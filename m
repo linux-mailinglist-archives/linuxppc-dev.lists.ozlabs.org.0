@@ -1,59 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D6486CB50
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 15:20:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C2A86CBE9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 15:48:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=e/zsT4nJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fd8bWomS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tltfk57G9z3vtm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 01:20:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlvGz1tkTz3vYF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 01:48:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=e/zsT4nJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fd8bWomS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TltYr3gBZz3vYD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 01:16:16 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id BEDD34000A;
-	Thu, 29 Feb 2024 14:16:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709216173;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+8ok8TG0kJuE8iBu8qNACBQYbQ3c7LdJVkKbhlZMtoA=;
-	b=e/zsT4nJuDpmvhqZpFnM2wGO+FvRTQNut1KFFCLZfwV8slgaTIXi3TbfWXS6GdEs3HglA4
-	oBsMaZBZEnyP/Rajv6poTS6FlX3AtCPigAkuG4H3iq/SsYR49cs678lJ3KMzF4bb9oS09K
-	QN+ea+N/ARlsRVNTfHXjYW+1SPGVEccbB47m2SXkWzhnULVnuWFNPjVc88dE5YBVVsBbNc
-	Srm8L01+GMGtOw3JasmfiLfTxRXpX1IR0AOlzyT7AXv3MMgE4E0C78O1i5uVKq09j0pVvN
-	9kA/VbcJ2RVey3XPfH0IukgkfO59gMM9pGQEC7Hh3USsaBytM0EKBZBrvmgF9Q==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH v5 5/5] net: wan: fsl_qmc_hdlc: Add framer support
-Date: Thu, 29 Feb 2024 15:15:53 +0100
-Message-ID: <20240229141554.836867-6-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229141554.836867-1-herve.codina@bootlin.com>
-References: <20240229141554.836867-1-herve.codina@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlvGD5Lnwz3dWk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 01:47:48 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3127260C80;
+	Thu, 29 Feb 2024 14:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C91BC43390;
+	Thu, 29 Feb 2024 14:47:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709218063;
+	bh=c7GmbVJf43ArHWG9m+LgTeyF8QmqxKm6DE7najW6vkw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fd8bWomSDlRNZkU9IB07feEamaa19n8kfPgUJONxZEAcmwiJIjF9ianrPSh2PUQ2+
+	 NQOJxKk8u6voltML5yygA3M0NCgqDtOjxDmGmqtquTBDRHh66gOOOyIC1JThtsl6Ui
+	 Z22/moAG2DQUoobCnXVA1JIYppGFI1eu86YJTtx9/j43KU+80OhaM0eDYlu72OPp0N
+	 gXicsCxEPUx0xW+xxKkjldIor83o1qhPBJTdeCerzQkG7Ka/I5NvebRky5wr1Krvlp
+	 +AY+VMQJOL5jaSejJsGunF6zMZc+2RzWh2YPdu2w4rjTBm3O48z4WQw6x9yhL1hPI8
+	 XLt3LA5uibv0Q==
+Date: Thu, 29 Feb 2024 06:47:42 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Subject: Re: [revert 0d60d8df6f49] [net/net-next] [6.8-rc5] Build Failure
+Message-ID: <20240229064742.36c2f476@kernel.org>
+In-Reply-To: <CANn89iKdaMFCKnGRL4ffnbyrr2PUaKn1hoiu4VZ=sRyX=Vy0Wg@mail.gmail.com>
+References: <3fcf3a2c-1c1b-42c1-bacb-78fdcd700389@linux.vnet.ibm.com>
+	<85b78dad-affa-47c3-9cd0-79a4321460b8@linux.dev>
+	<CANn89iJEzTjwxF7wXSnUR+NyDu-S-zEOYVXA+fEaYs_1o1g5HQ@mail.gmail.com>
+	<a1fdd2c2-4443-458e-86db-280e7cbd4a36@linux.vnet.ibm.com>
+	<CANn89iKdaMFCKnGRL4ffnbyrr2PUaKn1hoiu4VZ=sRyX=Vy0Wg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,368 +62,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org
+Cc: venkat88@linux.vnet.ibm.com, Vadim Fedorenko <vadim.fedorenko@linux.dev>, "mputtash@linux.vnet.com" <mputtash@linux.vnet.com>, Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, arkadiusz.kubalewski@intel.com, "sachinp@linux.vnet.com" <sachinp@linux.vnet.com>, "abdhalee@linux.vnet.ibm.com" <abdhalee@linux.vnet.ibm.com>, jiri@nvidia.com, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add framer support in the fsl_qmc_hdlc driver in order to be able to
-signal carrier changes to the network stack based on the framer status
-Also use this framer to provide information related to the E1/T1 line
-interface on IF_GET_IFACE and configure the line interface according to
-IF_IFACE_{E1,T1} information.
+On Thu, 29 Feb 2024 09:55:22 +0100 Eric Dumazet wrote:
+> I do not see other solution than this, otherwise we have to add more
+> pollution to include/linux/netdevice.h
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- drivers/net/wan/fsl_qmc_hdlc.c | 239 ++++++++++++++++++++++++++++++++-
- 1 file changed, 234 insertions(+), 5 deletions(-)
+Right :(
 
-diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-index 80998ad89088..dd6b69a950c9 100644
---- a/drivers/net/wan/fsl_qmc_hdlc.c
-+++ b/drivers/net/wan/fsl_qmc_hdlc.c
-@@ -10,6 +10,7 @@
- #include <linux/cleanup.h>
- #include <linux/bitmap.h>
- #include <linux/dma-mapping.h>
-+#include <linux/framer/framer.h>
- #include <linux/hdlc.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-@@ -29,6 +30,9 @@ struct qmc_hdlc {
- 	struct device *dev;
- 	struct qmc_chan *qmc_chan;
- 	struct net_device *netdev;
-+	struct framer *framer;
-+	spinlock_t carrier_lock; /* Protect carrier detection */
-+	struct notifier_block nb;
- 	bool is_crc32;
- 	spinlock_t tx_lock; /* Protect tx descriptors */
- 	struct qmc_hdlc_desc tx_descs[8];
-@@ -42,6 +46,192 @@ static struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *netdev)
- 	return dev_to_hdlc(netdev)->priv;
- }
- 
-+static int qmc_hdlc_framer_set_carrier(struct qmc_hdlc *qmc_hdlc)
-+{
-+	struct framer_status framer_status;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	guard(spinlock_irqsave)(&qmc_hdlc->carrier_lock);
-+
-+	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "get framer status failed (%d)\n", ret);
-+		return ret;
-+	}
-+	if (framer_status.link_is_on)
-+		netif_carrier_on(qmc_hdlc->netdev);
-+	else
-+		netif_carrier_off(qmc_hdlc->netdev);
-+
-+	return 0;
-+}
-+
-+static int qmc_hdlc_framer_notifier(struct notifier_block *nb, unsigned long action,
-+				    void *data)
-+{
-+	struct qmc_hdlc *qmc_hdlc = container_of(nb, struct qmc_hdlc, nb);
-+	int ret;
-+
-+	if (action != FRAMER_EVENT_STATUS)
-+		return NOTIFY_DONE;
-+
-+	ret = qmc_hdlc_framer_set_carrier(qmc_hdlc);
-+	return ret ? NOTIFY_DONE : NOTIFY_OK;
-+}
-+
-+static int qmc_hdlc_framer_start(struct qmc_hdlc *qmc_hdlc)
-+{
-+	struct framer_status framer_status;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	ret = framer_power_on(qmc_hdlc->framer);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer power-on failed (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	/* Be sure that get_status is supported */
-+	ret = framer_get_status(qmc_hdlc->framer, &framer_status);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "get framer status failed (%d)\n", ret);
-+		goto framer_power_off;
-+	}
-+
-+	qmc_hdlc->nb.notifier_call = qmc_hdlc_framer_notifier;
-+	ret = framer_notifier_register(qmc_hdlc->framer, &qmc_hdlc->nb);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer notifier register failed (%d)\n", ret);
-+		goto framer_power_off;
-+	}
-+
-+	return 0;
-+
-+framer_power_off:
-+	framer_power_off(qmc_hdlc->framer);
-+	return ret;
-+}
-+
-+static void qmc_hdlc_framer_stop(struct qmc_hdlc *qmc_hdlc)
-+{
-+	if (!qmc_hdlc->framer)
-+		return;
-+
-+	framer_notifier_unregister(qmc_hdlc->framer, &qmc_hdlc->nb);
-+	framer_power_off(qmc_hdlc->framer);
-+}
-+
-+static int qmc_hdlc_framer_set_iface(struct qmc_hdlc *qmc_hdlc, int if_iface,
-+				     const te1_settings *te1)
-+{
-+	struct framer_config config;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	ret = framer_get_config(qmc_hdlc->framer, &config);
-+	if (ret)
-+		return ret;
-+
-+	switch (if_iface) {
-+	case IF_IFACE_E1:
-+		config.iface = FRAMER_IFACE_E1;
-+		break;
-+	case IF_IFACE_T1:
-+		config.iface = FRAMER_IFACE_T1;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	switch (te1->clock_type) {
-+	case CLOCK_DEFAULT:
-+		/* Keep current value */
-+		break;
-+	case CLOCK_EXT:
-+		config.clock_type = FRAMER_CLOCK_EXT;
-+		break;
-+	case CLOCK_INT:
-+		config.clock_type = FRAMER_CLOCK_INT;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	config.line_clock_rate = te1->clock_rate;
-+
-+	return framer_set_config(qmc_hdlc->framer, &config);
-+}
-+
-+static int qmc_hdlc_framer_get_iface(struct qmc_hdlc *qmc_hdlc, int *if_iface, te1_settings *te1)
-+{
-+	struct framer_config config;
-+	int ret;
-+
-+	if (!qmc_hdlc->framer) {
-+		*if_iface = IF_IFACE_E1;
-+		return 0;
-+	}
-+
-+	ret = framer_get_config(qmc_hdlc->framer, &config);
-+	if (ret)
-+		return ret;
-+
-+	switch (config.iface) {
-+	case FRAMER_IFACE_E1:
-+		*if_iface = IF_IFACE_E1;
-+		break;
-+	case FRAMER_IFACE_T1:
-+		*if_iface = IF_IFACE_T1;
-+		break;
-+	}
-+
-+	if (!te1)
-+		return 0; /* Only iface type requested */
-+
-+	switch (config.clock_type) {
-+	case FRAMER_CLOCK_EXT:
-+		te1->clock_type = CLOCK_EXT;
-+		break;
-+	case FRAMER_CLOCK_INT:
-+		te1->clock_type = CLOCK_INT;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	te1->clock_rate = config.line_clock_rate;
-+	return 0;
-+}
-+
-+static int qmc_hdlc_framer_init(struct qmc_hdlc *qmc_hdlc)
-+{
-+	int ret;
-+
-+	if (!qmc_hdlc->framer)
-+		return 0;
-+
-+	ret = framer_init(qmc_hdlc->framer);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer init failed (%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void qmc_hdlc_framer_exit(struct qmc_hdlc *qmc_hdlc)
-+{
-+	if (!qmc_hdlc->framer)
-+		return;
-+
-+	framer_exit(qmc_hdlc->framer);
-+}
-+
- static int qmc_hdlc_recv_queue(struct qmc_hdlc *qmc_hdlc, struct qmc_hdlc_desc *desc, size_t size);
- 
- #define QMC_HDLC_RX_ERROR_FLAGS				\
-@@ -291,6 +481,12 @@ static int qmc_hdlc_set_iface(struct qmc_hdlc *qmc_hdlc, int if_iface, const te1
- 
- 	qmc_hdlc->slot_map = te1->slot_map;
- 
-+	ret = qmc_hdlc_framer_set_iface(qmc_hdlc, if_iface, te1);
-+	if (ret) {
-+		dev_err(qmc_hdlc->dev, "framer set iface failed %d\n", ret);
-+		return ret;
-+	}
-+
- 	return 0;
- }
- 
-@@ -298,11 +494,16 @@ static int qmc_hdlc_ioctl(struct net_device *netdev, struct if_settings *ifs)
- {
- 	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
- 	te1_settings te1;
-+	int ret;
- 
- 	switch (ifs->type) {
- 	case IF_GET_IFACE:
--		ifs->type = IF_IFACE_E1;
- 		if (ifs->size < sizeof(te1)) {
-+			/* Retrieve type only */
-+			ret = qmc_hdlc_framer_get_iface(qmc_hdlc, &ifs->type, NULL);
-+			if (ret)
-+				return ret;
-+
- 			if (!ifs->size)
- 				return 0; /* only type requested */
- 
-@@ -312,6 +513,11 @@ static int qmc_hdlc_ioctl(struct net_device *netdev, struct if_settings *ifs)
- 
- 		memset(&te1, 0, sizeof(te1));
- 
-+		/* Retrieve info from framer */
-+		ret = qmc_hdlc_framer_get_iface(qmc_hdlc, &ifs->type, &te1);
-+		if (ret)
-+			return ret;
-+
- 		/* Update slot_map */
- 		te1.slot_map = qmc_hdlc->slot_map;
- 
-@@ -345,10 +551,17 @@ static int qmc_hdlc_open(struct net_device *netdev)
- 	int ret;
- 	int i;
- 
--	ret = hdlc_open(netdev);
-+	ret = qmc_hdlc_framer_start(qmc_hdlc);
- 	if (ret)
- 		return ret;
- 
-+	ret = hdlc_open(netdev);
-+	if (ret)
-+		goto framer_stop;
-+
-+	/* Update carrier */
-+	qmc_hdlc_framer_set_carrier(qmc_hdlc);
-+
- 	chan_param.mode = QMC_HDLC;
- 	/* HDLC_MAX_MRU + 4 for the CRC
- 	 * HDLC_MAX_MRU + 4 + 8 for the CRC and some extraspace needed by the QMC
-@@ -397,6 +610,8 @@ static int qmc_hdlc_open(struct net_device *netdev)
- 	}
- hdlc_close:
- 	hdlc_close(netdev);
-+framer_stop:
-+	qmc_hdlc_framer_stop(qmc_hdlc);
- 	return ret;
- }
- 
-@@ -432,6 +647,7 @@ static int qmc_hdlc_close(struct net_device *netdev)
- 	}
- 
- 	hdlc_close(netdev);
-+	qmc_hdlc_framer_stop(qmc_hdlc);
- 	return 0;
- }
- 
-@@ -480,6 +696,7 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 
- 	qmc_hdlc->dev = dev;
- 	spin_lock_init(&qmc_hdlc->tx_lock);
-+	spin_lock_init(&qmc_hdlc->carrier_lock);
- 
- 	qmc_hdlc->qmc_chan = devm_qmc_chan_get_bychild(dev, dev->of_node);
- 	if (IS_ERR(qmc_hdlc->qmc_chan))
-@@ -502,9 +719,19 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	qmc_hdlc->framer = devm_framer_optional_get(dev, "fsl,framer");
-+	if (IS_ERR(qmc_hdlc->framer))
-+		return PTR_ERR(qmc_hdlc->framer);
-+
-+	ret = qmc_hdlc_framer_init(qmc_hdlc);
-+	if (ret)
-+		return ret;
-+
- 	qmc_hdlc->netdev = alloc_hdlcdev(qmc_hdlc);
--	if (!qmc_hdlc->netdev)
--		return -ENOMEM;
-+	if (!qmc_hdlc->netdev) {
-+		ret = -ENOMEM;
-+		goto framer_exit;
-+	}
- 
- 	hdlc = dev_to_hdlc(qmc_hdlc->netdev);
- 	hdlc->attach = qmc_hdlc_attach;
-@@ -519,11 +746,12 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
- 	}
- 
- 	platform_set_drvdata(pdev, qmc_hdlc);
--
- 	return 0;
- 
- free_netdev:
- 	free_netdev(qmc_hdlc->netdev);
-+framer_exit:
-+	qmc_hdlc_framer_exit(qmc_hdlc);
- 	return ret;
- }
- 
-@@ -533,6 +761,7 @@ static int qmc_hdlc_remove(struct platform_device *pdev)
- 
- 	unregister_hdlc_device(qmc_hdlc->netdev);
- 	free_netdev(qmc_hdlc->netdev);
-+	qmc_hdlc_framer_exit(qmc_hdlc);
- 
- 	return 0;
- }
--- 
-2.43.0
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index a9c973b92294bb110cf3cd336485972127b01b58..40797ea80bc6273cae6b7773d0a3e47459a72150
+> 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -2469,7 +2469,7 @@ struct net_device {
+>         struct devlink_port     *devlink_port;
+> 
+>  #if IS_ENABLED(CONFIG_DPLL)
+> -       struct dpll_pin __rcu   *dpll_pin;
+> +       void __rcu *dpll_pin;
+>  #endif
 
+If DPLL wants to hide its type definitions the helpers must live
+in dpll? IOW move netdev_dpll_pin() to drivers/dpll/dpll_core.c
+
+BTW Tasmiya, please do tell us what compiler you're using.
