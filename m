@@ -2,56 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C39586BFA6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 04:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9251B86BFA9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 04:54:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rne5CSNE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Fq1Z1FjH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tlcl36qc7z3vXb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 14:53:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tlcls19Bkz3vX1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 14:54:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rne5CSNE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Fq1Z1FjH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d34; helo=mail-io1-xd34.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlckL3pKvz3c9N
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 14:52:42 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id DF9A9CE21A8;
-	Thu, 29 Feb 2024 03:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEC1C433C7;
-	Thu, 29 Feb 2024 03:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709178757;
-	bh=yH4w3KkVCaD1LzUfUcTHguk7T7n3tQ9C/jrL4yRKV2Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rne5CSNEbrCuAvMIy9L8aj3RaP76gvIKhcvYyEDQnfSvXYeE44McntiUxD2ZxjCSI
-	 ahRfHcLZ5L3tOwkI+nrW/SslxK2n8ZMl97MF9S6fc7z3ci2+1z/iJ5dWkAjM+G/rJk
-	 Az8XmkafDYhn101oldaQWz3ds74I5TsJL0pqHFAhrX9PRTi0OvrCa/mgLNgiKO7ptj
-	 rgwgHVLSHvSzw02KdSAzfoA4Z31LzyE1eGe/BaI7F/yn+hoEx6dL3k3AP9YJBypUsa
-	 zjvdsQjAKc8UdNwAw2V4oX47MEDyc6CwJXOLB1RdSeOdr0drpGkqueWnltKYWH2ngH
-	 eYnXrUvUbJ0Tw==
-X-Mailer: emacs 29.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Kunwu Chan <chentao@kylinos.cn>,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	naveen.n.rao@linux.ibm.com
-Subject: Re: [PATCH] powerpc/mm: Code cleanup for __hash_page_thp
-In-Reply-To: <87jzmq5tjr.fsf@mail.lhotse>
-References: <20240125092624.537564-1-chentao@kylinos.cn>
- <87h6hva4b0.fsf@mail.lhotse>
- <f3b53f0e-58ce-4b2d-ba91-f347da73f9f3@kylinos.cn>
- <87jzmq5tjr.fsf@mail.lhotse>
-Date: Thu, 29 Feb 2024 09:22:30 +0530
-Message-ID: <87bk80kjup.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tlckb1nt7z3dHK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 14:52:55 +1100 (AEDT)
+Received: by mail-io1-xd34.google.com with SMTP id ca18e2360f4ac-7c78573f294so29823139f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Feb 2024 19:52:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709178772; x=1709783572; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GE8HlfcNsFFEiu7txF0WkDnaFjS/axbXg3f2FUFn/bg=;
+        b=Fq1Z1FjHLYaAFUG7Clbybb7PgSNzZfL6ezs2ykKQO/9uok4wh0H9Wqo0P7k/EM1E6v
+         sBpTFYDdiEtsD56dRLGeGZPpLaW3pqhf/7Zhf6nlS9R5YL++SG1/wl4NeCRjbl6kouwh
+         n6TRXYgyTkU3Vn0ACx7s6ZdOoXOojhdzXBHuvA+YCIG8dw0HHLRRLPeXfEKADYyENRcU
+         FQ4NT76Yy/eruBnMPOuCxGaZXax3seQ8muirpafHtsaX5bYdhitF0YdZ3lChvASDDx30
+         +UOtkj0ADZaL68Jq3KEu2lfAppN07DV52caO6pfYJea1YbJWVzYY1A9imaBr93shk6pL
+         pyCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709178772; x=1709783572;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GE8HlfcNsFFEiu7txF0WkDnaFjS/axbXg3f2FUFn/bg=;
+        b=nx6/ehHmAXpJIin+IDxqM2xaU7F7SMC2tUBC2Fj6t0dPY0/viymoZO0Hj8lMouY7bh
+         C3OpD1IyNljDAjglKjBApFiQHOGWh+l0Y2+mw5fmgx0u43cp/unGPr9bgw7qnLHTFcVE
+         fOz095g3e9LL53HvLad/jeFGxr16X2lSB5uGN0zJUl2hLSwegmVjcSPg9RbPaaqg1Cm2
+         bZoSH9hHL/SQtO1dkI8X/Hl8lOb8/6j7XRPKoixeqHV+TmtRCVaqYQ67t3qOByvLlQhi
+         ClojN4JmKV45SYB1NqkTKrpfi5OyZZ6PHR1cXDhiQe/OaAiOPSH1rKlwwkufpQu4ZVpK
+         qVGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWm6GOoIP3hFYo/ZetdzQ95SXebxdVmyHj1vaBjPRfbEVB017uTg23uHSUdyEuO704vi87oqGXoqWobsbF+JJS1wN1RXEnkcJyEyP1xgg==
+X-Gm-Message-State: AOJu0Yy5kYji1GyBwrTojei8GSVN2oGN3jkZL/FdlEXrMFW6sYtkP7Oy
+	F4OvDxSjE8hov06CI8u3cm0Jr9Xq9HgW9J7T8WF8Zsp+prkdZ3qL
+X-Google-Smtp-Source: AGHT+IF2sCHOGIDu81WosmY/mHd2F1QEFCJeLxZ9sG77D1aTATrp5oOMhRYDapBFD1jxZ9C3lI9ZfQ==
+X-Received: by 2002:a92:c684:0:b0:365:1dd9:ee6b with SMTP id o4-20020a92c684000000b003651dd9ee6bmr1394815ilg.25.1709178772085;
+        Wed, 28 Feb 2024 19:52:52 -0800 (PST)
+Received: from localhost (220-235-220-130.tpgi.com.au. [220.235.220.130])
+        by smtp.gmail.com with ESMTPSA id g5-20020a170902c38500b001dc78455383sm236299plg.223.2024.02.28.19.52.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Feb 2024 19:52:51 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 29 Feb 2024 13:52:46 +1000
+Message-Id: <CZH9B1R365G4.2Z2OICA7Z7OY9@wheely>
+Subject: Re: [kvm-unit-tests PATCH 09/32] scripts: allow machine option to
+ be specified in unittests.cfg
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Andrew Jones" <andrew.jones@linux.dev>
+X-Mailer: aerc 0.15.2
+References: <20240226101218.1472843-1-npiggin@gmail.com>
+ <20240226101218.1472843-10-npiggin@gmail.com>
+ <20240228-386d106a6ef0bc0430edad1a@orel>
+In-Reply-To: <20240228-386d106a6ef0bc0430edad1a@orel>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,63 +83,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-
-> Kunwu Chan <chentao@kylinos.cn> writes:
->> Thanks for the reply.
->>
->> On 2024/2/26 18:49, Michael Ellerman wrote:
->>> Kunwu Chan <chentao@kylinos.cn> writes:
->>>> This part was commented from commit 6d492ecc6489
->>>> ("powerpc/THP: Add code to handle HPTE faults for hugepages")
->>>> in about 11 years before.
->>>>
->>>> If there are no plans to enable this part code in the future,
->>>> we can remove this dead code.
->>> 
->>> I agree the code can go. But I'd like it to be replaced with a comment
->>> explaining what the dead code was trying to say.
+On Wed Feb 28, 2024 at 9:47 PM AEST, Andrew Jones wrote:
+> On Mon, Feb 26, 2024 at 08:11:55PM +1000, Nicholas Piggin wrote:
+> > This allows different machines with different requirements to be
+> > supported by run_tests.sh, similarly to how different accelerators
+> > are handled.
+> >=20
+> > Acked-by: Thomas Huth <thuth@redhat.com>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >  scripts/common.bash  |  8 ++++++--
+> >  scripts/runtime.bash | 16 ++++++++++++----
+> >  2 files changed, 18 insertions(+), 6 deletions(-)
 >
->> Thanks, i'll update a new patch with the following comment:
->>      /*
->>      * No CPU has hugepages but lacks no execute, so we
->>      * don't need to worry about cpu no CPU_FTR_COHERENT_ICACHE feature case
->>      */
->
-> Maybe wait until we can get some input from Aneesh. I'm not sure the
-> code/comment are really up to date.
->
-> cheers
+> Please also update the unittests.cfg documentation.
 
-How about?
+Yeah good catch, I will do.
 
-modified   arch/powerpc/mm/book3s64/hash_hugepage.c
-@@ -58,17 +58,13 @@ int __hash_page_thp(unsigned long ea, unsigned long access, unsigned long vsid,
- 		return 0;
- 
- 	rflags = htab_convert_pte_flags(new_pmd, flags);
-+	/*
-+	 * THPs are only supported on platforms that can do mixed page size
-+	 * segments (MPSS) and all such platforms have coherent icache. Hence we
-+	 * don't need to do lazy icache flush (hash_page_do_lazy_icache()) on
-+	 * noexecute fault.
-+	 */
- 
--#if 0
--	if (!cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
--
--		/*
--		 * No CPU has hugepages but lacks no execute, so we
--		 * don't need to worry about that case
--		 */
--		rflags = hash_page_do_lazy_icache(rflags, __pte(old_pte), trap);
--	}
--#endif
- 	/*
- 	 * Find the slot index details for this ea, using base page size.
- 	 */
+> Currently that
+> documentation lives in the header of each unittests.cfg file, but
+> we could maybe change each file to have a single line which points
+> at a single document.
 
+I'll take a look and do something if it's simple enough,
+otherwise I'll just update the unittests.cfg.
+
+Thanks,
+Nick
