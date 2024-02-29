@@ -1,53 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE2686C997
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 13:57:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B330286CA4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 14:32:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C+K5ELdx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RuQNA7CI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tlrq71XTyz3vYc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 23:57:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TlsbF2VYnz3vZ8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 00:32:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C+K5ELdx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RuQNA7CI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tlrnw3kpZz3vX2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 23:56:36 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 8C10ACE1020;
-	Thu, 29 Feb 2024 12:56:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4621EC433F1;
-	Thu, 29 Feb 2024 12:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709211393;
-	bh=FH+JdudMBgehU68hfBDKn6/fbrAreS/wl1YC0HPz/Tg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C+K5ELdxqti6l+X3XyprWkioDJDWESK1Q8aUt7ODmuCvs+B1SkleCGS2eEqKuvXhc
-	 QexaZ6oN8rwRdtzMCWk5hwhKaAp7YhoymoN8DvRIanJgaj90GMn1Ca3MbwYy2CygBW
-	 odHLaxPs6AoXzDLZTk8XNgsv5e9HzgUV6/jt7F0kU0NSKDa7TcHHUS2XzwcsPssFbY
-	 yyTfzN2vjbzjAV/RY4utg2ANfWB2XcDg7jBIBgwr3ZVoXrfOvihwUylOGhb0xI4tIh
-	 joL7P9t4siWvMU3aFWlo9KSxQEMDCpcIs+vCy7QH9HFbq0VPuv2Gx4sqzIN8C8ym1q
-	 +gtgrcmRWnWFw==
-Date: Thu, 29 Feb 2024 13:56:23 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v8 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
-Message-ID: <ZeB-93jiX31cLJyP@fedora>
-References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TlsZW3rrrz301T
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 00:31:47 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41TDS4kj013608;
+	Thu, 29 Feb 2024 13:31:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=GJo8iJMGfaGPwS99dafMtTmfFm51EAfN5bAYGc+TU50=;
+ b=RuQNA7CIekh/yYwAcIVRXbdhA1CWtqJbIy3FzwCffuWmVD0gJ5EI1b86UTTQRWaRSrAd
+ t+6u+t0dxoEPb9Gu+c4Af/nhwlu8fa17McT8M65xG4943tWxYRlZA8c+1ysfwjQenfSD
+ qVjEczqoKZctZLsBxNbPtxWIGrMSRUpCPdqJhS+CKsXrgT73FyzP5uZpEzHNL0u++q0K
+ uAAftIsfATnoeqvQMWX3ZKuc8tC8EAX1JQccW1w+4XZyWHV7jjkPGHZTDhClxflXz/wm
+ 98PKkl+dCOL1fadlZQGqUXD1O48gL+75V31Q1X3/4V+uPbnLthL/nvYj4YJS27IgI9NV og== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wjtu382u3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Feb 2024 13:31:44 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41TCC8mG024154;
+	Thu, 29 Feb 2024 13:31:14 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfw0kn86r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Feb 2024 13:31:14 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41TDV83116646718
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Feb 2024 13:31:11 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCAE420043;
+	Thu, 29 Feb 2024 13:31:08 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D347F20040;
+	Thu, 29 Feb 2024 13:31:07 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.80.238])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 29 Feb 2024 13:31:07 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [netdev] Build failure on powerpc
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <875xy8103a.fsf@mail.lhotse>
+Date: Thu, 29 Feb 2024 19:00:56 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <916F09F9-FC10-4248-BE64-9E01AA264CBA@linux.ibm.com>
+References: <8294bf9a-d175-4d86-b6df-9c409108cbf1@linux.vnet.ibm.com>
+ <875xy8103a.fsf@mail.lhotse>
+To: Michael Ellerman <mpe@linux.ibm.com>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5sYoHCdsaqxIPrqUqApQzJ2Rv-uhNl1Y
+X-Proofpoint-GUID: 5sYoHCdsaqxIPrqUqApQzJ2Rv-uhNl1Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-29_02,2024-02-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=912 mlxscore=0 priorityscore=1501
+ phishscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2402290104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,50 +92,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, linux-tegra@vger.kernel.org, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-
- kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: Tasmiya Nalatwad <tasmiya@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Mani,
-
-On Sat, Feb 24, 2024 at 12:24:16PM +0530, Manivannan Sadhasivam wrote:
-> All of the APIs are missing the Kernel-doc comments. Hence, add them.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/pci/controller/dwc/pcie-designware-ep.c | 92 +++++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> index fed4c2936c78..cdcb33a279db 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-
-(snip)
-
-> @@ -556,6 +606,12 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
->  	return 0;
->  }
->  
-> +/**
-> + * dw_pcie_ep_cleanup - Cleanup DWC EP resources
-> + * @ep: DWC EP device
-> + *
-> + * Cleans up the DWC EP specific resources like eDMA etc...
-
-I think that you should mention that this is only for glue drivers that
-use PERST# handling, so that other glue drivers do no start using it :)
 
 
-> + */
->  void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
->  {
->  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> @@ -564,6 +620,13 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
->  }
->  EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
+> On 29-Feb-2024, at 7:52=E2=80=AFAM, Michael Ellerman =
+<mpe@linux.ibm.com> wrote:
+>=20
+> Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com> writes:
+>> Greetings,
+>>=20
+>> [netdev] Build failure on powerpc
+>> latest netdev 6.8.0-rc5-auto-g1ce7d306ea63 fails to build on powerpc=20=
 
+>> below traces
+>=20
+> Please include the defconfig you're building, and the toolchain
+> versions, in reports like this.
+>=20
+> I wasn't able to reproduce this failure here.
 
-Kind regards,
-Niklas
+I believe this is tied to gcc version.=20
+
+Build failure is seen while using gcc-8.5.x but not with gcc-11.4.x
+
+=E2=80=94 Sachin
