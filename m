@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7780886C402
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E8E86C407
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 09:46:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A5hUWNJT;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A5hUWNJT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d0As4Sxm;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L8u61WNb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TllDf0kx9z3vjt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 19:45:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TllFZ6cWlz3vms
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Feb 2024 19:46:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A5hUWNJT;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A5hUWNJT;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d0As4Sxm;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L8u61WNb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TllB12Cn0z3vXV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:43:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TllB92nhSz3dXL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Feb 2024 19:43:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709196214;
+	s=mimecast20190719; t=1709196222;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jnT5L9L6w21lKd8yQkJVObKwVcge77cGSeo5m2W2yic=;
-	b=A5hUWNJTLtSAnqGur5kZXWT0SRKBTqbkbmcQuPGwf9q8I37NeJPzEwEZvLabVe0m721Hlo
-	HKeyY0ncR1arv5NlJlgo1fej+7asdennqhGY4r3twmBq71qHG5jTzxgsRzh/VZbSfNaMck
-	ou9Fz5W4rJpFGKJ5hM8Hv8lybWPyWEw=
+	bh=vaO5rUUUwqL4Op281F/k7Urm37If4ycpPAb8kcf+Fps=;
+	b=d0As4SxmGalLUkvl8Ku4sGbyQOpQt1j9fcZxEZ1svm4xTa2UWs2eWZ0SLeHOeNB/yXy677
+	PZwAIxH0nDIMNDJKd36xGlOcRVqyfbSrHRQce+4stlUEoa9VNbIYt9HFXpWbLtJTskXpzd
+	m5+SiyPyp0ujPSr5xuACcTw1InaJu9Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709196214;
+	s=mimecast20190719; t=1709196223;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jnT5L9L6w21lKd8yQkJVObKwVcge77cGSeo5m2W2yic=;
-	b=A5hUWNJTLtSAnqGur5kZXWT0SRKBTqbkbmcQuPGwf9q8I37NeJPzEwEZvLabVe0m721Hlo
-	HKeyY0ncR1arv5NlJlgo1fej+7asdennqhGY4r3twmBq71qHG5jTzxgsRzh/VZbSfNaMck
-	ou9Fz5W4rJpFGKJ5hM8Hv8lybWPyWEw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-XVRBeMQtPOS0aNn2-IbSjA-1; Thu, 29 Feb 2024 03:43:30 -0500
-X-MC-Unique: XVRBeMQtPOS0aNn2-IbSjA-1
+	bh=vaO5rUUUwqL4Op281F/k7Urm37If4ycpPAb8kcf+Fps=;
+	b=L8u61WNbTSK1VPlOlkwg/9itEUmDxno7RxVr+l1xQmqkE71sPDgVSVA7CdkjvjRA8Dmm4T
+	Ngyzl9VVxczvJ5y6YeiRbI/1DDEsuVBEmtSwEwZ8G8A/7lvNTV952NDOwdIVrLYg5RvN78
+	uctER4TAgqikGO3lTyxPfK7cWnpP1uU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-Kkkwr2teMLKh8mWF0KV25w-1; Thu,
+ 29 Feb 2024 03:43:37 -0500
+X-MC-Unique: Kkkwr2teMLKh8mWF0KV25w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4FD4485A58A;
-	Thu, 29 Feb 2024 08:43:29 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DBFF93C025B8;
+	Thu, 29 Feb 2024 08:43:36 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.12])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D063428D;
-	Thu, 29 Feb 2024 08:43:22 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 3759D28D;
+	Thu, 29 Feb 2024 08:43:29 +0000 (UTC)
 From: peterx@redhat.com
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/7] mm/x86: Replace p4d_large() with p4d_leaf()
-Date: Thu, 29 Feb 2024 16:42:54 +0800
-Message-ID: <20240229084258.599774-4-peterx@redhat.com>
+Subject: [PATCH v2 4/7] mm/x86: Drop two unnecessary pud_leaf() definitions
+Date: Thu, 29 Feb 2024 16:42:55 +0800
+Message-ID: <20240229084258.599774-5-peterx@redhat.com>
 In-Reply-To: <20240229084258.599774-1-peterx@redhat.com>
 References: <20240229084258.599774-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -86,11 +86,8 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-p4d_large() is always defined as p4d_leaf().  Merge their usages.  Chose
-p4d_leaf() because p4d_leaf() is a global API, while p4d_large() is not.
-
-Only x86 has p4d_leaf() defined as of now.  So it also means after this
-patch we removed all p4d_large() usages.
+pud_leaf() has a fallback macro defined in include/linux/pgtable.h already.
+Drop the extra two for x86.
 
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Ingo Molnar <mingo@redhat.com>
@@ -99,110 +96,34 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: x86@kernel.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/x86/mm/fault.c          | 4 ++--
- arch/x86/mm/init_64.c        | 2 +-
- arch/x86/mm/pat/set_memory.c | 4 ++--
- arch/x86/mm/pti.c            | 2 +-
- arch/x86/power/hibernate.c   | 2 +-
- arch/x86/xen/mmu_pv.c        | 2 +-
- 6 files changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/pgtable.h      | 1 -
+ include/asm-generic/pgtable-nopmd.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 679b09cfe241..8b69ce3f4115 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -368,7 +368,7 @@ static void dump_pagetable(unsigned long address)
- 		goto bad;
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 69ed0ea0641b..f884d5162507 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1097,7 +1097,6 @@ static inline int pud_bad(pud_t pud)
+ 	return (pud_flags(pud) & ~(_KERNPG_TABLE | _PAGE_USER)) != 0;
+ }
+ #else
+-#define pud_leaf	pud_large
+ static inline int pud_large(pud_t pud)
+ {
+ 	return 0;
+diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
+index 8ffd64e7a24c..fa27e16bbe1b 100644
+--- a/include/asm-generic/pgtable-nopmd.h
++++ b/include/asm-generic/pgtable-nopmd.h
+@@ -31,7 +31,6 @@ static inline int pud_none(pud_t pud)		{ return 0; }
+ static inline int pud_bad(pud_t pud)		{ return 0; }
+ static inline int pud_present(pud_t pud)	{ return 1; }
+ static inline int pud_user(pud_t pud)		{ return 0; }
+-static inline int pud_leaf(pud_t pud)		{ return 0; }
+ static inline void pud_clear(pud_t *pud)	{ }
+ #define pmd_ERROR(pmd)				(pud_ERROR((pmd).pud))
  
- 	pr_cont("P4D %lx ", p4d_val(*p4d));
--	if (!p4d_present(*p4d) || p4d_large(*p4d))
-+	if (!p4d_present(*p4d) || p4d_leaf(*p4d))
- 		goto out;
- 
- 	pud = pud_offset(p4d, address);
-@@ -1039,7 +1039,7 @@ spurious_kernel_fault(unsigned long error_code, unsigned long address)
- 	if (!p4d_present(*p4d))
- 		return 0;
- 
--	if (p4d_large(*p4d))
-+	if (p4d_leaf(*p4d))
- 		return spurious_kernel_fault_check(error_code, (pte_t *) p4d);
- 
- 	pud = pud_offset(p4d, address);
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index ebdbcae48011..d691e7992a9a 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1197,7 +1197,7 @@ remove_p4d_table(p4d_t *p4d_start, unsigned long addr, unsigned long end,
- 		if (!p4d_present(*p4d))
- 			continue;
- 
--		BUILD_BUG_ON(p4d_large(*p4d));
-+		BUILD_BUG_ON(p4d_leaf(*p4d));
- 
- 		pud_base = pud_offset(p4d, 0);
- 		remove_pud_table(pud_base, addr, next, altmap, direct);
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index e9b448d1b1b7..5359a9c88099 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -676,7 +676,7 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 		return NULL;
- 
- 	*level = PG_LEVEL_512G;
--	if (p4d_large(*p4d) || !p4d_present(*p4d))
-+	if (p4d_leaf(*p4d) || !p4d_present(*p4d))
- 		return (pte_t *)p4d;
- 
- 	pud = pud_offset(p4d, address);
-@@ -739,7 +739,7 @@ pmd_t *lookup_pmd_address(unsigned long address)
- 		return NULL;
- 
- 	p4d = p4d_offset(pgd, address);
--	if (p4d_none(*p4d) || p4d_large(*p4d) || !p4d_present(*p4d))
-+	if (p4d_none(*p4d) || p4d_leaf(*p4d) || !p4d_present(*p4d))
- 		return NULL;
- 
- 	pud = pud_offset(p4d, address);
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 669ba1c345b3..dc0a81f5f60e 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -206,7 +206,7 @@ static pmd_t *pti_user_pagetable_walk_pmd(unsigned long address)
- 	if (!p4d)
- 		return NULL;
- 
--	BUILD_BUG_ON(p4d_large(*p4d) != 0);
-+	BUILD_BUG_ON(p4d_leaf(*p4d) != 0);
- 	if (p4d_none(*p4d)) {
- 		unsigned long new_pud_page = __get_free_page(gfp);
- 		if (WARN_ON_ONCE(!new_pud_page))
-diff --git a/arch/x86/power/hibernate.c b/arch/x86/power/hibernate.c
-index 6f955eb1e163..28153789f873 100644
---- a/arch/x86/power/hibernate.c
-+++ b/arch/x86/power/hibernate.c
-@@ -165,7 +165,7 @@ int relocate_restore_code(void)
- 	pgd = (pgd_t *)__va(read_cr3_pa()) +
- 		pgd_index(relocated_restore_code);
- 	p4d = p4d_offset(pgd, relocated_restore_code);
--	if (p4d_large(*p4d)) {
-+	if (p4d_leaf(*p4d)) {
- 		set_p4d(p4d, __p4d(p4d_val(*p4d) & ~_PAGE_NX));
- 		goto out;
- 	}
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index e21974f2cf2d..12a43a4abebf 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -1104,7 +1104,7 @@ static void __init xen_cleanmfnmap_p4d(p4d_t *p4d, bool unpin)
- 	pud_t *pud_tbl;
- 	int i;
- 
--	if (p4d_large(*p4d)) {
-+	if (p4d_leaf(*p4d)) {
- 		pa = p4d_val(*p4d) & PHYSICAL_PAGE_MASK;
- 		xen_free_ro_pages(pa, P4D_SIZE);
- 		return;
 -- 
 2.43.0
 
