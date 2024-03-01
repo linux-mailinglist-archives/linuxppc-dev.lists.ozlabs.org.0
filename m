@@ -2,90 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA5E86E2DF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 14:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C046086E2F5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 15:05:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1gO54np;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1gO54np;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A1phmCRK;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P+frxxBw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmV6B234Rz3vdk
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 00:57:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmVHN2HH1z3vZR
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 01:05:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1gO54np;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1gO54np;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A1phmCRK;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P+frxxBw;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmV5R6dTLz3vXF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Mar 2024 00:57:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmVGf4X1Rz3vXH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Mar 2024 01:05:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709301431;
+	s=mimecast20190719; t=1709301910;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=X7PBjlrpvNONsqh2uMY775tMAp1gZn/T320+nNQVSQ8=;
-	b=T1gO54npBC0gYzodTHqP92oUWinnQKGHe+QuC1X86Xnuok+EP1R8OcnTUIfJdgfZbv4Y3u
-	sp892Bcfs00E6FRDdWqZbywMN6yyZ7q/JGKO4i8okhp4Bkv5mgBJKfJ/E7br2X1aBhcCgI
-	wKgmf+sHbKopcaSOhrk2Fpvy6GVQZcQ=
+	bh=YphiZellMbZ+Y5xIqDpD84y1HO6iOWPJPSjFDhAMAbk=;
+	b=A1phmCRKgpaOFOtVLAtnWjCZfIxISszfGj25ABu38hQjNBcFy+UheyfppxRr0y+I+hSWVq
+	IRt48VJiQxy1kLKS436yjqog8ECWKxoMX2qEn8kiE8oxSAkgSDuuuGEgZk9FzTZxTPSkJC
+	cr+tzC895H2qZ8YS9IuXgpFoKCYdmBU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709301431;
+	s=mimecast20190719; t=1709301911;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=X7PBjlrpvNONsqh2uMY775tMAp1gZn/T320+nNQVSQ8=;
-	b=T1gO54npBC0gYzodTHqP92oUWinnQKGHe+QuC1X86Xnuok+EP1R8OcnTUIfJdgfZbv4Y3u
-	sp892Bcfs00E6FRDdWqZbywMN6yyZ7q/JGKO4i8okhp4Bkv5mgBJKfJ/E7br2X1aBhcCgI
-	wKgmf+sHbKopcaSOhrk2Fpvy6GVQZcQ=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=YphiZellMbZ+Y5xIqDpD84y1HO6iOWPJPSjFDhAMAbk=;
+	b=P+frxxBw5lkOkLSs9MyYXDZ0hhICe6BsFWgNaEgx+e1PXv2evw5upv1CZKNk0nmzaO74bG
+	uFIx/tuxCYv1Lk30n5BY6IJtSPQxBS7WIuAmyvJVV3uLFPZsY/xYdIQk+751g+K42pVC33
+	GX6/RkNlbkdorSjDnakW+zc9tOUtCoQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-mcHgs0ktPEGK6tPRnc-IxA-1; Fri, 01 Mar 2024 08:57:10 -0500
-X-MC-Unique: mcHgs0ktPEGK6tPRnc-IxA-1
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-5a10683780dso345394eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 05:57:09 -0800 (PST)
+ us-mta-166-VUSmcxtgN4W3E63Ah4j1fg-1; Fri, 01 Mar 2024 09:05:09 -0500
+X-MC-Unique: VUSmcxtgN4W3E63Ah4j1fg-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7876f29a8daso296336385a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 06:05:09 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709301429; x=1709906229;
+        d=1e100.net; s=20230601; t=1709301908; x=1709906708;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X7PBjlrpvNONsqh2uMY775tMAp1gZn/T320+nNQVSQ8=;
-        b=LV35n8H3eQlxFW9W30xKcYgyW31FUtp77kd3WZsoLJ5MBpOAomnc/TkvTj8YNPDr60
-         WmqchS5Tesox93gC4fsM5v9tAO1xizq5nmbsBDEeLW/SLgu+sdlnrKO37ThIe8/T+wQz
-         ysAE9yFxB1btQjuL3TsIfqt7OWFNF3EqjjfGch93SxU3pMrhInCJ2k3ikjOCXKIQa1sX
-         gZdZlrp7sglN+ITOwvsjn+SAwGXq1z0GzmBAzchhYebpsdBalnRQjWDkgbxEo1D4EqIg
-         TODO4wEfbbVCmfBt8VhjJ30pQnEDjuFZDNiD5w7+DeDjZynxs2dfO7dmaSu7R9SRACWp
-         f+rA==
-X-Forwarded-Encrypted: i=1; AJvYcCU96X4ORV5vEm4+b6eVjeuElkVnVuMjvNQ9TcYMIuC5p3gnR87mIxnDi6jfkk5yrZs4sj4fmbkhmRKIAQT+lkb8ccZyHivZsrmgQ2WotQ==
-X-Gm-Message-State: AOJu0YzQ01xndUSlkvXI5VMiBFEke508vXWkO+gEcW+AaYhL/x1gA+bT
-	GNN5akKG8khwYmc8uWjCXPGWtJ3hWXuUb0ROZ3roCS8AwbyqE4s9/JxXbyNmJDvCFuLno2QWkbe
-	gDVMOnizf3huEB0d0po0upYHWsYelCjTPHqo1Lnezy40QtlEJ3NlYWzHbJB6yzkI=
-X-Received: by 2002:a05:6359:4104:b0:17b:581c:430e with SMTP id kh4-20020a056359410400b0017b581c430emr1629944rwc.3.1709301429082;
-        Fri, 01 Mar 2024 05:57:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHAALUYF3MjHnSxAWn3yxvvW7J/Y+wZ+qYcQuBwbpMuvxGNhVX2UbCWs/R+c5oDVW3YrxDr8Q==
-X-Received: by 2002:a05:6359:4104:b0:17b:581c:430e with SMTP id kh4-20020a056359410400b0017b581c430emr1629929rwc.3.1709301428811;
-        Fri, 01 Mar 2024 05:57:08 -0800 (PST)
+        bh=YphiZellMbZ+Y5xIqDpD84y1HO6iOWPJPSjFDhAMAbk=;
+        b=mcRG1RE0cW0xPO5TAEiNvHKw76A3UqUxQxbOMiajtsyq5nJATuUS7huIe5LW2pToH2
+         csJBZRUkQCG0+/hDKRm/LAt1PjzqoU3dTBmBS2lw/2K5qooGSwr2w/ouZDxwOIiwic/I
+         P7qv/FwBtWht8F5jjl87Z1f36UPq5we/rB6CU++vtZXqETKNk0UsiY1Revdq0bjdLoJJ
+         rQ7Hi2TOfn8OKxQk0pSeJq5doEtiPOCGU6cnXZvPGHdD5LN/eBGfralEyEmBwhugTVPi
+         akN+G8TDc0tHonKpGe8VqtGZSMbuB6r2BXUykEP9CqyyplJ3gUoHmB0iXE+hpIlomKgT
+         cQ2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUVnk6BxFBc9IfiZo5owQRwtTKGgix4xDNWTBfeD8mTooyWHN2eBOZBgPGJI1iIYJx5gSmVz21bKISq24EAzIcgyRjb4MJzi5zuUJJFKQ==
+X-Gm-Message-State: AOJu0Yx0iNVfYCenGzg+doMWWw7GljXgRYmHaULQsgytmi9E9B5Jo2P2
+	Xga4Onu4FbkgDeZKvU1RQF3YttH3+S4UUXTONLBootcPZo6MxIXrB3j01BLme6NmOOIKapPQ0Qy
+	ZUllRAjobUNZcbkEPzRW4r+jz0atLat2N4O7vuIVU76JxNMXQR/JJZwGBUGK9nmopq6+/PlU=
+X-Received: by 2002:ac8:5dd0:0:b0:42e:b20e:b691 with SMTP id e16-20020ac85dd0000000b0042eb20eb691mr2042765qtx.49.1709301908587;
+        Fri, 01 Mar 2024 06:05:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHH7e4vYSFYBzWNAc72YehUDF7uIHRPeKh16MtOAfwQ1sHS/Vx1HjrZXV4re/6hiN7peh81eg==
+X-Received: by 2002:ac8:5dd0:0:b0:42e:b20e:b691 with SMTP id e16-20020ac85dd0000000b0042eb20eb691mr2042734qtx.49.1709301908304;
+        Fri, 01 Mar 2024 06:05:08 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-133.web.vodafone.de. [109.43.178.133])
-        by smtp.gmail.com with ESMTPSA id a19-20020a0ce353000000b00690314356a4sm1874327qvm.80.2024.03.01.05.57.06
+        by smtp.gmail.com with ESMTPSA id jv12-20020a05622aa08c00b0042ea9d4f563sm1705753qtb.62.2024.03.01.06.05.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Mar 2024 05:57:08 -0800 (PST)
-Message-ID: <b4a1b995-e5cd-40e9-afc1-445a9e5f6fa5@redhat.com>
-Date: Fri, 1 Mar 2024 14:57:04 +0100
+        Fri, 01 Mar 2024 06:05:07 -0800 (PST)
+Message-ID: <d9b53b30-0640-499d-a543-b7ab8b3d48aa@redhat.com>
+Date: Fri, 1 Mar 2024 15:05:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 14/32] powerpc: general interrupt tests
-To: Andrew Jones <ajones@ventanamicro.com>
-References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-15-npiggin@gmail.com>
- <1b89e399-1160-4fca-a9d7-89d60fc9a710@redhat.com>
- <20240301-65a02dd1ea0bc25377fb248f@orel>
+Subject: Re: [kvm-unit-tests PATCH 4/7] powerpc: add asm/time.h header with
+ delay and get_clock_us/ms
+To: Nicholas Piggin <npiggin@gmail.com>
+References: <20240226093832.1468383-1-npiggin@gmail.com>
+ <20240226093832.1468383-5-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -129,7 +128,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240301-65a02dd1ea0bc25377fb248f@orel>
+In-Reply-To: <20240226093832.1468383-5-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -146,36 +145,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/03/2024 14.45, Andrew Jones wrote:
-> On Fri, Mar 01, 2024 at 01:41:22PM +0100, Thomas Huth wrote:
->> On 26/02/2024 11.12, Nicholas Piggin wrote:
->>> Add basic testing of various kinds of interrupts, machine check,
->>> page fault, illegal, decrementer, trace, syscall, etc.
->>>
->>> This has a known failure on QEMU TCG pseries machines where MSR[ME]
->>> can be incorrectly set to 0.
->>
->> Two questions out of curiosity:
->>
->> Any chance that this could be fixed easily in QEMU?
->>
->> Or is there a way to detect TCG from within the test? (for example, we have
->> a host_is_tcg() function for s390x so we can e.g. use report_xfail() for
->> tests that are known to fail on TCG there)
+On 26/02/2024 10.38, Nicholas Piggin wrote:
+> This matches s390x clock and delay APIs, so common test code can start
+> using time facilities.
 > 
-> If there's nothing better, then it should be possible to check the
-> QEMU_ACCEL environment variable which will be there with the default
-> environ.
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   lib/powerpc/asm/processor.h | 21 ---------------------
+>   lib/powerpc/asm/time.h      | 30 ++++++++++++++++++++++++++++++
+>   lib/powerpc/processor.c     | 11 +++++++++++
+>   lib/powerpc/smp.c           |  1 +
+>   lib/ppc64/asm/time.h        |  1 +
+>   powerpc/spapr_vpa.c         |  1 +
+>   powerpc/sprs.c              |  1 +
+>   powerpc/tm.c                |  1 +
+>   8 files changed, 46 insertions(+), 21 deletions(-)
+>   create mode 100644 lib/powerpc/asm/time.h
+>   create mode 100644 lib/ppc64/asm/time.h
 
-Well, but that's only available from the host side, not within the test 
-(i.e. the guest). So that does not help much with report_xfail...
-I was rather thinking of something like checking the device tree, e.g. for 
-the compatible property in /hypervisor to see whether it's KVM or TCG...?
-
-  Thomas
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
