@@ -2,89 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB8286E02B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 12:26:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD9386E0B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 12:51:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IYxrHid8;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X27IBQzj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmQlm55hDz3vdw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 22:26:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmRHl3qFpz3vdb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 22:50:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IYxrHid8;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X27IBQzj;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmQl240pKz3cZN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 22:26:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmRH12mY0z3d2S
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 22:50:20 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709292362;
+	s=mimecast20190719; t=1709293817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F99ZBpwcts994IwUQySStogjROuvdQA8mnKDnTZ7VIQ=;
-	b=IYxrHid8/x1HP9MZydwNsvgMcbpkmqO7dS1wNBfaM8IBfaBSokbrhrBvemmt9p8IbAKaD4
-	R1kDvM9EWmfq1BOjkaiPkeATaIJl1qeiw3sIKLwcduDDXzmQEvtIXlVyGm2aw3wdxWJ+xE
-	FWhRuiOVcD4myuqG/oTx8p9kRj9gm7w=
+	bh=sbxmYCmx7KEXKZU1W11M9tIsGjyOf9fGQFP2JCkJplU=;
+	b=KFSPsmPkFewkGQcoH2wiR+8bFA9FYSy0BqbWuD8OdrDh1IhLiivWVBBYbYkJajU9FKqQ2l
+	LFuR8BfmK95Vkv3I0LyQQbmDE1n0KBPlIXrbjXku04/VTM6DtL9mIuKoFiNXVckhI6S3kZ
+	7yJ/JDsUHSguL2yZMCXdRAzFHGKZNww=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709292363;
+	s=mimecast20190719; t=1709293817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F99ZBpwcts994IwUQySStogjROuvdQA8mnKDnTZ7VIQ=;
-	b=X27IBQzj2o9A5HIqQD7ctvjztbcubblhYMe1arQ0OH74mYYzUT9dpSU7DQCWpTZzqScixq
-	1gXf14n9F7Mm63IYPH+vBzVVX/P2GUBB4snh0R7ZSpJ9WcXNXAr+F5pEbjkT1OGXOS9cSk
-	QVid05+y0Ra1AOA0Rz3ztcwpWEUacik=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=sbxmYCmx7KEXKZU1W11M9tIsGjyOf9fGQFP2JCkJplU=;
+	b=KFSPsmPkFewkGQcoH2wiR+8bFA9FYSy0BqbWuD8OdrDh1IhLiivWVBBYbYkJajU9FKqQ2l
+	LFuR8BfmK95Vkv3I0LyQQbmDE1n0KBPlIXrbjXku04/VTM6DtL9mIuKoFiNXVckhI6S3kZ
+	7yJ/JDsUHSguL2yZMCXdRAzFHGKZNww=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-_gGCV1IlPleAdZteYgdjRg-1; Fri, 01 Mar 2024 06:26:01 -0500
-X-MC-Unique: _gGCV1IlPleAdZteYgdjRg-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-42ea49780c1so24570951cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 03:26:01 -0800 (PST)
+ us-mta-272-KqWqu9XuPCWf2vSoJQaseg-1; Fri, 01 Mar 2024 06:50:16 -0500
+X-MC-Unique: KqWqu9XuPCWf2vSoJQaseg-1
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-787f2059cfcso229724785a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 03:50:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709292361; x=1709897161;
+        d=1e100.net; s=20230601; t=1709293815; x=1709898615;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F99ZBpwcts994IwUQySStogjROuvdQA8mnKDnTZ7VIQ=;
-        b=sERxpTMuaVHUebEET8etZ2hBb3rhfbgVrqXv0QaOntPg11+pCBNt7hglTLF51QMJuZ
-         OqGBKiP1LB27zj4APXuYoGT61+wx6g1PIKDnNyOUUazyRWab488Cyjy/D4wG2UKvgK9q
-         O8sZX6iqbZWt5rEv6hHgJ/0ORsQrdYetgLiIPEZaCXmh9jrp0y6ACXgwhWzCKvTFsV3H
-         jbFM2B6HQPo2O5/SNmBIAhAq+tIA0buRcKkLe3IB2hzfAGL3NrVplkPcbi1m7OUug4m4
-         nCULOg1C8TabGwh0FlZAgyYAMlKBxS2LeOzVY58MU0qx+88YmyYXJLKopjNPCr1sXDc1
-         QTjg==
-X-Forwarded-Encrypted: i=1; AJvYcCVoXZ1p3vvUQZnJgOWSwrM+lMlx1wCufrYTFyyQ+Hw5hBeUbYLSSlMbFXND0z8JyA45CL8Re7hnH9OxVLKxmofjqnO5B3MeaXB24QYnrw==
-X-Gm-Message-State: AOJu0Yz0t4ei+DZkFymwEQsH6yxnMBNjINGHAAZAie5E1IevMGcQxBOW
-	FZgUOAV60APi1vrGK67wBmQtrX9wnPThk0i/08hpmEGQjNHM0o2QlMDbREjbVE6PRWieqJlJTNH
-	7lS0Ww2v008zn7iWymzyoX/Qy2qxOAErzmdCs3CciK+3kPQE3Enpo7xQ79llimks=
-X-Received: by 2002:a05:622a:190c:b0:42e:b2fa:80cc with SMTP id w12-20020a05622a190c00b0042eb2fa80ccmr1484903qtc.56.1709292361027;
-        Fri, 01 Mar 2024 03:26:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbQCdB9jRZGAsNwj3H5NlUMm3A1jQlDhe6tfyELOMd7VcIMNwpobakiwetJJebgSUBT6GSyQ==
-X-Received: by 2002:a05:622a:190c:b0:42e:b2fa:80cc with SMTP id w12-20020a05622a190c00b0042eb2fa80ccmr1484891qtc.56.1709292360786;
-        Fri, 01 Mar 2024 03:26:00 -0800 (PST)
+        bh=sbxmYCmx7KEXKZU1W11M9tIsGjyOf9fGQFP2JCkJplU=;
+        b=j6zukak9yf9FGjY6H+pO8KchFmm5J4Iwsw9jXK06mW95ZrTMtW1ifeuQLZzDS3KFO7
+         JCqZHxrfWn/2REQ+b6S9pciGkTYCrKd8QK22BRveH8cuYYv8xfNvk2QmexoQoI/2l2B0
+         yzWEZ0YoovHttHtZUevdnIN7xG3cSgooowqeRMh4uztIpei/3uaq03XkXPZo+YQZHNCx
+         i8kn7Kwzr2W5s6wY8HST811bhGRgYn63MswwSZpIQTX+p7HeW1bJ2Foda2P2oLkPtJXl
+         YyleiaWcaz8ou45PtB7gDcvyS+yBwavQmwOTC8sfjhmVO1L1t5y5qWWCKDM9T2OY8n4h
+         jecw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhso6R3R9OIzENHdebOyYGudosc43DaCaal2kAFaX3lxmdX89sVXkp5Q+DpMHQmm5OX+eqOOh8kVafPu/TYedMjGZ8sAmKy8akj2LG1w==
+X-Gm-Message-State: AOJu0Ywc0iUyG0PDjW06gVFlxvN+J2ZF3/eLL6MdXjsZX93GFB/ppmMn
+	fdfmYlTb2N1L9YNdsRlU7C1l43XfAnDCDgV3rlEF6ocr/TXw/2EQp9izsqLCdfyhuURFbW4cOuC
+	uWhnbtkCfWLNqlQ+9U/cPFn07Qs8wzvWb3F6Yi3OS/2J55g5Ic+ovYyZGRo1wblo=
+X-Received: by 2002:a05:620a:1643:b0:787:ec02:92f6 with SMTP id c3-20020a05620a164300b00787ec0292f6mr1238266qko.73.1709293815745;
+        Fri, 01 Mar 2024 03:50:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGiDwPYWVHkDqooggwtDzoTfzET85vE65+rQl/isQu55HmdcDVvr5OWdGkWeT82LeVW5FmW+A==
+X-Received: by 2002:a05:620a:1643:b0:787:ec02:92f6 with SMTP id c3-20020a05620a164300b00787ec0292f6mr1238253qko.73.1709293815465;
+        Fri, 01 Mar 2024 03:50:15 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-133.web.vodafone.de. [109.43.178.133])
-        by smtp.gmail.com with ESMTPSA id j19-20020ac85c53000000b0042e7c95c5d6sm1605442qtj.18.2024.03.01.03.25.58
+        by smtp.gmail.com with ESMTPSA id br37-20020a05620a462500b007872d50caf5sm1570063qkb.19.2024.03.01.03.50.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Mar 2024 03:26:00 -0800 (PST)
-Message-ID: <e38eec04-5d2d-4027-85b8-91d072306d4f@redhat.com>
-Date: Fri, 1 Mar 2024 12:25:56 +0100
+        Fri, 01 Mar 2024 03:50:15 -0800 (PST)
+Message-ID: <a9441736-e254-49f0-9bea-e8008cec3e96@redhat.com>
+Date: Fri, 1 Mar 2024 12:50:10 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 08/32] powerpc/sprs: Avoid taking PMU
- interrupts caused by register fuzzing
+Subject: Re: [kvm-unit-tests PATCH 12/32] powerpc: Fix emulator illegal
+ instruction test for powernv
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-9-npiggin@gmail.com>
+ <20240226101218.1472843-13-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +128,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240226101218.1472843-9-npiggin@gmail.com>
+In-Reply-To: <20240226101218.1472843-13-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,15 +150,104 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 26/02/2024 11.11, Nicholas Piggin wrote:
-> Storing certain values in MMCR0 can cause PMU interrupts when msleep
-> enables MSR[EE], and this crashes the test. Freeze the PMU counters
-> and clear any PMU exception before calling msleep.
+> Illegal instructions cause 0xe40 (HEAI) interrupts rather
+> than program interrupts.
 > 
+> Acked-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/asm/reg.h |  4 ++++
->   powerpc/sprs.c        | 17 +++++++++++------
->   2 files changed, 15 insertions(+), 6 deletions(-)
+>   lib/powerpc/asm/processor.h |  1 +
+>   lib/powerpc/setup.c         | 13 +++++++++++++
+>   powerpc/emulator.c          | 21 ++++++++++++++++++++-
+>   3 files changed, 34 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/powerpc/asm/processor.h b/lib/powerpc/asm/processor.h
+> index 9d8061962..cf1b9d8ff 100644
+> --- a/lib/powerpc/asm/processor.h
+> +++ b/lib/powerpc/asm/processor.h
+> @@ -11,6 +11,7 @@ void do_handle_exception(struct pt_regs *regs);
+>   #endif /* __ASSEMBLY__ */
+>   
+>   extern bool cpu_has_hv;
+> +extern bool cpu_has_heai;
+>   
+>   static inline uint64_t mfspr(int nr)
+>   {
+> diff --git a/lib/powerpc/setup.c b/lib/powerpc/setup.c
+> index 89e5157f2..3c81aee9e 100644
+> --- a/lib/powerpc/setup.c
+> +++ b/lib/powerpc/setup.c
+> @@ -87,6 +87,7 @@ static void cpu_set(int fdtnode, u64 regval, void *info)
+>   }
+>   
+>   bool cpu_has_hv;
+> +bool cpu_has_heai;
+>   
+>   static void cpu_init(void)
+>   {
+> @@ -108,6 +109,18 @@ static void cpu_init(void)
+>   		hcall(H_SET_MODE, 0, 4, 0, 0);
+>   #endif
+>   	}
+> +
+> +	switch (mfspr(SPR_PVR) & PVR_VERSION_MASK) {
+> +	case PVR_VER_POWER10:
+> +	case PVR_VER_POWER9:
+> +	case PVR_VER_POWER8E:
+> +	case PVR_VER_POWER8NVL:
+> +	case PVR_VER_POWER8:
+> +		cpu_has_heai = true;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+>   }
+>   
+>   static void mem_init(phys_addr_t freemem_start)
+> diff --git a/powerpc/emulator.c b/powerpc/emulator.c
+> index 39dd59645..c9b17f742 100644
+> --- a/powerpc/emulator.c
+> +++ b/powerpc/emulator.c
+> @@ -31,6 +31,20 @@ static void program_check_handler(struct pt_regs *regs, void *opaque)
+>   	regs->nip += 4;
+>   }
+>   
+> +static void heai_handler(struct pt_regs *regs, void *opaque)
+> +{
+> +	int *data = opaque;
+> +
+> +	if (verbose) {
+> +		printf("Detected invalid instruction %#018lx: %08x\n",
+> +		       regs->nip, *(uint32_t*)regs->nip);
+> +	}
+> +
+> +	*data = 8; /* Illegal instruction */
+> +
+> +	regs->nip += 4;
+> +}
+> +
+>   static void alignment_handler(struct pt_regs *regs, void *opaque)
+>   {
+>   	int *data = opaque;
+> @@ -362,7 +376,12 @@ int main(int argc, char **argv)
+>   {
+>   	int i;
+>   
+> -	handle_exception(0x700, program_check_handler, (void *)&is_invalid);
+> +	if (cpu_has_heai) {
+> +		handle_exception(0xe40, heai_handler, (void *)&is_invalid);
+> +		handle_exception(0x700, program_check_handler, (void *)&is_invalid);
+> +	} else {
+> +		handle_exception(0x700, program_check_handler, (void *)&is_invalid);
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+The 0x700 line looks identical to the other part of the if-statement ... I'd 
+suggest to leave it outside of the if-statement, drop the else-part and just 
+set 0xe40 if cpu_has_heai.
+
+  Thomas
+
+> +	}
+>   	handle_exception(0x600, alignment_handler, (void *)&alignment);
+>   
+>   	for (i = 1; i < argc; i++) {
 
