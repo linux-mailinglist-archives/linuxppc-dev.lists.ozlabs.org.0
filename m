@@ -2,109 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BCF86DAF9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 06:15:03 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AdVATzUm;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BB186DDB5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 09:59:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmGVr6w2Mz3vZF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 16:15:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmMTl2xr7z3vdk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 19:59:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AdVATzUm;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmGV63sM2z3dVv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 16:14:22 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TmGV06kx3z4wc1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 16:14:16 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4TmGV06Hskz4wyh; Fri,  1 Mar 2024 16:14:16 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AdVATzUm;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=chentao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TmGV03Lcnz4wc1
-	for <linuxppc-dev@ozlabs.org>; Fri,  1 Mar 2024 16:14:16 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4215954T005398;
-	Fri, 1 Mar 2024 05:13:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=JX6eSvoNUnWfKDMb2h6OWhmreqplk4n9Il8ykxlGp3M=;
- b=AdVATzUmOoNEQ9mLog5p4g38qUeI6Eien0L47fgzj4QriuNnnEFEZQTxucgB7eQwQLgr
- iQHJTms8w1DY+ZBDnj+5yBW3A99a4svPVgqmbV2S/vx/FCoJXSRNIsSTGUG6T4n1FOR6
- W8vggbZLrkso82jkrBnU7AqobqoDU4W1MovSfVDj6QL/ORFKmmZcJjr4AhJ2Gj+tDPPS
- EU7LymATw++X7X+uWuyFlT637Sl+ArpzxGRTWTrEhiZx/15hXKh6evG1tPcJN3CJCfrY
- xjX0Cxq67SfzOrvdUbeUDvZy0krt2y5QwaiynqdXzg6BIJDIg6Td9YJ0h98R6s2hnSQQ fw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk8m6g34p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 05:13:35 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42159Pux006313;
-	Fri, 1 Mar 2024 05:13:35 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk8m6g34f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 05:13:34 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4211hHXl021316;
-	Fri, 1 Mar 2024 05:13:34 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfuspja0c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 05:13:33 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4215DSUx24117966
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Mar 2024 05:13:30 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 32E972004D;
-	Fri,  1 Mar 2024 05:13:28 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0AF8B20040;
-	Fri,  1 Mar 2024 05:13:20 +0000 (GMT)
-Received: from [9.43.93.212] (unknown [9.43.93.212])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Mar 2024 05:13:19 +0000 (GMT)
-Message-ID: <9dd60fea-5b6c-409d-bc55-8e27545b47d4@linux.ibm.com>
-Date: Fri, 1 Mar 2024 10:43:18 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmMTK1RRhz3bwR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 19:59:00 +1100 (AEDT)
+X-UUID: 6fcd9518fad74e9e8e1119d24725da21-20240301
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.37,REQID:6b25d915-c005-4fd9-995e-80141905d565,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,AC
+	TION:release,TS:-30
+X-CID-INFO: VERSION:1.1.37,REQID:6b25d915-c005-4fd9-995e-80141905d565,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-30
+X-CID-META: VersionHash:6f543d0,CLOUDID:53bafe80-4f93-4875-95e7-8c66ea833d57,B
+	ulkID:240301165841JSPWFF9D,BulkQuantity:0,Recheck:0,SF:66|38|24|17|19|44|1
+	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC
+	:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,
+	TF_CID_SPAM_ULS
+X-UUID: 6fcd9518fad74e9e8e1119d24725da21-20240301
+Received: from mail.kylinos.cn [(39.156.73.10)] by mailgw
+	(envelope-from <chentao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1125709206; Fri, 01 Mar 2024 16:58:40 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 8AD6CE000EBC;
+	Fri,  1 Mar 2024 16:58:39 +0800 (CST)
+X-ns-mid: postfix-65E198BF-298440663
+Received: from kernel.. (unknown [172.20.15.254])
+	by mail.kylinos.cn (NSMail) with ESMTPA id C6123E000EBC;
+	Fri,  1 Mar 2024 16:58:36 +0800 (CST)
+From: Kunwu Chan <chentao@kylinos.cn>
+To: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	aneesh.kumar@kernel.org,
+	naveen.n.rao@linux.ibm.com
+Subject: [PATCH v2] powerpc/mm: Code cleanup for __hash_page_thp
+Date: Fri,  1 Mar 2024 16:58:34 +0800
+Message-Id: <20240301085834.1512921-1-chentao@kylinos.cn>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 0/6] powerpc/crash: Kernel handling of CPU and memory
- hotplug
-To: Baoquan He <bhe@redhat.com>
-References: <20240226084118.16310-1-sourabhjain@linux.ibm.com>
- <ZeCL1EsQ/vLojCYs@MiWiFi-R3L-srv>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <ZeCL1EsQ/vLojCYs@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9u_Dv4MsjhfHbNzgxaoNunXKjOOrmFVH
-X-Proofpoint-ORIG-GUID: -CQuMvGu3TPMfEpKcApoepztV5yUUGMh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-01_02,2024-02-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=930
- priorityscore=1501 impostorscore=0 clxscore=1015 malwarescore=0 mlxscore=0
- spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403010041
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,35 +66,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, linuxppc-dev@ozlabs.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kunwu Chan <chentao@kylinos.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Baoquan,
+This part was commented from commit 6d492ecc6489
+("powerpc/THP: Add code to handle HPTE faults for hugepages")
+in about 11 years before.
 
-On 29/02/24 19:21, Baoquan He wrote:
-> Hi Sourabh,
->
-> On 02/26/24 at 02:11pm, Sourabh Jain wrote:
->> Commit 247262756121 ("crash: add generic infrastructure for crash
->> hotplug support") added a generic infrastructure that allows
->> architectures to selectively update the kdump image component during CPU
->> or memory add/remove events within the kernel itself.
->>
->> This patch series adds crash hotplug handler for PowerPC and enable
->> support to update the kdump image on CPU/Memory add/remove events.
->>
->> Among the 5 patches in this series, the first two patches make changes
->> to the generic crash hotplug handler to assist PowerPC in adding support
->> for this feature. The last three patches add support for this feature.
-> The whole series looks good to me. I have acked patch 1 and 2. Leave
-> those three ppc patches to ppc expert to review and approve. Thanks a
-> lot for your great work.
-Thanks for your feedback. I will soon send v18 to fix the two mirror 
-document issues
-and will look forward to PPC maintainers to provide feedback on the rest 
-of the series.
+If there are no plans to enable this part code in the future,
+we can remove this dead code and replace with a comment
+explaining what the dead code was trying to say.
 
-Appreciate your support!
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Suggested-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+---
+Changes to v2:
+    - Replace dead code with a comment as Michael Ellerman said in https:=
+//lore.kernel.org/all/87h6hva4b0.fsf@mail.lhotse/#R
+    - Improve commit msg
+---
+ arch/powerpc/mm/book3s64/hash_hugepage.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-- Sourabh
+diff --git a/arch/powerpc/mm/book3s64/hash_hugepage.c b/arch/powerpc/mm/b=
+ook3s64/hash_hugepage.c
+index c0fabe6c5a12..15d6f3ea7178 100644
+--- a/arch/powerpc/mm/book3s64/hash_hugepage.c
++++ b/arch/powerpc/mm/book3s64/hash_hugepage.c
+@@ -59,16 +59,13 @@ int __hash_page_thp(unsigned long ea, unsigned long a=
+ccess, unsigned long vsid,
+=20
+ 	rflags =3D htab_convert_pte_flags(new_pmd, flags);
+=20
+-#if 0
+-	if (!cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
++	/*
++	 * THPs are only supported on platforms that can do mixed page size
++	 * segments (MPSS) and all such platforms have coherent icache. Hence w=
+e
++	 * don't need to do lazy icache flush (hash_page_do_lazy_icache()) on
++	 * noexecute fault.
++	 */
+=20
+-		/*
+-		 * No CPU has hugepages but lacks no execute, so we
+-		 * don't need to worry about that case
+-		 */
+-		rflags =3D hash_page_do_lazy_icache(rflags, __pte(old_pte), trap);
+-	}
+-#endif
+ 	/*
+ 	 * Find the slot index details for this ea, using base page size.
+ 	 */
+--=20
+2.39.2
+
