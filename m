@@ -1,90 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD9386E0B0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 12:51:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94D886E137
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 13:42:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YYAGrolK;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YYAGrolK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmRHl3qFpz3vdb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 22:50:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmSQt3Tdfz3vd3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 23:42:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KFSPsmPk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YYAGrolK;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YYAGrolK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmRH12mY0z3d2S
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 22:50:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmSQ50m3Nz3vXH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 23:41:31 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709293817;
+	s=mimecast20190719; t=1709296888;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sbxmYCmx7KEXKZU1W11M9tIsGjyOf9fGQFP2JCkJplU=;
-	b=KFSPsmPkFewkGQcoH2wiR+8bFA9FYSy0BqbWuD8OdrDh1IhLiivWVBBYbYkJajU9FKqQ2l
-	LFuR8BfmK95Vkv3I0LyQQbmDE1n0KBPlIXrbjXku04/VTM6DtL9mIuKoFiNXVckhI6S3kZ
-	7yJ/JDsUHSguL2yZMCXdRAzFHGKZNww=
+	bh=6IaCGh6ZtXd4qLYJr0P2224MdJzU6iImHxFEOxYooC0=;
+	b=YYAGrolKCeJM0I4vqRAfNvMai4UB7bSjZ+2001Myn2LBHlCyowSQBWm/U3Nb6TrbkXOE7f
+	qwBvJjV2qJTTd4doKfz0RNycWRE+7CoJoVUzyUjLlcG9hSikbqIfvsK5ckPl4jmRMNgGXs
+	PRGNIilf1oolGOk1PxZm6v+/6Kjwdvk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709293817;
+	s=mimecast20190719; t=1709296888;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sbxmYCmx7KEXKZU1W11M9tIsGjyOf9fGQFP2JCkJplU=;
-	b=KFSPsmPkFewkGQcoH2wiR+8bFA9FYSy0BqbWuD8OdrDh1IhLiivWVBBYbYkJajU9FKqQ2l
-	LFuR8BfmK95Vkv3I0LyQQbmDE1n0KBPlIXrbjXku04/VTM6DtL9mIuKoFiNXVckhI6S3kZ
-	7yJ/JDsUHSguL2yZMCXdRAzFHGKZNww=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=6IaCGh6ZtXd4qLYJr0P2224MdJzU6iImHxFEOxYooC0=;
+	b=YYAGrolKCeJM0I4vqRAfNvMai4UB7bSjZ+2001Myn2LBHlCyowSQBWm/U3Nb6TrbkXOE7f
+	qwBvJjV2qJTTd4doKfz0RNycWRE+7CoJoVUzyUjLlcG9hSikbqIfvsK5ckPl4jmRMNgGXs
+	PRGNIilf1oolGOk1PxZm6v+/6Kjwdvk=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-KqWqu9XuPCWf2vSoJQaseg-1; Fri, 01 Mar 2024 06:50:16 -0500
-X-MC-Unique: KqWqu9XuPCWf2vSoJQaseg-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-787f2059cfcso229724785a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 03:50:16 -0800 (PST)
+ us-mta-389-Tr7hyAiiORu1fFbcmFsvQw-1; Fri, 01 Mar 2024 07:41:26 -0500
+X-MC-Unique: Tr7hyAiiORu1fFbcmFsvQw-1
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-5a061ace71fso1773609eaf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 04:41:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709293815; x=1709898615;
+        d=1e100.net; s=20230601; t=1709296886; x=1709901686;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sbxmYCmx7KEXKZU1W11M9tIsGjyOf9fGQFP2JCkJplU=;
-        b=j6zukak9yf9FGjY6H+pO8KchFmm5J4Iwsw9jXK06mW95ZrTMtW1ifeuQLZzDS3KFO7
-         JCqZHxrfWn/2REQ+b6S9pciGkTYCrKd8QK22BRveH8cuYYv8xfNvk2QmexoQoI/2l2B0
-         yzWEZ0YoovHttHtZUevdnIN7xG3cSgooowqeRMh4uztIpei/3uaq03XkXPZo+YQZHNCx
-         i8kn7Kwzr2W5s6wY8HST811bhGRgYn63MswwSZpIQTX+p7HeW1bJ2Foda2P2oLkPtJXl
-         YyleiaWcaz8ou45PtB7gDcvyS+yBwavQmwOTC8sfjhmVO1L1t5y5qWWCKDM9T2OY8n4h
-         jecw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhso6R3R9OIzENHdebOyYGudosc43DaCaal2kAFaX3lxmdX89sVXkp5Q+DpMHQmm5OX+eqOOh8kVafPu/TYedMjGZ8sAmKy8akj2LG1w==
-X-Gm-Message-State: AOJu0Ywc0iUyG0PDjW06gVFlxvN+J2ZF3/eLL6MdXjsZX93GFB/ppmMn
-	fdfmYlTb2N1L9YNdsRlU7C1l43XfAnDCDgV3rlEF6ocr/TXw/2EQp9izsqLCdfyhuURFbW4cOuC
-	uWhnbtkCfWLNqlQ+9U/cPFn07Qs8wzvWb3F6Yi3OS/2J55g5Ic+ovYyZGRo1wblo=
-X-Received: by 2002:a05:620a:1643:b0:787:ec02:92f6 with SMTP id c3-20020a05620a164300b00787ec0292f6mr1238266qko.73.1709293815745;
-        Fri, 01 Mar 2024 03:50:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGiDwPYWVHkDqooggwtDzoTfzET85vE65+rQl/isQu55HmdcDVvr5OWdGkWeT82LeVW5FmW+A==
-X-Received: by 2002:a05:620a:1643:b0:787:ec02:92f6 with SMTP id c3-20020a05620a164300b00787ec0292f6mr1238253qko.73.1709293815465;
-        Fri, 01 Mar 2024 03:50:15 -0800 (PST)
+        bh=6IaCGh6ZtXd4qLYJr0P2224MdJzU6iImHxFEOxYooC0=;
+        b=ByfOzHlaq4stl4hNhYVkG/b/faGMxKO/6dmgOJtTjeClHgRnbW0uAou8EKRJQX4TWd
+         ffEvIZ6QFHh0mxYr25dfEpxQ7Ehh1miHkJ7IAYF1f2bOUxFvtRr+Td2g8kYrd1y/FKAI
+         qrIb2Q5BeGV5UWL5NwS9FUsFawJd5agrvkdE2E7o96HeIH28Vc/3fT/tzrxNLBWcxbS4
+         +1q+1DljAQTZgZUuyuA7UFaba3NRS4rAf1phVGlZD/11FrrxbR3PP5lk+AX9DqZyXqHZ
+         izxOqEz2bTDQyZDll90YCJZQSlHLlyIpdi6JhXVKRLR6EjRudaSzrUq8zXSCTtn9jv2w
+         91VA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/yI+w7th0PNVXPIhEPbIBQlp0hHi3dnVAcymxlLG26SA1vK9Wj7qzdFRpeOfXsxvHrIlTSOIvKY913fK1Nyfhd2EbkLSo4irDVgCdcw==
+X-Gm-Message-State: AOJu0YwF5gcetti6zh4fhvH5rB0obWrOo0gqeFlssETGrmXMYtR/l4p9
+	z1F50L3oJi+9eizxC07i/xxJqqu/nCCF2za3v0P4XtzQTrFTUb7au9a6b9GpGObxnPsEJAgd0sL
+	bmKxMZjjUTBc8dxYnLquZz+dGoIoTy4IACm8PPFfRw7gHCj7u/yAI7pwmyLnCsOk=
+X-Received: by 2002:a05:6358:d59b:b0:17b:f0c3:a592 with SMTP id ms27-20020a056358d59b00b0017bf0c3a592mr1177744rwb.32.1709296886173;
+        Fri, 01 Mar 2024 04:41:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGelwt2TDZcBmoThPETuCd3vgXm0IwgjlKPqBhm5H/Opd+/L+VYKlikWvpz88pGT2msCp3YBw==
+X-Received: by 2002:a05:6358:d59b:b0:17b:f0c3:a592 with SMTP id ms27-20020a056358d59b00b0017bf0c3a592mr1177721rwb.32.1709296885774;
+        Fri, 01 Mar 2024 04:41:25 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-133.web.vodafone.de. [109.43.178.133])
-        by smtp.gmail.com with ESMTPSA id br37-20020a05620a462500b007872d50caf5sm1570063qkb.19.2024.03.01.03.50.13
+        by smtp.gmail.com with ESMTPSA id ld8-20020a056214418800b0068fef1264f6sm1800943qvb.101.2024.03.01.04.41.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Mar 2024 03:50:15 -0800 (PST)
-Message-ID: <a9441736-e254-49f0-9bea-e8008cec3e96@redhat.com>
-Date: Fri, 1 Mar 2024 12:50:10 +0100
+        Fri, 01 Mar 2024 04:41:25 -0800 (PST)
+Message-ID: <1b89e399-1160-4fca-a9d7-89d60fc9a710@redhat.com>
+Date: Fri, 1 Mar 2024 13:41:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 12/32] powerpc: Fix emulator illegal
- instruction test for powernv
+Subject: Re: [kvm-unit-tests PATCH 14/32] powerpc: general interrupt tests
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-13-npiggin@gmail.com>
+ <20240226101218.1472843-15-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +127,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240226101218.1472843-13-npiggin@gmail.com>
+In-Reply-To: <20240226101218.1472843-15-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -149,105 +148,205 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Andrew Jones <andr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 26/02/2024 11.11, Nicholas Piggin wrote:
-> Illegal instructions cause 0xe40 (HEAI) interrupts rather
-> than program interrupts.
+On 26/02/2024 11.12, Nicholas Piggin wrote:
+> Add basic testing of various kinds of interrupts, machine check,
+> page fault, illegal, decrementer, trace, syscall, etc.
 > 
-> Acked-by: Thomas Huth <thuth@redhat.com>
+> This has a known failure on QEMU TCG pseries machines where MSR[ME]
+> can be incorrectly set to 0.
+
+Two questions out of curiosity:
+
+Any chance that this could be fixed easily in QEMU?
+
+Or is there a way to detect TCG from within the test? (for example, we have 
+a host_is_tcg() function for s390x so we can e.g. use report_xfail() for 
+tests that are known to fail on TCG there)
+
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/asm/processor.h |  1 +
->   lib/powerpc/setup.c         | 13 +++++++++++++
->   powerpc/emulator.c          | 21 ++++++++++++++++++++-
->   3 files changed, 34 insertions(+), 1 deletion(-)
+>   lib/powerpc/asm/processor.h |   4 +
+>   lib/powerpc/asm/reg.h       |  17 ++
+>   lib/powerpc/setup.c         |  11 +
+>   lib/ppc64/asm/ptrace.h      |  16 ++
+>   powerpc/Makefile.common     |   3 +-
+>   powerpc/interrupts.c        | 415 ++++++++++++++++++++++++++++++++++++
+>   powerpc/unittests.cfg       |   3 +
+>   7 files changed, 468 insertions(+), 1 deletion(-)
+>   create mode 100644 powerpc/interrupts.c
 > 
 > diff --git a/lib/powerpc/asm/processor.h b/lib/powerpc/asm/processor.h
-> index 9d8061962..cf1b9d8ff 100644
+> index cf1b9d8ff..eed37d1f4 100644
 > --- a/lib/powerpc/asm/processor.h
 > +++ b/lib/powerpc/asm/processor.h
-> @@ -11,6 +11,7 @@ void do_handle_exception(struct pt_regs *regs);
+> @@ -11,7 +11,11 @@ void do_handle_exception(struct pt_regs *regs);
 >   #endif /* __ASSEMBLY__ */
 >   
 >   extern bool cpu_has_hv;
-> +extern bool cpu_has_heai;
+> +extern bool cpu_has_power_mce;
+> +extern bool cpu_has_siar;
+>   extern bool cpu_has_heai;
+> +extern bool cpu_has_prefix;
+> +extern bool cpu_has_sc_lev;
 >   
 >   static inline uint64_t mfspr(int nr)
 >   {
+> diff --git a/lib/powerpc/asm/reg.h b/lib/powerpc/asm/reg.h
+> index 782e75527..d6097f48f 100644
+> --- a/lib/powerpc/asm/reg.h
+> +++ b/lib/powerpc/asm/reg.h
+> @@ -5,8 +5,15 @@
+>   
+>   #define UL(x) _AC(x, UL)
+>   
+> +#define SPR_DSISR	0x012
+> +#define SPR_DAR		0x013
+> +#define SPR_DEC		0x016
+>   #define SPR_SRR0	0x01a
+>   #define SPR_SRR1	0x01b
+> +#define   SRR1_PREFIX		UL(0x20000000)
+> +#define SPR_FSCR	0x099
+> +#define   FSCR_PREFIX		UL(0x2000)
+> +#define SPR_HFSCR	0x0be
+>   #define SPR_TB		0x10c
+>   #define SPR_SPRG0	0x110
+>   #define SPR_SPRG1	0x111
+> @@ -22,12 +29,17 @@
+>   #define   PVR_VER_POWER8	UL(0x004d0000)
+>   #define   PVR_VER_POWER9	UL(0x004e0000)
+>   #define   PVR_VER_POWER10	UL(0x00800000)
+> +#define SPR_HDEC	0x136
+>   #define SPR_HSRR0	0x13a
+>   #define SPR_HSRR1	0x13b
+> +#define SPR_LPCR	0x13e
+> +#define   LPCR_HDICE		UL(0x1)
+> +#define SPR_HEIR	0x153
+>   #define SPR_MMCR0	0x31b
+>   #define   MMCR0_FC		UL(0x80000000)
+>   #define   MMCR0_PMAE		UL(0x04000000)
+>   #define   MMCR0_PMAO		UL(0x00000080)
+> +#define SPR_SIAR	0x31c
+>   
+>   /* Machine State Register definitions: */
+>   #define MSR_LE_BIT	0
+> @@ -35,6 +47,11 @@
+>   #define MSR_HV_BIT	60			/* Hypervisor mode */
+>   #define MSR_SF_BIT	63			/* 64-bit mode */
+>   
+> +#define MSR_DR		UL(0x0010)
+> +#define MSR_IR		UL(0x0020)
+> +#define MSR_BE		UL(0x0200)		/* Branch Trace Enable */
+> +#define MSR_SE		UL(0x0400)		/* Single Step Enable */
+> +#define MSR_EE		UL(0x8000)
+>   #define MSR_ME		UL(0x1000)
+>   
+>   #endif
 > diff --git a/lib/powerpc/setup.c b/lib/powerpc/setup.c
-> index 89e5157f2..3c81aee9e 100644
+> index 3c81aee9e..9b665f59c 100644
 > --- a/lib/powerpc/setup.c
 > +++ b/lib/powerpc/setup.c
-> @@ -87,6 +87,7 @@ static void cpu_set(int fdtnode, u64 regval, void *info)
+> @@ -87,7 +87,11 @@ static void cpu_set(int fdtnode, u64 regval, void *info)
 >   }
 >   
 >   bool cpu_has_hv;
-> +bool cpu_has_heai;
+> +bool cpu_has_power_mce; /* POWER CPU machine checks */
+> +bool cpu_has_siar;
+>   bool cpu_has_heai;
+> +bool cpu_has_prefix;
+> +bool cpu_has_sc_lev; /* sc interrupt has LEV field in SRR1 */
 >   
 >   static void cpu_init(void)
 >   {
-> @@ -108,6 +109,18 @@ static void cpu_init(void)
->   		hcall(H_SET_MODE, 0, 4, 0, 0);
->   #endif
+> @@ -112,15 +116,22 @@ static void cpu_init(void)
+>   
+>   	switch (mfspr(SPR_PVR) & PVR_VERSION_MASK) {
+>   	case PVR_VER_POWER10:
+> +		cpu_has_prefix = true;
+> +		cpu_has_sc_lev = true;
+>   	case PVR_VER_POWER9:
+>   	case PVR_VER_POWER8E:
+>   	case PVR_VER_POWER8NVL:
+>   	case PVR_VER_POWER8:
+> +		cpu_has_power_mce = true;
+>   		cpu_has_heai = true;
+> +		cpu_has_siar = true;
+>   		break;
+>   	default:
+>   		break;
 >   	}
 > +
-> +	switch (mfspr(SPR_PVR) & PVR_VERSION_MASK) {
-> +	case PVR_VER_POWER10:
-> +	case PVR_VER_POWER9:
-> +	case PVR_VER_POWER8E:
-> +	case PVR_VER_POWER8NVL:
-> +	case PVR_VER_POWER8:
-> +		cpu_has_heai = true;
-> +		break;
-> +	default:
-> +		break;
-> +	}
+> +	if (!cpu_has_hv) /* HEIR is HV register */
+> +		cpu_has_heai = false;
 >   }
 >   
 >   static void mem_init(phys_addr_t freemem_start)
-> diff --git a/powerpc/emulator.c b/powerpc/emulator.c
-> index 39dd59645..c9b17f742 100644
-> --- a/powerpc/emulator.c
-> +++ b/powerpc/emulator.c
-> @@ -31,6 +31,20 @@ static void program_check_handler(struct pt_regs *regs, void *opaque)
->   	regs->nip += 4;
->   }
+> diff --git a/lib/ppc64/asm/ptrace.h b/lib/ppc64/asm/ptrace.h
+> index 12de7499b..db263a59e 100644
+> --- a/lib/ppc64/asm/ptrace.h
+> +++ b/lib/ppc64/asm/ptrace.h
+> @@ -5,6 +5,9 @@
+>   #define STACK_FRAME_OVERHEAD    112     /* size of minimum stack frame */
 >   
-> +static void heai_handler(struct pt_regs *regs, void *opaque)
+>   #ifndef __ASSEMBLY__
+> +
+> +#include <asm/reg.h>
+> +
+>   struct pt_regs {
+>   	unsigned long gpr[32];
+>   	unsigned long nip;
+> @@ -17,6 +20,19 @@ struct pt_regs {
+>   	unsigned long _pad; /* stack must be 16-byte aligned */
+>   };
+>   
+> +static inline bool regs_is_prefix(volatile struct pt_regs *regs)
 > +{
-> +	int *data = opaque;
-> +
-> +	if (verbose) {
-> +		printf("Detected invalid instruction %#018lx: %08x\n",
-> +		       regs->nip, *(uint32_t*)regs->nip);
-> +	}
-> +
-> +	*data = 8; /* Illegal instruction */
-> +
-> +	regs->nip += 4;
+> +	return regs->msr & SRR1_PREFIX;
 > +}
 > +
->   static void alignment_handler(struct pt_regs *regs, void *opaque)
->   {
->   	int *data = opaque;
-> @@ -362,7 +376,12 @@ int main(int argc, char **argv)
->   {
->   	int i;
+> +static inline void regs_advance_insn(struct pt_regs *regs)
+> +{
+> +	if (regs_is_prefix(regs))
+> +		regs->nip += 8;
+> +	else
+> +		regs->nip += 4;
+> +}
+> +
+>   #define STACK_INT_FRAME_SIZE    (sizeof(struct pt_regs) + \
+>   				 STACK_FRAME_OVERHEAD + KERNEL_REDZONE_SIZE)
 >   
-> -	handle_exception(0x700, program_check_handler, (void *)&is_invalid);
-> +	if (cpu_has_heai) {
-> +		handle_exception(0xe40, heai_handler, (void *)&is_invalid);
-> +		handle_exception(0x700, program_check_handler, (void *)&is_invalid);
-> +	} else {
-> +		handle_exception(0x700, program_check_handler, (void *)&is_invalid);
-
-The 0x700 line looks identical to the other part of the if-statement ... I'd 
-suggest to leave it outside of the if-statement, drop the else-part and just 
-set 0xe40 if cpu_has_heai.
-
-  Thomas
-
-> +	}
->   	handle_exception(0x600, alignment_handler, (void *)&alignment);
+> diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
+> index 1e181da69..68165fc25 100644
+> --- a/powerpc/Makefile.common
+> +++ b/powerpc/Makefile.common
+> @@ -12,7 +12,8 @@ tests-common = \
+>   	$(TEST_DIR)/rtas.elf \
+>   	$(TEST_DIR)/emulator.elf \
+>   	$(TEST_DIR)/tm.elf \
+> -	$(TEST_DIR)/sprs.elf
+> +	$(TEST_DIR)/sprs.elf \
+> +	$(TEST_DIR)/interrupts.elf
 >   
->   	for (i = 1; i < argc; i++) {
+>   tests-all = $(tests-common) $(tests)
+>   all: directories $(TEST_DIR)/boot_rom.bin $(tests-all)
+> diff --git a/powerpc/interrupts.c b/powerpc/interrupts.c
+> new file mode 100644
+> index 000000000..442f8c569
+> --- /dev/null
+> +++ b/powerpc/interrupts.c
+> @@ -0,0 +1,415 @@
+> +/*
+> + * Test interrupts
+> + *
+> + * Copyright 2024 Nicholas Piggin, IBM Corp.
+> + *
+> + * This work is licensed under the terms of the GNU LGPL, version 2.
+
+I know, we're using this line in a lot of source files ... but maybe we 
+should do better for new files at least: "LGPL, version 2" is a little bit 
+ambiguous: Does it mean the "Library GPL version 2.0" or the "Lesser GPL 
+version 2.1"? Maybe you could clarify by additionally providing a SPDX 
+identifier here, or by explicitly writing 2.0 or 2.1.
+
+  Thanks,
+   Thomas
 
