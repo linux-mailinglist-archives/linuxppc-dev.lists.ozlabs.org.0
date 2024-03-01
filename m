@@ -2,89 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6256386D807
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 00:46:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A2486D942
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 02:57:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kX4brMjo;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LpW5/pYO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tm7Cc6vk6z3vc6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 10:46:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmB6q0Xthz3vdl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 12:57:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kX4brMjo;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LpW5/pYO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mpe@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tm7Bq2cLWz3bx0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 10:45:39 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41TNWlOH010226;
-	Thu, 29 Feb 2024 23:45:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=lQZDwo7pNYetMYwpB3CLHJ/+PW0KEucA/7RaMYYnuTc=;
- b=kX4brMjoz9GU4Ua7wF7C3LO3d0+LpWRXWcHL979m82x2aYuGyQsMayFihDQbBqihP0Qh
- dM9OkKHAi+YwngaZBX5C5jGLRk2/dBWq/jUV/4lacEntPIPtgl7/IUVWCMAFCD2nNTjf
- 4lQiNffnATGq/ASD6r81bXFpaZzy3RTzmzblqEyUcoZOc9oS6iu8Yr52NtqwxcKNxQmE
- 28rhRpTGvht0OUKtp/EHDX8cPMVysF7Zm2Oz0aGEtQuqhn+dgwOmd/Z/Fvc2w/11wVio
- KCdPCgyAS77P6EQOmN/YnwihW3DCM5mCGWRZ4pMZ3Hz/nWn+Bwt7tiuBlaLS/OxExmYm WA== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk3pkr7vt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 23:45:36 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41TMA2D6021267;
-	Thu, 29 Feb 2024 23:45:35 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfuspgxdp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 23:45:35 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41TNjVfK000648
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Feb 2024 23:45:33 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CDBC20043;
-	Thu, 29 Feb 2024 23:45:31 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E8B6E2004B;
-	Thu, 29 Feb 2024 23:45:30 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Feb 2024 23:45:30 +0000 (GMT)
-Received: from localhost (unknown [9.66.77.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmB6271ptz3cFX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 12:56:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1709258201;
+	bh=NhRfz0fwuJ8H236qg4bFaUrtGCXiL5HAvS8qdoDbat0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LpW5/pYO8LldIKMgRqt6U0qDh4AiXUXb4qJslTK6WSDSqld+f0YKOXbzZh/OcQX+e
+	 c0ozGIIN6gIHWpJmLU1ugkaIU7EIlT5BpnLH9L5UMKikQ334JsllLZcSgeVVRdzk7B
+	 bGNh6CqMLMNG/fZ+9EEHNi3/enJYeh15f45imuCCtLM+AdroQYNNl4lWlGoXGSutE6
+	 +Dmv3ZUF6VA39HV1OllIy7msT8GlpxekW1Xp44Zsfd39r+gSbRn+ZMCfufsLUQksTd
+	 dpiPdHuzlx1kCzrAI1A7Z85YM4U67YGVIM07TQZQIDFVLrHHWBnoBpNf44mBijwCTq
+	 vXCgVUE9pZmAg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id DCE2A60064;
-	Fri,  1 Mar 2024 10:45:26 +1100 (AEDT)
-From: Michael Ellerman <mpe@linux.ibm.com>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: [netdev] Build failure on powerpc
-In-Reply-To: <916F09F9-FC10-4248-BE64-9E01AA264CBA@linux.ibm.com>
-References: <8294bf9a-d175-4d86-b6df-9c409108cbf1@linux.vnet.ibm.com>
- <875xy8103a.fsf@mail.lhotse>
- <916F09F9-FC10-4248-BE64-9E01AA264CBA@linux.ibm.com>
-Date: Fri, 01 Mar 2024 10:45:23 +1100
-Message-ID: <87il26g7ho.fsf@mail.lhotse>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TmB603yYvz4wc7;
+	Fri,  1 Mar 2024 12:56:40 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, tuxayo
+ <victor@tuxayo.net>
+Subject: Re: Boot failure with ppc64 port on iMacs G5
+In-Reply-To: <be7a1a66e9cc4789704d2c93f0b770ea391a4c28.camel@physik.fu-berlin.de>
+References: <fc93d03b-581d-40cd-8ab1-762a9ee2c20c@tuxayo.net>
+ <42e9a15f6733dd48c64cbceeb3ad27349ca8c3e4.camel@physik.fu-berlin.de>
+ <87r0gvg49s.fsf@mail.lhotse>
+ <be7a1a66e9cc4789704d2c93f0b770ea391a4c28.camel@physik.fu-berlin.de>
+Date: Fri, 01 Mar 2024 12:56:39 +1100
+Message-ID: <87frxag1ew.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vHsBYj5vATN-KdEmopV5fJmGr-eMjc2A
-X-Proofpoint-GUID: vHsBYj5vATN-KdEmopV5fJmGr-eMjc2A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-29_06,2024-02-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- bulkscore=0 mlxlogscore=669 impostorscore=0 adultscore=0 phishscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402290185
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,29 +61,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tasmiya Nalatwad <tasmiya@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: debian-powerpc@lists.debian.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Claudia Neumann <dr.claudia.neumann@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sachin Sant <sachinp@linux.ibm.com> writes:
->> On 29-Feb-2024, at 7:52=E2=80=AFAM, Michael Ellerman <mpe@linux.ibm.com>=
- wrote:
->> Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com> writes:
->>> Greetings,
->>>=20
->>> [netdev] Build failure on powerpc
->>> latest netdev 6.8.0-rc5-auto-g1ce7d306ea63 fails to build on powerpc=20
->>> below traces
->>=20
->> Please include the defconfig you're building, and the toolchain
->> versions, in reports like this.
->>=20
->> I wasn't able to reproduce this failure here.
+John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> writes:
+> Hi Michael,
 >
-> I believe this is tied to gcc version.=20
+> On Thu, 2024-02-29 at 17:42 +1100, Michael Ellerman wrote:
+>> > There seems to be a regression in the kernel which affects PowerPC 970 machines,
+>> > i.e. PowerMac G5 CPUs. The issue needs to be bisected and reported upstream.
+>> 
+>> I have a quad G5 that is booting mainline happily.
 >
-> Build failure is seen while using gcc-8.5.x but not with gcc-11.4.x
+> it's a really tricky problem because it seems to depend on how the kernel image
+> is booted.
+>
+> It fails when trying to boot the kernel off the installation CD, i.e. like from here:
+>
+>> https://cdimage.debian.org/cdimage/ports/snapshots/2024-02-25/debian-12.0.0-ppc64-NETINST-1.iso
+>
+> but the kernel will boot fine when installing in an existing system which was installed
+> with an installation CD which uses an older kernel.
+>
+>> https://cdimage.debian.org/cdimage/ports/snapshots/2023-06-18/debian-12.0.0-ppc64-NETINST-1.iso
+>
+> I have not really figured out yet what the problem is.
 
-Thanks. Yes, I see it here with 8.4, and 9.5, but not 10.5.
+OK.
+
+That second iso boots OK for me in qemu. It boots grub and then the
+kernel loads and shows:
+
+  Loading ...
+  OF stdout device is: /pci@f0000000/mac-io@c/escc@13000/ch-a@13020
+  Preparing to boot Linux version 6.3.0-1-powerpc64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.3.0-2) 12.3.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP Debian 6.3.7-1 (2023-06-12)
+  Detected machine type: 0000000000000400
+  command line: BOOT_IMAGE=/install/vmlinux --- quiet
+  memory layout at init:
+    memory_limit : 0000000000000000 (16 MB aligned)
+    alloc_bottom : 0000000005e70000
+    alloc_top    : 0000000030000000
+    alloc_top_hi : 0000000080000000
+    rmo_top      : 0000000030000000
+    ram_top      : 0000000080000000
+  copying OF device tree...
+  Building dt strings...
+  Building dt structure...
+  Device tree strings 0x0000000005e80000 -> 0x0000000005e80560
+  Device tree struct  0x0000000005e90000 -> 0x0000000005ea0000
+  Quiescing Open Firmware ...
+  Booting Linux via __start() @ 0x0000000002000000 ...
+  Hello World !
+  smp_core99_probe
+  smp_core99_bringup_done
+  Starting system log daemon: syslogd, klogd.
+
+And eventually starts the installer.
+
+That's using no VGA, so possibly there's something wrong with the video
+setup on real hardware:
+
+  $ qemu-system-ppc64 -nographic -vga none -M mac99,via=pmu -smp 1 -m 2G -nic user -drive file=$HOME/debian-12.0.0-ppc64-NETINST-1.2023-06-18.iso,format=raw,media=cdrom -boot d
+
+I'll try and find time to test it on my actual G5 next week when I'm in
+the office.
 
 cheers
