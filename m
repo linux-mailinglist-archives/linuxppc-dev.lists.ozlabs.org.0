@@ -2,39 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CF486EC03
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 23:43:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B9D86ECED
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 00:24:22 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LNakTF1E;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tmjmc5Bt7z3vdb
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 09:43:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tmkgm27PCz3vbv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 10:24:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=allandria.com (client-ip=50.242.82.17; helo=cynthia.allandria.com; envelope-from=flar@allandria.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2192 seconds by postgrey-1.37 at boromir; Sat, 02 Mar 2024 09:43:06 AEDT
-Received: from cynthia.allandria.com (cynthia.allandria.com [50.242.82.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LNakTF1E;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmjmB0Gygz3c5P
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Mar 2024 09:43:05 +1100 (AEDT)
-Received: from flar by cynthia.allandria.com with local (Exim 4.84_2)
-	(envelope-from <flar@allandria.com>)
-	id 1rgB1B-00050T-F9; Fri, 01 Mar 2024 14:06:13 -0800
-Date: Fri, 1 Mar 2024 14:06:13 -0800
-From: Brad Boyer <flar@allandria.com>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Re: Boot failure with ppc64 port on iMacs G5
-Message-ID: <20240301220613.GA18805@allandria.com>
-References: <fc93d03b-581d-40cd-8ab1-762a9ee2c20c@tuxayo.net>
- <42e9a15f6733dd48c64cbceeb3ad27349ca8c3e4.camel@physik.fu-berlin.de>
- <87r0gvg49s.fsf@mail.lhotse>
- <be7a1a66e9cc4789704d2c93f0b770ea391a4c28.camel@physik.fu-berlin.de>
- <87frxag1ew.fsf@mail.lhotse>
- <1768836b7e6895f3c2fb0cb4a01a40fee7473dd5.camel@physik.fu-berlin.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tmkfz3pSfz3dX5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Mar 2024 10:23:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1709335418;
+	bh=4kEIwFfqRv6oPsKGANVnLORvXnAWA3F6DnLBJl/uvnI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LNakTF1Eajw7GrUdX4fOw/P+RRygl2XCgx3FWFdOrXuWkqdMoN3xtshaJDlmRXf1A
+	 k4grncFThmejyovuYOleZ7mtKQnxO8CzsuOe5P3PYzuiafU0TOJ5hcWcbGNl4BHeBd
+	 Mf4x5pJGt9oBPoZ7pmDJyMzuglL77dkK9GOrN9CjL4VDbqcf1DVgYIH9aGmjI0MdpK
+	 j1GkC9KM/TmPox6aPHiNq+tMkkpMm/RChEpVmLr6rm0ZrFWh3ZnyxDtne4yQ/ETdsO
+	 LyLllN0azhGnubCa6Wa1o5jwub/rtqmzj1gPWkxAYVjIvLTyDuL4wsvkjVm9VHSWOH
+	 Wc2K6CRdjS6rg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tmkfx0Xjfz4wc4;
+	Sat,  2 Mar 2024 10:23:37 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Joel Savitz <jsavitz@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc: align memory_limit to 16MB in early_parse_mem
+In-Reply-To: <20240301203023.2197451-1-jsavitz@redhat.com>
+References: <20240301203023.2197451-1-jsavitz@redhat.com>
+Date: Sat, 02 Mar 2024 10:23:36 +1100
+Message-ID: <87cysdfsef.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1768836b7e6895f3c2fb0cb4a01a40fee7473dd5.camel@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,30 +57,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: debian-powerpc@lists.debian.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, tuxayo <victor@tuxayo.net>, Claudia Neumann <dr.claudia.neumann@gmx.de>
+Cc: Gonzalo Siero <gsierohu@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Joel Savitz <jsavitz@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 01, 2024 at 03:47:26PM +0100, John Paul Adrian Glaubitz wrote:
-> The problem is that the newer image doesn't boot and currently I don't know
-> why because installing the exact same kernel later from the package manager
-> into an installed system works yields a bootable system with the latest
-> kernel.
-> 
-> The installer images are built from the same kernel package which makes the
-> whole thing even more confusing.
+Hi Joel,
 
-Perhaps it's a memory allocation problem before the kernel has fully
-configured the MMU? I know in the past the kernel could be touchy
-about how memory was mapped in the very early stages of boot. If we
-happened to be near some limit, even a small increase in the size of
-the kernel might have pushed us over the edge.
+Joel Savitz <jsavitz@redhat.com> writes:
+> On 64-bit powerpc, usage of a non-16MB-aligned value for the mem= kernel
+> cmdline parameter results in a system hang at boot.
 
-I'm not sure of the exact details, but perhaps the memory setup is
-slightly different when booted from the CD image. I haven't looked
-at recent images, but I know in the past the boot process was
-different on CD compared to after the install.
+Can you give us any more details on that? It might be a bug we can fix.
 
-	Brad Boyer
-	flar@allandria.com
+> For example, using 'mem=4198400K' will always reproduce this issue.
+>
+> This patch fixes the problem by aligning any argument to mem= to 16MB
+> corresponding with the large page size on powerpc.
 
+The large page size depends on the MMU, with Radix it's 2MB or 1GB. So
+depending on what's happening 16MB may not be enough.
+
+What system are you testing on?
+
+cheers
+
+> Fixes: 2babf5c2ec2f ("[PATCH] powerpc: Unify mem= handling")
+> Co-developed-by: Gonzalo Siero <gsierohu@redhat.com>
+> Signed-off-by: Gonzalo Siero <gsierohu@redhat.com>
+> Signed-off-by: Joel Savitz <jsavitz@redhat.com>
+> ---
+>  arch/powerpc/kernel/prom.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index 0b5878c3125b..8cd3e2445d8a 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -82,8 +82,12 @@ static int __init early_parse_mem(char *p)
+>  {
+>  	if (!p)
+>  		return 1;
+> -
+> +#ifdef CONFIG_PPC64
+> +	/* Align to 16 MB == size of ppc64 large page */
+> +	memory_limit = ALIGN(memparse(p, &p), 0x1000000);
+> +#else
+>  	memory_limit = PAGE_ALIGN(memparse(p, &p));
+> +#endif
+>  	DBG("memory limit = 0x%llx\n", memory_limit);
+>  
+>  	return 0;
+> -- 
+> 2.43.0
