@@ -2,93 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD18586DA73
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 04:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 714CA86DAEA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 06:08:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FNJiCO4p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hWHz49sl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmDph3T8Kz3vbk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 14:58:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmGLj66TZz3vXS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 16:07:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FNJiCO4p;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hWHz49sl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tasmiya@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmDnw6rsmz3d8y
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 14:57:56 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4213JLam016311;
-	Fri, 1 Mar 2024 03:57:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=p5+p52mB34XnsI5TxDlp1VJZFYxgxclYpeW9vdq4/hU=;
- b=FNJiCO4pKvy7IpOjLzFdwi/TN6ZBdafsy1SDiGPIXAEKJFlr0QAUQjGQI7WADMV1Idvu
- fpCI7uBqncIYdKIWPte2buZb231LSqstuN3vsML58D03fi/KFZMItZNqH6Xy9BbMnmXM
- mB6vcuXyEhVCYGOFQg60FqRDaTVZ09FctlkDFqOAK+m7gymNEzU+TX+BmnM+BVjMJOwM
- tFgqQR+aq2S73O5hrlMoBXg7wFUSnFxC51cNhPwN8+nHnlLN0CVis+vjW2QYNu4nGFsa
- mojgguhTL1rCANfzzz6V+gpnFsH6BNkrc6fWe0bj6Qn9HXI5X0FAJdu32K2UgUtQTCsW 6A== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmGKw1k9sz3cQj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 16:07:15 +1100 (AEDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42155Vs9017716;
+	Fri, 1 Mar 2024 05:06:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=NU9hrphE/xAUchWvNGg6lkTEDPLfy0Uf5/Lks1Qk2VQ=;
+ b=hWHz49sl3RdVPnzg8Z9xX7oMArJn12v+sIiafTy4kZW0BkNwiv4nQBwyEYS0BOV+eVN7
+ B+xW7jkFRwpdQSFVUoNQ+6wyDGI/ZBVJdEGTSANsRcNArDPRfwEKOoHdagxyiomB/tYd
+ qf6e1F8lueiBQ87hFS7/8JizOcY5yjf3XmGybnYmCwUCcwGxRQ3O3SX/b8nFRuf0Qo+z
+ ks1Zw3uqhSVmi+gYwaRp83ONeukmS54EJWW/sg5OV9MTtXzFDJywdGkzDMiCkGGRngaD
+ 0xOFmA8EswqE5b9/hLNTZrEhEUw7B+kF/G5l0US2bQkF1PhDXB5HEzk//ZaXaMxY9aLI 7g== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk70vgsh7-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk8jh014k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 03:57:50 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4213nRhk008767;
-	Fri, 1 Mar 2024 03:57:50 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk70vgsh1-1
+	Fri, 01 Mar 2024 05:06:52 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42156TZx019581;
+	Fri, 1 Mar 2024 05:06:51 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wk8jh014b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 03:57:50 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42112fC7008154;
-	Fri, 1 Mar 2024 03:57:49 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfv9mstuf-1
+	Fri, 01 Mar 2024 05:06:51 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42133BM3024151;
+	Fri, 1 Mar 2024 05:06:51 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wfw0ksxqm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 03:57:49 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4213vjUi29295038
+	Fri, 01 Mar 2024 05:06:51 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42156mx832899574
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Mar 2024 03:57:47 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5FC4620043;
-	Fri,  1 Mar 2024 03:57:45 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1322320040;
-	Fri,  1 Mar 2024 03:57:44 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.11.96])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Mar 2024 03:57:43 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
-Subject: Re: [kselftests/powerpc] Primitives test build failure with
- linux-next
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <87o7bygbip.fsf@mail.lhotse>
-Date: Fri, 1 Mar 2024 09:27:32 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <74E707B6-E4DC-4977-967E-4D8A47E6C130@linux.ibm.com>
-References: <C11ED986-3959-4C4D-8780-ABD97D5FB0D1@linux.ibm.com>
- <87o7bygbip.fsf@mail.lhotse>
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mailer: Apple Mail (2.3774.300.61.1.2)
+	Fri, 1 Mar 2024 05:06:50 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACFEB58069;
+	Fri,  1 Mar 2024 05:06:46 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7F9455805F;
+	Fri,  1 Mar 2024 05:06:43 +0000 (GMT)
+Received: from [9.43.13.218] (unknown [9.43.13.218])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  1 Mar 2024 05:06:43 +0000 (GMT)
+Message-ID: <32b39767-2ba7-436c-8f76-01d07f01193b@linux.vnet.ibm.com>
+Date: Fri, 1 Mar 2024 10:36:41 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [revert 0d60d8df6f49] [net/net-next] [6.8-rc5] Build Failure
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>
+References: <3fcf3a2c-1c1b-42c1-bacb-78fdcd700389@linux.vnet.ibm.com>
+ <85b78dad-affa-47c3-9cd0-79a4321460b8@linux.dev>
+ <CANn89iJEzTjwxF7wXSnUR+NyDu-S-zEOYVXA+fEaYs_1o1g5HQ@mail.gmail.com>
+ <a1fdd2c2-4443-458e-86db-280e7cbd4a36@linux.vnet.ibm.com>
+ <CANn89iKdaMFCKnGRL4ffnbyrr2PUaKn1hoiu4VZ=sRyX=Vy0Wg@mail.gmail.com>
+ <20240229064742.36c2f476@kernel.org>
+From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
+In-Reply-To: <20240229064742.36c2f476@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fjfZb8OZPjicHPbjrPgRDtiD8y7VjcaL
-X-Proofpoint-ORIG-GUID: pFLnYm-uz4WMoz9DLuxKphPru-ftpdUV
+X-Proofpoint-GUID: eyRaQEkncOqs4a4_VggIsyY9JK13iHua
+X-Proofpoint-ORIG-GUID: wZVV2CgquUvU7nVb6yHaGKkMqZzzEJYz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-29_08,2024-02-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- bulkscore=0 impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403010031
+ definitions=2024-03-01_02,2024-02-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 mlxlogscore=999
+ phishscore=0 adultscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2403010041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,44 +103,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tanzhasanwork@gmail.com, andy.shevchenko@gmail.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kselftest@vger.kernel.org
+Cc: venkat88@linux.vnet.ibm.com, Vadim Fedorenko <vadim.fedorenko@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, arkadiusz.kubalewski@intel.com, jiri@nvidia.com, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Greetings,
 
+This is tied to gcc version. Build failure is seen while using gcc-8.5.x
 
-> On 01-Mar-2024, at 3:48=E2=80=AFAM, Michael Ellerman =
-<mpe@ellerman.id.au> wrote:
->=20
-> Sachin Sant <sachinp@linux.ibm.com> writes:
->> Powerpc specific selftests (specifically powerpc/primitives) included =
-in linux-next
->> tree fails to build with following error
->>=20
->> gcc -std=3Dgnu99 -O2 -Wall -Werror =
--DGIT_VERSION=3D'"next-20240229-0-gf303a3e2bcfb-dirty"' =
--I/home/sachin/linux-next/tools/testing/selftests/powerpc/include  =
--I/home/sachin/linux-next/tools/testing/selftests/powerpc/primitives    =
-load_unaligned_zeropad.c ../harness.c  -o =
-/home/sachin/linux-next/tools/testing/selftests/powerpc/primitives/load_un=
-aligned_zeropad
->> In file included from load_unaligned_zeropad.c:26:
->> word-at-a-time.h:7:10: fatal error: linux/bitops.h: No such file or =
-directory
->>    7 | #include <linux/bitops.h>
->>      |          ^~~~~~~~~~~~~~~~
->> compilation terminated.
->>=20
->> The header file in question was last changed by following commit
->>=20
->> commit 66a5c40f60f5d88ad8d47ba6a4ba05892853fa1f
->>    kernel.h: removed REPEAT_BYTE from kernel.h
->=20
-> Patch below should fix it, can you please confirm?
->=20
-Thanks Michael. Yes, this fixes the reported problem.
+On 2/29/24 20:17, Jakub Kicinski wrote:
+> On Thu, 29 Feb 2024 09:55:22 +0100 Eric Dumazet wrote:
+>> I do not see other solution than this, otherwise we have to add more
+>> pollution to include/linux/netdevice.h
+> Right :(
+>
+>> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+>> index a9c973b92294bb110cf3cd336485972127b01b58..40797ea80bc6273cae6b7773d0a3e47459a72150
+>> 100644
+>> --- a/include/linux/netdevice.h
+>> +++ b/include/linux/netdevice.h
+>> @@ -2469,7 +2469,7 @@ struct net_device {
+>>          struct devlink_port     *devlink_port;
+>>
+>>   #if IS_ENABLED(CONFIG_DPLL)
+>> -       struct dpll_pin __rcu   *dpll_pin;
+>> +       void __rcu *dpll_pin;
+>>   #endif
+> If DPLL wants to hide its type definitions the helpers must live
+> in dpll? IOW move netdev_dpll_pin() to drivers/dpll/dpll_core.c
+>
+> BTW Tasmiya, please do tell us what compiler you're using.
+>
+-- 
+Regards,
+Tasmiya Nalatwad
+IBM Linux Technology Center
 
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-
-
-=E2=80=94 Sachin=
