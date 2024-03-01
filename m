@@ -1,60 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E2B86E970
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 20:23:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A26A86EA59
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 21:31:18 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lt5xGL4i;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=GQe+ObDJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L2d4C7Nl;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvZ7jDVl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmdL16jgfz3vZY
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 06:23:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tmfr40WDmz3vbv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Mar 2024 07:31:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lt5xGL4i;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=GQe+ObDJ;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L2d4C7Nl;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvZ7jDVl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsavitz@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmdKJ6Xt4z3dWk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Mar 2024 06:23:00 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709320974;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmfqG66mtz3dVv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Mar 2024 07:30:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709325029;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YMpY8/JpqyvoIt2gTWiMpRfebnk0Oqv1/khPRGpbCE=;
-	b=lt5xGL4ikp2rMYJDfZ7HvTc51J0sK0wPz+5c8vFx1SuS27stYaJOWuKM8UWBr5+pgOT4Px
-	/zf1ECIiqu/o9bDNXwd0OmwFvn3wr5s6TWTh22XQgJnd6zNcYHvNw3H+EjqkCRzzHyGlCK
-	9c0McLTbOgJYwbxjj3ufVtBUaYTbp1OW9F0wWwGg67WLBjIW6BXQ6uACYMaX/U19dW7hVE
-	7YFSbHNtjH9wi+H5aXUENJ0WYyrEuLnL22HQ9pNMUw1GoSzpgNifD5GbZh1qfFM9H40tVf
-	8sahtMCI3rvRxY+czEM18S9Ga4W7B19CKnB0D8BHfOsg6bSvXKNzJzKLNOWfWA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709320974;
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=p4HV6m6g6G800ZFnvQF0dUMRRFs2reQboirIXeVEjws=;
+	b=L2d4C7NlvxzoHxWvHgpS3n6DRpNh4moMU0er/KcxJgBKfa/wpNoj5lJGU4Ex703DxwjlJp
+	jlHKK1EZVhWxA6K0+aGWtqgxJgokPaLfw1tzeAJtvhh9Q1Ex9ziSA8uzrVn/9UjWM6Qo19
+	HWLWZcJ5PL8F7AX5Dg0pG+Qxw+dQpac=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709325030;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YMpY8/JpqyvoIt2gTWiMpRfebnk0Oqv1/khPRGpbCE=;
-	b=GQe+ObDJ3PZr8qn2Ba8iOXvXOcVj7SM/gbg0My85H7/CKDbtY8JoxFhCmURN3Iwmiu2nfV
-	rZD31bO4dKD6t8DQ==
-To: Doug Anderson <dianders@chromium.org>, Bitao Hu <yaoma@linux.alibaba.com>
-Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for
- interrupt statistics
-In-Reply-To: <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
-References: <20240228072216.95130-1-yaoma@linux.alibaba.com>
- <20240228072216.95130-3-yaoma@linux.alibaba.com>
- <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
-Date: Fri, 01 Mar 2024 20:22:54 +0100
-Message-ID: <87plwdwycx.ffs@tglx>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=p4HV6m6g6G800ZFnvQF0dUMRRFs2reQboirIXeVEjws=;
+	b=EvZ7jDVlbXaBg+I7nxZ9LqELNN1i+hw6JaSXQPTizRgODKRaBeBc2tfZdnYpTtsL1PT3nI
+	XrsV0f1qViszX5Rpv5LM8Civboxi3Gh79qde6ehEFfzlr2tCl+Bf0jdVj0n+2qzCDDS7Rn
+	jcoH3wIYWIw2Vkfo7QM6f6vfY1YX9zg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-6Y1hDfuoONGk5m_HhEMYUQ-1; Fri,
+ 01 Mar 2024 15:30:28 -0500
+X-MC-Unique: 6Y1hDfuoONGk5m_HhEMYUQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 320F0380406D;
+	Fri,  1 Mar 2024 20:30:27 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.8.150])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id EC07A39D6D;
+	Fri,  1 Mar 2024 20:30:25 +0000 (UTC)
+From: Joel Savitz <jsavitz@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc: align memory_limit to 16MB in early_parse_mem
+Date: Fri,  1 Mar 2024 15:30:23 -0500
+Message-ID: <20240301203023.2197451-1-jsavitz@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,77 +75,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pmladek@suse.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jan.kiszka@siemens.com, deller@gmx.de, liusong@linux.alibaba.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com, kernelfans@gmail.com, akpm@linux-foundation.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Gonzalo Siero <gsierohu@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Joel Savitz <jsavitz@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Doug!
+On 64-bit powerpc, usage of a non-16MB-aligned value for the mem= kernel
+cmdline parameter results in a system hang at boot.
 
-On Wed, Feb 28 2024 at 14:44, Doug Anderson wrote:
-> I won't insist on it, but I continue to worry about memory
-> implications with large numbers of CPUs. With a 4-byte int, 8192 max
-> CPUs, and 100 IRQs the extra "ref" value takes up over 3MB of memory
-> (8192 * 4 bytes * 100).
->
-> Technically, you could add a new symbol like "config
-> NEED_IRQ_SNAPSHOTS". This wouldn't be a symbol selectable by the end
-> user but would automatically be selected by "config
-> SOFTLOCKUP_DETECTOR_INTR_STORM". If the config wasn't defined then the
-> struct wouldn't contain "ref" and the snapshot routines would just be
-> static inline stubs.
->
-> Maybe Thomas has an opinion about whether this is something to worry
-> about. Worst case it wouldn't be hard to do in a follow-up patch.
+For example, using 'mem=4198400K' will always reproduce this issue.
 
-I'd say it makes sense to give people a choice to save memory especially
-when the softlock detector code is not enabled.
+This patch fixes the problem by aligning any argument to mem= to 16MB
+corresponding with the large page size on powerpc.
 
-It's rather straight forward to do.
-
-Thanks,
-
-        tglx
+Fixes: 2babf5c2ec2f ("[PATCH] powerpc: Unify mem= handling")
+Co-developed-by: Gonzalo Siero <gsierohu@redhat.com>
+Signed-off-by: Gonzalo Siero <gsierohu@redhat.com>
+Signed-off-by: Joel Savitz <jsavitz@redhat.com>
 ---
---- a/include/linux/irqdesc.h
-+++ b/include/linux/irqdesc.h
-@@ -24,7 +24,9 @@ struct pt_regs;
-  */
- struct irqstat {
- 	unsigned int	cnt;
-+#ifdef CONFIG_GENIRQ_STAT_SNAPSHOT
- 	unsigned int	ref;
-+#endif
- };
- 
- /**
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -978,6 +978,7 @@ static unsigned int kstat_irqs(unsigned
- 	return sum;
- }
- 
-+#ifdef CONFIG_GENIRQ_STAT_SNAPSHOT
- void kstat_snapshot_irqs(void)
+ arch/powerpc/kernel/prom.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 0b5878c3125b..8cd3e2445d8a 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -82,8 +82,12 @@ static int __init early_parse_mem(char *p)
  {
- 	struct irq_desc *desc;
-@@ -998,6 +999,7 @@ unsigned int kstat_get_irq_since_snapsho
- 		return 0;
- 	return this_cpu_read(desc->kstat_irqs->cnt) - this_cpu_read(desc->kstat_irqs->ref);
- }
+ 	if (!p)
+ 		return 1;
+-
++#ifdef CONFIG_PPC64
++	/* Align to 16 MB == size of ppc64 large page */
++	memory_limit = ALIGN(memparse(p, &p), 0x1000000);
++#else
+ 	memory_limit = PAGE_ALIGN(memparse(p, &p));
 +#endif
+ 	DBG("memory limit = 0x%llx\n", memory_limit);
  
- /**
-  * kstat_irqs_usr - Get the statistics for an interrupt from thread context
---- a/kernel/irq/Kconfig
-+++ b/kernel/irq/Kconfig
-@@ -108,6 +108,10 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
- config GENERIC_IRQ_RESERVATION_MODE
- 	bool
- 
-+# Snapshot for interrupt statistics
-+config GENERIC_IRQ_STAT_SNAPSHOT
-+	bool
-+
- # Support forced irq threading
- config IRQ_FORCED_THREADING
-        bool
+ 	return 0;
+-- 
+2.43.0
+
