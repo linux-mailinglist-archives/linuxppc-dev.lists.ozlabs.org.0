@@ -1,90 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3199B86DFE8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 12:12:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D5086E003
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 12:16:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O5TZ1LVw;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O5TZ1LVw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dBZD9FJG;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QciYj+Jz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TmQRP5r8mz3vbv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 22:12:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TmQXG5jgFz3vcN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Mar 2024 22:16:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O5TZ1LVw;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O5TZ1LVw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dBZD9FJG;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QciYj+Jz;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmQQY4sCSz3dXc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 22:11:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TmQWY5HpVz3cWR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Mar 2024 22:16:09 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709291505;
+	s=mimecast20190719; t=1709291766;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FCQYsUouDSxv5reDjPV/4WyHKOYkBj14Aw0nlup8uBQ=;
-	b=O5TZ1LVwJ+l3GFW1FVsKTmdLI94RCIg3hWAMxVDLc5u3KYzFplWNuEEaQ9QA35ddn3dXwT
-	wDDiHqgiIhFuGwlDMKXKGb545XcsxqPN/XKRq78yEeRgCXdrp7DrqBQZTOo1i20hPxpUS9
-	beSMwdTwkSnRxsYBMg0sf9vcYMYqZHU=
+	bh=hz2gVlDx8rmyr1wJjekvfluZY3NlkxY6GUZj6+XbcUk=;
+	b=dBZD9FJGaT9EjynE9lwm9xTRCG7mPBySK8JfHTFzf7oXYxBNuKu/AMm1aYAVdHcg/LE0V0
+	DRM/qZMQiUdbY3Y9kSJpU3vmNC4csZM8XWiR3JnoBPaxBkQMz7CdREjc0i+LC3KJ7X6dY5
+	GkwtcKKaS+4cInYNwiRCw4XiLJuA7QM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709291505;
+	s=mimecast20190719; t=1709291767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FCQYsUouDSxv5reDjPV/4WyHKOYkBj14Aw0nlup8uBQ=;
-	b=O5TZ1LVwJ+l3GFW1FVsKTmdLI94RCIg3hWAMxVDLc5u3KYzFplWNuEEaQ9QA35ddn3dXwT
-	wDDiHqgiIhFuGwlDMKXKGb545XcsxqPN/XKRq78yEeRgCXdrp7DrqBQZTOo1i20hPxpUS9
-	beSMwdTwkSnRxsYBMg0sf9vcYMYqZHU=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=hz2gVlDx8rmyr1wJjekvfluZY3NlkxY6GUZj6+XbcUk=;
+	b=QciYj+JzcNtnZiZWlAcsRhnUCXnJBQA+kZz9844sInilKLMhOZK9/t82I7SHpMMUUy3W6s
+	PP4eWevWecrbsJf2VHWpjHwH4YShMko2OBNDYrxYhEjQ8v8KvBoUOxtqA4fBOfm08hagJq
+	rkBxqw9oMrJ2CEhfpZj/uCe1sSYjYFk=
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
+ [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-1r3stkNNMjm8wrjdfwvk4w-1; Fri, 01 Mar 2024 06:11:43 -0500
-X-MC-Unique: 1r3stkNNMjm8wrjdfwvk4w-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-42e61f21790so17087381cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 03:11:43 -0800 (PST)
+ us-mta-628-eHX8kdzBMiKDeJUDD5618g-1; Fri, 01 Mar 2024 06:16:05 -0500
+X-MC-Unique: eHX8kdzBMiKDeJUDD5618g-1
+Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-4b92015b9dcso1143704e0c.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Mar 2024 03:16:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709291503; x=1709896303;
+        d=1e100.net; s=20230601; t=1709291764; x=1709896564;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FCQYsUouDSxv5reDjPV/4WyHKOYkBj14Aw0nlup8uBQ=;
-        b=EeHtzsJoCSuZH2wFTShm/9xfk+S9pyjxDZk0aYQMWrcM59QB0O3Okh5Sz5ZS6d8cJl
-         R8teIWIdhObJ6Lbo8+HVeM9wDPT7sDmZv7TA11DngmQFDdM3dOMzyM+jlRhV7PQp/emL
-         xTEwM45/pyTlz/Jizss0F443jJxy2XRNElyXzJJFFOwfVOpjPdzg+OjkBmVewen4nzCh
-         TJV/xZ1SN0UXjWVNvbIRMH4yOFPK2JJUwhfHeV+8c8lrDpwqSUm1vMQn/L9LcQlRGCAF
-         VM7eexrv2Gfb9EDK1S9DoyWRjtbYOuAvF2HvbbGy+tN8M67dORk0n2kiCPh0pd86mEWI
-         GmMA==
-X-Forwarded-Encrypted: i=1; AJvYcCXuyGpPQ2p8cK+fdz/pbETARuju4NI+EvZlFBlWMjGhyC3GLvY9tplb5ssSGd394ngRF4rJWaVjfjwIDdMmRb47d5/BXxkebo+MbVBjnQ==
-X-Gm-Message-State: AOJu0YxuCuRKdDVnrTv8JqFS8BvetP8AXNgFygkCTNkmfsVvdrTYghLk
-	GWa5VwcXxjLb1oaRS4/HuM4O+x2/yhyrD/JIskMUYAeEFlcDD/SgG9ayvgyoSjStMdwrWQ6pWyi
-	PbjdkIQn5fweSPP8lwoQ2PxLiX/iPMEZYJ1X/6/3UnmgqyDRFrnrkA75nPOyS5Nk=
-X-Received: by 2002:a05:622a:190b:b0:42e:8190:1974 with SMTP id w11-20020a05622a190b00b0042e81901974mr1411229qtc.59.1709291503134;
-        Fri, 01 Mar 2024 03:11:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IErXEfe705xXBhoFeCqf6iTiv9eaDLvwqBUTIjTmv+up8UgiX/WNvnRCbJQ4RdUyq4h5yLKww==
-X-Received: by 2002:a05:622a:190b:b0:42e:8190:1974 with SMTP id w11-20020a05622a190b00b0042e81901974mr1411221qtc.59.1709291502844;
-        Fri, 01 Mar 2024 03:11:42 -0800 (PST)
+        bh=hz2gVlDx8rmyr1wJjekvfluZY3NlkxY6GUZj6+XbcUk=;
+        b=XJaL9PbvDSJhOHa4A2gRsN5zLo4qXxsiDbdfhxkbtPnxuFC0xbJihcmuWcvHvyV0Pk
+         FX6XjYyobEvMpCixAJkqNeX/k4bdxn1JTPKfJaZ/XVigVZMIS6i/L+oJg8K+CsclSzQX
+         jAiYK0KSg5YGJRo9YP4siVHmLr/YeZ9zyEGI+8DK7s93hG71f4ots2fVjYmFVlmgVWOE
+         PMycXvvjfreAdQCJA/+8RM6xESHDPQwJQgsbSXqlB6Hx1tmiSjZiuN1vC2SDEQfw42tA
+         Y9NVzvHDdHz4iOc3qSHp/4LE8y95P6INSX7WC6exO7Ab2JGLnxqXlcb5z5aOR0k36y3W
+         6P2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVxloQktXYOPWmw4ang3pPScrX5Z45+BJBOcruC8fJ64ZuFNOUhLN38N6xg4mMtdzK5usxE2UwHLLirjtDcm0grSqGY7fJDPy5ZxTk/iw==
+X-Gm-Message-State: AOJu0Yz37EpDjmwSxGvyPaiKgmeRXdyFRJJam+fvA71IMZ/r6RNbIqdp
+	VpVr9LZQpbXOf6vaQaAe+ubnPBJ7J1DdZTz+NTD2GTq6Z3ejtzJ9HG6UKDGXPkVtaG57+6NWlyl
+	iSdBFNLinotv5FTTc7btHQN53BMy50TO7LzkQBxjqyJINxPDdt3UwhaaumSI4o94=
+X-Received: by 2002:a05:6122:459a:b0:4c8:8025:f451 with SMTP id de26-20020a056122459a00b004c88025f451mr1112230vkb.12.1709291764755;
+        Fri, 01 Mar 2024 03:16:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEBgzNPag+mP+cbaorJIWf/mWEgMxVtHFiHVO5YW298gVYpDpwwcQws5mdd100h5uHBRc/CTg==
+X-Received: by 2002:a05:6122:459a:b0:4c8:8025:f451 with SMTP id de26-20020a056122459a00b004c88025f451mr1112216vkb.12.1709291764457;
+        Fri, 01 Mar 2024 03:16:04 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-133.web.vodafone.de. [109.43.178.133])
-        by smtp.gmail.com with ESMTPSA id k23-20020ac84757000000b0042ece270fdbsm233117qtp.93.2024.03.01.03.11.40
+        by smtp.gmail.com with ESMTPSA id f14-20020a05622a1a0e00b0042e1950d591sm1601473qtb.70.2024.03.01.03.16.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Mar 2024 03:11:42 -0800 (PST)
-Message-ID: <678e3dde-2579-4a21-9417-36f8374a2529@redhat.com>
-Date: Fri, 1 Mar 2024 12:11:38 +0100
+        Fri, 01 Mar 2024 03:16:04 -0800 (PST)
+Message-ID: <04e976cc-0239-4ee9-b0d2-cfdebbc4c3d9@redhat.com>
+Date: Fri, 1 Mar 2024 12:15:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 05/32] powerpc: Cleanup SPR and MSR
- definitions
+Subject: Re: [kvm-unit-tests PATCH 07/32] powerpc/sprs: Don't fail changed
+ SPRs that are used by the test harness
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-6-npiggin@gmail.com>
+ <20240226101218.1472843-8-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +128,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240226101218.1472843-6-npiggin@gmail.com>
+In-Reply-To: <20240226101218.1472843-8-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,23 +150,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 26/02/2024 11.11, Nicholas Piggin wrote:
-> Move SPR and MSR defines out of ppc_asm.h and processor.h and into a
-> new include, asm/reg.h.
-> 
-> Add a define for the PVR SPR and various processor versions, and replace
-> the open coded numbers in the sprs.c test case.
+> SPRs annotated with SPR_HARNESS can change between consecutive reads
+> because the test harness code has changed them. Avoid failing the
+> test in this case.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/asm/ppc_asm.h   |  8 +-------
->   lib/powerpc/asm/processor.h |  7 +------
->   lib/powerpc/asm/reg.h       | 30 ++++++++++++++++++++++++++++++
->   lib/powerpc/asm/time.h      |  1 +
->   lib/ppc64/asm/reg.h         |  1 +
->   powerpc/sprs.c              | 21 ++++++++++-----------
->   6 files changed, 44 insertions(+), 24 deletions(-)
->   create mode 100644 lib/powerpc/asm/reg.h
->   create mode 100644 lib/ppc64/asm/reg.h
+>   powerpc/sprs.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/powerpc/sprs.c b/powerpc/sprs.c
+> index 8253ea971..44edd0d7b 100644
+> --- a/powerpc/sprs.c
+> +++ b/powerpc/sprs.c
+> @@ -563,7 +563,7 @@ int main(int argc, char **argv)
+>   			if (before[i] >> 32)
+>   				pass = false;
+>   		}
+> -		if (!(sprs[i].type & SPR_ASYNC) && (before[i] != after[i]))
+> +		if (!(sprs[i].type & (SPR_HARNESS|SPR_ASYNC)) && (before[i] != after[i]))
+>   			pass = false;
+>   
+>   		if (sprs[i].width == 32 && !(before[i] >> 32) && !(after[i] >> 32))
 
+I guess you could also squash this into the previous patch (to avoid 
+problems with bisecting later?) ...
+
+Anyway:
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
