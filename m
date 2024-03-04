@@ -2,74 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA61686FD10
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 10:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E088E86FD32
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 10:23:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=hbbu7wCa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oYW1N9fD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TpCpm3SjFz3dRc
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 20:20:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TpCt53pT6z3dSM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 20:23:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=hbbu7wCa;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oYW1N9fD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpCp15xmCz2xTl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Mar 2024 20:19:52 +1100 (AEDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a45670f9508so47830666b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 01:19:51 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpCsM3W59z3bnv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Mar 2024 20:22:47 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1dc49afb495so40679975ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 01:22:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1709543987; x=1710148787; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QpO1bRxqGHUl4bZn2wivQvLLDkQhKaeBu0WknX2/7aU=;
-        b=hbbu7wCaGEzyLYKKuZjyzQw6YxEx9aTnCK5amlCKwUHAB+QRk56NprBpiJ0rl00TpK
-         aJTlZwrw9G/Ge/Hn92CevxZK7Sf0p7UildiiYv3aU/OhQWJPDlN3s8XjwCVPqGTc4gBr
-         3NBEZL99/cGzivZCVSzMESBWKegPEYoQq49BXriSnLG3iinvI5hiAb3LqgJmGZkU3/m0
-         SjznN6OvZgs0LTD+dRJtk0ekygR7kpKqEfWqlrQSXDtvgwHlNWD3qUooJZQDAXxfCbyO
-         0lnJTyrRmov/19h1Bq0iZSrfg6pMQXgUp12YVJU+gEGivJF8RstGNYkblzaSqkXDKbiF
-         uW+Q==
+        d=linaro.org; s=google; t=1709544164; x=1710148964; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b5AjmCqAyBy5sBCmGJ+0z6aZbOBdyU67G5MoGkYfj10=;
+        b=oYW1N9fDvh8iyIH9ZVcwV+IVtBrmxoITNSyKH/ZK33nTq8f5oKtHMBOsEacs/7oiUx
+         nMd60jr+Fn6I9BMQmIv77s+0yEsptWww0aGV0CT/B8CHP6WpylBr7TPMGbZY/eZANsrh
+         plfFLtpvuY1vqFQsxqg587BHjCu0cxFHgROLNGHu8Wtn2qojk1e/AGM6pQKynk/TymU8
+         xuinR9+zIIb3bivnLrhbCMkgEYicUVrnwST5nRas7dT3s+HtgO6XmUnEOz6IwDqYGMP9
+         l0gy09Yxb8eE0H/bW3gtT9iYmrDFWM2BeSxtwk4y5rMypNIzHgNkSqY3+XQ9zHcIbf6R
+         66Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709543987; x=1710148787;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QpO1bRxqGHUl4bZn2wivQvLLDkQhKaeBu0WknX2/7aU=;
-        b=sc8p7rIbGWWdsVkHZkU14ruLXCvtyq7rIj6HT7+kEypJVlxjWOHk/41Yu0jtZIhHpf
-         0iirSUWc9qRijXHKj5mdYXJO/4XDM0yMDrCMdCvnBly+G8qw4J62QqPEvG/6d327mwUk
-         mjslJGAV4x5eTrhYaZvO1S1Gdv+Yx30Q1fCBXXkHVBXEcdIrqDCRRbH2N6VCyNYpGk8v
-         VaJoLblCOngcJXKCe7wwfdF805Xh4ZXJPiZn6PdfkSHI7HcRs/E/lIUsaD0+ARDcVXL4
-         W8nBREH06bvSAz0gPF2eJWOVW/+wtw53R9QceSmZ2sVGk5v+50CaaGiXW5YBct4QhaA5
-         9WBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXC9PHTbKqXuj2ra9twjECca2oHxVRZeImDH+ACAQVcxqpSHUFWYQv2iE4ZO2d9GKgdbfRa68xlk2JlNkm74v6M59QlKOblhYcqebPMsA==
-X-Gm-Message-State: AOJu0YysE1V8k5n7FCl+f9W+QG2PIDx59pGNpi/fQcTxn6nPsS6x1CgH
-	h+Da/8CZc5im6Z+hykYrTSW8+NucFIAw+h8gkTGp1jwM6X7RXtCNw1r67IVleKQ=
-X-Google-Smtp-Source: AGHT+IHBkLHFj5WFEfrPMbcu4indk9Do5CBPsEWA/ISg1HrPVSBD2kmIH2fC68ipsbsm0K9eK2oBGw==
-X-Received: by 2002:a17:906:a456:b0:a44:52e8:9b82 with SMTP id cb22-20020a170906a45600b00a4452e89b82mr5777619ejb.24.1709543986706;
-        Mon, 04 Mar 2024 01:19:46 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id pw20-20020a17090720b400b00a450164cec6sm1874622ejb.194.2024.03.04.01.19.46
+        d=1e100.net; s=20230601; t=1709544164; x=1710148964;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b5AjmCqAyBy5sBCmGJ+0z6aZbOBdyU67G5MoGkYfj10=;
+        b=H7i04855Z+Ps5r7xsooq+UVB/Dsdf6Zj9aXgCUBeaFW/4l4qM4sKw8UbcU+/UfUzce
+         ZQZp6lWY2XEcgpNwKv4HwJRPTt9sGjdktO45OkGdD2nE3p/yHmicbjkEFcli4MX2uydH
+         TXAX1AcU9D+k5I+Ez25LCu3r8L/xjGnc3Og0M9hQrh7Lq6fwxyJ5CbV+KFvso1loER8l
+         yXnpxA0VTWhnvlxl61vVF5QbR7Z1sn1yrXCWCv8NIR72Nma0EHge3Ks0oCe2uc9lQzwB
+         O7PShRb0P0CFrxZeAVtbeVBsd8kH4TI036Pd+J9ay54zWR9whgjMU5bp2pHULmSL+7Y6
+         iWOg==
+X-Forwarded-Encrypted: i=1; AJvYcCWc52j4ZJT8BZ/UxlOGkcgw6dRUz5b6jiCRxI1dt18K2F/tvpwsjNC2A/sfn2lfw88xx00gtFpIBnVjKuzcBIWI3a+NMmojgT320l5QRg==
+X-Gm-Message-State: AOJu0YxiLit8397gER+F8XUagA1x4uahE3GaNll5l1sL6x3KUBUz8ucy
+	/7mdvPreAsrEzUPekoEYL0knLGhvbPHYuzNGlStKovkbuEwPMqee6O4knh6lvw==
+X-Google-Smtp-Source: AGHT+IFEMqv/PNpBYCEoYo/h2XH4t1cKfax+0MKorjDLCgK9bQh90oXT16Gx94SYuPDhwrgchBsFVQ==
+X-Received: by 2002:a17:902:c947:b0:1dc:3e49:677d with SMTP id i7-20020a170902c94700b001dc3e49677dmr12360994pla.26.1709544164262;
+        Mon, 04 Mar 2024 01:22:44 -0800 (PST)
+Received: from [127.0.1.1] ([117.202.187.165])
+        by smtp.gmail.com with ESMTPSA id c5-20020a170902c1c500b001dbb06b6138sm7996648plc.252.2024.03.04.01.22.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 01:19:46 -0800 (PST)
-Date: Mon, 4 Mar 2024 10:19:45 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: Re: [kvm-unit-tests PATCH 5/7] arch-run: Add a "continuous"
- migration option for tests
-Message-ID: <20240304-e416eb5a087bde2cad5ff325@orel>
-References: <20240226093832.1468383-1-npiggin@gmail.com>
- <20240226093832.1468383-6-npiggin@gmail.com>
- <6329dd4c-2093-40c3-8eb8-701d8e8b2ecd@redhat.com>
+        Mon, 04 Mar 2024 01:22:43 -0800 (PST)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH v9 00/10] PCI: dwc: ep: Fix DBI access failure for drivers
+ requiring refclk from host
+Date: Mon, 04 Mar 2024 14:52:12 +0530
+Message-Id: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6329dd4c-2093-40c3-8eb8-701d8e8b2ecd@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMSS5WUC/3XMQQrCMBCF4auUWTsSYoiNK+8hXbTJpB2UpkykK
+ iV3N3bv8n/wvg0yCVOGS7OB0MqZ01zDHRrwUz+PhBxqg1baKK0NLp4xDIxCryR3HDQ511vtTsp
+ DPS1Ckd87eOtqT5yfST67v7a/9S+1tqjQGn+OQflI1lwfPPeSjklG6EopX6+X1jOtAAAA
+To: Jingoo Han <jingoohan1@gmail.com>, 
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Marek Vasut <marek.vasut+renesas@gmail.com>, 
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Kishon Vijay Abraham I <kishon@ti.com>, Vidya Sagar <vidyas@nvidia.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
+ Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+ Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, 
+ Roy Zang <roy.zang@nxp.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Jesper Nilsson <jesper.nilsson@axis.com>, 
+ Srikanth Thokala <srikanth.thokala@intel.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4945;
+ i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
+ bh=D3YxXRPRe/3m7ipJEy7IuH10sCTvtxb4RmlKqvHI6fk=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBl5ZLSO+6vhj5ArwA31w+B+o7UQMvERN5xNXL/0
+ h2DiyttWXGJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZeWS0gAKCRBVnxHm/pHO
+ 9Xu0B/492E11+2fPEOd04mokl2I361P6hUg/guPNdBEZ1eaP5WIIZZXghxxFFQXh2pBybkGWve5
+ NGWpyXTm/UUE+ZCLJge/wavfoSVqY3QTZjwk7gwY5uhr0xW+CuHREVnuLW/1urQqbrJ+bwizlg1
+ Js/NCMoC8iYWCZQK4GSSIeZKbduzezX6jqdGvCGZepii4PpknDxs0lXB4I227sEohHIpg3JcyWq
+ yVZCY0SChP7O7w8qztldIqASdi1LXKQZsJa1BZNc4a3Avii2kWwEO/S+t5kXX6f5PzZhjIXzZ0f
+ PgpnOg1/MlDJo1n4e0xCc9lLWFfZR3b+wFO1ip3sARxQDuxG
+X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,167 +114,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Eric Auger <eric.auger@redhat.com>, Marc Hartmayer <mhartmay@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: linux-pci@vger.kernel.org, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, linux-arm-kernel@axis.com, linux-renesas-soc@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 04, 2024 at 07:17:35AM +0100, Thomas Huth wrote:
-> On 26/02/2024 10.38, Nicholas Piggin wrote:
-> > The cooperative migration protocol is very good to control precise
-> > pre and post conditions for a migration event. However in some cases
-> > its intrusiveness to the test program, can mask problems and make
-> > analysis more difficult.
-> > 
-> > For example to stress test migration vs concurrent complicated
-> > memory access, including TLB refill, ram dirtying, etc., then the
-> > tight spin at getchar() and resumption of the workload after
-> > migration is unhelpful.
-> > 
-> > This adds a continuous migration mode that directs the harness to
-> > perform migrations continually. This is added to the migration
-> > selftests, which also sees cooperative migration iterations reduced
-> > to avoid increasing test time too much.
-> > 
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >   common/selftest-migration.c | 16 +++++++++--
-> >   lib/migrate.c               | 18 ++++++++++++
-> >   lib/migrate.h               |  3 ++
-> >   scripts/arch-run.bash       | 55 ++++++++++++++++++++++++++++++++-----
-> >   4 files changed, 82 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/common/selftest-migration.c b/common/selftest-migration.c
-> > index 0afd8581c..9a9b61835 100644
-> > --- a/common/selftest-migration.c
-> > +++ b/common/selftest-migration.c
-> > @@ -9,12 +9,13 @@
-> >    */
-> >   #include <libcflat.h>
-> >   #include <migrate.h>
-> > +#include <asm/time.h>
-> > -#define NR_MIGRATIONS 30
-> > +#define NR_MIGRATIONS 15
-> >   int main(int argc, char **argv)
-> >   {
-> > -	report_prefix_push("migration");
-> > +	report_prefix_push("migration harness");
-> >   	if (argc > 1 && !strcmp(argv[1], "skip")) {
-> >   		migrate_skip();
-> > @@ -24,7 +25,16 @@ int main(int argc, char **argv)
-> >   		for (i = 0; i < NR_MIGRATIONS; i++)
-> >   			migrate_quiet();
-> > -		report(true, "simple harness stress");
-> > +		report(true, "cooperative migration");
-> > +
-> > +		migrate_begin_continuous();
-> > +		mdelay(2000);
-> > +		migrate_end_continuous();
-> > +		mdelay(1000);
-> > +		migrate_begin_continuous();
-> > +		mdelay(2000);
-> > +		migrate_end_continuous();
-> > +		report(true, "continuous migration");
-> >   	}
-> >   	report_prefix_pop();
-> > diff --git a/lib/migrate.c b/lib/migrate.c
-> > index 1d22196b7..770f76d5c 100644
-> > --- a/lib/migrate.c
-> > +++ b/lib/migrate.c
-> > @@ -60,3 +60,21 @@ void migrate_skip(void)
-> >   	puts("Skipped VM migration (quiet)\n");
-> >   	(void)getchar();
-> >   }
-> > +
-> > +void migrate_begin_continuous(void)
-> > +{
-> > +	puts("Begin continuous migration\n");
-> > +	(void)getchar();
-> > +}
-> > +
-> > +void migrate_end_continuous(void)
-> > +{
-> > +	/*
-> > +	 * Migration can split this output between source and dest QEMU
-> > +	 * output files, print twice and match once to always cope with
-> > +	 * a split.
-> > +	 */
-> > +	puts("End continuous migration\n");
-> > +	puts("End continuous migration (quiet)\n");
-> > +	(void)getchar();
-> > +}
-> > diff --git a/lib/migrate.h b/lib/migrate.h
-> > index db6e0c501..35b6703a2 100644
-> > --- a/lib/migrate.h
-> > +++ b/lib/migrate.h
-> > @@ -11,3 +11,6 @@ void migrate_quiet(void);
-> >   void migrate_once(void);
-> >   void migrate_skip(void);
-> > +
-> > +void migrate_begin_continuous(void);
-> > +void migrate_end_continuous(void);
-> > diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-> > index d0f6f098f..5c7e72036 100644
-> > --- a/scripts/arch-run.bash
-> > +++ b/scripts/arch-run.bash
-> > @@ -125,15 +125,17 @@ qmp_events ()
-> >   filter_quiet_msgs ()
-> >   {
-> >   	grep -v "Now migrate the VM (quiet)" |
-> > +	grep -v "Begin continuous migration (quiet)" |
-> > +	grep -v "End continuous migration (quiet)" |
-> >   	grep -v "Skipped VM migration (quiet)"
-> >   }
-> >   seen_migrate_msg ()
-> >   {
-> >   	if [ $skip_migration -eq 1 ]; then
-> > -		grep -q -e "Now migrate the VM" < $1
-> > +	        grep -q -e "Now migrate the VM" -e "Begin continuous migration" < $1
-> >   	else
-> > -		grep -q -e "Now migrate the VM" -e "Skipped VM migration" < $1
-> > +	        grep -q -e "Now migrate the VM" -e "Begin continuous migration" -e "Skipped VM migration" < $1
-> >   	fi
-> >   }
-> > @@ -161,6 +163,7 @@ run_migration ()
-> >   	src_qmpout=/dev/null
-> >   	dst_qmpout=/dev/null
-> >   	skip_migration=0
-> > +	continuous_migration=0
-> >   	mkfifo ${src_outfifo}
-> >   	mkfifo ${dst_outfifo}
-> > @@ -186,9 +189,12 @@ run_migration ()
-> >   	do_migration || return $?
-> >   	while ps -p ${live_pid} > /dev/null ; do
-> > -		# Wait for test exit or further migration messages.
-> > -		if ! seen_migrate_msg ${src_out} ;  then
-> > +		if [[ ${continuous_migration} -eq 1 ]] ; then
-> 
-> Here you're using "[[" for testing ...
-> 
-> > +			do_migration || return $?
-> > +		elif ! seen_migrate_msg ${src_out} ;  then
-> >   			sleep 0.1
-> > +		elif grep -q "Begin continuous migration" < ${src_out} ; then
-> > +			do_migration || return $?
-> >   		elif grep -q "Now migrate the VM" < ${src_out} ; then
-> >   			do_migration || return $?
-> >   		elif [ $skip_migration -eq 0 ] && grep -q "Skipped VM migration" < ${src_out} ; then
-> 
-> ... while the other code seems to use "[" for testing values. Can we try to
-> stick to one style, please (unless it's really required to use "[["
-> somewhere)?
->
+Hello,
 
-We should decide on a Bash coding style and on preferences like [[ and
-then write a document for it, as well as create a set of shellcheck
-includes/excludes to test it. Then, using shellcheck we'd change all our
-current Bash code and also require shellcheck to pass on all new code
-before merge. Any volunteers for that effort? For the style selection
-we can take inspiration from other projects or even just adopt their
-style guides. Google has some guidance[1][2] and googling for Bash style
-pops up other hits.
+This series is the continuation of previous work by Vidya Sagar [1] to fix the
+issues related to accessing DBI register space before completing the core
+initialization in some EP platforms like Tegra194/234 and Qcom EP.
 
-[1] https://google.github.io/styleguide/shellguide.html
-[2] https://chromium.googlesource.com/chromiumos/docs/+/master/styleguide/shell.md
+Since Vidya is busy, I took over the series based on his consent (off-list
+discussion).
 
-Thanks,
-drew
+NOTE
+====
+
+Based on the comments received in v7 [2], I've heavily modified the series
+to fix several other issues reported by Bjorn and Niklas. One noticeable
+change is getting rid of the 'core_init_notifer' flag added to differentiate
+between glue drivers requiring refclk from host and drivers getting refclk
+locally.
+
+By getting rid of this flag, now both the DWC EP driver and the EPF drivers
+can use a single flow and need not distinguish between the glue drivers.
+
+We can also get rid of the 'link_up_notifier' flag in the future by following
+the same convention.
+
+Testing
+=======
+
+I've tested the series on Qcom SM8450 based dev board that depends on refclk
+from host with EPF_MHI driver. It'd be good to test this series on platforms
+that generate refclk locally and also with EPF_TEST driver.
+
+- Mani
+
+[1] https://lore.kernel.org/linux-pci/20221013175712.7539-1-vidyas@nvidia.com/
+[2] https://lore.kernel.org/linux-pci/20231120084014.108274-1-manivannan.sadhasivam@linaro.org/
+
+Changes in v9:
+- Incorporated changes for missing drivers (Niklas)
+- Reworded the dw_pcie_ep_cleanup() API kdoc (Niklas)
+- Reworded the description of patch 6/10 (Frank)
+- Collected reviews
+- Link to v8: https://lore.kernel.org/r/20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org
+
+Changes in v8:
+
+- Rebased on top of v6.8-rc1
+- Removed the deinit callback from struct dw_pcie_ep_ops
+- Renamed dw_pcie_ep_exit() to dw_pcie_ep_deinit()
+- Introduced dw_pcie_ep_cleanup() API for drivers supporting PERST#
+- Renamed dw_pcie_ep_init_complete() to dw_pcie_ep_init_registers()
+- Called dw_pcie_ep_init_registers() API directly from all glue drivers
+- Removed "core_init_notifier" flag
+- Added a generic dw_pcie_ep_linkdown() API to handle LINK_DOWN event and used
+  it in qcom driver
+- Added Kernel-doc comments for DWC EP APIs
+
+Changes in v7:
+
+- Rebased on top of v6.7-rc1
+- Kept the current dw_pcie_ep_init_complete() API instead of renaming it to
+  dw_pcie_ep_init_late(), since changing the name causes a slight ambiguity.
+- Splitted the change that moves pci_epc_init_notify() inside
+  dw_pcie_ep_init_notify() to help bisecting and also to avoid build issue.
+- Added a new patch that moves pci_epc_init_notify() inside
+  dw_pcie_ep_init_notify().
+- Took over the authorship and dropped the previous Ack as the patches are
+  heavily modified.
+
+Changes in v6:
+
+- Rebased on top of pci/next (6e2fca71e187)
+- removed ep_init_late() callback as it is no longer necessary
+
+For previous changelog, please refer [1].
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+Manivannan Sadhasivam (10):
+      PCI: dwc: ep: Remove deinit() callback from struct dw_pcie_ep_ops
+      PCI: dwc: ep: Rename dw_pcie_ep_exit() to dw_pcie_ep_deinit()
+      PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#
+      PCI: dwc: ep: Fix DBI access failure for drivers requiring refclk from host
+      PCI: dwc: ep: Rename dw_pcie_ep_init_complete() to dw_pcie_ep_init_registers()
+      PCI: dwc: ep: Call dw_pcie_ep_init_registers() API directly from all glue drivers
+      PCI: dwc: ep: Remove "core_init_notifier" flag
+      PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API to handle LINK_DOWN event
+      PCI: qcom-ep: Use the generic dw_pcie_ep_linkdown() API to handle LINK_DOWN event
+      PCI: dwc: ep: Add Kernel-doc comments for APIs
+
+ drivers/pci/controller/dwc/pci-dra7xx.c           |   9 +
+ drivers/pci/controller/dwc/pci-imx6.c             |  10 +
+ drivers/pci/controller/dwc/pci-keystone.c         |  11 +
+ drivers/pci/controller/dwc/pci-layerscape-ep.c    |   9 +
+ drivers/pci/controller/dwc/pcie-artpec6.c         |  15 +-
+ drivers/pci/controller/dwc/pcie-designware-ep.c   | 309 +++++++++++++++-------
+ drivers/pci/controller/dwc/pcie-designware-plat.c |  11 +
+ drivers/pci/controller/dwc/pcie-designware.h      |  19 +-
+ drivers/pci/controller/dwc/pcie-keembay.c         |  18 +-
+ drivers/pci/controller/dwc/pcie-qcom-ep.c         |   6 +-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  28 +-
+ drivers/pci/controller/dwc/pcie-tegra194.c        |   5 +-
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  15 +-
+ drivers/pci/endpoint/functions/pci-epf-test.c     |  18 +-
+ include/linux/pci-epc.h                           |   3 -
+ 15 files changed, 354 insertions(+), 132 deletions(-)
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240224-pci-dbi-rework-b2e99a62930c
+
+Best regards,
+-- 
+Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
