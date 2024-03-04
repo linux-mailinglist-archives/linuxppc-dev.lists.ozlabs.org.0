@@ -1,77 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D775786FB84
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 09:18:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CB986FB9C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 09:19:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=X3qY4gkH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=naQuZIwe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TpBQr3nFCz3dTg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 19:18:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TpBSp1FSlz3cG3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 19:19:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=X3qY4gkH;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=naQuZIwe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::730; helo=mail-qk1-x730.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpBQ62br6z2ykn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Mar 2024 19:17:32 +1100 (AEDT)
-Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-787b0b1deeaso217670485a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 00:17:31 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpBS44HS2z2x9T
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Mar 2024 19:19:16 +1100 (AEDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-dd02fb9a31cso886540276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 00:19:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709540248; x=1710145048; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1709540353; x=1710145153; darn=lists.ozlabs.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=hmWR/dQ/IEMHbjZi2RajMkmXPdKPqp6IFe8boeN75aE=;
-        b=X3qY4gkHKhRUv9s8SjMq+ObHkE4TtQD5NXVhhwPVzvgeQpUK3NwdE/rPRmuWKavRB+
-         rVuhb6zflLJsoJ7q8AO+BC0K71qw321mRuYby1CvXs8B1GmkvlC2th7J1RjgOE1RyZM6
-         GYkiiEobTIs65HUdo7z3PO9y1qVAo4GwhkvPusRD8fcACJhz+l7Ce0SuJewVKPQU7pJA
-         7il3VYBZkJefwXV6l1CwfI2N7377q4iUl/Mg1BUbaD0qDxPelsjI7Zp87brBoyqm7R0y
-         Yh6uhGi5K5oJVF+3GtYnoZUOjD9vY+jYfluh1prDDSp0hWb/iH/1AxEeSizPgYhy+v5t
-         kLxw==
+        bh=nGaxan9MS5xxwpnuhzQOq+gU3MPaqevKCopu0R9YM7I=;
+        b=naQuZIweo7uKfc93x9hERvxKCvYNFUk4so6h+b7ADsconH+C1xpfDodi98eX/FcbC7
+         vhcQfrqZSBjhAfgn0i8vBcdx19YB31o9Yit+RdjudI9qMOUQP7KRa/HV4x3vK/wKWl1S
+         VnWQqcuqdN3MPKbQOnZVQ0t9et/7grqlMMnCsCpyZh4Bka11Ke7VV7iO/lSONIE7ssS6
+         3ogIHhVcr4lGw+K/VUJ0yTuq9BKJ9mV+3ZCisMoccDRc4QcfoVG1coFu+GQEWSVgHcdK
+         CKBTXWmqpawOGnUohGK/d1rrZzXFnqLtk6ZEiaAns4iNgq9bzlsZYqJbeDVTUTdOgnmL
+         e+/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709540248; x=1710145048;
+        d=1e100.net; s=20230601; t=1709540353; x=1710145153;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmWR/dQ/IEMHbjZi2RajMkmXPdKPqp6IFe8boeN75aE=;
-        b=Hx0vjel8ZPlUPoZBnoIFDXCbCKwJQBcNokUkiuuXxUD2Rx4dFT9UyIDJzN7lptxndu
-         RclirQRr58S20+naDAs40t5+YIOYwaV1TLXp8lKpFpJTDnHcutv84a+Xr2CyQ1/o4nbe
-         WtS8UCgjtbZFw6YzfryMxL8SHYsS7dBtAfdI0pdD7d1ZeITmvc+4Q6829FT+9xtj+xTo
-         5PArq/nCMFmHVUOzVt6OLG6FKiP1WTZRfmbXcVz47egFlb+j34IGSF1A48T8Ny1rC7Hd
-         ExZ7R8ZJJb5sqhlhA5KTSzgvu4HtOsBXMI51tFu1iLtFYiEf2Gpyms89HGaqQQ5eom9o
-         Y7jg==
-X-Forwarded-Encrypted: i=1; AJvYcCWgICHb7Cd3o0ucW9jKZiwZSfsk4ZDGcAqcJYF5rMEOs3mwHp9BDpmkkOZwZrJqi0CvzW8OuixLvgHE0sKKcTsuTxNLN4CBk7PFNHOqNQ==
-X-Gm-Message-State: AOJu0YznLWe/h+gHUC7/e1D+XmzqoADuKu3SD3+vwQFHtws+bEhNkXhc
-	vRmA+82BP48x0RB3aQVpjvkMmzedrBg38NHFP/5e8MfZeZNywKXmr4RACat+pg==
-X-Google-Smtp-Source: AGHT+IHj2odoO405rOYr1Gbd+eMsiiWMwBO5dmlWnp+hZP/p4is76K0Utr7rAm1gwPP1v5DFYu5Uzw==
-X-Received: by 2002:a05:620a:110d:b0:788:22c4:c95f with SMTP id o13-20020a05620a110d00b0078822c4c95fmr3901107qkk.21.1709540248532;
-        Mon, 04 Mar 2024 00:17:28 -0800 (PST)
+        bh=nGaxan9MS5xxwpnuhzQOq+gU3MPaqevKCopu0R9YM7I=;
+        b=BJrtLJPGJ1Zi7KdYKfl/VTWtrMXM0txobdIsWOL2+6RChVfW7tM56NsFE6TPWm41OK
+         8mfPjxKe5qY6F5IMUtZmfZmur5xgVJ5Q/fSUOcFN0TKQfL2U2QMzj1TVWRFulrha56/u
+         4byLdJxcGvMzPzxLm7zMPFnjU5hEQ64VYaLRGzL8LiVEx6izUXW1LKFvH15gBsbXTPxC
+         RfFu2iKJX0UB5qNglJB1Bmn+bsqzcszXfGv7GHQablH9f0fkLxbRGyhxs/+8dxwhUyGo
+         QFlBJUADX9N9OZkNEx66eQ1ge5OE3yA7MLe1wlQIkBIJTB4VgiwAOw8nZJMiaKsBNGef
+         vipQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjDbVAAySfGs0Y1KUEr5DjCLEZtub8No+NhYZZHVDDx/2POVleTlpVy26s/EVhj/ekbHn+mfoBzvmNF/K1KdX//A2wCEMoVhWYhYoS3A==
+X-Gm-Message-State: AOJu0YznhqRS587wDIHoeqYfwgTwmUwZ1ZBUikg5Wfz82KTWj+mifG64
+	wET866zY95dkay6o/bkHeUUMLZ3QaDnOVjkK4VmohwrqBv8J6ouogGTawNqcCQ==
+X-Google-Smtp-Source: AGHT+IHL1WHL+wc2Bkuxv4RuAVn4VY861FeJv8fqtZvJsgPjzKqwuQFKnCSzgHkDfczowkgJ09KEpA==
+X-Received: by 2002:a25:7412:0:b0:dcc:79ab:e51a with SMTP id p18-20020a257412000000b00dcc79abe51amr6318413ybc.57.1709540353345;
+        Mon, 04 Mar 2024 00:19:13 -0800 (PST)
 Received: from thinkpad ([117.202.187.165])
-        by smtp.gmail.com with ESMTPSA id t20-20020a05620a0b1400b007881ed0f87dsm1737718qkg.65.2024.03.04.00.17.17
+        by smtp.gmail.com with ESMTPSA id ks17-20020ac86211000000b0042ed81f5297sm2298830qtb.35.2024.03.04.00.19.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 00:17:28 -0800 (PST)
-Date: Mon, 4 Mar 2024 13:47:13 +0530
+        Mon, 04 Mar 2024 00:19:13 -0800 (PST)
+Date: Mon, 4 Mar 2024 13:48:59 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 To: Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v8 03/10] PCI: dwc: ep: Introduce dw_pcie_ep_cleanup()
- API for drivers supporting PERST#
-Message-ID: <20240304081713.GH2647@thinkpad>
+Subject: Re: [PATCH v8 10/10] PCI: dwc: ep: Add Kernel-doc comments for APIs
+Message-ID: <20240304081859.GI2647@thinkpad>
 References: <20240224-pci-dbi-rework-v8-0-64c7fd0cfe64@linaro.org>
- <20240224-pci-dbi-rework-v8-3-64c7fd0cfe64@linaro.org>
- <ZeB7PQtkDSoCzE1Z@fedora>
+ <20240224-pci-dbi-rework-v8-10-64c7fd0cfe64@linaro.org>
+ <ZeB-93jiX31cLJyP@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZeB7PQtkDSoCzE1Z@fedora>
+In-Reply-To: <ZeB-93jiX31cLJyP@fedora>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,74 +87,39 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <v
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 29, 2024 at 01:40:29PM +0100, Niklas Cassel wrote:
-> On Sat, Feb 24, 2024 at 12:24:09PM +0530, Manivannan Sadhasivam wrote:
-> > For DWC glue drivers supporting PERST# (currently Qcom and Tegra194), some
-> > of the DWC resources like eDMA should be cleaned up during the PERST#
-> > assert time.
+On Thu, Feb 29, 2024 at 01:56:23PM +0100, Niklas Cassel wrote:
+> Hello Mani,
+> 
+> On Sat, Feb 24, 2024 at 12:24:16PM +0530, Manivannan Sadhasivam wrote:
+> > All of the APIs are missing the Kernel-doc comments. Hence, add them.
 > > 
-> > So let's introduce a dw_pcie_ep_cleanup() API that could be called by these
-> > drivers to cleanup the DWC specific resources. Currently, it just removes
-> > eDMA.
-> > 
-> > Reported-by: Niklas Cassel <cassel@kernel.org>
-> > Closes: https://lore.kernel.org/linux-pci/ZWYmX8Y%2F7Q9WMxES@x1-carbon
 > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > > ---
-> >  drivers/pci/controller/dwc/pcie-designware-ep.c | 11 +++++++++--
-> >  drivers/pci/controller/dwc/pcie-designware.h    |  5 +++++
-> >  drivers/pci/controller/dwc/pcie-qcom-ep.c       |  1 +
-> >  drivers/pci/controller/dwc/pcie-tegra194.c      |  2 ++
-> >  4 files changed, 17 insertions(+), 2 deletions(-)
+> >  drivers/pci/controller/dwc/pcie-designware-ep.c | 92 +++++++++++++++++++++++++
+> >  1 file changed, 92 insertions(+)
 > > 
 > > diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > index 2b11290aab4c..1205bfba8310 100644
+> > index fed4c2936c78..cdcb33a279db 100644
 > > --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
 > > +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-> > @@ -564,12 +564,19 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+> 
+> (snip)
+> 
+> > @@ -556,6 +606,12 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
 > >  	return 0;
 > >  }
 > >  
-> > -void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
-> > +void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
-> >  {
-> >  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-> > -	struct pci_epc *epc = ep->epc;
-> >  
-> >  	dw_pcie_edma_remove(pci);
+> > +/**
+> > + * dw_pcie_ep_cleanup - Cleanup DWC EP resources
+> > + * @ep: DWC EP device
+> > + *
+> > + * Cleans up the DWC EP specific resources like eDMA etc...
 > 
-> Hello Mani,
-> 
-> In this message:
-> https://lore.kernel.org/linux-pci/20240130062938.GB32821@thinkpad/
-> 
-> You mentioned that you were going to clean up the BARs.
-
-Yes, I did and it is still in my queue.
-
-> (Like I wrote in that thread, I really think that we should merge a fix for
-> the broken "do we have a saved value from find_first_zero_bit() in the array",
-> by using a "if (!saved_value[bar])", when find_first_zero_bit() returns zero.)
+> I think that you should mention that this is only for glue drivers that
+> use PERST# handling, so that other glue drivers do no start using it :)
 > 
 
-Hmm, yeah that logic is flawed. Let me take another look.
-
-> However, regardless of that, I do not see that this series (neither
-> dw_pcie_ep_cleanup(), nor dw_pcie_ep_linkdown()), calls any function which
-> will clean up the BARs.
-> 
-> Since e.g. qcom-ep.c does a reset_control_assert() during perst
-> assert/deassert, which should clear sticky registers, I think that
-> you should let dw_pcie_ep_cleanup() clean up the BARs using
-> dw_pcie_ep_clear_bar().
-> 
-
-As I mentioned earlier, it is the job of the EPF drivers to clear the BARs since
-they allocate them. I'm trying to reduce the implicit resetting wherever we
-could.
-
-The proper fix is to add the LINK_DOWN callback to EPF drivers and do cleanup.
-I'm planning to submit a series for that after this one.
+You are right. Will add the wording.
 
 - Mani
 
