@@ -2,89 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A091886F9F4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 07:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3931A86FA04
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 07:23:09 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aYY7mcs9;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aYY7mcs9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T3slO4RT;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T3slO4RT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tp7mj1khJz3cRB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 17:18:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tp7t263Pmz3cZB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 17:23:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aYY7mcs9;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aYY7mcs9;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T3slO4RT;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T3slO4RT;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tp7lw6gx1z3bWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Mar 2024 17:17:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tp7sK48Gqz2yVv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Mar 2024 17:22:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709533064;
+	s=mimecast20190719; t=1709533347;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O+fO6j0tC3hoYWlaRzxgXQx+mHiiCB/NggfeHPRfEfg=;
-	b=aYY7mcs9jrk1e9aPb0rjAtH36F11La2SgLuO+JhbbxftSMJnhSAkekPMaWT04sSuCHiY09
-	vbuArhnl/2tLrS4hFenq+XzfQq7EzGRz8S4CQexTQuFJHRFS0q7UCVDbSaCRQfpT3F6aLy
-	wZxwUZPtYmSnFiU/ilTa4PsmqpnAQWA=
+	bh=0vc4Zmb8L094rZ1gY9Cchmv8ksKAo7EZKhul8nM1Mw4=;
+	b=T3slO4RT1hVFDK9MeCGrAfcHW9V2c8GKIQca+6HkLelGzEW80nxsNycygMNbQWWxe/Aq3I
+	r3m+lB4ajpfUQwgtnTMBs488/07+fPycj4ET9hS8iWuqZQHZnGp0+1hP3M2eUucdYmEli8
+	mgx+RI9CTAB+Lc/utqWW/aBktr6Redk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709533064;
+	s=mimecast20190719; t=1709533347;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O+fO6j0tC3hoYWlaRzxgXQx+mHiiCB/NggfeHPRfEfg=;
-	b=aYY7mcs9jrk1e9aPb0rjAtH36F11La2SgLuO+JhbbxftSMJnhSAkekPMaWT04sSuCHiY09
-	vbuArhnl/2tLrS4hFenq+XzfQq7EzGRz8S4CQexTQuFJHRFS0q7UCVDbSaCRQfpT3F6aLy
-	wZxwUZPtYmSnFiU/ilTa4PsmqpnAQWA=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0vc4Zmb8L094rZ1gY9Cchmv8ksKAo7EZKhul8nM1Mw4=;
+	b=T3slO4RT1hVFDK9MeCGrAfcHW9V2c8GKIQca+6HkLelGzEW80nxsNycygMNbQWWxe/Aq3I
+	r3m+lB4ajpfUQwgtnTMBs488/07+fPycj4ET9hS8iWuqZQHZnGp0+1hP3M2eUucdYmEli8
+	mgx+RI9CTAB+Lc/utqWW/aBktr6Redk=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-hU9aojI1N6u3bOw65OVl8g-1; Mon, 04 Mar 2024 01:17:42 -0500
-X-MC-Unique: hU9aojI1N6u3bOw65OVl8g-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-42ed6809154so34287921cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Mar 2024 22:17:42 -0800 (PST)
+ us-mta-380-dRszOc9SPQmhyLJMYW7-sQ-1; Mon, 04 Mar 2024 01:22:26 -0500
+X-MC-Unique: dRszOc9SPQmhyLJMYW7-sQ-1
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7876cf4554eso504078385a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Mar 2024 22:22:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709533061; x=1710137861;
+        d=1e100.net; s=20230601; t=1709533345; x=1710138145;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O+fO6j0tC3hoYWlaRzxgXQx+mHiiCB/NggfeHPRfEfg=;
-        b=rPIKprLPDNNQxzbXF0uCELA+PLf7GaoL1KoX7abrApF+2LueEqN8+LWyy48T+F+j0e
-         Rw4/E9Z8Pb4sSnZVkcRmUXWbiR71orCMquyhMOYWerOkUQ6ucEfdfguZdUDsC8Z81Gl3
-         ZhtRucW3+jMIH/F9bit0wqd+dNA73RnlTwTLmFOzmsso+d8RwEjo1Oe1SkCQl0Fzrjjt
-         7uwzNu3o5Heee+Kk+WPfHdmFChdkQkziaHPMe3KAzcYvoutCfYTPqBC2zI6tVAPQXIHO
-         mxHYUUJKY4Za0dPTmJM80s/4YL9It2Y9UD4YLKHlHQtPUGLgY5E+MS2ZZ7uN+F5GunRG
-         a5jg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOHkv0EP+U4+zd/J0bpSyOBuoFN+iErmiCXwL9v9+p3N7HzSfEG7DhJoBPlrjKN2TqIwINO61W6MOYi9/Wl700y+kP0LtCY4KClDsqQA==
-X-Gm-Message-State: AOJu0YwlWkTwbAqsoCsM7S0bQJ32584qr9+qiBZ0m3k+vjd0MeTxc7+d
-	tFVa+iNfuJqDdb7m9wI2PMWeQ4wY8E4syQnsSjTT87nnL0xpPOWWnahf2UHnEAxthwG//2rHVhm
-	T6uOxCjhtLnjowTaCf41UXV62fkf/juGI3ERo3lvkDrZjSIvkWrPU9YPFX3fx9fI=
-X-Received: by 2002:ac8:5ac2:0:b0:42e:d2f2:71f2 with SMTP id d2-20020ac85ac2000000b0042ed2f271f2mr11566454qtd.23.1709533061690;
-        Sun, 03 Mar 2024 22:17:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFTwt3A1nfxsBAOT9o42hUQSyWoxM3TY/5qVm2pNryLGHmXlVu2wbWYv1lpVD9oV398f6MfcA==
-X-Received: by 2002:ac8:5ac2:0:b0:42e:d2f2:71f2 with SMTP id d2-20020ac85ac2000000b0042ed2f271f2mr11566436qtd.23.1709533061382;
-        Sun, 03 Mar 2024 22:17:41 -0800 (PST)
+        bh=0vc4Zmb8L094rZ1gY9Cchmv8ksKAo7EZKhul8nM1Mw4=;
+        b=POo+jUw0oop013GgeycaMEFvxvznTmz6TkP+Ug5ktnp9ABO0WNxC0W6ntZa4ekEl3P
+         RSEsTfxcEt0+jMlWco2baXqXV6foNJLAP16gGrdQpWWKLnfVh2b2ezTEOqdWo3oS6mQ0
+         TqwY8DToUv7OcNVk9pQSgEorO8dGvPggx09fNP9m3td73doVE527yWzFEH5KHatxZvuD
+         1GLG603Ttv3a12yn0AZQgxE1tRGzFpBfNrTWKUcFUj4y0XIfurND2J+MkCuIokE8w3Qs
+         66AOov96O8hnpYyGpdp7YH0Zq738bGxPJXPR3s/g6beWt+e74vw5ongxfR/WLcpL3tSa
+         iotw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbnx9kHdnQ9OufAZNCjVJ1Qc0tMhM4fkdWZSlEUk/DjL9tyOM8w5ALs4S7DI4GH9DC6Aa3tTuIfZdzIYfAKusHCshpxxQkb98NdhQ/3A==
+X-Gm-Message-State: AOJu0YzM0N7Ck4Up3qTQOJTQzJgkbR4NHRnQ+dDg8Pl2ouUeDwxaxmgy
+	oypb3LSOtaN1uTeNxNlULu6u28aPS96VNF0aXnHwc5FiXbZKZ4hWQRbjZHpvYPn7QvVN52VNxkQ
+	M5smNw/QtvfjUTsNqZIJCi6PeuHLNAxyvW2MZLRspShNqMCXMXbTi/j6acyKNats=
+X-Received: by 2002:a05:620a:469e:b0:788:22e4:8c56 with SMTP id bq30-20020a05620a469e00b0078822e48c56mr4797936qkb.18.1709533345567;
+        Sun, 03 Mar 2024 22:22:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEK9JEmr9SYlUiIXaA+KwOw+p1F2N/m4FvMas+Hp7eeKx8Gu//kaDRmYmveE91UGdsqJTa7nA==
+X-Received: by 2002:a05:620a:469e:b0:788:22e4:8c56 with SMTP id bq30-20020a05620a469e00b0078822e48c56mr4797865qkb.18.1709533343297;
+        Sun, 03 Mar 2024 22:22:23 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-133.web.vodafone.de. [109.43.178.133])
-        by smtp.gmail.com with ESMTPSA id lr9-20020a0562145bc900b006904ca1971esm4405485qvb.42.2024.03.03.22.17.37
+        by smtp.gmail.com with ESMTPSA id op36-20020a05620a536400b00787930320b6sm4060260qkn.70.2024.03.03.22.22.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Mar 2024 22:17:41 -0800 (PST)
-Message-ID: <6329dd4c-2093-40c3-8eb8-701d8e8b2ecd@redhat.com>
-Date: Mon, 4 Mar 2024 07:17:35 +0100
+        Sun, 03 Mar 2024 22:22:23 -0800 (PST)
+Message-ID: <e967e7a6-eb20-4b2b-ab7a-fc5052a3eb52@redhat.com>
+Date: Mon, 4 Mar 2024 07:22:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 5/7] arch-run: Add a "continuous" migration
- option for tests
+Subject: Re: [kvm-unit-tests PATCH 7/7] common: add memory dirtying vs
+ migration test
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240226093832.1468383-1-npiggin@gmail.com>
- <20240226093832.1468383-6-npiggin@gmail.com>
+ <20240226093832.1468383-8-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -128,7 +128,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240226093832.1468383-6-npiggin@gmail.com>
+In-Reply-To: <20240226093832.1468383-8-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -150,158 +150,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 26/02/2024 10.38, Nicholas Piggin wrote:
-> The cooperative migration protocol is very good to control precise
-> pre and post conditions for a migration event. However in some cases
-> its intrusiveness to the test program, can mask problems and make
-> analysis more difficult.
-> 
-> For example to stress test migration vs concurrent complicated
-> memory access, including TLB refill, ram dirtying, etc., then the
-> tight spin at getchar() and resumption of the workload after
-> migration is unhelpful.
-> 
-> This adds a continuous migration mode that directs the harness to
-> perform migrations continually. This is added to the migration
-> selftests, which also sees cooperative migration iterations reduced
-> to avoid increasing test time too much.
-> 
+> This test stores to a bunch of pages and verifies previous stores,
+> while being continually migrated. This can fail due to a QEMU TCG
+> physical memory dirty bitmap bug.
+
+Good idea, but could we then please drop "continuous" test from 
+selftest-migration.c again? ... having two common tests to exercise the 
+continuous migration that take quite a bunch of seconds to finish sounds 
+like a waste of time in the long run to me.
+
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   common/selftest-migration.c | 16 +++++++++--
->   lib/migrate.c               | 18 ++++++++++++
->   lib/migrate.h               |  3 ++
->   scripts/arch-run.bash       | 55 ++++++++++++++++++++++++++++++++-----
->   4 files changed, 82 insertions(+), 10 deletions(-)
+>   common/memory-verify.c  | 48 +++++++++++++++++++++++++++++++++++++++++
+>   powerpc/Makefile.common |  1 +
+>   powerpc/memory-verify.c |  1 +
+>   powerpc/unittests.cfg   |  7 ++++++
+>   s390x/Makefile          |  1 +
+>   s390x/memory-verify.c   |  1 +
+>   s390x/unittests.cfg     |  6 ++++++
+>   7 files changed, 65 insertions(+)
+>   create mode 100644 common/memory-verify.c
+>   create mode 120000 powerpc/memory-verify.c
+>   create mode 120000 s390x/memory-verify.c
 > 
-> diff --git a/common/selftest-migration.c b/common/selftest-migration.c
-> index 0afd8581c..9a9b61835 100644
-> --- a/common/selftest-migration.c
-> +++ b/common/selftest-migration.c
-> @@ -9,12 +9,13 @@
->    */
->   #include <libcflat.h>
->   #include <migrate.h>
+> diff --git a/common/memory-verify.c b/common/memory-verify.c
+> new file mode 100644
+> index 000000000..7c4ec087b
+> --- /dev/null
+> +++ b/common/memory-verify.c
+> @@ -0,0 +1,48 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Simple memory verification test, used to exercise dirty memory migration.
+> + *
+> + */
+> +#include <libcflat.h>
+> +#include <migrate.h>
+> +#include <alloc.h>
+> +#include <asm/page.h>
 > +#include <asm/time.h>
->   
-> -#define NR_MIGRATIONS 30
-> +#define NR_MIGRATIONS 15
->   
->   int main(int argc, char **argv)
->   {
-> -	report_prefix_push("migration");
-> +	report_prefix_push("migration harness");
->   
->   	if (argc > 1 && !strcmp(argv[1], "skip")) {
->   		migrate_skip();
-> @@ -24,7 +25,16 @@ int main(int argc, char **argv)
->   
->   		for (i = 0; i < NR_MIGRATIONS; i++)
->   			migrate_quiet();
-> -		report(true, "simple harness stress");
-> +		report(true, "cooperative migration");
 > +
-> +		migrate_begin_continuous();
-> +		mdelay(2000);
-> +		migrate_end_continuous();
-> +		mdelay(1000);
-> +		migrate_begin_continuous();
-> +		mdelay(2000);
-> +		migrate_end_continuous();
-> +		report(true, "continuous migration");
->   	}
->   
->   	report_prefix_pop();
-> diff --git a/lib/migrate.c b/lib/migrate.c
-> index 1d22196b7..770f76d5c 100644
-> --- a/lib/migrate.c
-> +++ b/lib/migrate.c
-> @@ -60,3 +60,21 @@ void migrate_skip(void)
->   	puts("Skipped VM migration (quiet)\n");
->   	(void)getchar();
->   }
+> +#define NR_PAGES 32
 > +
-> +void migrate_begin_continuous(void)
+> +int main(int argc, char **argv)
 > +{
-> +	puts("Begin continuous migration\n");
-> +	(void)getchar();
-> +}
+> +	void *mem = malloc(NR_PAGES*PAGE_SIZE);
+> +	bool success = true;
+> +	uint64_t ms;
+> +	long i;
 > +
-> +void migrate_end_continuous(void)
-> +{
-> +	/*
-> +	 * Migration can split this output between source and dest QEMU
-> +	 * output files, print twice and match once to always cope with
-> +	 * a split.
-> +	 */
-> +	puts("End continuous migration\n");
-> +	puts("End continuous migration (quiet)\n");
-> +	(void)getchar();
-> +}
-> diff --git a/lib/migrate.h b/lib/migrate.h
-> index db6e0c501..35b6703a2 100644
-> --- a/lib/migrate.h
-> +++ b/lib/migrate.h
-> @@ -11,3 +11,6 @@ void migrate_quiet(void);
->   void migrate_once(void);
->   
->   void migrate_skip(void);
+> +	report_prefix_push("memory");
 > +
-> +void migrate_begin_continuous(void);
-> +void migrate_end_continuous(void);
-> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-> index d0f6f098f..5c7e72036 100644
-> --- a/scripts/arch-run.bash
-> +++ b/scripts/arch-run.bash
-> @@ -125,15 +125,17 @@ qmp_events ()
->   filter_quiet_msgs ()
->   {
->   	grep -v "Now migrate the VM (quiet)" |
-> +	grep -v "Begin continuous migration (quiet)" |
-> +	grep -v "End continuous migration (quiet)" |
->   	grep -v "Skipped VM migration (quiet)"
->   }
->   
->   seen_migrate_msg ()
->   {
->   	if [ $skip_migration -eq 1 ]; then
-> -		grep -q -e "Now migrate the VM" < $1
-> +	        grep -q -e "Now migrate the VM" -e "Begin continuous migration" < $1
->   	else
-> -		grep -q -e "Now migrate the VM" -e "Skipped VM migration" < $1
-> +	        grep -q -e "Now migrate the VM" -e "Begin continuous migration" -e "Skipped VM migration" < $1
->   	fi
->   }
->   
-> @@ -161,6 +163,7 @@ run_migration ()
->   	src_qmpout=/dev/null
->   	dst_qmpout=/dev/null
->   	skip_migration=0
-> +	continuous_migration=0
->   
->   	mkfifo ${src_outfifo}
->   	mkfifo ${dst_outfifo}
-> @@ -186,9 +189,12 @@ run_migration ()
->   	do_migration || return $?
->   
->   	while ps -p ${live_pid} > /dev/null ; do
-> -		# Wait for test exit or further migration messages.
-> -		if ! seen_migrate_msg ${src_out} ;  then
-> +		if [[ ${continuous_migration} -eq 1 ]] ; then
+> +	memset(mem, 0, NR_PAGES*PAGE_SIZE);
+> +
+> +	migrate_begin_continuous();
+> +	ms = get_clock_ms();
+> +	i = 0;
+> +	do {
+> +		int j;
+> +
+> +		for (j = 0; j < NR_PAGES*PAGE_SIZE; j += PAGE_SIZE) {
+> +			if (*(volatile long *)(mem + j) != i) {
+> +				success = false;
+> +				goto out;
+> +			}
+> +			*(volatile long *)(mem + j) = i + 1;
+> +		}
+> +		i++;
+> +	} while (get_clock_ms() - ms < 5000);
 
-Here you're using "[[" for testing ...
+Maybe add a parameter so that the user can use different values for the 
+runtime than always doing 5 seconds?
 
-> +			do_migration || return $?
-> +		elif ! seen_migrate_msg ${src_out} ;  then
->   			sleep 0.1
-> +		elif grep -q "Begin continuous migration" < ${src_out} ; then
-> +			do_migration || return $?
->   		elif grep -q "Now migrate the VM" < ${src_out} ; then
->   			do_migration || return $?
->   		elif [ $skip_migration -eq 0 ] && grep -q "Skipped VM migration" < ${src_out} ; then
+  Thomas
 
-... while the other code seems to use "[" for testing values. Can we try to 
-stick to one style, please (unless it's really required to use "[[" somewhere)?
-
-  Thanks,
-   Thomas
+> +out:
+> +	migrate_end_continuous();
+> +
+> +	report(success, "memory verification stress test");
+> +
+> +	report_prefix_pop();
+> +
+> +	return report_summary();
+> +}
 
