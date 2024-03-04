@@ -2,50 +2,135 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F9C8707B6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 17:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3277E8708F3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Mar 2024 19:01:51 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=FRPx+Cpx;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TpPtl02TMz3vY4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 03:54:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TpRND6Lqqz3vWy
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 05:01:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=FRPx+Cpx;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261d::700; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:261d::700])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpPtF10SYz2yk5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 03:54:11 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhBZn-00036t-El; Mon, 04 Mar 2024 17:54:07 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhBZm-004OHN-TI; Mon, 04 Mar 2024 17:54:06 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhBZm-00Gtu6-2e;
-	Mon, 04 Mar 2024 17:54:06 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Li Yang <leoyang.li@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2] usb: gadget: fsl-udc: Replace custom log wrappers by dev_{err,warn,dbg,vdbg}
-Date: Mon,  4 Mar 2024 17:54:02 +0100
-Message-ID: <20240304165404.807787-2-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpRMQ3WbQz3cCG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 05:01:05 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LEvtP9/66zp+vxc0YI77IottVO/NRi6vcTCNQjm1jhGb66jirCcfwxxW1uEd5LoPkWUy/BuZcVOPxDTwwVHPAQv9YjZqzEGOr+HIwTRv5bBA76O8H6RNDcl/4RW42djOOcJlNUEFSVAlJwnYOAUn5Mhpi3YZSE3i5g3OlTInS4Z8kXrjfnYfSzOe2svxUFpJAvb//xQpGZhttcRH/NMgI6x80x4Bkkql2gkfywNS5IZpUORO7N6UqAFJ2iD5xiPL6+XUhksYkDTWLLKGzDzFz8VOh9LXLTxVl3J6WByn4W8BmjMYUsNiWQqF6CLov7YdjNFOtdhw4gjZxqgkNgFhbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ChzmTioaoJ3Tnoz2NuP640C18LPE4jO3THzzaW9t1EE=;
+ b=drpm+3FLJgo8DZa3OaBXQMwQkxwoiIf5eupsuEi16RG00Ohik/XGf6QERWijtMQMiknarCu1V6/wzKTC9tdn5JO7toDzvc95IzeejdJE8JT58wq1NDL7WIzjacdZNEUHXVugsRvaXqQfBj5PtSXk8R+NB+aOK3+2LiYrLoAkhRfKWsdzqVgc2JnIwePbhe93Jj8ZwDIZ1nk2QSbQAp1OeWURhCuI0yQgvbeHTcD5wLoY/sn+nTt9fs7tvN0/0w8PP8Tox9k8i1lR9aCgUM2JvSvi9dT3O77fAbitcERg6vZXfv0aWsSRIeiwVsVH95JS7rNVPFEb0rWqr56PzTdl+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ChzmTioaoJ3Tnoz2NuP640C18LPE4jO3THzzaW9t1EE=;
+ b=FRPx+Cpx5lqpY3Y27KMEQ7Y3TLTCXCO1bwwRk44rknXX05g8w9qmHQlyBLorHCfvGvj9+eYH+czWdv4HeL+RUbzW3YQmzPCKtEs3Gqb+wvrUFwmbd/B2dmDU7tg0/2WaCv7IgOwaRhb6xFVHQyA36Hhcixbf/U5kBhnrYNJ0ky1Yh3jPficM9ddtI7JHTBDnVqPvjQla1XBtcn2nYr49T/29Mw2aOZ8yJeEr0YWusz8ftBJrUUnvDzTJuWZBsLWjYa8dV7OUMzJLUVPi3wz8NGRqwhWvj7e9tlxMbvR/kzIMrKtqTocbbSLpE0tK9Aotz5DVptuRKP3vA96e6qpgLw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR1P264MB2045.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:193::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Mon, 4 Mar
+ 2024 18:00:44 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7339.035; Mon, 4 Mar 2024
+ 18:00:44 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Kees Cook <keescook@chromium.org>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Thread-Topic: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Thread-Index:  AQHaaOd3T09DEeJabki6TgRFYbqm47EdxC4AgAC5pgCAAAKNAIAAJBAAgAEcAgCAAELkgIADoSgAgAAR4gCABDOQgA==
+Date: Mon, 4 Mar 2024 18:00:43 +0000
+Message-ID: <ec3e377a-c0a0-4dd3-9cb9-96517e54d17e@csgroup.eu>
+References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
+ <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
+ <94a2b919-e03b-4ade-b13e-7774849dc02b@csgroup.eu>
+ <202402271004.7145FDB53F@keescook>
+ <8265f804-4540-4858-adc3-a09c11a677eb@csgroup.eu>
+ <91384b505cb78b9d9b71ad58e037c1ed8dfb10d1.camel@intel.com>
+ <def71a27-2d5f-40da-867e-979648afc4cf@csgroup.eu>
+ <202402280912.33AEE7A9CF@keescook>
+ <ac04c9aa134807bbc00e6086e7a14a58a682f221.camel@intel.com>
+ <202403011747.9ECFAD060B@keescook>
+In-Reply-To: <202403011747.9ECFAD060B@keescook>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB2045:EE_
+x-ms-office365-filtering-correlation-id: 60952a1e-1f8f-435b-a1c4-08dc3c750315
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  QiHkvHWAmIEQ+lMV9izbpgV+qj/gGZM8GlRXJdt3PvAO4AyDKWMdepKIR29ScOSvKnBkBri+YAUrbVg4JwN4cV6L6wtg+GA6iW2315FUpxq3BmaVOdsWGJRW3mX9pUxtAjHxkXWP5ja7y91SHciALjhFtJ6iLiDrQbbksxn1QeoaCBLklhTERMcVMsf3oLoBbja+hDYslxP98BHHdFudjr2k4528j1vzgKGxt9klsOuslft+g4E+WWKbM9GJCp9dwTn9UlI9vn1R8LMqvcQ9WaG4bH7+a+W10lh4Vdg0RmD8PVIFJkakpNzRl43/Zp+2UdDhiq3Czwb+P8Q6M/5X5lGydrJmOZRtCilxUbSxv3PTbWBqY6q5uUhg+EJ7vQQDaCoasQ/IXwM4qOG5EdY2sKh3s2W9oVQqJ3W2Dc9gfczOnyBC8UDx6bm9bSXcHVjXPAB43HmCMsLJhLc8x51+/eaLN2KgbYSnKnElm77WqNDY92mBfPtv5bc+Nq5/8rDLn/5+OPXt7lwpEALccXdtIILmKdcP2VPtID8ahEfkyFlc3L1SgKIqYa/YYyXREjRi9ffJfapyrj5p6oQ/Kvf4czVedRTITtO+6fq/mrmOi9sGs9b4pDJSgrZ5ssjBztz3q9W+K9ydqS3FeiS21Hcng0frU02s0Yavs4KVaECFpR++TlHqHEaBRWbFioDlr7ZqZaBuW1hqZYfpbVxENtF8YbxsnS0ngbysTLH57/GdfVI=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?akU3bXhsRVRDSG9ZWUMwQnVoLzRNYmdhQ3o4K0d3emVURzY5RDdSMnB1ZUh1?=
+ =?utf-8?B?dFl2K3l5TTk0d1pONHdyTU9NOVY4L1ZuTUg4WTB2WWl4c2Jmcm5UTmlCeitX?=
+ =?utf-8?B?Skk0bjBidXVuTGkzakREL0R2Rnh2bGhpK1l2NExHWXRIMUdadkJXRFByWGRm?=
+ =?utf-8?B?UDFkaWtYZVhkMzI0VC9md3NYYmcra1Y3YzhLK2MxMlZYL0IzdEJVSmdHaGxp?=
+ =?utf-8?B?bnJiUXFwRVFIWFpuaGFkek5jN2FWdGVybms2WnZhdWZ5c2hQMXdsNHA5MDNE?=
+ =?utf-8?B?WC9NbFNTdkh4MTBiOGhRRUovZFhBbVBDOGlSZGVuUzFkeGVkSEV5UWpQa0tz?=
+ =?utf-8?B?Rkc1MHpJNHJZS3VGQ0NDV0ZoeklqeEhHSXpWRXdaUFNYaEptMSt3VkdueDE0?=
+ =?utf-8?B?d3ZmMExNN2h3ajRKNjhCQ1phTFY5RjhQa3h0L1MyR1ZLaklSKzhjcTNadk9O?=
+ =?utf-8?B?RU5aSTlYMTU1dEhkdUFaUTl3dWpya3h1NC9RNTNGZDVpREkxSWU5anBrS3o2?=
+ =?utf-8?B?aTR0bFQwbWh1dm5LWndMZ2NUNmtYSDFHNVBjU1JnaVA4Q0wxQms1bkg0ekNt?=
+ =?utf-8?B?QkZvZW1rVUZwTkpta2MwTlBEekRsZWVkbDhrLytNK3NRanhNUkw0NmlnbWNR?=
+ =?utf-8?B?QWlRRUoxZTVhUDMvVEE1aXQvckdTdjFGMlRTZmM1QlRxWEJkcFJNMkZhZGZx?=
+ =?utf-8?B?R3dPY2czalB2SllnVG5nUWpRNzlWOFNJUzJDQXA0eG56TXUvZHo4ZnRTcWQ1?=
+ =?utf-8?B?c1pUZEllNDZyclJhZ05QenZTVWtYcmEycHJaTnAvbitsR201M2tvY1VZdCtU?=
+ =?utf-8?B?MkNYV3FXUk56NGErVHBaTzB2U0lJT2FIQUUyTm5QZCsyYWhaMUZld3pDRk1k?=
+ =?utf-8?B?UThYUkVVckxCVWtWeGtwZmo3VGJJbWpzODRWTkN5T3BjeUxIUTFhaklBcmd6?=
+ =?utf-8?B?a204d21saVNyS3FxNFVWeUJZcTMyS3VPZGZ2TEg0dVoyV09laGxsRHRmU01F?=
+ =?utf-8?B?Ky85K1FUZUJVRFpsZkZ4VmRhNVBQQ1dIM21IWnlhYk9Fa3B6aXU2SWtFQTI1?=
+ =?utf-8?B?TC9DWEFtNEdJdGZZM0lFbEw5b2Q3N0hKcmdWakJoK2E2aVFZbkRRVnIzcGoy?=
+ =?utf-8?B?N1UrRzVpb0lEOU9pT3UvUmhiTWtsNksrQnYraHE3NnQ1U0RtQWRjMzdxTCt6?=
+ =?utf-8?B?K0tFREF6Q1Zia0h1ZEJJeEJBUXVmT2gwQTl2ZjhxM1FlMnhSRStUZS9qNGpQ?=
+ =?utf-8?B?TzQwK0lEcEdHQTdTakNLRnVCL3BCMndNL2EyUjE2YmdPdjZOaEk3TU9VeHA3?=
+ =?utf-8?B?Q0YyMENjN3YrODZYM3JiS0k5SDN3ajRpOVk5NlVkMHh3a2ZXQkhuc1dHTnpR?=
+ =?utf-8?B?blBJYkpTMlRaTThOU0NXNi9TSkY0UEZuelE3Z2phUWJsMTNNaVpIOTdxTEZR?=
+ =?utf-8?B?QXV3TmRyOGFXWkdRMHg4RlVVUnJNSXZPeXJiNjRFWlB3UTArQjE4U3BhTnNB?=
+ =?utf-8?B?K0QzK3IrZHRVay9SeUxid3U3NzV0ODlDNmMxaVYwRkdqWnpCVmJsc0FURCtN?=
+ =?utf-8?B?QnY0RUc1VGZKTzdpSHArTDBzeDBncEttZGcxU2M1UkdlaFU1VW5uc3FMMHpx?=
+ =?utf-8?B?RGFlYXNEcjRRZGhscTZSUVZrNnNsbTN0UVlpMDVSSi84OGNqelRnMVkwbnM3?=
+ =?utf-8?B?b04vS2dPeGdjejEwZWdBdVNjUlh1MUVSSlV6cFlTcDBETk15QnRPRVpQMXlz?=
+ =?utf-8?B?NU1pVFdqQjFsZzN0ekRsOVQ5ZnJIQ1ZZZFRmQi9WTndoUEd5b2lFWm5iYyt6?=
+ =?utf-8?B?T1AvVElSb0ZvOFEvbnErUXZ6ckw0VGpKZ2xGYWZyTkZhWlBraGUzZThpRVhH?=
+ =?utf-8?B?Z0JtNHY1eTJzbk1MZW4xVzd3NUsyMG5TN2NLM0ZhTTdMRkQwODkxTEo5ZVNQ?=
+ =?utf-8?B?Rk1XSXRUUUIva1UwRkdVaDk4eXZFYWFPczBZTC9zOTNjUW90Ry9mMnhSWFkr?=
+ =?utf-8?B?ODF5OWo2REg2V0cybzRVeGM3VUhlWm01azZZZ0c1dy9WZ1lnWXZwOU1CNDBR?=
+ =?utf-8?B?N2Voaml4UjYxU3R2bzVIM25ORjJuTUJnTmRVOWJiQVY1RU1BN2lhRkJiblpD?=
+ =?utf-8?Q?SkzmFsR+rdtu9P6kmAADfZ0AN?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <50BF0531C663AC4B9F8EB29F53B588E1@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=16721; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=UCzgH7JKXeUrPNMENW+BYY29W6UH+3pozfRKyhppzhg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl5fys9gsP2lw9cMKcaK4zWo2DYqYhB9Q1yLtDa hmUXd3DNJGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZeX8rAAKCRCPgPtYfRL+ TgUKCACRfaQh8myy37Xi/rZq59RdLiJ0eApj1qS1S6iON5cGmJ3no/ZwCYrNuZ33JLBFeXJ/icX UetzjPC7Ab2ZU+AZ1025gloIKDoS4e0roMZv290kD2XIFNqU5aOXjKj7Fw4v9iAy/ILQimG0gHF 8inqX16hV+o6MBgr0QpDGjRuNDbBCs3uwoUEqQ6aYphtersWqK8GrVS/4abdPxwC7bkeU5HUM2Z 9iPrK0MH9jNyvQd3l/e6Q7AVx7oUwed3H1kxt4xz3fT14/nnzAcCss1qn2PAom9+5fU7AlyKlnl /nctjk6EsEu0XjI7KWwirk4Wczn50v3MN5dKkfLalL3Dg785
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60952a1e-1f8f-435b-a1c4-08dc3c750315
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2024 18:00:43.9787
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EmRlyleQyqcvqJEL3brT1SwWFgPreElok2udAY42dILNeJuxguefLIiy0/vYkqWzyeu8IHoOwRxjhLJQpdhYq7S3ghIuHp/6Nc0iVP9wBaQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB2045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,486 +142,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de
+Cc: "luto@kernel.org" <luto@kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "peterz@infradead.org" <peterz@infradead.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "broonie@kernel.org" <broonie@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "debug@rivosinc.com" <debug
+ @rivosinc.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The custom log wrappers ERR, WARNING, DBG and VDBG don't add anything
-useful that cannot easily be done with dev_err() and friends. Replace
-the custom stuff by the well known functions from printk.h.
-
-Also drop some dead code in a #if 0 block.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Changes since (implicit) v1:
-
- - Use dev_* instead of pr_*
- - Adapt commit log accordingly.
-
- drivers/usb/gadget/udc/fsl_udc_core.c | 115 ++++++++++++++------------
- drivers/usb/gadget/udc/fsl_usb2_udc.h |  47 -----------
- 2 files changed, 62 insertions(+), 100 deletions(-)
-
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
-index e8042c158f6d..840d024fb75b 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -13,7 +13,7 @@
-  * code from Dave Liu and Shlomi Gridish.
-  */
- 
--#undef VERBOSE
-+#define pr_fmt(x) "udc: " x
- 
- #include <linux/module.h>
- #include <linux/kernel.h>
-@@ -183,9 +183,9 @@ __acquires(ep->udc->lock)
- 	usb_gadget_unmap_request(&ep->udc->gadget, &req->req, ep_is_in(ep));
- 
- 	if (status && (status != -ESHUTDOWN))
--		VDBG("complete %s req %p stat %d len %u/%u",
--			ep->ep.name, &req->req, status,
--			req->req.actual, req->req.length);
-+		dev_vdbg(&udc->gadget.dev, "complete %s req %p stat %d len %u/%u\n",
-+			 ep->ep.name, &req->req, status,
-+			 req->req.actual, req->req.length);
- 
- 	ep->stopped = 1;
- 
-@@ -285,7 +285,7 @@ static int dr_controller_setup(struct fsl_udc *udc)
- 	timeout = jiffies + FSL_UDC_RESET_TIMEOUT;
- 	while (fsl_readl(&dr_regs->usbcmd) & USB_CMD_CTRL_RESET) {
- 		if (time_after(jiffies, timeout)) {
--			ERR("udc reset timeout!\n");
-+			dev_err(&udc->gadget.dev, "udc reset timeout!\n");
- 			return -ETIMEDOUT;
- 		}
- 		cpu_relax();
-@@ -308,9 +308,10 @@ static int dr_controller_setup(struct fsl_udc *udc)
- 	tmp &= USB_EP_LIST_ADDRESS_MASK;
- 	fsl_writel(tmp, &dr_regs->endpointlistaddr);
- 
--	VDBG("vir[qh_base] is %p phy[qh_base] is 0x%8x reg is 0x%8x",
--		udc->ep_qh, (int)tmp,
--		fsl_readl(&dr_regs->endpointlistaddr));
-+	dev_vdbg(&udc->gadget.dev,
-+		 "vir[qh_base] is %p phy[qh_base] is 0x%8x reg is 0x%8x\n",
-+		 udc->ep_qh, (int)tmp,
-+		 fsl_readl(&dr_regs->endpointlistaddr));
- 
- 	max_no_of_ep = (0x0000001F & fsl_readl(&dr_regs->dccparams));
- 	for (ep_num = 1; ep_num < max_no_of_ep; ep_num++) {
-@@ -498,7 +499,7 @@ static void struct_ep_qh_setup(struct fsl_udc *udc, unsigned char ep_num,
- 		tmp = max_pkt_len << EP_QUEUE_HEAD_MAX_PKT_LEN_POS;
- 		break;
- 	default:
--		VDBG("error ep type is %d", ep_type);
-+		dev_vdbg(&udc->gadget.dev, "error ep type is %d\n", ep_type);
- 		return;
- 	}
- 	if (zlt)
-@@ -611,10 +612,10 @@ static int fsl_ep_enable(struct usb_ep *_ep,
- 	spin_unlock_irqrestore(&udc->lock, flags);
- 	retval = 0;
- 
--	VDBG("enabled %s (ep%d%s) maxpacket %d",ep->ep.name,
--			ep->ep.desc->bEndpointAddress & 0x0f,
--			(desc->bEndpointAddress & USB_DIR_IN)
--				? "in" : "out", max);
-+	dev_vdbg(&udc->gadget.dev, "enabled %s (ep%d%s) maxpacket %d\n",
-+		 ep->ep.name, ep->ep.desc->bEndpointAddress & 0x0f,
-+		 (desc->bEndpointAddress & USB_DIR_IN) ? "in" : "out",
-+		 max);
- en_done:
- 	return retval;
- }
-@@ -633,7 +634,10 @@ static int fsl_ep_disable(struct usb_ep *_ep)
- 
- 	ep = container_of(_ep, struct fsl_ep, ep);
- 	if (!_ep || !ep->ep.desc) {
--		VDBG("%s not enabled", _ep ? ep->ep.name : NULL);
-+		/*
-+		 * dev_vdbg(&udc->gadget.dev, "%s not enabled\n",
-+		 *	 _ep ? ep->ep.name : NULL);
-+		 */
- 		return -EINVAL;
- 	}
- 
-@@ -659,7 +663,7 @@ static int fsl_ep_disable(struct usb_ep *_ep)
- 	ep->stopped = 1;
- 	spin_unlock_irqrestore(&udc->lock, flags);
- 
--	VDBG("disabled %s OK", _ep->name);
-+	dev_vdbg(&udc->gadget.dev, "disabled %s OK\n", _ep->name);
- 	return 0;
- }
- 
-@@ -719,8 +723,8 @@ static void fsl_queue_td(struct fsl_ep *ep, struct fsl_req *req)
- {
- 	u32 temp, bitmask, tmp_stat;
- 
--	/* VDBG("QH addr Register 0x%8x", dr_regs->endpointlistaddr);
--	VDBG("ep_qh[%d] addr is 0x%8x", i, (u32)&(ep->udc->ep_qh[i])); */
-+	/* dev_vdbg(&udc->gadget.dev, "QH addr Register 0x%8x\n", dr_regs->endpointlistaddr);
-+	dev_vdbg(&udc->gadget.dev, "ep_qh[%d] addr is 0x%8x\n", i, (u32)&(ep->udc->ep_qh[i])); */
- 
- 	bitmask = ep_is_in(ep)
- 		? (1 << (ep_index(ep) + 16))
-@@ -808,7 +812,7 @@ static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req, unsigned *length,
- 		*is_last = 0;
- 
- 	if ((*is_last) == 0)
--		VDBG("multi-dtd request!");
-+		dev_vdbg(&udc_controller->gadget.dev, "multi-dtd request!\n");
- 	/* Fill in the transfer size; set active bit */
- 	swap_temp = ((*length << DTD_LENGTH_BIT_POS) | DTD_STATUS_ACTIVE);
- 
-@@ -820,7 +824,7 @@ static struct ep_td_struct *fsl_build_dtd(struct fsl_req *req, unsigned *length,
- 
- 	mb();
- 
--	VDBG("length = %d address= 0x%x", *length, (int)*dma);
-+	dev_vdbg(&udc_controller->gadget.dev, "length = %d address= 0x%x\n", *length, (int)*dma);
- 
- 	return dtd;
- }
-@@ -871,11 +875,11 @@ fsl_ep_queue(struct usb_ep *_ep, struct usb_request *_req, gfp_t gfp_flags)
- 	/* catch various bogus parameters */
- 	if (!_req || !req->req.complete || !req->req.buf
- 			|| !list_empty(&req->queue)) {
--		VDBG("%s, bad params", __func__);
-+		dev_vdbg(&udc->gadget.dev, "%s, bad params\n", __func__);
- 		return -EINVAL;
- 	}
- 	if (unlikely(!_ep || !ep->ep.desc)) {
--		VDBG("%s, bad ep", __func__);
-+		dev_vdbg(&udc->gadget.dev, "%s, bad ep\n", __func__);
- 		return -EINVAL;
- 	}
- 	if (usb_endpoint_xfer_isoc(ep->ep.desc)) {
-@@ -1036,8 +1040,8 @@ static int fsl_ep_set_halt(struct usb_ep *_ep, int value)
- 		udc->ep0_dir = 0;
- 	}
- out:
--	VDBG(" %s %s halt stat %d", ep->ep.name,
--			value ?  "set" : "clear", status);
-+	dev_vdbg(&udc->gadget.dev, "%s %s halt stat %d\n", ep->ep.name,
-+		 value ?  "set" : "clear", status);
- 
- 	return status;
- }
-@@ -1105,7 +1109,8 @@ static void fsl_ep_fifo_flush(struct usb_ep *_ep)
- 		/* Wait until flush complete */
- 		while (fsl_readl(&dr_regs->endptflush)) {
- 			if (time_after(jiffies, timeout)) {
--				ERR("ep flush timeout\n");
-+				dev_err(&udc_controller->gadget.dev,
-+					"ep flush timeout\n");
- 				return;
- 			}
- 			cpu_relax();
-@@ -1177,7 +1182,7 @@ static int fsl_vbus_session(struct usb_gadget *gadget, int is_active)
- 
- 	udc = container_of(gadget, struct fsl_udc, gadget);
- 	spin_lock_irqsave(&udc->lock, flags);
--	VDBG("VBUS %s", is_active ? "on" : "off");
-+	dev_vdbg(&gadget->dev, "VBUS %s\n", is_active ? "on" : "off");
- 	udc->vbus_active = (is_active != 0);
- 	if (can_pullup(udc))
- 		fsl_writel((fsl_readl(&dr_regs->usbcmd) | USB_CMD_RUN_STOP),
-@@ -1543,7 +1548,7 @@ static void ep0_req_complete(struct fsl_udc *udc, struct fsl_ep *ep0,
- 		udc->ep0_state = WAIT_FOR_SETUP;
- 		break;
- 	case WAIT_FOR_SETUP:
--		ERR("Unexpected ep0 packets\n");
-+		dev_err(&udc->gadget.dev, "Unexpected ep0 packets\n");
- 		break;
- 	default:
- 		ep0stall(udc);
-@@ -1612,7 +1617,7 @@ static int process_ep_req(struct fsl_udc *udc, int pipe,
- 		errors = hc32_to_cpu(curr_td->size_ioc_sts);
- 		if (errors & DTD_ERROR_MASK) {
- 			if (errors & DTD_STATUS_HALTED) {
--				ERR("dTD error %08x QH=%d\n", errors, pipe);
-+				dev_err(&udc->gadget.dev, "dTD error %08x QH=%d\n", errors, pipe);
- 				/* Clear the errors and Halt condition */
- 				tmp = hc32_to_cpu(curr_qh->size_ioc_int_sts);
- 				tmp &= ~errors;
-@@ -1623,32 +1628,35 @@ static int process_ep_req(struct fsl_udc *udc, int pipe,
- 				break;
- 			}
- 			if (errors & DTD_STATUS_DATA_BUFF_ERR) {
--				VDBG("Transfer overflow");
-+				dev_vdbg(&udc->gadget.dev, "Transfer overflow\n");
- 				status = -EPROTO;
- 				break;
- 			} else if (errors & DTD_STATUS_TRANSACTION_ERR) {
--				VDBG("ISO error");
-+				dev_vdbg(&udc->gadget.dev, "ISO error\n");
- 				status = -EILSEQ;
- 				break;
- 			} else
--				ERR("Unknown error has occurred (0x%x)!\n",
-+				dev_err(&udc->gadget.dev,
-+					"Unknown error has occurred (0x%x)!\n",
- 					errors);
- 
- 		} else if (hc32_to_cpu(curr_td->size_ioc_sts)
- 				& DTD_STATUS_ACTIVE) {
--			VDBG("Request not complete");
-+			dev_vdbg(&udc->gadget.dev, "Request not complete\n");
- 			status = REQ_UNCOMPLETE;
- 			return status;
- 		} else if (remaining_length) {
- 			if (direction) {
--				VDBG("Transmit dTD remaining length not zero");
-+				dev_vdbg(&udc->gadget.dev,
-+					 "Transmit dTD remaining length not zero\n");
- 				status = -EPROTO;
- 				break;
- 			} else {
- 				break;
- 			}
- 		} else {
--			VDBG("dTD transmitted successful");
-+			dev_vdbg(&udc->gadget.dev,
-+				 "dTD transmitted successful\n");
- 		}
- 
- 		if (j != curr_req->dtd_count - 1)
-@@ -1691,7 +1699,7 @@ static void dtd_complete_irq(struct fsl_udc *udc)
- 
- 		/* If the ep is configured */
- 		if (!curr_ep->ep.name) {
--			WARNING("Invalid EP?");
-+			dev_warn(&udc->gadget.dev, "Invalid EP?\n");
- 			continue;
- 		}
- 
-@@ -1700,8 +1708,9 @@ static void dtd_complete_irq(struct fsl_udc *udc)
- 				queue) {
- 			status = process_ep_req(udc, i, curr_req);
- 
--			VDBG("status of process_ep_req= %d, ep = %d",
--					status, ep_num);
-+			dev_vdbg(&udc->gadget.dev,
-+				 "status of process_ep_req= %d, ep = %d\n",
-+				 status, ep_num);
- 			if (status == REQ_UNCOMPLETE)
- 				break;
- 			/* write back status to req */
-@@ -1820,7 +1829,7 @@ static void reset_irq(struct fsl_udc *udc)
- 	while (fsl_readl(&dr_regs->endpointprime)) {
- 		/* Wait until all endptprime bits cleared */
- 		if (time_after(jiffies, timeout)) {
--			ERR("Timeout for reset\n");
-+			dev_err(&udc->gadget.dev, "Timeout for reset\n");
- 			break;
- 		}
- 		cpu_relax();
-@@ -1830,7 +1839,7 @@ static void reset_irq(struct fsl_udc *udc)
- 	fsl_writel(0xffffffff, &dr_regs->endptflush);
- 
- 	if (fsl_readl(&dr_regs->portsc1) & PORTSCX_PORT_RESET) {
--		VDBG("Bus reset");
-+		dev_vdbg(&udc->gadget.dev, "Bus reset\n");
- 		/* Bus is reseting */
- 		udc->bus_reset = 1;
- 		/* Reset all the queues, include XD, dTD, EP queue
-@@ -1838,7 +1847,7 @@ static void reset_irq(struct fsl_udc *udc)
- 		reset_queues(udc, true);
- 		udc->usb_state = USB_STATE_DEFAULT;
- 	} else {
--		VDBG("Controller reset");
-+		dev_vdbg(&udc->gadget.dev, "Controller reset\n");
- 		/* initialize usb hw reg except for regs for EP, not
- 		 * touch usbintr reg */
- 		dr_controller_setup(udc);
-@@ -1872,7 +1881,7 @@ static irqreturn_t fsl_udc_irq(int irq, void *_udc)
- 	/* Clear notification bits */
- 	fsl_writel(irq_src, &dr_regs->usbsts);
- 
--	/* VDBG("irq_src [0x%8x]", irq_src); */
-+	/* dev_vdbg(&udc->gadget.dev, "irq_src [0x%8x]", irq_src); */
- 
- 	/* Need to resume? */
- 	if (udc->usb_state == USB_STATE_SUSPENDED)
-@@ -1881,7 +1890,7 @@ static irqreturn_t fsl_udc_irq(int irq, void *_udc)
- 
- 	/* USB Interrupt */
- 	if (irq_src & USB_STS_INT) {
--		VDBG("Packet int");
-+		dev_vdbg(&udc->gadget.dev, "Packet int\n");
- 		/* Setup package, we only support ep0 as control ep */
- 		if (fsl_readl(&dr_regs->endptsetupstat) & EP_SETUP_STATUS_EP0) {
- 			tripwire_handler(udc, 0,
-@@ -1910,7 +1919,7 @@ static irqreturn_t fsl_udc_irq(int irq, void *_udc)
- 
- 	/* Reset Received */
- 	if (irq_src & USB_STS_RESET) {
--		VDBG("reset int");
-+		dev_vdbg(&udc->gadget.dev, "reset int\n");
- 		reset_irq(udc);
- 		status = IRQ_HANDLED;
- 	}
-@@ -1922,7 +1931,7 @@ static irqreturn_t fsl_udc_irq(int irq, void *_udc)
- 	}
- 
- 	if (irq_src & (USB_STS_ERR | USB_STS_SYS_ERR)) {
--		VDBG("Error IRQ %x", irq_src);
-+		dev_vdbg(&udc->gadget.dev, "Error IRQ %x\n", irq_src);
- 	}
- 
- 	spin_unlock_irqrestore(&udc->lock, flags);
-@@ -1958,7 +1967,7 @@ static int fsl_udc_start(struct usb_gadget *g,
- 					udc_controller->transceiver->otg,
- 						    &udc_controller->gadget);
- 			if (retval < 0) {
--				ERR("can't bind to transceiver\n");
-+				dev_err(&udc_controller->gadget.dev, "can't bind to transceiver\n");
- 				udc_controller->driver = NULL;
- 				return retval;
- 			}
-@@ -2243,7 +2252,7 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 
- 	udc->eps = kcalloc(udc->max_ep, sizeof(struct fsl_ep), GFP_KERNEL);
- 	if (!udc->eps) {
--		ERR("kmalloc udc endpoint status failed\n");
-+		dev_err(&udc->gadget.dev, "kmalloc udc endpoint status failed\n");
- 		goto eps_alloc_failed;
- 	}
- 
-@@ -2258,7 +2267,7 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	udc->ep_qh = dma_alloc_coherent(&pdev->dev, size,
- 					&udc->ep_qh_dma, GFP_KERNEL);
- 	if (!udc->ep_qh) {
--		ERR("malloc QHs for udc failed\n");
-+		dev_err(&udc->gadget.dev, "malloc QHs for udc failed\n");
- 		goto ep_queue_alloc_failed;
- 	}
- 
-@@ -2269,14 +2278,14 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	udc->status_req = container_of(fsl_alloc_request(NULL, GFP_KERNEL),
- 			struct fsl_req, req);
- 	if (!udc->status_req) {
--		ERR("kzalloc for udc status request failed\n");
-+		dev_err(&udc->gadget.dev, "kzalloc for udc status request failed\n");
- 		goto udc_status_alloc_failed;
- 	}
- 
- 	/* allocate a small amount of memory to get valid address */
- 	udc->status_req->req.buf = kmalloc(8, GFP_KERNEL);
- 	if (!udc->status_req->req.buf) {
--		ERR("kzalloc for udc request buffer failed\n");
-+		dev_err(&udc->gadget.dev, "kzalloc for udc request buffer failed\n");
- 		goto udc_req_buf_alloc_failed;
- 	}
- 
-@@ -2373,7 +2382,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
- 	if (pdata->operating_mode == FSL_USB2_DR_OTG) {
- 		udc_controller->transceiver = usb_get_phy(USB_PHY_TYPE_USB2);
- 		if (IS_ERR_OR_NULL(udc_controller->transceiver)) {
--			ERR("Can't find OTG driver!\n");
-+			dev_err(&udc_controller->gadget.dev, "Can't find OTG driver!\n");
- 			ret = -ENODEV;
- 			goto err_kfree;
- 		}
-@@ -2389,7 +2398,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
- 	if (pdata->operating_mode == FSL_USB2_DR_DEVICE) {
- 		if (!request_mem_region(res->start, resource_size(res),
- 					driver_name)) {
--			ERR("request mem region for %s failed\n", pdev->name);
-+			dev_err(&udc_controller->gadget.dev, "request mem region for %s failed\n", pdev->name);
- 			ret = -EBUSY;
- 			goto err_kfree;
- 		}
-@@ -2420,7 +2429,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
- 	/* Read Device Controller Capability Parameters register */
- 	dccparams = fsl_readl(&dr_regs->dccparams);
- 	if (!(dccparams & DCCPARAMS_DC)) {
--		ERR("This SOC doesn't support device role\n");
-+		dev_err(&udc_controller->gadget.dev, "This SOC doesn't support device role\n");
- 		ret = -ENODEV;
- 		goto err_exit;
- 	}
-@@ -2438,14 +2447,14 @@ static int fsl_udc_probe(struct platform_device *pdev)
- 	ret = request_irq(udc_controller->irq, fsl_udc_irq, IRQF_SHARED,
- 			driver_name, udc_controller);
- 	if (ret != 0) {
--		ERR("cannot request irq %d err %d\n",
-+		dev_err(&udc_controller->gadget.dev, "cannot request irq %d err %d\n",
- 				udc_controller->irq, ret);
- 		goto err_exit;
- 	}
- 
- 	/* Initialize the udc structure including QH member and other member */
- 	if (struct_udc_setup(udc_controller, pdev)) {
--		ERR("Can't initialize udc data structure\n");
-+		dev_err(&udc_controller->gadget.dev, "Can't initialize udc data structure\n");
- 		ret = -ENOMEM;
- 		goto err_free_irq;
- 	}
-diff --git a/drivers/usb/gadget/udc/fsl_usb2_udc.h b/drivers/usb/gadget/udc/fsl_usb2_udc.h
-index 2efc5a930b48..cc1756f3e89d 100644
---- a/drivers/usb/gadget/udc/fsl_usb2_udc.h
-+++ b/drivers/usb/gadget/udc/fsl_usb2_udc.h
-@@ -508,53 +508,6 @@ struct fsl_udc {
- 
- /*-------------------------------------------------------------------------*/
- 
--#ifdef DEBUG
--#define DBG(fmt, args...) 	printk(KERN_DEBUG "[%s]  " fmt "\n", \
--				__func__, ## args)
--#else
--#define DBG(fmt, args...)	do{}while(0)
--#endif
--
--#if 0
--static void dump_msg(const char *label, const u8 * buf, unsigned int length)
--{
--	unsigned int start, num, i;
--	char line[52], *p;
--
--	if (length >= 512)
--		return;
--	DBG("%s, length %u:\n", label, length);
--	start = 0;
--	while (length > 0) {
--		num = min(length, 16u);
--		p = line;
--		for (i = 0; i < num; ++i) {
--			if (i == 8)
--				*p++ = ' ';
--			sprintf(p, " %02x", buf[i]);
--			p += 3;
--		}
--		*p = 0;
--		printk(KERN_DEBUG "%6x: %s\n", start, line);
--		buf += num;
--		start += num;
--		length -= num;
--	}
--}
--#endif
--
--#ifdef VERBOSE
--#define VDBG		DBG
--#else
--#define VDBG(stuff...)	do{}while(0)
--#endif
--
--#define ERR(stuff...)		pr_err("udc: " stuff)
--#define WARNING(stuff...)	pr_warn("udc: " stuff)
--#define INFO(stuff...)		pr_info("udc: " stuff)
--
--/*-------------------------------------------------------------------------*/
--
- /* ### Add board specific defines here
-  */
- 
-
-base-commit: 67908bf6954b7635d33760ff6dfc189fc26ccc89
--- 
-2.43.0
-
+DQoNCkxlIDAyLzAzLzIwMjQgw6AgMDI6NTEsIEtlZXMgQ29vayBhIMOpY3JpdMKgOg0KPiBPbiBT
+YXQsIE1hciAwMiwgMjAyNCBhdCAxMjo0NzowOEFNICswMDAwLCBFZGdlY29tYmUsIFJpY2sgUCB3
+cm90ZToNCj4+IE9uIFdlZCwgMjAyNC0wMi0yOCBhdCAwOToyMSAtMDgwMCwgS2VlcyBDb29rIHdy
+b3RlOg0KPj4+IEkgdG90YWxseSB1bmRlcnN0YW5kLiBJZiB0aGUgInVuaW5pdGlhbGl6ZWQiIHdh
+cm5pbmdzIHdlcmUgYWN0dWFsbHkNCj4+PiByZWxpYWJsZSwgSSB3b3VsZCBhZ3JlZS4gSSBsb29r
+IGF0IGl0IHRoaXMgd2F5Og0KPj4+DQo+Pj4gLSBpbml0aWFsaXphdGlvbnMgY2FuIGJlIG1pc3Nl
+ZCBlaXRoZXIgaW4gc3RhdGljIGluaXRpYWxpemVycyBvciB2aWENCj4+PiAgwqAgcnVuIHRpbWUg
+aW5pdGlhbGl6ZXJzLiAoU28gdGhlIHJpc2sgb2YgbWlzdGFrZSBoZXJlIGlzIG1hdGNoZWQgLS0N
+Cj4+PiAgwqAgdGhvdWdoIEknZCBhcmd1ZSBpdCdzIGVhc2llciB0byAqZmluZCogc3RhdGljIGlu
+aXRpYWxpemVycyB3aGVuDQo+Pj4gYWRkaW5nDQo+Pj4gIMKgIG5ldyBzdHJ1Y3QgbWVtYmVycy4p
+DQo+Pj4gLSB1bmluaXRpYWxpemVkIHdhcm5pbmdzIGFyZSBpbmNvbnNpc3RlbnQgKHRoaXMgYmVj
+b21lcyBhbiB1bmtub3duDQo+Pj4gcmlzaykNCj4+PiAtIHdoZW4gYSBydW4gdGltZSBpbml0aWFs
+aXplciBpcyBtaXNzZWQsIHRoZSBjb250ZW50cyBhcmUgd2hhdGV2ZXINCj4+PiB3YXMNCj4+PiAg
+wqAgb24gdGhlIHN0YWNrIChoaWdoIHJpc2spDQo+Pj4gLSB3aGF0IGEgc3RhdGljIGluaXRpYWxp
+emVyIGlzIG1pc3NlZCwgdGhlIGNvbnRlbnQgaXMgMCAobG93IHJpc2spDQo+Pj4NCj4+PiBJIHRo
+aW5rIHVuYW1iaWd1b3VzIHN0YXRlIChhbHdheXMgMCkgaXMgc2lnbmlmaWNhbnRseSBtb3JlIGlt
+cG9ydGFudA0KPj4+IGZvcg0KPj4+IHRoZSBzYWZldHkgb2YgdGhlIHN5c3RlbSBhcyBhIHdob2xl
+LiBZZXMsIGluZGl2aWR1YWwgY2FzZXMgbWF5YmUgYmFkDQo+Pj4gKCJ3aGF0IHVpZCBzaG91bGQg
+dGhpcyBiZT8gcm9vdD8hIikgYnV0IGZyb20gYSBnZW5lcmFsIG1lbW9yeSBzYWZldHkNCj4+PiBw
+ZXJzcGVjdGl2ZSB0aGUgdmFsdWUgZG9lc24ndCBiZWNvbWUgcG90ZW50aWFsbHkgaW5mbHVlbmNl
+ZCBieSBvcmRlcg0KPj4+IG9mDQo+Pj4gb3BlcmF0aW9ucywgbGVmdG92ZXIgc3RhY2sgbWVtb3J5
+LCBldGMuDQo+Pj4NCj4+PiBJJ2QgYWdyZWUsIGxpZnRpbmcgZXZlcnl0aGluZyBpbnRvIGEgc3Rh
+dGljIGluaXRpYWxpemVyIGRvZXMgc2VlbQ0KPj4+IGNsZWFuZXN0IG9mIGFsbCB0aGUgY2hvaWNl
+cy4NCj4+DQo+PiBIaSBLZWVzLA0KPj4NCj4+IFdlbGwsIEkganVzdCBnYXZlIHRoaXMgYSB0cnku
+IEl0IGlzIGdpdmluZyBtZSBmbGFzaGJhY2tzIG9mIHdoZW4gSSBsYXN0DQo+PiBoYWQgdG8gZG8g
+YSB0cmVlIHdpZGUgY2hhbmdlIHRoYXQgSSBjb3VsZG4ndCBmdWxseSB0ZXN0IGFuZCB0aGUNCj4+
+IGJyZWFrYWdlIHdhcyBjYXVnaHQgYnkgTGludXMuDQo+IA0KPiBZZWFoLCB0ZXN0aW5nIGlzbid0
+IGZ1biBmb3IgdGhlc2Uga2luZHMgb2YgdGhpbmdzLiBUaGlzIGlzIHRyYWRpdGlvbmFsbHkNCj4g
+d2h5IHRoZSAib2J2aW91c2x5IGNvcnJlY3QiIGNoYW5nZXMgdGVuZCB0byBoYXZlIGFuIGVhc2ll
+ciB0aW1lIGxhbmRpbmcNCj4gKGkuZS4gYWRkaW5nICI9IHt9IiB0byBhbGwgb2YgdGhlbSkuDQo+
+IA0KPj4gQ291bGQgeW91IGxldCBtZSBrbm93IGlmIHlvdSB0aGluayB0aGlzIGlzIGFkZGl0aW9u
+YWxseSB3b3J0aHdoaWxlDQo+PiBjbGVhbnVwIG91dHNpZGUgb2YgdGhlIGd1YXJkIGdhcCBpbXBy
+b3ZlbWVudHMgb2YgdGhpcyBzZXJpZXM/IEJlY2F1c2UgSQ0KPj4gd2FzIHRoaW5raW5nIGEgbW9y
+ZSBjb3dhcmRseSBhcHByb2FjaCBjb3VsZCBiZSBhIG5ldyB2bV91bm1hcHBlZF9hcmVhKCkNCj4+
+IHZhcmlhbnQgdGhhdCB0YWtlcyB0aGUgbmV3IHN0YXJ0IGdhcCBtZW1iZXIgYXMgYSBzZXBhcmF0
+ZSBhcmd1bWVudA0KPj4gb3V0c2lkZSBvZiBzdHJ1Y3Qgdm1fdW5tYXBwZWRfYXJlYV9pbmZvLiBJ
+dCB3b3VsZCBiZSBraW5kIG9mIHN0cmFuZ2UgdG8NCj4+IGtlZXAgdGhlbSBzZXBhcmF0ZSwgYnV0
+IGl0IHdvdWxkIGJlIGxlc3MgbGlrZWx5IHRvIGJ1bXAgc29tZXRoaW5nLg0KPiANCj4gSSB0aGlu
+ayB5b3Ugd2FudCBhIG5ldyBtZW1iZXIgLS0gQUlVSSwgdGhhdCdzIHdoYXQgdGhhdCBzdHJ1Y3Qg
+aXMgZm9yLg0KPiANCj4gTG9va2luZyBhdCB0aGlzIHJlc3VsdGluZyBzZXQgb2YgcGF0Y2hlcywg
+SSBkbyBraW5kYSB0aGluayBqdXN0IGFkZGluZw0KPiB0aGUgIj0ge30iIGluIGEgc2luZ2xlIHBh
+dGNoIGlzIG1vcmUgc2Vuc2libGUuIEhhdmluZyB0byBzcGxpdCB0aGluZ3MNCj4gdGhhdCBhcmUg
+a25vdyBhdCB0aGUgdG9wIG9mIHRoZSBmdW5jdGlvbiBmcm9tIHRoZSBzdHVmZiBrbm93biBhdCB0
+aGUNCj4gZXhpc3RpbmcgaW5pdGlhbGl6YXRpb24gdGltZSBpcyByYXRoZXIgYXdrd2FyZC4NCj4g
+DQo+IFBlcnNvbmFsbHksIEkgdGhpbmsgYSBzaW5nbGUgcGF0Y2ggdGhhdCBzZXRzICI9IHt9IiBm
+b3IgYWxsIG9mIHRoZW0gYW5kDQo+IGRyb3AgdGhlIGFsbCB0aGUgIj0gMCIgb3IgIj0gTlVMTCIg
+YXNzaWdubWVudHMgd291bGQgYmUgdGhlIGNsZWFuZXN0IHdheQ0KPiB0byBnby4NCg0KSSBhZ3Jl
+ZSB3aXRoIEtlZXMsIHNldCA9IHt9IGFuZCBkcm9wIGFsbCB0aGUgInNvbWV0aGluZyA9IDA7IiBz
+dHVmZi4NCg0KQ2hyaXN0b3BoZQ0K
