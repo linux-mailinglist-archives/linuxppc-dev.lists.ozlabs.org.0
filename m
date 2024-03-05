@@ -2,63 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA188724F9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 17:58:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BE787254D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 18:10:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=HKbwYqoG;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8tNakUsg;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=smHoWrGm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tq1wd4V3Kz3vZF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 03:58:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tq2BP42TRz3vgq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 04:10:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=HKbwYqoG;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8tNakUsg;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=smHoWrGm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::ac; helo=out-172.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [IPv6:2001:41d0:203:375::ac])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tq1vw0b7Mz3c20
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 03:57:47 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709657861;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tq29Z6Ydqz3bV2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 04:09:36 +1100 (AEDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1709658548;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HRm+TnjyJg5idEpRreLSl5etxQBLrbJ4QAyjOJxgiHU=;
-	b=HKbwYqoGgFwQ5w0c2x4gUshWZq5DHnmoTWFc3/aZZcUsyBPUvs7FtgO9sXWFeAyfxpuEi6
-	xlcIADFKW3TAaX8V6Ga3Vk3KxGSZLgdUIYbQXmyX2czdZGrJV+gT+com+2AYsi4w5tCpPe
-	P+3R/323Mr+jpB72RGyL7UAB2G4Y24a0f5aPuMXb2XzcFpBHmn6AX+fCh47ITffrAmlSjQ
-	X0sd2R+FxjQ3skVdAjuyST0jIZLH7tS9pVec6Q/PgKFl70I0IEfjpeTld2114ViFAQn5Jb
-	vMDMFcMAgaGC7ZbfrNWUXKsAS9MSi3fMQV2MyyOkR6PfJ5iMQMb9P8IPdthLhQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709657861;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HRm+TnjyJg5idEpRreLSl5etxQBLrbJ4QAyjOJxgiHU=;
-	b=8tNakUsgVDjiTy1DgFT1yzq4jZIkpWJOqH5pgA+w3enng6vlac/FwllNiicYgryByF76pu
-	dUSgco6KK8GYs2CA==
-To: Bitao Hu <yaoma@linux.alibaba.com>, Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for
- interrupt statistics
-In-Reply-To: <28a24e4b-c322-4631-ad6d-7259ca3d084d@linux.alibaba.com>
-References: <20240228072216.95130-1-yaoma@linux.alibaba.com>
- <20240228072216.95130-3-yaoma@linux.alibaba.com>
- <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
- <87plwdwycx.ffs@tglx>
- <3a89fafb-f62e-472f-b40b-8bf97954e9e3@linux.alibaba.com>
- <87wmqiulaw.ffs@tglx>
- <28a24e4b-c322-4631-ad6d-7259ca3d084d@linux.alibaba.com>
-Date: Tue, 05 Mar 2024 17:57:40 +0100
-Message-ID: <87h6hkvcor.ffs@tglx>
+	bh=MraLn1H3cyPePsk9ywys4sQEOsdtJQzZmf/lns7/wI4=;
+	b=smHoWrGmsdeJ9o2I/sXSbb/8LrOQCi30nPSaXKPznf9whoa31DK/NUjgOwd/oOHU0Yv0Qw
+	G4qnoj6qjFK2voml2hTSfzPkdMut9sSjfab/ZI0apVoInf2309MR4Sl/+hjrB3sN9wYPsq
+	Ylm59PH0HRxlJqZhPy/f0XOjjZOwYk8=
+From: Andrew Jones <andrew.jones@linux.dev>
+To: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org
+Subject: [kvm-unit-tests PATCH v2 03/13] treewide: lib/stack: Fix backtrace
+Date: Tue,  5 Mar 2024 18:09:02 +0100
+Message-ID: <20240305170858.395836-18-andrew.jones@linux.dev>
+In-Reply-To: <20240305170858.395836-15-andrew.jones@linux.dev>
+References: <20240305170858.395836-15-andrew.jones@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,48 +56,234 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pmladek@suse.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jan.kiszka@siemens.com, deller@gmx.de, liusong@linux.alibaba.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com, yaoma@linux.alibaba.com, kernelfans@gmail.com, akpm@linux-foundation.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: lvivier@redhat.com, linux-s390@vger.kernel.org, thuth@redhat.com, nrb@linux.ibm.com, frankja@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, kvmarm@lists.linux.dev, pbonzini@redhat.com, Claudio Imbrenda <imbrenda@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 05 2024 at 18:57, Bitao Hu wrote:
-> On 2024/3/4 22:24, Thomas Gleixner wrote:
-> "GENERIC_IRQ_STAT_SNAPSHOT" visible to the user. However, after
-> analyzing the previous emails, it seems that what you were actually
-> proposing was to directly disable "GENERIC_IRQ_STAT_SNAPSHOT" when
-> "SOFTLOCKUP_DETECTOR_INTR_STORM" is not enabled, as a way to save
-> memory. If my current understanding is correct, then the code for that
-> part would look something like the following.
+We should never pass the result of __builtin_frame_address(0) to
+another function since the compiler is within its rights to pop the
+frame to which it points before making the function call, as may be
+done for tail calls. Nobody has complained about backtrace(), so
+likely all compilations have been inlining backtrace_frame(), not
+dropping the frame on the tail call, or nobody is looking at traces.
+However, for riscv, when built for EFI, it does drop the frame on the
+tail call, and it was noticed. Preemptively fix backtrace() for all
+architectures.
 
-Correct.
+Fixes: 52266791750d ("lib: backtrace printing")
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+---
+ lib/arm/stack.c   | 13 +++++--------
+ lib/arm64/stack.c | 12 +++++-------
+ lib/riscv/stack.c | 12 +++++-------
+ lib/s390x/stack.c | 12 +++++-------
+ lib/stack.h       | 24 +++++++++++++++++-------
+ lib/x86/stack.c   | 12 +++++-------
+ 6 files changed, 42 insertions(+), 43 deletions(-)
 
-> diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-> index 2531f3496ab6..a28e5ac5fc79 100644
-> --- a/kernel/irq/Kconfig
-> +++ b/kernel/irq/Kconfig
-> @@ -108,6 +108,10 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
->   config GENERIC_IRQ_RESERVATION_MODE
->          bool
->
-> +# Snapshot for interrupt statistics
-> +config GENERIC_IRQ_STAT_SNAPSHOT
-> +       bool
-> +
->   # Support forced irq threading
->   config IRQ_FORCED_THREADING
->          bool
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index 49f652674bd8..899b69fcb598 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -1032,6 +1032,7 @@ config SOFTLOCKUP_DETECTOR
->   config SOFTLOCKUP_DETECTOR_INTR_STORM
->          bool "Detect Interrupt Storm in Soft Lockups"
->          depends on SOFTLOCKUP_DETECTOR && IRQ_TIME_ACCOUNTING
-> +       select GENERIC_IRQ_STAT_SNAPSHOT
+diff --git a/lib/arm/stack.c b/lib/arm/stack.c
+index 7d081be7c6d0..66d18b47ea53 100644
+--- a/lib/arm/stack.c
++++ b/lib/arm/stack.c
+@@ -8,13 +8,16 @@
+ #include <libcflat.h>
+ #include <stack.h>
+ 
+-int backtrace_frame(const void *frame, const void **return_addrs,
+-		    int max_depth)
++int arch_backtrace_frame(const void *frame, const void **return_addrs,
++			 int max_depth, bool current_frame)
+ {
+ 	static int walking;
+ 	int depth;
+ 	const unsigned long *fp = (unsigned long *)frame;
+ 
++	if (current_frame)
++		fp = __builtin_frame_address(0);
++
+ 	if (walking) {
+ 		printf("RECURSIVE STACK WALK!!!\n");
+ 		return 0;
+@@ -33,9 +36,3 @@ int backtrace_frame(const void *frame, const void **return_addrs,
+ 	walking = 0;
+ 	return depth;
+ }
+-
+-int backtrace(const void **return_addrs, int max_depth)
+-{
+-	return backtrace_frame(__builtin_frame_address(0),
+-			       return_addrs, max_depth);
+-}
+diff --git a/lib/arm64/stack.c b/lib/arm64/stack.c
+index 82611f4b1815..f5eb57fd8892 100644
+--- a/lib/arm64/stack.c
++++ b/lib/arm64/stack.c
+@@ -8,7 +8,8 @@
+ 
+ extern char vector_stub_start, vector_stub_end;
+ 
+-int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
++int arch_backtrace_frame(const void *frame, const void **return_addrs,
++			 int max_depth, bool current_frame)
+ {
+ 	const void *fp = frame;
+ 	static bool walking;
+@@ -17,6 +18,9 @@ int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
+ 	bool is_exception = false;
+ 	unsigned long addr;
+ 
++	if (current_frame)
++		fp = __builtin_frame_address(0);
++
+ 	if (walking) {
+ 		printf("RECURSIVE STACK WALK!!!\n");
+ 		return 0;
+@@ -54,9 +58,3 @@ int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
+ 	walking = false;
+ 	return depth;
+ }
+-
+-int backtrace(const void **return_addrs, int max_depth)
+-{
+-	return backtrace_frame(__builtin_frame_address(0),
+-			       return_addrs, max_depth);
+-}
+diff --git a/lib/riscv/stack.c b/lib/riscv/stack.c
+index 712a5478d547..d865594b9671 100644
+--- a/lib/riscv/stack.c
++++ b/lib/riscv/stack.c
+@@ -2,12 +2,16 @@
+ #include <libcflat.h>
+ #include <stack.h>
+ 
+-int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
++int arch_backtrace_frame(const void *frame, const void **return_addrs,
++			 int max_depth, bool current_frame)
+ {
+ 	static bool walking;
+ 	const unsigned long *fp = (unsigned long *)frame;
+ 	int depth;
+ 
++	if (current_frame)
++		fp = __builtin_frame_address(0);
++
+ 	if (walking) {
+ 		printf("RECURSIVE STACK WALK!!!\n");
+ 		return 0;
+@@ -24,9 +28,3 @@ int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
+ 	walking = false;
+ 	return depth;
+ }
+-
+-int backtrace(const void **return_addrs, int max_depth)
+-{
+-	return backtrace_frame(__builtin_frame_address(0),
+-			       return_addrs, max_depth);
+-}
+diff --git a/lib/s390x/stack.c b/lib/s390x/stack.c
+index 9f234a12adf6..d194f654e94d 100644
+--- a/lib/s390x/stack.c
++++ b/lib/s390x/stack.c
+@@ -14,11 +14,15 @@
+ #include <stack.h>
+ #include <asm/arch_def.h>
+ 
+-int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
++int arch_backtrace_frame(const void *frame, const void **return_addrs,
++			 int max_depth, bool current_frame)
+ {
+ 	int depth = 0;
+ 	struct stack_frame *stack = (struct stack_frame *)frame;
+ 
++	if (current_frame)
++		stack = __builtin_frame_address(0);
++
+ 	for (depth = 0; stack && depth < max_depth; depth++) {
+ 		return_addrs[depth] = (void *)stack->grs[8];
+ 		stack = stack->back_chain;
+@@ -28,9 +32,3 @@ int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
+ 
+ 	return depth;
+ }
+-
+-int backtrace(const void **return_addrs, int max_depth)
+-{
+-	return backtrace_frame(__builtin_frame_address(0),
+-			       return_addrs, max_depth);
+-}
+diff --git a/lib/stack.h b/lib/stack.h
+index 10fc2f793354..6edc84344b51 100644
+--- a/lib/stack.h
++++ b/lib/stack.h
+@@ -11,17 +11,27 @@
+ #include <asm/stack.h>
+ 
+ #ifdef HAVE_ARCH_BACKTRACE_FRAME
+-extern int backtrace_frame(const void *frame, const void **return_addrs,
+-			   int max_depth);
++extern int arch_backtrace_frame(const void *frame, const void **return_addrs,
++				int max_depth, bool current_frame);
++
++static inline int backtrace_frame(const void *frame, const void **return_addrs,
++				  int max_depth)
++{
++	return arch_backtrace_frame(frame, return_addrs, max_depth, false);
++}
++
++static inline int backtrace(const void **return_addrs, int max_depth)
++{
++	return arch_backtrace_frame(NULL, return_addrs, max_depth, true);
++}
+ #else
+-static inline int
+-backtrace_frame(const void *frame __unused, const void **return_addrs __unused,
+-		int max_depth __unused)
++extern int backtrace(const void **return_addrs, int max_depth);
++
++static inline int backtrace_frame(const void *frame, const void **return_addrs,
++				  int max_depth)
+ {
+ 	return 0;
+ }
+ #endif
+ 
+-extern int backtrace(const void **return_addrs, int max_depth);
+-
+ #endif
+diff --git a/lib/x86/stack.c b/lib/x86/stack.c
+index 5ecd97ce90b9..58ab6c4b293a 100644
+--- a/lib/x86/stack.c
++++ b/lib/x86/stack.c
+@@ -1,12 +1,16 @@
+ #include <libcflat.h>
+ #include <stack.h>
+ 
+-int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
++int arch_backtrace_frame(const void *frame, const void **return_addrs,
++			 int max_depth, bool current_frame)
+ {
+ 	static int walking;
+ 	int depth = 0;
+ 	const unsigned long *bp = (unsigned long *) frame;
+ 
++	if (current_frame)
++		bp = __builtin_frame_address(0);
++
+ 	if (walking) {
+ 		printf("RECURSIVE STACK WALK!!!\n");
+ 		return 0;
+@@ -23,9 +27,3 @@ int backtrace_frame(const void *frame, const void **return_addrs, int max_depth)
+ 	walking = 0;
+ 	return depth;
+ }
+-
+-int backtrace(const void **return_addrs, int max_depth)
+-{
+-	return backtrace_frame(__builtin_frame_address(0), return_addrs,
+-			       max_depth);
+-}
+-- 
+2.44.0
 
-This goes into the patch which adds the lockup detector parts.
-
-Thanks,
-
-        tglx
