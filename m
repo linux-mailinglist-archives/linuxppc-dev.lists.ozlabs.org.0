@@ -2,52 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541FC872448
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 17:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA188724F9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 17:58:27 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=HKbwYqoG;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8tNakUsg;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tq1GC15BSz3vkQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 03:28:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tq1wd4V3Kz3vZF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 03:58:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=HKbwYqoG;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=8tNakUsg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tq1FV3w62z3vhw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 03:27:58 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhXdc-0003TG-PY; Tue, 05 Mar 2024 17:27:32 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhXdb-004aQC-L8; Tue, 05 Mar 2024 17:27:31 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rhXdb-000BLb-1o;
-	Tue, 05 Mar 2024 17:27:31 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Corey Minyard <minyard@acm.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/6] ipmi: ipmi_powernv: Convert to platform remove callback returning void
-Date: Tue,  5 Mar 2024 17:26:59 +0100
-Message-ID: <22375be2dd616d8ccc2959586a08e49a5ad9e47b.1709655755.git.u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1709655755.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1709655755.git.u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tq1vw0b7Mz3c20
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 03:57:47 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1709657861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HRm+TnjyJg5idEpRreLSl5etxQBLrbJ4QAyjOJxgiHU=;
+	b=HKbwYqoGgFwQ5w0c2x4gUshWZq5DHnmoTWFc3/aZZcUsyBPUvs7FtgO9sXWFeAyfxpuEi6
+	xlcIADFKW3TAaX8V6Ga3Vk3KxGSZLgdUIYbQXmyX2czdZGrJV+gT+com+2AYsi4w5tCpPe
+	P+3R/323Mr+jpB72RGyL7UAB2G4Y24a0f5aPuMXb2XzcFpBHmn6AX+fCh47ITffrAmlSjQ
+	X0sd2R+FxjQ3skVdAjuyST0jIZLH7tS9pVec6Q/PgKFl70I0IEfjpeTld2114ViFAQn5Jb
+	vMDMFcMAgaGC7ZbfrNWUXKsAS9MSi3fMQV2MyyOkR6PfJ5iMQMb9P8IPdthLhQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1709657861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HRm+TnjyJg5idEpRreLSl5etxQBLrbJ4QAyjOJxgiHU=;
+	b=8tNakUsgVDjiTy1DgFT1yzq4jZIkpWJOqH5pgA+w3enng6vlac/FwllNiicYgryByF76pu
+	dUSgco6KK8GYs2CA==
+To: Bitao Hu <yaoma@linux.alibaba.com>, Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for
+ interrupt statistics
+In-Reply-To: <28a24e4b-c322-4631-ad6d-7259ca3d084d@linux.alibaba.com>
+References: <20240228072216.95130-1-yaoma@linux.alibaba.com>
+ <20240228072216.95130-3-yaoma@linux.alibaba.com>
+ <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
+ <87plwdwycx.ffs@tglx>
+ <3a89fafb-f62e-472f-b40b-8bf97954e9e3@linux.alibaba.com>
+ <87wmqiulaw.ffs@tglx>
+ <28a24e4b-c322-4631-ad6d-7259ca3d084d@linux.alibaba.com>
+Date: Tue, 05 Mar 2024 17:57:40 +0100
+Message-ID: <87h6hkvcor.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1784; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=c+JLhSDxkhY7w+LNSmgp+zHARDE2cqnx9VEPDNYMgQ4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl50fUAnYGsrZ2HJWCgt9xxz9Xjr2GCv8q5rfPC ZxtNRO+SeKJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZedH1AAKCRCPgPtYfRL+ Tl6/CACp8/Fir0X126Y/o6U8/KCvw0LNLwO8QbNSR4Hl7f47vzPBLyqYoJ/hL7GDEuzt+Td8WDY CpG7WOamLVP44W8G1FxDZaAXkoxyjcCD04HJAkPbn2czr83r/OScSgSdnkkpA+Ymwt4dzc9nnN4 DKbwu9h7sKrfCoG7jgCEjayRG2oOIYL/XA6L2Bwi5O6YWYAqHF5A40Oq0qelcJzqOEI54jvW7zj li92X29CVA15C14UEoBOJ212c2VokyfkvIR56sesSnf+lNP4yLTdhcHZdVTSCOOywdEJQgu13L0 ZEEOqzF++Vg08B3f5jgG9veGSHocezL2VIlLGApIevIw6YOG
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +70,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, openipmi-developer@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
+Cc: pmladek@suse.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jan.kiszka@siemens.com, deller@gmx.de, liusong@linux.alibaba.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com, yaoma@linux.alibaba.com, kernelfans@gmail.com, akpm@linux-foundation.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+On Tue, Mar 05 2024 at 18:57, Bitao Hu wrote:
+> On 2024/3/4 22:24, Thomas Gleixner wrote:
+> "GENERIC_IRQ_STAT_SNAPSHOT" visible to the user. However, after
+> analyzing the previous emails, it seems that what you were actually
+> proposing was to directly disable "GENERIC_IRQ_STAT_SNAPSHOT" when
+> "SOFTLOCKUP_DETECTOR_INTR_STORM" is not enabled, as a way to save
+> memory. If my current understanding is correct, then the code for that
+> part would look something like the following.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+Correct.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+> diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+> index 2531f3496ab6..a28e5ac5fc79 100644
+> --- a/kernel/irq/Kconfig
+> +++ b/kernel/irq/Kconfig
+> @@ -108,6 +108,10 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
+>   config GENERIC_IRQ_RESERVATION_MODE
+>          bool
+>
+> +# Snapshot for interrupt statistics
+> +config GENERIC_IRQ_STAT_SNAPSHOT
+> +       bool
+> +
+>   # Support forced irq threading
+>   config IRQ_FORCED_THREADING
+>          bool
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 49f652674bd8..899b69fcb598 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1032,6 +1032,7 @@ config SOFTLOCKUP_DETECTOR
+>   config SOFTLOCKUP_DETECTOR_INTR_STORM
+>          bool "Detect Interrupt Storm in Soft Lockups"
+>          depends on SOFTLOCKUP_DETECTOR && IRQ_TIME_ACCOUNTING
+> +       select GENERIC_IRQ_STAT_SNAPSHOT
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/char/ipmi/ipmi_powernv.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+This goes into the patch which adds the lockup detector parts.
 
-diff --git a/drivers/char/ipmi/ipmi_powernv.c b/drivers/char/ipmi/ipmi_powernv.c
-index da22a8cbe68e..c59a86eb58c7 100644
---- a/drivers/char/ipmi/ipmi_powernv.c
-+++ b/drivers/char/ipmi/ipmi_powernv.c
-@@ -281,15 +281,13 @@ static int ipmi_powernv_probe(struct platform_device *pdev)
- 	return rc;
- }
- 
--static int ipmi_powernv_remove(struct platform_device *pdev)
-+static void ipmi_powernv_remove(struct platform_device *pdev)
- {
- 	struct ipmi_smi_powernv *smi = dev_get_drvdata(&pdev->dev);
- 
- 	ipmi_unregister_smi(smi->intf);
- 	free_irq(smi->irq, smi);
- 	irq_dispose_mapping(smi->irq);
--
--	return 0;
- }
- 
- static const struct of_device_id ipmi_powernv_match[] = {
-@@ -304,7 +302,7 @@ static struct platform_driver powernv_ipmi_driver = {
- 		.of_match_table	= ipmi_powernv_match,
- 	},
- 	.probe	= ipmi_powernv_probe,
--	.remove	= ipmi_powernv_remove,
-+	.remove_new = ipmi_powernv_remove,
- };
- 
- 
--- 
-2.43.0
+Thanks,
 
+        tglx
