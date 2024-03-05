@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7135C871362
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 03:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA5E871370
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 03:14:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QalY8slx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AXFtavNM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TpfHS243qz3dWx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 13:13:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TpfK72gQyz3dWW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 13:14:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QalY8slx;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AXFtavNM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpfGm0qHYz2ytg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 13:12:47 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6e617b39877so1562014b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 18:12:47 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpfJN09Wwz2ytg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 13:14:10 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1dc0e5b223eso44335835ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 18:14:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709604765; x=1710209565; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1709604849; x=1710209649; darn=lists.ozlabs.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6+XQ3M+Esqxw+BYm1LMLo360LMfLh1KPGarB/Ars53U=;
-        b=QalY8slxU1kAmv/Pe+YMVi6+WJ1irdvZRkSadPUVrQ6ZYoyl4XW75m1v1zH7EI3Kv/
-         slKvBujfN84pxMbSOMkAESBS7e7ZEjhz4V+Ox6fUeGFAu+IaRQZ+Ce1TQmG0lo4+fcGQ
-         pfqQAWcuQjG7/TEYs1bwaSzyZM2xreZdnbp35gQ0w6aYB+3XKDKPxwgvP6OlVVdzk1zT
-         Ep4MMrFeJoN0d7EUGMl6ZX3gYhB8MiMsU6OeGFUZT3LojNrG2axv75+2UHYhTMlpQbxE
-         hleaK3UqZaFchRimAnmFf9diFlhq+PrNgaYOTZmGH/G48KVsjXWsEaM3EbyVyUWGbdjf
-         5OFQ==
+        bh=kIaItcpq60SwRZMvgghKHJmefoIzj4K3zJYvKv5MwnU=;
+        b=AXFtavNM4k0854E8vhUrB3W/dG7mD8xRP9uBgE1FQHpZSPA1lF0ozEMn7pO6SVoi3C
+         4I6fZUAegtGaqMcph554gm5IZX8NFknIVfQq3fKwuTzVVepbKF91FVSCelafetlSTVqu
+         GbXerB+kA9R+v3RmFyFry+DcONXpJ7lpwbaFHCZ1vWj5P+uSr/X122b6gRa5Cwaf65N7
+         1PxO6/6ZbBdJoxgO5lkSal0cOVuXIs6DN5RDAtwp95KVG8Y6jBpOFt6CATGfthuTYiq1
+         pCQ/yUN5Vpx2B3K9Tq2wxDS5HS701x1hYRCZCgHq+zCFaU4Ies3XzVksrufevAm5dx5S
+         PIBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709604765; x=1710209565;
+        d=1e100.net; s=20230601; t=1709604849; x=1710209649;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=6+XQ3M+Esqxw+BYm1LMLo360LMfLh1KPGarB/Ars53U=;
-        b=MOJY+aMEFaIZ2wbIe9BYQbrQeeqzit0XZYSUzGvRuyJ3KjusC7Dy55RZZcNzo6yP6a
-         A9f6MWqEVsEfxMWnF0hePBJa97Z4JB+Xg0b40DDdCbiwugJZwwpS3oH/Zje0pXCEQDcc
-         BqBFHaDJRvQvMLFFK/abQBmMrqxLw29gvOh1raBawrl5UPnsvDiP5Zyj/9UDwDepBJEQ
-         yfyos4/Oxt4QHmylytUDMewMIke9pnEAQfomABOCwOxPFGc4v5JDxxhbbxWiYEcqQRgj
-         n3Hg/hxHy2kPNdE78iCRSFCnqQp8cupEdss0SVlNRa5DmVu3iuGc1xejFBlhxv3RQlZ5
-         6wpw==
-X-Forwarded-Encrypted: i=1; AJvYcCWeVTLZDMQhjRuezW0Rjm+tzNgOqZvgZuVFDOsZi/+YbjLJCK2jXV3K2A3KE3Q6KFIEcR6I9RXReEOD/DzuuS8ldxUIAor5u6KVz5HuvA==
-X-Gm-Message-State: AOJu0YzVTV7WhXZXbmBpXx9VWJZAg4QsUGcG74btYBrp6jZA5W5Bb/pj
-	FanQesuN4kEP8j66rTP2fzkowIbAljqqk39EKzWllpqtMyvDB/bJZG8YJEqD
-X-Google-Smtp-Source: AGHT+IEu8DynXzu9BByQp4QIf16lsnSVc/1E7fhz1eJ1/IbWK85IpX7ljsbYufF7UOAOwWKIv4wY9g==
-X-Received: by 2002:a05:6a20:428e:b0:1a1:4d86:7d2 with SMTP id o14-20020a056a20428e00b001a14d8607d2mr554530pzj.11.1709604765212;
-        Mon, 04 Mar 2024 18:12:45 -0800 (PST)
+        bh=kIaItcpq60SwRZMvgghKHJmefoIzj4K3zJYvKv5MwnU=;
+        b=My2nPO5oc/+ctU8LwHAHLgUY076gq9XlEuxAvDoCQDSk+M8iqo917mQeIegp/F8jlg
+         WzkVWTGVVlil4hKvNB5VrWOgNrJhFO+xNqotP3sa2TKLRwqWfJoBAG9f71xqwACvpFEP
+         NJf46Yonl9pjZObmkn53OzNWKrkwKkU/SOnWjmgvwJ4i6HJmZsFTx1D/0nabZFH4IrTG
+         oAhiFkBkq8hSpYZ/0TxbhJuxoJ1Ojv8xHtgGl/48mZgj4JBCWGUan0KPLxnkm6a4TBN3
+         mYHp7QvbgLKM8gmVRFkJc89pu8i3xCBj9OA/eJA08NFzTvRNE/SdeZuaADPn3Z1tpb+E
+         N0Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWzo0b/F4T4NZC6RQdy2D1vEtK2EvYeCNoKRsdTwETWN+PBVDVtHeOIdpyWztS054NmtpIw7RDvqEaw2T2woi/42h5PgnyW6ccePuLfA==
+X-Gm-Message-State: AOJu0YzdZEu1n09xkKDvwZPQrDCsRbsclKyecAnMr+XPrMpep85SuPgl
+	DUJwFNWajRJIyZWqsP+hNT26q5y1uzKnG/WYNdo6hpP68m7rWxEL
+X-Google-Smtp-Source: AGHT+IG0V/GYWcPSWzwDoq0twoJCNiOyb5mCYu5x71ATX4Oxr438p6feAW+dsfRoTqy5fVI//PezDw==
+X-Received: by 2002:a17:902:eec3:b0:1db:f389:2deb with SMTP id h3-20020a170902eec300b001dbf3892debmr511078plb.17.1709604849064;
+        Mon, 04 Mar 2024 18:14:09 -0800 (PST)
 Received: from localhost (220-235-220-130.tpgi.com.au. [220.235.220.130])
-        by smtp.gmail.com with ESMTPSA id gx15-20020a17090b124f00b00298ca46547fsm8430529pjb.36.2024.03.04.18.12.42
+        by smtp.gmail.com with ESMTPSA id mq12-20020a170902fd4c00b001dc8f1e06eesm9213195plb.291.2024.03.04.18.14.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 18:12:45 -0800 (PST)
+        Mon, 04 Mar 2024 18:14:08 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 05 Mar 2024 12:12:39 +1000
-Message-Id: <CZLGB4BCREUU.SZ1AQ0LTGNKB@wheely>
-Subject: Re: [kvm-unit-tests PATCH 04/32] powerpc: interrupt stack
- backtracing
+Date: Tue, 05 Mar 2024 12:14:03 +1000
+Message-Id: <CZLGC6S6YUQU.3FJKWH2MQ0NO5@wheely>
+Subject: Re: [kvm-unit-tests PATCH 07/32] powerpc/sprs: Don't fail changed
+ SPRs that are used by the test harness
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Thomas Huth" <thuth@redhat.com>
 X-Mailer: aerc 0.15.2
 References: <20240226101218.1472843-1-npiggin@gmail.com>
- <20240226101218.1472843-5-npiggin@gmail.com>
- <9d1166ed-e24f-4257-a441-080f577d3dde@redhat.com>
-In-Reply-To: <9d1166ed-e24f-4257-a441-080f577d3dde@redhat.com>
+ <20240226101218.1472843-8-npiggin@gmail.com>
+ <04e976cc-0239-4ee9-b0d2-cfdebbc4c3d9@redhat.com>
+In-Reply-To: <04e976cc-0239-4ee9-b0d2-cfdebbc4c3d9@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,188 +88,42 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Andrew Jones <andr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Mar 1, 2024 at 7:53 PM AEST, Thomas Huth wrote:
+On Fri Mar 1, 2024 at 9:15 PM AEST, Thomas Huth wrote:
 > On 26/02/2024 11.11, Nicholas Piggin wrote:
-> > Add support for backtracing across interrupt stacks, and
-> > add interrupt frame backtrace for unhandled interrupts.
+> > SPRs annotated with SPR_HARNESS can change between consecutive reads
+> > because the test harness code has changed them. Avoid failing the
+> > test in this case.
 > >=20
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
-> >   lib/powerpc/processor.c |  4 ++-
-> >   lib/ppc64/asm/stack.h   |  3 +++
-> >   lib/ppc64/stack.c       | 55 ++++++++++++++++++++++++++++++++++++++++=
-+
-> >   powerpc/Makefile.ppc64  |  1 +
-> >   powerpc/cstart64.S      |  7 ++++--
-> >   5 files changed, 67 insertions(+), 3 deletions(-)
-> >   create mode 100644 lib/ppc64/stack.c
+> >   powerpc/sprs.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
 > >=20
-> > diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
-> > index ad0d95666..114584024 100644
-> > --- a/lib/powerpc/processor.c
-> > +++ b/lib/powerpc/processor.c
-> > @@ -51,7 +51,9 @@ void do_handle_exception(struct pt_regs *regs)
-> >   		return;
-> >   	}
+> > diff --git a/powerpc/sprs.c b/powerpc/sprs.c
+> > index 8253ea971..44edd0d7b 100644
+> > --- a/powerpc/sprs.c
+> > +++ b/powerpc/sprs.c
+> > @@ -563,7 +563,7 @@ int main(int argc, char **argv)
+> >   			if (before[i] >> 32)
+> >   				pass =3D false;
+> >   		}
+> > -		if (!(sprs[i].type & SPR_ASYNC) && (before[i] !=3D after[i]))
+> > +		if (!(sprs[i].type & (SPR_HARNESS|SPR_ASYNC)) && (before[i] !=3D aft=
+er[i]))
+> >   			pass =3D false;
 > >  =20
-> > -	printf("unhandled cpu exception %#lx at NIA:0x%016lx MSR:0x%016lx\n",=
- regs->trap, regs->nip, regs->msr);
-> > +	printf("Unhandled cpu exception %#lx at NIA:0x%016lx MSR:0x%016lx\n",
-> > +			regs->trap, regs->nip, regs->msr);
-> > +	dump_frame_stack((void *)regs->nip, (void *)regs->gpr[1]);
-> >   	abort();
-> >   }
-> >  =20
-> > diff --git a/lib/ppc64/asm/stack.h b/lib/ppc64/asm/stack.h
-> > index 9734bbb8f..94fd1021c 100644
-> > --- a/lib/ppc64/asm/stack.h
-> > +++ b/lib/ppc64/asm/stack.h
-> > @@ -5,4 +5,7 @@
-> >   #error Do not directly include <asm/stack.h>. Just use <stack.h>.
-> >   #endif
-> >  =20
-> > +#define HAVE_ARCH_BACKTRACE
-> > +#define HAVE_ARCH_BACKTRACE_FRAME
-> > +
-> >   #endif
-> > diff --git a/lib/ppc64/stack.c b/lib/ppc64/stack.c
-> > new file mode 100644
-> > index 000000000..fcb7fa860
-> > --- /dev/null
-> > +++ b/lib/ppc64/stack.c
-> > @@ -0,0 +1,55 @@
-> > +#include <libcflat.h>
-> > +#include <asm/ptrace.h>
-> > +#include <stack.h>
-> > +
-> > +extern char exception_stack_marker[];
-> > +
-> > +int backtrace_frame(const void *frame, const void **return_addrs, int =
-max_depth)
-> > +{
-> > +	static int walking;
-> > +	int depth =3D 0;
-> > +	const unsigned long *bp =3D (unsigned long *)frame;
-> > +	void *return_addr;
-> > +
-> > +	asm volatile("" ::: "lr"); /* Force it to save LR */
-> > +
-> > +	if (walking) {
-> > +		printf("RECURSIVE STACK WALK!!!\n");
-> > +		return 0;
-> > +	}
-> > +	walking =3D 1;
-> > +
-> > +	bp =3D (unsigned long *)bp[0];
-> > +	return_addr =3D (void *)bp[2];
-> > +
-> > +	for (depth =3D 0; bp && depth < max_depth; depth++) {
-> > +		return_addrs[depth] =3D return_addr;
-> > +		if (return_addrs[depth] =3D=3D 0)
-> > +			break;
-> > +		if (return_addrs[depth] =3D=3D exception_stack_marker) {
-> > +			struct pt_regs *regs;
-> > +
-> > +			regs =3D (void *)bp + STACK_FRAME_OVERHEAD;
-> > +			bp =3D (unsigned long *)bp[0];
-> > +			/* Represent interrupt frame with vector number */
-> > +			return_addr =3D (void *)regs->trap;
-> > +			if (depth + 1 < max_depth) {
-> > +				depth++;
-> > +				return_addrs[depth] =3D return_addr;
-> > +				return_addr =3D (void *)regs->nip;
-> > +			}
-> > +		} else {
-> > +			bp =3D (unsigned long *)bp[0];
-> > +			return_addr =3D (void *)bp[2];
-> > +		}
-> > +	}
-> > +
-> > +	walking =3D 0;
-> > +	return depth;
-> > +}
-> > +
-> > +int backtrace(const void **return_addrs, int max_depth)
-> > +{
-> > +	return backtrace_frame(__builtin_frame_address(0), return_addrs,
-> > +			       max_depth);
-> > +}
-> > diff --git a/powerpc/Makefile.ppc64 b/powerpc/Makefile.ppc64
-> > index b0ed2b104..eb682c226 100644
-> > --- a/powerpc/Makefile.ppc64
-> > +++ b/powerpc/Makefile.ppc64
-> > @@ -17,6 +17,7 @@ cstart.o =3D $(TEST_DIR)/cstart64.o
-> >   reloc.o  =3D $(TEST_DIR)/reloc64.o
-> >  =20
-> >   OBJDIRS +=3D lib/ppc64
-> > +cflatobjs +=3D lib/ppc64/stack.o
-> >  =20
-> >   # ppc64 specific tests
-> >   tests =3D $(TEST_DIR)/spapr_vpa.elf
-> > diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
-> > index 14ab0c6c8..278af84a6 100644
-> > --- a/powerpc/cstart64.S
-> > +++ b/powerpc/cstart64.S
-> > @@ -188,6 +188,7 @@ call_handler:
-> >   	.endr
-> >   	mfsprg1	r0
-> >   	std	r0,GPR1(r1)
-> > +	std	r0,0(r1)
-> >  =20
-> >   	/* lr, xer, ccr */
-> >  =20
-> > @@ -206,12 +207,12 @@ call_handler:
-> >   	subi	r31, r31, 0b - start_text
-> >   	ld	r2, (p_toc_text - start_text)(r31)
-> >  =20
-> > -	/* FIXME: build stack frame */
-> > -
-> >   	/* call generic handler */
-> >  =20
-> >   	addi	r3,r1,STACK_FRAME_OVERHEAD
-> >   	bl	do_handle_exception
-> > +	.global exception_stack_marker
-> > +exception_stack_marker:
-> >  =20
-> >   	/* restore context */
-> >  =20
-> > @@ -321,6 +322,7 @@ handler_trampoline:
-> >   	/* nip and msr */
-> >   	mfsrr0	r0
-> >   	std	r0, _NIP(r1)
-> > +	std	r0, INT_FRAME_SIZE+16(r1)
+> >   		if (sprs[i].width =3D=3D 32 && !(before[i] >> 32) && !(after[i] >> =
+32))
 >
-> So if I got that right, INT_FRAME_SIZE+16 points to the stack frame of th=
-e=20
-> function that was running before the interrupt handler? Is it such a good=
-=20
-> idea to change that here?
+> I guess you could also squash this into the previous patch (to avoid=20
+> problems with bisecting later?) ...
 
-No, we switch to exception stack and don't support recursing interrupts
-on stack at the moment, so this goes into the initial frame.
+Yeah, I guess it doesn't make much sense to split out since lots of
+other stuff changes in the previous patch too.
 
-> Please add a comment here explaining this line.=20
-> Thanks!
-
-Yes, good idea.
+>
+> Anyway:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 Thanks,
 Nick
-
->
->
-> >   	mfsrr1	r0
-> >   	std	r0, _MSR(r1)
-> > @@ -337,6 +339,7 @@ handler_htrampoline:
-> >   	/* nip and msr */
-> >   	mfspr	r0, SPR_HSRR0
-> >   	std	r0, _NIP(r1)
-> > +	std	r0, INT_FRAME_SIZE+16(r1)
->
-> dito.
->
-> >   	mfspr	r0, SPR_HSRR1
-> >   	std	r0, _MSR(r1)
->
->   Thomas
-
