@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E62E8713E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 03:48:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEE38713ED
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 03:51:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hjZ1JruC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iC57DWBt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tpg4H6WVlz3d2x
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 13:48:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tpg6y0H15z3dXL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 13:51:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hjZ1JruC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iC57DWBt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::234; helo=mail-oi1-x234.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tpg3X6jGnz3bV2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 13:48:07 +1100 (AEDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3c1f582673bso556933b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 18:48:07 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tpg6F14WMz30YR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 13:50:28 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6e617b39877so1581500b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 18:50:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709606884; x=1710211684; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20230601; t=1709607026; x=1710211826; darn=lists.ozlabs.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HSZr4DPIKRSKTMaW46X/jcBrQt1dzvbv+0KNdLtj2k8=;
-        b=hjZ1JruCE5gI3U8MGPTsjU9uR3yF0C82LYAtIUM3rmsXLNjJgf6anxj+N7xEz25juJ
-         uGQht4GvcR7eCoUHrD+l8W61bGNz8GgH5ilGhCfk5oepCYsuuPbMNAW2dzvyHwPNT3ko
-         /AXjiveUt7ytYOJnn1oB7unW4j/+5pRUMkcmERA6o2iI7oAH1HW6hVD0/hDWZm+ay1Oj
-         Gg9TdPQ9lALPqBMbD8rYq1s4vFKNAsAGZXEWbA/dRhrIM/cLpCOiGs54Gx8I/cNi2GH0
-         hve85rtgs8H6nXDbG63A34budIxS9GTmh8EzUs4rEtDKcOcgAo1h+gaKF5C4vkp3aj/+
-         u2pA==
+        bh=K01sPMa+E35+HBf+hQVX1Loh4XduD8AUM0UI4iasBRg=;
+        b=iC57DWBt6D4PxKxcI5vRmrXJtmi6+7CmIVqOBr1cwwqva1GzsgoCiI5apAe9pVL0+R
+         tPOX5q42Goc1BYk5Rq0iAnHZHe5cW0KfBSoE5EgWZEfDnUFc+da2fQ03VI24enl4AXIH
+         k4j+7L2J0Hde01V0voGFLW7sK2NPc/n+nSpQRcf2N1TINbmHlPIq/FiSn0D0VPArey+2
+         yezAJ4jYk5cTqr273fP44VN7YjcRwKgqMj14fd8i500pJoZn19K8X6+wdfaQyQ00spZp
+         dUvBjly3yp627/0JklLDBcDVWb2PgVklqvAid2MZOS/o79fwj2FB0iaYFbWcAlEpHK34
+         jcjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709606884; x=1710211684;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1709607026; x=1710211826;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HSZr4DPIKRSKTMaW46X/jcBrQt1dzvbv+0KNdLtj2k8=;
-        b=UmMNIaG5QQmeq3L742urSYcCy0Cd2xgSdSAjEfKNOhK3lmpH/lGjjJpf2xooQrl+m9
-         8iI6dbDfNdFdjGj4DiR1T6qt7dSIXG94eGDE5BrhPu22Qd5hYvsCALTyleFP1JihD9qc
-         KpYdRohaLhqW0qNgvXe3WKSk0DJZ4RDP84K7lAP0Y37QoiY8ZzxFTeObMiOj/TLxOrZF
-         cVvtT++GhLUU0O2BlretKjh/rtLcqmUNEQkmfl1trBkidJKMGtUOKUvVbs1Xt+lViv0/
-         SO5ZW1SA8Iw+M52HDiknm5j4jSvU2NOwaBGqJ3SCS8kgNXMxfrctxrNyTWwzi47/qb4e
-         WQsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDxGKmWVfiUE7gUgfa5w4ZN4R+RArHaTlaWqM36FtqiyIdeM5VAj+Q3uwPRIK7qYQaFEYbHZq8wU0VzmOXk/lxHpb/QWG21VaLDrIHxQ==
-X-Gm-Message-State: AOJu0YxAQLRMfKrjcZ8SFlaFO2eaDc0jSYr31eVmWU/Xm1y547jmvWOv
-	jqrY794xdlwupzzDYG5UvyLIdv5bEw3fvzj8J2P4HnK5oCHjdMcw
-X-Google-Smtp-Source: AGHT+IH0UuEdRgXkpB3snaCgFc1Pc+EgsL4JBZeNU3fqUdfBioGXZ1BGiwqZOs82imAc/KYqpTli9g==
-X-Received: by 2002:aca:f01:0:b0:3c1:dbd5:fc39 with SMTP id 1-20020aca0f01000000b003c1dbd5fc39mr585576oip.31.1709606882631;
-        Mon, 04 Mar 2024 18:48:02 -0800 (PST)
+        bh=K01sPMa+E35+HBf+hQVX1Loh4XduD8AUM0UI4iasBRg=;
+        b=CZBvuoNJbKHd0KELTDEiBbjdh39NYmUkSflFbsEetiCxgOl0wSWIvzmIbkPvjtHRXe
+         VeQ5hKaOaZYp9eEre2MdrLOBekZsc1mjR1IiVwj3TGv5DQqbHtLjLUDLhwiIG3AHwZB8
+         /K0fysbjmZemJz4g1TOSYpG4MD1JTI8rTLuXy12lRldk9g1AbCScrTQih/XDUM3XZf5O
+         wMdHZ2O1mhLFtqEnU58VoSa1doQtLOm6/5g9o1gIQeHY01AzMNxWqji8UAmzW4QPC8ei
+         LGxfWYiOm3OCz794aK4MbP+dYT18ghDQ1hLR7ixEkbSdIFeg+ga0geG6xHqyv6+qWnp1
+         42qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSAOaQZO/9QjHMnXhMa3oto1iEpH3muPTHaQ0JUJcTTQy3gGxK3slI1sfDS64A0wC+mWiEVuR31vO5l0rNXFfDtiYWZfF5FoKHOG9HmA==
+X-Gm-Message-State: AOJu0Yw+g5GXpLA7L1ncJbwS41Vd9Sxa/LyR45aoJNPeKxsSCa9nCNa7
+	niVlSuUpGVDut3US0/a4Zi8ubfNQLMoZRSuRUDObj5yh2YottkYa
+X-Google-Smtp-Source: AGHT+IGeaUyWTzG0fHn8j7kM8kVyutYiwJxH45YKNyPGsMtfAwKqhuxGDXZ2ByjKjIbEtmSLAgF7Iw==
+X-Received: by 2002:a62:6203:0:b0:6e5:e7f5:856 with SMTP id w3-20020a626203000000b006e5e7f50856mr6657495pfb.19.1709607026290;
+        Mon, 04 Mar 2024 18:50:26 -0800 (PST)
 Received: from localhost (220-235-220-130.tpgi.com.au. [220.235.220.130])
-        by smtp.gmail.com with ESMTPSA id c6-20020aa78806000000b006e53cc789c3sm7936038pfo.107.2024.03.04.18.47.57
+        by smtp.gmail.com with ESMTPSA id k16-20020aa79d10000000b006e5ad7f245esm6916368pfp.11.2024.03.04.18.50.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 18:48:02 -0800 (PST)
+        Mon, 04 Mar 2024 18:50:26 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 05 Mar 2024 12:47:54 +1000
-Message-Id: <CZLH23VYF085.2H710Q91HBR6A@wheely>
-Subject: Re: [kvm-unit-tests PATCH 5/7] arch-run: Add a "continuous"
- migration option for tests
+Date: Tue, 05 Mar 2024 12:50:18 +1000
+Message-Id: <CZLH3XUGU8Z8.2R73ILJ3ISWN8@wheely>
+Subject: Re: [kvm-unit-tests PATCH 7/7] common: add memory dirtying vs
+ migration test
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Thomas Huth" <thuth@redhat.com>
 X-Mailer: aerc 0.15.2
 References: <20240226093832.1468383-1-npiggin@gmail.com>
- <20240226093832.1468383-6-npiggin@gmail.com>
- <6329dd4c-2093-40c3-8eb8-701d8e8b2ecd@redhat.com>
-In-Reply-To: <6329dd4c-2093-40c3-8eb8-701d8e8b2ecd@redhat.com>
+ <20240226093832.1468383-8-npiggin@gmail.com>
+ <e967e7a6-eb20-4b2b-ab7a-fc5052a3eb52@redhat.com>
+In-Reply-To: <e967e7a6-eb20-4b2b-ab7a-fc5052a3eb52@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,167 +89,91 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Mar 4, 2024 at 4:17 PM AEST, Thomas Huth wrote:
+On Mon Mar 4, 2024 at 4:22 PM AEST, Thomas Huth wrote:
 > On 26/02/2024 10.38, Nicholas Piggin wrote:
-> > The cooperative migration protocol is very good to control precise
-> > pre and post conditions for a migration event. However in some cases
-> > its intrusiveness to the test program, can mask problems and make
-> > analysis more difficult.
-> >=20
-> > For example to stress test migration vs concurrent complicated
-> > memory access, including TLB refill, ram dirtying, etc., then the
-> > tight spin at getchar() and resumption of the workload after
-> > migration is unhelpful.
-> >=20
-> > This adds a continuous migration mode that directs the harness to
-> > perform migrations continually. This is added to the migration
-> > selftests, which also sees cooperative migration iterations reduced
-> > to avoid increasing test time too much.
-> >=20
+> > This test stores to a bunch of pages and verifies previous stores,
+> > while being continually migrated. This can fail due to a QEMU TCG
+> > physical memory dirty bitmap bug.
+>
+> Good idea, but could we then please drop "continuous" test from=20
+> selftest-migration.c again? ... having two common tests to exercise the=
+=20
+> continuous migration that take quite a bunch of seconds to finish sounds=
+=20
+> like a waste of time in the long run to me.
+
+Yeah if you like. I could shorten them up a bit. I did want to have
+the selftests for just purely testing the harness with as little
+"test" code as possible.
+
+>
 > > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > > ---
-> >   common/selftest-migration.c | 16 +++++++++--
-> >   lib/migrate.c               | 18 ++++++++++++
-> >   lib/migrate.h               |  3 ++
-> >   scripts/arch-run.bash       | 55 ++++++++++++++++++++++++++++++++----=
--
-> >   4 files changed, 82 insertions(+), 10 deletions(-)
+> >   common/memory-verify.c  | 48 ++++++++++++++++++++++++++++++++++++++++=
++
+> >   powerpc/Makefile.common |  1 +
+> >   powerpc/memory-verify.c |  1 +
+> >   powerpc/unittests.cfg   |  7 ++++++
+> >   s390x/Makefile          |  1 +
+> >   s390x/memory-verify.c   |  1 +
+> >   s390x/unittests.cfg     |  6 ++++++
+> >   7 files changed, 65 insertions(+)
+> >   create mode 100644 common/memory-verify.c
+> >   create mode 120000 powerpc/memory-verify.c
+> >   create mode 120000 s390x/memory-verify.c
 > >=20
-> > diff --git a/common/selftest-migration.c b/common/selftest-migration.c
-> > index 0afd8581c..9a9b61835 100644
-> > --- a/common/selftest-migration.c
-> > +++ b/common/selftest-migration.c
-> > @@ -9,12 +9,13 @@
-> >    */
-> >   #include <libcflat.h>
-> >   #include <migrate.h>
+> > diff --git a/common/memory-verify.c b/common/memory-verify.c
+> > new file mode 100644
+> > index 000000000..7c4ec087b
+> > --- /dev/null
+> > +++ b/common/memory-verify.c
+> > @@ -0,0 +1,48 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Simple memory verification test, used to exercise dirty memory migr=
+ation.
+> > + *
+> > + */
+> > +#include <libcflat.h>
+> > +#include <migrate.h>
+> > +#include <alloc.h>
+> > +#include <asm/page.h>
 > > +#include <asm/time.h>
-> >  =20
-> > -#define NR_MIGRATIONS 30
-> > +#define NR_MIGRATIONS 15
-> >  =20
-> >   int main(int argc, char **argv)
-> >   {
-> > -	report_prefix_push("migration");
-> > +	report_prefix_push("migration harness");
-> >  =20
-> >   	if (argc > 1 && !strcmp(argv[1], "skip")) {
-> >   		migrate_skip();
-> > @@ -24,7 +25,16 @@ int main(int argc, char **argv)
-> >  =20
-> >   		for (i =3D 0; i < NR_MIGRATIONS; i++)
-> >   			migrate_quiet();
-> > -		report(true, "simple harness stress");
-> > +		report(true, "cooperative migration");
 > > +
-> > +		migrate_begin_continuous();
-> > +		mdelay(2000);
-> > +		migrate_end_continuous();
-> > +		mdelay(1000);
-> > +		migrate_begin_continuous();
-> > +		mdelay(2000);
-> > +		migrate_end_continuous();
-> > +		report(true, "continuous migration");
-> >   	}
-> >  =20
-> >   	report_prefix_pop();
-> > diff --git a/lib/migrate.c b/lib/migrate.c
-> > index 1d22196b7..770f76d5c 100644
-> > --- a/lib/migrate.c
-> > +++ b/lib/migrate.c
-> > @@ -60,3 +60,21 @@ void migrate_skip(void)
-> >   	puts("Skipped VM migration (quiet)\n");
-> >   	(void)getchar();
-> >   }
+> > +#define NR_PAGES 32
 > > +
-> > +void migrate_begin_continuous(void)
+> > +int main(int argc, char **argv)
 > > +{
-> > +	puts("Begin continuous migration\n");
-> > +	(void)getchar();
-> > +}
+> > +	void *mem =3D malloc(NR_PAGES*PAGE_SIZE);
+> > +	bool success =3D true;
+> > +	uint64_t ms;
+> > +	long i;
 > > +
-> > +void migrate_end_continuous(void)
-> > +{
-> > +	/*
-> > +	 * Migration can split this output between source and dest QEMU
-> > +	 * output files, print twice and match once to always cope with
-> > +	 * a split.
-> > +	 */
-> > +	puts("End continuous migration\n");
-> > +	puts("End continuous migration (quiet)\n");
-> > +	(void)getchar();
-> > +}
-> > diff --git a/lib/migrate.h b/lib/migrate.h
-> > index db6e0c501..35b6703a2 100644
-> > --- a/lib/migrate.h
-> > +++ b/lib/migrate.h
-> > @@ -11,3 +11,6 @@ void migrate_quiet(void);
-> >   void migrate_once(void);
-> >  =20
-> >   void migrate_skip(void);
+> > +	report_prefix_push("memory");
 > > +
-> > +void migrate_begin_continuous(void);
-> > +void migrate_end_continuous(void);
-> > diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-> > index d0f6f098f..5c7e72036 100644
-> > --- a/scripts/arch-run.bash
-> > +++ b/scripts/arch-run.bash
-> > @@ -125,15 +125,17 @@ qmp_events ()
-> >   filter_quiet_msgs ()
-> >   {
-> >   	grep -v "Now migrate the VM (quiet)" |
-> > +	grep -v "Begin continuous migration (quiet)" |
-> > +	grep -v "End continuous migration (quiet)" |
-> >   	grep -v "Skipped VM migration (quiet)"
-> >   }
-> >  =20
-> >   seen_migrate_msg ()
-> >   {
-> >   	if [ $skip_migration -eq 1 ]; then
-> > -		grep -q -e "Now migrate the VM" < $1
-> > +	        grep -q -e "Now migrate the VM" -e "Begin continuous migratio=
-n" < $1
-> >   	else
-> > -		grep -q -e "Now migrate the VM" -e "Skipped VM migration" < $1
-> > +	        grep -q -e "Now migrate the VM" -e "Begin continuous migratio=
-n" -e "Skipped VM migration" < $1
-> >   	fi
-> >   }
-> >  =20
-> > @@ -161,6 +163,7 @@ run_migration ()
-> >   	src_qmpout=3D/dev/null
-> >   	dst_qmpout=3D/dev/null
-> >   	skip_migration=3D0
-> > +	continuous_migration=3D0
-> >  =20
-> >   	mkfifo ${src_outfifo}
-> >   	mkfifo ${dst_outfifo}
-> > @@ -186,9 +189,12 @@ run_migration ()
-> >   	do_migration || return $?
-> >  =20
-> >   	while ps -p ${live_pid} > /dev/null ; do
-> > -		# Wait for test exit or further migration messages.
-> > -		if ! seen_migrate_msg ${src_out} ;  then
-> > +		if [[ ${continuous_migration} -eq 1 ]] ; then
+> > +	memset(mem, 0, NR_PAGES*PAGE_SIZE);
+> > +
+> > +	migrate_begin_continuous();
+> > +	ms =3D get_clock_ms();
+> > +	i =3D 0;
+> > +	do {
+> > +		int j;
+> > +
+> > +		for (j =3D 0; j < NR_PAGES*PAGE_SIZE; j +=3D PAGE_SIZE) {
+> > +			if (*(volatile long *)(mem + j) !=3D i) {
+> > +				success =3D false;
+> > +				goto out;
+> > +			}
+> > +			*(volatile long *)(mem + j) =3D i + 1;
+> > +		}
+> > +		i++;
+> > +	} while (get_clock_ms() - ms < 5000);
 >
-> Here you're using "[[" for testing ...
->
-> > +			do_migration || return $?
-> > +		elif ! seen_migrate_msg ${src_out} ;  then
-> >   			sleep 0.1
-> > +		elif grep -q "Begin continuous migration" < ${src_out} ; then
-> > +			do_migration || return $?
-> >   		elif grep -q "Now migrate the VM" < ${src_out} ; then
-> >   			do_migration || return $?
-> >   		elif [ $skip_migration -eq 0 ] && grep -q "Skipped VM migration" < =
-${src_out} ; then
->
-> ... while the other code seems to use "[" for testing values. Can we try =
-to=20
-> stick to one style, please (unless it's really required to use "[[" somew=
-here)?
+> Maybe add a parameter so that the user can use different values for the=
+=20
+> runtime than always doing 5 seconds?
 
-Good point. Will do.
+Sure.
 
 Thanks,
 Nick
