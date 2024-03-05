@@ -2,91 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29F387160B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 07:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3B4871616
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 07:53:18 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2NPQHTR;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2NPQHTR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HtPCPJOw;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HtPCPJOw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TpmRn45FMz3dTl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 17:51:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TpmVN022xz3dX1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 17:53:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2NPQHTR;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2NPQHTR;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HtPCPJOw;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HtPCPJOw;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpmR25z88z3cDR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 17:50:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TpmTg2CMNz3cgJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 17:52:39 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709621418;
+	s=mimecast20190719; t=1709621556;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yUHOxqOqxGyA7MtR9Nnzp2vnulyuYHtJSbKL4qmMk4s=;
-	b=D2NPQHTR1dVQHkqe1T8kzmcJ6akl3cd1cKfAJGdDNNbAkjAeS5U0+QTJ09/y3saHrlW9C+
-	ha2I4ML5nbaFQkdt3HEW0XoFljuOhmGvqpomvpsRcYeX4DDrVGyJmPuLMuwmuI0wmiT5cL
-	XelGhKjxLq40yHjXiUW9IsjbD92052o=
+	bh=055i0Cw+qSF55YTg7cbDTnODJKfJ+o7mIN7GUyBDy/4=;
+	b=HtPCPJOwo5QohktITTiT+7KI/FMAMDPCFWvABogKmR/B6YrdvHO4faHJYiRtcX4GI6VcLh
+	wp6hJYTuE3nfHVhRrc6o8BaiAbFzWOpfGHOLZxZvSGPITIZBDRSH1jh9VrevW4dyAU3yDc
+	DEmyHgMt9EM/xXM5hKSnwZTEFLrgJhE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709621418;
+	s=mimecast20190719; t=1709621556;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yUHOxqOqxGyA7MtR9Nnzp2vnulyuYHtJSbKL4qmMk4s=;
-	b=D2NPQHTR1dVQHkqe1T8kzmcJ6akl3cd1cKfAJGdDNNbAkjAeS5U0+QTJ09/y3saHrlW9C+
-	ha2I4ML5nbaFQkdt3HEW0XoFljuOhmGvqpomvpsRcYeX4DDrVGyJmPuLMuwmuI0wmiT5cL
-	XelGhKjxLq40yHjXiUW9IsjbD92052o=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=055i0Cw+qSF55YTg7cbDTnODJKfJ+o7mIN7GUyBDy/4=;
+	b=HtPCPJOwo5QohktITTiT+7KI/FMAMDPCFWvABogKmR/B6YrdvHO4faHJYiRtcX4GI6VcLh
+	wp6hJYTuE3nfHVhRrc6o8BaiAbFzWOpfGHOLZxZvSGPITIZBDRSH1jh9VrevW4dyAU3yDc
+	DEmyHgMt9EM/xXM5hKSnwZTEFLrgJhE=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-292-ozFziRe_NkKeLNKy4GkefQ-1; Tue, 05 Mar 2024 01:50:13 -0500
-X-MC-Unique: ozFziRe_NkKeLNKy4GkefQ-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-56544b5af9dso3526820a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 22:50:13 -0800 (PST)
+ us-mta-186-YGAjKI5hMjGby9fsr3y6dw-1; Tue, 05 Mar 2024 01:52:33 -0500
+X-MC-Unique: YGAjKI5hMjGby9fsr3y6dw-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a3fb52f121eso362769966b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Mar 2024 22:52:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709621412; x=1710226212;
+        d=1e100.net; s=20230601; t=1709621552; x=1710226352;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yUHOxqOqxGyA7MtR9Nnzp2vnulyuYHtJSbKL4qmMk4s=;
-        b=QpwpKSYx5gLhoNF/MCqcJS0ywpnx5o1T1RrtcpZd2hxwSyiEs4B173nW7ETefbl/1H
-         wZqqbMiAI3s7JVXS+8UT1DR15LPIhf6BfFd6f64bdje9t7gz6zRq5NnJK43QyEI3wyL4
-         STkPQXq4NjXFdTxgJv6aIeQniA83AClw6kt2kiLp0mKXuAz67pQAXh/zrJuNB6zy+rjd
-         SgynhbWWRCl9/Lv02frimN98iIKA9Gsr3BS3MaSAVRppUTBurKFk2l49rJK6P5x68+0Z
-         ua1j8AgB1hC/PtHuvTecxZMnuDs14Vqkd+S1Kay/7b8plGXjYuTNk8W1ywlgIKyYJaVh
-         b0Ig==
-X-Forwarded-Encrypted: i=1; AJvYcCXi/nEQIaxPg/LiduFHxCj70BAiMDNuuVJN9vXKUUrNm06G/TXdIL4dYUjTsbyrBLcqoT/Ky9Uf37sqgX4g7uqE5GQbAFm+pzB4sLobZg==
-X-Gm-Message-State: AOJu0YxhYSuh2xoYamqzFkuUiR+UhgyMlbbDmReVYcNLSpvsPG1/5ZhW
-	6qEz26Oj2k95kFrfDzZJAnKiLhrFlaTXIHFWBNy35KWsGsDr2aH3lA9Lkau/EqVK71W9ANORgeT
-	+U5HinShMm1/Tp4BWCiBhLSatIw4ZForVRpVoY/a/EOxpNzutpt2Qy/dm5hvxclE=
-X-Received: by 2002:a05:6402:901:b0:565:e646:5c12 with SMTP id g1-20020a056402090100b00565e6465c12mr8850261edz.0.1709621412698;
-        Mon, 04 Mar 2024 22:50:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtP2gEIqeZN5nDOzlMNSXgqysn23HAV2b1atmbvM+KQvO6/brgGjbq/PcchmAc2KGMGnL+hQ==
-X-Received: by 2002:a05:6402:901:b0:565:e646:5c12 with SMTP id g1-20020a056402090100b00565e6465c12mr8850252edz.0.1709621412367;
-        Mon, 04 Mar 2024 22:50:12 -0800 (PST)
+        bh=055i0Cw+qSF55YTg7cbDTnODJKfJ+o7mIN7GUyBDy/4=;
+        b=mwXPpmh6+1JKlgznqua1d2ExGZn3Hc1ss6OlvDGX+ThkSI7lhj6Mj+u1V3Yy/udN+v
+         zmbCkLRNVxNxq91UVc44eSDVAk1KtYOwQRoGtfKTorQ0zrpyQSgegwSo6Rg+J8o2kgyV
+         ec//IxX9FMuz8dNyCx1e8GRtnxSa5peqSlJJ5TmBxe/3zrno+7oZe06oqKmui3SQbcs8
+         aBd66m2u1IsaVpCJAJnRitQyC1GM0kwB1mROQb3tP1ClGogHugeubqyQWCPKqd/Z4ueI
+         ss/JGKoctalmIxREL5lYrqutI5Uj60ACG+2F6doh7eGneTUI3rgU8k7SkjORA6xEajCj
+         xMGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDpvC+PfjecEZjUjr3hkXzKLYkB8RJED1r28bhWqMMoMe/afxYxxj71RNgR/Ep+gNOCXRHd50BfVA3XLQMMa+7iXLKbWP/baaFRoCcXg==
+X-Gm-Message-State: AOJu0Yxyn0ZxPl+k3WujihuPqVjwa1cKKxjskLmpabTb2/6AQYvdhjo5
+	di3na4JuJ9BUMikPHH8hClYRnxB2vD4jDeSjUYN3awarTWNoNWkZEcb/U36NcN3NTpLABxip9jv
+	L9rx5pMJZQxGGUo+Jbcanl6Owv9pBmAqpk/vDMV5FAwYzaWNQ3aG88GsNDe4PC8g=
+X-Received: by 2002:a17:906:475a:b0:a40:4711:da20 with SMTP id j26-20020a170906475a00b00a404711da20mr7932078ejs.34.1709621552517;
+        Mon, 04 Mar 2024 22:52:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFajVdOaJs4uKX0LYrWLK+X2XMHvDfhEUWWpjcLyw7CAYFHHlfoPf9mDziaodNnuUxasFUVcg==
+X-Received: by 2002:a17:906:475a:b0:a40:4711:da20 with SMTP id j26-20020a170906475a00b00a404711da20mr7932065ejs.34.1709621552193;
+        Mon, 04 Mar 2024 22:52:32 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-178-243.web.vodafone.de. [109.43.178.243])
-        by smtp.gmail.com with ESMTPSA id q22-20020a50aa96000000b00564e489ce9asm5712740edc.12.2024.03.04.22.50.10
+        by smtp.gmail.com with ESMTPSA id uz3-20020a170907118300b00a44bb63f29csm4007506ejb.47.2024.03.04.22.52.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 22:50:12 -0800 (PST)
-Message-ID: <d78eda02-7cd7-4e66-94d8-8493f8282d72@redhat.com>
-Date: Tue, 5 Mar 2024 07:50:10 +0100
+        Mon, 04 Mar 2024 22:52:31 -0800 (PST)
+Message-ID: <839ca22a-b6e6-4e53-9819-cf803fb18101@redhat.com>
+Date: Tue, 5 Mar 2024 07:52:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 6/7] gitlab-ci: Run migration selftest on
- s390x and powerpc
+Subject: Re: [kvm-unit-tests PATCH 7/7] common: add memory dirtying vs
+ migration test
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240226093832.1468383-1-npiggin@gmail.com>
- <20240226093832.1468383-7-npiggin@gmail.com>
- <7783977b-69ea-4831-a8f2-55de26d7bfd4@redhat.com>
- <CZLGURIYNKHG.1JRG53746LHWI@wheely>
+ <20240226093832.1468383-8-npiggin@gmail.com>
+ <e967e7a6-eb20-4b2b-ab7a-fc5052a3eb52@redhat.com>
+ <CZLH3XUGU8Z8.2R73ILJ3ISWN8@wheely>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -130,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <CZLGURIYNKHG.1JRG53746LHWI@wheely>
+In-Reply-To: <CZLH3XUGU8Z8.2R73ILJ3ISWN8@wheely>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -151,85 +151,24 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, Nico Boehr 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/03/2024 03.38, Nicholas Piggin wrote:
-> On Sat Mar 2, 2024 at 12:16 AM AEST, Thomas Huth wrote:
+On 05/03/2024 03.50, Nicholas Piggin wrote:
+> On Mon Mar 4, 2024 at 4:22 PM AEST, Thomas Huth wrote:
 >> On 26/02/2024 10.38, Nicholas Piggin wrote:
->>> The migration harness is complicated and easy to break so CI will
->>> be helpful.
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>    .gitlab-ci.yml | 18 +++++++++++-------
->>>    1 file changed, 11 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
->>> index 71d986e98..61f196d5d 100644
->>> --- a/.gitlab-ci.yml
->>> +++ b/.gitlab-ci.yml
->>> @@ -64,26 +64,28 @@ build-arm:
->>>    build-ppc64be:
->>>     extends: .outoftree_template
->>>     script:
->>> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
->>> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
->>>     - mkdir build
->>>     - cd build
->>>     - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
->>>     - make -j2
->>>     - ACCEL=tcg ./run_tests.sh
->>> -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-day-base
->>> -     rtas-set-time-of-day emulator
->>> +     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
->>> +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
->>> +     emulator
->>>         | tee results.txt
->>>     - if grep -q FAIL results.txt ; then exit 1 ; fi
->>>    
->>>    build-ppc64le:
->>>     extends: .intree_template
->>>     script:
->>> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
->>> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
->>>     - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
->>>     - make -j2
->>>     - ACCEL=tcg ./run_tests.sh
->>> -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-day-base
->>> -     rtas-set-time-of-day emulator
->>> +     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
->>> +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
->>> +     emulator
->>>         | tee results.txt
->>>     - if grep -q FAIL results.txt ; then exit 1 ; fi
->>>    
->>> @@ -107,7 +109,7 @@ build-riscv64:
->>>    build-s390x:
->>>     extends: .outoftree_template
->>>     script:
->>> - - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu
->>> + - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu nmap-ncat
->>>     - mkdir build
->>>     - cd build
->>>     - ../configure --arch=s390x --cross-prefix=s390x-linux-gnu-
->>> @@ -133,6 +135,8 @@ build-s390x:
->>>          sclp-1g
->>>          sclp-3g
->>>          selftest-setup
->>> +      selftest-migration
->>> +      selftest-migration-skip
->>>          sieve
->>>          smp
->>>          stsi
+>>> This test stores to a bunch of pages and verifies previous stores,
+>>> while being continually migrated. This can fail due to a QEMU TCG
+>>> physical memory dirty bitmap bug.
 >>
->> While I can update the qemu binary for the s390x-kvm job, the build-* jobs
->> run in a container with a normal QEMU from the corresponding distros, so I
->> think this has to wait 'til we get distros that contain your QEMU TCG
->> migration fix.
+>> Good idea, but could we then please drop "continuous" test from
+>> selftest-migration.c again? ... having two common tests to exercise the
+>> continuous migration that take quite a bunch of seconds to finish sounds
+>> like a waste of time in the long run to me.
 > 
-> Okay. powerpc *could* run into the TCG bug too, in practice it has not.
-> We could try enable it there to get migration into CI, and revert it if
-> it starts showing random failures?
+> Yeah if you like. I could shorten them up a bit. I did want to have
+> the selftests for just purely testing the harness with as little
+> "test" code as possible.
 
-Fine for me.
+Ok, but then please shorten the selftest to ~ 2 seconds if possible, please.
 
   Thomas
+
 
