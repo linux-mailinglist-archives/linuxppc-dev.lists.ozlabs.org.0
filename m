@@ -2,133 +2,164 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0769E87198E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 10:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32F3871A2B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 11:05:13 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=EOzqqZs4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=G5vasWwx;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R4fg3BR+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=G5vasWwx;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R4fg3BR+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tpqvq5bzxz3dVj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 20:27:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tprlq4tzqz3dXB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 21:05:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=EOzqqZs4;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=G5vasWwx;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R4fg3BR+;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=G5vasWwx;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R4fg3BR+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261d::701; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20701.outbound.protection.outlook.com [IPv6:2a01:111:f403:261d::701])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tpqv51pzyz3cJW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 20:26:19 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FMmQfV4/daU93HiaXH7eWRTJd9wPpmvKcHc5L3p9zWfqs0AJFO1Ra+KNbMR8dDNMcE8aFSV+BeLwfgzLwcGSMAZ3SQ6no7O35cRWW4ueRgMafTkdb4uTD7MrldFfrM+OUYK8hr3/E1B13U5XJZF7IjdiAvZsxiaxYhVdbDunyIgJ4/kVBSwOUpaDlBeUJlB1H4s7tKT6zSu2TZLJ5KN4+g9huriNA+UfwUBDiRD8bZ7o/+vatpLoIYKsbAlnuA/Ij+kJoTRlqbXRuCwkuQfFZzhkqNfPKIYpGx/Ox5+YqWrWIgbBI8xWe3d0lCpLU2TKDf9U63YIdwQoa32m0liq6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qK0Hh9fNZe7KkArhM+Q4hZDuVhu/mBHxJ3jQV82aHqQ=;
- b=ni7kGkSYkvWNrzYPMCr7QI0GJFQX1E1z/5yLoRRmPxdQVPc64xzVai3fr9ZuGQzRQcq6DTstaN4Yswe+EEvLiMr7wFk/uFLKC6wC10tlhOMGGwuLKRcMXB5P5p7S3aaQFWpafCQyxrp8lLZ6xaKNBG+7tjTMmANhTb+z6WlwvHtIoFUvljfO62gMwlA8FFjZq8X9LXm5wylVB90oOB6AJtnQsx3pDslKbKl5cBIYCmVA9PR+mSYQGL5RuTep760eGE201PY8eKFp4K+sArJW3V1WRgmdkUolBQNdHjB2JUudBzrEiJOgvM6yHoO+rQRmzqBEOt+FvaUm5276FBYe1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qK0Hh9fNZe7KkArhM+Q4hZDuVhu/mBHxJ3jQV82aHqQ=;
- b=EOzqqZs4LbN2iFjYN2atyUcFVYgXG30NJPvH93pRjC8jghmkQe0d91q/3l0twdqVXcCtM6MrqGD8sYakTOByZcdB4FndcYmwpfHpd3gCtBsiwzrk4KlDpHNxjxAu8Ng+lOoQLwupocIwhe9d4EJronpsQx4yTdqf0bXuVTD2qcwou3LKP/EzOcKMbbKooa58wK8Mo4r7OA4HG6+GcBAZuWYtvFGwtZvcYm/2pd6a3M9/leKPSFWZ7lmRKw9rS+WQseZWWjXyzG2NUhTvc2D6uWN2qhW3jGaiWK1IMeE3FmXKyXIZ5Yzji1zP88QZcqBSQbYwvAo7CsNxGTZroHzWeA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PAZP264MB2717.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e7::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Tue, 5 Mar
- 2024 09:25:54 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7339.035; Tue, 5 Mar 2024
- 09:25:54 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Thomas Zimmermann <tzimmermann@suse.de>, "mpe@ellerman.id.au"
-	<mpe@ellerman.id.au>, "jani.nikula@intel.com" <jani.nikula@intel.com>,
-	"naresh.kamboju@linaro.org" <naresh.kamboju@linaro.org>, "deller@gmx.de"
-	<deller@gmx.de>, "npiggin@gmail.com" <npiggin@gmail.com>,
-	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
-	"naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tprl26t7Nz3cRB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 21:04:30 +1100 (AEDT)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AE2BF6AB06;
+	Tue,  5 Mar 2024 10:04:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709633066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TER6JpIJ4/RVnjarJCWAeQTVqdl0Kel7dheCcqNkqMA=;
+	b=G5vasWwxzx8tORqS9VBloBUYmuFmH7Eu+pmP6W3ZHVbna7BR1ELrAGtJemQeU3LILk08a0
+	DPAALqc7QW81E5BfOUlRx8dv707dKiF+aJYJpI8E/ebkyoXZ7NET2BGJ17HvxWDFXKplyz
+	7tOuexj/93nBplcGrj1+5vE6iirbxpc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709633066;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TER6JpIJ4/RVnjarJCWAeQTVqdl0Kel7dheCcqNkqMA=;
+	b=R4fg3BR+ZzWyyBENiRZ+/DanzPr+KLoMkcrRN+tn2nuUmCuYRP+96LN6yVOgO4y35WF+ZN
+	H0JDieqbO5vaYbAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709633066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TER6JpIJ4/RVnjarJCWAeQTVqdl0Kel7dheCcqNkqMA=;
+	b=G5vasWwxzx8tORqS9VBloBUYmuFmH7Eu+pmP6W3ZHVbna7BR1ELrAGtJemQeU3LILk08a0
+	DPAALqc7QW81E5BfOUlRx8dv707dKiF+aJYJpI8E/ebkyoXZ7NET2BGJ17HvxWDFXKplyz
+	7tOuexj/93nBplcGrj1+5vE6iirbxpc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709633066;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TER6JpIJ4/RVnjarJCWAeQTVqdl0Kel7dheCcqNkqMA=;
+	b=R4fg3BR+ZzWyyBENiRZ+/DanzPr+KLoMkcrRN+tn2nuUmCuYRP+96LN6yVOgO4y35WF+ZN
+	H0JDieqbO5vaYbAw==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5086113A5D;
+	Tue,  5 Mar 2024 10:04:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id GT4iEiru5mUhcgAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Tue, 05 Mar 2024 10:04:26 +0000
+Message-ID: <f7503198-ab1b-463c-a8c8-9addbdcdab1b@suse.de>
+Date: Tue, 5 Mar 2024 11:04:25 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 3/3] arch/powerpc: Remove <linux/fb.h> from backlight
  code
-Thread-Topic: [PATCH v2 3/3] arch/powerpc: Remove <linux/fb.h> from backlight
- code
-Thread-Index: AQHabtzNJ1qHAIS860mENCksCunHF7Eo4IQA
-Date: Tue, 5 Mar 2024 09:25:54 +0000
-Message-ID: <15e13364-8b43-402c-836b-436499906b74@csgroup.eu>
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "jani.nikula@intel.com" <jani.nikula@intel.com>,
+ "naresh.kamboju@linaro.org" <naresh.kamboju@linaro.org>,
+ "deller@gmx.de" <deller@gmx.de>, "npiggin@gmail.com" <npiggin@gmail.com>,
+ "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
+ "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>
 References: <20240305090910.26742-1-tzimmermann@suse.de>
  <20240305090910.26742-4-tzimmermann@suse.de>
-In-Reply-To: <20240305090910.26742-4-tzimmermann@suse.de>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB2717:EE_
-x-ms-office365-filtering-correlation-id: 7d0afa33-a05a-4228-a94d-08dc3cf64216
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  W+Vpx24V+UV11m9I1dxB7LGtR4ufF3FwqbEcxA1I+ECsWdVOlgSjSffktvWDMwzsWHnqwNtn1FVGav1E91GlyLFbVw0Qx1wMONCa6gzyY3EREB6igsnvEtUZerMnR9Hm5y3Yjeqt7zXVkUY/OS++reOflBTtaVXl+dkfN1VIdJSQkoT4F8IO2KXG8ak6WkiGVQFZSF5vlbzOtFJ0hUUezWjyX86ZEs6JLSKZiuno5PWqGGQaKrR0HHSltMRr9N02vnH7Ah1YRsvK5jv+L7ZSb3ww/G0vbHt6dVL0Sf0761zQ2BcRjxvDWU4rIc19T18/Vxh5301o+tBnbhWnqjJiVJsRAxeGZFHA+LJWSlFsr/dJLYJ7KrYjtgvH1unAHT5S/mSauzA7UdWjbMc+arK5q9U9NVPRyPBUaA/2LEr6TGFz0aYza+YzHBsBR9TDJRHRsXVK7Wib38Rs+o7z+bu9FRaERwQZQ5UKkiQiG3BXVLw1J/w70Pjr/A73hc/cuGrOkDDALZ73hdBqiMsNjvEKxNt7M+6qemzG8+6tna2hGwy2mmb1VfdFTSp76Lc4c/1XKtt4tXI9uCUF/t9nDI3x114OTTxyHfLB0ykLBFpbFRJVGaD3XCRMEvSMw5p5xI7aqgYDpmXHa4BKmnB+R0xZS7i0qYOfBeb/g27VzVVDICeTKFkaZ7HKCEF/reTBN4gCRJnY0gFCXDY2e2qwhoV03Vnp/YDqxz2na3VS2VeownM=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?WlZFdURoYmJzY0M4R1lwc2Y2TFowRWhnaFBXZ2U5WEQxeklTS28rNEZIeXQ4?=
- =?utf-8?B?ajZiRStmWVlXazJldjFjeWg1T3NZZEtGeDRHZUs0Q29tQlBrQmdmNHdDNDc5?=
- =?utf-8?B?QUQzb0d3YzY0Yi9OV004V29nR0R6WnJBeklES21QNGJzdU42UTgzazlySnRN?=
- =?utf-8?B?Mmd4M1Q5dnMxZnVOcDRrbW54OVE2aEI4Tzc4QzdIeEdCQzROTjJOWXk1L29C?=
- =?utf-8?B?aWZFYXlQUEJ4UHBkVFZ6YmF1azZGVkM1Sk5zaEJESHRFemFyeWRYNUx6RDNQ?=
- =?utf-8?B?dlNVUVI0dFdSRXdDMVo2bWdhSFJmY203STRTTVNmaDVFdlhVcGxZV2MyTlBh?=
- =?utf-8?B?OHBBcGlPNDZxdkJ1SUVlNUxScUYySDRzd1FwanBuR3FDQm0rSDRBTHlJU2xM?=
- =?utf-8?B?ZmlEQUxOZUU1VUdxL2ZIZEdGdHpyY216ampZRFFEcEQ3TnovblhYMEN5R3RN?=
- =?utf-8?B?M1NqV0RTbzQ2bGdNYi9pMWltSy9ZdFlWdEVsRFZzc0VuLy9hS20wNSszR3V1?=
- =?utf-8?B?TWY2ZmpKREc4dUpRMm9CTU1HMFZhSExoQ3JoeW55NU81eS9UVSt0ekx0bWdU?=
- =?utf-8?B?RlhkbnRobG9ZMGlFZlcwVUoybExBY1RFN0ZRL2xjellhRUIxSjR0MEV5YmtT?=
- =?utf-8?B?REwwSE9Sd3RaVDlWRUdjeWlleU1mMGRic0gzVVkxTVhzTUcvYzcyc3g0TFM4?=
- =?utf-8?B?Y1dPOHNqTnBYeWQ1T2h5NjVLRnFpZ1AwSjNNNDdrTlVBWnJKVEVzcXBBcXRI?=
- =?utf-8?B?dUZPWm1BVVVCaXYwS3JWQldKTWpWS0RJZjQ3c1NhYVgyRTV1RS80TTFWYXBq?=
- =?utf-8?B?Ri83aURpNE1CZ25ONlpBVHFIV3l4WExBS1ptK0dDUEVHSHJSZVdSVTN0ZERI?=
- =?utf-8?B?dFhYWTJmcWZTNllWTmRFTlhHRHhJa3BWMXk3NVJKeDc5WE1PNk5ueHBsRHN6?=
- =?utf-8?B?ZWIyTEJINE9zcUZxdnFsM3RsanNpTEQ0eHRucnl0UTVUODBudnVCZHMySXRS?=
- =?utf-8?B?T1o5VGJJcWZST21RU1ZVL1JGMm9TUEZLS3AvcWJobElHajZyWHNDQ1hEQnl4?=
- =?utf-8?B?a3hWT0I3eGFzNDJxeG1nZkdzNEZXbTIzdHg3eGZqVElMRENuYzVOeXQxZVpK?=
- =?utf-8?B?NDlkRVZMMytod25GSW9sNnA5MGc2RFdKcnVYUitleGlPSTJOZjNmcnU3em85?=
- =?utf-8?B?akI2Z1lSRG05NHBVM0cyZW1vaFZ6MTB3NDE0VEhvMjZGejZxeWpFN3BTZE5r?=
- =?utf-8?B?UXpla0ZWVXNKQ3lxSVdVaTNNa0JxYWNXQStkVWhPUEtINFdwTjI4eXhBeXNE?=
- =?utf-8?B?WWtEVkZ2SzJYSml4OFp3STB2ZmRrbmt2N2JDWkNZeEZIS0M2WlY3YUg1WWhS?=
- =?utf-8?B?SVBleWZ4K0dRNDNMSjRDTWtyd2graXh4SFVjQUJ4akpNZDZzaCtCcHFjN1lK?=
- =?utf-8?B?R1dYSFpybHg4bzZINStVUHdUdEUxZU5nYk5RallYM2RaTHdPRGRza2ZOeHBI?=
- =?utf-8?B?R0NLVUpGUU42ODI3cFd1ZlUyWFhVTnlWTC9KYXpVb3RkcSszQmFYRFNuYSs0?=
- =?utf-8?B?aHlUU2NFZmFuZ1diUTRNM0hmWXM4SFJkRStHZFJNcURqSS9sR3NMZzNmTmhv?=
- =?utf-8?B?NGhkTnVKdDZxYTYxcmNadlJYRVl2SFVFKzVaZGQ1Nm9EanJJT01xQnZMMjlP?=
- =?utf-8?B?bUlEei9nSHEwdVN6bGJ6VFN5VEl4WWdleFVMWEZoMFBndXlzV2ZkNnBXQkI2?=
- =?utf-8?B?U3pmTVByaWRwbFluUU1TalZoc3ZBMDY3SFlFRXNMN1hnWmhldkNDb3I1SWtU?=
- =?utf-8?B?aWk0N1d6VG9rQXBKbVdaVVFWWDdQRmtsdnQzVHNyL2k0WGY5VVFSY2hDdk4y?=
- =?utf-8?B?R2poUGt5Ty9RS3BYcVVQeDdqUGluaFBESjVEanhIZFQ4MWdQaGozY3BTS0xO?=
- =?utf-8?B?TVRwRnBrVUFaaXRIYWoybmlMUG1PT2VHY2szM2dmT2J5S2dqcTVFekNua1Fy?=
- =?utf-8?B?RkZVV0dDQ25xLy9iYlNhc0xoTGFJU1QwUGw0VllTcXB3ZGM4Y3RSTWFqbXlX?=
- =?utf-8?B?UW5YWjBrM1pYeG1xK3Q4SVl1aG0ydW14UVhaS0JtcC8rVmVNRSszNlkxaHht?=
- =?utf-8?Q?sGMzBrOxz7+grFmzGBRqpUXM2?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E8B2A581A21CCC4A8F962F0FD2D2587D@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d0afa33-a05a-4228-a94d-08dc3cf64216
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2024 09:25:54.7737
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sBSNERxEQbmreZl5M+l+2jArI5MZYS03073sqXnASbFJXysfUrn0Ih157tjf1QSZ3ooWLJjmqx2WfQE0pnvQKnhdPO7TyrfK3KczfSUPC6Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB2717
+ <15e13364-8b43-402c-836b-436499906b74@csgroup.eu>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <15e13364-8b43-402c-836b-436499906b74@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G5vasWwx;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=R4fg3BR+
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.50 / 50.00];
+	 TO_DN_EQ_ADDR_SOME(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-0.992];
+	 FREEMAIL_TO(0.00)[csgroup.eu,ellerman.id.au,intel.com,linaro.org,gmx.de,gmail.com,kernel.org,linux.ibm.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[13];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -4.50
+X-Rspamd-Queue-Id: AE2BF6AB06
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,59 +175,110 @@ Cc: "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>, "linuxppc-dev@l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA1LzAzLzIwMjQgw6AgMTA6MDEsIFRob21hcyBaaW1tZXJtYW5uIGEgw6ljcml0wqA6
-DQo+IFJlcGxhY2UgPGxpbnV4L2ZiLmg+IHdpdGggYSBmb3J3YXJkIGRlY2xhcmF0aW9uIGluIDxh
-c20vYmFja2xpZ2h0Lmg+IHRvDQo+IHJlc29sdmVzIGFuIHVubmVjZXNzYXJ5IGRlcGVuZGVuY3ku
-IFJlbW92ZSBwbWFjX2JhY2tsaWdodF9jdXJ2ZV9sb29rdXAoKQ0KPiBhbmQgc3RydWN0IGZiX2lu
-Zm8gZnJvbSBzb3VyY2UgYW5kIGhlYWRlciBmaWxlcy4gVGhlIGZ1bmN0aW9uIGFuZCB0aGUNCj4g
-ZnJhbWVidWZmZXIgc3RydWN0IGlzIHVudXNlZC4gTm8gZnVuY3Rpb25hbCBjaGFuZ2VzLg0KDQpX
-aGVuIHlvdSByZW1vdmUgcG1hY19iYWNrbGlnaHRfY3VydmVfbG9va3VwKCkgcHJvdG90eXBlIHlv
-dSdsbCB0aGVuIGdldCANCmEgd2FybmluZy9lcnJvciBhYm91dCBtaXNzaW5nIHByb3RvdHlwZSB3
-aGVuIGJ1aWxkaW5nIA0KYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm1hYy9iYWNrbGlnaHQu
-Yw0KDQpUaGUgZm9uY3Rpb24gaXMgbm90IHVzZWQgb3V0c2lkZSBvZiB0aGF0IGZpbGUgc28gaXQg
-c2hvdWxkIGJlIHN0YXRpYy4gDQpBbmQgdGhlbiBpdCBpcyBub3QgdXNlZCBpbiB0aGF0IGZpbGUg
-ZWl0aGVyIHNvIGl0IHNob3VsZCBiZSByZW1vdmVkIA0KY29tcGxldGVseS4gSW5kZWVkIGxhc3Qg
-dXNlIG9mIHRoYXQgZnVuY3Rpb24gd2FzIHJlbW92ZWQgYnkgY29tbWl0IA0KZDU2NWRkM2IwODI0
-ICgiW1BBVENIXSBwb3dlcnBjOiBNb3JlIHZpYS1wbXUgYmFja2xpZ2h0IGZpeGVzIikgc28gdGhl
-IA0KZnVuY3Rpb24gY2FuIHNhZmVseSBiZSByZW1vdmVkLg0KDQpDaHJpc3RvcGhlDQoNCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0K
-PiAtLS0NCj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vYmFja2xpZ2h0LmggICAgICAgIHwg
-IDUgKystLQ0KPiAgIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvYmFja2xpZ2h0LmMg
-fCAyNiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gICAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0
-aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBj
-L2luY2x1ZGUvYXNtL2JhY2tsaWdodC5oIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2JhY2ts
-aWdodC5oDQo+IGluZGV4IDFiNWVhYjYyZWQwNDcuLjA2MWE5MTBkNzQ5MjkgMTAwNjQ0DQo+IC0t
-LSBhL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9iYWNrbGlnaHQuaA0KPiArKysgYi9hcmNoL3Bv
-d2VycGMvaW5jbHVkZS9hc20vYmFja2xpZ2h0LmgNCj4gQEAgLTEwLDE1ICsxMCwxNCBAQA0KPiAg
-ICNkZWZpbmUgX19BU01fUE9XRVJQQ19CQUNLTElHSFRfSA0KPiAgICNpZmRlZiBfX0tFUk5FTF9f
-DQo+ICAgDQo+IC0jaW5jbHVkZSA8bGludXgvZmIuaD4NCj4gICAjaW5jbHVkZSA8bGludXgvbXV0
-ZXguaD4NCj4gICANCj4gK3N0cnVjdCBiYWNrbGlnaHRfZGV2aWNlOw0KPiArDQo+ICAgLyogRm9y
-IGxvY2tpbmcgaW5zdHJ1Y3Rpb25zLCBzZWUgdGhlIGltcGxlbWVudGF0aW9uIGZpbGUgKi8NCj4g
-ICBleHRlcm4gc3RydWN0IGJhY2tsaWdodF9kZXZpY2UgKnBtYWNfYmFja2xpZ2h0Ow0KPiAgIGV4
-dGVybiBzdHJ1Y3QgbXV0ZXggcG1hY19iYWNrbGlnaHRfbXV0ZXg7DQo+ICAgDQo+IC1leHRlcm4g
-aW50IHBtYWNfYmFja2xpZ2h0X2N1cnZlX2xvb2t1cChzdHJ1Y3QgZmJfaW5mbyAqaW5mbywgaW50
-IHZhbHVlKTsNCj4gLQ0KPiAgIGV4dGVybiBpbnQgcG1hY19oYXNfYmFja2xpZ2h0X3R5cGUoY29u
-c3QgY2hhciAqdHlwZSk7DQo+ICAgDQo+ICAgZXh0ZXJuIHZvaWQgcG1hY19iYWNrbGlnaHRfa2V5
-KGludCBkaXJlY3Rpb24pOw0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9w
-b3dlcm1hYy9iYWNrbGlnaHQuYyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvYmFj
-a2xpZ2h0LmMNCj4gaW5kZXggYWViNzlhOGIzZTEwOS4uMTJiYzAxMzUzYmQzYyAxMDA2NDQNCj4g
-LS0tIGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm1hYy9iYWNrbGlnaHQuYw0KPiArKysg
-Yi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybWFjL2JhY2tsaWdodC5jDQo+IEBAIC05LDcg
-KzksNiBAQA0KPiAgICAqLw0KPiAgIA0KPiAgICNpbmNsdWRlIDxsaW51eC9rZXJuZWwuaD4NCj4g
-LSNpbmNsdWRlIDxsaW51eC9mYi5oPg0KPiAgICNpbmNsdWRlIDxsaW51eC9iYWNrbGlnaHQuaD4N
-Cj4gICAjaW5jbHVkZSA8bGludXgvYWRiLmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L3BtdS5oPg0K
-PiBAQCAtNzIsMzEgKzcxLDYgQEAgaW50IHBtYWNfaGFzX2JhY2tsaWdodF90eXBlKGNvbnN0IGNo
-YXIgKnR5cGUpDQo+ICAgCXJldHVybiAwOw0KPiAgIH0NCj4gICANCj4gLWludCBwbWFjX2JhY2ts
-aWdodF9jdXJ2ZV9sb29rdXAoc3RydWN0IGZiX2luZm8gKmluZm8sIGludCB2YWx1ZSkNCj4gLXsN
-Cj4gLQlpbnQgbGV2ZWwgPSAoRkJfQkFDS0xJR0hUX0xFVkVMUyAtIDEpOw0KPiAtDQo+IC0JaWYg
-KGluZm8gJiYgaW5mby0+YmxfZGV2KSB7DQo+IC0JCWludCBpLCBtYXggPSAwOw0KPiAtDQo+IC0J
-CS8qIExvb2sgZm9yIGJpZ2dlc3QgdmFsdWUgKi8NCj4gLQkJZm9yIChpID0gMDsgaSA8IEZCX0JB
-Q0tMSUdIVF9MRVZFTFM7IGkrKykNCj4gLQkJCW1heCA9IG1heCgoaW50KWluZm8tPmJsX2N1cnZl
-W2ldLCBtYXgpOw0KPiAtDQo+IC0JCS8qIExvb2sgZm9yIG5lYXJlc3QgdmFsdWUgKi8NCj4gLQkJ
-Zm9yIChpID0gMDsgaSA8IEZCX0JBQ0tMSUdIVF9MRVZFTFM7IGkrKykgew0KPiAtCQkJaW50IGRp
-ZmYgPSBhYnMoaW5mby0+YmxfY3VydmVbaV0gLSB2YWx1ZSk7DQo+IC0JCQlpZiAoZGlmZiA8IG1h
-eCkgew0KPiAtCQkJCW1heCA9IGRpZmY7DQo+IC0JCQkJbGV2ZWwgPSBpOw0KPiAtCQkJfQ0KPiAt
-CQl9DQo+IC0NCj4gLQl9DQo+IC0NCj4gLQlyZXR1cm4gbGV2ZWw7DQo+IC19DQo+IC0NCj4gICBz
-dGF0aWMgdm9pZCBwbWFjX2JhY2tsaWdodF9rZXlfd29ya2VyKHN0cnVjdCB3b3JrX3N0cnVjdCAq
-d29yaykNCj4gICB7DQo+ICAgCWlmIChhdG9taWNfcmVhZCgma2VybmVsX2JhY2tsaWdodF9kaXNh
-YmxlZCkpDQo=
+Hi
+
+Am 05.03.24 um 10:25 schrieb Christophe Leroy:
+>
+> Le 05/03/2024 à 10:01, Thomas Zimmermann a écrit :
+>> Replace <linux/fb.h> with a forward declaration in <asm/backlight.h> to
+>> resolves an unnecessary dependency. Remove pmac_backlight_curve_lookup()
+>> and struct fb_info from source and header files. The function and the
+>> framebuffer struct is unused. No functional changes.
+> When you remove pmac_backlight_curve_lookup() prototype you'll then get
+> a warning/error about missing prototype when building
+> arch/powerpc/platforms/powermac/backlight.c
+>
+> The fonction is not used outside of that file so it should be static.
+> And then it is not used in that file either so it should be removed
+> completely. Indeed last use of that function was removed by commit
+> d565dd3b0824 ("[PATCH] powerpc: More via-pmu backlight fixes") so the
+> function can safely be removed.
+
+Isn't that what my patch is doing? I have no callers of the function in 
+my tree (drm-tip), so I removed it entirely. Should I add a Fixes tag 
+against commit d565dd3b0824? Best regards Thomas
+>
+> Christophe
+>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> ---
+>>    arch/powerpc/include/asm/backlight.h        |  5 ++--
+>>    arch/powerpc/platforms/powermac/backlight.c | 26 ---------------------
+>>    2 files changed, 2 insertions(+), 29 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/backlight.h b/arch/powerpc/include/asm/backlight.h
+>> index 1b5eab62ed047..061a910d74929 100644
+>> --- a/arch/powerpc/include/asm/backlight.h
+>> +++ b/arch/powerpc/include/asm/backlight.h
+>> @@ -10,15 +10,14 @@
+>>    #define __ASM_POWERPC_BACKLIGHT_H
+>>    #ifdef __KERNEL__
+>>    
+>> -#include <linux/fb.h>
+>>    #include <linux/mutex.h>
+>>    
+>> +struct backlight_device;
+>> +
+>>    /* For locking instructions, see the implementation file */
+>>    extern struct backlight_device *pmac_backlight;
+>>    extern struct mutex pmac_backlight_mutex;
+>>    
+>> -extern int pmac_backlight_curve_lookup(struct fb_info *info, int value);
+>> -
+>>    extern int pmac_has_backlight_type(const char *type);
+>>    
+>>    extern void pmac_backlight_key(int direction);
+>> diff --git a/arch/powerpc/platforms/powermac/backlight.c b/arch/powerpc/platforms/powermac/backlight.c
+>> index aeb79a8b3e109..12bc01353bd3c 100644
+>> --- a/arch/powerpc/platforms/powermac/backlight.c
+>> +++ b/arch/powerpc/platforms/powermac/backlight.c
+>> @@ -9,7 +9,6 @@
+>>     */
+>>    
+>>    #include <linux/kernel.h>
+>> -#include <linux/fb.h>
+>>    #include <linux/backlight.h>
+>>    #include <linux/adb.h>
+>>    #include <linux/pmu.h>
+>> @@ -72,31 +71,6 @@ int pmac_has_backlight_type(const char *type)
+>>    	return 0;
+>>    }
+>>    
+>> -int pmac_backlight_curve_lookup(struct fb_info *info, int value)
+>> -{
+>> -	int level = (FB_BACKLIGHT_LEVELS - 1);
+>> -
+>> -	if (info && info->bl_dev) {
+>> -		int i, max = 0;
+>> -
+>> -		/* Look for biggest value */
+>> -		for (i = 0; i < FB_BACKLIGHT_LEVELS; i++)
+>> -			max = max((int)info->bl_curve[i], max);
+>> -
+>> -		/* Look for nearest value */
+>> -		for (i = 0; i < FB_BACKLIGHT_LEVELS; i++) {
+>> -			int diff = abs(info->bl_curve[i] - value);
+>> -			if (diff < max) {
+>> -				max = diff;
+>> -				level = i;
+>> -			}
+>> -		}
+>> -
+>> -	}
+>> -
+>> -	return level;
+>> -}
+>> -
+>>    static void pmac_backlight_key_worker(struct work_struct *work)
+>>    {
+>>    	if (atomic_read(&kernel_backlight_disabled))
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
