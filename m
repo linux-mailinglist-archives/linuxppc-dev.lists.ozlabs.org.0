@@ -1,89 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A0E8717A3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 09:10:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337FE871815
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 09:20:34 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S4J+l6DL;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TppC923XFz3vbc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 19:10:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TppR36yNkz3dW1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Mar 2024 19:20:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S4J+l6DL;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=jani.nikula@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TppBj4f61z3d2W
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 19:09:49 +1100 (AEDT)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A7E56226E7;
-	Tue,  5 Mar 2024 08:09:43 +0000 (UTC)
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5917713A5D;
-	Tue,  5 Mar 2024 08:09:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id j1RKFEfT5mXCUwAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Tue, 05 Mar 2024 08:09:43 +0000
-Message-ID: <01d39b0d-ce72-4daa-8628-f47e031af5ca@suse.de>
-Date: Tue, 5 Mar 2024 09:09:42 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TppQK2Xbkz3d3Q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Mar 2024 19:19:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709626794; x=1741162794;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=Pco44Jn0AoXW3qDgZjVeFTowyTAynlFylgLFzt14dSY=;
+  b=S4J+l6DLMRkT2u6j34Vyr2ZHIgHhzzYWvojveRKBonx9mvVbUbTRLJtg
+   tNPGKmAOxW3kaiR/26/+H826pEymYrRhp7cCy98Qv11e5FE/Iwl79K5TJ
+   PqeFYeGnRfge4v4QyEUfVFd38L7UstHvZT9mBoVTbindOZ19w41nOqXP6
+   /UgEtjFvbBzTGShHspvL0qAMkApCvEPz0CvCakcNXwVkVXJl//UlF2b/O
+   YIbfjfDF0dzME1r3xfMl7sqN4Y5H3JYkgEUcZE/dlZhxz4WBt4HCmtlDq
+   cuXHuuEsGn3zRmnDKqbS698TgOcyWKXX3ey7CmO2jsyP9wRrpOtBtQ/Aw
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4023530"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="4023530"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 00:19:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="9261401"
+Received: from omakhlou-mobl4.amr.corp.intel.com (HELO localhost) ([10.252.51.143])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 00:19:44 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH] powerpc: include linux/backlight.h from asm/backlight.h
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Jani Nikula <jani.nikula@intel.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+In-Reply-To: <87cys9pl55.fsf@mail.lhotse>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <CA+G9fYsAk5TbqqxFC2W4oHLGA0CbTHMxbeq8QayFXTU75YiueA@mail.gmail.com>
- <20240304095512.742348-1-jani.nikula@intel.com>
- <eed9bb0f-486f-47f3-b4b5-c07adda4a1c7@suse.de>
- <e5a0e44d-d2b9-49f0-9a08-fb7d9254266c@csgroup.eu>
- <87frx5plan.fsf@mail.lhotse>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <87frx5plan.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: A7E56226E7
-X-Spam-Flag: NO
+ <20240304095512.742348-1-jani.nikula@intel.com> <87bk7u5n9h.fsf@intel.com>
+ <87cys9pl55.fsf@mail.lhotse>
+Date: Tue, 05 Mar 2024 10:19:41 +0200
+Message-ID: <87v8612iqq.fsf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,76 +67,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>, Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Tue, 05 Mar 2024, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> I prefer Thomas' patch, but I'm fine with either to go in via drm.
 
-Am 05.03.24 um 01:36 schrieb Michael Ellerman:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 04/03/2024 à 11:32, Thomas Zimmermann a écrit :
->>> Hi
->>>
->>> Am 04.03.24 um 10:55 schrieb Jani Nikula:
->>>> Removal of the backlight include from fb.h uncovered an implicit
->>>> dependency in powerpc asm/backlight.h. Add the explicit include.
->>>>
->>>> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
->>>> Closes:
->>>> https://lore.kernel.org/r/CA+G9fYsAk5TbqqxFC2W4oHLGA0CbTHMxbeq8QayFXTU75YiueA@mail.gmail.com
->>>> Fixes: 11b4eedfc87d ("fbdev: Do not include <linux/backlight.h> in
->>>> header")
->>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>>> Cc: Helge Deller <deller@gmx.de>
->>>> Cc: linux-fbdev@vger.kernel.org
->>>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->>>>
->>>> ---
->>>>
->>>> Not even compile tested!
->>> That's one of the cases that's hard to catch unless you get the config
->>> right.
->>>
->>>> ---
->>>>    arch/powerpc/include/asm/backlight.h | 1 +
->>>>    1 file changed, 1 insertion(+)
->>>>
->>>> diff --git a/arch/powerpc/include/asm/backlight.h
->>>> b/arch/powerpc/include/asm/backlight.h
->>>> index 1b5eab62ed04..275d5bb9aa04 100644
->>>> --- a/arch/powerpc/include/asm/backlight.h
->>>> +++ b/arch/powerpc/include/asm/backlight.h
->>>> @@ -10,6 +10,7 @@
->>>>    #define __ASM_POWERPC_BACKLIGHT_H
->>>>    #ifdef __KERNEL__
->>>> +#include <linux/backlight.h>
->>> Thanks, but I think this should go directly into chipsfb.c. I would have
->>> provided a patch already, if our mail server didn't have issues this
->>> morning. Let me try again.
->> asm/backlight.h needs it for struct backlight_device
->>
->> At least if you don't want to include linux/backlight.h in
->> asm/backlight.h, then you need a forward declaration of struct
->> backlight_device;
-> It's preferable for asm headers not to include linux headers (to avoid
-> loops), so a forward declaration would be better IMHO.
+Thanks!
 
-The asm header shouldn't include <linux/fb.h> either. I'll send an 
-update to my patch to clean up everything.
-
-Best regards
-Thomas
-
->
-> cheers
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Jani Nikula, Intel
