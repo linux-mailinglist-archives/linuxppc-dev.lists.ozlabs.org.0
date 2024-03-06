@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D724B873D18
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 18:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5DE873D26
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 18:16:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hLcCHGoD;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=r2OKQF+b;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=x/PfoZyL;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=LO7ZB53r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqfFv6ksHz3vZ4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 04:15:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TqfHH33Wsz3vXS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 04:16:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hLcCHGoD;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=r2OKQF+b;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=x/PfoZyL;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=LO7ZB53r;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqfF51LVRz2xKQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 04:14:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqfGY6M18z2xKQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 04:16:05 +1100 (AEDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1709745282;
+	s=2020; t=1709745362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vp8CgcEh2+XD1rrYCq9vFCOWhJV6Gj0UcBPHVO/mG3I=;
-	b=hLcCHGoDD+mz8ZbKjQeB5xXhhoPU/fE2kNC3hQNfd1ma/u8J/zddviA/HqdTgqdG3oVELs
-	yVs1/hPOwmAOTuivi7bn/t5AdXxzOgCbrjnNic9a7P3UD6t9DbBcDDZEQv9mdkZ5gNQmWv
-	7vbCgHbSJECaiSNWreeRIZmRe08ButQng2h/CGVRcpYXfkeDvP8s8MUjoaw0ejkV2aOd6J
-	GhCC5IBZxfnMkFg4BEdSUxSJkuNwB3HEKPGk8Ts8FrpJGs4nl/zkw473YhePn+NXGru8W6
-	nrJgDF25SYoVsf+V+wjNsd9UV9qsXdOpH54xyHauuhHRCs6LH5fgqRzBOaZs6A==
+	bh=bRnUqxYmz7US3PiJQqP3g2Rv7dTwvUQyVio9ZZY8LKI=;
+	b=x/PfoZyLbxCtOLtwhNHZrAjQXk47NM0qm+OUuf1jx9diwAf0o8l0QrENFNc7WZ0SAcP2iu
+	1E3xoLIGmEOu+hfn0K2lPNJvO3b46lm0DOxOiCCku7OS5SbvnNXS1k5nodzwqKqNeT+fYS
+	RkGr9j0rFdgc3W9X3lUHXNB8NKrW75TUo1Im1jkI3tbQA3Xu8jc29FwyOiIOPW69kZ5gI2
+	HFqFMyez91owlk6gDCMWjLsasDv2ZUcIrJ1LGI20cJzK1UAtbOHuYuAhisXVvC2Z9efSuo
+	0ZgOB7XFUmDTVtjkDtaAS4S/3WfhiuenOt6DaTQZiQk6K2C7Z37rod5h/TSpug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1709745282;
+	s=2020e; t=1709745362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vp8CgcEh2+XD1rrYCq9vFCOWhJV6Gj0UcBPHVO/mG3I=;
-	b=r2OKQF+b39Jbfxu8K1wz0pKjaanVs2rF1CqBPX6sZtQq8gqd45t5LNMwP4WV+c9wRqAr36
-	puBSYY3XgU94OPAA==
+	bh=bRnUqxYmz7US3PiJQqP3g2Rv7dTwvUQyVio9ZZY8LKI=;
+	b=LO7ZB53rWp+dyfEzJwj+/7uvMaejjC+uiKbRNMUR/894l60M5BZc+f+41YHx9zRBlkGwEN
+	IuyIzAJJmTm/VdBw==
 To: Arnd Bergmann <arnd@kernel.org>, Anna-Maria Behnsen
  <anna-maria@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
  Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v2 1/3] arch: consolidate existing CONFIG_PAGE_SIZE_*KB
- definitions
-In-Reply-To: <20240306141453.3900574-2-arnd@kernel.org>
+Subject: Re: [PATCH v2 2/3] arch: simplify architecture specific page size
+ configuration
+In-Reply-To: <20240306141453.3900574-3-arnd@kernel.org>
 References: <20240306141453.3900574-1-arnd@kernel.org>
- <20240306141453.3900574-2-arnd@kernel.org>
-Date: Wed, 06 Mar 2024 18:14:42 +0100
-Message-ID: <875xxzuvst.ffs@tglx>
+ <20240306141453.3900574-3-arnd@kernel.org>
+Date: Wed, 06 Mar 2024 18:16:02 +0100
+Message-ID: <8734t3uvql.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,10 +75,15 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Wed, Mar 06 2024 at 15:14, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> These four architectures define the same Kconfig symbols for configuring
-> the page size. Move the logic into a common place where it can be shared
-> with all other architectures.
+> arc, arm64, parisc and powerpc all have their own Kconfig symbols
+> in place of the common CONFIG_PAGE_SIZE_4KB symbols. Change these
+> so the common symbols are the ones that are actually used, while
+> leaving the arhcitecture specific ones as the user visible
+> place for configuring it, to avoid breaking user configs.
 >
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu> (powerpc32)
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Acked-by: Helge Deller <deller@gmx.de> # parisc
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
 Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
