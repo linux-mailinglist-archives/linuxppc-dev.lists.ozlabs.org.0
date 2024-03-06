@@ -2,62 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F48873C26
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 17:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590FE873C93
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 17:49:23 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q+XtvBMf;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tqd741PQpz3fQR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 03:24:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tqdgj1Ng3z3vc7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 03:49:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.179; helo=mail-il1-f179.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q+XtvBMf;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tqd6Z5y73z3cbl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 03:24:06 +1100 (AEDT)
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-365bd66bea9so25320605ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Mar 2024 08:24:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709742242; x=1710347042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D7JdIeS9zNSJ+HV+qdpk2QYV7GDhHiD75PCrvSyuiH4=;
-        b=YCJxWfok7yuBzUkJukgktz71tfl/2/OVxZooVz5g5DCuT9UkBuv5Jv3OIpZGKNvyr8
-         cnEW0EEpkEDyg79F5QoOGXQP7K22UZDu9IKMcEeXfPYlX4T6P5b8Gjt4TKCAsQLxxMkd
-         NYa1g1sqvugjVli0GOe2ozUsHuC8QueRwIkCmHJAz/fCaFP9QJ+ac1KF/kKHliIUfbjD
-         2Jp5xdwrRLBkgsBymz9RGcb7uQ5bKzng2DCqqVpt7EGscrglQky1MHBInvawCDYFPZTG
-         K/2Up639b6lfFtnpLWBHLFtWV6MfVRl45kmHUThS15CqckRhbHYht0L+TrkY8BZfR6nD
-         UKrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWUvqG6o//JIESrkiW53N1wKM9Rx42wAo03hPepzn+GYgD7JxYyHaofCSFrD63elQJvKXvGs+rhYo/dsQYTpPv3GuDolksPsojyt5KAQ==
-X-Gm-Message-State: AOJu0YxHstNQmZnIgYpMc7gtDo+aieti55jAO0ry7yGq0vUlslq3jpQ6
-	N5yRo8vlhVLX7UPvF2CTc1jPq2cgXwv6wsPMEpD0PXl56fkaFlKr5NLTfm/5W1o=
-X-Google-Smtp-Source: AGHT+IHRirkdkwvJMWMt0TzP125i5UM77eCOrvW/TQ2OFfSJUy7pupzBn6NEgqR/xN1bdnxzt9bklA==
-X-Received: by 2002:a92:c54a:0:b0:363:f8c5:9d7b with SMTP id a10-20020a92c54a000000b00363f8c59d7bmr20421766ilj.9.1709742241717;
-        Wed, 06 Mar 2024 08:24:01 -0800 (PST)
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com. [209.85.166.54])
-        by smtp.gmail.com with ESMTPSA id r4-20020a92d444000000b00364b66eb5e3sm3764806ilm.24.2024.03.06.08.24.01
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Mar 2024 08:24:01 -0800 (PST)
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7c864b742e5so79584639f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Mar 2024 08:24:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXMQ9ltu4IWlQX4gYsuRMd9bKsHpU8NuEwtT30ZbEcRwsDyi93xN7yYprkuACnk1S8XR1bLO0TlzUGhyzw9cELn+br8QzN4381Fspdy8Q==
-X-Received: by 2002:a25:580b:0:b0:dcf:c7ef:e4e0 with SMTP id
- m11-20020a25580b000000b00dcfc7efe4e0mr11968959ybb.1.1709742220242; Wed, 06
- Mar 2024 08:23:40 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tqdg06BHLz2y1Y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 03:48:44 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 62A96CE226F;
+	Wed,  6 Mar 2024 16:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D1DC433C7;
+	Wed,  6 Mar 2024 16:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709743722;
+	bh=0QVMuhO8tv+yD3wGofv4vd1QwlfUDwn6eLrDolYC9js=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q+XtvBMfqHnTWiAQDZ8gmGdBrn5wJ0nauughUwkeXvnk/yXYoJIVAHxMcc/zanr7f
+	 vg+r3Mgg6Z/cI2QQ44tNs16macvizUbJHML4KZ/Hkj5LnE2sUVZ4TFhN2/GvBYHUic
+	 +SruEao4Ms/6vRSwBrRzsuIpWHPgqKcCbK8a2oPYC7KwLZa+Joagn22T6X2g+tnssU
+	 2Pysjy4xZGG/IZ80vBiyhxntD4brOS+0Z1StfKp9ZXnbZphRrxvUA15xMdfCNvp1hO
+	 NxusReLi/PpMSggNg25a8S8EMLwjkkdH0aC5mXlKQ32kbkH45ovDO/ZYgyRyXOIAio
+	 uJLjHjJEVcAUw==
+Date: Wed, 6 Mar 2024 09:48:40 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: xor_vmx: Add '-mhard-float' to CFLAGS
+Message-ID: <20240306164840.GA3659677@dev-arch.thelio-3990X>
+References: <20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org>
+ <20240305224315.GA2361659@dev-arch.thelio-3990X>
+ <874jdkp409.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <20240306141453.3900574-1-arnd@kernel.org> <20240306141453.3900574-4-arnd@kernel.org>
-In-Reply-To: <20240306141453.3900574-4-arnd@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 6 Mar 2024 17:23:28 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU5ut09=b+5Qti6CD17XOOmsm+VtfA7TKac7qHNOBC2-A@mail.gmail.com>
-Message-ID: <CAMuHMdU5ut09=b+5Qti6CD17XOOmsm+VtfA7TKac7qHNOBC2-A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] arch: define CONFIG_PAGE_SIZE_*KB on all architectures
-To: Arnd Bergmann <arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874jdkp409.fsf@mail.lhotse>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,44 +60,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Stafford Horne <shorne@gmail.com>, Jan Kiszka <jan.kiszka@siemens.com>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, linux-alpha@vger.kernel.org, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Kieran Bingham <kbingham@kernel.org>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Andy L
- utomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: llvm@lists.linux.dev, patches@lists.linux.dev, aneesh.kumar@kernel.org, npiggin@gmail.com, justinstitt@google.com, naveen.n.rao@linux.ibm.com, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, morbo@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 6, 2024 at 3:15=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wrot=
-e:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Most architectures only support a single hardcoded page size. In order
-> to ensure that each one of these sets the corresponding Kconfig symbols,
-> change over the PAGE_SHIFT definition to the common one and allow
-> only the hardware page size to be selected.
->
-> Acked-by: Guo Ren <guoren@kernel.org>
-> Acked-by: Heiko Carstens <hca@linux.ibm.com>
-> Acked-by: Stafford Horne <shorne@gmail.com>
-> Acked-by: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> No changes from v1
+On Wed, Mar 06, 2024 at 12:01:42PM +1100, Michael Ellerman wrote:
+> Nathan Chancellor <nathan@kernel.org> writes:
+> > Ping? We have been applying this in our CI since it was sent, it would
+> > be nice to have this upstream soon so it can start filtering through the
+> > stable trees.
+> 
+> Sorry, I was away in January and missed this. Will pick it up.
 
->  arch/m68k/Kconfig                  | 3 +++
->  arch/m68k/Kconfig.cpu              | 2 ++
->  arch/m68k/include/asm/page.h       | 6 +-----
+No worries, I've done that more times than I would like to admit. Thanks
+a lot for the quick response and picking it up!
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cheers,
+Nathan
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+> > On Sat, Jan 27, 2024 at 11:07:43AM -0700, Nathan Chancellor wrote:
+> >> arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
+> >> powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
+> >> error when building with clang after a recent change in main:
+> >> 
+> >>   error: option '-msoft-float' cannot be specified with '-maltivec'
+> >>   make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
+> >> 
+> >> Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
+> >> to override the previous inclusion of '-msoft-float' (as the last option
+> >> wins), which matches how other areas of the kernel use '-maltivec', such
+> >> as AMDGPU.
+> >> 
+> >> Cc: stable@vger.kernel.org
+> >> Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
+> >> Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
+> >> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> >> ---
+> >>  arch/powerpc/lib/Makefile | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >> 
+> >> diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+> >> index 6eac63e79a89..0ab65eeb93ee 100644
+> >> --- a/arch/powerpc/lib/Makefile
+> >> +++ b/arch/powerpc/lib/Makefile
+> >> @@ -76,7 +76,7 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
+> >>  obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
+> >>  
+> >>  obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+> >> -CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
+> >> +CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
+> >>  # Enable <altivec.h>
+> >>  CFLAGS_xor_vmx.o += -isystem $(shell $(CC) -print-file-name=include)
+> >>  
+> >> 
+> >> ---
+> >> base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+> >> change-id: 20240127-ppc-xor_vmx-drop-msoft-float-ad68b437f86c
+> >> 
+> >> Best regards,
+> >> -- 
+> >> Nathan Chancellor <nathan@kernel.org>
+> >> 
+> 
