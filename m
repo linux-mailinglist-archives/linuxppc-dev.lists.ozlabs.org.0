@@ -1,69 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CEF87348C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 11:42:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD2C873498
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 11:43:29 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B/i8dZe3;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B/i8dZe3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYLVYXF0;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYLVYXF0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqTXk348Sz3vcn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 21:42:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TqTYW4sXRz3vjP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 21:43:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B/i8dZe3;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B/i8dZe3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYLVYXF0;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OYLVYXF0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqTWz2kXSz3cWB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 21:42:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqTX475jPz3dXT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 21:42:12 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709721721;
+	s=mimecast20190719; t=1709721729;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nsf6jReUnDDAR6+gdGYukarc12MvosBlw43zRUpKkD0=;
-	b=B/i8dZe34uh6OVl4+C2o+P21Fu/R+uauxzP2idOoJQFq83U6kRZnQZ/sJUHNtzmeFDDuCE
-	68CAveeW2SO+edKHfnIyAgYe3c04vaEl1Yna+hJiL4QBT2u4EFrNNPI5/AZfwXrtm3TTVQ
-	rxeVYENbygHC6z3EZN+YxtTAX1/19Ww=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=20nNimBrOEQv87l0vyMx8t0O66X6ZMzRQtOERvnhrUo=;
+	b=OYLVYXF0Q3FH516eOTadMFuJ1FxoUjoGoN6h49kP8znMXzmUDfEiXVx+ryyoALMSfZukmw
+	FPGGSwjjnWKTMNWJsg2Q5016DO7b/0AL07psN4DxKitcKg59xXmu8SDLdlNAPPACoDb2Xe
+	KcZAt+FgGNXsRu7C8VTx7sMerukt7Zg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709721721;
+	s=mimecast20190719; t=1709721729;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nsf6jReUnDDAR6+gdGYukarc12MvosBlw43zRUpKkD0=;
-	b=B/i8dZe34uh6OVl4+C2o+P21Fu/R+uauxzP2idOoJQFq83U6kRZnQZ/sJUHNtzmeFDDuCE
-	68CAveeW2SO+edKHfnIyAgYe3c04vaEl1Yna+hJiL4QBT2u4EFrNNPI5/AZfwXrtm3TTVQ
-	rxeVYENbygHC6z3EZN+YxtTAX1/19Ww=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-h1aSarPyMoSclrJ9xw8rvg-1; Wed, 06 Mar 2024 05:41:57 -0500
-X-MC-Unique: h1aSarPyMoSclrJ9xw8rvg-1
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=20nNimBrOEQv87l0vyMx8t0O66X6ZMzRQtOERvnhrUo=;
+	b=OYLVYXF0Q3FH516eOTadMFuJ1FxoUjoGoN6h49kP8znMXzmUDfEiXVx+ryyoALMSfZukmw
+	FPGGSwjjnWKTMNWJsg2Q5016DO7b/0AL07psN4DxKitcKg59xXmu8SDLdlNAPPACoDb2Xe
+	KcZAt+FgGNXsRu7C8VTx7sMerukt7Zg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-oo52lPpuOsCDdbHCtpeneA-1; Wed,
+ 06 Mar 2024 05:42:04 -0500
+X-MC-Unique: oo52lPpuOsCDdbHCtpeneA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70D85101A56C;
-	Wed,  6 Mar 2024 10:41:56 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C7D471C05AF3;
+	Wed,  6 Mar 2024 10:42:03 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.8])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 2CD3F112131D;
-	Wed,  6 Mar 2024 10:41:49 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 3C2C5112131D;
+	Wed,  6 Mar 2024 10:41:56 +0000 (UTC)
 From: peterx@redhat.com
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH RFC 00/13] mm/treewide: Remove pXd_huge() API
-Date: Wed,  6 Mar 2024 18:41:34 +0800
-Message-ID: <20240306104147.193052-1-peterx@redhat.com>
+Subject: [PATCH RFC 01/13] mm/hmm: Process pud swap entry without pud_huge()
+Date: Wed,  6 Mar 2024 18:41:35 +0800
+Message-ID: <20240306104147.193052-2-peterx@redhat.com>
+In-Reply-To: <20240306104147.193052-1-peterx@redhat.com>
+References: <20240306104147.193052-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,98 +80,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, Muchun Song <muchun.song@linux.dev>, peterx@redhat.com, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, Alistair Popple <apopple@nvidia.com>, x86@kernel.org, Muchun Song <muchun.song@linux.dev>, peterx@redhat.com, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Peter Xu <peterx@redhat.com>
 
-[based on akpm/mm-unstable latest commit a7f399ae964e]
+Swap pud entries do not always return true for pud_huge() for all archs.
+x86 and sparc (so far) allow it, but all the rest do not accept a swap
+entry to be reported as pud_huge().  So it's not safe to check swap entries
+within pud_huge().  Check swap entries before pud_huge(), so it should be
+always safe.
 
-In previous work [1], we removed the pXd_large() API, which is arch
-specific.  This patchset further removes the hugetlb pXd_huge() API.
+This is the only place in the kernel that (IMHO, wrongly) relies on
+pud_huge() to return true on pud swap entries.  The plan is to cleanup
+pXd_huge() to only report non-swap mappings for all archs.
 
-Hugetlb was never special on creating huge mappings when compared with
-other huge mappings.  Having a standalone API just to detect such pgtable
-entries is more or less redundant, especially after the pXd_leaf() API set
-is introduced with/without CONFIG_HUGETLB_PAGE.
+Cc: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ mm/hmm.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-When looking at this problem, a few issues are also exposed that we don't
-have a clear definition of the *_huge() variance API.  This patchset
-started by cleaning these issues first, then replace all *_huge() users to
-use *_leaf(), then drop all *_huge() code.
-
-On x86/sparc, swap entries will be reported "true" in pXd_huge(), while for
-all the rest archs they're reported "false" instead.  This part is done in
-patch 1-5, in which I suspect patch 1 can be seen as a bug fix, but I'll
-leave that to hmm experts to decide.
-
-Besides, there are three archs (arm, arm64, powerpc) that have slightly
-different definitions between the *_huge() v.s. *_leaf() variances.  I
-tackled them separately so that it'll be easier for arch experts to chim in
-when necessary.  This part is done in patch 6-9.
-
-The final patches 10-13 do the rest on the final removal, since *_leaf()
-will be the ultimate API in the future, and we seem to have quite some
-confusions on how *_huge() APIs can be defined, provide a rich comment for
-*_leaf() API set to define them properly to avoid future misuse, and
-hopefully that'll also help new archs to start support huge mappings and
-avoid traps (like either swap entries, or PROT_NONE entry checks).
-
-The whole series is only lightly tested on x86, while as usual I don't have
-the capability to test all archs that it touches.
-
-Marking this series RFC as of now.
-
-[1] https://lore.kernel.org/r/20240305043750.93762-1-peterx@redhat.com
-
-Peter Xu (13):
-  mm/hmm: Process pud swap entry without pud_huge()
-  mm/gup: Cache p4d in follow_p4d_mask()
-  mm/gup: Check p4d presence before going on
-  mm/x86: Change pXd_huge() behavior to exclude swap entries
-  mm/sparc: Change pXd_huge() behavior to exclude swap entries
-  mm/arm: Use macros to define pmd/pud helpers
-  mm/arm: Redefine pmd_huge() with pmd_leaf()
-  mm/arm64: Merge pXd_huge() and pXd_leaf() definitions
-  mm/powerpc: Redefine pXd_huge() with pXd_leaf()
-  mm/gup: Merge pXd huge mapping checks
-  mm/treewide: Replace pXd_huge() with pXd_leaf()
-  mm/treewide: Remove pXd_huge()
-  mm: Document pXd_leaf() API
-
- arch/arm/include/asm/pgtable-2level.h         |  4 +--
- arch/arm/include/asm/pgtable-3level-hwdef.h   |  1 +
- arch/arm/include/asm/pgtable-3level.h         |  6 ++--
- arch/arm/mm/Makefile                          |  1 -
- arch/arm/mm/hugetlbpage.c                     | 34 -------------------
- arch/arm64/include/asm/pgtable.h              |  6 +++-
- arch/arm64/mm/hugetlbpage.c                   | 18 ++--------
- arch/loongarch/mm/hugetlbpage.c               | 12 +------
- arch/mips/include/asm/pgtable-32.h            |  2 +-
- arch/mips/include/asm/pgtable-64.h            |  2 +-
- arch/mips/mm/hugetlbpage.c                    | 10 ------
- arch/mips/mm/tlb-r4k.c                        |  2 +-
- arch/parisc/mm/hugetlbpage.c                  | 11 ------
- .../include/asm/book3s/64/pgtable-4k.h        | 20 -----------
- .../include/asm/book3s/64/pgtable-64k.h       | 25 --------------
- arch/powerpc/include/asm/book3s/64/pgtable.h  |  3 --
- arch/powerpc/include/asm/nohash/pgtable.h     | 10 ------
- arch/powerpc/mm/pgtable_64.c                  |  6 ++--
- arch/riscv/mm/hugetlbpage.c                   | 10 ------
- arch/s390/mm/hugetlbpage.c                    | 10 ------
- arch/sh/mm/hugetlbpage.c                      | 10 ------
- arch/sparc/mm/hugetlbpage.c                   | 12 -------
- arch/x86/mm/hugetlbpage.c                     | 26 --------------
- arch/x86/mm/pgtable.c                         |  4 +--
- include/linux/hugetlb.h                       | 24 -------------
- include/linux/pgtable.h                       | 24 ++++++++++---
- mm/gup.c                                      | 24 ++++++-------
- mm/hmm.c                                      |  9 ++---
- mm/memory.c                                   |  2 +-
- 29 files changed, 56 insertions(+), 272 deletions(-)
- delete mode 100644 arch/arm/mm/hugetlbpage.c
-
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 277ddcab4947..c44391a0246e 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -424,7 +424,7 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
+ 	walk->action = ACTION_CONTINUE;
+ 
+ 	pud = READ_ONCE(*pudp);
+-	if (pud_none(pud)) {
++	if (pud_none(pud) || !pud_present(pud)) {
+ 		spin_unlock(ptl);
+ 		return hmm_vma_walk_hole(start, end, -1, walk);
+ 	}
+@@ -435,11 +435,6 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
+ 		unsigned long *hmm_pfns;
+ 		unsigned long cpu_flags;
+ 
+-		if (!pud_present(pud)) {
+-			spin_unlock(ptl);
+-			return hmm_vma_walk_hole(start, end, -1, walk);
+-		}
+-
+ 		i = (addr - range->start) >> PAGE_SHIFT;
+ 		npages = (end - addr) >> PAGE_SHIFT;
+ 		hmm_pfns = &range->hmm_pfns[i];
 -- 
 2.44.0
 
