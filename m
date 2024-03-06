@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114FE872EEA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 07:32:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B608872EF0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 07:36:09 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QUv0dILo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bAjNfent;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqN045hRqz3dXW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 17:32:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TqN466hQ2z3vg2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 17:36:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QUv0dILo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bAjNfent;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqMzM2kJdz2ykt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 17:31:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqN3Q5H2hz3cgk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 17:35:30 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 38D6DCE1F2C;
-	Wed,  6 Mar 2024 06:31:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5984BC433C7;
-	Wed,  6 Mar 2024 06:31:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 72B0061939;
+	Wed,  6 Mar 2024 06:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98586C433F1;
+	Wed,  6 Mar 2024 06:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709706716;
-	bh=4BSYoRefiwx7fEEkNm9b5ciSL9N04oFFyWZnIni2wJ0=;
+	s=k20201202; t=1709706928;
+	bh=AkqGeSCbOkMjmEjMN58b39D1ek/Y+Xn4vMztXVmtzMA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QUv0dILoz1CqQ9bMlFyfiWj7LvyDVz1ITqFoaaO8nvZPeUdsbxBbH4OzHuttWTIzb
-	 Qlwq9lPwOT9dtXFKgDwq6n6uP7SYPGEkde5jq0oeNg0+AO/VipQpjg9tpQNmuAFSKi
-	 y07n6nSKdBBmGwFvjotBcqufCg0GL1KHBywJYroQPyNdWNaYNUHvpJ74ku7TDUS7cw
-	 Y8wce+31rMpTZyYZJkQLe4qbX7qYA8KKkeMNit62WmrNXUWhaYvexoEfb86rb58py6
-	 99zB8/h8tWIjkxi1ZRmctrWpJOfWlGiBC6GghABX9YQrtHE0eSdRi1anMPVP3pbw0F
-	 WARs4ohkiraig==
-Date: Wed, 6 Mar 2024 08:31:04 +0200
+	b=bAjNfentksW5IBwcqdR2CUFKXyp35TuVTau+fIG66JkxSeGh1Di933CcGYONg8lA2
+	 kuAcfDOe3S1L/j4Kn200rLcN9mlAzW6a12lAKe1zmSdhdo8Tl5HDhh34P6WoH0xaiK
+	 k8H3dCa3gf4LajnlpBV14oo0/IyXbEayUQahpBRAi+C3vZWSUfPEnMTsdD1ul5paUK
+	 QFl/Mz0uQhm00r/y/VhMyka89QVNgjFnuQNkY5Y6ZoLSf7DHiKYIC5PvSfaQG1eGKX
+	 0+my/6FwLLrYJdbNaEXXJHjtLs3rsz7hTso34bZH6kzJIB/yEqITaR7+QyD/eJZaa9
+	 FGHbodbbP4YFg==
+Date: Wed, 6 Mar 2024 08:34:35 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: peterx@redhat.com
-Subject: Re: [PATCH v3 07/10] mm/treewide: Replace pmd_large() with pmd_leaf()
-Message-ID: <ZegNqDH-HMcWupwB@kernel.org>
+Subject: Re: [PATCH v3 09/10] mm/treewide: Drop pXd_large()
+Message-ID: <ZegOe5XEsLl9vu3E@kernel.org>
 References: <20240305043750.93762-1-peterx@redhat.com>
- <20240305043750.93762-8-peterx@redhat.com>
+ <20240305043750.93762-10-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240305043750.93762-8-peterx@redhat.com>
+In-Reply-To: <20240305043750.93762-10-peterx@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,570 +63,223 @@ Cc: Muchun Song <muchun.song@linux.dev>, Yang Shi <shy828301@gmail.com>, x86@ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 05, 2024 at 12:37:47PM +0800, peterx@redhat.com wrote:
+On Tue, Mar 05, 2024 at 12:37:49PM +0800, peterx@redhat.com wrote:
 > From: Peter Xu <peterx@redhat.com>
 > 
-> pmd_large() is always defined as pmd_leaf().  Merge their usages.  Chose
-> pmd_leaf() because pmd_leaf() is a global API, while pmd_large() is not.
+> They're not used anymore, drop all of them.
 > 
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 > Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  arch/arm/mm/dump.c                       |  4 ++--
->  arch/powerpc/mm/book3s64/pgtable.c       |  2 +-
->  arch/powerpc/mm/book3s64/radix_pgtable.c |  2 +-
->  arch/powerpc/mm/pgtable_64.c             |  2 +-
->  arch/s390/boot/vmem.c                    |  2 +-
->  arch/s390/include/asm/pgtable.h          |  8 ++++----
->  arch/s390/mm/gmap.c                      | 12 ++++++------
->  arch/s390/mm/hugetlbpage.c               |  2 +-
->  arch/s390/mm/pageattr.c                  |  2 +-
->  arch/s390/mm/pgtable.c                   |  6 +++---
->  arch/s390/mm/vmem.c                      |  6 +++---
->  arch/sparc/mm/init_64.c                  |  4 ++--
->  arch/x86/boot/compressed/ident_map_64.c  |  2 +-
->  arch/x86/kvm/mmu/mmu.c                   |  2 +-
->  arch/x86/mm/fault.c                      |  8 ++++----
->  arch/x86/mm/init_32.c                    |  2 +-
->  arch/x86/mm/init_64.c                    |  8 ++++----
->  arch/x86/mm/kasan_init_64.c              |  2 +-
->  arch/x86/mm/mem_encrypt_identity.c       |  4 ++--
->  arch/x86/mm/pat/set_memory.c             |  4 ++--
->  arch/x86/mm/pgtable.c                    |  2 +-
->  arch/x86/mm/pti.c                        |  4 ++--
->  arch/x86/power/hibernate.c               |  2 +-
->  arch/x86/xen/mmu_pv.c                    |  4 ++--
->  drivers/misc/sgi-gru/grufault.c          |  2 +-
->  25 files changed, 49 insertions(+), 49 deletions(-)
 
 Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
+> ---
+>  arch/arm/include/asm/pgtable-2level.h        |  1 -
+>  arch/arm/include/asm/pgtable-3level.h        |  1 -
+>  arch/loongarch/kvm/mmu.c                     |  2 +-
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  4 +---
+>  arch/powerpc/include/asm/pgtable.h           |  4 ----
+>  arch/s390/include/asm/pgtable.h              |  8 ++++----
+>  arch/sparc/include/asm/pgtable_64.h          |  8 ++++----
+>  arch/x86/include/asm/pgtable.h               | 19 +++++++------------
+>  arch/x86/kvm/mmu/mmu.c                       |  2 +-
+>  9 files changed, 18 insertions(+), 31 deletions(-)
 > 
-> diff --git a/arch/arm/mm/dump.c b/arch/arm/mm/dump.c
-> index a9381095ab36..cd032522d902 100644
-> --- a/arch/arm/mm/dump.c
-> +++ b/arch/arm/mm/dump.c
-> @@ -349,12 +349,12 @@ static void walk_pmd(struct pg_state *st, pud_t *pud, unsigned long start)
->  	for (i = 0; i < PTRS_PER_PMD; i++, pmd++) {
->  		addr = start + i * PMD_SIZE;
->  		domain = get_domain_name(pmd);
-> -		if (pmd_none(*pmd) || pmd_large(*pmd) || !pmd_present(*pmd))
-> +		if (pmd_none(*pmd) || pmd_leaf(*pmd) || !pmd_present(*pmd))
->  			note_page(st, addr, 4, pmd_val(*pmd), domain);
->  		else
->  			walk_pte(st, pmd, addr, domain);
+> diff --git a/arch/arm/include/asm/pgtable-2level.h b/arch/arm/include/asm/pgtable-2level.h
+> index ce543cd9380c..b0a262566eb9 100644
+> --- a/arch/arm/include/asm/pgtable-2level.h
+> +++ b/arch/arm/include/asm/pgtable-2level.h
+> @@ -213,7 +213,6 @@ static inline pmd_t *pmd_offset(pud_t *pud, unsigned long addr)
 >  
-> -		if (SECTION_SIZE < PMD_SIZE && pmd_large(pmd[1])) {
-> +		if (SECTION_SIZE < PMD_SIZE && pmd_leaf(pmd[1])) {
->  			addr += SECTION_SIZE;
->  			pmd++;
->  			domain = get_domain_name(pmd);
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-> index 3438ab72c346..45f526547b27 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -113,7 +113,7 @@ void set_pmd_at(struct mm_struct *mm, unsigned long addr,
+>  #define pmd_pfn(pmd)		(__phys_to_pfn(pmd_val(pmd) & PHYS_MASK))
 >  
->  	WARN_ON(pte_hw_valid(pmd_pte(*pmdp)) && !pte_protnone(pmd_pte(*pmdp)));
->  	assert_spin_locked(pmd_lockptr(mm, pmdp));
-> -	WARN_ON(!(pmd_large(pmd)));
-> +	WARN_ON(!(pmd_leaf(pmd)));
->  #endif
->  	trace_hugepage_set_pmd(addr, pmd_val(pmd));
->  	return set_pte_at(mm, addr, pmdp_ptep(pmdp), pmd_pte(pmd));
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index 1f8db10693e3..5cc4008329be 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -924,7 +924,7 @@ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->  int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
->  				unsigned long addr, unsigned long next)
+> -#define pmd_large(pmd)		(pmd_val(pmd) & 2)
+>  #define pmd_leaf(pmd)		(pmd_val(pmd) & 2)
+>  #define pmd_bad(pmd)		(pmd_val(pmd) & 2)
+>  #define pmd_present(pmd)	(pmd_val(pmd))
+> diff --git a/arch/arm/include/asm/pgtable-3level.h b/arch/arm/include/asm/pgtable-3level.h
+> index 71c3add6417f..4b1d9eb3908a 100644
+> --- a/arch/arm/include/asm/pgtable-3level.h
+> +++ b/arch/arm/include/asm/pgtable-3level.h
+> @@ -118,7 +118,6 @@
+>  						 PMD_TYPE_TABLE)
+>  #define pmd_sect(pmd)		((pmd_val(pmd) & PMD_TYPE_MASK) == \
+>  						 PMD_TYPE_SECT)
+> -#define pmd_large(pmd)		pmd_sect(pmd)
+>  #define pmd_leaf(pmd)		pmd_sect(pmd)
+>  
+>  #define pud_clear(pudp)			\
+> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
+> index 50a6acd7ffe4..a556cff35740 100644
+> --- a/arch/loongarch/kvm/mmu.c
+> +++ b/arch/loongarch/kvm/mmu.c
+> @@ -723,7 +723,7 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
+>  	/*
+>  	 * Read each entry once.  As above, a non-leaf entry can be promoted to
+>  	 * a huge page _during_ this walk.  Re-reading the entry could send the
+> -	 * walk into the weeks, e.g. p*d_large() returns false (sees the old
+> +	 * walk into the weeks, e.g. p*d_leaf() returns false (sees the old
+>  	 * value) and then p*d_offset() walks into the target huge page instead
+>  	 * of the old page table (sees the new value).
+>  	 */
+> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> index 3e99e409774a..df66dce8306f 100644
+> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+> @@ -1437,17 +1437,15 @@ static inline bool is_pte_rw_upgrade(unsigned long old_val, unsigned long new_va
+>  }
+>  
+>  /*
+> - * Like pmd_huge() and pmd_large(), but works regardless of config options
+> + * Like pmd_huge(), but works regardless of config options
+>   */
+>  #define pmd_leaf pmd_leaf
+> -#define pmd_large pmd_leaf
+>  static inline bool pmd_leaf(pmd_t pmd)
 >  {
-> -	int large = pmd_large(*pmdp);
-> +	int large = pmd_leaf(*pmdp);
+>  	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+>  }
 >  
->  	if (large)
->  		vmemmap_verify(pmdp_ptep(pmdp), node, addr, next);
-> diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-> index 386c6b06eab7..9b99113cb51a 100644
-> --- a/arch/powerpc/mm/pgtable_64.c
-> +++ b/arch/powerpc/mm/pgtable_64.c
-> @@ -132,7 +132,7 @@ struct page *pmd_page(pmd_t pmd)
->  		 * enabled so these checks can't be used.
->  		 */
->  		if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-> -			VM_WARN_ON(!(pmd_large(pmd) || pmd_huge(pmd)));
-> +			VM_WARN_ON(!(pmd_leaf(pmd) || pmd_huge(pmd)));
->  		return pte_page(pmd_pte(pmd));
->  	}
->  	return virt_to_page(pmd_page_vaddr(pmd));
-> diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
-> index e3a4500a5a75..348ab02b1028 100644
-> --- a/arch/s390/boot/vmem.c
-> +++ b/arch/s390/boot/vmem.c
-> @@ -333,7 +333,7 @@ static void pgtable_pmd_populate(pud_t *pud, unsigned long addr, unsigned long e
->  			}
->  			pte = boot_pte_alloc();
->  			pmd_populate(&init_mm, pmd, pte);
-> -		} else if (pmd_large(*pmd)) {
-> +		} else if (pmd_leaf(*pmd)) {
->  			continue;
->  		}
->  		pgtable_pte_populate(pmd, addr, next, mode);
+>  #define pud_leaf pud_leaf
+> -#define pud_large pud_leaf
+>  static inline bool pud_leaf(pud_t pud)
+>  {
+>  	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
+> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+> index e6edf1cdbc5b..239709a2f68e 100644
+> --- a/arch/powerpc/include/asm/pgtable.h
+> +++ b/arch/powerpc/include/asm/pgtable.h
+> @@ -101,10 +101,6 @@ void poking_init(void);
+>  extern unsigned long ioremap_bot;
+>  extern const pgprot_t protection_map[16];
+>  
+> -#ifndef pmd_large
+> -#define pmd_large(pmd)		0
+> -#endif
+> -
+>  /* can we use this in kvm */
+>  unsigned long vmalloc_to_phys(void *vmalloc_addr);
+>  
 > diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-> index 4b91e65c85d9..431d03d5116b 100644
+> index a5f16a244a64..9e08af5b9247 100644
 > --- a/arch/s390/include/asm/pgtable.h
 > +++ b/arch/s390/include/asm/pgtable.h
-> @@ -721,7 +721,7 @@ static inline int pmd_large(pmd_t pmd)
+> @@ -705,16 +705,16 @@ static inline int pud_none(pud_t pud)
+>  	return pud_val(pud) == _REGION3_ENTRY_EMPTY;
+>  }
 >  
->  static inline int pmd_bad(pmd_t pmd)
+> -#define pud_leaf	pud_large
+> -static inline int pud_large(pud_t pud)
+> +#define pud_leaf pud_leaf
+> +static inline int pud_leaf(pud_t pud)
 >  {
-> -	if ((pmd_val(pmd) & _SEGMENT_ENTRY_TYPE_MASK) > 0 || pmd_large(pmd))
-> +	if ((pmd_val(pmd) & _SEGMENT_ENTRY_TYPE_MASK) > 0 || pmd_leaf(pmd))
->  		return 1;
->  	return (pmd_val(pmd) & ~_SEGMENT_ENTRY_BITS) != 0;
+>  	if ((pud_val(pud) & _REGION_ENTRY_TYPE_MASK) != _REGION_ENTRY_TYPE_R3)
+>  		return 0;
+>  	return !!(pud_val(pud) & _REGION3_ENTRY_LARGE);
 >  }
-> @@ -820,8 +820,8 @@ static inline int pte_protnone(pte_t pte)
 >  
->  static inline int pmd_protnone(pmd_t pmd)
+> -#define pmd_leaf	pmd_large
+> -static inline int pmd_large(pmd_t pmd)
+> +#define pmd_leaf pmd_leaf
+> +static inline int pmd_leaf(pmd_t pmd)
 >  {
-> -	/* pmd_large(pmd) implies pmd_present(pmd) */
-> -	return pmd_large(pmd) && !(pmd_val(pmd) & _SEGMENT_ENTRY_READ);
-> +	/* pmd_leaf(pmd) implies pmd_present(pmd) */
-> +	return pmd_leaf(pmd) && !(pmd_val(pmd) & _SEGMENT_ENTRY_READ);
+>  	return (pmd_val(pmd) & _SEGMENT_ENTRY_LARGE) != 0;
 >  }
->  #endif
->  
-> @@ -1385,7 +1385,7 @@ static inline unsigned long pmd_deref(pmd_t pmd)
->  	unsigned long origin_mask;
->  
->  	origin_mask = _SEGMENT_ENTRY_ORIGIN;
-> -	if (pmd_large(pmd))
-> +	if (pmd_leaf(pmd))
->  		origin_mask = _SEGMENT_ENTRY_ORIGIN_LARGE;
->  	return (unsigned long)__va(pmd_val(pmd) & origin_mask);
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 652af9d63fa2..6ff0a28d5fd1 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -680,8 +680,8 @@ static inline unsigned long pte_special(pte_t pte)
+>  	return pte_val(pte) & _PAGE_SPECIAL;
 >  }
-> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-> index 4d2674f89322..b78ded9d3bf7 100644
-> --- a/arch/s390/mm/gmap.c
-> +++ b/arch/s390/mm/gmap.c
-> @@ -603,7 +603,7 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
->  	pmd = pmd_offset(pud, vmaddr);
->  	VM_BUG_ON(pmd_none(*pmd));
->  	/* Are we allowed to use huge pages? */
-> -	if (pmd_large(*pmd) && !gmap->mm->context.allow_gmap_hpage_1m)
-> +	if (pmd_leaf(*pmd) && !gmap->mm->context.allow_gmap_hpage_1m)
->  		return -EFAULT;
->  	/* Link gmap segment table entry location to page table. */
->  	rc = radix_tree_preload(GFP_KERNEL_ACCOUNT);
-> @@ -615,7 +615,7 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
->  		rc = radix_tree_insert(&gmap->host_to_guest,
->  				       vmaddr >> PMD_SHIFT, table);
->  		if (!rc) {
-> -			if (pmd_large(*pmd)) {
-> +			if (pmd_leaf(*pmd)) {
->  				*table = (pmd_val(*pmd) &
->  					  _SEGMENT_ENTRY_HARDWARE_BITS_LARGE)
->  					| _SEGMENT_ENTRY_GMAP_UC;
-> @@ -945,7 +945,7 @@ static inline pmd_t *gmap_pmd_op_walk(struct gmap *gmap, unsigned long gaddr)
->  	}
 >  
->  	/* 4k page table entries are locked via the pte (pte_alloc_map_lock). */
-> -	if (!pmd_large(*pmdp))
-> +	if (!pmd_leaf(*pmdp))
->  		spin_unlock(&gmap->guest_table_lock);
->  	return pmdp;
+> -#define pmd_leaf	pmd_large
+> -static inline unsigned long pmd_large(pmd_t pmd)
+> +#define pmd_leaf pmd_leaf
+> +static inline unsigned long pmd_leaf(pmd_t pmd)
+>  {
+>  	pte_t pte = __pte(pmd_val(pmd));
+>  
+> @@ -867,8 +867,8 @@ static inline pmd_t *pud_pgtable(pud_t pud)
+>  /* only used by the stubbed out hugetlb gup code, should never be called */
+>  #define p4d_page(p4d)			NULL
+>  
+> -#define pud_leaf	pud_large
+> -static inline unsigned long pud_large(pud_t pud)
+> +#define pud_leaf pud_leaf
+> +static inline unsigned long pud_leaf(pud_t pud)
+>  {
+>  	pte_t pte = __pte(pud_val(pud));
+>  
+> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+> index 9db7a38a0e9f..cfc84c55d0e6 100644
+> --- a/arch/x86/include/asm/pgtable.h
+> +++ b/arch/x86/include/asm/pgtable.h
+> @@ -251,8 +251,8 @@ static inline unsigned long pgd_pfn(pgd_t pgd)
+>  	return (pgd_val(pgd) & PTE_PFN_MASK) >> PAGE_SHIFT;
 >  }
-> @@ -957,7 +957,7 @@ static inline pmd_t *gmap_pmd_op_walk(struct gmap *gmap, unsigned long gaddr)
+>  
+> -#define p4d_leaf	p4d_large
+> -static inline int p4d_large(p4d_t p4d)
+> +#define p4d_leaf p4d_leaf
+> +static inline int p4d_leaf(p4d_t p4d)
+>  {
+>  	/* No 512 GiB pages yet */
+>  	return 0;
+> @@ -260,14 +260,14 @@ static inline int p4d_large(p4d_t p4d)
+>  
+>  #define pte_page(pte)	pfn_to_page(pte_pfn(pte))
+>  
+> -#define pmd_leaf	pmd_large
+> -static inline int pmd_large(pmd_t pte)
+> +#define pmd_leaf pmd_leaf
+> +static inline int pmd_leaf(pmd_t pte)
+>  {
+>  	return pmd_flags(pte) & _PAGE_PSE;
+>  }
+>  
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -/* NOTE: when predicate huge page, consider also pmd_devmap, or use pmd_large */
+> +/* NOTE: when predicate huge page, consider also pmd_devmap, or use pmd_leaf */
+>  static inline int pmd_trans_huge(pmd_t pmd)
+>  {
+>  	return (pmd_val(pmd) & (_PAGE_PSE|_PAGE_DEVMAP)) == _PAGE_PSE;
+> @@ -1085,8 +1085,8 @@ static inline pmd_t *pud_pgtable(pud_t pud)
 >   */
->  static inline void gmap_pmd_op_end(struct gmap *gmap, pmd_t *pmdp)
+>  #define pud_page(pud)	pfn_to_page(pud_pfn(pud))
+>  
+> -#define pud_leaf	pud_large
+> -static inline int pud_large(pud_t pud)
+> +#define pud_leaf pud_leaf
+> +static inline int pud_leaf(pud_t pud)
 >  {
-> -	if (pmd_large(*pmdp))
-> +	if (pmd_leaf(*pmdp))
->  		spin_unlock(&gmap->guest_table_lock);
->  }
->  
-> @@ -1068,7 +1068,7 @@ static int gmap_protect_range(struct gmap *gmap, unsigned long gaddr,
->  		rc = -EAGAIN;
->  		pmdp = gmap_pmd_op_walk(gmap, gaddr);
->  		if (pmdp) {
-> -			if (!pmd_large(*pmdp)) {
-> +			if (!pmd_leaf(*pmdp)) {
->  				rc = gmap_protect_pte(gmap, gaddr, pmdp, prot,
->  						      bits);
->  				if (!rc) {
-> @@ -2500,7 +2500,7 @@ void gmap_sync_dirty_log_pmd(struct gmap *gmap, unsigned long bitmap[4],
->  	if (!pmdp)
->  		return;
->  
-> -	if (pmd_large(*pmdp)) {
-> +	if (pmd_leaf(*pmdp)) {
->  		if (gmap_test_and_clear_dirty_pmd(gmap, pmdp, gaddr))
->  			bitmap_fill(bitmap, _PAGE_ENTRIES);
->  	} else {
-> diff --git a/arch/s390/mm/hugetlbpage.c b/arch/s390/mm/hugetlbpage.c
-> index 297a6d897d5a..1ccb5b40fe92 100644
-> --- a/arch/s390/mm/hugetlbpage.c
-> +++ b/arch/s390/mm/hugetlbpage.c
-> @@ -235,7 +235,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
->  
->  int pmd_huge(pmd_t pmd)
+>  	return (pud_val(pud) & (_PAGE_PSE | _PAGE_PRESENT)) ==
+>  		(_PAGE_PSE | _PAGE_PRESENT);
+> @@ -1096,11 +1096,6 @@ static inline int pud_bad(pud_t pud)
 >  {
-> -	return pmd_large(pmd);
-> +	return pmd_leaf(pmd);
+>  	return (pud_flags(pud) & ~(_KERNPG_TABLE | _PAGE_USER)) != 0;
 >  }
+> -#else
+> -static inline int pud_large(pud_t pud)
+> -{
+> -	return 0;
+> -}
+>  #endif	/* CONFIG_PGTABLE_LEVELS > 2 */
 >  
->  int pud_huge(pud_t pud)
-> diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c
-> index 631e3a4ee2de..9f55d5a3210c 100644
-> --- a/arch/s390/mm/pageattr.c
-> +++ b/arch/s390/mm/pageattr.c
-> @@ -185,7 +185,7 @@ static int walk_pmd_level(pud_t *pudp, unsigned long addr, unsigned long end,
->  		if (pmd_none(*pmdp))
->  			return -EINVAL;
->  		next = pmd_addr_end(addr, end);
-> -		if (pmd_large(*pmdp)) {
-> +		if (pmd_leaf(*pmdp)) {
->  			need_split  = !!(flags & SET_MEMORY_4K);
->  			need_split |= !!(addr & ~PMD_MASK);
->  			need_split |= !!(addr + PMD_SIZE > next);
-> diff --git a/arch/s390/mm/pgtable.c b/arch/s390/mm/pgtable.c
-> index b71432b15d66..9ac66304d776 100644
-> --- a/arch/s390/mm/pgtable.c
-> +++ b/arch/s390/mm/pgtable.c
-> @@ -827,7 +827,7 @@ int set_guest_storage_key(struct mm_struct *mm, unsigned long addr,
->  		return key ? -EFAULT : 0;
->  	}
->  
-> -	if (pmd_large(*pmdp)) {
-> +	if (pmd_leaf(*pmdp)) {
->  		paddr = pmd_val(*pmdp) & HPAGE_MASK;
->  		paddr |= addr & ~HPAGE_MASK;
->  		/*
-> @@ -938,7 +938,7 @@ int reset_guest_reference_bit(struct mm_struct *mm, unsigned long addr)
->  		return 0;
->  	}
->  
-> -	if (pmd_large(*pmdp)) {
-> +	if (pmd_leaf(*pmdp)) {
->  		paddr = pmd_val(*pmdp) & HPAGE_MASK;
->  		paddr |= addr & ~HPAGE_MASK;
->  		cc = page_reset_referenced(paddr);
-> @@ -1002,7 +1002,7 @@ int get_guest_storage_key(struct mm_struct *mm, unsigned long addr,
->  		return 0;
->  	}
->  
-> -	if (pmd_large(*pmdp)) {
-> +	if (pmd_leaf(*pmdp)) {
->  		paddr = pmd_val(*pmdp) & HPAGE_MASK;
->  		paddr |= addr & ~HPAGE_MASK;
->  		*key = page_get_storage_key(paddr);
-> diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
-> index eb100479f7be..afe5edf2a604 100644
-> --- a/arch/s390/mm/vmem.c
-> +++ b/arch/s390/mm/vmem.c
-> @@ -236,7 +236,7 @@ static int __ref modify_pmd_table(pud_t *pud, unsigned long addr,
->  		if (!add) {
->  			if (pmd_none(*pmd))
->  				continue;
-> -			if (pmd_large(*pmd)) {
-> +			if (pmd_leaf(*pmd)) {
->  				if (IS_ALIGNED(addr, PMD_SIZE) &&
->  				    IS_ALIGNED(next, PMD_SIZE)) {
->  					if (!direct)
-> @@ -281,7 +281,7 @@ static int __ref modify_pmd_table(pud_t *pud, unsigned long addr,
->  			if (!pte)
->  				goto out;
->  			pmd_populate(&init_mm, pmd, pte);
-> -		} else if (pmd_large(*pmd)) {
-> +		} else if (pmd_leaf(*pmd)) {
->  			if (!direct)
->  				vmemmap_use_sub_pmd(addr, next);
->  			continue;
-> @@ -610,7 +610,7 @@ pte_t *vmem_get_alloc_pte(unsigned long addr, bool alloc)
->  		if (!pte)
->  			goto out;
->  		pmd_populate(&init_mm, pmd, pte);
-> -	} else if (WARN_ON_ONCE(pmd_large(*pmd))) {
-> +	} else if (WARN_ON_ONCE(pmd_leaf(*pmd))) {
->  		goto out;
->  	}
->  	ptep = pte_offset_kernel(pmd, addr);
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index f83017992eaa..5e067b6a4464 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -1672,7 +1672,7 @@ bool kern_addr_valid(unsigned long addr)
->  	if (pmd_none(*pmd))
->  		return false;
->  
-> -	if (pmd_large(*pmd))
-> +	if (pmd_leaf(*pmd))
->  		return pfn_valid(pmd_pfn(*pmd));
->  
->  	pte = pte_offset_kernel(pmd, addr);
-> @@ -2968,7 +2968,7 @@ void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr,
->  	struct mm_struct *mm;
->  	pmd_t entry = *pmd;
->  
-> -	if (!pmd_large(entry) || !pmd_young(entry))
-> +	if (!pmd_leaf(entry) || !pmd_young(entry))
->  		return;
->  
->  	pte = pmd_val(entry);
-> diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-> index d040080d7edb..71c6e2fdcec7 100644
-> --- a/arch/x86/boot/compressed/ident_map_64.c
-> +++ b/arch/x86/boot/compressed/ident_map_64.c
-> @@ -284,7 +284,7 @@ static int set_clr_page_flags(struct x86_mapping_info *info,
->  	pudp = pud_offset(p4dp, address);
->  	pmdp = pmd_offset(pudp, address);
->  
-> -	if (pmd_large(*pmdp))
-> +	if (pmd_leaf(*pmdp))
->  		ptep = split_large_pmd(info, pmdp, address);
->  	else
->  		ptep = pte_offset_kernel(pmdp, address);
+>  #if CONFIG_PGTABLE_LEVELS > 3
 > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 2d6cdeab1f8a..c15123248c52 100644
+> index 5cb5bc4a72c4..58f5e6b637b4 100644
 > --- a/arch/x86/kvm/mmu/mmu.c
 > +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3135,7 +3135,7 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
->  	if (pmd_none(pmd) || !pmd_present(pmd))
->  		goto out;
->  
-> -	if (pmd_large(pmd))
-> +	if (pmd_leaf(pmd))
->  		level = PG_LEVEL_2M;
->  
->  out:
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index 8b69ce3f4115..09417f950343 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -250,7 +250,7 @@ static noinline int vmalloc_fault(unsigned long address)
->  	if (!pmd_k)
->  		return -1;
->  
-> -	if (pmd_large(*pmd_k))
-> +	if (pmd_leaf(*pmd_k))
->  		return 0;
->  
->  	pte_k = pte_offset_kernel(pmd_k, address);
-> @@ -319,7 +319,7 @@ static void dump_pagetable(unsigned long address)
->  	 * And let's rather not kmap-atomic the pte, just in case
->  	 * it's allocated already:
+> @@ -3110,7 +3110,7 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
+>  	/*
+>  	 * Read each entry once.  As above, a non-leaf entry can be promoted to
+>  	 * a huge page _during_ this walk.  Re-reading the entry could send the
+> -	 * walk into the weeks, e.g. p*d_large() returns false (sees the old
+> +	 * walk into the weeks, e.g. p*d_leaf() returns false (sees the old
+>  	 * value) and then p*d_offset() walks into the target huge page instead
+>  	 * of the old page table (sees the new value).
 >  	 */
-> -	if (!low_pfn(pmd_pfn(*pmd)) || !pmd_present(*pmd) || pmd_large(*pmd))
-> +	if (!low_pfn(pmd_pfn(*pmd)) || !pmd_present(*pmd) || pmd_leaf(*pmd))
->  		goto out;
->  
->  	pte = pte_offset_kernel(pmd, address);
-> @@ -384,7 +384,7 @@ static void dump_pagetable(unsigned long address)
->  		goto bad;
->  
->  	pr_cont("PMD %lx ", pmd_val(*pmd));
-> -	if (!pmd_present(*pmd) || pmd_large(*pmd))
-> +	if (!pmd_present(*pmd) || pmd_leaf(*pmd))
->  		goto out;
->  
->  	pte = pte_offset_kernel(pmd, address);
-> @@ -1053,7 +1053,7 @@ spurious_kernel_fault(unsigned long error_code, unsigned long address)
->  	if (!pmd_present(*pmd))
->  		return 0;
->  
-> -	if (pmd_large(*pmd))
-> +	if (pmd_leaf(*pmd))
->  		return spurious_kernel_fault_check(error_code, (pte_t *) pmd);
->  
->  	pte = pte_offset_kernel(pmd, address);
-> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-> index 5c736b707cae..ac41b1e0940d 100644
-> --- a/arch/x86/mm/init_32.c
-> +++ b/arch/x86/mm/init_32.c
-> @@ -463,7 +463,7 @@ void __init native_pagetable_init(void)
->  			break;
->  
->  		/* should not be large page here */
-> -		if (pmd_large(*pmd)) {
-> +		if (pmd_leaf(*pmd)) {
->  			pr_warn("try to clear pte for ram above max_low_pfn: pfn: %lx pmd: %p pmd phys: %lx, but pmd is big page and is not using pte !\n",
->  				pfn, pmd, __pa(pmd));
->  			BUG_ON(1);
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index d691e7992a9a..2c5490e58f41 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -530,7 +530,7 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
->  		}
->  
->  		if (!pmd_none(*pmd)) {
-> -			if (!pmd_large(*pmd)) {
-> +			if (!pmd_leaf(*pmd)) {
->  				spin_lock(&init_mm.page_table_lock);
->  				pte = (pte_t *)pmd_page_vaddr(*pmd);
->  				paddr_last = phys_pte_init(pte, paddr,
-> @@ -1114,7 +1114,7 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
->  		if (!pmd_present(*pmd))
->  			continue;
->  
-> -		if (pmd_large(*pmd)) {
-> +		if (pmd_leaf(*pmd)) {
->  			if (IS_ALIGNED(addr, PMD_SIZE) &&
->  			    IS_ALIGNED(next, PMD_SIZE)) {
->  				if (!direct)
-> @@ -1520,9 +1520,9 @@ void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
->  int __meminit vmemmap_check_pmd(pmd_t *pmd, int node,
->  				unsigned long addr, unsigned long next)
->  {
-> -	int large = pmd_large(*pmd);
-> +	int large = pmd_leaf(*pmd);
->  
-> -	if (pmd_large(*pmd)) {
-> +	if (pmd_leaf(*pmd)) {
->  		vmemmap_verify((pte_t *)pmd, node, addr, next);
->  		vmemmap_use_sub_pmd(addr, next);
->  	}
-> diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-> index 0302491d799d..f41d26bc9161 100644
-> --- a/arch/x86/mm/kasan_init_64.c
-> +++ b/arch/x86/mm/kasan_init_64.c
-> @@ -95,7 +95,7 @@ static void __init kasan_populate_pud(pud_t *pud, unsigned long addr,
->  	pmd = pmd_offset(pud, addr);
->  	do {
->  		next = pmd_addr_end(addr, end);
-> -		if (!pmd_large(*pmd))
-> +		if (!pmd_leaf(*pmd))
->  			kasan_populate_pmd(pmd, addr, next, nid);
->  	} while (pmd++, addr = next, addr != end);
->  }
-> diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-> index d73aeb16417f..bca4fea80579 100644
-> --- a/arch/x86/mm/mem_encrypt_identity.c
-> +++ b/arch/x86/mm/mem_encrypt_identity.c
-> @@ -161,7 +161,7 @@ static void __init sme_populate_pgd_large(struct sme_populate_pgd_data *ppd)
->  		return;
->  
->  	pmd = pmd_offset(pud, ppd->vaddr);
-> -	if (pmd_large(*pmd))
-> +	if (pmd_leaf(*pmd))
->  		return;
->  
->  	set_pmd(pmd, __pmd(ppd->paddr | ppd->pmd_flags));
-> @@ -185,7 +185,7 @@ static void __init sme_populate_pgd(struct sme_populate_pgd_data *ppd)
->  		set_pmd(pmd, __pmd(PMD_FLAGS | __pa(pte)));
->  	}
->  
-> -	if (pmd_large(*pmd))
-> +	if (pmd_leaf(*pmd))
->  		return;
->  
->  	pte = pte_offset_kernel(pmd, ppd->vaddr);
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index 5359a9c88099..b4037fe08eed 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -692,7 +692,7 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
->  		return NULL;
->  
->  	*level = PG_LEVEL_2M;
-> -	if (pmd_large(*pmd) || !pmd_present(*pmd))
-> +	if (pmd_leaf(*pmd) || !pmd_present(*pmd))
->  		return (pte_t *)pmd;
->  
->  	*level = PG_LEVEL_4K;
-> @@ -1229,7 +1229,7 @@ static void unmap_pmd_range(pud_t *pud, unsigned long start, unsigned long end)
->  	 * Try to unmap in 2M chunks.
->  	 */
->  	while (end - start >= PMD_SIZE) {
-> -		if (pmd_large(*pmd))
-> +		if (pmd_leaf(*pmd))
->  			pmd_clear(pmd);
->  		else
->  			__unmap_pmd_range(pud, pmd, start, start + PMD_SIZE);
-> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-> index 0cbc1b8e8e3d..d05dd86ceb41 100644
-> --- a/arch/x86/mm/pgtable.c
-> +++ b/arch/x86/mm/pgtable.c
-> @@ -792,7 +792,7 @@ int pud_clear_huge(pud_t *pud)
->   */
->  int pmd_clear_huge(pmd_t *pmd)
->  {
-> -	if (pmd_large(*pmd)) {
-> +	if (pmd_leaf(*pmd)) {
->  		pmd_clear(pmd);
->  		return 1;
->  	}
-> diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-> index c17aab24c1b3..0442e8f479a6 100644
-> --- a/arch/x86/mm/pti.c
-> +++ b/arch/x86/mm/pti.c
-> @@ -252,7 +252,7 @@ static pte_t *pti_user_pagetable_walk_pte(unsigned long address)
->  		return NULL;
->  
->  	/* We can't do anything sensible if we hit a large mapping. */
-> -	if (pmd_large(*pmd)) {
-> +	if (pmd_leaf(*pmd)) {
->  		WARN_ON(1);
->  		return NULL;
->  	}
-> @@ -341,7 +341,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
->  			continue;
->  		}
->  
-> -		if (pmd_large(*pmd) || level == PTI_CLONE_PMD) {
-> +		if (pmd_leaf(*pmd) || level == PTI_CLONE_PMD) {
->  			target_pmd = pti_user_pagetable_walk_pmd(addr);
->  			if (WARN_ON(!target_pmd))
->  				return;
-> diff --git a/arch/x86/power/hibernate.c b/arch/x86/power/hibernate.c
-> index 28153789f873..277eaf610e0e 100644
-> --- a/arch/x86/power/hibernate.c
-> +++ b/arch/x86/power/hibernate.c
-> @@ -175,7 +175,7 @@ int relocate_restore_code(void)
->  		goto out;
->  	}
->  	pmd = pmd_offset(pud, relocated_restore_code);
-> -	if (pmd_large(*pmd)) {
-> +	if (pmd_leaf(*pmd)) {
->  		set_pmd(pmd, __pmd(pmd_val(*pmd) & ~_PAGE_NX));
->  		goto out;
->  	}
-> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-> index 12a43a4abebf..dde551bbd231 100644
-> --- a/arch/x86/xen/mmu_pv.c
-> +++ b/arch/x86/xen/mmu_pv.c
-> @@ -1059,7 +1059,7 @@ static void __init xen_cleanmfnmap_pmd(pmd_t *pmd, bool unpin)
->  	pte_t *pte_tbl;
->  	int i;
->  
-> -	if (pmd_large(*pmd)) {
-> +	if (pmd_leaf(*pmd)) {
->  		pa = pmd_val(*pmd) & PHYSICAL_PAGE_MASK;
->  		xen_free_ro_pages(pa, PMD_SIZE);
->  		return;
-> @@ -1871,7 +1871,7 @@ static phys_addr_t __init xen_early_virt_to_phys(unsigned long vaddr)
->  	if (!pmd_present(pmd))
->  		return 0;
->  	pa = pmd_val(pmd) & PTE_PFN_MASK;
-> -	if (pmd_large(pmd))
-> +	if (pmd_leaf(pmd))
->  		return pa + (vaddr & ~PMD_MASK);
->  
->  	pte = native_make_pte(xen_read_phys_ulong(pa + pte_index(vaddr) *
-> diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
-> index 629edb6486de..3557d78ee47a 100644
-> --- a/drivers/misc/sgi-gru/grufault.c
-> +++ b/drivers/misc/sgi-gru/grufault.c
-> @@ -227,7 +227,7 @@ static int atomic_pte_lookup(struct vm_area_struct *vma, unsigned long vaddr,
->  	if (unlikely(pmd_none(*pmdp)))
->  		goto err;
->  #ifdef CONFIG_X86_64
-> -	if (unlikely(pmd_large(*pmdp)))
-> +	if (unlikely(pmd_leaf(*pmdp)))
->  		pte = ptep_get((pte_t *)pmdp);
->  	else
->  #endif
 > -- 
 > 2.44.0
 > 
