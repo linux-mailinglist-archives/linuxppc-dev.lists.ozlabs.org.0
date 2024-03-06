@@ -1,56 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0E687370F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 13:56:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C094873750
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 14:05:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=OubqRzeA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=KxfLIW5Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqXVT17rDz3vht
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 23:56:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TqXjH2Wrsz3vXP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 00:05:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=OubqRzeA;
+	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=KxfLIW5Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.118; helo=out30-118.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.152.168; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=07954e2aa0=rf@opensource.cirrus.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 586 seconds by postgrey-1.37 at boromir; Thu, 07 Mar 2024 00:04:42 AEDT
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqXQQ3FwNz3dWh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 23:52:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1709729546; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=v9ykK3Ir2S9XnRBkS+wPr5uicn0rIrMXIis4IDU1Mxg=;
-	b=OubqRzeA6K5Ov46daF+1nHEld3cg53rNcIjePdIxBxoaZVd3vaBcA/Y8/WEMvCcp3rPUC4Nov5G3UAcsFdPO4Mbir+E5LqmDH98gKVvRNjzQ8c5Nf2Y4M2NPS15Q0E4UYY3jPg+EwBFFNm1dA3nPoR/aS/WrAmLtFE55Grm9Qu4=
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W1xhgJL_1709729542;
-Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W1xhgJL_1709729542)
-          by smtp.aliyun-inc.com;
-          Wed, 06 Mar 2024 20:52:25 +0800
-From: Bitao Hu <yaoma@linux.alibaba.com>
-To: dianders@chromium.org,
-	tglx@linutronix.de,
-	liusong@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	pmladek@suse.com,
-	kernelfans@gmail.com,
-	deller@gmx.de,
-	npiggin@gmail.com,
-	tsbogend@alpha.franken.de,
-	James.Bottomley@HansenPartnership.com,
-	jan.kiszka@siemens.com
-Subject: [PATCHv12 4/4] watchdog/softlockup: report the most frequent interrupts
-Date: Wed,  6 Mar 2024 20:52:08 +0800
-Message-Id: <20240306125208.71803-5-yaoma@linux.alibaba.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-In-Reply-To: <20240306125208.71803-1-yaoma@linux.alibaba.com>
-References: <20240306125208.71803-1-yaoma@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqXhV4XBYz2xX4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 00:04:41 +1100 (AEDT)
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4268keDm013652;
+	Wed, 6 Mar 2024 06:54:46 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	PODMain02222019; bh=dUnOWEoxp3SnJf2CLLou3NRw4azRYH8sTPSVS7jTw3c=; b=
+	KxfLIW5ZslqURg+L4ZEH6tjKmxwt06qhWECFicj/THLPKjRvstRQgfQ6ki4e5PTf
+	+35OntL91YPaaGaigZAWUN5i5TbjwCHRl25guPLLG2z81RcZ3yiuQUjaCbzCochX
+	bQU8nHv+XY//hCf7NAkmc6MFc3OUw40//e0FS/nIMZsbMJOmTG+pHRq0/wiCS3bw
+	4tN+R8jXnrpzETHN2UA5sVhuBV6POgzb47aptlax+m2xIIjJa8Jew17F/LkL/5BO
+	q2+pJZvF7DHXCvdFa3y1+9K3jj6BoLvyYVEu88oCntCt11sFfKCy90/D/iJtTSJM
+	oVoJuKZTokzobNHXdtxK6w==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3wpn930795-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Mar 2024 06:54:45 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 6 Mar 2024
+ 12:54:43 +0000
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.4 via Frontend Transport; Wed, 6 Mar 2024 12:54:43 +0000
+Received: from [198.61.64.14] (EDIN4L06LR3.ad.cirrus.com [198.61.64.14])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id 7BA69820241;
+	Wed,  6 Mar 2024 12:54:43 +0000 (UTC)
+Message-ID: <fedf6e86-ca14-4236-85c0-64205c63d7f9@opensource.cirrus.com>
+Date: Wed, 6 Mar 2024 12:54:43 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: soc-card: Fix missing locking in
+ snd_soc_card_get_kcontrol()
+To: Takashi Iwai <tiwai@suse.de>
+References: <20240221123710.690224-1-rf@opensource.cirrus.com>
+ <878r33hf81.wl-tiwai@suse.de>
+Content-Language: en-US
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <878r33hf81.wl-tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: YEs5JGMEo5VD8m1KlprrWBCx10iE2ihb
+X-Proofpoint-ORIG-GUID: YEs5JGMEo5VD8m1KlprrWBCx10iE2ihb
+X-Proofpoint-Spam-Reason: safe
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,209 +77,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, broonie@kernel.org, patches@opensource.cirrus.com, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the watchdog determines that the current soft lockup is due
-to an interrupt storm based on CPU utilization, reporting the
-most frequent interrupts could be good enough for further
-troubleshooting.
+On 29/2/24 08:00, Takashi Iwai wrote:
+> On Wed, 21 Feb 2024 13:37:10 +0100,
+> Richard Fitzgerald wrote:
+>>
+>> snd_soc_card_get_kcontrol() must be holding a read lock on
+>> card->controls_rwsem while walking the controls list.
+>>
+>> Compare with snd_ctl_find_numid().
+>>
+>> The existing function is renamed snd_soc_card_get_kcontrol_locked()
+>> so that it can be called from contexts that are already holding
+>> card->controls_rwsem (for example, control get/put functions).
+>>
+>> There are few direct or indirect callers of
+>> snd_soc_card_get_kcontrol(), and most are safe. Three require
+>> changes, which have been included in this patch:
+>>
+>> codecs/cs35l45.c:
+>>    cs35l45_activate_ctl() is called from a control put() function so
+>>    is changed to call snd_soc_card_get_kcontrol_locked().
+>>
+>> codecs/cs35l56.c:
+>>    cs35l56_sync_asp1_mixer_widgets_with_firmware() is called from
+>>    control get()/put() functions so is changed to call
+>>    snd_soc_card_get_kcontrol_locked().
+>>
+>> fsl/fsl_xcvr.c:
+>>    fsl_xcvr_activate_ctl() is called from three places, one of which
+>>    already holds card->controls_rwsem:
+>>    1. fsl_xcvr_mode_put(), a control put function, which will
+>>       already be holding card->controls_rwsem.
+>>    2. fsl_xcvr_startup(), a DAI startup function.
+>>    3. fsl_xcvr_shutdown(), a DAI shutdown function.
+>>
+>>    To fix this, fsl_xcvr_activate_ctl() has been changed to call
+>>    snd_soc_card_get_kcontrol_locked() so that it is safe to call
+>>    directly from fsl_xcvr_mode_put().
+>>    The fsl_xcvr_startup() and fsl_xcvr_shutdown() functions have been
+>>    changed to take a read lock on card->controls_rsem() around calls
+>>    to fsl_xcvr_activate_ctl(). While this is not very elegant, it
+>>    keeps the change small, to avoid this patch creating a large
+>>    collateral churn in fsl/fsl_xcvr.c.
+>>
+>> Analysis of other callers of snd_soc_card_get_kcontrol() is that
+>> they do not need any changes, they are not holding card->controls_rwsem
+>> when they call snd_soc_card_get_kcontrol().
+>>
+>> Direct callers of snd_soc_card_get_kcontrol():
+>>    fsl/fsl_spdif.c: fsl_spdif_dai_probe() - DAI probe function
+>>    fsl/fsl_micfil.c: voice_detected_fn() - IRQ handler
+>>
+>> Indirect callers via soc_component_notify_control():
+>>    codecs/cs42l43: cs42l43_mic_shutter() - IRQ handler
+>>    codecs/cs42l43: cs42l43_spk_shutter() - IRQ handler
+>>    codecs/ak4118.c: ak4118_irq_handler() - IRQ handler
+>>    codecs/wm_adsp.c: wm_adsp_write_ctl() - not currently used
+>>
+>> Indirect callers via snd_soc_limit_volume():
+>>    qcom/sc8280xp.c: sc8280xp_snd_init() - DAIlink init function
+>>    ti/rx51.c: rx51_aic34_init() - DAI init function
+>>
+>> I don't have hardware to test the fsl/*, qcom/sc828xp.c, ti/rx51.c
+>> and ak4118.c changes.
+>>
+>> Backport note:
+>> The fsl/, qcom/, cs35l45, cs35l56 and cs42l43 callers were added
+>> since the Fixes commit so won't all be present on older kernels.
+>>
+>> Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+>> Fixes: 209c6cdfd283 ("ASoC: soc-card: move snd_soc_card_get_kcontrol() to soc-card")
+>> ---
+>> It would be great if people could test the fsl/, qcom/, ti/rx51 and ak4418
+>> drivers.
+> 
+> This fix itself looks correct, and I merged Mark's PR now.
+> 
+> But in general, it'd be better to use snd_ctl_find_id() and
+> snd_ctl_find_id_unlocked() if possible.  Those standard APIs can use
+> the fast Xarray lookup, and especially for the case like many ASoC
+> drivers that expose hundreds of kcontrols, the performance gain
+> becomes significant.
+> 
+> I see that there is no snd_ctl_find_mixer_id_unlocked() variant, but
+> it should be trivial to add.
+> 
+> 
 
-Below is an example of interrupt storm. The call tree does not
-provide useful information, but we can analyze which interrupt
-caused the soft lockup by comparing the counts of interrupts.
+Yes, I'll have a look at that. I was thinking that it would be good
+to have all the code to find controls in one place, instead of a special
+case for ASoC. But I decided to make the bugfix with minimum changes.
 
-[  638.870231] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [swapper/9:0]
-[  638.870825] CPU#9 Utilization every 4s during lockup:
-[  638.871194]  #1:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.871652]  #2:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.872107]  #3:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.872563]  #4:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.873018]  #5:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.873494] CPU#9 Detect HardIRQ Time exceeds 50%. Most frequent HardIRQs:
-[  638.873994]  #1: 330945      irq#7
-[  638.874236]  #2: 31          irq#82
-[  638.874493]  #3: 10          irq#10
-[  638.874744]  #4: 2           irq#89
-[  638.874992]  #5: 1           irq#102
-...
-[  638.875313] Call trace:
-[  638.875315]  __do_softirq+0xa8/0x364
-
-Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
-Reviewed-by: Liu Song <liusong@linux.alibaba.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
- kernel/watchdog.c | 115 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 111 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 69e72d7e461d..c9d49ae8d045 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -12,22 +12,25 @@
- 
- #define pr_fmt(fmt) "watchdog: " fmt
- 
--#include <linux/mm.h>
- #include <linux/cpu.h>
--#include <linux/nmi.h>
- #include <linux/init.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
- #include <linux/kernel_stat.h>
-+#include <linux/kvm_para.h>
- #include <linux/math64.h>
-+#include <linux/mm.h>
- #include <linux/module.h>
-+#include <linux/nmi.h>
-+#include <linux/stop_machine.h>
- #include <linux/sysctl.h>
- #include <linux/tick.h>
-+
- #include <linux/sched/clock.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/isolation.h>
--#include <linux/stop_machine.h>
- 
- #include <asm/irq_regs.h>
--#include <linux/kvm_para.h>
- 
- static DEFINE_MUTEX(watchdog_mutex);
- 
-@@ -417,13 +420,104 @@ static void print_cpustat(void)
- 	}
- }
- 
-+#define HARDIRQ_PERCENT_THRESH          50
-+#define NUM_HARDIRQ_REPORT              5
-+struct irq_counts {
-+	int irq;
-+	u32 counts;
-+};
-+
-+static DEFINE_PER_CPU(bool, snapshot_taken);
-+
-+/* Tabulate the most frequent interrupts. */
-+static void tabulate_irq_count(struct irq_counts *irq_counts, int irq, u32 counts, int rank)
-+{
-+	int i;
-+	struct irq_counts new_count = {irq, counts};
-+
-+	for (i = 0; i < rank; i++) {
-+		if (counts > irq_counts[i].counts)
-+			swap(new_count, irq_counts[i]);
-+	}
-+}
-+
-+/*
-+ * If the hardirq time exceeds HARDIRQ_PERCENT_THRESH% of the sample_period,
-+ * then the cause of softlockup might be interrupt storm. In this case, it
-+ * would be useful to start interrupt counting.
-+ */
-+static bool need_counting_irqs(void)
-+{
-+	u8 util;
-+	int tail = __this_cpu_read(cpustat_tail);
-+
-+	tail = (tail + NUM_HARDIRQ_REPORT - 1) % NUM_HARDIRQ_REPORT;
-+	util = __this_cpu_read(cpustat_util[tail][STATS_HARDIRQ]);
-+	return util > HARDIRQ_PERCENT_THRESH;
-+}
-+
-+static void start_counting_irqs(void)
-+{
-+	if (!__this_cpu_read(snapshot_taken)) {
-+		kstat_snapshot_irqs();
-+		__this_cpu_write(snapshot_taken, true);
-+	}
-+}
-+
-+static void stop_counting_irqs(void)
-+{
-+	__this_cpu_write(snapshot_taken, false);
-+}
-+
-+static void print_irq_counts(void)
-+{
-+	unsigned int i, count;
-+	struct irq_counts irq_counts_sorted[NUM_HARDIRQ_REPORT] = {
-+		{-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}
-+	};
-+
-+	if (__this_cpu_read(snapshot_taken)) {
-+		for_each_active_irq(i) {
-+			count = kstat_get_irq_since_snapshot(i);
-+			tabulate_irq_count(irq_counts_sorted, i, count, NUM_HARDIRQ_REPORT);
-+		}
-+
-+		/*
-+		 * We do not want the "watchdog: " prefix on every line,
-+		 * hence we use "printk" instead of "pr_crit".
-+		 */
-+		printk(KERN_CRIT "CPU#%d Detect HardIRQ Time exceeds %d%%. Most frequent HardIRQs:\n",
-+		       smp_processor_id(), HARDIRQ_PERCENT_THRESH);
-+
-+		for (i = 0; i < NUM_HARDIRQ_REPORT; i++) {
-+			if (irq_counts_sorted[i].irq == -1)
-+				break;
-+
-+			printk(KERN_CRIT "\t#%u: %-10u\tirq#%d\n",
-+			       i + 1, irq_counts_sorted[i].counts,
-+			       irq_counts_sorted[i].irq);
-+		}
-+
-+		/*
-+		 * If the hardirq time is less than HARDIRQ_PERCENT_THRESH% in the last
-+		 * sample_period, then we suspect the interrupt storm might be subsiding.
-+		 */
-+		if (!need_counting_irqs())
-+			stop_counting_irqs();
-+	}
-+}
-+
- static void report_cpu_status(void)
- {
- 	print_cpustat();
-+	print_irq_counts();
- }
- #else
- static inline void update_cpustat(void) { }
- static inline void report_cpu_status(void) { }
-+static inline bool need_counting_irqs(void) { return false; }
-+static inline void start_counting_irqs(void) { }
-+static inline void stop_counting_irqs(void) { }
- #endif
- 
- /*
-@@ -527,6 +621,18 @@ static int is_softlockup(unsigned long touch_ts,
- 			 unsigned long now)
- {
- 	if ((watchdog_enabled & WATCHDOG_SOFTOCKUP_ENABLED) && watchdog_thresh) {
-+		/*
-+		 * If period_ts has not been updated during a sample_period, then
-+		 * in the subsequent few sample_periods, period_ts might also not
-+		 * be updated, which could indicate a potential softlockup. In
-+		 * this case, if we suspect the cause of the potential softlockup
-+		 * might be interrupt storm, then we need to count the interrupts
-+		 * to find which interrupt is storming.
-+		 */
-+		if (time_after_eq(now, period_ts + get_softlockup_thresh() / NUM_SAMPLE_PERIODS) &&
-+		    need_counting_irqs())
-+			start_counting_irqs();
-+
- 		/* Warn about unreasonable delays. */
- 		if (time_after(now, period_ts + get_softlockup_thresh()))
- 			return now - touch_ts;
-@@ -549,6 +655,7 @@ static DEFINE_PER_CPU(struct cpu_stop_work, softlockup_stop_work);
- static int softlockup_fn(void *data)
- {
- 	update_touch_ts();
-+	stop_counting_irqs();
- 	complete(this_cpu_ptr(&softlockup_completion));
- 
- 	return 0;
--- 
-2.37.1 (Apple Git-137.1)
+> thanks,
+> 
+> Takashi
 
