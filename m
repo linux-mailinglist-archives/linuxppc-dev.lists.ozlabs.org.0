@@ -1,74 +1,128 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8394873769
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 14:12:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CD7873790
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 14:18:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TNCh7SRz;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=N+xf8aeP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqXrx4kxXz3vX3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 00:12:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TqY0m4WZ0z3vZ8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 00:18:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TNCh7SRz;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=N+xf8aeP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112b; helo=mail-yw1-x112b.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:261c::701; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20701.outbound.protection.outlook.com [IPv6:2a01:111:f403:261c::701])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqXrF1tx3z3bsP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 00:11:23 +1100 (AEDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-6098b9ed2a3so43957537b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Mar 2024 05:11:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709730680; x=1710335480; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=roOaXgRVJ2UD+hzpU1VpjqNtNVV/0xa+8QzgjG/otYQ=;
-        b=TNCh7SRzs+JqeQDt3uW4vaQgE0IwX4rk5VqxZOOCK+hoIWq11qku0VWhWBjjx3iY/f
-         V4hEFWYPwW3NWXhPbm+H9u+VmFnfjmRZLq8GGqTZVYC0/S79GjQn18JvBT0NzaKT6ueU
-         rw4YLy6xGM/NPsvXz1p7s35Do3LadCcpWMY65FBEQEHHuTZ7WXKh1ZA3ATJafEXp/1Gi
-         lIfF9eKHQRZBoYe+heZ7r4RRsnZuTu+9i9PuMseXWf46ZZtpYospVA6kpzU6wjBYvh0m
-         3cb6eMEV4XMHSXV9U03KGMPq1rdLLASRDAM/zaqVA5y4SfXKgk/Wbsz0F5d81Z6zl1fj
-         rcBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709730680; x=1710335480;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=roOaXgRVJ2UD+hzpU1VpjqNtNVV/0xa+8QzgjG/otYQ=;
-        b=VndgGuVkQ3l/2YohbZm6O09Jo5DAezsbk8CfsaR5ZXd8uP17klogogSNljx24hwzJq
-         2WbQAT6SIR2N7A0qyPYl3RQx+mLUlIhNb9XsXslgb+LpF5hcarfiyOQ0TynSRJALmk3l
-         UHnA2Vp84+/KaeIHi/JO5sJnWYqYgB9UQq9LfkJRaLthPUJqCqmCuBNpuhNQwTvtrfsn
-         s4oj4W8RDk1T0kkICFUfvhAKLJOs8BoUTa59UHiwE125D5vvCbhRCU0e3vVerq+iID3y
-         Xghr8ywZZHCCTtmwkcC8fkVHMc4oMfiORVoqY0f+DKz1uHeXc/0V6rBSjfx/mbAAl9IT
-         HGdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUZIke4OHDVwrKRNdU/ECe14R6Ux4Gmo1jeL58GLB6fnnGkHAbeLCJciHu5y4ZqgbpethuIHjZVrzdSHU0rBsoCunV1kwgMTrWua1nVw==
-X-Gm-Message-State: AOJu0YwVphgoLnFxuLCq1V9H553gaxNGJDDhHN8u1USgXCJs8o3zAnkR
-	VsElvP1kmOdOc695nHavJFGwdbEGcckYv0gCxBsCv4HflHrb0DzC
-X-Google-Smtp-Source: AGHT+IEOJMfd2VqHMJoD/p66gxEjQrJ2mrzfAgDuets3O0GNPreXnXlTKkPtVEu04LRe8elaDBPJdA==
-X-Received: by 2002:a0d:c245:0:b0:608:b7d6:753f with SMTP id e66-20020a0dc245000000b00608b7d6753fmr15139269ywd.33.1709730680473;
-        Wed, 06 Mar 2024 05:11:20 -0800 (PST)
-Received: from localhost ([2601:344:8301:57f0:a708:4ac5:2d2f:c5bb])
-        by smtp.gmail.com with ESMTPSA id j9-20020a81c409000000b00608aeba302dsm3670884ywi.14.2024.03.06.05.11.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Mar 2024 05:11:20 -0800 (PST)
-Date: Wed, 6 Mar 2024 05:11:19 -0800
-From: Yury Norov <yury.norov@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v6 3/5] lib/bitmap: Introduce bitmap_scatter() and
- bitmap_gather() helpers
-Message-ID: <Zehrd/VgW5AnfJEu@yury-ThinkPad>
-References: <20240306080726.167338-1-herve.codina@bootlin.com>
- <20240306080726.167338-4-herve.codina@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqXzz5sb0z3cL0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 00:18:05 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q5XRwCkJmpUiDwISoHJ/HoOJ0NjNfS8TXV5xebPka9gnTNGD7Qzm1H2z1QYZx4+hiBUhaZFpRzehe5++PKlS5aZvcFb1pB/i1g1u7f4JtPSOwWXkrOFuZL2d807x3H/CywCFcpr+WxoGJR3wig0WnAf41uyd/zIsW1+DmxkrzTNsKEYmhZV5pKthY6pv5nqhHwW+Qb5uDH2zSjPcEBx3F3D4f/DHUhkRhZgqR1CNtXKDVhpVnPQhxa1wp0PkddQUzYiNOgLspP5a5TR+imr1zaiBc7QFzM8p3CWGFDxapbsGvvFDmePpL9doveb5Z3LoFUAk434BFn8jEUGmXgQ8mQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lilFRQkuw9WC4dU73cFTZ4P/TfzOJNkcz735ZsFs+qA=;
+ b=C52/tjPRXhOscktfsW2kj/xbhCDKbv4ZHWS+TmB/1vJkSBQJMwn2nG4VDIW8vV1eNb/f3VVUu34vCLIUFFrqhGWtGgpMAdwBKseIz9eLLAKFDZU4uEhws6VT97csxwx4+h9nNkUcdRXbgzvyY1Bxw1yCp0MblXYbDRnVE/Qnji2DMkVRLCD7duo8cmgiIvS5dEJLXRqzwXnDBAMiz5ZERgMn790oFQgxxrgdGLeCG56gzYuh0pzFNURcJl8B3/62aKZEZNKtu6ZcZM0k4RN3D+kGJ9hFikLscB1eCi96E1hD7t39uScZ5GOfsFDjOS5qQrfDrQIwEQQqsyHytIbCVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lilFRQkuw9WC4dU73cFTZ4P/TfzOJNkcz735ZsFs+qA=;
+ b=N+xf8aePyyxUCaJX1zJcOD1KvBbR0YlDs0Z8zmVdag0jH+st7SvaCYwGKSP/3mjPqkY0Joy9K0AxM6WVQdY2adM8CO09kdVcTzUIzpt7gso7EFo7A3qXqry8QFmLW96dM7GJ+njwbjoQ8exj0HzBeLM0WURZWKUn89uHYIBxl4Js9Q5QNKlxGnUkXLJqqN9mk0M5QY/7fZ5MS9BnoMaVvxfP2/Gloyt6a2Y3rzvmYr9yJQyJb3Idf7sQy2XUc3xJXclc1uIUPVLeu9/qo1fLW16TZX1AFls3thi/b5gzkUGq4Kscxx2/canuAdfiVJubGYIIp3/5ZkGQP/KyaGSSiA==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PAZP264MB3245.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f6::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Wed, 6 Mar
+ 2024 13:17:43 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7339.035; Wed, 6 Mar 2024
+ 13:17:43 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 3/3] macintosh/ams: Fix unused variable warning
+Thread-Topic: [PATCH 3/3] macintosh/ams: Fix unused variable warning
+Thread-Index: AQHab8ZUbltzgnJp8UWXb7URKbgjErEqscoA
+Date: Wed, 6 Mar 2024 13:17:42 +0000
+Message-ID: <210b7f0e-9f1c-4f8d-8248-3d906121333a@csgroup.eu>
+References: <20240306125853.3714578-1-mpe@ellerman.id.au>
+ <20240306125853.3714578-3-mpe@ellerman.id.au>
+In-Reply-To: <20240306125853.3714578-3-mpe@ellerman.id.au>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB3245:EE_
+x-ms-office365-filtering-correlation-id: 97483ea3-02e4-4734-4ace-08dc3ddfce6e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  JpPnhqlsKV1uZeb5K9IWsRchxtLb2/q1euW36ERhHY09VBW6Xl+v1+oEKn/2msbhowUhlQvCyCOArE1ws6Hiigibrxn4+oGdweXTFDkH/PtQlYKjrCJNoFMWrv4lN8uzrBzQjZXEfHcqdRMQ1FiMATCKS0O4Lj4okuaxxPcT/p/WrLgKHhgRVU+In0N6FXsDCb1f66ayn1x6AHcox7dTbXn510+k6snz9rKp6FncCotfX8F/tOhjPOCDA/sQyUSgMPCM3pLMN/Zq8UfpSALvEX1GMw4whwHOFkjCc9xOfR/abHQbQ9bHia5VYXEx46KafnBhaaRTIY4ksk0LXhgWSWpmBUJta+ReBmaeTHcl/tG7VCQxNyrqoIpuQf3XIqxWGr2ZoR48HNJ3fw1xLYdDWa5ppyShXo1C9Xbzl+ENpbbmuM6JwJ244OIuPcnfx99a4WlBZ/6eSs6FonnbDXM0kZfNbUHJWq37f7adb6BFGFoEMkcZbdcMax1dOJcQCu2hi93Fn3BwMSCuPfCDaqpU2gCMm+Ah6R1qZOSSdO6GlKUO/ehX6ZluByFzJqCUBM9nNVnNUiR34Vctg5mGuzxNY6gjwBeWq2isnJuWB7YPzR8GhWE4KxCa7m0y2otnq+iRcWtn8Yb1kJ7bhqYlQKHYlrWRqNDRqWvQ//60unw7E5WJzI+vdeqh3nW5hz3x47YMIC5hjsGNzyX0GxcaUmsf0kT3U+k58HMCZFP/+aRmrcw=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?Y3BmeDNaODlLQkQ3b1JGVkJnUm1mR3NDQU8xQ1NjaWx1Rnh2Q1JlQm1rVHR3?=
+ =?utf-8?B?VGhlbXhJUDkrT0dES3FuNC9Sb2w2ME1XV3U0K21PTGMySlRjbjk3S2RIS1Iz?=
+ =?utf-8?B?c3VGTXRKSlJGa1g5aUlwT2RvY2lBQWZjWFJvaE83ckJMc0NpOEQ2WFFyWCt3?=
+ =?utf-8?B?YlFRSGQwd2NhTU93L2VKd2d1aXRNczY3dVhIMWoyUUlleXdVd1hYNHhCOHNS?=
+ =?utf-8?B?L0JXZUJteVFCZ0lJOVc1SHFMZmZkVjdZdk1odEgxR0gvNk5ZUDlDOHp6eW1R?=
+ =?utf-8?B?dVZtaVVZemxPdlZsVUljNnhJZS9ZWHdSdCs1WXhXVU10M3c0MWpiTXNlZWw1?=
+ =?utf-8?B?dXl3N0ViMStSNzdYTzc0eFRiekdCVDNtWUJYZkszK25DVS94SDFmNlJBQ0JV?=
+ =?utf-8?B?R256bVBOKzhRYlMrdW9BQnZLek90R0pRZWRGMlQrY0hSK3l5aFkrbTB5SjFG?=
+ =?utf-8?B?RzFIVGR4RytFbEhlM0F4SzdkVzduc0g4MjR0Q1Z2WlQ3enFDdmtQbkFvYStX?=
+ =?utf-8?B?WktybCtVcVl3ODVEUTYwdUo3K1lPVFRxTEZOQ0M3WkdUbWdFczJmaVdvNGJ5?=
+ =?utf-8?B?QnNnNnY3WU1rUVIrRlVIZ2FhL1BJclZ4THdYeGhOK1NEK2k2T1hKdFh6MW1C?=
+ =?utf-8?B?cVVlMzR5Z1lHZlA2REM5SDkzZ3VFcGlrZWxpZXQzeVdDNTJBUHBzWE5pUGFu?=
+ =?utf-8?B?SC9iR3J0RXZpcHlBTjFOSGRqeGNpdUlDZjRnbWMvdkZLMXVHYXRrZFZpbk9x?=
+ =?utf-8?B?UHlrd0gyZHZHUWhlVGpMMVJoMEtKblVMUmR3dU5ZV0I1TUY3ZkNCMXBiTFVP?=
+ =?utf-8?B?eGFkWFZITzBheGhoZTBSKzhIZ3dCQXZwRnhzUzEwV0lqYTAzQkdtelV1M0lN?=
+ =?utf-8?B?R2h5WXVQT0pQcVFjZnJEQ2d4Q2luNlkrS05SUFlSdDNrYnI4QU1DN2lFRk1q?=
+ =?utf-8?B?Uk9lakc1cGlIQWpnOTliVmtFUGNvaUtMemdyS2NuUVN6alBpT05XQ0QyUHN1?=
+ =?utf-8?B?OFVoVXYvd2R3ekhLRWNiK0lWcCs5Y2xsRCtoemc5OUpaemJCV3NpZEZtNGp3?=
+ =?utf-8?B?NE9pNjFXNmI2OVdsem8zOVhnNC9zM1RZWUtvUllIampzZDA4Y1pCc2txYW9N?=
+ =?utf-8?B?bHVmbnpDRmRxZDJZcExrM25wWFFUUk52Z1gzSTVsc2tSTmo4dzc4empFZ0hr?=
+ =?utf-8?B?VmVWMjlHQ2pXYmlSZ2prRHIva0tpVUFHejVYV2dPbzZIZitpQzBQVFpiQUND?=
+ =?utf-8?B?aTdVVnRoanVtSUVVM1BNeFZ0ZkxUbnVBdTNnT0Q1U0hVM2NNMjhkWGt1bFlI?=
+ =?utf-8?B?aFQ3bHpIbGVxa0M4UHV2VmRsQVVOcTdZakYzNmNLSWM0YUJnYys1ZXR6MVVs?=
+ =?utf-8?B?NE9NaVFvNCtLVTQ3Y0txTFNxT01ncEdQUTlzTlAwdnQ2SCs4dGx5NVcxb05X?=
+ =?utf-8?B?SkIybnZrVWNXZmFacW13MXUvRFM4RFZlR1J2akZKM1JHMmRvOC9SV2g5MjU4?=
+ =?utf-8?B?dzd6RlNmVkpTVVdYQjlQQUFhbk5rZ3VzeEpSZk56OFhGV0lQZDVxTytCdjdJ?=
+ =?utf-8?B?VFdVaVdaMVZ6aEdNRDd2RC9Sc1VTRUc5RG9iY1NOU0RYNmt4RjdOTUo5SSt3?=
+ =?utf-8?B?T3ZxR3BPMTRYOUdncVpKRFQxT0k0a2xmMW96cnR0ak92LzJaazlHaFhzR2JU?=
+ =?utf-8?B?SHRKcUpDTWVoR1pWTFlIMWRIeEQyVjNXbHVtOEZ1Q3dJaDBKa1k5YmNvSTZp?=
+ =?utf-8?B?U0svMUxzYzlwcUJNK29TalE3dEpNblQ4a25kTmFqczFtNlNlem5VUjdGNnkw?=
+ =?utf-8?B?WXgwUnBKTnJGL3RIdytoak41eU9RK3NHYk5XYmFhTDNGb3FnQUgyc3lJTE00?=
+ =?utf-8?B?L3djWHkrSTBLZnpibEVDRVdjdXVneWhyNHlNSGN4VUZBa09BSG5wbHB0OWdP?=
+ =?utf-8?B?YWVwQjI0RTJiTjNTOStYZmtPNDNnR3dkWVpCVjBKelhJa05RTXNpZUxpRjdt?=
+ =?utf-8?B?VFZGamRieUdvdDJPQW5teWNUZXBtK0VpUWhOWEhVanZ3RU9VYkMzVTFWclNo?=
+ =?utf-8?B?blRoTERMMkRSQWpIMU41cHU0NUpIRUR5TGg5d2puMGVjYWlxc1BUT2VrT2lB?=
+ =?utf-8?Q?vAjJ+Dns1B2cPqzn6obUkRCKo?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4BDA241EA789A74F81508A94BF7894A2@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240306080726.167338-4-herve.codina@bootlin.com>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97483ea3-02e4-4734-4ace-08dc3ddfce6e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Mar 2024 13:17:43.0038
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TDh/skK6/yGMOHN+29/Fy6Bg14PMQSnUkzMZ4IOakS+jdk2y0F8vqXdKQPJpQRCkJmuhgTviVfadTB7jF/uMdee1v/J315NKo61yFsoP284=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB3245
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,234 +134,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 06, 2024 at 09:07:19AM +0100, Herve Codina wrote:
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> These helpers scatters or gathers a bitmap with the help of the mask
-> position bits parameter.
-> 
-> bitmap_scatter() does the following:
->   src:  0000000001011010
->                   ||||||
->            +------+|||||
->            |  +----+||||
->            |  |+----+|||
->            |  ||   +-+||
->            |  ||   |  ||
->   mask: ...v..vv...v..vv
->         ...0..11...0..10
->   dst:  0000001100000010
-> 
-> and bitmap_gather() performs this one:
->    mask: ...v..vv...v..vv
->    src:  0000001100000010
->             ^  ^^   ^   0
->             |  ||   |  10
->             |  ||   > 010
->             |  |+--> 1010
->             |  +--> 11010
->             +----> 011010
->    dst:  0000000000011010
-> 
-> bitmap_gather() can the seen as the reverse bitmap_scatter() operation.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Link: https://lore.kernel.org/lkml/20230926052007.3917389-3-andriy.shevchenko@linux.intel.com/
-> Co-developed-by: Herve Codina <herve.codina@bootlin.com>
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-
-Would you like to move this with the rest of the series? If so please
-pull my Sof-by, otherwise I can move it with bitmap-for-next.
-
-> ---
->  include/linux/bitmap.h | 101 +++++++++++++++++++++++++++++++++++++++++
->  lib/test_bitmap.c      |  42 +++++++++++++++++
->  2 files changed, 143 insertions(+)
-> 
-> diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
-> index 99451431e4d6..049ba20911c5 100644
-> --- a/include/linux/bitmap.h
-> +++ b/include/linux/bitmap.h
-> @@ -62,6 +62,8 @@ struct device;
->   *  bitmap_shift_left(dst, src, n, nbits)       *dst = *src << n
->   *  bitmap_cut(dst, src, first, n, nbits)       Cut n bits from first, copy rest
->   *  bitmap_replace(dst, old, new, mask, nbits)  *dst = (*old & ~(*mask)) | (*new & *mask)
-> + *  bitmap_scatter(dst, src, mask, nbits)	*dst = map(dense, sparse)(src)
-> + *  bitmap_gather(dst, src, mask, nbits)	*dst = map(sparse, dense)(src)
->   *  bitmap_remap(dst, src, old, new, nbits)     *dst = map(old, new)(src)
->   *  bitmap_bitremap(oldbit, old, new, nbits)    newbit = map(old, new)(oldbit)
->   *  bitmap_onto(dst, orig, relmap, nbits)       *dst = orig relative to relmap
-> @@ -487,6 +489,105 @@ static inline void bitmap_replace(unsigned long *dst,
->  		__bitmap_replace(dst, old, new, mask, nbits);
->  }
->  
-> +/**
-> + * bitmap_scatter - Scatter a bitmap according to the given mask
-> + * @dst: scattered bitmap
-> + * @src: gathered bitmap
-> + * @mask: mask representing bits to assign to in the scattered bitmap
-> + * @nbits: number of bits in each of these bitmaps
-> + *
-> + * Scatters bitmap with sequential bits according to the given @mask.
-> + *
-> + * Example:
-> + * If @src bitmap = 0x005a, with @mask = 0x1313, @dst will be 0x0302.
-> + *
-> + * Or in binary form
-> + * @src			@mask			@dst
-> + * 0000000001011010	0001001100010011	0000001100000010
-> + *
-> + * (Bits 0, 1, 2, 3, 4, 5 are copied to the bits 0, 1, 4, 8, 9, 12)
-> + *
-> + * A more 'visual' description of the operation:
-> + * src:  0000000001011010
-> + *                 ||||||
-> + *          +------+|||||
-> + *          |  +----+||||
-> + *          |  |+----+|||
-> + *          |  ||   +-+||
-> + *          |  ||   |  ||
-> + * mask: ...v..vv...v..vv
-> + *       ...0..11...0..10
-> + * dst:  0000001100000010
-> + *
-> + * A relationship exists between bitmap_scatter() and bitmap_gather().
-> + * bitmap_gather() can be seen as the 'reverse' bitmap_scatter() operation.
-> + * See bitmap_scatter() for details related to this relationship.
-> + */
-> +static inline void bitmap_scatter(unsigned long *dst, const unsigned long *src,
-> +				  const unsigned long *mask, unsigned int nbits)
-> +{
-> +	unsigned int n = 0;
-> +	unsigned int bit;
-> +
-> +	bitmap_zero(dst, nbits);
-> +
-> +	for_each_set_bit(bit, mask, nbits)
-> +		__assign_bit(bit, dst, test_bit(n++, src));
-> +}
-> +
-> +/**
-> + * bitmap_gather - Gather a bitmap according to given mask
-> + * @dst: gathered bitmap
-> + * @src: scattered bitmap
-> + * @mask: mask representing bits to extract from in the scattered bitmap
-> + * @nbits: number of bits in each of these bitmaps
-> + *
-> + * Gathers bitmap with sparse bits according to the given @mask.
-> + *
-> + * Example:
-> + * If @src bitmap = 0x0302, with @mask = 0x1313, @dst will be 0x001a.
-> + *
-> + * Or in binary form
-> + * @src			@mask			@dst
-> + * 0000001100000010	0001001100010011	0000000000011010
-> + *
-> + * (Bits 0, 1, 4, 8, 9, 12 are copied to the bits 0, 1, 2, 3, 4, 5)
-> + *
-> + * A more 'visual' description of the operation:
-> + * mask: ...v..vv...v..vv
-> + * src:  0000001100000010
-> + *          ^  ^^   ^   0
-> + *          |  ||   |  10
-> + *          |  ||   > 010
-> + *          |  |+--> 1010
-> + *          |  +--> 11010
-> + *          +----> 011010
-> + * dst:  0000000000011010
-> + *
-> + * A relationship exists between bitmap_gather() and bitmap_scatter(). See
-> + * bitmap_scatter() for the bitmap scatter detailed operations.
-> + * Suppose scattered computed using bitmap_scatter(scattered, src, mask, n).
-> + * The operation bitmap_gather(result, scattered, mask, n) leads to a result
-> + * equal or equivalent to src.
-> + *
-> + * The result can be 'equivalent' because bitmap_scatter() and bitmap_gather()
-> + * are not bijective.
-> + * The result and src values are equivalent in that sense that a call to
-> + * bitmap_scatter(res, src, mask, n) and a call to
-> + * bitmap_scatter(res, result, mask, n) will lead to the same res value.
-> + */
-> +static inline void bitmap_gather(unsigned long *dst, const unsigned long *src,
-> +				 const unsigned long *mask, unsigned int nbits)
-> +{
-> +	unsigned int n = 0;
-> +	unsigned int bit;
-> +
-> +	bitmap_zero(dst, nbits);
-> +
-> +	for_each_set_bit(bit, mask, nbits)
-> +		__assign_bit(n++, dst, test_bit(bit, src));
-> +}
-> +
->  static inline void bitmap_next_set_region(unsigned long *bitmap,
->  					  unsigned int *rs, unsigned int *re,
->  					  unsigned int end)
-> diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-> index 65f22c2578b0..6b2b33579f56 100644
-> --- a/lib/test_bitmap.c
-> +++ b/lib/test_bitmap.c
-> @@ -380,6 +380,47 @@ static void __init test_replace(void)
->  	expect_eq_bitmap(bmap, exp3_1_0, nbits);
->  }
->  
-> +static const unsigned long sg_mask[] __initconst = {
-> +	BITMAP_FROM_U64(0x000000000000035aULL),
-> +};
-> +
-> +static const unsigned long sg_src[] __initconst = {
-> +	BITMAP_FROM_U64(0x0000000000000667ULL),
-> +};
-> +
-> +static const unsigned long sg_gather_exp[] __initconst = {
-> +	BITMAP_FROM_U64(0x0000000000000029ULL),
-> +};
-> +
-> +static const unsigned long sg_scatter_exp[] __initconst = {
-> +	BITMAP_FROM_U64(0x000000000000021aULL),
-> +};
-> +
-> +static void __init test_bitmap_sg(void)
-> +{
-> +	unsigned int nbits = 64;
-> +	DECLARE_BITMAP(bmap_gather, 100);
-> +	DECLARE_BITMAP(bmap_scatter, 100);
-> +	DECLARE_BITMAP(bmap_tmp, 100);
-> +	DECLARE_BITMAP(bmap_res, 100);
-> +
-> +	/* Simple gather call */
-> +	bitmap_zero(bmap_gather, 100);
-> +	bitmap_gather(bmap_gather, sg_src, sg_mask, nbits);
-> +	expect_eq_bitmap(sg_gather_exp, bmap_gather, nbits);
-> +
-> +	/* Simple scatter call */
-> +	bitmap_zero(bmap_scatter, 100);
-> +	bitmap_scatter(bmap_scatter, sg_src, sg_mask, nbits);
-> +	expect_eq_bitmap(sg_scatter_exp, bmap_scatter, nbits);
-> +
-> +	/* Scatter/gather relationship */
-> +	bitmap_zero(bmap_tmp, 100);
-> +	bitmap_gather(bmap_tmp, bmap_scatter, sg_mask, nbits);
-> +	bitmap_scatter(bmap_res, bmap_tmp, sg_mask, nbits);
-> +	expect_eq_bitmap(bmap_scatter, bmap_res, nbits);
-> +}
-> +
->  #define PARSE_TIME	0x1
->  #define NO_LEN		0x2
->  
-> @@ -1252,6 +1293,7 @@ static void __init selftest(void)
->  	test_copy();
->  	test_bitmap_region();
->  	test_replace();
-> +	test_bitmap_sg();
->  	test_bitmap_arr32();
->  	test_bitmap_arr64();
->  	test_bitmap_parse();
-> -- 
-> 2.43.0
+DQoNCkxlIDA2LzAzLzIwMjQgw6AgMTM6NTgsIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
+Cj4gSWYgYm90aCBDT05GSUdfU0VOU09SU19BTVNfUE1VIGFuZCBDT05GSUdfU0VOU09SU19BTVNf
+STJDIGFyZSB1bnNldCwNCj4gdGhlcmUgaXMgYW4gdW51c2VkIHZhcmlhYmxlIHdhcm5pbmcgaW4g
+dGhlIGFtcyBkcml2ZXI6DQo+IA0KPiAgICBkcml2ZXJzL21hY2ludG9zaC9hbXMvYW1zLWNvcmUu
+YzogSW4gZnVuY3Rpb24gJ2Ftc19pbml0JzoNCj4gICAgZHJpdmVycy9tYWNpbnRvc2gvYW1zL2Ft
+cy1jb3JlLmM6MTgxOjI5OiB3YXJuaW5nOiB1bnVzZWQgdmFyaWFibGUgJ25wJw0KPiAgICAgIDE4
+MSB8ICAgICAgICAgc3RydWN0IGRldmljZV9ub2RlICpucDsNCj4gDQo+IEZpeCBpdCBieSB1c2lu
+ZyBJU19FTkFCTEVEKCkgdG8gY3JlYXRlIGEgYmxvY2sgZm9yIGVhY2ggY2FzZSwgYW5kIG1vdmUN
+Cj4gdGhlIHZhcmlhYmxlIGRlY2xhcnRpb24gaW4gdGhlcmUuDQo+IA0KPiBQcm9iYWJseSB0aGUg
+ZGVwZW5kZW5jaWVzIHNob3VsZCBiZSBjaGFuZ2VkIHNvIHRoYXQgdGhlIGRyaXZlciBjYW4ndCBi
+ZQ0KPiBidWlsdCB3aXRoIGJvdGggdmFyaWFudHMgZGlzYWJsZWQsIGJ1dCB0aGF0IHdvdWxkIGJl
+IGEgbGFyZ2VyIGNoYW5nZS4NCg0KQ2FuIGJlIGRvbmUgZWFzaWx5IHRoYXQgd2F5IEkgdGhpbms6
+DQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL21hY2ludG9zaC9LY29uZmlnIGIvZHJpdmVycy9tYWNp
+bnRvc2gvS2NvbmZpZw0KaW5kZXggYTBlNzE3YTk4NmRjLi5mYjM4ZjY4NDQ0NGYgMTAwNjQ0DQot
+LS0gYS9kcml2ZXJzL21hY2ludG9zaC9LY29uZmlnDQorKysgYi9kcml2ZXJzL21hY2ludG9zaC9L
+Y29uZmlnDQpAQCAtMjYyLDcgKzI2Miw3IEBAIGNvbmZpZyBTRU5TT1JTX0FNUw0KICAJICB3aWxs
+IGJlIGNhbGxlZCBhbXMuDQoNCiAgY29uZmlnIFNFTlNPUlNfQU1TX1BNVQ0KLQlib29sICJQTVUg
+dmFyaWFudCINCisJYm9vbCAiUE1VIHZhcmlhbnQiIGlmIFNFTlNPUlNfQU1TX0kyQw0KICAJZGVw
+ZW5kcyBvbiBTRU5TT1JTX0FNUyAmJiBBREJfUE1VDQogIAlkZWZhdWx0IHkNCiAgCWhlbHANCg0K
+DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBNaWNoYWVsIEVsbGVybWFuIDxtcGVAZWxsZXJtYW4uaWQu
+YXU+DQo+IC0tLQ0KPiAgIGRyaXZlcnMvbWFjaW50b3NoL2Ftcy9hbXMtY29yZS5jIHwgMjkgKysr
+KysrKysrKysrKystLS0tLS0tLS0tLS0tLS0NCj4gICAxIGZpbGUgY2hhbmdlZCwgMTQgaW5zZXJ0
+aW9ucygrKSwgMTUgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tYWNp
+bnRvc2gvYW1zL2Ftcy1jb3JlLmMgYi9kcml2ZXJzL21hY2ludG9zaC9hbXMvYW1zLWNvcmUuYw0K
+PiBpbmRleCBjOTc4YjQyNzJkYWEuLjIyZDNlNjYwNTI4NyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVy
+cy9tYWNpbnRvc2gvYW1zL2Ftcy1jb3JlLmMNCj4gKysrIGIvZHJpdmVycy9tYWNpbnRvc2gvYW1z
+L2Ftcy1jb3JlLmMNCj4gQEAgLTE3OCwyNSArMTc4LDI0IEBAIGludCBhbXNfc2Vuc29yX2F0dGFj
+aCh2b2lkKQ0KPiAgIA0KPiAgIHN0YXRpYyBpbnQgX19pbml0IGFtc19pbml0KHZvaWQpDQo+ICAg
+ew0KPiAtCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbnA7DQo+IC0NCj4gICAJc3Bpbl9sb2NrX2luaXQo
+JmFtc19pbmZvLmlycV9sb2NrKTsNCj4gICAJbXV0ZXhfaW5pdCgmYW1zX2luZm8ubG9jayk7DQo+
+ICAgCUlOSVRfV09SSygmYW1zX2luZm8ud29ya2VyLCBhbXNfd29ya2VyKTsNCj4gICANCj4gLSNp
+ZmRlZiBDT05GSUdfU0VOU09SU19BTVNfSTJDDQo+IC0JbnAgPSBvZl9maW5kX25vZGVfYnlfbmFt
+ZShOVUxMLCAiYWNjZWxlcm9tZXRlciIpOw0KPiAtCWlmIChucCAmJiBvZl9kZXZpY2VfaXNfY29t
+cGF0aWJsZShucCwgIkFBUEwsYWNjZWxlcm9tZXRlcl8xIikpDQo+IC0JCS8qIEZvdW5kIEkyQyBt
+b3Rpb24gc2Vuc29yICovDQo+IC0JCXJldHVybiBhbXNfaTJjX2luaXQobnApOw0KPiAtI2VuZGlm
+DQo+IC0NCj4gLSNpZmRlZiBDT05GSUdfU0VOU09SU19BTVNfUE1VDQo+IC0JbnAgPSBvZl9maW5k
+X25vZGVfYnlfbmFtZShOVUxMLCAic21zIik7DQo+IC0JaWYgKG5wICYmIG9mX2RldmljZV9pc19j
+b21wYXRpYmxlKG5wLCAic21zIikpDQo+IC0JCS8qIEZvdW5kIFBNVSBtb3Rpb24gc2Vuc29yICov
+DQo+IC0JCXJldHVybiBhbXNfcG11X2luaXQobnApOw0KPiAtI2VuZGlmDQo+ICsJaWYgKElTX0VO
+QUJMRUQoQ09ORklHX1NFTlNPUlNfQU1TX0kyQykpIHsNCj4gKwkJc3RydWN0IGRldmljZV9ub2Rl
+ICpucCA9IG9mX2ZpbmRfbm9kZV9ieV9uYW1lKE5VTEwsICJhY2NlbGVyb21ldGVyIik7DQo+ICsJ
+CWlmIChucCAmJiBvZl9kZXZpY2VfaXNfY29tcGF0aWJsZShucCwgIkFBUEwsYWNjZWxlcm9tZXRl
+cl8xIikpDQo+ICsJCQkvKiBGb3VuZCBJMkMgbW90aW9uIHNlbnNvciAqLw0KPiArCQkJcmV0dXJu
+IGFtc19pMmNfaW5pdChucCk7DQo+ICsJfQ0KPiArDQo+ICsJaWYgKElTX0VOQUJMRUQoQ09ORklH
+X1NFTlNPUlNfQU1TX1BNVSkpIHsNCj4gKwkJc3RydWN0IGRldmljZV9ub2RlICpucCA9IG9mX2Zp
+bmRfbm9kZV9ieV9uYW1lKE5VTEwsICJzbXMiKTsNCj4gKwkJaWYgKG5wICYmIG9mX2RldmljZV9p
+c19jb21wYXRpYmxlKG5wLCAic21zIikpDQo+ICsJCQkvKiBGb3VuZCBQTVUgbW90aW9uIHNlbnNv
+ciAqLw0KPiArCQkJcmV0dXJuIGFtc19wbXVfaW5pdChucCk7DQo+ICsJfQ0KPiArDQo+ICAgCXJl
+dHVybiAtRU5PREVWOw0KPiAgIH0NCj4gICANCg==
