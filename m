@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACA5873024
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 09:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E339A873017
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 08:57:53 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=aQpmH65o;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=jrlqsufg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqPwy5tgZz3vkj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 19:00:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TqPtR4Wscz3vh8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Mar 2024 18:57:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=aQpmH65o;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=jrlqsufg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::601; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::601])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1a::613; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on20613.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1a::613])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqPs165Rpz3dwr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 18:56:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqPry6DcKz3dRl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Mar 2024 18:56:34 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Js8Sjw3OaVSFBKKV3szzHgfVsNFYThpw82oB4yM73kou8Q+4SddTMFto2DBSOIWwJQuWj7oNh+4kmTBHE45mTDDqyIV2Th68AHoej1S3qcuokmO1o1VqyVS5NN7/EEu9tzPUvAVs+bNNex1aAPU8rZhTfchKlqAmHiOjF/PVa0WfuSwRpUu8AtA7NARlB+S1GS0zoCirgjJS4LD922eYFZT39xF7dumLcMhfxTzuqmh4UR3YZnszr75f/BMhgqz8UZdw2RONSBENUVKVSfa0J1SFFNreWi0fhX4ULwWzKiFVX7XqnjdcJv4TvXBsi/Fcx9jM+GD3hUzrwnb9p0sx3w==
+ b=oFsB3PFDdsmdL9t0ycUI6Bye5dGEQqS6uE5J1qvqZ6dkC5otnhvjq6RyJsNFgqpLEFNqpkaCB1eItIGVoUnyAOyexJApFnFlm2VUDgYR+UocxY93u2wx+cuBgoZB/U3Nnxh+vy7aJ6znANcxuPhU9JwZ0hb5JOh+PVT0UklJVBvr7M3v8danLV4EdqTW+RfIPP83XdEMs3pPGlX9JJPWg2g574RjtObxM5eVEZOsXTrrCnysh8y8CRcWEccVTaiGTsSFP+/KC/sOlQUMS38R8OK68DuWv16U5IZh6OR9+49hw4kJOytAXVyP/kF9AZQcmJkcEUEayeZe37c7wExEnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wgGzeG+iwTNJd/AAbQ6AjkhznAUN+suHLFNatmwyngw=;
- b=VZIDc3juLEC2pF2HfAInhKYr++FNSFJToelSGk6m2onkphh41ensG6kWDIQCeEdTJO4aL3qOlTqsd/IWXHPwTUJBFEKl9sMNykbrwJiiTwGcILOWaun3INz1fza0eYaRE59rt34UwQh198D3yXrgQ5sQXw0DvOFKyjTBNUVk+fNjUmDSogD8mInQ0AuF0JKds1nK86FyQ2iNs7Rkc3kOhPqS3zkI4jzqo1ZH6KroIbWeo8WPgdlwF5oKLTT+t3JQBoQdQi0s6rsKZg7rpRMIWCU5SUEMfg5z4G/10dI1Ma6YtYvbGPrb8EbSdTL2tutFDhVJ+GUo9VIaTZwp+7VY7g==
+ bh=C0HxxwqbTUQyhMeXXnXFbjpyx5CV83NN+sqlk2mdOZE=;
+ b=aFXZkr+jWyb2pUQ3vJlExtSCWpw+KdkcsX+YKjGo9uiGV25By8j656pqsQR4klRiozrxg8phhVoIxBOI3v3keyXpDJ1P+9gyKcGBODgKGwL75SQ8x4lTHVdMO/rie86uq09PlJ5za/g3xpgogxMRg5cX8joZaPiBuT5Ltm83XcYmHI2I1BGkhiJWDQcSrCxUrUsCzZ61awgFxlSKnRtiZdv6topEPrN4XxK2fy0d2B6P5N2VM5zj5Wtt2JqDgPsDA3MoAYlgjMqmEPoygXsPbp3IVhWAdflWXw7lI6Ayr3ot1s0KVJQiBpotkb+KS+Jos0V1hU3FJcF3i18xsncqvg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wgGzeG+iwTNJd/AAbQ6AjkhznAUN+suHLFNatmwyngw=;
- b=aQpmH65o36JP3fh873lbMSYCMv72jbk+JS1wnhA4cXybzJ+G2zI9pdxv25akCM13DAulvYmZ1W7BKb1PJAlhSv9FxSxYTwc70w3KpC0DpmZSSkKB3bnXBhZ78hu1ruZuhOCpT9YtutLun+BRIiHHYy4sz88Bu4wPKFRmUh/v/rc=
+ bh=C0HxxwqbTUQyhMeXXnXFbjpyx5CV83NN+sqlk2mdOZE=;
+ b=jrlqsufgwvu/8fdl8vaf4zS8Gvnkj8Qq7/oUAUSSw6hZusgoWGyc8FfhBejuZxhkQ1wj1GvfpypU8J57lfWZ+XHn/mKQqeCf5mgCZxnm5YsGM0rA0uRkynDxpKZiohIpFH1GvFmSB1StPYIELsNb98mLGi565b4OjKW+smQXAeY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
- by VE1PR04MB7376.eurprd04.prod.outlook.com (2603:10a6:800:1a0::19) with
+ by DU2PR04MB9147.eurprd04.prod.outlook.com (2603:10a6:10:2f6::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39; Wed, 6 Mar
- 2024 07:56:26 +0000
+ 2024 07:56:32 +0000
 Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
  ([fe80::4bee:acb0:401a:3a01]) by DB9PR04MB9498.eurprd04.prod.outlook.com
  ([fe80::4bee:acb0:401a:3a01%7]) with mapi id 15.20.7339.035; Wed, 6 Mar 2024
- 07:56:26 +0000
+ 07:56:32 +0000
 From: Chancel Liu <chancel.liu@nxp.com>
 To: shengjiu.wang@gmail.com,
 	Xiubo.Lee@gmail.com,
@@ -64,9 +64,9 @@ To: shengjiu.wang@gmail.com,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 3/4] ASoC: fsl: Let imx-audio-rpmsg register platform device for card
-Date: Wed,  6 Mar 2024 16:55:09 +0900
-Message-ID: <20240306075510.535963-4-chancel.liu@nxp.com>
+Subject: [PATCH 4/4] ASoC: fsl: imx-rpmsg: Update to correct DT node
+Date: Wed,  6 Mar 2024 16:55:10 +0900
+Message-ID: <20240306075510.535963-5-chancel.liu@nxp.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240306075510.535963-1-chancel.liu@nxp.com>
 References: <20240306075510.535963-1-chancel.liu@nxp.com>
@@ -77,52 +77,52 @@ X-ClientProxiedBy: SI2PR04CA0017.apcprd04.prod.outlook.com
  (2603:10a6:10:360::21)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|VE1PR04MB7376:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ef007f8-46ea-484f-ab02-08dc3db2ecca
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|DU2PR04MB9147:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9083713-b647-4051-b35a-08dc3db2f00a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	ZDXBDj4Z33vSjF+trkNOfZXoAKa2YCnmiGVBJPf+ZCWWIAvR629HLH6VDAn6iIdaNTg7EN51ELeXW50738fAfqBp3xSgR+PQ53xQEgQi4c0KCKVCYxyeId9LdFx7mWRSxFIxYVIPMm2mLstgcQcb9UvAIo3rIDe60ctkFXrGKtzswCOSKsDuXQa0w9zU5oM+UH4cLf+hgm3ybvA5bRrj8uhKGGvYRz10Oo6nSP/NgREEIVHrTFBRPhTkqHpQLhW3FZp7op/shKmCuSJHJc3vrO3QG1g/YcJOgrJxKIgZvSkDgoY7Fr7EZnuthqVM1b+PfuhtZV2Nv+jpwBBLpPRJ26NdmxcMgGPWKIcmSmcmBUSmOQlp+M2Xu/AkzDXHP2x0INkOIH+wm3AtszFxk9sTYEITYHbsfGBDpAv8+8cQf6tDqIelf+KQOw+H1HR8iT9+bJxyKMdTThdPu+qj4m0vrD5WPej76+D7u35u+Esm4roWvu5uouH0P47QnfW/S/b2xbMIDM1naqkniWit5WoFV1+hGRXly7T29HlM7KSMi2BTCbOJuid22dgtD/3PiiwIF3gQ8TCaLbhPB9MywJmHAGyUe3ThnUvDddK9+HGKrINfSR7j0FIE8cegarjbbp/Rr5TL9zp9CWIs8XDDgYPhYZ0dfYbpgXMcORJH/z/oOTx8QqepHPoLGPrNuIPL65EUXstuY8RGmCqTT1/ifnM8Jk+pVaql7Vk63o1569L8eA8=
+X-Microsoft-Antispam-Message-Info: 	mR/vwwmLdF94JRO6Y25cSjgqB+z/A+HSbLizGtzA7nieaDtfkQihwS7fjNJe2WvKzTgVE0b9jZNQrvPLXnpwepe+88rvs7gZFkwx6uDv4PcnAzxXdcI+93iP/wk22WbSoIqsj7IuhcUgbup8L18X7Z5S41R0nZMRHFS9AvMaenOjk3aX/MyobPMuZJtnGxG0aRFTbAXjPLlQnozeBLIgFrjJ0QB3EE5if2/X1zQhzwt9c7wxfaodkgPflAqdaan8KwjCgQfB3RRm7gjzv92eG+bdicu49x+IghhAa6+5qfkvrnez9G+MWhhIQsTh4naxMvwgZipMutJEopfyysD0mqzbQ24Jb48l6yZDOQqXMGCSXLFTPFXEeX45M042iAfrlBBnIscJIDlY2ZbrbQxNamHk3oTU/COb+6p+aGk2CDKtw/5LAIVAqUvSoRu2S/HK2tDMDCtmsY0JhKZiickjPRgu6twRWFa+QDLy/7L34eelGHMwQfkGaSUD1zY1rAKie9xksF2ELgeTsGg9CCJ91RHEbj9Hsh2jtD19GqDsF4hwTF8wb8f4wJa8OH/xFzqwv8w+4mNtfANvHKp39fdz8wM91uCHTZVOnThNMjriyO6kOmdyhhWrFWu8uqdvRgHqBJd7bDhMXCPvkkNjcJQIe+2VVmkZtZF/1mHK/lSgCqhh6JnWrjMY8RcI328/4j3CgnI34Rkg2b0SXShwjxOJz++A0SAPJxuIX58sghU/m/8=
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(921011)(38350700005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?oHaffo0X1sfIB/xo0qytN0TW2Msuu/eDOBt2jE5uYwF9mTvLEZ8DNTez5l9r?=
- =?us-ascii?Q?NrZDe3YCosRMtatWYqWGXLVEuWh6rXIJWBKxHYHbNGx5J6Bpg899EJDfcvMl?=
- =?us-ascii?Q?agm3rOEFqe2M2obpET4i5oS3pr+BOESEkpfdlW2dVSBVToGxv/BgdDQ2H0ax?=
- =?us-ascii?Q?OetfVJVAKc62Qb79uAfj20zKpY4f/mBjhuy89SFryn55s9Hgq84acG/g+gLU?=
- =?us-ascii?Q?IJY17ZpAvYeVxNgx27mHuAazthG5e+PmnhBXKBJeTLbIARyL7rFXuGI70nlN?=
- =?us-ascii?Q?gqTO4yOmYPG5PX+2uwDVjrUEOZzW4FiLOkKArKavtBcC9P2gjf7bmqYhzg3X?=
- =?us-ascii?Q?9ZezAO/iE0z4qr5H4WBCIugAptvKKjXdmx9ytiSX2Ghf49uiPQdmWtGkjNbr?=
- =?us-ascii?Q?YHR9Go2lucCcd3u+SEyv9TwK6Hfp6c0tl98Jf9NqD7dFLNxTgj6rVnc9Hkww?=
- =?us-ascii?Q?yEVrxF9ylShz+agWLup2B8I4TjDvcNaOdhOGagw8/zFy4fy7/lXLQZ1X8CGd?=
- =?us-ascii?Q?tlN/2+M3qMzPwbLp+suL8qWPtkrqTTcm9M04DIoBr0hIQ6QD4m3o02QqZbms?=
- =?us-ascii?Q?IncmLYsVfIMdG8fncOu08n5ngC8+Zzet3Jf7p9xBfScFAtND4NKzhYmNHQ4B?=
- =?us-ascii?Q?14AnjGkk08pzX7ZpNdY4pAJWVItCJtdWknZNu95kBParbN0baIrNRlPi5HiW?=
- =?us-ascii?Q?wEdTXVJw04bM99JF5zkGdisNyUVz+ngi5wVrh3QI4g95ldMax4s5dnEglbFs?=
- =?us-ascii?Q?OuQkcD8I9iVN2/PC8E2L9u4NIgHe0XSu+aLJLIGKCq1rnunOWmfv1sOBZl6A?=
- =?us-ascii?Q?POURE3pntwPQKgXO8Zj8LcReVjjDJrpnic1mJ+N5lOmvgZ97Sa8j6/Tee3Sy?=
- =?us-ascii?Q?qIrmqWhY6XfwVYkx71gNdpK+EOhMlskk+CPpDacFAfWGsibNHQIyUof/UgNq?=
- =?us-ascii?Q?pSdJxJhV27QD+6oEp8sD+mCSNu6zoL/cL4VMzLthaICZcFpSPylsZytPS16q?=
- =?us-ascii?Q?5A9GW5XlNaS5kvBsmT1jDWlwNNq9FmXgaU0vJrwuRT1P9itHMsA/OMSs9qTr?=
- =?us-ascii?Q?cYMV87oENaLwT2hcn4sA5kjIxPd0jl6ZTEkZE0aIct9bUHW8n0n/S8tnxKFS?=
- =?us-ascii?Q?lhsL/iXMmSZucwIYg+d7dTg/oz1KuCRAPfr48MCWARamq09ecswG76iTXNqm?=
- =?us-ascii?Q?CtWyuSCfmLBhePznAO37j/xXdmKGjrLQ2D998rZAgdDIcun3AN0SvSbjR7+p?=
- =?us-ascii?Q?hvT3NuuxEzP92C8aGMzMiDybHohhewe0w8gkRPUdpFOAIeWJgz2MiSgsbRkS?=
- =?us-ascii?Q?LtGGluCNzUIjZIAJeLLIwsRAXTAgKR/Qlxk8wdlQ+KoROgp+XPjaGbnoI5Ej?=
- =?us-ascii?Q?yGUjlSGFDTBUTpHiDwocEy/1UgI+L9NTmymBUFcUjUQ6GjDryCwTRBs18Yv/?=
- =?us-ascii?Q?MmLLj2pp8riLbaNp7y8Wv+pVdM0ntfvj5/gE8BGlpuvn1SObY2ucZFugMxMe?=
- =?us-ascii?Q?qMaT/QQAtAK0/GEHA5V9VUP5NyZd8XHahifI2/pE/Szg6IIUZYG1jg2IK99w?=
- =?us-ascii?Q?ah644GE2lpXPtTJdX79tnhrsKOuDuFrQgkdr85yd?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?MzZMjqGo7y/wrOG7nx1SHROhWjPx2Gjcx0EHzRvoss/AToOAzoX9JDQWZZK6?=
+ =?us-ascii?Q?RpZBbW9rEaJLnpC05ZlvQ/2Zo+K++uwqK8LEyt3Ya5UdLnDQATBATn2knkiD?=
+ =?us-ascii?Q?awZlp4Q/1jjr6xAldDHStTVLcyjEEHw9Whksnf9lMKp0mdrSXr5h5AtQvk46?=
+ =?us-ascii?Q?uFXj4Qd7SbmoyRLm30ifoLH7tQzBHRKPwaLI+ihjf2PF/HKuOopbsyT3FimE?=
+ =?us-ascii?Q?bwQJApGY/uM/sGL3fcPWuVxbcqFokxcuhYxl0+L9uhTQm1hYUgrZjW7kJmuF?=
+ =?us-ascii?Q?PqixWkX9KdRpk7pBv9U1Nljr+M5KCKdDxAPWVZw52qrmAlxddJ2elMP6PXWH?=
+ =?us-ascii?Q?olB3iVNXoBTIJnjIBIw7CHP40McYe0bSY5BS1BHcoT+5H+1XXy9MgH+w1DB1?=
+ =?us-ascii?Q?9APumKBBmq4YpAjSwyl8s1sJ2RB19k60f5ZIBTASfsc4vOxlTgVhyFdXJJ/3?=
+ =?us-ascii?Q?k8px/FXwjtPL9dZF8uQXK1/zwzmzuYtCLg0/wKmmJoo5JB3AZ4pxnVKjyE7Y?=
+ =?us-ascii?Q?oPhRgHvlZ51SrLiGx/ni/udjMN2mDRYuG9lY+niePHkK50mCwGhbgOyVnf/C?=
+ =?us-ascii?Q?obv2KcImIQE8us9PYuHCjL2FpxdID0RiQW2Jd8cN4R4AECOig0IV/7gqd47L?=
+ =?us-ascii?Q?QEMgYXdFcAkXD27tTCHCvDUvo5y9DFHLzoaWI3AbC00HqOamuLc5mDCxh0Ve?=
+ =?us-ascii?Q?LBL2WYYpGGFI+XHUlBMgLZYqRjxAeFyXNZCbSKw1YFIGfJ5yiNfxEQbHImfI?=
+ =?us-ascii?Q?6HMLmnf3pYWNRsj+v+dTrzWTqowPu/QQcsiXSoLPGPUePIparZP3QAD2U0ju?=
+ =?us-ascii?Q?3ivesqWlEE7HFsmTpJwhH91VbboTPPltxzTOPEFnrZUKOFQCpUaPj2BLzEyZ?=
+ =?us-ascii?Q?PSYO+CrWRjx1l0aRDww/6WuCwc3MlmbV1wEOsFy3D4wNb8eWzmPUqa4iCwmr?=
+ =?us-ascii?Q?jkaW1qZkL2aAOhHq1mFKofR0lXyih9xVsqc510a0GhQpSgIPRRtyCGUADey1?=
+ =?us-ascii?Q?1ZedAW7MCT5Vu+aEUVLSo2+t323kMclLnAQve+ImUBXPUb6hAO4bjSF0rpHF?=
+ =?us-ascii?Q?DlwsZiB7ebmrbsc5PeOyAV4V2+l3xyhHlT4yhZtay+/+BmfQv0rLTQj+xPlq?=
+ =?us-ascii?Q?ID4t5Zu2eBIHQAq5hKtSz/maufE498Qy59VsTMOCpt0LuLTSS6fDi2U0RseT?=
+ =?us-ascii?Q?ECFBTDT8FeLX7TtQjI+1FRjc2i0EMB0BREO8S28bUbcd9It2/bhjnSZv6HJ/?=
+ =?us-ascii?Q?PXEp7jXVZx3pzIsY3HgoeZ+4MD1dpKvaEDGiEeVjBYZyVPYxRiHYHHEeJ4nZ?=
+ =?us-ascii?Q?8LQYS9Grr6x5WxzxnDYseHWtoSvCj67QUOyIcvC7nB1Yl6K63BVUVkRxZU8/?=
+ =?us-ascii?Q?QItZcpLct81T69fjt3xLMChAAqcKNHZsMVKmgwaYIyUXWFrJTaksx7p0VjSi?=
+ =?us-ascii?Q?s4qZMKIdq+M7c0R2D8r4KI4enBCbkPCu4Ya6YyaQuS2B+sQRMb9dr5JXlwyC?=
+ =?us-ascii?Q?/88ptwHythwSbbA2F1My1Bw/FnqRc86MWRCrhkXpEYQB7jThQnQWKHnueb80?=
+ =?us-ascii?Q?s3tli/C892Inaddg5ej3yWlvv5Vrsx8V90a7QSwD?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ef007f8-46ea-484f-ab02-08dc3db2ecca
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9083713-b647-4051-b35a-08dc3db2f00a
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 07:56:26.7987
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2024 07:56:32.2170
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5pMs1NzbT0apiJeB/iRWX44t4OFoWKxuoYvHGQADOBL0SLvlyYgPRLyeoylrNW5dmQX63Qiz6YkOeXPn/HTtUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7376
+X-MS-Exchange-CrossTenant-UserPrincipalName: uqYAVVvBbScxeiDNv3L7qd/sOT0zFSiGgy9g66x3u2HreaY/0nkrzY8fNJJRx0QKRFaFeMM7blWBaySLEdDkCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,93 +138,54 @@ Cc: Chancel Liu <chancel.liu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let imx-audio-rpmsg register platform device for card. So that card
-register and unregister can be controlled by rpmsg driver's register
-and unregister.
+Platform device for card to probe is registered in imx-audio-rpmsg.
+According to this change DT node of ASoC CPU DAI device is updated.
 
 Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 ---
- sound/soc/fsl/fsl_rpmsg.c       | 11 -----------
- sound/soc/fsl/imx-audio-rpmsg.c | 18 +++++++++++++++++-
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ sound/soc/fsl/imx-rpmsg.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
-index 00852f174a69..53bd517e59d6 100644
---- a/sound/soc/fsl/fsl_rpmsg.c
-+++ b/sound/soc/fsl/fsl_rpmsg.c
-@@ -240,17 +240,6 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_pm_disable;
- 
--	rpmsg->card_pdev = platform_device_register_data(&pdev->dev,
--							 "imx-audio-rpmsg",
--							 PLATFORM_DEVID_AUTO,
--							 NULL,
--							 0);
--	if (IS_ERR(rpmsg->card_pdev)) {
--		dev_err(&pdev->dev, "failed to register rpmsg card\n");
--		ret = PTR_ERR(rpmsg->card_pdev);
--		goto err_pm_disable;
--	}
--
- 	return 0;
- 
- err_pm_disable:
-diff --git a/sound/soc/fsl/imx-audio-rpmsg.c b/sound/soc/fsl/imx-audio-rpmsg.c
-index 40820d5ad92d..a6817ce1e92a 100644
---- a/sound/soc/fsl/imx-audio-rpmsg.c
-+++ b/sound/soc/fsl/imx-audio-rpmsg.c
-@@ -12,6 +12,7 @@
-  */
- struct imx_audio_rpmsg {
- 	struct platform_device *rpmsg_pdev;
-+	struct platform_device *card_pdev;
- };
- 
- static int imx_audio_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
-@@ -95,6 +96,17 @@ static int imx_audio_rpmsg_probe(struct rpmsg_device *rpdev)
- 		ret = PTR_ERR(data->rpmsg_pdev);
+diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+index e5bd63dab10c..2686125b3043 100644
+--- a/sound/soc/fsl/imx-rpmsg.c
++++ b/sound/soc/fsl/imx-rpmsg.c
+@@ -108,10 +108,9 @@ static int imx_rpmsg_late_probe(struct snd_soc_card *card)
+ static int imx_rpmsg_probe(struct platform_device *pdev)
+ {
+ 	struct snd_soc_dai_link_component *dlc;
+-	struct device *dev = pdev->dev.parent;
+ 	/* rpmsg_pdev is the platform device for the rpmsg node that probed us */
+-	struct platform_device *rpmsg_pdev = to_platform_device(dev);
+-	struct device_node *np = rpmsg_pdev->dev.of_node;
++	struct platform_device *rpmsg_pdev = NULL;
++	struct device_node *np = NULL;
+ 	struct of_phandle_args args;
+ 	const char *platform_name;
+ 	struct imx_rpmsg *data;
+@@ -127,6 +126,22 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 		goto fail;
  	}
  
-+	data->card_pdev = platform_device_register_data(&rpdev->dev,
-+							"imx-audio-rpmsg",
-+							PLATFORM_DEVID_AUTO,
-+							rpdev->id.name,
-+							strlen(rpdev->id.name));
-+	if (IS_ERR(data->card_pdev)) {
-+		dev_err(&rpdev->dev, "failed to register rpmsg card.\n");
-+		ret = PTR_ERR(data->card_pdev);
++	if (!strcmp(pdev->dev.platform_data, "rpmsg-micfil-channel"))
++		np = of_find_node_by_name(NULL, "rpmsg_micfil");
++	else
++		np = of_find_node_by_name(NULL, "rpmsg_audio");
++	if (!np) {
++		dev_err(&pdev->dev, "failed to parse node\n");
++		ret = -EINVAL;
++		goto fail;
++	}
++	rpmsg_pdev = of_find_device_by_node(np);
++	if (!rpmsg_pdev) {
++		dev_err(&pdev->dev, "failed to parse platform device\n");
++		ret = -EINVAL;
 +		goto fail;
 +	}
 +
- 	return ret;
- }
- 
-@@ -105,6 +117,9 @@ static void imx_audio_rpmsg_remove(struct rpmsg_device *rpdev)
- 	if (data->rpmsg_pdev)
- 		platform_device_unregister(data->rpmsg_pdev);
- 
-+	if (data->card_pdev)
-+		platform_device_unregister(data->card_pdev);
-+
- 	dev_info(&rpdev->dev, "audio rpmsg driver is removed\n");
- }
- 
-@@ -113,6 +128,7 @@ static struct rpmsg_device_id imx_audio_rpmsg_id_table[] = {
- 	{ .name = "rpmsg-micfil-channel" },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(rpmsg, imx_audio_rpmsg_id_table);
- 
- static struct rpmsg_driver imx_audio_rpmsg_driver = {
- 	.drv.name	= "imx_audio_rpmsg",
-@@ -126,5 +142,5 @@ module_rpmsg_driver(imx_audio_rpmsg_driver);
- 
- MODULE_DESCRIPTION("Freescale SoC Audio RPMSG interface");
- MODULE_AUTHOR("Shengjiu Wang <shengjiu.wang@nxp.com>");
--MODULE_ALIAS("platform:imx_audio_rpmsg");
-+MODULE_ALIAS("rpmsg:imx_audio_rpmsg");
- MODULE_LICENSE("GPL v2");
+ 	ret = of_reserved_mem_device_init_by_idx(&pdev->dev, np, 0);
+ 	if (ret)
+ 		dev_warn(&pdev->dev, "no reserved DMA memory\n");
 -- 
 2.43.0
 
