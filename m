@@ -1,113 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758BA87582A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:20:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B7887586B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:32:04 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=o/LFot+U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dq1Ij5cb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLKF1sv2z3vqD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:20:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLZB2VMrz3vmP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:32:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=o/LFot+U;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dq1Ij5cb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::601; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::601])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrLJV24H5z3vYb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:20:07 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fJYT7LCvYaHwT5lenWU7cEbdHRGyw7Z6HA/CIlEat83OzfwzdSieOth8D9yjg754nFYnUkgGg4iGP1j+pDvY5FzEVN+a3C7nAFJN+Q3+Vy4FQnSyQL+upI4ZKWO8qkejRsg+jHQ9TenvlaI9SdL60l+6ETuUC42awIrfumlJu5bR4y8YwKJdfQbt8rn7N7Mz1A7hxcMBrYPACTww4TmaKdmLV/kvfuCAsA6gDCmhXYa3wL2wOcUg7Itvgg1VHVzi1GONv3D152Uu9vVxF8iA7w7oA9+XWhDxQi5H3r4fh3zgefNstV/iU9gcAxyPRPUVsXB5Dq7O/rT6Y+fUZZ9vGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G7SWntkteWi7F8aMSFSKPv6yd75j8pHpX8cR8E3acRU=;
- b=Upbl1fISG/ISSkqLbz7a+QBv+BpxRl1M8RHeHg4nbaVLJX53HkMLptgKBcNT26eOIfmNja/3Tnl4qypH2SRlYuqXKBA8T6d9VnvQWY6u+3tL1Oe93YZ5rd5UgT+qoAEkBxscuEkMlbbZI70L0I3WWZ/CtWWeLUPE3UR0xQQGC6modw3pf4l56NU6Dl3vJpUAGhPDIT5zX+heDTqgukAYc4wsAfjetU7tm1qzVPWlNNvveYJVysBM9GNkG8r9idDQ9KoYo+BH1+fGAAtY8V6dYNQFVBOUMrYQEAVPwbUyj793tnbKml6S5ncaADChIPc6wZqeZ17QhZ1fPVAeyHnlYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G7SWntkteWi7F8aMSFSKPv6yd75j8pHpX8cR8E3acRU=;
- b=o/LFot+UfWI5YAg7qKFYHwmk9fjBcvkWrNhsAQfu1D9CfqCloTMPmbWmBIZKsRo/4rYNqz1A6oawh/FC/KFenxdry1XETeiL2SII0h4a/7qbTjbBCzAnkPPzoIasWqgAq+E2Sty83LYc1484YZV59FgVwZcW/LN7BRfYXEE1IFSjvgh6lLycVKFzvPjZR4IKonUl6fzJJb+HDBWtp7QTYLkBiiwXl34d9Mf4cRYDPrVAh/1tBwxrBfN5TG5Ivut9FJ97cQUzEHGXbDzKM4H1wljc4Q47zswjTUbRGrizvlqIMS5Zr/oh48teBn/GkYnzSgDDcGZIrPU8iGqPmHUmbA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by SN7PR12MB8027.namprd12.prod.outlook.com (2603:10b6:806:32a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Thu, 7 Mar
- 2024 20:19:48 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7362.019; Thu, 7 Mar 2024
- 20:19:47 +0000
-Date: Thu, 7 Mar 2024 16:19:46 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: peterx@redhat.com
-Subject: Re: [PATCH RFC 10/13] mm/gup: Merge pXd huge mapping checks
-Message-ID: <20240307201946.GG9179@nvidia.com>
-References: <20240306104147.193052-1-peterx@redhat.com>
- <20240306104147.193052-11-peterx@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrLYT2JjDz3vm2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:31:25 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id C8147CE262A;
+	Thu,  7 Mar 2024 20:31:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF1DC433F1;
+	Thu,  7 Mar 2024 20:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709843483;
+	bh=SpBFTgDYCZL5HMSP744NvFE2koQBVmNM5L2jWkZki7w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Dq1Ij5cbXC/azz2ARqvH18GU6nblsiWGJekKh8qOtyucIW4GqCRnXVbQlQjtTDrOw
+	 /QkuiKcsiHgteS5KrBFnY8QBf7g5BlAInJ5lA75KzFf02hYqh+iJTlYBkAhbD8wmcN
+	 MlcgMIrkMt5PPDeFFLmBWkrNhXZOwrWOTp3JIHIa1DcLWTyDHzHrbHVGosjmEtufOK
+	 o0H+MQGjAzJWkFcK+6eKhq8Yamb1XolFCnSNIjPhVH+lM9CvmbuF3VOGSHWZyqJXCW
+	 Oxl2l5XBcGLAfAFnlpjupMrL2nAN7mCz8/RL4c9k3rUaviU69PmCBCh0FHzrbA6NLs
+	 tlWLEc5gqsSpA==
+Date: Thu, 7 Mar 2024 21:31:12 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v9 04/10] PCI: dwc: ep: Fix DBI access failure for
+ drivers requiring refclk from host
+Message-ID: <ZeokEJstpRSUPDTL@ryzen>
+References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-4-29d433d99cda@linaro.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240306104147.193052-11-peterx@redhat.com>
-X-ClientProxiedBy: SN6PR16CA0056.namprd16.prod.outlook.com
- (2603:10b6:805:ca::33) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|SN7PR12MB8027:EE_
-X-MS-Office365-Filtering-Correlation-Id: b23dd179-86ea-4105-b9fa-08dc3ee3ef95
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	1p4e25+HzhVgyqC1ZhwtES1qrTLOJNxs5VTf3YSQZTosiXJI9rSXXNyqYftqpmeHiMXg2Z298JO7cSmbQqtVmn3yWHPi8IRwU31nw3hnUSqKi1NTneBDu/TPRun2iHEL+IGX+I2JpFbEUSOh5IHM++6tqCRofT3SEJbUOu/ec4BEH7Ak8RcAqrSTd4ZQIijI7AtovWBc1gUz1P1DY6q7rksY/OVERuoECI7PnrD1rdtfQAZHDvCHA1HKwQF50/jhJV2AT4u6lAen5EVZpK8tF9EoyemMtJQIzvUn8KFaf80AfpxNti6hX7w6QbQZHuCSXn/4qKKp5TJdgdAdUTDJsUm0SzpR3X4RcK85Ivm68dLODgUO75MrRgW3SXs9pQ8boUUbgw/8sYN0wm5mVVdGBmx70CBYsV59M59O9kyiliAsrecrOB9TG+FfQVpC1XqUwsClA77+Q1UUBoC9pvZOYTMNhuAhxXKpvHPEQOB81Xfa6mvItC+EDnrhYMn4fcbg4eWK+I3ju+RC7aztC72BQ1tONVkVsi42VRp5llYVfQbtnpwRvnMu11HISNilLYu/oqvaYtOgVTU5mdZlm7Nb0RCOU1swo7IQ85nterfMQI4S00fDbd1ETTA34YAGl3OZmaIihBSf++wFRTEVPdJcmUBA3x4pEhlc9tmZgmgf7nM=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?CqcN4IaHgu2B0IX7TuXnqA71VJwJtQDn7uz8yEPFssiXBEWjdTqUBfPeA7np?=
- =?us-ascii?Q?02Pa+1rdRs7Ye4Xk5OhzHhud1SWOLsPQlrvzhCUb2D9s7xhaxGTX7F2p0RJ+?=
- =?us-ascii?Q?rSpKYzU/YyjzVVxByzSZfyBxCqC+PD74NdxZW2JEL74uRERoD26LuJvzZB0Z?=
- =?us-ascii?Q?hjPBeNO83fNryhRJwcr0UzD0oC4Uo+nbiNX1T90nEmLWE2GXa1vM2MpAxtXP?=
- =?us-ascii?Q?QTbMj43pNWreT5ECM0gLAvAX0eMnJFyrgP3oR1nCvu8FH9j2ZoOo2trOZpSw?=
- =?us-ascii?Q?qAP/nrS/ISxZHbElx+pavdGNa1ZZn+Rb7r5Ju8Zm9UxkTtvx45qy6SSuMltf?=
- =?us-ascii?Q?o3dqYhh+Y3KKVufsb8aYyQ7qnvkqxA0wvv6cMOCxGBPN3ub7gfKhxe1ca9NS?=
- =?us-ascii?Q?bIOgFePGlWpCIkAa3gocJJJzkDnPpDZ+np6J+tG/qDjwhnsfwXOZ8/XO4nKo?=
- =?us-ascii?Q?fZ8g0BVm+BytxlJqLF9lmU4JnUVUhtsZEUGertJzcjQESaM6SJJ9qT/USjTM?=
- =?us-ascii?Q?zQV6tneamiZ7W0g/ZHUYmylWnZEy9yQUpMw14su26ihZrCa9H8HbwOECjy+7?=
- =?us-ascii?Q?Mp/lUN0mVJmOFBGHd00HkZbLWDksN178LC3XxIw2cVwA+dA42NNR9rEWBSHz?=
- =?us-ascii?Q?fcf1CDblEqnQLJyPnU1nONfERaCMdBTIGH83dz3rS55zSf6qZJcsKCXn1BXg?=
- =?us-ascii?Q?Z+l+bQY7aDQHaJ8kJdkr+t3gyKEZitGONWz6hWKd9sQF/7XwTp0yKn1RQrZo?=
- =?us-ascii?Q?MAi8LbYdFyU15woJYA0WBlYznUtM0lbcPAwillTyKlQlYNb2QXofYlW68j6R?=
- =?us-ascii?Q?rPXArVb2UBzatwECh2IJ8nmCRB2OvOQNgmltIkGAJsbBixxPQaTyWHuUai+d?=
- =?us-ascii?Q?jdIlKmGIaN6CxbfMOETa1qmZkbOTRpSZZqDIXner1t2IilTLeN3XsX6CXCiv?=
- =?us-ascii?Q?5qhVTn/bHawA0fXZ/QxjOx4yJJLlj2yuZc0QghZb3AbVXn5alyTyUFcHlXry?=
- =?us-ascii?Q?rl70xQRikP2jvrqErnrsvBc0yTLVwSQ8ftWi9UXsJRApRL4uqsLarsG7wPwF?=
- =?us-ascii?Q?VlnJu8X2X44rzFn4IW2YZtSyGMXnlQEeJzBF3urajxyEjNX9YX2fHuvQ7X36?=
- =?us-ascii?Q?/kuz5xWYZprd8z+kqH1FbcoTrcEb8yVOmaWHQOZ4go48IFNmxOIL9qrtAM5E?=
- =?us-ascii?Q?4P/XD7TBKXSsTFGdf3CGdA6Wdb9CEskY33WjHkTs3LJy2AyocsVjTUbbcFZq?=
- =?us-ascii?Q?18mFwl8XSIfmx9k/nIL1qZtqNqOnzV0FlvpBL7qbGJYTCQ7mka2mYQUtLB0k?=
- =?us-ascii?Q?hIb88hqfu3Haw7UkgsxMfhKw2dFt+Ut2BMsT/0rIaCxzesypql4S6kWyXh9b?=
- =?us-ascii?Q?XPTvQqJgWD1/vEScyXt2hjkX9N5sJe1mgq6Y82zMiU3BU5lbMApnYbaC247L?=
- =?us-ascii?Q?FZKdxq4UvmlQW0L99gr58cpLP2/Jh/yXYa3oybjsTHuZCWGSYo0legYFbvL9?=
- =?us-ascii?Q?hIzBcox5FZcJfoDPWqr8M+6v8A1PRWUdMa0R1uSfgPtl6FULHnj8Wh8q4jtQ?=
- =?us-ascii?Q?It5+zUd4BwwxxnTsLtY=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b23dd179-86ea-4105-b9fa-08dc3ee3ef95
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 20:19:47.9293
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YPsLvwfV83l84o8zrufE8pVEF1f1ehGRBGFK6FDVxRN7dlnPfuIJ1gJtt6Lj4u4D
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8027
+In-Reply-To: <20240304-pci-dbi-rework-v9-4-29d433d99cda@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,25 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@
+ lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 06, 2024 at 06:41:44PM +0800, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
+On Mon, Mar 04, 2024 at 02:52:16PM +0530, Manivannan Sadhasivam wrote:
+> The DWC glue drivers requiring an active reference clock from the PCIe host
+> for initializing their PCIe EP core, set a flag called 'core_init_notifier'
+> to let DWC driver know that these drivers need a special attention during
+> initialization. In these drivers, access to the hw registers (like DBI)
+> before receiving the active refclk from host will result in access failure
+> and also could cause a whole system hang.
 > 
-> Huge mapping checks in GUP are slightly redundant and can be simplified.
+> But the current DWC EP driver doesn't honor the requirements of the drivers
+> setting 'core_init_notifier' flag and tries to access the DBI registers
+> during dw_pcie_ep_init(). This causes the system hang for glue drivers such
+> as Tegra194 and Qcom EP as they depend on refclk from host and have set the
+> above mentioned flag.
 > 
-> pXd_huge() now is the same as pXd_leaf().  pmd_trans_huge() and
-> pXd_devmap() should both imply pXd_leaf(). Time to merge them into one.
+> To workaround this issue, users of the affected platforms have to maintain
+> the dependency with the PCIe host by booting the PCIe EP after host boot.
+> But this won't provide a good user experience, since PCIe EP is _one_ of
+> the features of those platforms and it doesn't make sense to delay the
+> whole platform booting due to PCIe requiring active refclk.
 > 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> So to fix this issue, let's move all the DBI access from
+> dw_pcie_ep_init() in the DWC EP driver to the dw_pcie_ep_init_complete()
+> API. This API will only be called by the drivers setting
+> 'core_init_notifier' flag once refclk is received from host. For the rest
+> of the drivers that gets the refclk locally, this API will be called
+> within dw_pcie_ep_init().
+> 
+> Fixes: e966f7390da9 ("PCI: dwc: Refactor core initialization code for EP mode")
+> Co-developed-by: Vidya Sagar <vidyas@nvidia.com>
+> Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  mm/gup.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
 
-Much better!
+I'm not sure if the Fixes tag is stictly correct, since there is
+nothing wrong with the commit that the Fixes-tag is referencing.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+What this patch addresses is an additional use-case/feature,
+which allows you to start the EP-side before the RC-side.
 
-Jason
+However, I'm guessing that you kept the Fixes-tag such that this
+patch will get backported. However, this patch is number 4/10 in
+the patch series. If this is a strict fix that you want backported,
+and it does not depend on any of the previous patches (it doesn't
+seem that way), then I think that you should have put it as patch
+1/10 in the series.
+
+Patch ordering aside:
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
