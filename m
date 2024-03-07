@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029CE875715
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:24:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B880F875734
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:31:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QFzn8xZK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T/xFY79D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrK4Z5gfhz3vds
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:24:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrKD3418Tz3vYd
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:31:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QFzn8xZK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T/xFY79D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrK3s5yFbz3cgg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 06:24:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrKCG5tw8z3bPV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 06:30:34 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8571561B6D;
-	Thu,  7 Mar 2024 19:24:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA77C433F1;
-	Thu,  7 Mar 2024 19:24:00 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 937FE61B69;
+	Thu,  7 Mar 2024 19:30:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934D4C433F1;
+	Thu,  7 Mar 2024 19:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709839447;
-	bh=VmDl/PZkEPMDzeu4mqXBrn0+YmIU9eU6ecMjun+f7oI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=QFzn8xZK4+32Z3U+qZmhaI1yrXSrdQb5mKemR8jBArf/3b5lx/sR4wwmdZ38E7yPV
-	 V34AUC8zn3Rg2JpStwl1ZRcnC/U/SXxds6D+lC8SgOM7f/TvFnpKlBSSbx4LxWX9rv
-	 9NLHTmazaR2cNQvPUEgSNGPakur7eCVmqsvHh/bjGUe/kQ/+CwT97aGIjb7Asq2Nwd
-	 1Q+xrHa6i34WTClpbgFUeqPsT9Iv2KYH+jv7L6Mn0RlaU+eJeZc1v9AfThGqprvNCv
-	 YxnlSo1GO+pQpaa/AcYFK5NtXHVirOr8tfZ5TOtZrBWapDVYKXQB9AUZisQNOPjSON
-	 wzHaNyVcsCFZw==
+	s=k20201202; t=1709839832;
+	bh=e1RnfxVhzeQJFU4w6fYYaD7Hga9Gkw00dIdsYdCM/Yk=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=T/xFY79DhNy2Ip9yEQSaBUOHEIRaToVN3OUGuNgegnPLxiUBMQRUfh8oYA6dm2/4k
+	 IZCpNTv0TyQwJ5Bp298JpmhtfIuobTaQjMj5KVQ+jnZ9OJ54Z33cKQDZus+6vpnHAo
+	 YeGtcADjvrdhu9Z/+UhxNPEe/I/Ozid6bdkaNdFJDEe8fhqh8Mbz+m3lyhzkLuuhy2
+	 2lz0k7vqU66NhEqnnOKUGUY+rgQtoizsyp3QnJcb0sKxFOvKSC22J5tqMAomskBfTE
+	 rNw9tvxraOXOWahDsLzwcs2vyzC5izkP+Xrh+BzId7xsbWzyMiLZzwfJCNr3DR6fUI
+	 KRisHDWwqafzg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Mar 2024 21:23:58 +0200
-Message-Id: <CZNRHU6AFXM0.3A87OQA993HG@kernel.org>
+Date: Thu, 07 Mar 2024 21:30:23 +0200
+Message-Id: <CZNRMR5YZPQO.1QBLW62A6S840@kernel.org>
 Subject: Re: [PATCH v6 3/6] KEYS: trusted: Introduce NXP DCP-backed trusted
  keys
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
@@ -72,8 +72,8 @@ Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Mar 7, 2024 at 5:38 PM EET, David Gstir wrote:> DCP (Data Co-Process=
-or) is the little brother of NXP's CAAM IP.
+On Thu Mar 7, 2024 at 5:38 PM EET, David Gstir wrote:
+> DCP (Data Co-Processor) is the little brother of NXP's CAAM IP.
 > Beside of accelerated crypto operations, it also offers support for
 > hardware-bound keys. Using this feature it is possible to implement a blo=
 b
@@ -489,6 +489,9 @@ N,
 > +	static const u8 bad[] =3D {0x9a, 0xda, 0xe0, 0x54, 0xf6, 0x3d, 0xfa, 0x=
 ff,
 > +				 0x5e, 0xa1, 0x8e, 0x45, 0xed, 0xf6, 0xea, 0x6f};
+=20
+ nit: inline comment about 'bad'.
+
 > +	void *buf =3D NULL;
 > +	int ret =3D 0;
 > +
@@ -526,27 +529,10 @@ ff,
 > +	ret =3D test_for_zero_key();
 > +	if (ret) {
 > +		pr_err("Test for zero'ed keys failed: %i\n", ret);
-> +
-> +		return -EINVAL;
-> +	}
-> +
-> +	return register_key_type(&key_type_trusted);
-> +}
-> +
-> +static void trusted_dcp_exit(void)
-> +{
-> +	unregister_key_type(&key_type_trusted);
-> +}
-> +
-> +struct trusted_key_ops dcp_trusted_key_ops =3D {
-> +	.exit =3D trusted_dcp_exit,
-> +	.init =3D trusted_dcp_init,
-> +	.seal =3D trusted_dcp_seal,
-> +	.unseal =3D trusted_dcp_unseal,
-> +	.migratable =3D 0,
-> +};
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+I'm not sure whether this should err or warn.
+
+What sort of situations can cause the test the fail (e.g.
+adversary/interposer, bad configuration etc.).
 
 BR, Jarkko
-
