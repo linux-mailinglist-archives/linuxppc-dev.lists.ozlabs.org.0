@@ -2,55 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F108757F9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:12:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 414BF87580B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:15:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dwYf4VUQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S1dNhY9a;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrL793GGpz3vgZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:12:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLBX6xdtz3vj6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:15:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dwYf4VUQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S1dNhY9a;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrL6S01rRz3dfy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:11:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrL9r302yz3c1w
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:14:24 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id E59ACCE24FD;
-	Thu,  7 Mar 2024 20:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAC9C433A6;
-	Thu,  7 Mar 2024 20:11:23 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 0AAB661CE5;
+	Thu,  7 Mar 2024 20:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127C2C43601;
+	Thu,  7 Mar 2024 20:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709842285;
-	bh=PRBFZzxdnpbyh1YzxY3vy1NxVesh8HXasBP1ah/s4Iw=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=dwYf4VUQ+8MNiFFZOdC5+Xg2Q6c6ZutnWss0KZMLp8KlC8GDhhSlnMpJbLNM/z6eV
-	 IlXT0LgZE000dtOPKKG4nUzX4daZFcfjq81v3Z2KL6poa6s+aKSM9Y6zXp83bb1oLX
-	 vf7H/wbVBC1SkcE1cV7c9XRVVcThE2GaFeAGxtKYgQAXvMLpJQC7lJuxf8znez1+nG
-	 tE2kFPtPqel/nooorKOw1X+MuvznCTPh8UYE29mc4gbm6Th3I4tei7YmQXbyFngbKC
-	 w/rlOojq3q9qQKvHj/LjNM7A0cm2xCrnL1WjF0nXIo0td7VBd5cfIXxpPvmqxgA+tQ
-	 kHDV8NBkmu/hw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Mar 2024 22:11:21 +0200
-Message-Id: <CZNSI4DXQMH4.2IYN7ZDJEBG59@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, <mpe@ellerman.id.au>,
- <linux-integrity@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 1/2] powerpc/prom_init: Replace linux,sml-base/sml-size
- with linux,sml-log
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240306155511.974517-1-stefanb@linux.ibm.com>
- <20240306155511.974517-2-stefanb@linux.ibm.com>
-In-Reply-To: <20240306155511.974517-2-stefanb@linux.ibm.com>
+	s=k20201202; t=1709842461;
+	bh=9g/TyhNGfCR/iMnSye5VRUmHHWo7BgK2gWR+z27+UT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S1dNhY9aEBZdeLadUrmkw3KVNJC43yd+/r60Z1+72kT3Quyl+APc7qLQipcl8d8EM
+	 JvQPq0542qirZbinHyPb1MB51ltlkKY9VSf1NpLvr2mH+5BZLENnTNqxwv3SWVqo74
+	 5eL6TmB+xGwpyg3kuuG4BfPcOfVVKVsHBtUzhZuhlLGjMBgZyzHkLgTY4rHVzBmyBz
+	 nlbnWNSc2y8wOIANU03Q79If0DyOSBRaFxckaPRk9ZfYfpl5xuryktU/yt2N1KsC1S
+	 o6sZSJtjofvkdBb6rua6VV0NhR+zf7kNk+vsTcB0EHDcvyfS8YpAxOrX3g6kqdjeON
+	 qzNwC7PLd2sNA==
+Date: Thu, 7 Mar 2024 21:14:11 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v9 03/10] PCI: dwc: ep: Introduce dw_pcie_ep_cleanup()
+ API for drivers supporting PERST#
+Message-ID: <ZeogExV6wbNdpdEA@ryzen>
+References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-3-29d433d99cda@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240304-pci-dbi-rework-v9-3-29d433d99cda@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,44 +60,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterhuewe@gmx.de, viparash@in.ibm.com, linux-kernel@vger.kernel.org, rnsastry@linux.ibm.com
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@
+ lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Mar 6, 2024 at 5:55 PM EET, Stefan Berger wrote:
-> linux,sml-base holds the address of a buffer with the TPM log. This
-> buffer may become invalid after a kexec and therefore embed the whole TPM
-> log in linux,sml-log. This helps to protect the log since it is properly
-> carried across a kexec with both of the kexec syscalls.
-
-So, I see only description of the problem but nothing how it gets
-addressed.
-
->
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+On Mon, Mar 04, 2024 at 02:52:15PM +0530, Manivannan Sadhasivam wrote:
+> For DWC glue drivers supporting PERST# (currently Qcom and Tegra194), some
+> of the DWC resources like eDMA should be cleaned up during the PERST#
+> assert time.
+> 
+> So let's introduce a dw_pcie_ep_cleanup() API that could be called by these
+> drivers to cleanup the DWC specific resources. Currently, it just removes
+> eDMA.
+> 
+> Reported-by: Niklas Cassel <cassel@kernel.org>
+> Closes: https://lore.kernel.org/linux-pci/ZWYmX8Y%2F7Q9WMxES@x1-carbon
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  arch/powerpc/kernel/prom_init.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_i=
-nit.c
-> index e67effdba85c..41268c30de4c 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -1956,12 +1956,8 @@ static void __init prom_instantiate_sml(void)
-> =20
->  	reserve_mem(base, size);
-> =20
-> -	prom_setprop(ibmvtpm_node, "/vdevice/vtpm", "linux,sml-base",
-> -		     &base, sizeof(base));
-> -	prom_setprop(ibmvtpm_node, "/vdevice/vtpm", "linux,sml-size",
-> -		     &size, sizeof(size));
-> -
-> -	prom_debug("sml base     =3D 0x%llx\n", base);
-> +	prom_setprop(ibmvtpm_node, "/vdevice/vtpm", "linux,sml-log",
-> +		     (void *)base, size);
->  	prom_debug("sml size     =3D 0x%x\n", size);
-> =20
->  	prom_debug("prom_instantiate_sml: end...\n");
+>  drivers/pci/controller/dwc/pcie-designware-ep.c | 11 +++++++++--
+>  drivers/pci/controller/dwc/pcie-designware.h    |  5 +++++
+>  drivers/pci/controller/dwc/pcie-qcom-ep.c       |  1 +
+>  drivers/pci/controller/dwc/pcie-tegra194.c      |  2 ++
+>  4 files changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 2b11290aab4c..1205bfba8310 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -564,12 +564,19 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+>  	return 0;
+>  }
+>  
+> -void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+> +void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> -	struct pci_epc *epc = ep->epc;
+>  
+>  	dw_pcie_edma_remove(pci);
+> +}
+> +EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
 
-BR, Jarkko
+Since you are not clearing the iATU bits in ep->ib_window_map and
+ep->bar_to_atu, this will "leak" resources, so depending on how many
+inbound iATUs the platform has, by simply the RC toggling PERST,
+will cause an error when calling set_bar() after dw_pcie_ep_init_notify().
+
+However, because you have said that you will address this in a follow up
+series:
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
