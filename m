@@ -1,57 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D784D875749
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:32:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8CA875794
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:53:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DSSx0pmw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kZm2YSwS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrKG14dQTz3dCH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:32:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrKjY4RHpz3vYv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:53:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DSSx0pmw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kZm2YSwS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrKFK0sX2z3bfS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 06:32:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrKhq6t48z3bnc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 06:52:43 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 3211CCE244F;
-	Thu,  7 Mar 2024 19:32:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACD8C43390;
-	Thu,  7 Mar 2024 19:32:10 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id E2DCD61CD2;
+	Thu,  7 Mar 2024 19:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C0C433F1;
+	Thu,  7 Mar 2024 19:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709839937;
-	bh=TXhaVJ7GnQctH6MS3SGDdX6MLHLH8awnbScWV9UkjqQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=DSSx0pmwjQkO9GS/HOxdniHdntYdsOXkE9MDzZ8JuN1gglQLarMv+/BZONB7aAPKR
-	 4+crYH1NwJi/8DnyTimwzxMnop3y1gKNG0LH9WKKamzhtAS45nM73VYLyFd9taRMUQ
-	 9K+1/j5YTSwZFcRhOYEhxoiKjjAkUr9Ye1oCqRju5+OtmD2lDkFXeWD4QZiX07XnaY
-	 meMk+2f48dFhMhJ0SkYm+F1BeU9dARCbxMP0tsB/amewBo69FGfgrU8XITO4I4nKS5
-	 bLQN2EZbqOAV5ZOKViiYnQaMllT2rGr04yfDYn98ch9Ko3BdYeyRHqpsfsysyXti69
-	 SvOtPhKFoOEgg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Mar 2024 21:32:08 +0200
-Message-Id: <CZNRO3HH6T0W.R91RSALY7S88@kernel.org>
-Subject: Re: [PATCH v6 5/6] docs: document DCP-backed trusted keys kernel
- params
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
- "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-X-Mailer: aerc 0.17.0
-References: <20240307153842.80033-1-david@sigma-star.at>
- <20240307153842.80033-6-david@sigma-star.at>
-In-Reply-To: <20240307153842.80033-6-david@sigma-star.at>
+	s=k20201202; t=1709841161;
+	bh=abVM7Az8c+fwhJYNf8SjY0MPBlfozwtnuPRGUqiuFH0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kZm2YSwSeAjDl/IxeY39+GMpbM8g/8yLdpNPzBh9Kp9OI7lIHdGVkI0W/SiXGXlVY
+	 8Ye4MdEO3tCq/Rskx6KQb/6n0TYuz5hgFRUTqcPq5lMDRZ4e68xdlI+OtljF8BrAhW
+	 uU3G/XKfd2W+GAEpIvJOH8/VjiPRvy3xkmXqZ6ZJN16Jj5szHjOqM4WehX4qqAwgUo
+	 lK6yFgKRk4vAkGPgD4jvralrfWKvR87DyZ2a62ltCqD/q4ZXANAZfTOlh9cdeyaotn
+	 gMKzIMKEyAbzGgl9wgZHgDfKWgZnsBm8mLkobnvwBY2pLtH90c8M7zCL36b5O9cGzO
+	 9MQH5Xf1EoKww==
+Date: Thu, 7 Mar 2024 20:52:30 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v9 01/10] PCI: dwc: ep: Remove deinit() callback from
+ struct dw_pcie_ep_ops
+Message-ID: <ZeoaOn2dekvBD8ae@ryzen>
+References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-1-29d433d99cda@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240304-pci-dbi-rework-v9-1-29d433d99cda@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,63 +60,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux
- Team <linux-imx@nxp.com>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma
- star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt
- \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy
- Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@
+ lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Mar 7, 2024 at 5:38 PM EET, David Gstir wrote:
-> Document the kernel parameters trusted.dcp_use_otp_key
-> and trusted.dcp_skip_zk_test for DCP-backed trusted keys.
->
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
+On Mon, Mar 04, 2024 at 02:52:13PM +0530, Manivannan Sadhasivam wrote:
+> deinit() callback was solely introduced for the pcie-rcar-gen4 driver where
+> it is used to do platform specific resource deallocation. And this callback
+> is called right at the end of the dw_pcie_ep_exit() API. So it doesn't
+> matter whether it is called within or outside of dw_pcie_ep_exit() API.
+> 
+> So let's remove this callback and directly call rcar_gen4_pcie_ep_deinit()
+> in pcie-rcar-gen4 driver to do resource deallocation after the completion
+> of dw_pcie_ep_exit() API in rcar_gen4_remove_dw_pcie_ep().
+> 
+> This simplifies the DWC layer.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  Documentation/admin-guide/kernel-parameters.txt | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
-ion/admin-guide/kernel-parameters.txt
-> index 24c02c704049..b6944e57768a 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -6698,6 +6698,7 @@
->  			- "tpm"
->  			- "tee"
->  			- "caam"
-> +			- "dcp"
->  			If not specified then it defaults to iterating through
->  			the trust source list starting with TPM and assigns the
->  			first trust source as a backend which is initialized
-> @@ -6713,6 +6714,18 @@
->  			If not specified, "default" is used. In this case,
->  			the RNG's choice is left to each individual trust source.
-> =20
-> +	trusted.dcp_use_otp_key
-> +			This is intended to be used in combination with
-> +			trusted.source=3Ddcp and will select the DCP OTP key
-> +			instead of the DCP UNIQUE key blob encryption.
-> +
-> +	trusted.dcp_skip_zk_test
-> +			This is intended to be used in combination with
-> +			trusted.source=3Ddcp and will disable the check if all
-> +			the blob key is zero'ed. This is helpful for situations where
-> +			having this key zero'ed is acceptable. E.g. in testing
-> +			scenarios.
-> +
->  	tsc=3D		Disable clocksource stability checks for TSC.
->  			Format: <string>
->  			[x86] reliable: mark tsc clocksource as reliable, this
 
-I don't disagree with the API part.
-
-Mimi?
-
-BR, Jarkko
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
