@@ -1,73 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BB5875884
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:35:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30483874DA3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 12:39:30 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TztGJW9C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Fce2eiZ8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLf856fnz3vsP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:35:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr6lg6Z54z3vXk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 22:39:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TztGJW9C;
+	dkim=pass (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=Fce2eiZ8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::133; helo=mail-lf1-x133.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=microchip.com (client-ip=68.232.154.123; helo=esa.microchip.iphmx.com; envelope-from=conor.dooley@microchip.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Thu, 07 Mar 2024 22:38:47 AEDT
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr6Bg0mTbz307y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 22:14:17 +1100 (AEDT)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-51336ab1fb7so951552e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Mar 2024 03:14:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709810053; x=1710414853; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2AMWp8CTIDIp4IzjSjlpXPuXredbkA06mu/mQm+MSh8=;
-        b=TztGJW9CSpViv+xSL9SQgmM2wUsm57NFbCX3RxrVWpTQPz0nPu2/p9mRV4i74XXjIS
-         aCW7biJ5z+voT7FKqFWCP6g1MiS5RntWsCwwBpAyhl5xmCIizyrQ1t8HdWFAFgVcu/ZY
-         L14P6pbIAmOt97n+z9An9F1T8a5k85yFTlVr16/OPgZtdLNRUTD6hB7553MSwl827QI1
-         /CRzGSzZN0RkI/MU1vFfUsA0Y0Fsi/v/hcBQRiQFTLi5/5nzMyyxMmNC3qerxE2Azn8a
-         Ea3hsZOKFSlJ/gmPWm+39U6pyfRWFJQTR4wnw7CYZTN+JwWOzUwFXPoHLMzG7YlYCV1l
-         xuhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709810053; x=1710414853;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2AMWp8CTIDIp4IzjSjlpXPuXredbkA06mu/mQm+MSh8=;
-        b=ec6pX3y1ApldMRAMTaOD+S2A0Gf6eQ8VcdYSyhcgmPBom7kC8egeLh0fMfI6P3o3+Q
-         O6JDABHRiTS4VTUVhLi5i5dvn8sf/TacV0ghy+YJgjy3G3Ib6EcCowi0hvn1dSK+syR/
-         fvw3tKu7gQGrAqOPn7ufvvIIHFb8SvLbaJuhYJjahJoHEhbP9xpcho03PkGu00p4Vtrs
-         zx7ZZrHkDCIrFJwwmejLEFSPWL+IfVB7xQh5NlhNnc8nSt6XntAU+abpbMSrBinEPJYC
-         LRcnYASbqjtn88sMJJbmyQ/ahXXtUS/oPFMCmfkvMiAEe+rvaTgKtOk78ReISp1UILjR
-         Qp6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWg0NlCE9TBtcbL4nDhtBw7LV4xODuqThAnndQXHHIli+UZ4PdupHbdYwYU0XYErQ1AQ+k94xXukbXVCFfPyFsuwELF58EFX7yx+fUOSg==
-X-Gm-Message-State: AOJu0YxEU6SD8i4qoGWoGjB9odiTbJuV4t/Ft/t0LR8whD6VwnDNwwg+
-	Oaa0H7rq4sq3rC9Sf/rZwbkJ+riSAKv27tKQs/ZT0j2Oegn29Zq3BwZDcfyyennc0AkoeMkEz13
-	ImOYbY1W8FocphyTYqI52pYowSRk=
-X-Google-Smtp-Source: AGHT+IFB//rVz7J8LQSz57QlmZWNxoI8xZk+YFkdITRdm5qY78WPwwIduSAyCkJ5szOvXqlJJTHOx3Ewfo8up7+BCpk=
-X-Received: by 2002:a05:6512:3d1f:b0:513:2f96:72b5 with SMTP id
- d31-20020a0565123d1f00b005132f9672b5mr1703519lfv.33.1709810052589; Thu, 07
- Mar 2024 03:14:12 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr6kv34fbz303d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 22:38:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709811527; x=1741347527;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bzo9Wfyr1Xgx6msDtriXR11PddtGvGUYjz6kRXVoZDM=;
+  b=Fce2eiZ8yiZBlGswgNjWSQ5S7DE7H4q0I7+xXCORSc3W7+t7zFeSRvor
+   OrcuF1f7GBxhWp8tzznI3aW90OUKAH+7NlyNRFzTNJLcuJty+YdQkwCun
+   jnV9Xs/BOXmNcw0kLMpGJykxUL+DVX7FG8pjYSkt9JTu5rnUeCrivL6LH
+   stCxHP3NnY8qzqHT2mzApPO2AUpKRdI0koaWrct/ivfWEmest+9LkNl5l
+   sy/O9tSz9bMGm7rEbadCB0PE4SGDwkd4OLvxoDoMpvrzha7uLaroqXe3c
+   t57smejYJfMoNvmi+0Of/4IZFe0UcyBbm7bjln0nl8OcGYch4zHz1ET0Q
+   w==;
+X-CSE-ConnectionGUID: vGKddyPVT5y+FgobIIh7Vw==
+X-CSE-MsgGUID: kumRBleARg+kz1/1CMIDRA==
+X-IronPort-AV: E=Sophos;i="6.07,211,1708412400"; 
+   d="asc'?scan'208";a="17329607"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Mar 2024 04:37:35 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 7 Mar 2024 04:36:24 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Thu, 7 Mar 2024 04:36:22 -0700
+Date: Thu, 7 Mar 2024 11:35:37 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH 2/2] tpm: of: If available Use linux,sml-log to get the
+ log and its size
+Message-ID: <20240307-chill-roundup-44a73c50aebc@wendy>
+References: <20240306155511.974517-1-stefanb@linux.ibm.com>
+ <20240306155511.974517-3-stefanb@linux.ibm.com>
 MIME-Version: 1.0
-References: <20240306080726.167338-1-herve.codina@bootlin.com>
- <20240306080726.167338-4-herve.codina@bootlin.com> <Zehrd/VgW5AnfJEu@yury-ThinkPad>
- <Zehx-v7h38TPJWwe@smile.fi.intel.com> <20240307083107.0fcd940f@bootlin.com>
-In-Reply-To: <20240307083107.0fcd940f@bootlin.com>
-From: Yury Norov <yury.norov@gmail.com>
-Date: Thu, 7 Mar 2024 06:14:01 -0500
-Message-ID: <CAAH8bW9+MiNnToZjKBz9kU0sy6ETSpGgX0CmaCdhm_6FxUya1w@mail.gmail.com>
-Subject: Re: [PATCH v6 3/5] lib/bitmap: Introduce bitmap_scatter() and
- bitmap_gather() helpers
-To: Herve Codina <herve.codina@bootlin.com>
-Content-Type: multipart/alternative; boundary="000000000000d1723b0613102c71"
-X-Mailman-Approved-At: Fri, 08 Mar 2024 07:34:53 +1100
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="pGsz+08ahPIBPDcV"
+Content-Disposition: inline
+In-Reply-To: <20240306155511.974517-3-stefanb@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,86 +75,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Netdev <netdev@vger.kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org, jarkko@kernel.org, linux-integrity@vger.kernel.org, viparash@in.ibm.com, linuxppc-dev@lists.ozlabs.org, peterhuewe@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000d1723b0613102c71
-Content-Type: text/plain; charset="UTF-8"
+--pGsz+08ahPIBPDcV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 7, 2024, 2:31 AM Herve Codina <herve.codina@bootlin.com> wrote:
+On Wed, Mar 06, 2024 at 10:55:11AM -0500, Stefan Berger wrote:
+> If linux,sml-log is available use it to get the TPM log rather than the
+> pointer found in linux,sml-base. This resolves an issue on PowerVM and KVM
+> on Power where after a kexec the memory pointed to by linux,sml-base may
+> have been corrupted. Also, linux,sml-log has replaced linux,sml-base and
+> linux,sml-size on these two platforms.
 
-> Hi Yury,
->
-> On Wed, 6 Mar 2024 15:39:06 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->
-> > On Wed, Mar 06, 2024 at 05:11:19AM -0800, Yury Norov wrote:
-> > > On Wed, Mar 06, 2024 at 09:07:19AM +0100, Herve Codina wrote:
-> >
-> > ...
-> >
-> > > Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> >
-> > Why? Shouldn't be Acked-by?
-> >
-> > > Would you like to move this with the rest of the series? If so please
-> > > pull my Sof-by, otherwise I can move it with bitmap-for-next.
-> >
->
-> A new iteration of the series is planned.
-> Yury, may I add your Acked-by in the next iteration ?
->
-> Best regards,
-> Herv=C3=A9
->
+Those two properties are documented, but linux,sml-log is not, nor can I
+find patches on the list documenting it.
+There should be a patch adding this to tmp-common.yaml.
 
-Please scratch my sign-off and add ack.
+Cheers,
+Conor.
 
->
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  drivers/char/tpm/eventlog/of.c | 36 +++++++++++-----------------------
+>  1 file changed, 11 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/drivers/char/tpm/eventlog/of.c b/drivers/char/tpm/eventlog/o=
+f.c
+> index 930fe43d5daf..e37196e64ef1 100644
+> --- a/drivers/char/tpm/eventlog/of.c
+> +++ b/drivers/char/tpm/eventlog/of.c
+> @@ -54,8 +54,8 @@ int tpm_read_log_of(struct tpm_chip *chip)
+>  	const u32 *sizep;
+>  	const u64 *basep;
+>  	struct tpm_bios_log *log;
+> +	const void *logp;
+>  	u32 size;
+> -	u64 base;
+> =20
+>  	log =3D &chip->log;
+>  	if (chip->dev.parent && chip->dev.parent->of_node)
+> @@ -66,37 +66,23 @@ int tpm_read_log_of(struct tpm_chip *chip)
+>  	if (of_property_read_bool(np, "powered-while-suspended"))
+>  		chip->flags |=3D TPM_CHIP_FLAG_ALWAYS_POWERED;
+> =20
+> -	sizep =3D of_get_property(np, "linux,sml-size", NULL);
+> -	basep =3D of_get_property(np, "linux,sml-base", NULL);
+> -	if (sizep =3D=3D NULL && basep =3D=3D NULL)
+> -		return tpm_read_log_memory_region(chip);
+> -	if (sizep =3D=3D NULL || basep =3D=3D NULL)
+> -		return -EIO;
+> -
+> -	/*
+> -	 * For both vtpm/tpm, firmware has log addr and log size in big
+> -	 * endian format. But in case of vtpm, there is a method called
+> -	 * sml-handover which is run during kernel init even before
+> -	 * device tree is setup. This sml-handover function takes care
+> -	 * of endianness and writes to sml-base and sml-size in little
+> -	 * endian format. For this reason, vtpm doesn't need conversion
+> -	 * but physical tpm needs the conversion.
+> -	 */
+> -	if (of_property_match_string(np, "compatible", "IBM,vtpm") < 0 &&
+> -	    of_property_match_string(np, "compatible", "IBM,vtpm20") < 0) {
+> +	logp =3D of_get_property(np, "linux,sml-log", &size);
+> +	if (logp =3D=3D NULL) {
+> +		sizep =3D of_get_property(np, "linux,sml-size", NULL);
+> +		basep =3D of_get_property(np, "linux,sml-base", NULL);
+> +		if (sizep =3D=3D NULL && basep =3D=3D NULL)
+> +			return tpm_read_log_memory_region(chip);
+> +		if (sizep =3D=3D NULL || basep =3D=3D NULL)
+> +			return -EIO;
+> +		logp =3D __va(be64_to_cpup((__force __be64 *)basep));
+>  		size =3D be32_to_cpup((__force __be32 *)sizep);
+> -		base =3D be64_to_cpup((__force __be64 *)basep);
+> -	} else {
+> -		size =3D *sizep;
+> -		base =3D *basep;
+>  	}
+> -
+>  	if (size =3D=3D 0) {
+>  		dev_warn(&chip->dev, "%s: Event log area empty\n", __func__);
+>  		return -EIO;
+>  	}
+> =20
+> -	log->bios_event_log =3D devm_kmemdup(&chip->dev, __va(base), size, GFP_=
+KERNEL);
+> +	log->bios_event_log =3D devm_kmemdup(&chip->dev, logp, size, GFP_KERNEL=
+);
+>  	if (!log->bios_event_log)
+>  		return -ENOMEM;
+> =20
+> --=20
+> 2.43.0
+>=20
 
---000000000000d1723b0613102c71
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+--pGsz+08ahPIBPDcV
+Content-Type: application/pgp-signature; name="signature.asc"
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Thu, Mar 7, 2024, 2:31 AM Herve Codina &lt;<a href=
-=3D"mailto:herve.codina@bootlin.com">herve.codina@bootlin.com</a>&gt; wrote=
-:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bor=
-der-left:1px #ccc solid;padding-left:1ex">Hi Yury,<br>
-<br>
-On Wed, 6 Mar 2024 15:39:06 +0200<br>
-Andy Shevchenko &lt;<a href=3D"mailto:andriy.shevchenko@linux.intel.com" ta=
-rget=3D"_blank" rel=3D"noreferrer">andriy.shevchenko@linux.intel.com</a>&gt=
-; wrote:<br>
-<br>
-&gt; On Wed, Mar 06, 2024 at 05:11:19AM -0800, Yury Norov wrote:<br>
-&gt; &gt; On Wed, Mar 06, 2024 at 09:07:19AM +0100, Herve Codina wrote:=C2=
-=A0 <br>
-&gt; <br>
-&gt; ...<br>
-&gt; <br>
-&gt; &gt; Signed-off-by: Yury Norov &lt;<a href=3D"mailto:yury.norov@gmail.=
-com" target=3D"_blank" rel=3D"noreferrer">yury.norov@gmail.com</a>&gt;=C2=
-=A0 <br>
-&gt; <br>
-&gt; Why? Shouldn&#39;t be Acked-by?<br>
-&gt; <br>
-&gt; &gt; Would you like to move this with the rest of the series? If so pl=
-ease<br>
-&gt; &gt; pull my Sof-by, otherwise I can move it with bitmap-for-next.=C2=
-=A0 <br>
-&gt; <br>
-<br>
-A new iteration of the series is planned.<br>
-Yury, may I add your Acked-by in the next iteration ?<br>
-<br>
-Best regards,<br>
-Herv=C3=A9<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">Please scratch my sign-off and add ack.=C2=A0</div><div dir=3D"au=
-to"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-</blockquote></div></div></div>
+-----BEGIN PGP SIGNATURE-----
 
---000000000000d1723b0613102c71--
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZemmegAKCRB4tDGHoIJi
+0geZAQDRqcSLRqXvICr64TJ1WsNpahDiNbtCA9bLKrnnkQKChwEAqoh88ZpfefYJ
+7KQ6U0WmddS80c0+qFeqxjEqa1WH5gM=
+=oHvc
+-----END PGP SIGNATURE-----
+
+--pGsz+08ahPIBPDcV--
