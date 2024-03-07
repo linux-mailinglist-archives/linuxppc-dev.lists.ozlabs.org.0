@@ -2,54 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7079D874F32
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 13:34:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B5A875069
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 14:40:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m2hV8+Uz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iyeW1MaJ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iyeW1MaJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr7zS1zsgz3vXC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 23:34:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr9RV1YyHz3fCg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 00:40:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m2hV8+Uz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iyeW1MaJ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iyeW1MaJ;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=longman@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr7ym6RrPz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 23:34:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1709814848;
-	bh=5GCSx/SWwEQN6H1v+rlc6aQIECBTZdtYZCIuJdaUGZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=m2hV8+UzshtbVo1SMQpGCIZAVMu9h2hQvtpDC9CkF6Ead01MUqjonBYL92rbYu9o5
-	 eONdwUL5JV+qzsPtqxYxcbEZTnxik/VNQnkbfcaMbISw7CbDppUAmAH/9P3sku/f8b
-	 i2LMQgXCW1DJms0NeuRTzJ0tBX4bUIMqKowAPBctWZSTjYyNqR0YILGQIfrcB30lQJ
-	 AxLogULtOaYvLPcYayeLz0xu9HzQh3oaG4608ibo49kkmjQLQ5CoPOkqEhC/05rYgX
-	 JxgCpZfY9Df2KdR0oUWson/F66hS7hXm3iPnnhME1f/unkDf0IfUz0QTmy9qELYv1z
-	 htVjJ1WY+KwZQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr9Qn2ZKBz2xTN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 00:40:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709818795;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=112pI+gt3JMCgKzIzUNSwArv3bdYT5A5xYg70+5/nCY=;
+	b=iyeW1MaJKCipOTrNCGF8ihsfL2rCwf3t9LvVXPZCT63bPJi8rj5LgxeD/gZEbZDsCRYCE1
+	wpIcZm+geKCODSpOoV2ifj9XOGXlS8gOY4LYclyU2gWI0ko2ibVKxwNa4ocS8ocUfD4Q4u
+	X4kOXjY5WVek389wM0uSEzAVYyoDZzY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709818795;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=112pI+gt3JMCgKzIzUNSwArv3bdYT5A5xYg70+5/nCY=;
+	b=iyeW1MaJKCipOTrNCGF8ihsfL2rCwf3t9LvVXPZCT63bPJi8rj5LgxeD/gZEbZDsCRYCE1
+	wpIcZm+geKCODSpOoV2ifj9XOGXlS8gOY4LYclyU2gWI0ko2ibVKxwNa4ocS8ocUfD4Q4u
+	X4kOXjY5WVek389wM0uSEzAVYyoDZzY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-286-PhGOQ0k9Pra5YEfCRg8aGQ-1; Thu, 07 Mar 2024 08:39:50 -0500
+X-MC-Unique: PhGOQ0k9Pra5YEfCRg8aGQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tr7yd1VsMz4wc8;
-	Thu,  7 Mar 2024 23:34:01 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnd Bergmann <arnd@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>, Vincenzo
- Frascino <vincenzo.frascino@arm.com>, Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v2 2/3] arch: simplify architecture specific page size
- configuration
-In-Reply-To: <20240306141453.3900574-3-arnd@kernel.org>
-References: <20240306141453.3900574-1-arnd@kernel.org>
- <20240306141453.3900574-3-arnd@kernel.org>
-Date: Thu, 07 Mar 2024 23:34:00 +1100
-Message-ID: <878r2unruv.fsf@mail.lhotse>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1EA19101A523;
+	Thu,  7 Mar 2024 13:39:49 +0000 (UTC)
+Received: from [10.22.17.9] (unknown [10.22.17.9])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 5BB371C0653F;
+	Thu,  7 Mar 2024 13:39:47 +0000 (UTC)
+Message-ID: <3d95ab40-2df5-4988-87be-568a628a0561@redhat.com>
+Date: Thu, 7 Mar 2024 08:39:46 -0500
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/10] locking/mutex: introduce devm_mutex_init
+Content-Language: en-US
+To: =?UTF-8?Q?Marek_Beh=C3=BAn?= <marek.behun@nic.cz>,
+ George Stark <gnstark@salutedevices.com>
+References: <20240307024034.1548605-1-gnstark@salutedevices.com>
+ <20240307024034.1548605-3-gnstark@salutedevices.com>
+ <20240307095639.b6utkbzr36liuu3p@kandell>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <20240307095639.b6utkbzr36liuu3p@kandell>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,39 +85,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Jan Kiszka <jan.kiszka@siemens.com>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quici
- nc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Kieran Bingham <kbingham@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: kabel@kernel.org, linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, pavel@ucw.cz, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@kernel.org> writes:
-> From: Arnd Bergmann <arnd@arndb.de>
+On 3/7/24 04:56, Marek Behún wrote:
+> On Thu, Mar 07, 2024 at 05:40:26AM +0300, George Stark wrote:
+>> Using of devm API leads to a certain order of releasing resources.
+>> So all dependent resources which are not devm-wrapped should be deleted
+>> with respect to devm-release order. Mutex is one of such objects that
+>> often is bound to other resources and has no own devm wrapping.
+>> Since mutex_destroy() actually does nothing in non-debug builds
+>> frequently calling mutex_destroy() is just ignored which is safe for now
+>> but wrong formally and can lead to a problem if mutex_destroy() will be
+>> extended so introduce devm_mutex_init()
+>>
+>> Signed-off-by: George Stark <gnstark@salutedevices.com>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   Hello Christophe. Hope you don't mind I put you SoB tag because you helped alot
+>>   to make this patch happen.
+>>
+>>   include/linux/mutex.h        | 13 +++++++++++++
+>>   kernel/locking/mutex-debug.c | 22 ++++++++++++++++++++++
+>>   2 files changed, 35 insertions(+)
+>>
+>> diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+>> index f7611c092db7..9bcf72cb941a 100644
+>> --- a/include/linux/mutex.h
+>> +++ b/include/linux/mutex.h
+>> @@ -22,6 +22,8 @@
+>>   #include <linux/cleanup.h>
+>>   #include <linux/mutex_types.h>
+>>
+>> +struct device;
+>> +
+>>   #ifdef CONFIG_DEBUG_LOCK_ALLOC
+>>   # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
+>>   		, .dep_map = {					\
+>> @@ -115,10 +117,21 @@ do {							\
+>>
+>>   #ifdef CONFIG_DEBUG_MUTEXES
+>>
+>> +int devm_mutex_init(struct device *dev, struct mutex *lock);
+>>   void mutex_destroy(struct mutex *lock);
+>>
+>>   #else
+>>
+>> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
+>> +{
+>> +	/*
+>> +	 * since mutex_destroy is nop actually there's no need to register it
+>> +	 * in devm subsystem.
+>> +	 */
+>> +	mutex_init(lock);
+>> +	return 0;
+>> +}
+>> +
+>>   static inline void mutex_destroy(struct mutex *lock) {}
+>>
+>>   #endif
+>> diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
+>> index bc8abb8549d2..c9efab1a8026 100644
+>> --- a/kernel/locking/mutex-debug.c
+>> +++ b/kernel/locking/mutex-debug.c
+>> @@ -19,6 +19,7 @@
+>>   #include <linux/kallsyms.h>
+>>   #include <linux/interrupt.h>
+>>   #include <linux/debug_locks.h>
+>> +#include <linux/device.h>
+>>
+>>   #include "mutex.h"
+>>
+>> @@ -104,3 +105,24 @@ void mutex_destroy(struct mutex *lock)
+>>   }
+>>
+>>   EXPORT_SYMBOL_GPL(mutex_destroy);
+>> +
+>> +static void devm_mutex_release(void *res)
+>> +{
+>> +	mutex_destroy(res);
+>> +}
+>> +
+>> +/**
+>> + * devm_mutex_init - Resource-managed mutex initialization
+>> + * @dev:	Device which lifetime mutex is bound to
+>> + * @lock:	Pointer to a mutex
+>> + *
+>> + * Initialize mutex which is automatically destroyed when the driver is detached.
+>> + *
+>> + * Returns: 0 on success or a negative error code on failure.
+>> + */
+>> +int devm_mutex_init(struct device *dev, struct mutex *lock)
+>> +{
+>> +	mutex_init(lock);
+>> +	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
+>> +}
+>> +EXPORT_SYMBOL_GPL(devm_mutex_init);
+> Hi George,
 >
-> arc, arm64, parisc and powerpc all have their own Kconfig symbols
-> in place of the common CONFIG_PAGE_SIZE_4KB symbols. Change these
-> so the common symbols are the ones that are actually used, while
-> leaving the arhcitecture specific ones as the user visible
-> place for configuring it, to avoid breaking user configs.
+> look at
+> https://lore.kernel.org/lkml/7013bf9e-2663-4613-ae61-61872e81355b@redhat.com/
+> where Matthew and Hans explain that devm_mutex_init needs to be a macro
+> because of the static lockdep key.
 >
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu> (powerpc32)
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Acked-by: Helge Deller <deller@gmx.de> # parisc
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> No changes from v1
+> so this should be something like:
 >
->  arch/arc/Kconfig                  |  3 +++
->  arch/arc/include/uapi/asm/page.h  |  6 ++----
->  arch/arm64/Kconfig                | 29 +++++++++++++----------------
->  arch/arm64/include/asm/page-def.h |  2 +-
->  arch/parisc/Kconfig               |  3 +++
->  arch/parisc/include/asm/page.h    | 10 +---------
->  arch/powerpc/Kconfig              | 31 ++++++-------------------------
->  arch/powerpc/include/asm/page.h   |  2 +-
->  scripts/gdb/linux/constants.py.in |  2 +-
->  scripts/gdb/linux/mm.py           |  2 +-
->  10 files changed, 32 insertions(+), 58 deletions(-)
+> static inline int __devm_mutex_init(struct device *dev, struct mutex *mutex,
+> 				    const char *name,
+> 				    struct lock_class_key *key)
+> {
+> 	__mutex_init(mutex, name, key);
+> 	return devm_add_action_or_reset(dev, devm_mutex_release, mutex);
+> }
+>
+> #define devm_mutex_init(dev, mutex)				\
+> do {								\
+> 	static struct lock_class_key __key;			\
+> 								\
+> 	__devm_mutex_init(dev, (mutex), #mutex, &__key);	\
+> } while (0);
+>
+>
+> Marek
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Making devm_mutex_init() a function will make all the devm_mutex share 
+the same lockdep key. Making it a macro will make each caller of 
+devm_mutex_init() have a distinct lockdep key. It all depends on whether 
+all the devm_mutexes have the same lock usage pattern or not and whether 
+it is possible for one devm_mutex to be nested inside another. So either 
+way can be fine depending on the mutex usage pattern. My suggestion is 
+to use a function, if possible, unless it will cause a false positive 
+lockdep splat as there is a limit on the maximum # of lockdep keys that 
+can be used.
 
-cheers
+Cheers,
+Longman
+
