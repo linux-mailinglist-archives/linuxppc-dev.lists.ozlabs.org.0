@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8CA875794
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A8587579F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:54:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kZm2YSwS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bp/jepb4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrKjY4RHpz3vYv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:53:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrKkM2zy1z3vdr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:54:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kZm2YSwS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bp/jepb4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrKhq6t48z3bnc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 06:52:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrKjG2bfzz3blb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 06:53:06 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E2DCD61CD2;
-	Thu,  7 Mar 2024 19:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C0C433F1;
-	Thu,  7 Mar 2024 19:52:33 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7217C61CD3;
+	Thu,  7 Mar 2024 19:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4ECC433C7;
+	Thu,  7 Mar 2024 19:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709841161;
-	bh=abVM7Az8c+fwhJYNf8SjY0MPBlfozwtnuPRGUqiuFH0=;
+	s=k20201202; t=1709841184;
+	bh=zBtZ5IOpkL6qCfo2I5F6M8ftp0zLjynvpva1eSiBuSI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kZm2YSwSeAjDl/IxeY39+GMpbM8g/8yLdpNPzBh9Kp9OI7lIHdGVkI0W/SiXGXlVY
-	 8Ye4MdEO3tCq/Rskx6KQb/6n0TYuz5hgFRUTqcPq5lMDRZ4e68xdlI+OtljF8BrAhW
-	 uU3G/XKfd2W+GAEpIvJOH8/VjiPRvy3xkmXqZ6ZJN16Jj5szHjOqM4WehX4qqAwgUo
-	 lK6yFgKRk4vAkGPgD4jvralrfWKvR87DyZ2a62ltCqD/q4ZXANAZfTOlh9cdeyaotn
-	 gMKzIMKEyAbzGgl9wgZHgDfKWgZnsBm8mLkobnvwBY2pLtH90c8M7zCL36b5O9cGzO
-	 9MQH5Xf1EoKww==
-Date: Thu, 7 Mar 2024 20:52:30 +0100
+	b=bp/jepb4PDvsNrjk56N3ijuTUlescXOvoEL1HEYCfWnGtSJ5C2lciuKIk9hA3sNLN
+	 bauPP3oAanTRILudB5QaMYsIwhDnQeJgMVYm1WQbwu2/T5yDhsjpnulrhAzJSyM0Um
+	 JSMNL1vDNLWZdY0h9jv3RuugiiMLH4eRc3RAY9fkP3uivAoUWyMJvQmEjckoo2KjtU
+	 9KqWTy+EFjPHoe8Cvm1gfS4PHZmArqpr84IwIWhs5aFsxn22g3DjPefBB8NHLkt1XW
+	 JZgtpaxHi5t367t6OiIreMnBe+pN+axheeVGhig2M9HfvhCTf3kvKSM1WGUAgl46qs
+	 N5f5iB1+2AGww==
+Date: Thu, 7 Mar 2024 20:52:53 +0100
 From: Niklas Cassel <cassel@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v9 01/10] PCI: dwc: ep: Remove deinit() callback from
- struct dw_pcie_ep_ops
-Message-ID: <ZeoaOn2dekvBD8ae@ryzen>
+Subject: Re: [PATCH v9 02/10] PCI: dwc: ep: Rename dw_pcie_ep_exit() to
+ dw_pcie_ep_deinit()
+Message-ID: <ZeobFZ0gXsmQPFyV@ryzen>
 References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-1-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-2-29d433d99cda@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240304-pci-dbi-rework-v9-1-29d433d99cda@linaro.org>
+In-Reply-To: <20240304-pci-dbi-rework-v9-2-29d433d99cda@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,17 +65,11 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <v
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 04, 2024 at 02:52:13PM +0530, Manivannan Sadhasivam wrote:
-> deinit() callback was solely introduced for the pcie-rcar-gen4 driver where
-> it is used to do platform specific resource deallocation. And this callback
-> is called right at the end of the dw_pcie_ep_exit() API. So it doesn't
-> matter whether it is called within or outside of dw_pcie_ep_exit() API.
-> 
-> So let's remove this callback and directly call rcar_gen4_pcie_ep_deinit()
-> in pcie-rcar-gen4 driver to do resource deallocation after the completion
-> of dw_pcie_ep_exit() API in rcar_gen4_remove_dw_pcie_ep().
-> 
-> This simplifies the DWC layer.
+On Mon, Mar 04, 2024 at 02:52:14PM +0530, Manivannan Sadhasivam wrote:
+> dw_pcie_ep_exit() API is undoing what the dw_pcie_ep_init() API has done
+> already (at least partly). But the API name dw_pcie_ep_exit() is not quite
+> reflecting that. So let's rename it to dw_pcie_ep_deinit() to make the
+> purpose of this API clear. This also aligns with the DWC host driver.
 > 
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
