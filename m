@@ -2,147 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1782874A44
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 10:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5706D874C5B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 11:26:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VvQogetT;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmb0ocOp;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VvQogetT;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmb0ocOp;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=nic.cz header.i=@nic.cz header.a=rsa-sha256 header.s=default header.b=U0oRVyb/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr3DC47rXz3vYs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 20:00:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr57x0bl2z3vX1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:26:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VvQogetT;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmb0ocOp;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VvQogetT;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmb0ocOp;
+	dkim=pass (1024-bit key; secure) header.d=nic.cz header.i=@nic.cz header.a=rsa-sha256 header.s=default header.b=U0oRVyb/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nic.cz (client-ip=2001:1488:800:400::400; helo=mail.nic.cz; envelope-from=marek.behun@nic.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 574 seconds by postgrey-1.37 at boromir; Thu, 07 Mar 2024 21:06:50 AEDT
+Received: from mail.nic.cz (mail.nic.cz [IPv6:2001:1488:800:400::400])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr3CQ6LR4z3cCx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 19:59:46 +1100 (AEDT)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5E8EC38949;
-	Thu,  7 Mar 2024 08:59:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1709801982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zr1vglmdaTVF4Y5C+JCtluV3UMYKqQ7gx5fxIkqkoVw=;
-	b=VvQogetTf/95bbo74xOfRkUqpGRuCqV9YNka3pz/Zykuze2ZUAaUNpq0zEYSmeg0X5fjZc
-	8lXmLoHrJxzonV1kp7l4kApYKMYwIL1XhKjZxtSY7iAqhsQ0j2pC2j474z3eoWNWziX+xF
-	2ySMB7eNyX6wdrVLiFrW0U47LyomLeQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1709801982;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zr1vglmdaTVF4Y5C+JCtluV3UMYKqQ7gx5fxIkqkoVw=;
-	b=qmb0ocOpIGTIw5ApzfJWBCPw7A+4Qx5qBRNg+/IikDhX+q3h6wUBU/NyGbwRQje2tgWsu4
-	OZngehUOQKu3GPBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1709801982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zr1vglmdaTVF4Y5C+JCtluV3UMYKqQ7gx5fxIkqkoVw=;
-	b=VvQogetTf/95bbo74xOfRkUqpGRuCqV9YNka3pz/Zykuze2ZUAaUNpq0zEYSmeg0X5fjZc
-	8lXmLoHrJxzonV1kp7l4kApYKMYwIL1XhKjZxtSY7iAqhsQ0j2pC2j474z3eoWNWziX+xF
-	2ySMB7eNyX6wdrVLiFrW0U47LyomLeQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1709801982;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Zr1vglmdaTVF4Y5C+JCtluV3UMYKqQ7gx5fxIkqkoVw=;
-	b=qmb0ocOpIGTIw5ApzfJWBCPw7A+4Qx5qBRNg+/IikDhX+q3h6wUBU/NyGbwRQje2tgWsu4
-	OZngehUOQKu3GPBA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id F209813997;
-	Thu,  7 Mar 2024 08:59:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id EV+QOf2B6WW7FAAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Thu, 07 Mar 2024 08:59:41 +0000
-Message-ID: <2c8ef49b-f20b-47f7-ad4e-2adcfd370024@suse.de>
-Date: Thu, 7 Mar 2024 09:59:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] arch/powerpc: Resolve backlight include
- dependencies
-Content-Language: en-US
-To: mpe@ellerman.id.au, jani.nikula@intel.com, naresh.kamboju@linaro.org,
- deller@gmx.de, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com
-References: <20240306122935.10626-1-tzimmermann@suse.de>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20240306122935.10626-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr4hp1z9hz3dJ0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 21:06:50 +1100 (AEDT)
+Received: from kandell (unknown [172.20.6.140])
+	by mail.nic.cz (Postfix) with ESMTPS id A3B251C035F;
+	Thu,  7 Mar 2024 10:56:58 +0100 (CET)
+Authentication-Results: mail.nic.cz;
 	none
-X-Spamd-Result: default: False [-3.09 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_DN_NONE(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[13];
-	 FREEMAIL_TO(0.00)[ellerman.id.au,intel.com,linaro.org,gmx.de,gmail.com,csgroup.eu,kernel.org,linux.ibm.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.09
-X-Spam-Flag: NO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nic.cz; s=default;
+	t=1709805421; bh=76Jo3UVwHUPVJ1Mxh3dPGM0nxOmpEeJydflFioZTAPQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Reply-To:
+	 Subject:To:Cc;
+	b=U0oRVyb/byvyZefng+g9v35ujBi7vq6aYkmzvkKCrDxKkrm4GdejErIA4KhO0xVnT
+	 WUqRgmcFvpZBesK2q11bJeZP+NENK/F4uNa1T0zLPva3uD4Ifw484KchmjTu7f5Ttu
+	 hIwK7zAsQ5g2CzFLPtjyTUvjxJV5Q6v7IBTxzfwg=
+Date: Thu, 7 Mar 2024 10:56:58 +0100
+From: Marek =?utf-8?B?QmVow7pu?= <marek.behun@nic.cz>
+To: George Stark <gnstark@salutedevices.com>
+Subject: Re: [PATCH v5 02/10] locking/mutex: introduce devm_mutex_init
+Message-ID: <20240307095639.b6utkbzr36liuu3p@kandell>
+References: <20240307024034.1548605-1-gnstark@salutedevices.com>
+ <20240307024034.1548605-3-gnstark@salutedevices.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240307024034.1548605-3-gnstark@salutedevices.com>
+X-Virus-Scanned: clamav-milter 0.103.10 at mail
+X-Virus-Status: Clean
+X-Rspamd-Queue-Id: A3B251C035F
+X-Rspamd-Pre-Result: action=no action;
+	module=multimap;
+	Matched map: WHITELISTED_IP
+X-Spam-Status: No, score=-0.10
+X-Spamd-Result: default: False [-0.10 / 20.00];
+	MIME_GOOD(-0.10)[text/plain];
+	WHITELISTED_IP(0.00)[172.20.6.140];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com]
+X-Rspamd-Action: no action
+X-Spamd-Bar: /
+X-Rspamd-Server: mail
+X-Mailman-Approved-At: Thu, 07 Mar 2024 21:26:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -154,48 +78,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, lkft-triage@lists.linaro.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Cc: kabel@kernel.org, linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If there are no further comments, I'm going to merge this patchset in 
-time for today's PR of drm-misc-next-fixes.
+On Thu, Mar 07, 2024 at 05:40:26AM +0300, George Stark wrote:
+> Using of devm API leads to a certain order of releasing resources.
+> So all dependent resources which are not devm-wrapped should be deleted
+> with respect to devm-release order. Mutex is one of such objects that
+> often is bound to other resources and has no own devm wrapping.
+> Since mutex_destroy() actually does nothing in non-debug builds
+> frequently calling mutex_destroy() is just ignored which is safe for now
+> but wrong formally and can lead to a problem if mutex_destroy() will be
+> extended so introduce devm_mutex_init()
+> 
+> Signed-off-by: George Stark <gnstark@salutedevices.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  Hello Christophe. Hope you don't mind I put you SoB tag because you helped alot
+>  to make this patch happen.
+> 
+>  include/linux/mutex.h        | 13 +++++++++++++
+>  kernel/locking/mutex-debug.c | 22 ++++++++++++++++++++++
+>  2 files changed, 35 insertions(+)
+> 
+> diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+> index f7611c092db7..9bcf72cb941a 100644
+> --- a/include/linux/mutex.h
+> +++ b/include/linux/mutex.h
+> @@ -22,6 +22,8 @@
+>  #include <linux/cleanup.h>
+>  #include <linux/mutex_types.h>
+> 
+> +struct device;
+> +
+>  #ifdef CONFIG_DEBUG_LOCK_ALLOC
+>  # define __DEP_MAP_MUTEX_INITIALIZER(lockname)			\
+>  		, .dep_map = {					\
+> @@ -115,10 +117,21 @@ do {							\
+> 
+>  #ifdef CONFIG_DEBUG_MUTEXES
+> 
+> +int devm_mutex_init(struct device *dev, struct mutex *lock);
+>  void mutex_destroy(struct mutex *lock);
+> 
+>  #else
+> 
+> +static inline int devm_mutex_init(struct device *dev, struct mutex *lock)
+> +{
+> +	/*
+> +	 * since mutex_destroy is nop actually there's no need to register it
+> +	 * in devm subsystem.
+> +	 */
+> +	mutex_init(lock);
+> +	return 0;
+> +}
+> +
+>  static inline void mutex_destroy(struct mutex *lock) {}
+> 
+>  #endif
+> diff --git a/kernel/locking/mutex-debug.c b/kernel/locking/mutex-debug.c
+> index bc8abb8549d2..c9efab1a8026 100644
+> --- a/kernel/locking/mutex-debug.c
+> +++ b/kernel/locking/mutex-debug.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/kallsyms.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/debug_locks.h>
+> +#include <linux/device.h>
+> 
+>  #include "mutex.h"
+> 
+> @@ -104,3 +105,24 @@ void mutex_destroy(struct mutex *lock)
+>  }
+> 
+>  EXPORT_SYMBOL_GPL(mutex_destroy);
+> +
+> +static void devm_mutex_release(void *res)
+> +{
+> +	mutex_destroy(res);
+> +}
+> +
+> +/**
+> + * devm_mutex_init - Resource-managed mutex initialization
+> + * @dev:	Device which lifetime mutex is bound to
+> + * @lock:	Pointer to a mutex
+> + *
+> + * Initialize mutex which is automatically destroyed when the driver is detached.
+> + *
+> + * Returns: 0 on success or a negative error code on failure.
+> + */
+> +int devm_mutex_init(struct device *dev, struct mutex *lock)
+> +{
+> +	mutex_init(lock);
+> +	return devm_add_action_or_reset(dev, devm_mutex_release, lock);
+> +}
+> +EXPORT_SYMBOL_GPL(devm_mutex_init);
 
-Am 06.03.24 um 13:28 schrieb Thomas Zimmermann:
-> After cleaning up <linux/fb.h> in commit 11b4eedfc87d ("fbdev: Do
-> not include <linux/backlight.h> in header"), building with
-> CONFIG_PMAC_BACKLIGHT=y returns errors about missing declarations.
-> Patches 1 and 2 resolve the errors. Patch 1 has been reviewed at [1].
-> Patch 3 removes another dependency between backlight and fbdev code.
->
-> Compile tested with ppc6xx_defconfig.
->
-> v3:
-> 	* add Fixes tag and fix typos in patch 3
-> v2:
-> 	* via-pmu-backlight: fix build errors
-> 	* powerpc: resolve dependency between fbdev and backlight
->
-> [1] https://patchwork.freedesktop.org/series/130661/
->
-> Thomas Zimmermann (3):
->    fbdev/chipsfb: Include <linux/backlight.h>
->    macintosh/via-pmu-backlight: Include <linux/backlight.h>
->    arch/powerpc: Remove <linux/fb.h> from backlight code
->
->   arch/powerpc/include/asm/backlight.h        |  5 ++--
->   arch/powerpc/platforms/powermac/backlight.c | 26 ---------------------
->   drivers/macintosh/via-pmu-backlight.c       |  1 +
->   drivers/video/fbdev/chipsfb.c               |  1 +
->   4 files changed, 4 insertions(+), 29 deletions(-)
->
+Hi George,
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+look at
+https://lore.kernel.org/lkml/7013bf9e-2663-4613-ae61-61872e81355b@redhat.com/
+where Matthew and Hans explain that devm_mutex_init needs to be a macro
+because of the static lockdep key. 
 
+so this should be something like:
+
+static inline int __devm_mutex_init(struct device *dev, struct mutex *mutex,
+				    const char *name,
+				    struct lock_class_key *key)
+{
+	__mutex_init(mutex, name, key);
+	return devm_add_action_or_reset(dev, devm_mutex_release, mutex);
+}
+
+#define devm_mutex_init(dev, mutex)				\
+do {								\
+	static struct lock_class_key __key;			\
+								\
+	__devm_mutex_init(dev, (mutex), #mutex, &__key);	\
+} while (0);
+
+
+Marek
