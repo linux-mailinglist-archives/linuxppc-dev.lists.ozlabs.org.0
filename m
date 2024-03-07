@@ -2,123 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26ABD87581E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758BA87582A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:20:51 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=j3UVtH/f;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=o/LFot+U;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLFz6Jj4z3vj9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:17:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLKF1sv2z3vqD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:20:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=j3UVtH/f;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=o/LFot+U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2414::600; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::600])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::601; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::601])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrLFD0b6nz2yk3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:17:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrLJV24H5z3vYb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:20:07 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AUeOorKkZ9OFfLTlobVEbbCggrzqkdw4uZPOGMNdjEkfb+TpeXGUQtrtISKJl5+t9fIMb8xo6IyqJDKzqgMl4r8ZJ2HzNrVdcqzcmD/BVLBJpq9ur5YFwzJIYheGP5jxoCly6U9pnxvYkhngaLCEWtszr6TcnI7FzyZhGF9rK+xF31vJuHTdWY1MmxNuzGmIaJCUe0o9xCMD/VwguyBQjV+vDm+cv7qpElUm/KAtrp2KBP4YM9XZmE2WuolxlwZOnEygqTeH6xYuk0BpvU8kOgDeLe5lE19QlMeZDWdSHNPRpkw0vP5a9iAjLb2OoBPcoHMXaQ5nBydrCatpyoU4kw==
+ b=fJYT7LCvYaHwT5lenWU7cEbdHRGyw7Z6HA/CIlEat83OzfwzdSieOth8D9yjg754nFYnUkgGg4iGP1j+pDvY5FzEVN+a3C7nAFJN+Q3+Vy4FQnSyQL+upI4ZKWO8qkejRsg+jHQ9TenvlaI9SdL60l+6ETuUC42awIrfumlJu5bR4y8YwKJdfQbt8rn7N7Mz1A7hxcMBrYPACTww4TmaKdmLV/kvfuCAsA6gDCmhXYa3wL2wOcUg7Itvgg1VHVzi1GONv3D152Uu9vVxF8iA7w7oA9+XWhDxQi5H3r4fh3zgefNstV/iU9gcAxyPRPUVsXB5Dq7O/rT6Y+fUZZ9vGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yjYLYsWUwR6Os+WUro8W9GHIcP7kmbFChN+9az3aDdY=;
- b=fLA/gr4qSFjySjO9n4Tim7MvnG3xqqnymm80GGdwvrzeGGZyDSxO061x8tOdebRvjrDzGC3UAmz6mvTZsBjOEKLzMnb2BfvEi9dyc7xgUqKssUuj6VZCBIJfZkAJB6f0z427f9bdP1ohyY5/Jw0/U9ql3iTdg2/v0NgArB91kLG1DMuAkbNrH3YwTiU3rtWHLoHu9SHoj+zVHLFT/zibxxzNK8zlstjEFqsNx0d16MYywapEKVs3g0GQTASi6bsD1fFKBgaylCqXP6A/V9OvfvvxD6o9eovQ1vG3A+kS3ci7eEyOtQM3G7bzKVD96X8cV3ntxbrVNucjl7tFJRh51Q==
+ bh=G7SWntkteWi7F8aMSFSKPv6yd75j8pHpX8cR8E3acRU=;
+ b=Upbl1fISG/ISSkqLbz7a+QBv+BpxRl1M8RHeHg4nbaVLJX53HkMLptgKBcNT26eOIfmNja/3Tnl4qypH2SRlYuqXKBA8T6d9VnvQWY6u+3tL1Oe93YZ5rd5UgT+qoAEkBxscuEkMlbbZI70L0I3WWZ/CtWWeLUPE3UR0xQQGC6modw3pf4l56NU6Dl3vJpUAGhPDIT5zX+heDTqgukAYc4wsAfjetU7tm1qzVPWlNNvveYJVysBM9GNkG8r9idDQ9KoYo+BH1+fGAAtY8V6dYNQFVBOUMrYQEAVPwbUyj793tnbKml6S5ncaADChIPc6wZqeZ17QhZ1fPVAeyHnlYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yjYLYsWUwR6Os+WUro8W9GHIcP7kmbFChN+9az3aDdY=;
- b=j3UVtH/fJzzkCe8JQRPxTEeyU2ZGhp//VEnnGurdy1+9Uipsl8ykUbo9JaYTle9W8eD8VQmhHQW5QVTTdxNyFFonEqKqbOzyOTPo0CEXchzC+R4B5N+rwHcaaQgjq8Qqb2om/uj9yySTtN87yU0mHh1BB55kr0xc+u72XJsBFG2ZUac3W7ChjE+3jN5/LfUf0PP/CaNKyiCmjo7XtF1G4FEpog8pp8P/jcPew+pwRISPiZu0bNsQI2Nj11Sn5+X2r2/5eUgg1J9PYJtdRCUIHrnrAz2HaGO877JCm/CxGFd1tBOO6Xk8u0l6tznIQ63byvHpNf6y9/ivnfAjVb5Mkw==
+ bh=G7SWntkteWi7F8aMSFSKPv6yd75j8pHpX8cR8E3acRU=;
+ b=o/LFot+UfWI5YAg7qKFYHwmk9fjBcvkWrNhsAQfu1D9CfqCloTMPmbWmBIZKsRo/4rYNqz1A6oawh/FC/KFenxdry1XETeiL2SII0h4a/7qbTjbBCzAnkPPzoIasWqgAq+E2Sty83LYc1484YZV59FgVwZcW/LN7BRfYXEE1IFSjvgh6lLycVKFzvPjZR4IKonUl6fzJJb+HDBWtp7QTYLkBiiwXl34d9Mf4cRYDPrVAh/1tBwxrBfN5TG5Ivut9FJ97cQUzEHGXbDzKM4H1wljc4Q47zswjTUbRGrizvlqIMS5Zr/oh48teBn/GkYnzSgDDcGZIrPU8iGqPmHUmbA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by MW3PR12MB4396.namprd12.prod.outlook.com (2603:10b6:303:59::17) with
+ by SN7PR12MB8027.namprd12.prod.outlook.com (2603:10b6:806:32a::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Thu, 7 Mar
- 2024 20:16:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Thu, 7 Mar
+ 2024 20:19:48 +0000
 Received: from DM6PR12MB3849.namprd12.prod.outlook.com
  ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
  ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7362.019; Thu, 7 Mar 2024
- 20:16:57 +0000
-Date: Thu, 7 Mar 2024 16:16:55 -0400
+ 20:19:47 +0000
+Date: Thu, 7 Mar 2024 16:19:46 -0400
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: peterx@redhat.com
-Subject: Re: [PATCH RFC 04/13] mm/x86: Change pXd_huge() behavior to exclude
- swap entries
-Message-ID: <20240307201655.GF9179@nvidia.com>
+Subject: Re: [PATCH RFC 10/13] mm/gup: Merge pXd huge mapping checks
+Message-ID: <20240307201946.GG9179@nvidia.com>
 References: <20240306104147.193052-1-peterx@redhat.com>
- <20240306104147.193052-5-peterx@redhat.com>
-Content-Type: text/plain; charset=utf-8
+ <20240306104147.193052-11-peterx@redhat.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240306104147.193052-5-peterx@redhat.com>
-X-ClientProxiedBy: SN4PR0501CA0069.namprd05.prod.outlook.com
- (2603:10b6:803:41::46) To DM6PR12MB3849.namprd12.prod.outlook.com
+In-Reply-To: <20240306104147.193052-11-peterx@redhat.com>
+X-ClientProxiedBy: SN6PR16CA0056.namprd16.prod.outlook.com
+ (2603:10b6:805:ca::33) To DM6PR12MB3849.namprd12.prod.outlook.com
  (2603:10b6:5:1c7::26)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|MW3PR12MB4396:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f5be981-b8a3-4f7f-016a-08dc3ee38a08
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|SN7PR12MB8027:EE_
+X-MS-Office365-Filtering-Correlation-Id: b23dd179-86ea-4105-b9fa-08dc3ee3ef95
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	NJ8HhtV0wbDGRgbqsFpHWrL0TsNjgen6EOcqvzAwj1i+rknyc4iW+GjuROKcYGZ2InjINyjuJFn6arn9/u/outX9LkV4Kkp+h2wFho6BWXqozGFHnpomOiiLzKh0+K2OwTpJE9/l2lshCFytUlUEANeckfu2Abwhj/F9D9P+VqUYXVArGYXYbp6NuoVAfgAWWrh3hCNTrADdizHWo9ZGUR/K5ZSeef8I8/y6Z1l2fOKj4IKyaPisYNaoSOt5zB2bPIayMRpNx7MKbCDLOnoqbBTJCzambgx+XD46uLMHvY4P/3PdQmbxC0Im7XaP6XPxdPuN9ACFuVoLlZMWlbqLELqic8+19OtI7IF74/MhFSje/7Ea7E3TvwF62zjXWVNjiYcpDxVgUVMGblec1rdUZZtqK55qEL9d9htu/jZR7X+6UbSQpVTyMqZKp+51NCqR3+6CuIEzvZeTPK7deTE7fUyxcvf26NvKZzmiKYEvL7NRA9vqRU8m/M7/+b16kRuVGFySGfJlzh9mhbw4kJleM80czkHWI3rl3ne9QVA7+nEl+WZ8Y1eBEe7yQHHKelCjaLENOeSyF5XINxM3I3PpO+BPv+qBTy2oJ9bjYEAPw3mETRySDUoTJ5eyq4qFDsvOH64a+P6IrCGSj4CoeYtHTORv/pajhfEeSkblmzS8jvs=
+X-Microsoft-Antispam-Message-Info: 	1p4e25+HzhVgyqC1ZhwtES1qrTLOJNxs5VTf3YSQZTosiXJI9rSXXNyqYftqpmeHiMXg2Z298JO7cSmbQqtVmn3yWHPi8IRwU31nw3hnUSqKi1NTneBDu/TPRun2iHEL+IGX+I2JpFbEUSOh5IHM++6tqCRofT3SEJbUOu/ec4BEH7Ak8RcAqrSTd4ZQIijI7AtovWBc1gUz1P1DY6q7rksY/OVERuoECI7PnrD1rdtfQAZHDvCHA1HKwQF50/jhJV2AT4u6lAen5EVZpK8tF9EoyemMtJQIzvUn8KFaf80AfpxNti6hX7w6QbQZHuCSXn/4qKKp5TJdgdAdUTDJsUm0SzpR3X4RcK85Ivm68dLODgUO75MrRgW3SXs9pQ8boUUbgw/8sYN0wm5mVVdGBmx70CBYsV59M59O9kyiliAsrecrOB9TG+FfQVpC1XqUwsClA77+Q1UUBoC9pvZOYTMNhuAhxXKpvHPEQOB81Xfa6mvItC+EDnrhYMn4fcbg4eWK+I3ju+RC7aztC72BQ1tONVkVsi42VRp5llYVfQbtnpwRvnMu11HISNilLYu/oqvaYtOgVTU5mdZlm7Nb0RCOU1swo7IQ85nterfMQI4S00fDbd1ETTA34YAGl3OZmaIihBSf++wFRTEVPdJcmUBA3x4pEhlc9tmZgmgf7nM=
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?U0pwSFhuZklCNENRWS9mVVNlOUFOVDBPdnFyOEJkYVV5cTJlL0VmNjVBZlpj?=
- =?utf-8?B?UWZDMVY3SDdWZnptNFlrYjJoajVFNC9JSVFhdDBPZm5ZNE1ITjVtNzlxaS9O?=
- =?utf-8?B?cVAzcU5OUFZXYis0Y1NnZm1wbFJqMHI3S1VYdktCMDhUaXhLbSthc0tiTHdD?=
- =?utf-8?B?RkdjUzk3MTM1SFBzekxVdVJjZ3A5WjhkS3Fxa0N6eWo0emtoT1gvMG5yMG5J?=
- =?utf-8?B?cWlvdnFPZXFLTytnNTAwOHYxUzFjMGlIRGxGY0RtdThTR2JsQlNqQytwMEtr?=
- =?utf-8?B?dWpSOGVicWxkdEdyRXpad3NaU2I5Zktvcjd5QWJnSW5PUkR1aU5RdGtNNVh5?=
- =?utf-8?B?elRCVVdnQ0Y5b2cxZURwSGNPZi91V2NCNjY3N3RUMnAyRnpVZXYzb1cySjds?=
- =?utf-8?B?Rm91Vkl0YXdZbHFYbmoranAwWWM3TEF5a3hHOEkvMExCSDRrNmlnOHhna05m?=
- =?utf-8?B?UEhVdVd6Vzc1UXRQdmdNMTJZaGptdlpFeEs2Q3ZJNjB2Wlh2S0IvZjNxSUFR?=
- =?utf-8?B?dCtGd1VrT0RFREFMYTI4eTZIbjM2N2twUXFYWjNwMmw5U1cyeXNrY0xya2xY?=
- =?utf-8?B?elM3SDVTWUxDUk5iZG1JL1lkZ2loMzlkNmZVaGhIcXY4QUJicXpWTlRKYnl5?=
- =?utf-8?B?d2QxQjRDbDArZUcwK0RpM1RCa21aaCswZGdPRldLVXVtaGVRdDdmSWxGTm5K?=
- =?utf-8?B?SVNJQk9CYkNMT2pCUXIzdXo0cWI2cERURUp6VXVZS1NsWVVWWE1xTEpybGR6?=
- =?utf-8?B?aTdBU0pLK1lMbkxReTh6U2F6SUpONkFNRXUyZEFyNytFS0grNXF0MHlOT1pL?=
- =?utf-8?B?Vi8zclUwMG93MXF0ZDlsRk9JYUVhNXFhRGp6UnJTOGk1Qkppb0tHZUllRVR6?=
- =?utf-8?B?RmFRR1B3WStuMDJHZUdZZnNBN25xSzJKZEVmOW9oeVd1aW92ejRVWXErZDJL?=
- =?utf-8?B?MnVpN0pLdWU1eVBTT1ROQjZBOFM5TysxcTB3TXM0WU1iemxIRlcrdXlLTWZu?=
- =?utf-8?B?WmdSZlZScHo4OXdaR0kvM0lkZzFvTXhteWhkaDhKRTJJK1N4eTNGUDZqNmxM?=
- =?utf-8?B?clJkQ3NYbHJlblFWSFd6V205UWhqVm53VUZTTzZvaWxpQndCbVZydXNnQkxr?=
- =?utf-8?B?amF3Mkhlcmc3bGNIbkJnQjRIUVRQWFJlVWh4NVBNUUlBYzJUcXJ6dWJiMWVD?=
- =?utf-8?B?MkdwaXR2UHhWU2tDa1dMWTEvdWk4S3l1OUIwVFYzRElmOUFabHFmYjZ5czBk?=
- =?utf-8?B?MEZMS0F6RTg1Rk02SUNYdzh4enBFUWF6NGxFZjZaVU9nVjQrc2NxUTRYQi9h?=
- =?utf-8?B?S04xYkNZaDdQQ1dpU3pZQ3U0WlhQM0NWUHk3cjM4SGUvUXlGczVKVzM3WUFC?=
- =?utf-8?B?Mm1BcStNNW9YNVhXTld6OWdlVzlWN1RIdnFwZ3RoNFhLQUtXYkFRcHJTQWo2?=
- =?utf-8?B?TmMybU5xaWdwdjErUmI5S3FRRmphZjJUbVpNUXRyM01vU2pjUEtqR003YmxL?=
- =?utf-8?B?NEIwNGdtallXWWtXN0M5N3ZMbTVCMjdhSTlmMFJZK3hQWWV0RWdpeUZJbW5G?=
- =?utf-8?B?UnF5TW9KVExINFcwMHhsYWVtOE82VHFoajVGRW5DV1UxeExlMURYQ3UvY2tV?=
- =?utf-8?B?ZDJXdlpXektTeUhVTlpObC9kZ0JLOGZzZkdWTXZEUmx5K1JnQUU1TDZEd0pI?=
- =?utf-8?B?WXNUNXZJalhBN21yUjVodnhTdUlVb0tFMk1HN0lqS1pZUUtBSUUxaHFoOGF5?=
- =?utf-8?B?THhyYUl5b1NEWkYrRW1wZytRRVAvWFNYczJ2ZVdseWM2SGg5YnBnNGVMQ3NI?=
- =?utf-8?B?cDJlSzRaOCtVSk9MNW9uMmhpbUpsR0ZGeE1MajAyU3RFa0NnVHYrWGowTmtl?=
- =?utf-8?B?aVFoMk1yb2wwaVRUSG5NOFJsNFNCREdTMnFzeWdKZWJ1bTBhVlVGeURJYVhR?=
- =?utf-8?B?a21NVkE0Q3R3RHhydmp6dXcxeGQyMko0YnFpdjZoTVprRVIvc3N5YnFYWXk4?=
- =?utf-8?B?d3hTY1hYenc1ekFnU29UbWpEdVdxbUJFcUNqSVVncHNpSklVemFpTnpUVFZB?=
- =?utf-8?B?eUdXV3ZTblkwU2F6T1RSNUwwb1JPcjd0dTA0MGthM3pyQ1ZCQnRKazFwNUJ4?=
- =?utf-8?Q?w/zQ=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?CqcN4IaHgu2B0IX7TuXnqA71VJwJtQDn7uz8yEPFssiXBEWjdTqUBfPeA7np?=
+ =?us-ascii?Q?02Pa+1rdRs7Ye4Xk5OhzHhud1SWOLsPQlrvzhCUb2D9s7xhaxGTX7F2p0RJ+?=
+ =?us-ascii?Q?rSpKYzU/YyjzVVxByzSZfyBxCqC+PD74NdxZW2JEL74uRERoD26LuJvzZB0Z?=
+ =?us-ascii?Q?hjPBeNO83fNryhRJwcr0UzD0oC4Uo+nbiNX1T90nEmLWE2GXa1vM2MpAxtXP?=
+ =?us-ascii?Q?QTbMj43pNWreT5ECM0gLAvAX0eMnJFyrgP3oR1nCvu8FH9j2ZoOo2trOZpSw?=
+ =?us-ascii?Q?qAP/nrS/ISxZHbElx+pavdGNa1ZZn+Rb7r5Ju8Zm9UxkTtvx45qy6SSuMltf?=
+ =?us-ascii?Q?o3dqYhh+Y3KKVufsb8aYyQ7qnvkqxA0wvv6cMOCxGBPN3ub7gfKhxe1ca9NS?=
+ =?us-ascii?Q?bIOgFePGlWpCIkAa3gocJJJzkDnPpDZ+np6J+tG/qDjwhnsfwXOZ8/XO4nKo?=
+ =?us-ascii?Q?fZ8g0BVm+BytxlJqLF9lmU4JnUVUhtsZEUGertJzcjQESaM6SJJ9qT/USjTM?=
+ =?us-ascii?Q?zQV6tneamiZ7W0g/ZHUYmylWnZEy9yQUpMw14su26ihZrCa9H8HbwOECjy+7?=
+ =?us-ascii?Q?Mp/lUN0mVJmOFBGHd00HkZbLWDksN178LC3XxIw2cVwA+dA42NNR9rEWBSHz?=
+ =?us-ascii?Q?fcf1CDblEqnQLJyPnU1nONfERaCMdBTIGH83dz3rS55zSf6qZJcsKCXn1BXg?=
+ =?us-ascii?Q?Z+l+bQY7aDQHaJ8kJdkr+t3gyKEZitGONWz6hWKd9sQF/7XwTp0yKn1RQrZo?=
+ =?us-ascii?Q?MAi8LbYdFyU15woJYA0WBlYznUtM0lbcPAwillTyKlQlYNb2QXofYlW68j6R?=
+ =?us-ascii?Q?rPXArVb2UBzatwECh2IJ8nmCRB2OvOQNgmltIkGAJsbBixxPQaTyWHuUai+d?=
+ =?us-ascii?Q?jdIlKmGIaN6CxbfMOETa1qmZkbOTRpSZZqDIXner1t2IilTLeN3XsX6CXCiv?=
+ =?us-ascii?Q?5qhVTn/bHawA0fXZ/QxjOx4yJJLlj2yuZc0QghZb3AbVXn5alyTyUFcHlXry?=
+ =?us-ascii?Q?rl70xQRikP2jvrqErnrsvBc0yTLVwSQ8ftWi9UXsJRApRL4uqsLarsG7wPwF?=
+ =?us-ascii?Q?VlnJu8X2X44rzFn4IW2YZtSyGMXnlQEeJzBF3urajxyEjNX9YX2fHuvQ7X36?=
+ =?us-ascii?Q?/kuz5xWYZprd8z+kqH1FbcoTrcEb8yVOmaWHQOZ4go48IFNmxOIL9qrtAM5E?=
+ =?us-ascii?Q?4P/XD7TBKXSsTFGdf3CGdA6Wdb9CEskY33WjHkTs3LJy2AyocsVjTUbbcFZq?=
+ =?us-ascii?Q?18mFwl8XSIfmx9k/nIL1qZtqNqOnzV0FlvpBL7qbGJYTCQ7mka2mYQUtLB0k?=
+ =?us-ascii?Q?hIb88hqfu3Haw7UkgsxMfhKw2dFt+Ut2BMsT/0rIaCxzesypql4S6kWyXh9b?=
+ =?us-ascii?Q?XPTvQqJgWD1/vEScyXt2hjkX9N5sJe1mgq6Y82zMiU3BU5lbMApnYbaC247L?=
+ =?us-ascii?Q?FZKdxq4UvmlQW0L99gr58cpLP2/Jh/yXYa3oybjsTHuZCWGSYo0legYFbvL9?=
+ =?us-ascii?Q?hIzBcox5FZcJfoDPWqr8M+6v8A1PRWUdMa0R1uSfgPtl6FULHnj8Wh8q4jtQ?=
+ =?us-ascii?Q?It5+zUd4BwwxxnTsLtY=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f5be981-b8a3-4f7f-016a-08dc3ee38a08
+X-MS-Exchange-CrossTenant-Network-Message-Id: b23dd179-86ea-4105-b9fa-08dc3ee3ef95
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 20:16:57.5340
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 20:19:47.9293
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z5+PuvTjZrLgdSDdJIvRa5G12f22nrcc9yreOm+GTWyDuyBejV1Cd0ZX5bcGF6GP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4396
+X-MS-Exchange-CrossTenant-UserPrincipalName: YPsLvwfV83l84o8zrufE8pVEF1f1ehGRBGFK6FDVxRN7dlnPfuIJ1gJtt6Lj4u4D
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,74 +119,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Muchun Song <muchun.song@linux.dev>, Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, x86@kernel.org, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 06, 2024 at 06:41:38PM +0800, peterx@redhat.com wrote:
+On Wed, Mar 06, 2024 at 06:41:44PM +0800, peterx@redhat.com wrote:
 > From: Peter Xu <peterx@redhat.com>
 > 
-> This patch partly reverts below commits:
+> Huge mapping checks in GUP are slightly redundant and can be simplified.
 > 
-> 3a194f3f8ad0 ("mm/hugetlb: make pud_huge() and follow_huge_pud() aware of non-present pud entry")
-> cbef8478bee5 ("mm/hugetlb: pmd_huge() returns true for non-present hugepage")
+> pXd_huge() now is the same as pXd_leaf().  pmd_trans_huge() and
+> pXd_devmap() should both imply pXd_leaf(). Time to merge them into one.
 > 
-> Right now, pXd_huge() definition across kernel is unclear. We have two
-> groups that think differently on swap entries:
-> 
->   - x86/sparc:     Allow pXd_huge() to accept swap entries
->   - all the rest:  Doesn't allow pXd_huge() to accept swap entries
-> 
-> This is so confusing.  Since the sparc helpers seem to be added in 2016,
-> which is after x86's (2015), so sparc could have followed a trend.  x86
-> proposed such swap handling in 2015 to resolve hugetlb swap entries hit in
-> GUP, but now GUP guards swap entries with !pXd_present() in all layers so
-> we should be safe.
-> 
-> We should define this API properly, one way or another, rather than keep
-> them defined differently across archs.
-> 
-> Gut feeling tells me that pXd_huge() shouldn't include swap entries, and it
-> turns out that I am not the only one thinking so, the question was raised
-> when the current pmd_huge() for x86 was proposed by Ville Syrjälä:
-> 
-> https://lore.kernel.org/all/Y2WQ7I4LXh8iUIRd@intel.com/
-> 
->   I might also be missing something obvious, but why is it even necessary
->   to treat PRESENT==0+PSE==0 as a huge entry?
-> 
-> It is also questioned when Jason Gunthorpe reviewed the other patchset on
-> swap entry handlings:
-> 
-> https://lore.kernel.org/all/20240221125753.GQ13330@nvidia.com/
-> 
-> Revert its meaning back to original.  It shouldn't have any functional
-> change as we should be ready with guards on !pXd_present() explicitly
-> everywhere.
-> 
-> Note that I also dropped the "#if CONFIG_PGTABLE_LEVELS > 2", it was there
-> probably because it was breaking things when 3a194f3f8ad0 was proposed,
-> according to the report here:
-> 
-> https://lore.kernel.org/all/Y2LYXItKQyaJTv8j@intel.com/
-> 
-> Now we shouldn't need that.
-> 
-> Instead of reverting to _PAGE_PSE raw check, leverage pXd_leaf().
-> 
-> Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: x86@kernel.org
 > Signed-off-by: Peter Xu <peterx@redhat.com>
 > ---
->  arch/x86/mm/hugetlbpage.c | 18 ++++--------------
->  1 file changed, 4 insertions(+), 14 deletions(-)
+>  mm/gup.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-I think this is the right thing to do, callers should be more directly
-sensitive to swap entries not back into it indirectly from a helper
-like this.
+Much better!
+
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
 Jason
