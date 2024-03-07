@@ -2,127 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB7687490D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 08:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAA8874985
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 09:24:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ZJmkDjme;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uw/pCp4j;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr1dq2cPFz3vrs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 18:49:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr2R808Cjz3bws
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 19:24:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ZJmkDjme;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uw/pCp4j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260f::601; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:260f::601])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr1Yt548Gz3d24
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 18:45:38 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a2ONkWDtUtO/9GFh4F+WcGsREP+3MeR/uJ47fJ/pyZFYH7la3nFsAXsQOyBGthNtS3qLwrAQ2YEVVZGrFddQiocoP2wA0FexjUgOPeeOw9czSPPukTNxFVzJujvU+LxILjrGVQmiLTGdid/ttULTGvSXQnnIKAh1jRgFE9szOiC5Q0B2n3qzvE2PvHd9qWhvw0MdZJxO6yeUE/Psf1IkYF5OBm1XroOWk7FGGqMbD2jh6TfqDiCXS5SaikVBa1jWoxAPAVrXmrDuzPNT+oqnbuJlYbCmF8nMV7tZduaFJCz2V8hPu4m2vxrr8wo1cDn6W04nNe23PLmi1dw6x97S7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C0HxxwqbTUQyhMeXXnXFbjpyx5CV83NN+sqlk2mdOZE=;
- b=e5Zjm8sNyBkmxArtJr9HmxzMJYkxK3D83gLGPKWrOKMMlhLFa+fyAbf3g/U1ZTtNs7xIEgYFjTXy0RTiSNYseCLXqAah/ncwYlQ4pMfwhYIunvaN4+lWO1bD5kDnr/LvVTaLVd/U9fZ4Myn5DrnKgsf0jse1l6wHP3huHFxoX7KHpBir1v4fesFsHH5H/odZKD6RUmfQf7KQN0FH6lBuQGtAKfjh2O7WrfhdMQoxrCnYDrXseUzya2njkmpPadfmalAVeXZIdJcbMxzTZciDoyZvc9zXyB0RTezJVFK40sqESBGMwF8zjz8fhE+KRx8OPGolrLB26Ix53Li8Y+j5xQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C0HxxwqbTUQyhMeXXnXFbjpyx5CV83NN+sqlk2mdOZE=;
- b=ZJmkDjmefw/Et47PZ+STJPHEMnpqgjRvb41VGaYlmOK/QPkTAwNnn2qyJrM73JSd0cuO/M1wYXVP+jIk9+jTp9kjCEhQgV0aof+IsKnETEWQ+S6v1yzCY4C3TF40FiXnFbvHvYKYxxMPE9tNQQYFdhjiYjyLlZw+RxHjiRkiJKw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
- by DB9PR04MB9789.eurprd04.prod.outlook.com (2603:10a6:10:4ed::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.26; Thu, 7 Mar
- 2024 07:45:28 +0000
-Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
- ([fe80::4bee:acb0:401a:3a01]) by DB9PR04MB9498.eurprd04.prod.outlook.com
- ([fe80::4bee:acb0:401a:3a01%7]) with mapi id 15.20.7362.024; Thu, 7 Mar 2024
- 07:45:28 +0000
-From: Chancel Liu <chancel.liu@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	linux-imx@nxp.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 4/4] ASoC: fsl: imx-rpmsg: Update to correct DT node
-Date: Thu,  7 Mar 2024 16:44:37 +0900
-Message-ID: <20240307074437.1472593-5-chancel.liu@nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240307074437.1472593-1-chancel.liu@nxp.com>
-References: <20240307074437.1472593-1-chancel.liu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0039.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::9) To DB9PR04MB9498.eurprd04.prod.outlook.com
- (2603:10a6:10:360::21)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr2QM72wdz3dW2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 19:24:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id D6C4561C2E;
+	Thu,  7 Mar 2024 08:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646A7C433C7;
+	Thu,  7 Mar 2024 08:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709799847;
+	bh=LnK4aSk3ub7negQrRfXck0P2JGqhuT6jGuyWGnitA9g=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=Uw/pCp4jYBGeE0xpSmi2Z0Fkc9gXd6atN/8AAx59H4+budzx8oOGV8HVEqFPT8R9A
+	 ep40uufbzSg6Dw77coIK+iyyO0FVDgrBZPOY2iv9LtRTAdmvTHVOqiZtKie6wZmd9y
+	 nzhxt8vi0z3wCKBtSH31IPylAfx8DWuX+MWt/FSzg4+VgIl+XdSoSylPNyC6mWJpzQ
+	 M7g8DAkjdA80fv6CwxRXUQQA5xhSJ/YEmX0lz7alUo4DWPmmg6RxzSLRU96nlf+0tx
+	 +iBY3wLKA600P0ieDLuBKjTxVtZ7FdisFiy+rjLHBGz/UG+YxjlcADJznA4YfGvpKu
+	 hRpQOvk2wkuKw==
+Message-ID: <3509c637-23f0-4e7e-847f-bf3f4f3bf8a0@kernel.org>
+Date: Thu, 7 Mar 2024 09:23:58 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|DB9PR04MB9789:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59b5b6e1-8187-4330-db11-08dc3e7a8eb2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	beI6JMLbyc9lm1JeMJwmAt4ZnB6s/pGrB9MmYvxQUU4vQuyaj1KsqdoZLCuKF7H0/u4WYbt9Qojb00/KmEedGxH8jXpcgVFhCqJt094kYi8yC5NC4oNvz0/j728aVTCF+ybTeClWHEhH+VJeeGMAGF8jdAMgTxLXRGv7QPMt0HPXxUoRfQ41+It/GhoeLqr555X2a4aabBHyBaPqYI7wSPhoNBT3VK93sDjp5NPFxPk0kIelAJjGht/m0IW6zhPbblA2tAz9iJVX/4n8CZf/HaeoilQyz9tpsJDpo8k29Br3vvnd/ofiZOj+47kBigMS9gc0iXXaWR1Plo7KAC++fd1ZI3v17VeSxEOQClw9VFiS72Sv7kRb2hXEjpvi6/LtP7RKhksEG4Ij7GnjfMFOy20tOjA10HklS4HIC/uP9768HQ0o/xhaOEiMIq79WBokmtIIpz2cdAHu4YLu+UL/JXaDUZY7ETbiMka1FTrLio1Kbc3BNTOkNelrA5GZdher4R25CeVGbCre5mP+Kc4u+bwbKcJe3cDGAhDjASNribPI4hMC61EAefMTAIVJkZy66Qs8ofp00ppNolPIV9aTBjBFAOAaZDNcWIGhsG9wBYYpStmRn28AGVwGbLlRUH6qE2kyIv6D+rJnMHgaDEVIdWrXxEIT2y/tWwvMWooZaYcMnVlSgrkl3Wvs2h8qm7dYpVN1CnpuynGt+rykgjct8c0T0T6wua8L8IVnxAM3nTU=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(921011)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/PNPw7YXhHsmpL3EBOkeotYV2SmpkF6210/1+3lgWVGpjXg7E1ZDlOL88SON?=
- =?us-ascii?Q?1YRNEVTBHogMzIg8DcFWjuG1JrolFOOR08m266jCBAztZ+tXYStUoJXmBbIE?=
- =?us-ascii?Q?zfe9v1PLFxIMO11a0mChKGPmzf0x0JFpWbqkFm2PAVQyAFSroETYBo5zip5F?=
- =?us-ascii?Q?GSgP2iDv8efGMkFo1Vlzye97Fatm4fhWIKcHjRMfdXhf+pqVY6mk08wr9pv4?=
- =?us-ascii?Q?0jSn3RiOAxB/OwFMx8/nA9bzWz2rTSs/i+Z3NVovLeeRinFU8/5AzMgbo/t3?=
- =?us-ascii?Q?+afMCRiczY4ORZH92D/vKuUL/hyEQI2aF3sK2id9Iqp16/c4vjN5/ZkXimYd?=
- =?us-ascii?Q?eNnVaN23w6AO1GaVPAP3g5kaS5p+pS19mltRuDT0hELANzJTdnI6N/2i4LSs?=
- =?us-ascii?Q?1OfUrn1tPJheFWJ3ggtVwlk87ftwsesFc2DPo4VdRzWpuNnFm5qw/OxKJce/?=
- =?us-ascii?Q?N8V6DQGvV5I/Fc6sU+zfBN/+9z8nkH7e1zT9hBDax4pgCye5smG5bHBdiEfQ?=
- =?us-ascii?Q?sDm1xvCAQJuQEpy6woL+Xow6hZsew1EQ8OjwxJZDNFrknsXG2dodvljqXcCC?=
- =?us-ascii?Q?n2AJPEcvVSo6qNG6Je/Dcv4aseQnGQ+ZaDpC5dv6howlQkaxgwJhInMN25kt?=
- =?us-ascii?Q?PwlekdwAX5ZurtLDEYOxhmRz1ov6+xW3/FnEMUkCFTLh12wzGCRBPtjOeCrF?=
- =?us-ascii?Q?I0OWRVBedmRYvY89ybj5cCqMj8G5pidCSwkv5VI2+XmSAQ/F7MTNqHx6xNje?=
- =?us-ascii?Q?Y7cLqqd1aFLtdpKoPuk05e0qaQAKzS89+vCa4xhpY+p3FcFFOAiMkvuSYP9j?=
- =?us-ascii?Q?XDkveUAtYNNm3/3ZJj3h9dxc6RwtCwzhfm7vNC0mvZNrPkhnmADlVTO13pWF?=
- =?us-ascii?Q?bUMae8mecRcoc4OBzB1Qrc9acy6+J6n3DhAvPWc6Qn1y1114nZ1hO305SGPs?=
- =?us-ascii?Q?ZvNfUkjYW7pmHOw8bBvuaBsXO8QrMhF/GrdVsAI3DXrwNgxQNyJLxK/aYsrM?=
- =?us-ascii?Q?z4Y6KUU32AT2kpDCjhIrB574i74py5ty/3IfhwOu8Vij94+8RQgNtTF7EDYj?=
- =?us-ascii?Q?aDUcrUslowBWi07OHihQVEXayEt178fXmjLHcKTa1EJ7RSa34Fv5HNuJ6b0O?=
- =?us-ascii?Q?aL6HqtFQWHa0mnmPurmeqz1mQOfKEqWJZHWJAkgpbf5D2YPUmnfKCgzyI8XK?=
- =?us-ascii?Q?TfBp0gSqZ41GWeRStfpq5fJnPeCcgFye2x8cGFlU7mw6LXB28RXQpXkqPWKK?=
- =?us-ascii?Q?LNRhlDRaWh3j/CO+1ezXYzcJgfOvikYd6HU4kIE4qCQ2iq8POtJPqNDsW6Ei?=
- =?us-ascii?Q?2ZH6YMafHoCcYYc17xBBzbr6Oh7g5GFIcnZb2s8fHNg9uEV/NdB/LOx7AfIZ?=
- =?us-ascii?Q?x1SIFdS7CN3udQEJdo2WkM5u03xmwzIuHoCBi6kwJVqsgVzosQ/2wFeL136W?=
- =?us-ascii?Q?LrFnOreWh07ScyxpZ+exzTcL3lJRatpEfH0a/a0fr1co7fSxX3A5XziDWRTj?=
- =?us-ascii?Q?1Rp5uzPPrUhOFP10N1jtivdeC9HEEbGDfnes+gC7No2QFFPqdihQg4GN90gn?=
- =?us-ascii?Q?OzoJWgMlIUkFh0QoMjKstuD780+4m/XEbbKuQuTl?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59b5b6e1-8187-4330-db11-08dc3e7a8eb2
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 07:45:28.2863
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t1xhy9todpSmwZEpcfCQtQOZ/++6/kq2zcFLeJEdznIFTgoiO1cOF38lIS+FQOQzIjtRRMScWHi/5D6Tj5wNAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9789
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] ASoC: fsl: imx-rpmsg: Update to correct DT node
+Content-Language: en-US
+To: Chancel Liu <chancel.liu@nxp.com>, shengjiu.wang@gmail.com,
+ Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ linux-imx@nxp.com, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20240307074437.1472593-1-chancel.liu@nxp.com>
+ <20240307074437.1472593-5-chancel.liu@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20240307074437.1472593-5-chancel.liu@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,58 +110,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chancel Liu <chancel.liu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Platform device for card to probe is registered in imx-audio-rpmsg.
-According to this change DT node of ASoC CPU DAI device is updated.
+On 07/03/2024 08:44, Chancel Liu wrote:
+> Platform device for card to probe is registered in imx-audio-rpmsg.
+> According to this change DT node of ASoC CPU DAI device is updated.
+> 
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+> ---
+>  sound/soc/fsl/imx-rpmsg.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+> 
+> diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+> index e5bd63dab10c..2686125b3043 100644
+> --- a/sound/soc/fsl/imx-rpmsg.c
+> +++ b/sound/soc/fsl/imx-rpmsg.c
+> @@ -108,10 +108,9 @@ static int imx_rpmsg_late_probe(struct snd_soc_card *card)
+>  static int imx_rpmsg_probe(struct platform_device *pdev)
+>  {
+>  	struct snd_soc_dai_link_component *dlc;
+> -	struct device *dev = pdev->dev.parent;
+>  	/* rpmsg_pdev is the platform device for the rpmsg node that probed us */
+> -	struct platform_device *rpmsg_pdev = to_platform_device(dev);
+> -	struct device_node *np = rpmsg_pdev->dev.of_node;
+> +	struct platform_device *rpmsg_pdev = NULL;
+> +	struct device_node *np = NULL;
+>  	struct of_phandle_args args;
+>  	const char *platform_name;
+>  	struct imx_rpmsg *data;
+> @@ -127,6 +126,22 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+>  		goto fail;
+>  	}
+>  
+> +	if (!strcmp(pdev->dev.platform_data, "rpmsg-micfil-channel"))
+> +		np = of_find_node_by_name(NULL, "rpmsg_micfil");
+> +	else
+> +		np = of_find_node_by_name(NULL, "rpmsg_audio");
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
----
- sound/soc/fsl/imx-rpmsg.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+Why do you create ABI on node names? Where is it documented? Why can't
+you use phandles?
 
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index e5bd63dab10c..2686125b3043 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -108,10 +108,9 @@ static int imx_rpmsg_late_probe(struct snd_soc_card *card)
- static int imx_rpmsg_probe(struct platform_device *pdev)
- {
- 	struct snd_soc_dai_link_component *dlc;
--	struct device *dev = pdev->dev.parent;
- 	/* rpmsg_pdev is the platform device for the rpmsg node that probed us */
--	struct platform_device *rpmsg_pdev = to_platform_device(dev);
--	struct device_node *np = rpmsg_pdev->dev.of_node;
-+	struct platform_device *rpmsg_pdev = NULL;
-+	struct device_node *np = NULL;
- 	struct of_phandle_args args;
- 	const char *platform_name;
- 	struct imx_rpmsg *data;
-@@ -127,6 +126,22 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- 		goto fail;
- 	}
- 
-+	if (!strcmp(pdev->dev.platform_data, "rpmsg-micfil-channel"))
-+		np = of_find_node_by_name(NULL, "rpmsg_micfil");
-+	else
-+		np = of_find_node_by_name(NULL, "rpmsg_audio");
-+	if (!np) {
-+		dev_err(&pdev->dev, "failed to parse node\n");
-+		ret = -EINVAL;
-+		goto fail;
-+	}
-+	rpmsg_pdev = of_find_device_by_node(np);
-+	if (!rpmsg_pdev) {
-+		dev_err(&pdev->dev, "failed to parse platform device\n");
-+		ret = -EINVAL;
-+		goto fail;
-+	}
-+
- 	ret = of_reserved_mem_device_init_by_idx(&pdev->dev, np, 0);
- 	if (ret)
- 		dev_warn(&pdev->dev, "no reserved DMA memory\n");
--- 
-2.43.0
+Best regards,
+Krzysztof
 
