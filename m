@@ -2,95 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402308752CF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 16:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D376A875341
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 16:35:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N8F91ScA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=hGYsH7Aw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrCSy737rz3dXL
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 02:12:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrD0T4GDwz3vXc
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 02:35:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N8F91ScA;
+	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=hGYsH7Aw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrCSF533Jz3bsP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 02:11:25 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 427F1LYx008788;
-	Thu, 7 Mar 2024 15:11:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=euuEeJjXnpV9EfcF+g1Rid2F4dUJ5mf3sXTllA3YfJM=;
- b=N8F91ScAgemvne6GJtQshOw6+R2JgJWh3z0GkteecEFB9sChgGvo0j52KwvDHSJpEphV
- aG6RZI1ECJFiX4rD4yj2HZPTdMRGfh59xKzrW5oSqyNHENRYPOvdYVBUgsyDFLbyztA8
- ky+qM0+bK4Z8c/ZdM6eC8+Xjq0S1jQmbaX1HNaQzPRmD+RQdEpwsRKxA/ptaN70abkg/
- vXLZ4b8jmSexz6u7dsUGbKGKWmzwNdgjLgl61cOfS1TfBR/Pk9j16SoDOG0Sx45SWaK6
- jbuV7w9l4MA7CZVNHjHb3HfU1uF86ndBaAEvDeCl6plST/5c/EtMC6YEXNPfTiUvXrXZ ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqfup0gp6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Mar 2024 15:11:10 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 427F1R5p009217;
-	Thu, 7 Mar 2024 15:11:10 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqfup0gnh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Mar 2024 15:11:09 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 427CDSnw031575;
-	Thu, 7 Mar 2024 15:11:09 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wmgnkdysy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Mar 2024 15:11:09 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 427FB52b17891964
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Mar 2024 15:11:07 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B16B58067;
-	Thu,  7 Mar 2024 15:11:05 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 415055806C;
-	Thu,  7 Mar 2024 15:11:04 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  7 Mar 2024 15:11:04 +0000 (GMT)
-Message-ID: <768fc5f1-3919-477e-a8e6-16a7e8536add@linux.ibm.com>
-Date: Thu, 7 Mar 2024 10:11:03 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/prom_init: Replace linux,sml-base/sml-size
- with linux,sml-log
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-integrity@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, conor.dooley@microchip.com,
-        nayna@linux.ibm.com, Lukas Wunner <lukas@wunner.de>
-References: <20240306155511.974517-1-stefanb@linux.ibm.com>
- <20240306155511.974517-2-stefanb@linux.ibm.com> <87jzmenx2c.fsf@mail.lhotse>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <87jzmenx2c.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WG70hV3g-X3LsEer3ntyisB7PM9L6BHp
-X-Proofpoint-GUID: SN9INhSckFwDHrQ84Ri7zLvgWPujb7qZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-07_08,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0 bulkscore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403070087
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrCzl2Pfsz3bqh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 02:35:12 +1100 (AEDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a293f2280c7so180786066b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Mar 2024 07:35:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1709825707; x=1710430507; darn=lists.ozlabs.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zQBkiWXTggIKvHEMWEiGOum5TT7ceiwVi4duUGHOdgY=;
+        b=hGYsH7Aw6U56oRo/2kRJDKWfQx2ky0X4l5R2YOsgoq5IC3trBUx9qOTlIvCp+qUDE8
+         XkWdGebxwA0dw1tHN5InKa4vFPTw85IMp+EAmUZtso7sxZoLrzk4ifxmoeg7fxvFSXR+
+         Hbw5dWkRXTOjik4gn6GHlLvuNNzTUs2DvMBlMSjge9nT1tsOIs62U6fbtXePfk8AjJtB
+         pvpVPLJQ+BXqYWQo7X09R894ERqy+g15cU26A2NxxlsurpTeQpkBGtGLm5mPjm+RgW+Y
+         lXGHzHGMZoM7YmKPxdTdfUxQXc2bDXrgoPL9TrbtRzUN9GcsEHyPcj1/0KIgfylkdrKA
+         DCtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709825707; x=1710430507;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zQBkiWXTggIKvHEMWEiGOum5TT7ceiwVi4duUGHOdgY=;
+        b=H/JBFGtBMJn6ZGDw81+CkbHATeUdfSHmcIGhlqWMLTrNqou4hoZsfACBfXvHKEHOG6
+         9lHk2Z6vNpxDJhMb7nFO9+EG5XAedLx9VRDXahr6pXZ86WxZYDegNNFX65qBjNdGYX3y
+         FsjWRJalD0ymYMyh2di0s4DH+O0SsLpzZYnTAJTdSws4KMGi7Anc9aNv5nY8u/zQomxj
+         yPyuGV/K4wI3PFiPgdmdqlxeH3tFYbdMIZ1yEYdWEVuhOtVbOL4NxKAWb6iI+pn+dfgg
+         ANcmyHQ1ogtZguAxn7HEC0ks3LIWuv+YiudQuM6uuBdbWxVws4OzOldryU0Bf8U7yRTN
+         toUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDqbNTc03WovW4+eCLkNUdG/4Z+p5InKrsCZB/Q22v+6zG71wlfHxeKD8bhUib4PeIPWuNLBrCeMLOu7ilzW/iXW0tmqWHx1t2chcHrw==
+X-Gm-Message-State: AOJu0Yxt1sDpj0RVAejX2KuhUjbElVdeCPcHUgJiBpvz8TRq5Z+muYUG
+	GA4B6WU8/V+jL6yLCYcqYGnpbC172Nlg1R1eSV89mMkQkNr2iZFO1Pv3QfY0x1I=
+X-Google-Smtp-Source: AGHT+IFZFPN298xxejGvRyvzbp276Z/iMmAVyPkxVHpe9zUTmo8gWkPUve5gZl3bDKcFPppBDzmd1g==
+X-Received: by 2002:a17:906:6a89:b0:a45:902b:3cb0 with SMTP id p9-20020a1709066a8900b00a45902b3cb0mr6729129ejr.58.1709825706741;
+        Thu, 07 Mar 2024 07:35:06 -0800 (PST)
+Received: from smtpclient.apple ([82.150.214.1])
+        by smtp.gmail.com with ESMTPSA id lz19-20020a170906fb1300b00a45b7f9e822sm1973422ejb.118.2024.03.07.07.35.04
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 07 Mar 2024 07:35:06 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH v5 4/6] MAINTAINERS: add entry for DCP-based trusted keys
+From: David Gstir <david@sigma-star.at>
+In-Reply-To: <CZLBYPUU992Q.2PRCZBFNZYWY6@suppilovahvero>
+Date: Thu, 7 Mar 2024 16:34:53 +0100
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2E9B3F32-B162-4C84-81AD-5713EB53A85D@sigma-star.at>
+References: <20231215110639.45522-1-david@sigma-star.at>
+ <20231215110639.45522-5-david@sigma-star.at>
+ <CZLBYPUU992Q.2PRCZBFNZYWY6@suppilovahvero>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+X-Mailer: Apple Mail (2.3774.400.31)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,183 +83,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jarkko@kernel.org, viparash@in.ibm.com, linux-kernel@vger.kernel.org, peterhuewe@gmx.de, rnsastry@linux.ibm.com
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, James Bottomley <jejb@linux.ibm.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, linux-arm-kernel@lists.infradead.org, Paul Moore <paul@paul-moore.com>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kern
+ el.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Jarkko,
 
-
-On 3/7/24 05:41, Michael Ellerman wrote:
-> Stefan Berger <stefanb@linux.ibm.com> writes:
->> linux,sml-base holds the address of a buffer with the TPM log. This
->> buffer may become invalid after a kexec and therefore embed the whole TPM
->> log in linux,sml-log. This helps to protect the log since it is properly
->> carried across a kexec with both of the kexec syscalls.
->>
->> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> On 04.03.2024, at 23:48, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>=20
+> On Fri Dec 15, 2023 at 1:06 PM EET, David Gstir wrote:
+>> This covers trusted keys backed by NXP's DCP (Data Co-Processor) chip
+>> found in smaller i.MX SoCs.
+>>=20
+>> Signed-off-by: David Gstir <david@sigma-star.at>
 >> ---
->>   arch/powerpc/kernel/prom_init.c | 8 ++------
->>   1 file changed, 2 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
->> index e67effdba85c..41268c30de4c 100644
->> --- a/arch/powerpc/kernel/prom_init.c
->> +++ b/arch/powerpc/kernel/prom_init.c
->> @@ -1956,12 +1956,8 @@ static void __init prom_instantiate_sml(void)
->>   
->>   	reserve_mem(base, size);
->>   
->> -	prom_setprop(ibmvtpm_node, "/vdevice/vtpm", "linux,sml-base",
->> -		     &base, sizeof(base));
->> -	prom_setprop(ibmvtpm_node, "/vdevice/vtpm", "linux,sml-size",
->> -		     &size, sizeof(size));
->> -
->> -	prom_debug("sml base     = 0x%llx\n", base);
->> +	prom_setprop(ibmvtpm_node, "/vdevice/vtpm", "linux,sml-log",
->> +		     (void *)base, size);
-> 
-> As we discussed via chat, doing it this way sucks the full content of
-> the log back into Open Firmware.
-> 
-> That relies on OF handling such big properties, and also means more
-> memory will be consumed, which can cause problems early in boot.
-> 
-> A better solution is to explicitly add the log to the FDT in the
-> flattening phase.
+>> MAINTAINERS | 9 +++++++++
+>> 1 file changed, 9 insertions(+)
+>>=20
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 90f13281d297..988d01226131 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -11647,6 +11647,15 @@ S: Maintained
+>> F: include/keys/trusted_caam.h
+>> F: security/keys/trusted-keys/trusted_caam.c
+>>=20
+>> +KEYS-TRUSTED-DCP
+>> +M: David Gstir <david@sigma-star.at>
+>> +R: sigma star Kernel Team <upstream+dcp@sigma-star.at>
+>> +L: linux-integrity@vger.kernel.org
+>> +L: keyrings@vger.kernel.org
+>> +S: Supported
+>> +F: include/keys/trusted_dcp.h
+>> +F: security/keys/trusted-keys/trusted_dcp.c
+>> +
+>> KEYS-TRUSTED-TEE
+>> M: Sumit Garg <sumit.garg@linaro.org>
+>> L: linux-integrity@vger.kernel.org
+>=20
+> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+>=20
+> I can for sure put this. The code quality is *not* bad :-) However, =
+your
+> backing story really needs rework. It is otherwise impossible to
+> understand the code changes later on because amount of information is
+> vast, and you tend to forget details of stuff that you are not =
+actively
+> working on. That is why we care so deeply about them.
 
-Done.
+got it! :) I=E2=80=99ve tried to rework the commit messages as good as =
+possible
+for v6 and will send that series momentarily.
 
-> 
-> Also adding the new linux,sml-log property should be accompanied by a
-> change to the device tree binding.
-
-
-See my proposal below.
-
-> 
-> The syntax is not very obvious to me, but possibly something like?
-> 
-> diff --git a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-> index 50a3fd31241c..cd75037948bc 100644
-> --- a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-> +++ b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-> @@ -74,8 +74,6 @@ required:
->     - ibm,my-dma-window
->     - ibm,my-drc-index
->     - ibm,loc-code
-> -  - linux,sml-base
-> -  - linux,sml-size
->   
->   allOf:
->     - $ref: tpm-common.yaml#
-> diff --git a/Documentation/devicetree/bindings/tpm/tpm-common.yaml b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
-> index 3c1241b2a43f..616604707c95 100644
-> --- a/Documentation/devicetree/bindings/tpm/tpm-common.yaml
-> +++ b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
-> @@ -25,6 +25,11 @@ properties:
->         base address of reserved memory allocated for firmware event log
->       $ref: /schemas/types.yaml#/definitions/uint64
->   
-> +  linux,sml-log:
-> +    description:
-> +      Content of firmware event log
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +
->     linux,sml-size:
->       description:
->         size of reserved memory allocated for firmware event log
-> @@ -53,15 +58,22 @@ dependentRequired:
->     linux,sml-base: ['linux,sml-size']
->     linux,sml-size: ['linux,sml-base']
->   
-> -# must only have either memory-region or linux,sml-base
-> +# must only have either memory-region or linux,sml-base/size or linux,sml-log
->   # as well as either resets or reset-gpios
->   dependentSchemas:
->     memory-region:
->       properties:
->         linux,sml-base: false
-> +      linux,sml-log: false
->     linux,sml-base:
->       properties:
->         memory-region: false
-> +      linux,sml-log: false
-> +  linux,sml-log:
-> +    properties:
-> +      memory-region: false
-> +      linux,sml-base: false
-> +      linux,sml-size: false
->     resets:
->       properties:
->         reset-gpios: false
-> 
-> 
-
-I have been working with this patch here now and it passes the following 
-test:
-
-make dt_binding_check dtbs_check DT_SCHEMA_FILES=tpm/ibm,vtpm.yaml
-
-
-diff --git a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml 
-b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-index 50a3fd31241c..cacf6c3082de 100644
---- a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-+++ b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-@@ -74,8 +74,12 @@ required:
-    - ibm,my-dma-window
-    - ibm,my-drc-index
-    - ibm,loc-code
--  - linux,sml-base
--  - linux,sml-size
-+oneOf:
-+  - required:
-+      - linux,sml-base
-+      - linux,sml-size
-+  - required:
-+      - linux,sml-log
-
-  allOf:
-    - $ref: tpm-common.yaml#
-@@ -102,3 +106,21 @@ examples:
-              linux,sml-size = <0xbce10200>;
-          };
-      };
-+  - |
-+    soc {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        tpm@30000003 {
-+            compatible = "IBM,vtpm";
-+            device_type = "IBM,vtpm";
-+            reg = <0x30000003>;
-+            interrupts = <0xa0003 0x0>;
-+            ibm,#dma-address-cells = <0x2>;
-+            ibm,#dma-size-cells = <0x2>;
-+            ibm,my-dma-window = <0x10000003 0x0 0x0 0x0 0x10000000>;
-+            ibm,my-drc-index = <0x30000003>;
-+            ibm,loc-code = "U8286.41A.10082DV-V3-C3";
-+            linux,sml-log = <00 00 00 00 03 00 00>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/tpm/tpm-common.yaml 
-b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
-index 3c1241b2a43f..591c48f8cb74 100644
---- a/Documentation/devicetree/bindings/tpm/tpm-common.yaml
-+++ b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
-@@ -30,6 +30,11 @@ properties:
-        size of reserved memory allocated for firmware event log
-      $ref: /schemas/types.yaml#/definitions/uint32
-
-+  linux,sml-log:
-+    description:
-+      firmware event log
-+    $ref: /schemas/types.yaml#/definitions/uint8-array
-+
-    memory-region:
-      description: reserved memory allocated for firmware event log
-      maxItems: 1
-
-
-Is my patch missing something?
+Thanks!
+- David=
