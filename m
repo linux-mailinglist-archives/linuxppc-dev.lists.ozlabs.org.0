@@ -2,53 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF5B875891
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4F38758A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 21:40:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZH712JAe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LTLMpS3V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLhp1Kc7z3vwV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:37:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrLm64y7mz3vkl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:40:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZH712JAe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LTLMpS3V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrLh52z0sz3bnt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:37:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrLlN6LC1z3dXY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 07:40:00 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 32A79CE262A;
-	Thu,  7 Mar 2024 20:37:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FCEC43399;
-	Thu,  7 Mar 2024 20:36:59 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2413E61CF2;
+	Thu,  7 Mar 2024 20:39:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4708CC433F1;
+	Thu,  7 Mar 2024 20:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709843827;
-	bh=eGOAWjsud1Ck55pN1j35rMAJfavIagxkoPDo64qggSI=;
+	s=k20201202; t=1709843995;
+	bh=xzOKp2H5xhff7RPjl7hUZinOqbqvSZ0ptOXYVgfGCwY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZH712JAesiA+VYRacjgjemvYuwNC+u2uBeBcbpeuc4RDzFUcSpwBReDql9vSCIg6d
-	 F93jh07hklNqj8HKW/f5tnNUFOiEOiJ/tjtfy9Tc/Jrw1hNHT6lF/+Qz8pkj9yoQ8y
-	 +VtpiY/Yqxlrgz22AK+AXoXf8eI8bexciwarO3P1BFhzEOdWvA7fQ6eek7GRC9soYk
-	 oL8S1zToSuXAd//ke4hVGX1dVjhSu+c6TgIhTuFy1FI9xpJGJ+iKB6Ljmnc+QfevSC
-	 pRKNjOCUkQmB51EtN7aQQYHMVP7F4yYBqYg+jVI86Rb2bJrAmukaFXBeAhGileYxkF
-	 Jx7SWbo+p/8Ow==
-Date: Thu, 7 Mar 2024 21:36:56 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v9 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
- API directly from all glue drivers
-Message-ID: <ZeolaEIRYmKZjnvT@ryzen>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-6-29d433d99cda@linaro.org>
+	b=LTLMpS3V56JS9D8rU1wNJes/qKPjQmq1Xy9PQLl9UYi85d/tBRdkmdybujPkQ0oc1
+	 lCh5LU5sR8iY6ZKRnZVzRsvjsaJ4iyxUYoHVqrCLU5MTyTSQth4Ok11AvCyeybhoiV
+	 R9nre40xIwxjSHJh0avjbHqEQynpt50oJBk8uWmgkBXqXxHjWVE2oSUa9pP4AJYgq6
+	 yqg5jtfLoySoJdERzW00Fym8HKrWWyBLnoKhYld/vSZR926l5KS4Q6e7/wb4p/iluj
+	 pqM6DhqT9yuG4mRnSPQffBQ4yRLhv8+PyB2NFSM0plLLgy7LPxuWDR5YelHrKhE5cp
+	 cS6Oy03pNvtvQ==
+Date: Thu, 7 Mar 2024 20:39:51 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/prom_init: Replace linux,sml-base/sml-size
+ with linux,sml-log
+Message-ID: <20240307-cytoplasm-compare-6656aae737ac@spud>
+References: <20240306155511.974517-1-stefanb@linux.ibm.com>
+ <20240306155511.974517-2-stefanb@linux.ibm.com>
+ <87jzmenx2c.fsf@mail.lhotse>
+ <768fc5f1-3919-477e-a8e6-16a7e8536add@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="IDMXI+tGPlolqedq"
 Content-Disposition: inline
-In-Reply-To: <20240304-pci-dbi-rework-v9-6-29d433d99cda@linaro.org>
+In-Reply-To: <768fc5f1-3919-477e-a8e6-16a7e8536add@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,97 +63,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang
-  <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: rnsastry@linux.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, conor.dooley@microchip.com, Lukas Wunner <lukas@wunner.de>, jarkko@kernel.org, linux-integrity@vger.kernel.org, viparash@in.ibm.com, linuxppc-dev@lists.ozlabs.org, peterhuewe@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 04, 2024 at 02:52:18PM +0530, Manivannan Sadhasivam wrote:
-> Currently, dw_pcie_ep_init_registers() API is directly called by the glue
-> drivers requiring active refclk from host. But for the other drivers, it is
-> getting called implicitly by dw_pcie_ep_init(). This is due to the fact
-> that this API initializes DWC EP specific registers and that requires an
-> active refclk (either from host or generated locally by endpoint itsef).
-> 
-> But, this causes a discrepancy among the glue drivers. So to avoid this
-> confusion, let's call this API directly from all glue drivers irrespective
-> of refclk dependency. Only difference here is that the drivers requiring
-> refclk from host will call this API only after the refclk is received and
-> other drivers without refclk dependency will call this API right after
-> dw_pcie_ep_init().
-> 
-> With this change, the check for 'core_init_notifier' flag can now be
-> dropped from dw_pcie_ep_init() API. This will also allow us to remove the
-> 'core_init_notifier' flag completely in the later commits.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c           |  7 +++++++
->  drivers/pci/controller/dwc/pci-imx6.c             |  8 ++++++++
->  drivers/pci/controller/dwc/pci-keystone.c         |  9 +++++++++
->  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  7 +++++++
->  drivers/pci/controller/dwc/pcie-artpec6.c         | 13 ++++++++++++-
->  drivers/pci/controller/dwc/pcie-designware-ep.c   | 22 ----------------------
->  drivers/pci/controller/dwc/pcie-designware-plat.c |  9 +++++++++
->  drivers/pci/controller/dwc/pcie-keembay.c         | 16 +++++++++++++++-
->  drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 12 +++++++++++-
->  drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 13 ++++++++++++-
->  10 files changed, 90 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> index 0e406677060d..395042b29ffc 100644
-> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> @@ -467,6 +467,13 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
->  		return ret;
->  	}
->  
-> +	ret = dw_pcie_ep_init_registers(ep);
-> +	if (ret) {
 
-Here you are using if (ret) to error check the return from
-dw_pcie_ep_init_registers().
+--IDMXI+tGPlolqedq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Mar 07, 2024 at 10:11:03AM -0500, Stefan Berger wrote:
+> On 3/7/24 05:41, Michael Ellerman wrote:
+> > Stefan Berger <stefanb@linux.ibm.com> writes:
 
-> index c0c62533a3f1..8392894ed286 100644
-> --- a/drivers/pci/controller/dwc/pci-keystone.c
-> +++ b/drivers/pci/controller/dwc/pci-keystone.c
-> @@ -1286,6 +1286,13 @@ static int ks_pcie_probe(struct platform_device *pdev)
->  		ret = dw_pcie_ep_init(&pci->ep);
->  		if (ret < 0)
->  			goto err_get_sync;
+> >=20
+> > Also adding the new linux,sml-log property should be accompanied by a
+> > change to the device tree binding.
+>=20
+>=20
+> See my proposal below.
+>=20
+> >=20
+> > The syntax is not very obvious to me, but possibly something like?
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml b/Docu=
+mentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> > index 50a3fd31241c..cd75037948bc 100644
+> > --- a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> > +++ b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> > @@ -74,8 +74,6 @@ required:
+> >     - ibm,my-dma-window
+> >     - ibm,my-drc-index
+> >     - ibm,loc-code
+> > -  - linux,sml-base
+> > -  - linux,sml-size
+> >   allOf:
+> >     - $ref: tpm-common.yaml#
+> > diff --git a/Documentation/devicetree/bindings/tpm/tpm-common.yaml b/Do=
+cumentation/devicetree/bindings/tpm/tpm-common.yaml
+> > index 3c1241b2a43f..616604707c95 100644
+> > --- a/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> > +++ b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> > @@ -25,6 +25,11 @@ properties:
+> >         base address of reserved memory allocated for firmware event log
+> >       $ref: /schemas/types.yaml#/definitions/uint64
+> > +  linux,sml-log:
+> > +    description:
+> > +      Content of firmware event log
+> > +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> > +
+> >     linux,sml-size:
+> >       description:
+> >         size of reserved memory allocated for firmware event log
+> > @@ -53,15 +58,22 @@ dependentRequired:
+> >     linux,sml-base: ['linux,sml-size']
+> >     linux,sml-size: ['linux,sml-base']
+> > -# must only have either memory-region or linux,sml-base
+> > +# must only have either memory-region or linux,sml-base/size or linux,=
+sml-log
+> >   # as well as either resets or reset-gpios
+> >   dependentSchemas:
+> >     memory-region:
+> >       properties:
+> >         linux,sml-base: false
+> > +      linux,sml-log: false
+> >     linux,sml-base:
+> >       properties:
+> >         memory-region: false
+> > +      linux,sml-log: false
+> > +  linux,sml-log:
+> > +    properties:
+> > +      memory-region: false
+> > +      linux,sml-base: false
+> > +      linux,sml-size: false
+> >     resets:
+> >       properties:
+> >         reset-gpios: false
+> >=20
+> >=20
+>=20
+> I have been working with this patch here now and it passes the following
+> test:
+>=20
+> make dt_binding_check dtbs_check DT_SCHEMA_FILES=3Dtpm/ibm,vtpm.yaml
+>=20
+>=20
+> diff --git a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> index 50a3fd31241c..cacf6c3082de 100644
+> --- a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> +++ b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> @@ -74,8 +74,12 @@ required:
+>    - ibm,my-dma-window
+>    - ibm,my-drc-index
+>    - ibm,loc-code
+> -  - linux,sml-base
+> -  - linux,sml-size
+> +oneOf:
+> +  - required:
+> +      - linux,sml-base
+> +      - linux,sml-size
+> +  - required:
+> +      - linux,sml-log
+>=20
+>  allOf:
+>    - $ref: tpm-common.yaml#
+> @@ -102,3 +106,21 @@ examples:
+>              linux,sml-size =3D <0xbce10200>;
+>          };
+>      };
+> +  - |
+> +    soc {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
 > +
-> +		ret = dw_pcie_ep_init_registers(&pci->ep);
-> +		if (ret < 0) {
+> +        tpm@30000003 {
+> +            compatible =3D "IBM,vtpm";
+> +            device_type =3D "IBM,vtpm";
+> +            reg =3D <0x30000003>;
+> +            interrupts =3D <0xa0003 0x0>;
+> +            ibm,#dma-address-cells =3D <0x2>;
+> +            ibm,#dma-size-cells =3D <0x2>;
+> +            ibm,my-dma-window =3D <0x10000003 0x0 0x0 0x0 0x10000000>;
+> +            ibm,my-drc-index =3D <0x30000003>;
+> +            ibm,loc-code =3D "U8286.41A.10082DV-V3-C3";
+> +            linux,sml-log =3D <00 00 00 00 03 00 00>;
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> index 3c1241b2a43f..591c48f8cb74 100644
+> --- a/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> +++ b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> @@ -30,6 +30,11 @@ properties:
+>        size of reserved memory allocated for firmware event log
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>=20
+> +  linux,sml-log:
+> +    description:
+> +      firmware event log
 
-Here you are using if (ret < 0) to error check the return from
-dw_pcie_ep_init_registers(). Please be consistent.
+Can you provide a more complete description here please as to what the
+different between this and the other property? If I was populating a DT
+I would have absolutely no idea whether or not to use this or the other
+property, nor how to go about actually populating it.
+The "log" in your example doesn't look like an actual log of any sort,
+but I know nothing about TPMs so I'll take your word for it that that's
+what a TPM log looks like.
 
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +
+>    memory-region:
+>      description: reserved memory allocated for firmware event log
+>      maxItems: 1
+>=20
+>=20
+> Is my patch missing something?
 
-> diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
-> index 9ed0a9ba7619..0edd9ab3f139 100644
-> --- a/drivers/pci/controller/dwc/pcie-artpec6.c
-> +++ b/drivers/pci/controller/dwc/pcie-artpec6.c
-> @@ -441,7 +441,18 @@ static int artpec6_pcie_probe(struct platform_device *pdev)
->  
->  		pci->ep.ops = &pcie_ep_ops;
->  
-> -		return dw_pcie_ep_init(&pci->ep);
-> +		ret = dw_pcie_ep_init(&pci->ep);
-> +		if (ret < 0)
+I think you also need the dependantSchema stuff you had in your original
+snippet that makes the linux,* properties mutually exclusive with
+memory-region (or at least something like that).
 
-Here you are using if (ret < 0) to error check the return from
-dw_pcie_ep_init().
+Please make sure you CC the DT maintainers and list on the v2 and Lukas
+Wunner too.
 
+Thanks,
+Conor.
 
-> index 778588b4be70..ca9b22e654cd 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-> @@ -145,6 +145,15 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
->  
->  		pci->ep.ops = &pcie_ep_ops;
->  		ret = dw_pcie_ep_init(&pci->ep);
-> +		if (ret)
+--IDMXI+tGPlolqedq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Here you are using if (ret) to error check the return from
-dw_pcie_ep_init(). Please be consistent.
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeomFgAKCRB4tDGHoIJi
+0rDjAQDCS+FWUSIjoa3pw2hIV6BHFi7ckp38kgze/iTx08jC2wD/Y6NcNqHRNxyH
+uqytmYK1UqfYlV6C3HtkWQilNytz6QA=
+=5EVs
+-----END PGP SIGNATURE-----
+
+--IDMXI+tGPlolqedq--
