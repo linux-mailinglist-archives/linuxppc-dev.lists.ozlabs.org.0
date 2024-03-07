@@ -1,50 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0C78748AA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 08:27:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3EC8748B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 08:31:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=P8vhRTSJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YhCwdWI5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr19942xJz3dgN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 18:27:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr1G35FTTz3vb6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 18:31:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=P8vhRTSJ;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YhCwdWI5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::225; helo=relay5-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::223; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr18S2brTz3cS3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 18:27:00 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B4D5C1C0008;
-	Thu,  7 Mar 2024 07:26:46 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr1FL75ljz3d24
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 18:31:17 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C9D2560002;
+	Thu,  7 Mar 2024 07:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709796409;
+	t=1709796670;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xj17IIU3mZI+eCLparz/ED3UapItdhG48ep26M0JvY0=;
-	b=P8vhRTSJ518ktE6j0m/qxCBcIS1lVkemkyN85nYa4BoMpelyHYZzXuFRpZ1cWIGgeTKCBM
-	ookJUy2RR8mU8frm6nQKWx70so7K3yARVwe6MrxU/w6HIftKGVPEbuZVFDLA4EnpwamyEJ
-	Z0vxtCZdfs41BY05p4RLwWCA/sucJT8L5DAr5i3ZcDux/N3Nk/yzqInuObynnyOGFn3xJd
-	rTC8IAzW+6rLPUp3V0/5+gSD6ythsBBsPWUOkccVjpTydkWwcoxfzUKjR3lJG71q7Jahwy
-	EApL63PwkFSXpTgVVZTv4IV+mWrLvuuYWeo5CAELvB/7tMF6rCCOQMkR/aCTFw==
-Date: Thu, 7 Mar 2024 08:26:46 +0100
+	bh=E/G30HQxLWRoFZIvYSd3SRA2snV7wVPADu6RkLNz5Vc=;
+	b=YhCwdWI5VgfWOlO+rdWF7RO2fwNn7lMLmJDNBX2NEAMPZO4OeQ1oh+5NminfFfM95kOzJ+
+	++1G/8FL6lEB+7Kli0tiJSU0cJAP69njWF4/wWjm0GpZKhif+96kfl7Ma8PoekzT/p6JKr
+	yD1kSC9Drw4GrHekHNrkfd0kbH05JYEjak3788Rlb/NuG/7kXO0zD54llmCWfhE2x8ePvP
+	xjhHpIm6yhuub04Bw8n2umzSt8CHcRLlZ84recBGwmnvStlHWQHgyQahpzEtXtusV9D4+Z
+	RO+Z/8frZyD1vM6m+QAggw4I0f0h5K6mOR5uXh8VzPfYP7bh9YMs9cXavpjp/Q==
+Date: Thu, 7 Mar 2024 08:31:07 +0100
 From: Herve Codina <herve.codina@bootlin.com>
 To: Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH v6 4/5] net: wan: fsl_qmc_hdlc: Add runtime timeslots
- changes support
-Message-ID: <20240307082646.6e9198df@bootlin.com>
-In-Reply-To: <ZehqRMZwtazTf6P6@yury-ThinkPad>
+Subject: Re: [PATCH v6 3/5] lib/bitmap: Introduce bitmap_scatter() and
+ bitmap_gather() helpers
+Message-ID: <20240307083107.0fcd940f@bootlin.com>
+In-Reply-To: <Zehx-v7h38TPJWwe@smile.fi.intel.com>
 References: <20240306080726.167338-1-herve.codina@bootlin.com>
-	<20240306080726.167338-5-herve.codina@bootlin.com>
-	<ZehqRMZwtazTf6P6@yury-ThinkPad>
+	<20240306080726.167338-4-herve.codina@bootlin.com>
+	<Zehrd/VgW5AnfJEu@yury-ThinkPad>
+	<Zehx-v7h38TPJWwe@smile.fi.intel.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
@@ -68,23 +69,24 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi Yury,
 
-On Wed, 6 Mar 2024 05:06:12 -0800
-Yury Norov <yury.norov@gmail.com> wrote:
+On Wed, 6 Mar 2024 15:39:06 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-...
-> > +static int qmc_hdlc_xlate_ts_info(struct qmc_hdlc *qmc_hdlc,
-> > +				  const struct qmc_chan_ts_info *ts_info, u32 *slot_map)
-> > +{
-> > +	DECLARE_BITMAP(ts_mask_avail, 64);
-> > +	DECLARE_BITMAP(ts_mask, 64);
-> > +	DECLARE_BITMAP(map, 64);
-> > +	u32 array32[2];  
+> On Wed, Mar 06, 2024 at 05:11:19AM -0800, Yury Norov wrote:
+> > On Wed, Mar 06, 2024 at 09:07:19AM +0100, Herve Codina wrote:  
 > 
-> NIT. Bad name. I'd suggest slot_array, or something.
+> ...
+> 
+> > Signed-off-by: Yury Norov <yury.norov@gmail.com>  
+> 
+> Why? Shouldn't be Acked-by?
+> 
+> > Would you like to move this with the rest of the series? If so please
+> > pull my Sof-by, otherwise I can move it with bitmap-for-next.  
 > 
 
-A new iteration of this series is planned.
-I will change to slot_array as suggested.
+A new iteration of the series is planned.
+Yury, may I add your Acked-by in the next iteration ?
 
 Best regards,
 Hervé
