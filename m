@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5FE874DBA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 12:41:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52E5874DBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 12:42:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=pYHPwqA8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Roz+eI5m;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr6pC5Jxzz3vcB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 22:41:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tr6q03WjDz30gM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 22:42:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=pYHPwqA8;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Roz+eI5m;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.198; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr6ly5Gz6z3vX1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 22:39:42 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 109A5C000C;
-	Thu,  7 Mar 2024 11:39:39 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tr6m42ZYgz3c4V
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 22:39:47 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 0F371C0008;
+	Thu,  7 Mar 2024 11:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709811579;
+	t=1709811580;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pXMSGTNIyW9t+fdCqRxqAJTtOLjCNS7pgtOkNW1Lqnk=;
-	b=pYHPwqA8a8d/l6Q6NpNtAjg77/GCtUR4UBK6+8Qm5aQ6ZH4EgpbvlYCno7fvmOcgSzB2HM
-	WxNRY+ApK1F3UvEErmvX8Ta1/XyPNxZqid1dQKPcdLnHYx75HssPV+Gos2d5qcQmGcLICU
-	qKA7fXhT+j0ea1wOFLBbAiRla3seWgszRWca+G7iEPpKL7f8sYWIINLxpm1pG4uYj3aY4k
-	kDsxCfCO/z82kXu1LIGgg67xXslvHql/Cb77Y8iaZpBb1NlgDnN0oOxOSGW63OxTHmjwEC
-	H7Eu/Dk3vig6H3cIzbQqpneVtrachJPr6bRMBOHsxFQQx0loAmtiykHdHljaCw==
+	bh=YcO76rLHbysLzSM0U7sP4jYJS1mQqZZkE1T/YxLFMFc=;
+	b=Roz+eI5mt9yYvFoQEr3CVCU6sKcqXOXRVoRhQ6z7ztNuLjcMn/63pD47jRqO4TyzloTmhC
+	CWrbJbXtUycQIU6df7apS8wYl0mK6IodP4ssuyNcgw7FM9Xw+/JrCPaixxzzR2GbTa5hY3
+	sPvyY1bwaP2hHdg+5NHI9IqWhjM2YjEUwEdA8epPVoxdZK3zdnO21OXSG0Gh+EyCL0QzTf
+	os8QF/Za8mz9I93+G1mq3hbqDwwO7nH6LI3i7gr+8D5UWaTxsv4fPmBKPso6bzDP/Ua4Hm
+	AufkCXUiJneW2AzZTpRGM8BY0X4LJ8iXRk0GC0SNGkcQmvgjpfyg0PvTu7AxCA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Yury Norov <yury.norov@gmail.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH v7 3/5] lib/bitmap: Introduce bitmap_scatter() and bitmap_gather() helpers
-Date: Thu,  7 Mar 2024 12:39:06 +0100
-Message-ID: <20240307113909.227375-4-herve.codina@bootlin.com>
+Subject: [PATCH v7 4/5] net: wan: fsl_qmc_hdlc: Add runtime timeslots changes support
+Date: Thu,  7 Mar 2024 12:39:07 +0100
+Message-ID: <20240307113909.227375-5-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240307113909.227375-1-herve.codina@bootlin.com>
 References: <20240307113909.227375-1-herve.codina@bootlin.com>
@@ -69,225 +69,214 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Ratheesh Kannoth <rkannoth@marvell.com>, netde
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+QMC channels support runtime timeslots changes but nothing is done at
+the QMC HDLC driver to handle these changes.
 
-These helpers scatters or gathers a bitmap with the help of the mask
-position bits parameter.
+Use existing IFACE ioctl in order to configure the timeslots to use.
 
-bitmap_scatter() does the following:
-  src:  0000000001011010
-                  ||||||
-           +------+|||||
-           |  +----+||||
-           |  |+----+|||
-           |  ||   +-+||
-           |  ||   |  ||
-  mask: ...v..vv...v..vv
-        ...0..11...0..10
-  dst:  0000001100000010
-
-and bitmap_gather() performs this one:
-   mask: ...v..vv...v..vv
-   src:  0000001100000010
-            ^  ^^   ^   0
-            |  ||   |  10
-            |  ||   > 010
-            |  |+--> 1010
-            |  +--> 11010
-            +----> 011010
-   dst:  0000000000011010
-
-bitmap_gather() can the seen as the reverse bitmap_scatter() operation.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/lkml/20230926052007.3917389-3-andriy.shevchenko@linux.intel.com/
-Co-developed-by: Herve Codina <herve.codina@bootlin.com>
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/bitmap.h | 101 +++++++++++++++++++++++++++++++++++++++++
- lib/test_bitmap.c      |  42 +++++++++++++++++
- 2 files changed, 143 insertions(+)
+ drivers/net/wan/fsl_qmc_hdlc.c | 151 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 150 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
-index 99451431e4d6..049ba20911c5 100644
---- a/include/linux/bitmap.h
-+++ b/include/linux/bitmap.h
-@@ -62,6 +62,8 @@ struct device;
-  *  bitmap_shift_left(dst, src, n, nbits)       *dst = *src << n
-  *  bitmap_cut(dst, src, first, n, nbits)       Cut n bits from first, copy rest
-  *  bitmap_replace(dst, old, new, mask, nbits)  *dst = (*old & ~(*mask)) | (*new & *mask)
-+ *  bitmap_scatter(dst, src, mask, nbits)	*dst = map(dense, sparse)(src)
-+ *  bitmap_gather(dst, src, mask, nbits)	*dst = map(sparse, dense)(src)
-  *  bitmap_remap(dst, src, old, new, nbits)     *dst = map(old, new)(src)
-  *  bitmap_bitremap(oldbit, old, new, nbits)    newbit = map(old, new)(oldbit)
-  *  bitmap_onto(dst, orig, relmap, nbits)       *dst = orig relative to relmap
-@@ -487,6 +489,105 @@ static inline void bitmap_replace(unsigned long *dst,
- 		__bitmap_replace(dst, old, new, mask, nbits);
+diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
+index 5fd7ed325f5b..57935b48a848 100644
+--- a/drivers/net/wan/fsl_qmc_hdlc.c
++++ b/drivers/net/wan/fsl_qmc_hdlc.c
+@@ -10,6 +10,7 @@
+ #include <linux/array_size.h>
+ #include <linux/bug.h>
+ #include <linux/cleanup.h>
++#include <linux/bitmap.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -39,6 +40,7 @@ struct qmc_hdlc {
+ 	struct qmc_hdlc_desc tx_descs[8];
+ 	unsigned int tx_out;
+ 	struct qmc_hdlc_desc rx_descs[4];
++	u32 slot_map;
+ };
+ 
+ static struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *netdev)
+@@ -209,6 +211,144 @@ static netdev_tx_t qmc_hdlc_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 	return NETDEV_TX_OK;
  }
  
-+/**
-+ * bitmap_scatter - Scatter a bitmap according to the given mask
-+ * @dst: scattered bitmap
-+ * @src: gathered bitmap
-+ * @mask: mask representing bits to assign to in the scattered bitmap
-+ * @nbits: number of bits in each of these bitmaps
-+ *
-+ * Scatters bitmap with sequential bits according to the given @mask.
-+ *
-+ * Example:
-+ * If @src bitmap = 0x005a, with @mask = 0x1313, @dst will be 0x0302.
-+ *
-+ * Or in binary form
-+ * @src			@mask			@dst
-+ * 0000000001011010	0001001100010011	0000001100000010
-+ *
-+ * (Bits 0, 1, 2, 3, 4, 5 are copied to the bits 0, 1, 4, 8, 9, 12)
-+ *
-+ * A more 'visual' description of the operation:
-+ * src:  0000000001011010
-+ *                 ||||||
-+ *          +------+|||||
-+ *          |  +----+||||
-+ *          |  |+----+|||
-+ *          |  ||   +-+||
-+ *          |  ||   |  ||
-+ * mask: ...v..vv...v..vv
-+ *       ...0..11...0..10
-+ * dst:  0000001100000010
-+ *
-+ * A relationship exists between bitmap_scatter() and bitmap_gather().
-+ * bitmap_gather() can be seen as the 'reverse' bitmap_scatter() operation.
-+ * See bitmap_scatter() for details related to this relationship.
-+ */
-+static inline void bitmap_scatter(unsigned long *dst, const unsigned long *src,
-+				  const unsigned long *mask, unsigned int nbits)
++static int qmc_hdlc_xlate_slot_map(struct qmc_hdlc *qmc_hdlc,
++				   u32 slot_map, struct qmc_chan_ts_info *ts_info)
 +{
-+	unsigned int n = 0;
-+	unsigned int bit;
++	DECLARE_BITMAP(ts_mask_avail, 64);
++	DECLARE_BITMAP(ts_mask, 64);
++	DECLARE_BITMAP(map, 64);
 +
-+	bitmap_zero(dst, nbits);
++	/* Tx and Rx available masks must be identical */
++	if (ts_info->rx_ts_mask_avail != ts_info->tx_ts_mask_avail) {
++		dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x%llx, 0x%llx)\n",
++			ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
++		return -EINVAL;
++	}
 +
-+	for_each_set_bit(bit, mask, nbits)
-+		__assign_bit(bit, dst, test_bit(n++, src));
++	bitmap_from_u64(ts_mask_avail, ts_info->rx_ts_mask_avail);
++	bitmap_from_u64(map, slot_map);
++	bitmap_scatter(ts_mask, map, ts_mask_avail, 64);
++
++	if (bitmap_weight(ts_mask, 64) != bitmap_weight(map, 64)) {
++		dev_err(qmc_hdlc->dev, "Cannot translate timeslots %64pb -> (%64pb, %64pb)\n",
++			map, ts_mask_avail, ts_mask);
++		return -EINVAL;
++	}
++
++	bitmap_to_arr64(&ts_info->tx_ts_mask, ts_mask, 64);
++	ts_info->rx_ts_mask = ts_info->tx_ts_mask;
++	return 0;
 +}
 +
-+/**
-+ * bitmap_gather - Gather a bitmap according to given mask
-+ * @dst: gathered bitmap
-+ * @src: scattered bitmap
-+ * @mask: mask representing bits to extract from in the scattered bitmap
-+ * @nbits: number of bits in each of these bitmaps
-+ *
-+ * Gathers bitmap with sparse bits according to the given @mask.
-+ *
-+ * Example:
-+ * If @src bitmap = 0x0302, with @mask = 0x1313, @dst will be 0x001a.
-+ *
-+ * Or in binary form
-+ * @src			@mask			@dst
-+ * 0000001100000010	0001001100010011	0000000000011010
-+ *
-+ * (Bits 0, 1, 4, 8, 9, 12 are copied to the bits 0, 1, 2, 3, 4, 5)
-+ *
-+ * A more 'visual' description of the operation:
-+ * mask: ...v..vv...v..vv
-+ * src:  0000001100000010
-+ *          ^  ^^   ^   0
-+ *          |  ||   |  10
-+ *          |  ||   > 010
-+ *          |  |+--> 1010
-+ *          |  +--> 11010
-+ *          +----> 011010
-+ * dst:  0000000000011010
-+ *
-+ * A relationship exists between bitmap_gather() and bitmap_scatter(). See
-+ * bitmap_scatter() for the bitmap scatter detailed operations.
-+ * Suppose scattered computed using bitmap_scatter(scattered, src, mask, n).
-+ * The operation bitmap_gather(result, scattered, mask, n) leads to a result
-+ * equal or equivalent to src.
-+ *
-+ * The result can be 'equivalent' because bitmap_scatter() and bitmap_gather()
-+ * are not bijective.
-+ * The result and src values are equivalent in that sense that a call to
-+ * bitmap_scatter(res, src, mask, n) and a call to
-+ * bitmap_scatter(res, result, mask, n) will lead to the same res value.
-+ */
-+static inline void bitmap_gather(unsigned long *dst, const unsigned long *src,
-+				 const unsigned long *mask, unsigned int nbits)
++static int qmc_hdlc_xlate_ts_info(struct qmc_hdlc *qmc_hdlc,
++				  const struct qmc_chan_ts_info *ts_info, u32 *slot_map)
 +{
-+	unsigned int n = 0;
-+	unsigned int bit;
++	DECLARE_BITMAP(ts_mask_avail, 64);
++	DECLARE_BITMAP(ts_mask, 64);
++	DECLARE_BITMAP(map, 64);
++	u32 slot_array[2];
 +
-+	bitmap_zero(dst, nbits);
++	/* Tx and Rx masks and available masks must be identical */
++	if (ts_info->rx_ts_mask_avail != ts_info->tx_ts_mask_avail) {
++		dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x%llx, 0x%llx)\n",
++			ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
++		return -EINVAL;
++	}
++	if (ts_info->rx_ts_mask != ts_info->tx_ts_mask) {
++		dev_err(qmc_hdlc->dev, "tx and rx timeslots mismatch (0x%llx, 0x%llx)\n",
++			ts_info->rx_ts_mask, ts_info->tx_ts_mask);
++		return -EINVAL;
++	}
 +
-+	for_each_set_bit(bit, mask, nbits)
-+		__assign_bit(n++, dst, test_bit(bit, src));
++	bitmap_from_u64(ts_mask_avail, ts_info->rx_ts_mask_avail);
++	bitmap_from_u64(ts_mask, ts_info->rx_ts_mask);
++	bitmap_gather(map, ts_mask, ts_mask_avail, 64);
++
++	if (bitmap_weight(ts_mask, 64) != bitmap_weight(map, 64)) {
++		dev_err(qmc_hdlc->dev, "Cannot translate timeslots (%64pb, %64pb) -> %64pb\n",
++			ts_mask_avail, ts_mask, map);
++		return -EINVAL;
++	}
++
++	bitmap_to_arr32(slot_array, map, 64);
++	if (slot_array[1]) {
++		dev_err(qmc_hdlc->dev, "Slot map out of 32bit (%64pb, %64pb) -> %64pb\n",
++			ts_mask_avail, ts_mask, map);
++		return -EINVAL;
++	}
++
++	*slot_map = slot_array[0];
++	return 0;
 +}
 +
- static inline void bitmap_next_set_region(unsigned long *bitmap,
- 					  unsigned int *rs, unsigned int *re,
- 					  unsigned int end)
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-index 65f22c2578b0..6b2b33579f56 100644
---- a/lib/test_bitmap.c
-+++ b/lib/test_bitmap.c
-@@ -380,6 +380,47 @@ static void __init test_replace(void)
- 	expect_eq_bitmap(bmap, exp3_1_0, nbits);
- }
++static int qmc_hdlc_set_iface(struct qmc_hdlc *qmc_hdlc, int if_iface, const te1_settings *te1)
++{
++	struct qmc_chan_ts_info ts_info;
++	int ret;
++
++	ret = qmc_chan_get_ts_info(qmc_hdlc->qmc_chan, &ts_info);
++	if (ret) {
++		dev_err(qmc_hdlc->dev, "get QMC channel ts info failed %d\n", ret);
++		return ret;
++	}
++	ret = qmc_hdlc_xlate_slot_map(qmc_hdlc, te1->slot_map, &ts_info);
++	if (ret)
++		return ret;
++
++	ret = qmc_chan_set_ts_info(qmc_hdlc->qmc_chan, &ts_info);
++	if (ret) {
++		dev_err(qmc_hdlc->dev, "set QMC channel ts info failed %d\n", ret);
++		return ret;
++	}
++
++	qmc_hdlc->slot_map = te1->slot_map;
++
++	return 0;
++}
++
++static int qmc_hdlc_ioctl(struct net_device *netdev, struct if_settings *ifs)
++{
++	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
++	te1_settings te1;
++
++	switch (ifs->type) {
++	case IF_GET_IFACE:
++		ifs->type = IF_IFACE_E1;
++		if (ifs->size < sizeof(te1)) {
++			if (!ifs->size)
++				return 0; /* only type requested */
++
++			ifs->size = sizeof(te1); /* data size wanted */
++			return -ENOBUFS;
++		}
++
++		memset(&te1, 0, sizeof(te1));
++
++		/* Update slot_map */
++		te1.slot_map = qmc_hdlc->slot_map;
++
++		if (copy_to_user(ifs->ifs_ifsu.te1, &te1, sizeof(te1)))
++			return -EFAULT;
++		return 0;
++
++	case IF_IFACE_E1:
++	case IF_IFACE_T1:
++		if (!capable(CAP_NET_ADMIN))
++			return -EPERM;
++
++		if (netdev->flags & IFF_UP)
++			return -EBUSY;
++
++		if (copy_from_user(&te1, ifs->ifs_ifsu.te1, sizeof(te1)))
++			return -EFAULT;
++
++		return qmc_hdlc_set_iface(qmc_hdlc, ifs->type, &te1);
++
++	default:
++		return hdlc_ioctl(netdev, ifs);
++	}
++}
++
+ static int qmc_hdlc_open(struct net_device *netdev)
+ {
+ 	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
+@@ -332,12 +472,13 @@ static const struct net_device_ops qmc_hdlc_netdev_ops = {
+ 	.ndo_open       = qmc_hdlc_open,
+ 	.ndo_stop       = qmc_hdlc_close,
+ 	.ndo_start_xmit = hdlc_start_xmit,
+-	.ndo_siocwandev	= hdlc_ioctl,
++	.ndo_siocwandev = qmc_hdlc_ioctl,
+ };
  
-+static const unsigned long sg_mask[] __initconst = {
-+	BITMAP_FROM_U64(0x000000000000035aULL),
-+};
-+
-+static const unsigned long sg_src[] __initconst = {
-+	BITMAP_FROM_U64(0x0000000000000667ULL),
-+};
-+
-+static const unsigned long sg_gather_exp[] __initconst = {
-+	BITMAP_FROM_U64(0x0000000000000029ULL),
-+};
-+
-+static const unsigned long sg_scatter_exp[] __initconst = {
-+	BITMAP_FROM_U64(0x000000000000021aULL),
-+};
-+
-+static void __init test_bitmap_sg(void)
-+{
-+	unsigned int nbits = 64;
-+	DECLARE_BITMAP(bmap_gather, 100);
-+	DECLARE_BITMAP(bmap_scatter, 100);
-+	DECLARE_BITMAP(bmap_tmp, 100);
-+	DECLARE_BITMAP(bmap_res, 100);
-+
-+	/* Simple gather call */
-+	bitmap_zero(bmap_gather, 100);
-+	bitmap_gather(bmap_gather, sg_src, sg_mask, nbits);
-+	expect_eq_bitmap(sg_gather_exp, bmap_gather, nbits);
-+
-+	/* Simple scatter call */
-+	bitmap_zero(bmap_scatter, 100);
-+	bitmap_scatter(bmap_scatter, sg_src, sg_mask, nbits);
-+	expect_eq_bitmap(sg_scatter_exp, bmap_scatter, nbits);
-+
-+	/* Scatter/gather relationship */
-+	bitmap_zero(bmap_tmp, 100);
-+	bitmap_gather(bmap_tmp, bmap_scatter, sg_mask, nbits);
-+	bitmap_scatter(bmap_res, bmap_tmp, sg_mask, nbits);
-+	expect_eq_bitmap(bmap_scatter, bmap_res, nbits);
-+}
-+
- #define PARSE_TIME	0x1
- #define NO_LEN		0x2
+ static int qmc_hdlc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
++	struct qmc_chan_ts_info ts_info;
+ 	struct qmc_hdlc *qmc_hdlc;
+ 	struct qmc_chan_info info;
+ 	hdlc_device *hdlc;
+@@ -363,6 +504,14 @@ static int qmc_hdlc_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, -EINVAL, "QMC chan mode %d is not QMC_HDLC\n",
+ 				     info.mode);
  
-@@ -1252,6 +1293,7 @@ static void __init selftest(void)
- 	test_copy();
- 	test_bitmap_region();
- 	test_replace();
-+	test_bitmap_sg();
- 	test_bitmap_arr32();
- 	test_bitmap_arr64();
- 	test_bitmap_parse();
++	ret = qmc_chan_get_ts_info(qmc_hdlc->qmc_chan, &ts_info);
++	if (ret)
++		return dev_err_probe(dev, ret, "get QMC channel ts info failed\n");
++
++	ret = qmc_hdlc_xlate_ts_info(qmc_hdlc, &ts_info, &qmc_hdlc->slot_map);
++	if (ret)
++		return ret;
++
+ 	qmc_hdlc->netdev = alloc_hdlcdev(qmc_hdlc);
+ 	if (!qmc_hdlc->netdev)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
