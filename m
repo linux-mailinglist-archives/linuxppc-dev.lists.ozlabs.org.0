@@ -2,44 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0948874645
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 03:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8F7874663
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 03:53:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=nu65ajK2;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=Z25DoIxn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TqttD3F4zz3vd5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 13:44:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tqv4w5LGRz3vXP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Mar 2024 13:53:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=nu65ajK2;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=Z25DoIxn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=45.89.224.132; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
+Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TqtpL17Vcz3cF4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 13:40:58 +1100 (AEDT)
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id F13E710003B;
-	Thu,  7 Mar 2024 05:40:46 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru F13E710003B
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tqv140FZFz2yNX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Mar 2024 13:50:15 +1100 (AEDT)
+Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 4CF4A12002D;
+	Thu,  7 Mar 2024 05:40:47 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 4CF4A12002D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1709779246;
-	bh=ne+UNP12/e+I4agBDJC1BgUysK2PGalNhVYKKmNLm2Y=;
+	s=mail; t=1709779247;
+	bh=kK6WfysHnoHnPx6m7g6/YcvxmY15e9MkbOzMlx2Ecms=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=nu65ajK24mGZGXYD6CTZLIYJBvvVz6hQTvh3DjLtwgnMuQ12/akaHHZn5RNisn5UM
-	 Okqul1+vZjEMxIPNdAJqZLxoQs5ZVk3f/YKvLt9yU/ySc4v28Mz1sPMFLEZjoLSZg5
-	 2NSH4RG6uWP9PD0ZtA3GsUUKNPTgtqX2d/hV7D7oXTz2g8pgkMdvgspqqpWFysUuwF
-	 wyOtIxH+0lM8J7hlO39wTDVWnSKzc20AujIMsUoO0FsLGMjyGi8XnHVkLsKvG0ELdb
-	 DcTrYS0Ci8AkopM0cGpeqiBwUl33j6Pb7u6Zxao0j5C6lC0AePjSUkR7wmwDQarwAq
-	 6QvEYKl8S7IwA==
+	b=Z25DoIxny13RFVUaWLPegVkGvGzrEAl2oayVtnHl8IGIpzQgatP+OrgyJ2/iyW+PW
+	 Yrc8IUWTpYeqFybrXKwZf+rDXAhpxEwlTRYHB662QqsmRUgDu1PjNroNJHu1HkDeMt
+	 wIxXqOTzX45R65eOe2Pnf82rZERDDGAhYycUZkolfZac3Dg5nC9MAXGcZlYSfk63ZL
+	 OlULeEgZe1iHIptHjLtq3kNAYyPAYwgEoamIDNvHUsP2PdTNxBBGVmA5//lINbGdrg
+	 m06/W2iHiC9OzgERgaIjNCWsF1RqOwdyHGWLdy/HuWagLHbmL31fn49drod0MvH/18
+	 OdYWvxX3kFPCQ==
 Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
 	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Thu,  7 Mar 2024 05:40:46 +0300 (MSK)
+	Thu,  7 Mar 2024 05:40:47 +0300 (MSK)
 Received: from localhost.localdomain (100.125.24.169) by
  p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -51,9 +51,9 @@ To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<mazziesaccount@gmail.com>, <peterz@infradead.org>, <mingo@redhat.com>,
 	<will@kernel.org>, <longman@redhat.com>, <boqun.feng@gmail.com>,
 	<nikitos.tr@gmail.com>, <kabel@kernel.org>
-Subject: [PATCH v5 09/10] leds: an30259a: use devm_mutext_init for mutext initialization
-Date: Thu, 7 Mar 2024 05:40:33 +0300
-Message-ID: <20240307024034.1548605-10-gnstark@salutedevices.com>
+Subject: [PATCH v5 10/10] leds: powernv: use LED_RETAIN_AT_SHUTDOWN flag for leds
+Date: Thu, 7 Mar 2024 05:40:34 +0300
+Message-ID: <20240307024034.1548605-11-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240307024034.1548605-1-gnstark@salutedevices.com>
 References: <20240307024034.1548605-1-gnstark@salutedevices.com>
@@ -94,59 +94,72 @@ Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In this driver LEDs are registered using devm_led_classdev_register()
-so they are automatically unregistered after module's remove() is done.
-led_classdev_unregister() calls module's led_set_brightness() to turn off
-the LEDs and that callback uses mutex which was destroyed already
-in module's remove() so use devm API instead.
+This driver wants to keep its LEDs state after module is removed
+and implemented it in its own way. LED subsystem supports dedicated
+flag LED_RETAIN_AT_SHUTDOWN for the same purpose so use the flag
+instead of custom implementation.
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/leds/leds-an30259a.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/leds/leds-powernv.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/leds/leds-an30259a.c b/drivers/leds/leds-an30259a.c
-index 0216afed3b6e..decfca447d8a 100644
---- a/drivers/leds/leds-an30259a.c
-+++ b/drivers/leds/leds-an30259a.c
-@@ -283,7 +283,10 @@ static int an30259a_probe(struct i2c_client *client)
- 	if (err < 0)
- 		return err;
- 
--	mutex_init(&chip->mutex);
-+	err = devm_mutex_init(&client->dev, &chip->mutex);
-+	if (err)
-+		return err;
-+
- 	chip->client = client;
- 	i2c_set_clientdata(client, chip);
- 
-@@ -317,17 +320,9 @@ static int an30259a_probe(struct i2c_client *client)
- 	return 0;
- 
- exit:
--	mutex_destroy(&chip->mutex);
- 	return err;
- }
- 
--static void an30259a_remove(struct i2c_client *client)
--{
--	struct an30259a *chip = i2c_get_clientdata(client);
--
--	mutex_destroy(&chip->mutex);
--}
--
- static const struct of_device_id an30259a_match_table[] = {
- 	{ .compatible = "panasonic,an30259a", },
- 	{ /* sentinel */ },
-@@ -347,7 +342,6 @@ static struct i2c_driver an30259a_driver = {
- 		.of_match_table = an30259a_match_table,
- 	},
- 	.probe = an30259a_probe,
--	.remove = an30259a_remove,
- 	.id_table = an30259a_id,
+diff --git a/drivers/leds/leds-powernv.c b/drivers/leds/leds-powernv.c
+index 4f01acb75727..9c6fb7d6e0e7 100644
+--- a/drivers/leds/leds-powernv.c
++++ b/drivers/leds/leds-powernv.c
+@@ -30,15 +30,6 @@ static const struct led_type_map led_type_map[] = {
  };
  
+ struct powernv_led_common {
+-	/*
+-	 * By default unload path resets all the LEDs. But on PowerNV
+-	 * platform we want to retain LED state across reboot as these
+-	 * are controlled by firmware. Also service processor can modify
+-	 * the LEDs independent of OS. Hence avoid resetting LEDs in
+-	 * unload path.
+-	 */
+-	bool		led_disabled;
+-
+ 	/* Max supported LED type */
+ 	__be64		max_led_type;
+ 
+@@ -178,10 +169,6 @@ static int powernv_brightness_set(struct led_classdev *led_cdev,
+ 	struct powernv_led_common *powernv_led_common = powernv_led->common;
+ 	int rc;
+ 
+-	/* Do not modify LED in unload path */
+-	if (powernv_led_common->led_disabled)
+-		return 0;
+-
+ 	mutex_lock(&powernv_led_common->lock);
+ 	rc = powernv_led_set(powernv_led, value);
+ 	mutex_unlock(&powernv_led_common->lock);
+@@ -225,6 +212,14 @@ static int powernv_led_create(struct device *dev,
+ 
+ 	powernv_led->cdev.brightness_set_blocking = powernv_brightness_set;
+ 	powernv_led->cdev.brightness_get = powernv_brightness_get;
++	/*
++	 * By default unload path resets all the LEDs. But on PowerNV
++	 * platform we want to retain LED state across reboot as these
++	 * are controlled by firmware. Also service processor can modify
++	 * the LEDs independent of OS. Hence avoid resetting LEDs in
++	 * unload path.
++	 */
++	powernv_led->cdev.flags = LED_RETAIN_AT_SHUTDOWN;
+ 	powernv_led->cdev.brightness = LED_OFF;
+ 	powernv_led->cdev.max_brightness = LED_FULL;
+ 
+@@ -313,9 +308,7 @@ static void powernv_led_remove(struct platform_device *pdev)
+ {
+ 	struct powernv_led_common *powernv_led_common;
+ 
+-	/* Disable LED operation */
+ 	powernv_led_common = platform_get_drvdata(pdev);
+-	powernv_led_common->led_disabled = true;
+ 
+ 	/* Destroy lock */
+ 	mutex_destroy(&powernv_led_common->lock);
 -- 
 2.25.1
 
