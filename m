@@ -2,55 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5348760A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 10:06:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2228760F6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 10:31:20 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MWkI4xtH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=poqyepOR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrgJB1bJRz3vZt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 20:06:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrgsL1yL7z3vZH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 20:31:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MWkI4xtH;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=poqyepOR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrgHS3JYpz3dC0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 20:05:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 84CF561DB8;
-	Fri,  8 Mar 2024 09:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6806C433B1;
-	Fri,  8 Mar 2024 09:05:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709888722;
-	bh=bZE3lLlkuJ7PvYUKEQqczGXk3MirQvfYGrIhBNhV2+0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MWkI4xtHh0q/rku6OXru8Y5F0uyRm3OagmGFpmUyIc2rYcZiMSPOiATfm4KcSiUkW
-	 IA/wiVN/IG7POxQlNaaz79LCo+ocHGUmXgYP6x6UEr/8a5tlpJo5msNuAtAERLfowz
-	 OydyRBOmxFQHHf4+urZfZqiXS8SHOFOoGxXqRrutLHKA76PqWRFuhnOKTTspI+kuci
-	 BQ28JitosqrxLAk3FoKKSH0YNWL74SOgWXdv6mXlpxLAHHLBY1yr79+O6wbAgLS4s4
-	 B4A1F/m+kSB0tUh7hiHLnsNWlFj4wbjuW+NQlJBLF+NrcRpNktQGGd61YzrHsCJ5xm
-	 y+8eyn0zKZ4sA==
-Date: Fri, 8 Mar 2024 10:05:11 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v9 06/10] PCI: dwc: ep: Call dw_pcie_ep_init_registers()
- API directly from all glue drivers
-Message-ID: <ZerUx9Vw_W997LZk@ryzen>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-6-29d433d99cda@linaro.org>
- <ZeolaEIRYmKZjnvT@ryzen>
- <20240308053624.GB3789@thinkpad>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Trgrd2p5Wz3dC0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 20:30:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1709890241;
+	bh=YrG1vi6s/nTwQkG4YsY+XqFiQyMrqUljBKJEXiaxAlo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=poqyepOR/C++MsETS/6QVuyHg2UIBvlhqaSA6Ce5Go5wIxdCFrubcjS2LSzyhflBx
+	 5Q8AwLdlL2B59MTdND6P3EKY3yJHoSAF5lQwj+e3T5JjlYw/NFKrOAMlt7OKAil0jj
+	 YW14/V32vV7XsCKTeyA889fdfzECaYF2iEYktWeiycbVj5Ac8St5Le2sG+/b3PSqVw
+	 xXOvXyMSA0SUfjBYo24HFVHSMiUygB5X8tWiLkyxMM6aDZHznE3RrumAU5gQIRV9eN
+	 Je+IdqrXNZpGz8tPt0SXHU475HQ0xcw7+qbjPtDVRAgtHtZmA515omGgpXybBDi7Nq
+	 etlkkl91F1cxA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Trgrc6vwJz4wc4;
+	Fri,  8 Mar 2024 20:30:40 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Joel Savitz <jsavitz@redhat.com>
+Subject: Re: [PATCH] powerpc: align memory_limit to 16MB in early_parse_mem
+In-Reply-To: <CAL1p7m7nHfLM=koNaFZ0MrrcC6Lyj3VWdC9i8rOWGmrijKR3+Q@mail.gmail.com>
+References: <20240301203023.2197451-1-jsavitz@redhat.com>
+ <87cysdfsef.fsf@mail.lhotse>
+ <CAL1p7m7nHfLM=koNaFZ0MrrcC6Lyj3VWdC9i8rOWGmrijKR3+Q@mail.gmail.com>
+Date: Fri, 08 Mar 2024 20:30:39 +1100
+Message-ID: <87zfv9m5og.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240308053624.GB3789@thinkpad>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,108 +60,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang
-  <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: Gonzalo Siero <gsierohu@redhat.com>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 08, 2024 at 11:06:24AM +0530, Manivannan Sadhasivam wrote:
-> On Thu, Mar 07, 2024 at 09:36:56PM +0100, Niklas Cassel wrote:
-> > On Mon, Mar 04, 2024 at 02:52:18PM +0530, Manivannan Sadhasivam wrote:
-> > > Currently, dw_pcie_ep_init_registers() API is directly called by the glue
-> > > drivers requiring active refclk from host. But for the other drivers, it is
-> > > getting called implicitly by dw_pcie_ep_init(). This is due to the fact
-> > > that this API initializes DWC EP specific registers and that requires an
-> > > active refclk (either from host or generated locally by endpoint itsef).
-> > > 
-> > > But, this causes a discrepancy among the glue drivers. So to avoid this
-> > > confusion, let's call this API directly from all glue drivers irrespective
-> > > of refclk dependency. Only difference here is that the drivers requiring
-> > > refclk from host will call this API only after the refclk is received and
-> > > other drivers without refclk dependency will call this API right after
-> > > dw_pcie_ep_init().
-> > > 
-> > > With this change, the check for 'core_init_notifier' flag can now be
-> > > dropped from dw_pcie_ep_init() API. This will also allow us to remove the
-> > > 'core_init_notifier' flag completely in the later commits.
-> > > 
-> > > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-dra7xx.c           |  7 +++++++
-> > >  drivers/pci/controller/dwc/pci-imx6.c             |  8 ++++++++
-> > >  drivers/pci/controller/dwc/pci-keystone.c         |  9 +++++++++
-> > >  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  7 +++++++
-> > >  drivers/pci/controller/dwc/pcie-artpec6.c         | 13 ++++++++++++-
-> > >  drivers/pci/controller/dwc/pcie-designware-ep.c   | 22 ----------------------
-> > >  drivers/pci/controller/dwc/pcie-designware-plat.c |  9 +++++++++
-> > >  drivers/pci/controller/dwc/pcie-keembay.c         | 16 +++++++++++++++-
-> > >  drivers/pci/controller/dwc/pcie-rcar-gen4.c       | 12 +++++++++++-
-> > >  drivers/pci/controller/dwc/pcie-uniphier-ep.c     | 13 ++++++++++++-
-> > >  10 files changed, 90 insertions(+), 26 deletions(-)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-> > > index 0e406677060d..395042b29ffc 100644
-> > > --- a/drivers/pci/controller/dwc/pci-dra7xx.c
-> > > +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-> > > @@ -467,6 +467,13 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
-> > >  		return ret;
-> > >  	}
-> > >  
-> > > +	ret = dw_pcie_ep_init_registers(ep);
-> > > +	if (ret) {
-> > 
-> > Here you are using if (ret) to error check the return from
-> > dw_pcie_ep_init_registers().
-> > 
-> > 
-> > > index c0c62533a3f1..8392894ed286 100644
-> > > --- a/drivers/pci/controller/dwc/pci-keystone.c
-> > > +++ b/drivers/pci/controller/dwc/pci-keystone.c
-> > > @@ -1286,6 +1286,13 @@ static int ks_pcie_probe(struct platform_device *pdev)
-> > >  		ret = dw_pcie_ep_init(&pci->ep);
-> > >  		if (ret < 0)
-> > >  			goto err_get_sync;
-> > > +
-> > > +		ret = dw_pcie_ep_init_registers(&pci->ep);
-> > > +		if (ret < 0) {
-> > 
-> > Here you are using if (ret < 0) to error check the return from
-> > dw_pcie_ep_init_registers(). Please be consistent.
-> > 
-> 
-> I maintained the consistency w.r.t individual drivers. Please check them
-> individually.
-> 
-> If I maintain consistency w.r.t this patch, then the style will change within
-> the drivers.
+Joel Savitz <jsavitz@redhat.com> writes:
+> On Fri, Mar 1, 2024 at 6:23=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.=
+au> wrote:
+>> Joel Savitz <jsavitz@redhat.com> writes:
+>> > On 64-bit powerpc, usage of a non-16MB-aligned value for the mem=3D ke=
+rnel
+>> > cmdline parameter results in a system hang at boot.
+>>
+>> Can you give us any more details on that? It might be a bug we can fix.
+>
+> The console freezes after the following output:
+>
+>   Booting a command list
+>
+> OF stdout device is: /vdevice/vty@30000000
+> Preparing to boot Linux version 6.8.0-rc6.memNOfix-00120-g87adedeba51a
+> (root@ibm-p9z-26-lp11.virt.pnr.lab.eng.rdu2.redhat.com) (gcc (GCC)
+> 11.4.1 20231218 (Red Hat 11.4.1-3), GNU ld version 2.35.2-43.el9) #3
+> SMP Fri Mar  1 10:45:45 EST 2024
+> Detected machine type: 0000000000000101
+> command line: BOOT_IMAGE=3D(ieee1275//vdevice/v-scsi@30000003/disk@810000=
+0000000000,msdos2)/vmlinuz-6.8.0-rc6.memNOfix-00120-g87adedeba51a
+> root=3D/dev/mapper/rhel_ibm--p9z--26--lp11-root ro
+> crashkernel=3D2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G
+> rd.lvm.lv=3Drhel_ibm-p9z-26-lp11/root
+> rd.lvm.lv=3Drhel_ibm-p9z-26-lp11/swap mem=3D4198400K
+> Max number of cores passed to firmware: 256 (NR_CPUS =3D 2048)
+> Calling ibm,client-architecture-support... done
+> Ignoring mem=3D0000000101000000 >=3D ram_top.
+> memory layout at init:
+>   memory_limit : 0000000000000000 (16 MB aligned)
+>   alloc_bottom : 00000000114f0000
+>   alloc_top    : 0000000020000000
+>   alloc_top_hi : 0000000020000000
+>   rmo_top      : 0000000020000000
+>   ram_top      : 0000000020000000
+> instantiating rtas at 0x000000001ecb0000... done
+> prom_hold_cpus: skipped
+> copying OF device tree...
+> Building dt strings...
+> Building dt structure...
+> Device tree strings 0x0000000011500000 -> 0x00000000115017b7
+> Device tree struct  0x0000000011510000 -> 0x0000000011520000
+> Quiescing Open Firmware ...
+> Booting Linux via __start() @ 0x000000000a6e0000 ...
 
-Personally, I disagree with that.
+Thanks.
 
-All glue drivers should use the same way of checking dw_pcie_ep_init(),
-depending on the kdoc of dw_pcie_ep_init().
+I haven't been able to reproduce this unfortunately, and I don't see the
+bug. As Aneesh pointed out the code should be aligning later anyway.
 
-If the kdoc for dw_pcie_ep_init() says returns 0 on success,
-then I think that it is strictly more correct to do:
+Can you build a kernel with CONFIG_PPC_EARLY_DEBUG_LPAR=3Dy and boot it
+without the patch? That should hopefully give you some more output.
 
-ret = dw_pcie_ep_init()
-if (ret) {
-	<error handling>
-}
-
-And if a glue driver doesn't look like that, then I think we should change
-them. (Same reasoning for dw_pcie_ep_init_registers().)
-
-
-If you read code that looks like:
-ret = dw_pcie_ep_init()
-if (ret < 0) {
-	<error handling>
-}
-
-then you assume that is is a function with a kdoc that says it can return 0
-or a positive value on success, e.g. a function that returns an index in an
-array.
-
-
-Kind regards,
-Niklas
+cheers
