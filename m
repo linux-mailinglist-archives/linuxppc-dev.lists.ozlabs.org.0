@@ -2,58 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB0C875C89
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 03:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DA5875D3A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 05:42:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EQZNsTaM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=It3wnWt9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrW0y5XtYz3vZG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 13:52:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrYRj4Z9Rz3dXQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 15:42:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EQZNsTaM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=It3wnWt9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrYQz6sgyz3cDR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 15:41:31 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TrYQx71drz4wcT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 15:41:29 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4TrYQx6mzBz4wcF; Fri,  8 Mar 2024 15:41:29 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=It3wnWt9;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrW0C2Dn6z3cDk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 13:51:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709866299; x=1741402299;
-  h=date:from:to:cc:subject:message-id;
-  bh=tlC3k3blA6UkbWvPNkYxuOaDI0WYEP8AD8+tVKEH5wI=;
-  b=EQZNsTaMRPma8EXS4T1U7DhOvyfbd5IEJn7pyMhNshmHFkaXh3l+56bg
-   sAuTi3Q4NrkioAxJJylVYwDxENCoMunFXpNXnW8GFGJ3FiLSasp7UZaz0
-   lj5J8nsebzYa1WxnLTzfIzY+GIvyJFpxhN38ALDDNPfQv/gHYRjsJezXI
-   /QSN9zVXdXeJ2O6UInYNqPI0dOR3LYAKsuy6ubVq+niE8WEXxoA/+evj8
-   h1jtI44rpXERr4HhNin34snBZlNhKoOD/8eZdeK457IGp7DXNEXzcNREX
-   23xtf6rAJY2653o9mxwAYOWItDXS3IwR6y1gd6JTV27M2J1TV5pBjiHIi
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15295646"
-X-IronPort-AV: E=Sophos;i="6.07,108,1708416000"; 
-   d="scan'208";a="15295646"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 18:51:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,108,1708416000"; 
-   d="scan'208";a="47801229"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 07 Mar 2024 18:51:32 -0800
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1riQKX-0005wn-1s;
-	Fri, 08 Mar 2024 02:51:29 +0000
-Date: Fri, 08 Mar 2024 10:51:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 9db2235326c4b868b6e065dfa3a69011ee570848
-Message-ID: <202403081059.1Taaj2cH-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TrYQx0SVmz4wc9;
+	Fri,  8 Mar 2024 15:41:28 +1100 (AEDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4284S00Y031981;
+	Fri, 8 Mar 2024 04:41:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=eRoucPmrGPePYExRxQZ5aaf8Unxq9GFMgnuKXJMAjko=;
+ b=It3wnWt9qEGo1SmdHFxfGQexpmOlXSxSL4P0vEQgMExU7zK1AuQS0AYkS+I7jsMyxbc9
+ cPWk6ARg4tPUZyJJ1fND9OXmZzukCjoq6th7y+lIc7GCA/4OVgo1TQLuX3IT5a1drkp8
+ 7RDqCfx9l+iqQKyL5ZhHKSgPWQTFyHqfnYp6yd859MiW4wNfu1N7SxlYnLd8et1911l7
+ uNl2Ochto2pnVlX3jXCEE57hBBZ1a300YvHmk6Uaq6vLKvXsMnUudEj35s1dGoNgLyLu
+ KaicMAwAPNXBJA7gjb2/I8cJAtKNdUovl2hzDhbMdZHHEpoerjdYRWRVazVPt/aUa+7M fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqunp05kj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 04:41:24 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4284UUn0005184;
+	Fri, 8 Mar 2024 04:41:23 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqunp05jt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 04:41:23 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4283IwO9024172;
+	Fri, 8 Mar 2024 04:41:22 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wpjwsnhhc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 04:41:22 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4284fGLQ41025888
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Mar 2024 04:41:18 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AE3A62004D;
+	Fri,  8 Mar 2024 04:41:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 53B2D20043;
+	Fri,  8 Mar 2024 04:41:15 +0000 (GMT)
+Received: from [9.43.12.26] (unknown [9.43.12.26])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Mar 2024 04:41:15 +0000 (GMT)
+Message-ID: <8d973907-8e86-4b9f-8995-cf3a8621f6b6@linux.ibm.com>
+Date: Fri, 8 Mar 2024 10:11:13 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] powerpc: Avoid nmi_enter/nmi_exit in real mode
+ interrupt.
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        linuxppc-dev <linuxppc-dev@ozlabs.org>
+References: <20240214095146.1527369-1-mahesh@linux.ibm.com>
+ <87edcmnu7o.fsf@mail.lhotse>
+From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+In-Reply-To: <87edcmnu7o.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7V5rmXHxNdxeNGx3gI8C6JW4RW_U1B0n
+X-Proofpoint-ORIG-GUID: p1Bz8Q60KWJGqHUd7jmTio-sOZY4h7hh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-08_02,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 adultscore=0 mlxlogscore=919
+ bulkscore=0 impostorscore=0 suspectscore=0 clxscore=1011 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403080033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,189 +118,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 9db2235326c4b868b6e065dfa3a69011ee570848  powerpc/macio: Make remove callback of macio driver void returned
+On 3/7/24 5:13 PM, Michael Ellerman wrote:
+> Hi Mahesh,
+> 
+> Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
+>> nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
+>> crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
+>> interrupt handler) if percpu allocation comes from vmalloc area.
+>>
+>> Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
+>> wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
+>> percpu allocation is from the embedded first chunk. However with
+>> CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
+>> allocation can come from the vmalloc area.
+>>
+>> With kernel command line "percpu_alloc=page" we can force percpu allocation
+>> to come from vmalloc area and can see kernel crash in machine_check_early:
+>>
+>> [    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
+>> [    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
+>> [    1.215719] --- interrupt: 200
+>> [    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
+>> [    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
+>> [    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
+>>
+>> Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
+>> first chunk is not embedded.
+> 
+> My system (powernv) doesn't even boot with percpu_alloc=page.
+> 
 
-elapsed time: 811m
 
-configs tested: 166
-configs skipped: 3
+Can you share the crash details? 
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                      axs103_smp_defconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              alldefconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                     am200epdkit_defconfig   gcc  
-arm                                 defconfig   clang
-arm                        neponset_defconfig   gcc  
-arm                           omap1_defconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                        shmobile_defconfig   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240307   clang
-i386         buildonly-randconfig-001-20240308   clang
-i386         buildonly-randconfig-002-20240307   gcc  
-i386         buildonly-randconfig-002-20240308   clang
-i386         buildonly-randconfig-003-20240307   clang
-i386         buildonly-randconfig-003-20240308   gcc  
-i386         buildonly-randconfig-004-20240307   gcc  
-i386         buildonly-randconfig-004-20240308   gcc  
-i386         buildonly-randconfig-005-20240307   gcc  
-i386         buildonly-randconfig-005-20240308   gcc  
-i386         buildonly-randconfig-006-20240307   clang
-i386         buildonly-randconfig-006-20240308   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240307   gcc  
-i386                  randconfig-001-20240308   clang
-i386                  randconfig-002-20240307   gcc  
-i386                  randconfig-002-20240308   clang
-i386                  randconfig-003-20240307   clang
-i386                  randconfig-003-20240308   clang
-i386                  randconfig-004-20240307   gcc  
-i386                  randconfig-004-20240308   gcc  
-i386                  randconfig-005-20240307   gcc  
-i386                  randconfig-005-20240308   clang
-i386                  randconfig-006-20240307   clang
-i386                  randconfig-006-20240308   clang
-i386                  randconfig-011-20240307   clang
-i386                  randconfig-011-20240308   gcc  
-i386                  randconfig-012-20240307   gcc  
-i386                  randconfig-012-20240308   clang
-i386                  randconfig-013-20240307   clang
-i386                  randconfig-013-20240308   clang
-i386                  randconfig-014-20240307   clang
-i386                  randconfig-014-20240308   clang
-i386                  randconfig-015-20240307   clang
-i386                  randconfig-015-20240308   gcc  
-i386                  randconfig-016-20240307   clang
-i386                  randconfig-016-20240308   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5249evb_defconfig   gcc  
-m68k                        m5272c3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      fuloong2e_defconfig   gcc  
-mips                           ip28_defconfig   gcc  
-mips                     loongson1c_defconfig   gcc  
-mips                   sb1250_swarm_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                      ppc64e_defconfig   gcc  
-powerpc                         ps3_defconfig   gcc  
-powerpc                  storcenter_defconfig   gcc  
-powerpc                     tqm8560_defconfig   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                         ap325rxa_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                            hp6xx_defconfig   gcc  
-sh                          kfr2r09_defconfig   gcc  
-sh                          rsk7201_defconfig   gcc  
-sh                           se7724_defconfig   gcc  
-sh                            titan_defconfig   gcc  
-sh                          urquell_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-002-20240308   gcc  
-x86_64       buildonly-randconfig-003-20240308   gcc  
-x86_64       buildonly-randconfig-005-20240308   gcc  
-x86_64       buildonly-randconfig-006-20240308   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240308   gcc  
-x86_64                randconfig-005-20240308   gcc  
-x86_64                randconfig-006-20240308   gcc  
-x86_64                randconfig-012-20240308   gcc  
-x86_64                randconfig-015-20240308   gcc  
-x86_64                randconfig-016-20240308   gcc  
-x86_64                randconfig-072-20240308   gcc  
-x86_64                randconfig-073-20240308   gcc  
-x86_64                randconfig-074-20240308   gcc  
-x86_64                randconfig-075-20240308   gcc  
-x86_64                randconfig-076-20240308   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                       common_defconfig   gcc  
+> AFAIK the only reason we added support for it was to handle 4K kernels
+> with HPT. See commit eb553f16973a ("powerpc/64/mm: implement page
+> mapping percpu first chunk allocator").
+> 
+> So I wonder if we should change the Kconfig to only offer it as an
+> option in that case, and change the logic in setup_per_cpu_areas() to
+> only use it as a last resort.
+> 
+> I guess we probably still need this commit though, even if just for 4K HPT.
+> 
+>
+We have also observed some error when we have large gap between the start memory of
+NUMA nodes. That made the percpu offset really large causing boot failures even on 64K.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-aneesh
