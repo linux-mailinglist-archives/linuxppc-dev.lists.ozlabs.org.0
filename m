@@ -2,106 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B391875D80
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:20:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD87875D9D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 06:35:19 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=npxBWVE0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=BCO5UHJ6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrZJ60xC8z3vYv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 16:20:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrZd13dZWz3vYp
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 16:35:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=npxBWVE0;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=BCO5UHJ6;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrZHM0J86z2xLW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 16:19:59 +1100 (AEDT)
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4TrZHH0TDsz4wxv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 16:19:55 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4TrZHH0MH4z4wcl; Fri,  8 Mar 2024 16:19:55 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=npxBWVE0;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4TrZHG4P1Hz4wb0;
-	Fri,  8 Mar 2024 16:19:53 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42857BMc011287;
-	Fri, 8 Mar 2024 05:19:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=fmX4nWkkYbcQHc2iymUNVeRBhYq+jMW4a2phnbGHtgM=;
- b=npxBWVE0rr9jk3eBiGY/h0BCmDYP7ljqx/unc417Lb4rpfHwpGPW1H0PW/kw2Mr4dopp
- JACO6qVMoq3tyzq0HK2B/R4jzJ+qh1saCBKvTM06DrajUSC+q8UJITfx5u/6fc4/cEFG
- NXvxdxOteVa813dZGhQSekqFyg0Bs+GNsGBOqZo2IPvpOZUdlDyIMjlQ6rwjXZsRHQ4A
- fXVc5rVhwkuCbJR5P3Ln0XvFAD6ZFJWswFthmnOdfrtM+dRVhM3JC/N7wzu/7cfuO9fP
- lYD7uyQbAXvC+mXLcL5ZvRNATOb/q+IX4a8bUsIAb8gtV5TrgYMQS3OF/A3QqXJfDt93 cQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqv88r5m9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Mar 2024 05:19:51 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 428576MS011174;
-	Fri, 8 Mar 2024 05:19:50 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqv88r5m3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Mar 2024 05:19:50 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4283TvB1024211;
-	Fri, 8 Mar 2024 05:19:49 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wpjwsnpj0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Mar 2024 05:19:49 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4285JhB534275788
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 Mar 2024 05:19:45 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B302C2004B;
-	Fri,  8 Mar 2024 05:19:43 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7250D20040;
-	Fri,  8 Mar 2024 05:19:42 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.171.47.236])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  8 Mar 2024 05:19:42 +0000 (GMT)
-Date: Fri, 8 Mar 2024 10:49:39 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v4] powerpc: Avoid nmi_enter/nmi_exit in real mode
- interrupt.
-Message-ID: <emzwsv2psn4bg4s4kmrbj6uc7hxbs22vcqf24rk63hv4ry2wyv@3wdx57e3nk4l>
-References: <20240214095146.1527369-1-mahesh@linux.ibm.com>
- <87edcmnu7o.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrZcF5m66z2ysD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 16:34:35 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1dcad814986so13741895ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Mar 2024 21:34:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709876073; x=1710480873; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qLlyiqWF0upHn9Y3ngiUh0k7hhFX2gsYsEhwvlh6VfE=;
+        b=BCO5UHJ6rLAVxLrrxLEw+vmNEZ0m9mBO23ZV1LYAAtK5GgsoBY+RAJ7B7ADlLDuZLJ
+         xBXBcogS6VHPfSYCtqdVdyHsXZ7rkPTo0N5H9bj9uVvtdZ6YagT0xjRVggkQ7Jvgobb7
+         /aSjTtjt0vPiQW3/9aI5Ubgann/deO5xynowH8Dh0EcypY6FkgdL5xM7hePQsv/bZz/S
+         pxX6+1yyywUA3sWGKSiT7wiVrN+4sTAuf1y6l7yISkADcUpwslGcfJJ5Ndf6LOlMmK50
+         01aOWrOKLjSxy08QOj35j6frbH4Ap0JHOtWy3J0XwrfiP/bFsxHyds1GPOEj0ZDqvQ7e
+         y+kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709876073; x=1710480873;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLlyiqWF0upHn9Y3ngiUh0k7hhFX2gsYsEhwvlh6VfE=;
+        b=EbDugynPAu2Vvu8ibzGyRAUYCWRFKgYTN24zlZ33p9qQEU8+XDEFPke9aEe3y9vdXA
+         lnZRgAiJC+K8NEWROBa89j0ZwKpn/etKmLJYihfo7Hved5IoDtQIbH2eFiCtyvcZNu1T
+         e776R8QvFjMpGeGk/767eOkzi8tc3fEk6Xaq8QFpzNgVTG5BIHi+CyHP3g0PB60qeOMt
+         zxPeCAn5lLU03Nfbr4FnA4567CDfkPfN0nSeaDStHUbQM2cYt7MBrwxpwI+TsyJ+/O58
+         nULtKvebuWeOEkHxEBf//W9tjlf/qV/e1+wc9n1N3TXMdCIo86ChnhIa3b6V9GbZBmbR
+         6LUg==
+X-Forwarded-Encrypted: i=1; AJvYcCW0J1Kkuj8PzKvuKCgbyguUPqWbXKYSHg949fqgIfpaQK873fItU8hH3JyTIpv0NPDWUTqm9Bp7FHRVdUUszCa0SS3G1dz19Ee2Wufyfw==
+X-Gm-Message-State: AOJu0YxGArStPV3HvxZvYOEoSBXL4nSC9xhtuYHZJKt+28ZyP9Dp6fbX
+	3vSq0nJGeDtIMmR/E70EzibTVvqgSUUu+8qBsdUJ2jA5U0BaQElFfV8qZBFETA==
+X-Google-Smtp-Source: AGHT+IG89iAmJ8LV9BCChv81LryPxWwamgWvwEd6QxuWM+joRnlgHY+wIW3y+qsIhhLN4Fb6hLrFWg==
+X-Received: by 2002:a17:903:2d1:b0:1dd:65bc:c056 with SMTP id s17-20020a17090302d100b001dd65bcc056mr1956887plk.40.1709876073327;
+        Thu, 07 Mar 2024 21:34:33 -0800 (PST)
+Received: from thinkpad ([117.217.178.39])
+        by smtp.gmail.com with ESMTPSA id z4-20020a170903018400b001dd66e6ec91sm578427plg.140.2024.03.07.21.34.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Mar 2024 21:34:32 -0800 (PST)
+Date: Fri, 8 Mar 2024 11:04:17 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v9 04/10] PCI: dwc: ep: Fix DBI access failure for
+ drivers requiring refclk from host
+Message-ID: <20240308053417.GA3789@thinkpad>
+References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
+ <20240304-pci-dbi-rework-v9-4-29d433d99cda@linaro.org>
+ <ZeokEJstpRSUPDTL@ryzen>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87edcmnu7o.fsf@mail.lhotse>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4yKwT_Y446OV79v8o1bI1yfgEcQVdfXj
-X-Proofpoint-ORIG-GUID: 3wkGgs5MVQHuXf1GgnsVYHYonWbLI4a6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-08_03,2024-03-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- clxscore=1011 suspectscore=0 phishscore=0 mlxscore=0 bulkscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403080040
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZeokEJstpRSUPDTL@ryzen>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,126 +83,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>, Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@
+ lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2024-03-07 22:43:07 Thu, Michael Ellerman wrote:
-> > diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-> > index a4196ab1d0167..0b96464ff0339 100644
-> > --- a/arch/powerpc/include/asm/interrupt.h
-> > +++ b/arch/powerpc/include/asm/interrupt.h
-> > @@ -336,6 +336,14 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
-> >  	if (IS_ENABLED(CONFIG_KASAN))
-> >  		return;
-> >  
-> > +	/*
-> > +	 * Likewise, do not use it in real mode if percpu first chunk is not
-> > +	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
-> > +	 * are chances where percpu allocation can come from vmalloc area.
-> > +	 */
-> > +	if (IS_ENABLED(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && !is_embed_first_chunk)
+On Thu, Mar 07, 2024 at 09:31:12PM +0100, Niklas Cassel wrote:
+> On Mon, Mar 04, 2024 at 02:52:16PM +0530, Manivannan Sadhasivam wrote:
+> > The DWC glue drivers requiring an active reference clock from the PCIe host
+> > for initializing their PCIe EP core, set a flag called 'core_init_notifier'
+> > to let DWC driver know that these drivers need a special attention during
+> > initialization. In these drivers, access to the hw registers (like DBI)
+> > before receiving the active refclk from host will result in access failure
+> > and also could cause a whole system hang.
+> > 
+> > But the current DWC EP driver doesn't honor the requirements of the drivers
+> > setting 'core_init_notifier' flag and tries to access the DBI registers
+> > during dw_pcie_ep_init(). This causes the system hang for glue drivers such
+> > as Tegra194 and Qcom EP as they depend on refclk from host and have set the
+> > above mentioned flag.
+> > 
+> > To workaround this issue, users of the affected platforms have to maintain
+> > the dependency with the PCIe host by booting the PCIe EP after host boot.
+> > But this won't provide a good user experience, since PCIe EP is _one_ of
+> > the features of those platforms and it doesn't make sense to delay the
+> > whole platform booting due to PCIe requiring active refclk.
+> > 
+> > So to fix this issue, let's move all the DBI access from
+> > dw_pcie_ep_init() in the DWC EP driver to the dw_pcie_ep_init_complete()
+> > API. This API will only be called by the drivers setting
+> > 'core_init_notifier' flag once refclk is received from host. For the rest
+> > of the drivers that gets the refclk locally, this API will be called
+> > within dw_pcie_ep_init().
+> > 
+> > Fixes: e966f7390da9 ("PCI: dwc: Refactor core initialization code for EP mode")
+> > Co-developed-by: Vidya Sagar <vidyas@nvidia.com>
+> > Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
 > 
-> I think this would be clearer if it was inverted, eg:
+> I'm not sure if the Fixes tag is stictly correct, since there is
+> nothing wrong with the commit that the Fixes-tag is referencing.
 > 
->         if (percpu_first_chunk_is_paged)
->                return;
 
-Agree.
+No. The commit was intented to move all the DBI accesses to
+dw_pcie_ep_init_complete(), but it left few things like ep_init() callback that
+could access the DBI registers. One may argue that the none of the drivers at
+that time were accessing DBI registers in that callback etc... but I used that
+commit as a fixes tag for the sake of backporting. Otherwise, I don't see how we
+can easily backport this patch.
 
+> What this patch addresses is an additional use-case/feature,
+> which allows you to start the EP-side before the RC-side.
 > 
-> That way you shouldn't need to check CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK here.
-> Instead it can be part of the ifdef in the header.
+> However, I'm guessing that you kept the Fixes-tag such that this
+> patch will get backported. However, this patch is number 4/10 in
+> the patch series. If this is a strict fix that you want backported,
+> and it does not depend on any of the previous patches (it doesn't
+> seem that way), then I think that you should have put it as patch
+> 1/10 in the series.
 > 
-> > @@ -351,6 +359,8 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
-> >  		// no nmi_exit for a pseries hash guest taking a real mode exception
-> >  	} else if (IS_ENABLED(CONFIG_KASAN)) {
-> >  		// no nmi_exit for KASAN in real mode
-> > +	} else if (IS_ENABLED(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && !is_embed_first_chunk) {
-> > +		// no nmi_exit if percpu first chunk is not embedded
-> >  	} else {
-> >  		nmi_exit();
-> >  	}
-> > diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
-> > index 8e5b7d0b851c6..e24063eb0b33b 100644
-> > --- a/arch/powerpc/include/asm/percpu.h
-> > +++ b/arch/powerpc/include/asm/percpu.h
-> > @@ -15,6 +15,16 @@
-> >  #endif /* CONFIG_SMP */
-> >  #endif /* __powerpc64__ */
-> >  
-> > +#ifdef CONFIG_PPC64
-> > +#include <linux/jump_label.h>
-> > +DECLARE_STATIC_KEY_FALSE(__percpu_embed_first_chunk);
-> > +
-> > +#define is_embed_first_chunk	\
-> > +		(static_key_enabled(&__percpu_embed_first_chunk.key))
-> > +#else
-> > +#define is_embed_first_chunk	true
-> > +#endif /* CONFIG_PPC64 */
-> > +
-> 
-> Something like:
-> 
-> #ifdef CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK
-> #include <linux/jump_label.h>
-> DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
-> 
-> #define percpu_first_chunk_is_paged	\
-> 		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
-> #else
-> #define percpu_first_chunk_is_paged	false
-> #endif /* CONFIG_PPC64 */
 
-Sure, will fix it.
+Not strictly required. Usually the fixes are added first for the ease of merging
+as you said, but here I intend to merge this series as it is and it is not
+fixing anything in the ongoing release. But, if I happen to respin, I may
+reorder so that this can get merged early in next release cycle (this series is
+going to miss 6.9 anyway).
 
-> 
-> > diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> > index 2f19d5e944852..e04f0ff69d4b6 100644
-> > --- a/arch/powerpc/kernel/setup_64.c
-> > +++ b/arch/powerpc/kernel/setup_64.c
-> > @@ -834,6 +834,7 @@ static __init int pcpu_cpu_to_node(int cpu)
-> >  
-> >  unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
-> >  EXPORT_SYMBOL(__per_cpu_offset);
-> > +DEFINE_STATIC_KEY_FALSE(__percpu_embed_first_chunk);
-> >  
-> >  void __init setup_per_cpu_areas(void)
-> >  {
-> > @@ -869,6 +870,8 @@ void __init setup_per_cpu_areas(void)
-> >  			pr_warn("PERCPU: %s allocator failed (%d), "
-> >  				"falling back to page size\n",
-> >  				pcpu_fc_names[pcpu_chosen_fc], rc);
-> > +		else
-> > +			static_key_enable(&__percpu_embed_first_chunk.key);
-> >  	}
-> >  
-> >  	if (rc < 0)
->  
-> Finally, the current patch breaks the microwatt build:
-> 
->   $ make microwatt_defconfig ; make -s -j (nproc)
->   make[1]: Entering directory '/home/michael/linux/.build'
->     GEN     Makefile
->   #
->   # configuration written to .config
->   #
->   make[1]: Leaving directory '/home/michael/linux/.build'
->   ld: arch/powerpc/kernel/traps.o:(.toc+0x0): undefined reference to `__percpu_embed_first_chunk'
->   ld: arch/powerpc/kernel/mce.o:(.toc+0x0): undefined reference to `__percpu_embed_first_chunk'
->   make[3]: *** [../scripts/Makefile.vmlinux:37: vmlinux] Error 1
-> 
-> I guess because it has CONFIG_JUMP_LABEL=n?
+> Patch ordering aside:
+> Reviewed-by: Niklas Cassel <cassel@kernel.org>
 
-Even with CONFIG_JUMP_LABEL=n it should still work. Let me take look and
-fix this for microwatt build.
+Thanks!
 
-Thanks for your review.
--Mahesh.
-
-> 
-> cheers
+- Mani
 
 -- 
-Mahesh J Salgaonkar
+மணிவண்ணன் சதாசிவம்
