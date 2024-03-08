@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729CE87654C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 14:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8A876550
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 14:30:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OfkqnGF/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IcN9KjBg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Trn7C1QwLz3vr4
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Mar 2024 00:28:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Trn9h1KnBz3vn5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Mar 2024 00:30:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OfkqnGF/;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IcN9KjBg;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrmtP5zLWz3vcs
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Mar 2024 00:17:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrmtY1mWmz3vdH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Mar 2024 00:17:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709903854; x=1741439854;
+  t=1709903861; x=1741439861;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zboSVI3HgVZXbpDBNnsTotqgGm69H9hHwUY1hZ67rA8=;
-  b=OfkqnGF/SoGxVbwqQrOxyL4/tBwLo/HfX+LiwCrmMTUCSrGWOVbLwfn7
-   rHcArpY3oJ+ibbjUPjBBDo/Amkv2t3YN2ObAo1CZNalS9ciVXTKWIWJHT
-   Iq9I6gOQENShcWvpXzjt+ZCNIFMuttBo8jgWTtdlOoUp57SBQ7negz+RC
-   cLdyTjJCzruYxuDayWuEgtNVaiF8NETHjMm24jBYBELItMaMuo+iu4o1Q
-   QXwAGn5yfd5cR3WGlXvBfqFp8vJKIJGs+qQ34WxxMufQWI7LlwqNQTYaD
-   b3caxxmIr20edxDHe6Gob+Rq3amKZZiA53OAjC10GunPgCe03eZouWd0A
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15342638"
+  bh=qTxeGZya5tNrF+OulKJd9BaTzgUsvcEDLjRYcSx3zxw=;
+  b=IcN9KjBgMURXKhz8/cThcPGj6lM/meyB2VVyq1R0f7bwuj0AA3x21G1Y
+   HMcioPudq01UIbuozeVzXIV5Go/Lv2a1C3mNiP0+f2bhhpGoa29q6hqQ/
+   mKwrtNf9R91ytqVkhdabSRcGuFvbZ28PFobr1OGR1vo/z+fW1S4TVwUWR
+   kXIZ4sl92nya22u5/TTbr3kxokrylvvFLlNtugzO3ICvyelMtkxneQtbN
+   bhiYaMu0yhMdMQBgAznfi1T/BqDOcPwU3gIVc4yUa+yai4DceaDIVABK+
+   4krMmxEKPXKiDq5LzWVk+VD+MLEM2m6yiKefNJQkLUKitAYx+RSpVPXuV
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15342668"
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="15342638"
+   d="scan'208";a="15342668"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:30 -0800
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:36 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="15161489"
+   d="scan'208";a="15161544"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.249.46.63])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:23 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:29 -0800
 From: Adrian Hunter <adrian.hunter@intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 09/19] timekeeping: Move timekeeping helper functions
-Date: Fri,  8 Mar 2024 15:15:02 +0200
-Message-Id: <20240308131512.44324-10-adrian.hunter@intel.com>
+Subject: [PATCH 10/19] timekeeping: Rename fast_tk_get_delta_ns() to __timekeeping_get_ns()
+Date: Fri,  8 Mar 2024 15:15:03 +0200
+Message-Id: <20240308131512.44324-11-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308131512.44324-1-adrian.hunter@intel.com>
 References: <20240308131512.44324-1-adrian.hunter@intel.com>
@@ -70,73 +70,46 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move timekeeping helper functions to prepare for their reuse.
+Rename fast_tk_get_delta_ns() to __timekeeping_get_ns() to prepare for its
+reuse as a general timekeeping helper function.
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- kernel/time/timekeeping.c | 34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ kernel/time/timekeeping.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index b58dffc58a8f..3375f0a6400f 100644
+index 3375f0a6400f..63061332a75c 100644
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -381,6 +381,23 @@ static inline u64 timekeeping_delta_to_ns(const struct tk_read_base *tkr, u64 de
- 	return nsec;
- }
- 
-+static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
-+{
-+	u64 delta;
-+
-+	/* calculate the delta since the last update_wall_time */
-+	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
-+	return timekeeping_delta_to_ns(tkr, delta);
-+}
-+
-+static __always_inline u64 fast_tk_get_delta_ns(struct tk_read_base *tkr)
-+{
-+	u64 delta, cycles = tk_clock_read(tkr);
-+
-+	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
-+	return timekeeping_delta_to_ns(tkr, delta);
-+}
-+
- static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
- {
- 	u64 delta;
-@@ -389,15 +406,6 @@ static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+@@ -390,7 +390,7 @@ static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 c
  	return timekeeping_delta_to_ns(tkr, delta);
  }
  
--static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
--{
--	u64 delta;
--
--	/* calculate the delta since the last update_wall_time */
--	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
--	return timekeeping_delta_to_ns(tkr, delta);
--}
--
- /**
-  * update_fast_timekeeper - Update the fast and NMI safe monotonic timekeeper.
-  * @tkr: Timekeeping readout base from which we take the update
-@@ -431,14 +439,6 @@ static void update_fast_timekeeper(const struct tk_read_base *tkr,
- 	memcpy(base + 1, base, sizeof(*base));
- }
- 
 -static __always_inline u64 fast_tk_get_delta_ns(struct tk_read_base *tkr)
--{
--	u64 delta, cycles = tk_clock_read(tkr);
--
--	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
--	return timekeeping_delta_to_ns(tkr, delta);
--}
--
- static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
++static __always_inline u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
  {
- 	struct tk_read_base *tkr;
+ 	u64 delta, cycles = tk_clock_read(tkr);
+ 
+@@ -449,7 +449,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
+ 		seq = raw_read_seqcount_latch(&tkf->seq);
+ 		tkr = tkf->base + (seq & 0x01);
+ 		now = ktime_to_ns(tkr->base);
+-		now += fast_tk_get_delta_ns(tkr);
++		now += __timekeeping_get_ns(tkr);
+ 	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
+ 
+ 	return now;
+@@ -565,7 +565,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
+ 		tkr = tkf->base + (seq & 0x01);
+ 		basem = ktime_to_ns(tkr->base);
+ 		baser = ktime_to_ns(tkr->base_real);
+-		delta = fast_tk_get_delta_ns(tkr);
++		delta = __timekeeping_get_ns(tkr);
+ 	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
+ 
+ 	if (mono)
 -- 
 2.34.1
 
