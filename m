@@ -1,94 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97704875E0D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 07:51:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D634875E59
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 08:18:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=heDxVs4J;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=heDxVs4J;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=SpfLTwe7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TrcJm2zZlz3dVv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 17:51:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TrcwD2Gs9z3vYg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 18:18:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=heDxVs4J;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=heDxVs4J;
+	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=SpfLTwe7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrcJ129y6z3bmy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 17:50:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709880635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=epRg3dGewUcblPePlS+KzZdY/GgoToAmRabId8Bpp4I=;
-	b=heDxVs4JuJWDoEnTziGBu+wOhirVIly0obbjgcHGDLl/w0Ujbc/n9faMMLhkFuGUgGitDi
-	ckYwO4zwgUjdIoTTDaLCNHl/u6NC7d0ptkUi4Icx1EuVocmpWuCYsdZru5rTEqKhMRYDTD
-	zZ9VNu4nQBrHTnuq+GvA3bD9uZOLatA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709880635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=epRg3dGewUcblPePlS+KzZdY/GgoToAmRabId8Bpp4I=;
-	b=heDxVs4JuJWDoEnTziGBu+wOhirVIly0obbjgcHGDLl/w0Ujbc/n9faMMLhkFuGUgGitDi
-	ckYwO4zwgUjdIoTTDaLCNHl/u6NC7d0ptkUi4Icx1EuVocmpWuCYsdZru5rTEqKhMRYDTD
-	zZ9VNu4nQBrHTnuq+GvA3bD9uZOLatA=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-lZhfF6BbM6SYIQQm6ega3w-1; Fri, 08 Mar 2024 01:50:31 -0500
-X-MC-Unique: lZhfF6BbM6SYIQQm6ega3w-1
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-21e4604101bso607478fac.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Mar 2024 22:50:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709880631; x=1710485431;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrcvT534hz3bnB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Mar 2024 18:17:55 +1100 (AEDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-a45bb2a9c20so223232166b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Mar 2024 23:17:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1709882267; x=1710487067; darn=lists.ozlabs.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=epRg3dGewUcblPePlS+KzZdY/GgoToAmRabId8Bpp4I=;
-        b=gaMIfuAceQzFCJb/Mk60KYXrecvF6/gW4elPwZNCZ6qwvGmivkJ876kBvgfFsVlYoY
-         LD21D4TxdEgTZ000hxjq6uGm3BgQa+mpkpnJo4IbD78QX21go9GiOJG8XtZZyvDb1tsj
-         aSPBQXjN25UOpVT6S0AkrGE9bBbpJqh3JzTY2u0pQP9LrZDS2Z6Gn8z0rParjZzsWxbA
-         D6/mL9pU6sAYHr+PmYAZhnllVXvLu+JVYeOaFt2BVZ6aT6P0kYEu9XAxVxsUAc2aJTQQ
-         a8zWIFz/ddonIWkTHatI4iZAblfzJ20WpFsOdypr+uZ6pXHJ8Kl3C0fMSP+br8/YXhnB
-         A9zg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLuWMb+PF64peVgvWipPlb7A/+d+HOVs8c+rYKbooUShF4/hGKfuQV7K0yOLpepa6MH08uswdy62xur0KLvgA1fET+WTTI6Q+CnL4y0A==
-X-Gm-Message-State: AOJu0YwpYUszqp7bYOuRBnXhn54S7w6N6lDnBT6gZd5qf9FrieZk4wpW
-	ctIuQHVUu2e/zzc9GXWekT+PeI2LZDO6i8HdS6OmQwcLwxb0xqcmDuSb8QBQSn+Bl47jCKK5DqU
-	T+sste1zQC453zKekYrZyDGgVFu/2+EtdLQ/wAFb9qL/2hZ3Yq3M1MHngmKPEPm0=
-X-Received: by 2002:a05:6870:911f:b0:221:9798:22ce with SMTP id o31-20020a056870911f00b00221979822cemr1235674oae.5.1709880630969;
-        Thu, 07 Mar 2024 22:50:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF5WJ4Hs7BOa4+cQmkVKBMn/KDqWDXIuEQmCh9SbFC/cz4o3SLGxNN1BrH2AJEolH8ck0I8Eg==
-X-Received: by 2002:a05:6870:911f:b0:221:9798:22ce with SMTP id o31-20020a056870911f00b00221979822cemr1235655oae.5.1709880630429;
-        Thu, 07 Mar 2024 22:50:30 -0800 (PST)
-Received: from x1n ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id r37-20020a632065000000b005dcc075d5edsm13621982pgm.60.2024.03.07.22.50.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Mar 2024 22:50:30 -0800 (PST)
-Date: Fri, 8 Mar 2024 14:50:20 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH RFC 01/13] mm/hmm: Process pud swap entry without
- pud_huge()
-Message-ID: <Zeq1LNValPosuWgw@x1n>
-References: <20240306104147.193052-1-peterx@redhat.com>
- <20240306104147.193052-2-peterx@redhat.com>
- <20240307181233.GD9179@nvidia.com>
-MIME-Version: 1.0
-In-Reply-To: <20240307181233.GD9179@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+        bh=7YvX8bPEV2BI0BpF/k+pwUbl0NZXlnKf36uLhchuK3c=;
+        b=SpfLTwe7Y/OpSynzASK22gC0qHKwwcZmXJSw5Urdi/TBMX0nZFBe6ETAgd2FDokU6D
+         psOrAwT9lkZa+E/h8Y+VYPkQAns45KOqvBFAqo0QSDFQvQH1b0Hz2JIe6gTKuCpkPTGK
+         gOqPKP8FZye3GH0OG/O3erm+BpFI4QXQJN0cUTXHKNZpNPh1X5NR8hiHYXBDzvZxPVZX
+         uT6bKk69AC3W2eQiingd7FRXegQwVrBOKLD/RaUOA/+1OeS+fc/tfDSFysmNfmvzsUf6
+         L1mfWfHok5QrmKogAAWoNL+CQrOWOHlm1mp/DV38NKGMA+C0B9H6qVuCjz+vgAjm+X+I
+         GQUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709882267; x=1710487067;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7YvX8bPEV2BI0BpF/k+pwUbl0NZXlnKf36uLhchuK3c=;
+        b=D7zhy/bdOJGtMaOynsBdzLUO78wmNBoQ9sueMx2fcKZCZkPUCIZTv26Ntrw2BRqXcB
+         5vJLF9vNxayV+cpyLY6HX06Hs2hCLu4Y/Zwbuh68LTZsPtfgU9IVJ5ujfK7e3q8T8KEZ
+         cG4lt+OWLo6MkwsFK5Q44xSv1lwwaNoybVsC9+kFckJvk51VzmI0KQbfX8Pi/7Uw3b67
+         aTtArBilSgOLG202E3UyBb4YdsBR6ticDK6NR/CCrbqEYUzsDDGHMm0Y+U+c9qewTENG
+         ggQDrAPy7SXujQu+pFeWJnzo5ubZJeoUb4cLm9r83zv4bfz5JJPkUmmQ+3p/9IWuSpRG
+         PWpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVldilpGxBqTAT7jQY6BkjuJhTSoGhPt9ulcpRa54naPS/DRt67HS+tBQrOOHyHLTSfryfG7o25MiiKRJRABW84E2a/oFSfHA8Cl3pCgQ==
+X-Gm-Message-State: AOJu0YxuMRsjfU7dW3aW/brhCpTHTJHH2AA9EFKi2c4nVCefzHvE3BWt
+	CXgJ12fH44DI44Q6jIOVaPcrpEDcX+QaWUTc0aiv8/aGlnCWL7MQz/lxW7HKq84=
+X-Google-Smtp-Source: AGHT+IGiGod9W2YM4YZ6sUKkrNh7qVjymDesOFOXF8mtdCcbqIFTzGM2YQaR07gH4KtP9j0849dGZQ==
+X-Received: by 2002:a17:906:339a:b0:a44:ff95:3911 with SMTP id v26-20020a170906339a00b00a44ff953911mr11831490eja.66.1709882267100;
+        Thu, 07 Mar 2024 23:17:47 -0800 (PST)
+Received: from smtpclient.apple (clnet-p106-198.ikbnet.co.at. [83.175.106.198])
+        by smtp.gmail.com with ESMTPSA id f27-20020a170906085b00b00a44ef54b6b6sm6582541ejd.58.2024.03.07.23.17.46
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 07 Mar 2024 23:17:46 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH v6 3/6] KEYS: trusted: Introduce NXP DCP-backed trusted
+ keys
+From: David Gstir <david@sigma-star.at>
+In-Reply-To: <CZNRMR5YZPQO.1QBLW62A6S840@kernel.org>
+Date: Fri, 8 Mar 2024 08:17:35 +0100
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <655221B7-634C-4493-A781-CF014DFFC8BF@sigma-star.at>
+References: <20240307153842.80033-1-david@sigma-star.at>
+ <20240307153842.80033-4-david@sigma-star.at>
+ <CZNRMR5YZPQO.1QBLW62A6S840@kernel.org>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+X-Mailer: Apple Mail (2.3774.400.31)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,47 +84,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Alistair Popple <apopple@nvidia.com>, x86@kernel.org, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, James Bottomley <jejb@linux.ibm.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, Paul Moore <paul@paul-moore.com>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" 
+ <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 07, 2024 at 02:12:33PM -0400, Jason Gunthorpe wrote:
-> On Wed, Mar 06, 2024 at 06:41:35PM +0800, peterx@redhat.com wrote:
-> > From: Peter Xu <peterx@redhat.com>
-> > 
-> > Swap pud entries do not always return true for pud_huge() for all archs.
-> > x86 and sparc (so far) allow it, but all the rest do not accept a swap
-> > entry to be reported as pud_huge().  So it's not safe to check swap entries
-> > within pud_huge().  Check swap entries before pud_huge(), so it should be
-> > always safe.
-> > 
-> > This is the only place in the kernel that (IMHO, wrongly) relies on
-> > pud_huge() to return true on pud swap entries.  The plan is to cleanup
-> > pXd_huge() to only report non-swap mappings for all archs.
-> > 
-> > Cc: Alistair Popple <apopple@nvidia.com>
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > ---
-> >  mm/hmm.c | 7 +------
-> >  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> > @@ -424,7 +424,7 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
-> >  	walk->action = ACTION_CONTINUE;
-> >  
-> >  	pud = READ_ONCE(*pudp);
-> > -	if (pud_none(pud)) {
-> > +	if (pud_none(pud) || !pud_present(pud)) {
-> 
-> Isn't this a tautology? pud_none always implies !present() ?
+Hi Jarkko,
 
-Hmm yes I think so, afact, it should be "all=none+swap+present". I still
-remember I missed that once previously, it's not always obvious when
-preparing such patches. :( I'll simplify this and also on patch 3.
+> On 07.03.2024, at 20:30, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+
+[...]
+
+>> +
+>> +static int trusted_dcp_init(void)
+>> +{
+>> + int ret;
+>> +
+>> + if (use_otp_key)
+>> + pr_info("Using DCP OTP key\n");
+>> +
+>> + ret =3D test_for_zero_key();
+>> + if (ret) {
+>> + pr_err("Test for zero'ed keys failed: %i\n", ret);
+>=20
+> I'm not sure whether this should err or warn.
+>=20
+> What sort of situations can cause the test the fail (e.g.
+> adversary/interposer, bad configuration etc.).
+
+This occurs when the hardware is not in "secure mode". I.e. it=E2=80=99s =
+a bad configuration issue.
+Once the board is properly configured, this will never trigger again.
+Do you think a warning is better for this then?
 
 Thanks,
-
--- 
-Peter Xu
+- David
 
