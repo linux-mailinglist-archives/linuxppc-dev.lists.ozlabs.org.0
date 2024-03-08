@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12403876548
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 14:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 729CE87654C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Mar 2024 14:28:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VZToW02V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OfkqnGF/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Trn6Q5bhDz3wHn
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Mar 2024 00:27:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Trn7C1QwLz3vr4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Mar 2024 00:28:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VZToW02V;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OfkqnGF/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrmtH4cyqz3vZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Mar 2024 00:17:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TrmtP5zLWz3vcs
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Mar 2024 00:17:33 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709903848; x=1741439848;
+  t=1709903854; x=1741439854;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Jf0Ify4PqkXxXfo1lgCW0RH1p8hV+xM9o246fKxlK4k=;
-  b=VZToW02VJjP4aVAIOE3yOnvaHCy+urr8FUlylwH6G9fbMygOOErmdIW5
-   Q+EffwzHh5TbM3+WbaTIP/wqdbM01t1zYjVDsmpnv1KzCIeZNcLafWPM3
-   WQ0vAV73O9kjSekpJtVO7WKm3KVEoNapM//IBjQdQ4Y9tAfOlKMvyWyi3
-   tNN5L125+fo9hKBt1QZI433sPpBTNNo3H1jDjpU7+AEpaKBMYnEVYKDzL
-   JzdhhqtB5Q/JCGHlC3a+IDwjfpAn2q5lKpplC30Zfunx+dHrdguNaN1lI
-   KdeVeyexL9RpF2/r5qqxV8YWV4UHcCPIFiUdu+kaqy35fDHlqUhPWjsFr
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15342602"
+  bh=zboSVI3HgVZXbpDBNnsTotqgGm69H9hHwUY1hZ67rA8=;
+  b=OfkqnGF/SoGxVbwqQrOxyL4/tBwLo/HfX+LiwCrmMTUCSrGWOVbLwfn7
+   rHcArpY3oJ+ibbjUPjBBDo/Amkv2t3YN2ObAo1CZNalS9ciVXTKWIWJHT
+   Iq9I6gOQENShcWvpXzjt+ZCNIFMuttBo8jgWTtdlOoUp57SBQ7negz+RC
+   cLdyTjJCzruYxuDayWuEgtNVaiF8NETHjMm24jBYBELItMaMuo+iu4o1Q
+   QXwAGn5yfd5cR3WGlXvBfqFp8vJKIJGs+qQ34WxxMufQWI7LlwqNQTYaD
+   b3caxxmIr20edxDHe6Gob+Rq3amKZZiA53OAjC10GunPgCe03eZouWd0A
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="15342638"
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="15342602"
+   d="scan'208";a="15342638"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:23 -0800
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:30 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="15161463"
+   d="scan'208";a="15161489"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.249.46.63])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:16 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:16:23 -0800
 From: Adrian Hunter <adrian.hunter@intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 08/19] x86/vdso: Make delta calculation overflow safe
-Date: Fri,  8 Mar 2024 15:15:01 +0200
-Message-Id: <20240308131512.44324-9-adrian.hunter@intel.com>
+Subject: [PATCH 09/19] timekeeping: Move timekeeping helper functions
+Date: Fri,  8 Mar 2024 15:15:02 +0200
+Message-Id: <20240308131512.44324-10-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240308131512.44324-1-adrian.hunter@intel.com>
 References: <20240308131512.44324-1-adrian.hunter@intel.com>
@@ -70,84 +70,73 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kernel timekeeping is designed to keep the change in cycles (since the last
-timer interrupt) below max_cycles, which prevents multiplication overflow
-when converting cycles to nanoseconds. However, if timer interrupts stop,
-the calculation will eventually overflow.
-
-Add protection against that. Select GENERIC_VDSO_OVERFLOW_PROTECT so that
-max_cycles is made available in the VDSO data page. Check against
-max_cycles, falling back to a slower higher precision calculation. Take
-advantage of the opportunity to move masking and negative motion check
-into the slow path.
-
-The result is a calculation that has similar performance as before. Newer
-machines showed performance benefit, whereas older Skylake-based hardware
-such as Intel Kaby Lake was seen <1% worse.
+Move timekeeping helper functions to prepare for their reuse.
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- arch/x86/Kconfig                         |  1 +
- arch/x86/include/asm/vdso/gettimeofday.h | 29 +++++++++++++++++-------
- 2 files changed, 22 insertions(+), 8 deletions(-)
+ kernel/time/timekeeping.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 720b96388191..200f80a36593 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -168,6 +168,7 @@ config X86
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_GETTIMEOFDAY
- 	select GENERIC_VDSO_TIME_NS
-+	select GENERIC_VDSO_OVERFLOW_PROTECT
- 	select GUP_GET_PXX_LOW_HIGH		if X86_PAE
- 	select HARDIRQS_SW_RESEND
- 	select HARDLOCKUP_CHECK_TIMESTAMP	if X86_64
-diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
-index 5727dedd3549..0ef36190abe6 100644
---- a/arch/x86/include/asm/vdso/gettimeofday.h
-+++ b/arch/x86/include/asm/vdso/gettimeofday.h
-@@ -319,18 +319,31 @@ static inline bool arch_vdso_cycles_ok(u64 cycles)
-  */
- static __always_inline u64 vdso_calc_ns(const struct vdso_data *vd, u64 cycles, u64 base)
- {
-+	u64 delta = cycles - vd->cycle_last;
-+
- 	/*
-+	 * Negative motion and deltas which can cause multiplication
-+	 * overflow require special treatment. This check covers both as
-+	 * negative motion is guaranteed to be greater than @vd::max_cycles
-+	 * due to unsigned comparison.
-+	 *
- 	 * Due to the MSB/Sign-bit being used as invalid marker (see
--	 * arch_vdso_cycles_valid() above), the effective mask is S64_MAX.
-+	 * arch_vdso_cycles_valid() above), the effective mask is S64_MAX,
-+	 * but that case is also unlikely and will also take the unlikely path
-+	 * here.
- 	 */
--	u64 delta = (cycles - vd->cycle_last) & S64_MAX;
-+	if (unlikely(delta > vd->max_cycles)) {
-+		/*
-+		 * Due to the above mentioned TSC wobbles, filter out
-+		 * negative motion.  Per the above masking, the effective
-+		 * sign bit is now bit 62.
-+		 */
-+		if (delta & (1ULL << 62))
-+			return base >> vd->shift;
- 
--	/*
--	 * Due to the above mentioned TSC wobbles, filter out negative motion.
--	 * Per the above masking, the effective sign bit is now bit 62.
--	 */
--	if (unlikely(delta & (1ULL << 62)))
--		return base >> vd->shift;
-+		/* Handle multiplication overflow gracefully */
-+		return mul_u64_u32_add_u64_shr(delta & S64_MAX, vd->mult, base, vd->shift);
-+	}
- 
- 	return ((delta * vd->mult) + base) >> vd->shift;
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index b58dffc58a8f..3375f0a6400f 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -381,6 +381,23 @@ static inline u64 timekeeping_delta_to_ns(const struct tk_read_base *tkr, u64 de
+ 	return nsec;
  }
+ 
++static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
++{
++	u64 delta;
++
++	/* calculate the delta since the last update_wall_time */
++	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
++	return timekeeping_delta_to_ns(tkr, delta);
++}
++
++static __always_inline u64 fast_tk_get_delta_ns(struct tk_read_base *tkr)
++{
++	u64 delta, cycles = tk_clock_read(tkr);
++
++	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
++	return timekeeping_delta_to_ns(tkr, delta);
++}
++
+ static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+ {
+ 	u64 delta;
+@@ -389,15 +406,6 @@ static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+ 	return timekeeping_delta_to_ns(tkr, delta);
+ }
+ 
+-static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
+-{
+-	u64 delta;
+-
+-	/* calculate the delta since the last update_wall_time */
+-	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
+-	return timekeeping_delta_to_ns(tkr, delta);
+-}
+-
+ /**
+  * update_fast_timekeeper - Update the fast and NMI safe monotonic timekeeper.
+  * @tkr: Timekeeping readout base from which we take the update
+@@ -431,14 +439,6 @@ static void update_fast_timekeeper(const struct tk_read_base *tkr,
+ 	memcpy(base + 1, base, sizeof(*base));
+ }
+ 
+-static __always_inline u64 fast_tk_get_delta_ns(struct tk_read_base *tkr)
+-{
+-	u64 delta, cycles = tk_clock_read(tkr);
+-
+-	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
+-	return timekeeping_delta_to_ns(tkr, delta);
+-}
+-
+ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
+ {
+ 	struct tk_read_base *tkr;
 -- 
 2.34.1
 
