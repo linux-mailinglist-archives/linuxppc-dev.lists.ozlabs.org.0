@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE04879E23
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 23:03:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7849F879E24
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 23:04:24 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=T2nfT/Vt;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=d6geoe/1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvSMZ5WC2z3vcK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 09:03:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvSNQ1tBpz3vfL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 09:04:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=T2nfT/Vt;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=d6geoe/1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::12f; helo=mail-il1-x12f.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvSLc4n5mz3dX6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 09:02:48 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6da202aa138so3959678b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 15:02:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvSM14wg2z3vXQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 09:03:09 +1100 (AEDT)
+Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-3662d7c79a9so2193675ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 15:03:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1710280967; x=1710885767; darn=lists.ozlabs.org;
+        d=chromium.org; s=google; t=1710280986; x=1710885786; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1akdFCp/NrQTZkdZoE61av7sk42pTtpjjQoFP3uV05s=;
-        b=T2nfT/VtmTO9Z9+bEUHrhzWl3IkoeGOYVNqTUS5CIky+DigMrReGquPkVJzFrSOjgu
-         OsWuqii1jJZP7BdKr1W7ejEHdNMAqd/b/fKMvxoJ/t+LTelI4AMvbYKbj18jway+/mfe
-         VxO8JmvR3euPZLj1vk0W1eQIHJYyleiXitwAE=
+        bh=bFZkOPzjUiG9hBeGxmULl/XMqNk9IbEaqEvdeXcgD8s=;
+        b=d6geoe/1ad/5MMooAQmdvEdjI9PVZCNrDEXSjzc4wsX1ocH/XPFsTnIgYJbn8kU4W2
+         HJqs+7vh1/fzA+z72BiFbZC/xAP8ckNbleRtLfk73KFf4/+41tXXA9NiCQ79Oucq52Ju
+         3F4Re/AOUHAgQCa0uszScC6mHwAwCa9EYSFDA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710280967; x=1710885767;
+        d=1e100.net; s=20230601; t=1710280986; x=1710885786;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1akdFCp/NrQTZkdZoE61av7sk42pTtpjjQoFP3uV05s=;
-        b=vKgme03lmKW7WGydJKJm09qXikxa2mNirZN+Xth1WerZ63pUvie/LzgNyS2YPZe8Sg
-         a7AaT2XKuFGo/xmeFOOoXtvCDWpGxEzqWnGoehbsL4Llt9Me9z2lIVc61Ep53wEO83V/
-         ecFTkB2XbVEgpG/n9M+o18ViOmSxvb4xsnGNvcR4a8iiRfG0SY/t2mim6xPV4rpSZkRc
-         /Pqemh5QLqk3JLR974EZrkb7Upq6Sb2A4ZlwLqh9ocCuiIpzhlFKkqtFG/queWEtlBKU
-         dnJQP2OI5oussJIKUSfhOJ3ioPKI2cKroNiN+4mlo0KAVfl/AWSnI1VSeJ7EkQGAnnm2
-         Kw+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXlG1e/ePCE421PRDaLE6JROpp45PSQzrIKY2xH0k3qzddDFsshW2WFcgImZKCkLbL9qbtzfvMwSqNFeqdMSmp9UuII3zayaeMJBeXmXg==
-X-Gm-Message-State: AOJu0YxI+8RUQcLdRIeIqBNOrrlmltZjefKNYbn8SPSBHU7QJhi8ye1h
-	kvaEQVQnibzz3wMT9iILq0oFumeX3mkfrwQ2CWF/XjLn2ITJC0IObdufDlIYyw==
-X-Google-Smtp-Source: AGHT+IFKZ+X2o3xvUM/DPjpn5dJMdSK/7jBm9riFOy6GxFDG2jNN2P7xmSx2+ecCvjPJ+atiR43WGA==
-X-Received: by 2002:a05:6a20:9382:b0:1a0:efd0:b183 with SMTP id x2-20020a056a20938200b001a0efd0b183mr14145890pzh.44.1710280967019;
-        Tue, 12 Mar 2024 15:02:47 -0700 (PDT)
+        bh=bFZkOPzjUiG9hBeGxmULl/XMqNk9IbEaqEvdeXcgD8s=;
+        b=HYNqN04W/w8bM44tIvanAsm34ZFjd3hRONFxSdhrlxYLpvHjKlhIQG7OyJ0LkARh+h
+         9XFSF3XqxZJdUANlHoSEqGvBccfrYh3S1R31h13gIxYE2ia8GpFc1lR9EtT/qRArUM3H
+         vO43wM3CoUE08GUOZCCX7aQXyhEyCwI40u09mXdQHxMZOoF10v4ZLp8J5KbZJeLGQBH5
+         sLHnET36bmdACcVjzWrotfKhPCvFH4zwqjhW0j/IQnDZwmV+K9G/f0tEOg/uSrHHcbjY
+         FdtqHNNSfCSEy9tO9ng9Mipd76SdB2Rur4WCZ5tA882DRmD5QHUuqbc2sosGo7YUws9S
+         GWlw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEHCjRIAHwPfkHUCyabj7EZYaZFrmquvH289bbn0QBS6z6cZSis8JYcdjWjxpvw80fhHBygM1hsIeYYINkJCtm8VfSdKqcNQbluctkyg==
+X-Gm-Message-State: AOJu0YxoG2hatSEQx3BADByNf4qQgH+60l+bd7wuvsYy2x8QvM2Abw7b
+	e7zNnsF3Vma/UuqrudN0ohArT8Bxx5Kg7SeJ89fNMKkF/ugQpUtk2ysAGYE5YQ==
+X-Google-Smtp-Source: AGHT+IEdwN1SY2GeciEHPDmRWgTgdPa04evl6KEFQYoPJeYQSV2BmWI4216WoCmzy6l7zJDsrZVhNw==
+X-Received: by 2002:a6b:e719:0:b0:7c8:bf15:5653 with SMTP id b25-20020a6be719000000b007c8bf155653mr4918871ioh.20.1710280986087;
+        Tue, 12 Mar 2024 15:03:06 -0700 (PDT)
 Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id e11-20020a17090301cb00b001dd6c0800b4sm7193896plh.188.2024.03.12.15.02.46
+        by smtp.gmail.com with ESMTPSA id m14-20020a63ed4e000000b005dc816b2369sm6650251pgk.28.2024.03.12.15.03.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 15:02:46 -0700 (PDT)
-Date: Tue, 12 Mar 2024 15:02:46 -0700
+        Tue, 12 Mar 2024 15:03:05 -0700 (PDT)
+Date: Tue, 12 Mar 2024 15:03:05 -0700
 From: Kees Cook <keescook@chromium.org>
 To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 03/14] kunit: Add test cases for backtrace warning
- suppression
-Message-ID: <202403121502.95F27A01@keescook>
+Subject: Re: [PATCH 04/14] kunit: Add documentation for warning backtrace
+ suppression API
+Message-ID: <202403121503.B97DE8A60E@keescook>
 References: <20240312170309.2546362-1-linux@roeck-us.net>
- <20240312170309.2546362-4-linux@roeck-us.net>
+ <20240312170309.2546362-5-linux@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240312170309.2546362-4-linux@roeck-us.net>
+In-Reply-To: <20240312170309.2546362-5-linux@roeck-us.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,12 +82,8 @@ Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freede
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 12, 2024 at 10:02:58AM -0700, Guenter Roeck wrote:
-> Add unit tests to verify that warning backtrace suppression works.
-> 
-> If backtrace suppression does _not_ work, the unit tests will likely
-> trigger unsuppressed backtraces, which should actually help to get
-> the affected architectures / platforms fixed.
+On Tue, Mar 12, 2024 at 10:02:59AM -0700, Guenter Roeck wrote:
+> Document API functions for suppressing warning backtraces.
 > 
 > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
