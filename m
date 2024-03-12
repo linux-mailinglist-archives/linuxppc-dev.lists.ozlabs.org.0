@@ -1,98 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30CE879C4D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 20:37:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00D9879C88
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 21:02:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IzMtufyi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hZUjP/D6;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZKQ3snpr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvP7R4DwTz3dd4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 06:37:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvPgN4wDHz3dXC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 07:02:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IzMtufyi;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hZUjP/D6;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZKQ3snpr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvP6j451yz3dRp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 06:37:16 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CIus7Y012523;
-	Tue, 12 Mar 2024 19:37:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=80wPmnITO8gQWN+zUxQmSA2ZI8Fawb2/8IYwf+7K3Eg=;
- b=IzMtufyiFM/OdIcCkMkaKiA8BgSUs0K1/85+EtVOt7mwUJ3KS8AsWLpSpPJj35cTAcQ2
- AAtomTwt6pMCSyxcifJwjvXcrEEWlei2AyaAXJTef8ahfGdk/XcNe2pldBIDtreG3Vbl
- wJckCl5ufl/XCRbSx27kKTkoUaCjDovFkTJpqAKtir2J531YtbipeZ1icqg2DEiMwlel
- aj4qNov4U2NjlJWRKz3eU2A0T0dmn7415ocCk0+Y7QJnFCjFMgdCktZ+pDgDGASSmwoE
- 9JKbQLV/kLoU1LeI5BmKyrIVQUyi3ZUmMOlejvZhzE1xwBKFv6GBQ/KpnLRPPoszMDzq mw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtvs90hd6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 19:37:09 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42CJRFxI017257;
-	Tue, 12 Mar 2024 19:37:08 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtvs90hcs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 19:37:08 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42CJNleX018581;
-	Tue, 12 Mar 2024 19:37:07 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4t20pw5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 19:37:07 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42CJb4mf47251884
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Mar 2024 19:37:06 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8CDB558063;
-	Tue, 12 Mar 2024 19:37:04 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA3D35804B;
-	Tue, 12 Mar 2024 19:37:03 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Mar 2024 19:37:03 +0000 (GMT)
-Message-ID: <81cd893e-46c3-4d38-aa93-8ab410a770ea@linux.ibm.com>
-Date: Tue, 12 Mar 2024 15:37:03 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvPfb4YKHz3cV5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 07:01:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710273681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sq8Q7APw4DcVkqWc+oejv1fuFkz+jT1GPn/e6E4W0Yk=;
+	b=hZUjP/D6J9pwOvjbXWl/TnnGrlwZOagSjLsshCH2LeYVshMTIYUmknyoagJorD1uvevAfF
+	a4nng9HJSzz+frcTyPIb6Rpc0GujIDxIIj10rjzImhujng22bOa8AktSwu7TrDvbJT3xlO
+	BbO5RM739tlIkETH9sPjBcrtdeoDA6w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710273682;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sq8Q7APw4DcVkqWc+oejv1fuFkz+jT1GPn/e6E4W0Yk=;
+	b=ZKQ3snpri8r+3q9plO5BJ7tIv5PnKEWn3i3GPhYPbD1Yezz1guiDCuECvT/2aeu6l1Cq/T
+	lRek4cHQVG7OZb3kGzf/Laa8z+EYkjyvJ3MtT6zB5v2JYZc945iz532YRsbS1IqHabq1cw
+	nSNUtG2aW+Cehope1/h1EuE9mPvAS8s=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-190-QrdOiWhhPe-eFx_NUA9wQg-1; Tue, 12 Mar 2024 16:01:18 -0400
+X-MC-Unique: QrdOiWhhPe-eFx_NUA9wQg-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-42ed8fb8ce0so5362891cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 13:01:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710273677; x=1710878477;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sq8Q7APw4DcVkqWc+oejv1fuFkz+jT1GPn/e6E4W0Yk=;
+        b=sYq8+nTbIFBMrwgd+52vllIFweuUmvWBYECfBwJyo9yjxr8uMDBnVzNB225kJ7pL9A
+         0lRuAFgXeXGssByjfQdIKiAnNFYLbY3Iza4SJD34lrtH5qnTxRl9RYNc0qbyT/kNbknF
+         U5dcZDPWXuH9rBns6wFbtj6KUWLd4/UM0zloTOvtpBTUia5QQFLLTMMFB03/hLpU+z4T
+         tdaVNEdxvQRyUu0I3/VHrtZJhmKUmx/JRrmTQjES6CZi+39GttAO4CNgF/iuyqq5Rfxb
+         Eu8Vv3e8G7x+IGJNkOTNmwQmc0Kegi6zXbRA63jq5gUbH1HmCRvIkJgrgOTCVaRvTAUr
+         GA/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW1CEzqmEh+ecPDiso08uQwbQjcy2mpzkQ7ae8Ul0r+v4CoKY0WkXWWTJH+5+JebQbvOD15p4j7pt/Rq0a3kpBA+FJp8rcmtbzMSKyT8g==
+X-Gm-Message-State: AOJu0YwJv58Bak8K5L8kOwC6URGzUErksqo5EQyHInqL9Hk5kftFRcwB
+	UXXZ3mJ2swvug6QU0AQC4+Z4AiEglJNIkxJf2Mbs9tsQhic63HoKQm9xM57YHsx3wOuTPNtNQ0X
+	NZnqX/bs37bRi+5iYy3nXFAwPoiv+BWSR1a1KIneBzWyVUcks8zhQ0DzU/aibTSM=
+X-Received: by 2002:a05:620a:2715:b0:788:79d3:402e with SMTP id b21-20020a05620a271500b0078879d3402emr3492050qkp.7.1710273677510;
+        Tue, 12 Mar 2024 13:01:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFci8LJ7emFKeNaMhqM4be32i5qK2b8ngNE0xIpit/UyC+7KzN+KAk6ieS3wmiUOL3/zXkrQ==
+X-Received: by 2002:a05:620a:2715:b0:788:79d3:402e with SMTP id b21-20020a05620a271500b0078879d3402emr3492030qkp.7.1710273677131;
+        Tue, 12 Mar 2024 13:01:17 -0700 (PDT)
+Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id f18-20020a05620a12f200b007882915ca34sm3977850qkl.40.2024.03.12.13.01.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Mar 2024 13:01:16 -0700 (PDT)
+Date: Tue, 12 Mar 2024 16:01:14 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH RFC 00/13] mm/treewide: Remove pXd_huge() API
+Message-ID: <ZfC0ioxUrCK5sX1k@x1n>
+References: <20240306104147.193052-1-peterx@redhat.com>
+ <f9b786bf-27d9-4e16-b8d2-2a2666d917df@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 3/3] tpm: of: If available use linux,sml-log to get
- the log and its size
-Content-Language: en-US
-To: Jarkko Sakkinen <jarkko@kernel.org>, mpe@ellerman.id.au,
-        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20240311132030.1103122-1-stefanb@linux.ibm.com>
- <20240311132030.1103122-4-stefanb@linux.ibm.com>
- <CZR7B45P71XS.53XNZD9FWZSL@kernel.org>
- <916fb19b-daf8-4c1b-bc25-f071d2b3ae33@linux.ibm.com>
- <CZRVXE96ZZA8.33VFES8S07YS9@kernel.org>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CZRVXE96ZZA8.33VFES8S07YS9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uYpch5nFxdfwWQwYQw4GeJGEeaWxQcn8
-X-Proofpoint-ORIG-GUID: B-r6TN2dDjIyVKTP_5HXBJqJIT_DYiuG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_12,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 suspectscore=0 priorityscore=1501 phishscore=0
- mlxlogscore=999 bulkscore=0 impostorscore=0 adultscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403120150
+In-Reply-To: <f9b786bf-27d9-4e16-b8d2-2a2666d917df@csgroup.eu>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,82 +98,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, rnsastry@linux.ibm.com, jsnitsel@redhat.com, linux-kernel@vger.kernel.org, peterhuewe@gmx.de, viparash@in.ibm.com
+Cc: "x86@kernel.org" <x86@kernel.org>, Muchun Song <muchun.song@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi, Christophe,
 
+On Mon, Mar 11, 2024 at 09:58:47AM +0000, Christophe Leroy wrote:
+> Hi Peter, and nice job you are doing in cleaning up things around _huge 
+> stuff.
 
-On 3/12/24 11:43, Jarkko Sakkinen wrote:
-> On Mon Mar 11, 2024 at 10:33 PM EET, Stefan Berger wrote:
->>
->>
->> On 3/11/24 16:25, Jarkko Sakkinen wrote:
->>> On Mon Mar 11, 2024 at 3:20 PM EET, Stefan Berger wrote:
->>>> If linux,sml-log is available use it to get the TPM log rather than the
->>>> pointer found in linux,sml-base. This resolves an issue on PowerVM and KVM
->>>> on Power where after a kexec the memory pointed to by linux,sml-base may
->>>> have become inaccessible or corrupted. Also, linux,sml-log has replaced
->>>> linux,sml-base and linux,sml-size on these two platforms.
->>>>
->>>> Keep the handling of linux,sml-base/sml-size for powernv platforms that
->>>> provide the two properties via skiboot.
->>>>
->>>> Fixes: c5df39262dd5 ("drivers/char/tpm: Add securityfs support for event log")
->>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>>
->>> I'm worried about not being up to date and instead using "cached" values
->>> when verifying anything from a security chip. Does this guarantee that
->>> TPM log is corrupted and will not get updated somehow?
->>
->>
->> What do you mean 'guarantee that TPM log is corrupted'?
-> 
-> I presume that this is for power architecture but I have no idea what
-
-Yes it is for Power. From commit message above: "This resolves an issue 
-on PowerVM and KVM on Power where after a kexec the memory pointed to by 
-linux,sml-base may have become inaccessible or corrupted."
-
-> leads log being corrupted, and is the scope all of that that arch or
-> some subset of CPUs.
-
-Every CPU will see a corrupted log.
+Thanks.  I appreciate your help along the way on Power.
 
 > 
-> The commit message is not very detailed on kexec scenario. It more like
-
-I guess what is missing in the message that the buffer was not properly 
-protected during the kexec and may have been overwritten for example 
-since it was mistakenly assumed to be free memory?
-
-> assumes that reader knows all the detail beforehand. So probably this
-> will start to make sense once the backing story is improved, that's
-> all.
+> One thing that might be worth looking at also at some point is the mess 
+> around pmd_clear_huge() and pud_clear_huge().
 > 
->> The TPM was handed over from the firmware to Linux and the firmware then
->> freed all memory associated with the log and will then not create a new
->> log or touch the TPM or do anything that would require an update to the
->> handed-over log. Linux also does not append to the firmware log. So
->> whatever we now find in linux,sml-log would be the latest firmware log
->> and the state of the 'firmware PCRs' computed from it should correspond
->> to the current state of the 'firmware PCRs'.
+> I tried to clean things up with commit c742199a014d ("mm/pgtable: add 
+> stubs for {pmd/pub}_{set/clear}_huge") but it was reverted because of 
+> arm64 by commit d8a719059b9d ("Revert "mm/pgtable: add stubs for 
+> {pmd/pub}_{set/clear}_huge"")
 > 
-> So on what CPU this happens and is there any bigger picture for that
-> design choice in the firmware?
+> So now powerpc/8xx has to implement pmd_clear_huge() and 
+> pud_clear_huge() allthough 8xx page hierarchy only has 2 levels.
 
-The firmware provides a call sml-handover, which hands over the TPM log 
-to the caller and at the same time frees the log. You cannot call the 
-firmware a 2nd time for the log.
+Those are so far out of my radar, as my focus right now is still more on
+hugetlbfs relevant side of things, while kernel mappings are not yet
+directly involved in hugetlbfs, even though they're still huge mappings.
 
-> 
-> If it is a firmware bug, this should emit FW_BUG log message. If not,
-> then this commit message should provide the necessary context.
+It's a pity to know that broke arm and got reverted, as that looks like a
+good thing to clean it up if ever possible.  I tend to agree with you that
+it seems for 3lvl we should define pgd_huge*() instead of pud_huge*(), so
+that it looks like the only way to provide such a treewide clean API is to
+properly define those APIs for aarch64, and define different pud helpers
+for either 3/4 levels.  But I confess I don't think I fully digested all
+the bits.
 
-It's not a firmware bug. The issue is that the buffer holding the TPM 
-log is not properly carried across a kexec soft reboot and may for 
-example have been overwritten since it was assumed to be free memory.
+Thanks,
 
-> 
-> BR, Jarkko
-> 
+-- 
+Peter Xu
+
