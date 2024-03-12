@@ -2,54 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D740E8792BB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 12:08:32 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KfNPgIqS;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id A81C98792CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 12:17:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tv9qf4jhrz3dSn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 22:08:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvB1R3kqkz3vZL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 22:16:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KfNPgIqS;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=h08.hostsharing.net (client-ip=2a01:4f8:150:2161:1:b009:f23e:0; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 314 seconds by postgrey-1.37 at boromir; Tue, 12 Mar 2024 22:16:38 AEDT
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [IPv6:2a01:4f8:150:2161:1:b009:f23e:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tv9pz1nVJz3bws
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 22:07:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1710241675;
-	bh=lcy9Eb1cZW7ubgW871++ju60s8L1NTUuFdFau4whLVs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KfNPgIqS2pK4ZAGExh6slU7/0hwPWNQAPXef7O0hrKvIxYmJqPFgpJeT3ZyF/JkMf
-	 FLxgVTnVmI73qTgJJnVzls0uClnBtBC18gXkH5OD9dK7fnJP44BVpZEoXHKWzSo7Up
-	 wf/WEZk6oLO8DDyRVJBhT8hs84y1CVgnSUq7vn4xFYd7yY8rpxbxk5do1hERxFjaJB
-	 lQD+SKxtq1i3munPZUYm6Gwy9P6PeVCIdEgAVo/yWgUNJ9btgk/PSVfJe4QU7R0FZA
-	 t6cxSL3H8MOY/F/rT0ssP5GyJehmvw0FrI1FPJTsshj1/1SKm7dKpUGcYOxYtj6X94
-	 AlUBuJxmdMK8Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvB122HPjz3bpp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 22:16:38 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tv9pz00lQz4x0n;
-	Tue, 12 Mar 2024 22:07:54 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Breno Leitao <leitao@debian.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/kernel: Fix potential spectre v1 in syscall
-In-Reply-To: <ZfAa59Z8njiGUnRW@gmail.com>
-References: <1534876926-21849-1-git-send-email-leitao@debian.org>
- <baf6af2b-d6e1-4df8-9466-98d19f8c765f@csgroup.eu>
- <ZfAa59Z8njiGUnRW@gmail.com>
-Date: Tue, 12 Mar 2024 22:07:54 +1100
-Message-ID: <874jdb4sj9.fsf@mail.lhotse>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id E95E1100DA1D9;
+	Tue, 12 Mar 2024 12:11:09 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id AFE422BC2D8; Tue, 12 Mar 2024 12:11:09 +0100 (CET)
+Date: Tue, 12 Mar 2024 12:11:09 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [RFC PATCH v2 2/3] dt-bindings: tpm: Add linux,sml-log to
+ ibm,vtpm.yaml
+Message-ID: <ZfA4TZspY7oOQ4vz@wunner.de>
+References: <20240311132030.1103122-1-stefanb@linux.ibm.com>
+ <20240311132030.1103122-3-stefanb@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311132030.1103122-3-stefanb@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,46 +49,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, rnsastry@linux.ibm.com, Nayna Jain <nayna@linux.ibm.com>, jsnitsel@redhat.com, linux-kernel@vger.kernel.org, jarkko@kernel.org, linux-integrity@vger.kernel.org, viparash@in.ibm.com, linuxppc-dev@lists.ozlabs.org, peterhuewe@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Breno Leitao <leitao@debian.org> writes:
-> On Tue, Mar 12, 2024 at 08:17:42AM +0000, Christophe Leroy wrote:
->> +Nathan as this is RTAS related.
->>=20
->> Le 21/08/2018 =C3=A0 20:42, Breno Leitao a =C3=A9crit=C2=A0:
->> > The rtas syscall reads a value from a user-provided structure and uses=
- it
->> > to index an array, being a possible area for a potential spectre v1 at=
-tack.
->> > This is the code that exposes this problem.
->> >=20
->> > 	args.rets =3D &args.args[nargs];
->> >=20
->> > The nargs is an user provided value, and the below code is an example =
-where
->> > the 'nargs' value would be set to XX.
->> >=20
->> > 	struct rtas_args ra;
->> > 	ra.nargs =3D htobe32(XX);
->> > 	syscall(__NR_rtas, &ra);
->>=20
->>=20
->> This patch has been hanging around in patchwork since 2018 and doesn't=20
->> apply anymore. Is it still relevant ? If so, can you rebase et resubmit ?
->
-> This seems to be important, since nargs is a user-provided value. I can
-> submit it if the maintainers are willing to accept. I do not want to
-> spend my time if no one is willing to review it.
+On Mon, Mar 11, 2024 at 09:20:29AM -0400, Stefan Berger wrote:
+> Add linux,sml-log, which carries the firmware TPM log in a uint8-array, to
+> the properties. Either this property is required or both linux,sml-base and
+> linux,sml-size are required. Add a test case for verification.
+> 
+> Fixes: 82003e0487fb ("Documentation: tpm: add the IBM Virtual TPM device tree binding documentation")
 
-My memory is that I didn't think it was actually a problem, because all
-we do is memset args.rets to zero. I thought I'd talked to you on Slack
-about it, but maybe I didn't.
+The Fixes tag is confusing.  The patch won't even apply cleanly to the
+v4.10 commit referenced here as the conversion to yaml happened only
+recently with v6.8.
 
-Anyway we should probably just fix it to be safe and keep the static
-checkers happy.
+Why is the Fixes tag necessary in the first place?  Same question for
+the other patches in the series.  This looks like feature work rather
+than a fix.  Not sure whether it satisfies the "obviously correct"
+rule per Documentation/process/stable-kernel-rules.rst.
 
-I'll rebase it and apply it, I'm sure you've got better things to do :)
 
-cheers
+> --- a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> +++ b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
+> @@ -74,8 +74,6 @@ required:
+>    - ibm,my-dma-window
+>    - ibm,my-drc-index
+>    - ibm,loc-code
+> -  - linux,sml-base
+> -  - linux,sml-size
+
+I assume that either these two or the new "linux,sml-log" property
+are (still) required?  If so, a quick grep through the bindings
+(e.g. auxdisplay/img,ascii-lcd.yaml) shows that the following
+might work:
+
+required:
+  - ...
+
+oneOf:
+  - required:
+      - linux,sml-base
+  - required:
+      - linux,sml-log
+
+
+> --- a/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> +++ b/Documentation/devicetree/bindings/tpm/tpm-common.yaml
+> @@ -30,6 +30,11 @@ properties:
+>        size of reserved memory allocated for firmware event log
+>      $ref: /schemas/types.yaml#/definitions/uint32
+>  
+> +  linux,sml-log:
+> +    description:
+> +      Content of firmware event log
+
+Please add one or two sentences of context so that readers don't
+need to use git blame + git log to find out what this is for.
+(Mention at least that the property may be used to pass the log
+to a kexec kernel.)
+
+
+> -# must only have either memory-region or linux,sml-base
+> +# must only have either memory-region or linux,sml-base/size or linux,sml-log
+>  # as well as either resets or reset-gpios
+>  dependentSchemas:
+>    memory-region:
+>      properties:
+>        linux,sml-base: false
+> +      linux,sml-log: false
+>    linux,sml-base:
+>      properties:
+>        memory-region: false
+> +      linux,sml-log: false
+> +  linux,sml-log:
+> +    properties:
+> +      memory-region: false
+> +      linux,sml-base: false
+> +      linux,sml-size: false
+
+Could you add "linux,sml-size: false" to "memory-region" as well
+while at it for consistency?
+
+Thanks,
+
+Lukas
