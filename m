@@ -1,92 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00D9879C88
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 21:02:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C821C879E05
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 23:01:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hZUjP/D6;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZKQ3snpr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h3rW0w7J;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvPgN4wDHz3dXC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 07:02:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvSKV4jWKz3dXc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 09:01:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hZUjP/D6;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZKQ3snpr;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h3rW0w7J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvPfb4YKHz3cV5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 07:01:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710273681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sq8Q7APw4DcVkqWc+oejv1fuFkz+jT1GPn/e6E4W0Yk=;
-	b=hZUjP/D6J9pwOvjbXWl/TnnGrlwZOagSjLsshCH2LeYVshMTIYUmknyoagJorD1uvevAfF
-	a4nng9HJSzz+frcTyPIb6Rpc0GujIDxIIj10rjzImhujng22bOa8AktSwu7TrDvbJT3xlO
-	BbO5RM739tlIkETH9sPjBcrtdeoDA6w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710273682;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sq8Q7APw4DcVkqWc+oejv1fuFkz+jT1GPn/e6E4W0Yk=;
-	b=ZKQ3snpri8r+3q9plO5BJ7tIv5PnKEWn3i3GPhYPbD1Yezz1guiDCuECvT/2aeu6l1Cq/T
-	lRek4cHQVG7OZb3kGzf/Laa8z+EYkjyvJ3MtT6zB5v2JYZc945iz532YRsbS1IqHabq1cw
-	nSNUtG2aW+Cehope1/h1EuE9mPvAS8s=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-QrdOiWhhPe-eFx_NUA9wQg-1; Tue, 12 Mar 2024 16:01:18 -0400
-X-MC-Unique: QrdOiWhhPe-eFx_NUA9wQg-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-42ed8fb8ce0so5362891cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 13:01:18 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvSJf5nQwz2xPZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 09:01:04 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-29be5386b74so2218405a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 15:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1710280859; x=1710885659; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lLq08iYnVcnWuDzFJHO0LDnyeIZ1/WCj/v6YSvUnsiY=;
+        b=h3rW0w7JxwshCDQ9yWB8qYoNyW+zFuVa+L8eDwMaYIb8V68oQI0dyVClRmj2p7k7vn
+         tIymHU41CO/rPUYlZ7akcpRfDlNzBmnE7zWXqH3MdrHvkC6Mp7tx/jm6mKPc4TjqDWM0
+         elj5fXt+vC4KsjYcx2AjV6mp/HGT4fhuOso8E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710273677; x=1710878477;
+        d=1e100.net; s=20230601; t=1710280859; x=1710885659;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sq8Q7APw4DcVkqWc+oejv1fuFkz+jT1GPn/e6E4W0Yk=;
-        b=sYq8+nTbIFBMrwgd+52vllIFweuUmvWBYECfBwJyo9yjxr8uMDBnVzNB225kJ7pL9A
-         0lRuAFgXeXGssByjfQdIKiAnNFYLbY3Iza4SJD34lrtH5qnTxRl9RYNc0qbyT/kNbknF
-         U5dcZDPWXuH9rBns6wFbtj6KUWLd4/UM0zloTOvtpBTUia5QQFLLTMMFB03/hLpU+z4T
-         tdaVNEdxvQRyUu0I3/VHrtZJhmKUmx/JRrmTQjES6CZi+39GttAO4CNgF/iuyqq5Rfxb
-         Eu8Vv3e8G7x+IGJNkOTNmwQmc0Kegi6zXbRA63jq5gUbH1HmCRvIkJgrgOTCVaRvTAUr
-         GA/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW1CEzqmEh+ecPDiso08uQwbQjcy2mpzkQ7ae8Ul0r+v4CoKY0WkXWWTJH+5+JebQbvOD15p4j7pt/Rq0a3kpBA+FJp8rcmtbzMSKyT8g==
-X-Gm-Message-State: AOJu0YwJv58Bak8K5L8kOwC6URGzUErksqo5EQyHInqL9Hk5kftFRcwB
-	UXXZ3mJ2swvug6QU0AQC4+Z4AiEglJNIkxJf2Mbs9tsQhic63HoKQm9xM57YHsx3wOuTPNtNQ0X
-	NZnqX/bs37bRi+5iYy3nXFAwPoiv+BWSR1a1KIneBzWyVUcks8zhQ0DzU/aibTSM=
-X-Received: by 2002:a05:620a:2715:b0:788:79d3:402e with SMTP id b21-20020a05620a271500b0078879d3402emr3492050qkp.7.1710273677510;
-        Tue, 12 Mar 2024 13:01:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGFci8LJ7emFKeNaMhqM4be32i5qK2b8ngNE0xIpit/UyC+7KzN+KAk6ieS3wmiUOL3/zXkrQ==
-X-Received: by 2002:a05:620a:2715:b0:788:79d3:402e with SMTP id b21-20020a05620a271500b0078879d3402emr3492030qkp.7.1710273677131;
-        Tue, 12 Mar 2024 13:01:17 -0700 (PDT)
-Received: from x1n (cpe688f2e2cb7c3-cm688f2e2cb7c0.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id f18-20020a05620a12f200b007882915ca34sm3977850qkl.40.2024.03.12.13.01.15
+        bh=lLq08iYnVcnWuDzFJHO0LDnyeIZ1/WCj/v6YSvUnsiY=;
+        b=L6KBExZnJ/l0zmUye5amdc9+g/OFCz15dTQkPn6hUFeli3HOOHbrhJwlb0uLnor/B1
+         ebZYVO+rLCsSwd26cdZN21JKoq1yj8VJiFOGGxSlCHEXElVCu5LFbNUolCddzGUNEbW/
+         /7DhNfj8pac4TZkjh+5gGqQ7LG6YCuWlvv39JQGNknKJrfuZgrH9LJRq6xAUnhK4wNvo
+         LTOgdpkYUxLzQcCs7jUE4D+ZMDL4AQxE1JgkXr//y7zl8mDoNm5cYHA+qQ77NAyf7d+e
+         7TchxBlmO6VPvT/RgYpqdVON/KidlW8wMwnv6ClU1vwfZQJfftq+EyTrtiRm3hI1kb1n
+         ApeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVuef7zWCBii0LXSfX5JoEir5vWqe1so0oV+S4sqaiNj0BTszS5/zSKcenv/SPphVu5Vr6YHPx1cSi/Vcl+ZUHKVRmuzpvmUaTnAPEn/g==
+X-Gm-Message-State: AOJu0YxY0gLjo2mAyuCYbKV5o+M4jQWXdfrZ6PBAg7VgByKD0s5kx1H/
+	S7nTRx3jKCQQuCCnAl8qF4dE9mLXTtGNJ1ZsiABiEqvC7E4owM0ryD/8gFmNDQ==
+X-Google-Smtp-Source: AGHT+IHdha0C7GHgTOtn+h7GC1nV2SuVFIKnwQ0XR5LyRaxyHLt5ciUVNw2VJKedo24c6BQYxDb+PA==
+X-Received: by 2002:a17:90a:8b02:b0:299:4cc5:aa25 with SMTP id y2-20020a17090a8b0200b002994cc5aa25mr2853635pjn.25.1710280859551;
+        Tue, 12 Mar 2024 15:00:59 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id u8-20020a170902e5c800b001ddb57a4dffsm2232631plf.132.2024.03.12.15.00.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 13:01:16 -0700 (PDT)
-Date: Tue, 12 Mar 2024 16:01:14 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH RFC 00/13] mm/treewide: Remove pXd_huge() API
-Message-ID: <ZfC0ioxUrCK5sX1k@x1n>
-References: <20240306104147.193052-1-peterx@redhat.com>
- <f9b786bf-27d9-4e16-b8d2-2a2666d917df@csgroup.eu>
+        Tue, 12 Mar 2024 15:00:59 -0700 (PDT)
+Date: Tue, 12 Mar 2024 15:00:58 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 01/14] bug/kunit: Core support for suppressing warning
+ backtraces
+Message-ID: <202403121500.64A2C02@keescook>
+References: <20240312170309.2546362-1-linux@roeck-us.net>
+ <20240312170309.2546362-2-linux@roeck-us.net>
 MIME-Version: 1.0
-In-Reply-To: <f9b786bf-27d9-4e16-b8d2-2a2666d917df@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240312170309.2546362-2-linux@roeck-us.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,44 +77,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "x86@kernel.org" <x86@kernel.org>, Muchun Song <muchun.song@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Jason Gunthorpe <jgg@nvidia.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>
+Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, netdev@lists.linux.dev, Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <a
+ kpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, Christophe,
-
-On Mon, Mar 11, 2024 at 09:58:47AM +0000, Christophe Leroy wrote:
-> Hi Peter, and nice job you are doing in cleaning up things around _huge 
-> stuff.
-
-Thanks.  I appreciate your help along the way on Power.
-
+On Tue, Mar 12, 2024 at 10:02:56AM -0700, Guenter Roeck wrote:
+> Some unit tests intentionally trigger warning backtraces by passing
+> bad parameters to API functions. Such unit tests typically check the
+> return value from those calls, not the existence of the warning backtrace.
 > 
-> One thing that might be worth looking at also at some point is the mess 
-> around pmd_clear_huge() and pud_clear_huge().
+> Such intentionally generated warning backtraces are neither desirable
+> nor useful for a number of reasons.
+> - They can result in overlooked real problems.
+> - A warning that suddenly starts to show up in unit tests needs to be
+>   investigated and has to be marked to be ignored, for example by
+>   adjusting filter scripts. Such filters are ad-hoc because there is
+>   no real standard format for warnings. On top of that, such filter
+>   scripts would require constant maintenance.
 > 
-> I tried to clean things up with commit c742199a014d ("mm/pgtable: add 
-> stubs for {pmd/pub}_{set/clear}_huge") but it was reverted because of 
-> arm64 by commit d8a719059b9d ("Revert "mm/pgtable: add stubs for 
-> {pmd/pub}_{set/clear}_huge"")
+> One option to address problem would be to add messages such as "expected
+> warning backtraces start / end here" to the kernel log.  However, that
+> would again require filter scripts, it might result in missing real
+> problematic warning backtraces triggered while the test is running, and
+> the irrelevant backtrace(s) would still clog the kernel log.
 > 
-> So now powerpc/8xx has to implement pmd_clear_huge() and 
-> pud_clear_huge() allthough 8xx page hierarchy only has 2 levels.
+> Solve the problem by providing a means to identify and suppress specific
+> warning backtraces while executing test code.
+> 
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Daniel Diaz <daniel.diaz@linaro.org>
+> Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-Those are so far out of my radar, as my focus right now is still more on
-hugetlbfs relevant side of things, while kernel mappings are not yet
-directly involved in hugetlbfs, even though they're still huge mappings.
+Yup, this looks fine to me.
 
-It's a pity to know that broke arm and got reverted, as that looks like a
-good thing to clean it up if ever possible.  I tend to agree with you that
-it seems for 3lvl we should define pgd_huge*() instead of pud_huge*(), so
-that it looks like the only way to provide such a treewide clean API is to
-properly define those APIs for aarch64, and define different pud helpers
-for either 3/4 levels.  But I confess I don't think I fully digested all
-the bits.
-
-Thanks,
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
 -- 
-Peter Xu
-
+Kees Cook
