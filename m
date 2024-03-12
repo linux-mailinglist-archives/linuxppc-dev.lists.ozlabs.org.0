@@ -2,58 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8616A8798DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 17:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CB78799BD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 18:04:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OW4iOzSu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KDhXB68a;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvJpy2gF4z3vX8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 03:23:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvKjp33Jsz3dVj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 04:03:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OW4iOzSu;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KDhXB68a;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvJpF3yJGz3cN9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 03:22:45 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 83ADFCE189A;
-	Tue, 12 Mar 2024 16:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97175C433F1;
-	Tue, 12 Mar 2024 16:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710260560;
-	bh=Ipf9zvhfvGw0qCLSPFs+Ov5pJgxtwIC4HDz+MvRXcl4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OW4iOzSuv4zzNFrLCz3VFKXt6F0ivI5jn4vCa1mqs2H6hgz2795jLI6HYxlb64Fwp
-	 nkbwtAtOuyivEwR1x8+/ZzmhqijkPRkUFUQeov6NPZy1axHDC8QpnbQEBsvpq95PWD
-	 beuftpHwgPAQ+PXkbHtiPZcRr5HxAhqF8xwJzJEEENED2oo+oooatgb8CrRr6+Njnu
-	 luU0iIyj6rtK/80WTEqIicYC4BdtDnpsGaySgtRRRVtawTW0siGOAEnBGEWCwlxMjX
-	 lFaFzgKirwKjAKcR46cYWc7zxjB6hRfIseNIVtwtdVDBNdZ3GzCS7VnrBea0SZU9zL
-	 C9OvBJqVWR7wA==
-Date: Tue, 12 Mar 2024 10:22:38 -0600
-From: Rob Herring <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/prom_init: Replace linux,sml-base/sml-size
- with linux,sml-log
-Message-ID: <20240312162238.GA2308643-robh@kernel.org>
-References: <20240306155511.974517-1-stefanb@linux.ibm.com>
- <20240306155511.974517-2-stefanb@linux.ibm.com>
- <87jzmenx2c.fsf@mail.lhotse>
- <20240307215214.GB3110385-robh@kernel.org>
- <851536a5-ad8f-4d65-8c33-707e2fe762df@linux.ibm.com>
- <20240308205751.GA1249866-robh@kernel.org>
- <87a5n34u5p.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvKj45zPrz3d2B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 04:03:19 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1dd6412da28so941035ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 10:03:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710262995; x=1710867795; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=WLftE/7MjlMuOSj897HlMQUMVZbmkOmcm7ijw8JWvLk=;
+        b=KDhXB68a8o7Smfpr4Jtb6qoFHtIkgXTtqNJlyJ8esXxrkpTkkD/UDr5srCwA654Xmy
+         iw97zrpwmIAgpzfeJgGIQ+2999Gzfp/QXi6bmGYsTQGM7Y42568qMtfVJHDI57fdEvlz
+         ji2thm1axoZEoffduKc1u4IJma3d7hMmKaC7X3OK0E2vs6kMEx9CtPD6A1iOcZlHAXOH
+         cZNgHdmpoWQ4cfVrySNClbK0TolU8HIGuGzWBwNtU+sGNt9bfXTXxulVcm1nNRuP8esx
+         gbcWrqAcyO9+bbhDUz+XRYPl4Uqqdo3KWfgt61dXBFfE8T4SigWLWC+S1/Kpc/rpsKqu
+         zZkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710262995; x=1710867795;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WLftE/7MjlMuOSj897HlMQUMVZbmkOmcm7ijw8JWvLk=;
+        b=c4jCk1lYlrNctChTupEai6A9NrgSbS4XJhpjdqqNWN9+Ao1CrVJFt1s+9xvF6pthpv
+         iAk/A32ElO5ZsSo5eEtoqSTWolFEQeldkKkaK4WqOIUAhoOvzqc4V9n9PripUDOsrcyP
+         9B/S8gihZyUqQj8WQlubpG6FXUO0paWBCZDuLzt+Jk1lcwjA+tyhDi/2gctn1JxkFhRB
+         Rjwplju8ViRCCS4ON0nYZN1fREghJYaDkPuj44Cb0oBePeonRJPbxbcaDsZa+JFO9Z+W
+         dpDyvIYyuH043Xv89CkBmg4RchLE7P5soY+NdCugzwOIjLKqZLt6ESee5vZdFcgvZp81
+         nKEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXS5EiK8rlaCo42ritzSywfG+So0uT0BPoORWXNieKNtWqMILyFUjZetjTRy3zPuN2IVDDz0fT64dx3BHbWlIdjxaXKCJO9cSLnJgmAig==
+X-Gm-Message-State: AOJu0YyDeZech2ymnUKl+v4xxOP/8fV+/IMU1FmEYqLLmg/LP8D/epZO
+	TIjdS2yZwXW3+Mq64pYYiCww6Gv9b00fYpAA8GzDfJ9kPul1H9lA
+X-Google-Smtp-Source: AGHT+IGoSNJSdzshXUinY0deqrpWSsXfjdp27VpnRBXFH0xqKuZltMGKwFFXD7x5fWGnOCLrPfDYHw==
+X-Received: by 2002:a17:902:7ec9:b0:1dd:b681:990e with SMTP id p9-20020a1709027ec900b001ddb681990emr2092458plb.36.1710262994820;
+        Tue, 12 Mar 2024 10:03:14 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170902c61400b001dd02f4c8fcsm6942533plr.139.2024.03.12.10.03.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Mar 2024 10:03:13 -0700 (PDT)
+From: Guenter Roeck <linux@roeck-us.net>
+To: linux-kselftest@vger.kernel.org
+Subject: [PATCH 00/14] Add support for suppressing warning backtraces
+Date: Tue, 12 Mar 2024 10:02:55 -0700
+Message-Id: <20240312170309.2546362-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a5n34u5p.fsf@mail.lhotse>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,87 +76,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org, jarkko@kernel.org, linux-integrity@vger.kernel.org, viparash@in.ibm.com, linuxppc-dev@lists.ozlabs.org, peterhuewe@gmx.de, Stefan Berger <stefanb@linux.ibm.com>
+Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Guenter Roeck <linux@roeck-us.net>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmerman
+ n <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 12, 2024 at 09:32:50PM +1100, Michael Ellerman wrote:
-> Rob Herring <robh@kernel.org> writes:
-> > On Fri, Mar 08, 2024 at 07:23:35AM -0500, Stefan Berger wrote:
-> >> On 3/7/24 16:52, Rob Herring wrote:
-> >> > On Thu, Mar 07, 2024 at 09:41:31PM +1100, Michael Ellerman wrote:
-> >> > > Stefan Berger <stefanb@linux.ibm.com> writes:
-> >> > > > linux,sml-base holds the address of a buffer with the TPM log. This
-> >> > > > buffer may become invalid after a kexec and therefore embed the whole TPM
-> >> > > > log in linux,sml-log. This helps to protect the log since it is properly
-> >> > > > carried across a kexec with both of the kexec syscalls.
-> >> > > > 
-> >> > > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> >> > > > ---
-> >> > > >   arch/powerpc/kernel/prom_init.c | 8 ++------
-> >> > > >   1 file changed, 2 insertions(+), 6 deletions(-)
-> >> > > > 
-> >> 
-> >> > 
-> >> > 
-> >> > > Also adding the new linux,sml-log property should be accompanied by a
-> >> > > change to the device tree binding.
-> >> > > 
-> >> > > The syntax is not very obvious to me, but possibly something like?
-> >> > > 
-> >> > > diff --git a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-> >> > > index 50a3fd31241c..cd75037948bc 100644
-> >> > > --- a/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-> >> > > +++ b/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml
-> >> > > @@ -74,8 +74,6 @@ required:
-> >> > >     - ibm,my-dma-window
-> >> > >     - ibm,my-drc-index
-> >> > >     - ibm,loc-code
-> >> > > -  - linux,sml-base
-> >> > > -  - linux,sml-size
-> >> > 
-> >> > Dropping required properties is an ABI break. If you drop them, an older
-> >> > OS version won't work.
-> >> 
-> >> 1) On PowerVM and KVM on Power these two properties were added in the Linux
-> >> code. I replaced the creation of these properties with creation of
-> >> linux,sml-log (1/2 in this series). I also replaced the handling of
-> >> these two (2/2 in this series) for these two platforms but leaving it for
-> >> powernv systems where the firmware creates these.
-> >
-> > Okay, I guess your case is not a ABI break if the kernel is populating 
-> > it and the same kernel consumes it. 
-> >
-> > You failed to answer my question on using /reserved-memory. Again, why 
-> > can't that be used? That is the standard way we prevent chunks of memory 
-> > from being clobbered.
-> 
-> Yes I think that would mostly work. I don't see support for
-> /reserved-memory in kexec-tools, so that would need fixing I think.
-> 
-> My logic was that the memory is not special. It's just a buffer we
-> allocated during early boot to store the log. There isn't anything else
-> in the system that relies on that memory remaining untouched. So it
-> seemed cleaner to just put the log in the device tree, rather than a
-> pointer to it.
+Some unit tests intentionally trigger warning backtraces by passing bad
+parameters to kernel API functions. Such unit tests typically check the
+return value from such calls, not the existence of the warning backtrace.
 
-My issue is we already have 2 ways to describe the log to the OS. I 
-don't see a good reason to add a 3rd way. (Though it might actually be a 
-4th way, because the chosen property for the last attempt was accepted 
-to dtschema yet the code has been abandoned.)
+Such intentionally generated warning backtraces are neither desirable
+nor useful for a number of reasons.
+- They can result in overlooked real problems.
+- A warning that suddenly starts to show up in unit tests needs to be
+  investigated and has to be marked to be ignored, for example by
+  adjusting filter scripts. Such filters are ad-hoc because there is
+  no real standard format for warnings. On top of that, such filter
+  scripts would require constant maintenance.
 
-If you put the log into the DT, then the memory for the log remains 
-untouched too because the FDT remains untouched. For reserved-memory 
-regions, the OS is free to free them if it knows what the region is and 
-that it is no longer needed. IOW, if freeing the log memory is desired, 
-then the suggested approach doesn't work.
+One option to address problem would be to add messages such as "expected
+warning backtraces start / end here" to the kernel log.  However, that
+would again require filter scripts, it might result in missing real
+problematic warning backtraces triggered while the test is running, and
+the irrelevant backtrace(s) would still clog the kernel log.
 
-> 
-> Having the log external to the device tree creates several problems,
-> like the crash kernel region colliding with it, it being clobbered by
-> kexec, etc.
+Solve the problem by providing a means to identify and suppress specific
+warning backtraces while executing test code. Support suppressing multiple
+backtraces while at the same time limiting changes to generic code to the
+absolute minimum. Architecture specific changes are kept at minimum by
+retaining function names only if both CONFIG_DEBUG_BUGVERBOSE and
+CONFIG_KUNIT are enabled.
 
-We have multiple regions to pass/maintain thru kexec, so how does having 
-one less really matter?
+The first patch of the series introduces the necessary infrastructure.
+The second patch introduces support for counting suppressed backtraces.
+This capability is used in patch three to implement unit tests.
+Patch four documents the new API.
+The next two patches add support for suppressing backtraces in drm_rect
+and dev_addr_lists unit tests. These patches are intended to serve as
+examples for the use of the functionality introduced with this series.
+The remaining patches implement the necessary changes for all
+architectures with GENERIC_BUG support.
 
-Rob
+This series is based on the RFC patch and subsequent discussion at
+https://patchwork.kernel.org/project/linux-kselftest/patch/02546e59-1afe-4b08-ba81-d94f3b691c9a@moroto.mountain/
+and offers a more comprehensive solution of the problem discussed there.
+
+Design note:
+  Function pointers are only added to the __bug_table section if both
+  CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBOSE are enabled to avoid image
+  size increases if CONFIG_KUNIT=n. There would be some benefits to
+  adding those pointers all the time (reduced complexity, ability to
+  display function names in BUG/WARNING messages). That change, if
+  desired, can be made later.
+
+Checkpatch note:
+  Remaining checkpatch errors and warnings were deliberately ignored.
+  Some are triggered by matching coding style or by comments interpreted
+  as code, others by assembler macros which are disliked by checkpatch.
+  Suggestions for improvements are welcome.
+
+Changes since RFC:
+- Minor cleanups and bug fixes
+- Added support for all affected architectures
+- Added support for counting suppressed warnings
+- Added unit tests using those counters
+- Added patch to suppress warning backtraces in dev_addr_lists tests
