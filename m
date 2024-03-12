@@ -1,58 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A36B87923E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 11:36:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D740E8792BB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 12:08:32 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fSkUOcUx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KfNPgIqS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tv96f6yqyz3vX1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 21:36:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tv9qf4jhrz3dSn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 22:08:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fSkUOcUx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KfNPgIqS;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tv95v3xGYz3cN6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 21:35:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tv9pz1nVJz3bws
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 22:07:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1710239743;
-	bh=RZEfYiLTkNnDL11Vo6sbxwGAoRDVBPoFLJr3cr56jVk=;
+	s=201909; t=1710241675;
+	bh=lcy9Eb1cZW7ubgW871++ju60s8L1NTUuFdFau4whLVs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fSkUOcUxT9cjPVrU6sP8jJWYfWnjxzJLfKf1w6I4iWC+czN6ATNMjWO3u4Ol/6NIA
-	 klGcwVNW/8svX8Sa0TDuNXmzpmRaIWCIIJiAZwux8+TQ3uC3zJKgS+4d8VliKauaaY
-	 QdI3599p5DxoYz1/zN+FEVUnepZ4ntyegPliodd6Q0GAAbzech0kGB5Sx2JeG/YXdz
-	 RK3wuxQVdXT+La7rI/Bh4+uNV4SHIuCZXcVn2QbzLvPia4W0BFpkoWtyvQOi29Hrqo
-	 QNBAi86yP7jeyw45oqpE9N7aCxKKaxoPn9m8zJIHkxcpuba/Z1fMqcONSLaWpLv5kc
-	 BYSV9xOI9uHDA==
+	b=KfNPgIqS2pK4ZAGExh6slU7/0hwPWNQAPXef7O0hrKvIxYmJqPFgpJeT3ZyF/JkMf
+	 FLxgVTnVmI73qTgJJnVzls0uClnBtBC18gXkH5OD9dK7fnJP44BVpZEoXHKWzSo7Up
+	 wf/WEZk6oLO8DDyRVJBhT8hs84y1CVgnSUq7vn4xFYd7yY8rpxbxk5do1hERxFjaJB
+	 lQD+SKxtq1i3munPZUYm6Gwy9P6PeVCIdEgAVo/yWgUNJ9btgk/PSVfJe4QU7R0FZA
+	 t6cxSL3H8MOY/F/rT0ssP5GyJehmvw0FrI1FPJTsshj1/1SKm7dKpUGcYOxYtj6X94
+	 AlUBuJxmdMK8Q==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tv95q63Rvz4x0t;
-	Tue, 12 Mar 2024 21:35:43 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tv9pz00lQz4x0n;
+	Tue, 12 Mar 2024 22:07:54 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stefan Berger <stefanb@linux.ibm.com>, Jarkko Sakkinen
- <jarkko@kernel.org>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/2] tpm: of: If available Use linux,sml-log to get the
- log and its size
-In-Reply-To: <663a3834-056e-4dda-99dd-16ee8734100e@linux.ibm.com>
-References: <20240306155511.974517-1-stefanb@linux.ibm.com>
- <20240306155511.974517-3-stefanb@linux.ibm.com>
- <CZNS7FO53BHK.6NO93P0C0VY5@kernel.org>
- <CZNS9K4BJPQ8.2MD4WZS8YMI3W@kernel.org>
- <663a3834-056e-4dda-99dd-16ee8734100e@linux.ibm.com>
-Date: Tue, 12 Mar 2024 21:35:43 +1100
-Message-ID: <877ci74u0w.fsf@mail.lhotse>
+To: Breno Leitao <leitao@debian.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/kernel: Fix potential spectre v1 in syscall
+In-Reply-To: <ZfAa59Z8njiGUnRW@gmail.com>
+References: <1534876926-21849-1-git-send-email-leitao@debian.org>
+ <baf6af2b-d6e1-4df8-9466-98d19f8c765f@csgroup.eu>
+ <ZfAa59Z8njiGUnRW@gmail.com>
+Date: Tue, 12 Mar 2024 22:07:54 +1100
+Message-ID: <874jdb4sj9.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,32 +61,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterhuewe@gmx.de, viparash@in.ibm.com, linux-kernel@vger.kernel.org, rnsastry@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stefan Berger <stefanb@linux.ibm.com> writes:
-> On 3/7/24 15:00, Jarkko Sakkinen wrote:
->> On Thu Mar 7, 2024 at 9:57 PM EET, Jarkko Sakkinen wrote:
->>> in short summary: s/Use/use/
->>>
->>> On Wed Mar 6, 2024 at 5:55 PM EET, Stefan Berger wrote:
->>>> If linux,sml-log is available use it to get the TPM log rather than the
->>>> pointer found in linux,sml-base. This resolves an issue on PowerVM and KVM
->>>> on Power where after a kexec the memory pointed to by linux,sml-base may
->>>> have been corrupted. Also, linux,sml-log has replaced linux,sml-base and
->>>> linux,sml-size on these two platforms.
->>>>
->>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>>
->>> So shouldn't this have a fixed tag, or not?
->> 
->> In English: do we want this to be backported to stable kernel releases or not?
+Breno Leitao <leitao@debian.org> writes:
+> On Tue, Mar 12, 2024 at 08:17:42AM +0000, Christophe Leroy wrote:
+>> +Nathan as this is RTAS related.
+>>=20
+>> Le 21/08/2018 =C3=A0 20:42, Breno Leitao a =C3=A9crit=C2=A0:
+>> > The rtas syscall reads a value from a user-provided structure and uses=
+ it
+>> > to index an array, being a possible area for a potential spectre v1 at=
+tack.
+>> > This is the code that exposes this problem.
+>> >=20
+>> > 	args.rets =3D &args.args[nargs];
+>> >=20
+>> > The nargs is an user provided value, and the below code is an example =
+where
+>> > the 'nargs' value would be set to XX.
+>> >=20
+>> > 	struct rtas_args ra;
+>> > 	ra.nargs =3D htobe32(XX);
+>> > 	syscall(__NR_rtas, &ra);
+>>=20
+>>=20
+>> This patch has been hanging around in patchwork since 2018 and doesn't=20
+>> apply anymore. Is it still relevant ? If so, can you rebase et resubmit ?
 >
-> Ideally, yes. v3 will have 3 patches and all 3 of them will have to be 
-> backported *together* and not applied otherwise if any one of them 
-> fails. Can this be 'guaranteed'?
+> This seems to be important, since nargs is a user-provided value. I can
+> submit it if the maintainers are willing to accept. I do not want to
+> spend my time if no one is willing to review it.
 
-You can use Depends-on: <previous commit SHA> to indicate the relationship.
+My memory is that I didn't think it was actually a problem, because all
+we do is memset args.rets to zero. I thought I'd talked to you on Slack
+about it, but maybe I didn't.
+
+Anyway we should probably just fix it to be safe and keep the static
+checkers happy.
+
+I'll rebase it and apply it, I'm sure you've got better things to do :)
 
 cheers
