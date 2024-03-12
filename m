@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0687F879B23
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 19:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9B4879B27
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 19:16:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tq59OYoF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=daBm+Yut;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvMJs5qPHz3vbk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 05:15:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvMKf2J54z3dW7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 05:16:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tq59OYoF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=daBm+Yut;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvMHX3jwjz3dTx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 05:14:48 +1100 (AEDT)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CI0VUR032729;
-	Tue, 12 Mar 2024 18:14:31 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvMHg35knz3dVb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 05:14:55 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CI2EHB012168;
+	Tue, 12 Mar 2024 18:14:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
  : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=pp1;
- bh=uszZoHUScvfpeeagNwfFGLg8tvqjaAxDDkFYoQOnBbw=;
- b=tq59OYoFryHBMRfr8jnsahJNUT+fpLCEv1kLdtL7ZBBTiTY0tRQlXwav41eH7nuWrWYp
- tx+PZKvKYAMrDUiY4TJ0oHmIW7/2Ry84XWSoSTU7MZupFGZW0uBlGHRipxZ9hUxGoMr6
- 9AilEQY0fvpHT6gAot/2qNdoZZj0Dj1Xnx/6ewfpp0fYn2zEvVrO0ErIFT/KugyG6K0y
- lXd9W1hluC0e86YAratmluxhs89OAKyHdhJcEIHR2JvD0jzrSrMmuuUWBWFuDMOOlpN8
- OkND/bDX8DWSr061/Ozzqutrc7XDI/usciDdnYg4PVnkyS/oZB9oXm8XD14DYwjMLyjZ mA== 
+ bh=trXzCuOVdv09a9VzXDn9FwK37IqxmCmGzyWTin/u/q0=;
+ b=daBm+Yut79BtK2Fi6tIXYKy23LM4/kMpGhBDDoVSqseqHCuKiFzMYJndfbVtVv5oKqgh
+ cakwTcV73PraOWbpXMQFznDk41NhcN/humZlDeQsiEOe5dBrHTjTAoB1rGa6iiyBy8VU
+ qStk/9n4xK3GKrJNILnbXQGie4mg1NYUGGuovI61BJDWUR5tRR77m8W3iQesZu0y3VyK
+ xR07uOS+bTUROdwDZ/3a8WlBcrUmuWf+H8z04lNrjjMGSnLbBeSOBVOhuD2VBnEnSdKe
+ PtmWSAQLcNw3ClAs6hcXHeTm1m4F0nlzJHYNV6bgKMHLDqvjEgSHdLwYEz9NdIh8skkU sg== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wturh8chr-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtuyj06h2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 18:14:31 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42CI6VSX019017;
-	Tue, 12 Mar 2024 18:14:30 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wturh8chd-1
+	Tue, 12 Mar 2024 18:14:42 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42CI3JB2014895;
+	Tue, 12 Mar 2024 18:14:42 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtuyj06gq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 18:14:30 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42CFSEoY020423;
-	Tue, 12 Mar 2024 18:14:29 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ws3km0m4y-1
+	Tue, 12 Mar 2024 18:14:41 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42CGwNGW018552;
+	Tue, 12 Mar 2024 18:14:40 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4t208wx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 18:14:29 +0000
+	Tue, 12 Mar 2024 18:14:40 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42CIEN3G37945740
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42CIEZPE35389710
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Mar 2024 18:14:25 GMT
+	Tue, 12 Mar 2024 18:14:37 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 681D920049;
-	Tue, 12 Mar 2024 18:14:23 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8A4CB20040;
+	Tue, 12 Mar 2024 18:14:35 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B169020040;
-	Tue, 12 Mar 2024 18:14:20 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 86F4520049;
+	Tue, 12 Mar 2024 18:14:32 +0000 (GMT)
 Received: from ltcd48-lp2.aus.stglabs.ibm.com (unknown [9.3.101.175])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Mar 2024 18:14:20 +0000 (GMT)
-Subject: [RFC PATCH 1/3] powerpc/pseries/iommu: Bring back userspace view for
- single level TCE tables
+	Tue, 12 Mar 2024 18:14:32 +0000 (GMT)
+Subject: [RFC PATCH 2/3] powerpc/iommu: Move pSeries specific functions to
+ pseries/iommu.c
 From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 To: tpearson@raptorengineering.com, alex.williamson@redhat.com,
         linuxppc-dev@lists.ozlabs.org
-Date: Tue, 12 Mar 2024 13:14:20 -0500
-Message-ID: <171026725393.8367.17497620074051138306.stgit@linux.ibm.com>
+Date: Tue, 12 Mar 2024 13:14:31 -0500
+Message-ID: <171026726856.8367.17227042474134236958.stgit@linux.ibm.com>
 In-Reply-To: <171026724548.8367.8321359354119254395.stgit@linux.ibm.com>
 References: <171026724548.8367.8321359354119254395.stgit@linux.ibm.com>
 User-Agent: StGit/1.5
@@ -78,15 +78,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5-fhysGSE_e6smelR3AT1kYjih6oe9_C
-X-Proofpoint-GUID: 7cKbR36YwbMJnTzz3TDT8ElrmbaqRYBj
+X-Proofpoint-GUID: urm6KnyZBseyjTaqwoPSkS8Lh48vfFgS
+X-Proofpoint-ORIG-GUID: KkuFWV4ed1u9IsVbUSQjPU2tdccDWXib
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-12_11,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- clxscore=1015 lowpriorityscore=0 suspectscore=0 priorityscore=1501
- phishscore=0 impostorscore=0 adultscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1015 spamscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0
+ impostorscore=0 malwarescore=0 suspectscore=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2403120138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,161 +103,391 @@ Cc: robh@kernel.org, jroedel@suse.de, sbhat@linux.ibm.com, gbatra@linux.vnet.ibm
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit 090bad39b237a ("powerpc/powernv: Add indirect levels to
-it_userspace") which implemented the tce indirect levels
-support for PowerNV ended up removing the single level support
-which existed by default(generic tce_iommu_userspace_view_alloc/free()
-calls). On pSeries the TCEs are single level, and the allocation
-of userspace view is lost with the removal of generic code.
+The PowerNV specific table_group_ops are defined in powernv/pci-ioda.c.
+The pSeries specific table_group_ops are sitting in the generic powerpc
+file. Move it to where it actually belong(pseries/iommu.c).
 
-The patch attempts to bring it back for pseries on the refactored
-code base.
-
-On pSeries, the windows/tables are "borrowed", so the it_ops->free()
-is not called during the container detach or the tce release call paths
-as the table is not really freed. So, decoupling the userspace view
-array free and alloc from table's it_ops just the way it was before.
+Only code movement, no functional changes intended.
 
 Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 ---
- arch/powerpc/platforms/pseries/iommu.c |   19 ++++++++++--
- drivers/vfio/vfio_iommu_spapr_tce.c    |   51 ++++++++++++++++++++++++++++++++
- 2 files changed, 67 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/iommu.h       |    4 +
+ arch/powerpc/kernel/iommu.c            |  149 --------------------------------
+ arch/powerpc/platforms/pseries/iommu.c |  145 +++++++++++++++++++++++++++++++
+ 3 files changed, 150 insertions(+), 148 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+index 026695943550..744cc5fc22d3 100644
+--- a/arch/powerpc/include/asm/iommu.h
++++ b/arch/powerpc/include/asm/iommu.h
+@@ -156,6 +156,9 @@ extern int iommu_tce_table_put(struct iommu_table *tbl);
+ extern struct iommu_table *iommu_init_table(struct iommu_table *tbl,
+ 		int nid, unsigned long res_start, unsigned long res_end);
+ bool iommu_table_in_use(struct iommu_table *tbl);
++extern void iommu_table_reserve_pages(struct iommu_table *tbl,
++		unsigned long res_start, unsigned long res_end);
++extern void iommu_table_clear(struct iommu_table *tbl);
+ 
+ #define IOMMU_TABLE_GROUP_MAX_TABLES	2
+ 
+@@ -218,7 +221,6 @@ extern long iommu_tce_xchg_no_kill(struct mm_struct *mm,
+ extern void iommu_tce_kill(struct iommu_table *tbl,
+ 		unsigned long entry, unsigned long pages);
+ 
+-extern struct iommu_table_group_ops spapr_tce_table_group_ops;
+ #else
+ static inline void iommu_register_group(struct iommu_table_group *table_group,
+ 					int pci_domain_number,
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 1185efebf032..aa11b2acf24f 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -642,7 +642,7 @@ void ppc_iommu_unmap_sg(struct iommu_table *tbl, struct scatterlist *sglist,
+ 		tbl->it_ops->flush(tbl);
+ }
+ 
+-static void iommu_table_clear(struct iommu_table *tbl)
++void iommu_table_clear(struct iommu_table *tbl)
+ {
+ 	/*
+ 	 * In case of firmware assisted dump system goes through clean
+@@ -683,7 +683,7 @@ static void iommu_table_clear(struct iommu_table *tbl)
+ #endif
+ }
+ 
+-static void iommu_table_reserve_pages(struct iommu_table *tbl,
++void iommu_table_reserve_pages(struct iommu_table *tbl,
+ 		unsigned long res_start, unsigned long res_end)
+ {
+ 	int i;
+@@ -1101,59 +1101,6 @@ void iommu_tce_kill(struct iommu_table *tbl,
+ }
+ EXPORT_SYMBOL_GPL(iommu_tce_kill);
+ 
+-#if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_PPC_POWERNV)
+-static int iommu_take_ownership(struct iommu_table *tbl)
+-{
+-	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
+-	int ret = 0;
+-
+-	/*
+-	 * VFIO does not control TCE entries allocation and the guest
+-	 * can write new TCEs on top of existing ones so iommu_tce_build()
+-	 * must be able to release old pages. This functionality
+-	 * requires exchange() callback defined so if it is not
+-	 * implemented, we disallow taking ownership over the table.
+-	 */
+-	if (!tbl->it_ops->xchg_no_kill)
+-		return -EINVAL;
+-
+-	spin_lock_irqsave(&tbl->large_pool.lock, flags);
+-	for (i = 0; i < tbl->nr_pools; i++)
+-		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
+-
+-	if (iommu_table_in_use(tbl)) {
+-		pr_err("iommu_tce: it_map is not empty");
+-		ret = -EBUSY;
+-	} else {
+-		memset(tbl->it_map, 0xff, sz);
+-	}
+-
+-	for (i = 0; i < tbl->nr_pools; i++)
+-		spin_unlock(&tbl->pools[i].lock);
+-	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
+-
+-	return ret;
+-}
+-
+-static void iommu_release_ownership(struct iommu_table *tbl)
+-{
+-	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
+-
+-	spin_lock_irqsave(&tbl->large_pool.lock, flags);
+-	for (i = 0; i < tbl->nr_pools; i++)
+-		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
+-
+-	memset(tbl->it_map, 0, sz);
+-
+-	iommu_table_reserve_pages(tbl, tbl->it_reserved_start,
+-			tbl->it_reserved_end);
+-
+-	for (i = 0; i < tbl->nr_pools; i++)
+-		spin_unlock(&tbl->pools[i].lock);
+-	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
+-}
+-#endif
+-
+ int iommu_add_device(struct iommu_table_group *table_group, struct device *dev)
+ {
+ 	/*
+@@ -1185,98 +1132,6 @@ int iommu_add_device(struct iommu_table_group *table_group, struct device *dev)
+ EXPORT_SYMBOL_GPL(iommu_add_device);
+ 
+ #if defined(CONFIG_PPC_PSERIES) || defined(CONFIG_PPC_POWERNV)
+-/*
+- * A simple iommu_table_group_ops which only allows reusing the existing
+- * iommu_table. This handles VFIO for POWER7 or the nested KVM.
+- * The ops does not allow creating windows and only allows reusing the existing
+- * one if it matches table_group->tce32_start/tce32_size/page_shift.
+- */
+-static unsigned long spapr_tce_get_table_size(__u32 page_shift,
+-					      __u64 window_size, __u32 levels)
+-{
+-	unsigned long size;
+-
+-	if (levels > 1)
+-		return ~0U;
+-	size = window_size >> (page_shift - 3);
+-	return size;
+-}
+-
+-static long spapr_tce_create_table(struct iommu_table_group *table_group, int num,
+-				   __u32 page_shift, __u64 window_size, __u32 levels,
+-				   struct iommu_table **ptbl)
+-{
+-	struct iommu_table *tbl = table_group->tables[0];
+-
+-	if (num > 0)
+-		return -EPERM;
+-
+-	if (tbl->it_page_shift != page_shift ||
+-	    tbl->it_size != (window_size >> page_shift) ||
+-	    tbl->it_indirect_levels != levels - 1)
+-		return -EINVAL;
+-
+-	*ptbl = iommu_tce_table_get(tbl);
+-	return 0;
+-}
+-
+-static long spapr_tce_set_window(struct iommu_table_group *table_group,
+-				 int num, struct iommu_table *tbl)
+-{
+-	return tbl == table_group->tables[num] ? 0 : -EPERM;
+-}
+-
+-static long spapr_tce_unset_window(struct iommu_table_group *table_group, int num)
+-{
+-	return 0;
+-}
+-
+-static long spapr_tce_take_ownership(struct iommu_table_group *table_group)
+-{
+-	int i, j, rc = 0;
+-
+-	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
+-		struct iommu_table *tbl = table_group->tables[i];
+-
+-		if (!tbl || !tbl->it_map)
+-			continue;
+-
+-		rc = iommu_take_ownership(tbl);
+-		if (!rc)
+-			continue;
+-
+-		for (j = 0; j < i; ++j)
+-			iommu_release_ownership(table_group->tables[j]);
+-		return rc;
+-	}
+-	return 0;
+-}
+-
+-static void spapr_tce_release_ownership(struct iommu_table_group *table_group)
+-{
+-	int i;
+-
+-	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
+-		struct iommu_table *tbl = table_group->tables[i];
+-
+-		if (!tbl)
+-			continue;
+-
+-		iommu_table_clear(tbl);
+-		if (tbl->it_map)
+-			iommu_release_ownership(tbl);
+-	}
+-}
+-
+-struct iommu_table_group_ops spapr_tce_table_group_ops = {
+-	.get_table_size = spapr_tce_get_table_size,
+-	.create_table = spapr_tce_create_table,
+-	.set_window = spapr_tce_set_window,
+-	.unset_window = spapr_tce_unset_window,
+-	.take_ownership = spapr_tce_take_ownership,
+-	.release_ownership = spapr_tce_release_ownership,
+-};
+-
+ /*
+  * A simple iommu_ops to allow less cruft in generic VFIO code.
+  */
 diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e8c4129697b1..40de8d55faef 100644
+index 40de8d55faef..3d9865dadf73 100644
 --- a/arch/powerpc/platforms/pseries/iommu.c
 +++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -143,7 +143,7 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
- }
- 
- 
--static void tce_free_pSeries(struct iommu_table *tbl, long index, long npages)
-+static void tce_clear_pSeries(struct iommu_table *tbl, long index, long npages)
- {
- 	__be64 *tcep;
- 
-@@ -162,6 +162,11 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
- 	return be64_to_cpu(*tcep);
- }
- 
-+static void tce_free_pSeries(struct iommu_table *tbl)
-+{
-+	/* Do nothing. */
-+}
-+
- static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
- static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
- 
-@@ -576,7 +581,7 @@ struct iommu_table_ops iommu_table_lpar_multi_ops;
- 
- struct iommu_table_ops iommu_table_pseries_ops = {
- 	.set = tce_build_pSeries,
--	.clear = tce_free_pSeries,
-+	.clear = tce_clear_pSeries,
- 	.get = tce_get_pseries
+@@ -54,6 +54,57 @@ enum {
+ 	DDW_EXT_QUERY_OUT_SIZE = 2
  };
  
-@@ -685,15 +690,23 @@ static int tce_exchange_pseries(struct iommu_table *tbl, long index, unsigned
- 
- 	return rc;
- }
-+
-+static __be64 *tce_useraddr_pSeriesLP(struct iommu_table *tbl, long index,
-+				      bool __always_unused alloc)
++static int iommu_take_ownership(struct iommu_table *tbl)
 +{
-+	return tbl->it_userspace ? &tbl->it_userspace[index - tbl->it_offset] : NULL;
-+}
- #endif
- 
- struct iommu_table_ops iommu_table_lpar_multi_ops = {
- 	.set = tce_buildmulti_pSeriesLP,
- #ifdef CONFIG_IOMMU_API
- 	.xchg_no_kill = tce_exchange_pseries,
-+	.useraddrptr = tce_useraddr_pSeriesLP,
- #endif
- 	.clear = tce_freemulti_pSeriesLP,
--	.get = tce_get_pSeriesLP
-+	.get = tce_get_pSeriesLP,
-+	.free = tce_free_pSeries
- };
- 
- /*
-diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
-index a94ec6225d31..1cf36d687559 100644
---- a/drivers/vfio/vfio_iommu_spapr_tce.c
-+++ b/drivers/vfio/vfio_iommu_spapr_tce.c
-@@ -177,6 +177,50 @@ static long tce_iommu_register_pages(struct tce_container *container,
- 	return ret;
- }
- 
-+static long tce_iommu_userspace_view_alloc(struct iommu_table *tbl,
-+		struct mm_struct *mm)
-+{
-+	unsigned long cb = ALIGN(sizeof(tbl->it_userspace[0]) *
-+			tbl->it_size, PAGE_SIZE);
-+	unsigned long *uas;
-+	long ret;
++	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
++	int ret = 0;
 +
-+	if (tbl->it_indirect_levels)
-+		return 0;
++	/*
++	 * VFIO does not control TCE entries allocation and the guest
++	 * can write new TCEs on top of existing ones so iommu_tce_build()
++	 * must be able to release old pages. This functionality
++	 * requires exchange() callback defined so if it is not
++	 * implemented, we disallow taking ownership over the table.
++	 */
++	if (!tbl->it_ops->xchg_no_kill)
++		return -EINVAL;
 +
-+	WARN_ON(tbl->it_userspace);
++	spin_lock_irqsave(&tbl->large_pool.lock, flags);
++	for (i = 0; i < tbl->nr_pools; i++)
++		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
 +
-+	ret = account_locked_vm(mm, cb >> PAGE_SHIFT, true);
-+	if (ret)
-+		return ret;
-+
-+	uas = vzalloc(cb);
-+	if (!uas) {
-+		account_locked_vm(mm, cb >> PAGE_SHIFT, false);
-+		return -ENOMEM;
++	if (iommu_table_in_use(tbl)) {
++		pr_err("iommu_tce: it_map is not empty");
++		ret = -EBUSY;
++	} else {
++		memset(tbl->it_map, 0xff, sz);
 +	}
-+	tbl->it_userspace = (__be64 *) uas;
 +
++	for (i = 0; i < tbl->nr_pools; i++)
++		spin_unlock(&tbl->pools[i].lock);
++	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
++
++	return ret;
++}
++
++static void iommu_release_ownership(struct iommu_table *tbl)
++{
++	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
++
++	spin_lock_irqsave(&tbl->large_pool.lock, flags);
++	for (i = 0; i < tbl->nr_pools; i++)
++		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
++
++	memset(tbl->it_map, 0, sz);
++
++	iommu_table_reserve_pages(tbl, tbl->it_reserved_start,
++			tbl->it_reserved_end);
++
++	for (i = 0; i < tbl->nr_pools; i++)
++		spin_unlock(&tbl->pools[i].lock);
++	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
++}
++
+ static struct iommu_table *iommu_pseries_alloc_table(int node)
+ {
+ 	struct iommu_table *tbl;
+@@ -67,6 +118,8 @@ static struct iommu_table *iommu_pseries_alloc_table(int node)
+ 	return tbl;
+ }
+ 
++struct iommu_table_group_ops spapr_tce_table_group_ops;
++
+ static struct iommu_table_group *iommu_pseries_alloc_group(int node)
+ {
+ 	struct iommu_table_group *table_group;
+@@ -1656,6 +1709,98 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+ 	return false;
+ }
+ 
++/*
++ * A simple iommu_table_group_ops which only allows reusing the existing
++ * iommu_table. This handles VFIO for POWER7 or the nested KVM.
++ * The ops does not allow creating windows and only allows reusing the existing
++ * one if it matches table_group->tce32_start/tce32_size/page_shift.
++ */
++static unsigned long spapr_tce_get_table_size(__u32 page_shift,
++					      __u64 window_size, __u32 levels)
++{
++	unsigned long size;
++
++	if (levels > 1)
++		return ~0U;
++	size = window_size >> (page_shift - 3);
++	return size;
++}
++
++static long spapr_tce_create_table(struct iommu_table_group *table_group, int num,
++				   __u32 page_shift, __u64 window_size, __u32 levels,
++				   struct iommu_table **ptbl)
++{
++	struct iommu_table *tbl = table_group->tables[0];
++
++	if (num > 0)
++		return -EPERM;
++
++	if (tbl->it_page_shift != page_shift ||
++	    tbl->it_size != (window_size >> page_shift) ||
++	    tbl->it_indirect_levels != levels - 1)
++		return -EINVAL;
++
++	*ptbl = iommu_tce_table_get(tbl);
 +	return 0;
 +}
 +
-+static void tce_iommu_userspace_view_free(struct iommu_table *tbl,
-+		struct mm_struct *mm)
++static long spapr_tce_set_window(struct iommu_table_group *table_group,
++				 int num, struct iommu_table *tbl)
 +{
-+	unsigned long cb = ALIGN(sizeof(tbl->it_userspace[0]) *
-+			tbl->it_size, PAGE_SIZE);
-+
-+	if (!tbl->it_userspace)
-+		return;
-+
-+	if (tbl->it_indirect_levels)
-+		return;
-+
-+	vfree(tbl->it_userspace);
-+	tbl->it_userspace = NULL;
-+	account_locked_vm(mm, cb >> PAGE_SHIFT, false);
++	return tbl == table_group->tables[num] ? 0 : -EPERM;
 +}
 +
- static bool tce_page_is_contained(struct mm_struct *mm, unsigned long hpa,
- 		unsigned int it_page_shift)
- {
-@@ -554,6 +598,12 @@ static long tce_iommu_build_v2(struct tce_container *container,
- 	unsigned long hpa;
- 	enum dma_data_direction dirtmp;
- 
-+	if (!tbl->it_userspace) {
-+		ret = tce_iommu_userspace_view_alloc(tbl, container->mm);
-+		if (ret)
-+			return ret;
-+	}
++static long spapr_tce_unset_window(struct iommu_table_group *table_group, int num)
++{
++	return 0;
++}
 +
- 	for (i = 0; i < pages; ++i) {
- 		struct mm_iommu_table_group_mem_t *mem = NULL;
- 		__be64 *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry + i);
-@@ -637,6 +687,7 @@ static void tce_iommu_free_table(struct tce_container *container,
++static long spapr_tce_take_ownership(struct iommu_table_group *table_group)
++{
++	int i, j, rc = 0;
++
++	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
++		struct iommu_table *tbl = table_group->tables[i];
++
++		if (!tbl || !tbl->it_map)
++			continue;
++
++		rc = iommu_take_ownership(tbl);
++		if (!rc)
++			continue;
++
++		for (j = 0; j < i; ++j)
++			iommu_release_ownership(table_group->tables[j]);
++		return rc;
++	}
++	return 0;
++}
++
++static void spapr_tce_release_ownership(struct iommu_table_group *table_group)
++{
++	int i;
++
++	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
++		struct iommu_table *tbl = table_group->tables[i];
++
++		if (!tbl)
++			continue;
++
++		iommu_table_clear(tbl);
++		if (tbl->it_map)
++			iommu_release_ownership(tbl);
++	}
++}
++
++struct iommu_table_group_ops spapr_tce_table_group_ops = {
++	.get_table_size = spapr_tce_get_table_size,
++	.create_table = spapr_tce_create_table,
++	.set_window = spapr_tce_set_window,
++	.unset_window = spapr_tce_unset_window,
++	.take_ownership = spapr_tce_take_ownership,
++	.release_ownership = spapr_tce_release_ownership,
++};
++
+ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 		void *data)
  {
- 	unsigned long pages = tbl->it_allocated_size >> PAGE_SHIFT;
- 
-+	tce_iommu_userspace_view_free(tbl, container->mm);
- 	iommu_tce_table_put(tbl);
- 	account_locked_vm(container->mm, pages, false);
- }
 
 
