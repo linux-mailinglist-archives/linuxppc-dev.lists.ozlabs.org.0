@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0210E879A57
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 18:10:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F8D879A5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 18:11:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=c2IOYvDq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RQZLlj3T;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvKsJ5qNQz3vbf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 04:10:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvKt50bFnz3vcj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 04:11:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=c2IOYvDq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RQZLlj3T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvKjP0KtTz3dVj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 04:03:36 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-29c52a90417so23561a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 10:03:36 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvKjQ6Gg4z3dVv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 04:03:38 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1dc5d0162bcso33494275ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 10:03:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710263014; x=1710867814; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1710263016; x=1710867816; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QaoPploMqkrEWkpIzUU4wfevhj/fOj8xGNuIym5RM4g=;
-        b=c2IOYvDqMAtdpeSwJZ30kW3Z7Gayy0KYx2xfvnsGbvUAko5dAxJ/hSMn9YEFUYNTBx
-         9uK5eA4s21qd/KqokOI030H9zsUvTwhXqXx/Y7YjM5mRlZ4SL6v/fS9u4yNzM765n9pP
-         OMMYRjaszsi1w5AIFPw9sWqjyvTXF0yWSIGiCC3lHlYsnqWvpqY7hkInJdUcTbKRjEcy
-         4jxGahwn9F0r5jvZhJ6wn96Sz5bE5VpzsJsPPFMtruoqy5GtJ9eb26YJm6T8QQyc/Ybu
-         5ARoebNZ/DdvM/hFH2pFw1FzpL3w40Z2+sXR/g6Pr4lVM3UT+BbE8H5N46qeM7npRFia
-         CqAg==
+        bh=8yPqiFdiMaUo8CT/x9a2ZlbShLK74ZzL6qnaxWOIrD0=;
+        b=RQZLlj3T59sjrFg/DieAJgXhF5t0Tq8mDUc7kVyNzHpba0kNwe0PXF7yiHa2lqlvH7
+         s2aJP00TqDA3c9Pg5rRsWNPAoDPIxoHSOJTCj+CW0KdwrU5N5AlhpHq9/B+mlZcJ73SO
+         hsgOan917vCuhgdvQQe/wRx5ek1C3VI4y5z13VmEKruTTEovGz0Uk3nn/thpqnkiaszr
+         jgMKISHx633rVE6oPFhVq69zcZVyLxBj1r88dQYvejNWO/BNKS31aOB2ugE+tDefAgj1
+         /ffdpAblZccg7SWGNyMyf9+7zBGH+YlvvEDtFvx/FY9ehJkgZ2/1u4bTjpHCF7vufkkm
+         sFEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710263014; x=1710867814;
+        d=1e100.net; s=20230601; t=1710263016; x=1710867816;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QaoPploMqkrEWkpIzUU4wfevhj/fOj8xGNuIym5RM4g=;
-        b=fcYvCHDcSP2fSY48disuCpvjdmwD13vkYbL9Veya+ufAj53tUEVcwUeQtrjIYAs2uH
-         9b7cxQOlmGXLNfgoOG+1iIu39gGsAJtbzWeNBg2sfLdvmjPDJsGPKYXg9e+1cT4rOUzP
-         4QryskMnq5oeQBwoPukNd8MCZgfjkFVuk9LKcAEYIn+yYyI2XdVj011X1g5ma8nLDnqW
-         9ZccQqmBo74zYI8kbCQ9hKCMNadRq7OK/gBXdSEyMa4XvvFiOmjHr5RqnrZckMdJUl5g
-         uGjl7iw+ehNjBuippKsKwaTK+B7vo+aNGCGZZNGcXHVteHwO7JYLSQcSRmvnqlo4GQMr
-         dNcg==
-X-Forwarded-Encrypted: i=1; AJvYcCXrkbbwPMM6gDVXsnoVcqXilPyhG3kyWvYmOaSrnzCVv/OHx8yiXQq3UTHibK5s9+8wQ1JJKmyFOWxi8biTn68piHWKv4iR7Dj2emahPw==
-X-Gm-Message-State: AOJu0YwnMkFlNzAcU4l3F/nVvtkmxgk0nbgKgffIPeFYj+VfANCXr1p4
-	QIaR1C5F8eCwSwe+gZPu6oXEI0VpqrkUoiElqTvW6qzwHMuhHmtz
-X-Google-Smtp-Source: AGHT+IGp1mJ0KTZ+LQYMSXPX4xCWLkAXoeTNJUTBRzyrNk3iCGaW03oMbFoz7IlCFWta+THFx92xXA==
-X-Received: by 2002:a17:90a:e514:b0:29a:9dd1:d45b with SMTP id t20-20020a17090ae51400b0029a9dd1d45bmr194372pjy.3.1710263013769;
-        Tue, 12 Mar 2024 10:03:33 -0700 (PDT)
+        bh=8yPqiFdiMaUo8CT/x9a2ZlbShLK74ZzL6qnaxWOIrD0=;
+        b=wH19XawJdulKwQG2fhwby460ehmJ/q3Lmi19Vcs6cti+royTVK8e4nhE0R7uKXY2bD
+         NvSdGRIp9Dgmow0C9cvwPBu3207rzPBVGX/gjladP4raExXe4AsnWeEVoZzvz1LJB+CM
+         7RfYnPvpRxhF3Lzex3LV/W0HPrNtLA49Ol2T+YL1DbUflJCR4VfSXyN5HR06axo4zvQ+
+         24S4xSc4ZQZwSR7wafyolOJiCEEWHFt+wW8QpWSlcg5KYJwOLmgH7G4hNyWIhSlS8lNH
+         yxNOL/Vx5AhI4PH+sQ5PVxxw+/Q4QNtGFeGW8X60wdr0M7FWNqpAUGf907fB8dx+RrO0
+         UpHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8BsRe7cVof5LB1XeZVYEOIUiTUQ/WS5xQCTdnJdXKxQs3/kjcYBguOObP/P17r2rtni28XnFCYeHMfB09h53jve5epUsZShSymSmpqA==
+X-Gm-Message-State: AOJu0YzKgqXejQ0UP5wsYtLZF72ixF6NlmPit8x0BbgvmYZiv0PaJkC1
+	J7KGw41PzGKyfVF9koE/vyAuHVr0hCINnGJRpX8nu82hsvzVQs8U
+X-Google-Smtp-Source: AGHT+IFoEsNPPrMLHPvnKMDpnnejQqa8I+dYMyPxL8EBJ4sDwkePMFxEwmxbDBpOVTaOpj6jJj/c1w==
+X-Received: by 2002:a17:903:2349:b0:1dd:afc9:a34f with SMTP id c9-20020a170903234900b001ddafc9a34fmr4471610plh.50.1710263016146;
+        Tue, 12 Mar 2024 10:03:36 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e11-20020a17090a77cb00b0029bf32b524esm4052208pjs.13.2024.03.12.10.03.32
+        by smtp.gmail.com with ESMTPSA id b21-20020a170902ed1500b001d9a42f6183sm6958877pld.45.2024.03.12.10.03.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 10:03:32 -0700 (PDT)
+        Tue, 12 Mar 2024 10:03:35 -0700 (PDT)
 From: Guenter Roeck <linux@roeck-us.net>
 To: linux-kselftest@vger.kernel.org
-Subject: [PATCH 09/14] loongarch: Add support for suppressing warning backtraces
-Date: Tue, 12 Mar 2024 10:03:04 -0700
-Message-Id: <20240312170309.2546362-10-linux@roeck-us.net>
+Subject: [PATCH 10/14] parisc: Add support for suppressing warning backtraces
+Date: Tue, 12 Mar 2024 10:03:05 -0700
+Message-Id: <20240312170309.2546362-11-linux@roeck-us.net>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240312170309.2546362-1-linux@roeck-us.net>
 References: <20240312170309.2546362-1-linux@roeck-us.net>
@@ -94,90 +94,79 @@ are enabled. Otherwise, the __func__ assembly parameter is replaced with a
 __func__ entries (this is necessary because __func__ is not a define but a
 virtual variable).
 
+While at it, declare assembler parameters as constants where possible.
+Refine .blockz instructions to calculate the necessary padding instead
+of using fixed values.
+
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- arch/loongarch/include/asm/bug.h | 38 +++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ arch/parisc/include/asm/bug.h | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/bug.h b/arch/loongarch/include/asm/bug.h
-index d4ca3ba25418..25f2b5ae7702 100644
---- a/arch/loongarch/include/asm/bug.h
-+++ b/arch/loongarch/include/asm/bug.h
-@@ -3,47 +3,63 @@
- #define __ASM_BUG_H
+diff --git a/arch/parisc/include/asm/bug.h b/arch/parisc/include/asm/bug.h
+index 833555f74ffa..792dacc2a653 100644
+--- a/arch/parisc/include/asm/bug.h
++++ b/arch/parisc/include/asm/bug.h
+@@ -23,8 +23,17 @@
+ # define __BUG_REL(val) ".word " __stringify(val)
+ #endif
  
- #include <asm/break.h>
-+#include <kunit/bug.h>
- #include <linux/stringify.h>
- 
- #ifndef CONFIG_DEBUG_BUGVERBOSE
--#define _BUGVERBOSE_LOCATION(file, line)
-+#define _BUGVERBOSE_LOCATION(file, func, line)
- #else
--#define __BUGVERBOSE_LOCATION(file, line)			\
+-
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
++
 +#if IS_ENABLED(CONFIG_KUNIT)
 +# define HAVE_BUG_FUNCTION
-+# define __BUG_FUNC_PTR(func)  .long func - .;
++# define __BUG_FUNC_PTR	__BUG_REL(%c1)
++# define __BUG_FUNC	__func__
 +#else
-+# define __BUG_FUNC_PTR(func)
-+#endif
++# define __BUG_FUNC_PTR
++# define __BUG_FUNC	NULL
++#endif /* IS_ENABLED(CONFIG_KUNIT) */
 +
-+#define __BUGVERBOSE_LOCATION(file, func, line)			\
- 		.pushsection .rodata.str, "aMS", @progbits, 1;	\
- 	10002:	.string file;					\
- 		.popsection;					\
- 								\
- 		.long 10002b - .;				\
-+		__BUG_FUNC_PTR(func)				\
- 		.short line;
--#define _BUGVERBOSE_LOCATION(file, line) __BUGVERBOSE_LOCATION(file, line)
-+#define _BUGVERBOSE_LOCATION(file, func, line) __BUGVERBOSE_LOCATION(file, func, line)
- #endif
- 
- #ifndef CONFIG_GENERIC_BUG
--#define __BUG_ENTRY(flags)
-+#define __BUG_ENTRY(flags, func)
- #else
--#define __BUG_ENTRY(flags) 					\
-+#define __BUG_ENTRY(flags, func)				\
- 		.pushsection __bug_table, "aw";			\
- 		.align 2;					\
- 	10000:	.long 10001f - .;				\
--		_BUGVERBOSE_LOCATION(__FILE__, __LINE__)	\
-+		_BUGVERBOSE_LOCATION(__FILE__, func, __LINE__)	\
- 		.short flags; 					\
- 		.popsection;					\
- 	10001:
- #endif
- 
--#define ASM_BUG_FLAGS(flags)					\
--	__BUG_ENTRY(flags)					\
-+#define ASM_BUG_FLAGS(flags, func)				\
-+	__BUG_ENTRY(flags, func)				\
- 	break		BRK_BUG
- 
--#define ASM_BUG()	ASM_BUG_FLAGS(0)
-+#define ASM_BUG()	ASM_BUG_FLAGS(0, .)
-+
-+#ifdef HAVE_BUG_FUNCTION
-+# define __BUG_FUNC    __func__
-+#else
-+# define __BUG_FUNC    NULL
-+#endif
- 
- #define __BUG_FLAGS(flags)					\
--	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags)));
-+	asm_inline volatile (__stringify(ASM_BUG_FLAGS(flags, %0)) : : "i" (__BUG_FUNC));
- 
- #define __WARN_FLAGS(flags)					\
- do {								\
- 	instrumentation_begin();				\
--	__BUG_FLAGS(BUGFLAG_WARNING|(flags));			\
-+	if (!IS_SUPPRESSED_WARNING(__func__))			\
-+		__BUG_FLAGS(BUGFLAG_WARNING|(flags));		\
- 	instrumentation_end();					\
- } while (0)
- 
+ #define BUG()								\
+ 	do {								\
+ 		asm volatile("\n"					\
+@@ -33,10 +42,12 @@
+ 			     "\t.align 4\n"				\
+ 			     "2:\t" __BUG_REL(1b) "\n"			\
+ 			     "\t" __BUG_REL(%c0)  "\n"			\
+-			     "\t.short %1, %2\n"			\
+-			     "\t.blockz %3-2*4-2*2\n"			\
++			     "\t" __BUG_FUNC_PTR  "\n"			\
++			     "\t.short %c2, %c3\n"			\
++			     "\t.blockz %c4-(.-2b)\n"			\
+ 			     "\t.popsection"				\
+-			     : : "i" (__FILE__), "i" (__LINE__),	\
++			     : : "i" (__FILE__), "i" (__BUG_FUNC),	\
++			     "i" (__LINE__),				\
+ 			     "i" (0), "i" (sizeof(struct bug_entry)) );	\
+ 		unreachable();						\
+ 	} while(0)
+@@ -58,10 +69,12 @@
+ 			     "\t.align 4\n"				\
+ 			     "2:\t" __BUG_REL(1b) "\n"			\
+ 			     "\t" __BUG_REL(%c0)  "\n"			\
+-			     "\t.short %1, %2\n"			\
+-			     "\t.blockz %3-2*4-2*2\n"			\
++			     "\t" __BUG_FUNC_PTR  "\n"			\
++			     "\t.short %c2, %3\n"			\
++			     "\t.blockz %c4-(.-2b)\n"			\
+ 			     "\t.popsection"				\
+-			     : : "i" (__FILE__), "i" (__LINE__),	\
++			     : : "i" (__FILE__), "i" (__BUG_FUNC),	\
++			     "i" (__LINE__),				\
+ 			     "i" (BUGFLAG_WARNING|(flags)),		\
+ 			     "i" (sizeof(struct bug_entry)) );		\
+ 	} while(0)
+@@ -74,7 +87,7 @@
+ 			     "\t.align 4\n"				\
+ 			     "2:\t" __BUG_REL(1b) "\n"			\
+ 			     "\t.short %0\n"				\
+-			     "\t.blockz %1-4-2\n"			\
++			     "\t.blockz %c1-(.-2b)\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (BUGFLAG_WARNING|(flags)),		\
+ 			     "i" (sizeof(struct bug_entry)) );		\
 -- 
 2.39.2
 
