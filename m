@@ -1,73 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B57B879A6B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 18:14:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B7A879B1D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Mar 2024 19:15:12 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JzjQFRKJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O/p1DeSm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvKxM3B0kz3vfN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 04:13:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvMHy1J4Jz3vXZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 05:15:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JzjQFRKJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O/p1DeSm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvKjc3Xbyz3dy3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 04:03:48 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1dd9568fc51so22813495ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Mar 2024 10:03:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710263026; x=1710867826; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f6JeHPuNf2fPfe8/IgMEBFCbi+8s7x8ZP+Ypz6wTBFE=;
-        b=JzjQFRKJAz6Qzc8unCBt3UG9wfu2i7qiKQH7v8yze0tZL5I3iskZ4m0lFeNIO+VCRf
-         hD+o/7jz+nakbRYsTgzC5bjroa0DF2L/K+3lc5mjSDcvgfcDCd++9NllMT3nZxAIt7gh
-         2rooXW6j3W2bNjSVZ9KtsvyUxmPLakSYWxUyPJRYgBW7SZ4D/7cGY/vt+ASW+vlnfAWJ
-         9JJp82rt+TTNjsmVZaiYSqEHffcORH7eHv9NwsUO0hL0SoOBr1hcEyniN0mFkBGly2HA
-         DvAwXMSaJcsSDTy9amAZtuGPF5kukDzOl6n7WZ2drVZlxhBseQB4taYKJPIlFtnM6cF9
-         IAjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710263026; x=1710867826;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f6JeHPuNf2fPfe8/IgMEBFCbi+8s7x8ZP+Ypz6wTBFE=;
-        b=tjmnkorIzkHzlpBhTRZhdX1Eor4a/qNsOmjty5hD4BV00oTeN6zKt3La/IRgrDpXn6
-         nD0lK1iOh8AjnLa1HSwfr26s8RzIpHwPbLCw9xt/V5xdPEu4gJ9jlDiPAEnOTA9sveO3
-         ykr4oS3oKMsgRvxt5U3DNFFODrO6wHw7JYKkdaR9M/LlpfSNG1CEe6CqhT5WP3rrcp8G
-         NkqEERVQnI051mW7mujJWovPjzRZWJQbEPNjiinB48CimpSkAcCaGCVut0ifeKFbXoqL
-         O24XrC+D2DlAUsMjXUvlhZoHba33OgpvRd2QRVh7SjsUK2Y3L4MLqvKt8NE8KDN78pZn
-         I/KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMArLRBFmI934o2PU51RxTh3hjdi+dWzixnzCWXsKpDa9ulQLMvDfkE5ieoEghyb3O5FFnzX2pBM79klZDZ5UOcpu/4EjAo3dbhGjXaQ==
-X-Gm-Message-State: AOJu0Yyxr9tfBhFO/NsM1XzNSmOMVkAVFWB7MHod19f+D97Hp8z7+4Qd
-	jq2dYLIZ5Ry3y/du9P3NNlw5zAmJCNmTkcr74YhufVjeqpSdvfDZ
-X-Google-Smtp-Source: AGHT+IFeKRBmX0VW7sv5rUHfZ0tynia7OwMdWO6tHkvskc+E+k+IhaoGejd1DMN70lLMBnMgohEXxQ==
-X-Received: by 2002:a17:903:483:b0:1dc:fba1:1522 with SMTP id jj3-20020a170903048300b001dcfba11522mr6685263plb.41.1710263026027;
-        Tue, 12 Mar 2024 10:03:46 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e10-20020a170902f1ca00b001dd75d4c78csm7006194plc.221.2024.03.12.10.03.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 10:03:44 -0700 (PDT)
-From: Guenter Roeck <linux@roeck-us.net>
-To: linux-kselftest@vger.kernel.org
-Subject: [PATCH 14/14] powerpc: Add support for suppressing warning backtraces
-Date: Tue, 12 Mar 2024 10:03:09 -0700
-Message-Id: <20240312170309.2546362-15-linux@roeck-us.net>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240312170309.2546362-1-linux@roeck-us.net>
-References: <20240312170309.2546362-1-linux@roeck-us.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvMHD2k3vz3bYc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 05:14:31 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CH745M025455;
+	Tue, 12 Mar 2024 18:14:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=XKNGZYmOYcbMyFlOT7owfdYa/ezTaXVNlWfUCujhK9I=;
+ b=O/p1DeSmuZC+PixDTpgyq6qSqFvJSBow+3hYXw1eFwB0TGEUjo4U7UG/KW0fZqxPfvaC
+ RpiW+CcqCTwH5LUx9tI7EPE85A7n9Xrc2KllJ1l/mdHyyJ+8fFoDGtXCvfD+NZTWEDyq
+ +ZTj2ZWl9wXrhEvNfe6aTZDVVsclX8lpzQGEBrHvTqpi1hW6t8exglQza/rbA8QQiKGq
+ q8g0L4DB9x4bU/xJOs6Hj5+C8SOYjPpw6R7c9YbK4mLUsX2zNa0V4G1JgJI1jtKAznru
+ VeVo3nEBOSjOBu/kl/TVKIGzVB8nN4UXPmAkeC0YD9XDfePYjjEc5hHVxNCMHtq43JSA Og== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtsapuf6j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 18:14:17 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42CHxn3s015652;
+	Tue, 12 Mar 2024 18:14:16 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtsapuf68-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 18:14:16 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42CGluYs013553;
+	Tue, 12 Mar 2024 18:14:15 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4ak8cm9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Mar 2024 18:14:15 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42CIEAP830015768
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Mar 2024 18:14:12 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C35F620040;
+	Tue, 12 Mar 2024 18:14:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 191F22005A;
+	Tue, 12 Mar 2024 18:14:06 +0000 (GMT)
+Received: from ltcd48-lp2.aus.stglabs.ibm.com (unknown [9.3.101.175])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 Mar 2024 18:14:05 +0000 (GMT)
+Subject: [RFC PATCH 0/3] powerpc: pSeries: vfio: iommu: Re-enable support for
+ SPAPR TCE VFIO
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+To: tpearson@raptorengineering.com, alex.williamson@redhat.com,
+        linuxppc-dev@lists.ozlabs.org
+Date: Tue, 12 Mar 2024 13:14:05 -0500
+Message-ID: <171026724548.8367.8321359354119254395.stgit@linux.ibm.com>
+User-Agent: StGit/1.5
+Content-Type: text/plain; charset="utf-8"
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: nM_n4KNkdtQOdBqyQlTqIQFj1nMmrCcn
+X-Proofpoint-GUID: Ov1NSsXSVowbq5PWuERKi9IkAjCnq0OM
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-12_11,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 clxscore=1011 phishscore=0 mlxlogscore=999 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403120138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,112 +97,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Guenter Roeck <linux@roeck-us.net>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmerman
- n <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: robh@kernel.org, jroedel@suse.de, sbhat@linux.ibm.com, gbatra@linux.vnet.ibm.com, jgg@ziepe.ca, aik@ozlabs.ru, linux-kernel@vger.kernel.org, svaidy@linux.ibm.com, aneesh.kumar@kernel.org, brking@linux.vnet.ibm.com, npiggin@gmail.com, kvm@vger.kernel.org, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, msuchanek@suse.de, aik@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add name of functions triggering warning backtraces to the __bug_table
-object section to enable support for suppressing WARNING backtraces.
+This patch-set fills the missing gaps on pSeries for VFIO SPAPR TCE
+sub-driver thereby re-enabling the VFIO support on POWER pSeries
+machines.
 
-To limit image size impact, the pointer to the function name is only added
-to the __bug_table section if both CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBOSE
-are enabled. Otherwise, the __func__ assembly parameter is replaced with a
-(dummy) NULL parameter to avoid an image size increase due to unused
-__func__ entries (this is necessary because __func__ is not a define but a
-virtual variable).
+Structure of the patchset
+=========================
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+* Currently, due to [1] VFIO_IOMMU_UNMAP_{DMA,UNMAP} ioctls are broken
+on pSeries as it only supports single level TCEs. This is addressed in
+the first patch as the lost functionality is restored.
+
+On pSeries, the DMA windows (default 32-bit and the 64-bit DDW) are
+"borrowed" between the host and the vfio driver. The necessary
+mechanism for this is already been in place since [2]. However,
+the VFIO SPAPR-TCE sub-driver doesn't open the 64-bit window if
+it wasn't already done by a host driver like NVME. So the user-space
+only gets access to the default 32-bit DMA window alone. This poses a
+challenge for devices having no host kernel drivers and completely
+depend on VFIO user-space interface to request DMA. The
+VFIO_SPAPR_TCE_CREATE ioctl currently just returns EPERM without
+attempting to open the second window for such devices.
+
+* The second patch is just code movement for pSeries specific
+functions from arch iommu to the pSeries platform iommu file.
+This is needed as the DMA window manipulation operations
+introduced in the third patch depend on these functions and are
+entirely pSeries specific.
+
+* The third patch adds necessary support to open up the 64-bit DMA
+window on VFIO_SPAPR_TCE_CREATE ioctl from the user-space. It also
+collects the DDW information from the platform for exposing it to
+user through 'struct vfio_iommu_spapr_tce_ddw_info'.
+
+Testing
+========
+These patches are tested with by attaching a nvme disk to a nested
+kvm guest running a pSeries lpar. Also vfio-test [3] by Alex Willamson,
+was forked and updated to add support for pSeries guest and used to
+test these patches[4].
+
+Limitations/Known Issues
+========================
+* Does not work for SRIOV VFs, as they have only one DMA window.
+* Does not work for multi-function cards.
+* Bugs
+  - mmdrop() in tce_iommu_release() when container detached
+    with pending unmaps.
+
+[1] Commit: 090bad39b237 ("powerpc/powernv: Add indirect levels to it_userspace")
+[2] Commit: 9d67c9433509 ("powerpc/iommu: Add \"borrowing\" iommu_table_group_ops")
+[3] https://github.com/awilliam/tests
+[4] https://github.com/nnmwebmin/vfio-ppc-tests/tree/vfio-ppc-ex
+
 ---
- arch/powerpc/include/asm/bug.h | 37 +++++++++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index 1db485aacbd9..330d4983f90e 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -14,6 +14,9 @@
- 	 .section __bug_table,"aw"
- 5001:	 .4byte \addr - .
- 	 .4byte 5002f - .
-+#if IS_ENABLED(CONFIG_KUNIT)
-+	 .4byte 0
-+#endif
- 	 .short \line, \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -32,30 +35,46 @@
- #endif /* verbose */
- 
- #else /* !__ASSEMBLY__ */
--/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
--   sizeof(struct bug_entry), respectively */
-+/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3,%4 to be FILE, __func__, LINE, flags
-+   and sizeof(struct bug_entry), respectively */
- #ifdef CONFIG_DEBUG_BUGVERBOSE
-+
-+#if IS_ENABLED(CONFIG_KUNIT)
-+# define HAVE_BUG_FUNCTION
-+# define __BUG_FUNC_PTR	"	.4byte %1 - .\n"
-+#else
-+# define __BUG_FUNC_PTR
-+#endif /* IS_ENABLED(CONFIG_KUNIT) */
-+
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
- 	"2:	.4byte 1b - .\n"		\
- 	"	.4byte %0 - .\n"		\
--	"	.short %1, %2\n"		\
--	".org 2b+%3\n"				\
-+	__BUG_FUNC_PTR				\
-+	"	.short %2, %3\n"		\
-+	".org 2b+%4\n"				\
- 	".previous\n"
- #else
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
- 	"2:	.4byte 1b - .\n"		\
--	"	.short %2\n"			\
--	".org 2b+%3\n"				\
-+	"	.short %3\n"			\
-+	".org 2b+%4\n"				\
- 	".previous\n"
- #endif
- 
-+#ifdef HAVE_BUG_FUNCTION
-+# define __BUG_FUNC	__func__
-+#else
-+# define __BUG_FUNC	NULL
-+#endif
-+
- #define BUG_ENTRY(insn, flags, ...)			\
- 	__asm__ __volatile__(				\
- 		"1:	" insn "\n"			\
- 		_EMIT_BUG_ENTRY				\
--		: : "i" (__FILE__), "i" (__LINE__),	\
-+		: : "i" (__FILE__), "i" (__BUG_FUNC),	\
-+		  "i" (__LINE__),			\
- 		  "i" (flags),				\
- 		  "i" (sizeof(struct bug_entry)),	\
- 		  ##__VA_ARGS__)
-@@ -80,7 +99,7 @@
- 		if (x)						\
- 			BUG();					\
- 	} else {						\
--		BUG_ENTRY(PPC_TLNEI " %4, 0", 0, "r" ((__force long)(x)));	\
-+		BUG_ENTRY(PPC_TLNEI " %5, 0", 0, "r" ((__force long)(x)));	\
- 	}							\
- } while (0)
- 
-@@ -90,7 +109,7 @@
- 		if (__ret_warn_on)				\
- 			__WARN();				\
- 	} else {						\
--		BUG_ENTRY(PPC_TLNEI " %4, 0",			\
-+		BUG_ENTRY(PPC_TLNEI " %5, 0",			\
- 			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
- 			  "r" (__ret_warn_on));	\
- 	}							\
--- 
-2.39.2
+Shivaprasad G Bhat (3):
+      powerpc/pseries/iommu: Bring back userspace view for single level TCE tables
+      powerpc/iommu: Move pSeries specific functions to pseries/iommu.c
+      pseries/iommu: Enable DDW for VFIO TCE create
+
+
+ arch/powerpc/include/asm/iommu.h       |   7 +-
+ arch/powerpc/kernel/iommu.c            | 156 +-------
+ arch/powerpc/platforms/pseries/iommu.c | 514 ++++++++++++++++++++++++-
+ drivers/vfio/vfio_iommu_spapr_tce.c    |  51 +++
+ 4 files changed, 571 insertions(+), 157 deletions(-)
 
