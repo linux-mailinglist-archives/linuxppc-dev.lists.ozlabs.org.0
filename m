@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE7187A853
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 14:28:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6E687A88C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 14:35:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvrtP64BGz3vXC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 00:28:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tvs2W0G8Bz3w2X
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 00:35:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tvrt10SyXz3dTt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 00:27:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvrtB5b2rz3dXD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 00:28:02 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tvrsy5b40z4x1R;
-	Thu, 14 Mar 2024 00:27:50 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tvrt96D1qz4x4T;
+	Thu, 14 Mar 2024 00:28:01 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <dc9a794f82ab62572d7d0be5cb4b8b27920a4f78.1708078316.git.christophe.leroy@csgroup.eu>
-References: <dc9a794f82ab62572d7d0be5cb4b8b27920a4f78.1708078316.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Implement set_memory_rox()
-Message-Id: <171033598336.517247.4075878005606513732.b4-ty@ellerman.id.au>
+To: Dawei Li <set_pte_at@outlook.com>
+In-Reply-To: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+References: <TYCP286MB232391520CB471E7C8D6EA84CAD19@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM>
+Subject: Re: [PATCH v3] powerpc: macio: Make remove callback of macio driver void returned
+Message-Id: <171033598348.517247.10069683831844972530.b4-ty@ellerman.id.au>
 Date: Thu, 14 Mar 2024 00:19:43 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, linux-scsi@vger.kernel.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, npiggin@gmail.com, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 16 Feb 2024 11:12:05 +0100, Christophe Leroy wrote:
-> Same as x86 and s390, add set_memory_rox() to avoid doing
-> one pass with set_memory_ro() and a second pass with set_memory_x().
+On Wed, 01 Feb 2023 22:36:19 +0800, Dawei Li wrote:
+> Commit fc7a6209d571 ("bus: Make remove callback return void") forces
+> bus_type::remove be void-returned, it doesn't make much sense for any
+> bus based driver implementing remove callbalk to return non-void to
+> its caller.
 > 
-> See commit 60463628c9e0 ("x86/mm: Implement native set_memory_rox()")
-> and commit 22e99fa56443 ("s390/mm: implement set_memory_rox()") for
-> more information.
+> This change is for macio bus based drivers.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Implement set_memory_rox()
-      https://git.kernel.org/powerpc/c/09ca1b11716f96461a4675eb0418d5cb97687389
+[1/1] powerpc: macio: Make remove callback of macio driver void returned
+      https://git.kernel.org/powerpc/c/9db2235326c4b868b6e065dfa3a69011ee570848
 
 cheers
