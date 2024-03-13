@@ -2,77 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55D187AE49
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 18:54:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B190487B3D0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 22:48:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wQQy+2vx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FI57p4S+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FI57p4S+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Tvynk38l9z3dVK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 04:54:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tw40435Zfz3vZX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 08:48:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wQQy+2vx;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FI57p4S+;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FI57p4S+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tvymz2TFbz3cG3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 04:53:53 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6e6c10bdd2fso163781b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 10:53:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710352429; x=1710957229; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=P42L0V1byhnm9xVh8nwf+gtaXnbnBXKB7y3o50DEnDg=;
-        b=wQQy+2vxvLAvNpqd3ubD/nJltqfAjlk8CQ9eCIl3gss64grF0YGr/tSa8cmrjRl0hA
-         J6We1/VMIDulapyU1T5kpZwZQqE0QmxLaHmtRGrd9MLnv9KKmNBA5BRfYMH3BNcEXpTi
-         rUwtjdTXU7v53cWELpp8DI0rrgwCWGks5j7LHpAdFXL4PHm2dQZqrYLU3kSgqXRObBMt
-         EcIL0iwUrANtHIxGfEHjFc/mVZtSwQlLJjcbt1JTYkT/2fOQIm1WDkfnCAS7Dy0eVvwW
-         6LY4h2sx8KADpaSd8MsHkF83YZLZeciLZyjkGsBBrv8d9967jsvYk3uViQkz3PI7rvoV
-         2t8A==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tw3yT02YWz30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 08:47:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710366444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Cvg3h+nHFQQ2z0yoilgh/3E5YQAg693jLTvjOOpWcMg=;
+	b=FI57p4S+EUcPi+r1+QxwPl0qovIAantYoBd76JKd9wff2BDeBE1QK85NxHnYzA8IJiin5G
+	DOaGBjfWifd7hjEwFNDUDpp9rMPUkT8pn9KGRRkOHv24Ic9tyDg8SAUoKJEVO6EdbiYYI6
+	vbqNIvIvCpIvbUEhT9Fin9vShdYtHZI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710366444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Cvg3h+nHFQQ2z0yoilgh/3E5YQAg693jLTvjOOpWcMg=;
+	b=FI57p4S+EUcPi+r1+QxwPl0qovIAantYoBd76JKd9wff2BDeBE1QK85NxHnYzA8IJiin5G
+	DOaGBjfWifd7hjEwFNDUDpp9rMPUkT8pn9KGRRkOHv24Ic9tyDg8SAUoKJEVO6EdbiYYI6
+	vbqNIvIvCpIvbUEhT9Fin9vShdYtHZI=
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
+ [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-495-MvY3vfAqOMyw-ojnCgCsLQ-1; Wed, 13 Mar 2024 17:47:22 -0400
+X-MC-Unique: MvY3vfAqOMyw-ojnCgCsLQ-1
+Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-474c751e9baso10126137.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 14:47:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710352429; x=1710957229;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P42L0V1byhnm9xVh8nwf+gtaXnbnBXKB7y3o50DEnDg=;
-        b=CkAIFDVr4VkZDz2QZqIEC5e6/3DQnJRrByX217+jzxUW94rZp+YDdLYQ/PO6LykBwZ
-         qXNqSt4mNT6muYYbgC6Dxm2rWSUoQVx+6fSLRaofry76C36iLAyyLlT7jtvDamr7aopl
-         UtO/DJ4J7eVDH8MG5SAEFbGnOHb+p+liakWlNwLtkcETqjqRIDyRi2ZvSpFVCyQqqBtX
-         VSoGu7JqW55o1lvcSjXf7G+ZjCgF4kxm8lVYe7uGBzOy7RIwVoNjNCXzv+D6FfuLJ9T0
-         BPMTjb6e7HdyjAOYQ63VXcQ66gsZsf689sIFPRgDqmAvRKBgK2pDw2au9Lz20tKh0tEk
-         Ra6g==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ2wdgNcQnHWMdYrbIs3qi1bO4FtpAWte65Wmg6PcmDI/k0L0CWghUMRXTzQZHr4ZZfLQTe2/zBaZO4tvuoogJbCoKzU/RaKfR+Fw/8g==
-X-Gm-Message-State: AOJu0Yx6igamKeaJhpE7SEImBv3Q6gC3sTQVkWhBFQJruokioVEFk2tp
-	vNKYMM1qhmbnrh2jftuR5J8WQKGLpH/K8FVB0xqG34/61j3Kx6K/vWRCDBspnA==
-X-Google-Smtp-Source: AGHT+IFcf5q7ruVnxD8hAPCs04EkAgFwMtLJq7WsD337HPZnA1JczKQ1xXu4AYtawACMGMb2l439Qw==
-X-Received: by 2002:a05:6a20:12c9:b0:1a3:113a:bbd5 with SMTP id v9-20020a056a2012c900b001a3113abbd5mr5892663pzg.40.1710352428857;
-        Wed, 13 Mar 2024 10:53:48 -0700 (PDT)
-Received: from thinkpad ([117.213.99.94])
-        by smtp.gmail.com with ESMTPSA id r6-20020a63e506000000b005dbd0facb4dsm7803062pgh.61.2024.03.13.10.53.38
+        d=1e100.net; s=20230601; t=1710366442; x=1710971242;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cvg3h+nHFQQ2z0yoilgh/3E5YQAg693jLTvjOOpWcMg=;
+        b=VMefxRi13QcpXa1GsFNC0Ubl5xV0HIQCAwh418uzniI0XnSDDCjxRDO9+S7QYHMR2Q
+         uf/PYdxEVa9TFYzq1sDIO7J5ivupKmAtK5iotkvjKL9xZt0lVEsjBBJgttgJllJAl37r
+         Ioq2cPJ0r8tj8irTWBOJ903F7jzYp6ip+WgEcqj30ege45wcBoClCpEj7yNYP4pvQgc+
+         f8cJvNMa/zH///hc1bS7irSZLu+C2UCiBv+Vla1rpPhg5lMaDnQDP45PTzh+u5C3jDVm
+         P0VO3mTM1/OdfXJS04ajtBEuBN01tsqLY/c1EsOHZZEzzdnv/wESHVt4oLw5q+K0Dztb
+         qG8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXlpvXlpSKi9xB6o1AidT38CtGT7dalRztqXdJb+DaAFCnkCZy0WOUGPsZyzjlD2w1J5OhFSYT8SABmPBEcUaJtdVYJsy/bkwts+J/moQ==
+X-Gm-Message-State: AOJu0Yzq4gLf2BFKTagnkKEK3F8LEpcBYwArfssvCG9dtH7dYN56BaxO
+	pHM5aVm0r2FMspteht/2HbEUcxborEXXLJQXClUWOhLc1SQ/0qBDDhjetAF1WbgqczRW+Iarrtm
+	UH+xBD/pM99LHHt/ebxpV+kDFlZYQtzqaa8VWzJ1dEcgdsy+hQihGZZ9Igv4lvrU=
+X-Received: by 2002:a67:fc48:0:b0:474:d24b:f5cc with SMTP id p8-20020a67fc48000000b00474d24bf5ccmr185182vsq.2.1710366442030;
+        Wed, 13 Mar 2024 14:47:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExtUpFAsO3j//nWUMiYrfkHfIQvS7XHG2BBi3o5gYAsKI/7+sGpzOvwSA+TSYy8KtxKUURKw==
+X-Received: by 2002:a67:fc48:0:b0:474:d24b:f5cc with SMTP id p8-20020a67fc48000000b00474d24bf5ccmr185164vsq.2.1710366441588;
+        Wed, 13 Mar 2024 14:47:21 -0700 (PDT)
+Received: from x1n.redhat.com ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id dv10-20020ad44eea000000b0069111c5cdd4sm60114qvb.100.2024.03.13.14.47.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 10:53:48 -0700 (PDT)
-Date: Wed, 13 Mar 2024 23:23:33 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH v9 07/10] PCI: dwc: ep: Remove "core_init_notifier" flag
-Message-ID: <20240313175333.GA126027@thinkpad>
-References: <20240304-pci-dbi-rework-v9-0-29d433d99cda@linaro.org>
- <20240304-pci-dbi-rework-v9-7-29d433d99cda@linaro.org>
- <ZesRk5Dg4KEASD3U@ryzen>
- <20240311144559.GA2504@thinkpad>
- <Ze99lLhe2GqIqMgl@ryzen>
+        Wed, 13 Mar 2024 14:47:21 -0700 (PDT)
+From: peterx@redhat.com
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 00/13] mm/treewide: Remove pXd_huge() API
+Date: Wed, 13 Mar 2024 17:47:06 -0400
+Message-ID: <20240313214719.253873-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Ze99lLhe2GqIqMgl@ryzen>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,83 +97,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@
- lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: Muchun Song <muchun.song@linux.dev>, Jason Gunthorpe <jgg@nvidia.com>, x86@kernel.org, peterx@redhat.com, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 11, 2024 at 10:54:28PM +0100, Niklas Cassel wrote:
-> On Mon, Mar 11, 2024 at 08:15:59PM +0530, Manivannan Sadhasivam wrote:
-> > > 
-> > > I would say that it is the following change that breaks things:
-> > > 
-> > > > -	if (!core_init_notifier) {
-> > > > -		ret = pci_epf_test_core_init(epf);
-> > > > -		if (ret)
-> > > > -			return ret;
-> > > > -	}
-> > > > -
-> > > 
-> > > Since without this code, pci_epf_test_core_init() will no longer be called,
-> > > as there is currently no one that calls epf->core_init() for a EPF driver
-> > > after it has been bound. (For drivers that call dw_pcie_ep_init_notify() in
-> > > .probe())
-> > > 
-> > 
-> > Thanks a lot for testing, Niklas!
-> > 
-> > > I guess one way to solve this would be for the EPC core to keep track of
-> > > the current EPC "core state" (up/down). If the core is "up" at EPF .bind()
-> > > time, notify the EPF driver directly after .bind()?
-> > > 
-> > 
-> > Yeah, that's a good solution. But I think it would be better if the EPC caches
-> > all events if the EPF drivers are not available and dispatch them once the bind
-> > happens for each EPF driver. Even though INIT_COMPLETE is the only event that is
-> > getting generated before bind() now, IMO it is better to add provision to catch
-> > other events also.
-> > 
-> > Wdyt?
-> 
-> I'm not sure.
-> What if the EPF goes up/down/up, it seems a bit silly to send all those
-> events to the EPF driver that will alloc+free+alloc.
-> 
-> Do we know for sure that we will want to store + replay events other than
-> INIT_COMPLETE?
-> 
-> And how many events should we store?
-> 
-> 
-> Until we can think of a good reason which events other than UP/DOWN we
-> can to store, I think that just storing the state as an integer in
-> struct pci_epc seems simpler.
-> 
+From: Peter Xu <peterx@redhat.com>
 
-Hmm, makes sense.
+[based on akpm/mm-unstable latest commit 9af2e4c429b5]
 
-> 
-> Or I guess we could continue with a flag in struct pci_epc_features,
-> like has_perst_notifier, which would then require the EPC driver to
-> call both epc_notify_core_up() and epc_notify_core_down() when receiving
-> the PERST deassert/assert.
-> For a driver without the flag set, the EPC core would call
-> .epc_notify_core_up() after bind. (And .epc_notify_core_down() would never
-> be called, or it could call it before unbind().)
-> That way an EPF driver itself would not need any different handling
-> (all callbacks would always come, either triggered by an EPC driver that
-> has PERST GPIO irq, or triggered by the EPC core for a driver that lacks
-> a PERST GPIO).
-> 
+v1:
+- Rebase, remove RFC tag
+- Fixed powerpc patch build issue, enhancing commit message [Michael]
+- Optimize patch 1 & 3 on "none || !present" check [Jason]
 
-For simplicity, I've just used a flag in 'struct pci_epc' to track the core_init
-and call the callback during bind().
+In previous work [1], we removed the pXd_large() API, which is arch
+specific.  This patchset further removes the hugetlb pXd_huge() API.
 
-But the series has grown big, so I decided to split it into two. One to address
-the DBI access issue and also remove the 'core_init_notifier' flag and another
-one to make EPF drivers more robust to handle the host reboot scenario.
+Hugetlb was never special on creating huge mappings when compared with
+other huge mappings.  Having a standalone API just to detect such pgtable
+entries is more or less redundant, especially after the pXd_leaf() API set
+is introduced with/without CONFIG_HUGETLB_PAGE.
 
-- Mani
+When looking at this problem, a few issues are also exposed that we don't
+have a clear definition of the *_huge() variance API.  This patchset
+started by cleaning these issues first, then replace all *_huge() users to
+use *_leaf(), then drop all *_huge() code.
+
+On x86/sparc, swap entries will be reported "true" in pXd_huge(), while for
+all the rest archs they're reported "false" instead.  This part is done in
+patch 1-5, in which I suspect patch 1 can be seen as a bug fix, but I'll
+leave that to hmm experts to decide.
+
+Besides, there are three archs (arm, arm64, powerpc) that have slightly
+different definitions between the *_huge() v.s. *_leaf() variances.  I
+tackled them separately so that it'll be easier for arch experts to chim in
+when necessary.  This part is done in patch 6-9.
+
+The final patches 10-13 do the rest on the final removal, since *_leaf()
+will be the ultimate API in the future, and we seem to have quite some
+confusions on how *_huge() APIs can be defined, provide a rich comment for
+*_leaf() API set to define them properly to avoid future misuse, and
+hopefully that'll also help new archs to start support huge mappings and
+avoid traps (like either swap entries, or PROT_NONE entry checks).
+
+The whole series is only lightly tested on x86, while as usual I don't have
+the capability to test all archs that it touches.
+
+[1] https://lore.kernel.org/r/20240305043750.93762-1-peterx@redhat.com
+
+Peter Xu (13):
+  mm/hmm: Process pud swap entry without pud_huge()
+  mm/gup: Cache p4d in follow_p4d_mask()
+  mm/gup: Check p4d presence before going on
+  mm/x86: Change pXd_huge() behavior to exclude swap entries
+  mm/sparc: Change pXd_huge() behavior to exclude swap entries
+  mm/arm: Use macros to define pmd/pud helpers
+  mm/arm: Redefine pmd_huge() with pmd_leaf()
+  mm/arm64: Merge pXd_huge() and pXd_leaf() definitions
+  mm/powerpc: Redefine pXd_huge() with pXd_leaf()
+  mm/gup: Merge pXd huge mapping checks
+  mm/treewide: Replace pXd_huge() with pXd_leaf()
+  mm/treewide: Remove pXd_huge()
+  mm: Document pXd_leaf() API
+
+ arch/arm/include/asm/pgtable-2level.h         |  4 +--
+ arch/arm/include/asm/pgtable-3level-hwdef.h   |  1 +
+ arch/arm/include/asm/pgtable-3level.h         |  6 ++--
+ arch/arm/mm/Makefile                          |  1 -
+ arch/arm/mm/hugetlbpage.c                     | 34 -------------------
+ arch/arm64/include/asm/pgtable.h              |  6 +++-
+ arch/arm64/mm/hugetlbpage.c                   | 18 ++--------
+ arch/loongarch/mm/hugetlbpage.c               | 12 +------
+ arch/mips/include/asm/pgtable-32.h            |  2 +-
+ arch/mips/include/asm/pgtable-64.h            |  2 +-
+ arch/mips/mm/hugetlbpage.c                    | 10 ------
+ arch/mips/mm/tlb-r4k.c                        |  2 +-
+ arch/parisc/mm/hugetlbpage.c                  | 11 ------
+ .../include/asm/book3s/64/pgtable-4k.h        | 20 -----------
+ .../include/asm/book3s/64/pgtable-64k.h       | 25 --------------
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 27 +++++++--------
+ arch/powerpc/include/asm/nohash/pgtable.h     | 10 ------
+ arch/powerpc/mm/pgtable_64.c                  |  6 ++--
+ arch/riscv/mm/hugetlbpage.c                   | 10 ------
+ arch/s390/mm/hugetlbpage.c                    | 10 ------
+ arch/sh/mm/hugetlbpage.c                      | 10 ------
+ arch/sparc/mm/hugetlbpage.c                   | 12 -------
+ arch/x86/mm/hugetlbpage.c                     | 26 --------------
+ arch/x86/mm/pgtable.c                         |  4 +--
+ include/linux/hugetlb.h                       | 24 -------------
+ include/linux/pgtable.h                       | 24 ++++++++++---
+ mm/gup.c                                      | 24 ++++++-------
+ mm/hmm.c                                      |  9 ++---
+ mm/memory.c                                   |  2 +-
+ 29 files changed, 68 insertions(+), 284 deletions(-)
+ delete mode 100644 arch/arm/mm/hugetlbpage.c
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.44.0
+
