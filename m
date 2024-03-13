@@ -2,76 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A2287A33B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 08:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A587A390
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 08:27:43 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PFgXzs6T;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D34peqLy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EBUhrqtc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvhWf2grRz3vbH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 18:11:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TvhtP35jyz3vYn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 18:27:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PFgXzs6T;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D34peqLy;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EBUhrqtc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TvhVv3mRfz3dXD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 18:10:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710313842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z9m0flQIeLqxyKbiwOgkeWggQ2qsLzO5+Pi+cvXBRIU=;
-	b=PFgXzs6Ty6Y9myj6R/AWEzbjQn0vx02Jz/6uP7UJfEnOUz/yjCLhmskUZey+sghTsRMloB
-	OK2MDYOZKbBzxn3/lYsTgtulGQ+p3GmkouN8462oUz3detGjNd5uqRYMTeU0VR4n4DspX1
-	lrnH6ikclh9YAK6X1GAOmy/UfX0I2UU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710313843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z9m0flQIeLqxyKbiwOgkeWggQ2qsLzO5+Pi+cvXBRIU=;
-	b=D34peqLyFuoW3Hw6+1SpK1xxAmDGXelGALXz8VBnovglqlumCJTw0FjY5RP/MQylJdVTOF
-	gv/nc59+zjrZjbvsrRjYRs93qn3BmueNB3FOvKdDaw/2vbOADXT+UCEREX6d+WRNwuqPqi
-	VxizUSejthk9hf58j/FVHSV3sHPWlcQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-A_LvjSnQPMGNLRwzgYbMmA-1; Wed, 13 Mar 2024 03:10:38 -0400
-X-MC-Unique: A_LvjSnQPMGNLRwzgYbMmA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAF9585A58C;
-	Wed, 13 Mar 2024 07:10:37 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.13])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0B65A2022C1E;
-	Wed, 13 Mar 2024 07:10:36 +0000 (UTC)
-Date: Wed, 13 Mar 2024 15:10:34 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Subject: Re: kexec verbose dumps with 6.8 [was: [PATCH v4 1/7] kexec_file:
- add kexec_file flag to control debug printing]
-Message-ID: <ZfFRaoOIgQQY46zD@MiWiFi-R3L-srv>
-References: <20231213055747.61826-1-bhe@redhat.com>
- <20231213055747.61826-2-bhe@redhat.com>
- <4c775fca-5def-4a2d-8437-7130b02722a2@kernel.org>
- <ZfD37AlznCXJ6P54@MiWiFi-R3L-srv>
- <2f8b1b2d-0abb-43f0-8665-0855928f017c@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tvhsh1T6dz3dXD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 18:27:03 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42D7257n005155;
+	Wed, 13 Mar 2024 07:26:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=rOor7RYeGfCOqux28AEV5i5j/WIDmKriNbgjbkQ8YKQ=;
+ b=EBUhrqtc3UDjCknmr7gvBw4Y6++4O/Du8j0GvqBpIL8W+yvZ9MCgtDRn8V9LgfIMVkLT
+ lDCzpcfNkPAysAIbDscs7bhnhDFiZ0GMXcJTkBJF+ajeW1rjTTXQI76XRVCTasgnRrK8
+ v2MiVDykNyAyttbfVccST9/vao6SAI94kOVeH4DvyRCy6v/Z4e5NRu8iSBeiFPHwHa4o
+ +DOc8jDTu+ZFqOxEScPBz176+SHuh0xlRLJaOsYWVIT27UK1/I0tHmQR2f/g+n20QVw+
+ 6/hVNwPO3SHS4P00avNURtBtdgbyzK5rQyBqNLrMS6B9UieNJP3kwI1aPq5GQRH6We5k AQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wu7d58ac3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 07:26:52 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42D783ob018909;
+	Wed, 13 Mar 2024 07:26:51 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wu7d58ab5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 07:26:51 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42D5VakQ018621;
+	Wed, 13 Mar 2024 07:26:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4t23tr7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Mar 2024 07:26:50 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42D7QjJB29753626
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Mar 2024 07:26:47 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E87A920040;
+	Wed, 13 Mar 2024 07:26:44 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3DDA520043;
+	Wed, 13 Mar 2024 07:26:37 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.43.89.57])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 13 Mar 2024 07:26:36 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Wed, 13 Mar 2024 12:56:29 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Book3S HV nestedv2: Cancel pending HDEC exception
+Date: Wed, 13 Mar 2024 12:56:23 +0530
+Message-ID: <20240313072625.76804-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f8b1b2d-0abb-43f0-8665-0855928f017c@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7-uVPKZHgdkelGTF0ILsAB7_BnaOOr58
+X-Proofpoint-ORIG-GUID: wBtPzTAxrU-_ZDuPAwchNsQUVA7Ghuey
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-13_07,2024-03-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=804 phishscore=0
+ impostorscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 clxscore=1011 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403130054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,134 +95,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-parisc@vger.kernel.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, conor@kernel.org, nathan@kernel.org, joe@perches.com, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
+Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaibhav Jain <vaibhav@linux.ibm.com>, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/13/24 at 06:58am, Jiri Slaby wrote:
-> Hi,
-> 
-> 
-> On 13. 03. 24, 1:48, Baoquan He wrote:
-> > Hi Jiri,
-> > 
-> > On 03/12/24 at 10:58am, Jiri Slaby wrote:
-> > > On 13. 12. 23, 6:57, Baoquan He wrote:
-> >   ... snip...
-> > > > --- a/include/linux/kexec.h
-> > > > +++ b/include/linux/kexec.h
-> > > ...
-> > > > @@ -500,6 +500,13 @@ static inline int crash_hotplug_memory_support(void) { return 0; }
-> > > >    static inline unsigned int crash_get_elfcorehdr_size(void) { return 0; }
-> > > >    #endif
-> > > > +extern bool kexec_file_dbg_print;
-> > > > +
-> > > > +#define kexec_dprintk(fmt, ...)					\
-> > > > +	printk("%s" fmt,					\
-> > > > +	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
-> > > > +	       ##__VA_ARGS__)
-> > > 
-> > > This means you dump it _always_. Only with different levels.
-> > 
-> > It dumped always too with pr_debug() before, I just add a switch to
-> > control it's pr_info() or pr_debug().
-> 
-> Not really, see below.
-> 
-> > > 
-> > > And without any prefix whatsoever, so people see bloat like this in their
-> > > log now:
-> > > [  +0.000001] 0000000000001000-000000000009ffff (1)
-> > > [  +0.000002] 000000007f96d000-000000007f97efff (3)
-> > > [  +0.000002] 0000000000800000-0000000000807fff (4)
-> > > [  +0.000001] 000000000080b000-000000000080bfff (4)
-> > > [  +0.000002] 0000000000810000-00000000008fffff (4)
-> > > [  +0.000001] 000000007f97f000-000000007f9fefff (4)
-> > > [  +0.000001] 000000007ff00000-000000007fffffff (4)
-> > > [  +0.000002] 0000000000000000-0000000000000fff (2)
-> > 
-> > On which arch are you seeing this? There should be one line above these
-> > range printing to tell what they are, like:
-> > 
-> > E820 memmap:
-> 
-> Ah this is there too. It's a lot of output, so I took it out of context,
-> apparently.
-> 
-> > 0000000000000000-000000000009a3ff (1)
-> > 000000000009a400-000000000009ffff (2)
-> > 00000000000e0000-00000000000fffff (2)
-> > 0000000000100000-000000006ff83fff (1)
-> > 000000006ff84000-000000007ac50fff (2)
-> 
-> It should all be prefixed like kdump: or kexec: in any way.
+This reverts commit 180c6b072bf360b686e53d893d8dcf7dbbaec6bb ("KVM: PPC:
+Book3S HV nestedv2: Do not cancel pending decrementer exception") which
+prevented cancelling a pending HDEC exception for nestedv2 KVM guests. It
+was done to avoid overhead of a H_GUEST_GET_STATE hcall to read the 'HDEC
+expiry TB' register which was higher compared to handling extra decrementer
+exceptions.
 
-I can reproduce it now on fedora. OK, I will add kexec or something
-similar to prefix. Thanks.
+This overhead of reading 'HDEC expiry TB' register has been mitigated
+recently by the L0 hypervisor(PowerVM) by putting the value of this
+register in L2 guest-state output buffer on trap to L1. From there the
+value of this register is cached, made available in kvmhv_run_single_vcpu()
+to compare it against host(L1) timebase and cancel the pending hypervisor
+decrementer exception if needed.
 
-> 
-> > > without actually knowing what that is.
-> > > 
-> > > There should be nothing logged if that is not asked for and especially if
-> > > kexec load went fine, right?
-> > 
-> > Right. Before this patch, those pr_debug() were already there. You need
-> > enable them to print out like add '#define DEBUG' in *.c file, or enable
-> > the dynamic debugging of the file or function.
-> 
-> I think it's perfectly fine for DEBUG builds to print this out. And many
-> (all major?) distros use dyndbg, so it used to print nothing by default.
-> 
-> > With this patch applied,
-> > you only need specify '-d' when you execute kexec command with
-> > kexec_file load interface, like:
-> > 
-> > kexec -s -l -d /boot/vmlinuz-xxxx.img --initrd xxx.img --reuse-cmdline
-> 
-> Perhaps our (SUSE) tooling passes -d? But I am seeing this every time I
-> boot.
-> 
-> No, it does not seem so:
-> load.sh[915]: Starting kdump kernel load; kexec cmdline: /sbin/kexec -p
-> /var/lib/kdump/kernel --append=" loglevel=7 console=tty0 console=ttyS0
-> video=1920x1080,1024x768,800x600 oops=panic
-> lsm=lockdown,capability,integrity,selinux sysrq=yes reset_devices
-> acpi_no_memhotplug cgroup_disable=memory nokaslr numa=off irqpoll nr_cpus=1
-> root=kdump rootflags=bind rd.udev.children-max=8 disable_cpu_apicid=0
-> panic=1" --initrd=/var/lib/kdump/initrd  -a
-> 
-> > For kexec_file load, it is not logging if not specifying '-d', unless
-> > you take way to make pr_debug() work in that file.
-> 
-> So is -d detection malfunctioning under some circumstances?
-> 
-> > > Can this be redesigned, please?
-> > 
-> > Sure, after making clear what's going on with this, I will try.
-> > 
-> > > 
-> > > Actually what was wrong on the pr_debug()s? Can you simply turn them on from
-> > > the kernel when -d is passed to kexec instead of all this?
-> > 
-> > Joe suggested this during v1 reviewing:
-> > https://lore.kernel.org/all/1e7863ec4e4ab10b84fd0e64f30f8464d2e484a3.camel@perches.com/T/#u
-> > 
-> > > 
-> > > ...
-> > > > --- a/kernel/kexec_core.c
-> > > > +++ b/kernel/kexec_core.c
-> > > > @@ -52,6 +52,8 @@ atomic_t __kexec_lock = ATOMIC_INIT(0);
-> > > >    /* Flag to indicate we are going to kexec a new kernel */
-> > > >    bool kexec_in_progress = false;
-> > > > +bool kexec_file_dbg_print;
-> > > 
-> > > Ugh, and a global flag for this?
-> > 
-> > Yeah, kexec_file_dbg_print records if '-d' is specified when 'kexec'
-> > command executed. Anything wrong with the global flag?
-> 
-> Global variables are frowned upon. To cite coding style: unless you
-> **really** need them. Here, it looks like you do not.
+Fixes: 180c6b072bf3 ("KVM: PPC: Book3S HV nestedv2: Do not cancel pending decrementer exception")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+ arch/powerpc/kvm/book3s_hv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I see your point, will consider and change. Thanks again.
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 0b921704da45..e47b954ce266 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4856,7 +4856,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	 * entering a nested guest in which case the decrementer is now owned
+ 	 * by L2 and the L1 decrementer is provided in hdec_expires
+ 	 */
+-	if (!kvmhv_is_nestedv2() && kvmppc_core_pending_dec(vcpu) &&
++	if (kvmppc_core_pending_dec(vcpu) &&
+ 			((tb < kvmppc_dec_expires_host_tb(vcpu)) ||
+ 			 (trap == BOOK3S_INTERRUPT_SYSCALL &&
+ 			  kvmppc_get_gpr(vcpu, 3) == H_ENTER_NESTED)))
+-- 
+2.44.0
 
