@@ -2,88 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A587A390
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 08:27:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFCE87A3AD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 08:40:23 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EBUhrqtc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=JBXiIRPj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TvhtP35jyz3vYn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 18:27:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tvj906fLcz3vbl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Mar 2024 18:40:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EBUhrqtc;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=JBXiIRPj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=dan.carpenter@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tvhsh1T6dz3dXD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 18:27:03 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42D7257n005155;
-	Wed, 13 Mar 2024 07:26:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=rOor7RYeGfCOqux28AEV5i5j/WIDmKriNbgjbkQ8YKQ=;
- b=EBUhrqtc3UDjCknmr7gvBw4Y6++4O/Du8j0GvqBpIL8W+yvZ9MCgtDRn8V9LgfIMVkLT
- lDCzpcfNkPAysAIbDscs7bhnhDFiZ0GMXcJTkBJF+ajeW1rjTTXQI76XRVCTasgnRrK8
- v2MiVDykNyAyttbfVccST9/vao6SAI94kOVeH4DvyRCy6v/Z4e5NRu8iSBeiFPHwHa4o
- +DOc8jDTu+ZFqOxEScPBz176+SHuh0xlRLJaOsYWVIT27UK1/I0tHmQR2f/g+n20QVw+
- 6/hVNwPO3SHS4P00avNURtBtdgbyzK5rQyBqNLrMS6B9UieNJP3kwI1aPq5GQRH6We5k AQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wu7d58ac3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Mar 2024 07:26:52 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42D783ob018909;
-	Wed, 13 Mar 2024 07:26:51 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wu7d58ab5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Mar 2024 07:26:51 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42D5VakQ018621;
-	Wed, 13 Mar 2024 07:26:50 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4t23tr7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Mar 2024 07:26:50 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42D7QjJB29753626
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 Mar 2024 07:26:47 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E87A920040;
-	Wed, 13 Mar 2024 07:26:44 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DDA520043;
-	Wed, 13 Mar 2024 07:26:37 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.43.89.57])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 13 Mar 2024 07:26:36 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Wed, 13 Mar 2024 12:56:29 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org
-Subject: [PATCH] KVM: PPC: Book3S HV nestedv2: Cancel pending HDEC exception
-Date: Wed, 13 Mar 2024 12:56:23 +0530
-Message-ID: <20240313072625.76804-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tvj8D1J71z2xLW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 18:39:38 +1100 (AEDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-a44665605f3so876193766b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Mar 2024 00:39:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710315572; x=1710920372; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AvANucvrZ/fsPo2yOI31iWo1FDKNiABMfD22ldNz5dc=;
+        b=JBXiIRPjyXSRjeg73eeKrgUa8r664IoTGKqnjwyUBEXy/9ywdun3bkPQPg2jFXTfH6
+         CBI8DFKdSD5qUdAthwXQPCSBccAr2H0ReOSyXpFyZp7/+g0Fo+X2lUrgT5e6An5ypc1H
+         A6WED7iUiBeYiIxrw87P5AhEtvSpxdS6BlLuJuKyNRb4JeKAYToo+uMKHPd9MLWYLjGt
+         mcLwk31rqRZa2w8S0SbIxxg+CK6q0e9p6pHojw9eQZ34w5Hm/1dhnFliq7lCOwnJ9mBB
+         SIxJkc7D+tp2tY77+MZ2VpT/kmXqev7SOYoaGNnMpG6PR9zjrwfOQd5OERHf1lHRURCn
+         4Mgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710315572; x=1710920372;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AvANucvrZ/fsPo2yOI31iWo1FDKNiABMfD22ldNz5dc=;
+        b=rHTH5OrGgUYAwKdKTMzi56Wd/4QvP8ZwGEO0eFFn3FwyuEwfQMzBWk9GDYdWAzGosh
+         tXFsIzsju4paQVIY8AN2nlm7o9qKIlB256ugRcPS71cLNIKrRiA6E48lZtPSc1Yo5exY
+         VisXGPtsqB7n55KPMgqg8Md8150qd2JFKmYjpVnm3Lo7gvpZFI6L6TOj/AuIgfIDzAj6
+         2gcnLYGjcvCFTpgrJG6E+BmR50SgNBuY0LjJf32l3tjhC2SVkX5xl5L9fDelQIJ0tMya
+         k2N4jxrRshkIkNcNzjH7VC9eGAKKzvvRcuSpFcZhjpxMllyh0JgljveADPvXDW773ANz
+         2yug==
+X-Forwarded-Encrypted: i=1; AJvYcCVaaf0V/rOjSbt46E8qsLesrQsavfjQkrYNSpZHaSaGP+o7sOGhVbyZQTFpNd+ugujchbUKQiTIDc4TZJVvdLGLYDaKBF6TYs0o7HO/jg==
+X-Gm-Message-State: AOJu0Yxeah8KTAryV7WFaC8svj+J6+BrHQo5hLDnQdQG5sGaX5Awr6D6
+	piMII3BRp/5LfiPS/xVUXeKwXnOibpfsUVn5oV1u/mnhWtYmvU7m9e+Md9LbhoE=
+X-Google-Smtp-Source: AGHT+IH38GneADkyKtRbEkb8+HLK5ZsZNpyhD22lE4uk6eUmiwmdHa00scLatPQEFNYx/T2Y2VkSUg==
+X-Received: by 2002:a17:906:2ccb:b0:a41:3e39:b918 with SMTP id r11-20020a1709062ccb00b00a413e39b918mr7484516ejr.24.1710315572226;
+        Wed, 13 Mar 2024 00:39:32 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id qx26-20020a170906fcda00b00a45a687b52asm4578781ejb.213.2024.03.13.00.39.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Mar 2024 00:39:31 -0700 (PDT)
+Date: Wed, 13 Mar 2024 10:39:28 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 00/14] Add support for suppressing warning backtraces
+Message-ID: <43ef4ef4-303b-45c6-aa50-3e0982c93bd7@moroto.mountain>
+References: <20240312170309.2546362-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7-uVPKZHgdkelGTF0ILsAB7_BnaOOr58
-X-Proofpoint-ORIG-GUID: wBtPzTAxrU-_ZDuPAwchNsQUVA7Ghuey
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-13_07,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=804 phishscore=0
- impostorscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
- malwarescore=0 priorityscore=1501 bulkscore=0 clxscore=1011 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403130054
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240312170309.2546362-1-linux@roeck-us.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,43 +78,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaibhav Jain <vaibhav@linux.ibm.com>, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <akpm@lin
+ ux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit 180c6b072bf360b686e53d893d8dcf7dbbaec6bb ("KVM: PPC:
-Book3S HV nestedv2: Do not cancel pending decrementer exception") which
-prevented cancelling a pending HDEC exception for nestedv2 KVM guests. It
-was done to avoid overhead of a H_GUEST_GET_STATE hcall to read the 'HDEC
-expiry TB' register which was higher compared to handling extra decrementer
-exceptions.
+Thanks!
 
-This overhead of reading 'HDEC expiry TB' register has been mitigated
-recently by the L0 hypervisor(PowerVM) by putting the value of this
-register in L2 guest-state output buffer on trap to L1. From there the
-value of this register is cached, made available in kvmhv_run_single_vcpu()
-to compare it against host(L1) timebase and cancel the pending hypervisor
-decrementer exception if needed.
+Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-Fixes: 180c6b072bf3 ("KVM: PPC: Book3S HV nestedv2: Do not cancel pending decrementer exception")
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 0b921704da45..e47b954ce266 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4856,7 +4856,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	 * entering a nested guest in which case the decrementer is now owned
- 	 * by L2 and the L1 decrementer is provided in hdec_expires
- 	 */
--	if (!kvmhv_is_nestedv2() && kvmppc_core_pending_dec(vcpu) &&
-+	if (kvmppc_core_pending_dec(vcpu) &&
- 			((tb < kvmppc_dec_expires_host_tb(vcpu)) ||
- 			 (trap == BOOK3S_INTERRUPT_SYSCALL &&
- 			  kvmppc_get_gpr(vcpu, 3) == H_ENTER_NESTED)))
--- 
-2.44.0
+regards,
+dan carpenter
 
