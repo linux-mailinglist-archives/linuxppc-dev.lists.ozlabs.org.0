@@ -2,57 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22C987BCE3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 13:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B1B87BD11
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 13:54:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Bd4SJ205;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GJEzbgW3;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QJv/Em92;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwRfC4sfZz3vXZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 23:34:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwS5K43bvz3vXP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 23:54:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Bd4SJ205;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GJEzbgW3;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QJv/Em92;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwRdV1m6yz2xSl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 23:34:02 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 50D1BE000B;
-	Thu, 14 Mar 2024 12:33:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710419632;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwS4b5Dmrz3cV5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 23:54:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710420843;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vmS6pTNpvnT/R21GkQzH7oBRj9ygun2hL3GsI2Prl7k=;
-	b=Bd4SJ2052tDvqmPvwvYDCWFxDOPB/uPi0aNi9qDO27H3vwbviwTbcoJHZOzjFbK+CjEU7X
-	wB9bNmnYTzmhxegXTFhGucB/tqAB6sqmnT7QRhpGkdShDRykrBqNTAyzBbHu+PCJ/jUsDB
-	0bmcsLfMSe5AJtreGLtuzOo2zg/xa0gIfiz2RjJMUNu91ufYz06T+erwYijk3HH/wnEYz7
-	KJxBFx4fCqkN0aE1wtWWYJpKMvqq5Dss6mNZoOMpxsNKlK3K1JVB84dGFLNQ3tN85+phO5
-	Q4ybimPoXRvfNhQMWJrRmDMNZor+f7DA+lOxGgtCK2ybxVygKtleWTlvr6da3w==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH] net: wan: fsl_qmc_hdlc: Fix module compilation
-Date: Thu, 14 Mar 2024 13:33:46 +0100
-Message-ID: <20240314123346.461350-1-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.44.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZxWk5KkUQhQXZEGGdHKASVJGou5PrPdHxO3BmOv5tM=;
+	b=GJEzbgW3NvzdmOuKkHmVPPUVsRiQubmNeTj2O/0ogg6WFtLTnxBslrMsm31Rj0ZEXebe27
+	qNnmIj3BS0Ix3e20hgLqlk6KYJi/tG1ebFmMp+enVRKY3K21EfZktqbY454EMfuZxG4hva
+	8Zsyq8iBpU0qMHJASa6nOiJ07ssAjq8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710420844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZxWk5KkUQhQXZEGGdHKASVJGou5PrPdHxO3BmOv5tM=;
+	b=QJv/Em92EoeIdxHwrQjeYNYWLMyzbZe4njNz8plrFLtr4FJwb6JmY+IqH00Bhjy13R194k
+	1SqBG6MD5+bNpd0SRVDNKNEps6pVcNCV+zJDRcXuPsSUcuB+JMXfvZzaeUaxqny2j8WleD
+	BvyHJ5mXGX0xZC2a9t82sE8Uj75SdFY=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-540-p_GiDewjPkmDfewDkKkWlw-1; Thu, 14 Mar 2024 08:54:02 -0400
+X-MC-Unique: p_GiDewjPkmDfewDkKkWlw-1
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-690d3f5af86so3182906d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 05:54:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710420841; x=1711025641;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BZxWk5KkUQhQXZEGGdHKASVJGou5PrPdHxO3BmOv5tM=;
+        b=O3TWAVs37umMVH9uX4/1lRvvbCPpDAQqbRom/OcBHX1pDmvEgKX9jWou38oUi8U70k
+         /oK9MXRx7XOzzrGQ/V1PUYwqKHGawuGA9QcRu1Kw26NSEYuso2z57LqcAyzgyMsKEHFj
+         xOR/rjx9hvAVrcLBoz1DyBjTVh50x27iy1VE1BDeLD1HQUAqAsav3gKK3rV+zQj8XZaS
+         Sc9K580d5rFt2HTLxa0JoqKT2OwDxAgRxb5hcNtwYdJxG9lYH6Ij8K5PyJVYEZQrfkrZ
+         h6R69vZE7xcpIjS/cMZSjPTzJP/dk+4h9u4mk67kcFRkh3aVpkfGdTiIc37rgxrsb4o0
+         ldbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgFdp5daZ35jK10jHFrwhuFtqb7/z3WIqLbjKakygDn9QeBgQ0oUCr9Rs7AwjqEkKnlWwVVpVnxKvLcDkCe6MWXCNRggAOCwnGo7zZuQ==
+X-Gm-Message-State: AOJu0YzHO8TEBb8y0mrvY90+LE40EgcIr/cvfZJlB7jjBD1VLqKiRAa6
+	rLIYvFzJ5KGR4PB1hfZX1nL0qajpmz9A2CioCKMeh8Q1f8dU7zmo+W27R3/T2YRrEuIBes6eJ90
+	92PDEhCjnOY7388PRxu1H2YwWq8Lq+BRm2IGErZuUqtMV9R7XIVl8Nu+5wM7BNcM=
+X-Received: by 2002:a05:6214:568b:b0:690:de72:316f with SMTP id qm11-20020a056214568b00b00690de72316fmr1649088qvb.1.1710420841568;
+        Thu, 14 Mar 2024 05:54:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDKFAcy0D0RZIBzW/ijnDnKbSAtNbNy7aeKjfEkMPENW2gRJ/JKFObLbnjKUsRDl/qV6I7cQ==
+X-Received: by 2002:a05:6214:568b:b0:690:de72:316f with SMTP id qm11-20020a056214568b00b00690de72316fmr1649061qvb.1.1710420841118;
+        Thu, 14 Mar 2024 05:54:01 -0700 (PDT)
+Received: from x1n ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id kd13-20020a056214400d00b0068ff79d8d97sm409217qvb.41.2024.03.14.05.53.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Mar 2024 05:54:00 -0700 (PDT)
+Date: Thu, 14 Mar 2024 08:53:57 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 09/13] mm/powerpc: Redefine pXd_huge() with pXd_leaf()
+Message-ID: <ZfLzZekFBp3J6JUy@x1n>
+References: <20240313214719.253873-1-peterx@redhat.com>
+ <20240313214719.253873-10-peterx@redhat.com>
+ <7b7d6ce1-4a3f-4392-951d-a9bd146c954c@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <7b7d6ce1-4a3f-4392-951d-a9bd146c954c@csgroup.eu>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,38 +102,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Ratheesh Kannoth <rkannoth@marvell.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Muchun Song <muchun.song@linux.dev>, "x86@kernel.org" <x86@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The fsl_qmc_driver does not compile as module:
-  error: ‘qmc_hdlc_driver’ undeclared here (not in a function);
-    405 | MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
-        |                         ^~~~~~~~~~~~~~~
+On Thu, Mar 14, 2024 at 08:45:34AM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 13/03/2024 à 22:47, peterx@redhat.com a écrit :
+> > From: Peter Xu <peterx@redhat.com>
+> > 
+> > PowerPC book3s 4K mostly has the same definition on both, except pXd_huge()
+> > constantly returns 0 for hash MMUs.  As Michael Ellerman pointed out [1],
+> > it is safe to check _PAGE_PTE on hash MMUs, as the bit will never be set so
+> > it will keep returning false.
+> > 
+> > As a reference, __p[mu]d_mkhuge() will trigger a BUG_ON trying to create
+> > such huge mappings for 4K hash MMUs.  Meanwhile, the major powerpc hugetlb
+> > pgtable walker __find_linux_pte() already used pXd_leaf() to check hugetlb
+> > mappings.
+> > 
+> > The goal should be that we will have one API pXd_leaf() to detect all kinds
+> > of huge mappings.  AFAICT we need to use the pXd_leaf() impl (rather than
+> > pXd_huge() ones) to make sure ie. THPs on hash MMU will also return true.
+> 
+> All kinds of huge mappings ?
+> 
+> pXd_leaf() will detect only leaf mappings (like pXd_huge() ). There are 
+> also huge mappings through hugepd. On powerpc 8xx we have 8M huge pages 
+> and 512k huge pages. A PGD entry covers 4M so pgd_leaf() won't report 
+> those huge pages.
 
-Fix the typo.
+Ah yes, I should always mention this is in the context of leaf huge pages
+only.  Are the examples you provided all fall into hugepd category?  If so
+I can reword the commit message, as:
 
-Fixes: b40f00ecd463 ("net: wan: Add support for QMC HDLC")
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Closes: https://lore.kernel.org/linux-kernel/87ttl93f7i.fsf@mail.lhotse/
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/net/wan/fsl_qmc_hdlc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+        As a reference, __p[mu]d_mkhuge() will trigger a BUG_ON trying to
+        create such huge mappings for 4K hash MMUs.  Meanwhile, the major
+        powerpc hugetlb pgtable walker __find_linux_pte() already used
+        pXd_leaf() to check leaf hugetlb mappings.
 
-diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-index 960371df470a..f69b1f579a0c 100644
---- a/drivers/net/wan/fsl_qmc_hdlc.c
-+++ b/drivers/net/wan/fsl_qmc_hdlc.c
-@@ -780,7 +780,7 @@ static const struct of_device_id qmc_hdlc_id_table[] = {
- 	{ .compatible = "fsl,qmc-hdlc" },
- 	{} /* sentinel */
- };
--MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
-+MODULE_DEVICE_TABLE(of, qmc_hdlc_id_table);
- 
- static struct platform_driver qmc_hdlc_driver = {
- 	.driver = {
+        The goal should be that we will have one API pXd_leaf() to detect
+        all kinds of huge mappings except hugepd.  AFAICT we need to use
+        the pXd_leaf() impl (rather than pXd_huge() ones) to make sure
+        ie. THPs on hash MMU will also return true.
+
+Does this look good to you?
+
+Thanks,
+
 -- 
-2.44.0
+Peter Xu
 
