@@ -2,102 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246AA87C540
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 23:41:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7696A87C1B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 17:59:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=freebsd.org header.i=@freebsd.org header.a=rsa-sha256 header.s=dkim header.b=Ls/AXlM1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JsGMjVwv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Twj5v6TYQz3vb2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 09:41:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwYXB1Mp5z3dwr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 03:59:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=freebsd.org header.i=@freebsd.org header.a=rsa-sha256 header.s=dkim header.b=Ls/AXlM1;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JsGMjVwv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=freebsd.org (client-ip=2610:1c1:1:606c::19:2; helo=mx2.freebsd.org; envelope-from=jhb@freebsd.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 547 seconds by postgrey-1.37 at boromir; Fri, 15 Mar 2024 03:55:20 AEDT
-Received: from mx2.freebsd.org (mx2.freebsd.org [IPv6:2610:1c1:1:606c::19:2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=alison.schofield@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 15 Mar 2024 03:59:15 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwYQw2FSmz2xdh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 03:55:20 +1100 (AEDT)
-Received: from mx1.freebsd.org (mx1.freebsd.org [IPv6:2610:1c1:1:606c::19:1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
-	 client-signature RSA-PSS (4096 bits))
-	(Client CN "mx1.freebsd.org", Issuer "R3" (verified OK))
-	by mx2.freebsd.org (Postfix) with ESMTPS id 4TwYD71pWjz3thN;
-	Thu, 14 Mar 2024 16:45:59 +0000 (UTC)
-	(envelope-from jhb@FreeBSD.org)
-Received: from smtp.freebsd.org (smtp.freebsd.org [96.47.72.83])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "smtp.freebsd.org", Issuer "R3" (verified OK))
-	by mx1.freebsd.org (Postfix) with ESMTPS id 4TwYD70pLsz47rh;
-	Thu, 14 Mar 2024 16:45:59 +0000 (UTC)
-	(envelope-from jhb@FreeBSD.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
-	t=1710434759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Or9nCnb/dQWNRqBHg4JM/wqAutmYuKp/s8W5MxKH3A=;
-	b=Ls/AXlM1E/0PoEUirK+ne97gapJUuFtvpieTbONtiLNQQLfaov1zfk6ga0kuguUTFt0BAI
-	JqVDO/0vHH8Uk5e1SE8+tLH5eXGrEPanZVX9S6TwjOe+ck/hrzO74RtGuzNrUR1Vwx5XxZ
-	3w8upAG4TMX0CLr8Dv35sDJrkGQpc2rPKgSpnKHgn7UzJY3tA4naI4v+CgJjpHjdlDrGM4
-	Bt4rBmdI/7xLaZpxhXq9EZDM96CR+lBUZwTLfE71W2J6fgkzprxqHNEMbeu9o0o6fWt/GD
-	gcWLeuymUQYU7Mu2zSpTWdOAbPz5IiEsWqSaqdmGdnZuCoTQBt3iVNdUX/tJ/w==
-ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1710434759; a=rsa-sha256; cv=none;
-	b=ydVZ+5k65PrkUrfACDATGl7fbchhyd//uhylOn2yTwlLH2KMFmqZhungfqnWfp6V9a0/tv
-	oK/9wOxteAkn27y3DsGcWhpWIPv89PNKZC3rs+TF9tqonvJtiRQ6/99Ft8zjdTdps6dzIv
-	w/JTKtl7DliSVxsFhVt/C96AkTEtT1/wh3JrvmkDUDky01getdnC902ITK7adiObM0maDI
-	mzMp3yqgEcz7ydde5s+l57YSYoNq0uggKxLHzpCVAYxbfay721YOoZ1AoVpZvFEGInzDNX
-	cGXt/798v5VhqlWlFOWDBV0513T5ABrdcC4l7ei+OeX4iTr3fUc1osZ0sw7stA==
-ARC-Authentication-Results: i=1;
-	mx1.freebsd.org;
-	none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
-	s=dkim; t=1710434759;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Or9nCnb/dQWNRqBHg4JM/wqAutmYuKp/s8W5MxKH3A=;
-	b=M7JfQhri+AHphqqXzABLoVnxXu4/VCefwkUY+x9uMHDXQXtXmOAhgZv2z674l+fdhdLfug
-	bZXV/OYJYBp3Uk5jwj6HJoxlk5VJSPUpzU1/sdUBuOkPNHn+k4Gyvq4LxlNiliUevn/bOR
-	oFoC8Ad4LEFWDaaTq/FLAuiN+fxqboTGrfoCJf5Z4x1SsT+HK9C//sibVaNjvXY/yJQzSi
-	49O9yd2SDkvNH4Fk1QXoE/Gj1w3oTbK+Sd83iKSZVXx5ELYkV/bW4VOtmho7jgEf5EBVdT
-	4M4fy1YIBfuVQRV3gY9GE8tcR8i74MOcNbJakGayJayfWIMBjMOIJNcJ5DdjkQ==
-Received: from [128.232.109.22] (user-109-22.vpn.cl.cam.ac.uk [128.232.109.22])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: jhb)
-	by smtp.freebsd.org (Postfix) with ESMTPSA id 4TwYD226LszMsW;
-	Thu, 14 Mar 2024 16:45:54 +0000 (UTC)
-	(envelope-from jhb@FreeBSD.org)
-Message-ID: <971d21b7-0309-439e-91b6-234f84da959d@FreeBSD.org>
-Date: Thu, 14 Mar 2024 09:45:50 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwYWR4fQQz2ysD;
+	Fri, 15 Mar 2024 03:59:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710435556; x=1741971556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fcf8GvnNI2NlxwWa/BLBUBs674hhRLyrkoAa66D2RKo=;
+  b=JsGMjVwvPci05JKMbeC9Zlu6poqISGQiABDqxA4jRp/87Gl4d4ePDxR9
+   gmKfVhEe3YmKYDS8lwsVlexTLGDL6OdkCDnUZLW3T6MWujs3T+NBddzvA
+   cTADnzdkeraSg8hHVDS89xNOqYXs0JJQ7hQ2vNLWeQgyo4Z0Uaz6v1dPu
+   st/Z+8/f8pwRNf6QKpdmGh1c2ZsBuuWdr93n7tgKOg9RYc0bNaH569mR+
+   oyL65kPHdDA8o76aNTY9YzTRlJQAb9zzBCMxMMKJOn0XBsuUWPIXNMbuE
+   YJXX+tLpgKhs28D2LPWw3VPeStFqEtxX8nP4cLQFnp0MApDyLKHajA0xk
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="22731670"
+X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
+   d="scan'208";a="22731670"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 09:58:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
+   d="scan'208";a="16952403"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.209.72.214])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 09:57:59 -0700
+Date: Thu, 14 Mar 2024 09:57:57 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [FYI][PATCH] tracing/treewide: Remove second parameter of
+ __assign_str()
+Message-ID: <ZfMslbCmCtyEaEWN@aschofie-mobl2>
+References: <20240223125634.2888c973@gandalf.local.home>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] x86/elf: Add a new .note section containing Xfeatures
- information to x86 core files
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>,
- Vignesh Balasubramanian <vigbalas@amd.com>, linux-kernel@vger.kernel.org,
- linux-toolchains@vger.kernel.org
-References: <20240314112359.50713-1-vigbalas@amd.com>
- <20240314112359.50713-2-vigbalas@amd.com>
- <dd54d6de-0bcc-4b2e-a420-b1a429b06246@intel.com>
-From: John Baldwin <jhb@FreeBSD.org>
-In-Reply-To: <dd54d6de-0bcc-4b2e-a420-b1a429b06246@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Fri, 15 Mar 2024 09:37:24 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240223125634.2888c973@gandalf.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,173 +67,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: matz@suse.de, keescook@chromium.org, felix.willgerodt@intel.com, bpetkov@amd.com, x86@kernel.org, npiggin@gmail.com, aneesh.kumar@kernel.org, linux-mm@kvack.org, ebiederm@xmission.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, binutils@sourceware.org
+Cc: linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, brcm80211@lists.linux.dev, ath10k@lists.infradead.org, Julia Lawall <Julia.Lawall@inria.fr>, linux-s390@vger.kernel.org, dev@openvswitch.org, linux-cifs@vger.kernel.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, io-uring@vger.kernel.org, linux-bcachefs@vger.kernel.org, iommu@lists.linux.dev, ath11k@lists.infradead.org, linux-media@vger.kernel.org, linux-wpan@vger.kernel.org, linux-pm@vger.kernel.org, selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-erofs@lists.ozlabs.org, virtualization@lists.linux.dev, linux-sound@vger.kernel.org, linux-block@vger.kernel.org, ocfs2-devel@lists.linux.dev, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-cxl@vger.kernel.org, linux-tegra@vger.kernel.org, intel-xe@lists.freedesktop.org, linux-edac@vger.kernel.org, linux-hwmon@vger.kernel.org, brcm80211-dev-list.pdl@broa
+ dcom.com, Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org, ath12k@lists.infradead.org, tipc-discussion@lists.sourceforge.net, Masami Hiramatsu <mhiramat@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>, freedreno@lists.freedesktop.org, linux-nfs@vger.kernel.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/14/24 8:37 AM, Dave Hansen wrote:
-> On 3/14/24 04:23, Vignesh Balasubramanian wrote:
->> Add a new .note section containing type, size, offset and flags of
->> every xfeature that is present.
+On Fri, Feb 23, 2024 at 12:56:34PM -0500, Steven Rostedt wrote:
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 > 
-> Mechanically, I'd much rather have all of that info in the cover letter
-> in the actual changelog instead.
+> [
+>    This is a treewide change. I will likely re-create this patch again in
+>    the second week of the merge window of v6.9 and submit it then. Hoping
+>    to keep the conflicts that it will cause to a minimum.
+> ]
 > 
-> I'd also love to see a practical example of what an actual example core
-> dump looks like on two conflicting systems:
+> With the rework of how the __string() handles dynamic strings where it
+> saves off the source string in field in the helper structure[1], the
+> assignment of that value to the trace event field is stored in the helper
+> value and does not need to be passed in again.
 > 
->     * Total XSAVE size
->     * XCR0 value
->     * XSTATE_BV from the core dump
->     * XFEATURE offsets for each feature
-
-I noticed this when I bought an AMD Ryzen 9 5900X based system for my desktop
-running FreeBSD and found that the XSAVE core dump notes were not recognized
-by GDB (FreeBSD dumps an XSAVE register set note that matches the same
-layout of NT_X86_XSTATE used by Linux).
-
-In particular, as the cover letter notes, on this AMD processor, there is
-no "gap" for MPX, so the PKRU registers it provides are at a different offset
-than on Intel CPUs.  Furthermore, my reading of the SDM is that there is no
-guarantee of architectural offsets of a given XSAVE feature and that software
-should be querying CPUID to determine the layout.
-
-FWIW, the relevant CPUID leaves for my AMD system:
-
-    XSAVE features (0xd/0):
-       XCR0 valid bit field mask               = 0x0000000000000207
-          x87 state                            = true
-          SSE state                            = true
-          AVX state                            = true
-          MPX BNDREGS                          = false
-          MPX BNDCSR                           = false
-          AVX-512 opmask                       = false
-          AVX-512 ZMM_Hi256                    = false
-          AVX-512 Hi16_ZMM                     = false
-          PKRU state                           = true
-          XTILECFG state                       = false
-          XTILEDATA state                      = false
-       bytes required by fields in XCR0        = 0x00000988 (2440)
-       bytes required by XSAVE/XRSTOR area     = 0x00000988 (2440)
-       XSAVEOPT instruction                    = true
-       XSAVEC instruction                      = true
-       XGETBV instruction                      = true
-       XSAVES/XRSTORS instructions             = true
-       XFD: extended feature disable supported = false
-       SAVE area size in bytes                 = 0x00000348 (840)
-       IA32_XSS valid bit field mask           = 0x0000000000001800
-          PT state                             = false
-          PASID state                          = false
-          CET_U user state                     = true
-          CET_S supervisor state               = true
-          HDC state                            = false
-          UINTR state                          = false
-          LBR state                            = false
-          HWP state                            = false
-
-> Do you have any information about what other OSes are doing in this
-> area?  I thought Windows, for instance, was even less flexible about the
-> XSAVE format than Linux is.
-
-I have an implementation of a similar note for FreeBSD already as well as
-patches for GDB to make use of the note (for FreeBSD) and generate it
-via 'gcore' (on FreeBSD).  However, I would very much like to reach
-consensus on a shared format of the note to avoid gratuitous differences
-between FreeBSD and Linux.  The AMD folks were gracious enough to work on
-the Linux kernel implementation.  A bit more on that below though.
-
-> Why didn't LWP cause this problem?
+> This means that with:
 > 
->  From the cover letter:
+>   __string(field, mystring)
 > 
->> But this patch series depends on heuristics based on the total XSAVE
->> register set size and the XCR0 mask to infer the layouts of the
->> various register blocks for core dumps, and hence, is not a foolproof
->> mechanism to determine the layout of the XSAVE area.
+> Which use to be assigned with __assign_str(field, mystring), no longer
+> needs the second parameter and it is unused. With this, __assign_str()
+> will now only get a single parameter.
 > 
-> It may not be theoretically foolproof.  But I'm struggling to think of a
-> case where it would matter in practice.  Is there any CPU from any
-> vendor where this is actually _needed_?
+> There's over 700 users of __assign_str() and because coccinelle does not
+> handle the TRACE_EVENT() macro I ended up using the following sed script:
 > 
-> Sure, it's ugly as hell, but these notes aren't going to be available
-> universally _ever_, so it's not like the crummy heuristic code gets to
-> go away.
+>   git grep -l __assign_str | while read a ; do
+>       sed -e 's/\(__assign_str([^,]*[^ ,]\) *,[^;]*/\1)/' $a > /tmp/test-file;
+>       mv /tmp/test-file $a;
+>   done
 > 
-> Have you seen the APX spec?
+> I then searched for __assign_str() that did not end with ';' as those
+> were multi line assignments that the sed script above would fail to catch.
 > 
->>
-> https://www.intel.com/content/www/us/en/developer/articles/technical/advanced-performance-extensions-apx.html
+> Note, the same updates will need to be done for:
 > 
-> It makes this even more fun because it adds a new XSAVE state component,
-> but reuses the MPX offsets.
+>   __assign_str_len()
+>   __assign_rel_str()
+>   __assign_rel_str_len()
+>   __assign_bitmask()
+>   __assign_rel_bitmask()
+>   __assign_cpumask()
+>   __assign_rel_cpumask()
 > 
->> This information will be used by the debuggers to understand the XSAVE
->> layout of the machine where the core file is dumped, and to read XSAVE
->> registers, especially during cross-platform debugging.
+> [1] https://lore.kernel.org/linux-trace-kernel/20240222211442.634192653@goodmis.org/
 > 
-> This is pretty close to just a raw dump of the XSAVE CPUID leaves.
-> Rather than come up with an XSAVE-specific ABI that depends on CPUID
-> *ANYWAY* (because it dumps the "flags" register aka. ECX), maybe we
-> should just bite the bullet and dump out (some of) the raw CPUID space.
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> ---
+>  arch/arm64/kernel/trace-events-emulation.h    |   2 +-
+>  arch/powerpc/include/asm/trace.h              |   4 +-
+>  arch/x86/kvm/trace.h                          |   2 +-
+>  drivers/base/regmap/trace.h                   |  18 +--
+>  drivers/base/trace.h                          |   2 +-
+>  drivers/block/rnbd/rnbd-srv-trace.h           |  12 +-
+>  drivers/cxl/core/trace.h                      |  24 ++--
 
-So the current note I initially proposed and implemented for FreeBSD
-(https://reviews.freebsd.org/D42136) and an initial patch set for GDB
-(https://sourceware.org/pipermail/gdb-patches/2023-October/203083.html)
-do indeed dump a raw set of CPUID leaves.  The version I have for FreeBSD
-only dumps the raw leaf values for leaf 0x0d though the note format is
-extensible should additional leaves be needed in the future.  One of the
-questions if we wanted to use a CPUID leaf note is which leaves to dump
-(e.g. do you dump all of them, or do you just dump the subset that is
-currently needed).  Another quirky question is what to do about systems
-with hetergeneous cores (E vs P for example).  Currently those systems
-use the same XSAVE layout across all cores, but other CPUID leaves do
-already vary across cores on those systems.  Some options considered for
-that are to 1) use a separate note type for "other" core types (e.g.
-a separate note type for "E" cores), or 2) make this new note a per-thread
-note that matches the core the given thread was running on when the
-register state stored in the process core dump was saved.
+snip to CXL
 
-However, there are other wrinkles with the leaf approach.  Namely, one
-of the use cases that I currently have an ugly hack for in GDB is if
-you are using gdb against a remote host running gdbserver and then use
-'gcore' to generate a core dump.  GDB needs to write out a NT_X86_XSTATE
-note, but that note requires a layout.  What GDB does today is just pick
-a known Intel layout based on the XCR0 mask.  However, GDB should ideally
-start writing out whatever new note we adopt here, so if we dump raw
-CPUID leaves it means extending the GDB remote protocol so we can query
-the CPUID leaves from the remote host.  On the other hand, if we choose a
-more abstract format as proposed in this patch, the local GDB (or LLDB
-or whatever) can generate whatever synthetic layout it wants to write
-the local NT_X86_XSTATE.  (NB: A relevant detail here is that the GDB
-remote protocol does not pass the entire XSAVE state across as a block,
-instead gdbserver parses individual register values for AVX, etc.
-registers and those decoded register values are passed over the
-protocol.)
 
-Another question is potentially supporting compact XSAVE format in
-for NT_X86_XSTATE.  Today Linux has some complicated code to re-expand
-the compat XSAVE format back out to the standard layout for ptrace() and
-process core dumps.  (FreeBSD doesn't yet make use of XSAVEC so we
-haven't yet dealt with that problem.)  The CPUID leaf approach would
-allow us to support compact formats, though GDB would have to check for
-the flag in the XSAVE header to decide which format to use, etc.  On
-the other hand, if we use the more abstract format in this patch, then
-GDB wouldn't actually have to care at all.  The kernel would just dump
-out the "compact" form of the layout note and the direct XSAVEC output
-as the note.  (I will probably do this in FreeBSD eventually, but
-using a policy knob (sysctl on FreeBSD) to control if it is enabled
-that FreeBSD would default to on at some point in the future.)
+> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+> index bdf117a33744..07ba4e033347 100644
+> --- a/drivers/cxl/core/trace.h
+> +++ b/drivers/cxl/core/trace.h
 
-I don't really have a strong preference for which type of note to dump
-myself, I really just want to have a shared format so that there is
-less work to do on the tools side (e.g. GDB).
+snip to poison
 
-Also, FWIW, I did try to raise this topic on LLDB's discussion forums
-and got a simple "sounds ok" type response but no detailed feedback.
-That was a proposal for the CPUID leaf note, but I suspect LLDB will
-be fine with either approach.  Certainly I will update GDB to work
-with whatever approach is adopted.
+> @@ -668,8 +668,8 @@ TRACE_EVENT(cxl_poison,
+>  	    ),
+>  
+>  	TP_fast_assign(
+> -		__assign_str(memdev, dev_name(&cxlmd->dev));
+> -		__assign_str(host, dev_name(cxlmd->dev.parent));
+> +		__assign_str(memdev);
+> +		__assign_str(host);
 
--- 
-John Baldwin
+I think I get that the above changes work because the TP_STRUCT__entry for
+these did:
+	__string(memdev, dev_name(&cxlmd->dev))
+	__string(host, dev_name(cxlmd->dev.parent))
+
+>  		__entry->serial = cxlmd->cxlds->serial;
+>  		__entry->overflow_ts = cxl_poison_overflow(flags, overflow_ts);
+>  		__entry->dpa = cxl_poison_record_dpa(record);
+> @@ -678,12 +678,12 @@ TRACE_EVENT(cxl_poison,
+>  		__entry->trace_type = trace_type;
+>  		__entry->flags = flags;
+>  		if (region) {
+> -			__assign_str(region, dev_name(&region->dev));
+> +			__assign_str(region);
+>  			memcpy(__entry->uuid, &region->params.uuid, 16);
+>  			__entry->hpa = cxl_trace_hpa(region, cxlmd,
+>  						     __entry->dpa);
+>  		} else {
+> -			__assign_str(region, "");
+> +			__assign_str(region);
+>  			memset(__entry->uuid, 0, 16);
+>  			__entry->hpa = ULLONG_MAX;
+
+For the above 2, there was no helper in TP_STRUCT__entry. A recently
+posted patch is fixing that up to be __string(region, NULL) See [1],
+with the actual assignment still happening in TP_fast_assign.
+
+Does that assign logic need to move to the TP_STRUCT__entry definition
+when you merge these changes? I'm not clear how much logic is able to be
+included, ie like 'C' style code in the TP_STRUCT__entry.
+
+[1]
+https://lore.kernel.org/linux-cxl/20240314044301.2108650-1-alison.schofield@intel.com/
+
+Thanks for helping,
+Alison
+
+
+>  		}
+
+
 
