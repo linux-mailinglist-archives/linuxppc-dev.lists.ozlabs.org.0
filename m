@@ -1,91 +1,122 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF50887BDF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 14:46:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE79B87BE1D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 14:55:18 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=he8MG/k9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OhZATZ0e;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwTFG3xxcz3vbs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 00:46:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwTR83Z0Xz3vdb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 00:55:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=he8MG/k9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OhZATZ0e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwTDT6WYvz3vZT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 00:46:00 +1100 (AEDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42ECrD2l029511;
-	Thu, 14 Mar 2024 13:45:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pp1; bh=XwiQpHXIslt51XYw+nYwRS+Tl6bFp6ua9li80Bv5mQw=;
- b=he8MG/k9ecHXJLA09kkkxNS8g7veOVeccmEJKg8RCfagzZBt1/11Pxu7FM+pW9DSI5FT
- sVVXvmSHO+SitfcyDOvOwuuKKzwlHIBblYZ60LMmmnjrHjqwYaeITiLhpkg5BFkpEOHO
- c+VsMx6DiSx1hrGAqPrawXuuI7nOO7yMyL+7KEu+zsnnesU3SaygPmvWM93hPMq3hGzZ
- kzf4qyxWICNv95FADnbQnC1yRYLK1D3uQ7RhdFOznR+3RGoQdKu7y1iJDwIqMGHQYWXP
- SbC9edevwNibhqyZJOPb7VmiOm0/JsKq7WUC4Q5skhTxb+4rJ4fFJ+jxFNrRfISILxEK 4w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wv1mngvq7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 13:45:48 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42EDdHqV001952;
-	Thu, 14 Mar 2024 13:45:47 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wv1mngvpy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 13:45:47 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42EB0RiW020506;
-	Thu, 14 Mar 2024 13:45:46 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ws3kmd2ar-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 13:45:46 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42EDjgFa12583400
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Mar 2024 13:45:44 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ABADF2004B;
-	Thu, 14 Mar 2024 13:45:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 699EB20040;
-	Thu, 14 Mar 2024 13:45:42 +0000 (GMT)
-Received: from DESKTOP-2CCOB1S. (unknown [9.171.201.209])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 14 Mar 2024 13:45:42 +0000 (GMT)
-Date: Thu, 14 Mar 2024 14:45:41 +0100
-From: Tobias Huschle <huschle@linux.ibm.com>
-To: Luis Machado <luis.machado@arm.com>
-Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
-Message-ID: <ZfL/hROYxQudcTuX@DESKTOP-2CCOB1S.>
-References: <20240228161018.14253-1-huschle@linux.ibm.com>
- <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PvEnVf3CeDddS-tn5gdTkdX5xc-aFryX
-X-Proofpoint-GUID: uO3Sy-jjvv1DLMP_tYpnLbfXBGAXTWbH
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwTQR3rFCz3vX7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 00:54:38 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1dd8dd198d0so7238935ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 06:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710424476; x=1711029276; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=VYCoE6x/5FFdiDNbW6/F39BZo8+6Gfyjcn8t3LZwS0o=;
+        b=OhZATZ0eO3NWqVdnVzPTtj3O5pGd9YE472/TDHK+Hls1CKGwS6Vy4WhmerrXn6uE5V
+         M20sBS5iDhGcZxG0Vzc9wtTg+4inu2YCluibvuNlFt5sVjz5M4DHF7+qkD7SbDEbQSDJ
+         JTf1eIemFAyK00MbtYVYBcJmvWzicFOWDCDZWHDB/VRwxVt163jH63M8r4P2ZegfBC6L
+         Pd1DDdg46SDQy9FJuPAU0NbzuNkvsAlLHqfk753GBujtNtC42xWjLsft5WyBrQnOLTBE
+         hfaQDJlRP3YtjXPfevTmqvuBAlD/CA+AD5UEju0HPs1kBLb3rxEfO4L173OlM2d0tXwA
+         ydIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710424476; x=1711029276;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VYCoE6x/5FFdiDNbW6/F39BZo8+6Gfyjcn8t3LZwS0o=;
+        b=TGsSAmruTcA4eq0GmINWIx5QwlYewjayitrkuJ+0e/vvpiCFDkc9reUMtG4SLL2X+h
+         PXGAw5BTrqRsqFua/mcp5sYSfIavoLo3nkje+D4h/OvGoA6YEtJdFQ68+wZTVdfntKdj
+         KEveZM0fBql7Nclg4uPEisp60C+d0H/nZpos6TwKnczD+MG22GH9WSw7SroqBhlamFlh
+         HTV6RDfi7VlnsDSeLymCm19xEnkKFIQ4Hp3xBrspYtxRCcjNjmmVHie2xtszhiLG1/Lp
+         nvAW8f3KJr/FVgUrp8mPfnY+0voU3DJerjtWw8zqOlpA+tvyr+tHP1KIKgh3GltFnQd2
+         c/fw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuvOhjzmud0wtK9gCBpoVseh2jUYO72ETMpVUEbIy3Y+dcpGp8PK/6xOkXQk0iU58pt05eROgNnQ8eBkNz6g57Ul013KJr3l02aDqq2A==
+X-Gm-Message-State: AOJu0YxL5Cv9B2zJVHDheFFy718qjzc82XhWRvOUeN8dZPZoEc/si4Jk
+	fvF3QhRAwKKKw45AuDbs5Qh8OfjnGZIsb+mS/DAHMRuLEAsm+vYI
+X-Google-Smtp-Source: AGHT+IF1d/JjNvaUdlV4zt2IUW1FJQXeQEYCUkspAPTpUNljVFGhXPd+BPdq0X4tfzWPOphzi79Nzg==
+X-Received: by 2002:a17:902:d2d0:b0:1dc:6d64:dcff with SMTP id n16-20020a170902d2d000b001dc6d64dcffmr41795plc.37.1710424476027;
+        Thu, 14 Mar 2024 06:54:36 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id u10-20020a170902e80a00b001dd95b5dd0fsm1700430plg.69.2024.03.14.06.54.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Mar 2024 06:54:35 -0700 (PDT)
+Message-ID: <a4229dee-8a4b-488d-99de-84ed255583a5@roeck-us.net>
+Date: Thu, 14 Mar 2024 06:54:33 -0700
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_11,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0 spamscore=0
- lowpriorityscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403140100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/14] s390: Add support for suppressing warning
+ backtraces
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20240312170309.2546362-1-linux@roeck-us.net>
+ <20240312170309.2546362-12-linux@roeck-us.net>
+ <CAMuHMdXHKfd8agPGx+MjvC4cjW5F6DEeVec3Moe-=LLkrT3CXQ@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <CAMuHMdXHKfd8agPGx+MjvC4cjW5F6DEeVec3Moe-=LLkrT3CXQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,78 +128,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, nd <nd@arm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
+Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmer
+ mann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 08, 2024 at 03:11:38PM +0000, Luis Machado wrote:
-> On 2/28/24 16:10, Tobias Huschle wrote:
-> > 
-> > Questions:
-> > 1. The kworker getting its negative lag occurs in the following scenario
-> >    - kworker and a cgroup are supposed to execute on the same CPU
-> >    - one task within the cgroup is executing and wakes up the kworker
-> >    - kworker with 0 lag, gets picked immediately and finishes its
-> >      execution within ~5000ns
-> >    - on dequeue, kworker gets assigned a negative lag
-> >    Is this expected behavior? With this short execution time, I would
-> >    expect the kworker to be fine.
+On 3/14/24 00:57, Geert Uytterhoeven wrote:
+> Hi Günter,
 > 
-> That strikes me as a bit odd as well. Have you been able to determine how a negative lag
-> is assigned to the kworker after such a short runtime?
+> On Tue, Mar 12, 2024 at 6:06 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>> Add name of functions triggering warning backtraces to the __bug_table
+>> object section to enable support for suppressing WARNING backtraces.
+>>
+>> To limit image size impact, the pointer to the function name is only added
+>> to the __bug_table section if both CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBOSE
+>> are enabled. Otherwise, the __func__ assembly parameter is replaced with a
+>> (dummy) NULL parameter to avoid an image size increase due to unused
+>> __func__ entries (this is necessary because __func__ is not a define but a
+>> virtual variable).
+>>
+>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> 
+> Thanks for your patch!
+> 
+>> --- a/arch/s390/include/asm/bug.h
+>> +++ b/arch/s390/include/asm/bug.h
+>> @@ -8,19 +8,30 @@
+>>
+>>   #ifdef CONFIG_DEBUG_BUGVERBOSE
+>>
+>> +#if IS_ENABLED(CONFIG_KUNIT)
+>> +# define HAVE_BUG_FUNCTION
+>> +# define __BUG_FUNC_PTR        "       .long   %0-.\n"
+>> +# define __BUG_FUNC    __func__
+>> +#else
+>> +# define __BUG_FUNC_PTR
+>> +# define __BUG_FUNC    NULL
+>> +#endif /* IS_ENABLED(CONFIG_KUNIT) */
+>> +
+>>   #define __EMIT_BUG(x) do {                                     \
+>>          asm_inline volatile(                                    \
+>>                  "0:     mc      0,0\n"                          \
+>>                  ".section .rodata.str,\"aMS\",@progbits,1\n"    \
+>>                  "1:     .asciz  \""__FILE__"\"\n"               \
+>>                  ".previous\n"                                   \
+>> -               ".section __bug_table,\"awM\",@progbits,%2\n"   \
+>> +               ".section __bug_table,\"awM\",@progbits,%3\n"   \
+> 
+> This change conflicts with commit 3938490e78f443fb ("s390/bug:
+> remove entry size from __bug_table section") in linus/master.
+> I guess it should just be dropped?
 > 
 
-I did some more trace reading though and found something.
+Yes, I know. I'll send v2 rebased to v6.9-rc1 once it is available and,
+yes, the change will be gone after that.
 
-What I observed if everything runs regularly:
-- vhost and kworker run alternating on the same CPU
-- if the kworker is done, it leaves the runqueue
-- vhost wakes up the kworker if it needs it
---> this means:
-  - vhost starts alone on an otherwise empty runqueue
-  - it seems like it never gets dequeued
-    (unless another unrelated task joins or migration hits)
-  - if vhost wakes up the kworker, the kworker gets selected
-  - vhost runtime > kworker runtime 
-    --> kworker gets positive lag and gets selected immediately next time
+Thanks,
+Guenter
 
-What happens if it does go wrong:
-From what I gather, there seem to be occasions where the vhost either
-executes suprisingly quick, or the kworker surprinsingly slow. If these
-outliers reach critical values, it can happen, that
-   vhost runtime < kworker runtime
-which now causes the kworker to get the negative lag.
 
-In this case it seems like, that the vhost is very fast in waking up
-the kworker. And coincidentally, the kworker takes, more time than usual
-to finish. We speak of 4-digit to low 5-digit nanoseconds.
-
-So, for these outliers, the scheduler extrapolates that the kworker 
-out-consumes the vhost and should be slowed down, although in the majority
-of other cases this does not happen.
-
-Therefore this particular usecase would profit from being able to ignore
-such outliers, or being able to ignore a certain amount of difference in the
-lag values, i.e. introduce some grace value around the average runtime for
-which lag is not accounted. But not sure if I like that idea.
-
-So the negative lag can be somewhat justified, but for this particular case
-it leads to a problem where one outlier can cause havoc. As mentioned in the
-vhost discussion, it could also be argued that the vhost should not rely on 
-the fact that the kworker gets always scheduled on wake up, since these
-timing issues can always happen.
-
-Hence, the two options:
-- offer the alternative strategy which dismisses lag on wake up for workloads
-  where we know that a task usually finishes faster than others but should
-  not be punished by rare outliers (if that is predicatble, I don't know)
-- require vhost to adress this issue on their side (if possible without 
-  creating an armada of side effects)
-
-(plus the third one mentioned above, but that requires a magic cutoff value, meh)
-
-> I was looking at a different thread (https://lore.kernel.org/lkml/20240226082349.302363-1-yu.c.chen@intel.com/) that
-> uncovers a potential overflow in the eligibility calculation. Though I don't think that is the case for this particular
-> vhost problem.
-
-Yea, the numbers I see do not look very overflowy.
