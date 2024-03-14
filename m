@@ -1,63 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DBF87BDD6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 14:37:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF50887BDF3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 14:46:44 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=he8MG/k9;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwT2h596Fz3vb9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 00:37:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwTFG3xxcz3vbs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 00:46:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.175; helo=mail-yw1-f175.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=he8MG/k9;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwT2H3vZpz3cVv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 00:37:10 +1100 (AEDT)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-60cbcd04de8so7769117b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 06:37:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710423427; x=1711028227;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QDiARA/24cHYG8FRrouoTvUxwp5WbH/hNpGJ/9ezCCU=;
-        b=rhmffZ/g1ielIG70SCdkBYej9Wvm1jPPc41G73Cgcx8XER/BUw/LPCDORN2iSllSxW
-         yGX0iyNJvLWFPcN1/+mOQbMVQx7DfOvekOztj30LggaJbdnDziMXEehgQWTBZ6ZYzljz
-         wXUstJ+eRXNpiJLsM+fMON/x3Az60Ww6LWN9E7lODSNF/QoFMxkVCu6B69lPjRp4+bXN
-         u13xxqIHMtA02L2SO4hTAp4+0ui99ishnqXN3lCUGs7k0/FJUAfl6OE4PGMlJU04ghA0
-         wKDB8CNsEmYlhvwgUZDtI3L1HigdIyJmU7pf9xr44n0sGBHZTGfQYbTyq/R+YHEUKicR
-         phTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWbGB1II4lffdayYytdG/8Ib7R8cUS891p1ytg/saE8jmnYuZCsQjv9UGS0OCbMc2dsXcAVGulrsSAnzAkQFFpmVgJh9CDZ5CQuRsP3wA==
-X-Gm-Message-State: AOJu0YwxKFKT90Ub+gwKQrKx3T+m0vHV//PjbI7du8hYXqEBnUZFo+hI
-	1pnOPktmIkkokrKKC6BKEY4UW+yfYGaP+83vLNe3D+yvkbY4kAl27K4jmunG3Ek=
-X-Google-Smtp-Source: AGHT+IHTRZ5KK7iD8WRn8PxioBgkT5VMKhpnfOQ6/Y6Iq/KxqIcuwLhdmzv6yAS0Orml3qh5llzxGw==
-X-Received: by 2002:a0d:d88a:0:b0:60a:6a3f:9d47 with SMTP id a132-20020a0dd88a000000b0060a6a3f9d47mr1195881ywe.16.1710423426543;
-        Thu, 14 Mar 2024 06:37:06 -0700 (PDT)
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com. [209.85.128.170])
-        by smtp.gmail.com with ESMTPSA id o1-20020a81ef01000000b0060a304ca3f4sm269229ywm.19.2024.03.14.06.37.04
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 06:37:04 -0700 (PDT)
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-60a0a54869bso8984377b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 06:37:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWGFCxgugxlaxdcehLJxHx0dPcfsDerW7j1afH9mxQuVGrEZOpmsgnz2jIz0c0eSzqRqMgzEd4ZKCyNMgKq9f+ksVbnfiuh01+DPsGj3A==
-X-Received: by 2002:a0d:fe04:0:b0:60a:4930:5bb1 with SMTP id
- o4-20020a0dfe04000000b0060a49305bb1mr1000757ywf.5.1710423424398; Thu, 14 Mar
- 2024 06:37:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwTDT6WYvz3vZT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 00:46:00 +1100 (AEDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42ECrD2l029511;
+	Thu, 14 Mar 2024 13:45:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=XwiQpHXIslt51XYw+nYwRS+Tl6bFp6ua9li80Bv5mQw=;
+ b=he8MG/k9ecHXJLA09kkkxNS8g7veOVeccmEJKg8RCfagzZBt1/11Pxu7FM+pW9DSI5FT
+ sVVXvmSHO+SitfcyDOvOwuuKKzwlHIBblYZ60LMmmnjrHjqwYaeITiLhpkg5BFkpEOHO
+ c+VsMx6DiSx1hrGAqPrawXuuI7nOO7yMyL+7KEu+zsnnesU3SaygPmvWM93hPMq3hGzZ
+ kzf4qyxWICNv95FADnbQnC1yRYLK1D3uQ7RhdFOznR+3RGoQdKu7y1iJDwIqMGHQYWXP
+ SbC9edevwNibhqyZJOPb7VmiOm0/JsKq7WUC4Q5skhTxb+4rJ4fFJ+jxFNrRfISILxEK 4w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wv1mngvq7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Mar 2024 13:45:48 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42EDdHqV001952;
+	Thu, 14 Mar 2024 13:45:47 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wv1mngvpy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Mar 2024 13:45:47 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42EB0RiW020506;
+	Thu, 14 Mar 2024 13:45:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ws3kmd2ar-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Mar 2024 13:45:46 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42EDjgFa12583400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 14 Mar 2024 13:45:44 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ABADF2004B;
+	Thu, 14 Mar 2024 13:45:42 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 699EB20040;
+	Thu, 14 Mar 2024 13:45:42 +0000 (GMT)
+Received: from DESKTOP-2CCOB1S. (unknown [9.171.201.209])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 14 Mar 2024 13:45:42 +0000 (GMT)
+Date: Thu, 14 Mar 2024 14:45:41 +0100
+From: Tobias Huschle <huschle@linux.ibm.com>
+To: Luis Machado <luis.machado@arm.com>
+Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
+Message-ID: <ZfL/hROYxQudcTuX@DESKTOP-2CCOB1S.>
+References: <20240228161018.14253-1-huschle@linux.ibm.com>
+ <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PvEnVf3CeDddS-tn5gdTkdX5xc-aFryX
+X-Proofpoint-GUID: uO3Sy-jjvv1DLMP_tYpnLbfXBGAXTWbH
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20240312170309.2546362-1-linux@roeck-us.net>
-In-Reply-To: <20240312170309.2546362-1-linux@roeck-us.net>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 14 Mar 2024 14:36:52 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUkvagJVEfnhq=Nx2jnmdS0Ax+zy1CvyN0k7k1EwUpu+g@mail.gmail.com>
-Message-ID: <CAMuHMdUkvagJVEfnhq=Nx2jnmdS0Ax+zy1CvyN0k7k1EwUpu+g@mail.gmail.com>
-Subject: Re: [PATCH 00/14] Add support for suppressing warning backtraces
-To: Guenter Roeck <linux@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-14_11,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0 spamscore=0
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403140100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,79 +97,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmer
- mann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, nd <nd@arm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi G=C3=BCnter,
+On Fri, Mar 08, 2024 at 03:11:38PM +0000, Luis Machado wrote:
+> On 2/28/24 16:10, Tobias Huschle wrote:
+> > 
+> > Questions:
+> > 1. The kworker getting its negative lag occurs in the following scenario
+> >    - kworker and a cgroup are supposed to execute on the same CPU
+> >    - one task within the cgroup is executing and wakes up the kworker
+> >    - kworker with 0 lag, gets picked immediately and finishes its
+> >      execution within ~5000ns
+> >    - on dequeue, kworker gets assigned a negative lag
+> >    Is this expected behavior? With this short execution time, I would
+> >    expect the kworker to be fine.
+> 
+> That strikes me as a bit odd as well. Have you been able to determine how a negative lag
+> is assigned to the kworker after such a short runtime?
+> 
 
-On Tue, Mar 12, 2024 at 6:03=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
-> Some unit tests intentionally trigger warning backtraces by passing bad
-> parameters to kernel API functions. Such unit tests typically check the
-> return value from such calls, not the existence of the warning backtrace.
->
-> Such intentionally generated warning backtraces are neither desirable
-> nor useful for a number of reasons.
-> - They can result in overlooked real problems.
-> - A warning that suddenly starts to show up in unit tests needs to be
->   investigated and has to be marked to be ignored, for example by
->   adjusting filter scripts. Such filters are ad-hoc because there is
->   no real standard format for warnings. On top of that, such filter
->   scripts would require constant maintenance.
->
-> One option to address problem would be to add messages such as "expected
-> warning backtraces start / end here" to the kernel log.  However, that
-> would again require filter scripts, it might result in missing real
-> problematic warning backtraces triggered while the test is running, and
-> the irrelevant backtrace(s) would still clog the kernel log.
->
-> Solve the problem by providing a means to identify and suppress specific
-> warning backtraces while executing test code. Support suppressing multipl=
-e
-> backtraces while at the same time limiting changes to generic code to the
-> absolute minimum. Architecture specific changes are kept at minimum by
-> retaining function names only if both CONFIG_DEBUG_BUGVERBOSE and
-> CONFIG_KUNIT are enabled.
->
-> The first patch of the series introduces the necessary infrastructure.
-> The second patch introduces support for counting suppressed backtraces.
-> This capability is used in patch three to implement unit tests.
-> Patch four documents the new API.
-> The next two patches add support for suppressing backtraces in drm_rect
-> and dev_addr_lists unit tests. These patches are intended to serve as
-> examples for the use of the functionality introduced with this series.
-> The remaining patches implement the necessary changes for all
-> architectures with GENERIC_BUG support.
+I did some more trace reading though and found something.
 
-Thanks for your series!
+What I observed if everything runs regularly:
+- vhost and kworker run alternating on the same CPU
+- if the kworker is done, it leaves the runqueue
+- vhost wakes up the kworker if it needs it
+--> this means:
+  - vhost starts alone on an otherwise empty runqueue
+  - it seems like it never gets dequeued
+    (unless another unrelated task joins or migration hits)
+  - if vhost wakes up the kworker, the kworker gets selected
+  - vhost runtime > kworker runtime 
+    --> kworker gets positive lag and gets selected immediately next time
 
-I gave it a try on m68k, just running backtrace-suppression-test,
-and that seems to work fine.
+What happens if it does go wrong:
+From what I gather, there seem to be occasions where the vhost either
+executes suprisingly quick, or the kworker surprinsingly slow. If these
+outliers reach critical values, it can happen, that
+   vhost runtime < kworker runtime
+which now causes the kworker to get the negative lag.
 
-> Design note:
->   Function pointers are only added to the __bug_table section if both
->   CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBOSE are enabled to avoid image
->   size increases if CONFIG_KUNIT=3Dn. There would be some benefits to
->   adding those pointers all the time (reduced complexity, ability to
->   display function names in BUG/WARNING messages). That change, if
->   desired, can be made later.
+In this case it seems like, that the vhost is very fast in waking up
+the kworker. And coincidentally, the kworker takes, more time than usual
+to finish. We speak of 4-digit to low 5-digit nanoseconds.
 
-Unfortunately this also increases kernel size in the CONFIG_KUNIT=3Dm
-case (ca. 80 KiB for atari_defconfig), making it less attractive to have
-kunit and all tests enabled as modules in my standard kernel.
+So, for these outliers, the scheduler extrapolates that the kworker 
+out-consumes the vhost and should be slowed down, although in the majority
+of other cases this does not happen.
 
-Gr{oetje,eeting}s,
+Therefore this particular usecase would profit from being able to ignore
+such outliers, or being able to ignore a certain amount of difference in the
+lag values, i.e. introduce some grace value around the average runtime for
+which lag is not accounted. But not sure if I like that idea.
 
-                        Geert
+So the negative lag can be somewhat justified, but for this particular case
+it leads to a problem where one outlier can cause havoc. As mentioned in the
+vhost discussion, it could also be argued that the vhost should not rely on 
+the fact that the kworker gets always scheduled on wake up, since these
+timing issues can always happen.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Hence, the two options:
+- offer the alternative strategy which dismisses lag on wake up for workloads
+  where we know that a task usually finishes faster than others but should
+  not be punished by rare outliers (if that is predicatble, I don't know)
+- require vhost to adress this issue on their side (if possible without 
+  creating an armada of side effects)
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+(plus the third one mentioned above, but that requires a magic cutoff value, meh)
+
+> I was looking at a different thread (https://lore.kernel.org/lkml/20240226082349.302363-1-yu.c.chen@intel.com/) that
+> uncovers a potential overflow in the eligibility calculation. Though I don't think that is the case for this particular
+> vhost problem.
+
+Yea, the numbers I see do not look very overflowy.
