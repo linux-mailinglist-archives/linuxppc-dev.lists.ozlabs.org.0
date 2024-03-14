@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A2F87BB63
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 11:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F82687BB70
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 11:38:33 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XWuhRMhb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VTB3qzGC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwP1R5jljz3dhY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 21:36:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwP4721Qfz3dXh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 21:38:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XWuhRMhb;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VTB3qzGC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwP0k2cgGz3cDg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 21:35:34 +1100 (AEDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-a3ddc13bbb3so336835566b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 03:35:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwP3Q2HzHz3c9x
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 21:37:54 +1100 (AEDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a466f89560eso67077766b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 03:37:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710412530; x=1711017330; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1710412670; x=1711017470; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xUT+z5aPzLoK1XBR0CtD7lRZ7iP+OijvRC1vgfB2c3M=;
-        b=XWuhRMhbjbA548ixO9NXKryvbv7u+CGDENCwvVdJPLDZ08JlbwQpdrSQcAhfkE/aWB
-         487towQBRabDmCWyS5Ce8l124c63Um8XdbtWkq0j3rvvqw4belo6NI7rpS6KS4HvuSq0
-         cFZ1kt1VEcUiRQWV3wCXjhfyeKRwtZtQOytnmuGQUxJSAfLp2bYGe/3wOa5zDNn+rV5n
-         anX84pZ5gJfBZP62DkmpA9TbdyaGl5FepAfJAQq6KhA7St8I1Vma3tf25Q1jRpKwb5Yp
-         EOlVNBFmiR9J0mc98Byw2Gll4kLU27q4nx01fOtdsAyp9X8Lft+piHRFoF1fu/1tECPB
-         +q0A==
+        bh=vzCmVzgk1A2WbwK3W/30teVzlmAUHDmYtHZ6Lsqwgus=;
+        b=VTB3qzGCMK5mwNSfp0YBqSw8XxhOYPRQGE2yy3y7QRfR/mO4SH5AeOclOSGZWh75gE
+         C2dSmEUm7pNTYlPcftostK94WrNSYXATeId+qZFAgVMxsYA3X9eLds15hc/d/Fpg/Zyq
+         V61/b6JxVQVx+0NaGtqx8ulH7WiHLTxpRZ1Q6C02DzfR0CtESCUpKb2XUrjp0bhZgvCJ
+         SuExDlRZ70e/sXB+x8ZSJ4RdJmnaTUcKvP0D9HLM9V7ZZTrLl6DfC/7c2A4SZmS4VeMF
+         ietmadZav4QPuK+C3w27615EdcHtvgcODoEq+4j4D5tM+hxnDuA/6RYW9NuxunxMAOKq
+         dDBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710412530; x=1711017330;
+        d=1e100.net; s=20230601; t=1710412670; x=1711017470;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xUT+z5aPzLoK1XBR0CtD7lRZ7iP+OijvRC1vgfB2c3M=;
-        b=MZhAxYkl4FHUx/dv9Std47V3Qljfg3Pv0H47NA0aHKY8bAoha/06YjUhTvP8coOh/x
-         fyt021jSL5S18jdKnOOf9til0GlkxAD6yKu74E80wsRpQ+YMb0ez+l15yL3htnqAsKtv
-         1dNs1O62dJ7XIi5FaY7p0E0+isdEa8gh8DhtCNvDLsSQWKrfVJ+jZfUx11SfkgX5lFG8
-         PfBAu3lPBCSdi7SsCAw61YX9xdbHEzOQgqo7Uov+R07Dl1Wf2oi4iAezTpVHqqCjyyF9
-         hH90N5/kQteKNiZTGKhgEU9BmpyKlyZEV4f2yU14WzXZ5722DuAEnu95PlXLCdIauGwf
-         ygoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZzb36XISouv0EEmkt9doTQbnKDx6G42m8uYVf92sC/s9EIbPWcNmTmlynADNRA8MZk28K/9potpw70pt/FvTZ+GkiiDj5Ye8xpARQxQ==
-X-Gm-Message-State: AOJu0YxzKFKUJVDbsYNBzt3phgReLIDFGLj5P2VFUt/OpbmcQHZZfFBd
-	TZhT0K5uS6ODgu3dwgDZ8QW7WIK1DuWyrwH6bz3KYXLSlN4PmwhV8N+SJX74IVJg1KsvBDCLGOf
-	LN5YaM/4ENJjNIPafMgFnUuIoMEw=
-X-Google-Smtp-Source: AGHT+IFnq0Pgx23scikKTP17lOnZUwgeSw196b+FB/RuP2T0OiI6iGiC9TdnME85WIwCtzKA0WA7uZJMZKfaiv1Soro=
-X-Received: by 2002:a17:906:5acf:b0:a46:1cbd:c2c4 with SMTP id
- x15-20020a1709065acf00b00a461cbdc2c4mr1170808ejs.26.1710412530221; Thu, 14
- Mar 2024 03:35:30 -0700 (PDT)
+        bh=vzCmVzgk1A2WbwK3W/30teVzlmAUHDmYtHZ6Lsqwgus=;
+        b=EyhpMF3C51DEG86PLq/8RUviCrbxAwu8U5/hx36Q0vqcbSBIdX2QuJOXQGEl+wD1TK
+         FwqNE+oA6SyshvW3Hr1UfRyxrUcyGQggYzNteu1c+JvXIU+eL+SYXK7O8nq4IXiVz/UW
+         Al05CYX0KJn/emsCY/ZwmFg6efvPEnL0R2WiN5qtnePVimLCFxPMixG2y33Z0AwPIqSH
+         K3bvm8nhUko/lxVkDuZ4i8Fz5pXQWKuHkvlsJEODIaDE6rOMjNwz3IHiAbcITwmtNp9j
+         QKKUxPoSlouRtyNRtkcK05G17tdb6021NaJ/t/6j6LcRkBIXhFy/VPg4d9w4rcf+GBBq
+         qXsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQHCpjBMFuTqDIMkMHGlvpCKMUn/yxXWeR9rwrbC6rPUyFaLfmGtGRWwqQtiI+P59jBwMR10fwUA8Kw5bdWtCJMP846xEi+SJRlAWPyg==
+X-Gm-Message-State: AOJu0Yz3FgdVyU5JnstvMaDm/rFWcRmKiw6HgBYw97XzfdKcPeNj1x/a
+	Ng8CGbyMwsYz/4GjqDpVe158Np9e5e7laDciRKjmeCBgc+c6JdYjx1Bs8BhooLeYdGvlvw2+qKL
+	X0twoQVVTznYjX3VUE3uo6UM+Al0=
+X-Google-Smtp-Source: AGHT+IHAgDyqVH7oGwixukT7CSGFbdDnW4TvuHEXAOyVQ/qRpBYbBxUZXwiLPNDdK50Y8a0SeFDblV5Sbfrs/AuuR+0=
+X-Received: by 2002:a17:906:5801:b0:a46:614f:f2be with SMTP id
+ m1-20020a170906580100b00a46614ff2bemr899128ejq.28.1710412670199; Thu, 14 Mar
+ 2024 03:37:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240314084531.1935545-1-gnstark@salutedevices.com> <20240314084531.1935545-10-gnstark@salutedevices.com>
-In-Reply-To: <20240314084531.1935545-10-gnstark@salutedevices.com>
+References: <20240314084531.1935545-1-gnstark@salutedevices.com>
+In-Reply-To: <20240314084531.1935545-1-gnstark@salutedevices.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 14 Mar 2024 12:34:54 +0200
-Message-ID: <CAHp75VfGRNo4hvKV7caQE6i2rHVncOjxDv3-b9oGrpK-uDEBRw@mail.gmail.com>
-Subject: Re: [PATCH v6 9/9] leds: powernv: use LED_RETAIN_AT_SHUTDOWN flag for leds
+Date: Thu, 14 Mar 2024 12:37:13 +0200
+Message-ID: <CAHp75VdM9GkogkeffY+0rwU3r2iWeTZ8-aj901MLteUmRfcLOA@mail.gmail.com>
+Subject: Re: [PATCH v6 0/9] devm_led_classdev_register() usage problem
 To: George Stark <gnstark@salutedevices.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -84,12 +84,41 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Thu, Mar 14, 2024 at 10:46=E2=80=AFAM George Stark <gnstark@salutedevice=
 s.com> wrote:
 >
-> This driver wants to keep its LEDs state after module is removed
-> and implemented it in its own way. LED subsystem supports dedicated
-> flag LED_RETAIN_AT_SHUTDOWN for the same purpose so use the flag
-> instead of custom implementation.
+> This patch series fixes the problem of devm_led_classdev_register misusin=
+g.
+>
+> The basic problem is described in [1]. Shortly when devm_led_classdev_reg=
+ister()
+> is used then led_classdev_unregister() called after driver's remove() cal=
+lback.
+> led_classdev_unregister() calls driver's brightness_set callback and that=
+ callback
+> may use resources which were destroyed already in driver's remove().
+>
+> After discussion with maintainers [2] [3] we decided:
+> 1) don't touch led subsytem core code and don't remove led_set_brightness=
+() from it
 
-So, this change is not related to the main purpose of the series...
+subsystem
+
+> but fix drivers
+> 2) don't use devm_led_classdev_unregister
+>
+> So the solution is to use devm wrappers for all resources
+> driver's brightness_set() depends on. And introduce dedicated devm wrappe=
+r
+> for mutex as it's often used resource.
+
+The leds related changes (except the last one) LGTM, hence FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+(for patches 2-8)
+
+> [1] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@sal=
+utedevices.com/T/
+> [2] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@sal=
+utedevices.com/T/#mc132b9b350fa51931b4fcfe14705d9f06e91421f
+> [3] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@sal=
+utedevices.com/T/#mdbf572a85c33f869a553caf986b6228bb65c8383
 
 --=20
 With Best Regards,
