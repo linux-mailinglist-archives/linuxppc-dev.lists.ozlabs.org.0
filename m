@@ -2,54 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE9487B85A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 08:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A0487B86D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 08:20:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=W7omPnN9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ChBlI9Z2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwJVt6TRXz3cy9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 18:12:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwJgZ0QRGz3ddR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 18:20:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=W7omPnN9;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ChBlI9Z2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::a32; helo=mail-vk1-xa32.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-vk1-xa32.google.com (mail-vk1-xa32.google.com [IPv6:2607:f8b0:4864:20::a32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwJV85fC8z3brZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 18:12:12 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F0D26FF803;
-	Thu, 14 Mar 2024 07:12:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710400324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H5VEjuuC5AnU2gJMo8TZ6MI2cdvYkDyizNf/LUfFzY0=;
-	b=W7omPnN9K0mk9NXpTw72bzIAJRdqYDOB4XIotsYwt1WH+u6qMlbVPLpEEZSwvEg4IDpL+7
-	IHFiXNXdg8+0UcUURrxWX5sGoedCEAnUOidpf4on92uFdvTigr6aXeXgl1F/96AULv/dJA
-	SYAGlgYzd7fLLdRQ4IwYv/Cy5K2IbS9qyup091Tge8INdmBbq1IlOTsJ4afqPAkfdN95NS
-	Y/2x1IN9g1IqaU2FYIop4+XeXeoAVnv9cFViYR2HEHYTsP+lTn1n2x3ZLaWCxvMeLa+G4w
-	X3XKQAWsYE/YaiUcD5zq0KbsQdKy26xMnJUIDN/Rn2KmkfoNajoaL+9T4U8FwA==
-Date: Thu, 14 Mar 2024 08:12:00 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v7 1/5] net: wan: Add support for QMC HDLC
-Message-ID: <20240314081200.5af62fab@bootlin.com>
-In-Reply-To: <87ttl93f7i.fsf@mail.lhotse>
-References: <20240307113909.227375-1-herve.codina@bootlin.com>
-	<20240307113909.227375-2-herve.codina@bootlin.com>
-	<87ttl93f7i.fsf@mail.lhotse>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwJfp40cwz30hQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 18:19:45 +1100 (AEDT)
+Received: by mail-vk1-xa32.google.com with SMTP id 71dfb90a1353d-4d36c20d0f7so914145e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 00:19:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710400782; x=1711005582; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ojH9YgZdQsTdhM/5DOp0sR2SpKlzVwEvHTXac3BNoo4=;
+        b=ChBlI9Z27J/7tybexawq4fKdPwAJ/v4MauqbPGWHrGfwyzgBVAynlCcX8cskqrz4Ye
+         8oPct99zu3XOjxnjjSrx1TIEAEusoAhOlIQdFWgv+gwPyhlxFNGV50fPgWcuQyee/nGg
+         c/d4tFLqdf7ZwdJJZLUmumTrV2sMAlT0oK6PCwvldPU/u1xr1qJjhyVo8G7ZBXp4+wu7
+         B4waz6BMRkCrxSTmk6754dc6bbSzfXPuV/dicw6nS/1JWV0k6P+ExgbrhFWuonbtDwxa
+         6aHAt/wSfaLpu5xBayagE/Ke1iHbKT3fk1NpNsLQ+uVXu1W0NvkR0cmWuDZMcdCgIVqE
+         pDRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710400782; x=1711005582;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ojH9YgZdQsTdhM/5DOp0sR2SpKlzVwEvHTXac3BNoo4=;
+        b=gtIDeminwS/ywZrt1g9RCfSR2m4n0hfmiefAzRpkAeETkumckGlagOpkflBXmCl7Ja
+         qdlesENgCw2q8tI+z8uVGrx59Rxh1JXXqi27xjCpeHZHN3Y7B3GS5eCMle32Kanbz5X5
+         7noznXCCa44ZddwdSGkMGSP+HEJa1UtJ1vjsNN4Md2vk5ARMFQA5TmUvnL66ZCT/p4Cf
+         yxwm/pNSHVOVAUghaDClBnSJ6/lgx3bLVxTCvBrrUGCXt7u06upc/5aW/JTntkv//tj8
+         fReUopJwDhX1URh8wUL6EzRODIARnsgJjihKgagFeJgDvkp2V+FOPU6mB0x+Rypy5E20
+         O6NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1YvB/1I6KqFB3SGZHw1Ty5wvahPH7sE9ywF34TScopYSMEanSdFh85zYz02Ry5lnimZlzaaaJguitBu5ZFTj9nF1J81/S8gTtgdsBzg==
+X-Gm-Message-State: AOJu0YydpfS6DLjFAa5BPLoMmi9F6rMjkohIlbwX0AJ+rZ6D4ZXK9Xz2
+	IvkAEHyQlXMQfytKsQWZiERUzeLa5UJpnUMelwCTLXIhPRJw8875pbUVrahT2uJ+tArSsGFhZpo
+	OYJHLHJZD+wO1X1Y3wWM8L+xktC7+jYCPSlqATw==
+X-Google-Smtp-Source: AGHT+IEu7MNUInwIY97dleYnWeWXfcA+5F5T/ApvKi6n0MwxHEqr/RR8abTAy2/zINbSlyHB23weCyfflgDg+RLDw2Y=
+X-Received: by 2002:a05:6122:1296:b0:4b9:e8bd:3b2 with SMTP id
+ i22-20020a056122129600b004b9e8bd03b2mr431224vkp.2.1710400782181; Thu, 14 Mar
+ 2024 00:19:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+References: <20240312170309.2546362-1-linux@roeck-us.net>
+In-Reply-To: <20240312170309.2546362-1-linux@roeck-us.net>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 14 Mar 2024 12:49:30 +0530
+Message-ID: <CA+G9fYsHhTLw3c1Eg-L6G3H2g7-mPf9zdR+hKDCV10RhHk5vhg@mail.gmail.com>
+Subject: Re: [PATCH 00/14] Add support for suppressing warning backtraces
+To: Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,59 +75,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Ratheesh Kannoth <rkannoth@marvell.com>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, linux-sh@vger.kernel.org, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmerma
+ nn@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Tue, 12 Mar 2024 at 22:33, Guenter Roeck <linux@roeck-us.net> wrote:
 
-On Thu, 14 Mar 2024 10:05:37 +1100
-Michael Ellerman <mpe@ellerman.id.au> wrote:
+<trim>
 
-> Hi Herve,
-> 
-> Herve Codina <herve.codina@bootlin.com> writes:
-...
-> This breaks when building as a module (eg. ppc32_allmodconfig):
-> 
->   In file included from ../include/linux/device/driver.h:21,
->                    from ../include/linux/device.h:32,
->                    from ../include/linux/dma-mapping.h:8,
->                    from ../drivers/net/wan/fsl_qmc_hdlc.c:13:
->   ../drivers/net/wan/fsl_qmc_hdlc.c:405:25: error: ‘qmc_hdlc_driver’ undeclared here (not in a function); did you mean ‘qmc_hdlc_probe’?
->     405 | MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
->         |                         ^~~~~~~~~~~~~~~
-> 
-> 
-> IIUIC it should be pointing to the table, not the driver, so:
-> 
-> diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-> index 5fd7ed325f5b..705c3681fb92 100644
-> --- a/drivers/net/wan/fsl_qmc_hdlc.c
-> +++ b/drivers/net/wan/fsl_qmc_hdlc.c
-> @@ -402,7 +402,7 @@ static const struct of_device_id qmc_hdlc_id_table[] = {
->         { .compatible = "fsl,qmc-hdlc" },
->         {} /* sentinel */
->  };
-> -MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
-> +MODULE_DEVICE_TABLE(of, qmc_hdlc_id_table);
-> 
->  static struct platform_driver qmc_hdlc_driver = {
->         .driver = {
-> 
-> 
-> Which then builds correctly.
+> This series is based on the RFC patch and subsequent discussion at
+> https://patchwork.kernel.org/project/linux-kselftest/patch/02546e59-1afe-4b08-ba81-d94f3b691c9a@moroto.mountain/
+> and offers a more comprehensive solution of the problem discussed there.
 
-My bad, I missed that one.
-I fully agree with your modification.
+Thanks for the patchset.
+This patch series applied on top of Linux next and tested.
 
-Do you want me to make a patch (copy/paste of your proposed modification)
-or do you plan to send the patch on your side ?
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Best regards,
-Hervé
 
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--
+Linaro LKFT
+https://lkft.linaro.org
