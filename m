@@ -1,40 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7741287B9B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 09:52:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B33987B9B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 09:52:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=vQQ3Y3Cw;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=EmA6DIeB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwLkF1b2dz3w3J
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 19:52:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwLjS1gyFz3vk3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 19:52:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=vQQ3Y3Cw;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=EmA6DIeB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=45.89.224.132; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwLZf58Hkz3dVh
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwLZf5FBvz3dWQ
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 19:46:18 +1100 (AEDT)
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id 57682120015;
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 8015B100019;
 	Thu, 14 Mar 2024 11:46:15 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 57682120015
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 8015B100019
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
 	s=mail; t=1710405975;
-	bh=LmfiAF+FpdVlIohenEIhk6shsOuTjKAZ1y/DMUyjSdQ=;
+	bh=ne+UNP12/e+I4agBDJC1BgUysK2PGalNhVYKKmNLm2Y=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=vQQ3Y3CwqnylN4ByQc+t+A1gysJ+XZa/5D4ndNa6wEnChH84sbaO6l5wyyuPg3DQo
-	 KP7RsorYZN4hJkmr4wWEJ4yozLONU4M+7JGanAoDmXcRVbpu155M6AcO3lNpxVT7Jc
-	 /rtFydf1v9Nlf6Cr+kf4urBQtvjnhhvaGp3Q7I3r9c5rA7ZeKCeJTioxyukbGbBxzR
-	 00SjSkdUaFjl5fUMQuiWBmS3p/dKHl3dpykFWYM8qNK/6hwc6WwjJoNo2kw+Fl5+rI
-	 hXphqyZ/+K4gDyKImWORG7x23b5TsvzxZjfPjHrr8xCCdbvjW2Yus7lzbtlB5cgaL6
-	 jPTA6bZjM4uVA==
+	b=EmA6DIeBpLr7w0kG20LBZRSyom9o8tWJwvvrVmx5OEesn9S8slOh/r4TTfxmVdQZV
+	 fcdDQfACpIenFvJ45lC8mD/0gzKcRF2JBUO3uRLVCeAFQnnW4xBXhCcx/AK1KazmBd
+	 3D1XpwduGv+4ZbqEwcayabxDTPpZO7Ac+/F0yOZffaEXUXmdvLJQg+VNGquL6dRQId
+	 +7Nm05/LZ3vTfDSApDUKhBF1USikMQod/2ictCctfmmEdxlRAnJ7nLEOWeRQ060qqy
+	 SfpKrqBbA4zaBL1ViFpbloXVz3cHC2kxnEuKfgy4OrfMUChqgP3z9phR7U7RzhkJEm
+	 yKZzkHM4vBHnA==
 Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
@@ -43,7 +43,7 @@ Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.1
 Received: from localhost.localdomain (100.64.160.123) by
  p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 14 Mar 2024 11:46:14 +0300
+ 15.2.1118.40; Thu, 14 Mar 2024 11:46:15 +0300
 From: George Stark <gnstark@salutedevices.com>
 To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<vadimp@nvidia.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
@@ -51,9 +51,9 @@ To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
 	<mazziesaccount@gmail.com>, <peterz@infradead.org>, <mingo@redhat.com>,
 	<will@kernel.org>, <longman@redhat.com>, <boqun.feng@gmail.com>,
 	<nikitos.tr@gmail.com>, <marek.behun@nic.cz>, <kabel@kernel.org>
-Subject: [PATCH v6 7/9] leds: mlxreg: use devm_mutex_init for mutex initializtion
-Date: Thu, 14 Mar 2024 11:45:29 +0300
-Message-ID: <20240314084531.1935545-8-gnstark@salutedevices.com>
+Subject: [PATCH v6 8/9] leds: an30259a: use devm_mutext_init for mutext initialization
+Date: Thu, 14 Mar 2024 11:45:30 +0300
+Message-ID: <20240314084531.1935545-9-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240314084531.1935545-1-gnstark@salutedevices.com>
 References: <20240314084531.1935545-1-gnstark@salutedevices.com>
@@ -102,52 +102,51 @@ in module's remove() so use devm API instead.
 
 Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/leds/leds-mlxreg.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/leds/leds-an30259a.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/leds/leds-mlxreg.c b/drivers/leds/leds-mlxreg.c
-index d8e3d5d8d2d0..b1510cd32e47 100644
---- a/drivers/leds/leds-mlxreg.c
-+++ b/drivers/leds/leds-mlxreg.c
-@@ -257,6 +257,7 @@ static int mlxreg_led_probe(struct platform_device *pdev)
- {
- 	struct mlxreg_core_platform_data *led_pdata;
- 	struct mlxreg_led_priv_data *priv;
-+	int err;
+diff --git a/drivers/leds/leds-an30259a.c b/drivers/leds/leds-an30259a.c
+index 0216afed3b6e..decfca447d8a 100644
+--- a/drivers/leds/leds-an30259a.c
++++ b/drivers/leds/leds-an30259a.c
+@@ -283,7 +283,10 @@ static int an30259a_probe(struct i2c_client *client)
+ 	if (err < 0)
+ 		return err;
  
- 	led_pdata = dev_get_platdata(&pdev->dev);
- 	if (!led_pdata) {
-@@ -268,26 +269,21 @@ static int mlxreg_led_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
- 
--	mutex_init(&priv->access_lock);
-+	err = devm_mutex_init(&pdev->dev, &priv->access_lock);
+-	mutex_init(&chip->mutex);
++	err = devm_mutex_init(&client->dev, &chip->mutex);
 +	if (err)
 +		return err;
 +
- 	priv->pdev = pdev;
- 	priv->pdata = led_pdata;
+ 	chip->client = client;
+ 	i2c_set_clientdata(client, chip);
  
- 	return mlxreg_led_config(priv);
+@@ -317,17 +320,9 @@ static int an30259a_probe(struct i2c_client *client)
+ 	return 0;
+ 
+ exit:
+-	mutex_destroy(&chip->mutex);
+ 	return err;
  }
  
--static void mlxreg_led_remove(struct platform_device *pdev)
+-static void an30259a_remove(struct i2c_client *client)
 -{
--	struct mlxreg_led_priv_data *priv = dev_get_drvdata(&pdev->dev);
+-	struct an30259a *chip = i2c_get_clientdata(client);
 -
--	mutex_destroy(&priv->access_lock);
+-	mutex_destroy(&chip->mutex);
 -}
 -
- static struct platform_driver mlxreg_led_driver = {
- 	.driver = {
- 	    .name = "leds-mlxreg",
+ static const struct of_device_id an30259a_match_table[] = {
+ 	{ .compatible = "panasonic,an30259a", },
+ 	{ /* sentinel */ },
+@@ -347,7 +342,6 @@ static struct i2c_driver an30259a_driver = {
+ 		.of_match_table = an30259a_match_table,
  	},
- 	.probe = mlxreg_led_probe,
--	.remove_new = mlxreg_led_remove,
+ 	.probe = an30259a_probe,
+-	.remove = an30259a_remove,
+ 	.id_table = an30259a_id,
  };
  
- module_platform_driver(mlxreg_led_driver);
 -- 
 2.25.1
 
