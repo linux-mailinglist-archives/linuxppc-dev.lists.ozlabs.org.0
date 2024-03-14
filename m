@@ -1,121 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE79B87BE1D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 14:55:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381B187BE84
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 15:09:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OhZATZ0e;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUUUPCHw;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUUUPCHw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwTR83Z0Xz3vdb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 00:55:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwTlp6nntz3vby
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 01:09:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OhZATZ0e;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUUUPCHw;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUUUPCHw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwTQR3rFCz3vX7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 00:54:38 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1dd8dd198d0so7238935ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 06:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710424476; x=1711029276; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=VYCoE6x/5FFdiDNbW6/F39BZo8+6Gfyjcn8t3LZwS0o=;
-        b=OhZATZ0eO3NWqVdnVzPTtj3O5pGd9YE472/TDHK+Hls1CKGwS6Vy4WhmerrXn6uE5V
-         M20sBS5iDhGcZxG0Vzc9wtTg+4inu2YCluibvuNlFt5sVjz5M4DHF7+qkD7SbDEbQSDJ
-         JTf1eIemFAyK00MbtYVYBcJmvWzicFOWDCDZWHDB/VRwxVt163jH63M8r4P2ZegfBC6L
-         Pd1DDdg46SDQy9FJuPAU0NbzuNkvsAlLHqfk753GBujtNtC42xWjLsft5WyBrQnOLTBE
-         hfaQDJlRP3YtjXPfevTmqvuBAlD/CA+AD5UEju0HPs1kBLb3rxEfO4L173OlM2d0tXwA
-         ydIQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwTl44FLyz3dHV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 01:09:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710425340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H0Ur324GEdYx6Na4EUzT7uu0LrdRXgiT37bQ9SRfD/k=;
+	b=eUUUPCHwLI87TuF9T4tgynGR2l98K59NC+DjzGG6EuLSmXZlPoS5pE3CzkqohYEXys1XT3
+	i+Ri1mPWQOBHQyf84ddyQztD/jO8q6dSyFx68kAob2Z9PIbrB2s6qd0IS+Zf/8mrVs9dbE
+	4pHtFwbuHNJI0lEtIGENcSH+ast1nQw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710425340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H0Ur324GEdYx6Na4EUzT7uu0LrdRXgiT37bQ9SRfD/k=;
+	b=eUUUPCHwLI87TuF9T4tgynGR2l98K59NC+DjzGG6EuLSmXZlPoS5pE3CzkqohYEXys1XT3
+	i+Ri1mPWQOBHQyf84ddyQztD/jO8q6dSyFx68kAob2Z9PIbrB2s6qd0IS+Zf/8mrVs9dbE
+	4pHtFwbuHNJI0lEtIGENcSH+ast1nQw=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-OI6MakTNPWC4MHP1LjIiiw-1; Thu, 14 Mar 2024 10:08:58 -0400
+X-MC-Unique: OI6MakTNPWC4MHP1LjIiiw-1
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-690ab2b0de1so3111866d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 07:08:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710424476; x=1711029276;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VYCoE6x/5FFdiDNbW6/F39BZo8+6Gfyjcn8t3LZwS0o=;
-        b=TGsSAmruTcA4eq0GmINWIx5QwlYewjayitrkuJ+0e/vvpiCFDkc9reUMtG4SLL2X+h
-         PXGAw5BTrqRsqFua/mcp5sYSfIavoLo3nkje+D4h/OvGoA6YEtJdFQ68+wZTVdfntKdj
-         KEveZM0fBql7Nclg4uPEisp60C+d0H/nZpos6TwKnczD+MG22GH9WSw7SroqBhlamFlh
-         HTV6RDfi7VlnsDSeLymCm19xEnkKFIQ4Hp3xBrspYtxRCcjNjmmVHie2xtszhiLG1/Lp
-         nvAW8f3KJr/FVgUrp8mPfnY+0voU3DJerjtWw8zqOlpA+tvyr+tHP1KIKgh3GltFnQd2
-         c/fw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuvOhjzmud0wtK9gCBpoVseh2jUYO72ETMpVUEbIy3Y+dcpGp8PK/6xOkXQk0iU58pt05eROgNnQ8eBkNz6g57Ul013KJr3l02aDqq2A==
-X-Gm-Message-State: AOJu0YxL5Cv9B2zJVHDheFFy718qjzc82XhWRvOUeN8dZPZoEc/si4Jk
-	fvF3QhRAwKKKw45AuDbs5Qh8OfjnGZIsb+mS/DAHMRuLEAsm+vYI
-X-Google-Smtp-Source: AGHT+IF1d/JjNvaUdlV4zt2IUW1FJQXeQEYCUkspAPTpUNljVFGhXPd+BPdq0X4tfzWPOphzi79Nzg==
-X-Received: by 2002:a17:902:d2d0:b0:1dc:6d64:dcff with SMTP id n16-20020a170902d2d000b001dc6d64dcffmr41795plc.37.1710424476027;
-        Thu, 14 Mar 2024 06:54:36 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u10-20020a170902e80a00b001dd95b5dd0fsm1700430plg.69.2024.03.14.06.54.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 06:54:35 -0700 (PDT)
-Message-ID: <a4229dee-8a4b-488d-99de-84ed255583a5@roeck-us.net>
-Date: Thu, 14 Mar 2024 06:54:33 -0700
+        d=1e100.net; s=20230601; t=1710425337; x=1711030137;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H0Ur324GEdYx6Na4EUzT7uu0LrdRXgiT37bQ9SRfD/k=;
+        b=Cq6Vz7mrcmWHanUvB6cVHwhUY9E9QsG5KUxD1ea6GfTbdekjtvJxoNIW5zBmCwx/28
+         cIixoInlceeNaNT2MTNwiCeeuNW1u033mpceg6qmm2cDR5+bhAmEl8pw60wGQUfGnugo
+         viW30KFAoFWsrVZuaA7LDnq+UdcP9y+iNz8c5+IlbtttJuvt3GT7Lvda/8VYODKRm4Qy
+         0jyO0gEa61dIybgKM3fceydaVcmmVw3g//EmDp8XBOtXDzB6bTpxCpLXsCfZCAmnDB48
+         fKewVYBxtpj+x6+K8iRKNWCUbl1RDDAXEy8B8KLfi9U9hz1y2Luj4RO6YsN3nRKefdlH
+         KKtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVuonBu60hVEs+WGPBu0RbATee/HGcNyXPzudAuNdUdMGt2DuJ4jaQjTZkowWqFz36JEGLin2UIX3XjZFNY9IcKhaTgsrv9S0gSfHYaA==
+X-Gm-Message-State: AOJu0YycBY/hWU1OfwN0EhUFSpRyGtosb8DLnC9P1PYW/UQw9iciYCoU
+	rgTaZhGrHtruiZISUogBLbWXSnUDsQYokNa7mIMfue7BQD9/MuP+ul/066worqUWIVNUvdxjlqy
+	nDskQfRQ4mG/3NErh2mjpG05Ul5fX3S7iixMRg8Gpa592Sl9UBbw4fIZSG9SOvRY=
+X-Received: by 2002:a05:6214:568f:b0:690:d848:5223 with SMTP id qm15-20020a056214568f00b00690d8485223mr1930032qvb.1.1710425336508;
+        Thu, 14 Mar 2024 07:08:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHucQiNsYz/grbilWzCKNHDTJ2JNCr8u+qXqtyrFQdPGNDAiC8YJGtZ0KjeTmr272RirFzDNA==
+X-Received: by 2002:a05:6214:568f:b0:690:d848:5223 with SMTP id qm15-20020a056214568f00b00690d8485223mr1929810qvb.1.1710425332941;
+        Thu, 14 Mar 2024 07:08:52 -0700 (PDT)
+Received: from x1n ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id eq9-20020ad45969000000b0069155a36f67sm499868qvb.9.2024.03.14.07.08.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Mar 2024 07:08:52 -0700 (PDT)
+Date: Thu, 14 Mar 2024 10:08:50 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 12/13] mm/treewide: Remove pXd_huge()
+Message-ID: <ZfME8vjFhl8AdyFe@x1n>
+References: <20240313214719.253873-1-peterx@redhat.com>
+ <20240313214719.253873-13-peterx@redhat.com>
+ <7e93ab99-c956-42d0-9afd-3c856f3ad951@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/14] s390: Add support for suppressing warning
- backtraces
-Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20240312170309.2546362-1-linux@roeck-us.net>
- <20240312170309.2546362-12-linux@roeck-us.net>
- <CAMuHMdXHKfd8agPGx+MjvC4cjW5F6DEeVec3Moe-=LLkrT3CXQ@mail.gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <CAMuHMdXHKfd8agPGx+MjvC4cjW5F6DEeVec3Moe-=LLkrT3CXQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <7e93ab99-c956-42d0-9afd-3c856f3ad951@csgroup.eu>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -128,62 +102,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmer
- mann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Muchun Song <muchun.song@linux.dev>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/14/24 00:57, Geert Uytterhoeven wrote:
-> Hi Günter,
+On Thu, Mar 14, 2024 at 08:56:59AM +0000, Christophe Leroy wrote:
 > 
-> On Tue, Mar 12, 2024 at 6:06 PM Guenter Roeck <linux@roeck-us.net> wrote:
->> Add name of functions triggering warning backtraces to the __bug_table
->> object section to enable support for suppressing WARNING backtraces.
->>
->> To limit image size impact, the pointer to the function name is only added
->> to the __bug_table section if both CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBOSE
->> are enabled. Otherwise, the __func__ assembly parameter is replaced with a
->> (dummy) NULL parameter to avoid an image size increase due to unused
->> __func__ entries (this is necessary because __func__ is not a define but a
->> virtual variable).
->>
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 > 
-> Thanks for your patch!
+> Le 13/03/2024 à 22:47, peterx@redhat.com a écrit :
+> > From: Peter Xu <peterx@redhat.com>
+> > 
+> > This API is not used anymore, drop it for the whole tree.
+> > 
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >   arch/arm/mm/Makefile                          |  1 -
+> >   arch/arm/mm/hugetlbpage.c                     | 29 -------------------
+> >   arch/arm64/mm/hugetlbpage.c                   | 10 -------
+> >   arch/loongarch/mm/hugetlbpage.c               | 10 -------
+> >   arch/mips/include/asm/pgtable-32.h            |  2 +-
+> >   arch/mips/include/asm/pgtable-64.h            |  2 +-
+> >   arch/mips/mm/hugetlbpage.c                    | 10 -------
+> >   arch/parisc/mm/hugetlbpage.c                  | 11 -------
+> >   .../include/asm/book3s/64/pgtable-4k.h        | 10 -------
+> >   .../include/asm/book3s/64/pgtable-64k.h       | 25 ----------------
+> >   arch/powerpc/include/asm/nohash/pgtable.h     | 10 -------
+> >   arch/riscv/mm/hugetlbpage.c                   | 10 -------
+> >   arch/s390/mm/hugetlbpage.c                    | 10 -------
+> >   arch/sh/mm/hugetlbpage.c                      | 10 -------
+> >   arch/sparc/mm/hugetlbpage.c                   | 10 -------
+> >   arch/x86/mm/hugetlbpage.c                     | 16 ----------
+> >   include/linux/hugetlb.h                       | 24 ---------------
+> >   17 files changed, 2 insertions(+), 198 deletions(-)
+> >   delete mode 100644 arch/arm/mm/hugetlbpage.c
+> > 
 > 
->> --- a/arch/s390/include/asm/bug.h
->> +++ b/arch/s390/include/asm/bug.h
->> @@ -8,19 +8,30 @@
->>
->>   #ifdef CONFIG_DEBUG_BUGVERBOSE
->>
->> +#if IS_ENABLED(CONFIG_KUNIT)
->> +# define HAVE_BUG_FUNCTION
->> +# define __BUG_FUNC_PTR        "       .long   %0-.\n"
->> +# define __BUG_FUNC    __func__
->> +#else
->> +# define __BUG_FUNC_PTR
->> +# define __BUG_FUNC    NULL
->> +#endif /* IS_ENABLED(CONFIG_KUNIT) */
->> +
->>   #define __EMIT_BUG(x) do {                                     \
->>          asm_inline volatile(                                    \
->>                  "0:     mc      0,0\n"                          \
->>                  ".section .rodata.str,\"aMS\",@progbits,1\n"    \
->>                  "1:     .asciz  \""__FILE__"\"\n"               \
->>                  ".previous\n"                                   \
->> -               ".section __bug_table,\"awM\",@progbits,%2\n"   \
->> +               ".section __bug_table,\"awM\",@progbits,%3\n"   \
+> > diff --git a/arch/mips/include/asm/pgtable-32.h b/arch/mips/include/asm/pgtable-32.h
+> > index 0e196650f4f4..92b7591aac2a 100644
+> > --- a/arch/mips/include/asm/pgtable-32.h
+> > +++ b/arch/mips/include/asm/pgtable-32.h
+> > @@ -129,7 +129,7 @@ static inline int pmd_none(pmd_t pmd)
+> >   static inline int pmd_bad(pmd_t pmd)
+> >   {
+> >   #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+> > -	/* pmd_huge(pmd) but inline */
+> > +	/* pmd_leaf(pmd) but inline */
 > 
-> This change conflicts with commit 3938490e78f443fb ("s390/bug:
-> remove entry size from __bug_table section") in linus/master.
-> I guess it should just be dropped?
-> 
+> Shouldn't this comment have been changed in patch 11 ?
 
-Yes, I know. I'll send v2 rebased to v6.9-rc1 once it is available and,
-yes, the change will be gone after that.
+IMHO it's fine to be here, as this is the patch to finally drop _huge().
+Patch 11 only converts the callers to use _leaf()s.  So this comment is
+still valid until this patch, because this patch removes that definition.
 
-Thanks,
-Guenter
+> 
+> >   	if (unlikely(pmd_val(pmd) & _PAGE_HUGE))
+> 
+> Unlike pmd_huge() which is an outline function, pmd_leaf() is a macro so 
+> it could be used here instead of open coping.
 
+I worry it will break things as pmd_leaf() can sometimes be defined after
+arch *pgtable.h headers.  So I avoided touching it except what I think I'm
+confident.  I had a feeling it's inlined just because of a similar reason
+for the old _huge().
+
+> 
+> >   		return 0;
+> >   #endif
+> > diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+> > index 20ca48c1b606..7c28510b3768 100644
+> > --- a/arch/mips/include/asm/pgtable-64.h
+> > +++ b/arch/mips/include/asm/pgtable-64.h
+> > @@ -245,7 +245,7 @@ static inline int pmd_none(pmd_t pmd)
+> >   static inline int pmd_bad(pmd_t pmd)
+> >   {
+> >   #ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+> > -	/* pmd_huge(pmd) but inline */
+> > +	/* pmd_leaf(pmd) but inline */
+> 
+> Same
+> 
+> >   	if (unlikely(pmd_val(pmd) & _PAGE_HUGE))
+> 
+> Same
+> 
+> >   		return 0;
+> >   #endif
+> 
+> > diff --git a/arch/powerpc/include/asm/book3s/64/pgtable-64k.h b/arch/powerpc/include/asm/book3s/64/pgtable-64k.h
+> > index 2fce3498b000..579a7153857f 100644
+> > --- a/arch/powerpc/include/asm/book3s/64/pgtable-64k.h
+> > +++ b/arch/powerpc/include/asm/book3s/64/pgtable-64k.h
+> > @@ -4,31 +4,6 @@
+> >   
+> >   #ifndef __ASSEMBLY__
+> >   #ifdef CONFIG_HUGETLB_PAGE
+> > -/*
+> > - * We have PGD_INDEX_SIZ = 12 and PTE_INDEX_SIZE = 8, so that we can have
+> > - * 16GB hugepage pte in PGD and 16MB hugepage pte at PMD;
+> > - *
+> > - * Defined in such a way that we can optimize away code block at build time
+> > - * if CONFIG_HUGETLB_PAGE=n.
+> > - *
+> > - * returns true for pmd migration entries, THP, devmap, hugetlb
+> > - * But compile time dependent on CONFIG_HUGETLB_PAGE
+> > - */
+> 
+> Should we keep this comment somewhere for documentation ?
+
+The 2nd/3rd paragraphs are definitely obsolete, so should be dropped.
+
+OTOH, I'm not sure how much that will help if e.g. I move that over to
+pmd_leaf(): a check over cpu_to_be64(_PAGE_PTE) is an implementation as
+simple as it could be to explain itself with even no comment to me..
+
+I also don't fully digest why that 1st paragraph discusses PGD entries: for
+example, there's no pgd_huge() defined.  It may not mean that the comment
+is wrong, perhaps it means that I may lack some knowledge around this area
+on Power..
+
+Would you suggest how I should move paragraph 1 (and help to explain what
+it is describing)?  Or maybe we can provide a separate patch for Power's
+huge page sizes but posted separately (and very possibly I'm not the best
+candidate then..).
+
+> 
+> > -static inline int pmd_huge(pmd_t pmd)
+> > -{
+> > -	/*
+> > -	 * leaf pte for huge page
+> > -	 */
+> > -	return !!(pmd_raw(pmd) & cpu_to_be64(_PAGE_PTE));
+> > -}
+> > -
+> > -static inline int pud_huge(pud_t pud)
+> > -{
+> > -	/*
+> > -	 * leaf pte for huge page
+> > -	 */
+> > -	return !!(pud_raw(pud) & cpu_to_be64(_PAGE_PTE));
+> > -}
+> >   
+> >   /*
+> >    * With 64k page size, we have hugepage ptes in the pgd and pmd entries. We don't
+
+-- 
+Peter Xu
 
