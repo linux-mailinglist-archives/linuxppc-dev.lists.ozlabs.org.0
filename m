@@ -1,87 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1B987B711
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 05:18:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE9487B85A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 08:12:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xk6s9Hgc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=W7omPnN9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwDdl14Sxz3fQH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 15:18:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwJVt6TRXz3cy9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 18:12:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xk6s9Hgc;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=W7omPnN9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwDcy49F5z3c7s
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 15:17:53 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42E0fEgL013082;
-	Thu, 14 Mar 2024 04:17:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=ZMEodGdLNGrhHqDayZF4AlZVhWNcJb2Vae8d0soaKZM=;
- b=Xk6s9Hgc8fpO2v1AB+QpTRS0mzfyplmF/iYWgVyr98RDOqpyS2VN6qSTCV6DKFT3yrT3
- 6EPa89LV5rLdAGbq3bdlfvj45MdzPQSscuvHnOGXDEB7o9V84fTRfNPXsy/WVmsiWy8O
- MyTbMJXhymxwSIdbtBVyJ7cC+ENMt73oOZTbGQkQ+0szzSfY7GUERJEokqvNBisKYVWR
- 6/tvVKoKxVuYQmEmPZv4txVfii/JhxL5NOStIZIWv/7M8c6fToOJxfbLO32bYr5HXiE5
- CG85lY5AZ214JOyedhGxNUXIbUnGDW5RwnNyzy3PI2GPjj6U/zDmDJah3Ob8YaJ3amQi YQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wupbcan5y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 04:17:46 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42E3wo6n010445;
-	Thu, 14 Mar 2024 04:17:46 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wupbcan5s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 04:17:46 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42E25ZOG013484;
-	Thu, 14 Mar 2024 04:17:45 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4akj4yb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 04:17:45 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42E4Het137814720
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Mar 2024 04:17:42 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 219CD20040;
-	Thu, 14 Mar 2024 04:17:40 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C2D22004E;
-	Thu, 14 Mar 2024 04:17:38 +0000 (GMT)
-Received: from sunshine.hsd1.in.comcast.net (unknown [9.61.126.74])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 14 Mar 2024 04:17:38 +0000 (GMT)
-From: Nayna Jain <nayna@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/pseries: fix max polling time in plpks_confirm_object_flushed() function
-Date: Thu, 14 Mar 2024 00:17:35 -0400
-Message-ID: <20240314041735.1171434-1-nayna@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwJV85fC8z3brZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 18:12:12 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F0D26FF803;
+	Thu, 14 Mar 2024 07:12:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1710400324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H5VEjuuC5AnU2gJMo8TZ6MI2cdvYkDyizNf/LUfFzY0=;
+	b=W7omPnN9K0mk9NXpTw72bzIAJRdqYDOB4XIotsYwt1WH+u6qMlbVPLpEEZSwvEg4IDpL+7
+	IHFiXNXdg8+0UcUURrxWX5sGoedCEAnUOidpf4on92uFdvTigr6aXeXgl1F/96AULv/dJA
+	SYAGlgYzd7fLLdRQ4IwYv/Cy5K2IbS9qyup091Tge8INdmBbq1IlOTsJ4afqPAkfdN95NS
+	Y/2x1IN9g1IqaU2FYIop4+XeXeoAVnv9cFViYR2HEHYTsP+lTn1n2x3ZLaWCxvMeLa+G4w
+	X3XKQAWsYE/YaiUcD5zq0KbsQdKy26xMnJUIDN/Rn2KmkfoNajoaL+9T4U8FwA==
+Date: Thu, 14 Mar 2024 08:12:00 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v7 1/5] net: wan: Add support for QMC HDLC
+Message-ID: <20240314081200.5af62fab@bootlin.com>
+In-Reply-To: <87ttl93f7i.fsf@mail.lhotse>
+References: <20240307113909.227375-1-herve.codina@bootlin.com>
+	<20240307113909.227375-2-herve.codina@bootlin.com>
+	<87ttl93f7i.fsf@mail.lhotse>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wgLbjY5K4pVbgUrGgTVTzEZtouk85K1j
-X-Proofpoint-ORIG-GUID: zyKs4xSSut2LHrbQp7ubrb75NX50sfnl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_01,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
- mlxscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 impostorscore=0 malwarescore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403140026
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,62 +61,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, npiggin@gmail.com, Nageswara R Sastry <rnsastry@linux.ibm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Ratheesh Kannoth <rkannoth@marvell.com>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-usleep_range() function takes input time and range in usec. However,
-currently it is assumed in msec in the function
-plpks_confirm_object_flushed().
+Hi Michael,
 
-Fix the total polling time for the object flushing from 5msec to 5sec.
+On Thu, 14 Mar 2024 10:05:37 +1100
+Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
----
-v2:
-* Updated based on feedback from Michael Ellerman
-	Replaced usleep_range with fsleep.
-	Since there is no more need to specify range, sleep time is
-reverted back to 10 msec.
+> Hi Herve,
+> 
+> Herve Codina <herve.codina@bootlin.com> writes:
+...
+> This breaks when building as a module (eg. ppc32_allmodconfig):
+> 
+>   In file included from ../include/linux/device/driver.h:21,
+>                    from ../include/linux/device.h:32,
+>                    from ../include/linux/dma-mapping.h:8,
+>                    from ../drivers/net/wan/fsl_qmc_hdlc.c:13:
+>   ../drivers/net/wan/fsl_qmc_hdlc.c:405:25: error: ‘qmc_hdlc_driver’ undeclared here (not in a function); did you mean ‘qmc_hdlc_probe’?
+>     405 | MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
+>         |                         ^~~~~~~~~~~~~~~
+> 
+> 
+> IIUIC it should be pointing to the table, not the driver, so:
+> 
+> diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
+> index 5fd7ed325f5b..705c3681fb92 100644
+> --- a/drivers/net/wan/fsl_qmc_hdlc.c
+> +++ b/drivers/net/wan/fsl_qmc_hdlc.c
+> @@ -402,7 +402,7 @@ static const struct of_device_id qmc_hdlc_id_table[] = {
+>         { .compatible = "fsl,qmc-hdlc" },
+>         {} /* sentinel */
+>  };
+> -MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
+> +MODULE_DEVICE_TABLE(of, qmc_hdlc_id_table);
+> 
+>  static struct platform_driver qmc_hdlc_driver = {
+>         .driver = {
+> 
+> 
+> Which then builds correctly.
 
- arch/powerpc/include/asm/plpks.h       | 5 ++---
- arch/powerpc/platforms/pseries/plpks.c | 3 +--
- 2 files changed, 3 insertions(+), 5 deletions(-)
+My bad, I missed that one.
+I fully agree with your modification.
 
-diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-index 23b77027c916..7a84069759b0 100644
---- a/arch/powerpc/include/asm/plpks.h
-+++ b/arch/powerpc/include/asm/plpks.h
-@@ -44,9 +44,8 @@
- #define PLPKS_MAX_DATA_SIZE		4000
- 
- // Timeouts for PLPKS operations
--#define PLPKS_MAX_TIMEOUT		5000 // msec
--#define PLPKS_FLUSH_SLEEP		10 // msec
--#define PLPKS_FLUSH_SLEEP_RANGE		400
-+#define PLPKS_MAX_TIMEOUT		(5 * USEC_PER_SEC)
-+#define PLPKS_FLUSH_SLEEP		10000 // usec
- 
- struct plpks_var {
- 	char *component;
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index febe18f251d0..bcfcd5acc5c2 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -415,8 +415,7 @@ static int plpks_confirm_object_flushed(struct label *label,
- 			break;
- 		}
- 
--		usleep_range(PLPKS_FLUSH_SLEEP,
--			     PLPKS_FLUSH_SLEEP + PLPKS_FLUSH_SLEEP_RANGE);
-+		fsleep(PLPKS_FLUSH_SLEEP);
- 		timeout = timeout + PLPKS_FLUSH_SLEEP;
- 	} while (timeout < PLPKS_MAX_TIMEOUT);
- 
+Do you want me to make a patch (copy/paste of your proposed modification)
+or do you plan to send the patch on your side ?
+
+Best regards,
+Hervé
+
 -- 
-2.31.1
-
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
