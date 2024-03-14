@@ -2,130 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CFB87C045
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 16:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D56C987C07D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 16:39:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Wo1jDVgZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YAoOhRuz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwWb715yKz3vY5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 02:32:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwWkq3NMnz3dng
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 02:38:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Wo1jDVgZ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YAoOhRuz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::4; helo=pr0p264cu014.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from PR0P264CU014.outbound.protection.outlook.com (mail-francecentralazlp170120004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::4])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Fri, 15 Mar 2024 02:38:18 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwWZR0l72z307y
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 02:31:41 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=B3TX8LCnjSugpWTsYUugaOo0FVTo2ZcM2tsfkdxQHhgrY/DO8Q3ZY8jTWa7ha7lFQ42TPMLw4Ym64DT30VK2wzY8zNAyqqgMIu6ae3iUzFCG482Q3iBIQObGCwcEPooIFaTc5Oikv5kMn/e2yUDgN4Aj/ScKXP3HBU9gwD1bGIHa2hvqGHnr0BGXrCjl144z9pdoB161r0/1wL8B9vWKaTpMajGXGrekV2Z2ng5tTxunxQeIpKaSk98VmTiV7/6mHogcI4Uop/Su1OJi495tzAtcMv3dBXH9eU4Znzytr9Ls5ET0YWmbAWL4VSDN2THXl5Tuu7Y0yBSCmoZcvxaxRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vVyU9ypwnLuWfCd+QI97GdhFwJ9WrzUvYxanKjTi9NA=;
- b=lcYfmOpGAl/Yz5zFvak011fAr2Ty4LJuPnNJwenAu9X2eLk854y8+MdpPw8ppf+HEIe0bX+6Aqp/V0K1EH/rHHjOEMbI33v4eOdPZIdiRG7yv8USTrD9UyDnigBVK/tkD0m0bqWVJTBhi0vaGCX6KnmG8tMkmoeE5aYX+6ZYfRQQdpTOKyBK0p//VblD/Hzp7W061NsKkb5EESej4XSMnrWf9Umoiw+yk19ptUW5nIdX7VIXTyUO3NIP7vwWLb6m66MXPUoqT5qEIsFmf3Ks8KiewC9HpFhasz5okAs8erRvDGFQW1wuPsH4HtpfZkPFerVNGAad7KPHmkcgmPMvQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vVyU9ypwnLuWfCd+QI97GdhFwJ9WrzUvYxanKjTi9NA=;
- b=Wo1jDVgZSDHkxGVZ3Hb9baHpvKeqYgK7/Z9/uTuK4ayZoft0wBQPQtxFNC38fe2KtFTe4rwIZei7e8DjHBqpTxak6bG+AxrXOUUCEkJWWJwePVFxp0iKWzSrKUKBOUoLH19f7v6Ckq4YSyD0fjCD3bjOYbkZdm10Fq2ZkmRsBj1Xu2dBHkWgKOr1brVtmPObbhmjQaNVg1xkIJmYAK9QCqc1CR7w3YcFNrQ7nsT/8k7JoakMTs/OQ2LimlwwLx3jlj4Zjv6YBl8f2hHMlyTdjSG5Ilo2muuV0UFsm+Luv/ErWZf1p5sGGTAthJ84b8TKo+fLzhEgZuAVKcu7AWOweQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3328.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.21; Thu, 14 Mar
- 2024 15:31:16 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7386.020; Thu, 14 Mar 2024
- 15:31:16 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Guenter Roeck <linux@roeck-us.net>, Herve Codina
-	<herve.codina@bootlin.com>
-Subject: Re: [PATCH v9 07/27] net: wan: Add support for QMC HDLC
-Thread-Topic: [PATCH v9 07/27] net: wan: Add support for QMC HDLC
-Thread-Index: AQHaF9GuM2a/sXV5FE2Knw6nmRUMD7E4FucAgAACw4A=
-Date: Thu, 14 Mar 2024 15:31:15 +0000
-Message-ID: <42504939-e423-4128-bb86-a40e7b7ae845@csgroup.eu>
-References: <20231115144007.478111-1-herve.codina@bootlin.com>
- <20231115144007.478111-8-herve.codina@bootlin.com>
- <bd7b7714-1e73-444a-a175-675039d4f6e4@roeck-us.net>
-In-Reply-To: <bd7b7714-1e73-444a-a175-675039d4f6e4@roeck-us.net>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB3328:EE_
-x-ms-office365-filtering-correlation-id: d03d5c1b-9593-4bdc-1382-08dc443bc9dd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  BHuuaoWHOKSimp/b/DwUlg+8V1wsnZDPzu9ajW+pK/fS+DhILothvym+0oQ7r9wzlvqzp0civf2Rr+Ok24pQ87KUVO5+Y9HAW+CdnXNzdER236LAdGASCtS1Q/5R2EKS1c2zzlFyOUfZL+wHBzEErNf1vUXHC1L0hZ3y4SA2s5wrw1IqLRCM8yDsuvgYWrCB6Uvs7blf29wFVTGLEgtRcqkxI4FdivG9CW0v7kLN7Ntz1swLBcN03tvwTMIOymMX2A41GyyW9LfBfcHS5oyyBBfeA5Bscll1EeFxaiOF7Yl9LGt/dMHv+TCTTN99aJjdEU04Mu/gHrhIg3lrKm+aX2cJ7rSPRjyPo58bU26VQ45grRrCz86xlmz38Te14OuuWd+HRe64qfOuvb0mEZfvHEGfXBwUk9C1PBEdwU8U2jS2xe4XLW3LEAh4TVMkERSMQogs+jCHp3mtWzARIAueVlJagQQlpMU1bZB/AlO1xi6puzpliepiO1EyLnd0DMVTYQz3V/zYnD0UYVxecN2esFZJs9LkUax2zfvpl2fJUKHvr6aJUjrVpLCkYNnQArZCydMtrKPKyay3XD76yOewkc+nndqHNS0T1wB9qLtAfSUSEtvWxAqYAAZaxwotqGHj7Vmp5bNMQzcB5sl6nFcEDRQr7Sjx3fNwMNt5JpT8sGo=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?N1NhZEh6ODVoK3dtVWx6MEVFRFFtbW1Pb2dFZDBWK0ZJZGlnWWg5clM4aWRM?=
- =?utf-8?B?bTAvbmpmU3lMbmQxSk9JVjNORUxCSEowWjRLZXJDSi9xdkZXMEh6WGxET0dP?=
- =?utf-8?B?cENLcDBDcE5PdUhCdWdFZzVjUzd2Z2ZWUjY2RWlPVjJYNWdlei9xUWdMYUtN?=
- =?utf-8?B?bmVmZEVBYy81SEJIaDRHOXFoRG92VUJucW01RllYcm1ZdmFCREk4SzNNTDkw?=
- =?utf-8?B?YzJlemEydzlzVHgxa1FOcTM4SDV5N25sTC9ha1BvNS85bkd1R3M2WG9uZ1dT?=
- =?utf-8?B?MTJsd2k5QzNUZFR3UnlaZ1NMakhCUzJuaUR5ek0rbXhUQVgyS0ZqU3BCcytz?=
- =?utf-8?B?dStBVzBadVZiQWNKT0lTQkVGSDNoWHFqSTBSV2hOR0VxU0tuVmZTMlpyb2U4?=
- =?utf-8?B?cHo4ZzkvTTlxMUJ1bk02Nit4SkxRdmllK2sxanVrczVsWWRVbWtoMC9STW9P?=
- =?utf-8?B?VnMyWWQvT1dTNVphcTR0dW42S2xNTzA2QUo4dGZLUnhjcVhhTlZ4ZDFHNTVQ?=
- =?utf-8?B?RExFdDIwYm1paUxXbkhjemh4aUt2ODI2NmN4L3NBRVFkaGh2ck1Yb2N2M0h4?=
- =?utf-8?B?WkpSdExwZmpnZUNreng0VDYxUy9NbzdxOE1waVlPdEpjYmZMa2FDTHlOelg3?=
- =?utf-8?B?RXZjd3pteXl2YUN3eTh1N3dBTnNnUkVpWFdIZ0JleWVxdmhNbGEvTnVpdzVW?=
- =?utf-8?B?bHFRajkyckdUd0VHS2JXK01WZ1JxSDBIKzNkdGpkOG0wTGRGb2h4eElpVzhZ?=
- =?utf-8?B?bU9Ub3lnTWVIazRkMW9EcVV5RkJnZUlIQ3l6MmgvR0VGRnpldWx1MytOR0JK?=
- =?utf-8?B?T3Jsd1lxa0tldzJ3bHpiYmFpNVdNenJKdDVsQjNvU1hVV1YwNDlieXlObTVF?=
- =?utf-8?B?NGsrOHB6d0ZJYkQ0Qk1xS2FKbDRmcGgxR2xudVI2UURnWjZMZjlxWUZqMXVN?=
- =?utf-8?B?OGtsTzM2UG1QWXNjdGk1Ris5bjVUTXo5Q3hYQ1R3S0FYbm5RelhacWhYSnVa?=
- =?utf-8?B?ckFoelBIT1NZMDF0NXJJdGg4dm5HejZoQnYxUWdSblRpUld6d1pMVW5kYXFZ?=
- =?utf-8?B?L29LMGwxS1hPWEhIcHdkQ1FtL1B2ZUdCbWdaTVNLcUlwb29XRHAwR0NvdjVU?=
- =?utf-8?B?aTMzVTJzRkpUQmFMUGxUaVFKekFBR2VBVWxpWVlnMHBMWVNPRGRjZlhxdHJk?=
- =?utf-8?B?ODJhWHlJTHBnWi9DNSs3T0xRR0RBemJIUjJzVnh1cDNPTEhoeFVUZVZZNzlY?=
- =?utf-8?B?ZzNNUEtBOHFkb0JTcXl2MUkvMCt0cUhrdFAzei9ySERNUHBtRGt4NlBBRmFn?=
- =?utf-8?B?WTJaTVhvWTZsdC9FcHNVb2QxSEZPb3lYRVRGc2RTOEpIQUhiY3BtOWtYMTlM?=
- =?utf-8?B?Uk8ycHdGaCtEUkpBam5oV2NXWVJNY0xXQTZ4QzJCNFlHZzZjTldjMkdkckZG?=
- =?utf-8?B?bFJDN1J6MTYxai8zQWFoZHcwRno2djZ4ZkxBUVlLM1hzbEdTTDQzNy9VQzBu?=
- =?utf-8?B?RVR5eXdLM3cyc1lsTHNxMkF0M0w1K2tRV1V3MjJiRGpaZUFwN3JNTWJHNDlB?=
- =?utf-8?B?eVF6VlB4YVZtN3hQa2p1S1dVQzMxS1owMFR4SU9ta25lSVNWWE9rMlZ1UVpw?=
- =?utf-8?B?NWhNR3Q4T0V4R01DM2hQVkowT09KWXR3biswZC8wRHR2Rm9YODA3ZmtzWnYy?=
- =?utf-8?B?S2ZXeTAxY2FrbnFNUVpML0dWRlJJZWlPQjNLUWgvUmhKTENzSGQ1VmZWdWdy?=
- =?utf-8?B?NXJabFRONkdvaHVxV0w2YitYbXFNN1VxVDFNc0pRTG1CT294M0pIYmlwMUsv?=
- =?utf-8?B?YkFMUHZpOThrdURwTnVmeXlSaGxGVTVjbWsyUkJpa0xCUHVFd0l1UWxmSTZz?=
- =?utf-8?B?ZkJ3Z2loV0xWTlViN2hSNVRpamZoeDJ0cHhPUks3K0U2alIxU2h2QzNCRmhM?=
- =?utf-8?B?cURyWlM2ZG5va3ZSZ1VmZWZTUUtvMGtFdmVBKzloOWNZaTJ0VGtXaGtuZTMv?=
- =?utf-8?B?SzZpTnR4aU5vKzVRdDFtTTVnTUtwQ25FcEVCcHpqckt2anJkdmt1YVFLZzIr?=
- =?utf-8?B?NEpjZHBjM0ZaMUR1RWNwRzZFWkFmSGhMZUU0VWdjU1ZPQTgyVmdPOUR6SXhn?=
- =?utf-8?B?cndqZHRla1JzNmwrTnQ0c1lTR0dGZkJqZnZVYWFFbGUwcDVldHNtSHBPMTRP?=
- =?utf-8?B?TXJKemVPZWE0L1gwbXhOUDJtdFBGVk9kOWZGQmhrMnZZa2VTRDhOWkFhVkh2?=
- =?utf-8?B?Mm82c05pK3NOZ05JUUN5TitWNUNBPT0=?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <927317E2CD1B4D4BBF381492F589C6F7@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwWk24xClz30f5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 02:38:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710430698; x=1741966698;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QDmSjFlGrU6Hd3mA2yDfUAmJpqa2FZnvH3/fn2q3Dj0=;
+  b=YAoOhRuzruNAllkDCT8yhrDjL8oi7EwLnkNNf5G1DKatZwoWL80VzN55
+   SzRMcxMJGiIcFpdogqNeens1qVCT9M2VT7euJRW1eh/y9c37UL6Upk6pD
+   /5PV2if9Wjx8gbIyH1t0VKuZPuCltkjKEwcd0uetp8G0gnaYg0XLyqoyJ
+   0G6i9bDNIu/520kKdYhoLg7CLhaPJfhav5Z1Hf/n/aCxoGg4jTUh/E1qB
+   fZS9WrjnG2OnlbW2q7pPDjLKt4ZmfIjeDH4Zha4yr47Aq9tyR38hefMC8
+   2RMBaw6zDz73v5i4YOUTfhz37XG74DNFipBluwDLR4hUr8qwqpM+LSQdN
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="15981635"
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
+   d="scan'208";a="15981635"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 08:37:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,125,1708416000"; 
+   d="scan'208";a="49752855"
+Received: from laallen-mobl.amr.corp.intel.com (HELO [10.209.21.198]) ([10.209.21.198])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 08:37:09 -0700
+Message-ID: <dd54d6de-0bcc-4b2e-a420-b1a429b06246@intel.com>
+Date: Thu, 14 Mar 2024 08:37:09 -0700
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: d03d5c1b-9593-4bdc-1382-08dc443bc9dd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Mar 2024 15:31:15.9974
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XUyj8UvMhh1O0EjyC1DrZwXQU+RswDM1VeMD/bKgXgtXwDi853LCYYTjG+Lwf24A6XpZ6hgPk/seDmi3hzRUM676wzTrR7deR/m86KJJiKg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3328
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] x86/elf: Add a new .note section containing Xfeatures
+ information to x86 core files
+Content-Language: en-US
+To: Vignesh Balasubramanian <vigbalas@amd.com>, linux-kernel@vger.kernel.org,
+ linux-toolchains@vger.kernel.org
+References: <20240314112359.50713-1-vigbalas@amd.com>
+ <20240314112359.50713-2-vigbalas@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240314112359.50713-2-vigbalas@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,26 +114,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.or
- g>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, Simon Horman <horms@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: felix.willgerodt@intel.com, matz@suse.de, keescook@chromium.org, jhb@FreeBSD.org, bpetkov@amd.com, x86@kernel.org, npiggin@gmail.com, aneesh.kumar@kernel.org, linux-mm@kvack.org, ebiederm@xmission.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, binutils@sourceware.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE0LzAzLzIwMjQgw6AgMTY6MjEsIEd1ZW50ZXIgUm9lY2sgYSDDqWNyaXTCoDoNCj4g
-T24gV2VkLCBOb3YgMTUsIDIwMjMgYXQgMDM6Mzk6NDNQTSArMDEwMCwgSGVydmUgQ29kaW5hIHdy
-b3RlOg0KPj4gVGhlIFFNQyBIRExDIGRyaXZlciBwcm92aWRlcyBzdXBwb3J0IGZvciBIRExDIHVz
-aW5nIHRoZSBRTUMgKFFVSUNDDQo+PiBNdWx0aWNoYW5uZWwgQ29udHJvbGxlcikgdG8gdHJhbnNm
-ZXIgdGhlIEhETEMgZGF0YS4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBIZXJ2ZSBDb2RpbmEgPGhl
-cnZlLmNvZGluYUBib290bGluLmNvbT4NCj4+IFJldmlld2VkLWJ5OiBDaHJpc3RvcGhlIExlcm95
-IDxjaHJpc3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU+DQo+PiBBY2tlZC1ieTogSmFrdWIgS2ljaW5z
-a2kgPGt1YmFAa2VybmVsLm9yZz4NCj4+IC0tLQ0KPiBbIC4uLiBdDQo+IA0KPj4gKw0KPj4gK3N0
-YXRpYyBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIHFtY19oZGxjX2lkX3RhYmxlW10gPSB7DQo+
-PiArCXsgLmNvbXBhdGlibGUgPSAiZnNsLHFtYy1oZGxjIiB9LA0KPj4gKwl7fSAvKiBzZW50aW5l
-bCAqLw0KPj4gK307DQo+PiArTU9EVUxFX0RFVklDRV9UQUJMRShvZiwgcW1jX2hkbGNfZHJpdmVy
-KTsNCj4gDQo+IEkgYW0gYSBiaXQgcHV6emxlZC4gSG93IGRvZXMgdGhpcyBldmVuIGNvbXBpbGUg
-Pw0KDQpCZWNhdXNlDQoNCiNlbHNlICAvKiAhTU9EVUxFICovDQojZGVmaW5lIE1PRFVMRV9ERVZJ
-Q0VfVEFCTEUodHlwZSwgbmFtZSkNCiNlbmRpZg0KDQoNCldlIHNob3VsZCBwcm9iYWJseSB0cnkg
-dG8gY2F0Y2ggdGhvc2UgZXJyb3JzIHdoZW4gQ09ORklHX01PRFVMRSBpcyBub3Qgc2V0Lg0KDQpC
-eSB0aGUgd2F5LCBhIGZpeCBpcyBhdmFpbGFibGUgYXQgDQpodHRwczovL3BhdGNod29yay5vemxh
-YnMub3JnL3Byb2plY3QvbGludXhwcGMtZGV2L3BhdGNoLzIwMjQwMzE0MTIzMzQ2LjQ2MTM1MC0x
-LWhlcnZlLmNvZGluYUBib290bGluLmNvbS8NCg0KQ2hyaXN0b3BoZQ0K
+On 3/14/24 04:23, Vignesh Balasubramanian wrote:
+> Add a new .note section containing type, size, offset and flags of
+> every xfeature that is present.
+
+Mechanically, I'd much rather have all of that info in the cover letter
+in the actual changelog instead.
+
+I'd also love to see a practical example of what an actual example core
+dump looks like on two conflicting systems:
+
+   * Total XSAVE size
+   * XCR0 value
+   * XSTATE_BV from the core dump
+   * XFEATURE offsets for each feature
+
+Do you have any information about what other OSes are doing in this
+area?  I thought Windows, for instance, was even less flexible about the
+XSAVE format than Linux is.
+
+Why didn't LWP cause this problem?
+
+From the cover letter:
+
+> But this patch series depends on heuristics based on the total XSAVE
+> register set size and the XCR0 mask to infer the layouts of the
+> various register blocks for core dumps, and hence, is not a foolproof
+> mechanism to determine the layout of the XSAVE area.
+
+It may not be theoretically foolproof.  But I'm struggling to think of a
+case where it would matter in practice.  Is there any CPU from any
+vendor where this is actually _needed_?
+
+Sure, it's ugly as hell, but these notes aren't going to be available
+universally _ever_, so it's not like the crummy heuristic code gets to
+go away.
+
+Have you seen the APX spec?
+
+>
+https://www.intel.com/content/www/us/en/developer/articles/technical/advanced-performance-extensions-apx.html
+
+It makes this even more fun because it adds a new XSAVE state component,
+but reuses the MPX offsets.
+
+> This information will be used by the debuggers to understand the XSAVE
+> layout of the machine where the core file is dumped, and to read XSAVE
+> registers, especially during cross-platform debugging.
+
+This is pretty close to just a raw dump of the XSAVE CPUID leaves.
+Rather than come up with an XSAVE-specific ABI that depends on CPUID
+*ANYWAY* (because it dumps the "flags" register aka. ECX), maybe we
+should just bite the bullet and dump out (some of) the raw CPUID space.
+
+
