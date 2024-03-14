@@ -2,69 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F82687BB70
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 11:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8326687BB7F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 11:41:52 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VTB3qzGC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d5NqvJSi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwP4721Qfz3dXh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 21:38:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwP7y27Yvz3dgN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 21:41:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VTB3qzGC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d5NqvJSi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=kabel@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwP3Q2HzHz3c9x
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 21:37:54 +1100 (AEDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a466f89560eso67077766b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 03:37:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710412670; x=1711017470; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vzCmVzgk1A2WbwK3W/30teVzlmAUHDmYtHZ6Lsqwgus=;
-        b=VTB3qzGCMK5mwNSfp0YBqSw8XxhOYPRQGE2yy3y7QRfR/mO4SH5AeOclOSGZWh75gE
-         C2dSmEUm7pNTYlPcftostK94WrNSYXATeId+qZFAgVMxsYA3X9eLds15hc/d/Fpg/Zyq
-         V61/b6JxVQVx+0NaGtqx8ulH7WiHLTxpRZ1Q6C02DzfR0CtESCUpKb2XUrjp0bhZgvCJ
-         SuExDlRZ70e/sXB+x8ZSJ4RdJmnaTUcKvP0D9HLM9V7ZZTrLl6DfC/7c2A4SZmS4VeMF
-         ietmadZav4QPuK+C3w27615EdcHtvgcODoEq+4j4D5tM+hxnDuA/6RYW9NuxunxMAOKq
-         dDBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710412670; x=1711017470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vzCmVzgk1A2WbwK3W/30teVzlmAUHDmYtHZ6Lsqwgus=;
-        b=EyhpMF3C51DEG86PLq/8RUviCrbxAwu8U5/hx36Q0vqcbSBIdX2QuJOXQGEl+wD1TK
-         FwqNE+oA6SyshvW3Hr1UfRyxrUcyGQggYzNteu1c+JvXIU+eL+SYXK7O8nq4IXiVz/UW
-         Al05CYX0KJn/emsCY/ZwmFg6efvPEnL0R2WiN5qtnePVimLCFxPMixG2y33Z0AwPIqSH
-         K3bvm8nhUko/lxVkDuZ4i8Fz5pXQWKuHkvlsJEODIaDE6rOMjNwz3IHiAbcITwmtNp9j
-         QKKUxPoSlouRtyNRtkcK05G17tdb6021NaJ/t/6j6LcRkBIXhFy/VPg4d9w4rcf+GBBq
-         qXsw==
-X-Forwarded-Encrypted: i=1; AJvYcCUQHCpjBMFuTqDIMkMHGlvpCKMUn/yxXWeR9rwrbC6rPUyFaLfmGtGRWwqQtiI+P59jBwMR10fwUA8Kw5bdWtCJMP846xEi+SJRlAWPyg==
-X-Gm-Message-State: AOJu0Yz3FgdVyU5JnstvMaDm/rFWcRmKiw6HgBYw97XzfdKcPeNj1x/a
-	Ng8CGbyMwsYz/4GjqDpVe158Np9e5e7laDciRKjmeCBgc+c6JdYjx1Bs8BhooLeYdGvlvw2+qKL
-	X0twoQVVTznYjX3VUE3uo6UM+Al0=
-X-Google-Smtp-Source: AGHT+IHAgDyqVH7oGwixukT7CSGFbdDnW4TvuHEXAOyVQ/qRpBYbBxUZXwiLPNDdK50Y8a0SeFDblV5Sbfrs/AuuR+0=
-X-Received: by 2002:a17:906:5801:b0:a46:614f:f2be with SMTP id
- m1-20020a170906580100b00a46614ff2bemr899128ejq.28.1710412670199; Thu, 14 Mar
- 2024 03:37:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240314084531.1935545-1-gnstark@salutedevices.com>
-In-Reply-To: <20240314084531.1935545-1-gnstark@salutedevices.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 14 Mar 2024 12:37:13 +0200
-Message-ID: <CAHp75VdM9GkogkeffY+0rwU3r2iWeTZ8-aj901MLteUmRfcLOA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/9] devm_led_classdev_register() usage problem
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwP7F4fjtz3cPR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 21:41:13 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 2CC4BCE1D80;
+	Thu, 14 Mar 2024 10:41:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63136C433F1;
+	Thu, 14 Mar 2024 10:40:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710412870;
+	bh=NKeKefPF6egagCg3IVA3tpwNCyhF4yfvOCdSY7XKMV0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=d5NqvJSiJLIuJ8UfZzIlO+3hWCpzNH+tKOmCRquj6mVZpDuZpZPfJJqRpiTe1Ufj+
+	 4CDxEWnc+DhHW6ZcQVNa0FJm8l5qm51+tnWI5h5X30tDvkkmcbymgTgjPhmVu+skC+
+	 fhKJyOoLRmBbkxKV5O5F7UCo7jjHlmQ4kp6QMh3tIcZtZetbwPw8vsjZKyvMt5lhOj
+	 ELghCvaa4Bip6VGbyvfldZNrilS4haYwvzT8JHXtvH1jG6+sMBV9f26/qUy7ajiMfM
+	 pvIThJ8v0fM4ud0wySZ1/ygDtkyG2wb8njNYj/jQ/p/QMHHarXbr9fLq/P0ASW4pa5
+	 cTFtcNALYcL7Q==
+Date: Thu, 14 Mar 2024 11:40:25 +0100
+From: Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
 To: George Stark <gnstark@salutedevices.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v6 1/9] locking/mutex: introduce devm_mutex_init
+Message-ID: <20240314114025.1e27399e@thinkpad>
+In-Reply-To: <20240314084531.1935545-2-gnstark@salutedevices.com>
+References: <20240314084531.1935545-1-gnstark@salutedevices.com>
+	<20240314084531.1935545-2-gnstark@salutedevices.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.39; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,49 +60,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kabel@kernel.org, linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, marek.behun@nic.cz, hdegoede@redhat.com, mingo@redhat.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
+Cc: kabel@kernel.org, linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 14, 2024 at 10:46=E2=80=AFAM George Stark <gnstark@salutedevice=
-s.com> wrote:
->
-> This patch series fixes the problem of devm_led_classdev_register misusin=
-g.
->
-> The basic problem is described in [1]. Shortly when devm_led_classdev_reg=
-ister()
-> is used then led_classdev_unregister() called after driver's remove() cal=
-lback.
-> led_classdev_unregister() calls driver's brightness_set callback and that=
- callback
-> may use resources which were destroyed already in driver's remove().
->
-> After discussion with maintainers [2] [3] we decided:
-> 1) don't touch led subsytem core code and don't remove led_set_brightness=
-() from it
+On Thu, 14 Mar 2024 11:45:23 +0300
+George Stark <gnstark@salutedevices.com> wrote:
 
-subsystem
+> Using of devm API leads to a certain order of releasing resources.
+> So all dependent resources which are not devm-wrapped should be deleted
+> with respect to devm-release order. Mutex is one of such objects that
+> often is bound to other resources and has no own devm wrapping.
+> Since mutex_destroy() actually does nothing in non-debug builds
+> frequently calling mutex_destroy() is just ignored which is safe for now
+> but wrong formally and can lead to a problem if mutex_destroy() will be
+> extended so introduce devm_mutex_init()
+>=20
+> Signed-off-by: George Stark <gnstark@salutedevices.com>
+> Suggested by-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-> but fix drivers
-> 2) don't use devm_led_classdev_unregister
->
-> So the solution is to use devm wrappers for all resources
-> driver's brightness_set() depends on. And introduce dedicated devm wrappe=
-r
-> for mutex as it's often used resource.
-
-The leds related changes (except the last one) LGTM, hence FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-(for patches 2-8)
-
-> [1] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@sal=
-utedevices.com/T/
-> [2] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@sal=
-utedevices.com/T/#mc132b9b350fa51931b4fcfe14705d9f06e91421f
-> [3] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@sal=
-utedevices.com/T/#mdbf572a85c33f869a553caf986b6228bb65c8383
-
---=20
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Marek Beh=C3=BAn <kabel@kernel.org>
