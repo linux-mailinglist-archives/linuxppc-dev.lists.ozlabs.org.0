@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8326687BB7F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 11:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C41587BB8D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 11:51:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d5NqvJSi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EwLkY4XJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwP7y27Yvz3dgN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 21:41:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwPMP5mTpz3dng
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 21:51:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d5NqvJSi;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EwLkY4XJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=kabel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwP7F4fjtz3cPR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 21:41:13 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 2CC4BCE1D80;
-	Thu, 14 Mar 2024 10:41:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63136C433F1;
-	Thu, 14 Mar 2024 10:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710412870;
-	bh=NKeKefPF6egagCg3IVA3tpwNCyhF4yfvOCdSY7XKMV0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d5NqvJSiJLIuJ8UfZzIlO+3hWCpzNH+tKOmCRquj6mVZpDuZpZPfJJqRpiTe1Ufj+
-	 4CDxEWnc+DhHW6ZcQVNa0FJm8l5qm51+tnWI5h5X30tDvkkmcbymgTgjPhmVu+skC+
-	 fhKJyOoLRmBbkxKV5O5F7UCo7jjHlmQ4kp6QMh3tIcZtZetbwPw8vsjZKyvMt5lhOj
-	 ELghCvaa4Bip6VGbyvfldZNrilS4haYwvzT8JHXtvH1jG6+sMBV9f26/qUy7ajiMfM
-	 pvIThJ8v0fM4ud0wySZ1/ygDtkyG2wb8njNYj/jQ/p/QMHHarXbr9fLq/P0ASW4pa5
-	 cTFtcNALYcL7Q==
-Date: Thu, 14 Mar 2024 11:40:25 +0100
-From: Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
-To: George Stark <gnstark@salutedevices.com>
-Subject: Re: [PATCH v6 1/9] locking/mutex: introduce devm_mutex_init
-Message-ID: <20240314114025.1e27399e@thinkpad>
-In-Reply-To: <20240314084531.1935545-2-gnstark@salutedevices.com>
-References: <20240314084531.1935545-1-gnstark@salutedevices.com>
-	<20240314084531.1935545-2-gnstark@salutedevices.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.39; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwPLd6hX5z3d4L
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 21:51:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1710413464;
+	bh=DRdiHGqYqxjEF8hsA5ZH+kEbHXJ9gHLyaDJurUBUBU8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EwLkY4XJ/XL6m9O01lkeRqb+bFGM+QvljzvF4nbDCTUEioyZoYoIMNbpMjw/ibU28
+	 UaZLGEMxbKyyHXpBTLDqSOa9gMjkeg2wXcWsO6hB8FLPuII9r/uZvQoQ0axiGR9ZjI
+	 OJoivYUdbYAy72HQQGSNAgfMInJNDl8EOWJ+HVA5xsz7/fbUPckzgw0OYMh8LYCfrh
+	 AHfU/K+/T+ds+0JQChBbJxC55hFG5D9mFQW1g+NpydlfUrwdlDsmwljjoxuLlD129X
+	 mFlBgg//ha/jnCRFFGrUoPpkT996Tpp2gKmcMniglSQgR/+XtpLQBEQyF4GYKAqh/K
+	 6sl4QGJjol9Vw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TwPLZ4lVKz4wnr;
+	Thu, 14 Mar 2024 21:51:02 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v7 1/5] net: wan: Add support for QMC HDLC
+In-Reply-To: <20240314081200.5af62fab@bootlin.com>
+References: <20240307113909.227375-1-herve.codina@bootlin.com>
+ <20240307113909.227375-2-herve.codina@bootlin.com>
+ <87ttl93f7i.fsf@mail.lhotse> <20240314081200.5af62fab@bootlin.com>
+Date: Thu, 14 Mar 2024 21:51:01 +1100
+Message-ID: <87r0gd2iju.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,23 +60,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kabel@kernel.org, linuxppc-dev@lists.ozlabs.org, vadimp@nvidia.com, mazziesaccount@gmail.com, peterz@infradead.org, boqun.feng@gmail.com, lee@kernel.org, kernel@salutedevices.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, hdegoede@redhat.com, andy.shevchenko@gmail.com, mingo@redhat.com, pavel@ucw.cz, longman@redhat.com, nikitos.tr@gmail.com, will@kernel.org, linux-leds@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Ratheesh Kannoth <rkannoth@marvell.com>, Yury Norov <yury.norov@gmail.com>, netdev@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 14 Mar 2024 11:45:23 +0300
-George Stark <gnstark@salutedevices.com> wrote:
+Herve Codina <herve.codina@bootlin.com> writes:
+> Hi Michael,
+>
+> On Thu, 14 Mar 2024 10:05:37 +1100
+> Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+>> Hi Herve,
+>>=20
+>> Herve Codina <herve.codina@bootlin.com> writes:
+> ..
+>> This breaks when building as a module (eg. ppc32_allmodconfig):
+>>=20
+>>   In file included from ../include/linux/device/driver.h:21,
+>>                    from ../include/linux/device.h:32,
+>>                    from ../include/linux/dma-mapping.h:8,
+>>                    from ../drivers/net/wan/fsl_qmc_hdlc.c:13:
+>>   ../drivers/net/wan/fsl_qmc_hdlc.c:405:25: error: =E2=80=98qmc_hdlc_dri=
+ver=E2=80=99 undeclared here (not in a function); did you mean =E2=80=98qmc=
+_hdlc_probe=E2=80=99?
+>>     405 | MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
+>>         |                         ^~~~~~~~~~~~~~~
+>>=20
+>>=20
+>> IIUIC it should be pointing to the table, not the driver, so:
+>>=20
+>> diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hd=
+lc.c
+>> index 5fd7ed325f5b..705c3681fb92 100644
+>> --- a/drivers/net/wan/fsl_qmc_hdlc.c
+>> +++ b/drivers/net/wan/fsl_qmc_hdlc.c
+>> @@ -402,7 +402,7 @@ static const struct of_device_id qmc_hdlc_id_table[]=
+ =3D {
+>>         { .compatible =3D "fsl,qmc-hdlc" },
+>>         {} /* sentinel */
+>>  };
+>> -MODULE_DEVICE_TABLE(of, qmc_hdlc_driver);
+>> +MODULE_DEVICE_TABLE(of, qmc_hdlc_id_table);
+>>=20
+>>  static struct platform_driver qmc_hdlc_driver =3D {
+>>         .driver =3D {
+>>=20
+>>=20
+>> Which then builds correctly.
+>
+> My bad, I missed that one.
+> I fully agree with your modification.
+>
+> Do you want me to make a patch (copy/paste of your proposed modification)
+> or do you plan to send the patch on your side ?
 
-> Using of devm API leads to a certain order of releasing resources.
-> So all dependent resources which are not devm-wrapped should be deleted
-> with respect to devm-release order. Mutex is one of such objects that
-> often is bound to other resources and has no own devm wrapping.
-> Since mutex_destroy() actually does nothing in non-debug builds
-> frequently calling mutex_destroy() is just ignored which is safe for now
-> but wrong formally and can lead to a problem if mutex_destroy() will be
-> extended so introduce devm_mutex_init()
->=20
-> Signed-off-by: George Stark <gnstark@salutedevices.com>
-> Suggested by-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Yes if you can please turn it into a proper patch and submit it.
 
-Reviewed-by: Marek Beh=C3=BAn <kabel@kernel.org>
+No need to add my SoB, it's trivial.
+
+cheers
