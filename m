@@ -2,51 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9518287C1FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 18:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC9087C542
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 23:42:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bLCoITag;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=freebsd.org header.i=@freebsd.org header.a=rsa-sha256 header.s=dkim header.b=sEhNz4ZB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwYvp2NpRz3vYP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 04:16:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Twj7c3zvhz3vmD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 09:42:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bLCoITag;
+	dkim=pass (2048-bit key; secure) header.d=freebsd.org header.i=@freebsd.org header.a=rsa-sha256 header.s=dkim header.b=sEhNz4ZB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=freebsd.org (client-ip=96.47.72.81; helo=mx2.freebsd.org; envelope-from=jhb@freebsd.org; receiver=lists.ozlabs.org)
+Received: from mx2.freebsd.org (mx2.freebsd.org [96.47.72.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwYv46fRyz3020
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 04:16:16 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 0B278CE1E18;
-	Thu, 14 Mar 2024 17:16:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C6BC433F1;
-	Thu, 14 Mar 2024 17:16:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710436573;
-	bh=L79tdLUwzaaRgRXL97CbprC3UX8xdukYNWJfNJ9rn8Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=bLCoITag/SuEtTrsO/sMEjHd4BnWeVtJvXB6210xjO0cdkxYMA8vA1JIb6pEd2Kfy
-	 Id8hEuP4GShaNC+PpogaxARWBhxMId5O2Cie8lL7/14MzwoABw+v7vAtpZtvsqvwVm
-	 j+7ReyKeR/gEjByLQxpMlRsVYXDEGyGeHFdCK6t+sjpJtjaZP9s/5wAN9lzVmWJr7r
-	 pLa+CQidixlNP3GHezj2k/ubGEQYBhmB8PMTnGZbFPbhqQ4aFXAmuJp6RUqrSv3XnA
-	 050p8/o022AJfkYOdhHhi7dvoS2VTcsuMhDFAH55Xucdvzdz4Rqw4PKJtaUCOfiv+R
-	 zUf5Dv5K5Grxg==
-Date: Thu, 14 Mar 2024 12:16:11 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH 2/4] PCI: Generalize TLP Header Log reading
-Message-ID: <20240314171611.GA958323@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwZLv2Hmmz3dH8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 04:36:54 +1100 (AEDT)
+Received: from mx1.freebsd.org (mx1.freebsd.org [IPv6:2610:1c1:1:606c::19:1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits)
+	 client-signature RSA-PSS (4096 bits))
+	(Client CN "mx1.freebsd.org", Issuer "R3" (verified OK))
+	by mx2.freebsd.org (Postfix) with ESMTPS id 4TwZLq2tq7z45qb;
+	Thu, 14 Mar 2024 17:36:51 +0000 (UTC)
+	(envelope-from jhb@FreeBSD.org)
+Received: from smtp.freebsd.org (smtp.freebsd.org [IPv6:2610:1c1:1:606c::24b:4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "smtp.freebsd.org", Issuer "R3" (verified OK))
+	by mx1.freebsd.org (Postfix) with ESMTPS id 4TwZLq0vlZz4G9m;
+	Thu, 14 Mar 2024 17:36:51 +0000 (UTC)
+	(envelope-from jhb@FreeBSD.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org; s=dkim;
+	t=1710437811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2FRnGeCxFOtPEvgUPXcBs82NrDY5IYDYS2r+RYjKVpg=;
+	b=sEhNz4ZBuiVsXmcilCwowh42gWx/ujdNrhfQgF9MTZYFlTaPNgT6u6CtyovNZK0Ny3h9mr
+	CjC3HmvFbS3BkqOsuR2TOxuM6kBYn8pnaHaQ4RrKVpMDnPny1CpYXDZtxa1zLIZAcWi31H
+	dyjuNpYOqU0wNqbJ3lIuEYxHTtKYl6lUX7XIzF4UyvBMJHmpJcGNGO5SP24p0a9wo6wJTr
+	/P8LZAor9zCuZK2PUIk/anzVNzBpYTQTHb3pdXSzZZKKUACMsWvjUoJjy9IHsaA73UU1+z
+	F1KVTzacJkz7b2ZE1J2ENR/X/qDRR9YZ+z0Mdt6SGn+gwOTkDJJr6G8QZrsaoA==
+ARC-Seal: i=1; s=dkim; d=freebsd.org; t=1710437811; a=rsa-sha256; cv=none;
+	b=PJKOWliNE9sARysvn+5wbnE2O6//dmWKHXlV8KLUAGyZVL7ruhitf1Yv22v2SuiB1cOfv2
+	CFcknR6jm5Wd0uWqAkvHZx4OE9ppyXIYhWhOlJ3yaXvOGMYjqUbtzBa822N37nVaTHugkB
+	Yi5GnZJF9OPyqDUB2cPOrlns4sLcOTrLpYWPzzL0C4cakDQv3yboQLvsM0hNVys8Ca+FE1
+	cf72Qv++5EHsmMq4OYvmnXvM3KEcMWq7phQqb6jeImXXdUBzZUhVRq17uwqz/wLKZZXaIt
+	914d2ab+00tzpHGfMelNG8uVgQLWotKFY53gT6SN9L2qx2iXe8tZkd6K9nw+Rw==
+ARC-Authentication-Results: i=1;
+	mx1.freebsd.org;
+	none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=freebsd.org;
+	s=dkim; t=1710437811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2FRnGeCxFOtPEvgUPXcBs82NrDY5IYDYS2r+RYjKVpg=;
+	b=uNM9NnEpZukwPoUCmQi64Ps5+jKT7j+T+8xTlbM759DPqHIneuZ0wR4NKINoteUxbgJNvX
+	dZtg3U0tYZM/JNO3w6oSigr0i4OCzfbaHAY3HWy0iPKcLLMZJRfxPOmK2mFW5kEY+H28Yj
+	cTXHiLTARTTjEJPYbQnbR3jKkbC2I8tqB1XopkCpJRPzJbwHScQr6LG0KK/1NI+iWRAil7
+	LXRBkTUE/AsW9N36R/6ZBD4XeddWzpJiqzfiLQ9yZyMC/hM6exKzQ/J4Er3RdlfZQpgbGD
+	kUkj/Np/G7DTcG6hUeI3XuFFL8gEdgfQBOJzlcI1Fnyb0HIFW1GmpHR3oCTrfQ==
+Received: from [IPV6:2601:644:937f:4c50:9159:2009:aff7:887a] (unknown [IPv6:2601:644:937f:4c50:9159:2009:aff7:887a])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: jhb)
+	by smtp.freebsd.org (Postfix) with ESMTPSA id 4TwZLn2VmVzMNv;
+	Thu, 14 Mar 2024 17:36:49 +0000 (UTC)
+	(envelope-from jhb@FreeBSD.org)
+Message-ID: <b86e4d31-70db-42de-bf54-4ffb03b5cba0@FreeBSD.org>
+Date: Thu, 14 Mar 2024 10:36:48 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] x86/elf: Add a new .note section containing Xfeatures
+ information to x86 core files
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>,
+ Vignesh Balasubramanian <vigbalas@amd.com>, linux-kernel@vger.kernel.org,
+ linux-toolchains@vger.kernel.org
+References: <20240314112359.50713-1-vigbalas@amd.com>
+ <20240314112359.50713-2-vigbalas@amd.com>
+ <dd54d6de-0bcc-4b2e-a420-b1a429b06246@intel.com>
+ <971d21b7-0309-439e-91b6-234f84da959d@FreeBSD.org>
+ <a789c10e-861e-48eb-96d6-aa129d352535@intel.com>
+From: John Baldwin <jhb@FreeBSD.org>
+In-Reply-To: <a789c10e-861e-48eb-96d6-aa129d352535@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240206135717.8565-3-ilpo.jarvinen@linux.intel.com>
+X-Mailman-Approved-At: Fri, 15 Mar 2024 09:37:24 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,122 +110,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, Tony Luck <tony.luck@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, linux-pci@vger.kernel.org, Greg Rose <gvrose8192@gmail.com>, Jesse Brandeburg <jesse.brandeburg@intel.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, linux-efi@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>, Jeff Kirsher <tarbal@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org
+Cc: matz@suse.de, keescook@chromium.org, felix.willgerodt@intel.com, bpetkov@amd.com, x86@kernel.org, npiggin@gmail.com, aneesh.kumar@kernel.org, linux-mm@kvack.org, ebiederm@xmission.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, binutils@sourceware.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[+cc Greg, Jeff -- ancient history, I know, sorry!]
-
-On Tue, Feb 06, 2024 at 03:57:15PM +0200, Ilpo Järvinen wrote:
-> Both AER and DPC RP PIO provide TLP Header Log registers (PCIe r6.1
-> secs 7.8.4 & 7.9.14) to convey error diagnostics but the struct is
-> named after AER as the struct aer_header_log_regs. Also, not all places
-> that handle TLP Header Log use the struct and the struct members are
-> named individually.
+On 3/14/24 10:10 AM, Dave Hansen wrote:
+> On 3/14/24 09:45, John Baldwin wrote:
+>> On 3/14/24 8:37 AM, Dave Hansen wrote:
+>>> On 3/14/24 04:23, Vignesh Balasubramanian wrote:
+>>>> Add a new .note section containing type, size, offset and flags of
+>>>> every xfeature that is present.
+>>>
+>>> Mechanically, I'd much rather have all of that info in the cover letter
+>>> in the actual changelog instead.
+>>>
+>>> I'd also love to see a practical example of what an actual example core
+>>> dump looks like on two conflicting systems:
+>>>
+>>>      * Total XSAVE size
+>>>      * XCR0 value
+>>>      * XSTATE_BV from the core dump
+>>>      * XFEATURE offsets for each feature
+>>
+>> I noticed this when I bought an AMD Ryzen 9 5900X based system for
+>> my desktop running FreeBSD and found that the XSAVE core dump notes
+>> were not recognized by GDB (FreeBSD dumps an XSAVE register set note
+>> that matches the same layout of NT_X86_XSTATE used by Linux).
 > 
-> Generalize the struct name and members, and use it consistently where
-> TLP Header Log is being handled so that a pcie_read_tlp_log() helper
-> can be easily added.
+> I just want to make sure that you heard what I asked.  I'd like to see a
+> practical example of how the real-world enumeration changes between two
+> real world systems.
 > 
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Is that possible?
+> 
+> Here's the raw CPUID data from the XSAVE region on my laptop:
+> 
+>>     0x0000000d 0x00: eax=0x000002e7 ebx=0x00000a88 ecx=0x00000a88 edx=0x00000000
+>>     0x0000000d 0x01: eax=0x0000000f ebx=0x00000998 ecx=0x00003900 edx=0x00000000
+>>     0x0000000d 0x02: eax=0x00000100 ebx=0x00000240 ecx=0x00000000 edx=0x00000000
+>>     0x0000000d 0x05: eax=0x00000040 ebx=0x00000440 ecx=0x00000000 edx=0x00000000
+>>     0x0000000d 0x06: eax=0x00000200 ebx=0x00000480 ecx=0x00000000 edx=0x00000000
+>>     0x0000000d 0x07: eax=0x00000400 ebx=0x00000680 ecx=0x00000000 edx=0x00000000
+>>     0x0000000d 0x08: eax=0x00000080 ebx=0x00000000 ecx=0x00000001 edx=0x00000000
+>>     0x0000000d 0x09: eax=0x00000008 ebx=0x00000a80 ecx=0x00000000 edx=0x00000000
+>>     0x0000000d 0x0b: eax=0x00000010 ebx=0x00000000 ecx=0x00000001 edx=0x00000000
+>>     0x0000000d 0x0c: eax=0x00000018 ebx=0x00000000 ecx=0x00000001 edx=0x00000000
+>>     0x0000000d 0x0d: eax=0x00000008 ebx=0x00000000 ecx=0x00000001 edx=0x00000000
+> 
+> Could we get that for an impacted AMD system, please?
+> 
+> 	cpuid -1 --raw | grep "   0x0000000d "
+> 
+> should do it.
 
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> index bd541527c8c7..5fdf37968b2d 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /* Copyright(c) 1999 - 2018 Intel Corporation. */
->  
-> +#include <linux/aer.h>
->  #include <linux/types.h>
->  #include <linux/module.h>
->  #include <linux/pci.h>
-> @@ -391,22 +392,6 @@ u16 ixgbe_read_pci_cfg_word(struct ixgbe_hw *hw, u32 reg)
->  	return value;
->  }
->  
-> -#ifdef CONFIG_PCI_IOV
-> -static u32 ixgbe_read_pci_cfg_dword(struct ixgbe_hw *hw, u32 reg)
-> -{
-> -	struct ixgbe_adapter *adapter = hw->back;
-> -	u32 value;
-> -
-> -	if (ixgbe_removed(hw->hw_addr))
-> -		return IXGBE_FAILED_READ_CFG_DWORD;
-> -	pci_read_config_dword(adapter->pdev, reg, &value);
-> -	if (value == IXGBE_FAILED_READ_CFG_DWORD &&
-> -	    ixgbe_check_cfg_remove(hw, adapter->pdev))
-> -		return IXGBE_FAILED_READ_CFG_DWORD;
-> -	return value;
-> -}
-> -#endif /* CONFIG_PCI_IOV */
-> -
->  void ixgbe_write_pci_cfg_word(struct ixgbe_hw *hw, u32 reg, u16 value)
->  {
->  	struct ixgbe_adapter *adapter = hw->back;
-> @@ -11332,8 +11317,8 @@ static pci_ers_result_t ixgbe_io_error_detected(struct pci_dev *pdev,
->  #ifdef CONFIG_PCI_IOV
->  	struct ixgbe_hw *hw = &adapter->hw;
->  	struct pci_dev *bdev, *vfdev;
-> -	u32 dw0, dw1, dw2, dw3;
-> -	int vf, pos;
-> +	struct pcie_tlp_log tlp_log;
-> +	int vf, pos, ret;
->  	u16 req_id, pf_func;
->  
->  	if (adapter->hw.mac.type == ixgbe_mac_82598EB ||
-> @@ -11351,14 +11336,13 @@ static pci_ers_result_t ixgbe_io_error_detected(struct pci_dev *pdev,
->  	if (!pos)
->  		goto skip_bad_vf_detection;
->  
-> -	dw0 = ixgbe_read_pci_cfg_dword(hw, pos + PCI_ERR_HEADER_LOG);
-> -	dw1 = ixgbe_read_pci_cfg_dword(hw, pos + PCI_ERR_HEADER_LOG + 4);
-> -	dw2 = ixgbe_read_pci_cfg_dword(hw, pos + PCI_ERR_HEADER_LOG + 8);
-> -	dw3 = ixgbe_read_pci_cfg_dword(hw, pos + PCI_ERR_HEADER_LOG + 12);
-> -	if (ixgbe_removed(hw->hw_addr))
-> +	ret = pcie_read_tlp_log(pdev, pos + PCI_ERR_HEADER_LOG, &tlp_log);
-> +	if (ret < 0) {
-> +		ixgbe_check_cfg_remove(hw, pdev);
->  		goto skip_bad_vf_detection;
-> +	}
->  
-> -	req_id = dw1 >> 16;
-> +	req_id = tlp_log.dw[1] >> 16;
->  	/* On the 82599 if bit 7 of the requestor ID is set then it's a VF */
->  	if (!(req_id & 0x0080))
->  		goto skip_bad_vf_detection;
-> @@ -11369,9 +11353,8 @@ static pci_ers_result_t ixgbe_io_error_detected(struct pci_dev *pdev,
->  
->  		vf = FIELD_GET(0x7F, req_id);
->  		e_dev_err("VF %d has caused a PCIe error\n", vf);
-> -		e_dev_err("TLP: dw0: %8.8x\tdw1: %8.8x\tdw2: "
-> -				"%8.8x\tdw3: %8.8x\n",
-> -		dw0, dw1, dw2, dw3);
-> +		e_dev_err("TLP: dw0: %8.8x\tdw1: %8.8x\tdw2: %8.8x\tdw3: %8.8x\n",
-> +			  tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
->  		switch (adapter->hw.mac.type) {
->  		case ixgbe_mac_82599EB:
->  			device_id = IXGBE_82599_VF_DEVICE_ID;
+    0x0000000d 0x00: eax=0x00000207 ebx=0x00000988 ecx=0x00000988 edx=0x00000000
+    0x0000000d 0x01: eax=0x0000000f ebx=0x00000348 ecx=0x00001800 edx=0x00000000
+    0x0000000d 0x02: eax=0x00000100 ebx=0x00000240 ecx=0x00000000 edx=0x00000000
+    0x0000000d 0x09: eax=0x00000008 ebx=0x00000980 ecx=0x00000000 edx=0x00000000
+    0x0000000d 0x0b: eax=0x00000010 ebx=0x00000000 ecx=0x00000001 edx=0x00000000
+    0x0000000d 0x0c: eax=0x00000018 ebx=0x00000000 ecx=0x00000001 edx=0x00000000
 
-The rest of this patch is headed for v6.10, but I dropped this ixgbe
-change for now.
+Here, I think the ebx value for the 0x09 leaf (PKRU) is the relevant difference
+here, it is 0xa80 on your laptop and 0x980 on the AMD CPU.  (This is the
+missing MPX gap on AMD.)
 
-These TLP Log registers are generic, not device-specific, and if
-there's something lacking in the PCI core that leads to ixgbe reading
-and dumping them itself, I'd rather improve the PCI core so all
-drivers will benefit without having to add code like this.
+>>> This is pretty close to just a raw dump of the XSAVE CPUID leaves.
+>>> Rather than come up with an XSAVE-specific ABI that depends on CPUID
+>>> *ANYWAY* (because it dumps the "flags" register aka. ECX), maybe we
+>>> should just bite the bullet and dump out (some of) the raw CPUID space.
+>>
+>> So the current note I initially proposed and implemented for FreeBSD
+>> (https://reviews.freebsd.org/D42136) and an initial patch set for GDB
+>> (https://sourceware.org/pipermail/gdb-patches/2023-October/203083.html)
+>> do indeed dump a raw set of CPUID leaves.  The version I have for FreeBSD
+>> only dumps the raw leaf values for leaf 0x0d though the note format is
+>> extensible should additional leaves be needed in the future.  One of the
+>> questions if we wanted to use a CPUID leaf note is which leaves to dump
+>> (e.g. do you dump all of them, or do you just dump the subset that is
+>> currently needed).
+> 
+> You dump what is needed and add to the dump over time.
 
-83c61fa97a7d ("ixgbe: Add protection from VF invalid target DMA") [1]
-added the ixgbe TLP Log dumping way back in v3.2 (2012).  It does do
-some device-specific VF checking and so on, but even back then, it
-looks like the PCI core would have dumped the log itself [2], so I
-don't know why we needed the extra dumping in ixgbe.
+That is what I started with, yes, but am attempting to anticipate future
+problems in my list of caveats.
 
-So what I'd really like is to remove the TLP Log reading and printing
-from ixgbe completely, but keep the VF checking.
+>> Another quirky question is what to do about systems with hetergeneous
+>> cores (E vs P for example).
+> That's irrelevant for now.  The cores may be heterogeneous but the
+> userspace ISA and (and thus XSAVE formats) are identical.  If they're
+> not, then we have bigger problems on our hands.
 
-Bjorn
+Yes, I agree on the bigger problems and hope we don't have to solve
+them.
 
-[1] https://git.kernel.org/linus/83c61fa97a7d
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/pcie/aer/aerdrv_errprint.c?id=83c61fa97a7d#n181
+>> Currently those systems use the same XSAVE layout across all cores,
+>> but other CPUID leaves do already vary across cores on those systems.
+> 
+> There shouldn't be any CPUID leaves that differ _and_ matter to
+> userspace and thus core dumps.
+
+Today that is true, yes.  I'm fine with making that tradeoff (along
+with only dumping a subset of leaves) so long as the consensus is that
+is an acceptable tradeoff to make.
+
+>> However, there are other wrinkles with the leaf approach.  Namely, one
+>> of the use cases that I currently have an ugly hack for in GDB is if
+>> you are using gdb against a remote host running gdbserver and then use
+>> 'gcore' to generate a core dump.  GDB needs to write out a NT_X86_XSTATE
+>> note, but that note requires a layout.  What GDB does today is just pick
+>> a known Intel layout based on the XCR0 mask.  However, GDB should ideally
+>> start writing out whatever new note we adopt here, so if we dump raw
+>> CPUID leaves it means extending the GDB remote protocol so we can query
+>> the CPUID leaves from the remote host.  On the other hand, if we choose a
+>> more abstract format as proposed in this patch, the local GDB (or LLDB
+>> or whatever) can generate whatever synthetic layout it wants to write
+>> the local NT_X86_XSTATE.  (NB: A relevant detail here is that the GDB
+>> remote protocol does not pass the entire XSAVE state across as a block,
+>> instead gdbserver parses individual register values for AVX, etc.
+>> registers and those decoded register values are passed over the
+>> protocol.)
+> 
+> So the gdb side says, "Give me PKRU" and the remote side parses the
+> XSAVE image, finds PKRU, and sends it over the wire?
+
+Yes.
+
+>> Another question is potentially supporting compact XSAVE format in
+>> for NT_X86_XSTATE.  Today Linux has some complicated code to re-expand
+>> the compat XSAVE format back out to the standard layout for ptrace() and
+>> process core dumps.
+> 
+> Yeah, but supporting the compacted format in NT_X86_XSTATE doesn't help
+> us at all.  We still intermingle user and supervisor state and that
+> needs to get repacked _anyway_.
+
+Fair enough.
+
+> In other words, no matter what we do, it's going to be complicated
+> because the userspace buffer can't have supervisor state and the kernel
+> buffer does have it.  The compacted format mismatch is the least of our
+> problems.
+> 
+>>    (FreeBSD doesn't yet make use of XSAVEC so we
+>> haven't yet dealt with that problem.)
+> 
+> ... or XSAVES, which is actually the most relevant here.
+> 
+> Backing up... there are two approaches here:
+> 
+>   1. Dump out raw x86-specific gunk, aka. CPUID contents itself.  There
+>      are a billion ways to do this and lots of complications, including
+>      the remote protocol implications
+> or
+>   2. Define an abstract format that works anywhere, not just on x86 and
+>      not just for XSAVE.
+> 
+> There's no (sane) middle ground.  The implementation here (in this
+> patch) is fundamentally x86-specific and pretends to be some kind of
+> abstracted x86-independent format.
+
+Well, are there other register notes that could benefit from an approach
+like this?  Most other register notes I'm aware of on various architectures
+either have a fixed layout (like the typical general purpose register notes),
+or they have a fixed set of registers but the size of individual registers
+can vary (thinks like SME or RISC-V's vector extension).  XSAVE is the only
+one I'm aware of that packs multiple register sets into a single note.
+
+To step back a bit, another approach that could be taken (and I'm not sure
+it is worth it at this point) would to stop dumping a single XSAVE note
+and dump a separate register note for each feature.  That is, dump a note
+for AVX (the upper bits of ymmX), a note for PKRU, etc.  I think if I had
+to pick a strategy at the very beginning that's what I would choose now,
+but this isn't the very beginning and that sort of change is likely too
+disruptive.  (This approach is what happens on other arches today in effect,
+e.g. on AArch64.)
+
+-- 
+John Baldwin
+
