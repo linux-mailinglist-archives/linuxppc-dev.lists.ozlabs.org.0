@@ -2,62 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880B087B90C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 09:04:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B68287B98B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 09:48:09 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=v1rPizqg;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwKfb2cTzz3vYR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 19:04:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwLck6871z3vZ6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Mar 2024 19:48:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.46; helo=mail-io1-f46.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=salutedevices.com header.i=@salutedevices.com header.a=rsa-sha256 header.s=mail header.b=v1rPizqg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=salutedevices.com (client-ip=37.18.73.165; helo=mx1.sberdevices.ru; envelope-from=gnstark@salutedevices.com; receiver=lists.ozlabs.org)
+Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwKf74KSsz2yk5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 19:04:14 +1100 (AEDT)
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7c8ae457b27so17924139f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 01:04:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710403450; x=1711008250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+kd7vHFr5fszcwgfp701zhW6bd0WPIDQKlsKOb1KQCg=;
-        b=TiFJI9Y6xr4e9st5PvdfGtd4bYSGsKTzGaFgLNzRglKwC43i2k5+OsI5IUQWW78SAc
-         U3dhyWynCy1WGAwu8C0txA68caY2droirvDXTcYCBAMsRt9+h6OkAeOaglOdFkE6lXgb
-         0e9lfmZpxLZ2xzI++g/kpO1uCHrsABrAqMXp749+g0/b0G00vOHZWLXgagxLVF7OBnDw
-         uWaSR6Ouzw79iooLzbXImpQ8dd5HnjicSWArN6cvn8/9g/Rxtb1NSEsmMi4AzbdbZicd
-         aIccOJhhdMbkqwB72yKoH9vWvp07Qhz8nWSuLjRU4eXtHzkvvseWSWd939tWykm/n/60
-         uf9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUgjk/j6UG86+DvNne6ghXF20hh/APKh7O3WSsgrn2xlQTXz6N4gqPEhAMA/VU+eJGWDX9F5l47yuCu5vyR+6c++I/MW4aepcX5E+5QMw==
-X-Gm-Message-State: AOJu0YzclMCnbrIth0+NzYpHx9r+0eOjWZjdorqdlNlWYI/cYmrBoOTa
-	pa2suDYwtdK3504p1d9ljmI4hYdJzsr07W+Ch2NIwkLA5rdlmgnQS3/FBHDW5fQ=
-X-Google-Smtp-Source: AGHT+IHsurm4Urq6QyzzrRFXs3p84pGhNXogyTbGtPbK2ybOPZEI/TmR0nuM5Ywz+GV9YwyOLRtnzw==
-X-Received: by 2002:a05:6602:5ce:b0:7c8:b447:c3e9 with SMTP id w14-20020a05660205ce00b007c8b447c3e9mr1267161iox.7.1710403449855;
-        Thu, 14 Mar 2024 01:04:09 -0700 (PDT)
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com. [209.85.166.42])
-        by smtp.gmail.com with ESMTPSA id c17-20020a02c9d1000000b004772b4e3a3asm39658jap.18.2024.03.14.01.04.09
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 01:04:09 -0700 (PDT)
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7c7476a11e0so24804439f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 01:04:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWrUH1bOzwKLPqzw7BNWQmFbbX5XuFVoL3lQwt8+5TxM6D2rukD+xnEFdSa4uXQlR6BwNPzUH/Q9Yb0+ek9bm1L3+47OfoSluoJY7wJAA==
-X-Received: by 2002:a0d:ea4c:0:b0:609:239a:d0fc with SMTP id
- t73-20020a0dea4c000000b00609239ad0fcmr990474ywe.38.1710403077141; Thu, 14 Mar
- 2024 00:57:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwLZc1PyMz3dSB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Mar 2024 19:46:13 +1100 (AEDT)
+Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 63B7D100014;
+	Thu, 14 Mar 2024 11:46:07 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 63B7D100014
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1710405967;
+	bh=0dng4LZgF8VdbCVVEka661RpoMAwXLn7fFDnBMpRVD0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=v1rPizqgSuqE/0oBzI+HKOr+KWPAG8FMm62rPgG67YvUo/jfXR5IjRbTvXuJl6t4D
+	 WRY4bQa/ct8yyI8TxD6g1yznytJf2KRQqoZoLPyRZ9BN9/TDPYiTf2lVVDMvSRmZH6
+	 t2EePVtsLZ79ZYE1OdJwo4giNjvpx1oqFrO2DqLlB/C8/HzYSP7dk0AFzg1PZ0bDCQ
+	 HGDeisik6s9II/hcIdE4Fg0FSH/3OGFzC42eg58X4MLa0XClFoKaDdqIEvI1lVE3Dk
+	 +O7M8Tw9w6Uw1DqK7fgi12Pm5CkUYS1N7fmjOhq9LccsVGm4gV+6RGah8KK3QEwuDg
+	 hfueCvWMvLZDw==
+Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Thu, 14 Mar 2024 11:46:07 +0300 (MSK)
+Received: from localhost.localdomain (100.64.160.123) by
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 14 Mar 2024 11:46:06 +0300
+From: George Stark <gnstark@salutedevices.com>
+To: <andy.shevchenko@gmail.com>, <pavel@ucw.cz>, <lee@kernel.org>,
+	<vadimp@nvidia.com>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+	<christophe.leroy@csgroup.eu>, <hdegoede@redhat.com>,
+	<mazziesaccount@gmail.com>, <peterz@infradead.org>, <mingo@redhat.com>,
+	<will@kernel.org>, <longman@redhat.com>, <boqun.feng@gmail.com>,
+	<nikitos.tr@gmail.com>, <marek.behun@nic.cz>, <kabel@kernel.org>
+Subject: [PATCH v6 0/9] devm_led_classdev_register() usage problem
+Date: Thu, 14 Mar 2024 11:45:22 +0300
+Message-ID: <20240314084531.1935545-1-gnstark@salutedevices.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20240312170309.2546362-1-linux@roeck-us.net> <20240312170309.2546362-12-linux@roeck-us.net>
-In-Reply-To: <20240312170309.2546362-12-linux@roeck-us.net>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 14 Mar 2024 08:57:45 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXHKfd8agPGx+MjvC4cjW5F6DEeVec3Moe-=LLkrT3CXQ@mail.gmail.com>
-Message-ID: <CAMuHMdXHKfd8agPGx+MjvC4cjW5F6DEeVec3Moe-=LLkrT3CXQ@mail.gmail.com>
-Subject: Re: [PATCH 11/14] s390: Add support for suppressing warning backtraces
-To: Guenter Roeck <linux@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [100.64.160.123]
+X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 183875 [Feb 29 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.3
+X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a, {Tracking_uf_ne_domains}, {Tracking_urls_end_caps}, {Tracking_from_domain_doesnt_match_to}, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2024/02/29 16:52:00
+X-KSMG-LinksScanning: Clean, bases: 2024/02/29 16:52:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/02/29 19:21:00 #23899999
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,86 +88,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, netdev@lists.linux.dev, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmer
- mann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: kernel@salutedevices.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, George Stark <gnstark@salutedevices.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi G=C3=BCnter,
+This patch series fixes the problem of devm_led_classdev_register misusing.
 
-On Tue, Mar 12, 2024 at 6:06=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
-> Add name of functions triggering warning backtraces to the __bug_table
-> object section to enable support for suppressing WARNING backtraces.
->
-> To limit image size impact, the pointer to the function name is only adde=
-d
-> to the __bug_table section if both CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBO=
-SE
-> are enabled. Otherwise, the __func__ assembly parameter is replaced with =
-a
-> (dummy) NULL parameter to avoid an image size increase due to unused
-> __func__ entries (this is necessary because __func__ is not a define but =
-a
-> virtual variable).
->
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+The basic problem is described in [1]. Shortly when devm_led_classdev_register()
+is used then led_classdev_unregister() called after driver's remove() callback.
+led_classdev_unregister() calls driver's brightness_set callback and that callback
+may use resources which were destroyed already in driver's remove().
 
-Thanks for your patch!
+After discussion with maintainers [2] [3] we decided:
+1) don't touch led subsytem core code and don't remove led_set_brightness() from it
+but fix drivers
+2) don't use devm_led_classdev_unregister
 
-> --- a/arch/s390/include/asm/bug.h
-> +++ b/arch/s390/include/asm/bug.h
-> @@ -8,19 +8,30 @@
->
->  #ifdef CONFIG_DEBUG_BUGVERBOSE
->
-> +#if IS_ENABLED(CONFIG_KUNIT)
-> +# define HAVE_BUG_FUNCTION
-> +# define __BUG_FUNC_PTR        "       .long   %0-.\n"
-> +# define __BUG_FUNC    __func__
-> +#else
-> +# define __BUG_FUNC_PTR
-> +# define __BUG_FUNC    NULL
-> +#endif /* IS_ENABLED(CONFIG_KUNIT) */
-> +
->  #define __EMIT_BUG(x) do {                                     \
->         asm_inline volatile(                                    \
->                 "0:     mc      0,0\n"                          \
->                 ".section .rodata.str,\"aMS\",@progbits,1\n"    \
->                 "1:     .asciz  \""__FILE__"\"\n"               \
->                 ".previous\n"                                   \
-> -               ".section __bug_table,\"awM\",@progbits,%2\n"   \
-> +               ".section __bug_table,\"awM\",@progbits,%3\n"   \
+So the solution is to use devm wrappers for all resources
+driver's brightness_set() depends on. And introduce dedicated devm wrapper
+for mutex as it's often used resource.
 
-This change conflicts with commit 3938490e78f443fb ("s390/bug:
-remove entry size from __bug_table section") in linus/master.
-I guess it should just be dropped?
+[1] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/
+[2] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mc132b9b350fa51931b4fcfe14705d9f06e91421f
+[3] https://lore.kernel.org/lkml/8704539b-ed3b-44e6-aa82-586e2f895e2b@salutedevices.com/T/#mdbf572a85c33f869a553caf986b6228bb65c8383
 
->                 "2:     .long   0b-.\n"                         \
->                 "       .long   1b-.\n"                         \
-> -               "       .short  %0,%1\n"                        \
-> -               "       .org    2b+%2\n"                        \
-> +               __BUG_FUNC_PTR                                  \
-> +               "       .short  %1,%2\n"                        \
-> +               "       .org    2b+%3\n"                        \
->                 ".previous\n"                                   \
-> -               : : "i" (__LINE__),                             \
-> +               : : "i" (__BUG_FUNC),                           \
-> +                   "i" (__LINE__),                             \
->                     "i" (x),                                    \
->                     "i" (sizeof(struct bug_entry)));            \
->  } while (0)
+Changelog:
+v1->v2:
+	revise patch series completely
 
-Gr{oetje,eeting}s,
+v2->v3:
+locking: add define if mutex_destroy() is not an empty function
+	new patch, discussed here [8]
 
-                        Geert
+devm-helpers: introduce devm_mutex_init
+	previous version [4]
+	- revise code based on mutex_destroy define
+	- update commit message
+	- update devm_mutex_init()'s description
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+leds: aw2013: unlock mutex before destroying it
+	previous version [5]
+	- make this patch first in the series
+	- add tags Fixes and RvB by Andy
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+leds: aw2013: use devm API to cleanup module's resources
+	previous version [6]
+	- make aw2013_chip_disable_action()'s body oneline
+	- don't shadow devm_mutex_init() return code
+
+leds: aw200xx: use devm API to cleanup module's resources
+	previous version [7]
+	- make aw200xx_*_action()'s bodies oneline
+	- don't shadow devm_mutex_init() return code
+
+leds: lm3532: use devm API to cleanup module's resources
+leds: nic78bx: use devm API to cleanup module's resources
+leds: mlxreg: use devm_mutex_init for mutex initializtion
+leds: an30259a: use devm_mutext_init for mutext initialization
+leds: powernv: add LED_RETAIN_AT_SHUTDOWN flag for leds
+	- those pathes were planned but not sent in the series #2 due to mail server
+	problem on my side. I revised them according to the comments.
+
+v3->v4:
+locking: introduce devm_mutex_init
+	new patch
+	- move devm_mutex_init implementation completely from devm-helpers.h to mutex.h
+
+locking: add define if mutex_destroy() is not an empty function
+	drop the patch [9]
+
+devm-helpers: introduce devm_mutex_init
+	drop the patch [10]
+
+leds: aw2013: use devm API to cleanup module's resources
+	- add tag Tested-by: Nikita Travkin <nikita@trvn.ru>
+
+v4->v5:
+leds: aw2013: unlock mutex before destroying it
+	merged separately and removed from the series
+
+locking/mutex: move mutex_destroy() definition lower
+	introduce optional refactoring patch
+
+locking/mutex: introduce devm_mutex_init
+	leave only one devm_mutex_init definition
+	add tag Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+leds* patches
+	remove #include <linux/devm-helpers.h> due to devm_mutext_init in mutex.h now
+
+v5->v6:
+locking/mutex: move mutex_destroy() definition lower [11]
+	drop the patch due to devm_mutex_init block is big enough to be declared standalone.
+
+locking/mutex: introduce devm_mutex_init
+	redesign devm_mutex_init function to macro to keep lockdep feature working
+	use typeof to redeclare mutex var in macro body (thanks to checkpatch)
+	previous version [12]
+
+[4] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#mf500af0eda2a9ffc95594607dbe4cb64f2e3c9a8
+[5] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#mc92df4fb4f7d4187fb01cc1144acfa5fb5230dd2
+[6] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#m300df89710c43cc2ab598baa16c68dd0a0d7d681
+[7] https://lore.kernel.org/lkml/20231204180603.470421-1-gnstark@salutedevices.com/T/#m8e5c65e0c6b137c91fa00bb9320ad581164d1d0b
+[8] https://lore.kernel.org/lkml/377e4437-7051-4d88-ae68-1460bcd692e1@redhat.com/T/#m5f84a4a2f387d49678783e652b9e658e02c27450
+[9] https://lore.kernel.org/lkml/20231213223020.2713164-1-gnstark@salutedevices.com/T/#m19ad1fc04c560012c1e27418e3156d0c9306dd84
+[10] https://lore.kernel.org/lkml/20231213223020.2713164-1-gnstark@salutedevices.com/T/#m63126025f5d1bdcef69bcad50f2e58274d42e2d
+[11] https://lore.kernel.org/lkml/20240307024034.1548605-2-gnstark@salutedevices.com/
+[12] https://lore.kernel.org/lkml/20240307024034.1548605-3-gnstark@salutedevices.com/
+
+George Stark (9):
+  locking/mutex: introduce devm_mutex_init
+  leds: aw2013: use devm API to cleanup module's resources
+  leds: aw200xx: use devm API to cleanup module's resources
+  leds: lp3952: use devm API to cleanup module's resources
+  leds: lm3532: use devm API to cleanup module's resources
+  leds: nic78bx: use devm API to cleanup module's resources
+  leds: mlxreg: use devm_mutex_init for mutex initializtion
+  leds: an30259a: use devm_mutext_init for mutext initialization
+  leds: powernv: use LED_RETAIN_AT_SHUTDOWN flag for leds
+
+ drivers/leds/leds-an30259a.c | 14 ++++----------
+ drivers/leds/leds-aw200xx.c  | 32 +++++++++++++++++++++-----------
+ drivers/leds/leds-aw2013.c   | 25 +++++++++++++------------
+ drivers/leds/leds-lm3532.c   | 29 +++++++++++++++++------------
+ drivers/leds/leds-lp3952.c   | 21 +++++++++++----------
+ drivers/leds/leds-mlxreg.c   | 14 +++++---------
+ drivers/leds/leds-nic78bx.c  | 23 +++++++++++++----------
+ drivers/leds/leds-powernv.c  | 23 ++++++++---------------
+ include/linux/mutex.h        | 27 +++++++++++++++++++++++++++
+ kernel/locking/mutex-debug.c | 11 +++++++++++
+ 10 files changed, 130 insertions(+), 89 deletions(-)
+
+--
+2.25.1
+
