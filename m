@@ -1,42 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF29A87D683
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:24:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77A387D67F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:24:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=ZRYoy5xK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=e0gHJn00;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJhm5R7Tz2yt0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:24:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJgw4WLpz3dW3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:24:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=ZRYoy5xK;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=e0gHJn00;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Sat, 16 Mar 2024 07:49:30 AEDT
 Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGZf3fmqz3dJ0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGZf0wQRz3cGc
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:49:30 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1710535767;
-	bh=odMbVtXputh1B0wvO7gtV7cKLTLD5qqVWgyPwr4fby8=;
+	s=mail; t=1710535766;
+	bh=ioYxjFgUhmgN64D7EqS9neBKa6VPb6OHx0+I2+vtq58=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZRYoy5xKlPbaQJbgxsp1QGsFld7cYmUHymRwffDkifNDwOHyAedHpITyb+WigYxCt
-	 q1gwkFJh6JIVyUe2TB4mwf5as8GGNXoQ1lKGvZwP/yMMpArCzaDsGbQ55vzZG5KmO6
-	 AB8XmeGq62jLL6684ZpFESHQRsP/qQVQN/RRxZNQ=
+	b=e0gHJn00rSPUSnJb+Jx6Ue3JxL9G0ZFpDZfWcshPnrqNLXF6mANtn7ZfmJdYtl2NH
+	 YF0nBfN7moHOVik9J5dzylQWjTUZQmTvqHZPgWQvbx9+WfDiZxC6O7h1e5C9Jdj55S
+	 lS7uTWKuOD2g2Cdt0l4N3qosPhGD2Ex77cb84CDs=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Fri, 15 Mar 2024 21:48:07 +0100
-Subject: [PATCH 09/11] ipvs: constify ctl_table arguments of utility
- functions
+Date: Fri, 15 Mar 2024 21:48:08 +0100
+Subject: [PATCH 10/11] sysctl: constify ctl_table arguments of utility
+ function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240315-sysctl-const-handler-v1-9-1322ac7cb03d@weissschuh.net>
+Message-Id: <20240315-sysctl-const-handler-v1-10-1322ac7cb03d@weissschuh.net>
 References: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 In-Reply-To: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -113,11 +114,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Serge E. Hallyn" <serge@hallyn.com>, 
  Alexander Popov <alex.popov@linux.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=1292;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=4555;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=odMbVtXputh1B0wvO7gtV7cKLTLD5qqVWgyPwr4fby8=;
- b=7GpUccAEuc2xBmXqEFNwFbz0XLotyU5tmG9v17gkewwd7Qns7NOwDWHSnZv3ofT48IWObeYTu
- 7RChjCUP9KPAHqCOBeJFTfx/E5jUeficzF5rmf2RzH6o0IYBCrGbbwP
+ bh=ioYxjFgUhmgN64D7EqS9neBKa6VPb6OHx0+I2+vtq58=;
+ b=3ezsimD4t+3/T0cNPSQ4+FYpRTQhNYyohAK+Rbgx8HlPQ+xGzze+WEFqLcmmpL3mfNQxqYUX7
+ 1t4oHVoJb7wAVyGZrGoUFlfOOhXQ+0lakf0I5Pzjxrct2orfuAx6LgW
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Mailman-Approved-At: Sat, 16 Mar 2024 09:23:34 +1100
@@ -138,38 +139,115 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 In a future commit the proc_handlers themselves will change to
 "const struct ctl_table". As a preparation for that adapt the internal
-helpers.
+helper.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/sysctl.h |  2 +-
+ kernel/sysctl.c        | 21 +++++++++++----------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 143a341bbc0a..689ac521ea2d 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1924,7 +1924,8 @@ proc_do_sync_ports(struct ctl_table *table, int write,
- 	return rc;
+diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+index ee7d33b89e9e..99ea26b16c0d 100644
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -238,7 +238,7 @@ extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
+ 
+ void do_sysctl_args(void);
+ bool sysctl_is_alias(char *param);
+-int do_proc_douintvec(struct ctl_table *table, int write,
++int do_proc_douintvec(const struct ctl_table *table, int write,
+ 		      void *buffer, size_t *lenp, loff_t *ppos,
+ 		      int (*conv)(unsigned long *lvalp,
+ 				  unsigned int *valp,
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 157f7ce2942d..93824d8a3636 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -205,7 +205,7 @@ static int _proc_do_string(char *data, int maxlen, int write,
+ 	return 0;
  }
  
--static int ipvs_proc_est_cpumask_set(struct ctl_table *table, void *buffer)
-+static int ipvs_proc_est_cpumask_set(const struct ctl_table *table,
-+				     void *buffer)
+-static void warn_sysctl_write(struct ctl_table *table)
++static void warn_sysctl_write(const struct ctl_table *table)
  {
- 	struct netns_ipvs *ipvs = table->extra2;
- 	cpumask_var_t *valp = table->data;
-@@ -1962,8 +1963,8 @@ static int ipvs_proc_est_cpumask_set(struct ctl_table *table, void *buffer)
- 	return ret;
+ 	pr_warn_once("%s wrote to %s when file position was not 0!\n"
+ 		"This will not be supported in the future. To silence this\n"
+@@ -223,7 +223,7 @@ static void warn_sysctl_write(struct ctl_table *table)
+  * handlers can ignore the return value.
+  */
+ static bool proc_first_pos_non_zero_ignore(loff_t *ppos,
+-					   struct ctl_table *table)
++					   const struct ctl_table *table)
+ {
+ 	if (!*ppos)
+ 		return false;
+@@ -468,7 +468,7 @@ static int do_proc_douintvec_conv(unsigned long *lvalp,
+ 
+ static const char proc_wspace_sep[] = { ' ', '\t', '\n' };
+ 
+-static int __do_proc_dointvec(void *tbl_data, struct ctl_table *table,
++static int __do_proc_dointvec(void *tbl_data, const struct ctl_table *table,
+ 		  int write, void *buffer,
+ 		  size_t *lenp, loff_t *ppos,
+ 		  int (*conv)(bool *negp, unsigned long *lvalp, int *valp,
+@@ -541,7 +541,7 @@ static int __do_proc_dointvec(void *tbl_data, struct ctl_table *table,
+ 	return err;
  }
  
--static int ipvs_proc_est_cpumask_get(struct ctl_table *table, void *buffer,
--				     size_t size)
-+static int ipvs_proc_est_cpumask_get(const struct ctl_table *table,
-+				     void *buffer, size_t size)
+-static int do_proc_dointvec(struct ctl_table *table, int write,
++static int do_proc_dointvec(const struct ctl_table *table, int write,
+ 		  void *buffer, size_t *lenp, loff_t *ppos,
+ 		  int (*conv)(bool *negp, unsigned long *lvalp, int *valp,
+ 			      int write, void *data),
+@@ -552,7 +552,7 @@ static int do_proc_dointvec(struct ctl_table *table, int write,
+ }
+ 
+ static int do_proc_douintvec_w(unsigned int *tbl_data,
+-			       struct ctl_table *table,
++			       const struct ctl_table *table,
+ 			       void *buffer,
+ 			       size_t *lenp, loff_t *ppos,
+ 			       int (*conv)(unsigned long *lvalp,
+@@ -639,7 +639,7 @@ static int do_proc_douintvec_r(unsigned int *tbl_data, void *buffer,
+ 	return err;
+ }
+ 
+-static int __do_proc_douintvec(void *tbl_data, struct ctl_table *table,
++static int __do_proc_douintvec(void *tbl_data, const struct ctl_table *table,
+ 			       int write, void *buffer,
+ 			       size_t *lenp, loff_t *ppos,
+ 			       int (*conv)(unsigned long *lvalp,
+@@ -675,7 +675,7 @@ static int __do_proc_douintvec(void *tbl_data, struct ctl_table *table,
+ 	return do_proc_douintvec_r(i, buffer, lenp, ppos, conv, data);
+ }
+ 
+-int do_proc_douintvec(struct ctl_table *table, int write,
++int do_proc_douintvec(const struct ctl_table *table, int write,
+ 		      void *buffer, size_t *lenp, loff_t *ppos,
+ 		      int (*conv)(unsigned long *lvalp,
+ 				  unsigned int *valp,
+@@ -1023,8 +1023,9 @@ static int sysrq_sysctl_handler(struct ctl_table *table, int write,
+ }
+ #endif
+ 
+-static int __do_proc_doulongvec_minmax(void *data, struct ctl_table *table,
+-		int write, void *buffer, size_t *lenp, loff_t *ppos,
++static int __do_proc_doulongvec_minmax(void *data,
++		const struct ctl_table *table, int write,
++		void *buffer, size_t *lenp, loff_t *ppos,
+ 		unsigned long convmul, unsigned long convdiv)
  {
- 	struct netns_ipvs *ipvs = table->extra2;
- 	cpumask_var_t *valp = table->data;
+ 	unsigned long *i, *min, *max;
+@@ -1096,7 +1097,7 @@ static int __do_proc_doulongvec_minmax(void *data, struct ctl_table *table,
+ 	return err;
+ }
+ 
+-static int do_proc_doulongvec_minmax(struct ctl_table *table, int write,
++static int do_proc_doulongvec_minmax(const struct ctl_table *table, int write,
+ 		void *buffer, size_t *lenp, loff_t *ppos, unsigned long convmul,
+ 		unsigned long convdiv)
+ {
 
 -- 
 2.44.0
