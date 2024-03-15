@@ -1,43 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E1187D68B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:26:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D70D87D68A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:25:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=RuyY3u5r;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=OzlCngVZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJkT6bSyz3vdh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:26:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJjc3177z3vbS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:25:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=RuyY3u5r;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=OzlCngVZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 336 seconds by postgrey-1.37 at boromir; Sat, 16 Mar 2024 07:54:03 AEDT
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgv5lpgz3dXH
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgv5RX9z3dTm
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:54:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1710535697;
-	bh=N3YQ+74nNXsZKp7PEdJnsfg+4VEg1y14khiTCB8rEVY=;
+	s=mail; t=1710535698;
+	bh=oevlPOUTno1lzAS8VyWx7MVuhqnxcH7itmP3/5hwz20=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RuyY3u5rYBiguTrn2XInl4Ajsqpr9gged17slcRcyBJUHHxvliEq2D58U55ZU0L/2
-	 tDtmVWfSwncce6QhDGXdWdqZSGwnSc0Kzxfvkvrjor4H49NhkZZxu5MoEIzzUHk82w
-	 zNfqHOTG+OspUx4e92XQR4ruhqFKUsn1UDGgq48w=
+	b=OzlCngVZzs14BEfB2dc5J4o4ZKkSQQkWcdhqOSjhZhgkw/Ll2JQ6iAP5cU1U+kVsa
+	 SrPCNtTtm8SHoDqPXiHa4YsznSa7vqTifHCUJbDAIQNi550jyZtghvHYAeHSFkf+H5
+	 CmLMXq4gfmBvTUDddBCzzP8cINqR1mq64EVXhq9A=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Fri, 15 Mar 2024 21:48:02 +0100
-Subject: [PATCH 04/11] utsname: constify ctl_table arguments of utility
+Date: Fri, 15 Mar 2024 21:48:03 +0100
+Subject: [PATCH 05/11] neighbour: constify ctl_table arguments of utility
  function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240315-sysctl-const-handler-v1-4-1322ac7cb03d@weissschuh.net>
+Message-Id: <20240315-sysctl-const-handler-v1-5-1322ac7cb03d@weissschuh.net>
 References: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 In-Reply-To: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -114,11 +113,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Serge E. Hallyn" <serge@hallyn.com>, 
  Alexander Popov <alex.popov@linux.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=696;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=808;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=N3YQ+74nNXsZKp7PEdJnsfg+4VEg1y14khiTCB8rEVY=;
- b=xEm0d8CYQV6qN7oZA7EuQpgHjbZrMfPqjThMCUp02NAIP8Ff1lQTYCA5z6GSB4NPcFQzy/2jj
- Y0NcUklMzOzC1as2M3524rbivhNsj1cwIIJnIozArSnSxvsTxxWEUrP
+ bh=oevlPOUTno1lzAS8VyWx7MVuhqnxcH7itmP3/5hwz20=;
+ b=nal6nqzlOqju6KoSlkSXv2irkXSIQB1hPxMMvRw5/3x5Pl0PJC8iZv6mLbrbrwrTwJiwMMOTx
+ vrmE29LSkJlAudC9x/ESIVrRSshIpjIXJbLqbScnLDsQB6DzgzZYtRY
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Mailman-Approved-At: Sat, 16 Mar 2024 09:23:34 +1100
@@ -143,22 +142,22 @@ helper.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- kernel/utsname_sysctl.c | 2 +-
+ net/core/neighbour.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/utsname_sysctl.c b/kernel/utsname_sysctl.c
-index 019e3a1566cf..46590d4addc8 100644
---- a/kernel/utsname_sysctl.c
-+++ b/kernel/utsname_sysctl.c
-@@ -15,7 +15,7 @@
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 552719c3bbc3..1fb71107accf 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3573,7 +3573,7 @@ static void neigh_copy_dflt_parms(struct net *net, struct neigh_parms *p,
+ 	rcu_read_unlock();
+ }
  
- #ifdef CONFIG_PROC_SYSCTL
- 
--static void *get_uts(struct ctl_table *table)
-+static void *get_uts(const struct ctl_table *table)
+-static void neigh_proc_update(struct ctl_table *ctl, int write)
++static void neigh_proc_update(const struct ctl_table *ctl, int write)
  {
- 	char *which = table->data;
- 	struct uts_namespace *uts_ns;
+ 	struct net_device *dev = ctl->extra1;
+ 	struct neigh_parms *p = ctl->extra2;
 
 -- 
 2.44.0
