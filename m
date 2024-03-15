@@ -2,41 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D70D87D68A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:25:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC7D87D693
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:28:41 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=OzlCngVZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=FizCPf3S;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJjc3177z3vbS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:25:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJn31Tg3z3vn4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:28:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=OzlCngVZ;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=FizCPf3S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgv5RX9z3dTm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:54:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgw1FB5z3dgN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:54:04 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1710535698;
-	bh=oevlPOUTno1lzAS8VyWx7MVuhqnxcH7itmP3/5hwz20=;
+	bh=yGyEnmkHG4K/QBZUE+wYC6PI0MysqQBf2jxKv03Uqeg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OzlCngVZzs14BEfB2dc5J4o4ZKkSQQkWcdhqOSjhZhgkw/Ll2JQ6iAP5cU1U+kVsa
-	 SrPCNtTtm8SHoDqPXiHa4YsznSa7vqTifHCUJbDAIQNi550jyZtghvHYAeHSFkf+H5
-	 CmLMXq4gfmBvTUDddBCzzP8cINqR1mq64EVXhq9A=
+	b=FizCPf3SLAP8QJl7MKFLQmc5kz5/Ber5gPk8JnKK898Pgfacl6e7Q9zZ8wapuxDxV
+	 TQWvxZCydhPkPxx+WAYMk6TZp7HXP9SWmdfrZU1oYK6fsVpzjHLFaMHd2iiXqD6aYq
+	 mvnmhabBstRavzIG/FFHz4xiVL036JzBS8Q+3twI=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Fri, 15 Mar 2024 21:48:03 +0100
-Subject: [PATCH 05/11] neighbour: constify ctl_table arguments of utility
- function
+Date: Fri, 15 Mar 2024 21:48:04 +0100
+Subject: [PATCH 06/11] ipv4/sysctl: constify ctl_table arguments of utility
+ functions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240315-sysctl-const-handler-v1-5-1322ac7cb03d@weissschuh.net>
+Message-Id: <20240315-sysctl-const-handler-v1-6-1322ac7cb03d@weissschuh.net>
 References: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 In-Reply-To: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -113,11 +113,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Serge E. Hallyn" <serge@hallyn.com>, 
  Alexander Popov <alex.popov@linux.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=808;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=1269;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=oevlPOUTno1lzAS8VyWx7MVuhqnxcH7itmP3/5hwz20=;
- b=nal6nqzlOqju6KoSlkSXv2irkXSIQB1hPxMMvRw5/3x5Pl0PJC8iZv6mLbrbrwrTwJiwMMOTx
- vrmE29LSkJlAudC9x/ESIVrRSshIpjIXJbLqbScnLDsQB6DzgzZYtRY
+ bh=yGyEnmkHG4K/QBZUE+wYC6PI0MysqQBf2jxKv03Uqeg=;
+ b=WplrulYKd7B5TGswqzcDZbw2m/RyDv+HhOXZKHSfdG38pZxdNlsfrZeeItPHEYHA5eD5Kt+EM
+ V7+s8EbXwZLDElxohBqz8CxV4en1zqMOoIPQsYqfboOMLt8tzBvHJKe
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Mailman-Approved-At: Sat, 16 Mar 2024 09:23:34 +1100
@@ -138,26 +138,37 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 In a future commit the proc_handlers themselves will change to
 "const struct ctl_table". As a preparation for that adapt the internal
-helper.
+helpers.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- net/core/neighbour.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/sysctl_net_ipv4.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 552719c3bbc3..1fb71107accf 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3573,7 +3573,7 @@ static void neigh_copy_dflt_parms(struct net *net, struct neigh_parms *p,
- 	rcu_read_unlock();
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index 7e4f16a7dcc1..363dc2a487ac 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -130,7 +130,8 @@ static int ipv4_privileged_ports(struct ctl_table *table, int write,
+ 	return ret;
  }
  
--static void neigh_proc_update(struct ctl_table *ctl, int write)
-+static void neigh_proc_update(const struct ctl_table *ctl, int write)
+-static void inet_get_ping_group_range_table(struct ctl_table *table, kgid_t *low, kgid_t *high)
++static void inet_get_ping_group_range_table(const struct ctl_table *table,
++					    kgid_t *low, kgid_t *high)
  {
- 	struct net_device *dev = ctl->extra1;
- 	struct neigh_parms *p = ctl->extra2;
+ 	kgid_t *data = table->data;
+ 	struct net *net =
+@@ -145,7 +146,8 @@ static void inet_get_ping_group_range_table(struct ctl_table *table, kgid_t *low
+ }
+ 
+ /* Update system visible IP port range */
+-static void set_ping_group_range(struct ctl_table *table, kgid_t low, kgid_t high)
++static void set_ping_group_range(const struct ctl_table *table,
++				 kgid_t low, kgid_t high)
+ {
+ 	kgid_t *data = table->data;
+ 	struct net *net =
 
 -- 
 2.44.0
