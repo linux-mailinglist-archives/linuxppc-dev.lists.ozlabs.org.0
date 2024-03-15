@@ -2,41 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A8D87D68D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:27:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E1187D68B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:26:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=Sq8LvcBI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=RuyY3u5r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJmC0Jd4z3vlZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJkT6bSyz3vdh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:26:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=Sq8LvcBI;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=RuyY3u5r;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 336 seconds by postgrey-1.37 at boromir; Sat, 16 Mar 2024 07:54:03 AEDT
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgw0CGLz3ddR
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgv5lpgz3dXH
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:54:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1710535697;
-	bh=ZA8n2/koLk8T5EEGrZrQe3HTqPjD2IuDJPJOoTgLjZQ=;
+	bh=N3YQ+74nNXsZKp7PEdJnsfg+4VEg1y14khiTCB8rEVY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Sq8LvcBI7p1gv8YF+Fl6E9SHh6cG4uM9FEK2x/Wqq1z2lsOrhhz5yQNS/tUAIK6jL
-	 zaTESlVFyFVTGgnfO0nn5yRM2Yc0itbSdfIy/O/NbQJVPCSWx7t53jzls8LBlYOeHK
-	 IrYN0Ex/0XRwb/4piozxul/b2C8P/gHg2Vl5ibj4=
+	b=RuyY3u5rYBiguTrn2XInl4Ajsqpr9gged17slcRcyBJUHHxvliEq2D58U55ZU0L/2
+	 tDtmVWfSwncce6QhDGXdWdqZSGwnSc0Kzxfvkvrjor4H49NhkZZxu5MoEIzzUHk82w
+	 zNfqHOTG+OspUx4e92XQR4ruhqFKUsn1UDGgq48w=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Fri, 15 Mar 2024 21:48:01 +0100
-Subject: [PATCH 03/11] hugetlb: constify ctl_table arguments of utility
- functions
+Date: Fri, 15 Mar 2024 21:48:02 +0100
+Subject: [PATCH 04/11] utsname: constify ctl_table arguments of utility
+ function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240315-sysctl-const-handler-v1-3-1322ac7cb03d@weissschuh.net>
+Message-Id: <20240315-sysctl-const-handler-v1-4-1322ac7cb03d@weissschuh.net>
 References: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 In-Reply-To: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -113,11 +114,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Serge E. Hallyn" <serge@hallyn.com>, 
  Alexander Popov <alex.popov@linux.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=1138;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=696;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=ZA8n2/koLk8T5EEGrZrQe3HTqPjD2IuDJPJOoTgLjZQ=;
- b=boZ4t6eOPk3Dljh4IP0PKWoLOxGtOLAXof5Zxa1r9XXXItitoJuOMZutWnuJAn75hjXtWjz0B
- 7PQefNn5iOMATogPVExj5hPohFmPOE42B/+MU7bt9FL5JEbL5sxkIfe
+ bh=N3YQ+74nNXsZKp7PEdJnsfg+4VEg1y14khiTCB8rEVY=;
+ b=xEm0d8CYQV6qN7oZA7EuQpgHjbZrMfPqjThMCUp02NAIP8Ff1lQTYCA5z6GSB4NPcFQzy/2jj
+ Y0NcUklMzOzC1as2M3524rbivhNsj1cwIIJnIozArSnSxvsTxxWEUrP
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Mailman-Approved-At: Sat, 16 Mar 2024 09:23:34 +1100
@@ -138,35 +139,26 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 In a future commit the proc_handlers themselves will change to
 "const struct ctl_table". As a preparation for that adapt the internal
-helpers.
+helper.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- mm/hugetlb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/utsname_sysctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 23ef240ba48a..b0d89ab98eaa 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4929,7 +4929,7 @@ static unsigned int allowed_mems_nr(struct hstate *h)
- }
+diff --git a/kernel/utsname_sysctl.c b/kernel/utsname_sysctl.c
+index 019e3a1566cf..46590d4addc8 100644
+--- a/kernel/utsname_sysctl.c
++++ b/kernel/utsname_sysctl.c
+@@ -15,7 +15,7 @@
  
- #ifdef CONFIG_SYSCTL
--static int proc_hugetlb_doulongvec_minmax(struct ctl_table *table, int write,
-+static int proc_hugetlb_doulongvec_minmax(const struct ctl_table *table, int write,
- 					  void *buffer, size_t *length,
- 					  loff_t *ppos, unsigned long *out)
- {
-@@ -4946,7 +4946,7 @@ static int proc_hugetlb_doulongvec_minmax(struct ctl_table *table, int write,
- }
+ #ifdef CONFIG_PROC_SYSCTL
  
- static int hugetlb_sysctl_handler_common(bool obey_mempolicy,
--			 struct ctl_table *table, int write,
-+			 const struct ctl_table *table, int write,
- 			 void *buffer, size_t *length, loff_t *ppos)
+-static void *get_uts(struct ctl_table *table)
++static void *get_uts(const struct ctl_table *table)
  {
- 	struct hstate *h = &default_hstate;
+ 	char *which = table->data;
+ 	struct uts_namespace *uts_ns;
 
 -- 
 2.44.0
