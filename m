@@ -1,42 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42F487D69C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:29:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA25C87D68C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 23:27:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=fXx71L6J;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=jqxDO3Tw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJnv3XHKz3vXc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:29:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TxJlK4K47z3vk2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 09:27:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=fXx71L6J;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=jqxDO3Tw;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgz1Mnqz3dgN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:54:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxGgv6r6Vz3dXY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 07:54:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1710535698;
-	bh=7M7T8qGemL/J5YUUwWJ0cC9nJ/50fjpcJlm81ezvXMY=;
+	bh=m+K+pCOcUIKDJXVlXdIjxkNCOOD+02kNnAffkd4pv3g=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fXx71L6JuiqeYvuZyYbzXSU8ULmJtg70CnofWoEiwBlN41Bqml1Gn5WgRnQq6Ajn5
-	 qDRqHOKkbjZnx3OuwYfASjLfdLsDv6kvpZD8exd4YCHBoXJOczJAyokASCokeIgyZB
-	 Md/qSjV+tOfVMb7Hd80eciTQw4KJ1N/ByH4nv8Ww=
+	b=jqxDO3Tw8x00e3dS7v4MMKOqIyXMSrjFO93KkLMrxEo1nDRFf5YphcW2HehQhDnFU
+	 PmlE72GP1SDCPoeSx/FKopC5InS9/uOUubALDtzDcA/2V1nHVuziA1mIR5zLXmk6E1
+	 eB3NdTCQ/ci/brS7mGewz0aIM76V0ywhclUqxjJY=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Fri, 15 Mar 2024 21:48:05 +0100
-Subject: [PATCH 07/11] ipv6/addrconf: constify ctl_table arguments of
- utility functions
+Date: Fri, 15 Mar 2024 21:48:06 +0100
+Subject: [PATCH 08/11] ipv6/ndisc: constify ctl_table arguments of utility
+ function
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240315-sysctl-const-handler-v1-7-1322ac7cb03d@weissschuh.net>
+Message-Id: <20240315-sysctl-const-handler-v1-8-1322ac7cb03d@weissschuh.net>
 References: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 In-Reply-To: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -113,11 +113,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Serge E. Hallyn" <serge@hallyn.com>, 
  Alexander Popov <alex.popov@linux.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=1733;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1710535695; l=778;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=7M7T8qGemL/J5YUUwWJ0cC9nJ/50fjpcJlm81ezvXMY=;
- b=tDrRFBvycsbBg1b0VjT1utAvA72vW/Pfn/OG8rmdlBPllpN3zp995mmaLodLsZ9cR6UItDzEG
- 934FLotKWacC+9a11IwVotmGV7cUQDZTwgtBLcNNphSOBq2Q6lt1ZQr
+ bh=m+K+pCOcUIKDJXVlXdIjxkNCOOD+02kNnAffkd4pv3g=;
+ b=d4zm13k2OQna/NlK3uekXkMo7hwOBupIjvbXHKdSXoSk2DsIK+yuhbmEQr0VAeaARyLv14HqX
+ 0Z4woBXtUp1D7/pq8L0Ybaa/TZAKfXvfcMgjftD2Zr5aqWsk6Mdkffo
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Mailman-Approved-At: Sat, 16 Mar 2024 09:23:34 +1100
@@ -138,53 +138,26 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 In a future commit the proc_handlers themselves will change to
 "const struct ctl_table". As a preparation for that adapt the internal
-helpers.
+helper.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- net/ipv6/addrconf.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv6/ndisc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 247bd4d8ee45..c72f3b63e41d 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -862,7 +862,7 @@ static void addrconf_forward_change(struct net *net, __s32 newf)
- 	}
- }
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index ae134634c323..945d5f5ca039 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1936,7 +1936,7 @@ static struct notifier_block ndisc_netdev_notifier = {
+ };
  
--static int addrconf_fixup_forwarding(struct ctl_table *table, int *p, int newf)
-+static int addrconf_fixup_forwarding(const struct ctl_table *table, int *p, int newf)
+ #ifdef CONFIG_SYSCTL
+-static void ndisc_warn_deprecated_sysctl(struct ctl_table *ctl,
++static void ndisc_warn_deprecated_sysctl(const struct ctl_table *ctl,
+ 					 const char *func, const char *dev_name)
  {
- 	struct net *net;
- 	int old;
-@@ -930,7 +930,7 @@ static void addrconf_linkdown_change(struct net *net, __s32 newf)
- 	}
- }
- 
--static int addrconf_fixup_linkdown(struct ctl_table *table, int *p, int newf)
-+static int addrconf_fixup_linkdown(const struct ctl_table *table, int *p, int newf)
- {
- 	struct net *net;
- 	int old;
-@@ -6375,7 +6375,7 @@ static void addrconf_disable_change(struct net *net, __s32 newf)
- 	}
- }
- 
--static int addrconf_disable_ipv6(struct ctl_table *table, int *p, int newf)
-+static int addrconf_disable_ipv6(const struct ctl_table *table, int *p, int newf)
- {
- 	struct net *net = (struct net *)table->extra2;
- 	int old;
-@@ -6666,7 +6666,7 @@ void addrconf_disable_policy_idev(struct inet6_dev *idev, int val)
- }
- 
- static
--int addrconf_disable_policy(struct ctl_table *ctl, int *valp, int val)
-+int addrconf_disable_policy(const struct ctl_table *ctl, int *valp, int val)
- {
- 	struct net *net = (struct net *)ctl->extra2;
- 	struct inet6_dev *idev;
+ 	static char warncomm[TASK_COMM_LEN];
 
 -- 
 2.44.0
