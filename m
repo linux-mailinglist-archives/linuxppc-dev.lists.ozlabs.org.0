@@ -1,95 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E9D87C7E8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 04:18:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24D987C7F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 04:25:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RXywY6/b;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dhQlRIOP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TwqFV0Bxtz3vXc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 14:18:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TwqPk35WYz3vXl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Mar 2024 14:25:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RXywY6/b;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dhQlRIOP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwqDk3gqdz30hY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 14:17:25 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42ENSJM6022143;
-	Fri, 15 Mar 2024 03:17:21 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TwqP031MDz3bZN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 14:24:35 +1100 (AEDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42F2POE7018829;
+	Fri, 15 Mar 2024 03:24:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : date : in-reply-to : references : content-type :
+ from : to : cc : date : in-reply-to : references : content-type :
  content-transfer-encoding : mime-version; s=pp1;
- bh=FcXHdkVj1lJQ5uyxdWx447XlEE5ps8ivEdM+UiYxVqY=;
- b=RXywY6/b9ZtIxfVyeUnqmKA5Mhpc7FSlh+iKR4sMl2WMCAvtkNAQ6LpxHGyOyin+FzO+
- n9P9WQ0b1ZMRYK2OlITlliDrO7+Ypysa7lJQwR7B9yJU62RHUzfjFsZCdWBwN9DWYZrM
- IixrHkKegtCgKpiHn/sgpdF7b5pUaX3354J1gM3oH8vEZI4jhEgTdV58wH/z4iVBCFph
- ZqoW0Q7guqR+C1xI7FjOBkaiVtVWeXS0GBxabnLc5J7WH+yLDGfoqTeQCe3BXMOuuM7C
- nIWsOYhw65dz1yjkgSO9q4rRXbXmdev+aiVnnD77PkWvP+ttjObKcvYmJUvsYx+vf3Bn Tg== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wvax42a5v-1
+ bh=hGM+7p8ApQKQJkJL9sZtzHwsBL7Z1tnQw92VAdivB5M=;
+ b=dhQlRIOPaGdbF99UXVJZMnZellKSo5dAVBNjKSecGeeAVu9PORXZ8SusOQOzNzeKfTwU
+ PlgsrctUCt6d1NI6f1ElYbhFNXnMeH2WOxIjMKNGSkEDlb74R5Va0FQ2rCvEJgRuwb9e
+ rpYZcDF94a9l6zVgVh7osIAijsE7CzEEjuqgEhhgshuHoP13DL6nsY49+JX0wvLBfgIO
+ 3Qvt6cnvaJcRffHslwz9r1UP1z9Iqsyqe1haQFtsEmvLr4FyopvJw4q+fC3lOix5r/L7
+ Du3rwZd8FApejz+vyVo479ahuh2U6gOj95W3L8yl4/jX3w+0N0kalhtfM3ohYIduqn5G wA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wvb7cj92e-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Mar 2024 03:17:20 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42F30gA6015539;
-	Fri, 15 Mar 2024 03:17:20 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ws2g09h01-1
+	Fri, 15 Mar 2024 03:24:31 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42F3LVbO008522;
+	Fri, 15 Mar 2024 03:24:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wvb7cj927-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Mar 2024 03:17:19 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42F3HGHA34603384
+	Fri, 15 Mar 2024 03:24:30 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42F1ZOxE013580;
+	Fri, 15 Mar 2024 03:24:29 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4aks0d8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Mar 2024 03:24:29 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42F3OQrY13107544
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 Mar 2024 03:17:18 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DD8020043;
-	Fri, 15 Mar 2024 03:17:16 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9082220040;
-	Fri, 15 Mar 2024 03:17:15 +0000 (GMT)
+	Fri, 15 Mar 2024 03:24:28 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3380720043;
+	Fri, 15 Mar 2024 03:24:26 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA9F420040;
+	Fri, 15 Mar 2024 03:24:25 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 15 Mar 2024 03:17:15 +0000 (GMT)
-Received: from [9.36.9.254] (unknown [9.36.9.254])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 15 Mar 2024 03:24:25 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D3B53600F0;
-	Fri, 15 Mar 2024 14:17:10 +1100 (AEDT)
-Message-ID: <cafa4ae3c9b35e9d5a0f9007dc1cc28a75aa5e89.camel@linux.ibm.com>
-Subject: Re: [PATCH v1 2/3] powerpc/code-patching: Use dedicated memory
- routines for patching
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Date: Fri, 15 Mar 2024 14:17:07 +1100
-In-Reply-To: <20240315025736.404867-2-bgray@linux.ibm.com>
-References: <20240315025736.404867-1-bgray@linux.ibm.com>
-	 <20240315025736.404867-2-bgray@linux.ibm.com>
-Autocrypt: addr=bgray@linux.ibm.com; prefer-encrypt=mutual;
- keydata=mDMEYzuwexYJKwYBBAHaRw8BAQdAsgBYEqW6nNaL7i0B3z1RqyMl8ADupDef+5Sfe+JbzeC0I0JlbmphbWluIEdyYXkgPGJncmF5QGxpbnV4LmlibS5jb20+iJMEExYKADsWIQQ9K5v9I+L06Hi4yOJ5xrdpFsvehAUCYzuwewIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCRB5xrdpFsvehCiCAP4g7CDkmsakpwv9QxU2D8dophyCIS8meDOQX4/83/sjHgEA5HWbUsbRCpVmeIgu0iNwhw3cmqhkv7ZkBGe3HhHaXg65Ay4EYzuwkREIAJjQ1EDAmLbOENucLy7VUzyNNCHkBirK/+FbjwOW7VIphc8zgsbZ26ZjIu5vC1NY7U7DpOvLAfR0g4+2QeKiQ8EEcuxLhif5X+jsekq0oSTVLcyNYXArJ3mhmV7jRhz8wBueMoXY/k+P3HCVLi4vzroJzN06Hrnmeu5ELlC4MbuvGRTvW751Y/o7gTa6hyyLb2P4pQ+sj/PuIn2Ly1RJPF839HVcOOERkjZ2QZNJnXEhlpfDD7LyRsy9Xm6MxGKRE5VsfjaO+Q8B6ByhXIy5/QK41AF1uSIPBfkZ8+AsBFw8Z87VGQ61tDdzi0U77IdYr98KsgRJ30vHInfKKdSj4csBALzNKjOFmp7dS8mefp3viouy4vWPla8+XZU6ZrRNtD8hB/9FsE7KVTdIBp4xqf6oN1ieTD7PNsQsBQWdDA/rg2bP7IJQkf4Pvn0yoATOFgqhQwadkwT7fwWAfk0YPEE+DPom1V3JwNM6wPaEJeNaMjleqTfAfauLaB9Sc+zJvN5cORrEjSL/0jfJBBdjW5j5BmdUDM1mGuBNVQhGlWHc/Rf7qokMoZAfYiPi/z44rB9zvNfb8t6sVNqHbC2fKRBn/0k8cZ9+qBEIj6vbkqUuih8xNDA+TU+FxPqJxyahqFv+LL9cfZelC0v3D
-	mjW5LaBPOdGiiDE1w95Ri9HRK27S2dRZpyib9L4mkfYWPAF41mTudjKmVpgtBLO//rO+zmF04OMB/4sWJhLfvhq1CXULDqw5dcuIAIYwf2ughOtyAPFK1ViDcMO5X1bVpNAFO5m4VBpZvFDQ0j0JfqfVBdL68uH05W1/8dMj76RaWj5m0rLM5slY1FQUPddSU+ic9vaZhlDepjU3ZyI8fmioofNGHaxJq6uNTytKdj87kwDV6PQ4hmuGtY56C7JCgjp053sRJ6sXqgKBWfe4ZOJH17mQm+fws93byLoZvvz4Z3im0Rb0MlFo/WirNyhu+TmTNLpnzFUZfenoKrqAkZLY8u1iCFquhgqA321P+sfYew66DtwQmaoi2GKmF89y2enXXzjLNKfLDKkuVoKxFSPeizYqrLi22R9iO8EGBYKACAWIQQ9K5v9I+L06Hi4yOJ5xrdpFsvehAUCYzuwkQIbAgCBCRB5xrdpFsvehHYgBBkRCAAdFiEESFUlaLYscsf4Dt5gaavCcpI6D/8FAmM7sJEACgkQaavCcpI6D/95UgEAqfSj0QhCrYfazQiLDKJstrz3oIKFjhB6+FYMZqt+K1MA/2ioFtHbypeeWbsqYYRhRyTjAKcvE1NZGtH/YWLgkViUidoBAN6gFX/P+VWB77/w8S/BnPmnJx45wmphlkCL8ckOyopFAQCj9eWamHCl2DSaASMSuoZed6C6Gm0OFtuZh/r8K485BQ==
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 48FE06014F;
+	Fri, 15 Mar 2024 14:24:24 +1100 (AEDT)
+Message-ID: <7e4607b18952be74e953ac836dd2270122e0e9ef.camel@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/pseries: fix max polling time in
+ plpks_confirm_object_flushed() function
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 15 Mar 2024 14:24:11 +1100
+In-Reply-To: <20240314041735.1171434-1-nayna@linux.ibm.com>
+References: <20240314041735.1171434-1-nayna@linux.ibm.com>
+Autocrypt: addr=ajd@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=mDMEZPaWfhYJKwYBBAHaRw8BAQdAAuMUoxVRwqphnsFua1W+WBz6I2cIn0+Ox4YypJSdBJ+0MEFuZHJldyBEb25uZWxsYW4gKElCTSBzdHVmZikgPGFqZEBsaW51eC5pYm0uY29tPoiTBBMWCgA7FiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQj1Qx8QRYRqAdswD8DhIh4trRQYiPe+7LaM7q+0+Thz+CwUJCW3UFOf0SEO0BAPNdsi7aVV+4Oah6nYzqzH5Zbs4Tz5RY+Vsf+DD/EzUKuDgEZPaWfhIKKwYBBAGXVQEFAQEHQLN9moJRqN8Zop/kcyIjga+2qzLoVaNAL6+4diGnlr1xAwEIB4h4BBgWCgAgFiEE01kE3s9shZVYLX1Aj1Qx8QRYRqAFAmT2ln4CGwwACgkQj1Qx8QRYRqCYkwD/W+gIP9kITfU4wnLtueFUThxA0T/LF49M7k31Qb8rPCwBALeEYAlX648lzjSA07pJB68Jt39FuUno444dSVmhYtoH
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UNFTm34cOeUSCg4u_svqVrN6DioLUfEW
-X-Proofpoint-ORIG-GUID: UNFTm34cOeUSCg4u_svqVrN6DioLUfEW
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: B0i8ihPzC1D4pJa_-ih7SGAffZQ_Vfd1
+X-Proofpoint-ORIG-GUID: Pep1Qpi_PKDERDuFEzQDEu24K3ifsZ3Y
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-14_13,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- bulkscore=0 suspectscore=0 mlxlogscore=447 spamscore=0 phishscore=0
- clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403150024
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxscore=0 adultscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 clxscore=1011 mlxlogscore=987 phishscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403150025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,8 +105,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: npiggin@gmail.com, Nageswara R Sastry <rnsastry@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Also supersedes
-https://lore.kernel.org/all/20240213043638.168048-1-bgray@linux.ibm.com/
+On Thu, 2024-03-14 at 00:17 -0400, Nayna Jain wrote:
+> usleep_range() function takes input time and range in usec. However,
+> currently it is assumed in msec in the function
+> plpks_confirm_object_flushed().
+>=20
+> Fix the total polling time for the object flushing from 5msec to
+> 5sec.
+>=20
+> Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+> Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform
+> KeyStore")
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+
+plpks_signed_update_var() also relies on PLPKS_MAX_TIMEOUT, and assumes
+it to be in milliseconds rather than microseconds.
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
