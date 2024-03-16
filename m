@@ -1,81 +1,131 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6A287D8BE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 05:26:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88ECF87D9AE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 10:51:28 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=M1dDPutJ;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=BmY1otlf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TxSk73g3Lz3dhR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 15:26:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Txbws38mvz3dTn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Mar 2024 20:51:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=M1dDPutJ;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=BmY1otlf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fromorbit.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=david@fromorbit.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::4; helo=pr0p264cu014.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PR0P264CU014.outbound.protection.outlook.com (mail-francecentralazlp170120004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TxQf24lqJz3brm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 13:52:57 +1100 (AEDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1dc5d0162bcso20769905ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Mar 2024 19:52:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1710557573; x=1711162373; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=bBoX08MQ+GnGsn3Ys1XDLWs0vSpU6QZ104y6JQ1iJRA=;
-        b=M1dDPutJdZ3grW5sxjtdR8wvRDPBtFjyiVj43Nxgi+6JNFWG/f0PHRK0TMjSGDN3V6
-         jVIZxaRPETV+XXK1CyeVms2BSUcThyoq+rB/nocVhHvlOkJObnxeaqyCosdlEbDy7GXy
-         63F80W8HqPn9Tkm6WhK92P1fnDIdhckbr++PJ+gJ4/J1xKhh54xPwh/8JQ11OSPPIZa+
-         PynSKJAV5W5QWzDaFvvkdQqe3RFk4npD7rg3F7/umkcTfKPjD0vST4Xfzohx5QdI22+N
-         ZkkETuhXGII1opEIfiq8oWKV39/3O6Rfumm5+Tdl5qefQ7qZpOfeg8RGTQAk64DabnLb
-         HA4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710557573; x=1711162373;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bBoX08MQ+GnGsn3Ys1XDLWs0vSpU6QZ104y6JQ1iJRA=;
-        b=QMgkjQBdy8+GSOY13JKuqU+ow7CwvjTlvIbhVKZNny0RlFou/435FTTntbC+ulbFpx
-         Tv+3ySbwxnyTF5aFwQPUl/XDnrYb3QHja47Pl4VzsGdginQCao9iXBY8P262Tplcnl4+
-         hQCq3x7kAMBCr6ukpoLCrN+Wme4tDKBkqNV/Ob0U/J7JQyTOyeUzmSld0dSgAb56op/a
-         4yiuAqGv+jOXz4YKzQ81bQ+BUpkvJ2UchQUV+kkGdWL6XebU5OeDQvPqRraksFSeSw/C
-         Que/zdseUXOO29N66glTpgWWqIr7J6MZn9PBbIoYC6xR83FHdZhIh+gMy4JiAaFHdQze
-         Xapg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoMo5Qq/bhvpXFBz7cYnJ+1K65cdE/ltMaJAKbTZapJUia9ztV+BgUaOrHzRemTjRR4+XWtlrRfbq84h5Mc0y4IOqOs3Ldmq+RimgzZA==
-X-Gm-Message-State: AOJu0YwD7Qi9vRqg6Mxb+V8aAGnxVUXRrZmGY6WcooThhGcd7XnItvAt
-	wNO+JKRiYp4M4P3nfmAQwtc1Avr2kuGVwXMyGD4nC1GsaiNuQ9WqO5PQmR8Djsc=
-X-Google-Smtp-Source: AGHT+IF+mhHYlAObRzpfXYn3IGnPDczeVjZaH7QVUqvtIq9UdyOULCBCqzY79zAwu/GemLxZ182Fng==
-X-Received: by 2002:a17:903:2446:b0:1dd:9cb3:8f96 with SMTP id l6-20020a170903244600b001dd9cb38f96mr6055795pls.42.1710557572964;
-        Fri, 15 Mar 2024 19:52:52 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-185-123.pa.nsw.optusnet.com.au. [49.180.185.123])
-        by smtp.gmail.com with ESMTPSA id f5-20020a170902684500b001dddbb58d5esm4736209pln.109.2024.03.15.19.52.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Mar 2024 19:52:52 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1rlKAC-002Wnj-2F;
-	Sat, 16 Mar 2024 13:52:48 +1100
-Date: Sat, 16 Mar 2024 13:52:48 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH 11/11] sysctl: treewide: constify the ctl_table argument
- of handlers
-Message-ID: <ZfUJgML8tk6RWqOC@dread.disaster.area>
-References: <20240315-sysctl-const-handler-v1-0-1322ac7cb03d@weissschuh.net>
- <20240315-sysctl-const-handler-v1-11-1322ac7cb03d@weissschuh.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Txbw546bZz3c9N
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Mar 2024 20:50:43 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jgcJnB3GbrWxnRMBqWiSZAyz+dzIG+wp3iSSBGo6xy4xp0HBa0joiXBxj7DzP0moD+D6rzuYBPMkztRYv725aTMdLX7+4MXKNHl+ucHeD6Y7x21z/BmjfYWNryJR85AMpwUA7v9HqNvpPMdm8D8xhq3pncp2uBAPI3hBUsb2ZXMf5bXYckQFhv3Z+uDTC1BFuhYLbWXnfRoz+jHAscVrpfDELNUXgFLUGda+Td5APv2hU4NYRr++fuH3C1YG4Y5cf3csMXh2aq+le7oMiB/TKOPxV/eoLpPU8wvL9aXSpiq7d2EVfbQECzCUjGGTq1im+C8qWweXjXIbYMAah5O0Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zr0I5wi8vLL6p3FjPsTptcHVIoapGvXXr3WlWZ31NS0=;
+ b=WsB+8w6XlPUI61blDfen+noZrsV89ENwaFiYSoqlSh+Hkcz3xyHBDZ7C9mek+4xvTY52GWiaqXvFX6Jz8VPKmECsmUe1kAoaMposkaPSCONSDea3PJzJ/fn1/XRqmRklhzdMat5PAVQaJV+lDAGjj+F8mQ0iq/3bKPwFvYORcLqvNSnlazA+zuAvaUK9fd1smLIstaC/IDbzMCcn3cbQ30U+xr+3xDUfSkzZ12L/VQtSlMzE5j/Tp/UATF9h3BocYpKy0TpxOEGaW//lBxATWg4eokCrFPtaz9mD1MYaJa6qkqlk95s06G2lW+Dr70KpXrkdXgUMjssBR9uJOpk7jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zr0I5wi8vLL6p3FjPsTptcHVIoapGvXXr3WlWZ31NS0=;
+ b=BmY1otlfCctBvUD/LOBwD8YdR0X4np4RcBHYrbW1fU31V2mo73W+SAuQphwhAEz4+5sDiskQm25w/uUdHeFwa2UGAF9E4ZGiSf9KcPnBPFm1wxS4OsxsHuaoeKtgmeGtF54bcqgY3YCmbeX7+/oNMLFqDbdYEXqQCd4/G+TKUUEPiw2E+ZxHBxk2yzMNWpayHu+dmmYUbqYYNLoCT/oxKS0cnfoyUoYJInNwFNqT2xxQW+YAYFPJiZegi4VDV6RuNutZk5pnbHy/0NldMd5sbbcJH/u3Lyk2XoLzh37wuQQh2BFT7WuUsB/e3vdEe2nZSZXtMK0CLKZ6DB81eMh+ew==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB1959.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:8::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7386.23; Sat, 16 Mar 2024 09:50:15 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7386.022; Sat, 16 Mar 2024
+ 09:50:15 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Gray <bgray@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>
+Subject: Re: [PATCH v1 2/2] powerpc/code-patching: Convert to
+ open_patch_window()/close_patch_window()
+Thread-Topic: [PATCH v1 2/2] powerpc/code-patching: Convert to
+ open_patch_window()/close_patch_window()
+Thread-Index: AQHadoUYgu3+KipSKkqQtIgPs6qhz7E4eysAgAGme4A=
+Date: Sat, 16 Mar 2024 09:50:15 +0000
+Message-ID: <60c8084e-cd87-4b7d-9688-69bfc3cfef74@csgroup.eu>
+References: <20240315025937.407590-1-bgray@linux.ibm.com>
+ <20240315025937.407590-2-bgray@linux.ibm.com>
+ <510d986a-ce2b-47dc-bf5e-7ba2e72ecf5a@csgroup.eu>
+In-Reply-To: <510d986a-ce2b-47dc-bf5e-7ba2e72ecf5a@csgroup.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB1959:EE_
+x-ms-office365-filtering-correlation-id: 5acad0ac-5c68-46e9-335e-08dc459e7b44
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  Ut58w99unbWAVSA/Ala0SZQWXNDYPLm5Oj/asFCgjbrSa6gKwQ/yw+Gy6aa39e1PZRmd/CsTMrFir/yZMZWd7zEadgVI8EeJ7UqEVuX5Af8uzGM5XiUd06+m01q5ZHT6SWTOWvN0+1zUXX5oWPkJA11jWmt4TwKhXRMBXMnpdrJ9pmX1C+FqCnsFzTJcsKHllLBXa9g6ACFvaORIQArX51ows/zqwABcVWptuSrxOPmPDvGBtrXymOkZp7+jrcWCnMqnuteZAODD/+9Pt6KWcaxFvFxzB+QEOf+t61lhBm4krbciQbfq2ibB2nWUCSkB1DWq88Mw9ognHofXwUnrC8hQvRkmvOFZlS8wmFDVkkqfFGKSbeBcixqlkeO+TpTHIz6Fr4CmJT/PIAHUyyNqtBHi6eXTAnBf0X0q22HLoELwcT1NdMMbZdCBiGN1afqDeOtWQiaJRp3PISuxBXxi8bHmVragq448K8oQMxpfkOfbXPLk/+9C35yqJOzOoYPKolnEwyFGXTbBQv/LR/BlJfplr7Jgi/CZ+j4FbhgUtAPX/G2ROnoaOjrp0liEkW8Xl6ie69LIG+lydXdtCuC7OhG2pYSeWU0i71PFOqS8+eI47hcczJOFx3ZLIjZbGYUjUVK9XcwjLoySCjwLw+ucVegszrNtUWesVHklqg1wSjEJolvu0iKT4HGCDCS8oR/aZfVIs9Rc2FKkptRZHzY6eAScIOL2ZFPXTUvogAs7VRM=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TWpVTERxSGluZFpUWDNtekh6ZkNqemlaM05kUGU2UGpiMFRud1Bub3RLbVV3?=
+ =?utf-8?B?aDZBRXlWalFDTnU4TUlDRTQrN01hVDhuR0JLWFhIVzA3dnVIVjZyTUxZQVdL?=
+ =?utf-8?B?bnl4dUZEWGVERFRRTVo1cGYwWUh5OXB2OTd6OHdyckZ0VzF5R2JWblVRRHJE?=
+ =?utf-8?B?WXZoT0cyRHVjenFuaTBrUUtndFBzWVRwR3NKbUgyOGszaG5EdUdObmVZTFpi?=
+ =?utf-8?B?a1haY0w5TmtzcW5IRXhOeHF5dXdFaDE0U1ZIdTFabjc0S0V4enprNWdTNkJx?=
+ =?utf-8?B?c0UydEN4THNCcnU3Y2N0MVRENUpQVTdFRVorNzV3VWpmY1lPTHIwUWJkUjZ5?=
+ =?utf-8?B?djlidksydWtJVWpzdHZmeTJDUzJodFRpVEI1Y0gxdHp4eDJ4c0hKMFJWczRB?=
+ =?utf-8?B?WmZ5YllsRUNXT1Y4YjlHMzNzSTZ4ckh2V3RjZGorNGlWQm9UY0FrQkVTaG8r?=
+ =?utf-8?B?UVk2NHg5bGZXak54TDdqQ0ZpTGhsTDgvSXNENUlWVnNPQXoveld3S2lZbTFv?=
+ =?utf-8?B?YUovdjhMcDYrK2VQRU9mdWNxRG9vZXp5akJNRkI2VXgvNFFObmtydHNZU01l?=
+ =?utf-8?B?R3hMMWJPNnMyTXc0OWZjVjd5U1pXbFVHeU9XbXpwVFFuS2QyMmljR2dRYm9K?=
+ =?utf-8?B?SDhzQWd4ZDNxWWxUSGZvemRJejd2TlJoUjRvb2dzU1ZVMzQ3NCtNQWVubEQv?=
+ =?utf-8?B?MmJCdFJpSUo3akZqMFl0UWRFeEtTVlAzeVZKb3ovMzBPQXgvdnVTZjlUK3Aw?=
+ =?utf-8?B?ZC9JQWJqei9ZeHFZTmdOdHNHNkRWcGVkZ3hSQ3lnNDI5MFdTUEpUd3pTTkhM?=
+ =?utf-8?B?VkI3aHVXK3lwM21GUHlicTBoZHN1RXJUNUZTcEhQdGZacHA2c3FLcjIwb3U2?=
+ =?utf-8?B?MTc0TFlkL0NGRjZWT29oSVNvWDFrVDdUdTJnV3NXSXE5RWx5RzgyOXJ3ODV2?=
+ =?utf-8?B?UnU2NjhBb2JrM1VEeCtrcHJlTFF4UTA0NU1HRFlrL2psblVYWWViZjgvVFcr?=
+ =?utf-8?B?SkxCTWNDMC9aSmpJdWY2a1l2UUQ3UEhiMmtGeUJxeFJQVEVTZDRnY05YZSt2?=
+ =?utf-8?B?NkYwdEIzOEVUR1M2RmRLczRmNHhxS20rN3NxdjUzUUZxRCtSSm5ONEpIRGRw?=
+ =?utf-8?B?NWhBbzF3bm5vdTUvOS84dmZFVmFxVDEzT09FRDNHam5lOWZZSkRZM2wwWmpi?=
+ =?utf-8?B?TXNUOXR6Vlp4OXYyenNJK3VOTkpjUm03KzZTWklwaXVSSTVLMys5M0w0WFdQ?=
+ =?utf-8?B?NmdTVGl6KzlmUCtZUG5pL3ZtclMvVzJaMFRZdjdOdGNJd1ZEbzg0dmhVektG?=
+ =?utf-8?B?WEhxZkYzTWhyQVBQR083MUYvMTROQ1k4ck9GRW8zQmRIcXBKVWhMQVkyR29Z?=
+ =?utf-8?B?ZXowNzdHYkNPVy9OU3lRU1k0bGl0RFFjcG1pNXUvQ2w3V1NhRE84WG9USVA3?=
+ =?utf-8?B?bk9XR2lQVDQwNHh4VVE5NUF6SzAwTVZDTTNyM29hL1lONUtVa1FpS3cyQlJF?=
+ =?utf-8?B?YkZlN2JzK2dUZVZoQlpwRXIydUlQeWZzeFlMQUJaTkxGTVlJb0h2SXM3dGhW?=
+ =?utf-8?B?QzBzd29iZVhVdWFqUGgrYURab1V4WVB2ZmRHVUFsOGxJN2wrMzhwWnVKWFZF?=
+ =?utf-8?B?bmNFb2JGckZUVGRDMHVDYUIya2dKZk9zQ252aVZRc1NBdW9SWkJQM1ptb21q?=
+ =?utf-8?B?YmdONjg1aUJmRjRMYTlsVWprQ1BoWDV0LzdMWTVlV0VacmJMTElNdmJ2dFYv?=
+ =?utf-8?B?Ykp3dncwbGptTXFRTGljUURtV2FrQmFLSnRKSHE5N1ZEdkdJTXVvTlB5WGJS?=
+ =?utf-8?B?cUNGMXQxZjl1SDlVZ2NETjdmeVkybHpTbnlxRTdsSjlUYVFXK1dkUXZEa2Fx?=
+ =?utf-8?B?eDMxbExtVjdvRE1UU1FrbUo0TjFqNEJaek5YNisxbUtsTHN5YmF2VUFTM2dO?=
+ =?utf-8?B?eXpnVlRUMGR5MlJxN1BoMzl1cDMyV0FVM1NxSUdlc1gzalRYekNsTXM4NkNV?=
+ =?utf-8?B?dkJ3UmZjUmhRNk81SWp2RWNDSkNrMmtiK3NDdVJxM1VlYi9MMERCMHlpZWpG?=
+ =?utf-8?B?L01xWDlUY1ZmWHZnc0RKZDdSdGRxdkFkN2wyYWJ1aFM1bjRmVXdTL0dHR2Jt?=
+ =?utf-8?B?bTBQMnNQMHlyNVNxQzRVeFNvcFA2SHBzNkJzb3JYbU96UWJsa203MTQ1bDZi?=
+ =?utf-8?Q?LojipwfmznO/AuesMDb+/+dHaKwir7NXO04ayPBVMhjN?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <64C15C61BB16394D948EAF871039FF26@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240315-sysctl-const-handler-v1-11-1322ac7cb03d@weissschuh.net>
-X-Mailman-Approved-At: Sat, 16 Mar 2024 15:26:03 +1100
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5acad0ac-5c68-46e9-335e-08dc459e7b44
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2024 09:50:15.4411
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qVZEl9OwXuZHkCYMxVdj7ms0v8N0nUe5T0hp20jYU6XIPJf2IIJYz5MpxrWGQXx1VWegFKwgnM9lm9tFMgf4t8gCaLwHeDN1qdSroGl2hPo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1959
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,211 +137,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joel Granados <j.granados@samsung.com>, Juri Lelli <juri.lelli@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>, linux-sctp@vger.kernel.org, Yonghong Song <yonghong.song@linux.dev>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincent Guittot <vincent.guittot@linaro.org>, James Morris <jmorris@namei.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, Mel Gorman <mgorman@suse.de>, "Darrick J. Wong" <djwong@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexander Popov <alex.popov@linux.com>, Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Remi Denis-Courmont <courmisch@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Christian Brauner <brauner@kernel.org>, Will Drewry <wad@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Sergey Senozhatsky 
- <senozhatsky@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, netfilter-devel@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Dave Hansen <dave.hansen@linux.intel.com>, Phillip Potter <phil@philpotter.co.uk>, Song Liu <song@kernel.org>, Eric Dumazet <edumazet@google.com>, John Stultz <jstultz@google.com>, Stanislav Fomichev <sdf@google.com>, linux-s390@vger.kernel.org, Valentin Schneider <vschneid@redhat.com>, Vasily Gorbik <gor@linux.ibm.com>, Anup Patel <anup@brainfault.org>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Julian Anastasov <ja@ssi.bg>, coreteam@netfilter.org, Roopa Prabhu <roopa@nvidia.com>, Sven Schnelle <svens@lin
- ux.ibm.com>, John Ogness <john.ogness@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Simon Horman <horms@verge.net.au>, Xin Long <lucien.xin@gmail.com>, linux-arm-kernel@lists.infradead.org, Hao Luo <haoluo@google.com>, Theodore Ts'o <tytso@mit.edu>, Stephen Boyd <sboyd@kernel.org>, Muchun Song <muchun.song@linux.dev>, Florian Westphal <fw@strlen.de>, "David S. Miller" <davem@davemloft.net>, Eric Biederman <ebiederm@xmission.com>, Anna Schumaker <anna@kernel.org>, Daniel Bristot de Oliveira <bristot@redhat.com>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Nikolay Aleksandrov <razor@blackwall.org>, Atish Patra <atishp@atishpatra.org>, Alexei Starovoitov <ast@kernel.org>, linux-hardening@vger.kernel.org, Will Deacon <will@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, linux-rdma@vger.kernel.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, lvs-devel@vger.kernel.org, Neil Brown <neilb@suse.de>, Allison Hender
- son <allison.henderson@oracle.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, "Serge E. Hallyn" <serge@hallyn.com>, Kees Cook <keescook@chromium.org>, bridge@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>, Borislav Petkov <bp@alien8.de>, linux-nfs@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Jeff Layton <jlayton@kernel.org>, Andy Lutomirski <luto@amacapital.net>, linux-xfs@vger.kernel.org, bpf@vger.kernel.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Chandan Babu R <chandan.babu@oracle.com>, Ian Rogers <irogers@google.com>, Jan Kara <jack@suse.cz>, Peter Zijlstra <peterz@infradead.org>, KP Singh <kpsingh@kernel.org>, linux-mm@kvack.org, "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org, rds-devel@oss.oracle.com, x86@kernel.org, Dai Ngo <Dai.Ngo@oracle.com>, Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>
- , Trond Myklebust <trond.myklebust@hammerspace.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, apparmor@lists.ubuntu.com, Tom Talpey <tom@talpey.com>, Paul Walmsley <paul.walmsley@sifive.com>, Namhyung Kim <namhyung@kernel.org>, Paul Moore <paul@paul-moore.com>, John Johansen <john.johansen@canonical.com>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, kexec@lists.infradead.org, Adrian Hunter <adrian.hunter@intel.com>, Eduard Zingerman <eddyz87@gmail.com>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Martin KaFai Lau <martin.lau@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 15, 2024 at 09:48:09PM +0100, Thomas Weißschuh wrote:
-> Adapt the proc_hander function signature to make it clear that handlers
-> are not supposed to modify their ctl_table argument.
-> 
-> This is a prerequisite to moving the static ctl_table structs into
-> .rodata.
-> By migrating all handlers at once a lengthy transition can be avoided.
-> 
-> The patch was mostly generated by coccinelle with the following script:
-> 
->     @@
->     identifier func, ctl, write, buffer, lenp, ppos;
->     @@
-> 
->     int func(
->     - struct ctl_table *ctl,
->     + const struct ctl_table *ctl,
->       int write, void *buffer, size_t *lenp, loff_t *ppos)
->     { ... }
-
-Which seems to have screwed up the formatting of the XFS code...
-
-> diff --git a/fs/xfs/xfs_sysctl.c b/fs/xfs/xfs_sysctl.c
-> index a191f6560f98..a3ca192eca79 100644
-> --- a/fs/xfs/xfs_sysctl.c
-> +++ b/fs/xfs/xfs_sysctl.c
-> @@ -10,12 +10,11 @@ static struct ctl_table_header *xfs_table_header;
->  
->  #ifdef CONFIG_PROC_FS
->  STATIC int
-> -xfs_stats_clear_proc_handler(
-> -	struct ctl_table	*ctl,
-> -	int			write,
-> -	void			*buffer,
-> -	size_t			*lenp,
-> -	loff_t			*ppos)
-> +xfs_stats_clear_proc_handler(const struct ctl_table *ctl,
-> +			     int			write,
-> +			     void			*buffer,
-> +			     size_t			*lenp,
-> +			     loff_t			*ppos)
-
-... because this doesn't match any format I've ever seen in the
-kernel. The diff for this change shold be just:
-
-@@ -10,7 +10,7 @@ static struct ctl_table_header *xfs_table_header;
- #ifdef CONFIG_PROC_FS
- STATIC int
- xfs_stats_clear_proc_handler(
--	struct ctl_table	*ctl,
-+	const struct ctl_table	*ctl,
- 	int			write,
- 	void			*buffer,
- 	size_t			*lenp,
-
->  {
->  	int		ret, *valp = ctl->data;
->  
-> @@ -30,12 +29,11 @@ xfs_stats_clear_proc_handler(
->  }
->  
->  STATIC int
-> -xfs_panic_mask_proc_handler(
-> -	struct ctl_table	*ctl,
-> -	int			write,
-> -	void			*buffer,
-> -	size_t			*lenp,
-> -	loff_t			*ppos)
-> +xfs_panic_mask_proc_handler(const struct ctl_table *ctl,
-> +			    int			write,
-> +			    void			*buffer,
-> +			    size_t			*lenp,
-> +			    loff_t			*ppos)
->  {
->  	int		ret, *valp = ctl->data;
->  
-> @@ -51,12 +49,11 @@ xfs_panic_mask_proc_handler(
->  #endif /* CONFIG_PROC_FS */
->  
->  STATIC int
-> -xfs_deprecated_dointvec_minmax(
-> -	struct ctl_table	*ctl,
-> -	int			write,
-> -	void			*buffer,
-> -	size_t			*lenp,
-> -	loff_t			*ppos)
-> +xfs_deprecated_dointvec_minmax(const struct ctl_table *ctl,
-> +			       int			write,
-> +			       void			*buffer,
-> +			       size_t			*lenp,
-> +			       loff_t			*ppos)
->  {
->  	if (write) {
->  		printk_ratelimited(KERN_WARNING
-
-And these need fixing as well.
-
-A further quick glance at the patch reveals that there are other
-similar screwed up conversions as well.
-
-> diff --git a/kernel/delayacct.c b/kernel/delayacct.c
-> index 6f0c358e73d8..513791ef573d 100644
-> --- a/kernel/delayacct.c
-> +++ b/kernel/delayacct.c
-> @@ -44,8 +44,9 @@ void delayacct_init(void)
->  }
->  
->  #ifdef CONFIG_PROC_SYSCTL
-> -static int sysctl_delayacct(struct ctl_table *table, int write, void *buffer,
-> -		     size_t *lenp, loff_t *ppos)
-> +static int sysctl_delayacct(const struct ctl_table *table, int write,
-> +			    void *buffer,
-> +			    size_t *lenp, loff_t *ppos)
->  {
->  	int state = delayacct_on;
->  	struct ctl_table t;
-
-Like this.
-
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 724e6d7e128f..e2955e0d9f44 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -450,7 +450,8 @@ static void update_perf_cpu_limits(void)
->  
->  static bool perf_rotate_context(struct perf_cpu_pmu_context *cpc);
->  
-> -int perf_event_max_sample_rate_handler(struct ctl_table *table, int write,
-> +int perf_event_max_sample_rate_handler(const struct ctl_table *table,
-> +				       int write,
->  				       void *buffer, size_t *lenp, loff_t *ppos)
->  {
->  	int ret;
-
-And this.
-
-> @@ -474,8 +475,10 @@ int perf_event_max_sample_rate_handler(struct ctl_table *table, int write,
->  
->  int sysctl_perf_cpu_time_max_percent __read_mostly = DEFAULT_CPU_TIME_MAX_PERCENT;
->  
-> -int perf_cpu_time_max_percent_handler(struct ctl_table *table, int write,
-> -		void *buffer, size_t *lenp, loff_t *ppos)
-> +int perf_cpu_time_max_percent_handler(const struct ctl_table *table,
-> +				      int write,
-> +				      void *buffer, size_t *lenp,
-> +				      loff_t *ppos)
->  {
->  	int ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
->  
-
-And this.
-
-> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
-> index b2fc2727d654..003f0f5cb111 100644
-> --- a/kernel/hung_task.c
-> +++ b/kernel/hung_task.c
-> @@ -239,9 +239,10 @@ static long hung_timeout_jiffies(unsigned long last_checked,
->  /*
->   * Process updating of timeout sysctl
->   */
-> -static int proc_dohung_task_timeout_secs(struct ctl_table *table, int write,
-> -				  void *buffer,
-> -				  size_t *lenp, loff_t *ppos)
-> +static int proc_dohung_task_timeout_secs(const struct ctl_table *table,
-> +					 int write,
-> +					 void *buffer,
-> +					 size_t *lenp, loff_t *ppos)
->  {
->  	int ret;
->  
-
-And this.
-
-> diff --git a/kernel/latencytop.c b/kernel/latencytop.c
-> index 781249098cb6..0a5c22b19821 100644
-> --- a/kernel/latencytop.c
-> +++ b/kernel/latencytop.c
-> @@ -65,8 +65,9 @@ static struct latency_record latency_record[MAXLR];
->  int latencytop_enabled;
->  
->  #ifdef CONFIG_SYSCTL
-> -static int sysctl_latencytop(struct ctl_table *table, int write, void *buffer,
-> -		size_t *lenp, loff_t *ppos)
-> +static int sysctl_latencytop(const struct ctl_table *table, int write,
-> +			     void *buffer,
-> +			     size_t *lenp, loff_t *ppos)
->  {
->  	int err;
->  
-
-And this.
-
-I could go on, but there are so many examples of this in the patch
-that I think that it needs to be toosed away and regenerated in a
-way that doesn't trash the existing function parameter formatting.
-
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+DQoNCkxlIDE1LzAzLzIwMjQgw6AgMDk6MzgsIENocmlzdG9waGUgTGVyb3kgYSDDqWNyaXTCoDoN
+Cj4gDQo+IA0KPiBMZSAxNS8wMy8yMDI0IMOgIDAzOjU5LCBCZW5qYW1pbiBHcmF5IGEgw6ljcml0
+wqA6DQo+PiBUaGUgZXhpc3RpbmcgcGF0Y2hpbmcgYWxpYXMgcGFnZSBzZXR1cCBhbmQgdGVhcmRv
+d24gc2VjdGlvbnMgY2FuIGJlDQo+PiBzaW1wbGlmaWVkIHRvIG1ha2UgdXNlIG9mIHRoZSBuZXcg
+b3Blbl9wYXRjaF93aW5kb3coKSBhYnN0cmFjdGlvbi4NCj4+DQo+PiBUaGlzIGVsaW1pbmF0ZXMg
+dGhlIF9tbSB2YXJpYW50cyBvZiB0aGUgaGVscGVycywgY29uc3VtZXJzIG5vIGxvbmdlcg0KPj4g
+bmVlZCB0byBjaGVjayBtbV9wYXRjaF9lbmFibGVkKCksIGFuZCBjb25zdW1lcnMgbm8gbG9uZ2Vy
+IG5lZWQgdG8gd29ycnkNCj4+IGFib3V0IHN5bmNocm9uaXphdGlvbiBhbmQgZmx1c2hpbmcgYmV5
+b25kIHRoZSBjaGFuZ2VzIHRoZXkgbWFrZSBpbiB0aGUNCj4+IHBhdGNoaW5nIHdpbmRvdy4NCj4g
+DQo+IFdpdGggdGhpcyBwYXRjaCwgdGhlIHRpbWUgbmVlZGVkIHRvIGFjdGl2YXRlIG9yIGRlLWFj
+dGl2YXRlIGZ1bmN0aW9uIA0KPiB0cmFjZXIgaXMgYXBwcm94IDEwJSBsb25nZXIgb24gcG93ZXJw
+YyA4eHguDQoNClNlZSBiZWxvdyBkaWZmZXJlbmNlIG9mIHBhdGNoX2luc3RydWN0aW9uKCkgYmVm
+b3JlIGFuZCBhZnRlciB5b3VyIHBhdGNoLCANCmJvdGggZm9yIDRrIHBhZ2VzIGFuZCAxNmsgcGFn
+ZXM6DQoNCjE2ayBwYWdlcywgYmVmb3JlIHlvdXIgcGF0Y2g6DQoNCjAwMDAwMjc4IDxwYXRjaF9p
+bnN0cnVjdGlvbj46DQogIDI3ODoJNDggMDAgMDAgODQgCW5vcA0KICAyN2M6CTdjIGUwIDAwIGE2
+IAltZm1zciAgIHI3DQogIDI4MDoJN2MgNTEgMTMgYTYgCW10c3ByICAgODEscjINCiAgMjg0Ogkz
+ZCAwMCAwMCAwMCAJbGlzICAgICByOCwwDQoJCQkyODY6IFJfUFBDX0FERFIxNl9IQQkuZGF0YQ0K
+ICAyODg6CTM5IDA4IDAwIDAwIAlhZGRpICAgIHI4LHI4LDANCgkJCTI4YTogUl9QUENfQUREUjE2
+X0xPCS5kYXRhDQogIDI4YzoJN2MgNjkgMWIgNzggCW1yICAgICAgcjkscjMNCiAgMjkwOgkzZCAy
+OSA0MCAwMCAJYWRkaXMgICByOSxyOSwxNjM4NA0KICAyOTQ6CTgxIDQ4IDAwIDA4IAlsd3ogICAg
+IHIxMCw4KHI4KQ0KICAyOTg6CTU1IDI5IDAwIDIyIAljbHJyd2kgIHI5LHI5LDE0DQogIDI5YzoJ
+ODEgMDggMDAgMDQgCWx3eiAgICAgcjgsNChyOCkNCiAgMmEwOgk2MSAyOSAwMSAyZCAJb3JpICAg
+ICByOSxyOSwzMDENCiAgMmE0Ogk1NSAwNiAwMCAyMiAJY2xycndpICByNixyOCwxNA0KICAyYTg6
+CTkxIDJhIDAwIDAwIAlzdHcgICAgIHI5LDAocjEwKQ0KICAyYWM6CTkxIDJhIDAwIDA0IAlzdHcg
+ICAgIHI5LDQocjEwKQ0KICAyYjA6CTkxIDJhIDAwIDA4IAlzdHcgICAgIHI5LDgocjEwKQ0KICAy
+YjQ6CTkxIDJhIDAwIDBjIAlzdHcgICAgIHI5LDEyKHIxMCkNCiAgMmI4Ogk1MCA2OCAwNCBiZSAJ
+cmx3aW1pICByOCxyMywwLDE4LDMxDQogIDJiYzoJOTAgODggMDAgMDAgCXN0dyAgICAgcjQsMChy
+OCkNCiAgMmMwOgk3YyAwMCA0MCA2YyAJZGNic3QgICAwLHI4DQogIDJjNDoJN2MgMDAgMDQgYWMg
+CWh3c3luYw0KICAyYzg6CTdjIDAwIDFmIGFjIAlpY2JpICAgIDAscjMNCiAgMmNjOgk3YyAwMCAw
+NCBhYyAJaHdzeW5jDQogIDJkMDoJNGMgMDAgMDEgMmMgCWlzeW5jDQogIDJkNDoJMzggNjAgMDAg
+MDAgCWxpICAgICAgcjMsMA0KICAyZDg6CTM5IDIwIDAwIDAwIAlsaSAgICAgIHI5LDANCiAgMmRj
+Ogk5MSAyYSAwMCAwMCAJc3R3ICAgICByOSwwKHIxMCkNCiAgMmUwOgk5MSAyYSAwMCAwNCAJc3R3
+ICAgICByOSw0KHIxMCkNCiAgMmU0Ogk5MSAyYSAwMCAwOCAJc3R3ICAgICByOSw4KHIxMCkNCiAg
+MmU4Ogk5MSAyYSAwMCAwYyAJc3R3ICAgICByOSwxMihyMTApDQogIDJlYzoJN2MgMDAgMzIgNjQg
+CXRsYmllICAgcjYscjANCiAgMmYwOgk3YyAwMCAwNCBhYyAJaHdzeW5jDQogIDJmNDoJN2MgZTAg
+MDEgMjQgCW10bXNyICAgcjcNCiAgMmY4Ogk0ZSA4MCAwMCAyMCAJYmxyDQoNCjE2ayBwYWdlcywg
+YWZ0ZXIgeW91ciBwYXRjaC4gTm93IHdlIGhhdmUgYSBzdGFjayBmcmFtZSBmb3IgdGhlIGNhbGwg
+dG8gDQpjbG9zZV9wYXRjaF93aW5kb3coKS4gQW5kIHRoZSBicmFuY2ggaW4gY2xvc2VfcGF0Y2hf
+d2luZG93KCkgaXMgDQp1bmV4cGVjdGVkIGFzIHBhdGNoX2luc3RydWN0aW9uKCkgd29ya3Mgb24g
+c2luZ2xlIHBhZ2VzLg0KDQowMDAwMDI0YyA8Y2xvc2VfcGF0Y2hfd2luZG93PjoNCiAgMjRjOgk4
+MSAyMyAwMCAwNCAJbHd6ICAgICByOSw0KHIzKQ0KICAyNTA6CTM5IDQwIDAwIDAwIAlsaSAgICAg
+IHIxMCwwDQogIDI1NDoJOTEgNDkgMDAgMDAgCXN0dyAgICAgcjEwLDAocjkpDQogIDI1ODoJOTEg
+NDkgMDAgMDQgCXN0dyAgICAgcjEwLDQocjkpDQogIDI1YzoJOTEgNDkgMDAgMDggCXN0dyAgICAg
+cjEwLDgocjkpDQogIDI2MDoJOTEgNDkgMDAgMGMgCXN0dyAgICAgcjEwLDEyKHI5KQ0KICAyNjQ6
+CTgxIDIzIDAwIDAwIAlsd3ogICAgIHI5LDAocjMpDQogIDI2ODoJNTUgMmEgMDAgMjIgCWNscnJ3
+aSAgcjEwLHI5LDE0DQogIDI2YzoJMzkgMjkgNDAgMDAgCWFkZGkgICAgcjkscjksMTYzODQNCiAg
+MjcwOgk3ZCAyYSA0OCA1MCAJc3ViZiAgICByOSxyMTAscjkNCiAgMjc0OgkyOCAwOSA0MCAwMCAJ
+Y21wbHdpICByOSwxNjM4NA0KICAyNzg6CTQxIDgxIDAwIDEwIAliZ3QgICAgIDI4OCA8Y2xvc2Vf
+cGF0Y2hfd2luZG93KzB4M2M+DQogIDI3YzoJN2MgMDAgNTIgNjQgCXRsYmllICAgcjEwLHIwDQog
+IDI4MDoJN2MgMDAgMDQgYWMgCWh3c3luYw0KICAyODQ6CTRlIDgwIDAwIDIwIAlibHINCiAgMjg4
+Ogk3YyAwMCAwNCBhYyAJaHdzeW5jDQogIDI4YzoJN2MgMDAgMDIgZTQgCXRsYmlhDQogIDI5MDoJ
+NGMgMDAgMDEgMmMgCWlzeW5jDQogIDI5NDoJNGUgODAgMDAgMjAgCWJscg0KDQowMDAwMDJjNCA8
+cGF0Y2hfaW5zdHJ1Y3Rpb24+Og0KICAyYzQ6CTk0IDIxIGZmIGQwIAlzdHd1ICAgIHIxLC00OChy
+MSkNCiAgMmM4Ogk5MyBjMSAwMCAyOCAJc3R3ICAgICByMzAsNDAocjEpDQogIDJjYzoJNDggMDAg
+MDAgYWMgCW5vcA0KICAyZDA6CTdjIDA4IDAyIGE2IAltZmxyICAgIHIwDQogIDJkNDoJOTAgMDEg
+MDAgMzQgCXN0dyAgICAgcjAsNTIocjEpDQogIDJkODoJOTMgZTEgMDAgMmMgCXN0dyAgICAgcjMx
+LDQ0KHIxKQ0KICAyZGM6CTdmIGUwIDAwIGE2IAltZm1zciAgIHIzMQ0KICAyZTA6CTdjIDUxIDEz
+IGE2IAltdHNwciAgIDgxLHIyDQogIDJlNDoJM2QgNDAgMDAgMDAgCWxpcyAgICAgcjEwLDANCgkJ
+CTJlNjogUl9QUENfQUREUjE2X0hBCS5kYXRhDQogIDJlODoJMzkgNGEgMDAgMDAgCWFkZGkgICAg
+cjEwLHIxMCwwDQoJCQkyZWE6IFJfUFBDX0FERFIxNl9MTwkuZGF0YQ0KICAyZWM6CTdjIDY5IDFi
+IDc4IAltciAgICAgIHI5LHIzDQogIDJmMDoJM2QgMjkgNDAgMDAgCWFkZGlzICAgcjkscjksMTYz
+ODQNCiAgMmY0Ogk4MSAwYSAwMCAwOCAJbHd6ICAgICByOCw4KHIxMCkNCiAgMmY4Ogk4MCBjYSAw
+MCAwNCAJbHd6ICAgICByNiw0KHIxMCkNCiAgMmZjOgk1NSAyOSAwMCAyMiAJY2xycndpICByOSxy
+OSwxNA0KICAzMDA6CTYxIDI5IDAxIDJkIAlvcmkgICAgIHI5LHI5LDMwMQ0KICAzMDQ6CTM4IGUw
+IDAwIDAwIAlsaSAgICAgIHI3LDANCiAgMzA4Ogk1NCA2YSAwNCBiZSAJY2xybHdpICByMTAscjMs
+MTgNCiAgMzBjOgk5MSAyOCAwMCAwMCAJc3R3ICAgICByOSwwKHI4KQ0KICAzMTA6CTkxIDI4IDAw
+IDA0IAlzdHcgICAgIHI5LDQocjgpDQogIDMxNDoJOTEgMjggMDAgMDggCXN0dyAgICAgcjksOChy
+OCkNCiAgMzE4Ogk5MSAyOCAwMCAwYyAJc3R3ICAgICByOSwxMihyOCkNCiAgMzFjOgk5MSAwMSAw
+MCAwYyAJc3R3ICAgICByOCwxMihyMSkNCiAgMzIwOgk5MCBjMSAwMCAwOCAJc3R3ICAgICByNiw4
+KHIxKQ0KICAzMjQ6CTdkIDRhIDMyIDE0IAlhZGQgICAgIHIxMCxyMTAscjYNCiAgMzI4Ogk5MCBl
+MSAwMCAxMCAJc3R3ICAgICByNywxNihyMSkNCiAgMzJjOgk5MCBlMSAwMCAxNCAJc3R3ICAgICBy
+NywyMChyMSkNCiAgMzMwOgk5MCBlMSAwMCAxOCAJc3R3ICAgICByNywyNChyMSkNCiAgMzM0Ogk5
+MCA4YSAwMCAwMCAJc3R3ICAgICByNCwwKHIxMCkNCiAgMzM4Ogk3YyAwMCA1MCA2YyAJZGNic3Qg
+ICAwLHIxMA0KICAzM2M6CTdjIDAwIDA0IGFjIAlod3N5bmMNCiAgMzQwOgk3YyAwMCAxZiBhYyAJ
+aWNiaSAgICAwLHIzDQogIDM0NDoJN2MgMDAgMDQgYWMgCWh3c3luYw0KICAzNDg6CTRjIDAwIDAx
+IDJjIAlpc3luYw0KICAzNGM6CTNiIGMwIDAwIDAwIAlsaSAgICAgIHIzMCwwDQogIDM1MDoJMzgg
+NjEgMDAgMDggCWFkZGkgICAgcjMscjEsOA0KICAzNTQ6CTRiIGZmIGZlIGY5IAlibCAgICAgIDI0
+YyA8Y2xvc2VfcGF0Y2hfd2luZG93Pg0KICAzNTg6CTdmIGUwIDAxIDI0IAltdG1zciAgIHIzMQ0K
+ICAzNWM6CTgwIDAxIDAwIDM0IAlsd3ogICAgIHIwLDUyKHIxKQ0KICAzNjA6CTgzIGUxIDAwIDJj
+IAlsd3ogICAgIHIzMSw0NChyMSkNCiAgMzY0Ogk3YyAwOCAwMyBhNiAJbXRsciAgICByMA0KICAz
+Njg6CTdmIGMzIGYzIDc4IAltciAgICAgIHIzLHIzMA0KICAzNmM6CTgzIGMxIDAwIDI4IAlsd3og
+ICAgIHIzMCw0MChyMSkNCiAgMzcwOgkzOCAyMSAwMCAzMCAJYWRkaSAgICByMSxyMSw0OA0KICAz
+NzQ6CTRlIDgwIDAwIDIwIAlibHINCg0KNGsgcGFnZXMgYmVmb3JlIHlvdXIgcGF0Y2g6DQoNCjAw
+MDAwMjY4IDxwYXRjaF9pbnN0cnVjdGlvbj46DQogIDI2ODoJNDggMDAgMDAgNmMgCW5vcA0KICAy
+NmM6CTdjIGUwIDAwIGE2IAltZm1zciAgIHI3DQogIDI3MDoJN2MgNTEgMTMgYTYgCW10c3ByICAg
+ODEscjINCiAgMjc0OgkzZCA0MCAwMCAwMCAJbGlzICAgICByMTAsMA0KCQkJMjc2OiBSX1BQQ19B
+RERSMTZfSEEJLmRhdGENCiAgMjc4OgkzOSA0YSAwMCAwMCAJYWRkaSAgICByMTAscjEwLDANCgkJ
+CTI3YTogUl9QUENfQUREUjE2X0xPCS5kYXRhDQogIDI3YzoJN2MgNjkgMWIgNzggCW1yICAgICAg
+cjkscjMNCiAgMjgwOgkzZCAyOSA0MCAwMCAJYWRkaXMgICByOSxyOSwxNjM4NA0KICAyODQ6CTgx
+IDBhIDAwIDA4IAlsd3ogICAgIHI4LDgocjEwKQ0KICAyODg6CTU1IDI5IDAwIDI2IAljbHJyd2kg
+IHI5LHI5LDEyDQogIDI4YzoJODEgNGEgMDAgMDQgCWx3eiAgICAgcjEwLDQocjEwKQ0KICAyOTA6
+CTYxIDI5IDAxIDI1IAlvcmkgICAgIHI5LHI5LDI5Mw0KICAyOTQ6CTkxIDI4IDAwIDAwIAlzdHcg
+ICAgIHI5LDAocjgpDQogIDI5ODoJNTUgNDkgMDAgMjYgCWNscnJ3aSAgcjkscjEwLDEyDQogIDI5
+YzoJNTAgNmEgMDUgM2UgCXJsd2ltaSAgcjEwLHIzLDAsMjAsMzENCiAgMmEwOgk5MCA4YSAwMCAw
+MCAJc3R3ICAgICByNCwwKHIxMCkNCiAgMmE0Ogk3YyAwMCA1MCA2YyAJZGNic3QgICAwLHIxMA0K
+ICAyYTg6CTdjIDAwIDA0IGFjIAlod3N5bmMNCiAgMmFjOgk3YyAwMCAxZiBhYyAJaWNiaSAgICAw
+LHIzDQogIDJiMDoJN2MgMDAgMDQgYWMgCWh3c3luYw0KICAyYjQ6CTRjIDAwIDAxIDJjIAlpc3lu
+Yw0KICAyYjg6CTM4IDYwIDAwIDAwIAlsaSAgICAgIHIzLDANCiAgMmJjOgkzOSA0MCAwMCAwMCAJ
+bGkgICAgICByMTAsMA0KICAyYzA6CTkxIDQ4IDAwIDAwIAlzdHcgICAgIHIxMCwwKHI4KQ0KICAy
+YzQ6CTdjIDAwIDRhIDY0IAl0bGJpZSAgIHI5LHIwDQogIDJjODoJN2MgMDAgMDQgYWMgCWh3c3lu
+Yw0KICAyY2M6CTdjIGUwIDAxIDI0IAltdG1zciAgIHI3DQogIDJkMDoJNGUgODAgMDAgMjAgCWJs
+cg0KDQo0ayBwYWdlcyBhZnRlciB5b3VyIHBhdGNoLiBIZXJlIGNsb3NlX3BhdGNoX3dpbmRvdygp
+IGlzIGlubGluZWQgYnV0IHRoZSANCnRlc3QgYXQgdGhlIGVuZCBpcyBjcmF6eSwgd2UndmUgYmVl
+biBwYXRjaGluZyBvbmUgaW5zdHJ1Y3Rpb24gd2l0aCB0aGUgDQphc3N1bXB0aW9uIGl0IGlzIHBy
+b3Blcmx5IGFsaWduZWQsIHNvIHdoeSBpcyB0aGVyZSBhIGJyYW5jaCB3aXRoIGEgdGxiaWEgDQp3
+aGVyZWFzIG9ubHkgb25lIHBhZ2UgbmVlZHMgdG8gYmUgaW52YWxpZGF0ZWQgPzoNCg0KMDAwMDAy
+NjggPHBhdGNoX2luc3RydWN0aW9uPjoNCiAgMjY4Ogk0OCAwMCAwMCA4NCAJbm9wDQogIDI2YzoJ
+N2MgYzAgMDAgYTYgCW1mbXNyICAgcjYNCiAgMjcwOgk3YyA1MSAxMyBhNiAJbXRzcHIgICA4MSxy
+Mg0KICAyNzQ6CTNkIDQwIDAwIDAwIAlsaXMgICAgIHIxMCwwDQoJCQkyNzY6IFJfUFBDX0FERFIx
+Nl9IQQkuZGF0YQ0KICAyNzg6CTM5IDRhIDAwIDAwIAlhZGRpICAgIHIxMCxyMTAsMA0KCQkJMjdh
+OiBSX1BQQ19BRERSMTZfTE8JLmRhdGENCiAgMjdjOgk3YyA2OSAxYiA3OCAJbXIgICAgICByOSxy
+Mw0KICAyODA6CTNkIDI5IDQwIDAwIAlhZGRpcyAgIHI5LHI5LDE2Mzg0DQogIDI4NDoJODAgZWEg
+MDAgMDggCWx3eiAgICAgcjcsOChyMTApDQogIDI4ODoJNTUgMjkgMDAgMjYgCWNscnJ3aSAgcjks
+cjksMTINCiAgMjhjOgk4MSA0YSAwMCAwNCAJbHd6ICAgICByMTAsNChyMTApDQogIDI5MDoJNjEg
+MjkgMDEgMjUgCW9yaSAgICAgcjkscjksMjkzDQogIDI5NDoJNTQgNjggMDUgM2UgCWNscmx3aSAg
+cjgscjMsMjANCiAgMjk4Ogk5MSAyNyAwMCAwMCAJc3R3ICAgICByOSwwKHI3KQ0KICAyOWM6CTdk
+IDA4IDUyIDE0IAlhZGQgICAgIHI4LHI4LHIxMA0KICAyYTA6CTkwIDg4IDAwIDAwIAlzdHcgICAg
+IHI0LDAocjgpDQogIDJhNDoJN2MgMDAgNDAgNmMgCWRjYnN0ICAgMCxyOA0KICAyYTg6CTdjIDAw
+IDA0IGFjIAlod3N5bmMNCiAgMmFjOgk3YyAwMCAxZiBhYyAJaWNiaSAgICAwLHIzDQogIDJiMDoJ
+N2MgMDAgMDQgYWMgCWh3c3luYw0KICAyYjQ6CTRjIDAwIDAxIDJjIAlpc3luYw0KICAyYjg6CTM4
+IDYwIDAwIDAwIAlsaSAgICAgIHIzLDANCiAgMmJjOgk1NSA0OSAwMCAyNiAJY2xycndpICByOSxy
+MTAsMTINCiAgMmMwOgkzOSA0YSAxMCAwMCAJYWRkaSAgICByMTAscjEwLDQwOTYNCiAgMmM0Ogk3
+ZCA0OSA1MCA1MCAJc3ViZiAgICByMTAscjkscjEwDQogIDJjODoJMjggMGEgMTAgMDAgCWNtcGx3
+aSAgcjEwLDQwOTYNCiAgMmNjOgkzOSA0MCAwMCAwMCAJbGkgICAgICByMTAsMA0KICAyZDA6CTkx
+IDQ3IDAwIDAwIAlzdHcgICAgIHIxMCwwKHI3KQ0KICAyZDQ6CTQwIDgxIDAwIDM4IAlibGUgICAg
+IDMwYyA8cGF0Y2hfaW5zdHJ1Y3Rpb24rMHhhND4NCiAgMmQ4Ogk3YyAwMCAwNCBhYyAJaHdzeW5j
+DQogIDJkYzoJN2MgMDAgMDIgZTQgCXRsYmlhDQogIDJlMDoJNGMgMDAgMDEgMmMgCWlzeW5jDQog
+IDJlNDoJN2MgYzAgMDEgMjQgCW10bXNyICAgcjYNCiAgMmU4Ogk0ZSA4MCAwMCAyMCAJYmxyDQou
+Li4NCiAgMzBjOgk3YyAwMCA0YSA2NCAJdGxiaWUgICByOSxyMA0KICAzMTA6CTdjIDAwIDA0IGFj
+IAlod3N5bmMNCiAgMzE0Ogk3YyBjMCAwMSAyNCAJbXRtc3IgICByNg0KICAzMTg6CTRlIDgwIDAw
+IDIwIAlibHINCg==
