@@ -2,86 +2,125 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C9B87ECD2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Mar 2024 16:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED54C87ED31
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Mar 2024 17:16:42 +0100 (CET)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QzZuBY7h;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TyzyC6Rr5z3vZ6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 02:57:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tz0NS5874z3dWw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 03:16:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=srs0=kran=ky=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=QzZuBY7h;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:240a::601; helo=nam04-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:240a::601])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tyzxm0SKpz3cSL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 02:56:59 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 5A5A2CE0AD6;
-	Mon, 18 Mar 2024 15:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B86FC433C7;
-	Mon, 18 Mar 2024 15:56:48 +0000 (UTC)
-Message-ID: <399da377-c2b6-4226-9108-8a1e776b6f3b@xs4all.nl>
-Date: Mon, 18 Mar 2024 16:56:47 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tz0Mh6rCTz3cNN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 03:15:57 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=e+CcdGzsnTq72yJAOE+f8Me64HjGti6A26PWbOMrP9LABVfDZd5KReGe/kTpZ1XR/0AtN1nfXox3rlh3cvZtbrYpfKLKPBrgjSKAM/jb+9n/wZazTNXs9m4dpfGNRIX0TEkmVsmY6fz/dFd0n8IvSrWz9q363qOXaqq0VhOPqVG+3nRmTn9WzIe3gQPBiY/IOP7O/oCgsf7wGKzw1xvFPpGRgKCaT97ei1AIjBH3W7ktfh7pign0vjWX0xYLmWwYBT5W49GMgE74PaSNoC+4UuQJzZFKUulPc8NaryvfBTi7QHw+UmZZgNji6vjjz4XyVkh9WNahxGnju+n3uQStUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dlv9s2X6IUZXoWRPusJ/nMrZ6cYw3m45dbmZorYVX7Y=;
+ b=dEsp+C/289gGr6movhZhmTpf5fAFa3IVXYDdL7+OGeCNrSY62JV3JmuJv7AQT33mzSikZgaDEYgX6HYzMsn9MRHhGJnqlgX4sVbaQBASZUjVUABBHA+dwKJLwCUEhrIK2jxXJl69bqoFMG5+btyksOkKCi4SR8R1SgNRUpkdFhcPEDBXyxYwfs+6K8jLwzqz5PWJh9DY+1sgeoQbfeKceUMHMrDydmUdlXEPqVu5gX5iz9NQUWAnU4p+jKJpWGXz/o2ANXNBv8DXd9S6NLpJRRTiz+qb9RXcax9RupgqaRvtzQ1mY+r85mKUfUNnJb3h8mef/S8zMAGMxrME35OuVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dlv9s2X6IUZXoWRPusJ/nMrZ6cYw3m45dbmZorYVX7Y=;
+ b=QzZuBY7hXHCOR8706MkWbH1fDoSq2MN/Ob7GM/NjS74eXtzpITp3CC9bmX3IGr9mNw93+0Tyi8JlwgkOwCiwsDiSyMl0P5M1J4u5gAR0QAz6xdw74EFoUP13hFo7j6Fm5DEw4DtsMTIW+qTU3sQWTzzR3vDmXqzx5O1beJAkwl1GQS8Afujp1LXSzeo92aXztc8WxD0Uo3CfPZcGB6YIjVaRUSDm27pPZJRO7LJkUJCIJZY07leuZ2RiJcnpFQPZ+rAEgq81xxYP8Ksu6AGDir/sAZPBuFtCXyJoB1lZIaRruUU6ksq0rhtN8vHJ9VqO5s+iXPTHZyF9qC0QvJwIIA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
+ by CH3PR12MB8331.namprd12.prod.outlook.com (2603:10b6:610:12f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
+ 2024 16:15:21 +0000
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
+ 16:15:21 +0000
+Date: Mon, 18 Mar 2024 13:15:19 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 09/13] mm/powerpc: Redefine pXd_huge() with pXd_leaf()
+Message-ID: <20240318161519.GA5825@nvidia.com>
+References: <20240313214719.253873-1-peterx@redhat.com>
+ <20240313214719.253873-10-peterx@redhat.com>
+ <7b7d6ce1-4a3f-4392-951d-a9bd146c954c@csgroup.eu>
+ <ZfLzZekFBp3J6JUy@x1n>
+ <1f6ad500-3ff7-44d4-8223-067bd2ed9ffe@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f6ad500-3ff7-44d4-8223-067bd2ed9ffe@csgroup.eu>
+X-ClientProxiedBy: SA9PR13CA0141.namprd13.prod.outlook.com
+ (2603:10b6:806:27::26) To DM6PR12MB3849.namprd12.prod.outlook.com
+ (2603:10b6:5:1c7::26)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 00/16] Add audio support in v4l2 framework
-Content-Language: en-US, nl
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, sakari.ailus@iki.fi,
- tfiga@chromium.org, m.szyprowski@samsung.com, mchehab@kernel.org,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org,
- linuxppc-dev@lists.ozlabs.org
-References: <1710150841-26991-1-git-send-email-shengjiu.wang@nxp.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <1710150841-26991-1-git-send-email-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|CH3PR12MB8331:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21eacb3b-8bd6-4b62-a007-08dc47669c17
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	VeKXYvAoK6iWXmAcXLaQEH4lPt94aqq5ovoSX7V3j15TdBEc7W4CWTVb4GuQrIsYtcEn2mr8Y031SJcq0lDu6/8ciSsxpyRcnYGNyPe5HuoXyea7ddZlen3EnoV+xkxHAMeLbZc+sUFV3X7YIAxpv8yNywKaXKDpucWj49i3yGvn4Rmc8QOenBXgMulnvoxda/8Q4rX+V+eliOpyIVoqKF5jeWwIev8VxDgxNPW/XPEDS9xAvC28QBdb5gImHjBjbRSm3MSq7FymDuEGdc51Hrsczy7FTDrQ8s77Tm2DUvQ5YrhEyQ7Q5LZpH1K2cM6u1XxEWmoQJRjtflJFMogrMDAiq+h43g+TovnTPRxVBpKQ7JwmUpYgRZSYeVhkBN4zHpJAmqZsqooTuupFc2zfdLi93rV+EuQUa8v2xBK0s7CuE/OdNz1eUNWYySCi3HcTOQWy8lrJut1qCU8cssJS9DfHGiSfbvnNriv6rgZr+RFKplNXdC+NaK/C+TdoLPgn/kEG1pJ4dmCRkDpd26wwyjPvbX1jihoLvtNQ7nu1pAdnRY79lgcpPsZShhzWjVoY35wbGf6xDeJTwrYYNppqvAHARxi7+r4GitMqw8oQ3d6aNDXWWCQF6uUekUvbnNzT7d7t0IzW2KOQstVWUVwyEXm/qADHXC1ekb/Uk6/oM6Q=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(7416005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?bHhHUWZoQllXU0VoeTFmTE9SZkdIbU96VFpLSHdrSFJJd0s1blBzMFZ5NExp?=
+ =?utf-8?B?dG01RGwzOEN3Y1Ztck9ScjZnaUpKYXJkSjFjcFlBdkhCUzNwc2MwTXRGcWcr?=
+ =?utf-8?B?MmhzdWNQcUp6WFd6Wi82MWZRV3V4YjBERUJqdHdvWUlRNlpwYVJZOGcrREFL?=
+ =?utf-8?B?Skl4U1RFUUlZbWVvYnJGSVNncWZIWjlDQmNOSXJhb0VMUWhSSHJhMVlpb2hP?=
+ =?utf-8?B?NS80N2drWXpYQ21HVnAzS2hnTnZOblBVb1BtOE9vVENDSERLNkJGcU9RZHkx?=
+ =?utf-8?B?WDk5MnZQUXRJdHcvT1Z2TmNxRENHVGtzMGNiU1htUUkrTEJxblh6QXpJS2Mx?=
+ =?utf-8?B?THhEek0zM2xVWVJESDRhNDFXTUtrajhqQWwwaGVucldqWmdLMkxYUEN1ZUhI?=
+ =?utf-8?B?cVZObFBFRjdUcUhablVkOElYMXkyTFd4NVMvS3NBN2EyVjR2WUthOFdCVzJr?=
+ =?utf-8?B?Z2ZUOVBmTyt3RStOSlJhclkyRVFjREtjTkpzR0xMY0ZGU0VraWNSKzJtUzNS?=
+ =?utf-8?B?RTVsN1dRYnFMMnlsYUNpd2hsMGhaTTNxQVlEV0Z3RmM1OTJJbzJPRmR0Mm9R?=
+ =?utf-8?B?aUtFOFVJVjZPZElkRk4yWGcrWjZuNGtUdnhjOFpJZ04yNWQxaGdsamN0M1Rw?=
+ =?utf-8?B?TGc5YWExdElLb0tsTnlRdGxHM1BhSjB5ZW5id0lwLzlLSGNHMVBaZjk0bXJN?=
+ =?utf-8?B?a1JFbDlkemR6S3ppcSttT2dYOFlselJWZ1RLVGZkeEZlVWp3bG5KSnFtbWkw?=
+ =?utf-8?B?aS9nV2VQd3dqcUxodzF1ekJBbTlDQXU0SXcvL25WUnBSMDhaNm8xanV4Nlcr?=
+ =?utf-8?B?Q0FlZ0hOYm1yTFhwSVF1dHhiZXJ1NHNXRlliOWNlZjM1VUhrWlI3Wm5qRHpD?=
+ =?utf-8?B?ZjU5dW84UWNUZXJXUWVQWmZEbXlJYllHbWVWL2tjdlN1MGt0ekwyMnVyZWxV?=
+ =?utf-8?B?VjM4VzJmc2NxUy9NTWdINDIrL0RyVVI2ZHpndGJWWW5PaDdkSmhTUTBzbDJZ?=
+ =?utf-8?B?MFJFUndqVEhrTDhjUUFiVDUwbkpIM3cvMXBhWWRNNzRXWXJJODc0Slc4eFVq?=
+ =?utf-8?B?bDF2TXk2Z1hsQ1BsaUxRT1A4OFJJWlo2TG1OanBJaC8yeU1NelFCOU1SK2VT?=
+ =?utf-8?B?RXE4THp0bGx0YVZTQmtPYy9BZFEzSWowWnhpbFgxMHFyU29odE1pd1BOTmMy?=
+ =?utf-8?B?S3UwZWxyN0FzblNIdHp5SnpjaER2N3o0eXVQR2F0WTRpRWx6N0QyMVRUVVVv?=
+ =?utf-8?B?QUd2M01DcUs5N29OZ3hjWmY1aWN5b21tQzJwZjZkekliU01WUDFBTjQyMzNS?=
+ =?utf-8?B?cmZLcUtoenBWUWY2a0QxVGpweVp3MWY2WExmcnd1K01UWmxPOUZmeTZzQ1Ey?=
+ =?utf-8?B?ZnBPdDhDNWcyTFlBV3dCTzhCOVB6MCszeVdIejJlY2xCUkk1V2szZTRHdXJl?=
+ =?utf-8?B?NFpCTjBzY0k3N0xOSVI4eTV2OXNhTDhqZ2RzUGp6NWR1VHhlQVBWMlo1SWZF?=
+ =?utf-8?B?ckpXOVVsN2diK0w0OHY2MlRTVlp0cW9DQllSTEZTTFBjMEpBRi83bFN1LzQ2?=
+ =?utf-8?B?TTJJZ3E3bGw0ajZwSkhwdGN5YTdzcVRmYXV4MlFydFpha3YrMnpKa3hxYkdE?=
+ =?utf-8?B?VlBXbitWb3lqUnVTUzdTRzRGNG1oZCtPRVg5Mkg1SERpTkRFUFhEZFk5U0lK?=
+ =?utf-8?B?OS9tL1NsdHZwTkg5bDhPdE5HUUJSWlFNOWxSTUhDK0ZRQ0JrQWQvS0Y1eFZu?=
+ =?utf-8?B?QWxWVWNBVGVzNzdwcFozQThiY2M0RnlndlBzVnNvRXpvYmFJS3djRTd3eGp2?=
+ =?utf-8?B?b3Bja0JHdUppSGJjSTRNQllGTmlzTThaMkJHbnJSaFNsVUFacno4STlHRUU5?=
+ =?utf-8?B?OGxxckZhZkhZVUl3MElRNFlCZGpQTmJveWtxc2F4aE52SVRTYmVLYUNoQ3Jt?=
+ =?utf-8?B?WldzQzBFS2djaG5YVnRSRk81bWZqVmI3UXRKc0dzc1A3QXRGdmtnQ3R5Z1Iv?=
+ =?utf-8?B?RkxwY01pT21NcVF1bnRPRG5OR0UvSzdwL3ZNVkUwRTliYnRLdDMyUXFacURW?=
+ =?utf-8?B?UG5ZTVFOQ04wbXk5enFjd2s3NDZSSndrMklKQW1CTEdkM1RIRGNuUm0yZU1V?=
+ =?utf-8?Q?fYwU=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21eacb3b-8bd6-4b62-a007-08dc47669c17
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2024 16:15:21.2007
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ptvgPTtAQp9uxgSCr5rnubGdY/jszhNphhnpNM1hGNKovsx6qNC1ywe+pYvIhi6b
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8331
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,193 +132,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Muchun Song <muchun.song@linux.dev>, "x86@kernel.org" <x86@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, Mike Rapoport <rppt@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Shengjiu,
+On Thu, Mar 14, 2024 at 01:11:59PM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 14/03/2024 à 13:53, Peter Xu a écrit :
+> > On Thu, Mar 14, 2024 at 08:45:34AM +0000, Christophe Leroy wrote:
+> >>
+> >>
+> >> Le 13/03/2024 à 22:47, peterx@redhat.com a écrit :
+> >>> From: Peter Xu <peterx@redhat.com>
+> >>>
+> >>> PowerPC book3s 4K mostly has the same definition on both, except pXd_huge()
+> >>> constantly returns 0 for hash MMUs.  As Michael Ellerman pointed out [1],
+> >>> it is safe to check _PAGE_PTE on hash MMUs, as the bit will never be set so
+> >>> it will keep returning false.
+> >>>
+> >>> As a reference, __p[mu]d_mkhuge() will trigger a BUG_ON trying to create
+> >>> such huge mappings for 4K hash MMUs.  Meanwhile, the major powerpc hugetlb
+> >>> pgtable walker __find_linux_pte() already used pXd_leaf() to check hugetlb
+> >>> mappings.
+> >>>
+> >>> The goal should be that we will have one API pXd_leaf() to detect all kinds
+> >>> of huge mappings.  AFAICT we need to use the pXd_leaf() impl (rather than
+> >>> pXd_huge() ones) to make sure ie. THPs on hash MMU will also return true.
+> >>
+> >> All kinds of huge mappings ?
+> >>
+> >> pXd_leaf() will detect only leaf mappings (like pXd_huge() ). There are
+> >> also huge mappings through hugepd. On powerpc 8xx we have 8M huge pages
+> >> and 512k huge pages. A PGD entry covers 4M so pgd_leaf() won't report
+> >> those huge pages.
+> > 
+> > Ah yes, I should always mention this is in the context of leaf huge pages
+> > only.  Are the examples you provided all fall into hugepd category?  If so
+> > I can reword the commit message, as:
+> 
+> On powerpc 8xx, only the 8M huge pages fall into the hugepd case.
+> 
+> The 512k hugepages are at PTE level, they are handled more or less like 
+> CONT_PTE on ARM. see function set_huge_pte_at() for more context.
+> 
+> You can also look at pte_leaf_size() and pgd_leaf_size().
 
-I was about to prepare a pull request for this when I realized that
-entries for the new drivers need to be added to the MAINTAINERS file.
+IMHO leaf should return false if the thing is pointing to a next level
+page table, even if that next level is fully populated with contiguous
+pages.
 
-Can you post patches 'v14 17/16' and 'v14/18/16' adding entries for each
-new driver?
+This seems more aligned with the contig page direction that hugepd
+should be moved over to..
 
-Thank you,
+> By the way pgd_leaf_size() looks odd because it is called only when 
+> pgd_leaf_size() returns true, which never happens for 8M pages.
 
-	Hans
+Like this, you should reach the actual final leaf that the HW will
+load and leaf_size() should say it is greater size than the current
+table level. Other levels should return 0.
 
-On 11/03/2024 10:53 am, Shengjiu Wang wrote:
-> Audio signal processing also has the requirement for memory to
-> memory similar as Video.
-> 
-> This asrc memory to memory (memory ->asrc->memory) case is a non
-> real time use case.
-> 
-> User fills the input buffer to the asrc module, after conversion, then asrc
-> sends back the output buffer to user. So it is not a traditional ALSA playback
-> and capture case.
-> 
-> It is a specific use case,  there is no reference in current kernel.
-> v4l2 memory to memory is the closed implementation,  v4l2 current
-> support video, image, radio, tuner, touch devices, so it is not
-> complicated to add support for this specific audio case.
-> 
-> Because we had implemented the "memory -> asrc ->i2s device-> codec"
-> use case in ALSA.  Now the "memory->asrc->memory" needs
-> to reuse the code in asrc driver, so the first 3 patches is for refining
-> the code to make it can be shared by the "memory->asrc->memory"
-> driver.
-> 
-> The main change is in the v4l2 side, A /dev/vl4-audioX will be created,
-> user applications only use the ioctl of v4l2 framework.
-> 
-> Other change is to add memory to memory support for two kinds of i.MX ASRC
-> module.
-> 
-> changes in v14:
-> - document the reservation of 'AUXX' fourcc format.
-> - add v4l2_audfmt_to_fourcc() definition.
-> 
-> changes in v13
-> - change 'pixelformat' to 'audioformat' in dev-audio-mem2mem.rst
-> - add more description for clock drift in ext-ctrls-audio-m2m.rst
-> - Add "media: v4l2-ctrls: add support for fraction_bits" from Hans
->   to avoid build issue for kernel test robot
-> 
-> changes in v12
-> - minor changes according to comments
-> - drop min_buffers_needed = 1 and V4L2_CTRL_FLAG_UPDATE flag
-> - drop bus_info
-> 
-> changes in v11
-> - add add-fixed-point-test-controls in vivid.
-> - add v4l2_ctrl_fp_compose() helper function for min and max
-> 
-> changes in v10
-> - remove FIXED_POINT type
-> - change code base on media: v4l2-ctrls: add support for fraction_bits
-> - fix issue reported by kernel test robot
-> - remove module_alias
-> 
-> changes in v9:
-> - add MEDIA_ENT_F_PROC_AUDIO_RESAMPLER.
-> - add MEDIA_INTF_T_V4L_AUDIO
-> - add media controller support
-> - refine the vim2m-audio to support 8k<->16k conversion.
-> 
-> changes in v8:
-> - refine V4L2_CAP_AUDIO_M2M to be 0x00000008
-> - update doc for FIXED_POINT
-> - address comments for imx-asrc
-> 
-> changes in v7:
-> - add acked-by from Mark
-> - separate commit for fixed point, m2m audio class, audio rate controls
-> - use INTEGER_MENU for rate,  FIXED_POINT for rate offset
-> - remove used fmts
-> - address other comments for Hans
-> 
-> changes in v6:
-> - use m2m_prepare/m2m_unprepare/m2m_start/m2m_stop to replace
->   m2m_start_part_one/m2m_stop_part_one, m2m_start_part_two/m2m_stop_part_two.
-> - change V4L2_CTRL_TYPE_ASRC_RATE to V4L2_CTRL_TYPE_FIXED_POINT
-> - fix warning by kernel test rebot
-> - remove some unused format V4L2_AUDIO_FMT_XX
-> - Get SNDRV_PCM_FORMAT from V4L2_AUDIO_FMT in driver.
-> - rename audm2m to viaudm2m.
-> 
-> changes in v5:
-> - remove V4L2_AUDIO_FMT_LPCM
-> - define audio pixel format like V4L2_AUDIO_FMT_S8...
-> - remove rate and format in struct v4l2_audio_format.
-> - Add V4L2_CID_ASRC_SOURCE_RATE and V4L2_CID_ASRC_DEST_RATE controls
-> - updata document accordingly.
-> 
-> changes in v4:
-> - update document style
-> - separate V4L2_AUDIO_FMT_LPCM and V4L2_CAP_AUDIO_M2M in separate commit
-> 
-> changes in v3:
-> - Modify documents for adding audio m2m support
-> - Add audio virtual m2m driver
-> - Defined V4L2_AUDIO_FMT_LPCM format type for audio.
-> - Defined V4L2_CAP_AUDIO_M2M capability type for audio m2m case.
-> - with modification in v4l-utils, pass v4l2-compliance test.
-> 
-> changes in v2:
-> - decouple the implementation in v4l2 and ALSA
-> - implement the memory to memory driver as a platfrom driver
->   and move it to driver/media
-> - move fsl_asrc_common.h to include/sound folder
-> 
-> Hans Verkuil (1):
->   media: v4l2-ctrls: add support for fraction_bits
-> 
-> Shengjiu Wang (15):
->   ASoC: fsl_asrc: define functions for memory to memory usage
->   ASoC: fsl_easrc: define functions for memory to memory usage
->   ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
->   ASoC: fsl_asrc: register m2m platform device
->   ASoC: fsl_easrc: register m2m platform device
->   media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
->   media: v4l2: Add audio capture and output support
->   media: uapi: Define audio sample format fourcc type
->   media: uapi: Add V4L2_CTRL_CLASS_M2M_AUDIO
->   media: uapi: Add audio rate controls support
->   media: uapi: Declare interface types for Audio
->   media: uapi: Add an entity type for audio resampler
->   media: vivid: add fixed point test controls
->   media: imx-asrc: Add memory to memory driver
->   media: vim2m-audio: add virtual driver for audio memory to memory
-> 
->  .../media/mediactl/media-types.rst            |   11 +
->  .../userspace-api/media/v4l/buffer.rst        |    6 +
->  .../userspace-api/media/v4l/common.rst        |    1 +
->  .../media/v4l/dev-audio-mem2mem.rst           |   71 +
->  .../userspace-api/media/v4l/devices.rst       |    1 +
->  .../media/v4l/ext-ctrls-audio-m2m.rst         |   59 +
->  .../userspace-api/media/v4l/pixfmt-audio.rst  |  100 ++
->  .../userspace-api/media/v4l/pixfmt.rst        |    1 +
->  .../media/v4l/vidioc-enum-fmt.rst             |    2 +
->  .../media/v4l/vidioc-g-ext-ctrls.rst          |    4 +
->  .../userspace-api/media/v4l/vidioc-g-fmt.rst  |    4 +
->  .../media/v4l/vidioc-querycap.rst             |    3 +
->  .../media/v4l/vidioc-queryctrl.rst            |   11 +-
->  .../media/videodev2.h.rst.exceptions          |    3 +
->  .../media/common/videobuf2/videobuf2-v4l2.c   |    4 +
->  drivers/media/platform/nxp/Kconfig            |   13 +
->  drivers/media/platform/nxp/Makefile           |    1 +
->  drivers/media/platform/nxp/imx-asrc.c         | 1256 +++++++++++++++++
->  drivers/media/test-drivers/Kconfig            |   10 +
->  drivers/media/test-drivers/Makefile           |    1 +
->  drivers/media/test-drivers/vim2m-audio.c      |  793 +++++++++++
->  drivers/media/test-drivers/vivid/vivid-core.h |    2 +
->  .../media/test-drivers/vivid/vivid-ctrls.c    |   26 +
->  drivers/media/v4l2-core/v4l2-compat-ioctl32.c |    9 +
->  drivers/media/v4l2-core/v4l2-ctrls-api.c      |    1 +
->  drivers/media/v4l2-core/v4l2-ctrls-core.c     |   93 +-
->  drivers/media/v4l2-core/v4l2-ctrls-defs.c     |   10 +
->  drivers/media/v4l2-core/v4l2-dev.c            |   21 +
->  drivers/media/v4l2-core/v4l2-ioctl.c          |   66 +
->  drivers/media/v4l2-core/v4l2-mem2mem.c        |   13 +-
->  include/media/v4l2-ctrls.h                    |   13 +-
->  include/media/v4l2-dev.h                      |    2 +
->  include/media/v4l2-ioctl.h                    |   34 +
->  .../fsl => include/sound}/fsl_asrc_common.h   |   60 +
->  include/uapi/linux/media.h                    |    2 +
->  include/uapi/linux/v4l2-controls.h            |    9 +
->  include/uapi/linux/videodev2.h                |   50 +-
->  sound/soc/fsl/fsl_asrc.c                      |  144 ++
->  sound/soc/fsl/fsl_asrc.h                      |    4 +-
->  sound/soc/fsl/fsl_asrc_dma.c                  |    2 +-
->  sound/soc/fsl/fsl_easrc.c                     |  233 +++
->  sound/soc/fsl/fsl_easrc.h                     |    6 +-
->  42 files changed, 3128 insertions(+), 27 deletions(-)
->  create mode 100644 Documentation/userspace-api/media/v4l/dev-audio-mem2mem.rst
->  create mode 100644 Documentation/userspace-api/media/v4l/ext-ctrls-audio-m2m.rst
->  create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-audio.rst
->  create mode 100644 drivers/media/platform/nxp/imx-asrc.c
->  create mode 100644 drivers/media/test-drivers/vim2m-audio.c
->  rename {sound/soc/fsl => include/sound}/fsl_asrc_common.h (60%)
-> 
+If necessary the core MM code should deal with this by iterating over
+adjacent tables.
 
+Jason
