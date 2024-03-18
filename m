@@ -2,56 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4FA87E8F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Mar 2024 12:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F9087EACC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Mar 2024 15:22:39 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bFMdFscK;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NhwipeGv;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NhwipeGv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TytX355Zxz3dXY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Mar 2024 22:52:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Tyxrr01lzz30Dg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 01:22:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bFMdFscK;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NhwipeGv;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NhwipeGv;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TytWM4Z6cz3byl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Mar 2024 22:52:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1710762733;
-	bh=i9CRW+oTEXP2RX7aLfZKKATP+J/BIcxQbk4aW/9GfOg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bFMdFscKQ2QCxC92JgF/Zg79/cxyFcsfp24B6DrhnTNMFC2/Tzo+bMwUBVJVjhY+7
-	 Olbnp1jZOS0zZ1U7lUC8/IBUt8lF/oxBCs/WrHKFDLJeLq3RIOz7/SYPTJnhZzglW5
-	 RW4mAtNvgvH5JvsSPiKHq/LmYZUom4GwxUegdAVtV+Isaorp9yHWrU9mmpuyGkEiMK
-	 LTx/LUSyWEA/Z/3+bvoLsTKUFwIIdeTI+XzFZk0MBxqKnLwHVXTmTqxXNRUw+GKZ7t
-	 cLTl7W/72ATt7xOU+tj4BCpOH9sHCvaSyaUHCJw+0FNlSNt196JdqEX/g94NnEgK/u
-	 LNGIlswB0H5WA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Tyxr54mmQz307y
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 01:21:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710771713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=F5ye388VWoErT8xKd/JXdRVRXGFtTvAxoGWVnY3cKSY=;
+	b=NhwipeGvrm54kiBMjob5kJxMv5bDvidUCd6ySMnKjB0BZagGY7ni2d5J06ypc4A672hju1
+	eQ/VaWwRIdfTtoW0mgJfQf1n7x2YL9/nVb3luyfI4crQsV19H31dzkqwSJSPJoOLOvpfcB
+	vYPlMOiaXaLb4LL7pAk6MU+6h7SN7xc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710771713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=F5ye388VWoErT8xKd/JXdRVRXGFtTvAxoGWVnY3cKSY=;
+	b=NhwipeGvrm54kiBMjob5kJxMv5bDvidUCd6ySMnKjB0BZagGY7ni2d5J06ypc4A672hju1
+	eQ/VaWwRIdfTtoW0mgJfQf1n7x2YL9/nVb3luyfI4crQsV19H31dzkqwSJSPJoOLOvpfcB
+	vYPlMOiaXaLb4LL7pAk6MU+6h7SN7xc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-wJFmYP1ANHGgSGjgt3Fcnw-1; Mon,
+ 18 Mar 2024 10:21:49 -0400
+X-MC-Unique: wJFmYP1ANHGgSGjgt3Fcnw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TytWK0ZL0z4wcF;
-	Mon, 18 Mar 2024 22:52:12 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Stephen Rothwell
- <sfr@canb.auug.org.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Andrew
- Morton <akpm@linux-foundation.org>
-Subject: Re: linux-next: manual merge of the powerpc tree with the mm-stable
- tree
-In-Reply-To: <61110d70-7b18-40a2-b3d2-6c267ab18096@csgroup.eu>
-References: <20240229101721.58569685@canb.auug.org.au>
- <87ttlrg4hm.fsf@mail.lhotse>
- <61110d70-7b18-40a2-b3d2-6c267ab18096@csgroup.eu>
-Date: Mon, 18 Mar 2024 22:52:12 +1100
-Message-ID: <87o7bbzrir.fsf@mail.lhotse>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 02C8F3C0F180;
+	Mon, 18 Mar 2024 14:21:49 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.12])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C88FE492BD0;
+	Mon, 18 Mar 2024 14:21:45 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Subject: [PATCH 0/6] mm/mm_init.c: refactor free_area_init_core()
+Date: Mon, 18 Mar 2024 22:21:32 +0800
+Message-ID: <20240318142138.783350-1-bhe@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,39 +76,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Baoquan He <bhe@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 29/02/2024 =C3=A0 07:37, Michael Ellerman a =C3=A9crit=C2=A0:
->> Stephen Rothwell <sfr@canb.auug.org.au> writes:
->>> Hi all,
->>>
->>> Today's linux-next merge of the powerpc tree got a conflict in:
->>>
->>>    arch/powerpc/mm/pgtable_32.c
->>>
->>> between commit:
->>>
->>>    a5e8131a0329 ("arm64, powerpc, riscv, s390, x86: ptdump: refactor CO=
-NFIG_DEBUG_WX")
->>>
->>> from the mm-stable tree and commit:
->>>
->>>    8f17bd2f4196 ("powerpc: Handle error in mark_rodata_ro() and mark_in=
-itmem_nx()")
->>>
->>> from the powerpc tree.
->>=20
->> Thanks. That's a fairly ugly conflict.
->>=20
->> Maybe I'll drop that patch until the generic change has gone in.
->>=20
->
-> The change is now in linus tree.
+In function free_area_init_core(), the code calculating
+zone->managed_pages and the subtracting dma_reserve from DMA zone looks
+very confusing.
 
-Thanks. I have moved my next up and applied your v2 on top of the
-upstream changes.
+From git history, the code calculating zone->managed_pages was for
+zone->present_pages originally. The early rough assignment is for
+optimize zone's pcp and water mark setting. Later, managed_pages was
+introduced into zone to represent the number of managed pages by buddy.
+Now, zone->managed_pages is zeroed out and reset in mem_init() when
+calling memblock_free_all(). zone's pcp and wmark setting relying on
+actual zone->managed_pages are done later than mem_init() invocation.
+So we don't need rush to early calculate and set zone->managed_pages,
+just set it as zone->present_pages, will adjust it in mem_init().
 
-cheers
+And also add a new function calc_nr_kernel_pages() to count up free but
+not reserved pages in memblock, then assign it to nr_all_pages and
+nr_kernel_pages after memmap pages are allocated.
+
+
+Baoquan He (6):
+  mm/mm_init.c: remove the useless dma_reserve
+  x86: remove unneeded memblock_find_dma_reserve()
+  mm/mm_init.c: add new function calc_nr_all_pages()
+  mm/mm_init.c: remove meaningless calculation of zone->managed_pages in
+    free_area_init_core()
+  mm/mm_init.c: remove unneeded calc_memmap_size()
+  mm/mm_init.c: remove arch_reserved_kernel_pages()
+
+ arch/powerpc/include/asm/mmu.h |   4 --
+ arch/powerpc/kernel/fadump.c   |   5 --
+ arch/x86/include/asm/pgtable.h |   1 -
+ arch/x86/kernel/setup.c        |   2 -
+ arch/x86/mm/init.c             |  47 -------------
+ include/linux/mm.h             |   4 --
+ mm/mm_init.c                   | 117 +++++++++------------------------
+ 7 files changed, 30 insertions(+), 150 deletions(-)
+
+-- 
+2.41.0
+
