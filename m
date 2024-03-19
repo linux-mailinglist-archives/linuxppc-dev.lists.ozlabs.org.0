@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F009887F938
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 09:14:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E44087F945
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 09:15:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IAVE/U+v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Jmq+2X6F;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TzPdz5FTnz3wNX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 19:14:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TzPfw1vYxz3wPY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 19:15:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IAVE/U+v;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Jmq+2X6F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2f; helo=mail-oa1-x2f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c31; helo=mail-oo1-xc31.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TzPKx3qNMz3vb4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 19:00:53 +1100 (AEDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-222ba2a19bdso1542325fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 01:00:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TzPL1704Sz3vY9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 19:00:57 +1100 (AEDT)
+Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-5a21859a4b8so2348798eaf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 01:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710835251; x=1711440051; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1710835255; x=1711440055; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fmYXUw1NFQqCkvaC1UircBJTaa68tPuVL3/2t/uANro=;
-        b=IAVE/U+v8ngULWGfdqMnwQ695q2mSAWTm3azovnG0MVy/ssGbOIu8uiv/HTQWooMhA
-         lODUSqWbEiI4M9ec443+jUdSOII9k8CDhohQ/wjzcqx/y88ZEbycLeAfekkF3Ehw+8H9
-         Vx+MLEkTggytpf8yvWMDNigX2zr2+ZSpmlYeWeT6ahdfk8h8gwwYnFwpS4SVcvN96gG/
-         Q11953hZlyPCet/mSStSZF19j0JohseQgAvc3K8LSwR8Ht1zJ1ImQxsI73Cr+hj+uAz7
-         fCabBqSBB/7yMu7e7De5mJOKZrFD6WSbnUpADZCCQKZsurFycEG6zKtPNG1vdV76IaR6
-         dGUA==
+        bh=GGo+1arrsYAVXsfTP4gQ2EL+vABqvISnH52kVRdFyBU=;
+        b=Jmq+2X6F4BpTTB26NgCj43lV69M3F/HgBEU0SAJq4+i81V+IM2awSyinsvE5CAUXzZ
+         hi0pvRXmVdQWCtcW4QQOJ22G2zw2b8MT1XCOlvHTkjD9ZHPn1SF2C3Jpfp7yAol3DhMO
+         HjC8Xme52WN/ZuBPsRRDv71SHOI2VFfjWIkDMbY1i04L5sqvt6Oxb6xMJ2NtrP4BViBL
+         oZSZufX5z6zzRmUXdUVxGjy2kQVQT/TTd5cdypqTZLydw2vKAZPKtbqc0K0llYq/fS8/
+         n6n+eCEcd/MtwyNBNsVBfygx1gE7Fnq7b9DMdmjL9U5gvLy0W6S0IvLWcbWBu+6eun0U
+         2O5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710835251; x=1711440051;
+        d=1e100.net; s=20230601; t=1710835255; x=1711440055;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fmYXUw1NFQqCkvaC1UircBJTaa68tPuVL3/2t/uANro=;
-        b=VAd61XQGSiOztr8e9a0ezWKPFuIy7MZnbQZgoMUj7rr9VVLj09b8Ju/25VxB0gkTjv
-         pzjk1DfbyrEkV+zy2uYLRxH5KV8zZUzWLNfs6mIllmkaf/Rv5osW+A43wRSQZm8esVh9
-         QANDZzMko4p6ri7SppUtqlyAUGSHPz+rIcqhsu0nmQod/FHaKFc8FNh+F7Rfy9PmrUrl
-         LUGTFVnfObmKIP6bKvE0KAdumIciHmzPqI+caM/3vYV9r7U2lJbe8/zBkcGkUebzZ34o
-         Sy4lBTpjl9Mz+AkkHnzZshsNl/0OC+7yy3T316orhGUEwQm9QxgPeiEmoZdPEuXuOoJx
-         p3bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXw7BDs1701Q3rHoznBfkj0cui5PCFsrlDC1YOhj3ZA8wM5a0UqHrpj89rsq4DsgMTVwnzoq/5FJyFuB/90RovHZoOIiWoIoABCQRHlUQ==
-X-Gm-Message-State: AOJu0YxpUp8c+0AhHtv7qAnXuZQyaOG8MYTQ16/iJ0CWXctK/nFm6wAk
-	LbB/PSqMTGGns0F0L8CKSXi7nmtNzxoSmjQG31YpiINVCjKYv1Yxn4vAwc1Nti8=
-X-Google-Smtp-Source: AGHT+IFfHuNzVGIE29NF+n08DtvfpVDdYpSp3yZpBjdFnpuN+dbSWe0Rtn2wUlx4d+yiEmJX+pa07w==
-X-Received: by 2002:a05:6870:e9a9:b0:21e:8590:6a5 with SMTP id r41-20020a056870e9a900b0021e859006a5mr15351073oao.2.1710835250874;
-        Tue, 19 Mar 2024 01:00:50 -0700 (PDT)
+        bh=GGo+1arrsYAVXsfTP4gQ2EL+vABqvISnH52kVRdFyBU=;
+        b=QdvPvx403vALAQmyfP6Y24X2AXjV3Jq+wn4Qwrasagh5crPNm5G4de7tcaYsI/5Svl
+         /q1LbA0VifUnArLxNyHJohJv6BefX0gS60/Na+KjLBSe/A+xSpzLyLIVwGZx0vUaUbz5
+         IeUa16YjCIrRo5bA9tLiJxLVf3/XLMA0hpjrjT8oD96+paO8DSxZURjAwmo0fQWAGUI6
+         c9p2JtIP4ArGIiT7bY+R99k4CssxeDxwfweCGOV8t8VkidC2IUwknmtCQkhqHNPLTKYU
+         8a+HNgQaWH8TjHBfYpy9Cp6x4vt5ls1GzYTHutLGfA5vuykmjdnK96/A1giJJfxtOYmW
+         Xyjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWU9FJA+6L2u+vwqNMjfNIhPtjJ64DQ4/WfdoU0oXN/FNz2VVzX1QuMNvnWbA7HWZJuOjvjvSGUhgylLeLMfPs4afDJzgw7QqF4o1F9Zg==
+X-Gm-Message-State: AOJu0YyJU/b+IFsqPz9bySrlmwYHLhvcKTbxw0I16Wa4Dz2EsIbGmEsf
+	HYmqQrN9tfMz7UKr9wA+zsVQAaWID2VnvwnTg0JjI+1lOfWB2vyfk5MtGvTCL1I=
+X-Google-Smtp-Source: AGHT+IFs4elYHLqSQaWxfOpvn0n1iBEA3/4l52mkNvpdgddck5fItF7mXhG/KqTc01Uq87acxqM7Qg==
+X-Received: by 2002:a05:6820:1629:b0:5a1:78c0:4327 with SMTP id bb41-20020a056820162900b005a178c04327mr13805982oob.4.1710835254929;
+        Tue, 19 Mar 2024 01:00:54 -0700 (PDT)
 Received: from wheely.local0.net (193-116-208-39.tpgi.com.au. [193.116.208.39])
-        by smtp.gmail.com with ESMTPSA id q23-20020a62ae17000000b006e5c464c0a9sm9121283pff.23.2024.03.19.01.00.47
+        by smtp.gmail.com with ESMTPSA id q23-20020a62ae17000000b006e5c464c0a9sm9121283pff.23.2024.03.19.01.00.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Mar 2024 01:00:50 -0700 (PDT)
+        Tue, 19 Mar 2024 01:00:54 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v7 20/35] powerpc: Add rtas stop-self support
-Date: Tue, 19 Mar 2024 17:59:11 +1000
-Message-ID: <20240319075926.2422707-21-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v7 21/35] powerpc: Remove broken SMP exception stack setup
+Date: Tue, 19 Mar 2024 17:59:12 +1000
+Message-ID: <20240319075926.2422707-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240319075926.2422707-1-npiggin@gmail.com>
 References: <20240319075926.2422707-1-npiggin@gmail.com>
@@ -83,148 +83,68 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for improved SMP support, add stop-self support to the
-harness. This is non-trivial because it requires an unlocked rtas
-call: a CPU can't be holding a spin lock when it goes offline or it
-will deadlock other CPUs. rtas permits stop-self to be called without
-serialising all other rtas operations.
+The exception stack setup does not work correctly for SMP, because
+it is the boot processor that calls cpu_set() which sets SPRG2 to
+the exception stack, not the target CPU itself. So secondaries
+never got their SPRG2 set to a valid exception stack.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Remove the SMP code and just set an exception stack for the boot
+processor. Make the stack 64kB while we're here, to match the
+size of the regular stack.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- lib/powerpc/asm/rtas.h |  2 ++
- lib/powerpc/rtas.c     | 78 +++++++++++++++++++++++++++++++++---------
- 2 files changed, 64 insertions(+), 16 deletions(-)
+ lib/powerpc/setup.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/lib/powerpc/asm/rtas.h b/lib/powerpc/asm/rtas.h
-index 6fb407a18..364bf9355 100644
---- a/lib/powerpc/asm/rtas.h
-+++ b/lib/powerpc/asm/rtas.h
-@@ -23,8 +23,10 @@ struct rtas_args {
- extern void rtas_init(void);
- extern int rtas_token(const char *service, uint32_t *token);
- extern int rtas_call(int token, int nargs, int nret, int *outputs, ...);
-+extern int rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret, int *outputs, ...);
+diff --git a/lib/powerpc/setup.c b/lib/powerpc/setup.c
+index 9b665f59c..496af40f8 100644
+--- a/lib/powerpc/setup.c
++++ b/lib/powerpc/setup.c
+@@ -42,10 +42,6 @@ struct cpu_set_params {
+ 	uint64_t tb_hz;
+ };
  
- extern void rtas_power_off(void);
-+extern void rtas_stop_self(void);
- #endif /* __ASSEMBLY__ */
- 
- #define RTAS_MSR_MASK 0xfffffffffffffffe
-diff --git a/lib/powerpc/rtas.c b/lib/powerpc/rtas.c
-index 41c0a243e..b477a38e0 100644
---- a/lib/powerpc/rtas.c
-+++ b/lib/powerpc/rtas.c
-@@ -87,40 +87,86 @@ int rtas_token(const char *service, uint32_t *token)
- 	return 0;
- }
- 
--int rtas_call(int token, int nargs, int nret, int *outputs, ...)
-+static void __rtas_call(struct rtas_args *args)
+-#define EXCEPTION_STACK_SIZE	(32*1024) /* 32kB */
+-
+-static char exception_stack[NR_CPUS][EXCEPTION_STACK_SIZE];
+-
+ static void cpu_set(int fdtnode, u64 regval, void *info)
  {
--	va_list list;
--	int ret, i;
-+	enter_rtas(__pa(args));
-+}
+ 	static bool read_common_info = false;
+@@ -56,10 +52,6 @@ static void cpu_set(int fdtnode, u64 regval, void *info)
  
--	spin_lock(&rtas_lock);
-+static int rtas_call_unlocked_va(struct rtas_args *args,
-+			  int token, int nargs, int nret, int *outputs,
-+			  va_list list)
-+{
-+	int ret, i;
+ 	cpus[cpu] = regval;
  
--	rtas_args.token = cpu_to_be32(token);
--	rtas_args.nargs = cpu_to_be32(nargs);
--	rtas_args.nret = cpu_to_be32(nret);
--	rtas_args.rets = &rtas_args.args[nargs];
-+	args->token = cpu_to_be32(token);
-+	args->nargs = cpu_to_be32(nargs);
-+	args->nret = cpu_to_be32(nret);
-+	args->rets = &args->args[nargs];
- 
--	va_start(list, outputs);
- 	for (i = 0; i < nargs; ++i)
--		rtas_args.args[i] = cpu_to_be32(va_arg(list, u32));
--	va_end(list);
-+		args->args[i] = cpu_to_be32(va_arg(list, u32));
- 
- 	for (i = 0; i < nret; ++i)
--		rtas_args.rets[i] = 0;
-+		args->rets[i] = 0;
- 
--	enter_rtas(__pa(&rtas_args));
-+	__rtas_call(args);
- 
- 	if (nret > 1 && outputs != NULL)
- 		for (i = 0; i < nret - 1; ++i)
--			outputs[i] = be32_to_cpu(rtas_args.rets[i + 1]);
-+			outputs[i] = be32_to_cpu(args->rets[i + 1]);
-+
-+	ret = nret > 0 ? be32_to_cpu(args->rets[0]) : 0;
-+
-+	return ret;
-+}
-+
-+int rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret, int *outputs, ...)
-+{
-+	va_list list;
-+	int ret;
- 
--	ret = nret > 0 ? be32_to_cpu(rtas_args.rets[0]) : 0;
-+	va_start(list, outputs);
-+	ret = rtas_call_unlocked_va(args, token, nargs, nret, outputs, list);
-+	va_end(list);
-+
-+	return ret;
-+}
-+
-+int rtas_call(int token, int nargs, int nret, int *outputs, ...)
-+{
-+	va_list list;
-+	int ret;
-+
-+	spin_lock(&rtas_lock);
-+
-+	va_start(list, outputs);
-+	ret = rtas_call_unlocked_va(&rtas_args, token, nargs, nret, outputs, list);
-+	va_end(list);
- 
- 	spin_unlock(&rtas_lock);
-+
- 	return ret;
+-	/* set exception stack address for this CPU (in SPGR0) */
+-	asm volatile ("mtsprg0 %[addr]" ::
+-		      [addr] "r" (exception_stack[cpu + 1]));
+-
+ 	if (!read_common_info) {
+ 		const struct fdt_property *prop;
+ 		u32 *data;
+@@ -180,6 +172,10 @@ static void mem_init(phys_addr_t freemem_start)
+ 					 ? __icache_bytes : __dcache_bytes);
  }
  
-+void rtas_stop_self(void)
-+{
-+	struct rtas_args args;
-+	uint32_t token;
-+	int ret;
++#define EXCEPTION_STACK_SIZE	SZ_64K
 +
-+	ret = rtas_token("stop-self", &token);
-+	if (ret) {
-+		puts("RTAS stop-self not available\n");
-+		return;
-+	}
++static char boot_exception_stack[EXCEPTION_STACK_SIZE];
 +
-+	ret = rtas_call_unlocked(&args, token, 0, 1, NULL);
-+	printf("RTAS stop-self returned %d\n", ret);
-+}
-+
- void rtas_power_off(void)
+ void setup(const void *fdt)
  {
-+	struct rtas_args args;
- 	uint32_t token;
- 	int ret;
+ 	void *freemem = &stacktop;
+@@ -189,6 +185,10 @@ void setup(const void *fdt)
  
-@@ -130,6 +176,6 @@ void rtas_power_off(void)
- 		return;
- 	}
+ 	cpu_has_hv = !!(mfmsr() & (1ULL << MSR_HV_BIT));
  
--	ret = rtas_call(token, 2, 1, NULL, -1, -1);
-+	ret = rtas_call_unlocked(&args, token, 2, 1, NULL, -1, -1);
- 	printf("RTAS power-off returned %d\n", ret);
- }
++	/* set exception stack address for this CPU (in SPGR0) */
++	asm volatile ("mtsprg0 %[addr]" ::
++		      [addr] "r" (boot_exception_stack));
++
+ 	enable_mcheck();
+ 
+ 	/*
 -- 
 2.42.0
 
