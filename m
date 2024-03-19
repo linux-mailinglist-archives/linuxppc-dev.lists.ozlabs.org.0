@@ -1,73 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427FB87F9A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 09:25:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A788A87FA61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 10:09:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JC73S4c9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SaXvhvnU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4TzPtj6WL4z3wPn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 19:25:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4TzQrd3Cylz3vXN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Mar 2024 20:09:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JC73S4c9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SaXvhvnU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4TzPMJ486gz3vgG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 19:02:04 +1100 (AEDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6e6ee9e3cffso3171443b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 01:02:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710835323; x=1711440123; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qexXpkpnrPosSamG4rwhfxX05W0nrjIaC9l6HzJDgrY=;
-        b=JC73S4c9futZDemDmz1NN56JmDHAqoRK8vHIC6O8qJJ1BHK8lJLJnzjakKhKr5b+WC
-         M7Ge7WhAwoBn85fGZbRpv5HBEZjgUuipWuezNzdzIvD62xj1DfroOCARbMw0eZ/sUhUC
-         D11j8Vi8c6SSi3U/FHFDlTkX3c+IKPGuPPZ60w51PnTq+J/KGQzzWRMtYT5yv97KRXlW
-         yZTNsL8uwnZod7E23PSo9pMpWr2TPEMI84ZKHX9Pxfvee7Ja5VjvmUCNt2bnX/9L7qXy
-         9zjLxLXqQMv0rsHV5qOmAtrdpZCgYl01QXdByqqoapaMilAWXjXvgAvFxC3KGt9G0LTn
-         Hplg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710835323; x=1711440123;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qexXpkpnrPosSamG4rwhfxX05W0nrjIaC9l6HzJDgrY=;
-        b=VdCKcd72gdej6xzyo6j3zWB9HDRgfJCV+lghOFA7TT58p5ZevsADestGIKeVD4lU9V
-         frrT9Q3/ABt9+kcSaeuZRDNLNu8EGYrosqviCPavlmwookRDSV1o3m53nyciPTGjOBg2
-         fN+I97sn4kAjU+Bo9YdOUPSzO2NMKlz67du4gbFx0QKbX8E9n1VveUKsEUK6CqQcY8kG
-         MgvOs/wUjLp/Iz2VGh+X3zvmngkpN6P+ABqMzcfr6rPCtakKE7P3Vui+Truc/aNQu+dn
-         PM2e9EC0RgOS6ekTvo6s5s/U4b957BNYddOqOqPq1myHndFZfOV3WHb9pe5bQDSp38EU
-         zEGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVpFgNq5TzGERV/vdlOYD8ao9sLOxL/++ltDLIxb/tz9Ys7EL/+OqSEvZCfxP9DtK7jh7VdIXV90ZPWQLQDQvk3Viz9YX1Bh0nlkIxecQ==
-X-Gm-Message-State: AOJu0YyicDllIIrB0tDP5PtytKJ8NfD31AlB/6VeMJSqMPzJ5d5tSxVi
-	tctW0oX0XqZXExB9Z/tRJB26ZwUuBIazHvLz90iTg5bWh5jNefGg
-X-Google-Smtp-Source: AGHT+IHs8YWGPGhmUNPd0Btq9HERv+NAaHotqwxHbqd2DVNc7XUkljS2Bi/D/KDM1wOxpVIcJpG6LA==
-X-Received: by 2002:a05:6a00:1a89:b0:6e6:c256:9d49 with SMTP id e9-20020a056a001a8900b006e6c2569d49mr2457020pfv.0.1710835322806;
-        Tue, 19 Mar 2024 01:02:02 -0700 (PDT)
-Received: from wheely.local0.net (193-116-208-39.tpgi.com.au. [193.116.208.39])
-        by smtp.gmail.com with ESMTPSA id q23-20020a62ae17000000b006e5c464c0a9sm9121283pff.23.2024.03.19.01.01.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Mar 2024 01:02:02 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v7 35/35] powerpc: gitlab CI update
-Date: Tue, 19 Mar 2024 17:59:26 +1000
-Message-ID: <20240319075926.2422707-36-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240319075926.2422707-1-npiggin@gmail.com>
-References: <20240319075926.2422707-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4TzQqv1YL9z30Pp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Mar 2024 20:08:26 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42J92R6A029460;
+	Tue, 19 Mar 2024 09:08:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : in-reply-to : references : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=S99aALjqHdt5vxeAAk7T9rQZ0KYFIS8P38QG1M9RXxs=;
+ b=SaXvhvnUCT0OOqT6Gb4lY5BqV8t/2YFNoZXuxiNN+XUsFLi1DBJRgkIoarmRIIYfxvgL
+ 2AUJhyg5/zhwrUvMC8Q3phAXnKDFktWXmhe5ukqR5mNskGgTgAVBbozIlgQGOLaox687
+ iMbi4AwwzX4qtWxDDbJBEd/CJAaDHNrv6fmR5I9RXiClNJSoii8q8MMuE7x19+A1jY6q
+ PR0X4op9S9EqM5e8HCQFuBAR7aGXBl1cgGWiENF+ssBzWFAAa5AMwWYZ80L8Q0jqSsGB
+ i0jL51+mbHKyXXobZx8ZOvYxqmnRdfqIYpQCLnuLZf9s08XdgDAcwQ643ZVcLj16zjpu ZQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wy7qhr16e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 09:08:07 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42J96v1a006375;
+	Tue, 19 Mar 2024 09:08:07 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wy7qhr164-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 09:08:06 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42J8U23i011615;
+	Tue, 19 Mar 2024 09:08:06 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wwq8kx792-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Mar 2024 09:08:06 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42J9835j44106156
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 Mar 2024 09:08:05 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7982858063;
+	Tue, 19 Mar 2024 09:08:03 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E0F8758065;
+	Tue, 19 Mar 2024 09:08:02 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 19 Mar 2024 09:08:02 +0000 (GMT)
+Date: Tue, 19 Mar 2024 10:08:02 +0100
+From: Tobias Huschle <huschle@linux.ibm.com>
+To: Luis Machado <luis.machado@arm.com>
+Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
+In-Reply-To: <66c4286e-deaf-44a0-be62-0928529ae73f@arm.com>
+References: <20240228161018.14253-1-huschle@linux.ibm.com>
+ <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
+ <ZfL/hROYxQudcTuX@DESKTOP-2CCOB1S.>
+ <66c4286e-deaf-44a0-be62-0928529ae73f@arm.com>
+Message-ID: <4b25ab45b762e64b9df09d4d12d8289f@linux.ibm.com>
+X-Sender: huschle@linux.ibm.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: WDxQaEywQuysNpKZbGQ-CLMB-p-6-mbS
+X-Proofpoint-GUID: cadWNAtsfNUd71EnJPbC7SXTnV4Ucb6I
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 suspectscore=0
+ mlxlogscore=998 phishscore=0 spamscore=0 adultscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403140000 definitions=main-2403190070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,122 +102,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, nd <nd@arm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds testing for the powernv machine, and adds a gitlab-ci test
-group instead of specifying all tests in .gitlab-ci.yml.
+On 2024-03-18 15:45, Luis Machado wrote:
+> On 3/14/24 13:45, Tobias Huschle wrote:
+>> On Fri, Mar 08, 2024 at 03:11:38PM +0000, Luis Machado wrote:
+>>> On 2/28/24 16:10, Tobias Huschle wrote:
+>>>> 
+>>>> Questions:
+>>>> 1. The kworker getting its negative lag occurs in the following 
+>>>> scenario
+>>>>    - kworker and a cgroup are supposed to execute on the same CPU
+>>>>    - one task within the cgroup is executing and wakes up the 
+>>>> kworker
+>>>>    - kworker with 0 lag, gets picked immediately and finishes its
+>>>>      execution within ~5000ns
+>>>>    - on dequeue, kworker gets assigned a negative lag
+>>>>    Is this expected behavior? With this short execution time, I 
+>>>> would
+>>>>    expect the kworker to be fine.
+>>> 
+>>> That strikes me as a bit odd as well. Have you been able to determine 
+>>> how a negative lag
+>>> is assigned to the kworker after such a short runtime?
+>>> 
+>> 
+>> I did some more trace reading though and found something.
+>> 
+>> What I observed if everything runs regularly:
+>> - vhost and kworker run alternating on the same CPU
+>> - if the kworker is done, it leaves the runqueue
+>> - vhost wakes up the kworker if it needs it
+>> --> this means:
+>>   - vhost starts alone on an otherwise empty runqueue
+>>   - it seems like it never gets dequeued
+>>     (unless another unrelated task joins or migration hits)
+>>   - if vhost wakes up the kworker, the kworker gets selected
+>>   - vhost runtime > kworker runtime
+>>     --> kworker gets positive lag and gets selected immediately next 
+>> time
+>> 
+>> What happens if it does go wrong:
+>> From what I gather, there seem to be occasions where the vhost either
+>> executes suprisingly quick, or the kworker surprinsingly slow. If 
+>> these
+>> outliers reach critical values, it can happen, that
+>>    vhost runtime < kworker runtime
+>> which now causes the kworker to get the negative lag.
+>> 
+>> In this case it seems like, that the vhost is very fast in waking up
+>> the kworker. And coincidentally, the kworker takes, more time than 
+>> usual
+>> to finish. We speak of 4-digit to low 5-digit nanoseconds.
+>> 
+>> So, for these outliers, the scheduler extrapolates that the kworker
+>> out-consumes the vhost and should be slowed down, although in the 
+>> majority
+>> of other cases this does not happen.
+> 
+> Thanks for providing the above details Tobias. It does seem like EEVDF 
+> is strict
+> about the eligibility checks and making tasks wait when their lags are
+> negative, even
+> if just a little bit as in the case of the kworker.
+> 
+> There was a patch to disable the eligibility checks
+> (https://lore.kernel.org/lkml/20231013030213.2472697-1-youssefesmat@chromium.org/),
+> which would make EEVDF more like EVDF, though the deadline comparison 
+> would
+> probably still favor the vhost task instead of the kworker with the
+> negative lag.
+> 
+> I'm not sure if you tried it, but I thought I'd mention it.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- .gitlab-ci.yml        | 20 ++++++++------------
- powerpc/unittests.cfg | 14 ++++++++------
- 2 files changed, 16 insertions(+), 18 deletions(-)
+Haven't seen that one yet. Unfortunately, it does not help to ignore the 
+eligibility.
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index bd34da04f..e3638b088 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -97,12 +97,10 @@ build-ppc64be:
-  - cd build
-  - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
-  - make -j2
-- - ACCEL=tcg ./run_tests.sh
--     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
--     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
--     emulator
--     | tee results.txt
-- - if grep -q FAIL results.txt ; then exit 1 ; fi
-+ - ACCEL=tcg MAX_SMP=8 ./run_tests.sh -g gitlab-ci | tee results.txt
-+ - grep -q PASS results.txt && ! grep -q FAIL results.txt
-+ - ACCEL=tcg MAX_SMP=8 MACHINE=powernv ./run_tests.sh -g gitlab-ci | tee results.txt
-+ - grep -q PASS results.txt && ! grep -q FAIL results.txt
- 
- build-ppc64le:
-  extends: .intree_template
-@@ -110,12 +108,10 @@ build-ppc64le:
-  - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
-  - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
-  - make -j2
-- - ACCEL=tcg ./run_tests.sh
--     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
--     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
--     emulator
--     | tee results.txt
-- - if grep -q FAIL results.txt ; then exit 1 ; fi
-+ - ACCEL=tcg MAX_SMP=8 ./run_tests.sh -g gitlab-ci | tee results.txt
-+ - grep -q PASS results.txt && ! grep -q FAIL results.txt
-+ - ACCEL=tcg MAX_SMP=8 MACHINE=powernv ./run_tests.sh -g gitlab-ci | tee results.txt
-+ - grep -q PASS results.txt && ! grep -q FAIL results.txt
- 
- # build-riscv32:
- # Fedora doesn't package a riscv32 compiler for QEMU. Oh, well.
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index 379aa166b..f6ddc4a7f 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -16,12 +16,12 @@
- file = selftest.elf
- smp = 2
- extra_params = -m 1g -append 'setup smp=2 mem=1024'
--groups = selftest
-+groups = selftest gitlab-ci
- 
- [selftest-migration]
- file = selftest-migration.elf
- machine = pseries
--groups = selftest migration
-+groups = selftest migration gitlab-ci
- # TODO: Remove accel=kvm once the following TCG migration fix has been merged:
- # https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@gmail.com/
- accel = kvm
-@@ -29,7 +29,7 @@ accel = kvm
- [selftest-migration-skip]
- file = selftest-migration.elf
- machine = pseries
--groups = selftest migration
-+groups = selftest migration gitlab-ci
- extra_params = -append "skip"
- 
- # This fails due to a QEMU TCG bug so KVM-only until QEMU is fixed upstream
-@@ -42,6 +42,7 @@ groups = migration
- [spapr_hcall]
- file = spapr_hcall.elf
- machine = pseries
-+groups = gitlab-ci
- 
- [spapr_vpa]
- file = spapr_vpa.elf
-@@ -52,24 +53,25 @@ file = rtas.elf
- machine = pseries
- timeout = 5
- extra_params = -append "get-time-of-day date=$(date +%s)"
--groups = rtas
-+groups = rtas gitlab-ci
- 
- [rtas-get-time-of-day-base]
- file = rtas.elf
- machine = pseries
- timeout = 5
- extra_params = -rtc base="2006-06-17" -append "get-time-of-day date=$(date --date="2006-06-17 UTC" +%s)"
--groups = rtas
-+groups = rtas gitlab-ci
- 
- [rtas-set-time-of-day]
- file = rtas.elf
- machine = pseries
- extra_params = -append "set-time-of-day"
- timeout = 5
--groups = rtas
-+groups = rtas gitlab-ci
- 
- [emulator]
- file = emulator.elf
-+groups = gitlab-ci
- 
- [interrupts]
- file = interrupts.elf
--- 
-2.42.0
+I'm inclined to rather propose propose a documentation change, which 
+describes that tasks should not rely on woken up tasks being scheduled 
+immediately.
+
+Changing things in the code to address for the specific scenario I'm 
+seeing seems to mostly create unwanted side effects and/or would require 
+the definition of some magic cut-off values.
+
 
