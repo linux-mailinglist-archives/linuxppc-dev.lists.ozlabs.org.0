@@ -1,76 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDD3880D8F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 09:48:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7126880ED3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 10:38:42 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aLZJSJL/;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aLZJSJL/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EFuQrpr1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V02L81zLLz3dTx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 19:48:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V03SJ1FQCz3dWW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 20:38:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aLZJSJL/;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aLZJSJL/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EFuQrpr1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V02KQ500fz2xdX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 19:47:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710924454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rFk7i7r/Rth0uc1ovX1/w3IsN+7Z5+mbDrMRpvOVhNM=;
-	b=aLZJSJL/+MqwPyu3Lmi2IhilGxKPkVXp4xOmgmjsEQnELPYq2ufbDm/xqVh+/BdVvxKcQt
-	RZhLQzYeBJQNaKZICG8qThr4eRDHV8nTfDtMz+ypZoV/+GPzAdTwlZ0J5corqiZwo5tjs+
-	LnueiNCt+OoMrMyCk5sCj5qAmFSDYvg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1710924454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rFk7i7r/Rth0uc1ovX1/w3IsN+7Z5+mbDrMRpvOVhNM=;
-	b=aLZJSJL/+MqwPyu3Lmi2IhilGxKPkVXp4xOmgmjsEQnELPYq2ufbDm/xqVh+/BdVvxKcQt
-	RZhLQzYeBJQNaKZICG8qThr4eRDHV8nTfDtMz+ypZoV/+GPzAdTwlZ0J5corqiZwo5tjs+
-	LnueiNCt+OoMrMyCk5sCj5qAmFSDYvg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-iyzdhYmPMSuJGahHdL-Mxg-1; Wed,
- 20 Mar 2024 04:47:30 -0400
-X-MC-Unique: iyzdhYmPMSuJGahHdL-Mxg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 409D02806044;
-	Wed, 20 Mar 2024 08:47:30 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.12])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 5AFA810E47;
-	Wed, 20 Mar 2024 08:47:29 +0000 (UTC)
-Date: Wed, 20 Mar 2024 16:47:22 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 4/6] mm/mm_init.c: remove meaningless calculation of
- zone->managed_pages in free_area_init_core()
-Message-ID: <ZfqimkC+L3M/3AYf@MiWiFi-R3L-srv>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V03RY5hwnz2y3b
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 20:38:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8652A61000;
+	Wed, 20 Mar 2024 09:37:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFA07C43390;
+	Wed, 20 Mar 2024 09:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710927476;
+	bh=6en8ZZ+fOEyondqQ+Wkc9mV58Xe+D619z940m0qzrm8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EFuQrpr1jzAOMq8F2IC3MV1yHDLmeckZtzWRKrHwdvnnIsPr3aiWwWV0UCpseJgMY
+	 CLVANZ2nMu20Vx/v7G0qEug+XY6D17CKFoScSKv7iSfSJc2Mk18dZpNZn4XDJFWD0v
+	 D0+Iz0wZTgbvswkA8UBsLimhMs893ReE4MErG0J74+jQX4sBmANFRvKSvZ41ojznqH
+	 QuINWdgXEerhnWjAkQVXdAWfUcu3ZMhme4xnes4TORjpi+glPdrPb1mPMv70cHmNA9
+	 fONx+GdtQX9iLu0n0AOPGjt2ahtYbmAaywQkrxrgvSP6aksTyWRav+DygUuV1rn+pp
+	 cjy7ab8i7wtKQ==
+Date: Wed, 20 Mar 2024 11:36:51 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH 2/6] x86: remove memblock_find_dma_reserve()
+Message-ID: <ZfquM06LOZB4vddu@kernel.org>
 References: <20240318142138.783350-1-bhe@redhat.com>
- <20240318142138.783350-5-bhe@redhat.com>
- <Zfm6gzhKUehLwM5-@kernel.org>
- <ZfqbygfNmFKpBCfR@MiWiFi-R3L-srv>
+ <20240318142138.783350-3-bhe@redhat.com>
+ <Zfmz_1sbbvSWMj9C@kernel.org>
+ <ZfqV1IEo3+cf9f9I@MiWiFi-R3L-srv>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfqbygfNmFKpBCfR@MiWiFi-R3L-srv>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+In-Reply-To: <ZfqV1IEo3+cf9f9I@MiWiFi-R3L-srv>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,54 +65,32 @@ Cc: linux-mm@kvack.org, akpm@linux-foundation.org, x86@kernel.org, linuxppc-dev@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/20/24 at 04:18pm, Baoquan He wrote:
-> On 03/19/24 at 06:17pm, Mike Rapoport wrote:
-> > On Mon, Mar 18, 2024 at 10:21:36PM +0800, Baoquan He wrote:
-> > > Currently, in free_area_init_core(), when initialize zone's field, a
-> > > rough value is set to zone->managed_pages. That value is calculated by
-> > > (zone->present_pages - memmap_pages).
-> > > 
-> > > In the meantime, add the value to nr_all_pages and nr_kernel_pages which
-> > > represent all free pages of system (only low memory or including HIGHMEM
-> > > memory separately). Both of them are gonna be used in
-> > > alloc_large_system_hash().
-> > > 
-> > > However, the rough calculation and setting of zone->managed_pages is
-> > > meaningless because
-> > >   a) memmap pages are allocated on units of node in sparse_init() or
-> > >      alloc_node_mem_map(pgdat); The simple (zone->present_pages -
-> > >      memmap_pages) is too rough to make sense for zone;
-> > >   b) the set zone->managed_pages will be zeroed out and reset with
-> > >      acutal value in mem_init() via memblock_free_all(). Before the
-> > >      resetting, no buddy allocation request is issued.
-> > > 
-> > > Here, remove the meaningless and complicated calculation of
-> > > (zone->present_pages - memmap_pages), directly set zone->present_pages to
-> > > zone->managed_pages. It will be adjusted in mem_init().
+On Wed, Mar 20, 2024 at 03:52:52PM +0800, Baoquan He wrote:
+> On 03/19/24 at 05:49pm, Mike Rapoport wrote:
+> > Hi Baoquan,
 > > 
-> > Do you mean "set zone->managed_pages to zone->present_pages"?
-> 
-> Hmm, maybe 'set zone->managed_pages as zone->present_pages'
->             or 
->            'assign zone->present_pages to zone->managed_pages'
-> which is more precise.
-> 
-> Wwill update.
-> 
+> > On Mon, Mar 18, 2024 at 10:21:34PM +0800, Baoquan He wrote:
+> > > This is not needed any more.
 > > 
-> > I think we can just set zone->managed_pages to 0 in free_area_init_core().
-> > Anyway it will be reset before the first use.
-
-Rethink about this, it's better to set zone->managed_pages to 0 because
-there isn't any page added to buddy. Will update.
-
+> > I'd swap this and the first patch, so that the first patch would remove
+> > memblock_find_dma_reserve() and it's changelog will explain why it's not
+> > needed and then the second patch will simply drop unused set_dma_reserve()
 > 
-> Yeah, setting to 0 is also fine. I thougt of 0 ever. Considering
-> zone->present_pages is closer value to actual zone->managed_pages
-> than 0, and it may be needed in the future in some way before
-> mem_init(). If no strong objection, I will keep the assigning
-> 'zone->present_pages' to 'zone->managed_pages'.
+> Thanks, Mike.
 > 
-> Thanks again for careful reviewing.
-> 
+> My thought on the patch 1/2 splitting is:
+> patch 1 is removing all relevant codes in mm, including the usage of
+> dma_reserve in free_area_init_core() and exporting set_dma_reserve()
+> to any ARCH which want to subtract the dma_reserve from DMA zone.
+>
+> Patch 2 purely remove the code in x86 ARCH about how to get dma_reserve.
+ 
+I think it's better first to remove the usage of set_dma_reserve() in x86
+and then clean up the unused code.
 
+> Your suggestion is also good to me, I can rearrange the order and
+> repost.
+
+-- 
+Sincerely yours,
+Mike.
