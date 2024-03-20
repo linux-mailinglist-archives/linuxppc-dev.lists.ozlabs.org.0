@@ -1,72 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C41F8812B4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 14:51:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E2E881326
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 15:15:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=thzeN1GR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FQykwYmb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V094V31gyz3dXY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 00:51:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V09c81ZzXz3dlY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 01:15:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=thzeN1GR;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FQykwYmb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=vincent.guittot@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V093m0Vttz3bX3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 00:51:14 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-29dedcd244dso4580461a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 06:51:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V09bM4Tx2z3brm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 01:15:10 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6e703e0e5deso3542125b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 07:15:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710942671; x=1711547471; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y8e4BaWXclywnzI3Jk7S4TKlOxYeGBb8JSlPzQCJxxg=;
-        b=thzeN1GRkZ56ZOE2kkAszo2pJzbnOAF826qFwsQv9uFMYaP7rkkL9/Jsx32ZsXuZPD
-         6Mkjz2i3BICYTW7TFUC7+eyRvdZxo0viOUv76+wvmD/4PVTBbTexkoCaddwUfXs0AeHR
-         PLZ6poVU65c64qsx7tB06fTYmI++YMDu6zTSucBxcCWMbnvC0skSoYAilEGQmlyhRRyT
-         h12Hi+fJz7j57KhTLjSpny5fdOtjIvCQfC4eSKDg9CWyzTazNpgYQcHkhxCuO/PVuMAS
-         XJGjIfFVu/BdoH8O0phhvFkSsQpnT/tFfB4uac60uc/lgL+Vh0McpzNEso++yhGTLgQA
-         3kCg==
+        d=gmail.com; s=20230601; t=1710944107; x=1711548907; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cyMQ+8dkMkvcjrYhj/YbvYKdLMOP0zpLYG0B4M+Jlis=;
+        b=FQykwYmb0/6mS2A6uNIu00d5JMFMuiXOU7BAx5SvmzB9AmJE6HOw5eFWA1B1wyYlcL
+         Hw1YdQ4F0s7aZdDD2DIs3xrBXRGFR8PaOGQGpHq5TLANVL0qqHp0GAb9zeqj7t4hiRtv
+         Q913C9GJqCiEOZCVSjh4tDqg78OxZ0OdmkAlFb9R8leB7aLYTKU7pCNcuWosEZ9V246H
+         F03G8U5B1HuWAuX5ViC+IIxTb4PjafkedIeTQb7e/3hz1TzLYk6CKPIWjAmY7PXWLtYu
+         fRZgx8u0MVh1nsEi172MBJfmwylrYC4Vti5aFboI08fwBOKXxaZC3sWClfcXFnwnhPpC
+         ddAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710942671; x=1711547471;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y8e4BaWXclywnzI3Jk7S4TKlOxYeGBb8JSlPzQCJxxg=;
-        b=ITIpewfclPiO9nNpNk8W7P9B7Lcxivl1wn5VO8oFOZmC1K3+U8rtohhr+c7MsAQKba
-         8mPl9TgzElnkCBE8V81o342h8L8eLG9HmpW8Qy0Us988Etor4Kw7DiH2+8NSTOUlZk5Y
-         9njqe6YxLA/+d1PqPM40oVLDEIIRTFDoSDq3f5noQp496eLZ58dOrd09bZimGmJVwRrn
-         cHH15rcAGfMYztXR75lup9NN2tE+NobBCkkb6QeCYPvNgaLuAazv3zi1E2RD611nSJGj
-         zFDoW5HJXZ5uNY8oV6N43Sxmt07IT1SBTMi91xvI7tyl7RGRbONWSywug+Xvk7G/PL1P
-         7ryw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCU1yM6+451prUhM//HdK7z1Px913dIi63ILw8T9/kOk3mEJLZIlGztjycavoWbpCK+JIjfDGrr0q/pl/7sz8/uOdvQ/5+SphgcSiIRA==
-X-Gm-Message-State: AOJu0YxR60Epz1iOUpgG3LZBNsPAOUO5ykWcl5JAlYyFM/MsqNsvXMn3
-	UKBDV1r392HzgO5TrhZt7/M21/M3Ef8Ggch08F8YAUzcigdaqOTsuGWV8Q7EyI7QbVmQOdeI+t6
-	XGtUiPmEwteP8r5zpIjdMMLzVou86ZNYXBpQ0ow==
-X-Google-Smtp-Source: AGHT+IFsUIwk02qC8x3xR6wX6hTw++PqVrYDzZneUQhrgnsJwX1DHRCbykwe+cTEelP+DZO8ncZNxbGnxie1HjumVQU=
-X-Received: by 2002:a17:90a:77cc:b0:29f:ea48:375c with SMTP id
- e12-20020a17090a77cc00b0029fea48375cmr3411136pjs.42.1710942671518; Wed, 20
- Mar 2024 06:51:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240228161018.14253-1-huschle@linux.ibm.com> <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
- <ZfL/hROYxQudcTuX@DESKTOP-2CCOB1S.> <66c4286e-deaf-44a0-be62-0928529ae73f@arm.com>
- <4b25ab45b762e64b9df09d4d12d8289f@linux.ibm.com> <CAKfTPtDyrsnq-CSFo+upzdOJpuH=JkRzSALad-OL29OvqkK2dg@mail.gmail.com>
- <65fa8a7c.050a0220.c8ec5.0278SMTPIN_ADDED_BROKEN@mx.google.com>
-In-Reply-To: <65fa8a7c.050a0220.c8ec5.0278SMTPIN_ADDED_BROKEN@mx.google.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Wed, 20 Mar 2024 14:51:00 +0100
-Message-ID: <CAKfTPtBA7ECeYJYdzL9ybeXLbpEudLfB6V9s+DZiJUmpnPf_kQ@mail.gmail.com>
-Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
-To: Tobias Huschle <huschle@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20230601; t=1710944107; x=1711548907;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cyMQ+8dkMkvcjrYhj/YbvYKdLMOP0zpLYG0B4M+Jlis=;
+        b=uvnNP86gcAKiucTDHWyK9eREEzU01FYuUWuFJMhKycQ70W+AgxvTXmbGzoeNBS1Tqg
+         YX0QubCoiqiiZZDwszTSFi3indB8BSTIRgSRTaOIqio7txaBitmWDn2/FpRYBu3n/UHC
+         e0ZLX73JhUhgbumxmRANAImsyrys8/7p4lYA3IvaJk80h3O9gltiYvTMvcJSjmo+SkYL
+         B6w0jlorIC1kufo+SFOPqtdk8bFt3OVgYsJIeqdfG9oyFTE5RR1JmP7xyMKxE66diHFY
+         90qaLU0TBmngW+hwmVqRYJdr6eoxctbDCN0/vvrGQgl6IrQb75SLALPNS7iTC5mKztAJ
+         ZXhQ==
+X-Gm-Message-State: AOJu0YzZzG3aRvB1AFOx4g5jt8Jhx2Yks5dvQzTV1wtwguDDXCQsKp4u
+	pdO3UcC5eFSDbi2Ya5NxWN20EMIFcjCvCms6XbexyP173oawjkQ+
+X-Google-Smtp-Source: AGHT+IEBoSbM9cPtFd7ZC+s4hE1kj4RJvDY5Pf8+BlYELGhMMMflFhnxv7spDETq1/cWJeznnbL6PQ==
+X-Received: by 2002:a05:6a00:2d8f:b0:6e7:8218:e75 with SMTP id fb15-20020a056a002d8f00b006e782180e75mr2504299pfb.7.1710944107582;
+        Wed, 20 Mar 2024 07:15:07 -0700 (PDT)
+Received: from localhost (193-116-208-39.tpgi.com.au. [193.116.208.39])
+        by smtp.gmail.com with ESMTPSA id gu25-20020a056a004e5900b006e7040519a1sm8260357pfb.216.2024.03.20.07.15.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Mar 2024 07:15:07 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 Mar 2024 00:15:01 +1000
+Message-Id: <CZYN2DBLH8Q2.U5H1A6VDAUY7@wheely>
+Subject: Re: [PATCH] arch/powerpc/kvm: Add support for reading VPA counters
+ for pseries guests
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Gautam Menghani" <gautam@linux.ibm.com>, <mpe@ellerman.id.au>,
+ <christophe.leroy@csgroup.eu>, <aneesh.kumar@kernel.org>,
+ <naveen.n.rao@linux.ibm.com>
+X-Mailer: aerc 0.15.2
+References: <20240319142807.95547-1-gautam@linux.ibm.com>
+In-Reply-To: <20240319142807.95547-1-gautam@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,51 +82,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, vschneid@redhat.com, srikar@linux.vnet.ibm.com, Luis Machado <luis.machado@arm.com>, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, nd <nd@arm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 20 Mar 2024 at 08:04, Tobias Huschle <huschle@linux.ibm.com> wrote:
+On Wed Mar 20, 2024 at 12:28 AM AEST, Gautam Menghani wrote:
+> PAPR hypervisor has introduced three new counters in the VPA area of
+> LPAR CPUs for KVM L2 guest (see [1] for terminology) observability - 2
+> for context switches from host to guest and vice versa, and 1 counter
+> for getting the total time spent inside the KVM guest. Add a tracepoint
+> that enables reading the counters for use by ftrace/perf. Note that this
+> tracepoint is only available for nestedv2 API (i.e, KVM on PowerVM).
 >
-> On Tue, Mar 19, 2024 at 02:41:14PM +0100, Vincent Guittot wrote:
-> > On Tue, 19 Mar 2024 at 10:08, Tobias Huschle <huschle@linux.ibm.com> wrote:
-> > >
-...
-> > >
-> > > Haven't seen that one yet. Unfortunately, it does not help to ignore the
-> > > eligibility.
-> > >
-> > > I'm inclined to rather propose propose a documentation change, which
-> > > describes that tasks should not rely on woken up tasks being scheduled
-> > > immediately.
-> >
-> > Where do you see such an assumption ? Even before eevdf, there were
-> > nothing that ensures such behavior. When using CFS (legacy or eevdf)
-> > tasks, you can't know if the newly wakeup task will run 1st or not
-> >
+> [1] Terminology:
+> a. L1 refers to the VM (LPAR) booted on top of PAPR hypervisor
+> b. L2 refers to the KVM guest booted on top of L1.
 >
-> There was no guarantee of course. place_entity was reducing the vruntime of
-> woken up tasks though, giving it a slight boost, right?. For the scenario
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/kvm_host.h |  5 +++++
+>  arch/powerpc/include/asm/lppaca.h   | 11 ++++++++---
+>  arch/powerpc/kvm/book3s_hv.c        | 20 ++++++++++++++++++++
+>  arch/powerpc/kvm/trace_hv.h         | 24 ++++++++++++++++++++++++
+>  4 files changed, 57 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/a=
+sm/kvm_host.h
+> index 8abac5321..26d7bb4b9 100644
+> --- a/arch/powerpc/include/asm/kvm_host.h
+> +++ b/arch/powerpc/include/asm/kvm_host.h
+> @@ -847,6 +847,11 @@ struct kvm_vcpu_arch {
+>  	gpa_t nested_io_gpr;
+>  	/* For nested APIv2 guests*/
+>  	struct kvmhv_nestedv2_io nestedv2_io;
+> +
+> +	/* For VPA counters having context switch and guest run time info (in n=
+s) */
+> +	u64 l1_to_l2_cs;
+> +	u64 l2_to_l1_cs;
+> +	u64 l2_runtime;
+>  #endif
+> =20
+>  #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
 
-It was rather the opposite, It was ensuring that long sleeping tasks
-will not get too much bonus because of vruntime too far in the past.
-This is similar although not exactly the same intent as the lag. The
-bonus was up to 24ms previously whereas it's not more than a slice now
+These aren't required here if it's just used for tracing over
+a single run vcpu call are they?
 
-> that I observed, that boost was enough to make sure, that the woken up tasks
-> gets scheduled consistently. This might still not be true for all scenarios,
-> but in general EEVDF seems to be stricter with woken up tasks.
->
-> Dismissing the lag on wakeup also does obviously not guarantee getting
-> scheduled, as other tasks might still be involved.
->
-> The question would be if it should be explicitly mentioned somewhere that,
-> at this point, woken up tasks are not getting any special treatment and
-> noone should rely on that boost for woken up tasks.
->
-> > >
-> > > Changing things in the code to address for the specific scenario I'm
-> > > seeing seems to mostly create unwanted side effects and/or would require
-> > > the definition of some magic cut-off values.
-> > >
-> > >
+> diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm=
+/lppaca.h
+> index 61ec2447d..bda6b86b9 100644
+> --- a/arch/powerpc/include/asm/lppaca.h
+> +++ b/arch/powerpc/include/asm/lppaca.h
+> @@ -62,7 +62,8 @@ struct lppaca {
+>  	u8	donate_dedicated_cpu;	/* Donate dedicated CPU cycles */
+>  	u8	fpregs_in_use;
+>  	u8	pmcregs_in_use;
+> -	u8	reserved8[28];
+> +	u8	l2_accumul_cntrs_enable;  /* Enable usage of counters for KVM guest =
+*/
+> +	u8	reserved8[27];
+>  	__be64	wait_state_cycles;	/* Wait cycles for this proc */
+>  	u8	reserved9[28];
+>  	__be16	slb_count;		/* # of SLBs to maintain */
+> @@ -92,9 +93,13 @@ struct lppaca {
+>  	/* cacheline 4-5 */
+> =20
+>  	__be32	page_ins;		/* CMO Hint - # page ins by OS */
+> -	u8	reserved12[148];
+> +	u8	reserved12[28];
+> +	volatile __be64 l1_to_l2_cs_tb;
+> +	volatile __be64 l2_to_l1_cs_tb;
+> +	volatile __be64 l2_runtime_tb;
+> +	u8 reserved13[96];
+>  	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
+> -	u8	reserved13[96];
+> +	u8	reserved14[96];
+>  } ____cacheline_aligned;
+> =20
+>  #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 2b04eba90..b94461b5f 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4092,6 +4092,7 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcp=
+u *vcpu, u64 time_limit,
+>  	unsigned long msr, i;
+>  	int trap;
+>  	long rc;
+> +	struct lppaca *lp =3D get_lppaca();
+
+Does get_lppaca() emit some inline asm that can't be optimised?
+Could move it under the unlikely branches if so.
+
+> =20
+>  	io =3D &vcpu->arch.nestedv2_io;
+> =20
+
+KVM L0 could in theory provide this for v1 L1s too, so could this
+be done at a higher level to cover both?
+
+> @@ -4107,6 +4108,17 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vc=
+pu *vcpu, u64 time_limit,
+>  	kvmppc_gse_put_u64(io->vcpu_run_input, KVMPPC_GSID_LPCR, lpcr);
+> =20
+>  	accumulate_time(vcpu, &vcpu->arch.in_guest);
+> +
+> +	/* Reset the guest host context switch timing */
+> +	if (unlikely(trace_kvmppc_vcpu_exit_cs_time_enabled())) {
+> +		lp->l2_accumul_cntrs_enable =3D 1;
+> +		lp->l1_to_l2_cs_tb =3D 0;
+> +		lp->l2_to_l1_cs_tb =3D 0;
+> +		lp->l2_runtime_tb =3D 0;
+> +	} else {
+> +		lp->l2_accumul_cntrs_enable =3D 0;
+> +	}
+
+Instead of zeroing here zero after the exit, which avoids the
+else branch and possibly avoids an obscure race with the counters.
+What if trace_kvmppc_vcpu_exit_cs_time_enabled() is false here...
+
+> +
+>  	rc =3D plpar_guest_run_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id,
+>  				  &trap, &i);
+> =20
+> @@ -4133,6 +4145,14 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vc=
+pu *vcpu, u64 time_limit,
+> =20
+>  	timer_rearm_host_dec(*tb);
+> =20
+> +	/* Record context switch and guest_run_time data */
+> +	if (unlikely(trace_kvmppc_vcpu_exit_cs_time_enabled())) {
+> +		vcpu->arch.l1_to_l2_cs =3D tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
+> +		vcpu->arch.l2_to_l1_cs =3D tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
+> +		vcpu->arch.l2_runtime =3D tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
+> +		trace_kvmppc_vcpu_exit_cs_time(vcpu);
+> +	}
+
+... and true here. If it had been previously true then it would trace
+stale values I think?
+
+Would something like this work?
+
+  if (unlikely(trace_kvmppc_vcpu_exit_cs_time_enabled()))
+    get_lppaca()->l2_accumul_cntrs_enable =3D 1;
+
+  [run vcpu ; ...]
+
+  if (unlikely(trace_kvmppc_vcpu_exit_cs_time_enabled()))
+    do_trace_nested_cs_time(vcpu);=20
+
+ ...
+
+static void do_trace_nested_cs_time(struct vcpu *vcpu)
+{
+    struct lppaca *lp =3D get_lppaca();
+    u64 l1_to_l2, l2_to_l1, l2_runtime;
+
+    if (!lp->l2_accumul_cntrs_enable)
+      return;
+
+    l1_to_l2 =3D tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
+    l2_to_l1 =3D tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
+    l2_runtime =3D tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
+    trace_kvmppc_vcpu_exit_cs_time(vcpu->cpu_id, l1_to_l2,
+                                   l2_to_l1, l2_runtime);
+    lp->l1_to_l2_cs_tb =3D 0;
+    lp->l2_to_l1_cs_tb =3D 0;
+    lp->l2_runtime_tb =3D 0;
+    lp->l2_accumul_cntrs_enable =3D 0;
+}
+
