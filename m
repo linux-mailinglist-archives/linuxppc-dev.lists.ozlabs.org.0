@@ -1,69 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951AC8818F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Mar 2024 22:09:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C1B881A4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 01:05:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FyIhWhLD;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=HyiVzWJU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V0Ln236wRz3dWh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 08:09:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V0Qgw5h8Dz3fQH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 11:05:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=FyIhWhLD;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=HyiVzWJU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0LmH2K8yz2ykC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 08:08:29 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-29f93c4946cso275158a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 14:08:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1710968906; x=1711573706; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uLkYzB5+ZTvWOiX3IvyY6oP/ICYdTVuS+z29/pPznQ8=;
-        b=FyIhWhLDhZEWmrYjT6tEkN2HR66A2qZeoYogDHOqO9+mz33i2l6VSPoWYrqGDyTVas
-         4BQ6rAn/xSm65yV/VDBvkCr5q+vbKV5vQkuHFyDb6VLitADvt3l/EYYxOnavAHP9ee1P
-         9BCauk3KZdrRH6d4BAZX+7FYGidRaEH5tzlao=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710968906; x=1711573706;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLkYzB5+ZTvWOiX3IvyY6oP/ICYdTVuS+z29/pPznQ8=;
-        b=pDHmg1Zqieit2JFYk3/duXbIbKDmSF1xmhxdsVob3GH1YxwS7YXGC3f+bNdw1uwsy/
-         VPAukgiuN5/BaO7E+PdXHfIzsZpcSbdjTP2nmYiz77AXT0z6MfOHX6zXRgH5tnXsPCdA
-         7aYNLpyKd8S+LLtE0SH/dgPI4E2drAtQ8MVnUUwv86YcW1GE7tQkAFv+mDfkGUBdk6Gi
-         pBW+03XlO922AZgEqwjVXdhy+anadEMqsvotF/I3yELMoTvSfreFW/ssydkf5jyASSzJ
-         exG9oRqJhMjgFE7qrXhOHZO8qae7nteiyFpiQHWAYZ64BhxGt3Op1qaesWo9qSY6ykTs
-         Ll7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWGzHbvV3Dt/UrjfuNShIvbf4rf25pvGNXfjZZ/wLjrzuKqztXah7zTn/O47HoHxp117S9NT03v6vGvmUdIu++Z7m4TaIHeikOPvKVhRg==
-X-Gm-Message-State: AOJu0YxNENBdkHjPmYF3q4LF31+JGV1jj5zQy+6HK3N14buvIev5UJLE
-	sal43rtyBsS3u1P0cIT+SyTxqilFsi0tgPTZorXXkSHTkYtesoiOAZPDC0Arrw==
-X-Google-Smtp-Source: AGHT+IFltwN6J3gvzQbI/NEeVt7wOISvzFFbommwSsWSGAWyfbnUCH2tsn1YPIhLgukC979AFUKfHQ==
-X-Received: by 2002:a17:90b:2c8d:b0:29f:b0a6:3c5 with SMTP id sw13-20020a17090b2c8d00b0029fb0a603c5mr206050pjb.49.1710968906551;
-        Wed, 20 Mar 2024 14:08:26 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id so15-20020a17090b1f8f00b002a0187d84f0sm162906pjb.20.2024.03.20.14.08.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 14:08:26 -0700 (PDT)
-Date: Wed, 20 Mar 2024 14:08:25 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH] vdso: use CONFIG_PAGE_SHIFT in vdso/datapage.h
-Message-ID: <202403201408.48C8AC89A@keescook>
-References: <20240320180228.136371-1-arnd@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0Qg34HRJz2xFt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 11:04:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=AuTy0DBYYdG/QKWrIh0uagTUXUFOgXWy8+vXQ7SNEJg=; b=HyiVzWJUKN7zEobwCSfi5HSpo8
+	+qncGtgXNEe8ND8EP7iESrJwebcnFQ7UO1NaP1y9w+ggyVBvnSTRIs00CKQaYz1qUrjQavuym+Q59
+	ErKVvwWvs9RGnWA16WZEpMfAWrbH/A9I99bRvzob1FvUmd7/y9seJi9FkoS+diObsYDI4molelB8i
+	TVJ/4N3YosCxpq6guZAnN8IxTbdoI5qRiegSVQuOsoo0hOukfbPQm2eiJYwu2iin6IoLpdeTOPVh4
+	7fK+ahU5aAULDrKaXfML1vgGvgSLoXAmCs2hti2cszJa8BcR8lywPlSJV/dxjq1QlJ2CYf5slz5xS
+	4Sf0bblw==;
+Received: from fpd2fa7e2a.ap.nuro.jp ([210.250.126.42] helo=[192.168.1.8])
+	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rn5uG-00000005TT9-33Nm;
+	Thu, 21 Mar 2024 00:03:41 +0000
+Message-ID: <5a40e58c-b38d-4bbd-8376-ebdc0c2cc47b@infradead.org>
+Date: Thu, 21 Mar 2024 09:03:29 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240320180228.136371-1-arnd@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: ps3: mark ps3_notification_device static for
+ stack usage
+Content-Language: en-US
+To: Arnd Bergmann <arnd@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@ozlabs.org>,
+ Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+References: <20240320180333.151043-1-arnd@kernel.org>
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <20240320180333.151043-1-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,48 +62,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andy Lutomirski <luto@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Kevin Hao <haokexin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 20, 2024 at 07:02:15PM +0100, Arnd Bergmann wrote:
+On 3/21/24 03:03, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Both the vdso rework and the CONFIG_PAGE_SHIFT changes were merged during
-> the v6.9 merge window, so it is now possible to use CONFIG_PAGE_SHIFT
-> instead of including asm/page.h in the vdso.
+> The device is way too large to be on the stack, causing a warning for
+> an allmodconfig build with clang:
 > 
-> This avoids the workaround for arm64 and addresses a build warning
-> for powerpc64:
+> arch/powerpc/platforms/ps3/device-init.c:771:12: error: stack frame size (2064) exceeds limit (2048) in 'ps3_probe_thread' [-Werror,-Wframe-larger-than]
+>   771 | static int ps3_probe_thread(void *data)
 > 
-> In file included from <built-in>:4:
-> In file included from /home/arnd/arm-soc/arm-soc/lib/vdso/gettimeofday.c:5:
-> In file included from ../include/vdso/datapage.h:25:
-> arch/powerpc/include/asm/page.h:230:9: error: result of comparison of constant 13835058055282163712 with expression of type 'unsigned long' is always true [-Werror,-Wtautological-constant-out-of-range-compare]
->   230 |         return __pa(kaddr) >> PAGE_SHIFT;
->       |                ^~~~~~~~~~~
-> arch/powerpc/include/asm/page.h:217:37: note: expanded from macro '__pa'
->   217 |         VIRTUAL_WARN_ON((unsigned long)(x) < PAGE_OFFSET);              \
->       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-> arch/powerpc/include/asm/page.h:202:73: note: expanded from macro 'VIRTUAL_WARN_ON'
->   202 | #define VIRTUAL_WARN_ON(x)      WARN_ON(IS_ENABLED(CONFIG_DEBUG_VIRTUAL) && (x))
->       |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-> arch/powerpc/include/asm/bug.h:88:25: note: expanded from macro 'WARN_ON'
->    88 |         int __ret_warn_on = !!(x);                              \
->       |                                ^
+> There is only a single thread that ever accesses this, so it's fine to
+> make it static, which avoids the warning.
 > 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-> Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
-> See-also: 8b3843ae3634 ("vdso/datapage: Quick fix - use asm/page-def.h for ARM64")
+> Fixes: b4cb2941f855 ("[POWERPC] PS3: Use the HVs storage device notification mechanism properly")
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/powerpc/platforms/ps3/device-init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
+> index 878bc160246e..ce99f06698a9 100644
+> --- a/arch/powerpc/platforms/ps3/device-init.c
+> +++ b/arch/powerpc/platforms/ps3/device-init.c
+> @@ -770,7 +770,7 @@ static struct task_struct *probe_task;
+>  
+>  static int ps3_probe_thread(void *data)
+>  {
+> -	struct ps3_notification_device dev;
+> +	static struct ps3_notification_device dev;
+>  	int res;
+>  	unsigned int irq;
+>  	u64 lpar;
 
-Thanks for tracking this!
+Seems fine.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Geoff Levand <geoff@infradead.org>
 
--- 
-Kees Cook
