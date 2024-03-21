@@ -1,55 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89736885695
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 10:33:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E8B8858F1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 13:19:36 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Oc2UNrB6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pbxcKG74;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V0gJ02nK8z3vXD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 20:33:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V0kzV55Rxz3dSn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 23:19:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Oc2UNrB6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pbxcKG74;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0gHD4NKwz3cDT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 20:32:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=webeErP71bGrCtrnKMl3CyhYpAF0y0SlAUiPvCaWPVw=; b=Oc2UNrB6E4lFSOnZpA7d1IatjG
-	W6hsUIFRGF6ZFdsUcV+Adz6oXUqJdPj+7cEAaWcSBjDWNgoRuI2o27QS02PykktSaeAZdv749sCRa
-	GdhddvtLxLuV4PC7ecOpTa1Y/35qamO+DvRbrZCenbBNBj3ZolBVbDPH/6oOyDG9UQpmYYsgMTitk
-	keK7SpcRac5G2tKjYbEz4qh0FgAbUW/zsobZ/WBh/npQDKa63ho3GLNifaGtQM7cc1/VHRA70bpV0
-	wrvzKP3/QqHx02S0Azo0b9GZC6bYxv2ww0qOEcALXPKWsZBEKrHBF6rbKfJCMZt3IeZ48LE5HcH0T
-	OTZF9h8g==;
-Received: from fpd2fa7e2a.ap.nuro.jp ([210.250.126.42] helo=[192.168.1.8])
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rnEmp-00000006Qam-3O3a;
-	Thu, 21 Mar 2024 09:32:36 +0000
-Message-ID: <ec1b6bdf-1676-48fb-99f0-a8cc2a99dd17@infradead.org>
-Date: Thu, 21 Mar 2024 18:32:25 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0kyn2Sm8z3d2j
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 23:18:57 +1100 (AEDT)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42LBbtDm018953;
+	Thu, 21 Mar 2024 12:18:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=X62us59Pvqeqmm1GjmKBYwVbjEXqdctN/u1yZ3LFFdI=;
+ b=pbxcKG74TNPUnWhKLBm2QZOQayYdqwj1yl6C0AopzCPBbjD9aN59RCkwFr1Kop3osXN2
+ B4kt+vqPWwedAJRH+sBh5nbQoyijoLMuH0sjGa61RbXmJmPaJQ1JJQHZH4TT1dipjZfn
+ dBXAiba+gZHbuQk8hAcqBN8HRPkFFJCkj4GKBaSQRQX4IIK1v+pnXU+U1mwFvXZBJdCt
+ Zyo3swc8vseqw4KigW/ySg2YPiLd5kFXrAkZFY8lYnkl5aM8BL12/mPUjc59km/UAIya
+ HHmtmDE+ZXiYuZKrwi3A7ncSqRD3YPE0HNYLIzUNsAaOMylvutmHr+S8C4kpUJydGGc7 wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x0hwv0e7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Mar 2024 12:18:45 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42LCIioG018156;
+	Thu, 21 Mar 2024 12:18:45 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x0hwv0e7q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Mar 2024 12:18:44 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42L9v2d0011615;
+	Thu, 21 Mar 2024 12:18:44 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wwq8mcu5q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Mar 2024 12:18:44 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42LCIex341812296
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 Mar 2024 12:18:42 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0E1742004E;
+	Thu, 21 Mar 2024 12:18:40 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BFE7C20040;
+	Thu, 21 Mar 2024 12:18:39 +0000 (GMT)
+Received: from DESKTOP-2CCOB1S. (unknown [9.171.204.154])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 21 Mar 2024 12:18:39 +0000 (GMT)
+Date: Thu, 21 Mar 2024 13:18:38 +0100
+From: Tobias Huschle <huschle@linux.ibm.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
+Message-ID: <ZfwlnqGsICGc1fOr@DESKTOP-2CCOB1S.>
+References: <20240228161018.14253-1-huschle@linux.ibm.com>
+ <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
+ <ZfL/hROYxQudcTuX@DESKTOP-2CCOB1S.>
+ <66c4286e-deaf-44a0-be62-0928529ae73f@arm.com>
+ <4b25ab45b762e64b9df09d4d12d8289f@linux.ibm.com>
+ <CAKfTPtDyrsnq-CSFo+upzdOJpuH=JkRzSALad-OL29OvqkK2dg@mail.gmail.com>
+ <65fa8a7c.050a0220.c8ec5.0278SMTPIN_ADDED_BROKEN@mx.google.com>
+ <CAKfTPtBA7ECeYJYdzL9ybeXLbpEudLfB6V9s+DZiJUmpnPf_kQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: ps3: mark ps3_notification_device static for
- stack usage
-To: Geert Uytterhoeven <geert@linux-m68k.org>, Arnd Bergmann <arnd@kernel.org>
-References: <20240320180333.151043-1-arnd@kernel.org>
- <CAMuHMdW41e+DSBKBgugTkjoLy6bXfji-KWmB_d9EstEv01eC6w@mail.gmail.com>
-Content-Language: en-US
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <CAMuHMdW41e+DSBKBgugTkjoLy6bXfji-KWmB_d9EstEv01eC6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKfTPtBA7ECeYJYdzL9ybeXLbpEudLfB6V9s+DZiJUmpnPf_kQ@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ESasaKX97QiUdCbjWjCk4eq2vYhB8I1A
+X-Proofpoint-ORIG-GUID: IaiJkQbwVe71r9Guni3BnrsUfF9eqTYm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-21_08,2024-03-18_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 clxscore=1015 priorityscore=1501 bulkscore=0
+ mlxlogscore=639 impostorscore=0 mlxscore=0 suspectscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403140000 definitions=main-2403210086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,28 +102,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Kevin Hao <haokexin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Justin Stitt <justinstitt@google.com>, Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>, linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, srikar@linux.vnet.ibm.com, Luis Machado <luis.machado@arm.com>, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, nd <nd@arm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Geert,
-
-On 3/21/24 17:32, Geert Uytterhoeven wrote:
->>  static int ps3_probe_thread(void *data)
->>  {
->> -       struct ps3_notification_device dev;
->> +       static struct ps3_notification_device dev;
->>         int res;
->>         unsigned int irq;
->>         u64 lpar;
+On Wed, Mar 20, 2024 at 02:51:00PM +0100, Vincent Guittot wrote:
+> On Wed, 20 Mar 2024 at 08:04, Tobias Huschle <huschle@linux.ibm.com> wrote:
+> > There was no guarantee of course. place_entity was reducing the vruntime of
+> > woken up tasks though, giving it a slight boost, right?. For the scenario
 > 
-> Making it static increases kernel size for everyone.  So I'd rather
-> allocate it dynamically. The thread already allocates a buffer, which
-> can be replaced at no cost by allocating a structure containing both
-> the ps3_notification_device and the buffer.
+> It was rather the opposite, It was ensuring that long sleeping tasks
+> will not get too much bonus because of vruntime too far in the past.
+> This is similar although not exactly the same intent as the lag. The
+> bonus was up to 24ms previously whereas it's not more than a slice now
+> 
 
-This seems like a much better solution.
+I might have gotten this quite wrong then. I was looking at place_entity
+and saw that non-initial placements get their vruntime reduced via
 
--Geoff
+    vruntime -= thresh;
 
+which would mean that the placed task would have a vruntime smaller than
+cfs_rq->min_vruntime, based on pre-EEVDF behavior, last seen at:
 
+   af4cf40470c2 sched/fair: Add cfs_rq::avg_vruntime
+
+If there was no such benefit for woken up tasks. Then the scenario I observed
+is just conincidentally worse with EEVDF, which can happen when exchanging an
+algorithm I suppose. Or EEVDF just exposes a so far hidden problem in that 
+scenario.
