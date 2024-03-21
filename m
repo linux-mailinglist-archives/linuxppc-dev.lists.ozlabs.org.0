@@ -1,70 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283A1881B75
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 04:27:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70069881B8D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 04:31:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OP0Uf632;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FGG9Raq4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V0W9L6knmz3f0P
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 14:27:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V0WGR21Jbz3dX4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 14:31:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OP0Uf632;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FGG9Raq4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12d; helo=mail-il1-x12d.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0W8b4MXnz3cWB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 14:26:37 +1100 (AEDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-366a4bcb2a8so2535925ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 20:26:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0WFh1s9Yz3bmY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 14:31:04 +1100 (AEDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-368602c9ed0so2811375ab.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Mar 2024 20:31:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710991595; x=1711596395; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1710991861; x=1711596661; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S0MuB5ySDlf80mKLJwWBjBqQwGvGCqX7FdKX4jErWIQ=;
-        b=OP0Uf632j2zxYmje1f5YlXkXZ7shQ60FygI9NTRnjjNK8PBBgFL+PKQrFTrcrTdp/2
-         mJMaXUtlQLIIp6z4cqlCOVe/jHO3KBnSeKeKbsBZJL7M4s1MM5kufc+jgUBKHjwfLcIJ
-         7rJp3h6e2NXElqBU427JvjuUjRSSTavkC5vK2MPFajQFKw19ktnX+kMJ+AfgVBi7r8UJ
-         FfuKeQ8hozxFTXKO+HIXxJEjbuseV/ksFFoP+KDCvr0RsbCRLtV6LSdQPK+0K5ua2B95
-         vHcE/17UyDJP7tFdGKtQT0WZ+sKiXhXGW+/YUFA9KCgvuEkhhAHbw4PYdm6Ev0XQ9kLO
-         AnWQ==
+        bh=YkcCPZV2rPe2mAIICfSKEdznaBH5x94qD30ycxtS6yw=;
+        b=FGG9Raq4rwwEx8dFT05SnqOl4hID+99fI6xJxM4oLdCzCp9TakdgZEB+WHUOlqyDGN
+         WC/biBehtlmaU/CGPpUxJ3nYTVFfDks+v6+dUc+Um1WDVqTEneReWMcrPxufy3eAJYvz
+         3iTgDx1Vwp20taNVUFrgDYAQixtHel/cRY8PeCxVmMogsFBYJIVFbekaXJWQoYWzeilq
+         Ikhxh/692zOfiG213Z+8D3ccYvrlQ0bCDBnQQZO222v7lCOMXs3n5G6yvPq18U0k0zMT
+         /nOqO/znzYUQcS77Z96qWVf4+e79StfJdoArryFw7Qsi9dCvq90P9r5JDNQHSmzLmcVT
+         rZCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710991595; x=1711596395;
+        d=1e100.net; s=20230601; t=1710991861; x=1711596661;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S0MuB5ySDlf80mKLJwWBjBqQwGvGCqX7FdKX4jErWIQ=;
-        b=NYcXZpvEdySO9qL1gwvZWKgY0QYNes/VHof2E1a12kZLO/xf5N+w7/SK1uBXS+gnb7
-         +VeVpgW74fjJKLutA6Cg602ippn2si0Oh9e7sz8kND9Vm4G10Byar6rqQipyRAxSy3PO
-         A+kqUUu9IcCfvg/OlxZZ6i2j4YHaI79wgekvQqYMS52smuReNqBRqZK5VQ+kh7s1t0Mn
-         oUwiHaGZ+rhkRewW1GvCqIXpidpCqkwRP+0MvugUyKWV1iDuX+9a1crykYQIotn9mGK9
-         EaaL+rSwUCg43EECjgOJwx4MdYv098J1UtZ0/GFViyeEs8KMZH5eHTt3OnS4h60KluKy
-         PmPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbN2bYVH27qbR76nwP7qqjBbW2rKZzmrUcmpkD+6TuGyLpI9FLKLh98WFducEDfZSf89JBENHjQXOPfVVhJs1kFWWI99/guovS2wUpQg==
-X-Gm-Message-State: AOJu0YzIZkOuZzADL2fMDoqJAR4TbzEisHmK6PDh3HYZo0kkWPwLiJQT
-	OpSUhEblSZk8X1/VuoscRg+fWpWHa/z3VwVfoLUV2p1EjS+2XjceuaKVjCLj3NJv4i1G+gTSl1V
-	3u1RWt8J3FO8ysOR2wcwg3Hz7NV4=
-X-Google-Smtp-Source: AGHT+IFc9RGbcaS9BK4282AsGdS9WHC1k3cMjtHAAfPxbdpowTsLcJUO6T6GCfuC6nwd3Y1eBaJZ6K2ufci7CeLK2Bg=
-X-Received: by 2002:a92:d812:0:b0:366:43bd:f0f5 with SMTP id
- y18-20020a92d812000000b0036643bdf0f5mr4561373ilm.17.1710991594728; Wed, 20
- Mar 2024 20:26:34 -0700 (PDT)
+        bh=YkcCPZV2rPe2mAIICfSKEdznaBH5x94qD30ycxtS6yw=;
+        b=P4fnhjwbXrp0MoncV2JMBFDr0e2lueEhmMjHerOvSboUVDtIXPEv4K0TOJMaPnmSYv
+         RFMoOfALArjzpDf6kUr9DwakkugI+kimuSCCHvToa9bkr70uFHNlRBhkwNNX7w/fDPMg
+         YRjmpB/H6GxFE99MTtn7w3X8D1KT46tixJD4ydrQyJPucrTF1aY7N0fqEJgvYvIM36It
+         EI8tLs1sBoCewb2hk/pQcjJAoy1XgrQWJYBl9iaXalg6xaeEZjFkQcwa1rRGfIuavpuf
+         hx8be32NxPt6ccwE3GGkAJJnQ25udPrkZRg8ZTOMX9Suc7vvJ+475NQNdh0KoExk06XU
+         +mfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTp0cHJj/Wws0lxWdDOgxevJVbvMuDZ25JeAUfGvAhpZBfiniXoYXxxrvJXcH+o0LLuNmPj1/T7femsjNAag44EyHzrZcs299jyrHgCA==
+X-Gm-Message-State: AOJu0YySNq8IrLGRD98jQ5o9H9OGScyuCVHcHG+t9ptognQcnv/gKZO5
+	lhhAnoi9hV1gPAqaz5CpBeZsuWxMAQJB3A60u7WpS4UzyxIw+XeXdSR20GiYyiAyYMY64thrPDg
+	ZzfAmhmsUiNF2bdwBCgPaIE76p2o=
+X-Google-Smtp-Source: AGHT+IFIZlapfD6kquVxMjP6vNIkczhJV1lbowblT0uRu6rB6UIdztD13JlWALUuzaKkGcAhpgwoNBsxh+aHMUBnGiE=
+X-Received: by 2002:a92:c90f:0:b0:366:9220:821f with SMTP id
+ t15-20020a92c90f000000b003669220821fmr7596072ilp.7.1710991861315; Wed, 20 Mar
+ 2024 20:31:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240311111349.723256-1-chancel.liu@nxp.com>
-In-Reply-To: <20240311111349.723256-1-chancel.liu@nxp.com>
+References: <20240314141642.2943605-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20240314141642.2943605-1-alexander.stein@ew.tq-group.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 21 Mar 2024 11:26:23 +0800
-Message-ID: <CAA+D8ANGAw3MVPiR7oXY0-FDxvGfs3KDQ5CqxhLQa3Oaxd5jwg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] ASoC: fsl: Support register and unregister rpmsg
- sound card through remoteproc
-To: Chancel Liu <chancel.liu@nxp.com>
+Date: Thu, 21 Mar 2024 11:30:50 +0800
+Message-ID: <CAA+D8APwNH2wf4p9DzZCy3b6xC8K-FPpMGw2V4kRMsX7U3=3Jg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ASoC: fsl: fsl_ssi: Add dev_err_probe if PCM DMA init fails
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,52 +77,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, linux-sound@vger.kernel.org, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 11, 2024 at 7:14=E2=80=AFPM Chancel Liu <chancel.liu@nxp.com> w=
-rote:
+On Thu, Mar 14, 2024 at 10:16=E2=80=AFPM Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
 >
->         echo /lib/firmware/fw.elf > /sys/class/remoteproc/remoteproc0/fir=
-mware
-> (A)     echo start > /sys/class/remoteproc/remoteproc0/state
-> (B)     echo stop > /sys/class/remoteproc/remoteproc0/state
+> This happens especially if this driver is built-in, but SDMA driver
+> is configured as module.
 >
-> The rpmsg sound card is registered in (A) and unregistered in (B).
-> After "start", imx-audio-rpmsg registers devices for ASoC platform driver
-> and machine driver. Then sound card is registered. After "stop",
-> imx-audio-rpmsg unregisters devices for ASoC platform driver and machine
-> driver. Then sound card is unregistered.
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
 Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-Best regards
+Best Regards
 Shengjiu Wang
-
+> ---
+>  sound/soc/fsl/fsl_ssi.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> changes in v2
-> - Fix build errors reported by kernel test robot
+> diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
+> index ab6ec1974807..4ca3a16f7ac0 100644
+> --- a/sound/soc/fsl/fsl_ssi.c
+> +++ b/sound/soc/fsl/fsl_ssi.c
+> @@ -1401,8 +1401,10 @@ static int fsl_ssi_imx_probe(struct platform_devic=
+e *pdev,
+>                         goto error_pcm;
+>         } else {
+>                 ret =3D imx_pcm_dma_init(pdev);
+> -               if (ret)
+> +               if (ret) {
+> +                       dev_err_probe(dev, ret, "Failed to init PCM DMA\n=
+");
+>                         goto error_pcm;
+> +               }
+>         }
 >
-> changes in v3
-> - Add a new patch for fsl_rpmsg to register CPU DAI with rpmsg channel
->   name
-> - Update imx-rpmsg.c to get DT node of ASoC CPU DAI device with rpmsg
->   channel name instead of using undocumented bindings
->
-> Chancel Liu (5):
->   ASoC: fsl: imx-pcm-rpmsg: Register component with rpmsg channel name
->   ASoC: fsl: imx-audio-rpmsg: Register device with rpmsg channel name
->   ASoC: fsl: Let imx-audio-rpmsg register platform device for card
->   ASoC: fsl: fsl_rpmsg: Register CPU DAI with name of rpmsg channel
->   ASoC: fsl: imx-rpmsg: Update to correct DT node
->
->  sound/soc/fsl/fsl_rpmsg.c       | 43 ++++++++++++++++++++-------------
->  sound/soc/fsl/imx-audio-rpmsg.c | 21 +++++++++++++---
->  sound/soc/fsl/imx-pcm-rpmsg.c   | 11 ++++++---
->  sound/soc/fsl/imx-rpmsg.c       | 28 ++++++++++++++-------
->  4 files changed, 71 insertions(+), 32 deletions(-)
->
+>         return 0;
 > --
-> 2.43.0
+> 2.34.1
 >
