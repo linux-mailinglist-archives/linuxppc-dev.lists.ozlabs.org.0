@@ -2,55 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF4488595E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 13:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5725886269
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 22:15:58 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ja8pHUrU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ECMQ6KK4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V0lcj3dpyz3dWk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Mar 2024 23:48:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V0ytN49qtz3vcw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 08:15:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ja8pHUrU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ECMQ6KK4;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=javier.carrasco.cruz@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0lc070ysz3dHV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 23:47:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1711025264;
-	bh=VpTgsHsE8Gwfx7YFHfRPL4F/osaBTmZy0HilednQEpY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Ja8pHUrUQvzu5RY8zFcgOwKslWfGRly7LXNffj17mBPyISG4D9nO5B4xwkMcsDUCG
-	 cIMcvey7zJjBOZwfSMY+LNafAC55wMlzZm8O8hBODwzTCxgJKR9EFnSDH9h5Ot3XJe
-	 yd2tvTiJDTeS2MbssbzK1fULqtg4gYUgU8TUy+di12moX1whg+7rKsKrxC2MuyihA0
-	 KlWpUQXCmytoN6ZbBCjM0kaQMVsbZVuI4Wd2esQjZXsrNr8wMxKxGATiAiEET8ke5O
-	 LPZXVzbUVfooAqrB3DOpHr51RDxmhwkneZ0/02M11IsLVaU/a667pG2wWKeVENYoOC
-	 uDuMVGhWqeJDQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4V0lbx3xtpz4wc1;
-	Thu, 21 Mar 2024 23:47:41 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: Cannot load wireguard module
-In-Reply-To: <20240320160428.GQ20665@kitsune.suse.cz>
-References: <20240315122005.GG20665@kitsune.suse.cz>
- <87jzm32h7q.fsf@mail.lhotse> <87r0g7zrl2.fsf@mail.lhotse>
- <20240318170855.GK20665@kitsune.suse.cz>
- <20240319124742.GM20665@kitsune.suse.cz> <87le6dyt1f.fsf@mail.lhotse>
- <20240320160428.GQ20665@kitsune.suse.cz>
-Date: Thu, 21 Mar 2024 23:47:41 +1100
-Message-ID: <87frwjzr82.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V0vW62yC8z3dTw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 05:44:00 +1100 (AEDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-56845954ffeso1674281a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 11:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711046634; x=1711651434; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S3YRi7CjBRkbKzL2OgLfygDYkiVqLApDwF8CS48Fl/4=;
+        b=ECMQ6KK4idpY3k6+3B7a4/2ndbUD2ZTImClqfD6PEtJR/1Mq8GRclGNIuP2CFi1H4U
+         Kok72AIEZhfZrfjt3bWJGe8GwT6QYldCgZBzLHW3fzhxNXRgQCY2BXT4lj4u9Y92UuKf
+         9NFX/CqjtZDI2v+9rbQR340RJ5RjUKjqxfWcyPIKF24w7sl65j9A/32AHMcMKs7WI/X7
+         1QVGQY1rwaR3HVoJT0PhDe6bcj5TyXJ9rRLzxeK2Guqsw6A/mxWwmKcU1gYmEV7fOeao
+         O/FAIGRmuXa7WcwwS3tIp1V279Hcgh+geccj0n9g1JEb9lD7GglikpSUfT//6fFXcugq
+         wkyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711046634; x=1711651434;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S3YRi7CjBRkbKzL2OgLfygDYkiVqLApDwF8CS48Fl/4=;
+        b=xCv3F41e/nia2GbjBJ2KyB4HNkoTUOdRm4bYqBGXg8sLj5QnpJWkDwKJq/8beurbmX
+         3gf36KW+nioBgttcTPaMkmPsXkWQpokDOjl/SpLl1WCGHN47JFWYEVl0+YJqQzo94WCL
+         d3AhXYCNwwhn2yj5W0v7id6hwuw0HMUPq1Q0UVp/UFXeRpDeHerWoa5G4zhp1S7re095
+         uY4FTx/aS5nXaMEqja0ALqaG3FYJCFbUHdlIMrndSgvP6ik5SmOem+RCc0Bo4GoR034A
+         1a24AKA0dLmImeK9kMRpxjc6rXhXErBklFv+qnTpGeJToDk+u0IZ0/0tF+9ly5X061ST
+         01OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAN0PI+MFDSTPST2eiZY2X0wYtq4I7pnuke9+B3Iv/zAF1RQZVsytWfXyNucbD8Vmopqw0pEkOv45pAxf0zOmA6zHkVBDLVRGpvtd7xw==
+X-Gm-Message-State: AOJu0YwmX4Nm2W3y7rZ6EmswY5U3/zOm4CSYSj5oX1p5wf9YUxqmRLLU
+	8X77ktfX4UMnZ/7QFynEhCPkRzkDw/DfeKQhvUP7iXnlM5Pv0/f+
+X-Google-Smtp-Source: AGHT+IEFiHREKP8OZY99MKua7vP3dIM4RLhMeHsbw+XjxbzuNF+ZCfqYHSxtkpjGdUDBwcJAT31ZEA==
+X-Received: by 2002:a17:906:b4b:b0:a46:edfb:ff68 with SMTP id v11-20020a1709060b4b00b00a46edfbff68mr195840ejg.5.1711046634142;
+        Thu, 21 Mar 2024 11:43:54 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-7db2-5855-2c59-b89b.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:7db2:5855:2c59:b89b])
+        by smtp.gmail.com with ESMTPSA id t6-20020a17090616c600b00a4576dd5a8csm188627ejd.201.2024.03.21.11.43.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Mar 2024 11:43:53 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/5] dt-bindings: hwmon: convert multiple devices to
+ dtschema
+Date: Thu, 21 Mar 2024 19:43:41 +0100
+Message-Id: <20240321-hwmon_dtschema-v1-0-96c3810c3930@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN1//GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDYyMD3Yzy3Py8+JSS4uSM1NxEXfM0U4s0E0tDQ4vERCWgpoKi1LTMCrC
+ B0bG1tQCDcjUqYAAAAA==
+To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711046632; l=1900;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=qb/Bf0zXY7etChiyat2ZjXEDTHS7YWl2pfFPxlK7XNM=;
+ b=LOtmOlWuGJJX1J1QTb6GMHIbOB8AUQtCR2RcGKO2IgzNuYJegE0yHi9i1d4c8pEUHYeoO5Fsk
+ Jp0xXdmoM1tARxzZhRyS8V3i+Zh/xozT+HvOd6B9c5uZUNkTIj6vQOV
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+X-Mailman-Approved-At: Fri, 22 Mar 2024 08:13:59 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,114 +96,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org, dtsen@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> On Wed, Mar 20, 2024 at 11:41:32PM +1100, Michael Ellerman wrote:
->> Michal Such=C3=A1nek <msuchanek@suse.de> writes:
->> > On Mon, Mar 18, 2024 at 06:08:55PM +0100, Michal Such=C3=A1nek wrote:
->> >> On Mon, Mar 18, 2024 at 10:50:49PM +1100, Michael Ellerman wrote:
->> >> > Michael Ellerman <mpe@ellerman.id.au> writes:
->> >> > > Michal Such=C3=A1nek <msuchanek@suse.de> writes:
->> >> > >> Hello,
->> >> > >>
->> >> > >> I cannot load the wireguard module.
->> >> > >>
->> >> > >> Loading the module provides no diagnostic other than 'No such de=
-vice'.
->> >> > >>
->> >> > >> Please provide maningful diagnostics for loading software-only d=
-river,
->> >> > >> clearly there is no particular device needed.
->> >> > >
->> >> > > Presumably it's just bubbling up an -ENODEV from somewhere.
->> >> > >
->> >> > > Can you get a trace of it?
->> >> > >
->> >> > > Something like:
->> >> > >
->> >> > >   # trace-cmd record -p function_graph -F modprobe wireguard
->> >
->> > Attached.
->>=20
->> Sorry :/, you need to also trace children of modprobe, with -c.
->>=20
->> But, I was able to reproduce the same issue here.
->>=20
->> On a P9, a kernel with CONFIG_CRYPTO_CHACHA20_P10=3Dn everything works:
->>=20
->>   $ modprobe -v wireguard
->>   insmod /lib/modules/6.8.0/kernel/net/ipv4/udp_tunnel.ko
->>   insmod /lib/modules/6.8.0/kernel/net/ipv6/ip6_udp_tunnel.ko
->>   insmod /lib/modules/6.8.0/kernel/lib/crypto/libchacha.ko
->>   insmod /lib/modules/6.8.0/kernel/lib/crypto/libchacha20poly1305.ko
->>   insmod /lib/modules/6.8.0/kernel/drivers/net/wireguard/wireguard.ko
->>   [   19.180564][  T692] wireguard: allowedips self-tests: pass
->>   [   19.185080][  T692] wireguard: nonce counter self-tests: pass
->>   [   19.310438][  T692] wireguard: ratelimiter self-tests: pass
->>   [   19.310639][  T692] wireguard: WireGuard 1.0.0 loaded. See www.wire=
-guard.com for information.
->>   [   19.310746][  T692] wireguard: Copyright (C) 2015-2019 Jason A. Don=
-enfeld <Jason@zx2c4.com>. All Rights Reserved.
->>=20
->>=20
->> If I build CONFIG_CRYPTO_CHACHA20_P10 as a module then it breaks:
->>=20
->>   $ modprobe -v wireguard
->>   insmod /lib/modules/6.8.0/kernel/net/ipv4/udp_tunnel.ko
->>   insmod /lib/modules/6.8.0/kernel/net/ipv6/ip6_udp_tunnel.ko
->>   insmod /lib/modules/6.8.0/kernel/lib/crypto/libchacha.ko
->>   insmod /lib/modules/6.8.0/kernel/arch/powerpc/crypto/chacha-p10-crypto=
-.ko
->>   modprobe: ERROR: could not insert 'wireguard': No such device
->>=20
->>=20
->> The ENODEV is coming from module_cpu_feature_match(), which blocks the
->> driver from loading on non-p10.
->>=20
->> Looking at other arches (arm64 at least) it seems like the driver should
->> instead be loading but disabling the p10 path. Which then allows
->> chacha_crypt_arch() to exist, and it has a fallback to use
->> chacha_crypt_generic().
->>=20
->> I don't see how module_cpu_feature_match() can co-exist with the driver
->> also providing a fallback. Hopefully someone who knows crypto better
->> than me can explain it.
->
-> Maybe it doesn't. ppc64le is the only platform that needs the fallback,
-> on other platforms that have hardware-specific chacha implementation it
-> seems to be using pretty common feature so the fallback is rarely if
-> ever needed in practice.
+This series converts the following existing bindings to dtschema:
 
-Yeah you are probably right.
+- as370
+- ibmpowernv
+- stts751
+- ibm,p8-occ-hwmon (moved to trivial-devices.yaml)
 
-The arm64 NEON code was changed by Ard to behave like a library in
-b3aad5bad26a ("crypto: arm64/chacha - expose arm64 ChaCha routine as
-library function").
+Additionally, pwm-fan.txt has been dropped because it was converted a
+year ago, and it is not mentioned anywhere in the tree.
+I could not find the rationale, but its current state does not seem to
+provide any valuable information.
 
-Which included this change:
+The binding of the as370 looks very simple, but given that the reg
+property is not a single address, I have written a dedicated file for
+it. If reg = <address range> is valid in trivial-devices.yaml, I have
+nothing against moving this device as well.
 
-@@ -179,14 +207,17 @@ static struct skcipher_alg algs[] =3D {
- static int __init chacha_simd_mod_init(void)
- {
-        if (!cpu_have_named_feature(ASIMD))
--               return -ENODEV;
-+               return 0;
-+
-+       static_branch_enable(&have_neon);
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (5):
+      dt-bindings: hwmon: as370: convert to dtschema
+      dt-bindings: hwmon: ibmpowernv: convert to dtschema
+      dt-bindings: hwmon: pwm-fan: drop text file
+      dt-bindings: hwmon: stts751: convert to dtschema
+      dt-bindings: hwmon: ibm,p8-occ-hwmon: move to trivial devices
 
-        return crypto_register_skciphers(algs, ARRAY_SIZE(algs));
- }
+ Documentation/devicetree/bindings/hwmon/as370.txt  | 11 ------
+ .../devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt | 25 -------------
+ .../devicetree/bindings/hwmon/ibm,powernv.yaml     | 37 +++++++++++++++++++
+ .../devicetree/bindings/hwmon/ibmpowernv.txt       | 23 ------------
+ .../devicetree/bindings/hwmon/pwm-fan.txt          |  1 -
+ .../devicetree/bindings/hwmon/st,stts751.yaml      | 41 ++++++++++++++++++++++
+ .../devicetree/bindings/hwmon/stts751.txt          | 15 --------
+ .../devicetree/bindings/hwmon/syna,as370.yaml      | 32 +++++++++++++++++
+ .../devicetree/bindings/trivial-devices.yaml       |  2 ++
+ 9 files changed, 112 insertions(+), 75 deletions(-)
+---
+base-commit: ebc9bee8814d12ec247de117aa2f7fd39ff11127
+change-id: 20240320-hwmon_dtschema-7f58f49118aa
 
-It didn't use module_cpu_feature_match(), but the above is basically the
-same pattern.
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-I don't actually see the point of using module_cpu_feature_match() for
-this code.
-
-There's no point loading it unless someone wants to use chacha, and that
-should be handled by MODULE_ALIAS_CRYPTO("chacha20") etc.
-
-cheers
