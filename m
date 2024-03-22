@@ -2,88 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A17E88671B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 07:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E411C886848
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 09:36:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D6yAueBb;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=JHtyBQH6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V1Ccb5cwMz3vXr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 17:49:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V1Fz453mbz3dkm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 19:36:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D6yAueBb;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=JHtyBQH6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=javier.carrasco.cruz@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1CWx5tPqz3dfM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 17:45:49 +1100 (AEDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-a4715991c32so175474166b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 23:45:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711089946; x=1711694746; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k0ZX0mSNtR84zaDW6QrVcacYADFhCeQmdayKmvm0d6c=;
-        b=D6yAueBbxJcAabWY05Ma2qMehfurEcx5Sw3amvq/77cXFREp4MUUme69uMbwCBV7Bb
-         iG1dgICUhRZGfk+0RxU420IPsQUrChNp0vwhCFJbfawJfWVg9k4/5Sth3VjYilo0yRQJ
-         xr5kNlr6X50nVT1Q29pz6WeG7yLJByrRAdGRrDoS0COxLiAQAH6FAewGjSSoZML5ZQwg
-         WA3BGneDz9HgphDLHizaebfaSiZkJ7eTQDSqtlfuSVbder5M67xTJ3/+UBP/rwkiVwkc
-         5cQdyApY0AODpAC41m4vldsq2YUU3cKq468hEwx00pb50QWIcKMDgg40hMp7sN2afPnU
-         pm6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711089946; x=1711694746;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k0ZX0mSNtR84zaDW6QrVcacYADFhCeQmdayKmvm0d6c=;
-        b=huzvVbDRn29RyCbD2xH5QWEGmAoXi0P8rQpHwSNOMCLz0Pm95EtbVIjnkp/rgZAqXM
-         BksmhmQnhfVRsb48qS4kyyoxNfhbOeBdlhQKUjzwmaxaC3HdS4zOfAw3ocFrTiGIP9MO
-         CasHKQgh4NVmSqHSHsS+zGqaV2xNwBq9uF0lAfrluN9K6QxcNMTcks7J4SWjzLUpz4kZ
-         fYfDLpQxEuY2vXKzuXgO824tfcnHyJJSIlzleaJ0GA9WEFowKdh/xJvmg83Ori2fSF3p
-         Gna6k/IN8ZcnX5eguQCoWtc6vq2GcDzPkFHgWdxIR0OKbK3DAij1N7fHmoRswPKYgMef
-         XXnA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3AJWucysmliqLznNY7bYoq6sV3vNP6HuWvaNBDm5IaheQ6zyHqihKsfOW5bkKIjuXrV+Sxf6mdNULF5+6c9BZg99X19KcwpueS59OnQ==
-X-Gm-Message-State: AOJu0YwyruXhtAiYxIcxCGBbZhOIrJJl0VSu+OsNIgvE8VGKltoPeO0c
-	mTj/0q5NB3/24yKyWp6ahIUxG7qjhUuw70rBruJDiJ0fxBl1I8uw
-X-Google-Smtp-Source: AGHT+IHWTwuW8UIUUoXFTdiYrzTtIrzPGEkZkGQ8lAESE+yEAIlcPzGhuzwEM7g3eVOt5C0rx4FIKQ==
-X-Received: by 2002:a17:906:38d7:b0:a46:1d4b:d81 with SMTP id r23-20020a17090638d700b00a461d4b0d81mr1014632ejd.62.1711089945564;
-        Thu, 21 Mar 2024 23:45:45 -0700 (PDT)
-Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id e19-20020a170906375300b00a46bb8a44cdsm679694ejc.198.2024.03.21.23.45.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 23:45:45 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Fri, 22 Mar 2024 07:45:30 +0100
-Subject: [PATCH v2 5/5] dt-bindings: hwmon: ibm,p8-occ-hwmon: move to
- trivial devices
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1FyG3hwRz3dXG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 19:35:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=B+eEe2rJKYVCOSpsUyFR0aFEgGcdrU57l8z/qph+tmM=; b=JHtyBQH6EX7GceqkO4taJJgxTp
+	MHSM6Uqnw3YFlkvvhAiy3qbAR0vYz3MGRdxZmGg5/mdAUNTul1mWj09WvLulV1q1v69YEuYQIuXhn
+	P+4q733Age1NYD6hfFWEFc0t+KuF9HA90D8+TcIfO/d9koXu4navByN+ZmWwMcqPO/i01Opbj0EBy
+	WTuTwTFJ/dZm7bPQd8J/FD43zJbO6Y047A+sffZnE54IZNoZV5n9cCRmuC+yxOzAZwfnlJQq4pCoy
+	ym665tUf6yqhhjtVMcCNHOKjEijyCNM6tDQWevVoSRf1chQmYyScxbzC4JT3i+oeKd+PzlolBJwMN
+	7ds5xwDA==;
+Received: from fpd2fa7e2a.ap.nuro.jp ([210.250.126.42] helo=[192.168.1.8])
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rnaMZ-0000000EhCD-3xGY;
+	Fri, 22 Mar 2024 08:34:56 +0000
+Message-ID: <87f6365f-a40e-4606-baff-170cb8fc48f3@infradead.org>
+Date: Fri, 22 Mar 2024 17:34:45 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: ps3: mark ps3_notification_device static for
+ stack usage
+To: Geert Uytterhoeven <geert@linux-m68k.org>, Arnd Bergmann <arnd@kernel.org>
+References: <20240320180333.151043-1-arnd@kernel.org>
+ <CAMuHMdW41e+DSBKBgugTkjoLy6bXfji-KWmB_d9EstEv01eC6w@mail.gmail.com>
+Content-Language: en-US
+From: Geoff Levand <geoff@infradead.org>
+In-Reply-To: <CAMuHMdW41e+DSBKBgugTkjoLy6bXfji-KWmB_d9EstEv01eC6w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240322-hwmon_dtschema-v2-5-570bee1acecb@gmail.com>
-References: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
-In-Reply-To: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
-To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711089934; l=2051;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=4rUBSyPV6ao55dHemnHVuLdadgQFFoAi54Gb6HBKVTY=;
- b=q70/gdmXCi4RvGIZ+Icn9EMX+Srdt6GnUw1wapHGSfBb5rKgsJsBrfeEQjXEbzRQpC0yBmLNL
- yBJQ7F88FHLBJrbYbGpP85x5g38ot1Fi6LVn2jSQHMJlPTSEvepiCto
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,65 +61,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: llvm@lists.linux.dev, Kevin Hao <haokexin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This binding meets the requirements to be converted to dtschema
-via trivial-devices.yaml.
+On 3/21/24 17:32, Geert Uytterhoeven wrote:
+> --- a/arch/powerpc/platforms/ps3/device-init.c
+>> +++ b/arch/powerpc/platforms/ps3/device-init.c
+>> @@ -770,7 +770,7 @@ static struct task_struct *probe_task;
+>>
+>>  static int ps3_probe_thread(void *data)
+>>  {
+>> -       struct ps3_notification_device dev;
+>> +       static struct ps3_notification_device dev;
+>>         int res;
+>>         unsigned int irq;
+>>         u64 lpar;
+> 
+> Making it static increases kernel size for everyone.  So I'd rather
+> allocate it dynamically. The thread already allocates a buffer, which
+> can be replaced at no cost by allocating a structure containing both
+> the ps3_notification_device and the buffer.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- .../devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt | 25 ----------------------
- .../devicetree/bindings/trivial-devices.yaml       |  2 ++
- 2 files changed, 2 insertions(+), 25 deletions(-)
+Here's what I came up with.  It builds for me without warnings.
+I haven't tested it yet.  A review would be appreciated.
 
-diff --git a/Documentation/devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt b/Documentation/devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt
-deleted file mode 100644
-index 5dc5d2e2573d..000000000000
---- a/Documentation/devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt
-+++ /dev/null
-@@ -1,25 +0,0 @@
--Device-tree bindings for I2C-based On-Chip Controller hwmon device
--------------------------------------------------------------------
--
--Required properties:
-- - compatible = "ibm,p8-occ-hwmon";
-- - reg = <I2C address>;			: I2C bus address
--
--Examples:
--
--    i2c-bus@100 {
--        #address-cells = <1>;
--        #size-cells = <0>;
--        clock-frequency = <100000>;
--        < more properties >
--
--        occ-hwmon@1 {
--            compatible = "ibm,p8-occ-hwmon";
--            reg = <0x50>;
--        };
--
--        occ-hwmon@2 {
--            compatible = "ibm,p8-occ-hwmon";
--            reg = <0x51>;
--        };
--    };
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index e07be7bf8395..87b0dd9b0734 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -126,6 +126,8 @@ properties:
-           - ibm,cffps1
-             # IBM Common Form Factor Power Supply Versions 2
-           - ibm,cffps2
-+            # IBM On-Chip Controller hwmon device
-+          - ibm,p8-occ-hwmon
-             # Infineon barometric pressure and temperature sensor
-           - infineon,dps310
-             # Infineon IR36021 digital POL buck controller
+diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
+index 878bc160246e..9bb44a6ccdaf 100644
+--- a/arch/powerpc/platforms/ps3/device-init.c
++++ b/arch/powerpc/platforms/ps3/device-init.c
+@@ -770,37 +770,48 @@ static struct task_struct *probe_task;
+ 
+ static int ps3_probe_thread(void *data)
+ {
+-	struct ps3_notification_device dev;
++	struct ps3_probe_thread_local {
++		struct ps3_notification_device dev;
++		union {
++			char buf[512];
++			struct ps3_notify_cmd notify_cmd;
++			struct ps3_notify_event notify_event;
++		};
++	};
++	struct ps3_probe_thread_local *local;
++	struct ps3_notification_device *dev;
++	struct ps3_notify_cmd *notify_cmd;
++	struct ps3_notify_event *notify_event;
+ 	int res;
+ 	unsigned int irq;
+ 	u64 lpar;
+-	void *buf;
+-	struct ps3_notify_cmd *notify_cmd;
+-	struct ps3_notify_event *notify_event;
+ 
+ 	pr_debug(" -> %s:%u: kthread started\n", __func__, __LINE__);
+ 
+-	buf = kzalloc(512, GFP_KERNEL);
+-	if (!buf)
++	local = kzalloc(sizeof(local), GFP_KERNEL);
++
++	if (!local)
+ 		return -ENOMEM;
+ 
+-	lpar = ps3_mm_phys_to_lpar(__pa(buf));
+-	notify_cmd = buf;
+-	notify_event = buf;
++	dev = &local->dev;
++	notify_cmd = &local->notify_cmd;
++	notify_event = &local->notify_event;
++
++	lpar = ps3_mm_phys_to_lpar(__pa(&local->notify_cmd));
+ 
+ 	/* dummy system bus device */
+-	dev.sbd.bus_id = (u64)data;
+-	dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
+-	dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
++	dev->sbd.bus_id = (u64)data;
++	dev->sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
++	dev->sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
+ 
+-	res = lv1_open_device(dev.sbd.bus_id, dev.sbd.dev_id, 0);
++	res = lv1_open_device(dev->sbd.bus_id, dev->sbd.dev_id, 0);
+ 	if (res) {
+ 		pr_err("%s:%u: lv1_open_device failed %s\n", __func__,
+ 		       __LINE__, ps3_result(res));
+ 		goto fail_free;
+ 	}
+ 
+-	res = ps3_sb_event_receive_port_setup(&dev.sbd, PS3_BINDING_CPU_ANY,
++	res = ps3_sb_event_receive_port_setup(&dev->sbd, PS3_BINDING_CPU_ANY,
+ 					      &irq);
+ 	if (res) {
+ 		pr_err("%s:%u: ps3_sb_event_receive_port_setup failed %d\n",
+@@ -808,11 +819,11 @@ static int ps3_probe_thread(void *data)
+ 	       goto fail_close_device;
+ 	}
+ 
+-	spin_lock_init(&dev.lock);
+-	rcuwait_init(&dev.wait);
++	spin_lock_init(&dev->lock);
++	rcuwait_init(&dev->wait);
+ 
+ 	res = request_irq(irq, ps3_notification_interrupt, 0,
+-			  "ps3_notification", &dev);
++			  "ps3_notification", &local->dev);
+ 	if (res) {
+ 		pr_err("%s:%u: request_irq failed %d\n", __func__, __LINE__,
+ 		       res);
+@@ -823,7 +834,7 @@ static int ps3_probe_thread(void *data)
+ 	notify_cmd->operation_code = 0; /* must be zero */
+ 	notify_cmd->event_mask = 1UL << notify_region_probe;
+ 
+-	res = ps3_notification_read_write(&dev, lpar, 1);
++	res = ps3_notification_read_write(&local->dev, lpar, 1);
+ 	if (res)
+ 		goto fail_free_irq;
+ 
+@@ -834,36 +845,36 @@ static int ps3_probe_thread(void *data)
+ 
+ 		memset(notify_event, 0, sizeof(*notify_event));
+ 
+-		res = ps3_notification_read_write(&dev, lpar, 0);
++		res = ps3_notification_read_write(&local->dev, lpar, 0);
+ 		if (res)
+ 			break;
+ 
+ 		pr_debug("%s:%u: notify event type 0x%llx bus id %llu dev id %llu"
+ 			 " type %llu port %llu\n", __func__, __LINE__,
+-			 notify_event->event_type, notify_event->bus_id,
+-			 notify_event->dev_id, notify_event->dev_type,
+-			 notify_event->dev_port);
++			notify_event->event_type, notify_event->bus_id,
++			notify_event->dev_id, notify_event->dev_type,
++			notify_event->dev_port);
+ 
+ 		if (notify_event->event_type != notify_region_probe ||
+-		    notify_event->bus_id != dev.sbd.bus_id) {
++			notify_event->bus_id != dev->sbd.bus_id) {
+ 			pr_warn("%s:%u: bad notify_event: event %llu, dev_id %llu, dev_type %llu\n",
+ 				__func__, __LINE__, notify_event->event_type,
+ 				notify_event->dev_id, notify_event->dev_type);
+ 			continue;
+ 		}
+ 
+-		ps3_find_and_add_device(dev.sbd.bus_id, notify_event->dev_id);
++		ps3_find_and_add_device(dev->sbd.bus_id, notify_event->dev_id);
+ 
+ 	} while (!kthread_should_stop());
+ 
+ fail_free_irq:
+-	free_irq(irq, &dev);
++	free_irq(irq, &local->dev);
+ fail_sb_event_receive_port_destroy:
+-	ps3_sb_event_receive_port_destroy(&dev.sbd, irq);
++	ps3_sb_event_receive_port_destroy(&dev->sbd, irq);
+ fail_close_device:
+-	lv1_close_device(dev.sbd.bus_id, dev.sbd.dev_id);
++	lv1_close_device(dev->sbd.bus_id, dev->sbd.dev_id);
+ fail_free:
+-	kfree(buf);
++	kfree(local);
+ 
+ 	probe_task = NULL;
+ 
 
--- 
-2.40.1
 
