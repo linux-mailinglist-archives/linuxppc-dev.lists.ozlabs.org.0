@@ -1,52 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373408873F3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 20:30:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BA888742D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 21:32:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GI4W6i26;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kM/Mma5t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ZEqFDuPW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V1XVj6nnVz3vxW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 06:30:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V1YsK41g3z3vgR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 07:32:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GI4W6i26;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kM/Mma5t;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ZEqFDuPW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 400 seconds by postgrey-1.37 at boromir; Sat, 23 Mar 2024 07:31:24 AEDT
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1XV149ZXz3vZh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 06:30:17 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9EF8261491;
-	Fri, 22 Mar 2024 19:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D41C433F1;
-	Fri, 22 Mar 2024 19:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711135813;
-	bh=9R6ki8LkQLAWyMMmV+81/0KXBdxdkaUt91oUyJxHRXQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=GI4W6i26GH4YKoxcLI7lQ8yf1CYz3gnsVS5q/50obT5c+RAjHWdIx+1+1fcYFuMSK
-	 z7tq2Hy8gsByyk1C6HLUmIdEjEMjPlAEd5SPyoRNSsS1HUrAS8NtMtMQaTjVj8XtIP
-	 GfI5wwIhfK2ZdvFH8yfESIP4RXcrOtJGRVvTmGJafpDdRsj5RvAbXWu2XtvMvItr/Z
-	 Zoq9QazCmln///YbTsHQqQmawt8pLZ8s+57149iivVTAWIDAH/W5Cm1wZubwMH+tEE
-	 0i08O00EIoJelk5Ubc024aZSDXEmpIUnVRa35wSfyaEC/x0wB3d6Rabg6Z8TigwMBO
-	 GVbz6krwT5hCg==
-Date: Fri, 22 Mar 2024 14:30:11 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH 3/4] PCI: Add TLP Prefix reading into pcie_read_tlp_log()
-Message-ID: <20240322193011.GA701027@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1YrX2htcz3vYk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 07:31:24 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.west.internal (Postfix) with ESMTP id CA69732000CC;
+	Fri, 22 Mar 2024 16:24:38 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Fri, 22 Mar 2024 16:24:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1711139078; x=1711225478; bh=v/zZxMEUwy
+	rsOu50oZW1RGy+/TjNPs8E2T2TvPN/4J4=; b=kM/Mma5taCEDtcFsIAKJ/4bAcV
+	8csomuDgZ/yXneFO//9V/Ul8XlY0Tg5NLKjpkVe4UjrbfUvt52G6qUu4LIsCX5oa
+	7U6y8K9eGoCTq1Y93ULqrt96Yrnr0XIbL4tVPN4CIXxZw78A2KYyuRKxb3n7MSqK
+	Xdkv+rwKuvgQh+nuXX0nKrfeEt392iw+sPOuXPA+KQs5D0JHLq6pqUQnXLXZ/Pp1
+	KfvXbHBoGgBtoD1S7RKrb9r8aXkHPQqdsQlAuZz3Ynsw5xlZVUUOiAlso1PZmxWT
+	fwew/FTqYbDBAmz6hwf8s/8wXvFE5Qc2LH8+n3pvBNopWG67JAvYXFHheeLQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1711139078; x=1711225478; bh=v/zZxMEUwyrsOu50oZW1RGy+/TjN
+	Ps8E2T2TvPN/4J4=; b=ZEqFDuPWXya0h9zVZrULnxwUduLk1b1Qmzy513+P3YBc
+	u54DZDez4AYp0gY6Fic83TtGzegqn+2SXJqiWMknWD9/pRB/f6vvpW1eVcuGvN/t
+	q1M0iuDfMDzWsmUWuLwTFpOxvNsm6M/dOygrMn/ALn9ifeyN6QpznZ5gXnM0Tk9u
+	X+rVmGTuIV0OD2NP7uQ3l366kO/osRgQsPu6Kc55focmKsfKv8afVPnqLutai5gX
+	yeUq081AQTdrl5GKLnO1/pwiuhDDN6IkXwjUI/kr4+lnyysbsa4PIXYxf52KsGIJ
+	khoGrYmuPvCwMwqltpWj2gY0gzE2TVVWNPQaH5LyHA==
+X-ME-Sender: <xms:Ben9ZaKQ8RKa-cyjhQ5WBzKAqA0HzQLdmh2pWGHC5HZSfTiPC5myAg>
+    <xme:Ben9ZSI9GjJS9WoBW3Y4aqD9Kb1n8V_0oggHhutp5oqr34uV8dVC4qwDoId0tBaud
+    Otfa46tg7F-T3SOG8o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddtvddgjeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:Ben9Zavr0LbgFgqow4rwvEpoh68ikn2AQGu0i33BYyA2zhQnfzx-wQ>
+    <xmx:Ben9ZfZlN1uh0G5i0nlIVxxJNLivXNMJOPoNamxiMyjPJQyDkTXzgg>
+    <xmx:Ben9ZRYyPSuXjZiPRBHryv62QeMpaHzJrTMtGdXCkpmrERi9Awfi3Q>
+    <xmx:Ben9ZbCzPCX7E43sLRvVh_VpdJPl213YS8a8Uia44SF2TxwLI4MPAw>
+    <xmx:Bun9ZVrQz6bwZlrVA9Ej5knBJLz21Rdcu5IflN_yY3GU4-O-DaghBg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 520FDB6008D; Fri, 22 Mar 2024 16:24:37 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-332-gdeb4194079-fm-20240319.002-gdeb41940
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240206135717.8565-4-ilpo.jarvinen@linux.intel.com>
+Message-Id: <7f854130-e92f-488f-9c56-a65f86b95567@app.fastmail.com>
+In-Reply-To: <87f6365f-a40e-4606-baff-170cb8fc48f3@infradead.org>
+References: <20240320180333.151043-1-arnd@kernel.org>
+ <CAMuHMdW41e+DSBKBgugTkjoLy6bXfji-KWmB_d9EstEv01eC6w@mail.gmail.com>
+ <87f6365f-a40e-4606-baff-170cb8fc48f3@infradead.org>
+Date: Fri, 22 Mar 2024 21:24:13 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Geoff Levand" <geoff@infradead.org>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Arnd Bergmann" <arnd@kernel.org>
+Subject: Re: [PATCH] powerpc: ps3: mark ps3_notification_device static for stack usage
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,54 +97,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linux-efi@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>, linux-pci@vger.kernel.org, Jesse Brandeburg <jesse.brandeburg@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>, Jakub Kicinski <kuba@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, intel-wired-lan@lists.osuosl.org, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>, Kevin Hao <haokexin@gmail.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 06, 2024 at 03:57:16PM +0200, Ilpo Järvinen wrote:
-> pcie_read_tlp_log() handles only 4 TLP Header Log DWORDs but TLP Prefix
-> Log (PCIe r6.1 secs 7.8.4.12 & 7.9.14.13) may also be present.
+On Fri, Mar 22, 2024, at 09:34, Geoff Levand wrote:
+> On 3/21/24 17:32, Geert Uytterhoeven wrote:
+>> --- a/arch/powerpc/platforms/ps3/device-init.c
+>>> +++ b/arch/powerpc/platforms/ps3/device-init.c
+>>> @@ -770,7 +770,7 @@ static struct task_struct *probe_task;
+>>>
+>>>  static int ps3_probe_thread(void *data)
+>>>  {
+>>> -       struct ps3_notification_device dev;
+>>> +       static struct ps3_notification_device dev;
+>>>         int res;
+>>>         unsigned int irq;
+>>>         u64 lpar;
+>> 
+>> Making it static increases kernel size for everyone.  So I'd rather
+>> allocate it dynamically. The thread already allocates a buffer, which
+>> can be replaced at no cost by allocating a structure containing both
+>> the ps3_notification_device and the buffer.
 
-s/TLP Header Log/Header Log/ to match spec terminology (also below)
+I didn't think it mattered much, given that you would rarely
+have a kernel with PS3 support along with other platforms.
 
-> Generalize pcie_read_tlp_log() and struct pcie_tlp_log to handle also
-> TLP Prefix Log. The layout of relevant registers in AER and DPC
-> Capability is not identical but the offsets of TLP Header Log and TLP
-> Prefix Log vary so the callers must pass the offsets to
-> pcie_read_tlp_log().
+I suppose it does increase the size for a PS3-only kernel
+as well, while your version makes it smaller.
 
-s/is not identical but/is identical, but/ ?
+> Here's what I came up with.  It builds for me without warnings.
+> I haven't tested it yet.  A review would be appreciated.
 
-The spec is a little obtuse about Header Log Size.
+It seems a little complicated but looks all correct to
+me and reduces both stack and .data size, so
 
-> Convert eetlp_prefix_path into integer called eetlp_prefix_max and
-> make is available also when CONFIG_PCI_PASID is not configured to
-> be able to determine the number of E-E Prefixes.
-
-I think this eetlp_prefix_path piece is right, but would be nice in a
-separate patch since it's a little bit different piece to review.
-
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-> @@ -11336,7 +11336,9 @@ static pci_ers_result_t ixgbe_io_error_detected(struct pci_dev *pdev,
->  	if (!pos)
->  		goto skip_bad_vf_detection;
->  
-> -	ret = pcie_read_tlp_log(pdev, pos + PCI_ERR_HEADER_LOG, &tlp_log);
-> +	ret = pcie_read_tlp_log(pdev, pos + PCI_ERR_HEADER_LOG,
-> +				pos + PCI_ERR_PREFIX_LOG,
-> +				aer_tlp_log_len(pdev), &tlp_log);
->  	if (ret < 0) {
->  		ixgbe_check_cfg_remove(hw, pdev);
->  		goto skip_bad_vf_detection;
-
-We applied the patch to export pcie_read_tlp_log(), but I'm having
-second thoughts about it.   I don't think drivers really have any
-business here, and I'd rather not expose either pcie_read_tlp_log() or
-aer_tlp_log_len().
-
-This part of ixgbe_io_error_detected() was added by 83c61fa97a7d
-("ixgbe: Add protection from VF invalid target DMA"), and to me it
-looks like debug code that probably doesn't need to be there as long
-as the PCI core does the appropriate logging.
-
-Bjorn
+Acked-by: Arnd Bergmann <arnd@arndb.de>
