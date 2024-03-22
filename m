@@ -1,71 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B57887272
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 19:01:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9E0887012
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 16:56:07 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=lJ6R4eit;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Toy4bsv3;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Toy4bsv3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V1VW11W0Nz3w9t
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 05:01:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V1Rkr5wNTz3vgx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 02:56:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=lJ6R4eit;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Toy4bsv3;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Toy4bsv3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=microchip.com (client-ip=68.232.154.123; helo=esa.microchip.iphmx.com; envelope-from=nicolas.ferre@microchip.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Sat, 23 Mar 2024 02:14:29 AEDT
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1Qps3p9Kz3vYp;
-	Sat, 23 Mar 2024 02:14:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1711120469; x=1742656469;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=F50EgZ2lJjv6pHduFkF5MM5IKGV69nz1KM4YNtLhMAs=;
-  b=lJ6R4eit6rZQ/gqYyhyQTNoILh7DDt8NvTnVpRLc+0Cbr7cCeCJsmC7y
-   kedJnmliWWR66HScfUY0POBnj9WNF0wx4glzWNPupb1Mkd7Xl6CIPMBcY
-   6Nv08oIpIpA2wTAodepHxSyM8kztXirGOF3ggKC3acQxDpYET0MIn3qD2
-   iYinfNYQU7EAzgpMc3BN1ctD8K3pO+g9n3gmqJT3h6Vqwi/9oEvcmubEb
-   9U8bZcSrcyjAfL+4fKWgYzbJgQvo4Vc33gAraS2dJzgQKGzUqcHJ6ta4D
-   f7hlR3vUUVFqm6JhdAXJeJHvU/gSgg2UuRilLBkMlDNoUkH07hfoNUeyD
-   Q==;
-X-CSE-ConnectionGUID: X1l3K2T7QvGR7YYL+xW82w==
-X-CSE-MsgGUID: FtnGXb0RSl6ESGuAQ94UKg==
-X-IronPort-AV: E=Sophos;i="6.07,146,1708412400"; 
-   d="scan'208";a="185306479"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Mar 2024 08:13:19 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 22 Mar 2024 08:13:07 -0700
-Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
- Transport; Fri, 22 Mar 2024 08:12:51 -0700
-Message-ID: <e8dff9d4-ed15-44e9-ae9a-2e77845ec40b@microchip.com>
-Date: Fri, 22 Mar 2024 16:11:48 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1Rk334h0z3cBN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 02:55:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711122919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QJLFb75dlh9Ilo5izUjxoeGL/8+am1RJvB8MBnP+8/Q=;
+	b=Toy4bsv3Ad85EA+NvHhY+40Wru/FLAZfGe5Va6JZ2KGVavZpglqvuJLQ+1oTB7EtyfyHM2
+	ZydbIPdbAg0z6EHbiLi7IpXveKI5PQTW3tCfNf+/yoBiixUmpN3zvNLydlbKPjMaq58U0P
+	fVP4gPz4L4phy7Szq+YaNPZgCJb93Rw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711122919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QJLFb75dlh9Ilo5izUjxoeGL/8+am1RJvB8MBnP+8/Q=;
+	b=Toy4bsv3Ad85EA+NvHhY+40Wru/FLAZfGe5Va6JZ2KGVavZpglqvuJLQ+1oTB7EtyfyHM2
+	ZydbIPdbAg0z6EHbiLi7IpXveKI5PQTW3tCfNf+/yoBiixUmpN3zvNLydlbKPjMaq58U0P
+	fVP4gPz4L4phy7Szq+YaNPZgCJb93Rw=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-WVF4NXapPcqoDuvirRj74Q-1; Fri, 22 Mar 2024 11:55:16 -0400
+X-MC-Unique: WVF4NXapPcqoDuvirRj74Q-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-690d3f5af86so5121046d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 08:55:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711122916; x=1711727716;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QJLFb75dlh9Ilo5izUjxoeGL/8+am1RJvB8MBnP+8/Q=;
+        b=Wx/KvlPSc1pL5oL3+iprLtdw3aZpctv2J99GG3Uc07QwbHRT8w2ZVofOT8E9SynkhA
+         Fj+ssNi1yI3+usFlwSaqDjty3x1V2UL50IqCBcGfRVmcNQF5coLq3wdMBHljY9vWPC/E
+         MT3ysORtkkwisiKkmbrhObML57yGU9MSiyFPJb3+Pk4lK5TSkxqA3L73XdlE7eDpB2Z7
+         xyM2YIK+8/qFb13vNrkgf2x05OPg7bxOqjqyND1styLice/UzqYQumwaZUBJm7vyBHKc
+         VtOvcgOdk4Cv28Ky20ndKZH2WMLlk7EMEwJIdLE2oDABiZiriL97jojNe1JdTL1PBQ+h
+         Cb7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWKCmq8Irk603/bOU5ETy/q0+Fimr7rmDITurokEBeA1LZUKQMxqM6Cbcvks7K0ENDTrVPVdDNnQFGZar91yMh7GHe44BQ1pTm4g7JtHA==
+X-Gm-Message-State: AOJu0YwGLNZ3C/wfnVbxqC15r+1hgJT5qJQZO2JxkZfb1xerSoDcyexJ
+	EzCklZ6wsFaJq9FW9Z8IKRpF01SS3mbt9BIk5AG/70Mh0EQGMWdc4PovT6+++NcSiDUDMcVZQ2/
+	/H+wXNYhtM9v2ihgwoBrApuoTBlz60NiPsI2d+QIOPlk5M5b/e+Xw1ksuRPTaPd8=
+X-Received: by 2002:a05:6214:2b86:b0:696:732f:41ce with SMTP id kr6-20020a0562142b8600b00696732f41cemr1030605qvb.0.1711122916029;
+        Fri, 22 Mar 2024 08:55:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcGgYl+6vk8GOgJHrnHh9Bk553GXwTOWFwJfwdxmayaEVIZH35b8wrrTSaV+/rgNR3L0gYLQ==
+X-Received: by 2002:a05:6214:2b86:b0:696:732f:41ce with SMTP id kr6-20020a0562142b8600b00696732f41cemr1030577qvb.0.1711122915578;
+        Fri, 22 Mar 2024 08:55:15 -0700 (PDT)
+Received: from x1n ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id jx12-20020a0562142b0c00b0068ff8bda6c7sm1185452qvb.92.2024.03.22.08.55.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Mar 2024 08:55:14 -0700 (PDT)
+Date: Fri, 22 Mar 2024 11:55:11 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v3 12/12] mm/gup: Handle hugetlb in the generic
+ follow_page_mask code
+Message-ID: <Zf2p38Pb51T3e9uB@x1n>
+References: <20240321220802.679544-1-peterx@redhat.com>
+ <20240321220802.679544-13-peterx@redhat.com>
+ <20240322133012.GI159172@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 64/64] i2c: reword i2c_algorithm in drivers according to
- newest specification
-Content-Language: en-US, fr-FR
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	<linux-i2c@vger.kernel.org>
-References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
- <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Organization: microchip
-In-Reply-To: <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Sat, 23 Mar 2024 04:58:59 +1100
+In-Reply-To: <20240322133012.GI159172@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,49 +100,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Shyam Sundar S K <shyam-sundar.s-k@amd.com>, Tomer Maimon <tmaimon77@gmail.com>, Ajay Gupta <ajayg@nvidia.com>, Viresh Kumar <viresh.kumar@linaro.org>, Linus
- Walleij <linus.walleij@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, Dmitry Osipenko <digetx@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Jerome Brunet <jbrunet@baylibre.com>, linux-samsung-soc@vger.kernel.org, Robert Foss <rfoss@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Khalil Blaiech <kblaiech@nvidia.com>, Oleksij
- Rempel <o.rempel@pengutronix.de>, Sascha Hauer <s.hauer@pengutronix.de>, Nicholas Piggin <npiggin@gmail.com>, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Yicong Yang <yangyicong@hisilicon.com>, Laxman Dewangan <ldewangan@nvidia.com>, Guenter Roeck <groeck@chromium.org>, chrome-platform@lists.linux.dev, Fabio Estevam <festevam@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, "Aneesh
- Kumar K.V" <aneesh.kumar@kernel.org>, Alain Volmat <alain.volmat@foss.st.com>, Ryan Wanner <Ryan.Wanner@microchip.com>, Andi Shyti <andi.shyti@kernel.org>, Martin
- Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Nick Hawkins <nick.hawkins@hpe.com>, linux-amlogic@lists.infradead.org, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Hector Martin <marcan@marcan.st>, linux-renesas-soc@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Kevin
- Hilman <khilman@baylibre.com>, linux-mediatek@lists.infradead.org, imx@lists.linux.dev, Jean-Marie Verdun <verdun@hpe.com>, linux-tegra@vger.kernel.org, Elie Morisse <syniurge@gmail.com>, Krzysztof Adamski <krzysztof.adamski@nokia.com>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Peter Korsgaard <peter@korsgaard.com>, Benjamin Fair <benjaminfair@google.com>, Michal
- Simek <michal.simek@amd.com>, Nancy Yuen <yuenn@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Codrin
- Ciubotariu <codrin.ciubotariu@microchip.com>, Robert Richter <rric@kernel.org>, Asmaa Mnebhi <asmaa@nvidia.com>, Vladimir
- Zapolskiy <vz@mleia.com>, Conghui Chen <conghui.chen@intel.com>, Benson Leung <bleung@chromium.org>, Qii Wang <qii.wang@mediatek.com>, Avi Fishman <avifishman70@gmail.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Konrad Dybcio <konrad.dybcio@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, asahi@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, Vignesh R <vigneshr@ti.com>, Tony Lindgren <tony@atomide.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Tali Perry <tali.perry1@gmail.com>, Paul Cercueil <paul@crapouillou.net>, Jan Dabros <jsd@semihalf.com>, openbmc@lists.ozlabs.org, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Sven Peter <sven@svenpeter.dev>, virtualization@lists.linux.dev, Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Loic Poulain <loic.pou
- lain@linaro.org>, Patrick Venture <venture@google.com>, Bjorn Andersson <andersson@kernel.org>, linux-mips@vger.kernel.org, Krzysztof
- Kozlowski <krzysztof.kozlowski@linaro.org>, linuxppc-dev@lists.ozlabs.org
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, linux-mm@kvack.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-arm-kernel@lists.infradead.org, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/03/2024 at 14:25, Wolfram Sang wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+Jason,
+
+On Fri, Mar 22, 2024 at 10:30:12AM -0300, Jason Gunthorpe wrote:
+> On Thu, Mar 21, 2024 at 06:08:02PM -0400, peterx@redhat.com wrote:
 > 
-> Match the wording in i2c_algorithm in I2C drivers wrt. the newest I2C
-> v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
-> appropriate terms. For some drivers, this means no more conversions are
-> needed. For the others more work needs to be done but this will be
-> performed incrementally along with API changes/improvements. All these
-> changes here are simple search/replace results.
+> > A quick performance test on an aarch64 VM on M1 chip shows 15% degrade over
+> > a tight loop of slow gup after the path switched.  That shouldn't be a
+> > problem because slow-gup should not be a hot path for GUP in general: when
+> > page is commonly present, fast-gup will already succeed, while when the
+> > page is indeed missing and require a follow up page fault, the slow gup
+> > degrade will probably buried in the fault paths anyway.  It also explains
+> > why slow gup for THP used to be very slow before 57edfcfd3419 ("mm/gup:
+> > accelerate thp gup even for "pages != NULL"") lands, the latter not part of
+> > a performance analysis but a side benefit.  If the performance will be a
+> > concern, we can consider handle CONT_PTE in follow_page().
 > 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> ---
-
-[..]
-
->   drivers/i2c/busses/i2c-at91-master.c       |  2 +-
->   drivers/i2c/busses/i2c-at91-slave.c        |  8 ++++----
-
-[..]
-
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com> # for at91
-Probably file names themselves will need some care, in a second time.
-
-Thanks. Regards,
-   Nicolas
-
-[..]
-
-> --
-> 2.43.0
+> I think this is probably fine for the moment, at least for this
+> series, as CONT_PTE is still very new.
 > 
+> But it will need to be optimized. "slow" GUP is the only GUP that is
+> used by FOLL_LONGTERM and it still needs to be optimized because you
+> can't assume a FOLL_LONGTERM user will be hitting the really slow
+> fault path. There are enough important cases where it is just reading
+> already populted page tables, and these days, often with large folios.
+
+Ah, I thought FOLL_LONGTERM should work in most cases for fast-gup,
+especially for hugetlb, but maybe I missed something?  I do see that devmap
+skips fast-gup for LONGTERM, we also have that writeback issue but none of
+those that I can find applies to hugetlb.  This might be a problem indeed
+if we have hugetlb cont_pte pages that will constantly fallback to slow
+gup.
+
+OTOH, I also agree with you that such batching would be nice to have for
+slow-gup, likely devmap or many fs (exclude shmem/hugetlb) file mappings
+can at least benefit from it due to above.  But then that'll be a more
+generic issue to solve, IOW, we still don't do that for !hugetlb cont_pte
+large folios, before or after this series.
+
+> 
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+
+Thanks!
+
+-- 
+Peter Xu
 
