@@ -1,74 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D444E88670B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 07:47:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FF2886703
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 07:46:21 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VA3fexTC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DyQfTMut;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V1CYJ4ZY6z3vc5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 17:47:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V1CXW2J7Mz3vXF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 17:46:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VA3fexTC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DyQfTMut;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=javier.carrasco.cruz@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=javier.carrasco.cruz@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1CWn29F4z3bbW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 17:45:39 +1100 (AEDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-a44665605f3so206129266b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 23:45:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1CWn2NCdz3dRp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 17:45:41 +1100 (AEDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-a44ad785a44so209599866b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Mar 2024 23:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711089936; x=1711694736; darn=lists.ozlabs.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ui2/86gYMRmJflyA3uO46uowsgpBJaLyEk39FOlIr+w=;
-        b=VA3fexTClsahj6SQ+DxrZqRQa0ieIQzzn6YzJqHrOLYnR1KKzueAnioqGaxOMicagY
-         Nl4IaoLkJFfECI9Uwd/9G2J6JPJ3DjMEwY5u/QiU9FNvhWtmdhLpUWE7WdwjUDl1Z8m2
-         cgBjuCPB4h/7HxQYrsQQI1B2zFMXWcvv87sJBlxNwWGCs/hWeFJbs84C95vXw40S6Upi
-         PT6PUUkvtSMQukFPOxY4PooBJ8X7t+91nZA7el3WQRh3ZxNREt6ZtfcoEPRDwYErTECO
-         0Zy3lIQkrYx+OtRt2scgxTKo+dNgnbW+ZhJyY/aKXGosaBKBkX/CZUI2EPcyzFkMwvVq
-         +jYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711089936; x=1711694736;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1711089938; x=1711694738; darn=lists.ozlabs.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ui2/86gYMRmJflyA3uO46uowsgpBJaLyEk39FOlIr+w=;
-        b=SaD9BoTPxL/HmnVw75qtK2YuKzM6SNQA1EePITzjvGGwFnTL5xuhWbMDSEqcuvwbFq
-         H07gGpi2HhUS3siOt4FKvSSfsIOVIZu9AFyRoounjyyZQLAglgLfXzD+O73ytwfAQ/DF
-         bMat5nMOL5T6KiBrXvOSZ1w/63yWQBjjHa97s6JLd/MD+b8SwSlN98ppBuxpzSDmkRIV
-         IfvEwXj0mEl0As4DQgCzuC9owwWGzmwQZwak3kU57sL9iX6WYVm8i5WHNd3n5w8vzeVH
-         TjwNh3An6h8ONcCi1rljeeqh9gH50bWiE/+TclfWdnwBlQzmcqs56PqnQPVGQaWYRf4T
-         a4Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCUj4RknfzdSTFIjw/3zgCyY1tMFsCae2r6DMV+kwGGLUdvNeEHHJLpELpWMou9P1AHC1tSFll//jAiQrV+9ThvjFcBZ6mmnXvJQ07yLIQ==
-X-Gm-Message-State: AOJu0YyDzsgSXk9PS8EBgGT3ZKodCiYibMN0P56JL7/SNjrr4Q8zRvS0
-	4UAb4BQCaTQ8Kg+pfvsPOb01kKfrSlMbQUOcJRa/ZUFLQL1/reSR
-X-Google-Smtp-Source: AGHT+IGtFzN/gx9AFNKUy9rg+o03MkxUw7k8OBf076+VwdSjKPVBe2p5nZFPIt2uvPzL3RYH0jwxwA==
-X-Received: by 2002:a17:906:eb08:b0:a43:f267:789f with SMTP id mb8-20020a170906eb0800b00a43f267789fmr948688ejb.41.1711089935743;
-        Thu, 21 Mar 2024 23:45:35 -0700 (PDT)
+        bh=rOSsKufZ/8yCjM1/hlvnqYOYaN3abG+vGfagOCNtt2o=;
+        b=DyQfTMutAERzfPNSdZgyhPv1w5q94C8kuGwAZ1emX6/ppN8mY94T64edZCN7UKBRqc
+         LoxQAchukelfbS1D8ebWsQ2IyV3B2HwOekshqqhMSQiJIv6EUdR9K5zEOb/p3wqaupXo
+         mRMeNXn1naAo+treiAJECxQuO9w0T5XqtJUEJiJvhYK8FL3hKnbK5wPSpeVl/tEzyXNf
+         yMaRyH5nCO6zzp/NzwOf7PpA/RcUWVwyGhMNNmC3PRGlsXTw7I4v2dWFp103M386rIsp
+         L9bxFIENBEMdQYR31nMmu3KNdqm4enKg+fJjS1UJSKwzfv/b6Jpx/zaKIfEEqZq08XJc
+         WVSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711089938; x=1711694738;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rOSsKufZ/8yCjM1/hlvnqYOYaN3abG+vGfagOCNtt2o=;
+        b=va+DlZ4ytqOrL0h0eWSoCCMS3h6P8lOSCF/16y2L4Hu3tZb6tow4eG0kjUxzw8OW7c
+         olNiNvgZnqGdw5CdscXIGrQ/P0Hzs/9FaD9mR3b0qDo2NzDqtTbvWvW1oCXr3/07ni7K
+         X22Em3uVQ4xoFW2SzbMlM2/ByXKC1GQckBxXtUAOLByLgRvmT5e1q/3S8N0d0YJgzutb
+         03lyTMDJyDyhC8KnXLcIDNIewzVM8hT2drEsVIe4asJL6dJnuRl8ebC8owBTkN8QhjG+
+         2t3borVxniMLIoYpO3jOEqBvOijK3YLXKNIXihPR/9QsW7zRPuopNMTQ8z7kRrsSs+C5
+         l0Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXhlwKS4U+h+Q6fmfuKPEVbmR8LRD9E2qLvbXcjyphnfg4zEiz45NQCRn4oqR7bR/rKk/PM+wOIDkGFAbhiaSDJFAu45S3NNox9Qt2N0Q==
+X-Gm-Message-State: AOJu0Yy/Z09eNb/rahrClBv/INguFwjq3BMg6MJptDxAlSB6/pdAAq/b
+	QHkDFP66RagHW/UUPSNeFDX8m3XwGYCW+mZxGiGXCzmMbgHn8QxC
+X-Google-Smtp-Source: AGHT+IEKmV1pnUuAwpsoeuF5BAS3RVUv2sjWEX2KhGLMWJPvS465ZIZs2/H3FbqnkYNv5pNHwrmMaw==
+X-Received: by 2002:a17:906:b818:b0:a46:206d:369b with SMTP id dv24-20020a170906b81800b00a46206d369bmr970238ejb.28.1711089937861;
+        Thu, 21 Mar 2024 23:45:37 -0700 (PDT)
 Received: from [127.0.1.1] ([213.208.157.67])
-        by smtp.gmail.com with ESMTPSA id e19-20020a170906375300b00a46bb8a44cdsm679694ejc.198.2024.03.21.23.45.34
+        by smtp.gmail.com with ESMTPSA id e19-20020a170906375300b00a46bb8a44cdsm679694ejc.198.2024.03.21.23.45.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 23:45:35 -0700 (PDT)
+        Thu, 21 Mar 2024 23:45:37 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH v2 0/5] dt-bindings: hwmon: convert multiple devices to
- dtschema
-Date: Fri, 22 Mar 2024 07:45:25 +0100
-Message-Id: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
+Date: Fri, 22 Mar 2024 07:45:26 +0100
+Subject: [PATCH v2 1/5] dt-bindings: hwmon: as370: convert to dtschema
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAUp/WUC/13M3QrCIBjG8VsZ73GGH6tcR91HjBCn84XU0GHF8
- N6zQScd/h94fitkk9BkOHcrJFMwYwwt+K4D7VSYDcGpNXDKeyo4Je7pY7hNS9bOeEVO9iBtPzA
- mlYJ2eiRj8bWB17G1w7zE9N78wr7rj2L/VGGEkuGohWRUi0HQy+wV3vc6ehhrrR9LIkOmrAAAA
- A==
+Message-Id: <20240322-hwmon_dtschema-v2-1-570bee1acecb@gmail.com>
+References: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
+In-Reply-To: <20240322-hwmon_dtschema-v2-0-570bee1acecb@gmail.com>
 To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
  Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
@@ -78,11 +76,11 @@ To: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
  "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
  "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711089934; l=2069;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711089934; l=1927;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=/lf0tDQvXRFPt50cWid1RnW3RlMNcFsrS7mt3Xkwubw=;
- b=2McnvuoHUuUtyQYvJUEBSnqDqQnJ2c+n4tSid9GmqgqV0Zi9e4tkHLv2pe+8MbsJr3uSAau/w
- yu/hjQxdwhkDr6+Iz3JBjASswg0ktvFhZOYsYhqCwUWzDO/UB4e8+YF
+ bh=dydiCo7iI1NW4gSDYIevGCRXxnVvyAdCyQwXxWD9D14=;
+ b=mjJW0wmKIE4uFauQh76CG+KkMvkmn4jNOfu3ARAqE1vXWCXBI7v4NH1AJAxudwdBY+/LWT6MG
+ K4pY9WZVNHmCiv/UQr95sYpl4Pf53ojlW5qCWElxZkxK1rqahIK8M7w
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -100,52 +98,73 @@ Cc: linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org, linuxppc-dev@lists.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series converts the following existing bindings to dtschema:
+Convert existing binding to support validation.
 
-- as370
-- ibmpowernv
-- stts751
-- ibm,p8-occ-hwmon (moved to trivial-devices.yaml)
+This is a straightforward conversion with now new properties.
 
-Additionally, pwm-fan.txt has been dropped because it was converted a
-year ago, and it is not mentioned anywhere in the tree.
-I could not find the rationale, but its current state does not seem to
-provide any valuable information.
-
-The binding of the as370 looks very simple, but given that the reg
-property is not a single address, I have written a dedicated file for
-it. If reg = <address range> is valid in trivial-devices.yaml, I have
-nothing against moving this device as well.
-
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Changes in v2:
-- ibmpowernv: fix compatible string in the example.
-- Link to v1: https://lore.kernel.org/r/20240321-hwmon_dtschema-v1-0-96c3810c3930@gmail.com
+ Documentation/devicetree/bindings/hwmon/as370.txt  | 11 --------
+ .../devicetree/bindings/hwmon/syna,as370.yaml      | 32 ++++++++++++++++++++++
+ 2 files changed, 32 insertions(+), 11 deletions(-)
 
----
-Javier Carrasco (5):
-      dt-bindings: hwmon: as370: convert to dtschema
-      dt-bindings: hwmon: ibmpowernv: convert to dtschema
-      dt-bindings: hwmon: pwm-fan: drop text file
-      dt-bindings: hwmon: stts751: convert to dtschema
-      dt-bindings: hwmon: ibm,p8-occ-hwmon: move to trivial devices
+diff --git a/Documentation/devicetree/bindings/hwmon/as370.txt b/Documentation/devicetree/bindings/hwmon/as370.txt
+deleted file mode 100644
+index d102fe765124..000000000000
+--- a/Documentation/devicetree/bindings/hwmon/as370.txt
++++ /dev/null
+@@ -1,11 +0,0 @@
+-Bindings for Synaptics AS370 PVT sensors
+-
+-Required properties:
+-- compatible : "syna,as370-hwmon"
+-- reg        : address and length of the register set.
+-
+-Example:
+-	hwmon@ea0810 {
+-		compatible = "syna,as370-hwmon";
+-		reg = <0xea0810 0xc>;
+-	};
+diff --git a/Documentation/devicetree/bindings/hwmon/syna,as370.yaml b/Documentation/devicetree/bindings/hwmon/syna,as370.yaml
+new file mode 100644
+index 000000000000..1f7005f55247
+--- /dev/null
++++ b/Documentation/devicetree/bindings/hwmon/syna,as370.yaml
+@@ -0,0 +1,32 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/hwmon/syna,as370.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Synaptics AS370 PVT sensors
++
++maintainers:
++  - Javier Carrasco <javier.carrasco.cruz@gmail.com>
++
++properties:
++  compatible:
++    const: syna,as370-hwmon
++
++  reg:
++    description:
++      Address and length of the register set.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    sensor@ea0810 {
++        compatible = "syna,as370-hwmon";
++        reg = <0xea0810 0xc>;
++    };
 
- Documentation/devicetree/bindings/hwmon/as370.txt  | 11 ------
- .../devicetree/bindings/hwmon/ibm,p8-occ-hwmon.txt | 25 -------------
- .../devicetree/bindings/hwmon/ibm,powernv.yaml     | 37 +++++++++++++++++++
- .../devicetree/bindings/hwmon/ibmpowernv.txt       | 23 ------------
- .../devicetree/bindings/hwmon/pwm-fan.txt          |  1 -
- .../devicetree/bindings/hwmon/st,stts751.yaml      | 41 ++++++++++++++++++++++
- .../devicetree/bindings/hwmon/stts751.txt          | 15 --------
- .../devicetree/bindings/hwmon/syna,as370.yaml      | 32 +++++++++++++++++
- .../devicetree/bindings/trivial-devices.yaml       |  2 ++
- 9 files changed, 112 insertions(+), 75 deletions(-)
----
-base-commit: ebc9bee8814d12ec247de117aa2f7fd39ff11127
-change-id: 20240320-hwmon_dtschema-7f58f49118aa
-
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.40.1
 
