@@ -2,80 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC75988717A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 18:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DDA88717F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Mar 2024 18:03:08 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eBgS22G9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=mTIO13x6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V1TBt4GxLz3w30
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 04:01:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V1TDB177bz3wBJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 04:03:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eBgS22G9;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=mTIO13x6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=vincent.guittot@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1T976yJfz3vjg;
-	Sat, 23 Mar 2024 04:00:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711126828; x=1742662828;
-  h=date:from:to:subject:message-id:references:mime-version:
-   in-reply-to;
-  bh=eijYIPLIRnSAkyrL//Qucwww06P+qCR4wOCt19HryXE=;
-  b=eBgS22G9h9Pz1J0MlzjH+y1gldAGZEjZlZ9UYwWyQC14PaEjt8yeGEj9
-   PO90OfwzZW+i56Bb2P720wW/z7oJOTmUlOq44B5qhaN+dqgBi3VsZA7QG
-   uKDaJuhhrR5PwtROp52dGNe0stEKQbICBhTOBwxhIbnOBWJHpKlasF00U
-   yBkJQwWYkyiFG3eJMc7gDwsHI0l/D+zPMoT7Yq8DM+qdZEeP9v9lJCyJL
-   fG7b0H0C1L37CdHou+skBXrpnWK6krEeEdScqGndwz9pg5MCoPMdg0ZbA
-   nhVMbXHuIH0tMqx1uybiQUBoJ4K2ej5Alm4nbgkHJ/UmI66XPVQikX6Iq
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="17619590"
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="17619590"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:00:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="914749126"
-X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
-   d="scan'208";a="914749126"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 10:00:18 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rniFb-0000000FDED-2Q86;
-	Fri, 22 Mar 2024 19:00:15 +0200
-Date: Fri, 22 Mar 2024 19:00:15 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-i2c@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
-	imx@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org,
-	linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	asahi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH 64/64] i2c: reword i2c_algorithm in drivers according to
- newest specification
-Message-ID: <Zf25H-LlAFmfuyYT@smile.fi.intel.com>
-References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
- <20240322132619.6389-65-wsa+renesas@sang-engineering.com>
- <Zf2tSLJzujUHbJjp@smile.fi.intel.com>
- <Zf22dmwBpN7Ctk3v@shikoro>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1TCJ5dJlz3w56
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 04:02:20 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1e04ac4209eso20297655ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Mar 2024 10:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711126937; x=1711731737; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FokECRCKDFSvWdQlq198p2mJBvxWlTy6rfKRldf1OUE=;
+        b=mTIO13x6vley/+TiWKit36huHP3qirsEpa7a7YRYq01nA2HG0XEnZFwM1yAZMmTboT
+         TMszQF0NIPLR1WMBeO+vlPp9zcgGxz3p//UyBRMJJVUNpL9QvPf8et8cvbyv78YPKKA1
+         YJwi55dhZpicmtukWLQT1rFrnTEGuO8qOyiY+0imDi9MCdL0jsC7tNppfz9L3GD/ug+P
+         OZ5FG+pjaYqWFcFCc+gN6BLUG/GZSGoidpvXlXeCNAswfQgbaZwFzrJxD5ylNtSWguyg
+         MyW4umhNvfAVemgBUlzGmJsjw3Cgmi0yPYFQUVqGWPjQuUYVA4QGiByKM3+wC5EHK4su
+         Ji4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711126937; x=1711731737;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FokECRCKDFSvWdQlq198p2mJBvxWlTy6rfKRldf1OUE=;
+        b=hnVeUUWGcXaZnTFTlhlRTMrz9vttwSqxUQDX49oZN6sG9dG/s9iDjCoHCPFEy58vlH
+         Fcy8qaNeQu5oIvRFc1zkbfbpUK4tyv1H746dckS0iLU/7PhPtJ8s6RXKXWW8nX6JrDFS
+         C1T1XouM0UFYv5la85n3L2ZP+AWHcADA6pbtrY7PB1zO6TjYcCi4nhAtT5l0yGuVYXt+
+         ak2KUYg9pcNHVmoZGyV/6IQv7MLtE7ueXB5P147TplwpxYnPM39QPtreoGz5e8RoGTx8
+         /hI/M4YjYcMyCASjzkUhxCsrQH6lk89XMxD36/ELIRje1+04FgVmcjodUsJ3eKxSycF1
+         gHuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEKlLr0GTC7ww17x0FqlAypXJL+aB25BWK/Gg28T/iNKzQLNmjDCfJJxGwPLu6DMEL1kgfOd0VT3xijqwtgsdQrYT4AwwjsMcHSntF3w==
+X-Gm-Message-State: AOJu0YwiEgYRohtpw/RpkA2jHkuR8KxLPI6VASSX6xR3pyR9rOQj8A4o
+	TrMIgCSqSjpuanYpu+V5vgCSdSwyrGSUne07lbG1nIlrpnjURSl+/DJJTjr4IHi4Xa0RZB4ZBV4
+	hxM1xtk+cdlisoB7dBS8Rqa3yWhMx1xTTKQWD0k10yPu6Wo/Y00Y=
+X-Google-Smtp-Source: AGHT+IENwh//6sLgcAqzxnJVnVpd66zXyuxgJJpLL7SyiDKB5DoNOJAorNwqZN2UlpGRBelhcanxNeLS7zSknKQgV4w=
+X-Received: by 2002:a17:902:c255:b0:1e0:20c3:7c39 with SMTP id
+ 21-20020a170902c25500b001e020c37c39mr295946plg.24.1711126937416; Fri, 22 Mar
+ 2024 10:02:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zf22dmwBpN7Ctk3v@shikoro>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240228161018.14253-1-huschle@linux.ibm.com> <5a32e8e1-67cf-4296-a655-f0fc35dc880a@arm.com>
+ <ZfL/hROYxQudcTuX@DESKTOP-2CCOB1S.> <66c4286e-deaf-44a0-be62-0928529ae73f@arm.com>
+ <4b25ab45b762e64b9df09d4d12d8289f@linux.ibm.com> <CAKfTPtDyrsnq-CSFo+upzdOJpuH=JkRzSALad-OL29OvqkK2dg@mail.gmail.com>
+ <65fa8a7c.050a0220.c8ec5.0278SMTPIN_ADDED_BROKEN@mx.google.com>
+ <CAKfTPtBA7ECeYJYdzL9ybeXLbpEudLfB6V9s+DZiJUmpnPf_kQ@mail.gmail.com> <65fc25ae.810a0220.f705f.4cdbSMTPIN_ADDED_BROKEN@mx.google.com>
+In-Reply-To: <65fc25ae.810a0220.f705f.4cdbSMTPIN_ADDED_BROKEN@mx.google.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Fri, 22 Mar 2024 18:02:05 +0100
+Message-ID: <CAKfTPtCv37JA+5D6WQbgsjeY7-Vx4tD+6PFDH+wc8TtPE58T9A@mail.gmail.com>
+Subject: Re: [RFC] sched/eevdf: sched feature to dismiss lag on wakeup
+To: Tobias Huschle <huschle@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,26 +79,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, srikar@linux.vnet.ibm.com, Luis Machado <luis.machado@arm.com>, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, nd <nd@arm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 22, 2024 at 05:48:54PM +0100, Wolfram Sang wrote:
-> 
-> > >  static const struct i2c_algorithm at91_twi_algorithm = {
-> > > -	.master_xfer	= at91_twi_xfer,
-> > > +	.xfer	= at91_twi_xfer,
-> > 
-> > Seems you made this by a script, can you check the indentations afterwards?
-> 
-> Yes, I noticed as well. But other (not converted) drivers have issues
-> there as well, so this will be a seperate patch.
+On Thu, 21 Mar 2024 at 13:18, Tobias Huschle <huschle@linux.ibm.com> wrote:
+>
+> On Wed, Mar 20, 2024 at 02:51:00PM +0100, Vincent Guittot wrote:
+> > On Wed, 20 Mar 2024 at 08:04, Tobias Huschle <huschle@linux.ibm.com> wrote:
+> > > There was no guarantee of course. place_entity was reducing the vruntime of
+> > > woken up tasks though, giving it a slight boost, right?. For the scenario
+> >
+> > It was rather the opposite, It was ensuring that long sleeping tasks
+> > will not get too much bonus because of vruntime too far in the past.
+> > This is similar although not exactly the same intent as the lag. The
+> > bonus was up to 24ms previously whereas it's not more than a slice now
+> >
+>
+> I might have gotten this quite wrong then. I was looking at place_entity
+> and saw that non-initial placements get their vruntime reduced via
+>
+>     vruntime -= thresh;
 
-The problem is that you add to a technical debt. We don't want that.
-If you have not introduced a new indentation issue, it obviously is
-not needed to be fixed in a separate patch. So, please consider this.
+and then
+    se->vruntime = max_vruntime(se->vruntime, vruntime)
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+>
+> which would mean that the placed task would have a vruntime smaller than
+> cfs_rq->min_vruntime, based on pre-EEVDF behavior, last seen at:
+>
+>    af4cf40470c2 sched/fair: Add cfs_rq::avg_vruntime
+>
+> If there was no such benefit for woken up tasks. Then the scenario I observed
+> is just conincidentally worse with EEVDF, which can happen when exchanging an
+> algorithm I suppose. Or EEVDF just exposes a so far hidden problem in that
+> scenario.
