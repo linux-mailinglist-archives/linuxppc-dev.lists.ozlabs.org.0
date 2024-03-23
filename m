@@ -1,59 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99DCA88795E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 17:25:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74527887A5C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 21:45:00 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UIcg4FAC;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TG8xN/Lf;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=aLDuLGbK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V24LS2rkQz3d2K
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 03:25:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V2B5f3Ss6z3dVr
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 07:44:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UIcg4FAC;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TG8xN/Lf;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=aLDuLGbK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V24Kg6C61z2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 03:24:55 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7B9AB60202;
-	Sat, 23 Mar 2024 16:24:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 252D9C433F1;
-	Sat, 23 Mar 2024 16:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711211092;
-	bh=T3OAyKyJpcbqAIQyHuZW09u3eIcA963sn5FOSQf9ROY=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=UIcg4FACYS16+O2uIsLA5ERgr+Zak+DWfradJRPzhFtZcYLF/JCxCRkdUMRkXKyAm
-	 rrLOxckhyzcAKBJbDBCAcS8Q/VINEqGBpGjohK3UtqpR8zdCL8An9IFJ+GKGAPnxrQ
-	 NM6sJcJgTGQfNmzNaamljx3R8W6r6jRS1LHfs+LU9YQ9zXPU8Ih9RKWufB05MeFSut
-	 BWhP7v0F4z2eSNiAhizTDPJF/r24vQJ7yn5e7Y5LZZTs2dsiPFjKBGqGEGJaqTFI5i
-	 ipcTj199sfSl5HqY8uZUMSAbLeFjmSMsR4DplanVAQyTCLEmUQ2xcpTu5DKxIhW1AT
-	 xZ9ynmS9Ana5w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1C228D8BCE3;
-	Sat, 23 Mar 2024 16:24:52 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.9-2 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87zfupix7p.fsf@mail.lhotse>
-References: <87zfupix7p.fsf@mail.lhotse>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87zfupix7p.fsf@mail.lhotse>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.9-2
-X-PR-Tracked-Commit-Id: 5c4233cc0920cc90787aafe950b90f6c57a35b88
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 484193fecd2b6349a6fd1554d306aec646ae1a6a
-Message-Id: <171121109210.3260.13947764386545794887.pr-tracker-bot@kernel.org>
-Date: Sat, 23 Mar 2024 16:24:52 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2B4s6NjLz30dn
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 07:44:13 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1711226639;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=498F8PEQ9wEXgdD7gmsVyIePv6lPN9KMgR9cake0cII=;
+	b=TG8xN/LfoRRdGRKLPJytQ0WbpsaWMv0WrL4DXHc0QF2TG12Q+SQKz6wiObWgnnW0HcR/Ql
+	F7NpwBCwlA2vJX8wi6bn4x4VVQlSM5xIJQKIHzRKU4I9+XuSiat0R7PfEeZifBlwk4bJAL
+	yvEB7eWVJx7O4K4GgJ3YXt6yO//Uay0/EmyvWT4oESAp+K6tUUEXEQ0ZBxK2rsiVEj8bEV
+	3Bzbt37hwIC0Ytzq/bSAlCawj2peBQWRNNvikh9Hcvrg0VIKo1H75ASOhVTq+sdlRR2Hkm
+	sjgXecrKKsUDj5FuF+LpeihW7o64DPQnycD8y6KM3vUmurhroDmduosVLQYLHQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1711226639;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=498F8PEQ9wEXgdD7gmsVyIePv6lPN9KMgR9cake0cII=;
+	b=aLDuLGbKEM9RIsVsNKRqttDQtUs33o/e8HGUnEg3BejCTi8TFZVBG6mVCOBMb9MEViBHMg
+	qYbmaaadEYPf6dDw==
+To: Bitao Hu <yaoma@linux.alibaba.com>, dianders@chromium.org,
+ liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+ jan.kiszka@siemens.com
+Subject: Re: [PATCHv12 4/4] watchdog/softlockup: report the most frequent
+ interrupts
+In-Reply-To: <20240306125208.71803-5-yaoma@linux.alibaba.com>
+References: <20240306125208.71803-1-yaoma@linux.alibaba.com>
+ <20240306125208.71803-5-yaoma@linux.alibaba.com>
+Date: Sat, 23 Mar 2024 21:43:58 +0100
+Message-ID: <87zfuofzld.ffs@tglx>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,19 +69,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhe@redhat.com, Linus Torvalds <torvalds@linux-foundation.org>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 23 Mar 2024 11:54:50 +1100:
+On Wed, Mar 06 2024 at 20:52, Bitao Hu wrote:
+> +	if (__this_cpu_read(snapshot_taken)) {
+> +		for_each_active_irq(i) {
+> +			count = kstat_get_irq_since_snapshot(i);
+> +			tabulate_irq_count(irq_counts_sorted, i, count, NUM_HARDIRQ_REPORT);
+> +		}
+> +
+> +		/*
+> +		 * We do not want the "watchdog: " prefix on every line,
+> +		 * hence we use "printk" instead of "pr_crit".
+> +		 */
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.9-2
+You are not providing any justification why the prefix is not
+wanted. Just saying 'We do not want' does not cut it and who is 'We'. I
+certainly not.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/484193fecd2b6349a6fd1554d306aec646ae1a6a
+I really disagree because the prefixes are very useful for searching log
+files. So not having it makes it harder to filter out for no reason.
 
-Thank you!
+Thanks,
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+        tglx
