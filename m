@@ -1,72 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F423887B0F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 00:13:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D02F8877C6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 10:21:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=C7fqEIj/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AmGkF125;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V2FP00fMyz3bn8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 10:13:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V1tx06s8cz3dwr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 20:21:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=C7fqEIj/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AmGkF125;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=lidong.zhong@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1tBJ6TZDz3bv3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 19:47:49 +1100 (AEDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2d4a8bddc21so38752571fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 01:47:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1711183664; x=1711788464; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gicMv3HOiEEZQMWq3K1W6UJgMPL6I0xNRjjgvC/+TB8=;
-        b=C7fqEIj/7ZS9mrMu/3n50gNV5cryF5KiXP4dwYTlLMZciWkVSNp9+Oidg2u+FFJ/rK
-         3ipl6VrhKM2r72yBW+kk9jH3NfR0ucatVZn6gciQxmgwc41DPIMD71KQNqbr9w+trZ5p
-         zvbfkWPZTVhbYlj71gCpVvSrTJ64IhBiVEXYpxOkZnLWCW4/iwxlJdwJx8fUl3Nt7p/w
-         w+9CiCDNTIulGBhPalONRdaQG3gZ/ZSfgcZJ8iCl0Sxq6a8ai4332JKMZfcvDDg+ulix
-         p3xFsbzmHZfTMVoY7zfis7VMkmWvRzwnVIvCB8xaH6zzLDvWwyH6K78+yw2aWUA/fVMX
-         GU/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711183664; x=1711788464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gicMv3HOiEEZQMWq3K1W6UJgMPL6I0xNRjjgvC/+TB8=;
-        b=e6pmmy/P9putkKhkdGnDeAbNZo7avSua1ndMDWb40R3cXhwahMFSmDAegfZXaY5YfH
-         /bp6HPxlmS3lAPHZ6PYhoSmmbVULCw5Y6+msTREeBLlgvu0xxR3o+ePDH5tM3D9kFTkQ
-         9vITEuXRswlGN7WShIHBJPTlyuZc9oBI3aua3hLEMHjc8kgc3hQDMbGC8gGYDqHp0UUk
-         yFolnOTqeYb50auTjXeOuROBUCBuu//mRyR1Nv0+V1AuAwu0faNM7q/jPwmF38oyTk5G
-         bOCjOmdD9HwwSxxRH7rl4+tjn2vWHsCiGcCpVSkhwx5Xca8JX6hFqtWrBvG6GA1G94RV
-         S5cg==
-X-Gm-Message-State: AOJu0Yy8AVHCiZSGbncE73ztuRueWwEnIM6oENgnbeBB9tu984o9BTfG
-	r7ucd0njGLBH2GptV8OTax8XcGBCe+xkUOwe3S2KFixpmC9KRLP6tLjwte5Tmal1ITVLKPD87+T
-	lxc0=
-X-Google-Smtp-Source: AGHT+IFp50X5Q/YlQFmTyOAkz1sddiKVCxIGSaRdXnYn77CFtz2J/Tt8+ePYEqFkOgRKF0s6wWzkbw==
-X-Received: by 2002:a05:651c:825:b0:2d6:c001:d8b with SMTP id r37-20020a05651c082500b002d6c0010d8bmr1066150ljb.5.1711183662504;
-        Sat, 23 Mar 2024 01:47:42 -0700 (PDT)
-Received: from localhost ([202.127.77.110])
-        by smtp.gmail.com with ESMTPSA id m10-20020a170902bb8a00b001dee0e175c1sm1095980pls.118.2024.03.23.01.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Mar 2024 01:47:42 -0700 (PDT)
-From: Lidong Zhong <lidong.zhong@suse.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] powerpc/pseries: remove returning ENODEV when uevent is triggered
-Date: Sat, 23 Mar 2024 16:47:37 +0800
-Message-Id: <20240323084737.12986-1-lidong.zhong@suse.com>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1tw90gByz3bsw;
+	Sat, 23 Mar 2024 20:20:41 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 352B7CE0959;
+	Sat, 23 Mar 2024 09:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51C0C433F1;
+	Sat, 23 Mar 2024 09:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711185636;
+	bh=aGTQuZy7vZpxuhlc2uWM1FWO2cNVLUpXYHPr+30NYM4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AmGkF125xegySFWAiHvPntmZ+07s8hZQPC/0IVIftdkxYeMJTqDHDoBaq087Sl4Ry
+	 qKx2QcAVw6S410SG7j4biAqt4/h5dTjc1vKUs5R8LJBjxtJSQyMNE1PxZTAhzLwpa+
+	 ZvDOHlqhfPGo+3K1JP9tq5K11rxRL31gNRIYe4fcfJjyAcpNQmozM0AzDwGqt7aAAm
+	 vL1bo7yWAyyXHWJXICav98Il7syCI5t9aEO0HLvfyTQ7cJVQX5WfpHiaD8JmvRG1Zm
+	 VmI4taBLphr2uo/nVmCk1uj3x3TE6/IYqaCXMkAcTk/3yvQe9KoaZIneVeSaGY4Thk
+	 hCCXd6I1k2Bcg==
+Date: Sat, 23 Mar 2024 10:20:32 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH 00/64] i2c: reword i2c_algorithm according to newest
+ specification
+Message-ID: <ug266trshvhhbsln3eoh53fmsuj3l63ziz6gavcl7rv2jhjr5t@3av5givh5n7m>
+References: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Sun, 24 Mar 2024 10:12:45 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322132619.6389-1-wsa+renesas@sang-engineering.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,50 +59,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lidong.zhong@suse.com
+Cc: imx@lists.linux.dev, linux-aspeed@lists.ozlabs.org, linux-mips@vger.kernel.org, linux-i2c@vger.kernel.org, linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org, openbmc@lists.ozlabs.org, linux-rockchip@lists.infradead.org, linux-sunxi@lists.linux.dev, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, virtualization@lists.linux.dev, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, asahi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We have noticed the following nuisance messages during boot
+Hi Wolfram,
 
-[    7.120610][ T1060] vio vio: uevent: failed to send synthetic uevent
-[    7.122281][ T1060] vio 4000: uevent: failed to send synthetic uevent
-[    7.122304][ T1060] vio 4001: uevent: failed to send synthetic uevent
-[    7.122324][ T1060] vio 4002: uevent: failed to send synthetic uevent
-[    7.122345][ T1060] vio 4004: uevent: failed to send synthetic uevent
+On Fri, Mar 22, 2024 at 02:24:53PM +0100, Wolfram Sang wrote:
+> Okay, we need to begin somewhere...
+> 
+> Start changing the wording of the I2C main header wrt. the newest I2C
+> v7, SMBus 3.2, I3C specifications and replace "master/slave" with more
+> appropriate terms. This first step renames the members of struct
+> i2c_algorithm. Once all in-tree users are converted, the anonymous union
+> will go away again. All this work will also pave the way for finally
+> seperating the monolithic header into more fine-grained headers like
+> "i2c/clients.h" etc. So, this is not a simple renaming-excercise but
+> also a chance to update the I2C core to recent Linux standards.
 
-It's caused by either vio_register_device_node() failed to set dev->of_node or
-the missing "compatible" property. Try return as much information as possible
-instead of a failure. The above annoying errors can also be removed
-after the patch applied.
+yes, very good! It's clearly stated in all three documentations
+that Target replaces Slave and Controller replaces Master (i3c is
+at the 1.1.1 version).
 
-Signed-off-by: Lidong Zhong <lidong.zhong@suse.com>
----
- arch/powerpc/platforms/pseries/vio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+> My motivation is to improve the I2C core API, in general. My motivation
+> is not to clean each and every driver. I think this is impossible
+> because register names based on official documentation will need to stay
+> as they are. But the Linux-internal names should be updated IMO.
 
-diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
-index 90ff85c879bf..62961715ca24 100644
---- a/arch/powerpc/platforms/pseries/vio.c
-+++ b/arch/powerpc/platforms/pseries/vio.c
-@@ -1593,12 +1593,13 @@ static int vio_hotplug(const struct device *dev, struct kobj_uevent_env *env)
- 
- 	dn = dev->of_node;
- 	if (!dn)
--		return -ENODEV;
-+		goto out;
- 	cp = of_get_property(dn, "compatible", NULL);
- 	if (!cp)
--		return -ENODEV;
--
--	add_uevent_var(env, "MODALIAS=vio:T%sS%s", vio_dev->type, cp);
-+		add_uevent_var(env, "MODALIAS=vio:T%s", vio_dev->type);
-+    else
-+		add_uevent_var(env, "MODALIAS=vio:T%sS%s", vio_dev->type, cp);
-+out:
- 	return 0;
- }
- 
--- 
-2.35.3
+Also because some drivers have been written based on previous
+specifications where master/slave was used.
 
+> That being said, I worked on 62 drivers in this series beyond plain
+> renames inside 'struct i2c_algorithm' because the fruits were so
+> low-hanging. Before this series, 112 files in the 'busses/' directory
+> contained 'master' and/or 'slave'. After the series, only 57. Why not?
+> 
+> Next step is updating the drivers outside the 'i2c'-folder regarding
+> 'struct i2c_algorithm' so we can remove the anonymous union ASAP. To be
+> able to work on this with minimal dependencies, I'd like to apply this
+> series between -rc1 and -rc2.
+> 
+> I hope this will work for you guys. The changes are really minimal. If
+> you are not comfortable with changes to your driver or need more time to
+> review, please NACK the patch and I will drop the patch and/or address
+> the issues separeately.
+> 
+> @Andi: are you okay with this approach? It means you'd need to merge
+> -rc2 into your for-next branch. Or rebase if all fails.
+
+I think it's a good plan, I'll try to support you with it.
+
+> Speaking of Andi, thanks a lot to him taking care of the controller
+> drivers these days. His work really gives me the freedom to work on I2C
+> core issues again.
+
+Thank you, Wolfram!
+
+Andi
