@@ -1,74 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2186C887904
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 15:19:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4064887905
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 15:19:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=buJLbX56;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ya4VarR+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V21XV640yz3vfD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 01:19:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V21YH3Zbtz3vj7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 01:19:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=buJLbX56;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ya4VarR+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V21Wd4D6bz3vXF
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 01:18:21 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6e6ee9e3cffso1966029b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 07:18:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V21XF4D4kz3vZV
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 01:18:53 +1100 (AEDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6e6b3dc3564so2073914b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 07:18:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711203499; x=1711808299; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1711203531; x=1711808331; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=r2oi8/Av41/0O7sn+va1z3hC3DhZlIeMcum4Cd0IBRc=;
-        b=buJLbX56mXyNv611VzZbAyQnemNFl9C6LMpS9uWKC9xx4aFL+vqpdpDpDTMIOpYc7u
-         I3qk/AAGqSsWDsU+n+dzlBeYIxZa5ueqNoANBwQz6tXcrOXPh46quWPYDVc8OCebX5Af
-         MMYRBTTUHPDRcYFe672X76clnaBbDp9doFQm+3P6BGpTknDyGQqV75kQl263TUeFGT6p
-         557FC5aN+SWtMX5Fg6bQ5gdr1CNnoNMXyLamv5Up4sV7ysCsMjmbcYRDi+u+GghzUmCP
-         V8pHdgp1TGhBZEbyeAnHbiZAy1hKUI85AjgNXruIEF0IZfVFt0OOOku3SC4XE+TLMpnd
-         /czQ==
+        bh=RgW1njvW4Wz+IGlNA3VNeEiCX2abnmGJkt4zaObGyJk=;
+        b=Ya4VarR+J9d6+LicyoCyE7kv+WJnZCaARfMmuXSLG0h/ZoTvmGryEvqQNia/M5WYds
+         0g/lLwKEGIwu+8AjcI5CMe1sPq8ZgaWV3aNGYSfWHVm0uThXrCX09SbMyjHyL05DMLHL
+         e8mfC8CJ0qkqHTu5cXBv2/mbjJN03HSIYQd4Ex2QiXVlPWigj9sbjfeAyY7ZmmTeH8zt
+         axCoGXcRdkf7Y871sZV21b0H+uZ2sY3E08IJ5R+bfl83RxJDrzQ90jLPLKsPVSdd+51W
+         +aE/wFMPLiqketPDNkIm1xII9wlEmbOHKNJsRhYzvO4meaVGCwJI2szJ2FGqgQS6MyEn
+         H8KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711203499; x=1711808299;
+        d=1e100.net; s=20230601; t=1711203531; x=1711808331;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r2oi8/Av41/0O7sn+va1z3hC3DhZlIeMcum4Cd0IBRc=;
-        b=CIn6R2U3nJjElCHLCXAIhYLZAuEWddEuxOaXSuNoQtruOKHI95nPVdpBsm31cMkDOO
-         AqkcC6xPUMJaEZtQ3HIOye19B21ZvZ8HET+JMtCc9r/+PxgWPkNXWvIdUwNm+zAA4OLU
-         Vf4QyHHIZfQTD5LiwCZ5/GOj7S1xD8YuELXCVSvzluT4TAkybJko0rPyIcHYlVIRv6fq
-         0A751xunmRgVVbypl36c6aaS9VfZiZqFrJNOXnbfQFfDG6MSX2Q4xX8zpy2/Zdn4VtnN
-         0Oe3OqigkcNeB467L0rPNwH48aSZPRgc3jHildJehJ6CDJbGq29yXSeQm/9JuCb/hMip
-         iUUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJHzgTOb3UAO8aN2FKLr4ZYQEND43iCRSY5bDPTNvHj6J4D4PCIWqbiwfG+aN4LPMsBBFJLEUnpIGIxF+dGqa4ysxHKkgVEtPKrXp1XA==
-X-Gm-Message-State: AOJu0YxhoK/Fzx7djtOHmAsOnh+DPa6wHSgBQwhbU08DMOEqho9HUHgI
-	9J6OePxz763wCQd5WM3+uI8bORh9WUFQL3bFG62cDx5NAQoh8eZy
-X-Google-Smtp-Source: AGHT+IHU7RYX/NffMSkoOzcuHzU2HMiSmyhPHK0+serzkUgaC0dwwzvBwrG1X6ZXGH0gZ+VzSWOqqw==
-X-Received: by 2002:a05:6a00:981:b0:6e6:57a9:f8b1 with SMTP id u1-20020a056a00098100b006e657a9f8b1mr2781759pfg.9.1711203498669;
-        Sat, 23 Mar 2024 07:18:18 -0700 (PDT)
+        bh=RgW1njvW4Wz+IGlNA3VNeEiCX2abnmGJkt4zaObGyJk=;
+        b=r16qqv9ethUK77hlapscB08CSY7oF6YRHupI3/pemKVIud+6OZ58XGKyx1xAcFQVXt
+         xKhx5U9PrbNPU+bwE/MDFzC5V1rKCIAJJxe26De84QpPyXnsOJl5G+8fNU30USxoIdJJ
+         mVbwCX+9o/8QanbC7ZmLQvDwxhl6/7bo6DY34VH/WDVPTIcyl9XXy2zvwU7vdbyheIr4
+         mBdSI+iBt85mGZchesetxdnth3+bkt31XTrhkHWVnfPPmQ/H4qfVor8/nXOU0+U+Hlsm
+         mamXj1i+44PBBPkrXIGqODecdf9PwE7bcHNPKc3xIxfFNfvf5Z3w+5PCsfyTyLuib3Fp
+         Hf9g==
+X-Forwarded-Encrypted: i=1; AJvYcCX0QvFIibx/MIuBTq5egsdK5+CJxB4anpwC+lWZtJ0rAzMe30C8d05oBSDpw5cBRdfUoNUKccYNXLFcorKAHki+iaZ9ofWtIO8wNCpgvQ==
+X-Gm-Message-State: AOJu0Yyyc2nbuwQHaROqUvy5XWLBmtFi0rX+KLbLpZ4RyHNuvRsEAJBp
+	Ww6XpX6koft5JptwRuB96blEBxbLZN4BWDzN/cr632OIjE2NEYC0qxQBGyK0
+X-Google-Smtp-Source: AGHT+IFGFxIRoqvGpXqMnnxrsXWZplVYwU/7PbCEWKy5oSpPf7AjWoIraV8DBpA54k91DPSWX32lJg==
+X-Received: by 2002:a05:6a20:6a0b:b0:1a3:ab77:a10f with SMTP id p11-20020a056a206a0b00b001a3ab77a10fmr2712655pzk.55.1711203530856;
+        Sat, 23 Mar 2024 07:18:50 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id fb6-20020a056a002d8600b006e7008bce11sm1422976pfb.26.2024.03.23.07.18.17
+        by smtp.gmail.com with ESMTPSA id i63-20020a62c142000000b006e77d7edc56sm1474298pfg.111.2024.03.23.07.18.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Mar 2024 07:18:18 -0700 (PDT)
-Date: Sat, 23 Mar 2024 07:18:17 -0700
+        Sat, 23 Mar 2024 07:18:50 -0700 (PDT)
+Date: Sat, 23 Mar 2024 07:18:49 -0700
 From: Guenter Roeck <linux@roeck-us.net>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: Re: [PATCH v3 4/5] dt-bindings: hwmon: stts751: convert to dtschema
-Message-ID: <bc2af486-4edc-46f2-bf0d-abd94538d003@roeck-us.net>
+Subject: Re: [PATCH v3 5/5] dt-bindings: hwmon: ibm,p8-occ-hwmon: move to
+ trivial devices
+Message-ID: <79f53936-608b-436a-af9f-9f47b1ef16cf@roeck-us.net>
 References: <20240322-hwmon_dtschema-v3-0-6697de2a8228@gmail.com>
- <20240322-hwmon_dtschema-v3-4-6697de2a8228@gmail.com>
+ <20240322-hwmon_dtschema-v3-5-6697de2a8228@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240322-hwmon_dtschema-v3-4-6697de2a8228@gmail.com>
+In-Reply-To: <20240322-hwmon_dtschema-v3-5-6697de2a8228@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,16 +81,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hwmon@vger.kernel.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hwmon@vger.kernel.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 22, 2024 at 08:24:38PM +0100, Javier Carrasco wrote:
-> Convert existing binding to support validation.
+On Fri, Mar 22, 2024 at 08:24:39PM +0100, Javier Carrasco wrote:
+> This binding meets the requirements to be converted to dtschema
+> via trivial-devices.yaml.
 > 
-> This is a straightforward conversion with no new properties.
-> 
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 Applied to hwmon-next.
