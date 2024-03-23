@@ -2,58 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935388878C1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 14:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E888D8878F4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 15:16:54 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OyhfQ+5z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UV5isOiD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V1zp82B5Tz3dV4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 00:00:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V21Tw5CRLz3dtJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 01:16:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OyhfQ+5z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UV5isOiD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V1znK55Xsz2ykZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 00:00:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711198806; x=1742734806;
-  h=date:from:to:cc:subject:message-id;
-  bh=bkB3GEoiXVsAwJlI47LXpKSXH7h2vSMpzOjnldTX8jY=;
-  b=OyhfQ+5zcnfpOr2QVl53STJiY8pzfYdIutjlJSYZP2YpCxJ+Cl4wOnwZ
-   en5qnl3vy6yg2Gy40O0qso6aZwx4iIN4NyA1QPmnCYxNiv8ejAWmoJ7FW
-   MlNBJ2vegmXUCFYnI4cx7v8oRPqHzfyj4QijQ5EOWB/D+F2tMNjgCLd16
-   3ly+oHItYfySGMGl1TZINGkbsqEGLHZPQfrA7DfGf99QC8g1gYkut0aVa
-   L58Wi6pMO0ftWVBgmlMY84+uxBWxnEzQQipNMjyAJQqlhRx0Pf1yC5iDd
-   j6IJcRJaXtwsJamREmVPvQfXD7OoY7d83K6jUugF65Fl3skmmCrhti8pm
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11021"; a="28723285"
-X-IronPort-AV: E=Sophos;i="6.07,149,1708416000"; 
-   d="scan'208";a="28723285"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2024 06:00:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,149,1708416000"; 
-   d="scan'208";a="15264838"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 23 Mar 2024 05:59:59 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ro0ya-000LA1-2r;
-	Sat, 23 Mar 2024 12:59:56 +0000
-Date: Sat, 23 Mar 2024 20:59:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- c564740049970cb2fbd2f8e6bcac79399d901732
-Message-ID: <202403232041.EQi477pn-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V21TC5RsVz3cGK
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 01:16:13 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1def2a1aafaso19161125ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Mar 2024 07:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711203369; x=1711808169; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0yHZUKY2RezcV60fnvTvfbW3kfQRjFkJeR3hdq5nZuY=;
+        b=UV5isOiDdidMVayGY+smnR/HxnGdZuCj3HCpPltmL/5xA+gOClY4IeUAchIVPwBwvJ
+         cargBjphQfNXTDE8VJfDkdQ6YygR+TiOGy+j6bEQfZGGpzfRZW7EmrvJSU/e2sy3jCYe
+         PoLOzRxoCNmp1Txu4eU7ZffJGrgosykCW0tGIsMorOYyCtNclZBrq7OkaO6/OMDaSTLj
+         LyPh3wjqh4ogSorDLheTjW4C2UqRdg127q0icMJTjT5q/3ymEPX8k2VAflcDv/q9MPyo
+         rerdgTcHHOU5nMrLrdoqHybMFBgmJPToFtVXHF0yu8q+6VNGc5ccg8Yhc02jsTSisgxs
+         xzvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711203369; x=1711808169;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0yHZUKY2RezcV60fnvTvfbW3kfQRjFkJeR3hdq5nZuY=;
+        b=jDouO65s6hrwr/dPSao30uqs6vpPXik64hG/5Ah/OdAD7YrwiGP7ODEcqbbN2boBLr
+         HWjCWiyvl4KvE+KiSZEh/IPs/zRYAXkuJT2Cw7j0XfS+GqoBwOr3rgOxsPoB76YfZIHe
+         ASxrwk+KxwILrS13offFzpvSg4bjOD1JKV7URKfpGwLLH8xd7w+imuM6YiPWB9m0LI14
+         j0lFJosTo/ajbnlh6ZP1idRiAvZPX9IyfANbV1dwLBAMnL8sndXi4QkXk4aiNqPI0wtk
+         0taNu6SebBdqHC2NCgkwP2caYEGveUDT0ektFRdoMut2lgP8BI5nO+vat+QO+NjbNpZJ
+         uMdA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+9l7/IkcM8km9tZ7Ephr3lh4VT8kQbL+B/12zlcUq23XL+R/dK6QJFYyzXHj3wAGCYW8UEzXCVAeVTIGp4lYkdptBAqYeGK0yts09dQ==
+X-Gm-Message-State: AOJu0Yyc9U5355kADlwDxtjjyT69kBmPzKyi1IWyXZoFepvvU3Fa/5jG
+	Uc9kgoGq42iTpPfoPsWlVGpzg+Uc8owSrqWUnXBEMXzRHKm2P9JD
+X-Google-Smtp-Source: AGHT+IE4Qp4YYnow/2jOmSjfy+hfB76Afq1NrBb0M4yGd34xRyXDm5SXGf+ljHUMeWADEY6YII99dA==
+X-Received: by 2002:a17:902:f641:b0:1e0:3f65:f503 with SMTP id m1-20020a170902f64100b001e03f65f503mr3201038plg.39.1711203369046;
+        Sat, 23 Mar 2024 07:16:09 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id u4-20020a170902e5c400b001def0324a64sm1597237plf.135.2024.03.23.07.16.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Mar 2024 07:16:08 -0700 (PDT)
+Date: Sat, 23 Mar 2024 07:16:07 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: Re: [PATCH v3 1/5] dt-bindings: hwmon: as370: convert to dtschema
+Message-ID: <aabc0c6c-dbc2-4e63-ba7a-f8c15db714a2@roeck-us.net>
+References: <20240322-hwmon_dtschema-v3-0-6697de2a8228@gmail.com>
+ <20240322-hwmon_dtschema-v3-1-6697de2a8228@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240322-hwmon_dtschema-v3-1-6697de2a8228@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,115 +80,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-hwmon@vger.kernel.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jean Delvare <jdelvare@suse.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: c564740049970cb2fbd2f8e6bcac79399d901732  powerpc/iommu: Refactor spapr_tce_platform_iommu_attach_dev()
+On Fri, Mar 22, 2024 at 08:24:35PM +0100, Javier Carrasco wrote:
+> Convert existing binding to support validation.
+> 
+> This is a straightforward conversion with now new properties.
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-elapsed time: 720m
+Applied to hwmon-next.
 
-configs tested: 92
-configs skipped: 157
+Please note that the branch will be pushed after the commit window closed.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            allyesconfig   gcc  
-arc                 nsimosci_hs_smp_defconfig   gcc  
-arm                     am200epdkit_defconfig   gcc  
-arm                        vexpress_defconfig   gcc  
-arm64                            allmodconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240323   gcc  
-i386         buildonly-randconfig-004-20240323   gcc  
-i386         buildonly-randconfig-005-20240323   gcc  
-i386                  randconfig-003-20240323   gcc  
-i386                  randconfig-004-20240323   gcc  
-i386                  randconfig-005-20240323   gcc  
-i386                  randconfig-006-20240323   gcc  
-i386                  randconfig-011-20240323   gcc  
-i386                  randconfig-012-20240323   gcc  
-i386                  randconfig-014-20240323   gcc  
-i386                  randconfig-015-20240323   gcc  
-i386                  randconfig-016-20240323   gcc  
-loongarch                        allmodconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                       allyesconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  decstation_64_defconfig   gcc  
-mips                           rs90_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                            allyesconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                     ep8248e_defconfig   gcc  
-powerpc               randconfig-001-20240323   gcc  
-powerpc               randconfig-002-20240323   gcc  
-powerpc               randconfig-003-20240323   clang
-powerpc64             randconfig-001-20240323   clang
-powerpc64             randconfig-002-20240323   clang
-powerpc64             randconfig-003-20240323   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                        dreamcast_defconfig   gcc  
-sh                          kfr2r09_defconfig   gcc  
-sh                             sh03_defconfig   gcc  
-sh                     sh7710voipgw_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64       buildonly-randconfig-001-20240323   clang
-x86_64       buildonly-randconfig-002-20240323   clang
-x86_64       buildonly-randconfig-003-20240323   clang
-x86_64       buildonly-randconfig-005-20240323   clang
-x86_64       buildonly-randconfig-006-20240323   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240323   clang
-x86_64                randconfig-003-20240323   clang
-x86_64                randconfig-004-20240323   clang
-x86_64                randconfig-011-20240323   clang
-x86_64                randconfig-013-20240323   clang
-x86_64                randconfig-014-20240323   clang
-x86_64                randconfig-015-20240323   clang
-x86_64                randconfig-016-20240323   clang
-x86_64                randconfig-071-20240323   clang
-x86_64                randconfig-072-20240323   clang
-x86_64                randconfig-073-20240323   clang
-x86_64                randconfig-074-20240323   clang
-x86_64                randconfig-076-20240323   clang
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                  audio_kc705_defconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Guenter
