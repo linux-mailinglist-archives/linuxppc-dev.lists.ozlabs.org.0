@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290DB88802B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 23:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6418880ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 00:08:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XH0PZUU/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y1kFLPyn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V2rxl6N8Gz3dVJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 09:55:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V2sF01Kw2z3dTS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 10:08:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XH0PZUU/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y1kFLPyn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2rwz1hMkz30Pp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 09:54:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2sD66MDlz3bqB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 10:07:50 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id CDDBECE0E5D;
-	Sun, 24 Mar 2024 22:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9E0C43330;
-	Sun, 24 Mar 2024 22:54:38 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5ED0660E04;
+	Sun, 24 Mar 2024 23:07:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE43C43399;
+	Sun, 24 Mar 2024 23:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711320880;
+	s=k20201202; t=1711321668;
 	bh=Vql+8js91BRX0rn5qU3meYIvkq3/iZebYzGwS509XTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XH0PZUU/46IFy8sp/+S5J2rWTXJcondn8GwtpQ6j2PcAO4JftmUyhtMoBm8y8xmZr
-	 nJT1PggckArlgyaFJseQHRKMSTLT8Q8EMeu4O0EFrsYIcCWIaS+qQCtAOV+MDe7I9s
-	 Fww8XlgD3i5NEG9pax/uQeuiF0Dok6MDFkHzgPnNgVFCfMtcQQFS9L/pSK/lzTNifm
-	 eVHba0MMrcPYWG+yjUmp1SwXOab8LmJEAMRW3OElxQ9gNLGq8dnicv+otg1UJD562O
-	 w1bX2UbvY8YajhxVPWIrYyX62G+w81kp/BTkgWZlbLcGQcrSfYL8N7ovfr/WXq7s36
-	 zQ+z3p4GVRdow==
+	b=Y1kFLPynROeXaia/neLYNhDoRiejoV8FwURaGegVxq+CWtddmSrfg8rZvGajA0DHb
+	 mb0B1wycTdOSGLAFUXKnrVyEsugGi/Eyalcrd4UlUSXcVKtDGi7RtJoWDepbCFD3KJ
+	 hKXsAzOW36fM7e+V7p7Bt1lJ3VHWG/pFAbNFdo8q9BuKLjrkE+TK4s6//uoPNyzZus
+	 sjGTlZdZ35/9XidkW1JZhiNM4Oon8O3ICEDGTMAqEBub1LXdqFjIicE21tZwb6P117
+	 Gncq2cOJzNKAxOMoyGcRiFj1b5dfb6y1j0xbkKj00E+Qk02GV8vYpq16xUp6nS86RE
+	 EDUc5uu8ovFlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 6.7 444/713] drivers/ps3: select VIDEO to provide cmdline functions
-Date: Sun, 24 Mar 2024 18:42:50 -0400
-Message-ID: <20240324224720.1345309-445-sashal@kernel.org>
+Subject: [PATCH 6.6 397/638] drivers/ps3: select VIDEO to provide cmdline functions
+Date: Sun, 24 Mar 2024 18:57:14 -0400
+Message-ID: <20240324230116.1348576-398-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240324224720.1345309-1-sashal@kernel.org>
-References: <20240324224720.1345309-1-sashal@kernel.org>
+In-Reply-To: <20240324230116.1348576-1-sashal@kernel.org>
+References: <20240324230116.1348576-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
