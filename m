@@ -1,63 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74527887A5C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Mar 2024 21:45:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C427C887B4A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 02:12:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TG8xN/Lf;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=aLDuLGbK;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bw9fFzSj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V2B5f3Ss6z3dVr
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 07:44:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V2J203tXxz3dHV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 12:12:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=TG8xN/Lf;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=aLDuLGbK;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bw9fFzSj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2B4s6NjLz30dn
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 07:44:13 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1711226639;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=498F8PEQ9wEXgdD7gmsVyIePv6lPN9KMgR9cake0cII=;
-	b=TG8xN/LfoRRdGRKLPJytQ0WbpsaWMv0WrL4DXHc0QF2TG12Q+SQKz6wiObWgnnW0HcR/Ql
-	F7NpwBCwlA2vJX8wi6bn4x4VVQlSM5xIJQKIHzRKU4I9+XuSiat0R7PfEeZifBlwk4bJAL
-	yvEB7eWVJx7O4K4GgJ3YXt6yO//Uay0/EmyvWT4oESAp+K6tUUEXEQ0ZBxK2rsiVEj8bEV
-	3Bzbt37hwIC0Ytzq/bSAlCawj2peBQWRNNvikh9Hcvrg0VIKo1H75ASOhVTq+sdlRR2Hkm
-	sjgXecrKKsUDj5FuF+LpeihW7o64DPQnycD8y6KM3vUmurhroDmduosVLQYLHQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1711226639;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=498F8PEQ9wEXgdD7gmsVyIePv6lPN9KMgR9cake0cII=;
-	b=aLDuLGbKEM9RIsVsNKRqttDQtUs33o/e8HGUnEg3BejCTi8TFZVBG6mVCOBMb9MEViBHMg
-	qYbmaaadEYPf6dDw==
-To: Bitao Hu <yaoma@linux.alibaba.com>, dianders@chromium.org,
- liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- jan.kiszka@siemens.com
-Subject: Re: [PATCHv12 4/4] watchdog/softlockup: report the most frequent
- interrupts
-In-Reply-To: <20240306125208.71803-5-yaoma@linux.alibaba.com>
-References: <20240306125208.71803-1-yaoma@linux.alibaba.com>
- <20240306125208.71803-5-yaoma@linux.alibaba.com>
-Date: Sat, 23 Mar 2024 21:43:58 +0100
-Message-ID: <87zfuofzld.ffs@tglx>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2J1D0RlQz3bsT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 12:11:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711242688; x=1742778688;
+  h=date:from:to:cc:subject:message-id;
+  bh=PCcSKTzhXdtkXiy0DUIBhOpFm/GFM1cSsMENBiuoN7c=;
+  b=bw9fFzSj5bjBE7cOVyDWwXPSKwGZhddZTXLw/f/+C3e0P1xHpKovOrbO
+   pvrNZNPgNOmDeMQlerk7Lx4Y8216k5cWvRHjr6c77o6B8f/CyNqV71ZHf
+   7CRhqrFhwwSuiwce2BcijDZCJKzu1bBn58b8/6rYU8aF8vqSGTBwIPf1s
+   p3ElJeMFC2V3pjVB9CjzUKmg4L4VYGKy/WYMHbxgrWpN/Cb6pMhaCbMtP
+   CeSNpa2okInr6/X3SMfT10u+xlAVlPZP6zuFQ5UwOlNnOKANFmphDZHgs
+   SyitmEzHSdoV9vTyP3FEqxjSOzVoiKRtSkij3sOQrAGp/1HWsElI8NK1T
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11022"; a="6867679"
+X-IronPort-AV: E=Sophos;i="6.07,150,1708416000"; 
+   d="scan'208";a="6867679"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2024 18:11:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,150,1708416000"; 
+   d="scan'208";a="15351911"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 23 Mar 2024 18:11:21 -0700
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1roCON-000LZn-1N;
+	Sun, 24 Mar 2024 01:11:19 +0000
+Date: Sun, 24 Mar 2024 09:11:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 4db42212e1f16ba12cea838d04d9dcdd4a382ba0
+Message-ID: <202403240902.cctDQYks-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,29 +65,215 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 06 2024 at 20:52, Bitao Hu wrote:
-> +	if (__this_cpu_read(snapshot_taken)) {
-> +		for_each_active_irq(i) {
-> +			count = kstat_get_irq_since_snapshot(i);
-> +			tabulate_irq_count(irq_counts_sorted, i, count, NUM_HARDIRQ_REPORT);
-> +		}
-> +
-> +		/*
-> +		 * We do not want the "watchdog: " prefix on every line,
-> +		 * hence we use "printk" instead of "pr_crit".
-> +		 */
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 4db42212e1f16ba12cea838d04d9dcdd4a382ba0  Automatic merge of 'next' into merge (2024-03-23 11:19)
 
-You are not providing any justification why the prefix is not
-wanted. Just saying 'We do not want' does not cut it and who is 'We'. I
-certainly not.
+elapsed time: 1451m
 
-I really disagree because the prefixes are very useful for searching log
-files. So not having it makes it harder to filter out for no reason.
+configs tested: 192
+configs skipped: 3
 
-Thanks,
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-        tglx
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                 nsimosci_hs_smp_defconfig   gcc  
+arc                   randconfig-001-20240323   gcc  
+arc                   randconfig-002-20240323   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                     am200epdkit_defconfig   gcc  
+arm                                 defconfig   clang
+arm                      integrator_defconfig   clang
+arm                          ixp4xx_defconfig   gcc  
+arm                   randconfig-001-20240323   clang
+arm                   randconfig-002-20240323   clang
+arm                   randconfig-003-20240323   clang
+arm                   randconfig-004-20240323   gcc  
+arm                             rpc_defconfig   clang
+arm                         socfpga_defconfig   gcc  
+arm                        vexpress_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   clang
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240323   gcc  
+arm64                 randconfig-002-20240323   gcc  
+arm64                 randconfig-003-20240323   clang
+arm64                 randconfig-004-20240323   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240323   gcc  
+csky                  randconfig-002-20240323   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240323   clang
+hexagon               randconfig-002-20240323   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240323   gcc  
+i386         buildonly-randconfig-002-20240323   clang
+i386         buildonly-randconfig-003-20240323   clang
+i386         buildonly-randconfig-004-20240323   gcc  
+i386         buildonly-randconfig-005-20240323   gcc  
+i386         buildonly-randconfig-006-20240323   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240323   clang
+i386                  randconfig-002-20240323   clang
+i386                  randconfig-003-20240323   gcc  
+i386                  randconfig-004-20240323   gcc  
+i386                  randconfig-005-20240323   gcc  
+i386                  randconfig-006-20240323   gcc  
+i386                  randconfig-011-20240323   gcc  
+i386                  randconfig-012-20240323   gcc  
+i386                  randconfig-013-20240323   clang
+i386                  randconfig-014-20240323   gcc  
+i386                  randconfig-015-20240323   gcc  
+i386                  randconfig-016-20240323   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240323   gcc  
+loongarch             randconfig-002-20240323   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                          amiga_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                       m5208evb_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                           ci20_defconfig   clang
+mips                  decstation_64_defconfig   gcc  
+mips                            gpr_defconfig   clang
+mips                          malta_defconfig   gcc  
+mips                           rs90_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240323   gcc  
+nios2                 randconfig-002-20240323   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240323   gcc  
+parisc                randconfig-002-20240323   gcc  
+parisc64                            defconfig   gcc  
+powerpc                    adder875_defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                     ep8248e_defconfig   gcc  
+powerpc                        icon_defconfig   gcc  
+powerpc                     mpc5200_defconfig   clang
+powerpc                     mpc83xx_defconfig   clang
+powerpc               randconfig-001-20240323   gcc  
+powerpc               randconfig-002-20240323   gcc  
+powerpc               randconfig-003-20240323   clang
+powerpc64             randconfig-001-20240323   clang
+powerpc64             randconfig-002-20240323   clang
+powerpc64             randconfig-003-20240323   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv             nommu_k210_sdcard_defconfig   gcc  
+riscv                 randconfig-001-20240323   clang
+riscv                 randconfig-002-20240323   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240323   clang
+s390                  randconfig-002-20240323   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                        dreamcast_defconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sh                    randconfig-001-20240323   gcc  
+sh                    randconfig-002-20240323   gcc  
+sh                          sdk7780_defconfig   gcc  
+sh                             sh03_defconfig   gcc  
+sh                     sh7710voipgw_defconfig   gcc  
+sparc                            alldefconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240323   gcc  
+sparc64               randconfig-002-20240323   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240323   gcc  
+um                    randconfig-002-20240323   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240323   clang
+x86_64       buildonly-randconfig-002-20240323   clang
+x86_64       buildonly-randconfig-003-20240323   clang
+x86_64       buildonly-randconfig-004-20240323   gcc  
+x86_64       buildonly-randconfig-005-20240323   clang
+x86_64       buildonly-randconfig-006-20240323   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240323   clang
+x86_64                randconfig-002-20240323   gcc  
+x86_64                randconfig-003-20240323   clang
+x86_64                randconfig-004-20240323   clang
+x86_64                randconfig-005-20240323   gcc  
+x86_64                randconfig-006-20240323   gcc  
+x86_64                randconfig-011-20240323   clang
+x86_64                randconfig-012-20240323   gcc  
+x86_64                randconfig-013-20240323   clang
+x86_64                randconfig-014-20240323   clang
+x86_64                randconfig-015-20240323   clang
+x86_64                randconfig-016-20240323   clang
+x86_64                randconfig-071-20240323   clang
+x86_64                randconfig-072-20240323   clang
+x86_64                randconfig-073-20240323   clang
+x86_64                randconfig-074-20240323   clang
+x86_64                randconfig-075-20240323   gcc  
+x86_64                randconfig-076-20240323   clang
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                  audio_kc705_defconfig   gcc  
+xtensa                randconfig-001-20240323   gcc  
+xtensa                randconfig-002-20240323   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
