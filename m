@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32CB4887B53
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 02:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F586887CBD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 13:28:35 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YA2pouGY;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=ILTODdiI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V2JJT63Njz3dTn
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 12:24:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V2b2S1Blmz3dV4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Mar 2024 23:28:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YA2pouGY;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=ILTODdiI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2607:5300:203:b2ee::31e5; helo=smtpout.efficios.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 447 seconds by postgrey-1.37 at boromir; Sun, 24 Mar 2024 23:27:53 AEDT
+Received: from smtpout.efficios.com (smtpout.efficios.com [IPv6:2607:5300:203:b2ee::31e5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2JHm0lRCz3bsw
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 12:24:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=9L1Ixhk4fnArxEJyLsZSUrzBMXeZlWcbrA4YzaHi20w=; b=YA2pouGYKw+A1B1ZIA+oI6t2rI
-	UYxXKX1FyWHN+OefjkwIVXw4TNo2VrjTkRW3dZ2Wf2zhvExCxBvCWOcSJ3LYgofNlBeFk7Ztq09kg
-	JS4590P83CDq8iyIqcMv2rboSQgYeZfcood6A2dm+tsrAQ/EAKcUY1y7UCFYkTak2F6ex8d98lJjq
-	DVcAU2/Eo6n4wZ1nZrcCLuGXPzo4SZwVfEwpBArmyX1ZphR8NWKbik+JA5aZ6R0WMGSKMvObGyoyK
-	QYhOltp6I6ISOtWRJ+q4ram0fpdYpUVH6WWiBGwZGO435jiP632dleLidpJfJFPwmmLPEBJk8gxP/
-	OhOiKkjQ==;
-Received: from fpd2fa7e2a.ap.nuro.jp ([210.250.126.42] helo=[192.168.1.8])
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1roCaO-0000000CxgD-1YTP;
-	Sun, 24 Mar 2024 01:23:44 +0000
-Message-ID: <415f4af0-f44a-49fb-b1fa-76f64ed09ec6@infradead.org>
-Date: Sun, 24 Mar 2024 10:23:36 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2b1j3lQcz30PD
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Mar 2024 23:27:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+	s=smtpout1; t=1711282807;
+	bh=1rWZrcnRk5MmjMJtp4pl8QDLmZ4mQWqpBpMwhDvzDvw=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ILTODdiIp2nJbQdnnfFDZVc1aW9Ps7KnCaRhhDuXwQXK6/F/NK+IDvOgzWo4OCWC8
+	 +mY1YTdb87lPSxscqY6mG9Vz3HE9h1FOSCyTpmAfUcVi0LpGHjIHv6gvu1DdanqIRP
+	 88Tz4qBDFzz3BYXZbiiNkhZOejSrGRWkXPqIUep/MJgvLRBbTXW912FgD2WAo+SkXC
+	 xrBzLjjLXcgp0LLGlpEf0B+4XoQGl7epeeBFosGlKWeOdTm/reznzuEfpfDZk2HSjC
+	 2jlqKspuljOoc56F3blkFGC+E4Oqy6gWoMlhtUL26fwGkBZxI1Q+XT5mK84AYzKeHm
+	 Ec8PjqZoj2+LQ==
+Received: from [IPV6:2606:6d00:100:4000:cacb:9855:de1f:ded2] (unknown [IPv6:2606:6d00:100:4000:cacb:9855:de1f:ded2])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4V2Zrl4GyVzmMf;
+	Sun, 24 Mar 2024 08:20:07 -0400 (EDT)
+Message-ID: <19c3ea76-9e05-4552-8b93-6c42df105747@efficios.com>
+Date: Sun, 24 Mar 2024 08:20:29 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH] powerpc: Fix PS3 allmodconfig warning
 Content-Language: en-US
-To: Arnd Bergmann <arnd@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@ozlabs.org>,
- Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-References: <20240320180333.151043-1-arnd@kernel.org>
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <20240320180333.151043-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: paulmck <paulmck@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Appropriate liburcu cache line size for Power
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,148 +61,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kevin Hao <haokexin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The struct ps3_notification_device in the ps3_probe_thread routine
-is too large to be on the stack, causing a warning for an
-allmodconfig build with clang.
+Hi,
 
-Change the struct ps3_notification_device from a variable on the stack
-to a dynamically allocated variable.
+In the powerpc architecture support within the liburcu project [1]
+we have a cache line size defined as 256 bytes with the following
+comment:
 
-Reported-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Geoff Levand <geoff@infradead.org>
+/* Include size of POWER5+ L3 cache lines: 256 bytes */
+#define CAA_CACHE_LINE_SIZE     256
 
-diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
-index 878bc160246e..03292869e6a1 100644
---- a/arch/powerpc/platforms/ps3/device-init.c
-+++ b/arch/powerpc/platforms/ps3/device-init.c
-@@ -770,49 +770,51 @@ static struct task_struct *probe_task;
- 
- static int ps3_probe_thread(void *data)
- {
--	struct ps3_notification_device dev;
-+	struct {
-+		struct ps3_notification_device dev;
-+		u8 buf[512];
-+	} *local;
-+	struct ps3_notify_cmd *notify_cmd;
-+	struct ps3_notify_event *notify_event;
- 	int res;
- 	unsigned int irq;
- 	u64 lpar;
--	void *buf;
--	struct ps3_notify_cmd *notify_cmd;
--	struct ps3_notify_event *notify_event;
- 
- 	pr_debug(" -> %s:%u: kthread started\n", __func__, __LINE__);
- 
--	buf = kzalloc(512, GFP_KERNEL);
--	if (!buf)
-+	local = kzalloc(sizeof(local), GFP_KERNEL);
-+	if (!local)
- 		return -ENOMEM;
- 
--	lpar = ps3_mm_phys_to_lpar(__pa(buf));
--	notify_cmd = buf;
--	notify_event = buf;
-+	lpar = ps3_mm_phys_to_lpar(__pa(&local->buf));
-+	notify_cmd = (struct ps3_notify_cmd *)&local->buf;
-+	notify_event = (struct ps3_notify_event *)&local->buf;
- 
- 	/* dummy system bus device */
--	dev.sbd.bus_id = (u64)data;
--	dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
--	dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
-+	local->dev.sbd.bus_id = (u64)data;
-+	local->dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
-+	local->dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
- 
--	res = lv1_open_device(dev.sbd.bus_id, dev.sbd.dev_id, 0);
-+	res = lv1_open_device(local->dev.sbd.bus_id, local->dev.sbd.dev_id, 0);
- 	if (res) {
- 		pr_err("%s:%u: lv1_open_device failed %s\n", __func__,
- 		       __LINE__, ps3_result(res));
- 		goto fail_free;
- 	}
- 
--	res = ps3_sb_event_receive_port_setup(&dev.sbd, PS3_BINDING_CPU_ANY,
--					      &irq);
-+	res = ps3_sb_event_receive_port_setup(&local->dev.sbd,
-+		PS3_BINDING_CPU_ANY, &irq);
- 	if (res) {
- 		pr_err("%s:%u: ps3_sb_event_receive_port_setup failed %d\n",
- 		       __func__, __LINE__, res);
- 	       goto fail_close_device;
- 	}
- 
--	spin_lock_init(&dev.lock);
--	rcuwait_init(&dev.wait);
-+	spin_lock_init(&local->dev.lock);
-+	rcuwait_init(&local->dev.wait);
- 
- 	res = request_irq(irq, ps3_notification_interrupt, 0,
--			  "ps3_notification", &dev);
-+			  "ps3_notification", &local->dev);
- 	if (res) {
- 		pr_err("%s:%u: request_irq failed %d\n", __func__, __LINE__,
- 		       res);
-@@ -823,7 +825,7 @@ static int ps3_probe_thread(void *data)
- 	notify_cmd->operation_code = 0; /* must be zero */
- 	notify_cmd->event_mask = 1UL << notify_region_probe;
- 
--	res = ps3_notification_read_write(&dev, lpar, 1);
-+	res = ps3_notification_read_write(&local->dev, lpar, 1);
- 	if (res)
- 		goto fail_free_irq;
- 
-@@ -834,36 +836,37 @@ static int ps3_probe_thread(void *data)
- 
- 		memset(notify_event, 0, sizeof(*notify_event));
- 
--		res = ps3_notification_read_write(&dev, lpar, 0);
-+		res = ps3_notification_read_write(&local->dev, lpar, 0);
- 		if (res)
- 			break;
- 
- 		pr_debug("%s:%u: notify event type 0x%llx bus id %llu dev id %llu"
- 			 " type %llu port %llu\n", __func__, __LINE__,
--			 notify_event->event_type, notify_event->bus_id,
--			 notify_event->dev_id, notify_event->dev_type,
--			 notify_event->dev_port);
-+			notify_event->event_type, notify_event->bus_id,
-+			notify_event->dev_id, notify_event->dev_type,
-+			notify_event->dev_port);
- 
- 		if (notify_event->event_type != notify_region_probe ||
--		    notify_event->bus_id != dev.sbd.bus_id) {
-+			notify_event->bus_id != local->dev.sbd.bus_id) {
- 			pr_warn("%s:%u: bad notify_event: event %llu, dev_id %llu, dev_type %llu\n",
- 				__func__, __LINE__, notify_event->event_type,
- 				notify_event->dev_id, notify_event->dev_type);
- 			continue;
- 		}
- 
--		ps3_find_and_add_device(dev.sbd.bus_id, notify_event->dev_id);
-+		ps3_find_and_add_device(local->dev.sbd.bus_id,
-+			notify_event->dev_id);
- 
- 	} while (!kthread_should_stop());
- 
- fail_free_irq:
--	free_irq(irq, &dev);
-+	free_irq(irq, &local->dev);
- fail_sb_event_receive_port_destroy:
--	ps3_sb_event_receive_port_destroy(&dev.sbd, irq);
-+	ps3_sb_event_receive_port_destroy(&local->dev.sbd, irq);
- fail_close_device:
--	lv1_close_device(dev.sbd.bus_id, dev.sbd.dev_id);
-+	lv1_close_device(local->dev.sbd.bus_id, local->dev.sbd.dev_id);
- fail_free:
--	kfree(buf);
-+	kfree(local);
- 
- 	probe_task = NULL;
- 
+I recently received a pull request on github [2] asking to
+change this to 128 bytes. All the material provided supports
+that the cache line sizes on powerpc are 128 bytes or less (even
+L3 on POWER7, POWER8, and POWER9) [3].
+
+I wonder where the 256 bytes L3 cache line size for POWER5+
+we have in liburcu comes from, and I wonder if it's the right choice
+for a cache line size on all powerpc, considering that the Linux
+kernel cache line size appear to use 128 bytes on recent Power
+architectures. I recall some benchmark experiments Paul and I did
+on a 64-core 1.9GHz POWER5+ machine that benefited from a 256 bytes
+cache line size, and I suppose this is why we came up with this
+value, but I don't have the detailed specs of that machine.
+
+Any feedback on this matter would be appreciated.
+
+Thanks!
+
+Mathieu
+
+[1] https://liburcu.org
+[2] https://github.com/urcu/userspace-rcu/pull/22
+[3] https://www.7-cpu.com/
+
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
