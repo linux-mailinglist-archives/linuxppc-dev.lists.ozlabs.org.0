@@ -1,60 +1,129 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DB08891FE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:54:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F1A889204
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:55:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Iusz8THA;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=KTOs64zo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V33Zg4tc7z3wHm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:54:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V33bc3RMlz3vpg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:55:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Iusz8THA;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=KTOs64zo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::1; helo=pa5p264cu001.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PA5P264CU001.outbound.protection.outlook.com (mail-francecentralazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33K12pt5z3vd6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:42:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711348965; x=1742884965;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jWLLlF4KdyRZzGfn4U2lSdQ4Wei7Cj+yXLsz+I6EvZY=;
-  b=Iusz8THA13pqubRw6kvkL5p5vNxVzykvnS/33uQZKIHDT+sb1IA3LO5W
-   OqgjDeLnZvl/26QtHvzEliO4MDb+09t6wQm8fEFboF5kAPLoJT0mNBkPA
-   Y3drThHz2EovOYR9Dx4xU9d1XlODfXO44aVF+ya3xqPSrh/Pv+3FyjmPN
-   PykU0G74QD/wy7uaamV/+vSpJP1sRHWVPke0Oz6Lv7ckGvAzsf3E44uED
-   jd1pJwNHD+9Ih+5c2RkTvIiTFcLY+tPyO2ilQCRUHNbzbhc+hFiV5JMcc
-   Tpr3x3Jng+qxMTIpEaFugbo5lml35Xbt2Z1bH66mkH40gzU/xps9bBVT8
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6191617"
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="6191617"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="38629719"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.211.155])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:38 -0700
-From: Adrian Hunter <adrian.hunter@intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH V2 19/19] clocksource: Make watchdog and suspend-timing multiplication overflow safe
-Date: Mon, 25 Mar 2024 08:40:23 +0200
-Message-Id: <20240325064023.2997-20-adrian.hunter@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240325064023.2997-1-adrian.hunter@intel.com>
-References: <20240325064023.2997-1-adrian.hunter@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33Lb6nsSz3vht
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:44:06 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QtxCnEgqWYFyX7viVVW/yCHS2qEAEXDORcZ2OvJqD4OAUlHt6dKqH3diSxY+fHdykYEye5/qo7Ykxp0jy/9NZ60JXjBv5cUCQ5j31Uhzn2ZAKbDO13Ovr33f09hEfn/tpX/5XlyiWKRU9VTFz7sqvSe7w0ueDCCCz2dWaK8wgIIXJP/30U0Q8gLR88MNEoeifrLj+C0kdB/NFSQ2YNHHxQQkc3o7BSbJ2jfFmbzzb3VJyo0IwP4o3CtYLi3p79tRh1BcMbqBjWIqFSYTXMFVc0mE9+owXpdObY8tefJ2ChnmVHR44bEXPTT0r07VpVPf05XaLQ/8uq+1DyOOaOg3TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Nukh09oiBSmSo919Q/bGDATYNHQvYhwnDuHrUpbHtw4=;
+ b=f9dOSao1cjMzrNH0/HVVViJ+u34wJQknKhmFsDJB32zPRpZmr33r5PaEYlexSssDv2m8GTaDB8pTXUQtzDcWLHl8PNeMV7bTP2GTxvY3vTmrVX/oiZM8FE8ulnUeLACpdZHMssCJC2wdMklKk8jn2Y3I662sozLslXm1/LPOpP+HjDAfeKHrxfR78yomF7eg4QPuZQMqW3IhfEiDOgZx2a7zCYa+YcwPpcSyj0sUXa+b0TcuoJ5Yn5skqPL4tm3IzUCLwCvVi23DECpAk5p/v2VLSGg9XgMQtW/kOaw/dSxk+1Fm5Xg2uAONG0/n7sFYlz9fl7AnGa5/vyt/fxNXMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Nukh09oiBSmSo919Q/bGDATYNHQvYhwnDuHrUpbHtw4=;
+ b=KTOs64zouDRXBla+kRc5E2kcETKCJALkty5iGDTd07MWXHe6Nv0jwjv6ebrj8/CaFJl6wZAwyoNN18EB7bE1iGt2hHNg/KWNa/uIwrOX1oE3nsLtD1dEo696DaLlKe68l9FfglOVIDi8NgvR1+hbgg9S90ASAT2CgbGgfehbVQWcRk97LFA2mzOXCzISoOq4CfLAmuHnFbPk3wl35bC5ePQ5TpeXOFyEuarmuVNMXrpOwK3ydjPBoAoc1zg7TumsD+2aRTcbe5X5AZ7wYKGIvOYx3FZ7z2uisz9xtQqBbdIhTMJ9c5fmRs7eM3DtLOPyzKgJxw4KDDhQOafmdpMcBA==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB1859.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:12::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Mon, 25 Mar
+ 2024 06:43:40 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7409.028; Mon, 25 Mar 2024
+ 06:43:40 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev
+	<linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
+	"hbathini@linux.ibm.com" <hbathini@linux.ibm.com>
+Subject: Re: [FSL P50x0] Kernel 6.9-rc1 compiling issue
+Thread-Topic: [FSL P50x0] Kernel 6.9-rc1 compiling issue
+Thread-Index: AQHafm/HBa6Zup3O6kOZVcW6XoFyVrFH6uWAgAAXxYA=
+Date: Mon, 25 Mar 2024 06:43:40 +0000
+Message-ID: <5c232ad9-c4d5-49fa-8434-fc5034b6c5da@csgroup.eu>
+References: <fa247ae4-5825-4dbe-a737-d93b7ab4d4b9@xenosoft.de>
+ <761e7864-4655-4b58-b0ad-60d716c5f321@xenosoft.de>
+In-Reply-To: <761e7864-4655-4b58-b0ad-60d716c5f321@xenosoft.de>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MR1P264MB1859:EE_
+x-ms-office365-filtering-correlation-id: 4ad3315e-1ff1-4105-3d84-08dc4c96e80a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  kk1saIfEWL0uob+rfYZl2y28cbyEIMrERcV8aK4HvEHek21Fk5UvWdc7hcOvAAomxRAUyTGhPWk5Lhb9Q6Gnbjubdp3fahAcE1uTTkOn3rBskUCnkdnTx9EKObNbjB9d77lFKQj4+eskS6ZIXa3QSfWApSfUZPbr7PkkV9P1fMQuRdrFZ8+ICyHm05qFTXYQdMb2cqjAFcvBAndtfutdbhhj+3oKLIxoYTf8cIOBWVF56FNVc4orPM1oP2pPswQCK0TzNj1fu8JOORKJO7+tW8pwZlA/8S7QMiU7sGkhxrRmscoTKcKTVcD6mHL6dctcnXGjv3Xb0a1ArvURDUg5xGopiK9bVaYo6pkPz1gDTQYzv8ON0olZRs+ie10F6ENACmwB9q2W21bqGeb2vRP68ZNQWMQ3oasNhUa52uf5tbJWNULcHW1Ooekmpwq0T0RsHS2oKFAKb1jGq5FQOlRscbtTzSqsb06zjTTfHZZg48+S8kNVnqHE4qx0soNhJeE7hqhyD+F3fxjHQtMX9Su2rpTUDjfrN6b0JJl4UxPt3Ty5a+7W09QL/sXkef+xXLf5wpynAlJakikXo7TFQWzQi8YZD4TB7ubtqJ6jnnefw7KMNlNbDEAIsyjvK9I+ekFC78phY0DGjkUIoK9u8+9cQZpppbsEIHWLIXJB8DzOhwo=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(1800799015)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?MHRjOVJGQmM1Z1dVekZyZWE1QTZSUW45dlRCWUhBT2Z1dDREMmZINFJ2cldp?=
+ =?utf-8?B?SEIzeHR6cXlJYjV1OEQxQm1mUVorMEt3VEJWQ1VYb3ZBUmVEQ0FQNzY4UGtj?=
+ =?utf-8?B?RHMwQnJjU3ZpeDVKWkc1NldLMHk0YXEzN1lPZm9lTlYxNWJzajhMUkRxcklF?=
+ =?utf-8?B?cGxuMDJtS0dSSGJ1eGtLMjk4OG9MRndXcG5VcTJkcVQ3WWZKNGVzZVArV0ZZ?=
+ =?utf-8?B?cDBtT2VGNDBMdlZXZHFVYlp1UUhwa1RWMkF1UnEwN3dxa0pvaEYzK1dpLzlm?=
+ =?utf-8?B?REhSTUc0MGk2c1BHOE1UWHcvL3liU2k0S3dWaWUzNHZzMVdzS3BFek54MGRs?=
+ =?utf-8?B?bmNoczY3cUtKY2ppTmpYalVDcGFZSkhXUEgzWnBLV3BBNGF6Nkl1Ty9pcnBZ?=
+ =?utf-8?B?c0NGTk1OdUFoOFBYSjBjcUJ6NUJrUG1Xa2Y1UThuUlVKSUtjT1pUeFR4eEVZ?=
+ =?utf-8?B?Q01Ydy9VK1hoRHNLTlRZdXpQY2w3OTVubmJwQnRFN2R1YnNuS3pLTDBOWmRN?=
+ =?utf-8?B?MmlEMWIrOHJWaE9PUFVsYmtHK3A0UDZLQW54NnB4V0hzWFVWSXZXanEyUGw2?=
+ =?utf-8?B?ckhwb2llelRqOEhwZVp3RUlYblY1NTJLMmwweCtncDRweEZVejZlWmdQRFNE?=
+ =?utf-8?B?bHY2bmQzbU11WVZ0OHlLbEV1aGNRQnUva2h0SzRMY0J1bHE4TVhKWThIK3ZQ?=
+ =?utf-8?B?M01xV3pPT0ZQdVRmUTUzV1YyU0RrN1Jyc3RrblVWSnBBTUhtTnVodFlDSTNC?=
+ =?utf-8?B?empRS2E3WExRbUNIbk85TW92WnRQMUhiamRFckJlRTlZUThNT3RaNStYbExs?=
+ =?utf-8?B?ODR2MDBCZ3FmOXpxQlhjRmFpaEE1K0FoNThCWlNFQkhJQjJlWlpYUTF2ZzF0?=
+ =?utf-8?B?WEozNHI3WVVkQ1VLY2hST2VkaWFyVTVHN3dGZkVOR3I1ekljd2N4dmZ5RUs4?=
+ =?utf-8?B?TU14cjdKdGJSSVBkVWVlaGlNYVRQQ0VLUGcxRXNrcGozNjZjb1FLUEpjNTZ2?=
+ =?utf-8?B?N3o0WTAvajJKVWJJNHQ5MWZXOGducFBFcGU4aUp5UDlVQjNsaEo1eTNtSlhM?=
+ =?utf-8?B?UmhUNUtBd1lWVVp2UTVDSGR0TXVMMEtPMWNSemhQaXJldE9SMThYUnN0RmR4?=
+ =?utf-8?B?YVhiSi9DSjhUblQ4NXdFdnpGSk5wNkpsVjl2b3R5SXBuVHBIRzU2RlZ0Smc4?=
+ =?utf-8?B?THAreFIxUlUvdGtqdDQ3ZkI1N2xHcDNiQ2dKQ1Bna3h6NnhtbzQ3NWY3QTBU?=
+ =?utf-8?B?V1gyekRrUjlUKzBwSUVKZytYOUNrVUpETnBMdVVVQVNKQzFiZVRwQ3hVTWZX?=
+ =?utf-8?B?cFlYbFk2REREdUNUbi9FMmxmZFMwV3pKclUrVENSUHVJd2lhOGpKKytCZGh3?=
+ =?utf-8?B?RnNhN2pGSXRXRDNIQ0I1K3VjWGo3ZVhJVzIzR0IxVG8wVmZHSTFraFNFVHlx?=
+ =?utf-8?B?YmZKUG1YbGxKd2orQlpudzI1VXJ0R0psOGxjM09RdDZ6V1pZOWp6SjIybHJi?=
+ =?utf-8?B?Snk4bXAvSTYwYUIxdllUVFI4S0JEdTBHTm81R0laQ1FUQ2htYXgwWW5jOWZ6?=
+ =?utf-8?B?cTFwQTUzR2ttdExneFA2MXlsSmRhRC91MmkzQ2ZlN1FQdHYvNVVia3NrU096?=
+ =?utf-8?B?MXhQbkplMkR1SFNTTmVyVVVxK1FpTXFvY2Zlb0l4aGxoU21PTm13QkcwbWV3?=
+ =?utf-8?B?YzgvUThwWkVRY1FvSUtuTWpCZ0tnZHl6OHJNS1NmbUIrS0xlN09UNlRsV1V0?=
+ =?utf-8?B?alVHTE4xd0lrQ2RHQjFXcE1DeEVQZ1U5L3JuajR2OTVuTVFSbTZ5TWpYQVFm?=
+ =?utf-8?B?eVpqTVJSSFhFcGM5VE5BSnpRa2l2emd5NzJ2K1dXcW1SR29oNUIzOXBIb1Na?=
+ =?utf-8?B?citHNFlHRFhCY1ZEMlJDTW9FYUhGVkpxOHRIZnZkRzBHUUpsVlhRbEM2UFdz?=
+ =?utf-8?B?SFZaMm90NHFXRUI1YVlXUkZKaEFtaW1IVktwVEFlRnRwZTYzMXF3V0Y2ZWRy?=
+ =?utf-8?B?QmhGSm1neWMxRENjWlVkd0V0R1IxazN6alM1YzdKTDNyVU82WUVMS3gySkhV?=
+ =?utf-8?B?SGRRVU1INC9ZMTU1TjUrM2ZveENGNEpGakZzcm1GNGpLZnRGa3l0dGpIcDVB?=
+ =?utf-8?Q?ZQxagYdOGP8ALsK5gwc7zwshu?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A2501813EE592D4F84B0D863A4CCFDAC@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ad3315e-1ff1-4105-3d84-08dc4c96e80a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Mar 2024 06:43:40.0996
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Xjb/Ap9pyK5O1cVMhzerkeEr9fuHfhBlaSCojUiEIdb4fb3KeRWu15DBVQkiZFCvcv2vbv1A2CbXAuKMxXz9EsbGZkLSq1OtbrjtYArhhvo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB1859
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,137 +135,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd@a-eon.com>, Matthew Leaman <matthew@a-eon.biz>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kernel timekeeping is designed to keep the change in cycles (since the last
-timer interrupt) below max_cycles, which prevents multiplication overflow
-when converting cycles to nanoseconds. However, if timer interrupts stop,
-the clocksource_cyc2ns() calculation will eventually overflow.
-
-Add protection against that. Simplify by folding together
-clocksource_delta() and clocksource_cyc2ns() into cycles_to_nsec_safe().
-Check against max_cycles, falling back to a slower higher precision
-calculation.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
----
- kernel/time/clocksource.c | 42 +++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
-
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index e5b260aa0e02..4d50d53ac719 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -20,6 +20,16 @@
- #include "tick-internal.h"
- #include "timekeeping_internal.h"
- 
-+static noinline u64 cycles_to_nsec_safe(struct clocksource *cs, u64 start, u64 end)
-+{
-+	u64 delta = clocksource_delta(end, start, cs->mask);
-+
-+	if (likely(delta < cs->max_cycles))
-+		return clocksource_cyc2ns(delta, cs->mult, cs->shift);
-+
-+	return mul_u64_u32_shr(delta, cs->mult, cs->shift);
-+}
-+
- /**
-  * clocks_calc_mult_shift - calculate mult/shift factors for scaled math of clocks
-  * @mult:	pointer to mult variable
-@@ -222,8 +232,8 @@ enum wd_read_status {
- static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, u64 *wdnow)
- {
- 	unsigned int nretries, max_retries;
--	u64 wd_end, wd_end2, wd_delta;
- 	int64_t wd_delay, wd_seq_delay;
-+	u64 wd_end, wd_end2;
- 
- 	max_retries = clocksource_get_max_watchdog_retry();
- 	for (nretries = 0; nretries <= max_retries; nretries++) {
-@@ -234,9 +244,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
- 		wd_end2 = watchdog->read(watchdog);
- 		local_irq_enable();
- 
--		wd_delta = clocksource_delta(wd_end, *wdnow, watchdog->mask);
--		wd_delay = clocksource_cyc2ns(wd_delta, watchdog->mult,
--					      watchdog->shift);
-+		wd_delay = cycles_to_nsec_safe(watchdog, *wdnow, wd_end);
- 		if (wd_delay <= WATCHDOG_MAX_SKEW) {
- 			if (nretries > 1 || nretries >= max_retries) {
- 				pr_warn("timekeeping watchdog on CPU%d: %s retried %d times before success\n",
-@@ -254,8 +262,7 @@ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow,
- 		 * report system busy, reinit the watchdog and skip the current
- 		 * watchdog test.
- 		 */
--		wd_delta = clocksource_delta(wd_end2, wd_end, watchdog->mask);
--		wd_seq_delay = clocksource_cyc2ns(wd_delta, watchdog->mult, watchdog->shift);
-+		wd_seq_delay = cycles_to_nsec_safe(watchdog, wd_end, wd_end2);
- 		if (wd_seq_delay > WATCHDOG_MAX_SKEW/2)
- 			goto skip_test;
- 	}
-@@ -366,8 +373,7 @@ void clocksource_verify_percpu(struct clocksource *cs)
- 		delta = (csnow_end - csnow_mid) & cs->mask;
- 		if (delta < 0)
- 			cpumask_set_cpu(cpu, &cpus_ahead);
--		delta = clocksource_delta(csnow_end, csnow_begin, cs->mask);
--		cs_nsec = clocksource_cyc2ns(delta, cs->mult, cs->shift);
-+		cs_nsec = cycles_to_nsec_safe(cs, csnow_begin, csnow_end);
- 		if (cs_nsec > cs_nsec_max)
- 			cs_nsec_max = cs_nsec;
- 		if (cs_nsec < cs_nsec_min)
-@@ -398,8 +404,8 @@ static inline void clocksource_reset_watchdog(void)
- 
- static void clocksource_watchdog(struct timer_list *unused)
- {
--	u64 csnow, wdnow, cslast, wdlast, delta;
- 	int64_t wd_nsec, cs_nsec, interval;
-+	u64 csnow, wdnow, cslast, wdlast;
- 	int next_cpu, reset_pending;
- 	struct clocksource *cs;
- 	enum wd_read_status read_ret;
-@@ -456,12 +462,8 @@ static void clocksource_watchdog(struct timer_list *unused)
- 			continue;
- 		}
- 
--		delta = clocksource_delta(wdnow, cs->wd_last, watchdog->mask);
--		wd_nsec = clocksource_cyc2ns(delta, watchdog->mult,
--					     watchdog->shift);
--
--		delta = clocksource_delta(csnow, cs->cs_last, cs->mask);
--		cs_nsec = clocksource_cyc2ns(delta, cs->mult, cs->shift);
-+		wd_nsec = cycles_to_nsec_safe(watchdog, cs->wd_last, wdnow);
-+		cs_nsec = cycles_to_nsec_safe(cs, cs->cs_last, csnow);
- 		wdlast = cs->wd_last; /* save these in case we print them */
- 		cslast = cs->cs_last;
- 		cs->cs_last = csnow;
-@@ -832,7 +834,7 @@ void clocksource_start_suspend_timing(struct clocksource *cs, u64 start_cycles)
-  */
- u64 clocksource_stop_suspend_timing(struct clocksource *cs, u64 cycle_now)
- {
--	u64 now, delta, nsec = 0;
-+	u64 now, nsec = 0;
- 
- 	if (!suspend_clocksource)
- 		return 0;
-@@ -847,12 +849,8 @@ u64 clocksource_stop_suspend_timing(struct clocksource *cs, u64 cycle_now)
- 	else
- 		now = suspend_clocksource->read(suspend_clocksource);
- 
--	if (now > suspend_start) {
--		delta = clocksource_delta(now, suspend_start,
--					  suspend_clocksource->mask);
--		nsec = mul_u64_u32_shr(delta, suspend_clocksource->mult,
--				       suspend_clocksource->shift);
--	}
-+	if (now > suspend_start)
-+		nsec = cycles_to_nsec_safe(suspend_clocksource, suspend_start, now);
- 
- 	/*
- 	 * Disable the suspend timer to save power if current clocksource is
--- 
-2.34.1
-
+SGksDQoNCkxlIDI1LzAzLzIwMjQgw6AgMDY6MTgsIENocmlzdGlhbiBaaWdvdHpreSBhIMOpY3Jp
+dMKgOg0KPiBJIGhhdmUgY3JlYXRlZCBhIHBhdGNoOg0KPiANCj4gLS0tIGEvYXJjaC9wb3dlcnBj
+L3BsYXRmb3Jtcy84NXh4L3NtcC5jIDIwMjQtMDMtMjUgMDY6MTQ6MDIuMjAxMjA5NDc2ICswMTAw
+DQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9zbXAuYyAyMDI0LTAzLTI1IDA2
+OjEwOjA0LjQyMTQyNTkzMSArMDEwMA0KPiBAQCAtMzkzLDYgKzM5Myw3IEBAIHN0YXRpYyB2b2lk
+IG1wYzg1eHhfc21wX2tleGVjX2NwdV9kb3duKGkNCj4gIMKgwqDCoMKgwqDCoMKgIGludCBkaXNh
+YmxlX3RocmVhZGJpdCA9IDA7DQo+ICDCoMKgwqDCoMKgwqDCoCBsb25nIHN0YXJ0ID0gbWZ0Yigp
+Ow0KPiAgwqDCoMKgwqDCoMKgwqAgbG9uZyBub3c7DQo+ICvCoMKgwqDCoMKgwqAgaW50IGNyYXNo
+aW5nX2NwdSA9IC0xOw0KDQpjcmFzaGluZ19jcHUgaXMgYSBnbG9iYWwgdmFyaWFibGUgZGVmaW5l
+ZCBpbiANCmFyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMgYW5kIGRlY2xhcmVkIGlu
+IA0KYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2tleGVjLmgNCg0KU28geW91IGNhbid0IHJlZGVm
+aW5lIGNyYXNoaW5nX2NwdSBhcyBhIGxvY2FsIHN0dWIuDQoNCkFsbCB5b3UgbmVlZCB0byBkbyBp
+cyB0byBhZGQgI2luY2x1ZGUgPGFzbS9rZXhlYy5oPiBqdXN0IGxpa2UgDQphcmNoL3Bvd2VycGMv
+cGxhdGZvcm1zL3Bvd2VybnYvc21wLmMgSSBndWVzcy4NCg0KQ2hyaXN0b3BoZQ0KDQoNCg0KPiAN
+Cj4gIMKgwqDCoMKgwqDCoMKgIGxvY2FsX2lycV9kaXNhYmxlKCk7DQo+ICDCoMKgwqDCoMKgwqDC
+oCBoYXJkX2lycV9kaXNhYmxlKCk7DQo+IA0KPiAtLS0NCj4gDQo+IC0tIENocmlzdGlhbg0KPiAN
+Cj4gDQo+IE9uIDI1IE1hcmNoIDIwMjQgYXQgMDU6NDggYW0sIENocmlzdGlhbiBaaWdvdHpreSB3
+cm90ZToNCj4+IEhpIEFsbCwNCj4+DQo+PiBDb21waWxpbmcgb2YgdGhlIFJDMSBvZiBrZXJuZWwg
+Ni45IGRvZXNu4oCZdCB3b3JrIGFueW1vcmUgZm9yIG91ciBGU0wgDQo+PiBQNTAyMC9QNTA0MCBi
+b2FyZHMgWzFdIHNpbmNlIHRoZSBQb3dlclBDIHVwZGF0ZXMgNi45LTIgWzJdLg0KPj4NCj4+IEVy
+cm9yIG1lc3NhZ2VzOg0KPj4NCj4+IGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9zbXAuYzog
+SW4gZnVuY3Rpb24gDQo+PiAnbXBjODV4eF9zbXBfa2V4ZWNfY3B1X2Rvd24nOg0KPj4gYXJjaC9w
+b3dlcnBjL3BsYXRmb3Jtcy84NXh4L3NtcC5jOjQwMToxMzogZXJyb3I6ICdjcmFzaGluZ19jcHUn
+IA0KPj4gdW5kZWNsYXJlZCAoZmlyc3QgdXNlIGluIHRoaXMgZnVuY3Rpb24pOyBkaWQgeW91IG1l
+YW4gJ2NyYXNoX3NhdmVfY3B1Jz8NCj4+IMKgIDQwMSB8wqAgaWYgKGNwdSA9PSBjcmFzaGluZ19j
+cHUgJiYgY3B1X3RocmVhZF9pbl9jb3JlKGNwdSkgIT0gMCkgew0KPj4gwqDCoMKgwqDCoCB8wqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIF5+fn5+fn5+fn5+fg0KPj4gwqDCoMKgwqDCoCB8wqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIGNyYXNoX3NhdmVfY3B1DQo+PiBhcmNoL3Bvd2VycGMvcGxhdGZv
+cm1zLzg1eHgvc21wLmM6NDAxOjEzOiBub3RlOiBlYWNoIHVuZGVjbGFyZWQgDQo+PiBpZGVudGlm
+aWVyIGlzIHJlcG9ydGVkIG9ubHkgb25jZSBmb3IgZWFjaCBmdW5jdGlvbiBpdCBhcHBlYXJzIGlu
+DQo+PiBtYWtlWzVdOiAqKiogW3NjcmlwdHMvTWFrZWZpbGUuYnVpbGQ6MjQ0OiANCj4+IGFyY2gv
+cG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9zbXAub10gRXJyb3IgMQ0KPj4gbWFrZVs0XTogKioqIFtz
+Y3JpcHRzL01ha2VmaWxlLmJ1aWxkOjQ4NTogYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy84NXh4XSAN
+Cj4+IEVycm9yIDINCj4+IG1ha2VbM106ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDo0ODU6
+IGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXNdIEVycm9yIDINCj4+IG1ha2VbMl06ICoqKiBbc2NyaXB0
+cy9NYWtlZmlsZS5idWlsZDo0ODU6IGFyY2gvcG93ZXJwY10gRXJyb3IgMg0KPj4NCj4+IC0tLQ0K
+Pj4NCj4+IEkgd2FzIGFibGUgdG8gcmV2ZXJ0IGl0LiBBZnRlciB0aGF0IHRoZSBjb21waWxpbmcg
+d29ya3MgYWdhaW4uDQo+Pg0KPj4gQ291bGQgeW91IHBsZWFzZSBjaGVjayB0aGUgUG93ZXJQQyB1
+cGRhdGVzIDYuOS0yPyBbMl0NCj4+DQo+PiBUaGFua3MsDQo+PiBDaHJpc3RpYW4NCj4+DQo+PiBb
+MV0gaHR0cDovL3dpa2kuYW1pZ2Eub3JnL2luZGV4LnBocD90aXRsZT1YNTAwMA0KPj4gWzJdIA0K
+Pj4gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFs
+ZHMvbGludXguZ2l0L2NvbW1pdC8/aD12Ni45LXJjMSZpZD00ODQxOTNmZWNkMmI2MzQ5YTZmZDE1
+NTRkMzA2YWVjNjQ2YWUxYTZhDQo+IA0K
