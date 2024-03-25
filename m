@@ -1,91 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068F388A7BE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 16:54:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DB188A862
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:09:02 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=euGzfNDA;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TYKQ05Hw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V3HZ55QWpz3vZ0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 02:54:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3HtN4jn6z3dVb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 03:09:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=euGzfNDA;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TYKQ05Hw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3HYK6l1Tz3cS3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 02:54:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3Hsc3m7jz3cVd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 03:08:19 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711382049;
+	s=mimecast20190719; t=1711382896;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WVTqNn/tSJ8aDQ1daUbOXsohjW6KUPH9mX5kruoLQjU=;
-	b=euGzfNDAe8fdc0rWCxjR8OmaxOumQdGFzui7DJqIPCbUinhzn2vJjKoAO2UmT9cV8yI2zF
-	7vEy5vdxmmhBzuvDIuZxaiScUb1N3Q8WVe6TiBUO5y34e07BivsE5kH2n0vpW5xIodU+cK
-	5Bn/Ef7jLBq8Cc88MCgy2qxRdtb/sig=
+	bh=+3LtywVA7NTQFz0RoMpqZgRH+FCq4yAPsqKSgNMKI1A=;
+	b=UFSW7T/R4js08K81YGVc8rDCOQusb3wsXqM14r7kcxbZkO3FG30b8k+vBs/OBpiasGwC62
+	1HCKdZfyzayF2Az9BDeVMiExGOumJVkTMEbDXQJLgNc5bjJKXainKpkY79x8ib3vmYl8U5
+	2L3EYvHMVRj/VJ1FG/qLrpe0wFjh9ZY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711382050;
+	s=mimecast20190719; t=1711382896;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WVTqNn/tSJ8aDQ1daUbOXsohjW6KUPH9mX5kruoLQjU=;
-	b=TYKQ05Hw1AQMcBjmjnQ8EiEJ/UwfbFsGPiKqlalYMlTdsacQ1gdr4HVS87Y6YN6AkjLdit
-	uCHZ2HHLd+UBgGiz+PoARLcNq2pfpL9EmzUYeDCWeUXAWuX9WL6Lchat9cHra+n4UFCy8K
-	+DPf8mHAvSNw+A1u273o4DItSaoliVA=
+	bh=+3LtywVA7NTQFz0RoMpqZgRH+FCq4yAPsqKSgNMKI1A=;
+	b=UFSW7T/R4js08K81YGVc8rDCOQusb3wsXqM14r7kcxbZkO3FG30b8k+vBs/OBpiasGwC62
+	1HCKdZfyzayF2Az9BDeVMiExGOumJVkTMEbDXQJLgNc5bjJKXainKpkY79x8ib3vmYl8U5
+	2L3EYvHMVRj/VJ1FG/qLrpe0wFjh9ZY=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-ZRkr-8f9O1OrqepivmNBMg-1; Mon, 25 Mar 2024 11:54:07 -0400
-X-MC-Unique: ZRkr-8f9O1OrqepivmNBMg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4140e6bbc87so25718175e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 08:54:06 -0700 (PDT)
+ us-mta-657-lxsonsgUPey_S05iqSUFvg-1; Mon, 25 Mar 2024 12:08:14 -0400
+X-MC-Unique: lxsonsgUPey_S05iqSUFvg-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4148b739698so3067075e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 09:08:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711382046; x=1711986846;
+        d=1e100.net; s=20230601; t=1711382893; x=1711987693;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WVTqNn/tSJ8aDQ1daUbOXsohjW6KUPH9mX5kruoLQjU=;
-        b=cTjUeTiXN7qivsi8spnB8OHBJgscGu+JYw4xFB4EPDmgWJUkqlKKoCQL2LfaynEe9F
-         P1490GbHNBDwZ63udKXwZ86RjL6M3hKdH98eZZvCORNQ/mdCsFw86hntoTcARa2iBWsU
-         R9jU+y+Lzv4YeHoRWFcJ88JKv+htj5iUVFJOu4GwrJXenKoxm8z0CuARKk+IzdaTLruO
-         mZalZ/fI40kdyTI3i98JTyc0y+OJvMQyE4s27kM3twBBL2tOLy1QVN1QQgR18o/au049
-         yjsEwYlqIyAYzZ6GNxx4XCfADfBF3TzsT56xaPB4fAtw6RbO9s8yERdbfup2BLepG6pY
-         ieyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUf1Qvex4e3VVFlEzKUzZhDQujf9DWcfb3eqK9se1+uX93sAeFE5EKs1QzrDncyiHPpYnIxVst4lBQSoGLBps+mZkaWzqI8GeBO19EqIA==
-X-Gm-Message-State: AOJu0YzuGq/B0EaVvLGsPLTkxzIHuesJ/QNiz8uRduwtThypGkD97+eK
-	9ALwL1dB2aNLRGXFmsR90/viOwgkdIPBsszQze06DtFXH3UT2XEli4PaTPsQwDJ15iPg4+0RnyE
-	F13GV9IlDGcQLgM2lYeRVhriF7Y9QgcEUoR2FZAyRc0++kX9kSadaHY2A2CakCO8=
-X-Received: by 2002:a05:600c:3b1c:b0:414:6909:f65f with SMTP id m28-20020a05600c3b1c00b004146909f65fmr29168wms.6.1711382046053;
-        Mon, 25 Mar 2024 08:54:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGD6+unXqelSSGOx4UHrZ6q+cMOMdzI+nbQ6A24EFEMTqbcFmZRjzOAgLUttkiJFquDYExNyw==
-X-Received: by 2002:a05:600c:3b1c:b0:414:6909:f65f with SMTP id m28-20020a05600c3b1c00b004146909f65fmr29153wms.6.1711382045714;
-        Mon, 25 Mar 2024 08:54:05 -0700 (PDT)
+        bh=+3LtywVA7NTQFz0RoMpqZgRH+FCq4yAPsqKSgNMKI1A=;
+        b=WKMyAL8B10pzExhvPKZtU4Fk2PC2aWzMbR8QPHd9e6P3PUuZDBDJfORGaQfNvXk98u
+         i6bxaJWH0tvKgafFl0NbUHl0QFDMfMmd4g8j5KvXQt/i4BtAEJ0lTR8CS7OzGkWyBcA9
+         d3t8L+XFR3idLEtrSwWyTimUtvy0NPnQMbwHuTZvIUgJuf7PWiOv+lKy7kEXlgIpOnSi
+         FXtN8x9SuZRBpfOoIDl6VpiElpQE8gkx4KPrqtQAbHarb38+SQK/AnOqV4RJOWeVyiV7
+         Ygbiu4mAeo3B4D9OyadUV4f0vt5QKD8nIs7Qhqthcxq9ZOicKQiv+N2GLc8hOgQP3ncU
+         0eGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxnk3M4qXVMjleFdaj8e4DL0+bcB+YA8FphidhC1WE8VUvgdyiATf/AV6LOprLzJOy08nldUrIR2ZkbcOFSQN2FOOii8d8ZGYkPxSJ5A==
+X-Gm-Message-State: AOJu0Yx4HJqDFhW+WNXwPMwXAvEbV7HX/6roktxpRKMUo8wbnzf7CQK+
+	w9dsySEFXS8xGT02tTAsy9VlZAgD5zEgmSi9lazogEzZvZD/2JSgI0bmyLte59K2Y6PFD0K03rk
+	X5YE9TIRtSyM/ak8/yd09J1g9btErkEVdOJHSwn3yRvjQM/PglRKjKZ4URYkE8Cs=
+X-Received: by 2002:a05:600c:1f84:b0:414:887f:6167 with SMTP id je4-20020a05600c1f8400b00414887f6167mr3382728wmb.7.1711382893045;
+        Mon, 25 Mar 2024 09:08:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRDyTWIfUX3BkdmHTwqnjITCdrXKqdGGiggbkYvcUs2c0ghfvn9MeU2N4y9nE9g5vUn9I2/w==
+X-Received: by 2002:a05:600c:1f84:b0:414:887f:6167 with SMTP id je4-20020a05600c1f8400b00414887f6167mr3382716wmb.7.1711382892704;
+        Mon, 25 Mar 2024 09:08:12 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-176-158.web.vodafone.de. [109.43.176.158])
-        by smtp.gmail.com with ESMTPSA id o20-20020a5d58d4000000b0033e7503ce7esm9811125wrf.46.2024.03.25.08.54.04
+        by smtp.gmail.com with ESMTPSA id r18-20020a05600c35d200b00414808dea22sm2387686wmq.0.2024.03.25.09.08.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 08:54:04 -0700 (PDT)
-Message-ID: <4edfe9dd-6e61-4bbb-bcab-fa3c1102b377@redhat.com>
-Date: Mon, 25 Mar 2024 16:54:03 +0100
+        Mon, 25 Mar 2024 09:08:12 -0700 (PDT)
+Message-ID: <91a6724d-5247-4f43-9400-1b8c03cb6cb3@redhat.com>
+Date: Mon, 25 Mar 2024 17:08:10 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v7 01/35] arch-run: Add functions to help
- handle migration directives from test
+Subject: Re: [kvm-unit-tests PATCH v7 06/35] gitlab-ci: Run migration selftest
+ on s390x and powerpc
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240319075926.2422707-1-npiggin@gmail.com>
- <20240319075926.2422707-2-npiggin@gmail.com>
+ <20240319075926.2422707-7-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -129,7 +129,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240319075926.2422707-2-npiggin@gmail.com>
+In-Reply-To: <20240319075926.2422707-7-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -151,14 +151,101 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 19/03/2024 08.58, Nicholas Piggin wrote:
-> The migration harness will be expanded to deal with more commands
-> from the test, moving these checks into functions helps keep things
-> managable.
+> The migration harness is complicated and easy to break so CI will
+> be helpful.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   scripts/arch-run.bash | 20 +++++++++++++++-----
->   1 file changed, 15 insertions(+), 5 deletions(-)
+>   .gitlab-ci.yml      | 18 +++++++++++-------
+>   s390x/unittests.cfg |  8 ++++++++
+>   2 files changed, 19 insertions(+), 7 deletions(-)
+> 
+> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+> index ff34b1f50..bd34da04f 100644
+> --- a/.gitlab-ci.yml
+> +++ b/.gitlab-ci.yml
+> @@ -92,26 +92,28 @@ build-arm:
+>   build-ppc64be:
+>    extends: .outoftree_template
+>    script:
+> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
+> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
+>    - mkdir build
+>    - cd build
+>    - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
+>    - make -j2
+>    - ACCEL=tcg ./run_tests.sh
+> -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-day-base
+> -     rtas-set-time-of-day emulator
+> +     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
+> +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I used to squash as much as possible into one line in the past, but nowadays 
+I rather prefer one test per line (like it is done for s390x below), so that 
+it is easier to identify the changes ...
+So if you like, I think you could also put each test on a separate line here 
+now (since you're touching all lines with tests here anyway).
+
+> +     emulator
+>        | tee results.txt
+>    - if grep -q FAIL results.txt ; then exit 1 ; fi
+>   
+>   build-ppc64le:
+>    extends: .intree_template
+>    script:
+> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
+> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
+>    - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
+>    - make -j2
+>    - ACCEL=tcg ./run_tests.sh
+> -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-day-base
+> -     rtas-set-time-of-day emulator
+> +     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
+> +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
+> +     emulator
+>        | tee results.txt
+>    - if grep -q FAIL results.txt ; then exit 1 ; fi
+>   
+> @@ -135,7 +137,7 @@ build-riscv64:
+>   build-s390x:
+>    extends: .outoftree_template
+>    script:
+> - - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu
+> + - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu nmap-ncat
+>    - mkdir build
+>    - cd build
+>    - ../configure --arch=s390x --cross-prefix=s390x-linux-gnu-
+> @@ -161,6 +163,8 @@ build-s390x:
+>         sclp-1g
+>         sclp-3g
+>         selftest-setup
+> +      selftest-migration-kvm
+> +      selftest-migration-skip
+>         sieve
+>         smp
+>         stsi
+> diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
+> index 49e3e4608..b79b99416 100644
+> --- a/s390x/unittests.cfg
+> +++ b/s390x/unittests.cfg
+> @@ -31,6 +31,14 @@ groups = selftest migration
+>   # https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@gmail.com/
+>   accel = kvm
+>   
+> +[selftest-migration-kvm]
+> +file = selftest-migration.elf
+> +groups = nodefault
+> +accel = kvm
+> +# This is a special test for gitlab-ci that can must not use TCG until the
+
+"can" or "must"?
+
+> +# TCG migration fix has made its way into CI environment's QEMU.
+> +# https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@gmail.com/
+> +
+>   [selftest-migration-skip]
+>   file = selftest-migration.elf
+>   groups = selftest migration
+
+  Thomas
 
