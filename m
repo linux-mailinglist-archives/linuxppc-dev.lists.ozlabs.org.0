@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C2E8891D3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4ADD8891D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:50:27 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=alPU62rn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hWekLvT9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V33T43CQLz3vq7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:49:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V33Ts47k9z3vqt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:50:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=alPU62rn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hWekLvT9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33J61gPKz3dkm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:41:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33JS3V1Pz3dSr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:42:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711348918; x=1742884918;
+  t=1711348937; x=1742884937;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ul0hfPOmfS7i90s07MvVRoTCajL4zQDIAp9Wq9nGTHo=;
-  b=alPU62rn9qVu1yt3kG5Uiop0cXCzhPb0lBkiE7x2bAMlTGr0BQKfiVVr
-   qVpmo2CUQilDIzajd4EN+ZEFld7xbl15W3/xYL9zzCfPJAjxVb6l4BYfz
-   yTDuPH3g6l7pDHti7RSkJ9zzL50m8ad8CxaCnMOTVTjThRQgi4yI4HCMQ
-   cRidxz6QGGXSp2wqua/q26pLJN5wzc7sAA8ytybpnF8huLv38aDYhwn8n
-   Zp8cDuS6Fv4jOxvq9sFjTBwv7EfFeG9tnQqEq9DghedEGCm4I1nyeZ9eX
-   MlOg/nYtNbCfMihg4ZhY7WKWjkDiv9S40IXfErYyUJZaXMr8Y6G9I6SgX
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="17065345"
+  bh=16GQ0vc+mvjtkGYNmUSKlWdfc5Q8uWzvZ2NpVFo2g5s=;
+  b=hWekLvT9hTBSNalsx30SzTMdH5tkfxgbtI84VmaOk7W6U0kzgBPM58/d
+   0ICXcPQ0Mf/E2FUJRgqiB/PyupELBbahZiz66GuWPM2U8AbIESdhMuSLG
+   w6VxyAdmOIRQDday1fZLp31iDVZ3xetH0KnmdaBVz3JMGxTcwJKHJr3qT
+   Qmj9yrpdOsQEGSA7GP98ZGvLOuM4kn6DNJkFbqUEIYTOU8Dhd8xf9JzMD
+   812mBi1jxvsWVYOJUPEJQhZy2q8LICZZ1yUQNrcOR728gGQWqJ4103D42
+   qXDiFC6SgQiQ+5tZ9uRmwbgLUmEsyhgkRDDA/PFSZYHFzFXK81oYh5Rnf
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6191510"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="17065345"
+   d="scan'208";a="6191510"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:41:57 -0700
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:09 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="38629647"
+   d="scan'208";a="38629669"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.211.155])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:41:51 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:41:58 -0700
 From: Adrian Hunter <adrian.hunter@intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH V2 12/19] timekeeping: Reuse timekeeping_cycles_to_ns()
-Date: Mon, 25 Mar 2024 08:40:16 +0200
-Message-Id: <20240325064023.2997-13-adrian.hunter@intel.com>
+Subject: [PATCH V2 13/19] timekeeping: Refactor timekeeping helpers
+Date: Mon, 25 Mar 2024 08:40:17 +0200
+Message-Id: <20240325064023.2997-14-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325064023.2997-1-adrian.hunter@intel.com>
 References: <20240325064023.2997-1-adrian.hunter@intel.com>
@@ -70,30 +70,63 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Simplify __timekeeping_get_ns() by reusing timekeeping_cycles_to_ns().
+Simplify use of timekeeping sanity checking, in preparation for
+consolidating timekeeping helpers. This works towards eliminating
+timekeeping_delta_to_ns() in favour of timekeeping_cycles_to_ns().
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- kernel/time/timekeeping.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ kernel/time/timekeeping.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
 diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index c698219b152d..f81d675291e0 100644
+index f81d675291e0..618328cd4bc4 100644
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -391,10 +391,7 @@ static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 c
- 
- static __always_inline u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
- {
--	u64 delta, cycles = tk_clock_read(tkr);
--
--	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
--	return timekeeping_delta_to_ns(tkr, delta);
-+	return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
+@@ -237,7 +237,7 @@ static void timekeeping_check_update(struct timekeeper *tk, u64 offset)
+ 	}
  }
  
+-static inline u64 timekeeping_get_delta(const struct tk_read_base *tkr)
++static inline u64 timekeeping_debug_get_delta(const struct tk_read_base *tkr)
+ {
+ 	struct timekeeper *tk = &tk_core.timekeeper;
+ 	u64 now, last, mask, max, delta;
+@@ -281,17 +281,9 @@ static inline u64 timekeeping_get_delta(const struct tk_read_base *tkr)
+ static inline void timekeeping_check_update(struct timekeeper *tk, u64 offset)
+ {
+ }
+-static inline u64 timekeeping_get_delta(const struct tk_read_base *tkr)
++static inline u64 timekeeping_debug_get_delta(const struct tk_read_base *tkr)
+ {
+-	u64 cycle_now, delta;
+-
+-	/* read clocksource */
+-	cycle_now = tk_clock_read(tkr);
+-
+-	/* calculate the delta since the last update_wall_time */
+-	delta = clocksource_delta(cycle_now, tkr->cycle_last, tkr->mask);
+-
+-	return delta;
++	BUG();
+ }
+ #endif
+ 
+@@ -396,10 +388,10 @@ static __always_inline u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
+ 
  static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+ {
+-	u64 delta;
++	if (IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING))
++		return timekeeping_delta_to_ns(tkr, timekeeping_debug_get_delta(tkr));
+ 
+-	delta = timekeeping_get_delta(tkr);
+-	return timekeeping_delta_to_ns(tkr, delta);
++	return __timekeeping_get_ns(tkr);
+ }
+ 
+ /**
 -- 
 2.34.1
 
