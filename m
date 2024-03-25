@@ -1,55 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4CA889170
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:41:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82ED88917B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:42:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VJ9cHMZl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T3R7S0u7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V33HR0JYWz3dWQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:41:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V33JC4Qyrz3vXB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:42:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VJ9cHMZl;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T3R7S0u7;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33Gh3nlqz2xmC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:40:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33Gj7369z2xmC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:40:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711348844; x=1742884844;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9S3xrv7Gxvyj4H9Azn1pzm7Lwa+4CbIsrUr3ufmKQOM=;
-  b=VJ9cHMZl8XoAdLmsrnlDCkQ0v/88V1L/LJA8Xub0H3pMDWzCF0O2U2v7
-   g7a1bK++H+KDuijNjTTiRAfvd+Us3T+lRsO9AOH3edHTCcFVcW1oRH6wT
-   Z2qcLae5VbXRnqVzQUvQAczXp95ULHysIMSqSxcgsTi203vfZ5tpyw6aK
-   1+NtO8r5sLIInnVUrdneERhyNBr9VmlHpU3T+N6H5c7WXjVzLPsHvCGQ6
-   UYHKuSomzvVAhKDsS62Xfn/m7urEfSbaiPT+g/lmXtc6pPtmsmdpAWfTk
-   92vn5OY19PjhU8tDz1ZmzKZbKnlpTehSMLHD20D+POrP8OPyRBXE6AgsC
+  t=1711348846; x=1742884846;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=+W4K6lkGmf5ZfckuHCgiOpf7pq6FEiJVqi6VEtd9uvE=;
+  b=T3R7S0u7UOondqjERQWLNGBnhzyhxBkgQKMD7r5+FEBvCWM9kT4VHe04
+   Dh1hDx8ZJyZ4SR9SWJIs0AKQHGt9gKAvTz8rwq3bKNZNQkjxDF3tGPSV1
+   GDQNfK8BUkLT1MxeEmQDFDlQvyGBS5aEwhjTghiaSGyWFhZoXUWgd4hL+
+   nO5YYtW8uool+xbe48YY2gmcA7/I5iqqSONxZhJXMtxRKVgzlrePya3h2
+   ycKWojMLtDCGMIM9CvHY2PmPchTTzQga5ITc7I6zW4EDmKMy/vneVzBUF
+   Dfj0Vu7p9b5Gp2HrfyRdxH4wS2YPadYLAC9TqK9Y1TCMyXBRtoa2RjdmN
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="17065053"
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="17065082"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="17065053"
+   d="scan'208";a="17065082"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:38 -0700
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:45 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="38629553"
+   d="scan'208";a="38629565"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.211.155])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:32 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:38 -0700
 From: Adrian Hunter <adrian.hunter@intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH V2 00/19] timekeeping: Handle potential multiplication overflow
-Date: Mon, 25 Mar 2024 08:40:04 +0200
-Message-Id: <20240325064023.2997-1-adrian.hunter@intel.com>
+Subject: [PATCH V2 01/19] vdso: Consolidate vdso_calc_delta()
+Date: Mon, 25 Mar 2024 08:40:05 +0200
+Message-Id: <20240325064023.2997-2-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240325064023.2997-1-adrian.hunter@intel.com>
+References: <20240325064023.2997-1-adrian.hunter@intel.com>
 MIME-Version: 1.0
 Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
 Content-Transfer-Encoding: 8bit
@@ -68,88 +70,117 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+Consolidate vdso_calc_delta(), in preparation for further simplification.
 
-Kernel timekeeping calculates a clock value by keeping a base value and
-adding the number of nanoseconds since that time. Those nanoseconds are
-calculated from the clocksource delta. Then periodically, the base value is
-moved forwards (refer timekeeping_advance()) which is done by the local
-timer interrupt handler. It is designed such that there will always be a
-timer interrupt before the delta becomes big enough to overflow the 64-bit
-multiplication used in the conversion of delta to nanoseconds (refer
-timekeeping_delta_to_ns()). Obviously if timer interrupts are stopped, then
-the multiplication does eventually overflow.
-
-Timekeeping multiplication overflow results in a "time loop", typically
-cycling about every 15 minutes with x86 TSC, for example starting at 10:00:
-
-  10:00, 10:01, 10:02 ... 10:15, 10:00, 10:01, ... 10:15, 10:00, 10:01 ...
-
-Because a VMM can deliberately stop timer interrupts for a guest, a virtual
-machine can be exposed to this issue.
-
-TDX maintains a monotonically increasing virtual TSC for a TDX guest, so
-the overflow is allowing a backwards movement of timekeeping that would not
-happen otherwise.
-
-It is considered this could break security of cryptographic protocols that
-rely on the timestamps for freshness / replay protection, and consequently
-the kernel should prevent such a time loop.
-
-Handle multiplication overflows by falling back to higher precision
-calculation when the possibility of an overflow is detected.
-
-Extend the facility also to VDSO, dependent on new config option
-GENERIC_VDSO_OVERFLOW_PROTECT which is selected by x86 only, so other
-architectures are not affected. The result is a calculation that has
-similar performance as before. Most machines showed performance benefit,
-except Skylake-based hardware such as Intel Kaby Lake which was seen <1%
-worse.
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+---
 
 
 Changes in V2:
-    vdso: Consolidate vdso_calc_delta()
 	Keep powerpc comment about mask
 	Move ifdef out of function
-    vdso: Consolidate nanoseconds calculation
-	Adjusted due to changes in "vdso: Consolidate vdso_calc_delta()"
 
 
-Adrian Hunter (19):
-      vdso: Consolidate vdso_calc_delta()
-      vdso: Consolidate nanoseconds calculation
-      vdso: Add CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
-      math64: Tidy mul_u64_u32_shr()
-      vdso: math64: Provide mul_u64_u32_add_u64_shr()
-      vdso: Add vdso_data::max_cycles
-      vdso: Make delta calculation overflow safe
-      x86/vdso: Make delta calculation overflow safe
-      timekeeping: Move timekeeping helper functions
-      timekeeping: Rename fast_tk_get_delta_ns() to __timekeeping_get_ns()
-      timekeeping: Tidy timekeeping_cycles_to_ns() slightly
-      timekeeping: Reuse timekeeping_cycles_to_ns()
-      timekeeping: Refactor timekeeping helpers
-      timekeeping: Consolidate timekeeping helpers
-      timekeeping: Fold in timekeeping_delta_to_ns()
-      timekeeping: Prepare timekeeping_cycles_to_ns() for overflow safety
-      timekeeping: Make delta calculation overflow safe
-      timekeeping: Let timekeeping_cycles_to_ns() handle both under and overflow
-      clocksource: Make watchdog and suspend-timing multiplication overflow safe
+ arch/powerpc/include/asm/vdso/gettimeofday.h | 26 +++++++++-----------
+ arch/s390/include/asm/vdso/gettimeofday.h    |  7 ++----
+ lib/vdso/gettimeofday.c                      |  9 ++++++-
+ 3 files changed, 21 insertions(+), 21 deletions(-)
 
- arch/powerpc/include/asm/vdso/gettimeofday.h |  26 +++----
- arch/s390/include/asm/vdso/gettimeofday.h    |   7 +-
- arch/x86/Kconfig                             |   1 +
- arch/x86/include/asm/vdso/gettimeofday.h     |  42 +++++++----
- include/linux/math64.h                       |   8 +-
- include/vdso/datapage.h                      |   4 +
- include/vdso/math64.h                        |  38 ++++++++++
- kernel/time/clocksource.c                    |  42 +++++------
- kernel/time/timekeeping.c                    | 106 ++++++++++++++-------------
- kernel/time/vsyscall.c                       |   6 ++
- lib/vdso/Kconfig                             |   7 ++
- lib/vdso/gettimeofday.c                      |  55 +++++++++-----
- 12 files changed, 208 insertions(+), 134 deletions(-)
+diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/include/asm/vdso/gettimeofday.h
+index f0a4cf01e85c..ac21a2a0c2f9 100644
+--- a/arch/powerpc/include/asm/vdso/gettimeofday.h
++++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
+@@ -14,6 +14,17 @@
+ 
+ #define VDSO_HAS_TIME			1
+ 
++/*
++ * powerpc specific delta calculation.
++ *
++ * This variant removes the masking of the subtraction because the
++ * clocksource mask of all VDSO capable clocksources on powerpc is U64_MAX
++ * which would result in a pointless operation. The compiler cannot
++ * optimize it away as the mask comes from the vdso data and is not compile
++ * time constant.
++ */
++#define VDSO_DELTA_NOMASK		1
++
+ static __always_inline int do_syscall_2(const unsigned long _r0, const unsigned long _r3,
+ 					const unsigned long _r4)
+ {
+@@ -105,21 +116,6 @@ static inline bool vdso_clocksource_ok(const struct vdso_data *vd)
+ }
+ #define vdso_clocksource_ok vdso_clocksource_ok
+ 
+-/*
+- * powerpc specific delta calculation.
+- *
+- * This variant removes the masking of the subtraction because the
+- * clocksource mask of all VDSO capable clocksources on powerpc is U64_MAX
+- * which would result in a pointless operation. The compiler cannot
+- * optimize it away as the mask comes from the vdso data and is not compile
+- * time constant.
+- */
+-static __always_inline u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+-{
+-	return (cycles - last) * mult;
+-}
+-#define vdso_calc_delta vdso_calc_delta
+-
+ #ifndef __powerpc64__
+ static __always_inline u64 vdso_shift_ns(u64 ns, unsigned long shift)
+ {
+diff --git a/arch/s390/include/asm/vdso/gettimeofday.h b/arch/s390/include/asm/vdso/gettimeofday.h
+index db84942eb78f..7937765ccfa5 100644
+--- a/arch/s390/include/asm/vdso/gettimeofday.h
++++ b/arch/s390/include/asm/vdso/gettimeofday.h
+@@ -6,16 +6,13 @@
+ 
+ #define VDSO_HAS_CLOCK_GETRES 1
+ 
++#define VDSO_DELTA_NOMASK 1
++
+ #include <asm/syscall.h>
+ #include <asm/timex.h>
+ #include <asm/unistd.h>
+ #include <linux/compiler.h>
+ 
+-#define vdso_calc_delta __arch_vdso_calc_delta
+-static __always_inline u64 __arch_vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+-{
+-	return (cycles - last) * mult;
+-}
+ 
+ static __always_inline const struct vdso_data *__arch_get_vdso_data(void)
+ {
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index ce2f69552003..faccf12f7c03 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -6,6 +6,13 @@
+ #include <vdso/helpers.h>
+ 
+ #ifndef vdso_calc_delta
++
++#ifdef VDSO_DELTA_NOMASK
++# define VDSO_DELTA_MASK(mask)	U64_MAX
++#else
++# define VDSO_DELTA_MASK(mask)	(mask)
++#endif
++
+ /*
+  * Default implementation which works for all sane clocksources. That
+  * obviously excludes x86/TSC.
+@@ -13,7 +20,7 @@
+ static __always_inline
+ u64 vdso_calc_delta(u64 cycles, u64 last, u64 mask, u32 mult)
+ {
+-	return ((cycles - last) & mask) * mult;
++	return ((cycles - last) & VDSO_DELTA_MASK(mask)) * mult;
+ }
+ #endif
+ 
+-- 
+2.34.1
 
-
-Regards
-Adrian
