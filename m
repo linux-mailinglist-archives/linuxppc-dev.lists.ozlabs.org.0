@@ -2,139 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DB188A862
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21ED88A8DD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:20:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Y0rTuQ/b;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V3HtN4jn6z3dVb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 03:09:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3J7X56Lnz3vb4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 03:20:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFSW7T/R;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Y0rTuQ/b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:200a::601; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::601])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3Hsc3m7jz3cVd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 03:08:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711382896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+3LtywVA7NTQFz0RoMpqZgRH+FCq4yAPsqKSgNMKI1A=;
-	b=UFSW7T/R4js08K81YGVc8rDCOQusb3wsXqM14r7kcxbZkO3FG30b8k+vBs/OBpiasGwC62
-	1HCKdZfyzayF2Az9BDeVMiExGOumJVkTMEbDXQJLgNc5bjJKXainKpkY79x8ib3vmYl8U5
-	2L3EYvHMVRj/VJ1FG/qLrpe0wFjh9ZY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711382896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+3LtywVA7NTQFz0RoMpqZgRH+FCq4yAPsqKSgNMKI1A=;
-	b=UFSW7T/R4js08K81YGVc8rDCOQusb3wsXqM14r7kcxbZkO3FG30b8k+vBs/OBpiasGwC62
-	1HCKdZfyzayF2Az9BDeVMiExGOumJVkTMEbDXQJLgNc5bjJKXainKpkY79x8ib3vmYl8U5
-	2L3EYvHMVRj/VJ1FG/qLrpe0wFjh9ZY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-lxsonsgUPey_S05iqSUFvg-1; Mon, 25 Mar 2024 12:08:14 -0400
-X-MC-Unique: lxsonsgUPey_S05iqSUFvg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4148b739698so3067075e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 09:08:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711382893; x=1711987693;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+3LtywVA7NTQFz0RoMpqZgRH+FCq4yAPsqKSgNMKI1A=;
-        b=WKMyAL8B10pzExhvPKZtU4Fk2PC2aWzMbR8QPHd9e6P3PUuZDBDJfORGaQfNvXk98u
-         i6bxaJWH0tvKgafFl0NbUHl0QFDMfMmd4g8j5KvXQt/i4BtAEJ0lTR8CS7OzGkWyBcA9
-         d3t8L+XFR3idLEtrSwWyTimUtvy0NPnQMbwHuTZvIUgJuf7PWiOv+lKy7kEXlgIpOnSi
-         FXtN8x9SuZRBpfOoIDl6VpiElpQE8gkx4KPrqtQAbHarb38+SQK/AnOqV4RJOWeVyiV7
-         Ygbiu4mAeo3B4D9OyadUV4f0vt5QKD8nIs7Qhqthcxq9ZOicKQiv+N2GLc8hOgQP3ncU
-         0eGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUxnk3M4qXVMjleFdaj8e4DL0+bcB+YA8FphidhC1WE8VUvgdyiATf/AV6LOprLzJOy08nldUrIR2ZkbcOFSQN2FOOii8d8ZGYkPxSJ5A==
-X-Gm-Message-State: AOJu0Yx4HJqDFhW+WNXwPMwXAvEbV7HX/6roktxpRKMUo8wbnzf7CQK+
-	w9dsySEFXS8xGT02tTAsy9VlZAgD5zEgmSi9lazogEzZvZD/2JSgI0bmyLte59K2Y6PFD0K03rk
-	X5YE9TIRtSyM/ak8/yd09J1g9btErkEVdOJHSwn3yRvjQM/PglRKjKZ4URYkE8Cs=
-X-Received: by 2002:a05:600c:1f84:b0:414:887f:6167 with SMTP id je4-20020a05600c1f8400b00414887f6167mr3382728wmb.7.1711382893045;
-        Mon, 25 Mar 2024 09:08:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRDyTWIfUX3BkdmHTwqnjITCdrXKqdGGiggbkYvcUs2c0ghfvn9MeU2N4y9nE9g5vUn9I2/w==
-X-Received: by 2002:a05:600c:1f84:b0:414:887f:6167 with SMTP id je4-20020a05600c1f8400b00414887f6167mr3382716wmb.7.1711382892704;
-        Mon, 25 Mar 2024 09:08:12 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-176-158.web.vodafone.de. [109.43.176.158])
-        by smtp.gmail.com with ESMTPSA id r18-20020a05600c35d200b00414808dea22sm2387686wmq.0.2024.03.25.09.08.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 09:08:12 -0700 (PDT)
-Message-ID: <91a6724d-5247-4f43-9400-1b8c03cb6cb3@redhat.com>
-Date: Mon, 25 Mar 2024 17:08:10 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3J6n3FvWz3dWd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 03:19:42 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=c3yz4fm4kouV49ZUxOW6Xv+STx9qmIhgWhS29OJjSq3dGU6F37hdb+UTXLgnX1WY8OocLdmCCM1WlPH1fIhvrEQN/PYhWqG9n+l2uf0soBsZpZIyTCe4fmEHafKBwbJGZ4B2ixlirfx5SzRcqZcla/FOlexFm2PTOQ3+cVcqX34Xbt/huY4SZIw4rcKx4liI24FqtSp0IIwVKmnAYuyOQEmX7ZfKwg499iVoA0KgTp9XBJLyY9YigD85dz2+81fkJf2h2mbqTjscc7ab3iORoEH1qSHXszfQzmqOCE9pLDnMgPeUGPEpibWGzSvZtHSDarrcm8/hTFX/yWqrAp0Yiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5Kuzz4kAM0MmNLkTr7po/cfNPtpIyN31iuXORLVdAbY=;
+ b=IGpaOtubglcYyGOrbWONC21/euCu1c//Uk98rDoGnm+M66dn0CtXRzYvPZ5hlWZSGZ+bNw0kAnCuuLlq0rg2Ey6Kb0CVbmbXAdpV1ZOF80qDdWhJbcrzlZ1TecX/hk4K8FFylcaDcFx0NHRtaFlA3Bu+xtje/XQUq8eeL3F6RTyS8Kuc/RrtX1xFMVOXz4ZKIZ2JeXm/uK+2onefgYQe7mjY8ogRj87Qmdid/vze82CTVc6xMNzIcHUe9I/uXxz2ewWA/jVYz4QPhorB9YTkDcztRYxdh1X+t6OLjz8+EIc74K3Q4y85xU3NN3fLnuXs8uFhYGkQU7fVF8wFxx8lbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5Kuzz4kAM0MmNLkTr7po/cfNPtpIyN31iuXORLVdAbY=;
+ b=Y0rTuQ/b4Q6Deo0IDbYR5V40pu7rmJaLx3ccmHj6nyBov3/EHBB2dNd3lmUQhF+SboZThA7+noWJnXKa9obBGgRS+f/sCBseRTNcXzUdlXYN9nCKyfScap+oclk8tGLxs1eAAnmlkjkl6lDCXuUolj/jU9xBEm1dxPTNtf2LrfvWsJmVtfwouC65ANq5i736xV+s9zajNUnbJhAcBX09BHp80mnnH4csGp/031/EBKhE69Vdaa/ntAXJ9eOvAEVIQFKyuUA35w0jucvMfX4NXWdut3JaF6gOtCdUa+fOB8nacSCQz1Stik2L24bBKdSeLW1XWIdhkpLsAkXBUpeLeg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
+ by LV3PR12MB9142.namprd12.prod.outlook.com (2603:10b6:408:198::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Mon, 25 Mar
+ 2024 16:19:20 +0000
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7409.028; Mon, 25 Mar 2024
+ 16:19:20 +0000
+Date: Mon, 25 Mar 2024 13:19:19 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH 1/8] mm: Provide pagesize to pmd_populate()
+Message-ID: <20240325161919.GD6245@nvidia.com>
+References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
+ <54d78f1b7e7f1c671e40b7c0c637380bcb834326.1711377230.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54d78f1b7e7f1c671e40b7c0c637380bcb834326.1711377230.git.christophe.leroy@csgroup.eu>
+X-ClientProxiedBy: BLAPR03CA0158.namprd03.prod.outlook.com
+ (2603:10b6:208:32f::24) To DM6PR12MB3849.namprd12.prod.outlook.com
+ (2603:10b6:5:1c7::26)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v7 06/35] gitlab-ci: Run migration selftest
- on s390x and powerpc
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20240319075926.2422707-1-npiggin@gmail.com>
- <20240319075926.2422707-7-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240319075926.2422707-7-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|LV3PR12MB9142:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7d3e14c6-94cc-4aa2-404f-08dc4ce753b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	v5/IRBsIVBObxqY06oC9Upim19yMjJxziQgnNAZpFrCNhbntcDh+7hegYCZKNjYcBMXAaUCiDqFOEI/J+2biiJFD6C9h8VmNBvhcc0YY7L3YyMmr08Cc4dZaX7Ox+LvmYBqT7MVkQ/fPvnB4EJ4Z1ISg0xV3k4P/yMlxi1JUlmxfoU+mWnZ12THe9PI/6IELMNLKQ2+wjprrnzcZo6h7iekfovwJ1N6IVqiF+wdbyu0VKkRcCm95tXY6WJTqMQG4CtgmMV1bx6HEIGX6lT3mzO3MS/8Zhmni7woylBVp9uplAdZCFMJQU+aSNWahpqqZ3mWbgxWiyjiSXBtLL+4MG9AfDTaWOq3mmA9YlvQ920EYYzGcXWzDRz0aDMN8EAySYN1CQJjSmWubBhGKX1b7vhpyg0DIega+ajCKYd0tqEghHkNGvwYDBkEDGv1H5B1/xww0Dt6skA3QEGPSLviJSiUZxOoEpU8mu6rjlG5lrZhvLraDBr2FfyBDk3Pp3mXELmX/DO2OPxkUDkTtO4QN89GGrQYnXtYWaIotoCx6M5ylTidvH8kHzb/40B4vDmxtqlQ3iec42xuOOUVSC+8KE+o/hzRdx+JayCXVrrAmTPS7IlDP2e4OsAQhZbhugyCqqgHa1GzUEuL95gi/Pwblfw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?CMpPP9T7RoE9moXFQG/wI96fAFoieYr6X82dNxspzDMW+sHu1JmL+buMDMCC?=
+ =?us-ascii?Q?4yzTNXtA89zWPSKHjlCsp+uCCZGc83tYHI7gNh5eGZD/C4hWq/7zfTs4PE+H?=
+ =?us-ascii?Q?FLKSLiXVFIImnlaOTkVD6krCP41pMBkzL8sLJZ+aM79sE1+bFyzbW5yr24L/?=
+ =?us-ascii?Q?hF/R11X+ACCO1vX/yEtmzuR2GCVwCfkK9aNUZINNhEJlR9HyoAuRtqA49mYR?=
+ =?us-ascii?Q?rlmT/DBio5rW3LC8BYyOuVgzNEqsavHaRoaEhS6yFosUuURTGmFI0eLARQzP?=
+ =?us-ascii?Q?ZwCm1Mn++jfETaedUesKgwyYqUYndsK5VVn74WL0rUh7RpuZ4I9IUCwbMSCY?=
+ =?us-ascii?Q?FqM7OL6Jr/4SZ30exAwDvlZ/Slsu3VN3GvkRI2tt+DNYQBxgQUdKUKtPID8/?=
+ =?us-ascii?Q?cB9tCnyJRLTb0NhAvboM5wQrM/wLe31YI+WEMXEhHZl65lpo/fLkiFlnBhPA?=
+ =?us-ascii?Q?oD7wU/C/1PVM1F9TILz8iSRGrwvhCVPlgV/CHSHpfw0kmo9gYVCEw/GjRryu?=
+ =?us-ascii?Q?qDoYi2ag7s1p83bVUt/TUaylHzHgg1Z0jOvE58PbxfE9O2BhMEXR7KIG7Obf?=
+ =?us-ascii?Q?/xyFeYXWlTasoODkLslBphCrEu7DIZSc5RqAEiAVSFU4EHCHy6Z63clBi+BW?=
+ =?us-ascii?Q?40VDSVyy3veKpU5I9/SCI946T50zsbgeu0SVy647JBt3LB7UG6LpFF34687u?=
+ =?us-ascii?Q?V/RYpPzJcQPMNQuc/ELT4IMnTVrZE1HYE7KCIllPV+FaBA4wvIvp1PUgsMZt?=
+ =?us-ascii?Q?tjT22e5ecKCjMqfBovOaL+2YpnBEsNYBgxwGfYtfVK7spzeQIVUOewbgklk3?=
+ =?us-ascii?Q?h51B+b2bysBORYILx/YSCMR1vsln97aVs2MhFw/3qYC1qgQww63OqQg798Xr?=
+ =?us-ascii?Q?FrK8d+6fPblUqgnUou3m2ljs/SLQgK5sCLYhnJGQ8WJYsOYAPwN1pnFsPGYR?=
+ =?us-ascii?Q?wqHqC8f7qryPfWCKOX6G7N0ZiirvxzjCj2RLkPQvmhJ1l5FZ+rRN4oa3/PO7?=
+ =?us-ascii?Q?5cKjrNEkyBu+8Jmk3xxku172/gl/HJ/IYVIm97seuU8jmCJBIMWYWquDVPwD?=
+ =?us-ascii?Q?IRbIkpIWEriWoC4hE16KleDx+nwbX2TrvHZRjncTLgH5BRNHdomvgHecY3i7?=
+ =?us-ascii?Q?h/8SDSZ/ozDE2wRTz9D7RWiUkrKLhErqmOJ6PzovZgDAD414aJyFyaF9gpyg?=
+ =?us-ascii?Q?AWyyJhVNKzcalyGMVr3TejoAKI9Sv2tx1XWGTsQ5ovXTrMDf7t0V+CtNmJxU?=
+ =?us-ascii?Q?Y7qMrRa5jI6KolnJVkSlo05LteFqSfUbxqyFSQpVJaqOvxuC72Lei+qCmLKX?=
+ =?us-ascii?Q?NKRYW7jzBk5ZNj3/iCVEaI72yUjwt8Y70I75+phAraPrGxToxUO5o6f2TR+g?=
+ =?us-ascii?Q?Hk5g8VESNJCGZVgeofvbmy6+dlnnyUZF0VgLRed8Qw9qDpP7f2chfAe44u7E?=
+ =?us-ascii?Q?sS9F406tVRq5/Ss/Jo/czceiwpRJw4YMwhVn4AfXuToVlFoqiYlvBlJpMPxR?=
+ =?us-ascii?Q?uOwnbzkEAQhkO4BtzzFKiFqNdZT77TQmOj+hA1Wg3jIDNztgGvls0LUoxWho?=
+ =?us-ascii?Q?Nc+wjTVfmZaXzSmlr/gdEQseHLHeMIupvAKgPwN7?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d3e14c6-94cc-4aa2-404f-08dc4ce753b7
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2024 16:19:20.6531
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3+Zz9A2j1imQG0SR1EXhFKxsNHL36k6WaNoume3wUwr1/SmG1quGVFXxnBsOpTUm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -146,106 +119,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 19/03/2024 08.58, Nicholas Piggin wrote:
-> The migration harness is complicated and easy to break so CI will
-> be helpful.
+On Mon, Mar 25, 2024 at 03:55:54PM +0100, Christophe Leroy wrote:
+> Unlike many architectures, powerpc 8xx hardware tablewalk requires
+> a two level process for all page sizes, allthough second level only
+> has one entry when pagesize is 8M.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   .gitlab-ci.yml      | 18 +++++++++++-------
->   s390x/unittests.cfg |  8 ++++++++
->   2 files changed, 19 insertions(+), 7 deletions(-)
+> To fit with Linux page table topology and without requiring special
+> page directory layout like hugepd, the page entry will be replicated
+> 1024 times in the standard page table. However for large pages it is
+> necessary to set bits in the level-1 (PMD) entry. At the time being,
+> for 512k pages the flag is kept in the PTE and inserted in the PMD
+> entry at TLB miss exception, that is necessary because we can have
+> pages of different sizes in a page table. However the 12 PTE bits are
+> fully used and there is no room for an additional bit for page size.
 > 
-> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> index ff34b1f50..bd34da04f 100644
-> --- a/.gitlab-ci.yml
-> +++ b/.gitlab-ci.yml
-> @@ -92,26 +92,28 @@ build-arm:
->   build-ppc64be:
->    extends: .outoftree_template
->    script:
-> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
-> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
->    - mkdir build
->    - cd build
->    - ../configure --arch=ppc64 --endian=big --cross-prefix=powerpc64-linux-gnu-
->    - make -j2
->    - ACCEL=tcg ./run_tests.sh
-> -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-day-base
-> -     rtas-set-time-of-day emulator
-> +     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
-> +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
+> For 8M pages, there will be only one page per PMD entry, it is
+> therefore possible to flag the pagesize in the PMD entry, with the
+> advantage that the information will already be at the right place for
+> the hardware.
+> 
+> To do so, add a new helper called pmd_populate_size() which takes the
+> page size as an additional argument, and modify __pte_alloc() to also
+> take that argument. pte_alloc() is left unmodified in order to
+> reduce churn on callers, and a pte_alloc_size() is added for use by
+> pte_alloc_huge().
+> 
+> When an architecture doesn't provide pmd_populate_size(),
+> pmd_populate() is used as a fallback.
 
-I used to squash as much as possible into one line in the past, but nowadays 
-I rather prefer one test per line (like it is done for s390x below), so that 
-it is easier to identify the changes ...
-So if you like, I think you could also put each test on a separate line here 
-now (since you're touching all lines with tests here anyway).
+I think it would be a good idea to document what the semantic is
+supposed to be for sz?
 
-> +     emulator
->        | tee results.txt
->    - if grep -q FAIL results.txt ; then exit 1 ; fi
->   
->   build-ppc64le:
->    extends: .intree_template
->    script:
-> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
-> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
->    - ./configure --arch=ppc64 --endian=little --cross-prefix=powerpc64-linux-gnu-
->    - make -j2
->    - ACCEL=tcg ./run_tests.sh
-> -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-day-base
-> -     rtas-set-time-of-day emulator
-> +     selftest-setup selftest-migration selftest-migration-skip spapr_hcall
-> +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-day
-> +     emulator
->        | tee results.txt
->    - if grep -q FAIL results.txt ; then exit 1 ; fi
->   
-> @@ -135,7 +137,7 @@ build-riscv64:
->   build-s390x:
->    extends: .outoftree_template
->    script:
-> - - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu
-> + - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu nmap-ncat
->    - mkdir build
->    - cd build
->    - ../configure --arch=s390x --cross-prefix=s390x-linux-gnu-
-> @@ -161,6 +163,8 @@ build-s390x:
->         sclp-1g
->         sclp-3g
->         selftest-setup
-> +      selftest-migration-kvm
-> +      selftest-migration-skip
->         sieve
->         smp
->         stsi
-> diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
-> index 49e3e4608..b79b99416 100644
-> --- a/s390x/unittests.cfg
-> +++ b/s390x/unittests.cfg
-> @@ -31,6 +31,14 @@ groups = selftest migration
->   # https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@gmail.com/
->   accel = kvm
->   
-> +[selftest-migration-kvm]
-> +file = selftest-migration.elf
-> +groups = nodefault
-> +accel = kvm
-> +# This is a special test for gitlab-ci that can must not use TCG until the
+Just a general remark, probably nothing for this, but with these new
+arguments the historical naming seems pretty tortured for
+pte_alloc_size().. Something like pmd_populate_leaf(size) as a naming
+scheme would make this more intuitive. Ie pmd_populate_leaf() gives
+you a PMD entry where the entry points to a leaf page table able to
+store folios of at least size.
 
-"can" or "must"?
+Anyhow, I thought the edits to the mm helpers were fine, certainly
+much nicer than hugepd. Do you see a path to remove hugepd entirely
+from here?
 
-> +# TCG migration fix has made its way into CI environment's QEMU.
-> +# https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@gmail.com/
-> +
->   [selftest-migration-skip]
->   file = selftest-migration.elf
->   groups = selftest migration
-
-  Thomas
-
+Thanks,
+Jason
