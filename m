@@ -2,87 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9056E888E14
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 06:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3417888E8B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 06:22:24 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Nn6xTFDS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=YTPN9++q;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=paA1++ZZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V31CH27hhz3d36
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 16:07:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V31XG3bsKz3dWj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 16:22:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Nn6xTFDS;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=YTPN9++q;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=paA1++ZZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.167; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 138 seconds by postgrey-1.37 at boromir; Mon, 25 Mar 2024 16:21:43 AEDT
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V31BT74clz2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 16:06:57 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42P3iOSg032524;
-	Mon, 25 Mar 2024 05:06:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=93IxIEVNxtyr+ERORojTVn9AS1f7a+/VryecW1dOj48=;
- b=Nn6xTFDSmhlBHuY4GQ08uPYUqxMcD6/ARXNcszzc3mK/kz8+KXXsa4KszGUabhvmknZI
- YXaWackCn7Jg0vUIYUjDIcJ5ksWOHjL8A+TNe+bvYVgybnzhEZY1laEkwW6t76FEDt1k
- aSY1/6vGABhRps5ostdtn1umBFd1M+zt5valeyfTr0SwM6kKqw0YMhbBLAnIiVnG2HOg
- ZU8VW/3FHCcugA0p20n6zKV+hvDAm6+O60OJ2ULZaKumMiwEvxC62aVSfOQ1tFu664Yo
- nA/K26gbBwg0izVF7Pn4ne82TfrjMT0wVWAoTSASJn0klHHYLwkg9zmQGYOsgAUSIWWQ QA== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x28fhtcwu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Mar 2024 05:06:51 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42P47B5j003744;
-	Mon, 25 Mar 2024 05:06:51 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x2c42ecn6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Mar 2024 05:06:50 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42P56l9c42140040
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 Mar 2024 05:06:49 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 424AA20043;
-	Mon, 25 Mar 2024 05:06:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 68B4B20040;
-	Mon, 25 Mar 2024 05:06:46 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 25 Mar 2024 05:06:46 +0000 (GMT)
-Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D817460429;
-	Mon, 25 Mar 2024 16:06:43 +1100 (AEDT)
-From: Benjamin Gray <bgray@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1 2/2] powerpc64/dexcr: Enable PHIE on all CPUs
-Date: Mon, 25 Mar 2024 16:06:29 +1100
-Message-ID: <20240325050629.832497-2-bgray@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240325050629.832497-1-bgray@linux.ibm.com>
-References: <20240325050629.832497-1-bgray@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V31WW44bRz2ysD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 16:21:43 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1711343916; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=b7th4FG2rrVwY+CtVHYiMUkCWlI9i8MkZi0/0Qf9GdA5SDzyXfP3UpBneso8y2br/Y
+    0a5AIeklNgBiDJjNEKoVhz9/dOAdaMCEa5PkOJIHGhOEygcaagGhhZp/SAvvvfsowLJ3
+    5K70A+8yUQ/qnJl1vXL7nhrfkWVbBIjkRqRElY+KlEmdnwwT7qJEvNL+gzpr5cjPOzVg
+    LSg346/SFAlc3NpLiCc+FzZXrupLn0pLpeK+miFAWUb/NQkAHNfheBuG5Qh6Cpb8MrDB
+    HrmiTzt743/2Gak0OAfnGZ/uP3Uyx/XHLWeWkldNOOpvmSixlZ4MosC8GZ8jwjLfFWxz
+    JSIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1711343916;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=c8f4Ocl60Gvr6M9GiLWC34lQhec8Hxr6qFIesOSWTX0=;
+    b=mDkSLD1TJwNV9hJj1m90n+nPoKDp+gHPSGvNbyxtfJl+m3VskD2NScpqL9owSJvck3
+    ySdOe6vL+za5F5foqp14IKMhSpPz8fSxw0CQqKIkoRMtqGYsTSp1xgxLQQymw8qMrslo
+    +/IHK5qsdQz34LCBbfWeQY/zNzQ3YnHSSyklLGNhYcyYPIh9kqSpBJL5ByAO9u/QM2bE
+    f5RfPMxp1QbG8eILjg0vgjC2wk9SPnF8zjI0+AnoterFy6khrfNoevnekHp7YlMuJX5i
+    tUU5vGUtVWxtRk2R1bNnxuuAvEVFGW1H+huRP1ZzQpi0Or+1P0G6TudJVow5uUIgIWoz
+    f0Iw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1711343916;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=c8f4Ocl60Gvr6M9GiLWC34lQhec8Hxr6qFIesOSWTX0=;
+    b=YTPN9++qinZzFwYOamJymDM7cctSw4BmiD1E9gdRiPUVE0xMQg3b/Mhri1Yy47l9fy
+    f6ZudwVO+aN1lAMrA0ATRdZ9MXEG2EobHAIqCKKzzj/tP/e8TDpOPkFh/HGKzuVvfYpP
+    KnP9pjBdQ2UVWvJVfb2nSj/o60IlU7AV+0ZB3Nye1Kjh33vxy0T7yOrLF/gD1F1uPF3/
+    3qo8mSu8XfgJHdx1f9ClPffklh3NUjocUkSeI0y8X8+JeyQ/ndkVuMNjUwXKuhK4hv99
+    6aJVojT4QYRgF5OMQMiWCQqrXt0uo1M4DQacBgRTroaAwum3U4uwtGhigDtRc9Fnkk4T
+    MpGA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1711343916;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=c8f4Ocl60Gvr6M9GiLWC34lQhec8Hxr6qFIesOSWTX0=;
+    b=paA1++ZZLUjOEuRoAD9kWcHUhz4LY5NdLY49yWpUdNy2juefIetZsjLZX3ZG/D3KYw
+    6r7LhC122LJSU1RuD0DA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfi4XXBswJY1xkHd0jCgCs4udHdhJKmTWY2xslQ=="
+Received: from [IPV6:2a02:8109:8984:5d00:299c:b5cd:1d87:5681]
+    by smtp.strato.de (RZmta 50.3.2 AUTH)
+    with ESMTPSA id eaf61b02P5Ia4Lv
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 25 Mar 2024 06:18:36 +0100 (CET)
+Message-ID: <761e7864-4655-4b58-b0ad-60d716c5f321@xenosoft.de>
+Date: Mon, 25 Mar 2024 06:18:35 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: [FSL P50x0] Kernel 6.9-rc1 compiling issue
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, hbathini@linux.ibm.com
+References: <fa247ae4-5825-4dbe-a737-d93b7ab4d4b9@xenosoft.de>
+Content-Language: de-DE
+In-Reply-To: <fa247ae4-5825-4dbe-a737-d93b7ab4d4b9@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ruCBcARXtpwEOA8Bu2Dp8nVJGVRXt-sT
-X-Proofpoint-GUID: ruCBcARXtpwEOA8Bu2Dp8nVJGVRXt-sT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-25_02,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- suspectscore=0 phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=785
- bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403250027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,107 +98,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd@a-eon.com>, Matthew Leaman <matthew@a-eon.biz>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While we can now compile the kernel with ROP
-protection, it's possible the hash instructions
-are acting as NOPs.
+I have created a patch:
 
-Enable the PHIE aspect at an appropriate stage in
-boot so as to maximise coverage without requiring
-certain functions be compiled without ROP
-protection.
+--- a/arch/powerpc/platforms/85xx/smp.c 2024-03-25 06:14:02.201209476 +0100
++++ b/arch/powerpc/platforms/85xx/smp.c 2024-03-25 06:10:04.421425931 +0100
+@@ -393,6 +393,7 @@ static void mpc85xx_smp_kexec_cpu_down(i
+         int disable_threadbit = 0;
+         long start = mftb();
+         long now;
++       int crashing_cpu = -1;
 
-For the boot CPU, there are no arch defined functions
-that do not return and get called before we start
-spawning tasks. Therefore we insert the PHIE enablement
-as a feature section after we call early_setup() where
-CPU feature detection takes place.
-
-For secondary CPUs, we can enable PHIE in
-start_secondary().
-
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+         local_irq_disable();
+         hard_irq_disable();
 
 ---
 
-This patch is probably incompatible with the
-per-task DEXCR tracking in the userspace DEXCR
-series, but I'll fix up whichever one lands last.
+-- Christian
 
-I tested on a Power10 (TCG and KVM) and Power9.
-I also tried enabling ftrace; no apparent issues,
-and the trace probes were definitely triggering.
 
-The default config enables ROP protection when
-the dependencies are satisfied but perhaps we
-might want to phase it in slower by disabling it?
-
-Finally, I've tied together inserting the hash
-instructions and enabling the PHIE aspect. It
-might be preferable for distros to have the option
-to boot without enabling PHIE for performance
-comparisons. This would be with a command line
-option I guess?
----
- arch/powerpc/include/asm/reg.h |  2 ++
- arch/powerpc/kernel/head_64.S  | 10 ++++++++++
- arch/powerpc/kernel/smp.c      |  6 ++++++
- 3 files changed, 18 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index d3d1aea009b4..185807119320 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -392,6 +392,8 @@
- #define   DEXCR_PR_IBRTPD 0x10000000UL /* 3: Indirect Branch Recurrent Target Prediction Disable */
- #define   DEXCR_PR_SRAPD  0x08000000UL /* 4: Subroutine Return Address Prediction Disable */
- #define   DEXCR_PR_NPHIE  0x04000000UL /* 5: Non-Privileged Hash Instruction Enable */
-+#define   DEXCR_PR_PHIE   0x02000000UL /* 6: Privileged Hash Instruction Enable */
-+#define   DEXCR_PNH_PHIE  (DEXCR_PR_PHIE << 32)
- #define   DEXCR_INIT	DEXCR_PR_NPHIE	/* Fixed DEXCR value to initialise all CPUs with */
- #define SPRN_IC		0x350	/* Virtual Instruction Count */
- #define SPRN_VTB	0x351	/* Virtual Time Base */
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index 4690c219bfa4..490cd09dc9a4 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -1011,6 +1011,16 @@ start_here_multiplatform:
- 	mtctr	r12
- 	bctrl		/* also sets r13 and SPRG_PACA */
- 
-+#ifdef CONFIG_PPC_KERNEL_ROP_PROTECT
-+BEGIN_FTR_SECTION
-+	mfspr	r3,SPRN_DEXCR
-+	LOAD_REG_IMMEDIATE(r4,DEXCR_PNH_PHIE)
-+	or	r3,r3,r4
-+	mtspr	SPRN_DEXCR,r3
-+	isync
-+END_FTR_SECTION_IFSET(CPU_FTR_ARCH_31)
-+#endif
-+
- 	LOAD_REG_ADDR(r3, start_here_common)
- 	ld	r4,PACAKMSR(r13)
- 	mtspr	SPRN_SRR0,r3
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index a60e4139214b..4a8e9f79aa0c 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1620,6 +1620,12 @@ void start_secondary(void *unused)
- {
- 	unsigned int cpu = raw_smp_processor_id();
- 
-+	/* Enable hash instructions on this CPU in case not already enabled by the hypervisor */
-+	if (IS_ENABLED(CONFIG_PPC_KERNEL_ROP_PROTECT) && cpu_has_feature(CPU_FTR_ARCH_31)) {
-+		mtspr(SPRN_DEXCR, mfspr(SPRN_DEXCR) | DEXCR_PNH_PHIE);
-+		isync();
-+	}
-+
- 	/* PPC64 calls setup_kup() in early_setup_secondary() */
- 	if (IS_ENABLED(CONFIG_PPC32))
- 		setup_kup();
--- 
-2.44.0
+On 25 March 2024 at 05:48 am, Christian Zigotzky wrote:
+> Hi All,
+>
+> Compiling of the RC1 of kernel 6.9 doesn’t work anymore for our FSL 
+> P5020/P5040 boards [1] since the PowerPC updates 6.9-2 [2].
+>
+> Error messages:
+>
+> arch/powerpc/platforms/85xx/smp.c: In function 
+> 'mpc85xx_smp_kexec_cpu_down':
+> arch/powerpc/platforms/85xx/smp.c:401:13: error: 'crashing_cpu' 
+> undeclared (first use in this function); did you mean 'crash_save_cpu'?
+>   401 |  if (cpu == crashing_cpu && cpu_thread_in_core(cpu) != 0) {
+>       |             ^~~~~~~~~~~~
+>       |             crash_save_cpu
+> arch/powerpc/platforms/85xx/smp.c:401:13: note: each undeclared 
+> identifier is reported only once for each function it appears in
+> make[5]: *** [scripts/Makefile.build:244: 
+> arch/powerpc/platforms/85xx/smp.o] Error 1
+> make[4]: *** [scripts/Makefile.build:485: arch/powerpc/platforms/85xx] 
+> Error 2
+> make[3]: *** [scripts/Makefile.build:485: arch/powerpc/platforms] Error 2
+> make[2]: *** [scripts/Makefile.build:485: arch/powerpc] Error 2
+>
+> ---
+>
+> I was able to revert it. After that the compiling works again.
+>
+> Could you please check the PowerPC updates 6.9-2? [2]
+>
+> Thanks,
+> Christian
+>
+> [1] http://wiki.amiga.org/index.php?title=X5000
+> [2] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.9-rc1&id=484193fecd2b6349a6fd1554d306aec646ae1a6a
 
