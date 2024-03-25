@@ -1,96 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5E8889BD5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 12:03:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A48DE88A418
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 15:18:17 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=VjBeE5oQ;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=2Bnt6+cN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=vo8wL1UK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V395c03CMz3dtJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 22:03:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3FQb35n3z3vX3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 01:18:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=VjBeE5oQ;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=2Bnt6+cN;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=vo8wL1UK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V394n4pVTz3bv3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 22:02:30 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1711364501; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Oxs8ZH8Q411CYOmdJMAhVbPmZbKTGHBaCHlVIefXE/t1xSYEU7ydVpHr6EYbza/0QV
-    HEXfdFckZmUZw2Rhvl0WQcfkRam68IfN0MrI16wndMKCdo1NhOWANVycsyu2hAoWGFUA
-    gapJ6awjKDEN9Kqk/Xj/ZS8wTcVny04px3Y6ahx1ZCVQYfOwZamHwDfDO/MnW7tpvK3r
-    VQzbrTAA0HGH0eqJCxXwJ4Ygy0/E00unnRaQPSOrtsDY5QkQTTXUbqfUG837Mnk6JCjD
-    kEyT1uDlKKHQiUK+ciiDVbaYZrsEHL+Viw2L4zyfDJhps5+tWgKI8+4QziFox3ES7p7y
-    od6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1711364501;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=RV+oBR1TovWsE7dvsvfbEI8CZGxRwyX9HyFi7xXjChI=;
-    b=LwCw9Izk8fihWr0Kb48OD5w3jV2FnpyJukqGS0kyRqmS7pJJ8C1y9MVY3NWgo4cJul
-    47NRYagPmhZK+Yls6aHy6INCCtKklfwlXcPxHM6il0uE7l7lMquq01s3ZxQvOP5hh3Ze
-    /4ngGLJDgDewa6r0r375iH5Oucq0n7UAuugX93TRwzvOLuBEKycUnv6gwA/0lGXYyKuS
-    N0YUU4HmGF1AmE1i0DOcPkwPeOXprlU7egw58KE6P6T5yHo07gjsLmMussVqOraF9m0e
-    PNjK1EsQiGO4ZmlrYjZ9tu/V5hokkKqFftrWgzxgSBp1NurFywxjuEvsYIKpJCyK70GB
-    /8xA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1711364501;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=RV+oBR1TovWsE7dvsvfbEI8CZGxRwyX9HyFi7xXjChI=;
-    b=VjBeE5oQebKxfmKkDYEkKYMctn20FSJPsN5jnXB+ogPpSPwjCpOrHBWpnn6g0e+/Pc
-    yZhdKl2jyXeoEBpYIlhdyjLK9VsfKao4oKmPnlnPZJaqvCEuyS57Ff6FTZwJcJAuC5w5
-    d9DxsIYXyVdxxOsX1mYz9b4K2w27xU+zLn4t7Xb3Mgo+O88ah66LKgw1kZO1/VdBtPn6
-    EC7DK74o75SPfsuWyywWIfc0l5JmaWy2vn1nvtwHXy/tzEzrZXc3/bmmu53uSUGs9Ohw
-    nrwoSQqyuPNFpTv2lduLuNBmMoLEHOpWANNd/7d38z4OUQM4JctEF4iSVQxf5ay+ItcN
-    Xulg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1711364501;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=RV+oBR1TovWsE7dvsvfbEI8CZGxRwyX9HyFi7xXjChI=;
-    b=2Bnt6+cNLgVp2bZJSdczAmkAdyHfBi2g03WoCHt6JKUCg+fRe/pT4E8eTyR6jLvqRf
-    jOwvbAdLIKF8EIPblgDw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfi4XXBswJY1xkHd0jCgCs4udHdhJKmTWY2xslQ=="
-Received: from [IPV6:2a02:8109:8984:5d00:299c:b5cd:1d87:5681]
-    by smtp.strato.de (RZmta 50.3.2 AUTH)
-    with ESMTPSA id eaf61b02PB1c5wB
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 25 Mar 2024 12:01:38 +0100 (CET)
-Message-ID: <6820f808-6da2-4aeb-8a24-5a446935dccf@xenosoft.de>
-Date: Mon, 25 Mar 2024 12:01:37 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3FPr0kdYz3cDw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 01:17:34 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6e6b5432439so3321852b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 07:17:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711376251; x=1711981051; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0j0+WJEClcsY1ZLRLTNOl6KxnRBJYlHp2TmN77gstlg=;
+        b=vo8wL1UKzEzt03dBES1reWhxzN+6fT4F0YHlUSbxR1asJ29UvP2bLuiV2Mm9Bc9Bol
+         sOLC4ZadLhk8RI+J4Mm8sIDTKCZMFvp5IQ3CPOY+g1RhmGpqEmGZ3fym6dsR8g/v70tO
+         EOb1i1TV3cJIa8FJ3lsz+RY5gY3+YI5RPHXYlww3wTQhs8jbGwtJQJKjHgMg+IsZvn1Z
+         f5OmKz23uJgl9POV6INineHmmUhmK2lIzm6uXKtbEi7yyR7Rg0ls1O0p2f6oACR4NZST
+         zspDdC+ExmO8Uq6HR7fhBZihYmqaP1kYdCLhidnpaivfkhbXwfXVh01wPLsrnYW7Rc38
+         wQVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711376251; x=1711981051;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0j0+WJEClcsY1ZLRLTNOl6KxnRBJYlHp2TmN77gstlg=;
+        b=NqzPBsIweb0TcREhIQfkR+2qRSr19Zr4iiKrMghNVeJZwTShKrhKHsYUjvVnQPIK4O
+         rCovt2JMo3aJWHR9HkKXw/EgttCDXcNurpVilEqtqgKYic4cICMmP3U33SiXUlTFHitf
+         4ZJZqtEYwJSu5LOIcANo+KI7+8uddqHZi+zzvnkOWuvmlMHMUyeBDDqZm4x/pmcqQe6H
+         zao/vFpQEjIhQ2fpSddw3YELWB9+J67a+1IMifq+w+aW2vUn5I2++F/FULsSW3Cv5cps
+         PbIJC9kj3fUQQngJK+CkKeN450EMC7HK/VxgzxcQ95vk8cUrF4q44sq/LCjAh+P6TlbH
+         uxlg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9eDCUJAKh8arvY2Lanja2xGTQy+QwqWclxaaBJkUtJoU/RPpMULFbkOoklULzwDOCBfhJz6IWY7ThOUyBYHeCUWYPkotemrsKPt4AmQ==
+X-Gm-Message-State: AOJu0YwHhQDVknuBTiYft8ghRN6AQHdhKwbxir/cdgPbHfrVDFCeVa8Q
+	LtRNwTm/y9DvYN+mMFAgtjACY9FiHD0rXAsawMJ1IOqJTJridSuE8zvH0uB7RA==
+X-Google-Smtp-Source: AGHT+IGt81Wd5PNUHb9reJZgU/GFYtwbIn5716OPRltJ4cQey21mzq5YUv6LXvmRDnnlFilp9pVUoA==
+X-Received: by 2002:a05:6a00:2345:b0:6e6:bb2b:882c with SMTP id j5-20020a056a00234500b006e6bb2b882cmr7821317pfj.13.1711376251041;
+        Mon, 25 Mar 2024 07:17:31 -0700 (PDT)
+Received: from thinkpad ([117.207.29.15])
+        by smtp.gmail.com with ESMTPSA id x25-20020a056a00271900b006e24991dd5bsm4217943pfv.98.2024.03.25.07.17.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 07:17:30 -0700 (PDT)
+Date: Mon, 25 Mar 2024 19:47:06 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v10 8/8] PCI: dwc: ep: Remove "core_init_notifier" flag
+Message-ID: <20240325141706.GD2938@thinkpad>
+References: <20240314-pci-dbi-rework-v10-0-14a45c5a938e@linaro.org>
+ <20240314-pci-dbi-rework-v10-8-14a45c5a938e@linaro.org>
+ <Zf1xTkuK8yBZXmQ0@ryzen>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [FSL P50x0] Kernel 6.9-rc1 compiling issue
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>
-References: <fa247ae4-5825-4dbe-a737-d93b7ab4d4b9@xenosoft.de>
- <761e7864-4655-4b58-b0ad-60d716c5f321@xenosoft.de>
- <5c232ad9-c4d5-49fa-8434-fc5034b6c5da@csgroup.eu>
- <1486b4f1-cb55-48c8-b492-ddbec495eef3@xenosoft.de>
- <a4320985-f585-4033-8229-63937a49aa84@xenosoft.de>
-Content-Language: de-DE
-In-Reply-To: <a4320985-f585-4033-8229-63937a49aa84@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zf1xTkuK8yBZXmQ0@ryzen>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,184 +82,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd@a-eon.com>, Matthew Leaman <matthew@a-eon.biz>, Christian Zigotzky <info@xenosoft.de>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Kishon Vijay Abraham I <kishon@ti.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, NXP Linux Team <linux-imx@nxp.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang
+  <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Configured:
+On Fri, Mar 22, 2024 at 12:53:50PM +0100, Niklas Cassel wrote:
+> On Thu, Mar 14, 2024 at 01:18:06PM +0530, Manivannan Sadhasivam wrote:
+> > "core_init_notifier" flag is set by the glue drivers requiring refclk from
+> > the host to complete the DWC core initialization. Also, those drivers will
+> > send a notification to the EPF drivers once the initialization is fully
+> > completed using the pci_epc_init_notify() API. Only then, the EPF drivers
+> > will start functioning.
+> > 
+> > For the rest of the drivers generating refclk locally, EPF drivers will
+> > start functioning post binding with them. EPF drivers rely on the
+> > 'core_init_notifier' flag to differentiate between the drivers.
+> > Unfortunately, this creates two different flows for the EPF drivers.
+> > 
+> > So to avoid that, let's get rid of the "core_init_notifier" flag and follow
+> > a single initialization flow for the EPF drivers. This is done by calling
+> > the dw_pcie_ep_init_notify() from all glue drivers after the completion of
+> > dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
+> > send the notification to the EPF drivers once the initialization is fully
+> > completed.
+> > 
+> > Only difference here is that, the drivers requiring refclk from host will
+> > send the notification once refclk is received, while others will send it
+> > during probe time itself.
+> > 
+> > But this also requires the EPC core driver to deliver the notification
+> > after EPF driver bind. Because, the glue driver can send the notification
+> > before the EPF drivers bind() and in those cases the EPF drivers will miss
+> > the event. To accommodate this, EPC core is now caching the state of the
+> > EPC initialization in 'init_complete' flag and pci-ep-cfs driver sends the
+> > notification to EPF drivers based on that after each EPF driver bind.
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> >  drivers/pci/controller/dwc/pci-dra7xx.c           |  2 ++
+> >  drivers/pci/controller/dwc/pci-imx6.c             |  2 ++
+> >  drivers/pci/controller/dwc/pci-keystone.c         |  2 ++
+> >  drivers/pci/controller/dwc/pci-layerscape-ep.c    |  2 ++
+> >  drivers/pci/controller/dwc/pcie-artpec6.c         |  2 ++
+> >  drivers/pci/controller/dwc/pcie-designware-plat.c |  2 ++
+> >  drivers/pci/controller/dwc/pcie-keembay.c         |  2 ++
+> >  drivers/pci/controller/dwc/pcie-qcom-ep.c         |  1 -
+> >  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  2 ++
+> >  drivers/pci/controller/dwc/pcie-tegra194.c        |  1 -
+> >  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  2 ++
+> >  drivers/pci/endpoint/functions/pci-epf-test.c     | 18 +++++-------------
+> >  drivers/pci/endpoint/pci-ep-cfs.c                 |  9 +++++++++
+> >  drivers/pci/endpoint/pci-epc-core.c               | 22 ++++++++++++++++++++++
+> >  include/linux/pci-epc.h                           |  7 ++++---
+> >  15 files changed, 58 insertions(+), 18 deletions(-)
+> 
+> FWIW:
+> Tested-by: Niklas Cassel <cassel@kernel.org>
+> 
+> 
+> 
+> However, when looking at this, I was surprised that you never call something
+> that will set:
+> init_complete = false;
+> from e.g. dw_pcie_ep_deinit() or dw_pcie_ep_cleanup().
+> 
+> I saw that you do seem to set
+> init_complete = false;
+> in your other follow up series that is based on this one.
+> 
+> What will happen if you run with only this series merged (without your
+> follow up series), on a platform that used to have .core_init_notifier?
+> 
+> If you do remove and recreate the symlink on a platform with external
+> refclk, since you never set init_complete to false, you could trigger
+> EPF core_init callback, e.g. pci_epf_test_core_init() to be called,
+> which will do DBI writes even when there is no refclk.
+> 
+> E.g. (on a platform with external refclk):
+> 1) Create symlink to pci-epf-test in configfs.
+> 2) Start RC, your EPC driver will call ep_init_notifiy() when perst
+> deasserts.
+> 3) Run pci-epf-test.
+> 4) Remove the pci-epf-test symlink
+> 5) Shutdown RC
+> 6) Create symlink to pci-epf-test in configfs.
+>    This will see that init_complete is true, and will do DBI writes
+>    which will crash your system, since you don't have a refclk.
+> 
+> Perhaps you should move the patch that calls a function that sets
+> init_complete = false;
+> to this series, so that this crash is not possible?
+> 
 
-CONFIG_VMCORE_INFO=y
-# CONFIG_CRASH_DUMP is not set
-CONFIG_KEXEC_CORE=y
+Good catch! But moving that patch to this series requires moving some other
+patches as well. So in the meantime, I'll set this flag to false in
+dw_pcie_ep_cleanup().
 
-PowerPC updates 6.9-2:
+[...]
 
--#ifdef CONFIG_VMCORE_INFO
-+#ifdef CONFIG_CRASH_DUMP
-  /* This keeps a track of which one is the crashing cpu. */
-  int crashing_cpu = -1;
-  #endif
+> > diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+> > index 18c80002d3bd..fc0282b0d626 100644
+> > --- a/drivers/pci/endpoint/functions/pci-epf-test.c
+> > +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
 
----------
+[...]
 
-int crashing_cpu = -1; was used before.
+> > -	if (!core_init_notifier) {
+> > -		ret = pci_epf_test_core_init(epf);
+> > -		if (ret)
+> > -			return ret;
+> > -	}
+> > -
+> 
+> While you did fix up all DWC based drivers, the non-DWC EPC drivers that
+> did not have epc_features->core_init_notifier before this patch:
+> 
+> drivers/pci/controller/cadence/pcie-cadence-ep.c:#include <linux/pci-epc.h>
+> drivers/pci/controller/pcie-rcar-ep.c:#include <linux/pci-epc.h>
+> drivers/pci/controller/pcie-rockchip-ep.c:#include <linux/pci-epc.h>
+> 
+> I don't think that they will work with pci-epf-test anymore, since AFAICT,
+> you did not add a call to: pci_epc_init_notify() or similar in these EPC drivers.
+> (Like this patch does to all the DWC-based drivers without a core_init_notifier.)
+> 
 
-I continue to use it with the following temporary patch:
+Doh, yeah I completely missed these. Thanks for pointing out. Will add the
+notify_init call in next version.
 
---- a/arch/powerpc/platforms/85xx/smp.c    2024-03-25 06:14:02.201209476 
-+0100
-+++ b/arch/powerpc/platforms/85xx/smp.c    2024-03-25 06:10:04.421425931 
-+0100
-@@ -393,6 +393,7 @@ static void mpc85xx_smp_kexec_cpu_down(i
-      int disable_threadbit = 0;
-      long start = mftb();
-      long now;
-+    int crashing_cpu = -1;
+- Mani
 
-      local_irq_disable();
-      hard_irq_disable();
-
----------
-
--- Christian
-
-
-On 25 March 2024 at 10:14 am, Christian Zigotzky wrote:
-> We have configured (kernel config):
->
-> # CONFIG_CRASH_DUMP is not set
-> CONFIG_KEXEC_CORE=y
->
-> Link: 
-> https://github.com/chzigotzky/kernels/blob/main/configs/x5000_defconfig
->
-> Compiling error:
->
-> arch/powerpc/platforms/85xx/smp.c: In function 
-> 'mpc85xx_smp_kexec_cpu_down':
-> arch/powerpc/platforms/85xx/smp.c:401:13: error: 'crashing_cpu' 
-> undeclared (first use in this function); did you mean 'crash_save_cpu'?
->   401 |  if (cpu == crashing_cpu && cpu_thread_in_core(cpu) != 0) {
->       |             ^~~~~~~~~~~~
->       |             crash_save_cpu
-> arch/powerpc/platforms/85xx/smp.c:401:13: note: each undeclared 
-> identifier is reported only once for each function it appears in
-> make[5]: *** [scripts/Makefile.build:244: 
-> arch/powerpc/platforms/85xx/smp.o] Error 1
-> make[4]: *** [scripts/Makefile.build:485: arch/powerpc/platforms/85xx] 
-> Error 2
-> make[3]: *** [scripts/Makefile.build:485: arch/powerpc/platforms] Error 2
-> make[2]: *** [scripts/Makefile.build:485: arch/powerpc] Error 2
->
-> -----------------
->
-> PowerPC updates 6.9-2:
->
-> #ifdef CONFIG_KEXEC_CORE
->
-> -extern int crashing_cpu;
->
-> -----------------
->
-> +#if defined(CONFIG_CRASH_DUMP)
-> ...
-> +extern int crashing_cpu;
->
-> +#ifdef CONFIG_CRASH_DUMP
->  /* This keeps a track of which one is the crashing cpu. */
->  int crashing_cpu = -1;
->  #endif
->
-> -----------------
->
-> -- Christian
->
->
-> On 25 March 2024 at 08:15 am, Christian Zigotzky wrote:
->> Thanks a lot for the hint.
->>
->> Could you please add #include <asm/kexec.h> to 
->> arch/powerpc/platforms/85xx/smp.c for the next PowerPC fixes?
->>
->> Christian
->>
->>
->> On 25 March 2024 at 07:43 am, Christophe Leroy wrote:
->>> Hi,
->>>
->>> Le 25/03/2024 à 06:18, Christian Zigotzky a écrit :
->>>> I have created a patch:
->>>>
->>>> --- a/arch/powerpc/platforms/85xx/smp.c 2024-03-25 
->>>> 06:14:02.201209476 +0100
->>>> +++ b/arch/powerpc/platforms/85xx/smp.c 2024-03-25 
->>>> 06:10:04.421425931 +0100
->>>> @@ -393,6 +393,7 @@ static void mpc85xx_smp_kexec_cpu_down(i
->>>>           int disable_threadbit = 0;
->>>>           long start = mftb();
->>>>           long now;
->>>> +       int crashing_cpu = -1;
->>> crashing_cpu is a global variable defined in
->>> arch/powerpc/kernel/setup-common.c and declared in
->>> arch/powerpc/include/asm/kexec.h
->>>
->>> So you can't redefine crashing_cpu as a local stub.
->>>
->>> All you need to do is to add #include <asm/kexec.h> just like
->>> arch/powerpc/platforms/powernv/smp.c I guess.
->>>
->>> Christophe
->>>
->>>
->>>
->>>>           local_irq_disable();
->>>>           hard_irq_disable();
->>>>
->>>> ---
->>>>
->>>> -- Christian
->>>>
->>>>
->>>> On 25 March 2024 at 05:48 am, Christian Zigotzky wrote:
->>>>> Hi All,
->>>>>
->>>>> Compiling of the RC1 of kernel 6.9 doesn’t work anymore for our FSL
->>>>> P5020/P5040 boards [1] since the PowerPC updates 6.9-2 [2].
->>>>>
->>>>> Error messages:
->>>>>
->>>>> arch/powerpc/platforms/85xx/smp.c: In function
->>>>> 'mpc85xx_smp_kexec_cpu_down':
->>>>> arch/powerpc/platforms/85xx/smp.c:401:13: error: 'crashing_cpu'
->>>>> undeclared (first use in this function); did you mean 
->>>>> 'crash_save_cpu'?
->>>>>    401 |  if (cpu == crashing_cpu && cpu_thread_in_core(cpu) != 0) {
->>>>>        |             ^~~~~~~~~~~~
->>>>>        |             crash_save_cpu
->>>>> arch/powerpc/platforms/85xx/smp.c:401:13: note: each undeclared
->>>>> identifier is reported only once for each function it appears in
->>>>> make[5]: *** [scripts/Makefile.build:244:
->>>>> arch/powerpc/platforms/85xx/smp.o] Error 1
->>>>> make[4]: *** [scripts/Makefile.build:485: 
->>>>> arch/powerpc/platforms/85xx]
->>>>> Error 2
->>>>> make[3]: *** [scripts/Makefile.build:485: arch/powerpc/platforms] 
->>>>> Error 2
->>>>> make[2]: *** [scripts/Makefile.build:485: arch/powerpc] Error 2
->>>>>
->>>>> ---
->>>>>
->>>>> I was able to revert it. After that the compiling works again.
->>>>>
->>>>> Could you please check the PowerPC updates 6.9-2? [2]
->>>>>
->>>>> Thanks,
->>>>> Christian
->>>>>
->>>>> [1] http://wiki.amiga.org/index.php?title=X5000
->>>>> [2]
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.9-rc1&id=484193fecd2b6349a6fd1554d306aec646ae1a6a 
->>>>>
->>
->
-
+-- 
+மணிவண்ணன் சதாசிவம்
