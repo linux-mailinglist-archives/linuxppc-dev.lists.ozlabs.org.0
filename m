@@ -1,56 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A668899C4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 11:16:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB68889B4D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 11:49:24 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=xry111.site header.i=@xry111.site header.a=rsa-sha256 header.s=default header.b=UUcDbdjZ;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=E8DDr+Ad;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V383v6PFRz3dVR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 21:16:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V38nZ2gFjz3vXF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 21:49:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=xry111.site header.i=@xry111.site header.a=rsa-sha256 header.s=default header.b=UUcDbdjZ;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=E8DDr+Ad;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xry111.site (client-ip=89.208.246.23; helo=xry111.site; envelope-from=xry111@xry111.site; receiver=lists.ozlabs.org)
-Received: from xry111.site (xry111.site [89.208.246.23])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12c; helo=mail-lf1-x12c.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V38385DwNz2yPq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 21:16:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1711361760;
-	bh=sKKRdrTurFaHKczVM5dueoW5ihUbWtXhk0VglFkeCWI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=UUcDbdjZes5HxI4JaxjU8oNwuRs4pvOz4nITFL0SMNyQV+qc0rFFNv3NlDQDofF/l
-	 PBzKemeloUIJ+UR1KuTuJjOcvVMn/KEHzXjiYgV2ZRTTc102GUuUNcecorHw9InFuX
-	 hjQebatvwiSqyN6j+KHY7SO8D9myXjtNQjUXM4q0=
-Received: from [IPv6:240e:358:11fe:a000:dc73:854d:832e:8] (unknown [IPv6:240e:358:11fe:a000:dc73:854d:832e:8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id C812866D53;
-	Mon, 25 Mar 2024 06:15:55 -0400 (EDT)
-Message-ID: <ba78805af8b39237b22a0ff87c4ba3c614a43910.camel@xry111.site>
-Subject: Re: [PATCHv3 pci-next 1/2] PCI/AER: correctable error message as
- KERN_INFO
-From: Xi Ruoyao <xry111@xry111.site>
-To: Ethan Zhao <haifeng.zhao@linux.intel.com>, Bjorn Helgaas
-	 <helgaas@kernel.org>
-Date: Mon, 25 Mar 2024 18:15:50 +0800
-In-Reply-To: <38601aef-b082-463f-8e41-f73a4307de21@linux.intel.com>
-References: <20230918193913.GA203601@bhelgaas>
-	 <0a44fd663e93ac5b36865b0080da52d94252791a.camel@xry111.site>
-	 <38601aef-b082-463f-8e41-f73a4307de21@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.0 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V38ms3JCfz3cQm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 21:48:43 +1100 (AEDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-512b3b04995so2149558e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 03:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711363717; x=1711968517; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GdyAlHz63fHy0CpLlEnn3btu6ypzjd0jIMH561mJYbY=;
+        b=E8DDr+AdyohdEcpdrU+GmR9Ck+VMcsCR+Kwt1AME1kOLSVEDevG/ClHQ+QXGfYd/T5
+         agIfEWAn/q6VJkwS1Whj+4BYRVXnHiMxfVlwcLwwqduBF80iuTq798q2PRYxpHVbPi51
+         mjlT7P3Dmme+lFE+ircPRSodETpYERNtwStsS2ohr5SpHqAN3t63F/TR/MeL2Prp53tS
+         AA8NH581rwoV0DG1crbcqj6iRQKHW3HZeieEwzwH7YaMsgpPjNq2ikmWlju2fchCoM6D
+         OzFg0RhUq8yPs92iNmr1fZpjg4yhxbU4Hc0dfTEmg2MzBOtZ//UGyveow0slT05K6IVe
+         pBjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711363717; x=1711968517;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GdyAlHz63fHy0CpLlEnn3btu6ypzjd0jIMH561mJYbY=;
+        b=ZJBNm+H+gjbUp90qHm3SOYQmUyB9yVdjXIUnRZfrsHaAfQwr3lGxmoXKauQJnyl+KZ
+         hyP+fJecC9ZAMHjNs8SZ1FK03DSa6ZvKq9h7Xqy3uSiKnHmrFwX2k4cVXj9U4NHVx78O
+         pBPAgSWvxlXArjZC8jtQIlF+Ub2UdVy4NsavSdYR2fon92aPFfcCj4q+8JYamE1R3YRB
+         GEtiIEce6ErGTCjxjtS9zYhsXLyRZ8FLZG1uQv+M91EKp0IQipvKniVGDlTZGZb723lY
+         K9SEsfV/ife9CA2Y6Y9HQz/eUReG5SgGqk3FidEfeywWAAfMiW9WpKEODVZ6v0h+uihS
+         sXOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVoWW/mRi4Cwt/t9LHk0TdeuPMhrOJvkTi0XLQ2bJvxH6rxyh9SWzru15WjB/2niGe5RduFVkGMG3ccmPkkb4xM9+9Zt+LIUtYvaKIIg==
+X-Gm-Message-State: AOJu0YzPlIz+i6DjIA1MMvvn0xxpRAxiwdcJCAgEmbrfSntEya4X1PEf
+	ZJg17T9AywoLHJ1R+kX65ZSXnZNsODTce2yBfg73blh4O42C6D5Sler+b1SOtvE=
+X-Google-Smtp-Source: AGHT+IEtwhIbYV6Dwdb3Hs6WgP/TgyCYhQ1U7xeEJW156UNlPksk5MnUlGzwXG2IL7SeXUvQg/yLUQ==
+X-Received: by 2002:a19:8c56:0:b0:513:c9ea:67 with SMTP id i22-20020a198c56000000b00513c9ea0067mr4160794lfj.24.1711363717293;
+        Mon, 25 Mar 2024 03:48:37 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.222.44])
+        by smtp.gmail.com with ESMTPSA id df15-20020a05640230af00b00568d6a20717sm2859339edb.52.2024.03.25.03.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 03:48:36 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Li Yang <leoyang.li@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] dt-bindings: soc: fsl: narrow regex for unit address to hex numbers
+Date: Mon, 25 Mar 2024 11:48:32 +0100
+Message-Id: <20240325104833.33372-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,101 +88,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rajatja@chromium.org, rajat.khandelwal@linux.intel.com, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-kernel@vger.kernel.org, oohall@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2024-03-25 at 16:45 +0800, Ethan Zhao wrote:
-> On 3/25/2024 1:19 AM, Xi Ruoyao wrote:
-> > On Mon, 2023-09-18 at 14:39 -0500, Bjorn Helgaas wrote:
-> > > On Mon, Sep 18, 2023 at 07:42:30PM +0800, Xi Ruoyao wrote:
-> > > > ...
-> > > > My workstation suffers from too much correctable AER reporting as w=
-ell
-> > > > (related to Intel's errata "RPL013: Incorrectly Formed PCIe Packets=
- May
-> > > > Generate Correctable Errors" and/or the motherboard design, I guess=
-).
-> > > We should rate-limit correctable error reporting so it's not
-> > > overwhelming.
-> > >=20
-> > > At the same time, I'm *also* interested in the cause of these errors,
-> > > in case there's a Linux defect or a hardware erratum that we can work
-> > > around.=C2=A0 Do you have a bug report with any more details, e.g., a=
- dmesg
-> > > log and "sudo lspci -vv" output?
-> > Hi Bjorn,
-> >=20
-> > Sorry for the *very* late reply (somehow I didn't see the reply at all
-> > before it was removed by my cron job, and now I just savaged it from
-> > lore.kernel.org...)
-> >=20
-> > The dmesg is like:
-> >=20
-> > [=C2=A0 882.456994] pcieport 0000:00:1c.1: AER: Multiple Correctable er=
-ror message received from 0000:00:1c.1
-> > [=C2=A0 882.457002] pcieport 0000:00:1c.1: AER: found no error details =
-for 0000:00:1c.1
-> > [=C2=A0 882.457003] pcieport 0000:00:1c.1: AER: Multiple Correctable er=
-ror message received from 0000:06:00.0
-> > [=C2=A0 883.545763] pcieport 0000:00:1c.1: AER: Multiple Correctable er=
-ror message received from 0000:00:1c.1
-> > [=C2=A0 883.545789] pcieport 0000:00:1c.1: PCIe Bus Error: severity=3DC=
-orrectable, type=3DPhysical Layer, (Receiver ID)
-> > [=C2=A0 883.545790] pcieport 0000:00:1c.1:=C2=A0=C2=A0 device [8086:7a3=
-9] error status/mask=3D00000001/00002000
-> > [=C2=A0 883.545792] pcieport 0000:00:1c.1:=C2=A0=C2=A0=C2=A0 [ 0] RxErr=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 (First)
-> > [=C2=A0 883.545794] pcieport 0000:00:1c.1: AER:=C2=A0=C2=A0 Error of th=
-is Agent is reported first
-> > [=C2=A0 883.545798] r8169 0000:06:00.0: PCIe Bus Error: severity=3DCorr=
-ectable, type=3DPhysical Layer, (Transmitter ID)
-> > [=C2=A0 883.545799] r8169 0000:06:00.0:=C2=A0=C2=A0 device [10ec:8125] =
-error status/mask=3D00001101/0000e000
-> > [=C2=A0 883.545800] r8169 0000:06:00.0:=C2=A0=C2=A0=C2=A0 [ 0] RxErr=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 (First)
-> > [=C2=A0 883.545801] r8169 0000:06:00.0:=C2=A0=C2=A0=C2=A0 [ 8] Rollover
-> > [=C2=A0 883.545802] r8169 0000:06:00.0:=C2=A0=C2=A0=C2=A0 [12] Timeout
-> > [=C2=A0 883.545815] pcieport 0000:00:1c.1: AER: Correctable error messa=
-ge received from 0000:00:1c.1
-> > [=C2=A0 883.545823] pcieport 0000:00:1c.1: AER: found no error details =
-for 0000:00:1c.1
-> > [=C2=A0 883.545824] pcieport 0000:00:1c.1: AER: Multiple Correctable er=
-ror message received from 0000:06:00.0
-> >=20
-> > lspci output attached.
-> >=20
-> > Intel has issued an errata "RPL013" saying:
-> >=20
-> > "Under complex microarchitectural conditions, the PCIe controller may
-> > transmit an incorrectly formed Transaction Layer Packet (TLP), which
-> > will fail CRC checks.=C2=A0When this erratum occurs, the PCIe end point=
- may
-> > record correctable errors resulting in either a NAK or link recovery.
-> > Intel=C2=AE has not observed any functional impact due to this erratum.=
-"
-> >=20
-> > But I'm really unsure if it describes my issue.
-> >=20
-> > Do you think I have some broken hardware and I should replace the CPU
-> > and/or the motherboard (where the r8169 is soldered)?=C2=A0 I've notice=
-d that
-> > my 13900K is almost impossible to overclock (despite it's a K), but I'v=
-e
-> > not encountered any issue other than these AER reporting so far after I
-> > gave up overclocking.
->=20
-> Seems there are two r8169 nics on your board, only 0000:06:00.0 reports
-> aer errors, how about another one the 0000:07:00.0 nic ?
+Regular expression used to match the unit address part should not allow
+non-hex numbers.
 
-It never happens to 0000:07:00.0, even if I plug the ethernet cable into
-it instead of 0000:06:00.0.
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Maybe I should just use 0000:07:00.0 and blacklist 0000:06:00.0 as I
-don't need two NICs?
+---
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+v2: No changes
+---
+ .../devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml        | 2 +-
+ .../devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml
+index 397f75909b20..ce1a6505eb51 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-dcfg.yaml
+@@ -51,7 +51,7 @@ properties:
+   ranges: true
+ 
+ patternProperties:
+-  "^clock-controller@[0-9a-z]+$":
++  "^clock-controller@[0-9a-f]+$":
+     $ref: /schemas/clock/fsl,flexspi-clock.yaml#
+ 
+ required:
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+index 8d088b5fe823..a6a511b00a12 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+@@ -41,7 +41,7 @@ properties:
+   ranges: true
+ 
+ patternProperties:
+-  "^interrupt-controller@[a-z0-9]+$":
++  "^interrupt-controller@[a-f0-9]+$":
+     $ref: /schemas/interrupt-controller/fsl,ls-extirq.yaml#
+ 
+ required:
+-- 
+2.34.1
+
