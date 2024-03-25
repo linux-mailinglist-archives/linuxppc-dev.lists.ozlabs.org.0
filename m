@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6418880ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 00:08:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B71888D4A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 05:44:40 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y1kFLPyn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iZ/b0NE+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V2sF01Kw2z3dTS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 10:08:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V30hk2v9Fz3vbP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 15:44:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y1kFLPyn;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iZ/b0NE+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V2sD66MDlz3bqB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 10:07:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V30fR3P0Mz2ykC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 15:42:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5ED0660E04;
-	Sun, 24 Mar 2024 23:07:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE43C43399;
-	Sun, 24 Mar 2024 23:07:46 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6128B60DE9;
+	Mon, 25 Mar 2024 04:42:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B5273C43399;
+	Mon, 25 Mar 2024 04:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711321668;
-	bh=Vql+8js91BRX0rn5qU3meYIvkq3/iZebYzGwS509XTc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1kFLPynROeXaia/neLYNhDoRiejoV8FwURaGegVxq+CWtddmSrfg8rZvGajA0DHb
-	 mb0B1wycTdOSGLAFUXKnrVyEsugGi/Eyalcrd4UlUSXcVKtDGi7RtJoWDepbCFD3KJ
-	 hKXsAzOW36fM7e+V7p7Bt1lJ3VHWG/pFAbNFdo8q9BuKLjrkE+TK4s6//uoPNyzZus
-	 sjGTlZdZ35/9XidkW1JZhiNM4Oon8O3ICEDGTMAqEBub1LXdqFjIicE21tZwb6P117
-	 Gncq2cOJzNKAxOMoyGcRiFj1b5dfb6y1j0xbkKj00E+Qk02GV8vYpq16xUp6nS86RE
-	 EDUc5uu8ovFlQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 6.6 397/638] drivers/ps3: select VIDEO to provide cmdline functions
-Date: Sun, 24 Mar 2024 18:57:14 -0400
-Message-ID: <20240324230116.1348576-398-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240324230116.1348576-1-sashal@kernel.org>
-References: <20240324230116.1348576-1-sashal@kernel.org>
+	s=k20201202; t=1711341754;
+	bh=duVRPOkUwtqb9I+6o5VQiYAgtSlpWGf+X+0yQv8TjAs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=iZ/b0NE+i7+do8pgZkg46x1uBB/MQJfp/c/XhpH71z/wGKatNJQnfFVi4TsSrJUcx
+	 p9B9v3m0m2h+2n352ZneEdcJs25ZuYmCkptcEJJi14CEjUg6fZRWGQjsnzSbTTqpuQ
+	 jBLNyyJKgrClKH6Ar2Sk8/u0rVBaZT96gqSwdlSHBYKiJ8LneSrMklScm8Ww85dTEe
+	 eja5sWn2jN4CV4FDoeaf5TOJPL86Efy9rTKDI0W7hc3GLlwluHdA9GYm7yTBbMYg6F
+	 MrrxjzojsaA/BYbk4OYMb2sE8+b4REldcJ8JhTboSwFB0wiYQTm1AKpQdnuWO2wot9
+	 CNckLCoG3Oykg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9F5E8D95071;
+	Mon, 25 Mar 2024 04:42:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 00/11] Bump the minimum supported version of LLVM to 13.0.1
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id:  <171134175464.18749.18342004135343709281.git-patchwork-notify@kernel.org>
+Date: Mon, 25 Mar 2024 04:42:34 +0000
+References: <20240125-bump-min-llvm-ver-to-13-0-1-v1-0-f5ff9bda41c5@kernel.org>
+In-Reply-To: <20240125-bump-min-llvm-ver-to-13-0-1-v1-0-f5ff9bda41c5@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,54 +61,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-fbdev@vger.kernel.org, Geoff Levand <geoff@infradead.org>, dri-devel@lists.freedesktop.org, Randy Dunlap <rdunlap@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, aou@eecs.berkeley.edu, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, will@kernel.org, ardb@kernel.org, keescook@chromium.org, masahiroy@kernel.org, x86@kernel.org, linux@armlinux.org.uk, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, llvm@lists.linux.dev, nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, npiggin@gmail.com, bp@alien8.de, paul.walmsley@sifive.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, patches@lists.linux.dev, conor@kernel.org, palmer@dabbelt.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Hello:
 
-[ Upstream commit 7edd06233958d9086a9e3eb723a8768d3c5a9ce1 ]
+This series was applied to riscv/linux.git (fixes)
+by Andrew Morton <akpm@linux-foundation.org>:
 
-When VIDEO is not set, there is a build error. Fix that by selecting
-VIDEO for PS3_PS3AV.
+On Thu, 25 Jan 2024 15:55:06 -0700 you wrote:
+> Hi all,
+> 
+> This series bumps the minimum supported version of LLVM for building the
+> kernel to 13.0.1. The first patch does the bump and all subsequent
+> patches clean up all the various workarounds and checks for earlier
+> versions.
+> 
+> [...]
 
-ERROR: modpost: ".video_get_options" [drivers/ps3/ps3av_mod.ko] undefined!
+Here is the summary with links:
+  - [07/11] riscv: Remove MCOUNT_NAME workaround
+    https://git.kernel.org/riscv/c/de5f3984664e
+  - [08/11] riscv: Kconfig: Remove version dependency from CONFIG_CLANG_SUPPORTS_DYNAMIC_FTRACE
+    https://git.kernel.org/riscv/c/a38d97181271
 
-Fixes: dae7fbf43fd0 ("driver/ps3: Include <video/cmdline.h> for mode parsing")
-Fixes: a3b6792e990d ("video/cmdline: Introduce CONFIG_VIDEO for video= parameter")
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Geoff Levand <geoff@infradead.org>
-Acked-by: Geoff Levand <geoff@infradead.org>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240207161322.8073-1-rdunlap@infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/ps3/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/platforms/ps3/Kconfig b/arch/powerpc/platforms/ps3/Kconfig
-index a44869e5ea70f..1bd1b0b49bc62 100644
---- a/arch/powerpc/platforms/ps3/Kconfig
-+++ b/arch/powerpc/platforms/ps3/Kconfig
-@@ -67,6 +67,7 @@ config PS3_VUART
- config PS3_PS3AV
- 	depends on PPC_PS3
- 	tristate "PS3 AV settings driver" if PS3_ADVANCED
-+	select VIDEO
- 	select PS3_VUART
- 	default y
- 	help
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
