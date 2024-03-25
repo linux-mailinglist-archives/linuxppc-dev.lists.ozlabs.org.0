@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AEF8891E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:51:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F39A8891EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:52:36 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ckqX5eEn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gigGFkdI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V33WQ2YKvz2yGk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:51:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V33XL0fMNz3wB6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:52:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ckqX5eEn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gigGFkdI;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33JW2DQqz3vbN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:42:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33Jg31FRz3vbq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:42:26 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711348939; x=1742884939;
+  t=1711348948; x=1742884948;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XagHsKZy0o0b/SfCKSGfthtDX1F7t80ikEGTTX3TaPM=;
-  b=ckqX5eEniHY+A6sK/F41fC5asgkog6yJ0hGbXmo1RNw3f8lqLii86HlO
-   6UviiCgfDFKMhGw7rZ9Ni0DMvVT7BzDGhw0TfjXFp14tS3BAcgYUFRaZ1
-   xPWF0tUMSgZLmkq9DX6PP3jzqoCk+aA5QMLsHfaQE0kaLEEFcVxsefziE
-   vMXgNDZ889wHbsdj5eR+8mH6ER7G3Cy5Fkkrka6E0DnYlaTePjkQMnOVT
-   PyXYJj3jF22TmwrVdLLdG3G7/a5IRp7T29MfVTeGy6TboaGE5Krs3zM7I
-   Si1L1YWBuwQMurEJSde9ghqFhu17noba7FII2sWx5DJlNwEPL+SBJeQXR
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6191552"
+  bh=DWUH05pMFGBZtgh8QTM1fOtl5JuwFtwudYwKfS+CudI=;
+  b=gigGFkdIPCgVEss35ESOK/bZDUJlroUTHuqikerhry+uwfBmRe4fJkbb
+   uRHw9wXszvQ8vlqL3ZX2knOFqLhhbDEOpqOUI/cOKZibscCYKxFEWyD5/
+   3NNo/Hz5/ncXmNlHU4y83QVdVQVVan4vyLYm9Mg3tQTqWfpNgQ4tHqlXD
+   MgrsfwD3H2XCdc+yy01SRv8JHDO05CD4PLZOPvM/ofBv+b+Cq3WRB5ON/
+   BzZX9M5bmx6HLdJkSDOwljqHWkSBtLpYzdoE9+2foe6KbGh7VbIXcG6Qm
+   yr1Q0MLsNb8qw+OSdmFJxT2ElWj8OkvnOoq2+3WP8uMtbiFMx7lVi/DnI
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6191566"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="6191552"
+   d="scan'208";a="6191566"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:17 -0700
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:24 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="38629691"
+   d="scan'208";a="38629701"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.211.155])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:11 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:42:18 -0700
 From: Adrian Hunter <adrian.hunter@intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH V2 15/19] timekeeping: Fold in timekeeping_delta_to_ns()
-Date: Mon, 25 Mar 2024 08:40:19 +0200
-Message-Id: <20240325064023.2997-16-adrian.hunter@intel.com>
+Subject: [PATCH V2 16/19] timekeeping: Prepare timekeeping_cycles_to_ns() for overflow safety
+Date: Mon, 25 Mar 2024 08:40:20 +0200
+Message-Id: <20240325064023.2997-17-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325064023.2997-1-adrian.hunter@intel.com>
 References: <20240325064023.2997-1-adrian.hunter@intel.com>
@@ -70,45 +70,38 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-timekeeping_delta_to_ns() is now called only from
-timekeeping_cycles_to_ns(), and it is not useful otherwise. Simplify by
-folding it into timekeeping_cycles_to_ns().
+Open code clocksource_delta() in timekeeping_cycles_to_ns() so that
+overflow safety can be added efficiently.
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- kernel/time/timekeeping.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ kernel/time/timekeeping.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 1bbfe1ff8d24..749387f22f0f 100644
+index 749387f22f0f..d17484082e2c 100644
 --- a/kernel/time/timekeeping.c
 +++ b/kernel/time/timekeeping.c
-@@ -364,23 +364,12 @@ static void tk_setup_internals(struct timekeeper *tk, struct clocksource *clock)
- }
- 
- /* Timekeeper helper functions. */
--
--static inline u64 timekeeping_delta_to_ns(const struct tk_read_base *tkr, u64 delta)
--{
--	u64 nsec;
--
--	nsec = delta * tkr->mult + tkr->xtime_nsec;
--	nsec >>= tkr->shift;
--
--	return nsec;
--}
--
+@@ -367,7 +367,17 @@ static void tk_setup_internals(struct timekeeper *tk, struct clocksource *clock)
  static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles)
  {
  	/* Calculate the delta since the last update_wall_time() */
- 	u64 delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
+-	u64 delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
++	u64 mask = tkr->mask, delta = (cycles - tkr->cycle_last) & mask;
++
++	if (IS_ENABLED(CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE)) {
++		/*
++		 * Handle clocksource inconsistency between CPUs to prevent
++		 * time from going backwards by checking for the MSB of the
++		 * mask being set in the delta.
++		 */
++		if (unlikely(delta & ~(mask >> 1)))
++			return tkr->xtime_nsec >> tkr->shift;
++	}
  
--	return timekeeping_delta_to_ns(tkr, delta);
-+	return ((delta * tkr->mult) + tkr->xtime_nsec) >> tkr->shift;
+ 	return ((delta * tkr->mult) + tkr->xtime_nsec) >> tkr->shift;
  }
- 
- static __always_inline u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
 -- 
 2.34.1
 
