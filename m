@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FE3889190
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:43:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A16889195
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 07:44:14 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VWTBw3bZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GEj17car;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V33Kn148kz3vfv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:43:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V33Lh554Rz3vjL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Mar 2024 17:44:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VWTBw3bZ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GEj17car;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33Gy6BNhz3dVp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:40:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V33H7008pz3dTm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 17:41:06 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711348859; x=1742884859;
+  t=1711348867; x=1742884867;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bS1S2X2CJjfZI9Wdu/gKC/PtojbjfoojrJoco+YT8K0=;
-  b=VWTBw3bZjv8ercimLpbp5wUER4aqVGxVcYN9WQxCh7k6ryyxCeVrbnwX
-   y1PO+HJHkqGeGPgNv+Pt/A6KJ+S4jOsnHGbnEdzcTkAz1f+FbOwnNs4mQ
-   kuAIDou6lEiCd3hfc0K7ddZkLtTsr8GUDPUp9vVI4+iqnCEYTB1laIG4i
-   xo48s9JYLlZzEXj9KSm66S8u++8RjPly5pPTvW+w4wPxkeyEkePUIdygS
-   y3EOZtpiez1/aPSroSuMmyFBfvASQbEvbWIA2iKTDp6P9NqTfSBUfwwhZ
-   Qy0BAnBLT0KUk+sJOcuJDNpOpY+WFD4MIVifnE94Jvv8IdjndSg4RBfp5
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="17065125"
+  bh=xuamuB97LVfxyJSvE4i73CrmF8XOSgafgM3yHCD1nqo=;
+  b=GEj17carFGYzqPX9CDSkTz+FgGfk8b4HVf1AK5H9DIu3cxPeTPXBvcme
+   Y5sZ80BeG8Hx92l5v7TEETAyOvr+jauY9eOZyF/13RZYENjDpKsR7c00e
+   zdGkwNVv6RguPGwXAEPxt56aG/0h6x+E4Vd7MmBNCCgfXR1MjEyTvcFeT
+   YWMRVpjBAKHqb/X++L85PQdnIFVx3tT2DFTXmbdHrKcHIdmg/RPfxRQAi
+   X+aighZmQ9twRWNVA7/durVqhaOul2zNq3DQK8BYngFZr/AUsG9ppejnv
+   m3A71kUcvYD2P3I3j88nS8rLAmjqgvNqSaY9m99kaceE5wWMQew1E5fsw
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="17065147"
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="17065125"
+   d="scan'208";a="17065147"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:58 -0700
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:41:04 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,152,1708416000"; 
-   d="scan'208";a="38629577"
+   d="scan'208";a="38629583"
 Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.home\044ger.corp.intel.com) ([10.251.211.155])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:52 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2024 23:40:58 -0700
 From: Adrian Hunter <adrian.hunter@intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH V2 03/19] vdso: Add CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
-Date: Mon, 25 Mar 2024 08:40:07 +0200
-Message-Id: <20240325064023.2997-4-adrian.hunter@intel.com>
+Subject: [PATCH V2 04/19] math64: Tidy mul_u64_u32_shr()
+Date: Mon, 25 Mar 2024 08:40:08 +0200
+Message-Id: <20240325064023.2997-5-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325064023.2997-1-adrian.hunter@intel.com>
 References: <20240325064023.2997-1-adrian.hunter@intel.com>
@@ -70,31 +70,36 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT in preparation to add
-multiplication overflow protection to the VDSO time getter functions.
+Put together declaration and initialization of local variables.
 
 Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- lib/vdso/Kconfig | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/math64.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
-index d883ac299508..c46c2300517c 100644
---- a/lib/vdso/Kconfig
-+++ b/lib/vdso/Kconfig
-@@ -30,4 +30,11 @@ config GENERIC_VDSO_TIME_NS
- 	  Selected by architectures which support time namespaces in the
- 	  VDSO
+diff --git a/include/linux/math64.h b/include/linux/math64.h
+index bf74478926d4..fd13622b2056 100644
+--- a/include/linux/math64.h
++++ b/include/linux/math64.h
+@@ -179,16 +179,12 @@ static __always_inline u64 mul_u64_u64_shr(u64 a, u64 mul, unsigned int shift)
+ #ifndef mul_u64_u32_shr
+ static __always_inline u64 mul_u64_u32_shr(u64 a, u32 mul, unsigned int shift)
+ {
+-	u32 ah, al;
++	u32 ah = a >> 32, al = a;
+ 	u64 ret;
  
-+config GENERIC_VDSO_OVERFLOW_PROTECT
-+	bool
-+	help
-+	  Select to add multiplication overflow protection to the VDSO
-+	  time getter functions for the price of an extra conditional
-+	  in the hotpath.
-+
- endif
+-	al = a;
+-	ah = a >> 32;
+-
+ 	ret = mul_u32_u32(al, mul) >> shift;
+ 	if (ah)
+ 		ret += mul_u32_u32(ah, mul) << (32 - shift);
+-
+ 	return ret;
+ }
+ #endif /* mul_u64_u32_shr */
 -- 
 2.34.1
 
