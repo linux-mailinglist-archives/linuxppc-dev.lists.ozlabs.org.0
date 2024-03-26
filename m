@@ -1,124 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8194588B9A4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 06:03:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC1488BA0B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 06:57:03 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ax3EFaGT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EQs/23vb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V3d3q1sv2z3vXF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 16:03:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3fFm6ZGVz3dVH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 16:57:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ax3EFaGT;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EQs/23vb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3d353n2nz3bx0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 16:02:39 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1e0d82d441bso8634755ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Mar 2024 22:02:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711429358; x=1712034158; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=nIhrywFoGE/FB0l12vjAjrM2buYxUGncKgITpiq2JlY=;
-        b=ax3EFaGTVcGljMPjyZIpcQqMHs2VulxKMvv8yROiegm3q6vqNCyR2Wu0LQeaZbXFPX
-         w/YO7JinbU3vLz346TsglV/fLZ7UaBFK8hPrnJVhL0Xpj5Cvc8ANr+0k2m0OKNrNkaed
-         7aS1YGZvsQJ7me88fJs54m2xXElyRoTR3/XPu9KMyqBeyF7Sts6gH/iPrJlRHKL7DQ/z
-         jMAEP66flqKddwW0utN+yEoBR18ZZrW0/Q9msA8RDZnHVaacQo0JHCvy3kOO0uRgCnUL
-         Pr82P/syuCsxmfWCZ2oIoJts3PHevLfpftj1aoDMi3ReMpK40Sfr+encH86wQhd8DIZ7
-         XlWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711429358; x=1712034158;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nIhrywFoGE/FB0l12vjAjrM2buYxUGncKgITpiq2JlY=;
-        b=FNDzKFTm87Ei8nAfpx5uObqwmjqioJtPHtMJ9JhyVeSgpMgBQ9KWTaKkMpOoNg1joF
-         Jx0uJykD6Sh5a+PAQVzK5XPBuEvV6ObXv/P1BN9oX1r5HvXebVYstNO2yW5zAxA9zn1t
-         SMkrTzHKaFOdEdaE7VNMmvup1ccm2oL5jEduNVyVk3mZ5mIsWi9e/fGmlgOY57C0Tebx
-         LnlYQwpmKubnsWYc/I26oJ0tv3HxwSzV88EuS3yK1GIscpQTXNrQnJ0geZmDVzWJYsaW
-         bl+PxK5/2yMVbdXXqqMWw2JDxMaXVSDMCF4r7DBwY/5+wk8ajJMiYAaRi2E/LkwzPZZJ
-         IsMA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBpeIKlSU8UX85VUM6IUmQeJVOscmPEFwzJlwKkTGZBy3wDr0aISz5GGX8Z+fCHQ6PBkR8m+2YvW2oMptpYLjMldHhd9QREC44CQrE5w==
-X-Gm-Message-State: AOJu0YxWyZRq+Uqt2JodoChG4qEu6c5mS1D7GdPAZBrsfLcRb0JPI6Tp
-	RNTrFyuGZ0BHwdeoo52BKBKXpOrTJzodMoeYiX/riujQSK5MIc8q
-X-Google-Smtp-Source: AGHT+IEcTHB/02f9HaB1tS0cP2ZsRx971NBiGwEGqHnjokk6umDjAiHMd//taF/o4xULvRj25jCExA==
-X-Received: by 2002:a17:902:a586:b0:1e0:cd8a:581 with SMTP id az6-20020a170902a58600b001e0cd8a0581mr42211plb.23.1711429357721;
-        Mon, 25 Mar 2024 22:02:37 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j11-20020a170902690b00b001dd64048f78sm5700013plk.211.2024.03.25.22.02.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 22:02:36 -0700 (PDT)
-Message-ID: <4799424e-8dfc-4848-8c4f-affedaec9dfe@roeck-us.net>
-Date: Mon, 25 Mar 2024 22:02:33 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/14] drm: Suppress intentional warning backtraces in
- scaling unit tests
-Content-Language: en-US
-To: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-References: <20240325175248.1499046-1-linux@roeck-us.net>
- <20240325175248.1499046-6-linux@roeck-us.net>
- <0729b218-53f1-4139-b165-a324794a9abd@igalia.com>
- <e880828b-552e-488e-9f31-3989bec276ae@roeck-us.net>
- <7f6a223f-f432-4e1b-a67e-3816448224a1@igalia.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <7f6a223f-f432-4e1b-a67e-3816448224a1@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3fDC4HmQz3cxn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 16:55:39 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4V3fDB20Tkz4wnr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 16:55:38 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4V3fDB1tbqz4wnq; Tue, 26 Mar 2024 16:55:38 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EQs/23vb;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4V3fD96dTdz4wcK
+	for <linuxppc-dev@ozlabs.org>; Tue, 26 Mar 2024 16:55:37 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42Q1o13H025200;
+	Tue, 26 Mar 2024 05:54:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=JdXrYSzx/RXKSx/v2umg0QWpMvebtf4u6jKEEQdEagw=;
+ b=EQs/23vbipj+TW759+FJT10bN7S9t+7xzVO/t+xU8/xY+ijARXqOwPoG5BVhaLc4WZY/
+ P+Ft1mkU6mcB7E4ZJ5zqxfzPjCK5MDCGMPeFiakiMrrIeATW3tag8Ss0WPeEA3Znu25Y
+ JMfyNeW1IPede2GCbg6LjE55aDdyS8HgkITYAE6X+21sM/ioe+GLi9WiLYwB4Rq17ftA
+ IQEZkZdNZTLPCK5abaKK9PfFCpjszRMDKVoWwsqlNwOmXoMkv/I2p3oZZhy7+TqPhasp
+ 4Uwm8fNowH6gqMgroCP8PoBrVGFxqUqFZGd1hJ81VyOS0eE9qnu4F1Pyq2S8WRC+vY31 Cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3k3j8mu7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 05:54:34 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42Q5sXO6008351;
+	Tue, 26 Mar 2024 05:54:33 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3k3j8mu2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 05:54:33 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42Q4PDYk011328;
+	Tue, 26 Mar 2024 05:54:32 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x2bmkwg3g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Mar 2024 05:54:32 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42Q5sQ3R43581718
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Mar 2024 05:54:28 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C70B920049;
+	Tue, 26 Mar 2024 05:54:26 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C81EA20040;
+	Tue, 26 Mar 2024 05:54:17 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.19.10])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 26 Mar 2024 05:54:17 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v18 0/6] powerpc/crash: Kernel handling of CPU and memory hotplug
+Date: Tue, 26 Mar 2024 11:24:07 +0530
+Message-ID: <20240326055413.186534-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: BKL80nWfb78lPYXII8hnEIWytT1aeuOa
+X-Proofpoint-GUID: 0QJd9GAA2ycKCH2ntCh4RoKVHb8kkcca
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-26_02,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ bulkscore=0 adultscore=0 spamscore=0 phishscore=0 clxscore=1011
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403260037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,65 +110,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, linux-sh@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, Linux Kernel Functional Testing <lkft@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimme
- rmann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Mimi Zohar <zohar@linux.ibm.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Valentin Schneider <vschneid@redhat.com>, Baoquan He <bhe@redhat.com>, x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Dave Young <dyoung@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, Naveen N Rao <naveen@kernel.org>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Akhil Raj <lf32.dev@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/25/24 18:09, Maíra Canal wrote:
-> On 3/25/24 16:24, Guenter Roeck wrote:
->> Hi,
->>
->> On Mon, Mar 25, 2024 at 04:05:06PM -0300, Maíra Canal wrote:
->>> Hi Guenter,
->>>
->>> On 3/25/24 14:52, Guenter Roeck wrote:
->>>> The drm_test_rect_calc_hscale and drm_test_rect_calc_vscale unit tests
->>>> intentionally trigger warning backtraces by providing bad parameters to
->>>> the tested functions. What is tested is the return value, not the existence
->>>> of a warning backtrace. Suppress the backtraces to avoid clogging the
->>>> kernel log.
->>>>
->>>> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
->>>> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
->>>> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->>>> ---
->>>> - Rebased to v6.9-rc1
->>>> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
->>>>
->>>>    drivers/gpu/drm/tests/drm_rect_test.c | 6 ++++++
->>>>    1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/drivers/gpu/drm/tests/drm_rect_test.c b/drivers/gpu/drm/tests/drm_rect_test.c
->>>> index 76332cd2ead8..75614cb4deb5 100644
->>>> --- a/drivers/gpu/drm/tests/drm_rect_test.c
->>>> +++ b/drivers/gpu/drm/tests/drm_rect_test.c
->>>> @@ -406,22 +406,28 @@ KUNIT_ARRAY_PARAM(drm_rect_scale, drm_rect_scale_cases, drm_rect_scale_case_desc
->>>>    static void drm_test_rect_calc_hscale(struct kunit *test)
->>>>    {
->>>> +    DEFINE_SUPPRESSED_WARNING(drm_calc_scale);
->>>>        const struct drm_rect_scale_case *params = test->param_value;
->>>>        int scaling_factor;
->>>> +    START_SUPPRESSED_WARNING(drm_calc_scale);
->>>
->>> I'm not sure if it is not that obvious only to me, but it would be nice
->>> to have a comment here, remembering that we provide bad parameters in
->>> some test cases.
->>
->> Sure. Something like this ?
->>
->>          /*
->>           * drm_rect_calc_hscale() generates a warning backtrace whenever bad
->>           * parameters are passed to it. This affects all unit tests with an
->>           * error code in expected_scaling_factor.
->>           */
->>
-> 
-> Yeah, perfect. With that, feel free to add my
-> 
-> Acked-by: Maíra Canal <mcanal@igalia.com>
-> 
+Commit 247262756121 ("crash: add generic infrastructure for crash
+hotplug support") added a generic infrastructure that allows
+architectures to selectively update the kdump image component during CPU
+or memory add/remove events within the kernel itself.
 
-Thanks!
-Guenter
+This patch series adds crash hotplug handler for PowerPC and enable
+support to update the kdump image on CPU/Memory add/remove events.
+
+Among the 6 patches in this series, the first two patches make changes
+to the generic crash hotplug handler to assist PowerPC in adding support
+for this feature. The last four patches add support for this feature.
+
+The following section outlines the problem addressed by this patch
+series, along with the current solution, its shortcomings, and the
+proposed resolution.
+
+Problem:
+========
+Due to CPU/Memory hotplug or online/offline events the elfcorehdr
+(which describes the CPUs and memory of the crashed kernel) and FDT
+(Flattened Device Tree) of kdump image becomes outdated. Consequently,
+attempting dump collection with an outdated elfcorehdr or FDT can lead
+to failed or inaccurate dump collection.
+
+Going forward CPU hotplug or online/offline events are referred as
+CPU/Memory add/remove events.
+
+Existing solution and its shortcoming:
+======================================
+The current solution to address the above issue involves monitoring the
+CPU/memory add/remove events in userspace using udev rules and whenever
+there are changes in CPU and memory resources, the entire kdump image
+is loaded again. The kdump image includes kernel, initrd, elfcorehdr,
+FDT, purgatory. Given that only elfcorehdr and FDT get outdated due to
+CPU/Memory add/remove events, reloading the entire kdump image is
+inefficient. More importantly, kdump remains inactive for a substantial
+amount of time until the kdump reload completes.
+
+Proposed solution:
+==================
+Instead of initiating a full kdump image reload from userspace on
+CPU/Memory hotplug and online/offline events, the proposed solution aims
+to update only the necessary kdump image component within the kernel
+itself.
+
+Git tree for testing:
+=====================
+https://github.com/sourabhjains/linux/tree/kdump-in-kernel-crash-update-v18
+
+Above tree is rebased on top of powerpc/next branch.
+
+To realize this feature, the kdump udev rule must be updated. On RHEL,
+add the following two lines at the top of the
+"/usr/lib/udev/rules.d/98-kexec.rules" file.
+
+SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+SUBSYSTEM=="memory", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+
+With the above change to the kdump udev rule, kdump reload is avoided
+during CPU/Memory add/remove events if this feature is enabled in the
+kernel.
+
+Note: only kexec_file_load syscall will work. For kexec_load minor changes
+are required in kexec tool.
+
+Changelog:
+----------
+v18: [No functional changes]
+  - Update a comment in 2/6.
+  - Describe the clean-up done on x86 in patch description 2/6.
+  - Fix a minor typo in the patch description of 3/6.
+
+v17: [https://lore.kernel.org/all/20240226084118.16310-1-sourabhjain@linux.ibm.com/]
+  - Rebase the patch series on top linux-next tree and below patch series
+    https://lore.kernel.org/all/20240213113150.1148276-1-hbathini@linux.ibm.com/
+  - Split 0003 patch from v16 into two patches
+       1. Move get_crash_memory_ranges() along with other *_memory_ranges()
+          functions to ranges.c and make them public.
+       2. Make update_cpus_node function public and take this function
+          out of file_load_64.c
+  - Keep arch_crash_hotplug_support in crash.c instead of core_64.c [05/06]
+  - Use CONFIG_CRASH_MAX_MEMORY_RANGES to find extra elfcorehdr size [06/06]
+
+v16: [https://lore.kernel.org/all/20240217081452.164571-1-sourabhjain@linux.ibm.com/]
+  - Remove the unused #define `crash_hotplug_cpu_support`
+    and `crash_hotplug_memory_support` in `arch/x86/include/asm/kexec.h`.
+  - Document why two kexec flag bits are used in
+    `arch_crash_hotplug_memory_support` (x86).
+  - Use a switch case to handle different hotplug operations
+    in `arch_crash_handle_hotplug_event` for PowerPC.
+  - Fix a typo in 4/5.
+
+v15:
+  - Remove the patch that adds a new kexec flag for FDT update.
+  - Introduce a generic kexec flag bit to share hotplug support
+    intent between the kexec tool and the kernel for the kexec_load
+    syscall. (2/5)
+  - Introduce an architecture-specific handler to process the kexec
+    flag for crash hotplug support. (2/5)
+  - Rename the @update_elfcorehdr member of the struct kimage to
+    @hotplug_support. (2/5)
+  - Use a common function to advertise hotplug support for both CPU
+    and Memory. (2/5)
+
+v14:
+  - Fix build warnings by including necessary header files
+  - Rebase to v6.7-rc5
+
+v13:
+  - Fix a build warning, take ranges.c out of CONFIG_KEXEC_FILE
+  - Rebase to v6.7-rc4
+
+v12:
+  - A patch to add new kexec flags to support this feature on kexec_load
+    system call
+  - Change in the way this feature is advertise to userspace for both
+    kexec_load syscall
+  - Rebase to v6.6-rc7
+
+v11:
+  - Rebase to v6.4-rc6
+  - The patch that introduced CONFIG_CRASH_HOTPLUG for PowerPC has been
+    removed. The config is now part of common configuration:
+    https://lore.kernel.org/all/87ilbpflsk.fsf@mail.lhotse/
+
+v10:
+  - Drop the patch that adds fdt_index attribute to struct kimage_arch
+    Find the fdt segment index when needed.
+  - Added more details into commits messages.
+  - Rebased onto 6.3.0-rc5
+
+v9:
+  - Removed patch to prepare elfcorehdr crash notes for possible CPUs.
+    The patch is moved to generic patch series that introduces generic
+    infrastructure for in kernel crash update.
+  - Removed patch to pass the hotplug action type to the arch crash
+    hotplug handler function. The generic patch series has introduced
+    the hotplug action type in kimage struct.
+  - Add detail commit message for better understanding.
+
+v8:
+  - Restrict fdt_index initialization to machine_kexec_post_load
+    it work for both kexec_load and kexec_file_load.[3/8] Laurent Dufour
+
+  - Updated the logic to find the number of offline core. [6/8]
+
+  - Changed the logic to find the elfcore program header to accommodate
+    future memory ranges due memory hotplug events. [8/8]
+
+v7
+  - added a new config to configure this feature
+  - pass hotplug action type to arch specific handler
+
+v6
+  - Added crash memory hotplug support
+
+v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
+
+v4:
+  - Update the logic to find the additional space needed for hotadd CPUs
+    post kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash
+    hotplug support for kexec_file_load" patch to know more about the
+    change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of
+    https://lore.kernel.org/lkml/20220303162725.49640-1-eric.devolder@oracle.com/
+  - Fixed warning reported by checpatch script
+
+v2:
+  - Use generic hotplug handler introduced by
+    https://lore.kernel.org/lkml/20220209195706.51522-1-eric.devolder@oracle.com/
+    a significant change from v1.
+
+Cc: Akhil Raj <lf32.dev@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Laurent Dufour <laurent.dufour@fr.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: kexec@lists.infradead.org
+Cc: x86@kernel.org
+
+Sourabh Jain (6):
+  crash: forward memory_notify arg to arch crash hotplug handler
+  crash: add a new kexec flag for hotplug support
+  powerpc/kexec: move *_memory_ranges functions to ranges.c
+  PowerPC/kexec: make the update_cpus_node() function public
+  powerpc/crash: add crash CPU hotplug support
+  powerpc/crash: add crash memory hotplug support
+
+ arch/powerpc/Kconfig                    |   4 +
+ arch/powerpc/include/asm/kexec.h        |  15 ++
+ arch/powerpc/include/asm/kexec_ranges.h |  20 +-
+ arch/powerpc/kexec/Makefile             |   4 +-
+ arch/powerpc/kexec/core_64.c            |  91 +++++++
+ arch/powerpc/kexec/crash.c              | 196 +++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |   3 +-
+ arch/powerpc/kexec/file_load_64.c       | 314 +++---------------------
+ arch/powerpc/kexec/ranges.c             | 312 ++++++++++++++++++++++-
+ arch/x86/include/asm/kexec.h            |  13 +-
+ arch/x86/kernel/crash.c                 |  32 ++-
+ drivers/base/cpu.c                      |   2 +-
+ drivers/base/memory.c                   |   2 +-
+ include/linux/crash_core.h              |  15 +-
+ include/linux/kexec.h                   |  11 +-
+ include/uapi/linux/kexec.h              |   1 +
+ kernel/crash_core.c                     |  29 +--
+ kernel/kexec.c                          |   4 +-
+ kernel/kexec_file.c                     |   5 +
+ 19 files changed, 714 insertions(+), 359 deletions(-)
+
+-- 
+2.43.0
 
