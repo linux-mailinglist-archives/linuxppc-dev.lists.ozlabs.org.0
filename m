@@ -1,54 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C7388BB19
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 08:20:22 +0100 (CET)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a4TAbSFZ;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C5488BDF1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 10:36:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V3h5w2fJnz3d4H
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 18:20:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3l7K2mJYz3vbQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 20:36:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a4TAbSFZ;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3h5B6CmLz3cGM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 18:19:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1711437582;
-	bh=8AOT1glzJqyCf7lOrPMpn92SEwJeGYb4j0TXp1M/vgQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=a4TAbSFZ1Ctk9tMopXuvxY6ZnJLbG4+/xZ4IrkWUlPqygTMo29JcIRK/ndkrhQBSn
-	 itZd9ZcDWTe+uGTRNpODZUDp4y/PnYXDC1Y8n2HDBgaN8BYRui+mdP1xM4q6Hrv4UP
-	 Rh8LeolCR7odE6kIR4BYLSZXOxwvU2KZEGmYiAO57Q/3udl4T4QNYTFVF9y21BiwgI
-	 kpvdVBQohudighrbWUqgoFwOnYfHvOnki1ApW3Y/1e/t+byXRReCumBlXJ3n5DIFrX
-	 RRp+r49sXwgGpUWd02oNKwDaAJ/0tTCw39ysIkE7dnG3WRJD9rVqSrTKwaRoDEvGCx
-	 vBVM2+OGhR4kA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4V3h5B3y4kz4wb2;
-	Tue, 26 Mar 2024 18:19:41 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, paulmck
- <paulmck@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: Appropriate liburcu cache line size for Power
-In-Reply-To: <19c3ea76-9e05-4552-8b93-6c42df105747@efficios.com>
-References: <19c3ea76-9e05-4552-8b93-6c42df105747@efficios.com>
-Date: Tue, 26 Mar 2024 18:19:38 +1100
-Message-ID: <87ttktiho5.fsf@mail.lhotse>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=yangtiezhu@loongson.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 26 Mar 2024 20:36:22 AEDT
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3l6t4K24z3cZK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 20:36:22 +1100 (AEDT)
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8CxruvNlgJmAlIeAA--.5545S3;
+	Tue, 26 Mar 2024 17:35:09 +0800 (CST)
+Received: from [10.130.0.149] (unknown [113.200.148.30])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8Bx8OTIlgJmZL1oAA--.10454S3;
+	Tue, 26 Mar 2024 17:35:04 +0800 (CST)
+Subject: Re: [PATCH 3/3] tools/perf/arch/powerc: Add get_arch_regnum for
+ powerpc
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+ namhyung@kernel.org
+References: <20240309072513.9418-1-atrajeev@linux.vnet.ibm.com>
+ <20240309072513.9418-4-atrajeev@linux.vnet.ibm.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <4072f03b-a8a2-5611-901e-bc16e97c3fe6@loongson.cn>
+Date: Tue, 26 Mar 2024 17:35:04 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20240309072513.9418-4-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: AQAAf8Bx8OTIlgJmZL1oAA--.10454S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7JrW8Cr1UWF1ruFy7ArW7KFX_yoW3CFbE9a
+	97Jr97JrWrXFnrKFy7GrWrZ34Fka13GFZxXF48Xa47Grn5ZFZI9F45Xrn3Cr10qr18Jrs2
+	kr1ktrn5Ww129osvyTuYvTs0mTUanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbqAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUcApnDU
+	UUU
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,50 +67,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, disgoel@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mathieu Desnoyers <mathieu.desnoyers@efficios.com> writes:
-> Hi,
+Hi Athira and Namhyung,
 
-Hi Mathieu,
-
-> In the powerpc architecture support within the liburcu project [1]
-> we have a cache line size defined as 256 bytes with the following
-> comment:
+On 03/09/2024 03:25 PM, Athira Rajeev wrote:
+> The function get_dwarf_regnum() returns a DWARF register number
+> from a register name string. This calls arch specific function
+> get_arch_regnum to return register number for corresponding arch.
+> Add mappings for register name to register number in powerpc code:
+> arch/powerpc/util/dwarf-regs.c
 >
-> /* Include size of POWER5+ L3 cache lines: 256 bytes */
-> #define CAA_CACHE_LINE_SIZE     256
->
-> I recently received a pull request on github [2] asking to
-> change this to 128 bytes. All the material provided supports
-> that the cache line sizes on powerpc are 128 bytes or less (even
-> L3 on POWER7, POWER8, and POWER9) [3].
->
-> I wonder where the 256 bytes L3 cache line size for POWER5+
-> we have in liburcu comes from, and I wonder if it's the right choice
-> for a cache line size on all powerpc, considering that the Linux
-> kernel cache line size appear to use 128 bytes on recent Power
-> architectures. I recall some benchmark experiments Paul and I did
-> on a 64-core 1.9GHz POWER5+ machine that benefited from a 256 bytes
-> cache line size, and I suppose this is why we came up with this
-> value, but I don't have the detailed specs of that machine.
->
-> Any feedback on this matter would be appreciated.
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/arch/powerpc/util/dwarf-regs.c | 29 +++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
 
-The ISA doesn't specify the cache line size, other than it is smaller
-than a page.
+I found commit 3eee606757ad ("perf dwarf-regs: Add get_dwarf_regnum()")
+for x86, would you be able to share how to test these changes? What is
+the difference with and without the patches?
 
-In practice all the 64-bit IBM server CPUs I'm aware of have used 128
-bytes. There are some 64-bit CPUs that use 64 bytes, eg. pasemi PA6T and
-Freescale e6500.
+Thanks,
+Tiezhu
 
-It is possible to discover at runtime via AUXV headers. But that's no
-use if you want a compile-time constant.
-
-I'm happy to run some benchmarks if you can point me at what to run. I
-had a poke around the repository and found short_bench, but it seemed to
-run for a very long time.
-
-cheers
