@@ -1,128 +1,123 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578FF88CFD5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 22:15:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021F288BEC7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 11:07:47 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=22v+cIq7;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zoTbS1Em;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V42dz0ldVz3cPm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 08:15:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3lq45VL1z3vcV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 21:07:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=22v+cIq7;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zoTbS1Em;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7e88::72c; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=vignesh.balasubrmanian@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072c.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e88::72c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2418::700; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=vignesh.balasubrmanian@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::700])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3lf14ZV0z3c9y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 20:59:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3lpJ6s4Qz3cy4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 21:07:02 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wd9HWkGv25FlHx4iU5VsnYpq0YehiyqO4W9mOkJiIgOa27Ywdb0f3ZP2StH+ZYbr88N40zf+EwP42a2pLEIU5QKGSLZ9K1+cmwHdSzQ7j7rAH8+Y+/qj/Pl4fZ4RexdL3IKYIZ42enGJCvvzyil29E8NyH11qZ7HDYajABi8Wq6z11t8sxDNX6ncvgVJ+nkOmOInFdQaU2ZYiSoQYEBS3FKVnAPJ9PB07gNRTFW1xRujCPaDp8E4jQFXCD5RbQOgBZT/vizWJpKO6di/1DYTRmaJl0dAUCY+rHYr6Y28YL47KjLh5qN6QaXP3I21MCCXLId596x0FpsHd4lmUBPT3A==
+ b=PlHJlrfEMvuWzHDlOrmpMjiG80/dBj2Ht8Xym6E2Ld2yAMnzCpGUivo0skYFrxKIVajcPTkfd34gNlN3SjwupNXbviIn9wKvl3qgzs4+LL6z0UUZS7IuY8A3muZj7F3pHOpPl1AqTJnWE8k4emYrL9zBxhTS5R7JWAIah5vPccC5KEv6MonZdZMtlE/URwYyHsE38oLMVvwcusZUUso69sFos9VnnhfiHGF6aRajGE+HVkksGax0E26xqYwBi9YGFTZD+n9MhI8sgDCmekvcL8l4tGsMvjHVBSREh4tFuWEdwb9+pb98E/WqAAZaabMWSJe2yKrG1934qokoSRIEow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tR01Q869QWhv2sxVq6NhyDhx2q4aHlNyy0Wa0FZ7dTM=;
- b=bsZ9+bnomHaUhpKpxO8owReazsQtbu1hI1mMqT+UNvnFizJ7yJKgw2oL4ddzCoNxlJ4nVtQSs3o2JxyFitaykF2eAoVH/+wwuclAhF/1FOBa/NBHNiFhjgnup5oYAZW1YIu0F+O141Cp1OHNFc2RCFX0uDL2qDLgvKWGwed39NJ593OOwMp0PgX/hDm2ZLV/DI/UKZvUuguCY77GLVYeq0LXaGUQtS4C/0KxxDJNu/DELHd8HP5Ihyt2/WTTBBpD8O6tIwnj+wQODHjD62MNB2nlRMUvpD684mXOwbcib2XIBZSfQboBJUZe9akc2kgnGzXHUe73lBdJCCRWOoyHUA==
+ bh=kCZcqiQX/KGmjB7Thv3ntO08cG61XMpTYWhL49fL5hY=;
+ b=iBY7dc+FUynsnHTVl+rLa6LygvqI7+ObJ0VMcp72+IV9ar2FsUUbEMHWRZeKwCkznATcOLao2Prk3/mZ8knncF/h1dAtJI1pVXwRgSF9YXF3yEYLWp1YIYE9E6AMezkvlnOhYhvFgYtW5MaOb6vJGjz3XgESZYPxYE01qNLxXvGtg84sVmS6d60Q8ryS7ZwwcceGW6De4FSZEBXYV6J5YoWd+I5lrwckAEGiVntuN9JdHLRQEWX8T8HYdnjWL4MPhYlF+uKZaSS5blk3obiOKt6oy9Rj45JiGMuXhDBr+2k91vwOwu7bGyPr2GrsmG0329bNDg9PkPUA87sEfWeByg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tR01Q869QWhv2sxVq6NhyDhx2q4aHlNyy0Wa0FZ7dTM=;
- b=22v+cIq7aB/QHfLSO9U7uxKt1LhOHkSfRu0S/xzl7OMfZ7AE5elG3e0Z/5pxj4y5/92vAdS3OxUEQpTqF1gXBq7oYaomfcSgurhKXVTDGN/4evb8exOtOlIdQiGd1cjb3em6roCdyqSCf+OW/+7Ro6GS9kVyR6GZxCi0L8UYODM=
+ bh=kCZcqiQX/KGmjB7Thv3ntO08cG61XMpTYWhL49fL5hY=;
+ b=zoTbS1EmCZWFpacyEWlWDnoAVBokGX22BaFND4t8am+ZbA9YkmQkfW4OV1qc8XLbepe+088vA1FJbts3iDUdsgaKppYCR5d/58obqgiJ/PyiTI3TqASIdmZkqj1RTLZ+OxVl3eZEPVDzhyHN9QfjH+b0sH1a+c1DK5jvtIaGrpc=
 Received: from SJ1PR12MB6124.namprd12.prod.outlook.com (2603:10b6:a03:459::15)
- by SJ0PR12MB5611.namprd12.prod.outlook.com (2603:10b6:a03:426::17) with
+ by IA1PR12MB8555.namprd12.prod.outlook.com (2603:10b6:208:44f::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Tue, 26 Mar
- 2024 09:59:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Tue, 26 Mar
+ 2024 10:06:41 +0000
 Received: from SJ1PR12MB6124.namprd12.prod.outlook.com
  ([fe80::c2c5:a349:ed66:b28]) by SJ1PR12MB6124.namprd12.prod.outlook.com
  ([fe80::c2c5:a349:ed66:b28%7]) with mapi id 15.20.7409.031; Tue, 26 Mar 2024
- 09:59:27 +0000
-Content-Type: multipart/alternative;
- boundary="------------ZD84mwGO1vFg4iJmEJsFMFZN"
-Message-ID: <1b030dfa-e42f-4e45-8af6-e35bf4f1c393@amd.com>
-Date: Tue, 26 Mar 2024 15:29:14 +0530
+ 10:06:41 +0000
+Message-ID: <1a2b604e-6e1b-4da9-ac2f-e2f2c80054ce@amd.com>
+Date: Tue, 26 Mar 2024 15:36:31 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/1] x86/elf: Add a new .note section containing Xfeatures
  information to x86 core files
-To: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
-References: <20240314112359.50713-1-vigbalas@amd.com>
- <20240314112359.50713-2-vigbalas@amd.com>
- <dd54d6de-0bcc-4b2e-a420-b1a429b06246@intel.com>
- <20240314160824.GDZfMg-J1VOyjxIMiV@fat_crate.local>
- <6ce6aa20-25d2-4784-823f-2a18f592e002@intel.com>
- <20240314162954.GAZfMmAnYQoRjRbRzc@fat_crate.local>
- <24f71d52-0891-4cfc-8dec-9f13ed618eee@intel.com>
 Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>,
+ "Balasubrmanian, Vignesh" <Vignesh.Balasubrmanian@amd.com>
+References: <20240314112359.50713-1-vigbalas@amd.com>
+ <20240314112359.50713-2-vigbalas@amd.com> <202403140850.5659C0F4@keescook>
 From: "Balasubrmanian, Vignesh" <vigbalas@amd.com>
-In-Reply-To: <24f71d52-0891-4cfc-8dec-9f13ed618eee@intel.com>
-X-ClientProxiedBy: PN3PR01CA0093.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:9b::21) To SJ1PR12MB6124.namprd12.prod.outlook.com
+In-Reply-To: <202403140850.5659C0F4@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0245.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:21a::10) To SJ1PR12MB6124.namprd12.prod.outlook.com
  (2603:10b6:a03:459::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR12MB6124:EE_|SJ0PR12MB5611:EE_
+X-MS-TrafficTypeDiagnostic: SJ1PR12MB6124:EE_|IA1PR12MB8555:EE_
 X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	RfVAie3KJetoUtiIBCVuHwXDzWRIqB3yNHhJzOdrXrYzYwIhBnLygMcjIJdZJaOBXPhUWRNKPEFlUr1YFYCUSHyoDaiPvuSEWwrICugdn3oI/gZdmRsKDVpIcN0gY/D18FJIhVJrNMdB0c4O9MUYxt6eLCZxrhu3XSWssGphqKON6Dm3VXDvgHtvmF3PLjV7s9boJS76DcMzAHNG2H3n+pomKm4cj9sFBE9E/VMwED6E7kKPKOdPyaSyFUHMlkiM6+j0WrON3RQTSAe4COHr0YPqbBV3C0ni6rt9ms/hd+wu/UiF6q0pO6vOL7gumxqqwmDuIyJNLwJkHHAhpA8Pc4YFreeTY397+16oN+C81MSdnE7JeIvUR7C5iFJXzI7ttCkbAVwztmoVKrdnsogpWMCCoZcUxWfoSIUfwUPy3S6GLvVyJdOzULnqNlO08ZkPWClNhC3zasFgktjgp/DdAbXJk4hgURnmiESncR/rN0tgBIaPMAb/GJfTwRpKmsRXbjS8pejXx6TI+Lp9lzbddXl8fL6WdeY9ObyIcH5yfj7dC0BwlW3pGfsD49j8JXIJn1eroCLwP0tLUNErqrABk86Yp+r/Jp9ZZJ8KI1icnHxwnYyU9izBVXANm+IrYGNhFZYTypYWyGGPTdXOEtpy9VOlzZGp6WS41oP/rOTJm64=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6124.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(366007);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 	iZJumW9HgAFn9PMKdUDpo5la0RLXOjBVx6tsFP43BBsgUHkQr6KGrdvO3svbamTvTisdv0A3zH9d9di3vw2qFGGQRQWp92yaEIcK2MyuABNIanc/DZ7chVBxAjgyg4SRFcltOwPWVxbqDo3bWCa5bkoDH85jHF5cYY2LVv0P+Fzd8GZ1hG912F6Y27dGw5kXxLyN+a2ZWN99CwNIdXnsPlBGAS1QvcZslCTKw93qUna2kGAkvLGpAYQtErT0j2CaOIoEXpTUgQuFrYCq+V0dCU8fNQfLTrmU7oGqmZIkygEZaHSegsvvrLQ9LOWm/HjpGizCnhdYZgp9pZwiHr66PCdbPX3l6H9NpYtNlRslIm8RoPmfRY6B+ekEtdQp/MlWRUDnT0U8OxYdRgqrJ8/CLrpTvpGsN1QtrnnXx6s/XIr98XsLnqkfsd27hkfNjfxNi6EoV4ABjWs+prJfX1QVduxFOLABJCg2avE2tlJX1UGN/Tyx9JC2YHiY7QbBdq+5FKJRGgfK53M6mkWcblgYd0mDg6d23gGAkUlHU2U7VQ89/Gn/c5OAJNGBuNvZm0QZbYcAUm4KgCCeIihHygztUDD2H3zhvT6VljsRKWEnwRFz1V7auxQKBEbKBARFep88gJ/FjaS+1kbqUthaM+crjKO5kczHkgrdiH7kzQU50EA=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6124.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Ymt2LzlFVG4vZDlOQkNsU2hDT0txcXU0OGZNT3hIWnVsK3VOY2VXc2w3Zlgz?=
- =?utf-8?B?QnRtVUNOa0x2VmppdUp1VDVVNi9PNnp4cUF0YW90NjIvaW41Z1lQbXZlZ25D?=
- =?utf-8?B?R2J2T1RBNGl3TDg3endZZjgyR0krVEdXNGpIdkhSQWdlaHBzYmZpZDdkYkhN?=
- =?utf-8?B?aENnN3dlRmdCbkNmSkxNVnV3KzVZMTVRSGNjckpjVXNxZGZzOVFDTm5VblJX?=
- =?utf-8?B?YmliSlhNZU5tQWhXZVFmUTFYdVRqN0pJRm5ZbDZTNmFaTExXZEh1M20xKy9F?=
- =?utf-8?B?NUhrdFBNRzhrdzlBUGd2eEg2dHlyS1RlZXFSSXNrcXIyRFlHa045cnZlUGlO?=
- =?utf-8?B?NXlmQ3ZFRmNOTUpQNS9kMUNlNVpMak5wek15bHB1ajQvSU5UYWZJRVNiOHo4?=
- =?utf-8?B?UDE0bEVkeWlsZDlWaGtwTFU1dWFVdFpEa0ozQ2xmb3liTkFPd0RueC9xOWQ0?=
- =?utf-8?B?STdBZG53RTBMcndMeWV4QU9aNHl4c0Z1a2hNV0RPTGdPcUkwdjQ3MkxESWZ0?=
- =?utf-8?B?VXlUNTdCeHNPZWM3bTZNTHZsM1UrWk1YL1dHc2tBalJvbmxWT0VWOTJSWXRQ?=
- =?utf-8?B?K0d3SW5zekR3YkFxVDJEODRjaU9KNkk3dUhMS0Q2Z2owazNhZnBld3hsb2VP?=
- =?utf-8?B?Z1laTWdJYng3Zks4N3d2V0kxcEdRZlROUFRTWmRGdEFIKzRhbll2UVZRdmwz?=
- =?utf-8?B?UUx6NVJQSjUzUStELzR3N2RIUk5lUElWQlAydFg5WVdYSms0eTBNTzZRNHND?=
- =?utf-8?B?MEtRY0R2VTk3RXZXcWlhRkVNOTZOS2ZPRUhZZWs0WWFrZmNmRFI4Z1JpN3lq?=
- =?utf-8?B?UVNua01IM09Md0JlMUtteHBWMk5ERFJUa2ViaFprTmp4WTljNG9FVnRidVBa?=
- =?utf-8?B?ZWRQMHpmY0krSVRYOU9BNHYvQnY5TEFmSXdCWVJ5ME1NTjBXS3FjTFV1a0ZC?=
- =?utf-8?B?Q2llTTJNWXE4K3dmNTBGVm9SYitQNkdvT09QNXRZZnR5bjRSbHRHSThnUWY4?=
- =?utf-8?B?Y3ZvVitlM29KSHdaeWREajhaUUpWcHJYR2hWeTBKYkFsTnZJMWlrRS81OEQ1?=
- =?utf-8?B?enJ3ck5JOGRNRVYxdkYwZ21RYU5HMXIyellpSU5kbHhMTmVmZ3dBMmxCUHZB?=
- =?utf-8?B?d3JQS2NYRzdWUy9iMFZrZm9TQU1jZTdtUmJXQVB1SHNQb09xVVFVZEEvSCt1?=
- =?utf-8?B?N0pQYnNqRFUxL2tJSFRIa0x6TTY0L09ZWThwdU5KZDhMbkloWVptK1Y1ODJD?=
- =?utf-8?B?RExsMjZTS0hwYXZ5S0tISElmY0RzOGFCVlNXVWMrbXd1MEFWYXRONTh3Ujcw?=
- =?utf-8?B?RU9lcTN0YlF6dnRvN0czNUExNnpHTFNrbHQyWEVGZVhUSVVCTFVvcXlCZEMw?=
- =?utf-8?B?aHRJLzlEWU1nU01tRVM2VWx6ZkhqdHhSMGUrM1FGL0JoWHlLM3A2c3dpYUYr?=
- =?utf-8?B?THNSb3NyMHBGcHoyL3pZYmYwc2FvWnZwajBrcVE1cGxlWHlOd1lPcHpUSktq?=
- =?utf-8?B?djJ2REhBWnl5V1RKd283NUZaMDRSS1dlUmh0UXJYeURjazBueGt4VVF1TXRw?=
- =?utf-8?B?TndRN1RXVjdnUytQUlZKNGN2bTgzZ1UrZG51VWVXVUF2OUJxN0o1Sk9ucWEy?=
- =?utf-8?B?SjR4Y0Zwd0pDUXRPakpQeGdGa0tOUU5BSENSNUlmMHBycVN1dUwwblpmMjNn?=
- =?utf-8?B?am5QOUo4bnRzcVpNSWZZU2VNa3lWQlR5S0IxaEFSS2J2NG1PTkp5VlZaU2ZD?=
- =?utf-8?B?ZCs5bnlHK0RqUHZRVmJ3V29jQTR4SUp3NkJHWmVtZUpJVnp2UDJGSmlDbTJS?=
- =?utf-8?B?dHE4TXl3dk40TnByNU9KR3IxaGpOZlZOcXdsVE9ZVFBDeExMVCt2c2pjdVlI?=
- =?utf-8?B?dkZqeU5OVlpIQXZycDJBck1Eak5ZUjdYTklYSzBmaGlJRWc1TU14dDFtclBW?=
- =?utf-8?B?ZllnNlBNOTZ6NzVySEhIZTFUWVpxbHpWR3RpQ1doaDN2NUFLMzlCWjJwenU5?=
- =?utf-8?B?Zm0xMk1ka0dmWjNoQWRZQm81RWVsRkp0K1g5cDBuaUdYWE5jUG5lR2xNcWNq?=
- =?utf-8?B?RnJGQjFzVmMvWVVsY3ppcVVhYU0zdzdtQ2tJSHMwWWRzdHBLYTNjODdzUFE3?=
- =?utf-8?Q?FQjDIC8X9sbwk+3MNNjpLSgEH?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?amlUNjFXNzJ3b1JHbk0ya1NSNjVHRVROR2FNc0pyT1c5QVh0Ky82clhLc1lQ?=
+ =?utf-8?B?d1Q1Z05ITHlyQVhMVFJoUWNxdHlxUDluYk8vU1htd0g0TE41WkdFWHpTV3Bl?=
+ =?utf-8?B?bURZclB0b3MvbWl0bmQ4cldPZ2Q4RDZUc3BQa2IyaHVTUXh3L2owbVJPTXN4?=
+ =?utf-8?B?ZVlkaHZ3cUV3T1kvTjNaRUlRVExSazNiS09wZFBnWHlETGw3OVJCRUd3ak82?=
+ =?utf-8?B?U0NsVFRNdDVEczJVeGY1b21xeEhxVDdUZHVoMjBrcGtrMkZSbEo5TU5RaVBR?=
+ =?utf-8?B?bTNqUThQVVpvMkxkcHBYQ21nV2RNOXZqVUNuaU5JaUFiZTBvYzhnSElkT1lN?=
+ =?utf-8?B?dFlpRU5sZUlJTE1BSGtxbWs4ZjhldU5MSzhNVWMzNEJMaFdxZW9lc3kxZWJD?=
+ =?utf-8?B?aG84UzZ3ZVJpMzEyNEU3Sm5wT0xwQktaSTZhdHVuTEdEZzJMcXEvSkpnbHR2?=
+ =?utf-8?B?Q2M1cE03T0JFSHNYRVFweDB3em5KWXIrK0tVT0JSK0ZLaXg4QnlpREhubzM0?=
+ =?utf-8?B?SVhSVUZKODR3dC9OWi9vMG5sL2JBNlVDSFlXUnJaUGk2bUpWRmRnMFJpeFZG?=
+ =?utf-8?B?R2JHQ3RmaVVGSlZlUWNSdGwwVUM2ZUtOWHVGcytLWWxBdnZUOElvN2g1dUZR?=
+ =?utf-8?B?L1ZuWm1kYnlieUljSmJpdGtiWEdrWkx0VlFtci9MWUh4NkxWL0lwdjhDY2ZY?=
+ =?utf-8?B?UTk0TTB2ekxhQ1FNamx4Vm5MM0VQV3hwUGJQc0pZL3Y2N3lqeitIbFRRem5F?=
+ =?utf-8?B?dmdNUkF3WElZaGVjUHc5b2kxT2FYU0ZzbE05U2lFUjVzUG5IOHd1dUVHcklB?=
+ =?utf-8?B?WkIyZDI0K1g2SlJhUHBjK3o1QmN5UUxtWHdrdWdwMk1vb2Z1cUxHQXE5OHVX?=
+ =?utf-8?B?S0F2VnREZzRyS2ZaWFhEUGN5RlE3a3NRRGtUVW5BNi9FZzBZYTFuVDhMUFlF?=
+ =?utf-8?B?anJ0bzQ5ZFgyN2tjTFpsRXhhVGROaUpVdkd1dnVzMEw1dE9ZUC9CblhPZ01y?=
+ =?utf-8?B?d3ZIZnpiU3BTNm1FNFZrcGtmMGpFYno4R0M2R1d0QkVGM3NVTVN2N1haUXhj?=
+ =?utf-8?B?ekYvWTVLUjEyZzNYclcyRjFnbjAwanZLbWtrZTJaMHRlWjQ0LzV1eFd1aVh2?=
+ =?utf-8?B?dm9WQWs3dFMzYlVRTjVUTTZ6YjNUL0ViMnRFR3FlRERvRGdDa0FjQ0Zybktx?=
+ =?utf-8?B?SndOKzNWTytKY0h4WVp6QkIzRk5GUW5YalRlQ0Q3Ymk1eVk3bDd1MmdPc3Y0?=
+ =?utf-8?B?MG9XZGpGQ3R1UUpKbXhHQnRwMFdnVlJkeW9rTFRIK2QvNkhJeHVSN3F1ai9H?=
+ =?utf-8?B?QkdhbGNwY3o1S3FHT0x6aVE0azNiV1RTYTBxaHIyVkxOQTRnRXZtT05IWXdq?=
+ =?utf-8?B?Z3FMbjFCVUpmQ2xKWmhndE9JMVU2VkNwVHpBMVBnK3VQUEJjenNyTWx6Tm5H?=
+ =?utf-8?B?TmxvUnJEakJ6Umw1em9CS1UwYUZnWFlpSEFtWGV0eUg4ZnJVSDVvUjRmZnQ5?=
+ =?utf-8?B?c1dES05aeExxTjJrRjYvUVFjem94RDJ0TDJybzdTZ2g0RnllZFFzU0RNQXU0?=
+ =?utf-8?B?ZjVJbWRXRFk5U1Yyb0tNblMxQ1JqWXJ2REtaZnFaVXBUVnNHejl0VjdZZGRZ?=
+ =?utf-8?B?UDJWeHgrVUJNeGwxV0NaMTIvbnNLTU8zVVFPTnM2dXYrcEZLSHRoNThjVXdn?=
+ =?utf-8?B?RmFEd2JDeTc5V3VwbE50S2kxekgzK3BoMUJQRGowN28vRW1HK0tGb1M3eFJI?=
+ =?utf-8?B?NzREZEpHMnJuT1h4VjFYYVlDQ1Q5d1BXM1NTZy9ZY3RaL3oyVjc0ZXJJQVBF?=
+ =?utf-8?B?ZFR3TzJHTEdHZUxzd1ZPSXJBcFRFVDdhT0NUcTBmaXVKc3UvTHhJWVZLQStD?=
+ =?utf-8?B?MWVBWFA0U0dQTEw5Mi9YeXpJTVJiN2p5eFJCcHJ6QmFjdEFNTlhhTndrNnc5?=
+ =?utf-8?B?SWNaSi9DcUVCUUFqOFN3dVFmL1Q0aTFRR3pkd2JPZ21qSDBxbTRoRDBRTlQ5?=
+ =?utf-8?B?eGtDd0J6Q3VwZldzSlV0VkNYMTZraUF5Sk5kZU5OcVBSa0wyTE1NSzN0MVEy?=
+ =?utf-8?B?d3h3L2R2dENkWXkwc3k5MTNPVFZkaXZnSlJZM1pCMGpXTTRheXNsYTNFOTNV?=
+ =?utf-8?Q?PlXID0VRltIjHWIdRgRzUWh2n?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e081a1f1-8c68-41b7-875e-08dc4d7b6beb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88c1d0fd-4728-45ce-2f7f-08dc4d7c6ea0
 X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6124.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 09:59:27.0129
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 10:06:41.0119
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +qyZ92WKYQmFEahytUz3WJNKxJPn9uNNQwrCnG90QR07R0QfqP0/h9LretfBTbpILNVfkMYSUf+bfrn0GVYz5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5611
-X-Mailman-Approved-At: Wed, 27 Mar 2024 08:15:14 +1100
+X-MS-Exchange-CrossTenant-UserPrincipalName: wgiD5X4SumZXyZv/PAUOXuuBwqnrLhGgQ/B8J4NVt7TzRBQA+Rc4JVRm/4LhcnclEB+3QSPVJ2nlXmkz18DTIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8555
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,162 +129,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "felix.willgerodt@intel.com" <felix.willgerodt@intel.com>, "matz@suse.de" <matz@suse.de>, "George, Jini Susan" <JiniSusan.George@amd.com>, "keescook@chromium.org" <keescook@chromium.org>, "jhb@freebsd.org" <jhb@freebsd.org>, "binutils@sourceware.org" <binutils@sourceware.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "linux-toolchains@vger.kernel.org" <linux-toolchains@vger.kernel.org>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Balasubrmanian, Vignesh" <Vignesh.Balasubrmanian@amd.com>, "ebiederm@xmission.com" <ebiederm@xmission.com>
+Cc: "matz@suse.de" <matz@suse.de>, "felix.willgerodt@intel.com" <felix.willgerodt@intel.com>, "jhb@freebsd.org" <jhb@freebsd.org>, "binutils@sourceware.org" <binutils@sourceware.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Petkov, Borislav" <Borislav.Petkov@amd.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "linux-toolchains@vger.kernel.org" <linux-toolchains@vger.kernel.org>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "George, Jini Susan" <JiniSusan.George@amd.com>, "ebiederm@xmission.com" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---------------ZD84mwGO1vFg4iJmEJsFMFZN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+> Otherwise looks reasonable, though I see Dave has feedback to address
+> too. :)
+>
+> Thanks for working on this!
+>
+> -Kees
+Thank you for the review.
+I will address all this on next version.
 
-On 3/14/2024 10:09 PM, Dave Hansen wrote:
-> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->
->
-> On 3/14/24 09:29, Borislav Petkov wrote:
->>> That argument breaks down a bit on the flags though:
->>>
->>>       xc.xfeat_flags = xstate_flags[i];
->>>
->>> Because it comes _directly_ from CPUID with zero filtering:
->>>
->>>       cpuid_count(XSTATE_CPUID, i, &eax, &ebx, &ecx, &edx);
->>>       ...
->>>       xstate_flags[i] = ecx;
->>>
->>> So this layout is quite dependent on what's in x86's CPUID.
->> Yeah, no, this should not be copying CPUID flags - those flags should be
->> *translated* to independently defined flags which describe those
->> buffers.
-> Ditto for:
->
->          xc.xfeat_type = i;
->
-> Right now, that's bound to CPUID and XSAVE.  "feat_type==10" can only
-> ever be PKRU and that's derived from the XSAVE architecture.
->
-> If you want this to be extensible to things outside of the XSAVE
-> architecture, it needs to be something actually extensible and not
-> entangled with XSAVE.
->
-> In other words "xc.xfeat_type" can enumerate XSAVE state components
-> being in the dump, but it should not be limited to XSAVE.  Just as an
-> example:
->
-> enum feat_type {
->          FEATURE_XSAVE_PKRU,
->          FEATURE_XSAVE__YMM,
->          FEATURE_XSAVE_BNDREGS,
->          FEATURE_XSAVE_BNDCSR,
->          ...
->          RANDOM_STATE_NOT_XSAVE
-> };
->
-> See how feat_type==1 is PKRU and *NOT* feat_type==10?  That opens the
-> door to RANDOM_STATE_NOT_XSAVE or anything else you want.  This would be
-> _actually_ extensible.
-
-
-Thanks for the review.
-I will add new enum, instead of using "enum xfeature".
-Currently we are retaining the flags field. The value will be set to 
-zero at this point, and the field will be reserved for future use.
-GDB / LLDB would not require this field at this point. Do let us know if 
-this is not OK.
-
--thanks,
+thanks,
 vigneshbalu.
 
---------------ZD84mwGO1vFg4iJmEJsFMFZN
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 3/14/2024 10:09 PM, Dave Hansen
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:24f71d52-0891-4cfc-8dec-9f13ed618eee@intel.com">
-      <pre class="moz-quote-pre" wrap="">Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
-
-
-On 3/14/24 09:29, Borislav Petkov wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">That argument breaks down a bit on the flags though:
-
-     xc.xfeat_flags = xstate_flags[i];
-
-Because it comes _directly_ from CPUID with zero filtering:
-
-     cpuid_count(XSTATE_CPUID, i, &amp;eax, &amp;ebx, &amp;ecx, &amp;edx);
-     ...
-     xstate_flags[i] = ecx;
-
-So this layout is quite dependent on what's in x86's CPUID.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">Yeah, no, this should not be copying CPUID flags - those flags should be
-*translated* to independently defined flags which describe those
-buffers.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Ditto for:
-
-        xc.xfeat_type = i;
-
-Right now, that's bound to CPUID and XSAVE.  &quot;feat_type==10&quot; can only
-ever be PKRU and that's derived from the XSAVE architecture.
-
-If you want this to be extensible to things outside of the XSAVE
-architecture, it needs to be something actually extensible and not
-entangled with XSAVE.
-
-In other words &quot;xc.xfeat_type&quot; can enumerate XSAVE state components
-being in the dump, but it should not be limited to XSAVE.  Just as an
-example:
-
-enum feat_type {
-        FEATURE_XSAVE_PKRU,
-        FEATURE_XSAVE__YMM,
-        FEATURE_XSAVE_BNDREGS,
-        FEATURE_XSAVE_BNDCSR,
-        ...
-        RANDOM_STATE_NOT_XSAVE
-};
-
-See how feat_type==1 is PKRU and *NOT* feat_type==10?  That opens the
-door to RANDOM_STATE_NOT_XSAVE or anything else you want.  This would be
-_actually_ extensible.</pre>
-    </blockquote>
-    <p><br>
-    </p>
-    <p>Thanks for the review.<br>
-      <span><span class="ui-provider a b c d e f g h i j k l m n o p q r s t u v w x y z ab ac ae af ag ah ai aj ak" dir="ltr">I will add new enum, instead of using &quot;enum
-          xfeature&quot;. <br>
-        </span></span><span><span class="ui-provider a b c d e f g h i j k l m n o p q r s t u v w x y z ab ac ae af ag ah ai aj ak" dir="ltr">Currently we are retaining the flags field. The
-          value will be set to zero at this point, and the field will be
-          reserved for future use.<br>
-          GDB / LLDB would not require this field at this point. Do let
-          us know if this is not OK. <br>
-          <br>
-          -thanks,<br>
-          vigneshbalu.<br>
-        </span></span></p>
-    <blockquote type="cite" cite="mid:24f71d52-0891-4cfc-8dec-9f13ed618eee@intel.com">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------ZD84mwGO1vFg4iJmEJsFMFZN--
+> --
+> Kees Cook
