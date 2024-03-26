@@ -2,57 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BB888C29B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 13:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B45D288C41A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 14:50:10 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sEPxM8BV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NHSNzpqy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hOnUextn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V3qSW6xFZz3dWQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 23:51:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3rlh3hz9z3vXw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 00:50:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sEPxM8BV;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NHSNzpqy;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hOnUextn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3qRp3v8Xz3bsw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 23:51:18 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C39A36100C;
-	Tue, 26 Mar 2024 12:51:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C07FC43394;
-	Tue, 26 Mar 2024 12:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711457474;
-	bh=Hnsmw4cSlCWFWusJgFgXB9IFNQHqwcx52ZbhZkS1BMc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=sEPxM8BVbQ07kjm4amF/00CiTgh1i2KSrruwCtk1gy5l57g81+eu/IVT1/qPM6PCt
-	 6C7ar8Me3JW30/ZCq8HNP5Gxzu0Q5lFimE3pAh1S6KHchXGQygXkKp4MHyBcfCsHDB
-	 aamnyV2tG/zleVfYnqAf6knJ9SMbX2+xb8LXr1U89fFxtf+dl57q6BG3o8zy1/m2KL
-	 u43T+2gL2C5qq1jv4rxNcm9D5aGE88x4XKp6iPP0GfFEQsJz0ForRWeP+xAiqam/Sh
-	 HMPA3Qal319cQxp+Hj/EWNEw+E+bJlDQIeOWAQr5oNUI5c4dCFpxCVWucPQ+4ouIEx
-	 PETXvB7mo3aXQ==
-From: Mark Brown <broonie@kernel.org>
-To: Alper Nebi Yasak <alpernebiyasak@gmail.com>, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240325191341.3977321-1-andriy.shevchenko@linux.intel.com>
-References: <20240325191341.3977321-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] ASoC: fsl: imx-es8328: Remove leftover gpio
- initialisation
-Message-Id: <171145746963.70451.9741731830919913816.b4-ty@kernel.org>
-Date: Tue, 26 Mar 2024 12:51:09 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3rkw6j1Dz3d3Z
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 00:49:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711460961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fzgh4GVszcwQ5kywfb8L4k+Qo7qZ/xV1p+DuS7SPp54=;
+	b=NHSNzpqyBS9it6GnNCJ0rYKZvoDQoECOCHjViA9LtJ1Q+a2OhzeZJ1O0NUd+0lAV34bCVO
+	67RG1pt6pbBR94bOprWhIOK6SjN6OuA6IC3ewZIN7D0spiLy2wT/lGKVbmmWtTifG+wHZd
+	9TpFQC6/HBO+CZbJH/mXkVSgEfjH/RI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711460962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fzgh4GVszcwQ5kywfb8L4k+Qo7qZ/xV1p+DuS7SPp54=;
+	b=hOnUextnGmjcSJJnBXhZYWcPEslMwvE0HEWOrauzMCreaXV+XgOTrRi0+iVf3z5mBbkmhp
+	IV1AOIWdCfKWzU9XUIwgxUesobuxFQbjKlU4K6So5pw9R643Bil8N0locruRvJPPXzBifH
+	T/xFMnSBq5Zs4Y+KldaRG/RCCkgy2XM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-yNP3kpugPDeb38rdMr3mQQ-1; Tue,
+ 26 Mar 2024 09:49:16 -0400
+X-MC-Unique: yNP3kpugPDeb38rdMr3mQQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5195C28EC117;
+	Tue, 26 Mar 2024 13:49:16 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.12])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D083C041F3;
+	Tue, 26 Mar 2024 13:49:15 +0000 (UTC)
+Date: Tue, 26 Mar 2024 21:49:07 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v2 3/6] mm/mm_init.c: add new function calc_nr_all_pages()
+Message-ID: <ZgLSUx2tC5caoJb/@MiWiFi-R3L-srv>
+References: <20240325145646.1044760-1-bhe@redhat.com>
+ <20240325145646.1044760-4-bhe@redhat.com>
+ <ZgJx2RLPAdom1EbE@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZgJx2RLPAdom1EbE@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,41 +80,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Xiubo Li <Xiubo.Lee@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 25 Mar 2024 21:13:41 +0200, Andy Shevchenko wrote:
-> The gpio field is not used anymore, remove the leftover.
-> This also fixes the compilation error after the ...
+On 03/26/24 at 08:57am, Mike Rapoport wrote:
+> Hi Baoquan,
 > 
+> On Mon, Mar 25, 2024 at 10:56:43PM +0800, Baoquan He wrote:
+> > This is a preparation to calculate nr_kernel_pages and nr_all_pages,
+> > both of which will be used later in alloc_large_system_hash().
+> > 
+> > nr_all_pages counts up all free but not reserved memory in memblock
+> > allocator, including HIGHMEM memory. While nr_kernel_pages counts up
+> > all free but not reserved low memory in memblock allocator, excluding
+> > HIGHMEM memory.
 > 
+> Sorry I've missed this in the previous review, but I think this patch and
+> the patch "remove unneeded calc_memmap_size()" can be merged into "remove
+> meaningless calculation of zone->managed_pages in free_area_init_core()"
+> with an appropriate update of the commit message.
+> 
+> With the current patch splitting there will be compilation warning about unused
+> function for this and the next patch.
 
-Applied to
+Thanks for careful checking.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+We need to make patch bisect-able to not break compiling so that people can
+spot the cirminal commit, that's for sure. Do we need care about the
+compiling warning from intermediate patch in one series? Not sure about
+it. I always suggest people to seperate out this kind of newly added
+function to a standalone patch for better reviewing and later checking,
+and I saw a lot of commits like this by searching with
+'git log --oneline | grep helper'
 
-Thanks!
-
-[1/1] ASoC: fsl: imx-es8328: Remove leftover gpio initialisation
-      commit: 6a92834166b16babd70e99c3e0ce9262893ad6ae
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+>  
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > ---
+> >  mm/mm_init.c | 24 ++++++++++++++++++++++++
+> >  1 file changed, 24 insertions(+)
+> > 
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index 153fb2dc666f..c57a7fc97a16 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -1264,6 +1264,30 @@ static void __init reset_memoryless_node_totalpages(struct pglist_data *pgdat)
+> >  	pr_debug("On node %d totalpages: 0\n", pgdat->node_id);
+> >  }
+> >  
+> > +static void __init calc_nr_kernel_pages(void)
+> > +{
+> > +	unsigned long start_pfn, end_pfn;
+> > +	phys_addr_t start_addr, end_addr;
+> > +	u64 u;
+> > +#ifdef CONFIG_HIGHMEM
+> > +	unsigned long high_zone_low = arch_zone_lowest_possible_pfn[ZONE_HIGHMEM];
+> > +#endif
+> > +
+> > +	for_each_free_mem_range(u, NUMA_NO_NODE, MEMBLOCK_NONE, &start_addr, &end_addr, NULL) {
+> > +		start_pfn = PFN_UP(start_addr);
+> > +		end_pfn   = PFN_DOWN(end_addr);
+> > +
+> > +		if (start_pfn < end_pfn) {
+> > +			nr_all_pages += end_pfn - start_pfn;
+> > +#ifdef CONFIG_HIGHMEM
+> > +			start_pfn = clamp(start_pfn, 0, high_zone_low);
+> > +			end_pfn = clamp(end_pfn, 0, high_zone_low);
+> > +#endif
+> > +			nr_kernel_pages += end_pfn - start_pfn;
+> > +		}
+> > +	}
+> > +}
+> > +
+> >  static void __init calculate_node_totalpages(struct pglist_data *pgdat,
+> >  						unsigned long node_start_pfn,
+> >  						unsigned long node_end_pfn)
+> > -- 
+> > 2.41.0
+> > 
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+> 
 
