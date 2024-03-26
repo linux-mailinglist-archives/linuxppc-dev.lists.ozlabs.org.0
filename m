@@ -1,64 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327CB88B6FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 02:41:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483E388B745
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 03:18:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S408ZJQs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DNQc5tU4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V3XbL6ks3z3vXR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 12:41:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V3YP70LHgz3vXK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Mar 2024 13:18:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S408ZJQs;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DNQc5tU4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=haifeng.zhao@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Tue, 26 Mar 2024 12:41:11 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3XZb6RmCz3cnv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 12:41:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V3YNP0qB4z3cBN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Mar 2024 13:17:22 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711417272; x=1742953272;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fxaAJQ+kSn8nKb0OEa7bo1CfKPOsd0+BK2jb2R82ysM=;
-  b=S408ZJQs1AaR3jnOPSSt9i8Thg0J1p/KQSvrJUZiEvP1NZIbLBasx92a
-   6k+4klBBGrTqe2YcDeNbxBpvDWHLcAB+WZ+fYZdbctAw4a8+NuKtXeD28
-   mQ4L6ZAgVXcle1Z2t+gV10G6fHHfhRAJLvsYSuQGNY0zVQRuKo1dBfLo1
-   m8gONIMLIPVR3OiZPWu7Dbp6E3ye1c953vrQgiDmAC3tOQBxihgafjJUS
-   hIO7aYFoVHFDu6o+c6YHBo7DJHn6MGx/ITzkSllXN37KLCMl0Uf/kMe+h
-   7CrRHYtWyu+s17QQvO2gDlcgnlUwOEo9XOBnvexGTHtoJDYy0rrXX46fW
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6635339"
+  t=1711419445; x=1742955445;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BjoIXKt5bAU2p5uENJE46EVXE51w6Jj985k5TB+SvjQ=;
+  b=DNQc5tU4+E7g7DjNw9dsU06sb3iqfgjG9R+nMag4lGN+xd8/86wA5HeO
+   vlu4M6rBasBwBA9j2aPYW5H+1ezv1YWkt12Ysa5XvdoKGsyRK0idF3kt9
+   JTDXbwKtLp8t2eoVYpnNozn/ytzZvecw55Bq/lMRzqYyux0edl3HEw8G3
+   2XvqD3/7/G7Elj6SzEiO7bXhOJ3BUCmLfMpxHfb2otvf9leGd4r7cTZS8
+   iUWZ4glHrVKAPpdC46I6N9AHE3h+k0g963bJKnykZZh8HubB8yW/a0BLI
+   JQz9Sk3ymTxzU68buZjaqIYq4mScNQ9wfCheHwjKDReSNIMrhencD/7rf
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6564334"
 X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
-   d="scan'208";a="6635339"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 18:40:01 -0700
+   d="scan'208";a="6564334"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 19:17:17 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,154,1708416000"; 
-   d="scan'208";a="53262206"
-Received: from zhaohaif-mobl.ccr.corp.intel.com (HELO [10.254.209.117]) ([10.254.209.117])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 18:39:58 -0700
-Message-ID: <a1d7b4c9-b47e-4b59-a4d5-e091bbbff5d7@linux.intel.com>
-Date: Tue, 26 Mar 2024 09:39:54 +0800
+   d="scan'208";a="20489901"
+Received: from rpwilson-mobl.amr.corp.intel.com (HELO rpedgeco-desk4.intel.com) ([10.251.11.187])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 19:17:16 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	bp@alien8.de,
+	broonie@kernel.org,
+	christophe.leroy@csgroup.eu,
+	dave.hansen@linux.intel.com,
+	debug@rivosinc.com,
+	hpa@zytor.com,
+	keescook@chromium.org,
+	kirill.shutemov@linux.intel.com,
+	luto@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	x86@kernel.org
+Subject: [PATCH v4 09/14] powerpc: Use initializer for struct vm_unmapped_area_info
+Date: Mon, 25 Mar 2024 19:16:51 -0700
+Message-Id: <20240326021656.202649-10-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240326021656.202649-1-rick.p.edgecombe@intel.com>
+References: <20240326021656.202649-1-rick.p.edgecombe@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 pci-next 1/2] PCI/AER: correctable error message as
- KERN_INFO
-To: Xi Ruoyao <xry111@xry111.site>, Bjorn Helgaas <helgaas@kernel.org>
-References: <20230918193913.GA203601@bhelgaas>
- <0a44fd663e93ac5b36865b0080da52d94252791a.camel@xry111.site>
- <38601aef-b082-463f-8e41-f73a4307de21@linux.intel.com>
- <ba78805af8b39237b22a0ff87c4ba3c614a43910.camel@xry111.site>
-From: Ethan Zhao <haifeng.zhao@linux.intel.com>
-In-Reply-To: <ba78805af8b39237b22a0ff87c4ba3c614a43910.camel@xry111.site>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,87 +79,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rajatja@chromium.org, rajat.khandelwal@linux.intel.com, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-kernel@vger.kernel.org, oohall@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, linux-mm@kvack.org, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, rick.p.edgecombe@intel.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/25/2024 6:15 PM, Xi Ruoyao wrote:
-> On Mon, 2024-03-25 at 16:45 +0800, Ethan Zhao wrote:
->> On 3/25/2024 1:19 AM, Xi Ruoyao wrote:
->>> On Mon, 2023-09-18 at 14:39 -0500, Bjorn Helgaas wrote:
->>>> On Mon, Sep 18, 2023 at 07:42:30PM +0800, Xi Ruoyao wrote:
->>>>> ...
->>>>> My workstation suffers from too much correctable AER reporting as well
->>>>> (related to Intel's errata "RPL013: Incorrectly Formed PCIe Packets May
->>>>> Generate Correctable Errors" and/or the motherboard design, I guess).
->>>> We should rate-limit correctable error reporting so it's not
->>>> overwhelming.
->>>>
->>>> At the same time, I'm *also* interested in the cause of these errors,
->>>> in case there's a Linux defect or a hardware erratum that we can work
->>>> around.  Do you have a bug report with any more details, e.g., a dmesg
->>>> log and "sudo lspci -vv" output?
->>> Hi Bjorn,
->>>
->>> Sorry for the *very* late reply (somehow I didn't see the reply at all
->>> before it was removed by my cron job, and now I just savaged it from
->>> lore.kernel.org...)
->>>
->>> The dmesg is like:
->>>
->>> [  882.456994] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:00:1c.1
->>> [  882.457002] pcieport 0000:00:1c.1: AER: found no error details for 0000:00:1c.1
->>> [  882.457003] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:06:00.0
->>> [  883.545763] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:00:1c.1
->>> [  883.545789] pcieport 0000:00:1c.1: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
->>> [  883.545790] pcieport 0000:00:1c.1:   device [8086:7a39] error status/mask=00000001/00002000
->>> [  883.545792] pcieport 0000:00:1c.1:    [ 0] RxErr                  (First)
->>> [  883.545794] pcieport 0000:00:1c.1: AER:   Error of this Agent is reported first
->>> [  883.545798] r8169 0000:06:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Transmitter ID)
->>> [  883.545799] r8169 0000:06:00.0:   device [10ec:8125] error status/mask=00001101/0000e000
->>> [  883.545800] r8169 0000:06:00.0:    [ 0] RxErr                  (First)
->>> [  883.545801] r8169 0000:06:00.0:    [ 8] Rollover
->>> [  883.545802] r8169 0000:06:00.0:    [12] Timeout
->>> [  883.545815] pcieport 0000:00:1c.1: AER: Correctable error message received from 0000:00:1c.1
->>> [  883.545823] pcieport 0000:00:1c.1: AER: found no error details for 0000:00:1c.1
->>> [  883.545824] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:06:00.0
->>>
->>> lspci output attached.
->>>
->>> Intel has issued an errata "RPL013" saying:
->>>
->>> "Under complex microarchitectural conditions, the PCIe controller may
->>> transmit an incorrectly formed Transaction Layer Packet (TLP), which
->>> will fail CRC checks. When this erratum occurs, the PCIe end point may
->>> record correctable errors resulting in either a NAK or link recovery.
->>> Intel® has not observed any functional impact due to this erratum."
->>>
->>> But I'm really unsure if it describes my issue.
->>>
->>> Do you think I have some broken hardware and I should replace the CPU
->>> and/or the motherboard (where the r8169 is soldered)?  I've noticed that
->>> my 13900K is almost impossible to overclock (despite it's a K), but I've
->>> not encountered any issue other than these AER reporting so far after I
->>> gave up overclocking.
->> Seems there are two r8169 nics on your board, only 0000:06:00.0 reports
->> aer errors, how about another one the 0000:07:00.0 nic ?
-> It never happens to 0000:07:00.0, even if I plug the ethernet cable into
-> it instead of 0000:06:00.0.
+Future changes will need to add a new member to struct
+vm_unmapped_area_info. This would cause trouble for any call site that
+doesn't initialize the struct. Currently every caller sets each member
+manually, so if new members are added they will be uninitialized and the
+core code parsing the struct will see garbage in the new member.
 
-So something is wrong with the physical layer, I guess.
+It could be possible to initialize the new member manually to 0 at each
+call site. This and a couple other options were discussed, and a working
+consensus (see links) was that in general the best way to accomplish this
+would be via static initialization with designated member initiators.
+Having some struct vm_unmapped_area_info instances not zero initialized
+will put those sites at risk of feeding garbage into vm_unmapped_area() if
+the convention is to zero initialize the struct and any new member addition
+misses a call site that initializes each member manually.
 
->
-> Maybe I should just use 0000:07:00.0 and blacklist 0000:06:00.0 as I
-> don't need two NICs?
+It could be possible to leave the code mostly untouched, and just change
+the line:
+struct vm_unmapped_area_info info
+to:
+struct vm_unmapped_area_info info = {};
 
-Yup,
-ratelimit the AER warning is another choice instead of change WARN to INFO.
-if corrected error flood happens, even the function is working, suggests
-something was already wrong, likely will be worse, that is the meaning of
-WARN I think.
+However, that would leave cleanup for the members that are manually set
+to zero, as it would no longer be required.
 
+So to be reduce the chance of bugs via uninitialized members, instead
+simply continue the process to initialize the struct this way tree wide.
+This will zero any unspecified members. Move the member initializers to the
+struct declaration when they are known at that time. Leave the members out
+that were manually initialized to zero, as this would be redundant for
+designated initializers.
+
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/lkml/202402280912.33AEE7A9CF@keescook/#t
+Link: https://lore.kernel.org/lkml/j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs/
+---
+v4:
+ - Remove designated zero initialization (Christophe Leroy)
+
+v3:
+ - Fixed spelling errors in log
+ - Be consistent about field vs member in log
+
+Hi,
+
+This patch was split and refactored out of a tree-wide change [0] to just
+zero-init each struct vm_unmapped_area_info. The overall goal of the
+series is to help shadow stack guard gaps. Currently, there is only one
+arch with shadow stacks, but two more are in progress. It is compile tested
+only.
+
+There was further discussion that this method of initializing the structs
+while nice in some ways has a greater risk of introducing bugs in some of
+the more complicated callers. Since this version was reviewed my arch
+maintainers already, leave it as was already acknowledged.
 
 Thanks,
-Ethan
 
->
+Rick
+
+[0] https://lore.kernel.org/lkml/20240226190951.3240433-6-rick.p.edgecombe@intel.com/
+---
+ arch/powerpc/mm/book3s64/slice.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
+
+diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
+index c0b58afb9a47..ef3ce37f1bb3 100644
+--- a/arch/powerpc/mm/book3s64/slice.c
++++ b/arch/powerpc/mm/book3s64/slice.c
+@@ -282,12 +282,10 @@ static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
+ {
+ 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
+ 	unsigned long found, next_end;
+-	struct vm_unmapped_area_info info;
+-
+-	info.flags = 0;
+-	info.length = len;
+-	info.align_mask = PAGE_MASK & ((1ul << pshift) - 1);
+-	info.align_offset = 0;
++	struct vm_unmapped_area_info info = {
++		.length = len,
++		.align_mask = PAGE_MASK & ((1ul << pshift) - 1),
++	};
+ 	/*
+ 	 * Check till the allow max value for this mmap request
+ 	 */
+@@ -326,13 +324,13 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
+ {
+ 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
+ 	unsigned long found, prev;
+-	struct vm_unmapped_area_info info;
++	struct vm_unmapped_area_info info = {
++		.flags = VM_UNMAPPED_AREA_TOPDOWN,
++		.length = len,
++		.align_mask = PAGE_MASK & ((1ul << pshift) - 1),
++	};
+ 	unsigned long min_addr = max(PAGE_SIZE, mmap_min_addr);
+ 
+-	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+-	info.length = len;
+-	info.align_mask = PAGE_MASK & ((1ul << pshift) - 1);
+-	info.align_offset = 0;
+ 	/*
+ 	 * If we are trying to allocate above DEFAULT_MAP_WINDOW
+ 	 * Add the different to the mmap_base.
+-- 
+2.34.1
+
