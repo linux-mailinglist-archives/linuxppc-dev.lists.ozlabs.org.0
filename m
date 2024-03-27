@@ -2,86 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86BB88E8EB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A96888E8F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:27:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bkvBedbz;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bkvBedbz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VrR3cQXz3vpd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:26:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VsF6ywhz3vhf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:27:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bkvBedbz;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bkvBedbz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnG73W1z3vY9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:23:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnL16frz3vYX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:23:49 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711553024;
+	s=mimecast20190719; t=1711553027;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/g69WjpU0rXeMHNQq0wHJ20ikWbVhFRACidICzEeTCE=;
-	b=bkvBedbze8RVNVsEW+6xD5cM6TwuRhHYlCAAPcieiEM5mVWDPZ/MUSSoZ8et5+FudChwbr
-	ll8o6EhgzahcYrgnrDilfqGB8eYJn6ogSYlPOLu6QF06a32wzXjE5AWzt5YD7LGKMXIRWl
-	rFOHvUuSH01eEIpR8piDboLY6uhQGGs=
+	bh=iN7hVKxpU9yGNoa0FvV6QQfaV15Sbc5QZKf/pqr08oc=;
+	b=YoUFMiqFRQwhob84m5cE7rl4ymoqHhlX4EDmjLX6XYrePEOIIbfmCh/MAOwdaYeQHBYR+R
+	zahoAgoWPVh3bqDzBgpodsIDqI1r7v4l2TP9JFH8fqbyuDel/wgMjx+Yz4rmFKVIbWqbHw
+	hXtPSMsy4uouiL7XlpLU7jvFHIs5uZE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711553024;
+	s=mimecast20190719; t=1711553027;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/g69WjpU0rXeMHNQq0wHJ20ikWbVhFRACidICzEeTCE=;
-	b=bkvBedbze8RVNVsEW+6xD5cM6TwuRhHYlCAAPcieiEM5mVWDPZ/MUSSoZ8et5+FudChwbr
-	ll8o6EhgzahcYrgnrDilfqGB8eYJn6ogSYlPOLu6QF06a32wzXjE5AWzt5YD7LGKMXIRWl
-	rFOHvUuSH01eEIpR8piDboLY6uhQGGs=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=iN7hVKxpU9yGNoa0FvV6QQfaV15Sbc5QZKf/pqr08oc=;
+	b=YoUFMiqFRQwhob84m5cE7rl4ymoqHhlX4EDmjLX6XYrePEOIIbfmCh/MAOwdaYeQHBYR+R
+	zahoAgoWPVh3bqDzBgpodsIDqI1r7v4l2TP9JFH8fqbyuDel/wgMjx+Yz4rmFKVIbWqbHw
+	hXtPSMsy4uouiL7XlpLU7jvFHIs5uZE=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-LdS0BP3CPlKnOyCRTFZY1A-1; Wed, 27 Mar 2024 11:23:42 -0400
-X-MC-Unique: LdS0BP3CPlKnOyCRTFZY1A-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-696a5972507so4145666d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:42 -0700 (PDT)
+ us-mta-332-XbcEmYQHOVie1qLx1N32LQ-1; Wed, 27 Mar 2024 11:23:45 -0400
+X-MC-Unique: XbcEmYQHOVie1qLx1N32LQ-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-696a9c482a4so3595806d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711553022; x=1712157822;
+        d=1e100.net; s=20230601; t=1711553025; x=1712157825;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/g69WjpU0rXeMHNQq0wHJ20ikWbVhFRACidICzEeTCE=;
-        b=q4CqMsRUObdXVh0aOHFBYF7g0MP71Lt5Oofw9WVrgl4JrYm+kSuD8D8d74byL2WUSp
-         P7pz1qQWLbtnf8TD31bix/MsW3ZjE1T/E6JXe19qG427oG6aXfT61BcsEBdw4dYWcs7R
-         S/Xj1LWOzZnKGVbGTUfASHFUD97VcBWGCwjFiHMa0Rka92zX/ub5VTo0sho4HBX3L7E/
-         k8bwByWVXA3rUxJBWqNa18cZOZsL+jYw6C7nm7n3byu63MNyotdV8XOAIjw5ZfCK8DR5
-         Loz3idwzMX364Lk0J4/scST1IL71cIeFgUTjUTB8/VBPBEKvHzjRlkcK99gGPs0ZU6N2
-         Jpww==
-X-Forwarded-Encrypted: i=1; AJvYcCWOt8Peyhx2VJrGau4YTi5ZlIdM8U93CnDTNMERyQPo2iuZzNqDq7Lgemw+pUUqQU3SwKs7+6SdLibwaOsopptCFgPGmzoofY8gfFcqSQ==
-X-Gm-Message-State: AOJu0YxxMl+l6bONOr/g7EENxc2KyyCRvsw+ogUSQGznlRwlSpox/kTd
-	4ZIUgY77uAEElL0p5euXlxfOLWVsmPVX4zCtH5/QoRy8hnKbBZpQjo6ru1xIvm+EdGr7rdQKDAE
-	Qo/LnM7uuZBa29/B81VI61f9Ew7EtJ7RUnAp3Dmnxf2xsLpXynu1rjfPP2a1L5xE=
-X-Received: by 2002:a05:6214:3187:b0:691:456f:415a with SMTP id lb7-20020a056214318700b00691456f415amr14772453qvb.4.1711553022242;
-        Wed, 27 Mar 2024 08:23:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwFABTpt0oYC5XP41rgqaavJwjTuxekGLogedD16Vy17R/DxfwS2XqF10qrZ+lSq8ZmFvRzQ==
-X-Received: by 2002:a05:6214:3187:b0:691:456f:415a with SMTP id lb7-20020a056214318700b00691456f415amr14772425qvb.4.1711553021719;
-        Wed, 27 Mar 2024 08:23:41 -0700 (PDT)
+        bh=iN7hVKxpU9yGNoa0FvV6QQfaV15Sbc5QZKf/pqr08oc=;
+        b=ZJiJSk6VIjW25maVIDy1qoaIOrNdbuMmESRKvUMJwb8laO4UewEPnzRu0Fg/x4We8X
+         iQx0vSKCtWq/dkdzWL+zfEYeqPuPCPnKypqSd5xpGyK/nMe9dUS4MWFxxIGAlvDhgrBB
+         jjJH83kfq8UXxlEXZ5dW18h7ueFx7gueYj2lcXTON2tI5CVQ3JmjfPFs318pRbXZ1zIc
+         lekNCwqOg7bb4lRGQeMXRrP3fmtVg8ds8Y5eB+GqskGq3AMluMm4lKTBIHwfl1ZGTmfm
+         vdknfkDuh9chRlEK79sRacI3XsvMT2aL8UEOV6PQrrVKnhEYU2bSSdugLhdxZYzMnlHq
+         fV2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUE+qhUgLIS7uT2nkVj3K96QBik4013+IMh/ZBcoWBheFqfNjukfmU6Ff3RqgPwFRxCGN6MJSViXnebTCwOoD4CwGEJcOuALYjivoUPIA==
+X-Gm-Message-State: AOJu0Yxc8vdseyoGkHTSZRZGqzcsuz4pLYOPW2Y9/ba5eBgzXn1m262x
+	tCRvwDO5Wdlz7gVHYdTV5Zt3yQqH7cBZR+UepGaGJTk+j1RzAcPC8jFYumUIJ7ee5/8SsnB3HHL
+	a+J9sfVJifiTNESOzIsiAU0KZnmf0nWPFr7Cv7Wvpk2On4TqQfpGDVYUPUXlo/Tk=
+X-Received: by 2002:a05:6214:4598:b0:696:7b32:cceb with SMTP id op24-20020a056214459800b006967b32ccebmr13869546qvb.6.1711553024672;
+        Wed, 27 Mar 2024 08:23:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFS0Dr3UNRPnI4el/D5x8gcrtCXLMsQwIvd4dOzHJoXuoNg03xhCSCfsu9VpmJMAiYn3G+95A==
+X-Received: by 2002:a05:6214:4598:b0:696:7b32:cceb with SMTP id op24-20020a056214459800b006967b32ccebmr13869513qvb.6.1711553024070;
+        Wed, 27 Mar 2024 08:23:44 -0700 (PDT)
 Received: from x1n.redhat.com ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.39
+        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 08:23:40 -0700 (PDT)
+        Wed, 27 Mar 2024 08:23:43 -0700 (PDT)
 From: peterx@redhat.com
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 03/13] mm: Make HPAGE_PXD_* macros even if !THP
-Date: Wed, 27 Mar 2024 11:23:22 -0400
-Message-ID: <20240327152332.950956-4-peterx@redhat.com>
+Subject: [PATCH v4 04/13] mm: Introduce vma_pgtable_walk_{begin|end}()
+Date: Wed, 27 Mar 2024 11:23:23 -0400
+Message-ID: <20240327152332.950956-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240327152332.950956-1-peterx@redhat.com>
 References: <20240327152332.950956-1-peterx@redhat.com>
@@ -107,82 +107,55 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-These macros can be helpful when we plan to merge hugetlb code into generic
-code.  Move them out and define them as long as PGTABLE_HAS_HUGE_LEAVES is
-selected, because there are systems that only define HUGETLB_PAGE not THP.
+Introduce per-vma begin()/end() helpers for pgtable walks.  This is a
+preparation work to merge hugetlb pgtable walkers with generic mm.
 
-One note here is HPAGE_PMD_SHIFT must be defined even if PMD_SHIFT is not
-defined (e.g. !CONFIG_MMU case); it (or in other forms, like HPAGE_PMD_NR)
-is already used in lots of common codes without ifdef guards.  Use the old
-trick to let complations work.
+The helpers need to be called before and after a pgtable walk, will start
+to be needed if the pgtable walker code supports hugetlb pages.  It's a
+hook point for any type of VMA, but for now only hugetlb uses it to
+stablize the pgtable pages from getting away (due to possible pmd
+unsharing).
 
-Here we only need to differenciate HPAGE_PXD_SHIFT definitions. All the
-rest macros will be defined based on it.  When at it, move HPAGE_PMD_NR /
-HPAGE_PMD_ORDER over together.
-
+Reviewed-by: Christoph Hellwig <hch@infradead.org>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/linux/huge_mm.h | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ include/linux/mm.h |  3 +++
+ mm/memory.c        | 12 ++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 7576025db55d..d3bb25c39482 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -64,9 +64,6 @@ ssize_t single_hugepage_flag_show(struct kobject *kobj,
- 				  enum transparent_hugepage_flag flag);
- extern struct kobj_attribute shmem_enabled_attr;
- 
--#define HPAGE_PMD_ORDER (HPAGE_PMD_SHIFT-PAGE_SHIFT)
--#define HPAGE_PMD_NR (1<<HPAGE_PMD_ORDER)
--
- /*
-  * Mask of all large folio orders supported for anonymous THP; all orders up to
-  * and including PMD_ORDER, except order-0 (which is not "huge") and order-1
-@@ -87,14 +84,25 @@ extern struct kobj_attribute shmem_enabled_attr;
- #define thp_vma_allowable_order(vma, vm_flags, smaps, in_pf, enforce_sysfs, order) \
- 	(!!thp_vma_allowable_orders(vma, vm_flags, smaps, in_pf, enforce_sysfs, BIT(order)))
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
- #define HPAGE_PMD_SHIFT PMD_SHIFT
--#define HPAGE_PMD_SIZE	((1UL) << HPAGE_PMD_SHIFT)
-+#define HPAGE_PUD_SHIFT PUD_SHIFT
-+#else
-+#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
-+#define HPAGE_PUD_SHIFT ({ BUILD_BUG(); 0; })
-+#endif
-+
-+#define HPAGE_PMD_ORDER (HPAGE_PMD_SHIFT-PAGE_SHIFT)
-+#define HPAGE_PMD_NR (1<<HPAGE_PMD_ORDER)
- #define HPAGE_PMD_MASK	(~(HPAGE_PMD_SIZE - 1))
-+#define HPAGE_PMD_SIZE	((1UL) << HPAGE_PMD_SHIFT)
- 
--#define HPAGE_PUD_SHIFT PUD_SHIFT
--#define HPAGE_PUD_SIZE	((1UL) << HPAGE_PUD_SHIFT)
-+#define HPAGE_PUD_ORDER (HPAGE_PUD_SHIFT-PAGE_SHIFT)
-+#define HPAGE_PUD_NR (1<<HPAGE_PUD_ORDER)
- #define HPAGE_PUD_MASK	(~(HPAGE_PUD_SIZE - 1))
-+#define HPAGE_PUD_SIZE	((1UL) << HPAGE_PUD_SHIFT)
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 
- extern unsigned long transparent_hugepage_flags;
- extern unsigned long huge_anon_orders_always;
-@@ -377,13 +385,6 @@ static inline bool thp_migration_supported(void)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index afe27ff3fa94..d8f78017d271 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4233,4 +4233,7 @@ static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+ 	return range_contains_unaccepted_memory(paddr, paddr + PAGE_SIZE);
  }
  
- #else /* CONFIG_TRANSPARENT_HUGEPAGE */
--#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
--#define HPAGE_PMD_MASK ({ BUILD_BUG(); 0; })
--#define HPAGE_PMD_SIZE ({ BUILD_BUG(); 0; })
--
--#define HPAGE_PUD_SHIFT ({ BUILD_BUG(); 0; })
--#define HPAGE_PUD_MASK ({ BUILD_BUG(); 0; })
--#define HPAGE_PUD_SIZE ({ BUILD_BUG(); 0; })
- 
- static inline bool folio_test_pmd_mappable(struct folio *folio)
- {
++void vma_pgtable_walk_begin(struct vm_area_struct *vma);
++void vma_pgtable_walk_end(struct vm_area_struct *vma);
++
+ #endif /* _LINUX_MM_H */
+diff --git a/mm/memory.c b/mm/memory.c
+index 3d0c0cc33c57..27d173f9a521 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6438,3 +6438,15 @@ void ptlock_free(struct ptdesc *ptdesc)
+ 	kmem_cache_free(page_ptl_cachep, ptdesc->ptl);
+ }
+ #endif
++
++void vma_pgtable_walk_begin(struct vm_area_struct *vma)
++{
++	if (is_vm_hugetlb_page(vma))
++		hugetlb_vma_lock_read(vma);
++}
++
++void vma_pgtable_walk_end(struct vm_area_struct *vma)
++{
++	if (is_vm_hugetlb_page(vma))
++		hugetlb_vma_unlock_read(vma);
++}
 -- 
 2.44.0
 
