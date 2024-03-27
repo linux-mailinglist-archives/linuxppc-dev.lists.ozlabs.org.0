@@ -1,53 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C8A88EB0E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 17:22:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB5588EB16
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 17:23:50 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IavBJGsz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=P+vdkTPh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qzE8tHKH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4X5H5Xrtz3vbq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 03:22:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4X6W62D5z3vZn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 03:23:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IavBJGsz;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=P+vdkTPh;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qzE8tHKH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.146; helo=fout3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout3-smtp.messagingengine.com (fout3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4X4Z4zcnz3c9r
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 03:22:06 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A6DFD615F0;
-	Wed, 27 Mar 2024 16:22:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE561C433C7;
-	Wed, 27 Mar 2024 16:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711556524;
-	bh=/HwfEIPp2rgEplQNov6HPpeEoXKzTzryrZH4IYBxJHY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IavBJGszFmAlc2pEn+zfe6ZTmvjuzS8OniqKBl3fq326ok4Z1/lQIFhubB5J3YlF+
-	 UJ7cH6fmsukvoIbMe+qb0s38Dpb5PZkO6MeQepUNQjTYesXIsI7Tt6Okk8maBGjSOE
-	 2ZjVJLDIGgdH9xzzcM3kKRi0rqL4LQ0EAJjGeovCvCD4A6h/kwamy8QttJ8EIgV/zp
-	 IzQAw0jKezVA3KsiiT8nk7Tn7rm+KI1haka80NRE9CgIVAe6TudWIlsqAq3Su1BT8/
-	 j2oRBxYxdj1bTB2sEPjNeWwA+TXigfhS5Lc9NBty0edAy6fDSDCpgqHNsZ1UG/5piz
-	 SSHvZMjybuQKQ==
-Date: Wed, 27 Mar 2024 18:21:20 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH v2 5/6] mm/mm_init.c: remove unneeded calc_memmap_size()
-Message-ID: <ZgRHgL1zbQc2DJlc@kernel.org>
-References: <20240325145646.1044760-1-bhe@redhat.com>
- <20240325145646.1044760-6-bhe@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4X5g0xvdz3bnB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 03:23:02 +1100 (AEDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id A1ACF1380097;
+	Wed, 27 Mar 2024 12:22:58 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Wed, 27 Mar 2024 12:22:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1711556578; x=1711642978; bh=04/bv9qv/f
+	J7b6lD5xQpNrs8Wx7z7kkFDtCrZ28H1cg=; b=P+vdkTPhYaNxsDmytF+YVstKTK
+	Pti/rLi9wS8kERhdO3lnq7EGjv2SkvPIoxmsWJMJhLHwEXuzxfpkEd0zo9zuCXe9
+	U+wEG++UW/9ffuDwZQeKjwN2Pdnj3K1fq/uIr+zRKUmmGX2VZikefQZiAdW9+LI+
+	tFc1D5WNqUSuF5nsWnIjQhgKI7iSeKP4j2I+zuHk7DUhCDXwgbx+WVXCooU21c1p
+	i4qEUnq3VWG4y1tvWsJeR3Te+90gCWzNDjx4gK7NRhFzTjJSEaYw6+mIFtvhGc6J
+	uTb8spKcVwxI8gDizZzGDrJfP2J9keJmj5W0iRW5udWe55/wCuskxMEvsLQA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1711556578; x=1711642978; bh=04/bv9qv/fJ7b6lD5xQpNrs8Wx7z
+	7kkFDtCrZ28H1cg=; b=qzE8tHKHnXdh4+H3pRQ/ZQ7HlCMNYT5iwoUelyrNrOO8
+	rHZzjLjTcU1e8WjZdJgpfc5jLq/fS7QujczfIn/RZo9w2sHMwghfmx0B/Pt6ciyY
+	mZLXkBewR4JEfqGSBYoEcrLAYEywprCzg8zl4EfCw/eu0cB+xjol8cRcx4RY2S6G
+	yqYw6EB6oSHbw1fde2y2fpaO35fwy1+1v0G+H5DJwtNWdudg4JulUGwKOMqWw9Fz
+	Sc8MgrZE9ndJY9TQXAX4zlMqZDxTH7TDiDq8JGVK2pWe/jyKZ0+UU4SnTFh/QrUy
+	6QbhllOJ146SyrMw77vTVADthM+W645OaIDvsQniTA==
+X-ME-Sender: <xms:4kcEZiU97SGN7Z_w79poK1nb4N_1GpgTvPhi0lpBpmvTGvWyR8sg2w>
+    <xme:4kcEZuliBFO5zPrdua67vIRl9xLyspg4F5Bc-HYsOxZ4V_RjSuVPQ5Fes-xLTZdBt
+    JRp7P5hoNKuZuOrkdM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduiedgieefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepvefhffeltdegheeffffhtdegvdehjedtgfekueevgfduffettedtkeekueef
+    hedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:4kcEZmbL533qBSNpSxrdX4q5ILP7r7kzKKmlSnDstDRjLbf5N8vcEQ>
+    <xmx:4kcEZpWqWhcavi76Zt4HKiuB6gYaszYGDCTgfWOAAr_Q77vH-hFE1g>
+    <xmx:4kcEZslDfBqUDssPqA0QxV_r5lXOighpBxK0ZhIx_za5D5YM44lNmA>
+    <xmx:4kcEZucOAjhkok5D1ywWCVr9FlOuqT3l6-wCX7uvVOa5-_-KGobtlw>
+    <xmx:4kcEZisfEnJnEcHuvnu41r2ISp1fJRG4dePekVw2WfvYtWEHKQhabQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id EE9E9B60092; Wed, 27 Mar 2024 12:22:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-328-gc998c829b7-fm-20240325.002-gc998c829
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325145646.1044760-6-bhe@redhat.com>
+Message-Id: <dc1433ea-4e59-4ab7-83fb-23b393020980@app.fastmail.com>
+In-Reply-To: <3922460a-4d01-4ecb-b8c5-7c57fd46f3fd@redhat.com>
+References: <20240327130538.680256-1-david@redhat.com> <ZgQ5hNltQ2DHQXps@x1n>
+ <3922460a-4d01-4ecb-b8c5-7c57fd46f3fd@redhat.com>
+Date: Wed, 27 Mar 2024 17:22:37 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "David Hildenbrand" <david@redhat.com>, peterx <peterx@redhat.com>
+Subject: Re: [PATCH RFC 0/3] mm/gup: consistently call it GUP-fast
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +93,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, Ryan Roberts <ryan.roberts@arm.com>, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Vineet Gupta <vgupta@kernel.org>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Matt Turner <mattst88@gmail.com>, linux-arm-kernel@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 25, 2024 at 10:56:45PM +0800, Baoquan He wrote:
-> Nobody calls calc_memmap_size() now.
-> 
-> Signed-off-by: Baoquan He <bhe@redhat.com>
+On Wed, Mar 27, 2024, at 16:39, David Hildenbrand wrote:
+> On 27.03.24 16:21, Peter Xu wrote:
+>> On Wed, Mar 27, 2024 at 02:05:35PM +0100, David Hildenbrand wrote:
+>> 
+>> I'm not sure what config you tried there; as I am doing some build tests
+>> recently, I found turning off CONFIG_SAMPLES + CONFIG_GCC_PLUGINS could
+>> avoid a lot of issues, I think it's due to libc missing.  But maybe not the
+>> case there.
+>
+> CCin Arnd; I use some of his compiler chains, others from Fedora directly. For
+> example for alpha and arc, the Fedora gcc is "13.2.1".
 
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+>
+> But there is other stuff like (arc):
+>
+> ./arch/arc/include/asm/mmu-arcv2.h: In function 'mmu_setup_asid':
+> ./arch/arc/include/asm/mmu-arcv2.h:82:9: error: implicit declaration of 
+> function 'write_aux_reg' [-Werro
+> r=implicit-function-declaration]
+>     82 |         write_aux_reg(ARC_REG_PID, asid | MMU_ENABLE);
+>        |         ^~~~~~~~~~~~~
 
-Looks like I replied to patch 6/6 twice by mistake and missed this one.
+Seems to be missing an #include of soc/arc/aux.h, but I can't
+tell when this first broke without bisecting.
 
-> ---
->  mm/mm_init.c | 20 --------------------
->  1 file changed, 20 deletions(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 7f71e56e83f3..e269a724f70e 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1331,26 +1331,6 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
->  	pr_debug("On node %d totalpages: %lu\n", pgdat->node_id, realtotalpages);
->  }
->  
-> -static unsigned long __init calc_memmap_size(unsigned long spanned_pages,
-> -						unsigned long present_pages)
-> -{
-> -	unsigned long pages = spanned_pages;
-> -
-> -	/*
-> -	 * Provide a more accurate estimation if there are holes within
-> -	 * the zone and SPARSEMEM is in use. If there are holes within the
-> -	 * zone, each populated memory region may cost us one or two extra
-> -	 * memmap pages due to alignment because memmap pages for each
-> -	 * populated regions may not be naturally aligned on page boundary.
-> -	 * So the (present_pages >> 4) heuristic is a tradeoff for that.
-> -	 */
-> -	if (spanned_pages > present_pages + (present_pages >> 4) &&
-> -	    IS_ENABLED(CONFIG_SPARSEMEM))
-> -		pages = present_pages;
-> -
-> -	return PAGE_ALIGN(pages * sizeof(struct page)) >> PAGE_SHIFT;
-> -}
-> -
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  static void pgdat_init_split_queue(struct pglist_data *pgdat)
->  {
-> -- 
-> 2.41.0
-> 
+> or (alpha)
+>
+> WARNING: modpost: "saved_config" [vmlinux] is COMMON symbol
+> ERROR: modpost: "memcpy" [fs/reiserfs/reiserfs.ko] undefined!
+> ERROR: modpost: "memcpy" [fs/nfs/nfs.ko] undefined!
+> ERROR: modpost: "memcpy" [fs/nfs/nfsv3.ko] undefined!
+> ERROR: modpost: "memcpy" [fs/nfsd/nfsd.ko] undefined!
+> ERROR: modpost: "memcpy" [fs/lockd/lockd.ko] undefined!
+> ERROR: modpost: "memcpy" [crypto/crypto.ko] undefined!
+> ERROR: modpost: "memcpy" [crypto/crypto_algapi.ko] undefined!
+> ERROR: modpost: "memcpy" [crypto/aead.ko] undefined!
+> ERROR: modpost: "memcpy" [crypto/crypto_skcipher.ko] undefined!
+> ERROR: modpost: "memcpy" [crypto/seqiv.ko] undefined!
 
--- 
-Sincerely yours,
-Mike.
+Al did a series to fix various build problems on alpha, see
+https://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git/log/?h=work.alpha
+Not sure if he still has to send them to Matt, or if Matt
+just needs to apply them.
+
+I also have some alpha patches that I should send upstream.
+
+     Arnd
