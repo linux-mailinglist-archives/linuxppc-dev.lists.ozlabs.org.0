@@ -1,87 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B830C88E90A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:30:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B63C88E90D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:30:49 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BfNHhC7/;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BfNHhC7/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YpJbgc7e;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YpJbgc7e;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VwY3Zt4z3w3m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:30:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VxL6NhLz3vyp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:30:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BfNHhC7/;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BfNHhC7/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YpJbgc7e;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YpJbgc7e;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnV3H1nz3vXM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:23:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnY4GfVz3vXJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:24:01 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711553036;
+	s=mimecast20190719; t=1711553039;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2/UoYTg8lz4bAl/L4a1cbQCJuXO8WYRlAVPmeKHJK2E=;
-	b=BfNHhC7/QTHfJJejCN6UOENDD37xcKQ7bNRSmWUlk+y8EQT14LnTFt+vH4FLelO9KzMZrc
-	gx/UvOse+zix6gWJQtcL1Ds9yicQZU8holhhshH3IAhhwDvC8L7MYnr0Eawe6vOMtkO47v
-	ARz+IL9uQ1n8BSAj78Y9QiadgLhNVfU=
+	bh=0ClTZB7edrSwahK3rulsC63VROBcD1QOdNuRXa61Ddg=;
+	b=YpJbgc7e92OxMacUGZUo4N2rGr4wPPxYAmdK2pSoAvZelfN/7882qHOoygeJ3If31YdNb3
+	RzkpZ3ymPmuTOnXPv1VXuTg4BhQHGIGpBwdqS+CtxQ6J9vlWr7TNFJx2UZGAetcuPspVmA
+	UHNTJ3IJVE+A0RKg0DgJ89Pbqd3lXXs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711553036;
+	s=mimecast20190719; t=1711553039;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2/UoYTg8lz4bAl/L4a1cbQCJuXO8WYRlAVPmeKHJK2E=;
-	b=BfNHhC7/QTHfJJejCN6UOENDD37xcKQ7bNRSmWUlk+y8EQT14LnTFt+vH4FLelO9KzMZrc
-	gx/UvOse+zix6gWJQtcL1Ds9yicQZU8holhhshH3IAhhwDvC8L7MYnr0Eawe6vOMtkO47v
-	ARz+IL9uQ1n8BSAj78Y9QiadgLhNVfU=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0ClTZB7edrSwahK3rulsC63VROBcD1QOdNuRXa61Ddg=;
+	b=YpJbgc7e92OxMacUGZUo4N2rGr4wPPxYAmdK2pSoAvZelfN/7882qHOoygeJ3If31YdNb3
+	RzkpZ3ymPmuTOnXPv1VXuTg4BhQHGIGpBwdqS+CtxQ6J9vlWr7TNFJx2UZGAetcuPspVmA
+	UHNTJ3IJVE+A0RKg0DgJ89Pbqd3lXXs=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-p_MggXIWODis6yjoh8Vo8Q-1; Wed, 27 Mar 2024 11:23:53 -0400
-X-MC-Unique: p_MggXIWODis6yjoh8Vo8Q-1
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-78a5e62931cso61836785a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:53 -0700 (PDT)
+ us-mta-204-Ty-M6qppM0G8uCuxngaFjw-1; Wed, 27 Mar 2024 11:23:55 -0400
+X-MC-Unique: Ty-M6qppM0G8uCuxngaFjw-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-696a5972507so4146636d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711553033; x=1712157833;
+        d=1e100.net; s=20230601; t=1711553035; x=1712157835;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2/UoYTg8lz4bAl/L4a1cbQCJuXO8WYRlAVPmeKHJK2E=;
-        b=ipVvpVp3CRAXKN0VABh8KSkFvdjyTjNUPIA3xogjyaS8KMXuX7pI8tGxb2Zi5R7mtz
-         Q/clWKEp7b+l+b/eo/Tni6lagczrieLGVeqK5/dL9+0BKDYFNsFxVJ1rjlIEdg/aUMUT
-         /F0la1fupki9g/Uc4pP+NBDcbP4rPsgyBo/cLRoFcwVBt7hVxvGEYB/4vsy60KfTq/6s
-         Gz2BmL8+AFJq5lBfhiuxCoT8aiEG29X9BZHceOL4njiBQuAuNaI0BVn4K2kWAN/vL41G
-         SWZBHetrl7NryLUS+AJxBbrrAZH2peVbT/20wVEXG0sSyFEXdn9sVnR+ffg9KO9rCa38
-         5U5g==
-X-Forwarded-Encrypted: i=1; AJvYcCU+diZ8xZbUKyTU4JzSzFe6V8IrfOqwdrGlosguCtnI7X0Ig+dADTUxHS7G2d6L9HeL1Ovvpf1mi9fDOV5CqyFKmJDP8q3jJkffMqLY6A==
-X-Gm-Message-State: AOJu0Yzg2SsUDV8QEHm9b66p63g744aAAcW+8oox3hdZpDV0ZI/CbRHg
-	ROxAcMxNpPuNoogyOZcRxM+ftj2bvY4XgLvMIUuKJ0pl5NATNKJZAgfA2zIap4yBRPd6t0Zegsk
-	9yVrxLiJqL0RNESWAC1i5eJzAXukVlgPWTpw/cp9WbtlKqcQgYDOGqtaDAq4GACU=
-X-Received: by 2002:a05:6214:4a8a:b0:696:ad00:7deb with SMTP id pi10-20020a0562144a8a00b00696ad007debmr2078353qvb.2.1711553033241;
-        Wed, 27 Mar 2024 08:23:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8Fh1FPXUmWlSE4Ssu3coIMvek7Et1xEVKx+8QTY39hYxqq3mRFRgZ7bz+i1V9Jmd/zYMv6Q==
-X-Received: by 2002:a05:6214:4a8a:b0:696:ad00:7deb with SMTP id pi10-20020a0562144a8a00b00696ad007debmr2078325qvb.2.1711553032687;
-        Wed, 27 Mar 2024 08:23:52 -0700 (PDT)
+        bh=0ClTZB7edrSwahK3rulsC63VROBcD1QOdNuRXa61Ddg=;
+        b=Y7W0FBizypS8T2e0TR24tq1ce1NPvu8B1ClmHbNDSch4UhxfuRVlpvZ9v5ukylOezB
+         E9O96gowDzSgm6aVnVmHYNToBR3wWA9KoKPDCg3XkLw48hLwTemzwrbfL01qT5FrxFwT
+         xUXGZuK3zT1fHapUFwvnwCDZuuuinmqClc3eU/ut6nn3X8tbYt3X8DOLu3/fPadqzl5Y
+         kIVmfi4E1ppOS8jrsSEOJfndjPTX6BVSDHI6HrtJD+8YOCehs1R0n3uX1971OgCBtfZN
+         BiDdQMriJOBZVeaDc4WWZ+V0aSxxeXJX7WwhJZJsDvhETTTh2Slv/Qq0Z8zxCeCbfNLY
+         zmsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0RLyV+dh2yqco0pWgROqDMSJtqNv6+HcRwajzK8dbF+nlPs+oekQypBwqQ9IDq0+jL+NUi0vavknOYe1O+ArFzfCuUErwnLHHFbkCcQ==
+X-Gm-Message-State: AOJu0Yw+dkRh2H0izuzhlJrrB7RHmmP/zbIULwvkuMBQnFmnzd/0l3GH
+	PRjBNKHQdu/na0iYU1RR9Z6BdkGGKZkdMGGHQz6qagIjefyhqTM0/c+/f6e7R7mogD7W7WVmab5
+	J7ocyVT33s1qZR18N93u1bH9UiEQZeOZ5Rh3rvqWBYcki8GkEaisVjE8YrmsjfsA=
+X-Received: by 2002:a05:6214:3d8c:b0:696:1892:c19f with SMTP id om12-20020a0562143d8c00b006961892c19fmr15035542qvb.3.1711553035014;
+        Wed, 27 Mar 2024 08:23:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFT3GjlhPAIM0f0tWP3PNax9bFYBunh5winrPqMP8FazkZOSJ/P00xdKeX4lX2Up3S+10Z8OQ==
+X-Received: by 2002:a05:6214:3d8c:b0:696:1892:c19f with SMTP id om12-20020a0562143d8c00b006961892c19fmr15035509qvb.3.1711553034516;
+        Wed, 27 Mar 2024 08:23:54 -0700 (PDT)
 Received: from x1n.redhat.com ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.50
+        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 08:23:52 -0700 (PDT)
+        Wed, 27 Mar 2024 08:23:54 -0700 (PDT)
 From: peterx@redhat.com
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 08/13] mm/gup: Handle hugetlb for no_page_table()
-Date: Wed, 27 Mar 2024 11:23:27 -0400
-Message-ID: <20240327152332.950956-9-peterx@redhat.com>
+Subject: [PATCH v4 09/13] mm/gup: Cache *pudp in follow_pud_mask()
+Date: Wed, 27 Mar 2024 11:23:28 -0400
+Message-ID: <20240327152332.950956-10-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240327152332.950956-1-peterx@redhat.com>
 References: <20240327152332.950956-1-peterx@redhat.com>
@@ -107,151 +107,59 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-no_page_table() is not yet used for hugetlb code paths. Make it prepared.
+Introduce "pud_t pud" in the function, so the code won't dereference *pudp
+multiple time.  Not only because that looks less straightforward, but also
+because if the dereference really happened, it's not clear whether there
+can be race to see different *pudp values if it's being modified at the
+same time.
 
-The major difference here is hugetlb will return -EFAULT as long as page
-cache does not exist, even if VM_SHARED.  See hugetlb_follow_page_mask().
-
-Pass "address" into no_page_table() too, as hugetlb will need it.
-
-Reviewed-by: Christoph Hellwig <hch@infradead.org>
+Acked-by: James Houghton <jthoughton@google.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- mm/gup.c | 44 ++++++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 18 deletions(-)
+ mm/gup.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/mm/gup.c b/mm/gup.c
-index c2881772216b..ef46a7053e16 100644
+index ef46a7053e16..26b8cca24077 100644
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -501,19 +501,27 @@ static inline void mm_set_has_pinned_flag(unsigned long *mm_flags)
- 
- #ifdef CONFIG_MMU
- static struct page *no_page_table(struct vm_area_struct *vma,
--		unsigned int flags)
-+				  unsigned int flags, unsigned long address)
+@@ -753,26 +753,27 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
+ 				    unsigned int flags,
+ 				    struct follow_page_context *ctx)
  {
-+	if (!(flags & FOLL_DUMP))
-+		return NULL;
-+
- 	/*
--	 * When core dumping an enormous anonymous area that nobody
--	 * has touched so far, we don't want to allocate unnecessary pages or
-+	 * When core dumping, we don't want to allocate unnecessary pages or
- 	 * page tables.  Return error instead of NULL to skip handle_mm_fault,
- 	 * then get_dump_page() will return NULL to leave a hole in the dump.
- 	 * But we can only make this optimization where a hole would surely
- 	 * be zero-filled if handle_mm_fault() actually did handle it.
- 	 */
--	if ((flags & FOLL_DUMP) &&
--			(vma_is_anonymous(vma) || !vma->vm_ops->fault))
-+	if (is_vm_hugetlb_page(vma)) {
-+		struct hstate *h = hstate_vma(vma);
-+
-+		if (!hugetlbfs_pagecache_present(h, vma, address))
-+			return ERR_PTR(-EFAULT);
-+	} else if ((vma_is_anonymous(vma) || !vma->vm_ops->fault)) {
- 		return ERR_PTR(-EFAULT);
-+	}
-+
- 	return NULL;
- }
+-	pud_t *pud;
++	pud_t *pudp, pud;
+ 	spinlock_t *ptl;
+ 	struct page *page;
+ 	struct mm_struct *mm = vma->vm_mm;
  
-@@ -593,7 +601,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
- 
- 	ptep = pte_offset_map_lock(mm, pmd, address, &ptl);
- 	if (!ptep)
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	pte = ptep_get(ptep);
- 	if (!pte_present(pte))
- 		goto no_page;
-@@ -685,7 +693,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
- 	pte_unmap_unlock(ptep, ptl);
- 	if (!pte_none(pte))
- 		return NULL;
--	return no_page_table(vma, flags);
-+	return no_page_table(vma, flags, address);
- }
- 
- static struct page *follow_pmd_mask(struct vm_area_struct *vma,
-@@ -701,27 +709,27 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
- 	pmd = pmd_offset(pudp, address);
- 	pmdval = pmdp_get_lockless(pmd);
- 	if (pmd_none(pmdval))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	if (!pmd_present(pmdval))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	if (pmd_devmap(pmdval)) {
- 		ptl = pmd_lock(mm, pmd);
- 		page = follow_devmap_pmd(vma, address, pmd, flags, &ctx->pgmap);
+-	pud = pud_offset(p4dp, address);
+-	if (pud_none(*pud))
++	pudp = pud_offset(p4dp, address);
++	pud = READ_ONCE(*pudp);
++	if (pud_none(pud))
+ 		return no_page_table(vma, flags, address);
+-	if (pud_devmap(*pud)) {
+-		ptl = pud_lock(mm, pud);
+-		page = follow_devmap_pud(vma, address, pud, flags, &ctx->pgmap);
++	if (pud_devmap(pud)) {
++		ptl = pud_lock(mm, pudp);
++		page = follow_devmap_pud(vma, address, pudp, flags, &ctx->pgmap);
  		spin_unlock(ptl);
  		if (page)
  			return page;
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
+ 		return no_page_table(vma, flags, address);
  	}
- 	if (likely(!pmd_trans_huge(pmdval)))
- 		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
+-	if (unlikely(pud_bad(*pud)))
++	if (unlikely(pud_bad(pud)))
+ 		return no_page_table(vma, flags, address);
  
- 	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 
- 	ptl = pmd_lock(mm, pmd);
- 	if (unlikely(!pmd_present(*pmd))) {
- 		spin_unlock(ptl);
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	}
- 	if (unlikely(!pmd_trans_huge(*pmd))) {
- 		spin_unlock(ptl);
-@@ -752,17 +760,17 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
- 
- 	pud = pud_offset(p4dp, address);
- 	if (pud_none(*pud))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	if (pud_devmap(*pud)) {
- 		ptl = pud_lock(mm, pud);
- 		page = follow_devmap_pud(vma, address, pud, flags, &ctx->pgmap);
- 		spin_unlock(ptl);
- 		if (page)
- 			return page;
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	}
- 	if (unlikely(pud_bad(*pud)))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 
- 	return follow_pmd_mask(vma, address, pud, flags, ctx);
+-	return follow_pmd_mask(vma, address, pud, flags, ctx);
++	return follow_pmd_mask(vma, address, pudp, flags, ctx);
  }
-@@ -777,10 +785,10 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
- 	p4dp = p4d_offset(pgdp, address);
- 	p4d = READ_ONCE(*p4dp);
- 	if (!p4d_present(p4d))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 	BUILD_BUG_ON(p4d_leaf(p4d));
- 	if (unlikely(p4d_bad(p4d)))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
  
- 	return follow_pud_mask(vma, address, p4dp, flags, ctx);
- }
-@@ -830,7 +838,7 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
- 	pgd = pgd_offset(mm, address);
- 
- 	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
--		return no_page_table(vma, flags);
-+		return no_page_table(vma, flags, address);
- 
- 	return follow_p4d_mask(vma, address, pgd, flags, ctx);
- }
+ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
 -- 
 2.44.0
 
