@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F5188E7C2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:04:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF6188E7C8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:04:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n3XRX+do;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sEXhPEfA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VLV6PHrz3vdd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:04:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VMH52G5z3vlF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:04:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n3XRX+do;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sEXhPEfA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VKp6YrVz3dTw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:03:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VLQ2Zrrz3vgZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:03:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 85EBDCE26B4;
-	Wed, 27 Mar 2024 15:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2115C433F1;
-	Wed, 27 Mar 2024 15:03:19 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 4B910CE26D9;
+	Wed, 27 Mar 2024 15:03:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAA5C433F1;
+	Wed, 27 Mar 2024 15:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711551804;
-	bh=7eEcZmvTzb8VSbNdQfoe1CbrQJGiq8lc7tQjpI5gzrI=;
+	s=k20201202; t=1711551835;
+	bh=hrWUIu1S4DXcjUN8so6lC+qmnHu3MFuX+fS4XcrdbO8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n3XRX+dorHzwJYR0nkw+/2S37Z3avXPbnL3l4xeBZaO1cOokPn4Sn8Hl3ZgYqaHK4
-	 0kubFaY2NZBNaaFz+7fdRscWPnZxRPDlZVhYImbvdRTPeKaN4OyaH/sOSgLmtAlYUt
-	 Py3S4E8DHYrdpnkfbALpT6mXIVFFYENSMqZFE0nVREpzuBagIQiXz1haBQlKTeyGMO
-	 Mfmoclvn7X/CefsCt75iA8cIawPUlLgToUoGLqqiCWhn5GdaVUMHMMRhSW1z+TYvQM
-	 Zpuu3oMbg25Sp08D4ejJN4eErkxISgRYvHfEgaYTvQunVgbodg7kui6XhwXKZ/DNsl
-	 sUZGhIwYQm2GQ==
-Date: Wed, 27 Mar 2024 17:02:38 +0200
+	b=sEXhPEfA8uvevGFpChDpATF2dMUKGWLnO5+bt+v7isVd7EjxTKF99rLKMlCoCY2Jk
+	 LuBNcgxFXvcAgzKgdn7vsNZjHWI/5Sxa9eaRM8pqyajO+AVM0tR5DZkT4hNHK6CO2A
+	 w6S39o/WjUkgG+q0WSK5KMJFjhLU7SRfEIgObn/GsY8ta+z1NArzQzAOYHOeZnYnjW
+	 e38vh+dRtIDDS4AosbPwEtJyLKxcC3Cc6m+WHoxDCOw+3s9xMFHxTRa22EtgGEEj/f
+	 8i2TtvEZt8J0HLpsg/flQsmKDxLTLrVkjOuog3osUis787HulTYqsgEXHQXq6rhSio
+	 WTScQfYfAJsMw==
+Date: Wed, 27 Mar 2024 17:03:10 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH RFC 2/3] mm/treewide: rename CONFIG_HAVE_FAST_GUP to
- CONFIG_HAVE_GUP_FAST
-Message-ID: <ZgQ1Dh2KZ3JvevX_@kernel.org>
+Subject: Re: [PATCH RFC 3/3] mm: use "GUP-fast" instead "fast GUP" in
+ remaining comments
+Message-ID: <ZgQ1LtMUiaj5maDO@kernel.org>
 References: <20240327130538.680256-1-david@redhat.com>
- <20240327130538.680256-3-david@redhat.com>
+ <20240327130538.680256-4-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240327130538.680256-3-david@redhat.com>
+In-Reply-To: <20240327130538.680256-4-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,30 +64,49 @@ Cc: linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 27, 2024 at 02:05:37PM +0100, David Hildenbrand wrote:
-> Nowadays, we call it "GUP-fast", the external interface includes
-> functions like "get_user_pages_fast()", and we renamed all internal
-> functions to reflect that as well.
-> 
-> Let's make the config option reflect that.
+On Wed, Mar 27, 2024 at 02:05:38PM +0100, David Hildenbrand wrote:
+> Let's fixup the remaining comments to consistently call that thing
+> "GUP-fast". With this change, we consistently call it "GUP-fast".
 > 
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
 Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
 > ---
->  arch/arm/Kconfig       | 2 +-
->  arch/arm64/Kconfig     | 2 +-
->  arch/loongarch/Kconfig | 2 +-
->  arch/mips/Kconfig      | 2 +-
->  arch/powerpc/Kconfig   | 2 +-
->  arch/s390/Kconfig      | 2 +-
->  arch/sh/Kconfig        | 2 +-
->  arch/x86/Kconfig       | 2 +-
->  include/linux/rmap.h   | 8 ++++----
->  kernel/events/core.c   | 4 ++--
->  mm/Kconfig             | 2 +-
->  mm/gup.c               | 6 +++---
->  mm/internal.h          | 2 +-
->  13 files changed, 19 insertions(+), 19 deletions(-)
+>  mm/filemap.c    | 2 +-
+>  mm/khugepaged.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 387b394754fa..c668e11cd6ef 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1810,7 +1810,7 @@ EXPORT_SYMBOL(page_cache_prev_miss);
+>   * C. Return the page to the page allocator
+>   *
+>   * This means that any page may have its reference count temporarily
+> - * increased by a speculative page cache (or fast GUP) lookup as it can
+> + * increased by a speculative page cache (or GUP-fast) lookup as it can
+>   * be allocated by another user before the RCU grace period expires.
+>   * Because the refcount temporarily acquired here may end up being the
+>   * last refcount on the page, any page allocation must be freeable by
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 38830174608f..6972fa05132e 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1169,7 +1169,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+>  	 * huge and small TLB entries for the same virtual address to
+>  	 * avoid the risk of CPU bugs in that area.
+>  	 *
+> -	 * Parallel fast GUP is fine since fast GUP will back off when
+> +	 * Parallel GUP-fast is fine since GUP-fast will back off when
+>  	 * it detects PMD is changed.
+>  	 */
+>  	_pmd = pmdp_collapse_flush(vma, address, pmd);
+> -- 
+> 2.43.2
+> 
+
+-- 
+Sincerely yours,
+Mike.
