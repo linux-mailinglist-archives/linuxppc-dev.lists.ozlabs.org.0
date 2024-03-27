@@ -1,91 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718AD88E887
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:22:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B711788E8B7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:24:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a8VDp2WD;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FfeBvTQ1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CzXBqQPV;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CzXBqQPV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Vll1cflz3vfV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:22:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Vnw3dvNz3vfr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:24:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a8VDp2WD;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FfeBvTQ1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CzXBqQPV;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CzXBqQPV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4Vl14jRFz3dTw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:21:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnC1LLcz3dwr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:23:42 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711552905;
+	s=mimecast20190719; t=1711553019;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4RJOr7EzuI0DVaYxx+XjeXTwjAi2iT7d0lhMZ/VIsjg=;
-	b=a8VDp2WDVgyboA8qBtWpRsUNHVKyVsc8ecB42vWPaCxi7L2I6aLlzUsd12wEni6Bz/IF9e
-	0DXN5FhKemqb74DMpAYYLlKJHsHzh215527tymhMbeAWXwr+MxbzPf1WY3DZBqtdywpvhG
-	TRGFzUEXQPGmKnzuovOS49QyXr5qhPA=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QY8+yIZm1ve5QuiynFE7MjMximJHpz8noDQuYnaNKN8=;
+	b=CzXBqQPVO/pokRZyQxofUKeKNFx80ixQWplciuRbqT/SLx1jUEC8xEHo2eo9eB9TRWcb24
+	hSZQg1LSV4o4CsmtABfBEzeJQDgQnihAC0qsUyEXlPxe33RexQBrx0Fm6oYdrfMGSV5ua5
+	gR37x5eduuQxpB2ir48AExa7AtELPtM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711552906;
+	s=mimecast20190719; t=1711553019;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4RJOr7EzuI0DVaYxx+XjeXTwjAi2iT7d0lhMZ/VIsjg=;
-	b=FfeBvTQ1YOCM6sVNyKpde99nQEnNF1bbiPegJ6LoRMJz4OLuzJ7Fw8hizVP/xUyE3pUtTI
-	pg2pnt6R7jteuiaraKjG1pwwKNW7Pah3Zsuf+7wcy8fZNtwkEprZkD3msgiSMEzEZw4TX7
-	h/hxo47DbbYOVBC3z3m8yRRJ/luCImU=
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
- [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QY8+yIZm1ve5QuiynFE7MjMximJHpz8noDQuYnaNKN8=;
+	b=CzXBqQPVO/pokRZyQxofUKeKNFx80ixQWplciuRbqT/SLx1jUEC8xEHo2eo9eB9TRWcb24
+	hSZQg1LSV4o4CsmtABfBEzeJQDgQnihAC0qsUyEXlPxe33RexQBrx0Fm6oYdrfMGSV5ua5
+	gR37x5eduuQxpB2ir48AExa7AtELPtM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-504-QV8Sbxr-NLuNHktA2OPcDQ-1; Wed, 27 Mar 2024 11:21:44 -0400
-X-MC-Unique: QV8Sbxr-NLuNHktA2OPcDQ-1
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-6e4fe655c93so2425755a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:21:44 -0700 (PDT)
+ us-mta-171-zqWzHnr-PUK8v505i74Qdg-1; Wed, 27 Mar 2024 11:23:36 -0400
+X-MC-Unique: zqWzHnr-PUK8v505i74Qdg-1
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-69152af7760so25771946d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711552903; x=1712157703;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4RJOr7EzuI0DVaYxx+XjeXTwjAi2iT7d0lhMZ/VIsjg=;
-        b=WYB5aSfSSEcfoaf6b5SpHFalUTbuXsMojk5+PcVhYUesAeqI0MRKsYyuhSrT/b/W85
-         4rSGPliY5bwC0nlXaac0LciekCdJrn19oXZbzMDBv64YsH8LGhXjScSHRmP9ZgbtOWjd
-         /BZxyvC2hlCGiJa8JwzJLMSF9BEOg8y4bEvi9cPRF/wCeKDpfqeFSvGhNuKLUW/7DTwO
-         3R5lyK2jhBuUQDMvUtBIKMG0VXtxYindWius6B4ibyCJ2xecXw/z58Z7U5SmjdkTy7OT
-         5YAINo00gd21cMLbte/c/iWNAcCbU5eVBJl0+iWT1W3d4vzKtJZYwlrdyGQcNGZWoxme
-         TK4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXr3x6HYWTwZA7fY+JA/jeSuonbxPDV/B2lU5d4ECTxPs05RX4KtVxZvRZQQEGUgoXSkQVSfVdnAXZF8dA9I26Aq46PIGbogupSULMOYw==
-X-Gm-Message-State: AOJu0YzqYeIMsxXMuuEeP1Qvd+U+e675rNJQYRxiI5wRyfSp6iuJSiBM
-	0axDswC0An56IHs12YEU4atKvnnDZ4jP2MChqwVffNDJzPWtXKJB9c+/0R0NRGj87fxue6gytVn
-	6CfWxfcr+LpAQuZavaVaUJo1vjws45QM0oH6+KpL3AzWoJ4J82HbctFdFQgMlY5o=
-X-Received: by 2002:a05:6808:128a:b0:3c3:d729:1d56 with SMTP id a10-20020a056808128a00b003c3d7291d56mr316754oiw.0.1711552903442;
-        Wed, 27 Mar 2024 08:21:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxT5qAZWntttFMbBHTXwtvywmg90pV0zoL9F4zS7SQ4GsHwDy+Ru4KfcRdtRpsXZfeVg5bqg==
-X-Received: by 2002:a05:6808:128a:b0:3c3:d729:1d56 with SMTP id a10-20020a056808128a00b003c3d7291d56mr316719oiw.0.1711552902921;
-        Wed, 27 Mar 2024 08:21:42 -0700 (PDT)
-Received: from x1n ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id r15-20020a056214212f00b0069698528727sm2350243qvc.90.2024.03.27.08.21.41
+        d=1e100.net; s=20230601; t=1711553016; x=1712157816;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QY8+yIZm1ve5QuiynFE7MjMximJHpz8noDQuYnaNKN8=;
+        b=IgNjwIA7ZzjT4lplh3Xqf5oUCPPO46MnxDGkm+DeGu363McXmHRov7iN25cNyM8CnH
+         x0gYSvVPfaeReQVcrCnNfe+NysJBnOF9+L99rTYYDebmjJErGBgKqVInJF7RcUrJ5PkK
+         MFfu6VozhIXhzl70zrPm/B5VsINvg7Q94jVCM9YzIcM5EQa80fKL/y4GQTTqj4fUT3Qa
+         hHbB54tAiGu1+pIinQGuoylXAsx/duGogJPCz8icpEA38iHWDGC5X1K108VSfIoZv1Le
+         LN5a9FmIBx3EC8eIobBXZRIEYwokvKOGcpbwxyvPeCI0j/W46jXOfBvnE1yCOzs5GpR6
+         4GyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKJaQyno9Ai9aetKWY1UOYGfQBgV/yj8BplO2T8qS8zu5hT5RXH6WFIc0EX16CzK3TVCB4pRQPD5Qz/ZyPRIxkkY5GzIwX71RT3mciYA==
+X-Gm-Message-State: AOJu0YwdgoORFuGfRu1no9IUZaMe/AbrA0kneOPC6OFy8x5uh0SnvmqC
+	u3NnzESMUUvyBEJOhTmMhV+jqL2mWegtb4rEUAdYA14Ny2UU7nogact/qfkQJsGg5YhsKhRE0Qk
+	4ZjVoVr6abF8eDyK7OSgs+Mjt3vSmR17ktY0vr/CggxJcGHwkyDuNaED61O/fRjg=
+X-Received: by 2002:a05:6214:4a07:b0:696:8ecc:c368 with SMTP id pg7-20020a0562144a0700b006968eccc368mr9338922qvb.5.1711553015494;
+        Wed, 27 Mar 2024 08:23:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIDOc++LqI5apT0o+E9CespyQta03LCPOzKebS/1UvNBD/Rvzf0d7U/D6UOW074NAt3LtIIw==
+X-Received: by 2002:a05:6214:4a07:b0:696:8ecc:c368 with SMTP id pg7-20020a0562144a0700b006968eccc368mr9338893qvb.5.1711553014922;
+        Wed, 27 Mar 2024 08:23:34 -0700 (PDT)
+Received: from x1n.redhat.com ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 08:21:42 -0700 (PDT)
-Date: Wed, 27 Mar 2024 11:21:40 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH RFC 0/3] mm/gup: consistently call it GUP-fast
-Message-ID: <ZgQ5hNltQ2DHQXps@x1n>
-References: <20240327130538.680256-1-david@redhat.com>
+        Wed, 27 Mar 2024 08:23:34 -0700 (PDT)
+From: peterx@redhat.com
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 00/13] mm/gup: Unify hugetlb, part 2
+Date: Wed, 27 Mar 2024 11:23:19 -0400
+Message-ID: <20240327152332.950956-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-In-Reply-To: <20240327130538.680256-1-david@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,40 +97,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, peterx@redhat.com, Andrew Jones <andrew.jones@linux.dev>, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, Christoph Hellwig <hch@infradead.org>, Matthew Wilcox <willy@infradead.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 27, 2024 at 02:05:35PM +0100, David Hildenbrand wrote:
-> Some cleanups around function names, comments and the config option of
-> "GUP-fast" -- GUP without "lock" safety belts on.
-> 
-> With this cleanup it's easy to judge which functions are GUP-fast specific.
-> We now consistently call it "GUP-fast", avoiding mixing it with "fast GUP",
-> "lockless", or simply "gup" (which I always considered confusing in the
-> ode).
-> 
-> So the magic now happens in functions that contain "gup_fast", whereby
-> gup_fast() is the entry point into that magic. Comments consistently
-> reference either "GUP-fast" or "gup_fast()".
-> 
-> Based on mm-unstable from today. I won't CC arch maintainers, but only
-> arch mailing lists, to reduce noise.
-> 
-> Tested on x86_64, cross compiled on a bunch of archs, whereby some of them
-> don't properly even compile on mm-unstable anymore in my usual setup
-> (alpha, arc, parisc64, sh) ... maybe the cross compilers are outdated,
-> but there are no new ones around. Hm.
+From: Peter Xu <peterx@redhat.com>
 
-I'm not sure what config you tried there; as I am doing some build tests
-recently, I found turning off CONFIG_SAMPLES + CONFIG_GCC_PLUGINS could
-avoid a lot of issues, I think it's due to libc missing.  But maybe not the
-case there.
+v4:
+- Fix build issues, tested on more archs/configs ([x86_64, i386, arm, arm64,
+  powerpc, riscv, s390] x [allno, alldef, allmod]).
+  - Squashed the fixup series into v3, touched up commit messages [1]
+  - Added the patch to fix pud_pfn() into the series [2]
+  - Fixed one more build issue on arm+alldefconfig, where pgd_t is a
+    two-item array.
+- Manage R-bs: add some, remove some (due to the squashes above)
+- Rebase to latest mm-unstable (2f6182cd23a7, March 26th)
 
-The series makes sense to me, the naming is confusing.  Btw, thanks for
-posting this as RFC. This definitely has a conflict with the other gup
-series that I had; I'll post v4 of that shortly.
+rfc: https://lore.kernel.org/r/20231116012908.392077-1-peterx@redhat.com
+v1:  https://lore.kernel.org/r/20231219075538.414708-1-peterx@redhat.com
+v2:  https://lore.kernel.org/r/20240103091423.400294-1-peterx@redhat.com
+v3:  https://lore.kernel.org/r/20240321220802.679544-1-peterx@redhat.com
+
+The series removes the hugetlb slow gup path after a previous refactor work
+[1], so that slow gup now uses the exact same path to process all kinds of
+memory including hugetlb.
+
+For the long term, we may want to remove most, if not all, call sites of
+huge_pte_offset().  It'll be ideal if that API can be completely dropped
+from arch hugetlb API.  This series is one small step towards merging
+hugetlb specific codes into generic mm paths.  From that POV, this series
+removes one reference to huge_pte_offset() out of many others.
+
+One goal of such a route is that we can reconsider merging hugetlb features
+like High Granularity Mapping (HGM).  It was not accepted in the past
+because it may add lots of hugetlb specific codes and make the mm code even
+harder to maintain.  With a merged codeset, features like HGM can hopefully
+share some code with THP, legacy (PMD+) or modern (continuous PTEs).
+
+To make it work, the generic slow gup code will need to at least understand
+hugepd, which is already done like so in fast-gup.  Due to the specialty of
+hugepd to be software-only solution (no hardware recognizes the hugepd
+format, so it's purely artificial structures), there's chance we can merge
+some or all hugepd formats with cont_pte in the future.  That question is
+yet unsettled from Power side to have an acknowledgement.  As of now for
+this series, I kept the hugepd handling because we may still need to do so
+before getting a clearer picture of the future of hugepd.  The other reason
+is simply that we did it already for fast-gup and most codes are still
+around to be reused.  It'll make more sense to keep slow/fast gup behave
+the same before a decision is made to remove hugepd.
+
+There's one major difference for slow-gup on cont_pte / cont_pmd handling,
+currently supported on three architectures (aarch64, riscv, ppc).  Before
+the series, slow gup will be able to recognize e.g. cont_pte entries with
+the help of huge_pte_offset() when hstate is around.  Now it's gone but
+still working, by looking up pgtable entries one by one.
+
+It's not ideal, but hopefully this change should not affect yet on major
+workloads.  There's some more information in the commit message of the last
+patch.  If this would be a concern, we can consider teaching slow gup to
+recognize cont pte/pmd entries, and that should recover the lost
+performance.  But I doubt its necessity for now, so I kept it as simple as
+it can be.
+
+Test Done
+=========
+
+For x86_64, tested full gup_test matrix over 2MB huge pages. For aarch64,
+tested the same over 64KB cont_pte huge pages.
+
+One note is that this v3 didn't go through any ppc test anymore, as finding
+such system can always take time.  It's based on the fact that it was
+tested in previous versions, and this version should have zero change
+regarding to hugepd sections.
+
+If anyone (Christophe?) wants to give it a shot on PowerPC, please do and I
+would appreciate it: "./run_vmtests.sh -a -t gup_test" should do well
+enough (please consider [2] applied if hugepd is <1MB), as long as we're
+sure the hugepd pages are touched as expected.
+
+Patch layout
+=============
+
+Patch 1-8:    Preparation works, or cleanups in relevant code paths
+Patch 9-11:   Teach slow gup with all kinds of huge entries (pXd, hugepd)
+Patch 12:     Drop hugetlb_follow_page_mask()
+
+More information can be found in the commit messages of each patch.  Any
+comment will be welcomed.  Thanks.
+
+[1] https://lore.kernel.org/all/20230628215310.73782-1-peterx@redhat.com
+[2] https://lore.kernel.org/r/20240321215047.678172-1-peterx@redhat.com
+
+Peter Xu (13):
+  mm/Kconfig: CONFIG_PGTABLE_HAS_HUGE_LEAVES
+  mm/hugetlb: Declare hugetlbfs_pagecache_present() non-static
+  mm: Make HPAGE_PXD_* macros even if !THP
+  mm: Introduce vma_pgtable_walk_{begin|end}()
+  mm/arch: Provide pud_pfn() fallback
+  mm/gup: Drop folio_fast_pin_allowed() in hugepd processing
+  mm/gup: Refactor record_subpages() to find 1st small page
+  mm/gup: Handle hugetlb for no_page_table()
+  mm/gup: Cache *pudp in follow_pud_mask()
+  mm/gup: Handle huge pud for follow_pud_mask()
+  mm/gup: Handle huge pmd for follow_pmd_mask()
+  mm/gup: Handle hugepd for follow_page()
+  mm/gup: Handle hugetlb in the generic follow_page_mask code
+
+ arch/riscv/include/asm/pgtable.h    |   1 +
+ arch/s390/include/asm/pgtable.h     |   1 +
+ arch/sparc/include/asm/pgtable_64.h |   1 +
+ arch/x86/include/asm/pgtable.h      |   1 +
+ include/linux/huge_mm.h             |  37 +-
+ include/linux/hugetlb.h             |  16 +-
+ include/linux/mm.h                  |   3 +
+ include/linux/pgtable.h             |  10 +
+ mm/Kconfig                          |   6 +
+ mm/gup.c                            | 518 ++++++++++++++++++++--------
+ mm/huge_memory.c                    | 133 +------
+ mm/hugetlb.c                        |  75 +---
+ mm/internal.h                       |   7 +-
+ mm/memory.c                         |  12 +
+ 14 files changed, 441 insertions(+), 380 deletions(-)
 
 -- 
-Peter Xu
+2.44.0
 
