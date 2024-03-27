@@ -1,63 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC7588D539
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 04:51:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2115188D5AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 06:05:44 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GmSRCuBR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JblpmIH7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4CQD0blQz3dXb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 14:51:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4F456Qhzz3vZB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:05:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GmSRCuBR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JblpmIH7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=haifeng.zhao@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nicholas@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4CPT10h5z3c4C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 14:50:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711511437; x=1743047437;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8FuvHj1lo7MqFCoSr7VmIEgHXsnZYyUvy3bJUnQm6yI=;
-  b=GmSRCuBRVNPaodXaA2hn+aYde0J5vsSEjTTNRl6ocCGx/f/9fWe8clX1
-   dh8VfC7g0RGxsjX/XKyik3syl6fGGx5xTPZo9Za9T3Y1MatsTCJmcF271
-   mat27cAdaeg/RbpzEYCZIeJ+sXGBiakLFRlV6tCqpEvyg6xsFTp21Cchr
-   BluOxJnq+sSpwO6jsGFXlmN1TxJjJl89F3eec3DC3mbbwfbmVTglUMqzj
-   h58kl2NfEq3Bn6h8sBdps1mOCLrOKzdzfwKNII7dVHU/nBuIVpAe6E0dc
-   cA1agZ47mYGcws52MfoOsdeUn/VUdeEjeM1021BkZ2SF4CTrH2o6XfAp1
-   g==;
-X-CSE-ConnectionGUID: c+mZkkHwQUeFsYl7vpj9KQ==
-X-CSE-MsgGUID: H3YOLnbMSG+77tc+Q4w5KA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6449944"
-X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
-   d="scan'208";a="6449944"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 20:50:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
-   d="scan'208";a="16095770"
-Received: from zjiang7-mobl.ccr.corp.intel.com (HELO [10.254.212.75]) ([10.254.212.75])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 20:50:10 -0700
-Message-ID: <ac855191-1289-40f5-b910-fb9558d5df76@linux.intel.com>
-Date: Wed, 27 Mar 2024 11:49:35 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4F3K1Qlsz2y3b
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 16:05:00 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42R3oDRf003154;
+	Wed, 27 Mar 2024 05:04:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Xy749pr4ANI8S1kI2hjv5J/U5FI734Yj9pdk9vDyhVs=;
+ b=JblpmIH7yMtqeRe/82rGz5b+IGXpOIW2Pah0tzLgMeaEmySl6SamaEg/7ZsdyLluuGE7
+ drIpgY0w9RyNfXY1rm/DnrWuKYsi0d7IYr00w6oZ7ScvvLfHkLqAgj7xKaM/LW+zXBf+
+ QhgpaFo9zS23UE7X6a3w7hKJ0D1W9rewbN61NDg0nwDsNVgZDSW2k8T/wkAglFXC2DeG
+ bQZ7PyIqBwZN1IFLt+x+R2Lpaxm05YptF6irHYl+cMihcZDIsAZN6pX5i4OkmLb4X39q
+ b9HIgygkIxudUbo7nRZ/jHJEr3eWNtKS/VUjWefQ7lfgVe9FGNk/67XdnnIm2j8n/b0m vg== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x49xwr986-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 05:04:53 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42R20C6C011243;
+	Wed, 27 Mar 2024 04:59:52 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x2bmm449c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Mar 2024 04:59:52 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42R4xmGE52625894
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 Mar 2024 04:59:51 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DF8812004B;
+	Wed, 27 Mar 2024 04:59:48 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 19D0920065;
+	Wed, 27 Mar 2024 04:59:48 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 27 Mar 2024 04:59:48 +0000 (GMT)
+Received: from nicholasmvm.. (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AE12060125;
+	Wed, 27 Mar 2024 15:59:45 +1100 (AEDT)
+From: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] Add static_key_feature_checks_initialized flag
+Date: Wed, 27 Mar 2024 04:59:11 +0000
+Message-Id: <20240327045911.64543-1-nicholas@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 pci-next 1/2] PCI/AER: correctable error message as
- KERN_INFO
-To: Bjorn Helgaas <helgaas@kernel.org>
-References: <20240326211705.GA1497507@bhelgaas>
-From: Ethan Zhao <haifeng.zhao@linux.intel.com>
-In-Reply-To: <20240326211705.GA1497507@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JQFq7nq6rIknJKo0KB1tJV0-0W7eKvXV
+X-Proofpoint-GUID: JQFq7nq6rIknJKo0KB1tJV0-0W7eKvXV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-27_02,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 malwarescore=0 clxscore=1011
+ adultscore=0 phishscore=0 mlxscore=0 impostorscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403270031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,115 +91,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rajatja@chromium.org, rajat.khandelwal@linux.intel.com, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, mahesh@linux.ibm.com, oohall@gmail.com, Xi Ruoyao <xry111@xry111.site>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Miehlbradt <nicholas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/27/2024 5:17 AM, Bjorn Helgaas wrote:
-> On Tue, Mar 26, 2024 at 09:39:54AM +0800, Ethan Zhao wrote:
->> On 3/25/2024 6:15 PM, Xi Ruoyao wrote:
->>> On Mon, 2024-03-25 at 16:45 +0800, Ethan Zhao wrote:
->>>> On 3/25/2024 1:19 AM, Xi Ruoyao wrote:
->>>>> On Mon, 2023-09-18 at 14:39 -0500, Bjorn Helgaas wrote:
->>>>>> On Mon, Sep 18, 2023 at 07:42:30PM +0800, Xi Ruoyao wrote:
->>>>>>> ...
->>>>>>> My workstation suffers from too much correctable AER reporting as well
->>>>>>> (related to Intel's errata "RPL013: Incorrectly Formed PCIe Packets May
->>>>>>> Generate Correctable Errors" and/or the motherboard design, I guess).
->>>>>> We should rate-limit correctable error reporting so it's not
->>>>>> overwhelming.
->>>>>>
->>>>>> At the same time, I'm *also* interested in the cause of these errors,
->>>>>> in case there's a Linux defect or a hardware erratum that we can work
->>>>>> around.  Do you have a bug report with any more details, e.g., a dmesg
->>>>>> log and "sudo lspci -vv" output?
->>>>> Hi Bjorn,
->>>>>
->>>>> Sorry for the *very* late reply (somehow I didn't see the reply at all
->>>>> before it was removed by my cron job, and now I just savaged it from
->>>>> lore.kernel.org...)
->>>>>
->>>>> The dmesg is like:
->>>>>
->>>>> [  882.456994] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:00:1c.1
->>>>> [  882.457002] pcieport 0000:00:1c.1: AER: found no error details for 0000:00:1c.1
->>>>> [  882.457003] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:06:00.0
->>>>> [  883.545763] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:00:1c.1
->>>>> [  883.545789] pcieport 0000:00:1c.1: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
->>>>> [  883.545790] pcieport 0000:00:1c.1:   device [8086:7a39] error status/mask=00000001/00002000
->>>>> [  883.545792] pcieport 0000:00:1c.1:    [ 0] RxErr                  (First)
->>>>> [  883.545794] pcieport 0000:00:1c.1: AER:   Error of this Agent is reported first
->>>>> [  883.545798] r8169 0000:06:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Transmitter ID)
->>>>> [  883.545799] r8169 0000:06:00.0:   device [10ec:8125] error status/mask=00001101/0000e000
->>>>> [  883.545800] r8169 0000:06:00.0:    [ 0] RxErr                  (First)
->>>>> [  883.545801] r8169 0000:06:00.0:    [ 8] Rollover
->>>>> [  883.545802] r8169 0000:06:00.0:    [12] Timeout
->>>>> [  883.545815] pcieport 0000:00:1c.1: AER: Correctable error message received from 0000:00:1c.1
->>>>> [  883.545823] pcieport 0000:00:1c.1: AER: found no error details for 0000:00:1c.1
->>>>> [  883.545824] pcieport 0000:00:1c.1: AER: Multiple Correctable error message received from 0000:06:00.0
->>>>>
->>>>> lspci output attached.
->>>>>
->>>>> Intel has issued an errata "RPL013" saying:
->>>>>
->>>>> "Under complex microarchitectural conditions, the PCIe controller may
->>>>> transmit an incorrectly formed Transaction Layer Packet (TLP), which
->>>>> will fail CRC checks. When this erratum occurs, the PCIe end point may
->>>>> record correctable errors resulting in either a NAK or link recovery.
->>>>> Intel® has not observed any functional impact due to this erratum."
->>>>>
->>>>> But I'm really unsure if it describes my issue.
->>>>>
->>>>> Do you think I have some broken hardware and I should replace the CPU
->>>>> and/or the motherboard (where the r8169 is soldered)?  I've noticed that
->>>>> my 13900K is almost impossible to overclock (despite it's a K), but I've
->>>>> not encountered any issue other than these AER reporting so far after I
->>>>> gave up overclocking.
->>>> Seems there are two r8169 nics on your board, only 0000:06:00.0 reports
->>>> aer errors, how about another one the 0000:07:00.0 nic ?
->>> It never happens to 0000:07:00.0, even if I plug the ethernet cable into
->>> it instead of 0000:06:00.0.
->> So something is wrong with the physical layer, I guess.
->>
->>> Maybe I should just use 0000:07:00.0 and blacklist 0000:06:00.0 as I
->>> don't need two NICs?
->> Yup,
->> ratelimit the AER warning is another choice instead of change WARN to INFO.
->> if corrected error flood happens, even the function is working, suggests
->> something was already wrong, likely will be worse, that is the meaning of
->> WARN I think.
-> We should fix this.  IMHO Correctable Errors should be "info" level,
-> non-alarming, and rate-limited.  They're basically hints about link
-> integrity.
+JUMP_LABEL_FEATURE_CHECK_DEBUG used static_key_initialized to determine
+whether {cpu,mmu}_has_feature() was used before static keys were
+initialized. However, {cpu,mmu}_has_feature() should not be used before
+setup_feature_keys() is called. As static_key_initalized is set much
+earlier during boot there is a window in which JUMP_LABEL_FEATURE_CHECK_DEBUG
+will not report errors. Add a flag specifically to indicate when
+{cpu,mmu}_has_feature() is safe to use.
 
-This case, hit following errors:
+Signed-off-by: Nicholas Miehlbradt <nicholas@linux.ibm.com>
+---
+ arch/powerpc/include/asm/cpu_has_feature.h | 2 +-
+ arch/powerpc/include/asm/feature-fixups.h  | 2 ++
+ arch/powerpc/include/asm/mmu.h             | 2 +-
+ arch/powerpc/lib/feature-fixups.c          | 8 ++++++++
+ 4 files changed, 12 insertions(+), 2 deletions(-)
 
-[  883.545800] r8169 0000:06:00.0:    [ 0] RxErr
-[  883.545801] r8169 0000:06:00.0:    [ 8] Rollover
-[  883.545802] r8169 0000:06:00.0:    [12] Timeout
+diff --git a/arch/powerpc/include/asm/cpu_has_feature.h b/arch/powerpc/include/asm/cpu_has_feature.h
+index 727d4b321937..0efabccd820c 100644
+--- a/arch/powerpc/include/asm/cpu_has_feature.h
++++ b/arch/powerpc/include/asm/cpu_has_feature.h
+@@ -29,7 +29,7 @@ static __always_inline bool cpu_has_feature(unsigned long feature)
+ #endif
+ 
+ #ifdef CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG
+-	if (!static_key_initialized) {
++	if (!static_key_feature_checks_initialized) {
+ 		printk("Warning! cpu_has_feature() used prior to jump label init!\n");
+ 		dump_stack();
+ 		return early_cpu_has_feature(feature);
+diff --git a/arch/powerpc/include/asm/feature-fixups.h b/arch/powerpc/include/asm/feature-fixups.h
+index 77824bd289a3..17d168dd8b49 100644
+--- a/arch/powerpc/include/asm/feature-fixups.h
++++ b/arch/powerpc/include/asm/feature-fixups.h
+@@ -291,6 +291,8 @@ extern long __start___rfi_flush_fixup, __stop___rfi_flush_fixup;
+ extern long __start___barrier_nospec_fixup, __stop___barrier_nospec_fixup;
+ extern long __start__btb_flush_fixup, __stop__btb_flush_fixup;
+ 
++extern bool static_key_feature_checks_initialized;
++
+ void apply_feature_fixups(void);
+ void update_mmu_feature_fixups(unsigned long mask);
+ void setup_feature_keys(void);
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index 3b72c7ed24cf..24f830cf9bb4 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -251,7 +251,7 @@ static __always_inline bool mmu_has_feature(unsigned long feature)
+ #endif
+ 
+ #ifdef CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG
+-	if (!static_key_initialized) {
++	if (!static_key_feature_checks_initialized) {
+ 		printk("Warning! mmu_has_feature() used prior to jump label init!\n");
+ 		dump_stack();
+ 		return early_mmu_has_feature(feature);
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index 4f82581ca203..b7201ba50b2e 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -25,6 +25,13 @@
+ #include <asm/firmware.h>
+ #include <asm/inst.h>
+ 
++/*
++ * Used to generate warnings if mmu or cpu feature check functions that
++ * use static keys before they are initialized.
++ */
++bool static_key_feature_checks_initialized __read_mostly;
++EXPORT_SYMBOL_GPL(static_key_feature_checks_initialized);
++
+ struct fixup_entry {
+ 	unsigned long	mask;
+ 	unsigned long	value;
+@@ -679,6 +686,7 @@ void __init setup_feature_keys(void)
+ 	jump_label_init();
+ 	cpu_feature_keys_init();
+ 	mmu_feature_keys_init();
++	static_key_feature_checks_initialized = true;
+ }
+ 
+ static int __init check_features(void)
+-- 
+2.40.1
 
-#1 Timeout -- replay timer timeout, means endpoint didn't response with ACK DLLP or
-NACK in time, that caused the re-send timer timeout, the sender will re-send the
-packet.
-
-#2 Rollover -- the counter of re-transmission reaches 0 (from 11b ->00b), means the
-sender had tried 3 times. that would trigger link retraining to recover.
-
-#1 & #2 happened together, but no uncorrected errors reported, means the link was
-recovered, the issue mostly caused by improper TxEQ, receiver equalization, bad
-signal integrity.
-
-#3 RxErr -- bad DLLP, bad TLP, clock issue, signal integrity issue etc.
-
-so, yup, basically, the signal integrity is not good enough.
-Though the function could work, its performance will be impacted.
-
-If we change it to "info" level, by default, users wouldn't see such errors, they
-might hit more serious data corruption/malfunction in the future without WARN
-precaution to them.
-
-Thanks,
-Ethan
-
-> Bjorn
->
