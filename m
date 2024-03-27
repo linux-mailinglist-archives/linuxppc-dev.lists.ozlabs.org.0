@@ -2,55 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B9D88EF6A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 20:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9166B88EFB6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 21:03:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKHszxO4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=lEOTnlTl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4cT44C82z3vbs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 06:40:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4czv2VgLz3vZQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 07:03:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKHszxO4;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=lEOTnlTl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4cSM2qYDz3c7s
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 06:39:31 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5DD3761173;
-	Wed, 27 Mar 2024 19:39:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3492BC433C7;
-	Wed, 27 Mar 2024 19:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711568368;
-	bh=mgDCCV9DYm3gE81YovhkygNKHO9RS0DsGnhFgu3kHyA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SKHszxO4HY0/TKQKrYd5xjeNheZExttn6ouZSQo7RamEADgZOHEGKOgxLgWnDAQsX
-	 TQk1EiCgbOjPSXUXVDKc1GHuMb8JYfr2n9dUTSMBL4fPlQCFaWvqtzr7SljGX8ozL0
-	 d+GxeE8i5/jrK3YAq+PzsRs9yg9Ub9Ye0zUWxbvydciwA80gaS/Cm+ZdJSIaW62wjN
-	 8mgdqhfJd0T7WESQFdfsQPBT5oU/lItq2D11cSo/Qk/7TSLc6IaPfRphmumfAFxMTP
-	 w0oml1KABCZkKYStlxNthCpMKTFGN6FZPoQQlay9J46ava0AXCk2S+OoNd/Q7U91J0
-	 LlcAACEC05P/g==
-Date: Wed, 27 Mar 2024 19:39:20 +0000
-From: Simon Horman <horms@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 12/14] sh: Add support for suppressing warning
- backtraces
-Message-ID: <20240327193920.GV403975@kernel.org>
-References: <20240325175248.1499046-1-linux@roeck-us.net>
- <20240325175248.1499046-13-linux@roeck-us.net>
- <20240327144431.GL403975@kernel.org>
- <320aacc6-b7e5-4c3d-948e-d0743ab26c5d@roeck-us.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4cyM66KZz3dXZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 07:02:02 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1e0878b76f3so2239945ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 13:02:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1711569719; x=1712174519; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IfyGhgpaDuL/FUm+Bqequ3n7X/gQ/Scu0/x5tn5zB10=;
+        b=lEOTnlTlsTTzB0rk6jofgJIUcoSarNNY4gEzoIov71GhGIa/xCksGoTFQCRuqDZWmy
+         sJl0HLHx+5yca+LImXQcq1fvUKd0YatB3SKun97QJ7N+d/dZ0fqrD9CAX3lMMYzKjrJS
+         Y42TmQ2XMpOHNzC/V56kOEyQeTQbf0Lc8q3xqgk9ud14RUwtV2kMqrAv7iFhihgIPioO
+         s3JhVBEZwi8oP7GUP0FVrsnNQPw6b0GRvRK7JsZ9UCY8UAJNLd2HD9kb2V1+8sucZzGK
+         GOBarDatTAycyeaqtHUGZgndjM2Vzm0yttMpZBphXO6wfkffbfSLPwCTn6PvcdhvbZjq
+         ST4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711569719; x=1712174519;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IfyGhgpaDuL/FUm+Bqequ3n7X/gQ/Scu0/x5tn5zB10=;
+        b=KGuiEW+R4qN9gvCXuf/vL8bdnoskXmcScd51FOrnZSiHlWNGOLhQ4j4rzyLyGYXrWV
+         P7tVGJz98LEcddN53zOHJR3Eo7FKBaaySkJ+UT+kVR4R3jMjZG71Z82/8QAIBqPc/+CJ
+         wDqpUAd4b+5hdASLvgdN9I6EEhYxFmf6zQ/bD6Kpc5Zjij0eVx4ugskD0yGoKu1GVhxZ
+         6EvOYo+GRRJR8cCPmxJdFbKNXVEpyFKmi+5MSN5v/1K1i6CVnGuMrBYSAZySajKJlUMm
+         ox7cuGb0adlMC8rPAPMcNPML15v/9kJS8PYG+6+YHVBEYxIvAFNiLmPxJuArfTTPBwfU
+         yEXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXkpDXAFeoFNTO0GYdNtZUgptKoaxFPz+1jCzlAYEqpVUC1ibtQ2ISld2lm9qH7dPjV5+/LW93sfXtrMtuTgPlfUgdh/sDLwHTAIOQDiQ==
+X-Gm-Message-State: AOJu0YzQD9k1mhSNMdSg2P/Jp2T/V9NfIS8dKdIg9JFyWzBl7HsWYofX
+	EQpdG057Gk7gqVevKGDQXBSI1eUcRq+Iw1PAYD9bPO/j7dHzf6QwdR02DgTvorc=
+X-Google-Smtp-Source: AGHT+IEARU4E/EcVAHx8vARVbt2kMjNg+KIZramOtQSdDofKvpaWh4CU2DiZjPQFyzvcMxh9ySg0ww==
+X-Received: by 2002:a17:902:d2cc:b0:1e0:e011:e3cb with SMTP id n12-20020a170902d2cc00b001e0e011e3cbmr442983plc.15.1711569718923;
+        Wed, 27 Mar 2024 13:01:58 -0700 (PDT)
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id u4-20020a170902e5c400b001dd0d0d26a4sm9446459plf.147.2024.03.27.13.01.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Mar 2024 13:01:58 -0700 (PDT)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org
+Subject: [PATCH v3 00/14] Unified cross-architecture kernel-mode FPU API
+Date: Wed, 27 Mar 2024 13:00:31 -0700
+Message-ID: <20240327200157.1097089-1-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.43.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <320aacc6-b7e5-4c3d-948e-d0743ab26c5d@roeck-us.net>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,106 +78,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Linux Kernel Functional Testing <lkft@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-ker
- nel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Masahiro Yamada <masahiroy@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, amd-gfx@lists.freedesktop.org, Ingo Molnar <mingo@redhat.com>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 27, 2024 at 08:10:51AM -0700, Guenter Roeck wrote:
-> On 3/27/24 07:44, Simon Horman wrote:
-> > On Mon, Mar 25, 2024 at 10:52:46AM -0700, Guenter Roeck wrote:
-> > > Add name of functions triggering warning backtraces to the __bug_table
-> > > object section to enable support for suppressing WARNING backtraces.
-> > > 
-> > > To limit image size impact, the pointer to the function name is only added
-> > > to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
-> > > CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
-> > > parameter is replaced with a (dummy) NULL parameter to avoid an image size
-> > > increase due to unused __func__ entries (this is necessary because __func__
-> > > is not a define but a virtual variable).
-> > > 
-> > > Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> > > ---
-> > > - Rebased to v6.9-rc1
-> > > - Added Tested-by:, Acked-by:, and Reviewed-by: tags
-> > > - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option
-> > > 
-> > >   arch/sh/include/asm/bug.h | 26 ++++++++++++++++++++++----
-> > >   1 file changed, 22 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/arch/sh/include/asm/bug.h b/arch/sh/include/asm/bug.h
-> > > index 05a485c4fabc..470ce6567d20 100644
-> > > --- a/arch/sh/include/asm/bug.h
-> > > +++ b/arch/sh/include/asm/bug.h
-> > > @@ -24,21 +24,36 @@
-> > >    * The offending file and line are encoded in the __bug_table section.
-> > >    */
-> > >   #ifdef CONFIG_DEBUG_BUGVERBOSE
-> > > +
-> > > +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
-> > > +# define HAVE_BUG_FUNCTION
-> > > +# define __BUG_FUNC_PTR	"\t.long %O2\n"
-> > > +#else
-> > > +# define __BUG_FUNC_PTR
-> > > +#endif /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
-> > > +
-> > 
-> > Hi Guenter,
-> > 
-> > a minor nit from my side: this change results in a Kernel doc warning.
-> > 
-> >       .../bug.h:29: warning: expecting prototype for _EMIT_BUG_ENTRY(). Prototype was for HAVE_BUG_FUNCTION() instead
-> > 
-> > Perhaps either the new code should be placed above the Kernel doc,
-> > or scripts/kernel-doc should be enhanced?
-> > 
-> 
-> Thanks a lot for the feedback.
-> 
-> The definition block needs to be inside CONFIG_DEBUG_BUGVERBOSE,
-> so it would be a bit odd to move it above the documentation
-> just to make kerneldoc happy. I am not really sure that to do
-> about it.
+This series unifies the kernel-mode FPU API across several architectures
+by wrapping the existing functions (where needed) in consistently-named
+functions placed in a consistent header location, with mostly the same
+semantics: they can be called from preemptible or non-preemptible task
+context, and are not assumed to be reentrant. Architectures are also
+expected to provide CFLAGS adjustments for compiling FPU-dependent code.
+For the moment, SIMD/vector units are out of scope for this common API.
 
-FWIIW, I agree that would be odd.
-But perhaps the #ifdef could also move above the Kernel doc?
-Maybe not a great idea, but the best one I've had so far.
+This allows us to remove the ifdeffery and duplicated Makefile logic at
+each FPU user. It then implements the common API on RISC-V, and converts
+a couple of users to the new API: the AMDGPU DRM driver, and the FPU
+self test.
 
-> I'll wait for comments from others before making any changes.
-> 
-> Thanks,
-> Guenter
-> 
-> > >   #define _EMIT_BUG_ENTRY				\
-> > >   	"\t.pushsection __bug_table,\"aw\"\n"	\
-> > >   	"2:\t.long 1b, %O1\n"			\
-> > > -	"\t.short %O2, %O3\n"			\
-> > > -	"\t.org 2b+%O4\n"			\
-> > > +	__BUG_FUNC_PTR				\
-> > > +	"\t.short %O3, %O4\n"			\
-> > > +	"\t.org 2b+%O5\n"			\
-> > >   	"\t.popsection\n"
-> > >   #else
-> > >   #define _EMIT_BUG_ENTRY				\
-> > >   	"\t.pushsection __bug_table,\"aw\"\n"	\
-> > >   	"2:\t.long 1b\n"			\
-> > > -	"\t.short %O3\n"			\
-> > > -	"\t.org 2b+%O4\n"			\
-> > > +	"\t.short %O4\n"			\
-> > > +	"\t.org 2b+%O5\n"			\
-> > >   	"\t.popsection\n"
-> > >   #endif
-> > > +#ifdef HAVE_BUG_FUNCTION
-> > > +# define __BUG_FUNC	__func__
-> > > +#else
-> > > +# define __BUG_FUNC	NULL
-> > > +#endif
-> > > +
-> > >   #define BUG()						\
-> > >   do {							\
-> > >   	__asm__ __volatile__ (				\
-> > 
-> > ...
-> 
+The underlying goal of this series is to allow using newer AMD GPUs
+(e.g. Navi) on RISC-V boards such as SiFive's HiFive Unmatched. Those
+GPUs need CONFIG_DRM_AMD_DC_FP to initialize, which requires kernel-mode
+FPU support.
+
+Previous versions:
+v2: https://lore.kernel.org/linux-kernel/20231228014220.3562640-1-samuel.holland@sifive.com/
+v1: https://lore.kernel.org/linux-kernel/20231208055501.2916202-1-samuel.holland@sifive.com/
+v0: https://lore.kernel.org/linux-kernel/20231122030621.3759313-1-samuel.holland@sifive.com/
+
+Changes in v3:
+ - Rebase on v6.9-rc1
+ - Limit ARCH_HAS_KERNEL_FPU_SUPPORT to 64BIT
+
+Changes in v2:
+ - Add documentation explaining the built-time and runtime APIs
+ - Add a linux/fpu.h header for generic isolation enforcement
+ - Remove file name from header comment
+ - Clean up arch/arm64/lib/Makefile, like for arch/arm
+ - Remove RISC-V architecture-specific preprocessor check
+ - Split altivec removal to a separate patch
+ - Use linux/fpu.h instead of asm/fpu.h in consumers
+ - Declare test_fpu() in a header
+
+Michael Ellerman (1):
+  drm/amd/display: Only use hard-float, not altivec on powerpc
+
+Samuel Holland (13):
+  arch: Add ARCH_HAS_KERNEL_FPU_SUPPORT
+  ARM: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  ARM: crypto: Use CC_FLAGS_FPU for NEON CFLAGS
+  arm64: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  arm64: crypto: Use CC_FLAGS_FPU for NEON CFLAGS
+  lib/raid6: Use CC_FLAGS_FPU for NEON CFLAGS
+  LoongArch: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  powerpc: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  x86: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+  riscv: Add support for kernel-mode FPU
+  drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
+  selftests/fpu: Move FP code to a separate translation unit
+  selftests/fpu: Allow building on other architectures
+
+ Documentation/core-api/floating-point.rst     | 78 +++++++++++++++++++
+ Documentation/core-api/index.rst              |  1 +
+ Makefile                                      |  5 ++
+ arch/Kconfig                                  |  6 ++
+ arch/arm/Kconfig                              |  1 +
+ arch/arm/Makefile                             |  7 ++
+ arch/arm/include/asm/fpu.h                    | 15 ++++
+ arch/arm/lib/Makefile                         |  3 +-
+ arch/arm64/Kconfig                            |  1 +
+ arch/arm64/Makefile                           |  9 ++-
+ arch/arm64/include/asm/fpu.h                  | 15 ++++
+ arch/arm64/lib/Makefile                       |  6 +-
+ arch/loongarch/Kconfig                        |  1 +
+ arch/loongarch/Makefile                       |  5 +-
+ arch/loongarch/include/asm/fpu.h              |  1 +
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/Makefile                         |  5 +-
+ arch/powerpc/include/asm/fpu.h                | 28 +++++++
+ arch/riscv/Kconfig                            |  1 +
+ arch/riscv/Makefile                           |  3 +
+ arch/riscv/include/asm/fpu.h                  | 16 ++++
+ arch/riscv/kernel/Makefile                    |  1 +
+ arch/riscv/kernel/kernel_mode_fpu.c           | 28 +++++++
+ arch/x86/Kconfig                              |  1 +
+ arch/x86/Makefile                             | 20 +++++
+ arch/x86/include/asm/fpu.h                    | 13 ++++
+ drivers/gpu/drm/amd/display/Kconfig           |  2 +-
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.c    | 35 +--------
+ drivers/gpu/drm/amd/display/dc/dml/Makefile   | 36 +--------
+ drivers/gpu/drm/amd/display/dc/dml2/Makefile  | 36 +--------
+ include/linux/fpu.h                           | 12 +++
+ lib/Kconfig.debug                             |  2 +-
+ lib/Makefile                                  | 26 +------
+ lib/raid6/Makefile                            | 31 ++------
+ lib/test_fpu.h                                |  8 ++
+ lib/{test_fpu.c => test_fpu_glue.c}           | 37 ++-------
+ lib/test_fpu_impl.c                           | 37 +++++++++
+ 37 files changed, 343 insertions(+), 190 deletions(-)
+ create mode 100644 Documentation/core-api/floating-point.rst
+ create mode 100644 arch/arm/include/asm/fpu.h
+ create mode 100644 arch/arm64/include/asm/fpu.h
+ create mode 100644 arch/powerpc/include/asm/fpu.h
+ create mode 100644 arch/riscv/include/asm/fpu.h
+ create mode 100644 arch/riscv/kernel/kernel_mode_fpu.c
+ create mode 100644 arch/x86/include/asm/fpu.h
+ create mode 100644 include/linux/fpu.h
+ create mode 100644 lib/test_fpu.h
+ rename lib/{test_fpu.c => test_fpu_glue.c} (71%)
+ create mode 100644 lib/test_fpu_impl.c
+
+-- 
+2.43.1
+
