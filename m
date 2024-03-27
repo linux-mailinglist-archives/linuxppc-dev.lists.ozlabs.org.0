@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B08A88DEF0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 13:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F81188DF07
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 13:20:56 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hl10Rivr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fspxh4aX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4QjT026Hz3vZn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 23:20:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4QkG1mMmz3vXZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 23:20:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hl10Rivr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fspxh4aX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4Qhj0Nsnz3cB2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 23:19:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4Qhq2w4pz3dXP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 23:19:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id B3982CE16C2;
-	Wed, 27 Mar 2024 12:19:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A4AC433C7;
-	Wed, 27 Mar 2024 12:19:28 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id B19CB61515;
+	Wed, 27 Mar 2024 12:19:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99BFC433C7;
+	Wed, 27 Mar 2024 12:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541969;
-	bh=tt8eU4VUfuIPZHdt++uGx7KknR4yhi/5oRxH0qFL6wU=;
+	s=k20201202; t=1711541977;
+	bh=GsRPpKxOMToQRVoKkukbsS+8ZQPqObxQNquJ7NUTJZQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Hl10RivrK0UO2jNeUl8nyJCh28iKoyaj1ts6qaXETWi54G/fMYQF8bQIgXPFtc1w+
-	 3tZak36C1vweMXoV8PYcGzfbADa50Ntd0Fzj0a0IEM8CJKe1T77YWzg4jxxbBbbSbX
-	 qCqQU321dsH+RJVMYa1Tu25xfNGorjJK+MmI5UQ5E6FVIwlO/Jn6XjokQeM7DxggFp
-	 bwarI25JRYIbYOxn+fdB5AyvM+as5k8TGRagm+ysKjQqfn8wmtH4NBVeLz/OWQp9qF
-	 iWvd1SOCNUwSkvuq5QpzUD35PmMw2j+s7rbeevTHee517eLS+wvGo44GVVJDAMDXl4
-	 PO4hITrit5nXQ==
+	b=fspxh4aX3gB8rtjCugJSAfa3WChKIGp1u4UI3WKLNs/glbk34ete6FAia7AiTjhOZ
+	 sPY00ZQqR92hXPWWpMag6VyXQeqGvWa2BWRQ3LY6kkVHu4CrMhEHpRKCKHftXJ9ghe
+	 jjEDNcnj3Sk59eN36gqv/KJ0WBIgrlwBzFjZlyVKmmL3KOLAWZqJGvzNWhrCXNLaf0
+	 omptx3MM01khJ0RuWsy7UwOKLxrtNnuXoci2g7y7472BR+4XoxAZNstsdmYYA4sBGA
+	 v6g945B8xyFb5i3cZQs7Qgm0rEbKBhfL+oePRYgxm/yCieVfOjJ5qj2mqhIF4++4ur
+	 ncX+ZQJH6JW4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	mpe@ellerman.id.au
-Subject: FAILED: Patch "powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core" failed to apply to 5.10-stable tree
-Date: Wed, 27 Mar 2024 08:19:27 -0400
-Message-ID: <20240327121927.2835195-1-sashal@kernel.org>
+Subject: FAILED: Patch "powerpc/smp: Increase nr_cpu_ids to include the boot CPU" failed to apply to 5.10-stable tree
+Date: Wed, 27 Mar 2024 08:19:35 -0400
+Message-ID: <20240327121936.2835310-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
@@ -73,34 +73,34 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5580e96dad5a439d561d9648ffcbccb739c2a120 Mon Sep 17 00:00:00 2001
+From 777f81f0a9c780a6443bcf2c7785f0cc2e87c1ef Mon Sep 17 00:00:00 2001
 From: Michael Ellerman <mpe@ellerman.id.au>
 Date: Thu, 15 Feb 2024 00:14:04 +1100
-Subject: [PATCH] powerpc/smp: Adjust nr_cpu_ids to cover all threads of a core
+Subject: [PATCH] powerpc/smp: Increase nr_cpu_ids to include the boot CPU
 
-If nr_cpu_ids is too low to include at least all the threads of a single
-core adjust nr_cpu_ids upwards. This avoids triggering odd bugs in code
-that assumes all threads of a core are available.
+If nr_cpu_ids is too low to include the boot CPU adjust nr_cpu_ids
+upward. Otherwise the kernel will BUG when trying to allocate a paca
+for the boot CPU and fail to boot.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231229120107.2281153-1-mpe@ellerman.id.au
+Link: https://msgid.link/20231229120107.2281153-2-mpe@ellerman.id.au
 ---
  arch/powerpc/kernel/prom.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 0b5878c3125b1..58e80076bed5c 100644
+index 58e80076bed5c..77364729a1b61 100644
 --- a/arch/powerpc/kernel/prom.c
 +++ b/arch/powerpc/kernel/prom.c
-@@ -375,6 +375,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 	if (IS_ENABLED(CONFIG_PPC64))
- 		boot_cpu_hwid = be32_to_cpu(intserv[found_thread]);
+@@ -381,6 +381,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 			nr_cpu_ids);
+ 	}
  
-+	if (nr_cpu_ids % nthreads != 0) {
-+		set_nr_cpu_ids(ALIGN(nr_cpu_ids, nthreads));
-+		pr_warn("nr_cpu_ids was not a multiple of threads_per_core, adjusted to %d\n",
-+			nr_cpu_ids);
++	if (boot_cpuid >= nr_cpu_ids) {
++		set_nr_cpu_ids(min(CONFIG_NR_CPUS, ALIGN(boot_cpuid + 1, nthreads)));
++		pr_warn("Boot CPU %d >= nr_cpu_ids, adjusted nr_cpu_ids to %d\n",
++			boot_cpuid, nr_cpu_ids);
 +	}
 +
  	/*
