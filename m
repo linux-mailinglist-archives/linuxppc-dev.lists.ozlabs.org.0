@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F81188DF07
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 13:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C83B88DF22
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 13:21:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fspxh4aX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S7E9xN0n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4QkG1mMmz3vXZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 23:20:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Ql321bBz3vg2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 23:21:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fspxh4aX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S7E9xN0n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4Qhq2w4pz3dXP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 23:19:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4QjR0MJYz3vZZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 23:20:11 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B19CB61515;
-	Wed, 27 Mar 2024 12:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99BFC433C7;
-	Wed, 27 Mar 2024 12:19:36 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 045D5CE2630;
+	Wed, 27 Mar 2024 12:20:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81342C43330;
+	Wed, 27 Mar 2024 12:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711541977;
-	bh=GsRPpKxOMToQRVoKkukbsS+8ZQPqObxQNquJ7NUTJZQ=;
+	s=k20201202; t=1711542009;
+	bh=ufK/g3GX9r3mWLjejioZqTZhpQp3PSOo4bubJdqFO2A=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fspxh4aX3gB8rtjCugJSAfa3WChKIGp1u4UI3WKLNs/glbk34ete6FAia7AiTjhOZ
-	 sPY00ZQqR92hXPWWpMag6VyXQeqGvWa2BWRQ3LY6kkVHu4CrMhEHpRKCKHftXJ9ghe
-	 jjEDNcnj3Sk59eN36gqv/KJ0WBIgrlwBzFjZlyVKmmL3KOLAWZqJGvzNWhrCXNLaf0
-	 omptx3MM01khJ0RuWsy7UwOKLxrtNnuXoci2g7y7472BR+4XoxAZNstsdmYYA4sBGA
-	 v6g945B8xyFb5i3cZQs7Qgm0rEbKBhfL+oePRYgxm/yCieVfOjJ5qj2mqhIF4++4ur
-	 ncX+ZQJH6JW4Q==
+	b=S7E9xN0n5bLST7rfZvB5XGIT4mgB5D0C3XuVsi/nk2XSSp2VgjiLL1+jzs1TmVQJN
+	 a/P5fe3KB/xpoG/hpiS9rlei73OVnhOesNqDD11ahb/lcdaVl9unNQQgyfuYyNrN2n
+	 yMEe3VvILa3VZz890fzL5lPEZWClNr4oAGSiI58WQZcUZykeMDwEK/b6v/5T6N0wVk
+	 MEDLBQyzf0TOSdfzsnsf8gZfRDmOQgfO+JHq3lipCR/5GaADY5x1I5FpmPJ11t3UHa
+	 q3YaICxI7bk83Kz0PTb9W7gRnp+3vIe1Lx9JY7OfGRxZZHPi7qq9lCw/OBU7o+2+en
+	 +wS40vIubp/fQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mpe@ellerman.id.au
-Subject: FAILED: Patch "powerpc/smp: Increase nr_cpu_ids to include the boot CPU" failed to apply to 5.10-stable tree
-Date: Wed, 27 Mar 2024 08:19:35 -0400
-Message-ID: <20240327121936.2835310-1-sashal@kernel.org>
+	nathan@kernel.org
+Subject: FAILED: Patch "powerpc: xor_vmx: Add '-mhard-float' to CFLAGS" failed to apply to 5.10-stable tree
+Date: Wed, 27 Mar 2024 08:20:07 -0400
+Message-ID: <20240327122007.2835763-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
@@ -59,7 +59,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -73,39 +73,46 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 777f81f0a9c780a6443bcf2c7785f0cc2e87c1ef Mon Sep 17 00:00:00 2001
-From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 15 Feb 2024 00:14:04 +1100
-Subject: [PATCH] powerpc/smp: Increase nr_cpu_ids to include the boot CPU
+From 35f20786c481d5ced9283ff42de5c69b65e5ed13 Mon Sep 17 00:00:00 2001
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Sat, 27 Jan 2024 11:07:43 -0700
+Subject: [PATCH] powerpc: xor_vmx: Add '-mhard-float' to CFLAGS
 
-If nr_cpu_ids is too low to include the boot CPU adjust nr_cpu_ids
-upward. Otherwise the kernel will BUG when trying to allocate a paca
-for the boot CPU and fail to boot.
+arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
+powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
+error when building with clang after a recent change in main:
+
+  error: option '-msoft-float' cannot be specified with '-maltivec'
+  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
+
+Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
+to override the previous inclusion of '-msoft-float' (as the last option
+wins), which matches how other areas of the kernel use '-maltivec', such
+as AMDGPU.
 
 Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
+Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231229120107.2281153-2-mpe@ellerman.id.au
+Link: https://msgid.link/20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org
 ---
- arch/powerpc/kernel/prom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/lib/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 58e80076bed5c..77364729a1b61 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -381,6 +381,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 			nr_cpu_ids);
- 	}
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 6eac63e79a899..0ab65eeb93ee3 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -76,7 +76,7 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
+ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
  
-+	if (boot_cpuid >= nr_cpu_ids) {
-+		set_nr_cpu_ids(min(CONFIG_NR_CPUS, ALIGN(boot_cpuid + 1, nthreads)));
-+		pr_warn("Boot CPU %d >= nr_cpu_ids, adjusted nr_cpu_ids to %d\n",
-+			boot_cpuid, nr_cpu_ids);
-+	}
-+
- 	/*
- 	 * PAPR defines "logical" PVR values for cpus that
- 	 * meet various levels of the architecture:
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+-CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
++CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
+ # Enable <altivec.h>
+ CFLAGS_xor_vmx.o += -isystem $(shell $(CC) -print-file-name=include)
+ 
 -- 
 2.43.0
 
