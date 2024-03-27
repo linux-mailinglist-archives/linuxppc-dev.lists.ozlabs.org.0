@@ -1,75 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3536488F0CB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 22:21:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B9D88EF6A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 20:40:11 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=B5zRUrgV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKHszxO4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4fk76Xjfz3vh8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 08:21:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4cT44C82z3vbs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 06:40:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=B5zRUrgV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKHszxO4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=jernej.skrabec@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4cNS3y13z3dW4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 06:36:06 +1100 (AEDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-a46ea03c2a5so42697466b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 12:36:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711568159; x=1712172959; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aojaArSnA0JfedDto4elyer8YODIKcUTNNFpLzMMgW8=;
-        b=B5zRUrgVKV2jw6NFFreC9Et/RrNkG6MPzD02YpxQZGvRxyVYiJQA+iZYGWgszstySB
-         AHWmvDQXLFr5pyHDfQvwim4pmx2Qw3+zLlObyca3MvReBJp1KlEbAzVL0eXr1m0RNdfC
-         tDn12Xchfz9AA8ep2FRGsm4GbzW/08zXpFyLRF/vX73d4fT/nk4eGp5AFBIafnFl8qUX
-         o+eM8GOfg23oZSFtN5p+0Qm/rWWUSVEXjxZFFsCXKBns8aOf9/BlNHobol054hiD3/F8
-         Dzkd1/Ygcp7gFe9MLiEn7WGzdrTUdzWjoJX6uHqch4AvVd2ooDkzrZ5DcC2EJFRtZpfi
-         FKbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711568159; x=1712172959;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aojaArSnA0JfedDto4elyer8YODIKcUTNNFpLzMMgW8=;
-        b=S65SwJaKChR0/pMn9p9BdJL8QE7ddEarg58Kds/xQiha2uThK+YuIwfsv13CN45tXJ
-         EeX6ZIWF9UwiSZd995h3Ypq69zWYUFwsv89+GgQ3NjBuKaBjM9Nf+lFPMveyGgULXopr
-         9r4NxnSh5FaNLgtNaxPnoRZbJM+O3cDrPJcgQI5YWQS8XcjTsu4zQFn2lHhLaLWNoONZ
-         guAPS53HDHf9EKtrid4cBmOeKFSzICmjAwarF5pShjblFEz5DLdptpK64qP49/8ubGew
-         DJ+OsF8PDjT+1+WnKQo375g3VPMHXsQ9/XPpR2qMWqi8pum430VLN/u5Lukb1WlW/WlQ
-         ADQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWfFM6EQuADzZWVLoEUcTiIynRYwn/75YyQUpFTlVq0qjL+d8q4883iiSWhV4ObUcNtULqrGC3WB58paP3NOO1NAE5MkI+Yfx1Q41hppA==
-X-Gm-Message-State: AOJu0YyqL22mbtOtZG/hMH/Qh6z5dP1OXR9lUOJkMfmy+A7WqnP89bDX
-	Pxhpj0WODq3PqxCK3xO71aYsjRsUIBTWY5lcEZ04iCbNQuClUUL9
-X-Google-Smtp-Source: AGHT+IHWYCsKCZfCKe9WJ0A8h2jBWKCzprPvh9Stt4hH84aJN1DmeskwZihR1IueuTRTWs9wYxpP6Q==
-X-Received: by 2002:a17:906:119a:b0:a47:3766:cfec with SMTP id n26-20020a170906119a00b00a473766cfecmr235001eja.9.1711568159337;
-        Wed, 27 Mar 2024 12:35:59 -0700 (PDT)
-Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
-        by smtp.gmail.com with ESMTPSA id j24-20020a17090643d800b00a4672fb2a03sm5858783ejn.10.2024.03.27.12.35.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 12:35:58 -0700 (PDT)
-From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: linux-kernel@vger.kernel.org, Allen Pais <apais@linux.microsoft.com>
-Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
-Date: Wed, 27 Mar 2024 20:35:54 +0100
-Message-ID: <9252961.CDJkKcVGEf@jernej-laptop>
-In-Reply-To: <20240327160314.9982-10-apais@linux.microsoft.com>
-References:  <20240327160314.9982-1-apais@linux.microsoft.com>
- <20240327160314.9982-10-apais@linux.microsoft.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4cSM2qYDz3c7s
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 06:39:31 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5DD3761173;
+	Wed, 27 Mar 2024 19:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3492BC433C7;
+	Wed, 27 Mar 2024 19:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711568368;
+	bh=mgDCCV9DYm3gE81YovhkygNKHO9RS0DsGnhFgu3kHyA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SKHszxO4HY0/TKQKrYd5xjeNheZExttn6ouZSQo7RamEADgZOHEGKOgxLgWnDAQsX
+	 TQk1EiCgbOjPSXUXVDKc1GHuMb8JYfr2n9dUTSMBL4fPlQCFaWvqtzr7SljGX8ozL0
+	 d+GxeE8i5/jrK3YAq+PzsRs9yg9Ub9Ye0zUWxbvydciwA80gaS/Cm+ZdJSIaW62wjN
+	 8mgdqhfJd0T7WESQFdfsQPBT5oU/lItq2D11cSo/Qk/7TSLc6IaPfRphmumfAFxMTP
+	 w0oml1KABCZkKYStlxNthCpMKTFGN6FZPoQQlay9J46ava0AXCk2S+OoNd/Q7U91J0
+	 LlcAACEC05P/g==
+Date: Wed, 27 Mar 2024 19:39:20 +0000
+From: Simon Horman <horms@kernel.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v2 12/14] sh: Add support for suppressing warning
+ backtraces
+Message-ID: <20240327193920.GV403975@kernel.org>
+References: <20240325175248.1499046-1-linux@roeck-us.net>
+ <20240325175248.1499046-13-linux@roeck-us.net>
+ <20240327144431.GL403975@kernel.org>
+ <320aacc6-b7e5-4c3d-948e-d0743ab26c5d@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Mailman-Approved-At: Thu, 28 Mar 2024 08:10:21 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <320aacc6-b7e5-4c3d-948e-d0743ab26c5d@roeck-us.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,31 +62,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, ulf.hansson@linaro.org, oneukum@suse.com, duncan.sands@free.fr, hayashi.kunihiko@socionext.com, linux-mmc@vger.kernel.org, aubin.constans@microchip.com, linus.walleij@linaro.org, Frank.Li@nxp.com, linux-hyperv@vger.kernel.org, HaraldWelte@viatech.com, paul@crapouillou.net, linux-tegra@vger.kernel.org, netdev@vger.kernel.org, maintainers@bluecherrydvr.com, manivannan.sadhasivam@linaro.org, linux-riscv@lists.infradead.org, kys@microsoft.com, robert.jarzmik@free.fr, haijie1@huawei.com, linux-renesas-soc@vger.kernel.org, wei.liu@kernel.org, linux-omap@vger.kernel.org, florian.fainelli@broadcom.com, linux-rdma@vger.kernel.org, vireshk@kernel.org, jassisinghbrar@gmail.com, decui@microsoft.com, wangzhou1@hisilicon.com, peter.ujfalusi@gmail.com, jh80.chung@samsung.com, zw@zh-kernel.org, wens@csie.org, stern@rowland.harvard.edu, linux-arm-msm@vger.kernel.org, orsonzhai@gmail.com, pierre@ossman.eu, linux-usb@vger.kernel.org, Eugeniy.Paltsev@synopsys.com, patrice.chotar
- d@foss.st.com, asahi@lists.linux.dev, brucechang@via.com.tw, keescook@chromium.org, oakad@yahoo.com, sven@svenpeter.dev, rjui@broadcom.com, s.hauer@pengutronix.de, sean.wang@mediatek.com, linux-actions@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, haojian.zhuang@gmail.com, mirq-linux@rere.qmqm.pl, dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, baolin.wang@linux.alibaba.com, matthias.bgg@gmail.com, openipmi-developer@lists.sourceforge.net, mchehab@kernel.org, linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com, sbranden@broadcom.com, logang@deltatee.com, andersson@kernel.org, marcan@marcan.st, haiyangz@microsoft.com, linux-mips@vger.kernel.org, leoyang.li@nxp.com, konrad.dybcio@linaro.org, linux-sunxi@lists.linux.dev, vkoul@kernel.org, linux-s390@vger.kernel.org, mhiramat@kernel.org, zhang.lyra@gmail.com, tj@kernel.org, manuel.lauss@gmail.com, linux-media@vger.kernel.org, shawnguo@kernel.org, afaerb
- er@suse.de, daniel@zonque.org
+Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Linux Kernel Functional Testing <lkft@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-ker
+ nel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dne sreda, 27. marec 2024 ob 17:03:14 CET je Allen Pais napisal(a):
-> The only generic interface to execute asynchronously in the BH context is
-> tasklet; however, it's marked deprecated and has some design flaws. To
-> replace tasklets, BH workqueue support was recently added. A BH workqueue
-> behaves similarly to regular workqueues except that the queued work items
-> are executed in the BH context.
+On Wed, Mar 27, 2024 at 08:10:51AM -0700, Guenter Roeck wrote:
+> On 3/27/24 07:44, Simon Horman wrote:
+> > On Mon, Mar 25, 2024 at 10:52:46AM -0700, Guenter Roeck wrote:
+> > > Add name of functions triggering warning backtraces to the __bug_table
+> > > object section to enable support for suppressing WARNING backtraces.
+> > > 
+> > > To limit image size impact, the pointer to the function name is only added
+> > > to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
+> > > CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
+> > > parameter is replaced with a (dummy) NULL parameter to avoid an image size
+> > > increase due to unused __func__ entries (this is necessary because __func__
+> > > is not a define but a virtual variable).
+> > > 
+> > > Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> > > ---
+> > > - Rebased to v6.9-rc1
+> > > - Added Tested-by:, Acked-by:, and Reviewed-by: tags
+> > > - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option
+> > > 
+> > >   arch/sh/include/asm/bug.h | 26 ++++++++++++++++++++++----
+> > >   1 file changed, 22 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/arch/sh/include/asm/bug.h b/arch/sh/include/asm/bug.h
+> > > index 05a485c4fabc..470ce6567d20 100644
+> > > --- a/arch/sh/include/asm/bug.h
+> > > +++ b/arch/sh/include/asm/bug.h
+> > > @@ -24,21 +24,36 @@
+> > >    * The offending file and line are encoded in the __bug_table section.
+> > >    */
+> > >   #ifdef CONFIG_DEBUG_BUGVERBOSE
+> > > +
+> > > +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
+> > > +# define HAVE_BUG_FUNCTION
+> > > +# define __BUG_FUNC_PTR	"\t.long %O2\n"
+> > > +#else
+> > > +# define __BUG_FUNC_PTR
+> > > +#endif /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
+> > > +
+> > 
+> > Hi Guenter,
+> > 
+> > a minor nit from my side: this change results in a Kernel doc warning.
+> > 
+> >       .../bug.h:29: warning: expecting prototype for _EMIT_BUG_ENTRY(). Prototype was for HAVE_BUG_FUNCTION() instead
+> > 
+> > Perhaps either the new code should be placed above the Kernel doc,
+> > or scripts/kernel-doc should be enhanced?
+> > 
 > 
-> This patch converts drivers/infiniband/* from tasklet to BH workqueue.
-
-infiniband -> mmc
-
-Best regards,
-Jernej
-
+> Thanks a lot for the feedback.
 > 
-> Based on the work done by Tejun Heo <tj@kernel.org>
-> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
+> The definition block needs to be inside CONFIG_DEBUG_BUGVERBOSE,
+> so it would be a bit odd to move it above the documentation
+> just to make kerneldoc happy. I am not really sure that to do
+> about it.
+
+FWIIW, I agree that would be odd.
+But perhaps the #ifdef could also move above the Kernel doc?
+Maybe not a great idea, but the best one I've had so far.
+
+> I'll wait for comments from others before making any changes.
 > 
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-
-
-
+> Thanks,
+> Guenter
+> 
+> > >   #define _EMIT_BUG_ENTRY				\
+> > >   	"\t.pushsection __bug_table,\"aw\"\n"	\
+> > >   	"2:\t.long 1b, %O1\n"			\
+> > > -	"\t.short %O2, %O3\n"			\
+> > > -	"\t.org 2b+%O4\n"			\
+> > > +	__BUG_FUNC_PTR				\
+> > > +	"\t.short %O3, %O4\n"			\
+> > > +	"\t.org 2b+%O5\n"			\
+> > >   	"\t.popsection\n"
+> > >   #else
+> > >   #define _EMIT_BUG_ENTRY				\
+> > >   	"\t.pushsection __bug_table,\"aw\"\n"	\
+> > >   	"2:\t.long 1b\n"			\
+> > > -	"\t.short %O3\n"			\
+> > > -	"\t.org 2b+%O4\n"			\
+> > > +	"\t.short %O4\n"			\
+> > > +	"\t.org 2b+%O5\n"			\
+> > >   	"\t.popsection\n"
+> > >   #endif
+> > > +#ifdef HAVE_BUG_FUNCTION
+> > > +# define __BUG_FUNC	__func__
+> > > +#else
+> > > +# define __BUG_FUNC	NULL
+> > > +#endif
+> > > +
+> > >   #define BUG()						\
+> > >   do {							\
+> > >   	__asm__ __volatile__ (				\
+> > 
+> > ...
+> 
