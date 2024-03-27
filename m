@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C09F88E6E3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 15:45:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F5188E7C2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:04:05 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HaYZUqiJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n3XRX+do;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Tww6xDwz3dSJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 01:45:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VLV6PHrz3vdd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:04:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HaYZUqiJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n3XRX+do;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4TwB5N0Nz3dSJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 01:44:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VKp6YrVz3dTw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:03:26 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id CF582CE250F;
-	Wed, 27 Mar 2024 14:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463CDC433C7;
-	Wed, 27 Mar 2024 14:44:33 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 85EBDCE26B4;
+	Wed, 27 Mar 2024 15:03:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2115C433F1;
+	Wed, 27 Mar 2024 15:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711550679;
-	bh=YSLGb1GXTxnIIfhyIvC9GwAUZFGWgRDDFdTmlm4yRqw=;
+	s=k20201202; t=1711551804;
+	bh=7eEcZmvTzb8VSbNdQfoe1CbrQJGiq8lc7tQjpI5gzrI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HaYZUqiJa07VEuOX2hUbqIVTlZ8o22sLnSNBmDvYGZReqgO3lSbCQK9Or5zp1KJbR
-	 JvGvc2ZghpWxbzW5dcHWLkdtr9WPLtyBcYNZCtzYkZ0aehioYwzIa2QQF4Onnok8FB
-	 Wc4M/AdTqe1cmI5ouLQdACNeTQWP2vIBDKBtvzYFRBk3qaqst4TyhFgm3+FAsIAsGT
-	 mP0xgnOjCX2lX877lT3Jl7cBjQZe+yHaVUg+5xWuYNjiWEBCoNJyKr1tugz+G9vCSC
-	 fo6IjfObk8UjT+1n6kvF1dQ0obJmvxfW9gBCQkbrMpth/5YtLWt0cnhdydB5wLkqq1
-	 8N6oSbYrk2HYQ==
-Date: Wed, 27 Mar 2024 14:44:31 +0000
-From: Simon Horman <horms@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 12/14] sh: Add support for suppressing warning
- backtraces
-Message-ID: <20240327144431.GL403975@kernel.org>
-References: <20240325175248.1499046-1-linux@roeck-us.net>
- <20240325175248.1499046-13-linux@roeck-us.net>
+	b=n3XRX+dorHzwJYR0nkw+/2S37Z3avXPbnL3l4xeBZaO1cOokPn4Sn8Hl3ZgYqaHK4
+	 0kubFaY2NZBNaaFz+7fdRscWPnZxRPDlZVhYImbvdRTPeKaN4OyaH/sOSgLmtAlYUt
+	 Py3S4E8DHYrdpnkfbALpT6mXIVFFYENSMqZFE0nVREpzuBagIQiXz1haBQlKTeyGMO
+	 Mfmoclvn7X/CefsCt75iA8cIawPUlLgToUoGLqqiCWhn5GdaVUMHMMRhSW1z+TYvQM
+	 Zpuu3oMbg25Sp08D4ejJN4eErkxISgRYvHfEgaYTvQunVgbodg7kui6XhwXKZ/DNsl
+	 sUZGhIwYQm2GQ==
+Date: Wed, 27 Mar 2024 17:02:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH RFC 2/3] mm/treewide: rename CONFIG_HAVE_FAST_GUP to
+ CONFIG_HAVE_GUP_FAST
+Message-ID: <ZgQ1Dh2KZ3JvevX_@kernel.org>
+References: <20240327130538.680256-1-david@redhat.com>
+ <20240327130538.680256-3-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325175248.1499046-13-linux@roeck-us.net>
+In-Reply-To: <20240327130538.680256-3-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,87 +60,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Linux Kernel Functional Testing <lkft@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-ker
- nel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Jason Gunthorpe <jgg@nvidia.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 25, 2024 at 10:52:46AM -0700, Guenter Roeck wrote:
-> Add name of functions triggering warning backtraces to the __bug_table
-> object section to enable support for suppressing WARNING backtraces.
+On Wed, Mar 27, 2024 at 02:05:37PM +0100, David Hildenbrand wrote:
+> Nowadays, we call it "GUP-fast", the external interface includes
+> functions like "get_user_pages_fast()", and we renamed all internal
+> functions to reflect that as well.
 > 
-> To limit image size impact, the pointer to the function name is only added
-> to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
-> CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
-> parameter is replaced with a (dummy) NULL parameter to avoid an image size
-> increase due to unused __func__ entries (this is necessary because __func__
-> is not a define but a virtual variable).
+> Let's make the config option reflect that.
 > 
-> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+
 > ---
-> - Rebased to v6.9-rc1
-> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
-> - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option
+>  arch/arm/Kconfig       | 2 +-
+>  arch/arm64/Kconfig     | 2 +-
+>  arch/loongarch/Kconfig | 2 +-
+>  arch/mips/Kconfig      | 2 +-
+>  arch/powerpc/Kconfig   | 2 +-
+>  arch/s390/Kconfig      | 2 +-
+>  arch/sh/Kconfig        | 2 +-
+>  arch/x86/Kconfig       | 2 +-
+>  include/linux/rmap.h   | 8 ++++----
+>  kernel/events/core.c   | 4 ++--
+>  mm/Kconfig             | 2 +-
+>  mm/gup.c               | 6 +++---
+>  mm/internal.h          | 2 +-
+>  13 files changed, 19 insertions(+), 19 deletions(-)
 > 
->  arch/sh/include/asm/bug.h | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/sh/include/asm/bug.h b/arch/sh/include/asm/bug.h
-> index 05a485c4fabc..470ce6567d20 100644
-> --- a/arch/sh/include/asm/bug.h
-> +++ b/arch/sh/include/asm/bug.h
-> @@ -24,21 +24,36 @@
->   * The offending file and line are encoded in the __bug_table section.
->   */
->  #ifdef CONFIG_DEBUG_BUGVERBOSE
-> +
-> +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
-> +# define HAVE_BUG_FUNCTION
-> +# define __BUG_FUNC_PTR	"\t.long %O2\n"
-> +#else
-> +# define __BUG_FUNC_PTR
-> +#endif /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
-> +
-
-Hi Guenter,
-
-a minor nit from my side: this change results in a Kernel doc warning.
-
-     .../bug.h:29: warning: expecting prototype for _EMIT_BUG_ENTRY(). Prototype was for HAVE_BUG_FUNCTION() instead
-
-Perhaps either the new code should be placed above the Kernel doc,
-or scripts/kernel-doc should be enhanced?
-
->  #define _EMIT_BUG_ENTRY				\
->  	"\t.pushsection __bug_table,\"aw\"\n"	\
->  	"2:\t.long 1b, %O1\n"			\
-> -	"\t.short %O2, %O3\n"			\
-> -	"\t.org 2b+%O4\n"			\
-> +	__BUG_FUNC_PTR				\
-> +	"\t.short %O3, %O4\n"			\
-> +	"\t.org 2b+%O5\n"			\
->  	"\t.popsection\n"
->  #else
->  #define _EMIT_BUG_ENTRY				\
->  	"\t.pushsection __bug_table,\"aw\"\n"	\
->  	"2:\t.long 1b\n"			\
-> -	"\t.short %O3\n"			\
-> -	"\t.org 2b+%O4\n"			\
-> +	"\t.short %O4\n"			\
-> +	"\t.org 2b+%O5\n"			\
->  	"\t.popsection\n"
->  #endif
->  
-> +#ifdef HAVE_BUG_FUNCTION
-> +# define __BUG_FUNC	__func__
-> +#else
-> +# define __BUG_FUNC	NULL
-> +#endif
-> +
->  #define BUG()						\
->  do {							\
->  	__asm__ __volatile__ (				\
-
-...
