@@ -2,86 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A96888E8F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 636AB88E8FF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 16:27:57 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AVsJQ3ox;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AVsJQ3ox;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4VsF6ywhz3vhf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:27:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Vt3196Rz3vvd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 02:27:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YoUFMiqF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AVsJQ3ox;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AVsJQ3ox;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnL16frz3vYX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:23:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4VnN3Czdz3fQH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 02:23:52 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711553027;
+	s=mimecast20190719; t=1711553029;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iN7hVKxpU9yGNoa0FvV6QQfaV15Sbc5QZKf/pqr08oc=;
-	b=YoUFMiqFRQwhob84m5cE7rl4ymoqHhlX4EDmjLX6XYrePEOIIbfmCh/MAOwdaYeQHBYR+R
-	zahoAgoWPVh3bqDzBgpodsIDqI1r7v4l2TP9JFH8fqbyuDel/wgMjx+Yz4rmFKVIbWqbHw
-	hXtPSMsy4uouiL7XlpLU7jvFHIs5uZE=
+	bh=VkfUQlJiw2YmDi669w4oXgCkjfbnGDZMVpc2LJneNK4=;
+	b=AVsJQ3oxZori/0jbiU/hEUHGTPyOIfF2KtXrxRs+X9qPY6bpKKg3pU3mS80iG+/rUMPxLq
+	aQKTRNxV677HRcYDhyG05TlV3K7yqcgzl97J0robQAfWSrJEq7Qlz53NpFNy5DqVt8zadu
+	G+7oNcVo6BMi+6axzYrp57Fo5oxz+yY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711553027;
+	s=mimecast20190719; t=1711553029;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iN7hVKxpU9yGNoa0FvV6QQfaV15Sbc5QZKf/pqr08oc=;
-	b=YoUFMiqFRQwhob84m5cE7rl4ymoqHhlX4EDmjLX6XYrePEOIIbfmCh/MAOwdaYeQHBYR+R
-	zahoAgoWPVh3bqDzBgpodsIDqI1r7v4l2TP9JFH8fqbyuDel/wgMjx+Yz4rmFKVIbWqbHw
-	hXtPSMsy4uouiL7XlpLU7jvFHIs5uZE=
+	bh=VkfUQlJiw2YmDi669w4oXgCkjfbnGDZMVpc2LJneNK4=;
+	b=AVsJQ3oxZori/0jbiU/hEUHGTPyOIfF2KtXrxRs+X9qPY6bpKKg3pU3mS80iG+/rUMPxLq
+	aQKTRNxV677HRcYDhyG05TlV3K7yqcgzl97J0robQAfWSrJEq7Qlz53NpFNy5DqVt8zadu
+	G+7oNcVo6BMi+6axzYrp57Fo5oxz+yY=
 Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
  [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-XbcEmYQHOVie1qLx1N32LQ-1; Wed, 27 Mar 2024 11:23:45 -0400
-X-MC-Unique: XbcEmYQHOVie1qLx1N32LQ-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-696a9c482a4so3595806d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:45 -0700 (PDT)
+ us-mta-96-Hd2Zgh6ZNTKbLnjXj4ljTQ-1; Wed, 27 Mar 2024 11:23:47 -0400
+X-MC-Unique: Hd2Zgh6ZNTKbLnjXj4ljTQ-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-69627b26a51so3093426d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 08:23:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711553025; x=1712157825;
+        d=1e100.net; s=20230601; t=1711553027; x=1712157827;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iN7hVKxpU9yGNoa0FvV6QQfaV15Sbc5QZKf/pqr08oc=;
-        b=ZJiJSk6VIjW25maVIDy1qoaIOrNdbuMmESRKvUMJwb8laO4UewEPnzRu0Fg/x4We8X
-         iQx0vSKCtWq/dkdzWL+zfEYeqPuPCPnKypqSd5xpGyK/nMe9dUS4MWFxxIGAlvDhgrBB
-         jjJH83kfq8UXxlEXZ5dW18h7ueFx7gueYj2lcXTON2tI5CVQ3JmjfPFs318pRbXZ1zIc
-         lekNCwqOg7bb4lRGQeMXRrP3fmtVg8ds8Y5eB+GqskGq3AMluMm4lKTBIHwfl1ZGTmfm
-         vdknfkDuh9chRlEK79sRacI3XsvMT2aL8UEOV6PQrrVKnhEYU2bSSdugLhdxZYzMnlHq
-         fV2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUE+qhUgLIS7uT2nkVj3K96QBik4013+IMh/ZBcoWBheFqfNjukfmU6Ff3RqgPwFRxCGN6MJSViXnebTCwOoD4CwGEJcOuALYjivoUPIA==
-X-Gm-Message-State: AOJu0Yxc8vdseyoGkHTSZRZGqzcsuz4pLYOPW2Y9/ba5eBgzXn1m262x
-	tCRvwDO5Wdlz7gVHYdTV5Zt3yQqH7cBZR+UepGaGJTk+j1RzAcPC8jFYumUIJ7ee5/8SsnB3HHL
-	a+J9sfVJifiTNESOzIsiAU0KZnmf0nWPFr7Cv7Wvpk2On4TqQfpGDVYUPUXlo/Tk=
-X-Received: by 2002:a05:6214:4598:b0:696:7b32:cceb with SMTP id op24-20020a056214459800b006967b32ccebmr13869546qvb.6.1711553024672;
-        Wed, 27 Mar 2024 08:23:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFS0Dr3UNRPnI4el/D5x8gcrtCXLMsQwIvd4dOzHJoXuoNg03xhCSCfsu9VpmJMAiYn3G+95A==
-X-Received: by 2002:a05:6214:4598:b0:696:7b32:cceb with SMTP id op24-20020a056214459800b006967b32ccebmr13869513qvb.6.1711553024070;
-        Wed, 27 Mar 2024 08:23:44 -0700 (PDT)
+        bh=VkfUQlJiw2YmDi669w4oXgCkjfbnGDZMVpc2LJneNK4=;
+        b=LssyutQivpE4gWiE5EcssPkX66ZyjzlCIkSctuOycsl1v64+2nz4YYra+/OWEShzeS
+         bsF4Cvyo+1CAAU6pNG4LCmvAQANu5euaT9vqbnsPrEmTpwIv9KoztBEJOt2hBbuXRu8u
+         +ACcNB5SdfOGKQcd6Wo6uH+TQ/EHg3pemq7crHOXVlxnJjy9VD/lEE3Sklds8mEVdxst
+         nefd1nZwR0EDbBuDx1p8BnmwuOPRCnBvVrLbGu4iA0liGaSwuhCEFwBkIyFGIbOra7SU
+         ZMAPAdJhK27bns/sUEiIP57yjlDxZqBdPbwKih8fPLTnvWs2R4N4SFfRiHfsYsoXwT+M
+         nL9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWGNsqEjoGSJLZdFPI3TdMRQlMcj3xsvEGCT4Fi8FpwF2JS0/HhM+gdPOCMTvZzXTanm1ySw7sp5a2rvQLUc2JeRbiqR9iFlB3Iz88Tsw==
+X-Gm-Message-State: AOJu0YyjhUVbfLlGNGaxJ3YG6yiMrsjSzoevUKAo/65CF9mRJtdaWbgK
+	VkK/pL214JmKJKrW5w0wBFeZmg7E//dC1nYctuaAqfVyQ0QluZHtcWsuYPD0m8lVzpRGpJ6uiht
+	duisXGtEc8FBh4F6zIEyIIRF9L8h0ahOkXwb/K0jAZ4o4uo3bu9/G4R3mx7aUCJE=
+X-Received: by 2002:a05:6214:3105:b0:696:6f59:4d19 with SMTP id ks5-20020a056214310500b006966f594d19mr14917320qvb.1.1711553026973;
+        Wed, 27 Mar 2024 08:23:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/cvaZbNzejgmgOgxRck5pBSr/g3hsLSZETHWpBhBPVR+VZkVf7lYhXdSr9+e3t1xSA2Wfog==
+X-Received: by 2002:a05:6214:3105:b0:696:6f59:4d19 with SMTP id ks5-20020a056214310500b006966f594d19mr14917279qvb.1.1711553026413;
+        Wed, 27 Mar 2024 08:23:46 -0700 (PDT)
 Received: from x1n.redhat.com ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.41
+        by smtp.gmail.com with ESMTPSA id hu4-20020a056214234400b00690dd47a41csm6412639qvb.86.2024.03.27.08.23.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 08:23:43 -0700 (PDT)
+        Wed, 27 Mar 2024 08:23:45 -0700 (PDT)
 From: peterx@redhat.com
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 04/13] mm: Introduce vma_pgtable_walk_{begin|end}()
-Date: Wed, 27 Mar 2024 11:23:23 -0400
-Message-ID: <20240327152332.950956-5-peterx@redhat.com>
+Subject: [PATCH v4 05/13] mm/arch: Provide pud_pfn() fallback
+Date: Wed, 27 Mar 2024 11:23:24 -0400
+Message-ID: <20240327152332.950956-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240327152332.950956-1-peterx@redhat.com>
 References: <20240327152332.950956-1-peterx@redhat.com>
@@ -107,55 +107,94 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Peter Xu <peterx@redhat.com>
 
-Introduce per-vma begin()/end() helpers for pgtable walks.  This is a
-preparation work to merge hugetlb pgtable walkers with generic mm.
+The comment in the code explains the reasons.  We took a different approach
+comparing to pmd_pfn() by providing a fallback function.
 
-The helpers need to be called before and after a pgtable walk, will start
-to be needed if the pgtable walker code supports hugetlb pages.  It's a
-hook point for any type of VMA, but for now only hugetlb uses it to
-stablize the pgtable pages from getting away (due to possible pmd
-unsharing).
+Another option is to provide some lower level config options (compare to
+HUGETLB_PAGE or THP) to identify which layer an arch can support for such
+huge mappings.  However that can be an overkill.
 
-Reviewed-by: Christoph Hellwig <hch@infradead.org>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/linux/mm.h |  3 +++
- mm/memory.c        | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
+ arch/riscv/include/asm/pgtable.h    |  1 +
+ arch/s390/include/asm/pgtable.h     |  1 +
+ arch/sparc/include/asm/pgtable_64.h |  1 +
+ arch/x86/include/asm/pgtable.h      |  1 +
+ include/linux/pgtable.h             | 10 ++++++++++
+ 5 files changed, 14 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index afe27ff3fa94..d8f78017d271 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4233,4 +4233,7 @@ static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
- 	return range_contains_unaccepted_memory(paddr, paddr + PAGE_SIZE);
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 20242402fc11..0ca28cc8e3fa 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -646,6 +646,7 @@ static inline unsigned long pmd_pfn(pmd_t pmd)
+ 
+ #define __pud_to_phys(pud)  (__page_val_to_pfn(pud_val(pud)) << PAGE_SHIFT)
+ 
++#define pud_pfn pud_pfn
+ static inline unsigned long pud_pfn(pud_t pud)
+ {
+ 	return ((__pud_to_phys(pud) & PUD_MASK) >> PAGE_SHIFT);
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 1a71cb19c089..6cbbe473f680 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1414,6 +1414,7 @@ static inline unsigned long pud_deref(pud_t pud)
+ 	return (unsigned long)__va(pud_val(pud) & origin_mask);
  }
  
-+void vma_pgtable_walk_begin(struct vm_area_struct *vma);
-+void vma_pgtable_walk_end(struct vm_area_struct *vma);
-+
- #endif /* _LINUX_MM_H */
-diff --git a/mm/memory.c b/mm/memory.c
-index 3d0c0cc33c57..27d173f9a521 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6438,3 +6438,15 @@ void ptlock_free(struct ptdesc *ptdesc)
- 	kmem_cache_free(page_ptl_cachep, ptdesc->ptl);
++#define pud_pfn pud_pfn
+ static inline unsigned long pud_pfn(pud_t pud)
+ {
+ 	return __pa(pud_deref(pud)) >> PAGE_SHIFT;
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index 4d1bafaba942..26efc9bb644a 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -875,6 +875,7 @@ static inline bool pud_leaf(pud_t pud)
+ 	return pte_val(pte) & _PAGE_PMD_HUGE;
  }
+ 
++#define pud_pfn pud_pfn
+ static inline unsigned long pud_pfn(pud_t pud)
+ {
+ 	pte_t pte = __pte(pud_val(pud));
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index cefc7a84f7a4..273f7557218c 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -234,6 +234,7 @@ static inline unsigned long pmd_pfn(pmd_t pmd)
+ 	return (pfn & pmd_pfn_mask(pmd)) >> PAGE_SHIFT;
+ }
+ 
++#define pud_pfn pud_pfn
+ static inline unsigned long pud_pfn(pud_t pud)
+ {
+ 	phys_addr_t pfn = pud_val(pud);
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 600e17d03659..75fe309a4e10 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1817,6 +1817,16 @@ typedef unsigned int pgtbl_mod_mask;
+ #define pte_leaf_size(x) PAGE_SIZE
  #endif
+ 
++/*
++ * We always define pmd_pfn for all archs as it's used in lots of generic
++ * code.  Now it happens too for pud_pfn (and can happen for larger
++ * mappings too in the future; we're not there yet).  Instead of defining
++ * it for all archs (like pmd_pfn), provide a fallback.
++ */
++#ifndef pud_pfn
++#define pud_pfn(x) ({ BUILD_BUG(); 0; })
++#endif
 +
-+void vma_pgtable_walk_begin(struct vm_area_struct *vma)
-+{
-+	if (is_vm_hugetlb_page(vma))
-+		hugetlb_vma_lock_read(vma);
-+}
-+
-+void vma_pgtable_walk_end(struct vm_area_struct *vma)
-+{
-+	if (is_vm_hugetlb_page(vma))
-+		hugetlb_vma_unlock_read(vma);
-+}
+ /*
+  * Some architectures have MMUs that are configurable or selectable at boot
+  * time. These lead to variable PTRS_PER_x. For statically allocated arrays it
 -- 
 2.44.0
 
