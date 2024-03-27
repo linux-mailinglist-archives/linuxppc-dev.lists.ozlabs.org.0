@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C3188D90E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 09:28:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0101E88D919
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 09:29:26 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=Wx+AxN0u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=oTYt7PAH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4KZL42hlz3vnF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 19:28:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Kb756KDz3vq2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 19:29:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=Wx+AxN0u;
+	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=oTYt7PAH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4KVX6pB1z3vY5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 19:25:24 +1100 (AEDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-33ed4dd8659so355911f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 01:25:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4KVZ65f3z3vYv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 19:25:26 +1100 (AEDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-41493e21931so2876545e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 01:25:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1711527921; x=1712132721; darn=lists.ozlabs.org;
+        d=sigma-star.at; s=google; t=1711527923; x=1712132723; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D9xm7Qk02wEciH96RlDxlZxQKfuGKusC1XnJuVX2I7s=;
-        b=Wx+AxN0uDacSqQgWX3p4cImIPFxUW3aswIJl/DaRR1hRnae9TpYNhDMELW3wv2ebGI
-         JEZoJGTWKIbG2YNBjQCyMCqua+GWcgzvQYkJvE74+qX6gAVxYod4hm5rLZ8CbTXLeVMc
-         DpdfphRzCsxhb4QIa415SR05ZtbtRFJkU8OPsAVLNIRA17SyWGELDDWKC2Nd4GV56fLV
-         RNfTdgXdbVDDpVuX7ktS1sYSS9cu2LUsOrko7i9dJPti6DU7IAg/XeTLEeZTvhVs3Wyj
-         kAMOhK1FyoFf2QOvzguEVvzJ8tsKMxe1I07uzqNdf7MKkdhu0Z/DTZNUVKebOL84RZrB
-         6ETQ==
+        bh=q95Pv5eUd7/PCCDIkGY46bAHfemcttBtSKECUmP8rbg=;
+        b=oTYt7PAHa6Ww/6OjgbVJVMorqcNuqB9ynNBujdBKgHiNsidSjFigGv3BsLZ0IvC7u9
+         J+0hhW3GlZwdqRyxzRPQw84lx87M/i9V+at096LbR4rKUMWup/JBx5tkxaBQtT/DExL3
+         ZbA+VQzTtTup6RokypPPl59ZMtqQN3JRZZyjxfzzqa4waAb4+VNHFhfqPdRM6mAgQOJr
+         mylAo+5uA9b9Z/xyaaxcjS05jkzxbs/pGS65rrXHx0/8Xt8ztRqJ7crM6gyAOChmv9Pr
+         Ni9C9zfO7FqXkDto3xH0bIWTGrM0Z7VPsR3cWhj7/hzC6dmpB3T60oSIj8zvMXyAk6oy
+         pYRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711527921; x=1712132721;
+        d=1e100.net; s=20230601; t=1711527923; x=1712132723;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D9xm7Qk02wEciH96RlDxlZxQKfuGKusC1XnJuVX2I7s=;
-        b=bM6l6LNULQdlUiXNFyMOU+cLMUvwVkqH7ITmP0c7RwWnVfvMR/zYlqh+DncxmwbIao
-         y/LXUVvFYnK18Cz4Xb9iHkjoXqQRHObG/RScLZ9we9HjAIs0P/xFX/xT0HEhwDG7noQj
-         J84H2OMSEfLCwMb+Jv9B/AYfE+rrw4tgschzRpkws+7Bp8SdKnI7k5umYvujKoIZcCgL
-         0f5eDAIYhWOUz+wOUtFnIlYCh0lBZ6DZvZODSeuc7gpEmqxgUs6ltdRp1SRMzYxpZ+5Y
-         U3CylB03kt7rQIG1MJJ7MnMUl5nyyw/IA5wUH1RUMPFaxd62bAxr8R3vU/vjMARdwUv8
-         EldA==
-X-Forwarded-Encrypted: i=1; AJvYcCWaBzeENuezR20KyymQW7lMQtfYtY/LcLkQtuvIJRd5TQyQr2qRIOLtJKyLCKtcNSQcL+IvnEllrht1dHgtcHtTG1LvvBfZmOmLB7k+rA==
-X-Gm-Message-State: AOJu0YzdRL6Zkz1AYMJRZrYcZ38WmoUXfVob8yAp68rdWr5gvT2tzvBR
-	MoqVoMdr59ASXPtcc13sxKITrbstV4vrM3JKXpQmXQL+OteDRxgy+6E+SxhQ0Eo=
-X-Google-Smtp-Source: AGHT+IEi6DJCe+eRQesc9WaCfXzgJ1OMWtJfkq8NT9bPs2vNWQls9qa5Cc9KIdoWDe4T00OA6qEG8g==
-X-Received: by 2002:a5d:67c6:0:b0:33e:764b:ab17 with SMTP id n6-20020a5d67c6000000b0033e764bab17mr3298532wrw.14.1711527921136;
-        Wed, 27 Mar 2024 01:25:21 -0700 (PDT)
+        bh=q95Pv5eUd7/PCCDIkGY46bAHfemcttBtSKECUmP8rbg=;
+        b=oY9N09P+sTTVQ5wYTcqNyvN//cdkcQdqYEdlHzr9yvKcKb/1zfoRRxnb4C5oKwq1Eh
+         pUWkEF0bjlhielHEulwHDmwWtjupdvqAuWh/eR90XQa4y+eJqunAIMH1gMM+NtCf2j+F
+         uIDEDfhnYAvJPlpmLjvfyZLHYFwQ4ZR9qCrOnjikkJUudUDvNeI+Uwrux/5FZKE0sFB9
+         K9tZ7f+JsFoITU6mQhQsakSPZ1+D948mtkyLgCw8Ethpf+R6GirwSK1U/9O8v6milGp4
+         hGvX/tGfpZWnkrhKhPTLph3m2vSZi+JTdcJz2qrbjeBcEejYpIIlwAMrqTjwa77rgDCw
+         8C1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUnJC2SmT9OpdxZEf581HCE2QCH64JIhtfbfzy9Xf5/drFBMv+fvdT5vfWhSEZRlPNke0QLfeg37RUAXNlLETo4H+ud/34cO8NvYhJ7YQ==
+X-Gm-Message-State: AOJu0YzKNh8mLYNToQcSuadFca3pyt1yY8z50D4/nBRCW8iCyzVGk7Tp
+	Pf7/KYKERbQdSV3QDBPLNqZHpTS40ehrhsjIjLgRM5WsgKoLZuBUYPu5NrbY1h4=
+X-Google-Smtp-Source: AGHT+IErr6t+SUrVfJunEwUJoIKv/4U7lQAfXQ9Bqp61+O4I6oZbasCzHveygFWHw9GNXm9VGKM5sA==
+X-Received: by 2002:a05:600c:444c:b0:414:7e91:a992 with SMTP id v12-20020a05600c444c00b004147e91a992mr399734wmn.3.1711527923123;
+        Wed, 27 Mar 2024 01:25:23 -0700 (PDT)
 Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id cl1-20020a5d5f01000000b0033e72e104c5sm13308800wrb.34.2024.03.27.01.25.19
+        by smtp.gmail.com with UTF8SMTPSA id iw18-20020a05600c54d200b004148619f5d0sm1379012wmb.35.2024.03.27.01.25.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Mar 2024 01:25:20 -0700 (PDT)
+        Wed, 27 Mar 2024 01:25:22 -0700 (PDT)
 From: David Gstir <david@sigma-star.at>
 To: Mimi Zohar <zohar@linux.ibm.com>,
 	James Bottomley <jejb@linux.ibm.com>,
 	Jarkko Sakkinen <jarkko@kernel.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v7 4/6] MAINTAINERS: add entry for DCP-based trusted keys
-Date: Wed, 27 Mar 2024 09:24:50 +0100
-Message-ID: <20240327082454.13729-5-david@sigma-star.at>
+Subject: [PATCH v7 5/6] docs: document DCP-backed trusted keys kernel params
+Date: Wed, 27 Mar 2024 09:24:51 +0100
+Message-ID: <20240327082454.13729-6-david@sigma-star.at>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240327082454.13729-1-david@sigma-star.at>
 References: <20240327082454.13729-1-david@sigma-star.at>
@@ -83,40 +83,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.
- org, Shawn Guo <shawnguo@kernel.org>
+Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutroni
+ x Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This covers trusted keys backed by NXP's DCP (Data Co-Processor) chip
-found in smaller i.MX SoCs.
+Document the kernel parameters trusted.dcp_use_otp_key
+and trusted.dcp_skip_zk_test for DCP-backed trusted keys.
 
+Co-developed-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 Signed-off-by: David Gstir <david@sigma-star.at>
-Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 976a5cea1577..ca7f42ca9338 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12019,6 +12019,15 @@ S:	Maintained
- F:	include/keys/trusted_caam.h
- F:	security/keys/trusted-keys/trusted_caam.c
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 24c02c704049..b6944e57768a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6698,6 +6698,7 @@
+ 			- "tpm"
+ 			- "tee"
+ 			- "caam"
++			- "dcp"
+ 			If not specified then it defaults to iterating through
+ 			the trust source list starting with TPM and assigns the
+ 			first trust source as a backend which is initialized
+@@ -6713,6 +6714,18 @@
+ 			If not specified, "default" is used. In this case,
+ 			the RNG's choice is left to each individual trust source.
  
-+KEYS-TRUSTED-DCP
-+M:	David Gstir <david@sigma-star.at>
-+R:	sigma star Kernel Team <upstream+dcp@sigma-star.at>
-+L:	linux-integrity@vger.kernel.org
-+L:	keyrings@vger.kernel.org
-+S:	Supported
-+F:	include/keys/trusted_dcp.h
-+F:	security/keys/trusted-keys/trusted_dcp.c
++	trusted.dcp_use_otp_key
++			This is intended to be used in combination with
++			trusted.source=dcp and will select the DCP OTP key
++			instead of the DCP UNIQUE key blob encryption.
 +
- KEYS-TRUSTED-TEE
- M:	Sumit Garg <sumit.garg@linaro.org>
- L:	linux-integrity@vger.kernel.org
++	trusted.dcp_skip_zk_test
++			This is intended to be used in combination with
++			trusted.source=dcp and will disable the check if all
++			the blob key is zero'ed. This is helpful for situations where
++			having this key zero'ed is acceptable. E.g. in testing
++			scenarios.
++
+ 	tsc=		Disable clocksource stability checks for TSC.
+ 			Format: <string>
+ 			[x86] reliable: mark tsc clocksource as reliable, this
 -- 
 2.35.3
 
