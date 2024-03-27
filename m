@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F7588DA08
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 10:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D56088DA11
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 10:17:45 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Yp7nd+MV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PUMbxhbE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Ldz1Gjdz3vjh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 20:16:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Lfv1b5gz3vZp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 20:17:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Yp7nd+MV;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PUMbxhbE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4LbF1YC7z3vXF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 20:14:32 +1100 (AEDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6e703e0e5deso4727840b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 02:14:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4LbT5r1Vz3vXJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 20:14:45 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6e6bee809b8so5487960b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 02:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711530870; x=1712135670; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1711530883; x=1712135683; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zPk9OMXL2EDAJPzRk28eQ8ffeZSU9ou0GuU/yWTRHW0=;
-        b=Yp7nd+MVNmdQciJeCntk+0cFxjPPB6LVoemVBVHSQ1wLUpnRznYsDa2bi95Mi81JSD
-         /5SgudxmmYQoIwYgNj/7IQPydoWS44eRdx2BA+3/Eq2G1EnGNteTbkA0HafL1NRgcvcV
-         4L7Beok2rGefefXL7cqtkxP6AssrFvIPoNnlqEd5t6Z+j06AMz/TChvdjaT1kAeWsewX
-         BkA3j+GopcbhEalVGzkP2osfFIlZKg1fgcbg6P5x06Kp6eivLrHF8Gwkm9oCJdWyDrIH
-         vEFMxyxQMzyC6JGKzDg7VxApuUnLS1Ffi9YNN44ZgcwyjMRRu9p9igYkTBnETz53/mu6
-         OM7w==
+        bh=oZiY/N9QWjiUSrWkYkKKgVbAI8JcvjPgGcqjy1l+QIE=;
+        b=PUMbxhbEwrKTZExqLvlJLVvhCgyUQLawBsOL5wfr0LDfTDaM0NRFDp+Wn4yvUQn5nY
+         4Drj22B37tMaIUqvUnkE70XIlxYzLRa5yiZmxJ/4MghAfKcD4HHqaNaXw0FwvxPjHCvV
+         Fdf+/TxCtm8GrSR5ZUup9GCvTLj4VDCHpufOfft5EZjNWVvtXx0QJi8hycm0/1IQ93v0
+         pDiLYeNNi5a83Xl9EYs4emviOd0v9iAJ2fqoUkTREyFEb5SsAdKrtpqM9qU9b2Hj+aiN
+         TyZPN49ycHin/wpR8+wQhVzYUa1ynrosS4zvWYOJUoQJNGE9sRiHsit5kH5R5AfTftIa
+         MYTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711530870; x=1712135670;
+        d=1e100.net; s=20230601; t=1711530883; x=1712135683;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zPk9OMXL2EDAJPzRk28eQ8ffeZSU9ou0GuU/yWTRHW0=;
-        b=sGFbiJ9nVo4Y2VS7DWoYkHwqbLNt1MSfZLJq/HmQBiz0uReHiWPGMJ4perZqQ0S9wt
-         J1A0t+XqQNLh5fsnfhUalWY3cK0aV6w6hqDdo2yzhcEwk+02P1j2g0xjIsl3LJRK77To
-         jRTQlMwqQg83qEQ49Nndi5Cb8fDnk2A81BjKj0UnrHP3j9xLu5gc6PRO4zes4hF8NBWo
-         aO+M8gD50ROdoFyF860rjOIONGm7kgftMSQZnpZ4TNs1ZAZlqJtgVFR7n5a/o2K0fjSX
-         8aBHsU5IL9LiY5IrlbL6qIfIALS2edvgOmeuyUqe+vmOhcfa3Xeh91jqESfIFEqRcCIB
-         76ew==
-X-Forwarded-Encrypted: i=1; AJvYcCUmEnf4Qvd0PsAW5Tvd7F77u35k5f96NgSgOB5wzce/OR0c1F2VYLsQq2/4xcngGvpeDW58TXRkam8rsDxcUeAtfWpmHN5bXmxvUhM2Jg==
-X-Gm-Message-State: AOJu0YyJr9zTkM7emf/s+Yf7eyNYNCoWEGHnXo+5zvCczc9qnYKESs1K
-	GLFJxYVex7QSnEJLGAHWX6vVr94IgOSTMdG7cD3BBzfvXuWnqtuOHun46qI0gw==
-X-Google-Smtp-Source: AGHT+IHUqTOBDCc0FzxMHZPzlvLHKFGoK7XVK6UdIi44MV6apc230jjA2Kps2spz4iW6N2fPM1JOFA==
-X-Received: by 2002:aa7:888f:0:b0:6ea:ad01:357c with SMTP id z15-20020aa7888f000000b006eaad01357cmr2103804pfe.22.1711530870218;
-        Wed, 27 Mar 2024 02:14:30 -0700 (PDT)
+        bh=oZiY/N9QWjiUSrWkYkKKgVbAI8JcvjPgGcqjy1l+QIE=;
+        b=kEh03CPSVpNLdaXd8ZJgTx9rkEwjIUAblxLuzutsuxuf/HB7DeauhCK9f5t5Xdp3M4
+         lZdRNvEGhKONw6Lm3RlWFEoTZU5uBjgSHsxeJ1X8SDMUuqYvg1FfscpODwtkrkK6F43h
+         IumhU3JSKKBAiutqlhxaLJS56t6hZ/QENcUPw5UoKOwVnZqcYAtHseJEqS+pTXD/jiFd
+         RpRgl++EELyBbkIDJSQTgdT49hkQUz/yEoKOTDGkaXQyKI5dcqLrJye+24MBawxlIS9+
+         ljBSfExAOc1EvyFTKrJ5Qrqg76Wm05dGpVHi07Wc95KbwTv1SpaOaW6g0fNJ78n+b/Eq
+         OpWw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvpXGxY/J0xT2yA8ao/+CBGrtQNzfJ5TZSAp7qP0o7jL17iVQuI0g2yyYhwrO8Mn4UZdLJf18toHND2CF+m6Z5I34vc1lYovPylvNjhQ==
+X-Gm-Message-State: AOJu0YwSBoWdnT5TqYIpyQRuCOkVHrv21gHT9m/hJFVvwQl/rw/GPuIC
+	8bv0kwtmElM5e6/SQKzKJ58ZGphnoz5IhwOAb1T/vjqZ5l8CMIF0WR1WM30Baw==
+X-Google-Smtp-Source: AGHT+IEhjrzAmhdc31Ckj+SKUIw8a5+ySLGll4S+n7ONvtok2U56QZlSSqe5kaYrOAdathooGe1xBg==
+X-Received: by 2002:a05:6a00:2d25:b0:6ea:bf1c:9dfd with SMTP id fa37-20020a056a002d2500b006eabf1c9dfdmr2337979pfb.27.1711530882957;
+        Wed, 27 Mar 2024 02:14:42 -0700 (PDT)
 Received: from [127.0.1.1] ([120.60.52.77])
-        by smtp.gmail.com with ESMTPSA id h190-20020a6383c7000000b005dc4fc80b21sm8673871pge.70.2024.03.27.02.14.20
+        by smtp.gmail.com with ESMTPSA id h190-20020a6383c7000000b005dc4fc80b21sm8673871pge.70.2024.03.27.02.14.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 02:14:29 -0700 (PDT)
+        Wed, 27 Mar 2024 02:14:42 -0700 (PDT)
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Wed, 27 Mar 2024 14:43:32 +0530
-Subject: [PATCH v12 3/8] PCI: dwc: ep: Remove deinit() callback from struct
- dw_pcie_ep_ops
+Date: Wed, 27 Mar 2024 14:43:33 +0530
+Subject: [PATCH v12 4/8] PCI: dwc: ep: Rename dw_pcie_ep_exit() to
+ dw_pcie_ep_deinit()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240327-pci-dbi-rework-v12-3-082625472414@linaro.org>
+Message-Id: <20240327-pci-dbi-rework-v12-4-082625472414@linaro.org>
 References: <20240327-pci-dbi-rework-v12-0-082625472414@linaro.org>
 In-Reply-To: <20240327-pci-dbi-rework-v12-0-082625472414@linaro.org>
 To: Jingoo Han <jingoohan1@gmail.com>, 
@@ -91,16 +91,16 @@ To: Jingoo Han <jingoohan1@gmail.com>,
  Shawn Lin <shawn.lin@rock-chips.com>, Heiko Stuebner <heiko@sntech.de>, 
  Kishon Vijay Abraham I <kishon@kernel.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4397;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3334;
  i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=oxVwts31AynSAqvIvFdaJ3BN9dSR3M2c799N6+9XayE=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmA+NJyLax6YW3Dcb5Sh5QpLv875ecVd4pu/l86
- j0PZPCzgsaJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZgPjSQAKCRBVnxHm/pHO
- 9XU1B/9zbXi+U6FRqviLhKGscc2BcpWXO/vZZZSbP1V8JFoZQnH13D+vsY4FHCsxxKSu06ZxXci
- Pur8uJij9gSzGzokzDgbR32/AAtNIxKbJmJgSp7Rm/DFAGPfOYbmm2CM1m8VXNgxphbS/ADHe2c
- k6+hszGUixD98daIPtNbm7G3Bo2O1PKrhUIRj5+kjN9Evl6Hr1b56Toj7oGZJbzedElT3HOKsa3
- Dw7LsKjusaL39VdWv2jKh2IgAZ2qC/VQCjZ7ub0J+yicfYWLIMdl4MPmlL+Ri/OUCJ8AzkGAmXp
- RJsivu+Qzbyuwo6MRmVdT54dAvHVgWmOq4iue+ylu5TEgsmZ
+ bh=xGVEiZ7J2TIauI1NZJAP+R7IoNGzHRfiU2LIamYdE4E=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmA+NJFpiteOu/bMaZydpCj3T9fJPQVQN/vgf+I
+ pB4YUgDlCSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZgPjSQAKCRBVnxHm/pHO
+ 9dD4B/0TWr4d5WLYoGlJRNd23GLjZofrVBBEdotNf5AQj9lgW1AwbW1nJPy48qrR6OmFgqtMwJU
+ AoJRwRrLJd44NPcLVDU7k1DLcM2L6J0jwgpyc83rrCjVdhTIpCqP17u/lg9Tr6o3FaJWRAcR3qd
+ UZ29lpeYmZT6uFNuM/VvklfmrSDKH/OoNtDQLszOKd51l/lmKCjdCnM+OEW5UuXSGNNMi2AJGCU
+ 4jyHZy/eESG8OMB4JoGH+B4jhUN1g55aJd+iEVEAHtrh0s/RQs3/EjMpe/ktSaRupYnD/Sa2eTH
+ FDYOiC3JgEjJ7H5spaG21OJihpC5FZLMmkOI3TsWwwBuyCMC
 X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -118,124 +118,85 @@ Cc: linux-rockchip@lists.infradead.org, linux-pci@vger.kernel.org, Manivannan Sa
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-deinit() callback was solely introduced for the pcie-rcar-gen4 driver where
-it is used to do platform specific resource deallocation. And this callback
-is called right at the end of the dw_pcie_ep_exit() API. So it doesn't
-matter whether it is called within or outside of dw_pcie_ep_exit() API.
-
-So let's remove this callback and directly call rcar_gen4_pcie_ep_deinit()
-in pcie-rcar-gen4 driver to do resource deallocation after the completion
-of dw_pcie_ep_exit() API in rcar_gen4_remove_dw_pcie_ep().
-
-This simplifies the DWC layer.
+dw_pcie_ep_exit() API is undoing what the dw_pcie_ep_init() API has done
+already (at least partly). But the API name dw_pcie_ep_exit() is not quite
+reflecting that. So let's rename it to dw_pcie_ep_deinit() to make the
+purpose of this API clear. This also aligns with the DWC host driver.
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |  9 +--------
- drivers/pci/controller/dwc/pcie-designware.h    |  1 -
- drivers/pci/controller/dwc/pcie-rcar-gen4.c     | 14 ++++++++------
- 3 files changed, 9 insertions(+), 15 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 6 +++---
+ drivers/pci/controller/dwc/pcie-designware.h    | 4 ++--
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c     | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index dc63478f6910..f06598715412 100644
+index f06598715412..d87f7642d7f6 100644
 --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
 +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -637,9 +637,6 @@ void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
- 			      epc->mem->window.page_size);
+@@ -620,13 +620,13 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
+ }
+ 
+ /**
+- * dw_pcie_ep_exit - Deinitialize the endpoint device
++ * dw_pcie_ep_deinit - Deinitialize the endpoint device
+  * @ep: DWC EP device
+  *
+  * Deinitialize the endpoint device. EPC device is not destroyed since that will
+  * be taken care by Devres.
+  */
+-void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
++void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	struct pci_epc *epc = ep->epc;
+@@ -638,7 +638,7 @@ void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
  
  	pci_epc_mem_exit(epc);
--
--	if (ep->ops->deinit)
--		ep->ops->deinit(ep);
  }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_exit);
+-EXPORT_SYMBOL_GPL(dw_pcie_ep_exit);
++EXPORT_SYMBOL_GPL(dw_pcie_ep_deinit);
  
-@@ -844,7 +841,7 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
- 			       ep->page_size);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to initialize address space\n");
--		goto err_ep_deinit;
-+		return ret;
- 	}
- 
- 	ep->msi_mem = pci_epc_mem_alloc_addr(epc, &ep->msi_mem_phys,
-@@ -881,10 +878,6 @@ int dw_pcie_ep_init(struct dw_pcie_ep *ep)
- err_exit_epc_mem:
- 	pci_epc_mem_exit(epc);
- 
--err_ep_deinit:
--	if (ep->ops->deinit)
--		ep->ops->deinit(ep);
--
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_init);
+ static unsigned int dw_pcie_ep_find_ext_capability(struct dw_pcie *pci, int cap)
+ {
 diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 26dae4837462..ab7431a37209 100644
+index ab7431a37209..61465203bb60 100644
 --- a/drivers/pci/controller/dwc/pcie-designware.h
 +++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -333,7 +333,6 @@ struct dw_pcie_rp {
- struct dw_pcie_ep_ops {
- 	void	(*pre_init)(struct dw_pcie_ep *ep);
- 	void	(*init)(struct dw_pcie_ep *ep);
--	void	(*deinit)(struct dw_pcie_ep *ep);
- 	int	(*raise_irq)(struct dw_pcie_ep *ep, u8 func_no,
- 			     unsigned int type, u16 interrupt_num);
- 	const struct pci_epc_features* (*get_features)(struct dw_pcie_ep *ep);
+@@ -671,7 +671,7 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep);
+ int dw_pcie_ep_init(struct dw_pcie_ep *ep);
+ int dw_pcie_ep_init_complete(struct dw_pcie_ep *ep);
+ void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep);
+-void dw_pcie_ep_exit(struct dw_pcie_ep *ep);
++void dw_pcie_ep_deinit(struct dw_pcie_ep *ep);
+ int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no);
+ int dw_pcie_ep_raise_msi_irq(struct dw_pcie_ep *ep, u8 func_no,
+ 			     u8 interrupt_num);
+@@ -701,7 +701,7 @@ static inline void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
+ {
+ }
+ 
+-static inline void dw_pcie_ep_exit(struct dw_pcie_ep *ep)
++static inline void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
+ {
+ }
+ 
 diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-index 0be760ed420b..5d29c4cfe0a0 100644
+index 5d29c4cfe0a0..de4bdfaecab3 100644
 --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
 +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-@@ -352,11 +352,8 @@ static void rcar_gen4_pcie_ep_init(struct dw_pcie_ep *ep)
- 		dw_pcie_ep_reset_bar(pci, bar);
- }
- 
--static void rcar_gen4_pcie_ep_deinit(struct dw_pcie_ep *ep)
-+static void rcar_gen4_pcie_ep_deinit(struct rcar_gen4_pcie *rcar)
- {
--	struct dw_pcie *dw = to_dw_pcie_from_ep(ep);
--	struct rcar_gen4_pcie *rcar = to_rcar_gen4_pcie(dw);
--
- 	writel(0, rcar->base + PCIEDMAINTSTSEN);
- 	rcar_gen4_pcie_common_deinit(rcar);
- }
-@@ -410,7 +407,6 @@ static unsigned int rcar_gen4_pcie_ep_get_dbi2_offset(struct dw_pcie_ep *ep,
- static const struct dw_pcie_ep_ops pcie_ep_ops = {
- 	.pre_init = rcar_gen4_pcie_ep_pre_init,
- 	.init = rcar_gen4_pcie_ep_init,
--	.deinit = rcar_gen4_pcie_ep_deinit,
- 	.raise_irq = rcar_gen4_pcie_ep_raise_irq,
- 	.get_features = rcar_gen4_pcie_ep_get_features,
- 	.get_dbi_offset = rcar_gen4_pcie_ep_get_dbi_offset,
-@@ -420,18 +416,24 @@ static const struct dw_pcie_ep_ops pcie_ep_ops = {
- static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
- {
- 	struct dw_pcie_ep *ep = &rcar->dw.ep;
-+	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_PCIE_RCAR_GEN4_EP))
- 		return -ENODEV;
- 
- 	ep->ops = &pcie_ep_ops;
- 
--	return dw_pcie_ep_init(ep);
-+	ret = dw_pcie_ep_init(ep);
-+	if (ret)
-+		rcar_gen4_pcie_ep_deinit(rcar);
-+
-+	return ret;
- }
+@@ -432,7 +432,7 @@ static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
  
  static void rcar_gen4_remove_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
  {
- 	dw_pcie_ep_exit(&rcar->dw.ep);
-+	rcar_gen4_pcie_ep_deinit(rcar);
+-	dw_pcie_ep_exit(&rcar->dw.ep);
++	dw_pcie_ep_deinit(&rcar->dw.ep);
+ 	rcar_gen4_pcie_ep_deinit(rcar);
  }
  
- /* Common */
 
 -- 
 2.25.1
