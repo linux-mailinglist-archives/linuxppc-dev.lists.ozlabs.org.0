@@ -2,112 +2,142 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2211588E427
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 14:54:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB8C88E44B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Mar 2024 14:57:22 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZL3uFO7S;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MwaGEXxH;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rg6y7jWV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4Snk5twVz3vcD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 00:54:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4SsX2kHKz3vgM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 00:57:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZL3uFO7S;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MwaGEXxH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rg6y7jWV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2415::600; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::600])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4Sn118r2z3dW2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 00:53:22 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FAks4C1dXGUKoJHl69RY0z/V++IfV4Md1FPdybrOt6N5XVCjbUcxc25r+2sGBYR0Q8fdyV3+NzY0FyEVGP6UDulDXk6P+PnbZn8YKNFF9ZY9ppWI9IjesWGAh5JWQ/L/x3WupT0iNI6EMpT+7L6kHW3N0IUeHBWmP7owDMZ0BgR+l4NQ9tpSrmpVlf92Bs7pEBoCWlb25iZcarNhZ7x3SDvK7obm/WOiMwdJGZSW9s8ZW504O29VwjWRomUonxjzOUFz4nXQDyxYU9287B6ISNcxBaOvsPHP4FvldrNJ/266lIMwXxnZlpCD85GZNcWF6BwQhMtAkiMlmxlcUHy02A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cZ2rQuHOc7DiX3XJ8A5mf+IVhyyY13SQcZzCvdnBfWg=;
- b=BvpeGxyBa0SVnzmF/nT/q1kfTTjh4pj/jj4vaKuR3eFMyZy2F7k23dM/Bq+ofQuMH30PCGUWV9isVRR07buoK4td78pYb7ib1Y8dyi58HYllCvG0Vk+TZm3+3NKQnXikE9fp3J9SUSS7L3/fNti+eKdhQpQ1snkTel5bf6GbGytxPF64vseDuSSA0VOeqQXS6qKotOe86L1vzugHXdBsJzlGZhuWGS6T9tel0fHCNRBhSSePvzbguIBXAZGjnSmY1QIaX3aVwjz4GxsFYXuvD4uoS4IVCOBLVMcxew0N7u/KrETRsHaOd33JuWkllAk6D6C/jiwIB4AMYxJODepttQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cZ2rQuHOc7DiX3XJ8A5mf+IVhyyY13SQcZzCvdnBfWg=;
- b=ZL3uFO7SDcYM/3uVKaBB8k+zC1edhFnqGZhKNnzrUDUMwDeafJBv3/89h2imC4jc6EO4XNL7YYjLD/RBvKYL8zO83nzVAozYUp1jobQfkT01sRdTAjblXv8CaFA/du4gZDA0TtoRgZsr4wD+kZg5IXh6V+2/T3h7gi1QjFvKWfVyIRWGd0O66b2uioYOnb6doBF5QEwBs93f5gjl/CjBgKeziq3bgVIqfyF6HklyIBULzlpwIvfJZhWYVhWdp7jxt6b9MFelnN3hOEnbG/gZ3S0P692nYDuB1VwM37+iWNTR+yXZqUGXH4nRqOCp5r5OZ1nV9293VYGOLoVyo1dSVg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by PH0PR12MB5608.namprd12.prod.outlook.com (2603:10b6:510:143::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.33; Wed, 27 Mar
- 2024 13:52:58 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7409.031; Wed, 27 Mar 2024
- 13:52:58 +0000
-Date: Wed, 27 Mar 2024 10:52:56 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4Srm5qXcz3vbV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 00:56:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711547797;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wwFOu67rAm/jgeVVs/VXwT1nwHyOmGUKbXFLwpopGYg=;
+	b=MwaGEXxHl6gKs6OCt9bbnGbQCxFk/VSsAZw1UbEK5gwjTABNmbEH/rih9CLJZTdB80lX0d
+	yUVgbyTBei7ihESAWcWPPSam5ebjN24iTYG/XD6+cdteD2I8Vq2o+SxM03NKh4b5v0NpG6
+	L6agR5BKxHe4sNAXFrBsyDVz9K2jitA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711547798;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wwFOu67rAm/jgeVVs/VXwT1nwHyOmGUKbXFLwpopGYg=;
+	b=Rg6y7jWVvKWdrWKliM6sxF2+iGNh8aG8we9ScbisSEw34uTr9zR6ygH3ZbDILX58XtKpit
+	xwI03cVHiMTVnXzsGaIJF+VAvAY9sDzHEzUMMhcHRhtFaNcqNq20bdLkcukEA7K1U+bmfw
+	sJdrjXV3EGNfsTw9W9HaFWbAbBF00Sc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-274-OZbhsvZWO1qZ6cVCPWsshw-1; Wed, 27 Mar 2024 09:56:34 -0400
+X-MC-Unique: OZbhsvZWO1qZ6cVCPWsshw-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-41485831b2dso28046545e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Mar 2024 06:56:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711547793; x=1712152593;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wwFOu67rAm/jgeVVs/VXwT1nwHyOmGUKbXFLwpopGYg=;
+        b=AQAqji0+4XgaeynwBOF0VXVKJBEBtipbWnAvSwwR6SffRzQLQ06VdVlwuBdvG9jmob
+         N49u7XVyPwDMnlrabOPl9kCRQ+KL6q/KDWqrI302UllZhe//38U3/5HL5MvpQS+0E4xL
+         f9BqScEgFqr+kuwxF3V1BipyhWfKNtNM9r3Tyk4TxYO/J+2AXK2uuDEJYiNoMYwT2Cff
+         aV4spAVKfoFsjxMyuNgDGHdhlt3qyJx5Ps/1ZPeZgJQ3KM/nZKv7SuCLvkRujfP+ZZPu
+         XYpXQzWgiIk9/qeavxI0Tx3/hN8D8K7rebVp6D+QI04DgqRivNfvGRxih1XWWCr5G14X
+         0TiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVd0MIsg5j5dYTcdxORklYr5YwGqwaKdeLqXW+37fFkK6E9+GpeScoSAWD0bQS2ThuScHF5Aqc/Lf3ePSmfCfsMpJLlTH1KWEs3Ngn3JQ==
+X-Gm-Message-State: AOJu0YzmyD99z4XZv+KBAk+Tvu2TcDhN7iW4tn87RADcfNDfvNF/G8hj
+	/i1uENFmFEvFgDAixtfCD+BsSlFMHWjqojvaV9C2g5opgPMZlCYXljSM4z5zAsPXmaiiImgQWt0
+	EMVJp0aZl+WT2+ZcfCAm689926itH3W3wa8X6k9f0OcWde1GzCV55PJacndFJrgc=
+X-Received: by 2002:a05:600c:a08:b0:414:392:38d2 with SMTP id z8-20020a05600c0a0800b00414039238d2mr74562wmp.24.1711547793062;
+        Wed, 27 Mar 2024 06:56:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExpTOhHThCpVA+4b+ZiNKOUdia4Bzq6YqF2zp26xsxLD8eZI4hj+mGwvlthboaboFnQKnRxA==
+X-Received: by 2002:a05:600c:a08:b0:414:392:38d2 with SMTP id z8-20020a05600c0a0800b00414039238d2mr74531wmp.24.1711547792613;
+        Wed, 27 Mar 2024 06:56:32 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c708:8a00:362b:7e34:a3bc:9ddf? (p200300cbc7088a00362b7e34a3bc9ddf.dip0.t-ipconnect.de. [2003:cb:c708:8a00:362b:7e34:a3bc:9ddf])
+        by smtp.gmail.com with ESMTPSA id k33-20020a05600c1ca100b0041409cabb39sm2218013wms.18.2024.03.27.06.56.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Mar 2024 06:56:32 -0700 (PDT)
+Message-ID: <7631ff56-fa16-4b2b-87b2-1e93691bd110@redhat.com>
+Date: Wed, 27 Mar 2024 14:56:31 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 1/3] mm/gup: consistently name GUP-fast functions
-Message-ID: <20240327135256.GG946323@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
 References: <20240327130538.680256-1-david@redhat.com>
  <20240327130538.680256-2-david@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327130538.680256-2-david@redhat.com>
-X-ClientProxiedBy: MN2PR16CA0043.namprd16.prod.outlook.com
- (2603:10b6:208:234::12) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|PH0PR12MB5608:EE_
-X-MS-Office365-Filtering-Correlation-Id: ddf8446e-4483-4aef-ad6a-08dc4e6535e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	tbA0esurhiO+3PfEmHRopmGYoyz1MPbRyEW8gqqTfsxXRUJRehYJbhrw2sNEfeyKKpTPD47cioHUnrbXLtvH3VkuhvIj7mWqSLVm+txE79TYMkTjWuwLu2g7safC9B/2lu/9IOfefrHjGb2akXW/2vODzDEvh/fPZMF2r2w/n7RUAqm63+nBpQSYBB6foVKDQhl2bIuNH0UmiAXLWGmJSaa7UPkcfxw/VRvQ37t8RtkWONR1S+KGl8PKW0Z7zNFJCLMP5BKdFBuacepmI+IoPCzdw5CDjyXv/OtJMolUbrqXA+feeyDYNXVSlbA/fRmbzjSkJJTU3eAqbREZPUkSm6J/7KESiJUrbJmLVESP46aRZYByA72dBapzynt5loi2Qi0ITMjP0Y2UsXlnQyDVjCzP1HFVPN+x3k9rBKO4v289fVyzH2VtAXtARVWw1w9gKji31tTkrlX28hSIjr6N+iu9Fau7UF0JaDMN2VtY1FkYN6OIndB5BSpdcXVx1lV6zlJvU7w95Y1146akF3Ekf/FHMHqkwnfjPfQtraajQPAybSa0HVCKn6aKqyH7PfoaZkUPjtrUqOvZ4IRcDwuPTit1kMb5Tdt/NWIi3st9th6V9MjnS2lkclu9s3fUYSpNCYErmd2CsWaeX3tYJDAw9+/ibu38MuNb9PxC5CQLV54=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(376005)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?itf+dpo3GTzSl55VfIjsjt1srx8KuTR6OxZ5DSzQgq9f9ayJLsqD8iU9cW31?=
- =?us-ascii?Q?Up1J9bTXRk/h6ziQRjfAvIpV3qo66CdbEQOXk4t7UKlL+7x5Ibq6YSL4Qzpv?=
- =?us-ascii?Q?cBnFNhRzX8JeSLZpVrSEtq/N7w5MZt8QVSfe4A2MCla4c1q95rt9faidTBOj?=
- =?us-ascii?Q?IWHvzaLwipQyipk2CavvWwXkO+PDFEobgpJKfaEVZmdzxg098OahjxB1aVov?=
- =?us-ascii?Q?GbO7QzUO38km8ZzcmA7tOXODtmZVA5j2NNfXH6pyFZwLnJ8oWuU5GIUqLPNp?=
- =?us-ascii?Q?DTU1SZUbLqXMl8Ca4sTCZprooweLoZnlC//ITsuCA99gu4EyO8HUIddDOen0?=
- =?us-ascii?Q?p8P/9CrycaEDcXEM/7JIPY3FgZ4xD2iZJSJGAjuI5H0B+9Nhymok48Exw9NW?=
- =?us-ascii?Q?rM5nc/uaMzV2F7BBinFBg/JGxqnD3JZleei65YN+LI5McCQw9V2qw9Eqhp3o?=
- =?us-ascii?Q?HQ1LnfYjQFVuEzKms5OW5cUU3wOtmojS3tVZTKEiDc7bvrd7ISpGZbR2wphs?=
- =?us-ascii?Q?qyEurTFInOUItLQDYsnY5AT5Aph8fqvlz572gFFBX1ugC+y8UGspWLlFKeOm?=
- =?us-ascii?Q?MJkHVMJPWWFuDkvzPfBiSIQNibZbz06OQVu5kt1rWSmrYLZ+UzozrhtOedBF?=
- =?us-ascii?Q?Xz0rlA34CTE4fkRoGjcr3rMMPxIZsY8zMSB80eenkmQlxFvbxuaOASfG483l?=
- =?us-ascii?Q?Xa3TSb4yzpVGKJN71bxDB2X4STn952BmjctA0KldZJ+zyIR+QPt3WzpyUpQE?=
- =?us-ascii?Q?ISRktj15OTt2Um/OIVW4n78gcTYQg0iG0QLXWoB8hVy4Dxsnnj0KovnbsVww?=
- =?us-ascii?Q?d5Qelk+r6ZYgD55CCeBrzi8HwvBSF7gc4Thk3dtzv9EpKld6rMUQ1b9ImuK8?=
- =?us-ascii?Q?RDRxp9kxKQCaw2hsM6XBeKRz5JVT6pgDEEjQoWZmZSdoP1ISd+eKqgn1+hy1?=
- =?us-ascii?Q?XoZjijCW469TvVXED2ZzbAj8/HJwEr3ZiqsnHCI1RYpTVnjH+Lc1BmGzBkE1?=
- =?us-ascii?Q?F2IiMaaCoqOn+zmlujey8DlmDqw/2WqETVi7w38sxlhFP0q5g7dRAVe+ZWPy?=
- =?us-ascii?Q?Nef9UGfXVgybBey3EgQiNJCeLKdly7VR18n+6kz1OCx/vOKbRuvh++0P5Ln5?=
- =?us-ascii?Q?T7ioUSaUGExfesZfA2MbFMMBlyaJbhwsfb+2jTT/3x8Hgpan8AiQT1R0h/PK?=
- =?us-ascii?Q?5TbtlURy8DDRHyRgXDKgfdP9iReHMVf2TYVUPd/wlgKz1DhLDH/T+toNbmxz?=
- =?us-ascii?Q?JJ9hW0iFpI/lvCEh+90Ot7eqovCnKPCmSJNQrsDydp+PM0QGXSImsVrBmQB+?=
- =?us-ascii?Q?AzUh1iuMGsp+IIkkbCCcHRY+WMvEU1wMXU+0p/uwrtRD7R/bBSmV6TrBh8rH?=
- =?us-ascii?Q?VhQ9yio6XH/wmPWYJkWeGSUBO1FeF1umPFxW/g111H4CojOglwD1Dn71nv4i?=
- =?us-ascii?Q?6x2geb2AdNcdyKosPr4UNq4wHorGbbXf+lP2MHosWacPSZalRF4tymuw/6nb?=
- =?us-ascii?Q?sNoV/Pw+ztzyS5ytbj03i26FzJkBDXcL+GIbacNBfcmJG2qu1R+yL/h3dCET?=
- =?us-ascii?Q?LDfL9PZHkgamvOhsDiRvnERKfSOgx3Z0elCh3RRm?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ddf8446e-4483-4aef-ad6a-08dc4e6535e5
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2024 13:52:58.3889
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m9NbpnUV2D+qEEPq7X0g7K4FHmO8DKt1OZluear73anXy7NNypFF6Z0Kf3f1qPwt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5608
+ <20240327135256.GG946323@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240327135256.GG946323@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,68 +153,49 @@ Cc: linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, John Hubbard <jhubbard
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 27, 2024 at 02:05:36PM +0100, David Hildenbrand wrote:
-> Let's consistently call the "fast-only" part of GUP "GUP-fast" and rename
-> all relevant internal functions to start with "gup_fast", to make it
-> clearer that this is not ordinary GUP. The current mixture of
-> "lockless", "gup" and "gup_fast" is confusing.
+On 27.03.24 14:52, Jason Gunthorpe wrote:
+> On Wed, Mar 27, 2024 at 02:05:36PM +0100, David Hildenbrand wrote:
+>> Let's consistently call the "fast-only" part of GUP "GUP-fast" and rename
+>> all relevant internal functions to start with "gup_fast", to make it
+>> clearer that this is not ordinary GUP. The current mixture of
+>> "lockless", "gup" and "gup_fast" is confusing.
+>>
+>> Further, avoid the term "huge" when talking about a "leaf" -- for
+>> example, we nowadays check pmd_leaf() because pmd_huge() is gone. For the
+>> "hugepd"/"hugepte" stuff, it's part of the name ("is_hugepd"), so that
+>> says.
+>>
+>> What remains is the "external" interface:
+>> * get_user_pages_fast_only()
+>> * get_user_pages_fast()
+>> * pin_user_pages_fast()
+>>
+>> And the "internal" interface that handles GUP-fast + fallback:
+>> * internal_get_user_pages_fast()
 > 
-> Further, avoid the term "huge" when talking about a "leaf" -- for
-> example, we nowadays check pmd_leaf() because pmd_huge() is gone. For the
-> "hugepd"/"hugepte" stuff, it's part of the name ("is_hugepd"), so that
-> says.
-> 
-> What remains is the "external" interface:
-> * get_user_pages_fast_only()
-> * get_user_pages_fast()
-> * pin_user_pages_fast()
-> 
-> And the "internal" interface that handles GUP-fast + fallback:
-> * internal_get_user_pages_fast()
+> This would like a better name too. How about gup_fast_fallback() ?
 
-This would like a better name too. How about gup_fast_fallback() ?
+Yes, I was not able to come up with something I liked. But I do like
+your proposal, so I'll do that!
 
-> The high-level internal function for GUP-fast is now:
-> * gup_fast()
-> 
-> The basic GUP-fast walker functions:
-> * gup_pgd_range() -> gup_fast_pgd_range()
-> * gup_p4d_range() -> gup_fast_p4d_range()
-> * gup_pud_range() -> gup_fast_pud_range()
-> * gup_pmd_range() -> gup_fast_pmd_range()
-> * gup_pte_range() -> gup_fast_pte_range()
-> * gup_huge_pgd()  -> gup_fast_pgd_leaf()
-> * gup_huge_pud()  -> gup_fast_pud_leaf()
-> * gup_huge_pmd()  -> gup_fast_pmd_leaf()
-> 
-> The weird hugepd stuff:
-> * gup_huge_pd() -> gup_fast_hugepd()
-> * gup_hugepte() -> gup_fast_hugepte()
-> 
-> The weird devmap stuff:
-> * __gup_device_huge_pud() -> gup_fast_devmap_pud_leaf()
-> * __gup_device_huge_pmd   -> gup_fast_devmap_pmd_leaf()
-> * __gup_device_huge()     -> gup_fast_devmap_leaf()
->
-> Helper functions:
-> * unpin_user_pages_lockless() -> gup_fast_unpin_user_pages()
-> * gup_fast_folio_allowed() is already properly named
-> * gup_fast_permitted() is already properly named
-> 
-> With "gup_fast()", we now even have a function that is referred to in
-> comment in mm/mmu_gather.c.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/gup.c | 164 ++++++++++++++++++++++++++++---------------------------
->  1 file changed, 84 insertions(+), 80 deletions(-)
+[...]
 
-I think it is a great idea, it always takes a moment to figure out if
-a function is part of the fast callchain or not..
+> 
+> I think it is a great idea, it always takes a moment to figure out if
+> a function is part of the fast callchain or not..
+> 
+> (even better would be to shift the fast stuff into its own file, but I
+> expect that is too much)
 
-(even better would be to shift the fast stuff into its own file, but I
-expect that is too much)
+Yes, one step at a time :)
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> 
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Jason
+Thanks Jason!
+
+-- 
+Cheers,
+
+David / dhildenb
+
