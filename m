@@ -1,77 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E6A88F9E7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 09:16:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D58388FA0A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 09:33:37 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ggd1eF+l;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZI+74/pc;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZI+74/pc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4xGF0s4hz3vmD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 19:16:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4xdV6lqgz3vgW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 19:33:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ggd1eF+l;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZI+74/pc;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZI+74/pc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4xFT0dlsz3vdp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 19:16:12 +1100 (AEDT)
-Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-368a694dce3so2447775ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 01:16:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711613769; x=1712218569; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dg/mTl/gZQBBVLX4ap1mVzi903wSdDhAIBYr54tqh6E=;
-        b=ggd1eF+lz1bNngZQZKkkcgJ+YydQhcrdQ+77uT9mEU/sLmo2TAlQLAy1IOUucM5Y6j
-         A4PLoF0nNapodUJW+unDbBAb3vr8sQtgXloeCtPdeJqr4k4a9hc8CTRMB6IB8xVSVkI1
-         gY6u0CFXrVLWlsJZHBu0+W7QaFQDXH1GJr1LjPua/ssyfaaEX2FURsw5ENXpF2skhp71
-         wjZm1Kh4IWe5vMpXRqM4jkT8+e7FD2MMvikSuAHgU9q249YmR7/tVI9IC7iqYsWLk4p7
-         L4EyIkYbiWAIvg3hKG8j7TVK4Pefbu5zUtqpNM120doukN5ZrDTicQ2jxGbBqyWmVeF5
-         hmlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711613769; x=1712218569;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Dg/mTl/gZQBBVLX4ap1mVzi903wSdDhAIBYr54tqh6E=;
-        b=KFSsi95/DcT0SyR0ySuh50WZvbyJKHmNOCZ/Id8UjX2K87UBVhKhDiCH87S0Sok+Pp
-         2T//sMOmXkzR9tJK/J2ZUbYv/+44TkhlMWO72mqjjcUZrsamhaPsNL4+doCHrxEb/NCm
-         skUSb90MHPb9k5YiUnUJzUN4HsRQEX4StqfOtUQJywu3ZGsXTD50Zk5guebQBttUSnsZ
-         GMUaP8XnpoQ1FeydDW1vSkxr8zvESCsQIVIMnRrr6h9eoFVT/qRCGoaR2/VTvVdSrJ9G
-         jdX1nipZCBbkQIk4zVF/n74j+9Z3f7lxEWAwRJiRZihNxKIvlxkrx3/ZDg6a4hJBlpSJ
-         wP9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWKGW3ZMfcsaJig8gpOn8dkYaU8/+gc9yfNWo86q1hv2USUukUX499Ccu9RRdcnISU554CRQNL1zuxGwWbXWKPh0USXGpDWFh/mFSsWQQ==
-X-Gm-Message-State: AOJu0YzgqPYt33KbASQ6lcFwATYFQWt4tPqCeWL+7DzrjNLgC8aOmjrg
-	nx8kCcrIEmdMQU9M3G8Z2N7z2ge4eFYs/9RNp+PctBSUSJtvAdQw
-X-Google-Smtp-Source: AGHT+IH+KaecwF3RwYZB0cv1SBJhdImRZrrY8YeVsJ1nJSXdi5yIxyolvTctIVwOl1LXGmnuj4ETdA==
-X-Received: by 2002:a92:dd0f:0:b0:368:9ab5:6482 with SMTP id n15-20020a92dd0f000000b003689ab56482mr2435442ilm.13.1711613769423;
-        Thu, 28 Mar 2024 01:16:09 -0700 (PDT)
-Received: from localhost ([118.210.97.62])
-        by smtp.gmail.com with ESMTPSA id t23-20020a63f357000000b005dc4da2121fsm756659pgj.6.2024.03.28.01.16.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Mar 2024 01:16:09 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 28 Mar 2024 18:16:04 +1000
-Message-Id: <D058FW7AZ5NH.2TFDC2YABBB05@wheely>
-Subject: Re: [kvm-unit-tests PATCH v7 06/35] gitlab-ci: Run migration
- selftest on s390x and powerpc
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>
-X-Mailer: aerc 0.15.2
-References: <20240319075926.2422707-1-npiggin@gmail.com>
- <20240319075926.2422707-7-npiggin@gmail.com>
- <91a6724d-5247-4f43-9400-1b8c03cb6cb3@redhat.com>
-In-Reply-To: <91a6724d-5247-4f43-9400-1b8c03cb6cb3@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4xck3T3Rz3vYH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 19:32:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711614770;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YU98x6HKPS4cGaJBRCphv0qa0ztW8Hkud3KMpoGM99k=;
+	b=ZI+74/pctXFNa6WO8YAbdAb3gXtbEk87hsx9wAH0UKrqFhYKtkUnur36MOK+9RaIQSPOdA
+	iE9EvzGyl0Ly4MK5U6f2dBh0YDJCUk0R0ITx8U5uy4JD3IuBKkRsHF8GB0Z22W4/phVeSk
+	Cp7dK7KVTXJ7lGz0DGkh09NuAVLe5Xs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711614770;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YU98x6HKPS4cGaJBRCphv0qa0ztW8Hkud3KMpoGM99k=;
+	b=ZI+74/pctXFNa6WO8YAbdAb3gXtbEk87hsx9wAH0UKrqFhYKtkUnur36MOK+9RaIQSPOdA
+	iE9EvzGyl0Ly4MK5U6f2dBh0YDJCUk0R0ITx8U5uy4JD3IuBKkRsHF8GB0Z22W4/phVeSk
+	Cp7dK7KVTXJ7lGz0DGkh09NuAVLe5Xs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-252-Jahxg1_oOjKaLrJVe7kmLQ-1; Thu, 28 Mar 2024 04:32:46 -0400
+X-MC-Unique: Jahxg1_oOjKaLrJVe7kmLQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0B332852000;
+	Thu, 28 Mar 2024 08:32:46 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.12])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 4F752C01600;
+	Thu, 28 Mar 2024 08:32:45 +0000 (UTC)
+Date: Thu, 28 Mar 2024 16:32:38 +0800
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Subject: Re: [PATCH v2 4/6] mm/mm_init.c: remove meaningless calculation of
+ zone->managed_pages in free_area_init_core()
+Message-ID: <ZgUrJuatQqAT0QA1@MiWiFi-R3L-srv>
+References: <20240325145646.1044760-1-bhe@redhat.com>
+ <20240325145646.1044760-5-bhe@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240325145646.1044760-5-bhe@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,118 +80,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
+Cc: akpm@linux-foundation.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Mar 26, 2024 at 2:08 AM AEST, Thomas Huth wrote:
-> On 19/03/2024 08.58, Nicholas Piggin wrote:
-> > The migration harness is complicated and easy to break so CI will
-> > be helpful.
-> >=20
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >   .gitlab-ci.yml      | 18 +++++++++++-------
-> >   s390x/unittests.cfg |  8 ++++++++
-> >   2 files changed, 19 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-> > index ff34b1f50..bd34da04f 100644
-> > --- a/.gitlab-ci.yml
-> > +++ b/.gitlab-ci.yml
-> > @@ -92,26 +92,28 @@ build-arm:
-> >   build-ppc64be:
-> >    extends: .outoftree_template
-> >    script:
-> > - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
-> > + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
-> >    - mkdir build
-> >    - cd build
-> >    - ../configure --arch=3Dppc64 --endian=3Dbig --cross-prefix=3Dpowerp=
-c64-linux-gnu-
-> >    - make -j2
-> >    - ACCEL=3Dtcg ./run_tests.sh
-> > -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-=
-day-base
-> > -     rtas-set-time-of-day emulator
-> > +     selftest-setup selftest-migration selftest-migration-skip spapr_h=
-call
-> > +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-d=
-ay
->
-> I used to squash as much as possible into one line in the past, but nowad=
-ays=20
-> I rather prefer one test per line (like it is done for s390x below), so t=
-hat=20
-> it is easier to identify the changes ...
-> So if you like, I think you could also put each test on a separate line h=
-ere=20
-> now (since you're touching all lines with tests here anyway).
+On 03/25/24 at 10:56pm, Baoquan He wrote:
+> Currently, in free_area_init_core(), when initialize zone's field, a
+> rough value is set to zone->managed_pages. That value is calculated by
+> (zone->present_pages - memmap_pages).
+> 
+> In the meantime, add the value to nr_all_pages and nr_kernel_pages which
+> represent all free pages of system (only low memory or including HIGHMEM
+> memory separately). Both of them are gonna be used in
+> alloc_large_system_hash().
+> 
+> However, the rough calculation and setting of zone->managed_pages is
+> meaningless because
+>   a) memmap pages are allocated on units of node in sparse_init() or
+>      alloc_node_mem_map(pgdat); The simple (zone->present_pages -
+>      memmap_pages) is too rough to make sense for zone;
+>   b) the set zone->managed_pages will be zeroed out and reset with
+>      acutal value in mem_init() via memblock_free_all(). Before the
+>      resetting, no buddy allocation request is issued.
+> 
+> Here, remove the meaningless and complicated calculation of
+> (zone->present_pages - memmap_pages), initialize zone->managed_pages as 0
+> which reflect its actual value because no any page is added into buddy
+> system right now. It will be reset in mem_init().
+> 
+> And also remove the assignment of nr_all_pages and nr_kernel_pages in
+> free_area_init_core(). Instead, call the newly added calc_nr_kernel_pages()
+> to count up all free but not reserved memory in memblock and assign to
+> nr_all_pages and nr_kernel_pages. The counting excludes memmap_pages,
+> and other kernel used data, which is more accurate than old way and
+> simpler, and can also cover the ppc required arch_reserved_kernel_pages()
+> case.
+> 
+> And also clean up the outdated code comment above free_area_init_core().
+> And free_area_init_core() is easy to understand now, no need to add
+> words to explain.
+> 
+> Signed-off-by: Baoquan He <bhe@redhat.com>
+> ---
+>  mm/mm_init.c | 46 +++++-----------------------------------------
+>  1 file changed, 5 insertions(+), 41 deletions(-)
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index c57a7fc97a16..7f71e56e83f3 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1565,15 +1565,6 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+>  }
+>  #endif
+>  
+> -/*
+> - * Set up the zone data structures:
+> - *   - mark all pages reserved
+> - *   - mark all memory queues empty
+> - *   - clear the memory bitmaps
+> - *
+> - * NOTE: pgdat should get zeroed by caller.
+> - * NOTE: this function is only called during early init.
+> - */
+>  static void __init free_area_init_core(struct pglist_data *pgdat)
+>  {
+>  	enum zone_type j;
+> @@ -1584,41 +1575,13 @@ static void __init free_area_init_core(struct pglist_data *pgdat)
+>  
+>  	for (j = 0; j < MAX_NR_ZONES; j++) {
+>  		struct zone *zone = pgdat->node_zones + j;
+> -		unsigned long size, freesize, memmap_pages;
+> -
+> -		size = zone->spanned_pages;
+> -		freesize = zone->present_pages;
+> -
+> -		/*
+> -		 * Adjust freesize so that it accounts for how much memory
+> -		 * is used by this zone for memmap. This affects the watermark
+> -		 * and per-cpu initialisations
+> -		 */
+> -		memmap_pages = calc_memmap_size(size, freesize);
+> -		if (!is_highmem_idx(j)) {
+> -			if (freesize >= memmap_pages) {
+> -				freesize -= memmap_pages;
+> -				if (memmap_pages)
+> -					pr_debug("  %s zone: %lu pages used for memmap\n",
+> -						 zone_names[j], memmap_pages);
+> -			} else
+> -				pr_warn("  %s zone: %lu memmap pages exceeds freesize %lu\n",
+> -					zone_names[j], memmap_pages, freesize);
+> -		}
+> -
+> -		if (!is_highmem_idx(j))
+> -			nr_kernel_pages += freesize;
+> -		/* Charge for highmem memmap if there are enough kernel pages */
+> -		else if (nr_kernel_pages > memmap_pages * 2)
+> -			nr_kernel_pages -= memmap_pages;
+> -		nr_all_pages += freesize;
+> +		unsigned long size = zone->spanned_pages;
+>  
+>  		/*
+> -		 * Set an approximate value for lowmem here, it will be adjusted
+> -		 * when the bootmem allocator frees pages into the buddy system.
+> -		 * And all highmem pages will be managed by the buddy system.
+> +		 * Initialize zone->managed_pages as 0 , it will be reset
+> +		 * when memblock allocator frees pages into buddy system.
+>  		 */
+> -		zone_init_internals(zone, j, nid, freesize);
+> +		zone_init_internals(zone, j, nid, 0);
 
-Yeah it is nicer.
+Here, we should initialize zone->managed_pages as zone->present_pages
+because later page_group_by_mobility_disabled need be set according to
+zone->managed_pages. Otherwise page_group_by_mobility_disabled will be
+set to 1 always. I will sent out v3.
 
->
-> > +     emulator
-> >        | tee results.txt
-> >    - if grep -q FAIL results.txt ; then exit 1 ; fi
-> >  =20
-> >   build-ppc64le:
-> >    extends: .intree_template
-> >    script:
-> > - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
-> > + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
-> >    - ./configure --arch=3Dppc64 --endian=3Dlittle --cross-prefix=3Dpowe=
-rpc64-linux-gnu-
-> >    - make -j2
-> >    - ACCEL=3Dtcg ./run_tests.sh
-> > -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-=
-day-base
-> > -     rtas-set-time-of-day emulator
-> > +     selftest-setup selftest-migration selftest-migration-skip spapr_h=
-call
-> > +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-d=
-ay
-> > +     emulator
-> >        | tee results.txt
-> >    - if grep -q FAIL results.txt ; then exit 1 ; fi
-> >  =20
-> > @@ -135,7 +137,7 @@ build-riscv64:
-> >   build-s390x:
-> >    extends: .outoftree_template
-> >    script:
-> > - - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu
-> > + - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu nmap-ncat
-> >    - mkdir build
-> >    - cd build
-> >    - ../configure --arch=3Ds390x --cross-prefix=3Ds390x-linux-gnu-
-> > @@ -161,6 +163,8 @@ build-s390x:
-> >         sclp-1g
-> >         sclp-3g
-> >         selftest-setup
-> > +      selftest-migration-kvm
-> > +      selftest-migration-skip
-> >         sieve
-> >         smp
-> >         stsi
-> > diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
-> > index 49e3e4608..b79b99416 100644
-> > --- a/s390x/unittests.cfg
-> > +++ b/s390x/unittests.cfg
-> > @@ -31,6 +31,14 @@ groups =3D selftest migration
-> >   # https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@=
-gmail.com/
-> >   accel =3D kvm
-> >  =20
-> > +[selftest-migration-kvm]
-> > +file =3D selftest-migration.elf
-> > +groups =3D nodefault
-> > +accel =3D kvm
-> > +# This is a special test for gitlab-ci that can must not use TCG until=
- the
->
-> "can" or "must"?
+From a17b0921b4bd00596330f61ee9ea4b82386a9fed Mon Sep 17 00:00:00 2001
+From: Baoquan He <bhe@redhat.com>
+Date: Thu, 28 Mar 2024 16:20:15 +0800
+Subject: [PATCH] mm/mm_init.c: set zone's ->managed_pages as ->present_pages
+ for now
+Content-type: text/plain
 
-I think it must be "must not".
+Because page_group_by_mobility_disabled need be set according to zone's
+managed_pages later.
 
-Thanks,
-Nick
+Signed-off-by: Baoquan He <bhe@redhat.com>
+---
+ mm/mm_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index cc24e7958c0c..dd875f943cbb 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1561,7 +1561,7 @@ static void __init free_area_init_core(struct pglist_data *pgdat)
+ 		 * Initialize zone->managed_pages as 0 , it will be reset
+ 		 * when memblock allocator frees pages into buddy system.
+ 		 */
+-		zone_init_internals(zone, j, nid, 0);
++		zone_init_internals(zone, j, nid, zone->present_pages);
+ 
+ 		if (!size)
+ 			continue;
+-- 
+2.41.0
+
+
+>  
+>  		if (!size)
+>  			continue;
+> @@ -1915,6 +1878,7 @@ void __init free_area_init(unsigned long *max_zone_pfn)
+>  		check_for_memory(pgdat);
+>  	}
+>  
+> +	calc_nr_kernel_pages();
+>  	memmap_init();
+>  
+>  	/* disable hash distribution for systems with a single node */
+> -- 
+> 2.41.0
+> 
+
