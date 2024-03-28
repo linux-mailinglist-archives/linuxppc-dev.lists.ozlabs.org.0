@@ -2,88 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC77A88FFA2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 13:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 820A488FFC2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 14:03:06 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=lJeza5yy;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Bb0RNIiz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OxZCP8BM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V53Ny41hdz3vd5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 23:53:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V53cS21Vtz3vdW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 00:03:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=lJeza5yy;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Bb0RNIiz;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OxZCP8BM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.155; helo=fhigh4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh4-smtp.messagingengine.com (fhigh4-smtp.messagingengine.com [103.168.172.155])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V53N70d3Vz3cy4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 23:52:22 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 521AA11400CB;
-	Thu, 28 Mar 2024 08:52:19 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Thu, 28 Mar 2024 08:52:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1711630339; x=1711716739; bh=Lh4MuWdYpt
-	nETV0Wdnx8P7s+c4JMcLpkbpgMh56pLFU=; b=lJeza5yyYcri2tqJXpeirr9IYD
-	QgEwfGN2RlgSUZc2rPDvxJhYxVV/089I5H8oqHMLkN1+FSFdvimIGpzJdybXiVd5
-	2Hh7M3Fpr5K+u/YoqlSgteczcWUPaZe5PebEFQhsn8cz06VmU1/BTqmSG88UpbbW
-	IRDHUvWeKM93m9tnIVFqW9PGvlFsvxcia5odqwnh/sOipC53vjPC915vrwXdf3ah
-	NQDPw1x0KM/1Z6i113r4SH/r8f13MvPNNpADkwyEjH+JePCvmsqUsdRpbb4ui8li
-	J45J5/3Dd68gaDOg4hUkS0HOa1RLi7A6iqh9EgTFdOh7UQ2jAtXzjQh8oNKg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1711630339; x=1711716739; bh=Lh4MuWdYptnETV0Wdnx8P7s+c4JM
-	cLpkbpgMh56pLFU=; b=Bb0RNIizRq1jBDXW2lq5jH171BDUGdtZOBg2yhJaGCQ5
-	MBUTySW+5j/DdyxglMRP3qw/rYCu0oiLgYsbKnKkbNOTFRIfXop0TJU5J9/Nuwht
-	IH+tgwf4DUiVeonklvbKjpPszY0PLMdnEchwigznQZzcjH99EbmiLLpg1qf34krT
-	iJghoc6WkCjfz5VazuLrz8Gy/4B3LuUTJh7DtGLExpprxflXUKQ5u16km0VO9gz/
-	/xIY+MDt7wkkOiFfd34Gcgjv5bdHKl97f1ijnvyK1q2AxPNwwE/+Te5MSHhM3YvC
-	/1bTpCSbgPPNegyP+O+CzYBZP3dLsoFPbxV98O3B/Q==
-X-ME-Sender: <xms:AWgFZudGwHi-Z_ipu-DAtsUL6gJmM5eGp3QTYrVOimzirRINehkvoQ>
-    <xme:AWgFZoPWeyCXm0gz801Wq1t5hhpzKklxaM1TLa1qtwhXC7iwXRxMyw3onJxip2eAj
-    WWQT6wPeOdpsid83Ls>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudduledggeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:AWgFZvhfmGntOEERrkeD9wQxbG3BBl0ymkFJFs1vm6jkXMFebhBQyQ>
-    <xmx:AWgFZr8YnamA7dSxSPnNPmMKwDGtXJdBScUKn5dZp1VpBND1nJVyTQ>
-    <xmx:AWgFZqvndgo1Vk3LX14Uj8eNF0kPqgRQgY7FmHK6m8-J_1U1eqBvWg>
-    <xmx:AWgFZiHiTqUPJIypCNK7EW6Z8ridICdLObLwSNabIfJrzpIA_ulyaA>
-    <xmx:A2gFZq2IF3v0r4kisD05XZs3sJZhIlR4o-eCVWP-cdF5aXis-a6QEw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 69BC9B6008D; Thu, 28 Mar 2024 08:52:17 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V53bh0FhPz3dhR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:02:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1711630937;
+	bh=x+HARHjN6PjTasqejFvCjOWEUt0vA4nR9qlaT1Vlr5g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OxZCP8BMd8mnym1pAo2FNEHLzwJZw5ncXfQr0rV0N1Q04cZ/fJnoQoZV/Nn7DByPx
+	 oY4tNYQ7ULeBCNJhVjUmRDOZf0JoFLu7trm+Cvef9XPH4YXvIBPMR8a0iuq1DA6opt
+	 PNmBx1LmqFhibPkoFuLOsooOyqY3tPRK2Bd+t8qrqnravOUzyJ5nxd7swfe4WM0XHg
+	 8NfBW+VgQlBXl/ZTGzJY+o0TKPjcbW42iiQslibed/gj+H5D3H4LKUxtQ3+atdA3WS
+	 QnTQuf00Th3iXc4HKt46R0Hw6ZnCcOfIxLIhbqmKg2DXlLfktNsJ1UvOctq19F8iUT
+	 qJRF3UkQmxuVw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4V53bX1JF9z4wcq;
+	Fri, 29 Mar 2024 00:02:16 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/crypto/chacha-p10: Fix failure on non Power10
+Date: Fri, 29 Mar 2024 00:02:00 +1100
+Message-ID: <20240328130200.3041687-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Message-Id: <72e8aa58-c732-4a96-bcb1-32310ee041b3@app.fastmail.com>
-In-Reply-To: <140d6bb3-5f44-49cb-846b-7141e551eedd@gmx.de>
-References: <20240327204450.14914-1-tzimmermann@suse.de>
- <20240327204450.14914-4-tzimmermann@suse.de>
- <140d6bb3-5f44-49cb-846b-7141e551eedd@gmx.de>
-Date: Thu, 28 Mar 2024 13:51:57 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Helge Deller" <deller@gmx.de>, "Thomas Zimmermann" <tzimmermann@suse.de>,
- "Javier Martinez Canillas" <javierm@redhat.com>, sui.jingfeng@linux.dev
-Subject: Re: [PATCH v2 3/3] arch: Rename fbdev header and source files
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,32 +57,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andreas Larsson <andreas@gaisler.com>, linux-fbdev@vger.kernel.org, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@l
- ists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: dtsen@linux.ibm.com, msuchanek@suse.de, herbert@gondor.apana.org.au, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 28, 2024, at 13:46, Helge Deller wrote:
-> On 3/27/24 21:41, Thomas Zimmermann wrote:
+The chacha-p10-crypto module provides optimised chacha routines for
+Power10. It also selects CRYPTO_ARCH_HAVE_LIB_CHACHA which says it
+provides chacha_crypt_arch() to generic code.
 
->> +++ b/arch/arc/include/asm/video.h
->> @@ -0,0 +1,8 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +
->> +#ifndef _ASM_VIDEO_H_
->> +#define _ASM_VIDEO_H_
->> +
->> +#include <asm-generic/video.h>
->> +
->> +#endif /* _ASM_VIDEO_H_ */
->
-> I wonder, since that file simply #includes the generic version,
-> wasn't there a possibility that kbuild could symlink
-> the generic version for us?
-> Does it need to be mandatory in include/asm-generic/Kbuild ?
-> Same applies to a few other files below.
+Notably the module needs to provide chacha_crypt_arch() regardless of
+whether it is loaded on Power10 or an older CPU.
 
-It should be enough to just remove the files entirely,
-as kbuild will generate the same wrappers for mandatory files.
+The implementation of chacha_crypt_arch() already has a fallback to
+chacha_crypt_generic(), however the module as a whole fails to load on
+pre-Power10, because of the use of module_cpu_feature_match().
 
-     Arnd
+This breaks for example loading wireguard:
+
+  jostaberry-1:~ # modprobe -v wireguard
+  insmod /lib/modules/6.8.0-lp155.8.g7e0e887-default/kernel/arch/powerpc/crypto/chacha-p10-crypto.ko.zst
+  modprobe: ERROR: could not insert 'wireguard': No such device
+
+Fix it by removing module_cpu_feature_match(), and instead check the
+CPU feature manually. If the CPU feature is not found, the module
+still loads successfully, but doesn't register the Power10 specific
+algorithms. That allows chacha_crypt_generic() to remain available for
+use, fixing the problem.
+
+  [root@fedora ~]# modprobe -v wireguard
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/net/ipv4/udp_tunnel.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/net/ipv6/ip6_udp_tunnel.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/lib/crypto/libchacha.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/arch/powerpc/crypto/chacha-p10-crypto.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/lib/crypto/libchacha20poly1305.ko
+  insmod /lib/modules/6.8.0-00001-g786a790c4d79/kernel/drivers/net/wireguard/wireguard.ko
+  [   18.910452][  T721] wireguard: allowedips self-tests: pass
+  [   18.914999][  T721] wireguard: nonce counter self-tests: pass
+  [   19.029066][  T721] wireguard: ratelimiter self-tests: pass
+  [   19.029257][  T721] wireguard: WireGuard 1.0.0 loaded. See www.wireguard.com for information.
+  [   19.029361][  T721] wireguard: Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+
+Reported-by: Michal Suchánek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/all/20240315122005.GG20665@kitsune.suse.cz/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/crypto/chacha-p10-glue.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/crypto/chacha-p10-glue.c b/arch/powerpc/crypto/chacha-p10-glue.c
+index 74fb86b0d209..7c728755852e 100644
+--- a/arch/powerpc/crypto/chacha-p10-glue.c
++++ b/arch/powerpc/crypto/chacha-p10-glue.c
+@@ -197,6 +197,9 @@ static struct skcipher_alg algs[] = {
+ 
+ static int __init chacha_p10_init(void)
+ {
++	if (!cpu_has_feature(CPU_FTR_ARCH_31))
++		return 0;
++
+ 	static_branch_enable(&have_p10);
+ 
+ 	return crypto_register_skciphers(algs, ARRAY_SIZE(algs));
+@@ -204,10 +207,13 @@ static int __init chacha_p10_init(void)
+ 
+ static void __exit chacha_p10_exit(void)
+ {
++	if (!static_branch_likely(&have_p10))
++		return;
++
+ 	crypto_unregister_skciphers(algs, ARRAY_SIZE(algs));
+ }
+ 
+-module_cpu_feature_match(PPC_MODULE_FEATURE_P10, chacha_p10_init);
++module_init(chacha_p10_init);
+ module_exit(chacha_p10_exit);
+ 
+ MODULE_DESCRIPTION("ChaCha and XChaCha stream ciphers (P10 accelerated)");
+-- 
+2.44.0
+
