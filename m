@@ -1,59 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1453B890779
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 18:47:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F92F890851
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 19:31:25 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f0dgZsew;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=tIDs0u8+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V59wl4VjYz3vZt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 04:47:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V5BvH2QlGz3vdP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 05:31:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f0dgZsew;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=tIDs0u8+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=vgupta@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=2607:5300:203:b2ee::31e5; helo=smtpout.efficios.com; envelope-from=mathieu.desnoyers@efficios.com; receiver=lists.ozlabs.org)
+Received: from smtpout.efficios.com (smtpout.efficios.com [IPv6:2607:5300:203:b2ee::31e5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V59w06qJYz3vXy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 04:46:56 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9B613617D7;
-	Thu, 28 Mar 2024 17:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F2CC433C7;
-	Thu, 28 Mar 2024 17:46:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711648012;
-	bh=YNR7A+kRgAjMXDjHr2JB1yywFqUpQ/6e+8DUHAu4Nlg=;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5BtV3wRnz3fQR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 05:30:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+	s=smtpout1; t=1711650630;
+	bh=lk8dC9gKsJV/AcTmMyh8lji2TjUF7O+n96I5er4a4zc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f0dgZsewbfCG8PiA45FJQw1TL/EasYUMhLz2/QhlXeqqfXOMfSFzRv9IkgTHijlFV
-	 FhqTfFXUmCq641ywYGBQNJBov/tcSVKyclO43CvFgYl4vG0jR5PyLIGzGCMyZLU3uq
-	 upLsVvNze+XfKUgkqPNlhtRQ4CV0x+8HigCh3u2WrcBvzfPqQuTABnjeZ6Hvb3VE8w
-	 6ZvOi3ANgqwkkwdMuKgaXo07dtclbN/G0YdTFjA+6G2vfiNmaVW0Ibuf2jgixdXOzz
-	 yzc01GzZXuDW31OzbOufYEa/h1z/NE2Qj9VquGG7bkMy752oMrsKA8KOWYY6NXnc2q
-	 ClRqTQBAOutLg==
-Message-ID: <1ea303d0-b5c6-4185-b6ae-8836c5ac0469@kernel.org>
-Date: Thu, 28 Mar 2024 10:46:50 -0700
+	b=tIDs0u8+IOZ+ZrDN59yyuphpve3soMx6ZF8m4GIf00AfVdDZsI2b16/bOWuzh1LVj
+	 Y8jHyX9y5b+QBmGpqDeOk/NqxAvTEOm6h50Wcb9z2K5exeCH/YoEwvKl0v/CVEtR2v
+	 jWbzrruevXZ8952C0iez3iQLclnOBoB9jRhIwYo5KMiqYngjcHrQAGM5lod5rRbnoE
+	 Km4KfTCt72HW69gv2OnF+ItWOgaNQ1+5o1SclYb8yFLPbD+7Vfn11u4mYAUc6bTsbR
+	 wRVjiGR/rMiUj0FaW6bQ2voqvH6k6pjsZ7p9u44xr5e2wK/RzcdaEBHUeQGljokzVC
+	 igTrOUnV4c0Rg==
+Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4V5BtF68Gpznrq;
+	Thu, 28 Mar 2024 14:30:29 -0400 (EDT)
+Message-ID: <4fb4f78e-69b6-4c34-b7c7-28b6b4b17b33@efficios.com>
+Date: Thu, 28 Mar 2024 14:30:57 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/3] mm/gup: consistently call it GUP-fast
-To: Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-References: <20240327130538.680256-1-david@redhat.com> <ZgQ5hNltQ2DHQXps@x1n>
- <3922460a-4d01-4ecb-b8c5-7c57fd46f3fd@redhat.com>
- <dc1433ea-4e59-4ab7-83fb-23b393020980@app.fastmail.com>
- <3360dba8-0fac-4126-b72b-abc036957d6a@kernel.org>
- <10da3ced-9a79-4ebb-a77d-1aa49cc61952@app.fastmail.com>
- <ZgUZCBNloC-grPWJ@kernel.org>
+Subject: Re: Appropriate liburcu cache line size for Power
+To: Nathan Lynch <nathanl@linux.ibm.com>, paulmck <paulmck@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+References: <19c3ea76-9e05-4552-8b93-6c42df105747@efficios.com>
+ <87jzlqqcdl.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Content-Language: en-US
-From: Vineet Gupta <vgupta@kernel.org>
-In-Reply-To: <ZgUZCBNloC-grPWJ@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87jzlqqcdl.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,95 +63,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Ryan Roberts <ryan.roberts@arm.com>, loongarch@lists.linux.dev, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, linux-sh@vger.kernel.org, Alexey Brodkin <abrodkin@synopsys.com>, linux-kernel@vger.kernel.org, peterx <peterx@redhat.com>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>, Jason Gunthorpe <jgg@nvidia.com>, Vineet Gupta <vgupta@kernel.org>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Matt Turner <mattst88@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 2024-03-25 16:34, Nathan Lynch wrote:
+> Mathieu Desnoyers <mathieu.desnoyers@efficios.com> writes:
+>> In the powerpc architecture support within the liburcu project [1]
+>> we have a cache line size defined as 256 bytes with the following
+>> comment:
+>>
+>> /* Include size of POWER5+ L3 cache lines: 256 bytes */
+>> #define CAA_CACHE_LINE_SIZE     256
+>>
+>> I recently received a pull request on github [2] asking to
+>> change this to 128 bytes. All the material provided supports
+>> that the cache line sizes on powerpc are 128 bytes or less (even
+>> L3 on POWER7, POWER8, and POWER9) [3].
+>>
+>> I wonder where the 256 bytes L3 cache line size for POWER5+
+>> we have in liburcu comes from, and I wonder if it's the right choice
+>> for a cache line size on all powerpc, considering that the Linux
+>> kernel cache line size appear to use 128 bytes on recent Power
+>> architectures. I recall some benchmark experiments Paul and I did
+>> on a 64-core 1.9GHz POWER5+ machine that benefited from a 256 bytes
+>> cache line size, and I suppose this is why we came up with this
+>> value, but I don't have the detailed specs of that machine.
+>>
+>> Any feedback on this matter would be appreciated.
+> 
+> For what it's worth, I found a copy of an IBM Journal of Research &
+> Development article confirming that POWER5's L3 had a 256-byte line
+> size:
+> 
+>    Each slice [of the L3] is 12-way set-associative, with 4,096
+>    congruence classes of 256-byte lines managed as two 128-byte sectors
+>    to match the L2 line size.
+> 
+> https://www.eecg.utoronto.ca/~moshovos/ACA08/readings/power5.pdf
+> 
+> I don't know of any reason to prefer 256 over 128 for current Power
+> processors though.
 
-On 3/28/24 00:15, Mike Rapoport wrote:
-> On Thu, Mar 28, 2024 at 07:09:13AM +0100, Arnd Bergmann wrote:
->> On Thu, Mar 28, 2024, at 06:51, Vineet Gupta wrote:
->>> On 3/27/24 09:22, Arnd Bergmann wrote:
->>>> On Wed, Mar 27, 2024, at 16:39, David Hildenbrand wrote:
->>>>> On 27.03.24 16:21, Peter Xu wrote:
->>>>>> On Wed, Mar 27, 2024 at 02:05:35PM +0100, David Hildenbrand wrote:
->>>>>>
->>>>>> I'm not sure what config you tried there; as I am doing some build tests
->>>>>> recently, I found turning off CONFIG_SAMPLES + CONFIG_GCC_PLUGINS could
->>>>>> avoid a lot of issues, I think it's due to libc missing.  But maybe not the
->>>>>> case there.
->>>>> CCin Arnd; I use some of his compiler chains, others from Fedora directly. For
->>>>> example for alpha and arc, the Fedora gcc is "13.2.1".
->>>>> But there is other stuff like (arc):
->>>>>
->>>>> ./arch/arc/include/asm/mmu-arcv2.h: In function 'mmu_setup_asid':
->>>>> ./arch/arc/include/asm/mmu-arcv2.h:82:9: error: implicit declaration of 
->>>>> function 'write_aux_reg' [-Werro
->>>>> r=implicit-function-declaration]
->>>>>     82 |         write_aux_reg(ARC_REG_PID, asid | MMU_ENABLE);
->>>>>        |         ^~~~~~~~~~~~~
->>>> Seems to be missing an #include of soc/arc/aux.h, but I can't
->>>> tell when this first broke without bisecting.
->>> Weird I don't see this one but I only have gcc 12 handy ATM.
->>>
->>>     gcc version 12.2.1 20230306 (ARC HS GNU/Linux glibc toolchain -
->>> build 1360)
->>>
->>> I even tried W=1 (which according to scripts/Makefile.extrawarn) should
->>> include -Werror=implicit-function-declaration but don't see this still.
->>>
->>> Tomorrow I'll try building a gcc 13.2.1 for ARC.
->> David reported them with the toolchains I built at
->> https://mirrors.edge.kernel.org/pub/tools/crosstool/
->> I'm fairly sure the problem is specific to the .config
->> and tree, not the toolchain though.
-> This happens with defconfig and both gcc 12.2.0 and gcc 13.2.0 from your
-> crosstools. I also see these on the current Linus' tree:
->
-> arc/kernel/ptrace.c:342:16: warning: no previous prototype for 'syscall_trace_enter' [-Wmissing-prototypes]
-> arch/arc/kernel/kprobes.c:193:15: warning: no previous prototype for 'arc_kprobe_handler' [-Wmissing-prototypes]
+Thanks for the pointer. I will add a reference to it in the liburcu
+source code to explain the cache line size choice.
 
-Yep these two I could trigger and fix posted [1]
+Mathieu
 
-> This fixed the warning about write_aux_reg for me, probably Vineet would
-> want this include somewhere else...
->
-> diff --git a/arch/arc/include/asm/mmu-arcv2.h b/arch/arc/include/asm/mmu-arcv2.h
-> index ed9036d4ede3..0fca342d7b79 100644
-> --- a/arch/arc/include/asm/mmu-arcv2.h
-> +++ b/arch/arc/include/asm/mmu-arcv2.h
-> @@ -69,6 +69,8 @@
->  
->  #ifndef __ASSEMBLY__
->  
-> +#include <asm/arcregs.h>
-> +
->  struct mm_struct;
->  extern int pae40_exist_but_not_enab(void);
 
-Thx Mike. Indeed the fix is trivial but on tip of tree I still can't
-trigger the warning to even test anything. I'm at following with my
-other fixes.
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
-    2024-03-27 962490525cff Merge tag 'probes-fixes-v6.9-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace  
-
-I tried defconfig build as well as the exact config from Linaro report
-[2], and/or various toolchains: from snps github, Arnd's crosstool
-toolchain.
-Granted all of these are linux toolchains - I vaguely remember at some
-time, baremetal elf32 toolchain behaved differently due to different
-defaults etc.
-I have a feeling this was something transient which got fixed up due to
-order of header includes etc.
-
-Anyone in the followup email David only reported 2 warnings which have
-been tended to as mentioned above - will be sent to Linus soon.
-
-[1]
-http://lists.infradead.org/pipermail/linux-snps-arc/2024-March/007916.html
-[2]
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2eA2VSZdDsL0DMBBhjoauN9IVoK/
-
-Thx,
--Vineet
