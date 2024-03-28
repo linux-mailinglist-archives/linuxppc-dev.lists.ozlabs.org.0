@@ -2,77 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C3988F9B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 09:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E6A88F9E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 09:16:55 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=P6f8Y7V8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ggd1eF+l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V4x280hPJz3vhY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 19:06:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V4xGF0s4hz3vmD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 19:16:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=P6f8Y7V8;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ggd1eF+l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4x1P2sr8z3vfx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 19:05:42 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-515c3eeea5dso569382e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 01:05:42 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V4xFT0dlsz3vdp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 19:16:12 +1100 (AEDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-368a694dce3so2447775ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 01:16:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1711613137; x=1712217937; darn=lists.ozlabs.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1711613769; x=1712218569; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HjvmSG9QLL+8JxFPMAhTrQfWNaL+EODKgEV1lHWuZn0=;
-        b=P6f8Y7V8NetHP50WIM6UJhp8WmGCJz4uJfmYIp6PHsAsPDwjaLtNU8x4THhRsmKENd
-         wznKgHs8dpkEP5N+wf49bifUlfWBjv/9Byary3pYRImTH12WOnKHAYBqObMpA09QObR0
-         zQ4ELeSrZrln+87PTgl4qWkdrZaDPZhLU72ZnORm9m8cqVuvBFq9XNbgFiftn3dQnv2h
-         kCzuseNETAOFZpsvfGvcEVmhVUaYs0quhbaELHNzPWlEaiLaoJaR3hnpcLsjZIflZqGo
-         IKYx5+dIebG1PzMDLA7rmAjghghFyknBsKmaBoXvdkZd1uNtT5W4vYBUyDlMch4K2OBq
-         WrcQ==
+        bh=Dg/mTl/gZQBBVLX4ap1mVzi903wSdDhAIBYr54tqh6E=;
+        b=ggd1eF+lz1bNngZQZKkkcgJ+YydQhcrdQ+77uT9mEU/sLmo2TAlQLAy1IOUucM5Y6j
+         A4PLoF0nNapodUJW+unDbBAb3vr8sQtgXloeCtPdeJqr4k4a9hc8CTRMB6IB8xVSVkI1
+         gY6u0CFXrVLWlsJZHBu0+W7QaFQDXH1GJr1LjPua/ssyfaaEX2FURsw5ENXpF2skhp71
+         wjZm1Kh4IWe5vMpXRqM4jkT8+e7FD2MMvikSuAHgU9q249YmR7/tVI9IC7iqYsWLk4p7
+         L4EyIkYbiWAIvg3hKG8j7TVK4Pefbu5zUtqpNM120doukN5ZrDTicQ2jxGbBqyWmVeF5
+         hmlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711613137; x=1712217937;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HjvmSG9QLL+8JxFPMAhTrQfWNaL+EODKgEV1lHWuZn0=;
-        b=nmOQDJhb7NOdgZd9ebvTcl8mM5oNLOQU0qPFDjqUwPV1Or7xaNxAgYz6Z7otdTveb0
-         vgbd+pAVswcGSLaQM1KhdypNFNfH12hv9ZXKHyX3TJOlhogUq9pPT3T/Q4kIHwgS3Cip
-         VCGWoHBmbkLLgGkreM9DLbyxQK9aHFX5fsoIB1dA3IvpgKOvlvUuX5Msg8YK+Tfxy/Ai
-         0BkQ3EFUBSw63oWepGbzFTqLlSUAQtRJa2a3bv/hSdI9s353y3a626PXqDwH0tfy3N2E
-         QdbctcdSZQ2Scb/H/5W9JwmjqUJ7XsW3lXPfXgXewFNUvtGI169HvglxHfmvdk9cenGf
-         Z1ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXOWtCXXBsRw1Ucua19psPRxTPVAHnj/MK2oJh09eo6862jQ25OT1b7MpyftWFcqDpO1YAyGeh+Tv+SkIwA0fRjQAdMR58Cbd5iMbBilQ==
-X-Gm-Message-State: AOJu0YzF3MhqIfOZjhRrx/fAG85o9n+NCylPL0NxmB7WDEgzsNyA7Ong
-	pjY3d35cYx2HIdH5rGb8HLWpo9ic4odONBWBm7qr1i1zEgHNKnUyyT7rEedCjHk=
-X-Google-Smtp-Source: AGHT+IFrYwSIqg79NLq2byoG3OlkUZikLzETvtMHvIzq87EemGEvn6YgogXjKDwDSMwvzIJu/C/jBA==
-X-Received: by 2002:a05:6512:312d:b0:513:4a0c:b83d with SMTP id p13-20020a056512312d00b005134a0cb83dmr1263720lfd.46.1711613137216;
-        Thu, 28 Mar 2024 01:05:37 -0700 (PDT)
-Received: from smtpclient.apple ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id p12-20020a05600c468c00b00413eb5aa694sm1444424wmo.38.2024.03.28.01.05.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 28 Mar 2024 01:05:36 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH v7 6/6] docs: trusted-encrypted: add DCP as new trust
- source
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
-Date: Thu, 28 Mar 2024 09:05:24 +0100
+        d=1e100.net; s=20230601; t=1711613769; x=1712218569;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Dg/mTl/gZQBBVLX4ap1mVzi903wSdDhAIBYr54tqh6E=;
+        b=KFSsi95/DcT0SyR0ySuh50WZvbyJKHmNOCZ/Id8UjX2K87UBVhKhDiCH87S0Sok+Pp
+         2T//sMOmXkzR9tJK/J2ZUbYv/+44TkhlMWO72mqjjcUZrsamhaPsNL4+doCHrxEb/NCm
+         skUSb90MHPb9k5YiUnUJzUN4HsRQEX4StqfOtUQJywu3ZGsXTD50Zk5guebQBttUSnsZ
+         GMUaP8XnpoQ1FeydDW1vSkxr8zvESCsQIVIMnRrr6h9eoFVT/qRCGoaR2/VTvVdSrJ9G
+         jdX1nipZCBbkQIk4zVF/n74j+9Z3f7lxEWAwRJiRZihNxKIvlxkrx3/ZDg6a4hJBlpSJ
+         wP9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWKGW3ZMfcsaJig8gpOn8dkYaU8/+gc9yfNWo86q1hv2USUukUX499Ccu9RRdcnISU554CRQNL1zuxGwWbXWKPh0USXGpDWFh/mFSsWQQ==
+X-Gm-Message-State: AOJu0YzgqPYt33KbASQ6lcFwATYFQWt4tPqCeWL+7DzrjNLgC8aOmjrg
+	nx8kCcrIEmdMQU9M3G8Z2N7z2ge4eFYs/9RNp+PctBSUSJtvAdQw
+X-Google-Smtp-Source: AGHT+IH+KaecwF3RwYZB0cv1SBJhdImRZrrY8YeVsJ1nJSXdi5yIxyolvTctIVwOl1LXGmnuj4ETdA==
+X-Received: by 2002:a92:dd0f:0:b0:368:9ab5:6482 with SMTP id n15-20020a92dd0f000000b003689ab56482mr2435442ilm.13.1711613769423;
+        Thu, 28 Mar 2024 01:16:09 -0700 (PDT)
+Received: from localhost ([118.210.97.62])
+        by smtp.gmail.com with ESMTPSA id t23-20020a63f357000000b005dc4da2121fsm756659pgj.6.2024.03.28.01.16.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Mar 2024 01:16:09 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A3831544-E47C-4AEB-9963-536F0B1EE8FD@sigma-star.at>
-References: <20240327082454.13729-1-david@sigma-star.at>
- <20240327082454.13729-7-david@sigma-star.at>
- <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 28 Mar 2024 18:16:04 +1000
+Message-Id: <D058FW7AZ5NH.2TFDC2YABBB05@wheely>
+Subject: Re: [kvm-unit-tests PATCH v7 06/35] gitlab-ci: Run migration
+ selftest on s390x and powerpc
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Thomas Huth" <thuth@redhat.com>
+X-Mailer: aerc 0.15.2
+References: <20240319075926.2422707-1-npiggin@gmail.com>
+ <20240319075926.2422707-7-npiggin@gmail.com>
+ <91a6724d-5247-4f43-9400-1b8c03cb6cb3@redhat.com>
+In-Reply-To: <91a6724d-5247-4f43-9400-1b8c03cb6cb3@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,241 +83,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, James Bottomley <jejb@linux.ibm.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, Paul Moore <paul@paul-moore.com>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" 
- <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
+Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jarkko,
+On Tue Mar 26, 2024 at 2:08 AM AEST, Thomas Huth wrote:
+> On 19/03/2024 08.58, Nicholas Piggin wrote:
+> > The migration harness is complicated and easy to break so CI will
+> > be helpful.
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   .gitlab-ci.yml      | 18 +++++++++++-------
+> >   s390x/unittests.cfg |  8 ++++++++
+> >   2 files changed, 19 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+> > index ff34b1f50..bd34da04f 100644
+> > --- a/.gitlab-ci.yml
+> > +++ b/.gitlab-ci.yml
+> > @@ -92,26 +92,28 @@ build-arm:
+> >   build-ppc64be:
+> >    extends: .outoftree_template
+> >    script:
+> > - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
+> > + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
+> >    - mkdir build
+> >    - cd build
+> >    - ../configure --arch=3Dppc64 --endian=3Dbig --cross-prefix=3Dpowerp=
+c64-linux-gnu-
+> >    - make -j2
+> >    - ACCEL=3Dtcg ./run_tests.sh
+> > -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-=
+day-base
+> > -     rtas-set-time-of-day emulator
+> > +     selftest-setup selftest-migration selftest-migration-skip spapr_h=
+call
+> > +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-d=
+ay
+>
+> I used to squash as much as possible into one line in the past, but nowad=
+ays=20
+> I rather prefer one test per line (like it is done for s390x below), so t=
+hat=20
+> it is easier to identify the changes ...
+> So if you like, I think you could also put each test on a separate line h=
+ere=20
+> now (since you're touching all lines with tests here anyway).
 
-> On 27.03.2024, at 16:40, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->=20
-> On Wed Mar 27, 2024 at 10:24 AM EET, David Gstir wrote:
->> Update the documentation for trusted and encrypted KEYS with DCP as =
-new
->> trust source:
->>=20
->> - Describe security properties of DCP trust source
->> - Describe key usage
->> - Document blob format
->>=20
->> Co-developed-by: Richard Weinberger <richard@nod.at>
->> Signed-off-by: Richard Weinberger <richard@nod.at>
->> Co-developed-by: David Oberhollenzer =
-<david.oberhollenzer@sigma-star.at>
->> Signed-off-by: David Oberhollenzer =
-<david.oberhollenzer@sigma-star.at>
->> Signed-off-by: David Gstir <david@sigma-star.at>
->> ---
->> .../security/keys/trusted-encrypted.rst       | 85 =
-+++++++++++++++++++
->> 1 file changed, 85 insertions(+)
->>=20
->> diff --git a/Documentation/security/keys/trusted-encrypted.rst =
-b/Documentation/security/keys/trusted-encrypted.rst
->> index e989b9802f92..81fb3540bb20 100644
->> --- a/Documentation/security/keys/trusted-encrypted.rst
->> +++ b/Documentation/security/keys/trusted-encrypted.rst
->> @@ -42,6 +42,14 @@ safe.
->>          randomly generated and fused into each SoC at manufacturing =
-time.
->>          Otherwise, a common fixed test key is used instead.
->>=20
->> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX =
-SoCs)
->> +
->> +         Rooted to a one-time programmable key (OTP) that is =
-generally burnt
->> +         in the on-chip fuses and is accessible to the DCP =
-encryption engine only.
->> +         DCP provides two keys that can be used as root of trust: =
-the OTP key
->> +         and the UNIQUE key. Default is to use the UNIQUE key, but =
-selecting
->> +         the OTP key can be done via a module parameter =
-(dcp_use_otp_key).
->> +
->>   *  Execution isolation
->>=20
->>      (1) TPM
->> @@ -57,6 +65,12 @@ safe.
->>=20
->>          Fixed set of operations running in isolated execution =
-environment.
->>=20
->> +     (4) DCP
->> +
->> +         Fixed set of cryptographic operations running in isolated =
-execution
->> +         environment. Only basic blob key encryption is executed =
-there.
->> +         The actual key sealing/unsealing is done on main =
-processor/kernel space.
->> +
->>   * Optional binding to platform integrity state
->>=20
->>      (1) TPM
->> @@ -79,6 +93,11 @@ safe.
->>          Relies on the High Assurance Boot (HAB) mechanism of NXP =
-SoCs
->>          for platform integrity.
->>=20
->> +     (4) DCP
->> +
->> +         Relies on Secure/Trusted boot process (called HAB by =
-vendor) for
->> +         platform integrity.
->> +
->>   *  Interfaces and APIs
->>=20
->>      (1) TPM
->> @@ -94,6 +113,11 @@ safe.
->>=20
->>          Interface is specific to silicon vendor.
->>=20
->> +     (4) DCP
->> +
->> +         Vendor-specific API that is implemented as part of the DCP =
-crypto driver in
->> +         ``drivers/crypto/mxs-dcp.c``.
->> +
->>   *  Threat model
->>=20
->>      The strength and appropriateness of a particular trust source =
-for a given
->> @@ -129,6 +153,13 @@ selected trust source:
->>      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the =
-device
->>      is probed.
->>=20
->> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX =
-SoCs)
->> +
->> +     The DCP hardware device itself does not provide a dedicated RNG =
-interface,
->> +     so the kernel default RNG is used. SoCs with DCP like the =
-i.MX6ULL do have
->> +     a dedicated hardware RNG that is independent from DCP which can =
-be enabled
->> +     to back the kernel RNG.
->> +
->> Users may override this by specifying ``trusted.rng=3Dkernel`` on the =
-kernel
->> command-line to override the used RNG with the kernel's random number =
-pool.
->>=20
->> @@ -231,6 +262,19 @@ Usage::
->> CAAM-specific format.  The key length for new keys is always in =
-bytes.
->> Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
->>=20
->> +Trusted Keys usage: DCP
->> +-----------------------
->> +
->> +Usage::
->> +
->> +    keyctl add trusted name "new keylen" ring
->> +    keyctl add trusted name "load hex_blob" ring
->> +    keyctl print keyid
->> +
->> +"keyctl print" returns an ASCII hex copy of the sealed key, which is =
-in format
->> +specific to this DCP key-blob implementation.  The key length for =
-new keys is
->> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 =
-bits).
->> +
->> Encrypted Keys usage
->> --------------------
->>=20
->> @@ -426,3 +470,44 @@ string length.
->> privkey is the binary representation of TPM2B_PUBLIC excluding the
->> initial TPM2B header which can be reconstructed from the ASN.1 octed
->> string length.
->> +
->> +DCP Blob Format
->> +---------------
->> +
->> +The Data Co-Processor (DCP) provides hardware-bound AES keys using =
-its
->> +AES encryption engine only. It does not provide direct key =
-sealing/unsealing.
->> +To make DCP hardware encryption keys usable as trust source, we =
-define
->> +our own custom format that uses a hardware-bound key to secure the =
-sealing
->> +key stored in the key blob.
->> +
->> +Whenever a new trusted key using DCP is generated, we generate a =
-random 128-bit
->> +blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are =
-used to
->> +encrypt the trusted key payload using AES-128-GCM.
->> +
->> +The BEK itself is encrypted using the hardware-bound key using the =
-DCP's AES
->> +encryption engine with AES-128-ECB. The encrypted BEK, generated =
-nonce,
->> +BEK-encrypted payload and authentication tag make up the blob format =
-together
->> +with a version number, payload length and authentication tag::
->> +
->> +    /*
->> +     * struct dcp_blob_fmt - DCP BLOB format.
->> +     *
->> +     * @fmt_version: Format version, currently being %1
->> +     * @blob_key: Random AES 128 key which is used to encrypt =
-@payload,
->> +     *            @blob_key itself is encrypted with OTP or UNIQUE =
-device key in
->> +     *            AES-128-ECB mode by DCP.
->> +     * @nonce: Random nonce used for @payload encryption.
->> +     * @payload_len: Length of the plain text @payload.
->> +     * @payload: The payload itself, encrypted using AES-128-GCM and =
-@blob_key,
->> +     *           GCM auth tag of size AES_BLOCK_SIZE is attached at =
-the end of it.
->> +     *
->> +     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + =
-@payload_len +
->> +     * AES_BLOCK_SIZE.
->> +     */
->> +    struct dcp_blob_fmt {
->> +            __u8 fmt_version;
->> +            __u8 blob_key[AES_KEYSIZE_128];
->> +            __u8 nonce[AES_KEYSIZE_128];
->> +            __le32 payload_len;
->> +            __u8 payload[];
->> +    } __packed;
->=20
-> I'm thinking here given that you need to replicate the same thing that
-> is in the source files. E.g. Documentation/gpu/i915.rst.
->=20
-> The rationale would so many sources so maybe it would make sense to
-> maintain this in the source code.
->=20
-> Also this documents how to generally insert documentation inline:
-> https://docs.kernel.org/doc-guide/kernel-doc.html
->=20
-> I.e. I'm feeling that this is good time to improve scalability so that
-> documentation will keep up to date. Also then backend specific patches
-> mostly go to their subdirectories and not to Documentation/ subtree
-> (or that would be more rare case).
->=20
-> So a good chance to do more than just a new backend for the benefit
-> of the trusted keys subsystem :-)
->=20
-> Also, later on if something is changed e.g. in the above struct you
-> don't have to do matching update to the documentation so it will save
-> time too (over time).
+Yeah it is nicer.
 
-sound good! I=E2=80=99ll maintain the blob format documentation to the =
-source and insert=20
-a reference in the documentation. Thanks for pointing that out!
+>
+> > +     emulator
+> >        | tee results.txt
+> >    - if grep -q FAIL results.txt ; then exit 1 ; fi
+> >  =20
+> >   build-ppc64le:
+> >    extends: .intree_template
+> >    script:
+> > - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu
+> > + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
+> >    - ./configure --arch=3Dppc64 --endian=3Dlittle --cross-prefix=3Dpowe=
+rpc64-linux-gnu-
+> >    - make -j2
+> >    - ACCEL=3Dtcg ./run_tests.sh
+> > -     selftest-setup spapr_hcall rtas-get-time-of-day rtas-get-time-of-=
+day-base
+> > -     rtas-set-time-of-day emulator
+> > +     selftest-setup selftest-migration selftest-migration-skip spapr_h=
+call
+> > +     rtas-get-time-of-day rtas-get-time-of-day-base rtas-set-time-of-d=
+ay
+> > +     emulator
+> >        | tee results.txt
+> >    - if grep -q FAIL results.txt ; then exit 1 ; fi
+> >  =20
+> > @@ -135,7 +137,7 @@ build-riscv64:
+> >   build-s390x:
+> >    extends: .outoftree_template
+> >    script:
+> > - - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu
+> > + - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu nmap-ncat
+> >    - mkdir build
+> >    - cd build
+> >    - ../configure --arch=3Ds390x --cross-prefix=3Ds390x-linux-gnu-
+> > @@ -161,6 +163,8 @@ build-s390x:
+> >         sclp-1g
+> >         sclp-3g
+> >         selftest-setup
+> > +      selftest-migration-kvm
+> > +      selftest-migration-skip
+> >         sieve
+> >         smp
+> >         stsi
+> > diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
+> > index 49e3e4608..b79b99416 100644
+> > --- a/s390x/unittests.cfg
+> > +++ b/s390x/unittests.cfg
+> > @@ -31,6 +31,14 @@ groups =3D selftest migration
+> >   # https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@=
+gmail.com/
+> >   accel =3D kvm
+> >  =20
+> > +[selftest-migration-kvm]
+> > +file =3D selftest-migration.elf
+> > +groups =3D nodefault
+> > +accel =3D kvm
+> > +# This is a special test for gitlab-ci that can must not use TCG until=
+ the
+>
+> "can" or "must"?
 
-Is there anything else I can improve for this patchset? I=E2=80=99d like =
-to include that in v8
-too and make it the last iteration of this patchset.
+I think it must be "must not".
 
 Thanks,
-David=
+Nick
