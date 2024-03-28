@@ -2,149 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4A589004F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 14:33:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C598900FC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Mar 2024 14:59:01 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nU601w+V;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NeVwDz/G;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nU601w+V;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NeVwDz/G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=gZFbdLbB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V54Hr6xl5z3vcQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 00:33:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V54rz1C9Hz3vc7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 00:58:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nU601w+V;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NeVwDz/G;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nU601w+V;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NeVwDz/G;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=gZFbdLbB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b32; helo=mail-yb1-xb32.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V54H53TQCz3cN4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:33:05 +1100 (AEDT)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8FE112096C;
-	Thu, 28 Mar 2024 13:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1711632781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij2Otxna5to9v4ar/0Ig3hfIGSPyVYpp2GAwK6pFXjo=;
-	b=nU601w+VZiETEH2DUUyN8B+NOXK2DOFjM7pT0QDYAezrSyT2xtDvuWT8dLZJwqU9yxX1YH
-	oJA12PF8zSozLVgqHSw3Mrw6rtZ6R//iazl8ybyeAXtE+jwEDZvy/OQ4udp9dmofWXS58h
-	de0oa0HRcnsxPQgMV7hdW+6wBTM8a4k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1711632781;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij2Otxna5to9v4ar/0Ig3hfIGSPyVYpp2GAwK6pFXjo=;
-	b=NeVwDz/G52UQg/ByogZOv/vscgDN6XzKAszac/EFVBGZ6RUuvX+H46iVtshHhXZtH6Fg/u
-	QHZywQcMcz3BSkBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1711632781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij2Otxna5to9v4ar/0Ig3hfIGSPyVYpp2GAwK6pFXjo=;
-	b=nU601w+VZiETEH2DUUyN8B+NOXK2DOFjM7pT0QDYAezrSyT2xtDvuWT8dLZJwqU9yxX1YH
-	oJA12PF8zSozLVgqHSw3Mrw6rtZ6R//iazl8ybyeAXtE+jwEDZvy/OQ4udp9dmofWXS58h
-	de0oa0HRcnsxPQgMV7hdW+6wBTM8a4k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1711632781;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ij2Otxna5to9v4ar/0Ig3hfIGSPyVYpp2GAwK6pFXjo=;
-	b=NeVwDz/G52UQg/ByogZOv/vscgDN6XzKAszac/EFVBGZ6RUuvX+H46iVtshHhXZtH6Fg/u
-	QHZywQcMcz3BSkBA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C9EE13AF7;
-	Thu, 28 Mar 2024 13:33:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id n0koIIxxBWZ4QAAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Thu, 28 Mar 2024 13:33:00 +0000
-Message-ID: <9db306b2-b102-4bf5-a120-e1d279269fe9@suse.de>
-Date: Thu, 28 Mar 2024 14:33:00 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V54N460djz3c12
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:37:24 +1100 (AEDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso815440276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Mar 2024 06:37:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711633042; x=1712237842; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vhptj9/Vq4Rm0PoGzxaGiCJqIgDUZwkAbXDvc9ksjDI=;
+        b=gZFbdLbBx25D1ZAKzH9CdI3WLFC7FNoWAr2LVIb3mga/vPUdi2KHc088b0u5TeETm9
+         SgTf8bb3VMkEWz4Up39SygQMbDIZYye00AHMDiEK73ODe9P6LvhMk/JKypRKCRz/lq6W
+         gLV9PHz6gir7VDelcTzQ9W4ZMUdvbH36fBczQj6ItRIzJEbdZvZAA8e6iNXrmF/rF/Sb
+         RH1vQF3eHE5ZxoELU2LxRCeryLv5a3al5PQegd3PDKzMyumHpP8uBTJ/pZ1Vhb/g+fvZ
+         8wOblBYXDXtmhgUV8r8g3amOYLOWtwOzTxjmD04o/MMdW2i6iz5HxNhRa8i7z6zsz2Af
+         pvag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711633042; x=1712237842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vhptj9/Vq4Rm0PoGzxaGiCJqIgDUZwkAbXDvc9ksjDI=;
+        b=OpBNFUoJ0Hh70tnYH0G2TiuRN1FLAsQK4zXpcPnBiRqgilEH1EaQ5OBYvkVpu8QrSt
+         lhddsFCLCXCvYSLp58IBHzqbvWVh9zbdPKs4/ibT1gmMey0iUbUrfHKZfX11L2TQuREN
+         o6m0ztZfbCTbBFQnLjIpDpg0bw+uMoeryJoTfN84FiE+Y0+FansijaBsI8hbSuhRpYYT
+         qOa1YwNyfNgWjss3YCsiuZBek+8t+otfwIJwJm1m9+sfEGcyY4kXbtA1aOIrPbZmLlc2
+         VV8sVsRBZkgbwL3LK3csCYhugDDkwLvfQihX0W7evVhpUozbtheeJLdS3Nd5isXWzr9/
+         ZWKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhwjAABjygJwtORpyADDOCaB2iLcnNAiyW2XEcnpzqf0uanFWsM6D+LZzfOd6Mud0SDVf7xPi6iwvjU9wiYd8pshgEUQg1r36GzRYuUQ==
+X-Gm-Message-State: AOJu0YzCyzkUBf5AWIg1AFKVSGj9tjdbSXcDm4atkkEyfcWsfVcuVgZl
+	gTm+rzi2v1HpjdhWTFe+SpZMJNXmQzoNWeCPSLeSRVJ4ban+vBc2xkeW0fr+nIBGppzaA9UBKDi
+	JvdCfYiqzGS0e/nMz9NqW4s/fejILpcWS28B83Q==
+X-Google-Smtp-Source: AGHT+IGjGHEbsk10nKTaVGgOOQzkHc5Qm9STf87bHGVpMP0DEmjO9lKjEWUgvRJ23UvcJC23rRkiymMtwiTmbVMLRs0=
+X-Received: by 2002:a25:b9ca:0:b0:dd1:3cc1:5352 with SMTP id
+ y10-20020a25b9ca000000b00dd13cc15352mr2820459ybj.15.1711633040798; Thu, 28
+ Mar 2024 06:37:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] arch: Remove struct fb_info from video helpers
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, arnd@arndb.de, javierm@redhat.com,
- sui.jingfeng@linux.dev
-References: <20240327204450.14914-1-tzimmermann@suse.de>
- <20240327204450.14914-3-tzimmermann@suse.de>
- <b5a8bc60-ad16-407d-9e57-c224467c3f06@gmx.de>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <b5a8bc60-ad16-407d-9e57-c224467c3f06@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.29
-X-Spamd-Result: default: False [-4.29 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 BAYES_HAM(-3.00)[100.00%];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-0.995];
-	 RCPT_COUNT_TWELVE(0.00)[26];
-	 FREEMAIL_TO(0.00)[gmx.de,arndb.de,redhat.com,linux.dev];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Flag: NO
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-10-apais@linux.microsoft.com> <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
+In-Reply-To: <CAPDyKFpuKadPQv6+61C2pE4x4FE-DUC5W6WCCPu9Nb2DnDB56g@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 28 Mar 2024 14:37:09 +0100
+Message-ID: <CACRpkdZ7wAbtTUmmLCef7KnATmfZeAL26Q-gLqnGe3CdZ3+O3A@mail.gmail.com>
+Subject: Re: [PATCH 9/9] mmc: Convert from tasklet to BH workqueue
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Fri, 29 Mar 2024 00:55:57 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -156,314 +79,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andreas Larsson <andreas@gaisler.com>, linux-fbdev@vger.kernel.org, linux-sh@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: imx@lists.linux.dev, linux-hyperv@vger.kernel.org, oneukum@suse.com, duncan.sands@free.fr, hayashi.kunihiko@socionext.com, linux-mmc@vger.kernel.org, aubin.constans@microchip.com, Frank.Li@nxp.com, linux-usb@vger.kernel.org, HaraldWelte@viatech.com, paul@crapouillou.net, linux-tegra@vger.kernel.org, netdev@vger.kernel.org, maintainers@bluecherrydvr.com, peter.ujfalusi@gmail.com, manivannan.sadhasivam@linaro.org, linux-riscv@lists.infradead.org, kys@microsoft.com, robert.jarzmik@free.fr, haijie1@huawei.com, linux-renesas-soc@vger.kernel.org, wei.liu@kernel.org, linux-omap@vger.kernel.org, florian.fainelli@broadcom.com, linux-rdma@vger.kernel.org, vireshk@kernel.org, jassisinghbrar@gmail.com, decui@microsoft.com, wangzhou1@hisilicon.com, jernej.skrabec@gmail.com, jh80.chung@samsung.com, zw@zh-kernel.org, wens@csie.org, stern@rowland.harvard.edu, linux-arm-msm@vger.kernel.org, orsonzhai@gmail.com, pierre@ossman.eu, linux-mips@vger.kernel.org, Eugeniy.Paltsev@synopsys.com, patrice.ch
+ otard@foss.st.com, asahi@lists.linux.dev, brucechang@via.com.tw, keescook@chromium.org, oakad@yahoo.com, sven@svenpeter.dev, rjui@broadcom.com, s.hauer@pengutronix.de, sean.wang@mediatek.com, linux-actions@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, haojian.zhuang@gmail.com, mirq-linux@rere.qmqm.pl, dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, baolin.wang@linux.alibaba.com, matthias.bgg@gmail.com, openipmi-developer@lists.sourceforge.net, mchehab@kernel.org, Allen Pais <apais@linux.microsoft.com>, linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com, sbranden@broadcom.com, logang@deltatee.com, andersson@kernel.org, marcan@marcan.st, haiyangz@microsoft.com, linux-kernel@vger.kernel.org, leoyang.li@nxp.com, konrad.dybcio@linaro.org, linux-sunxi@lists.linux.dev, vkoul@kernel.org, linux-s390@vger.kernel.org, mhiramat@kernel.org, zhang.lyra@gmail.com, tj@kernel.org, manuel.lauss@gmail.com, linux-medi
+ a@vger.kernel.org, shawnguo@kernel.org, afaerber@suse.de, daniel@zonque.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Thu, Mar 28, 2024 at 1:54=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.org=
+> wrote:
 
-Am 28.03.24 um 12:04 schrieb Helge Deller:
-> On 3/27/24 21:41, Thomas Zimmermann wrote:
->> The per-architecture video helpers do not depend on struct fb_info
->> or anything else from fbdev. Remove it from the interface and replace
->> fb_is_primary_device() with video_is_primary_device(). The new helper
->
-> Since you rename this function, wouldn't something similar to
->
-> device_is_primary_display()
->     or
-> device_is_primary_console()
->     or
-> is_primary_graphics_device()
->     or
-> is_primary_display_device()
->
-> be a better name?
+> At this point we have suggested to drivers to switch to use threaded
+> irq handlers (and regular work queues if needed too). That said,
+> what's the benefit of using the BH work queue?
 
-The video_ prefix is there to signal that the code is part of the video 
-subsystem.
+Context:
+https://lwn.net/Articles/960041/
+"Tasklets, in particular, remain because they offer lower latency than
+workqueues which, since they must go through the CPU scheduler,
+can take longer to execute a deferred-work item."
 
-But there's too much code that tried to figure out a default video 
-device. So I actually have different plans for this function. I'd like 
-to replace it with a helper that returns the default device instead of 
-just testing for it. Sample code for x86 is already in vgaarb.c. [1] The 
-function's name would then be video_default_device() and return the 
-appropriate struct device*. video_is_primary device() will be removed. 
-This rename here is the easiest step towards the new helper. Ok?
+The BH WQ is controlled by a software IRQ and quicker than an
+ordinary work item.
 
-Best regards
-Thomas
+I don't know if this little latency could actually affect any MMC
+device, I doubt it.
 
-[1] https://elixir.bootlin.com/linux/v6.8/source/drivers/pci/vgaarb.c#L559
+The other benefit IIUC is that it is easy to mechanically rewrite tasklets
+to BH workqueues and be sure that it is as fast as the tasklet, if you want
+to switch to threaded IRQ handlers or proper work, you need to write a
+lot of elaborate code and test it (preferably on real hardware).
 
->
-> Helge
->
->> is similar in functionality, but can operate on non-fbdev devices.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
->> Cc: Helge Deller <deller@gmx.de>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Andreas Larsson <andreas@gaisler.com>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: Borislav Petkov <bp@alien8.de>
->> Cc: Dave Hansen <dave.hansen@linux.intel.com>
->> Cc: x86@kernel.org
->> Cc: "H. Peter Anvin" <hpa@zytor.com>
->> ---
->>   arch/parisc/include/asm/fb.h     |  8 +++++---
->>   arch/parisc/video/fbdev.c        |  9 +++++----
->>   arch/sparc/include/asm/fb.h      |  7 ++++---
->>   arch/sparc/video/fbdev.c         | 17 ++++++++---------
->>   arch/x86/include/asm/fb.h        |  8 +++++---
->>   arch/x86/video/fbdev.c           | 18 +++++++-----------
->>   drivers/video/fbdev/core/fbcon.c |  2 +-
->>   include/asm-generic/fb.h         | 11 ++++++-----
->>   8 files changed, 41 insertions(+), 39 deletions(-)
->>
->> diff --git a/arch/parisc/include/asm/fb.h b/arch/parisc/include/asm/fb.h
->> index 658a8a7dc5312..ed2a195a3e762 100644
->> --- a/arch/parisc/include/asm/fb.h
->> +++ b/arch/parisc/include/asm/fb.h
->> @@ -2,11 +2,13 @@
->>   #ifndef _ASM_FB_H_
->>   #define _ASM_FB_H_
->>
->> -struct fb_info;
->> +#include <linux/types.h>
->> +
->> +struct device;
->>
->>   #if defined(CONFIG_STI_CORE)
->> -int fb_is_primary_device(struct fb_info *info);
->> -#define fb_is_primary_device fb_is_primary_device
->> +bool video_is_primary_device(struct device *dev);
->> +#define video_is_primary_device video_is_primary_device
->>   #endif
->>
->>   #include <asm-generic/fb.h>
->> diff --git a/arch/parisc/video/fbdev.c b/arch/parisc/video/fbdev.c
->> index e4f8ac99fc9e0..540fa0c919d59 100644
->> --- a/arch/parisc/video/fbdev.c
->> +++ b/arch/parisc/video/fbdev.c
->> @@ -5,12 +5,13 @@
->>    * Copyright (C) 2001-2002 Thomas Bogendoerfer 
->> <tsbogend@alpha.franken.de>
->>    */
->>
->> -#include <linux/fb.h>
->>   #include <linux/module.h>
->>
->>   #include <video/sticore.h>
->>
->> -int fb_is_primary_device(struct fb_info *info)
->> +#include <asm/fb.h>
->> +
->> +bool video_is_primary_device(struct device *dev)
->>   {
->>       struct sti_struct *sti;
->>
->> @@ -21,6 +22,6 @@ int fb_is_primary_device(struct fb_info *info)
->>           return true;
->>
->>       /* return true if it's the default built-in framebuffer driver */
->> -    return (sti->dev == info->device);
->> +    return (sti->dev == dev);
->>   }
->> -EXPORT_SYMBOL(fb_is_primary_device);
->> +EXPORT_SYMBOL(video_is_primary_device);
->> diff --git a/arch/sparc/include/asm/fb.h b/arch/sparc/include/asm/fb.h
->> index 24440c0fda490..07f0325d6921c 100644
->> --- a/arch/sparc/include/asm/fb.h
->> +++ b/arch/sparc/include/asm/fb.h
->> @@ -3,10 +3,11 @@
->>   #define _SPARC_FB_H_
->>
->>   #include <linux/io.h>
->> +#include <linux/types.h>
->>
->>   #include <asm/page.h>
->>
->> -struct fb_info;
->> +struct device;
->>
->>   #ifdef CONFIG_SPARC32
->>   static inline pgprot_t pgprot_framebuffer(pgprot_t prot,
->> @@ -18,8 +19,8 @@ static inline pgprot_t pgprot_framebuffer(pgprot_t 
->> prot,
->>   #define pgprot_framebuffer pgprot_framebuffer
->>   #endif
->>
->> -int fb_is_primary_device(struct fb_info *info);
->> -#define fb_is_primary_device fb_is_primary_device
->> +bool video_is_primary_device(struct device *dev);
->> +#define video_is_primary_device video_is_primary_device
->>
->>   static inline void fb_memcpy_fromio(void *to, const volatile void 
->> __iomem *from, size_t n)
->>   {
->> diff --git a/arch/sparc/video/fbdev.c b/arch/sparc/video/fbdev.c
->> index bff66dd1909a4..e46f0499c2774 100644
->> --- a/arch/sparc/video/fbdev.c
->> +++ b/arch/sparc/video/fbdev.c
->> @@ -1,26 +1,25 @@
->>   // SPDX-License-Identifier: GPL-2.0
->>
->>   #include <linux/console.h>
->> -#include <linux/fb.h>
->> +#include <linux/device.h>
->>   #include <linux/module.h>
->>
->> +#include <asm/fb.h>
->>   #include <asm/prom.h>
->>
->> -int fb_is_primary_device(struct fb_info *info)
->> +bool video_is_primary_device(struct device *dev)
->>   {
->> -    struct device *dev = info->device;
->> -    struct device_node *node;
->> +    struct device_node *node = dev->of_node;
->>
->>       if (console_set_on_cmdline)
->> -        return 0;
->> +        return false;
->>
->> -    node = dev->of_node;
->>       if (node && node == of_console_device)
->> -        return 1;
->> +        return true;
->>
->> -    return 0;
->> +    return false;
->>   }
->> -EXPORT_SYMBOL(fb_is_primary_device);
->> +EXPORT_SYMBOL(video_is_primary_device);
->>
->>   MODULE_DESCRIPTION("Sparc fbdev helpers");
->>   MODULE_LICENSE("GPL");
->> diff --git a/arch/x86/include/asm/fb.h b/arch/x86/include/asm/fb.h
->> index c3b9582de7efd..999db33792869 100644
->> --- a/arch/x86/include/asm/fb.h
->> +++ b/arch/x86/include/asm/fb.h
->> @@ -2,17 +2,19 @@
->>   #ifndef _ASM_X86_FB_H
->>   #define _ASM_X86_FB_H
->>
->> +#include <linux/types.h>
->> +
->>   #include <asm/page.h>
->>
->> -struct fb_info;
->> +struct device;
->>
->>   pgprot_t pgprot_framebuffer(pgprot_t prot,
->>                   unsigned long vm_start, unsigned long vm_end,
->>                   unsigned long offset);
->>   #define pgprot_framebuffer pgprot_framebuffer
->>
->> -int fb_is_primary_device(struct fb_info *info);
->> -#define fb_is_primary_device fb_is_primary_device
->> +bool video_is_primary_device(struct device *dev);
->> +#define video_is_primary_device video_is_primary_device
->>
->>   #include <asm-generic/fb.h>
->>
->> diff --git a/arch/x86/video/fbdev.c b/arch/x86/video/fbdev.c
->> index 1dd6528cc947c..4d87ce8e257fe 100644
->> --- a/arch/x86/video/fbdev.c
->> +++ b/arch/x86/video/fbdev.c
->> @@ -7,7 +7,6 @@
->>    *
->>    */
->>
->> -#include <linux/fb.h>
->>   #include <linux/module.h>
->>   #include <linux/pci.h>
->>   #include <linux/vgaarb.h>
->> @@ -25,20 +24,17 @@ pgprot_t pgprot_framebuffer(pgprot_t prot,
->>   }
->>   EXPORT_SYMBOL(pgprot_framebuffer);
->>
->> -int fb_is_primary_device(struct fb_info *info)
->> +bool video_is_primary_device(struct device *dev)
->>   {
->> -    struct device *device = info->device;
->> -    struct pci_dev *pci_dev;
->> +    struct pci_dev *pdev;
->>
->> -    if (!device || !dev_is_pci(device))
->> -        return 0;
->> +    if (!dev_is_pci(dev))
->> +        return false;
->>
->> -    pci_dev = to_pci_dev(device);
->> +    pdev = to_pci_dev(dev);
->>
->> -    if (pci_dev == vga_default_device())
->> -        return 1;
->> -    return 0;
->> +    return (pdev == vga_default_device());
->>   }
->> -EXPORT_SYMBOL(fb_is_primary_device);
->> +EXPORT_SYMBOL(video_is_primary_device);
->>
->>   MODULE_LICENSE("GPL");
->> diff --git a/drivers/video/fbdev/core/fbcon.c 
->> b/drivers/video/fbdev/core/fbcon.c
->> index 46823c2e2ba12..85c5c8cbc680a 100644
->> --- a/drivers/video/fbdev/core/fbcon.c
->> +++ b/drivers/video/fbdev/core/fbcon.c
->> @@ -2939,7 +2939,7 @@ void fbcon_remap_all(struct fb_info *info)
->>   static void fbcon_select_primary(struct fb_info *info)
->>   {
->>       if (!map_override && primary_device == -1 &&
->> -        fb_is_primary_device(info)) {
->> +        video_is_primary_device(info->device)) {
->>           int i;
->>
->>           printk(KERN_INFO "fbcon: %s (fb%i) is primary device\n",
->> diff --git a/include/asm-generic/fb.h b/include/asm-generic/fb.h
->> index 6ccabb400aa66..4788c1e1c6bc0 100644
->> --- a/include/asm-generic/fb.h
->> +++ b/include/asm-generic/fb.h
->> @@ -10,8 +10,9 @@
->>   #include <linux/io.h>
->>   #include <linux/mm_types.h>
->>   #include <linux/pgtable.h>
->> +#include <linux/types.h>
->>
->> -struct fb_info;
->> +struct device;
->>
->>   #ifndef pgprot_framebuffer
->>   #define pgprot_framebuffer pgprot_framebuffer
->> @@ -23,11 +24,11 @@ static inline pgprot_t 
->> pgprot_framebuffer(pgprot_t prot,
->>   }
->>   #endif
->>
->> -#ifndef fb_is_primary_device
->> -#define fb_is_primary_device fb_is_primary_device
->> -static inline int fb_is_primary_device(struct fb_info *info)
->> +#ifndef video_is_primary_device
->> +#define video_is_primary_device video_is_primary_device
->> +static inline bool video_is_primary_device(struct device *dev)
->>   {
->> -    return 0;
->> +    return false;
->>   }
->>   #endif
->>
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Yours,
+Linus Walleij
