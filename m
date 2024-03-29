@@ -1,127 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BE3891533
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 09:31:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58839891567
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 10:09:38 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=avkIUS9a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dlLyt+eE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V5YX85YqSz3vfS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 19:31:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V5ZNc0vr8z3vl6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 20:09:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=avkIUS9a;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dlLyt+eE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::3; helo=paup264cu001.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from PAUP264CU001.outbound.protection.outlook.com (mail-francecentralazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5YWR2St7z3cKN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 19:30:25 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cMXBqE5ne9cv0xiUiF0J0gERTl+kim6fM6ar68YOt0pOe6F/MpD/FPhLjIggay1Y2kH7z9W6A00JtE6gg23TAKpa3EY+sLhaOxKphKeJq790IBLF6IJMezl0F/rjfj7W6w0SJZj0TdhFQ3pCIbk9e2uClNoIAoTDPpDPg2bQLb/GtEvknppnK2prW+s+ZNkK203TPESdmLfu4B1a7ilocX+3V8zztzMh32Jp9nS4wmOXoMSKkOoXzJwKZSEU/C41GiTzb+IDTstlSdUMSfdMCXI7JKHA/gNxbO+U5kPVuA6EMmUFABHLBQ4YbCt7SG80cvhrYPkBeZX82LVRkccoYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uFbutNqjk3KRMdN+dcBc7RtXO0p/5lhaUnzeiDwCtVM=;
- b=Vbt5sp2Ltm1MZaMt0YVviFEL1l/FfdS11lrRYEtfG+g6Nq4hfXVqrrO6H7Zx4ecMrdrhZLmp3bo1XkiSsfEzROZXUqTlA6WPeX59DWVfv5q1FM419AHt1dJlyGW+adgZmFMoBpiLODYkEAPNkeWr1vaGBQJ+OIM6DtThTCfdqhQu8hbI58vKXZcwfCUuM9miNymSVFEROBXJbCC3SEMBBIfgNQ0D5YTnJNX4wL4Ctu5cJ2p3hTkdbqozvKUQgGXjYoiACLBtm2UJW/tOtCh9gv+RaA9wmqBc+R+Inyl6chPuz6JBNWaW9hgfckYFI8WMH1GoR8pKUIHcgCYpuFRFig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uFbutNqjk3KRMdN+dcBc7RtXO0p/5lhaUnzeiDwCtVM=;
- b=avkIUS9aoZd/3ao/R9qg0PIoQMu1YUC3u6D8kO9QRNv4NyD2zCNzOYgSgu8Ta/dw5UPDek5mnPxXkOO2HN2WPBy15ae+ERSPieJGsMXY6Lj1xybAT0WjsyBH67Hla2jJdIzl/rFO2uLNZvsQghyc1rXhg6dFJg+MTodgGdgDhp3DKFqYoPtUHQd9XwAs7nFzJG8ZVahiFqFFp04IMvzZPStawUBD0Dc212eomblIK196fHhsS2aT8rDSNqkukWDAeQLBiyDiGE2qkAu9jt1ZqiyjWpfgJa9EMOhiE+XIhViicf3ESxFIl+gVpFW6YqRVcBaImq2tBSFHD4RsBv/sHg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB1870.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1b5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.40; Fri, 29 Mar
- 2024 08:29:59 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7409.039; Fri, 29 Mar 2024
- 08:29:59 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Rohan McLure <rmclure@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v11 00/11] Support page table check PowerPC
-Thread-Topic: [PATCH v11 00/11] Support page table check PowerPC
-Thread-Index: AQHagMxYDPDvnI1/CkO3HAPKAXtN1bFMt4IAgAAR7gCAAZuCgA==
-Date: Fri, 29 Mar 2024 08:29:59 +0000
-Message-ID: <02ab19a2-cd5d-4205-8be5-d642f277c75d@csgroup.eu>
-References: <20240328045535.194800-3-rmclure@linux.ibm.com>
- <5009c511-ec85-4d05-a106-8fca9189dd5d@csgroup.eu>
- <eb906bc3-b372-449b-a351-eb739ffa7418@csgroup.eu>
-In-Reply-To: <eb906bc3-b372-449b-a351-eb739ffa7418@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB1870:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  ODdKmH3zCp+INKyE/8cPI9ifot7mMbOitoskdC066mzfQTIp7C5SjunI6oa51b1he1FA5hcskAf26m41/padMqQZIxjtBhPnIzxNLJfYNmEs/JltBRIPg5dEIxkbOAFC6FyyhruzFE/gytsfwvznlwoFvxgbE0AbTHfHUCk+n1KrgNphr29g8Ise5gc26AF16Y9Xpc3wnzYdPysmxXCM1ZakonzWCYhj025enMIo4E0NqMlnF16JYjrW36MGH4i026NoMlTMoXsaqkEYEAZt4GTSTNndSfgAhkd828/v5K/UPyOe4NyesBMdnNnkimTOzKMxETdyXbHkzwNiewo86bZAA2lqEMJPZYCzYMH46coDGtNyBNaJcLbYPlQ/s2kJro+1ElLvG7klqKq9h93dFJvAEYcb9MLRfRp1jdkYt7W5Zno2qgQKVXP+OyX8PybyharMWxR1MnU+1byVtxixebiIKCzJOPl/1DJFKWWG1Js1eb43zMInfYeHp3kC1MP2TtfRWxyyBKa548Eizcq0D2HmSFaS3gAKSV8+uDoexT/Y2RjHW0bDQQZZ+veRfnw40p4hnP1hDsRPV68j8FiT2yQk3SMVdv2Rz310rhK0k/0IEiUk6DA2q8u9L70fH+Sjg7COCD98Tpd3MEHIHDSHoOB5qrsVqe7D0+JwJpRYl4w=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?NktlT2RpdGgyVjlhSmVHSXlxcmRuRERjak55anlJWTZ5Y3RNRm13ZkR3dFNx?=
- =?utf-8?B?S2NzazROeWFBNHpGMVJ3T0g3SEl0VWFpVDdxNmNWczdHZXJUUWtGczQyd21l?=
- =?utf-8?B?VVRVSTl1Z3I1QWkxTk9XbjR3M2d6ZzQrVjlDcm1Nazc4MUY0VkdiM083MUN1?=
- =?utf-8?B?elBWbjlBUnFWaC9acGRDTTJsdHJ1dUo0RGZYWXIrRVV5a3l5OWVLU3pCcTh5?=
- =?utf-8?B?T3hYTTlIczB1M1VHMjhFQjlPVElrU3gwSW40dkVNYXhzR0ZKZEVTaWxXaXZY?=
- =?utf-8?B?VG15T1JDcGtQZWNaS25DUGJMZ3JWeGsvemFjcVR5ZkJzblAveVFpN0NoY1g5?=
- =?utf-8?B?bVRFaXprYno2RkpVbWVyTmlZOXNTbVRxMnRUMlFiMXIxeC9xaEJrbjEzYVZK?=
- =?utf-8?B?RVJoTnRGNTExUk10Njd3MjBma2RtcHpjdEMyeEI4WWJ0eis3VDhoYjYzSkVq?=
- =?utf-8?B?T2w0KzEzc3dHaVd4cjVwZ2E4WlRDZDVrS0E3WW5Ec2x3cXo2M3hEMzZhajgw?=
- =?utf-8?B?bU52UHVYbWZ6eHZKVU5hZ3ZBME5GTjRjcDNFTG5vRVZkZlJFeEVFUjhRbFhj?=
- =?utf-8?B?NUNFdENZOGhBU1RpY2ZsYk5vK29TMElzdXdPYkxNZkdrd1FxeDJPb00xMG5T?=
- =?utf-8?B?TjU5N1Jveit5MzlvZGF0dCt5M3g2cndwbkpjZHlxc2VjM2RNU2ZYdXQ1a053?=
- =?utf-8?B?ekFhVFFMK0wrdkNVSHRCTXJZb1Zja2RjT2tydUxFMkxJc3ZVYjkrTkpIVHNS?=
- =?utf-8?B?akhZVFFiZGdNV1dHSCs3aGxxa3VsZE02TXlpbkpDV2k5Mks1MkxrWkRydDFC?=
- =?utf-8?B?c2tMMG9PMFEyTUZ2ZU9oT0NSTlJ4Rk5pUFM4bzRMVXNyOFBOSEF0cE5obFhF?=
- =?utf-8?B?MGlUL2hnMVhxQWdJT1V6NkFvWFJUcEpnTWtPZ09jM0tyQVBVeGNieTNwRXBS?=
- =?utf-8?B?cklPc0dBRC80QnZQT2toT3pscVdEVDNXblJKWEYrMHZXYWdaWG5mVDNxRnlS?=
- =?utf-8?B?TDlxTUZieDNxZVdFemI2cHR4bUN1SE9sQmpVeUZHbmk3RFNBeEdSWGRGNVBL?=
- =?utf-8?B?VEpwaFM4dVVQbTJ5TWI3NWh3Q0xYeWkrTEw3U0h5NDc1RDcvVWRMVVpSazdH?=
- =?utf-8?B?bnRXbURPTFZzbUs0RFRIL09hZGg5aHJVVmt1aHpkYU94SUVqaHRPZkJSNVFy?=
- =?utf-8?B?NHg3TWVyRnU5YnBZYnZhc2RoL1F3QzBrUm00cVNqclJ5K0ljN0JncE5hbGYv?=
- =?utf-8?B?MlZEUEhQVUpVMmErWGRHNkRBMUdpYmd4dy9kUmNqM2xObVFHS0tKSTVVT2l6?=
- =?utf-8?B?dmdXcjQrWDVjMm83L1ZiK0k5U09SUVNLRWZxa3BNOFpBYWl1RGJiV0N2RTJP?=
- =?utf-8?B?cWd4Zmk3aFpvM0hvd1BjVGx4VU9Fc0lCQnVYcis2WlJpZTVWemZrbC9XdHBD?=
- =?utf-8?B?MHc2YmlQYUU2am0xZkdVMko0WVZLNVFXMzJONEE5YjYxR2VnUEw0bHF4a0ZK?=
- =?utf-8?B?U0J2NWIzM05GWGQ5V1cvNFRlMXRMZEVFamtkY1NUQ1Y3UmszSDU4cGVaSDZZ?=
- =?utf-8?B?Y1VocEVpMVhyOHRrdUJ4TDJNSXZleFhsV3ZBVjEra2doNkxFdG1jak1Ma0V6?=
- =?utf-8?B?eStVLzl6ZEFaYUlyNlpyV2U0SkNDRWttdFRxS3RTR0dka2Q2QVhwS2lTdm9D?=
- =?utf-8?B?NkxwMVhFWDQrWGczakNNQTZFZ01WOTBOcFNQemFlYmJQdXdzVTZLeGxkdm5M?=
- =?utf-8?B?M29GdlhWTFo5elkyWnI1QSt5UEptcHVTL3hQblJSMC9LaDFWTjdQSlZxZUNv?=
- =?utf-8?B?aThpYTU0dUs5MDJTUS82eDQ0a0dPUmtlVWlPUEtaZ2VCbDVueDhyS3pyc2t6?=
- =?utf-8?B?MzNJZnNoSm1NWnFoYWdLM2NFRE5tVXRGWlE5THFGVXZFVS9ia3FuRGFuUnpI?=
- =?utf-8?B?VlJUUXFRTjdmSTQzSjJmLzBqSmluUHRPNGFTSlR6N0luUjdOV2hWcFAzREhQ?=
- =?utf-8?B?ZmtOZTY2TlBHZkJLVDBuVUpBZVNkVVFDMjdzQ1lMRlkrWVJpTkNzZFl0YXBL?=
- =?utf-8?B?SXk5TWY3UkV0SDlBZjIrQUdFWHY4QUExRlJoZ3hPWjhUbis5WTV0d2N6ZUM2?=
- =?utf-8?B?UjVxWG5tUzRxLzhHbGxqSWl3dEJPL1B3Mm4wZGV6Q2FMSi9ncWpWa2tJbmo5?=
- =?utf-8?Q?L3QQsMf/WTho36z7mx5926U0pdKWDy3pcr5IY/28YYr0?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9CB0A8E65A250240B171522881A8F36D@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: da7a6cf9-d035-48c9-c74a-08dc4fca6c0e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Mar 2024 08:29:59.4537
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9sZN56EBQJLUCg/1jGpfE9y3g7ovie7XmvVu50A/5mtQX9xMnyR2JJjCk9fKysII8dtrBl10jY8abiN9eJwi2ljSc6osCTrRRGo95eDOEQ8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB1870
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5ZMn594Jz3bvd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 20:08:52 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42T72xjI006247;
+	Fri, 29 Mar 2024 09:08:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=ORNZsXaAlcrVpKaV2uZR6K/0qkeC26TdqjsjsYyFbGw=;
+ b=dlLyt+eEh1qmjZ9Np8WqCIMDg97rhu3qjLlrd6+lcgDsd94Y6/LCHwxm0jcv+egVIxbr
+ OK5wML8kEHeAG8QbrqGMhUKjh1bBmyweLL8wpV0JN2AxQCqTLX121SSzFFYaDyTovVX8
+ MTSWkeeEu9+2jrHtQe4KwuLMMgrgl5kzfH57y830BiY5M6MEw1wJqX5Mm1uxWbIcmivn
+ xlk4v+KpB6h/S/apFiE5u6myTVXcCJv5+Xlj6yjSTvF7Qx78uGZcg7O9KKUDBFsxINGS
+ S79X6Dsn7BttKvV0Z061EHs26rFovtfzoeGLSsuwf/b818uD+R6h7ZWavOhHOVIiS3HO Zg== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5rw888fy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 09:08:35 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42T8VZqQ012965;
+	Fri, 29 Mar 2024 09:08:34 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x29t138xd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 09:08:34 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42T98Ubo28901700
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 Mar 2024 09:08:32 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B21F20043;
+	Fri, 29 Mar 2024 09:08:30 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DE0C32004F;
+	Fri, 29 Mar 2024 09:08:28 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.42])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 Mar 2024 09:08:28 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: [powerpc] WARN at drivers/scsi/sg.c:2236 (sg_remove_sfp_usercontext)
+Message-Id: <5375B275-D137-4D5F-BE25-6AF8ACAE41EF@linux.ibm.com>
+Date: Fri, 29 Mar 2024 14:38:17 +0530
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-scsi@vger.kernel.org
+X-Mailer: Apple Mail (2.3774.400.31)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3_0kOFuIrZ3inV6eh0C5pG0QbG5vq53r
+X-Proofpoint-GUID: 3_0kOFuIrZ3inV6eh0C5pG0QbG5vq53r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-29_08,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1011 phishscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
+ definitions=main-2403290079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,53 +88,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Cc: Alexander Wetzel <Alexander@wetzel-home.de>, Bart Van Assche <bvanassche@acm.org>, "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI4LzAzLzIwMjQgw6AgMDg6NTcsIENocmlzdG9waGUgTGVyb3kgYSDDqWNyaXTCoDoN
-Cj4gDQo+IA0KPiBMZSAyOC8wMy8yMDI0IMOgIDA3OjUyLCBDaHJpc3RvcGhlIExlcm95IGEgw6lj
-cml0wqA6DQo+Pg0KPj4NCj4+IExlIDI4LzAzLzIwMjQgw6AgMDU6NTUsIFJvaGFuIE1jTHVyZSBh
-IMOpY3JpdMKgOg0KPj4+IFN1cHBvcnQgcGFnZSB0YWJsZSBjaGVjayBvbiBhbGwgUG93ZXJQQyBw
-bGF0Zm9ybXMuIFRoaXMgd29ya3MgYnkNCj4+PiBzZXJpYWxpc2luZyBhc3NpZ25tZW50cywgcmVh
-c3NpZ25tZW50cyBhbmQgY2xlYXJzIG9mIHBhZ2UgdGFibGUNCj4+PiBlbnRyaWVzIGF0IGVhY2gg
-bGV2ZWwgaW4gb3JkZXIgdG8gZW5zdXJlIHRoYXQgYW5vbnltb3VzIG1hcHBpbmdzDQo+Pj4gaGF2
-ZSBhdCBtb3N0IG9uZSB3cml0YWJsZSBjb25zdW1lciwgYW5kIGxpa2V3aXNlIHRoYXQgZmlsZS1i
-YWNrZWQNCj4+PiBtYXBwaW5ncyBhcmUgbm90IHNpbXVsdGFuZW91c2x5IGFsc28gYW5vbnltb3Vz
-IG1hcHBpbmdzLg0KPj4+DQo+Pj4gSW4gb3JkZXIgdG8gc3VwcG9ydCB0aGlzIGluZnJhc3RydWN0
-dXJlLCBhIG51bWJlciBvZiBzdHVicyBtdXN0IGJlDQo+Pj4gZGVmaW5lZCBmb3IgYWxsIHBvd2Vy
-cGMgcGxhdGZvcm1zLiBBZGRpdGlvbmFsbHksIHNlcGVyYXRlIHNldF9wdGVfYXQoKQ0KPj4+IGFu
-ZCBzZXRfcHRlX2F0X3VuY2hlY2tlZCgpLCB0byBhbGxvdyBmb3IgaW50ZXJuYWwsIHVuaW5zdHJ1
-bWVudGVkIA0KPj4+IG1hcHBpbmdzLg0KPj4NCj4+IEkgZ2F2ZSBpdCBhIHRyeSBvbiBRRU1VIGU1
-MDAgKDY0IGJpdHMpLCBhbmQgZ2V0IHRoZSBmb2xsb3dpbmcgT29wcy4gDQo+PiBXaGF0IGRvIEkg
-aGF2ZSB0byBsb29rIGZvciA/DQo+Pg0KPj4gRnJlZWluZyB1bnVzZWQga2VybmVsIGltYWdlIChp
-bml0bWVtKSBtZW1vcnk6IDI1ODhLDQo+PiBUaGlzIGFyY2hpdGVjdHVyZSBkb2VzIG5vdCBoYXZl
-IGtlcm5lbCBtZW1vcnkgcHJvdGVjdGlvbi4NCj4+IFJ1biAvaW5pdCBhcyBpbml0IHByb2Nlc3MN
-Cj4+IC0tLS0tLS0tLS0tLVsgY3V0IGhlcmUgXS0tLS0tLS0tLS0tLQ0KPj4ga2VybmVsIEJVRyBh
-dCBtbS9wYWdlX3RhYmxlX2NoZWNrLmM6MTE5IQ0KPj4gT29wczogRXhjZXB0aW9uIGluIGtlcm5l
-bCBtb2RlLCBzaWc6IDUgWyMxXQ0KPj4gQkUgUEFHRV9TSVpFPTRLIFNNUCBOUl9DUFVTPTMyIFFF
-TVUgZTUwMA0KPiANCj4gU2FtZSBwcm9ibGVtIG9uIG15IDh4eCBib2FyZDoNCj4gDQo+IFvCoMKg
-wqAgNy4zNTgxNDZdIEZyZWVpbmcgdW51c2VkIGtlcm5lbCBpbWFnZSAoaW5pdG1lbSkgbWVtb3J5
-OiA0NDhLDQo+IFvCoMKgwqAgNy4zNjM5NTddIFJ1biAvaW5pdCBhcyBpbml0IHByb2Nlc3MNCj4g
-W8KgwqDCoCA3LjM3MDk1NV0gLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQo+
-IFvCoMKgwqAgNy4zNzU0MTFdIGtlcm5lbCBCVUcgYXQgbW0vcGFnZV90YWJsZV9jaGVjay5jOjEx
-OSENCj4gW8KgwqDCoCA3LjM4MDM5M10gT29wczogRXhjZXB0aW9uIGluIGtlcm5lbCBtb2RlLCBz
-aWc6IDUgWyMxXQ0KPiBbwqDCoMKgIDcuMzg1NjIxXSBCRSBQQUdFX1NJWkU9MTZLIFBSRUVNUFQg
-Q01QQzg4NQ0KDQpCb3RoIHByb2JsZW1zIGFyZSBmaXhlZCBieSBmb2xsb3dpbmcgY2hhbmdlOg0K
-DQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL25vaGFzaC9wZ3RhYmxlLmgg
-DQpiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9ub2hhc2gvcGd0YWJsZS5oDQppbmRleCA0MTNk
-MDFhNTFlNmYuLjViOTMyNjMyYTVkNyAxMDA2NDQNCi0tLSBhL2FyY2gvcG93ZXJwYy9pbmNsdWRl
-L2FzbS9ub2hhc2gvcGd0YWJsZS5oDQorKysgYi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vbm9o
-YXNoL3BndGFibGUuaA0KQEAgLTI5LDYgKzI5LDggQEAgc3RhdGljIGlubGluZSBwdGVfYmFzaWNf
-dCBwdGVfdXBkYXRlKHN0cnVjdCBtbV9zdHJ1Y3QgDQoqbW0sIHVuc2lnbmVkIGxvbmcgYWRkciwg
-cA0KDQogICNpZm5kZWYgX19BU1NFTUJMWV9fDQoNCisjaW5jbHVkZSA8bGludXgvcGFnZV90YWJs
-ZV9jaGVjay5oPg0KKw0KICBleHRlcm4gaW50IGljYWNoZV80NHhfbmVlZF9mbHVzaDsNCg0KICAv
-Kg0KQEAgLTkyLDcgKzk0LDExIEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBwdGVwX3NldF93cnByb3Rl
-Y3Qoc3RydWN0IA0KbW1fc3RydWN0ICptbSwgdW5zaWduZWQgbG9uZyBhZGRyLA0KICBzdGF0aWMg
-aW5saW5lIHB0ZV90IHB0ZXBfZ2V0X2FuZF9jbGVhcihzdHJ1Y3QgbW1fc3RydWN0ICptbSwgdW5z
-aWduZWQgDQpsb25nIGFkZHIsDQogIAkJCQkgICAgICAgcHRlX3QgKnB0ZXApDQogIHsNCi0JcmV0
-dXJuIF9fcHRlKHB0ZV91cGRhdGUobW0sIGFkZHIsIHB0ZXAsIH4wVUwsIDAsIDApKTsNCisJcHRl
-X3Qgb2xkX3B0ZSA9IF9fcHRlKHB0ZV91cGRhdGUobW0sIGFkZHIsIHB0ZXAsIH4wVUwsIDAsIDAp
-KTsNCisNCisJcGFnZV90YWJsZV9jaGVja19wdGVfY2xlYXIobW0sIGFkZHIsIG9sZF9wdGUpOw0K
-Kw0KKwlyZXR1cm4gb2xkX3B0ZTsNCiAgfQ0KICAjZGVmaW5lIF9fSEFWRV9BUkNIX1BURVBfR0VU
-X0FORF9DTEVBUg0KDQoNCg==
+Following WARN_ON_ONCE is triggered while running LTP tests
+(specifically ioctl_sg01) on IBM Power booted with =
+6.9.0-rc1-next-20240328
+
+[   64.230233] ------------[ cut here ]------------
+[   64.230269] WARNING: CPU: 10 PID: 452 at drivers/scsi/sg.c:2236 =
+sg_remove_sfp_usercontext+0x270/0x280 [sg]
+[   64.230302] Modules linked in: rpadlpar_io rpaphp xsk_diag =
+nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet =
+nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat =
+nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding tls rfkill ip_set =
+nf_tables nfnetlink sunrpc binfmt_misc pseries_rng vmx_crypto xfs =
+libcrc32c sd_mod sr_mod t10_pi crc64_rocksoft_generic cdrom =
+crc64_rocksoft crc64 sg ibmvscsi ibmveth scsi_transport_srp fuse
+[   64.230420] CPU: 10 PID: 452 Comm: kworker/10:1 Kdump: loaded Not =
+tainted 6.9.0-rc1-next-20240328 #2
+[   64.230438] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 =
+0xf000006 of:IBM,FW1060.00 (NH1060_018) hv:phyp pSeries
+[   64.230449] Workqueue: events sg_remove_sfp_usercontext [sg]
+[   64.230468] NIP:  c008000015c34110 LR: c008000015c33ffc CTR: =
+c0000000005393b0
+[   64.230485] REGS: c00000000c1efae0 TRAP: 0700   Not tainted  =
+(6.9.0-rc1-next-20240328)
+[   64.230498] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  =
+CR: 44000408  XER: 00000000
+[   64.230535] CFAR: c008000015c3400c IRQMASK: 0
+[   64.230535] GPR00: c008000015c33ffc c00000000c1efd80 c008000015c58900 =
+c00000000ca8ae98
+[   64.230535] GPR04: 00000000c0000000 0000000000000023 c000000007c2e000 =
+0000000000000022
+[   64.230535] GPR08: 000000038a130000 0000000000000002 0000000000000000 =
+c008000015c38bc0
+[   64.230535] GPR12: c0000000005393b0 c00000038fff3f00 c0000000001a2bac =
+c000000007c7a9c0
+[   64.230535] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000
+[   64.230535] GPR20: c00000038c3f3b00 c000000007c10030 c000000007c10000 =
+c0000000901c0000
+[   64.230535] GPR24: 0000000000000000 c00000000ca8ae00 c0000000045a5805 =
+c000000007c11330
+[   64.230535] GPR28: c00000038c3f3b00 c000000007c10080 c000000007c11328 =
+c000000002fdee54
+[   64.230671] NIP [c008000015c34110] =
+sg_remove_sfp_usercontext+0x270/0x280 [sg]
+[   64.230690] LR [c008000015c33ffc] =
+sg_remove_sfp_usercontext+0x15c/0x280 [sg]
+[   64.230709] Call Trace:
+[   64.230716] [c00000000c1efd80] [c008000015c33ffc] =
+sg_remove_sfp_usercontext+0x15c/0x280 [sg] (unreliable)
+[   64.230740] [c00000000c1efe40] [c00000000019337c] =
+process_one_work+0x20c/0x4f4
+[   64.230767] [c00000000c1efef0] [c0000000001942fc] =
+worker_thread+0x378/0x544
+[   64.230787] [c00000000c1eff90] [c0000000001a2cdc] kthread+0x138/0x140
+[   64.230801] [c00000000c1effe0] [c00000000000df98] =
+start_kernel_thread+0x14/0x18
+[   64.230819] Code: e8c98310 3d220000 e8698010 480044bd e8410018 =
+7ec3b378 48004ac9 e8410018 38790098 81390098 2c090001 4182ff04 =
+<0fe00000> 4bfffefc 000247e0 00000000
+[   64.230857] ---[ end trace 0000000000000000 ]=E2=80=94
+
+This WARN_ON was introduced with
+commit 27f58c04a8f438078583041468ec60597841284d
+    scsi: sg: Avoid sg device teardown race
+
+Reverting the patch avoids the warning. The test case passes =
+irrespective of the
+patch is present of not.=20
+
+-- Sachin=
