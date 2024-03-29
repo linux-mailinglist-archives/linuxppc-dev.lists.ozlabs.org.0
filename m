@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9197891440
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 08:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E64891447
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 08:28:16 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=njGi8o5j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=e4vij1Lv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V5X6s4fHKz3vnS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 18:27:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V5X7f20Hcz3vqJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 18:28:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=njGi8o5j;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=e4vij1Lv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5X3j5w2vz3cPm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 18:24:48 +1100 (AEDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-5dbd519bde6so1255908a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:24:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5X3l1CvDz3cGc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 18:24:50 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5d4a1e66750so1061264a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:24:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1711697087; x=1712301887; darn=lists.ozlabs.org;
+        d=sifive.com; s=google; t=1711697088; x=1712301888; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cDl3drvCV8mQminB8cd0FWY5ZeQD5iRDfGVHISUC3N8=;
-        b=njGi8o5jjpkVCDR7HgE9z5QEVbPLkioexGquAFmOQ2nv0ZMUSp7FYNe1tpdeHgnyJ8
-         VkgUehm5LLPumzcLybVvgIXrNrwIh0c6vsGEhhsIwTuhwNXj6Xl9cNSYShcXIdjP0pUd
-         phffgV0X1H3UsgYyCXIaRIgTZaaf5Jc50af27vR5zb/aTYCnzx0mZ6q6iQP0VBGZ95Gy
-         wuR24Uip+tBFSFNQoCE0a/RwHHQWC6KhVKqdTqbKeajrcS8UxuISuVbvfTAnQWco782s
-         kbMu9uRBFVHd531s8yl1RgG13bagOLp3L38JjUN9NcVqlMtFT03+D/damKh+MbhAa236
-         HfNA==
+        bh=BaG/5r11zMVVbJK9XMgdhlmzZC0nXZGHxxAlEP5YrDw=;
+        b=e4vij1Lv1o0TNeR3dWHQ8j20xADz7rtNfLmgd+chFdRd22v+u2eOKv1Cp99RXuTPi/
+         kbfySz9HwhNpNu0T0xdfdqOvBqj1djG5MTactic0l9pd870WSDCk9OMitcaztOMLUEYx
+         91X6DCo3d1mwgcr6cDf+j0GwNecv5Crfu5HRPWpKmzNTj/sC/xZQAYk61x80FpweBZNG
+         oiMnZ5g33OrrzCWuJSI4EHvX+UNKn/ANlMPyYrxdXYU1QfQTKHJRGsr6gnKgTrpGl2sd
+         qH17QZMmy7c35HuLD6eoqz4zLs9c5ckw/b0O6IBJDDYgF7cgDM4/yOZ/wJXLJgN/ESyI
+         YnMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711697087; x=1712301887;
+        d=1e100.net; s=20230601; t=1711697088; x=1712301888;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cDl3drvCV8mQminB8cd0FWY5ZeQD5iRDfGVHISUC3N8=;
-        b=LQHqCR1PVZJ5/igOmBdwnVJFpSvsgJW5+mf3+m43lEeJ+KKo9fpyoGcJbchPcDOQne
-         kKEJp5zYD/k8CJOg0ho43E1uUVhmdDI5JjSRemK9S19vN8XYr8E0K4qy7WDtF4AUG/ky
-         YAIw1rC65lI75R6IUooKbChG0A74NaY74AuI1QwNWgs8aTofGnK06U7RsT54XoHQCtn5
-         BleMW2Py8dBdfeXaIYVIpe2tCy+Ef4Nug/Ciqym5BMhCyj4chFu62d/E0RHPR1GA7OWi
-         LNpCOCPL2f+vk3JXEmSlMYP86mPyhkzjbHIr5fCc4/vrMnLtiUO3PQtYY+iFkcgdtem/
-         WyLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUL6nkTsin96NFeeVI/wA9wv53zojo6ha5YaF0ktKRwDRKOqQctk4uiIeFjNIQvDDxxPa/4Hzv+19cG67VsaF2txsH9AIjV08cyVhG8og==
-X-Gm-Message-State: AOJu0YwHtAiYMP7Uxc/gRim0fTT7JNV19Xv1drc/TOzCm6zCTJ0poSoU
-	J+TzV6pkmPKBk+NPJAYCn2H5K49YbqoGmBnW5/5XF1ZeqajYRZbXtaCRAf1QuWU=
-X-Google-Smtp-Source: AGHT+IF+FV+uMuQXtJuoJZDILLDfziMVBq/KUES3aiEW6OY8o73iJ5kWmw5SdybGS1gXP7gvN622NQ==
-X-Received: by 2002:a05:6a20:394d:b0:1a3:647b:b895 with SMTP id r13-20020a056a20394d00b001a3647bb895mr1477372pzg.47.1711697087156;
-        Fri, 29 Mar 2024 00:24:47 -0700 (PDT)
+        bh=BaG/5r11zMVVbJK9XMgdhlmzZC0nXZGHxxAlEP5YrDw=;
+        b=cljtuovb+KKKF+imkbUWxOuC5g9i3A7VEnMawv24h4CIhXBLO4MvdJDEp6pLo9Y0oR
+         TellbvhqNd4QJT/GJw3vTCzTWqkFBwqaOD+rCtVpUui092NP/NSgMCyNIQtWzXXmfAoY
+         Lla66e4J9xuePlTZqCwxf8bvS30umBRftXBo+dBFCiwUJ2dZQGCd6cyqzpbOEwjWRsIR
+         cz+cNx17HCjrCMyw2TcHPQeCEPjgRhQiDVCULzWHFtleNxAGbSPiPlUUtevhK6sfBe/3
+         9oEcx1euABQj+GbKe1S5+1HbqzzO6mvXdwgNnzcYxdhLndRhrOVSM9mgMdIbpDM8K+De
+         s8WQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUisJEbX5d2NjEiokJ90twueqZOsA0RxJd3qhwqMw1cA6OZDnTsz+89GwZk2i3G8BYA2WQ53pke6F6Ko1/luUKgqWZxQE7U0UqunNV2BA==
+X-Gm-Message-State: AOJu0YyUXFDcVJothzb3PYHlh1x4a76nsVgZWGbz8aFUO80ExSPdmPaN
+	ICy5WOOaivOb9aTU158mEQ18G/GOsgptZtPBnYaVjN5HosJbTTLRgipV6Lv2VhY=
+X-Google-Smtp-Source: AGHT+IHyYuok2TNfdiOcE/l5igRa3fLGWQKdU9IqGK1Jb+NsKkae7YWqfCeB+c37aWtPbJ/1sA02qQ==
+X-Received: by 2002:a05:6a21:6d9f:b0:1a3:55d2:1489 with SMTP id wl31-20020a056a216d9f00b001a355d21489mr1432790pzb.7.1711697088383;
+        Fri, 29 Mar 2024 00:24:48 -0700 (PDT)
 Received: from sw06.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id b8-20020a17090a010800b0029ddac03effsm4971798pjb.11.2024.03.29.00.24.46
+        by smtp.gmail.com with ESMTPSA id b8-20020a17090a010800b0029ddac03effsm4971798pjb.11.2024.03.29.00.24.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 00:24:46 -0700 (PDT)
+        Fri, 29 Mar 2024 00:24:48 -0700 (PDT)
 From: Samuel Holland <samuel.holland@sifive.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-arm-kernel@lists.infradead.org,
 	x86@kernel.org
-Subject: [PATCH v4 03/15] ARM: crypto: Use CC_FLAGS_FPU for NEON CFLAGS
-Date: Fri, 29 Mar 2024 00:18:18 -0700
-Message-ID: <20240329072441.591471-4-samuel.holland@sifive.com>
+Subject: [PATCH v4 04/15] arm64: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+Date: Fri, 29 Mar 2024 00:18:19 -0700
+Message-ID: <20240329072441.591471-5-samuel.holland@sifive.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240329072441.591471-1-samuel.holland@sifive.com>
 References: <20240329072441.591471-1-samuel.holland@sifive.com>
@@ -81,36 +81,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>, loongarch@lists.linux.dev, Russell King <linux@armlinux.org.uk>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that CC_FLAGS_FPU is exported and can be used anywhere in the source
-tree, use it instead of duplicating the flags here.
+arm64 provides an equivalent to the common kernel-mode FPU API, but in a
+different header and using different function names. Add a wrapper
+header, and export CFLAGS adjustments as found in lib/raid6/Makefile.
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 ---
 
-(no changes since v1)
+(no changes since v2)
 
- arch/arm/lib/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Changes in v2:
+ - Remove file name from header comment
 
-diff --git a/arch/arm/lib/Makefile b/arch/arm/lib/Makefile
-index 650404be6768..0ca5aae1bcc3 100644
---- a/arch/arm/lib/Makefile
-+++ b/arch/arm/lib/Makefile
-@@ -40,8 +40,7 @@ $(obj)/csumpartialcopy.o:	$(obj)/csumpartialcopygeneric.S
- $(obj)/csumpartialcopyuser.o:	$(obj)/csumpartialcopygeneric.S
- 
- ifeq ($(CONFIG_KERNEL_MODE_NEON),y)
--  NEON_FLAGS			:= -march=armv7-a -mfloat-abi=softfp -mfpu=neon
--  CFLAGS_xor-neon.o		+= $(NEON_FLAGS)
-+  CFLAGS_xor-neon.o		+= $(CC_FLAGS_FPU)
-   obj-$(CONFIG_XOR_BLOCKS)	+= xor-neon.o
+ arch/arm64/Kconfig           |  1 +
+ arch/arm64/Makefile          |  9 ++++++++-
+ arch/arm64/include/asm/fpu.h | 15 +++++++++++++++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/include/asm/fpu.h
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 7b11c98b3e84..67f0d3b5b7df 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -30,6 +30,7 @@ config ARM64
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select ARCH_HAS_KCOV
++	select ARCH_HAS_KERNEL_FPU_SUPPORT if KERNEL_MODE_NEON
+ 	select ARCH_HAS_KEEPINITRD
+ 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 0e075d3c546b..3e863e5b0169 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -36,7 +36,14 @@ ifeq ($(CONFIG_BROKEN_GAS_INST),y)
+ $(warning Detected assembler with broken .inst; disassembly will be unreliable)
  endif
  
+-KBUILD_CFLAGS	+= -mgeneral-regs-only	\
++# The GCC option -ffreestanding is required in order to compile code containing
++# ARM/NEON intrinsics in a non C99-compliant environment (such as the kernel)
++CC_FLAGS_FPU	:= -ffreestanding
++# Enable <arm_neon.h>
++CC_FLAGS_FPU	+= -isystem $(shell $(CC) -print-file-name=include)
++CC_FLAGS_NO_FPU	:= -mgeneral-regs-only
++
++KBUILD_CFLAGS	+= $(CC_FLAGS_NO_FPU) \
+ 		   $(compat_vdso) $(cc_has_k_constraint)
+ KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
+ KBUILD_AFLAGS	+= $(compat_vdso)
+diff --git a/arch/arm64/include/asm/fpu.h b/arch/arm64/include/asm/fpu.h
+new file mode 100644
+index 000000000000..2ae50bdce59b
+--- /dev/null
++++ b/arch/arm64/include/asm/fpu.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2023 SiFive
++ */
++
++#ifndef __ASM_FPU_H
++#define __ASM_FPU_H
++
++#include <asm/neon.h>
++
++#define kernel_fpu_available()	cpu_has_neon()
++#define kernel_fpu_begin()	kernel_neon_begin()
++#define kernel_fpu_end()	kernel_neon_end()
++
++#endif /* ! __ASM_FPU_H */
 -- 
 2.44.0
 
