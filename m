@@ -2,59 +2,146 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45275893111
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Mar 2024 11:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD4C893369
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Mar 2024 18:40:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KQkVLCGO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0N/h/M4o;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pmoyIzmQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V6pVl0Jbmz3vfc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Mar 2024 20:19:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V70JM66lvz3vkw
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 03:40:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KQkVLCGO;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0N/h/M4o;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pmoyIzmQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.de (client-ip=62.96.220.36; helo=a.mx.secunet.com; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V6pTJ6Hzbz3dSV
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Mar 2024 20:17:56 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 76F1CCE0AE1;
-	Sun, 31 Mar 2024 09:17:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE181C433F1;
-	Sun, 31 Mar 2024 09:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711876671;
-	bh=ZvMc1elPVJhE6Ny4UYVuUqULOUmKNl8y6zwFM7uGIh0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQkVLCGOR+WxOkbH46DMO6r6z5ar9wO2q1mTyCjAVRjUUH3IpKiL4Lc4RF3kMDTM3
-	 horj/O3zCC8wl442itIeiUgeHhDXDJGaOwZ45aB/2DsPZTAhGcTOK4K88TtC9Dvk82
-	 aint35VjVXD1MKD3mCSTrZGRQzaug7otAAHHjWDt6awFgQbyUttuZGFCfUF+7Kmtwf
-	 TFjHYnnUfE4DcTR0oHMAvQHUH4ePtBwzBD7Q3ov6uKNcfkLTwCwPIM+i18Ku8CuTGV
-	 S18hiZYYbYemuMJw+vWK1dYdtBR0v6VPCGlT9V3j4sIi6gqwpcxdXvmECdAt5JIYXs
-	 8IYYAsz55DVwg==
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Ran Wang <ran.wang_1@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	linux-usb@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] usb: typec: displayport: drop driver owner assignment
-Date: Sun, 31 Mar 2024 11:17:37 +0200
-Message-Id: <20240331091737.19836-3-krzk@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240331091737.19836-1-krzk@kernel.org>
-References: <20240331091737.19836-1-krzk@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V70Hd3zg3z3vhl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Apr 2024 03:40:13 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 080B4208CC;
+	Sun, 31 Mar 2024 18:40:11 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id EEfopbYeUoOB; Sun, 31 Mar 2024 18:40:09 +0200 (CEST)
+Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id A8A0B208BE;
+	Sun, 31 Mar 2024 18:40:05 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com A8A0B208BE
+Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
+	by mailout1.secunet.com (Postfix) with ESMTP id 9B42680004A;
+	Sun, 31 Mar 2024 18:40:05 +0200 (CEST)
+Received: from mbx-essen-01.secunet.de (10.53.40.197) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 31 Mar 2024 18:40:05 +0200
+Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
+ 15.1.2507.17; Sun, 31 Mar 2024 16:36:39 +0000
+X-sender: <linux-kernel+bounces-125395-steffen.klassert=secunet.com@vger.kernel.org>
+X-Receiver: <steffen.klassert@secunet.com> ORCPT=rfc822;steffen.klassert@secunet.com
+X-CreatedBy: MSExchange15
+X-HeloDomain: mbx-essen-01.secunet.de
+X-ExtendedProps: BQBjAAoAAEamlidQ3AgFADcAAgAADwA8AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50Lk9yZ2FuaXphdGlvblNjb3BlEQAAAAAAAAAAAAAAAAAAAAAADwA/AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5EaXJlY3RvcnlEYXRhLk1haWxEZWxpdmVyeVByaW9yaXR5DwADAAAATG93
+X-Source: SMTP:Default MBX-ESSEN-02
+X-SourceIPAddress: 10.53.40.197
+X-EndOfInjectedXHeaders: 13533
+X-Virus-Scanned: by secunet
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=139.178.88.99; helo=sv.mirrors.kernel.org; envelope-from=linux-kernel+bounces-125395-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
+DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 6546C20270
+Authentication-Results: b.mx.secunet.com;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0N/h/M4o";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pmoyIzmQ"
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0N/h/M4o";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pmoyIzmQ"
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711744502; cv=none; b=fjcYnOCS7m7++i3mArJETlO99jp5LHVpDekfQ1dZyeMRjBF0Cpe2hAUeUh2A4DcERRQvb3/72zlFOhXnasMv3uwJDatB2vi6zhTUazXTg8DkWm3iACGEOAO17G8ZyrRSvG2VBCQOb1TYOIZ8Ue6RVuO2+O0Zb7+44GJq7IXaYNk=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711744502; c=relaxed/simple;
+	bh=1F3bC9AfluAx91aimWFrXnEkMkyhFJNbxwKmrZG2b8A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G5m4m4klNzHchv/BCT9LAxOunHNrRG5DniTGhZxfquKU2Y+5GL5EBmjVQhVT8gyUxaqW9x8dKZHhDQyqbgpeTkCOlH0oaYaAi2JgP+/hXICleYyN1nG/9uDj6lqzsMNni7Vl6viIdW0A3GDviyJB4Ixk0z4xyDAK1WJnM3JMMzg=
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0N/h/M4o; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pmoyIzmQ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1711744499; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MEcgOTyAQAoXByBYKUR2lBKOa8ZhmGZAbpGTc5urdcs=;
+	b=0N/h/M4oFKP9e6JE78XEh1S/v6uJSKh1uvA1wPsCajar4AYYVB5MtoSQURwicU0FjTA3ZA
+	61MBm+lwJkoVB7qIrNvH3IDBG4ar+09OTaZYiATVbRQqTa3K+2VbkUVT17xAR/I3rqyXWN
+	Z87CE1W9k4JpKCgCEwSFnBh/TZXfcOY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1711744499;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MEcgOTyAQAoXByBYKUR2lBKOa8ZhmGZAbpGTc5urdcs=;
+	b=pmoyIzmQMCIpxEEegRU389t/9HfEGPbkrxeN/Z4w3PlV59F1yC09nX/ACLDPrFrN/Qx5Ay
+	FEGw4evB+gjhIACQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=none
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: arnd@arndb.de,
+	sam@ravnborg.org,
+	javierm@redhat.com,
+	deller@gmx.de,
+	sui.jingfeng@linux.dev
+Subject: [PATCH v3 1/3] arch: Select fbdev helpers with CONFIG_VIDEO
+Date: Fri, 29 Mar 2024 21:32:10 +0100
+Message-ID: <20240329203450.7824-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240329203450.7824-1-tzimmermann@suse.de>
+References: <20240329203450.7824-1-tzimmermann@suse.de>
+Precedence: bulk
+X-Mailing-List: linux-kernel@vger.kernel.org
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: ++
+X-Spamd-Result: default: False [2.89 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	 R_MISSING_CHARSET(2.50)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-0.999];
+	 RCPT_COUNT_TWELVE(0.00)[28];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,intel.com:email];
+	 FREEMAIL_TO(0.00)[arndb.de,ravnborg.org,redhat.com,gmx.de,linux.dev];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(2.20)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: EFC633528A
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -63,35 +150,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Andreas Larsson <andreas@gaisler.com>, linux-fbdev@vger.kernel.org, linux-sh@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Core in typec_altmode_register_driver() already sets the .owner, so
-driver does not need to.
+Various Kconfig options selected the per-architecture helpers for
+fbdev. But none of the contained code depends on fbdev. Standardize
+on CONFIG_VIDEO, which will allow to add more general helpers for
+video functionality.
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+CONFIG_VIDEO protects each architecture's video/ directory. This
+allows for the use of more fine-grained control for each directory's
+files, such as the use of CONFIG_STI_CORE on parisc.
 
+v2:
+- sparc: rebased onto Makefile changes
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 ---
+ arch/parisc/Makefile      | 2 +-
+ arch/sparc/Makefile       | 4 ++--
+ arch/sparc/video/Makefile | 2 +-
+ arch/x86/Makefile         | 2 +-
+ arch/x86/video/Makefile   | 3 ++-
+ 5 files changed, 7 insertions(+), 6 deletions(-)
 
-Changes in v2:
-1. New patch
----
- drivers/usb/typec/altmodes/displayport.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index 038dc51f429d..596cd4806018 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -802,7 +802,6 @@ static struct typec_altmode_driver dp_altmode_driver = {
- 	.remove = dp_altmode_remove,
- 	.driver = {
- 		.name = "typec_displayport",
--		.owner = THIS_MODULE,
- 		.dev_groups = displayport_groups,
- 	},
- };
+diff --git a/arch/parisc/Makefile b/arch/parisc/Makefile
+index 316f84f1d15c8..21b8166a68839 100644
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -119,7 +119,7 @@ export LIBGCC
+ 
+ libs-y	+= arch/parisc/lib/ $(LIBGCC)
+ 
+-drivers-y += arch/parisc/video/
++drivers-$(CONFIG_VIDEO) += arch/parisc/video/
+ 
+ boot	:= arch/parisc/boot
+ 
+diff --git a/arch/sparc/Makefile b/arch/sparc/Makefile
+index 2a03daa68f285..757451c3ea1df 100644
+--- a/arch/sparc/Makefile
++++ b/arch/sparc/Makefile
+@@ -59,8 +59,8 @@ endif
+ libs-y                 += arch/sparc/prom/
+ libs-y                 += arch/sparc/lib/
+ 
+-drivers-$(CONFIG_PM) += arch/sparc/power/
+-drivers-$(CONFIG_FB_CORE) += arch/sparc/video/
++drivers-$(CONFIG_PM)    += arch/sparc/power/
++drivers-$(CONFIG_VIDEO) += arch/sparc/video/
+ 
+ boot := arch/sparc/boot
+ 
+diff --git a/arch/sparc/video/Makefile b/arch/sparc/video/Makefile
+index d4d83f1702c61..9dd82880a027a 100644
+--- a/arch/sparc/video/Makefile
++++ b/arch/sparc/video/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-obj-$(CONFIG_FB_CORE) += fbdev.o
++obj-y	+= fbdev.o
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 662d9d4033e6b..b80d15c29ecc6 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -260,7 +260,7 @@ drivers-$(CONFIG_PCI)            += arch/x86/pci/
+ # suspend and hibernation support
+ drivers-$(CONFIG_PM) += arch/x86/power/
+ 
+-drivers-$(CONFIG_FB_CORE) += arch/x86/video/
++drivers-$(CONFIG_VIDEO) += arch/x86/video/
+ 
+ ####
+ # boot loader support. Several targets are kept for legacy purposes
+diff --git a/arch/x86/video/Makefile b/arch/x86/video/Makefile
+index 5ebe48752ffc4..9dd82880a027a 100644
+--- a/arch/x86/video/Makefile
++++ b/arch/x86/video/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_FB_CORE)		+= fbdev.o
++
++obj-y	+= fbdev.o
 -- 
-2.34.1
+2.44.0
+
 
