@@ -2,60 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366FA8922C4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 18:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 160508922C7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 18:30:59 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ju8n5/yc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HOE2ZL2P;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V5nTP722Bz3vg9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Mar 2024 04:29:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V5nW4627xz3vfS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Mar 2024 04:30:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ju8n5/yc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HOE2ZL2P;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5nSg2Wycz3dKG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Mar 2024 04:28:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5nVM0J3wz3dKG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Mar 2024 04:30:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711733332; x=1743269332;
+  t=1711733419; x=1743269419;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=yFDVjGYfjWII0t1wE88WD1st8TP3w0lvfG9W2m2CZOE=;
-  b=ju8n5/ycf238o2FY/JT0FzVk92xSasgAk0yoyknhpa4g0EsGPskhj255
-   DjUxy9HtPCmPSIPSLF9oj47UKTFCH4/qHL+ECzrT/QePgGvXpv/gTGCtO
-   8Zo8cdW/QAjqV1BCEl5O2zeZ3LL5Mt7lLLVDnQb6irRwxT7MgtvDAWGx6
-   zCtRokrCBZj2Qtwa0YdRPzS96TK1xAxbKuhKjQEmsf5RENoyvJ9Q+jyIv
-   +h8ODVnOgL2PtucabECiUNa/cgMempN5UKNg+hSbLNqPddIDXFCztOgCx
-   9muqEVAeVL0vuZXimVZ61GALR0BZuxCqwkE3PG7HB93VLxvr70Sy1NUpV
-   g==;
-X-CSE-ConnectionGUID: obZrdk4vTJGMJ3GOQralzg==
-X-CSE-MsgGUID: kpgfCMahRemg2TnUQQQvZQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="9882643"
+  bh=skmiPVy+9TKQ2YOwN5z49H0coa6SVnQShC/bqYFiK/I=;
+  b=HOE2ZL2PCMI2VcNZiRAIWfEkCSDHEt8Zn0s/op1gJ8531ENYgpqoNb/c
+   b0814M80uXRxTEt/dHCEO7D84t8dmDJNLgWAvOAyRErRSg4aboeCx7Iul
+   alxA31vDWfaWU2GA/W6zT8rRnKBp3wYlFevHV/Q1hHeNIhK6kZp4JrIAy
+   KbbtcTLYVJvZICusaXtTzHRDepgSHx5HNcXI3sZ0rpx/UcTrUHaPwF/i2
+   kxnbHk+t1AUgY5JZbabkcWk8XlNJwoi2ff5vJzHUKoa3/++97wzk8CfnG
+   7u1hmywDXmWns0txaL8pnHteBoGaXwxI7gNgBPBXhEoLie0nGw2Kvj54I
+   Q==;
+X-CSE-ConnectionGUID: B4U9GHDWRm+Isk+UZsFWaA==
+X-CSE-MsgGUID: 51VYCsd9Tr6fiP6jKbNywQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="9882795"
 X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="9882643"
+   d="scan'208";a="9882795"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 10:28:45 -0700
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 10:30:17 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="40178285"
+   d="scan'208";a="40178522"
 Received: from sergeyko-mobl.amr.corp.intel.com (HELO [10.212.56.129]) ([10.212.56.129])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 10:28:45 -0700
-Message-ID: <d2c3cd78-cdc6-4a39-9804-4f30402751b1@intel.com>
-Date: Fri, 29 Mar 2024 10:28:44 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 10:30:16 -0700
+Message-ID: <d795b1ac-5e3d-4450-8ca7-3da7f53a5482@intel.com>
+Date: Fri, 29 Mar 2024 10:30:15 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/15] x86: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+Subject: Re: [PATCH v4 09/15] x86/fpu: Fix asm/fpu/types.h include guard
 To: Samuel Holland <samuel.holland@sifive.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  linux-arm-kernel@lists.infradead.org, x86@kernel.org
 References: <20240329072441.591471-1-samuel.holland@sifive.com>
- <20240329072441.591471-11-samuel.holland@sifive.com>
+ <20240329072441.591471-10-samuel.holland@sifive.com>
 Content-Language: en-US
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -101,7 +101,7 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20240329072441.591471-11-samuel.holland@sifive.com>
+In-Reply-To: <20240329072441.591471-10-samuel.holland@sifive.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -120,27 +120,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 3/29/24 00:18, Samuel Holland wrote:
-> +#
-> +# CFLAGS for compiling floating point code inside the kernel.
-> +#
-> +CC_FLAGS_FPU := -msse -msse2
-> +ifdef CONFIG_CC_IS_GCC
-> +# Stack alignment mismatch, proceed with caution.
-> +# GCC < 7.1 cannot compile code using `double` and -mpreferred-stack-boundary=3
-> +# (8B stack alignment).
-> +# See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53383
-> +#
-> +# The "-msse" in the first argument is there so that the
-> +# -mpreferred-stack-boundary=3 build error:
-> +#
-> +#  -mpreferred-stack-boundary=3 is not between 4 and 12
-> +#
-> +# can be triggered. Otherwise gcc doesn't complain.
-> +CC_FLAGS_FPU += -mhard-float
-> +CC_FLAGS_FPU += $(call cc-option,-msse -mpreferred-stack-boundary=3,-mpreferred-stack-boundary=4)
-> +endif
+> The include guard should match the filename, or it will conflict with
+> the newly-added asm/fpu.h.
 
-I was expecting to see this (now duplicate) hunk come _out_ of
-lib/Makefile somewhere in the series.
-
-Did I miss that, or is there something keeping the duplicate there?
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
