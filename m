@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E591E89145A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 08:31:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC15289145B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 08:31:48 +0100 (CET)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=Jev976fS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=asL64p71;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V5XBx4wCfz3w10
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 18:31:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V5XCk4mM9z3w2h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Mar 2024 18:31:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=Jev976fS;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=asL64p71;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5X3w3lZgz3vZt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 18:25:00 +1100 (AEDT)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5d42e7ab8a9so1029689a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:25:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5X3y5kwkz3vZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 18:25:02 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-29fb12a22afso1334806a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Mar 2024 00:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1711697099; x=1712301899; darn=lists.ozlabs.org;
+        d=sifive.com; s=google; t=1711697100; x=1712301900; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=miBOSRWGIbztCOf3acmBaICqQz/+WnlSIiHBb+4Rl8M=;
-        b=Jev976fSZVnIwNjwmcgDb2dx4967iQiGRRwa38wUN+NBmQvd77D7aMogA6D9esDMx+
-         hXnOfTuyfWfEWB93lIaQT5R8oT3yeWy2eiCVSjz8EPukdEg/6yqIZkSH08rAqD5pjqQL
-         ZHzq5UfV55YMq6SohSSxMsm+pyjRyNtZjx7hi+2IqmQq59rwgR8OuQJa/zt5VyrzHYY/
-         xEGAT/JBbkSC9ILvQ5HAyzImlq9Mb2u7u/XDgY8EW1rgQ35VLJZ7+yHoA+W7lEykL2Qe
-         l9dr/waWV2Mevv9IJB5PEEhKmZIp/SFMoTXUEaruMcSjxMiwld27Lzn7TL+C41Y8DtsI
-         QrUA==
+        bh=dzRar7ztYXEnRyKAelp48saozJM51jVm9Dh1Zr4pH8s=;
+        b=asL64p71m8UwZpJMOBTrYFfjrxjKArWZ+Buyg5BdVZXn/VIwouc4ETFRfktEIrJiMR
+         HR7nODDbgtqLX2+V8aNyWiH/Z8NtzcgKAxZVi725fNpz5CKjAFSDJ3xTP3xN2ErYidot
+         mAYOjisS0ocgtY5uiAkEE7ngZLKOrPNjd7sP8DUhsBhNZiUj+Iu4TAucS0vs7rHHcrLp
+         RpjdIZUGKAr1abHNboz/GTMd8C67NIPv3BSsst5svjCrvi+NqQDZZagAwUy+0iSbuqfF
+         WTQv+4udYCxvhp8Tz4xwUFQLRBmLUlqRbRxBde36oDYoWZQd/XBtzaVIeY+QFgJBaSTK
+         e7mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711697099; x=1712301899;
+        d=1e100.net; s=20230601; t=1711697100; x=1712301900;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=miBOSRWGIbztCOf3acmBaICqQz/+WnlSIiHBb+4Rl8M=;
-        b=Cdgvv61gV9TyuzKGKKTJf1QIoXOdyC/AHOIMZZJx+xB4RugxGxRzOf5ZpflGHydT4c
-         m6vr0C+NrbTfSf3c+IrSCL6KKIxA14hROe38016IhIiCFAAKsgmyl1m8K/r9xEpS/oaG
-         CnwGIMyGTqxqA8Xhqoke8r3jYV2ZhRvBYc+ugRxmNDu45f25EuL94ePa4X+bcAoVskGb
-         kFHfoQlpu89asPiSt6sXMgO/wFJFGMk6gosW73owg90G645y/waiue4STdXVI+dqC87C
-         1GylYgvGGsLFp+yIBh6W10ZMXH84dGhokhGHT2HPb1m1GRFvcrJvPzAaXyQsKh/VBT4X
-         Bk4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXumTZDIpxAuT1rY8qZ4ugXiy2sqeyJH703oF4+TmcqYnSqVtyYB8BaQRaeLz0BNaIB6rVwHqgOKvTHgJ5X+8tBAmSk7IPqa5LBp1MYYw==
-X-Gm-Message-State: AOJu0YwgkCT8cR/oS1itb+rQezpT+SPXICFzir+bq7iszqHsNYfchXbv
-	bToLpQ1PK4IgX3GBoTcBwD2z4Jk8MW4PDJYFpu2qhIjg0DoDru3dgZD5XIO0+A4=
-X-Google-Smtp-Source: AGHT+IHGvAdAnX/0WDZVeXS0a7ZQ/motGWeac64eqKBau0xYaG382zqiN+0tE34St5zugVtRmJL1tg==
-X-Received: by 2002:a05:6a20:549c:b0:1a3:baad:d566 with SMTP id i28-20020a056a20549c00b001a3baadd566mr1487303pzk.40.1711697098883;
-        Fri, 29 Mar 2024 00:24:58 -0700 (PDT)
+        bh=dzRar7ztYXEnRyKAelp48saozJM51jVm9Dh1Zr4pH8s=;
+        b=GXhTPmxrBaXehKAUAsF4bQGSJVVWJFUvr9YJ6Mrz6jTO9yhaDNBYC1YuKkTROI1Vj3
+         URqkoXk0GzivVO66cDfXCnZH2AgzLEHSBzxJ6Xsq1CqbVAXP6d5WYGAtqh+bF+VD7rOW
+         QcVx87lebjZcOr/wNxEbZ/NwwOvv4fSk5Wvz3KXIvnONp737NAKUrvh8YuhuYEjiznKA
+         SzDanWu6Y41GKMClLKP+8PpIp5hT9C8lHS9FOI66NAB0SU90KnUvkQnqY5N/losCV/SN
+         WFFjfCrI/WK80rSKB9zAephEUTfkZVZdJ+42IixYLLTzAcq2k+DLV/1Pfq8tgpcgMa75
+         IuHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWk5arFDQMK+g+Bq1ELNOk7HjVOJxIY2yo24zsFye48eF3QH2chYNJBR31W7NY1Rdq9jsCFP4DyMaqzTaf6jqZgq9lfboUeeGvLSkK0yw==
+X-Gm-Message-State: AOJu0YxLJ1an/gs9ohq/cltxdhSuVUax27j3UA3rlxpZ1Tw3pjeaSJE7
+	V0alc0SxB54byUqC3gF1wInklZ3uCW22JGLnLeegm1Nn75OlpIhvkeYMIcfUWoI=
+X-Google-Smtp-Source: AGHT+IEs8kBZu3dBChnRywCF22OnC9/Ej+znSx9gblpEFd+wsOZOeprciOlW3fwk28PpRrFgoWrM2Q==
+X-Received: by 2002:a17:90a:d3c3:b0:29e:975:3500 with SMTP id d3-20020a17090ad3c300b0029e09753500mr1446912pjw.28.1711697100232;
+        Fri, 29 Mar 2024 00:25:00 -0700 (PDT)
 Received: from sw06.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id b8-20020a17090a010800b0029ddac03effsm4971798pjb.11.2024.03.29.00.24.52
+        by smtp.gmail.com with ESMTPSA id b8-20020a17090a010800b0029ddac03effsm4971798pjb.11.2024.03.29.00.24.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 00:24:53 -0700 (PDT)
+        Fri, 29 Mar 2024 00:24:59 -0700 (PDT)
 From: Samuel Holland <samuel.holland@sifive.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-arm-kernel@lists.infradead.org,
 	x86@kernel.org
-Subject: [PATCH v4 08/15] powerpc: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
-Date: Fri, 29 Mar 2024 00:18:23 -0700
-Message-ID: <20240329072441.591471-9-samuel.holland@sifive.com>
+Subject: [PATCH v4 09/15] x86/fpu: Fix asm/fpu/types.h include guard
+Date: Fri, 29 Mar 2024 00:18:24 -0700
+Message-ID: <20240329072441.591471-10-samuel.holland@sifive.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240329072441.591471-1-samuel.holland@sifive.com>
 References: <20240329072441.591471-1-samuel.holland@sifive.com>
@@ -81,97 +81,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Samuel Holland <samuel.holland@sifive.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerPC provides an equivalent to the common kernel-mode FPU API, but in
-a different header and using different function names. The PowerPC API
-also requires a non-preemptible context. Add a wrapper header, and
-export the CFLAGS adjustments.
+The include guard should match the filename, or it will conflict with
+the newly-added asm/fpu.h.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 ---
 
-(no changes since v1)
+Changes in v4:
+ - New patch for v4
 
- arch/powerpc/Kconfig           |  1 +
- arch/powerpc/Makefile          |  5 ++++-
- arch/powerpc/include/asm/fpu.h | 28 ++++++++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/include/asm/fpu.h
+ arch/x86/include/asm/fpu/types.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1c4be3373686..c42a57b6839d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -137,6 +137,7 @@ config PPC
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_HUGEPD			if HUGETLB_PAGE
- 	select ARCH_HAS_KCOV
-+	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC_FPU
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
- 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
- 	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN	if PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 65261cbe5bfd..93d89f055b70 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -153,6 +153,9 @@ CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option, $(MULTIPLEWORD))
+diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
+index ace9aa3b78a3..eb17f31b06d2 100644
+--- a/arch/x86/include/asm/fpu/types.h
++++ b/arch/x86/include/asm/fpu/types.h
+@@ -2,8 +2,8 @@
+ /*
+  * FPU data structures:
+  */
+-#ifndef _ASM_X86_FPU_H
+-#define _ASM_X86_FPU_H
++#ifndef _ASM_X86_FPU_TYPES_H
++#define _ASM_X86_FPU_TYPES_H
  
- CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option,-mno-readonly-in-sdata)
+ #include <asm/page_types.h>
  
-+CC_FLAGS_FPU		:= $(call cc-option,-mhard-float)
-+CC_FLAGS_NO_FPU		:= $(call cc-option,-msoft-float)
-+
- ifdef CONFIG_FUNCTION_TRACER
- ifdef CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY
- KBUILD_CPPFLAGS	+= -DCC_USING_PATCHABLE_FUNCTION_ENTRY
-@@ -174,7 +177,7 @@ asinstr := $(call as-instr,lis 9$(comma)foo@high,-DHAVE_AS_ATHIGH=1)
+@@ -596,4 +596,4 @@ struct fpu_state_config {
+ /* FPU state configuration information */
+ extern struct fpu_state_config fpu_kernel_cfg, fpu_user_cfg;
  
- KBUILD_CPPFLAGS	+= -I $(srctree)/arch/powerpc $(asinstr)
- KBUILD_AFLAGS	+= $(AFLAGS-y)
--KBUILD_CFLAGS	+= $(call cc-option,-msoft-float)
-+KBUILD_CFLAGS	+= $(CC_FLAGS_NO_FPU)
- KBUILD_CFLAGS	+= $(CFLAGS-y)
- CPP		= $(CC) -E $(KBUILD_CFLAGS)
- 
-diff --git a/arch/powerpc/include/asm/fpu.h b/arch/powerpc/include/asm/fpu.h
-new file mode 100644
-index 000000000000..ca584e4bc40f
---- /dev/null
-+++ b/arch/powerpc/include/asm/fpu.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2023 SiFive
-+ */
-+
-+#ifndef _ASM_POWERPC_FPU_H
-+#define _ASM_POWERPC_FPU_H
-+
-+#include <linux/preempt.h>
-+
-+#include <asm/cpu_has_feature.h>
-+#include <asm/switch_to.h>
-+
-+#define kernel_fpu_available()	(!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
-+
-+static inline void kernel_fpu_begin(void)
-+{
-+	preempt_disable();
-+	enable_kernel_fp();
-+}
-+
-+static inline void kernel_fpu_end(void)
-+{
-+	disable_kernel_fp();
-+	preempt_enable();
-+}
-+
-+#endif /* ! _ASM_POWERPC_FPU_H */
+-#endif /* _ASM_X86_FPU_H */
++#endif /* _ASM_X86_FPU_TYPES_H */
 -- 
 2.44.0
 
