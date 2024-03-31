@@ -2,57 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7141A8928BB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Mar 2024 02:19:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFAA893110
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Mar 2024 11:18:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uW7qxP8y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TmZ0Zyl0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V5zvJ1XTPz3vmt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Mar 2024 12:19:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V6pTy0DSkz3vYB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 Mar 2024 20:18:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uW7qxP8y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TmZ0Zyl0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V5mMx4F1Tz3cVv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Mar 2024 03:39:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V6pTC3t5Nz3bvW
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Mar 2024 20:17:51 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 385F9CE301C;
-	Fri, 29 Mar 2024 16:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D9DC433C7;
-	Fri, 29 Mar 2024 16:39:37 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5FD8760A06;
+	Sun, 31 Mar 2024 09:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E617C433F1;
+	Sun, 31 Mar 2024 09:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711730378;
-	bh=bg+h7PlnfTedz1YBjzApxZkMOAnsBGDd8/EzMTXhZfQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uW7qxP8y8ACgUR891lLqNXK4nRCSSexkXmk3NVlX/43RdUbJKhMUBo+3F7ImHHCLd
-	 EgMy3VnFONlXXBX8N/84xV65QgEoe3byfIcVSoYOnvkYvas222h0lZkI0ts/7GK5dK
-	 RXDBa+pCTcdJsCx5bNqP+0NeWpjfPDjTw0LzbJBD2TGFbdPiUtd9S2xCHSf/YkWg3h
-	 LkeVRnbJmAa4tPbrg134PWkZdQ7HBQC4t3veXbL+goDjmVnDap5Tj4fOkvn8ClJwbk
-	 uuZW1rzs8wZhLpPlp2dMwsOxB3VXY8Xf/XxfLnuX/VdqMAE2Sw5BpezoMJa9uZRiGz
-	 dYTGMY6Ps7ZVQ==
-Date: Fri, 29 Mar 2024 22:09:34 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Allen <allen.lkml@gmail.com>
-Subject: Re: [PATCH 2/9] dma: Convert from tasklet to BH workqueue
-Message-ID: <ZgbuxmxncU0-0jhA@matsya>
-References: <20240327160314.9982-1-apais@linux.microsoft.com>
- <20240327160314.9982-3-apais@linux.microsoft.com>
- <ZgUGXTKPVhrA1tam@matsya>
- <2e9257af-c123-406b-a189-eaebeecc1d71@app.fastmail.com>
- <ZgW3j1qkLA-QU4iM@matsya>
- <CAOMdWSKY9D75FM3bswUfXn2o7bGtrei3G5kLt6JdcdOPDXaG8g@mail.gmail.com>
+	s=k20201202; t=1711876667;
+	bh=VzdFzXRE2VaRW7jFZgwq93tJA5xuLG9fPdxBzjiMqvM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TmZ0Zyl0dHghbpysYElex7UbdbqFMjqVZ9jfc4of38vp92x2Ggicmbza02ifRZyNe
+	 1TQOiRfyYJy90FHAWMK6pQxIo4xQBQomixhiDa82oWD7APSNNNfuIVaDHX+yN9Ds2A
+	 hqnywqXPFnnoubHSKvEAj+w5VFPm/MR7IPQ5fqL22XyHGWtPMLooJXOETsJq/sD6Ex
+	 lTHuYjdGOvWTbWcERl+3lJPyTmBXVvrjy7EQDPW82+o2K8JCIXW3Y95nmH2txcoA5g
+	 IfXDZg2EoKH9SLDB70edXR9gwvhGRWUFHaDKCR02wzl6XPPFkHZX9TH3ztnlKcB4Ig
+	 ukevB8jk8ZHyw==
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Ran Wang <ran.wang_1@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	linux-usb@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/3] usb: phy: fsl-usb: drop driver owner assignment
+Date: Sun, 31 Mar 2024 11:17:35 +0200
+Message-Id: <20240331091737.19836-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOMdWSKY9D75FM3bswUfXn2o7bGtrei3G5kLt6JdcdOPDXaG8g@mail.gmail.com>
-X-Mailman-Approved-At: Sat, 30 Mar 2024 12:17:51 +1100
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,27 +61,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>, Oliver Neukum <oneukum@suse.com>, duncan.sands@free.fr, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>, aubin.constans@microchip.com, Linus Walleij <linus.walleij@linaro.org>, Frank Li <Frank.Li@nxp.com>, linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>, linux-tegra@vger.kernel.org, Netdev <netdev@vger.kernel.org>, maintainers@bluecherrydvr.com, peter.ujfalusi@gmail.com, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linux-riscv@lists.infradead.org, "K. Y. Srinivasan" <kys@microsoft.com>, Robert Jarzmik <robert.jarzmik@free.fr>, haijie1@huawei.com, Linux-Renesas <linux-renesas-soc@vger.kernel.org>, Wei Liu <wei.liu@kernel.org>, Linux-OMAP <linux-omap@vger.kernel.org>, oakad@yahoo.com, Florian Fainelli <florian.fainelli@broadcom.com>, linux-rdma@vger.kernel.org, Viresh Kumar <vireshk@kernel.org>, Jassi
-  Brar <jassisinghbrar@gmail.com>, Dexuan Cui <decui@microsoft.com>, HaraldWelte@viatech.com, Jernej Skrabec <jernej.skrabec@gmail.com>, "jh80.chung" <jh80.chung@samsung.com>, zw@zh-kernel.org, Chen-Yu Tsai <wens@csie.org>, Alan Stern <stern@rowland.harvard.edu>, linux-arm-msm@vger.kernel.org, Orson Zhai <orsonzhai@gmail.com>, pierre@ossman.eu, linux-usb@vger.kernel.org, Eugeniy.Paltsev@synopsys.com, Patrice Chotard <patrice.chotard@foss.st.com>, asahi@lists.linux.dev, brucechang@via.com.tw, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Sven Peter <sven@svenpeter.dev>, Ray Jui <rjui@broadcom.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sean Wang <sean.wang@mediatek.com>, linux-actions@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Haojian Zhuang <haojian.zhuang@gmail.com>, =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, Baolin Wang <baolin.wang
- @linux.alibaba.com>, Matthias Brugger <matthias.bgg@gmail.com>, openipmi-developer@lists.sourceforge.net, Mauro Carvalho Chehab <mchehab@kernel.org>, Allen Pais <apais@linux.microsoft.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Scott Branden <sbranden@broadcom.com>, logang@deltatee.com, Bjorn Andersson <andersson@kernel.org>, Hector Martin <marcan@marcan.st>, Haiyang Zhang <haiyangz@microsoft.com>, linux-kernel@vger.kernel.org, Leo Li <leoyang.li@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, linux-sunxi@lists.linux.dev, Zhou Wang <wangzhou1@hisilicon.com>, linux-s390@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Chunyan Zhang <zhang.lyra@gmail.com>, Tejun Heo <tj@kernel.org>, Manuel Lauss <manuel.lauss@gmail.com>, linux-media@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>, Daniel Mack <daniel@zonque.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28-03-24, 12:39, Allen wrote:
+Core in platform_driver_register() already sets the .owner, so driver
+does not need to.
 
-> > I think that is very great idea. having this wrapped in dma_chan would
-> > be very good way as well
-> >
-> > Am not sure if Allen is up for it :-)
-> 
->  Thanks Arnd, I know we did speak about this at LPC. I did start
-> working on using completion. I dropped it as I thought it would
-> be easier to move to workqueues.
-> 
-> Vinod, I would like to give this a shot and put out a RFC, I would
-> really appreciate review and feedback.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Sounds like a good plan to me
+---
 
+Changes in v2:
+1. None
+---
+ drivers/usb/phy/phy-fsl-usb.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/usb/phy/phy-fsl-usb.c b/drivers/usb/phy/phy-fsl-usb.c
+index 79617bb0a70e..1ebbf189a535 100644
+--- a/drivers/usb/phy/phy-fsl-usb.c
++++ b/drivers/usb/phy/phy-fsl-usb.c
+@@ -1005,7 +1005,6 @@ struct platform_driver fsl_otg_driver = {
+ 	.remove_new = fsl_otg_remove,
+ 	.driver = {
+ 		.name = driver_name,
+-		.owner = THIS_MODULE,
+ 	},
+ };
+ 
 -- 
-~Vinod
+2.34.1
+
