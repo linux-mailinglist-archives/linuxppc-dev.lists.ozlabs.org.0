@@ -1,52 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE782893895
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 09:09:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45A78939D8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 11:58:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pC80AAS8;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=wetzel-home.de header.i=@wetzel-home.de header.a=rsa-sha256 header.s=wetzel-home header.b=OVDxb2V3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V7Mb33GW7z3fQR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 18:09:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V7RKJ4v6vz3dXY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 20:58:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V7MZB6zKNz2y70
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Apr 2024 18:09:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=faKtwJA5t6Zj+D3Q/jEbeWC+9IIE68VhlZebCZwcy9Y=; b=pC80AAS8EZ4vHufsZXQhhNJXMB
-	pEZ4zygf0sNfgHbd7JHc5VE5r8vplOj8Vdo3RUxGuZj3OM9UhReJOicLxpX1+QY61C88nz5lxjIfg
-	sg7AVzqLO24mjIphRT4DTseRQTfjnua7G0tZICN3mZhOyWNk4Ux23hZQfM7ItidY5DxS9ZcvtELvq
-	2F5Er7a13fIYALE36kvV1kcuaYoXBuzsP9iPq5Zivg1qEU8qYHH1BFZgbDk70vqEhQDvSf+dHN8gY
-	rpOES3fB8J5cnkDomIiqIAd96lW16AN/qj5MdS8bMsnXjsEx8BMLOUbfsLuAH+DFFzx2MSQxg63+M
-	iGiaMIfw==;
-Received: from fpd2fa7e2a.ap.nuro.jp ([210.250.126.42] helo=[192.168.1.8])
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrBml-0000000016F-0yKC;
-	Mon, 01 Apr 2024 07:08:52 +0000
-Message-ID: <d64f06f4-81ae-4ec5-ab3b-d7f7f091e0ac@infradead.org>
-Date: Mon, 1 Apr 2024 16:08:31 +0900
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=wetzel-home.de header.i=@wetzel-home.de header.a=rsa-sha256 header.s=wetzel-home header.b=OVDxb2V3;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wetzel-home.de (client-ip=2a03:4000:40:5b2::1; helo=ns2.wdyn.eu; envelope-from=alexander@wetzel-home.de; receiver=lists.ozlabs.org)
+Received: from ns2.wdyn.eu (ns2.wdyn.eu [IPv6:2a03:4000:40:5b2::1])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V7RJV3nHlz3btQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Apr 2024 20:57:27 +1100 (AEDT)
+From: Alexander Wetzel <Alexander@wetzel-home.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+	s=wetzel-home; t=1711965440;
+	bh=VQZhdw09jrXTFrGwzX+rLaXVEw+XW/mOek8JIA6cGZM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OVDxb2V3ZvrNNEUNEbfcoMuWiqa9QKUV+uMtT+2IHg1rw2OI9CbY47okrm8rOqDSY
+	 cLk7eqXhB3ap6DsRA9Kf9mGu9957NQtiu4UkDxwx62342UPUtt1v51QRsG52DyMA6E
+	 vKBPcM5TA3RUtjFGq6FxEPRsjabOReBmuT7iG27Y=
+To: dgilbert@interlog.com
+Subject: [PATCH] scsi: sg: Avoid race in error handling & drop bogus warn
+Date: Mon,  1 Apr 2024 11:56:29 +0200
+Message-ID: <20240401095629.5089-1-Alexander@wetzel-home.de>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com>
+References: <81266270-42F4-48F9-9139-8F0C3F0A6553@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2] powerpc: Fix PS3 allmodconfig warning
-From: Geoff Levand <geoff@infradead.org>
-To: Arnd Bergmann <arnd@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@ozlabs.org>
-References: <20240320180333.151043-1-arnd@kernel.org>
- <415f4af0-f44a-49fb-b1fa-76f64ed09ec6@infradead.org>
-Content-Language: en-US
-In-Reply-To: <415f4af0-f44a-49fb-b1fa-76f64ed09ec6@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,149 +47,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kevin Hao <haokexin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
+Cc: bvanassche@acm.org, linux-scsi@vger.kernel.org, gregkh@linuxfoundation.org, stable@vger.kernel.org, Alexander@wetzel-home.de, sachinp@linux.ibm.com, martin.petersen@oracle.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The struct ps3_notification_device in the ps3_probe_thread routine
-is too large to be on the stack, causing a warning for an
-allmodconfig build with clang.
+commit 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
+introduced an incorrect WARN_ON_ONCE() and missed a sequence where
+sg_device_destroy() after scsi_device_put() when handling errors.
 
-Change the struct ps3_notification_device from a variable on the stack
-to a dynamically allocated variable.
+sg_device_destroy() is accessing the parent scsi_device request_queue which
+will already be set to NULL when the preceding call to scsi_device_put()
+removed the last reference to the parent scsi_device.
 
-Reported-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Geoff Levand <geoff@infradead.org>
+Drop the incorrect WARN_ON_ONCE() - allowing more than one concurrent
+access to the sg device -  and make sure sg_device_destroy() is not used
+after scsi_device_put() in the error handling.
 
-diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
-index 878bc160246e..b18e1c92e554 100644
---- a/arch/powerpc/platforms/ps3/device-init.c
-+++ b/arch/powerpc/platforms/ps3/device-init.c
-@@ -770,49 +770,51 @@ static struct task_struct *probe_task;
+Link: https://lore.kernel.org/all/5375B275-D137-4D5F-BE25-6AF8ACAE41EF@linux.ibm.com
+Fixes: 27f58c04a8f4 ("scsi: sg: Avoid sg device teardown race")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
+---
+
+The WARN_ON_ONCE() was kind of stupid to add:
+We get add reference for each sg_open(). So opening a second session and
+then closing either one will trigger the warning... Nothing to warn
+about here.
+
+Alexander
+---
+ drivers/scsi/sg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 386981c6976a..833c9277419b 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -372,8 +372,9 @@ sg_open(struct inode *inode, struct file *filp)
+ error_out:
+ 	scsi_autopm_put_device(sdp->device);
+ sdp_put:
++	kref_put(&sdp->d_ref, sg_device_destroy);
+ 	scsi_device_put(sdp->device);
+-	goto sg_put;
++	return retval;
+ }
  
- static int ps3_probe_thread(void *data)
- {
--	struct ps3_notification_device dev;
-+	struct {
-+		struct ps3_notification_device dev;
-+		u8 buf[512];
-+	} *local;
-+	struct ps3_notify_cmd *notify_cmd;
-+	struct ps3_notify_event *notify_event;
- 	int res;
- 	unsigned int irq;
- 	u64 lpar;
--	void *buf;
--	struct ps3_notify_cmd *notify_cmd;
--	struct ps3_notify_event *notify_event;
+ /* Release resources associated with a successful sg_open()
+@@ -2233,7 +2234,6 @@ sg_remove_sfp_usercontext(struct work_struct *work)
+ 			"sg_remove_sfp: sfp=0x%p\n", sfp));
+ 	kfree(sfp);
  
- 	pr_debug(" -> %s:%u: kthread started\n", __func__, __LINE__);
- 
--	buf = kzalloc(512, GFP_KERNEL);
--	if (!buf)
-+	local = kzalloc(sizeof(*local), GFP_KERNEL);
-+	if (!local)
- 		return -ENOMEM;
- 
--	lpar = ps3_mm_phys_to_lpar(__pa(buf));
--	notify_cmd = buf;
--	notify_event = buf;
-+	lpar = ps3_mm_phys_to_lpar(__pa(&local->buf));
-+	notify_cmd = (struct ps3_notify_cmd *)&local->buf;
-+	notify_event = (struct ps3_notify_event *)&local->buf;
- 
- 	/* dummy system bus device */
--	dev.sbd.bus_id = (u64)data;
--	dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
--	dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
-+	local->dev.sbd.bus_id = (u64)data;
-+	local->dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
-+	local->dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
- 
--	res = lv1_open_device(dev.sbd.bus_id, dev.sbd.dev_id, 0);
-+	res = lv1_open_device(local->dev.sbd.bus_id, local->dev.sbd.dev_id, 0);
- 	if (res) {
- 		pr_err("%s:%u: lv1_open_device failed %s\n", __func__,
- 		       __LINE__, ps3_result(res));
- 		goto fail_free;
- 	}
- 
--	res = ps3_sb_event_receive_port_setup(&dev.sbd, PS3_BINDING_CPU_ANY,
--					      &irq);
-+	res = ps3_sb_event_receive_port_setup(&local->dev.sbd,
-+		PS3_BINDING_CPU_ANY, &irq);
- 	if (res) {
- 		pr_err("%s:%u: ps3_sb_event_receive_port_setup failed %d\n",
- 		       __func__, __LINE__, res);
- 	       goto fail_close_device;
- 	}
- 
--	spin_lock_init(&dev.lock);
--	rcuwait_init(&dev.wait);
-+	spin_lock_init(&local->dev.lock);
-+	rcuwait_init(&local->dev.wait);
- 
- 	res = request_irq(irq, ps3_notification_interrupt, 0,
--			  "ps3_notification", &dev);
-+			  "ps3_notification", &local->dev);
- 	if (res) {
- 		pr_err("%s:%u: request_irq failed %d\n", __func__, __LINE__,
- 		       res);
-@@ -823,7 +825,7 @@ static int ps3_probe_thread(void *data)
- 	notify_cmd->operation_code = 0; /* must be zero */
- 	notify_cmd->event_mask = 1UL << notify_region_probe;
- 
--	res = ps3_notification_read_write(&dev, lpar, 1);
-+	res = ps3_notification_read_write(&local->dev, lpar, 1);
- 	if (res)
- 		goto fail_free_irq;
- 
-@@ -834,36 +836,37 @@ static int ps3_probe_thread(void *data)
- 
- 		memset(notify_event, 0, sizeof(*notify_event));
- 
--		res = ps3_notification_read_write(&dev, lpar, 0);
-+		res = ps3_notification_read_write(&local->dev, lpar, 0);
- 		if (res)
- 			break;
- 
- 		pr_debug("%s:%u: notify event type 0x%llx bus id %llu dev id %llu"
- 			 " type %llu port %llu\n", __func__, __LINE__,
--			 notify_event->event_type, notify_event->bus_id,
--			 notify_event->dev_id, notify_event->dev_type,
--			 notify_event->dev_port);
-+			notify_event->event_type, notify_event->bus_id,
-+			notify_event->dev_id, notify_event->dev_type,
-+			notify_event->dev_port);
- 
- 		if (notify_event->event_type != notify_region_probe ||
--		    notify_event->bus_id != dev.sbd.bus_id) {
-+			notify_event->bus_id != local->dev.sbd.bus_id) {
- 			pr_warn("%s:%u: bad notify_event: event %llu, dev_id %llu, dev_type %llu\n",
- 				__func__, __LINE__, notify_event->event_type,
- 				notify_event->dev_id, notify_event->dev_type);
- 			continue;
- 		}
- 
--		ps3_find_and_add_device(dev.sbd.bus_id, notify_event->dev_id);
-+		ps3_find_and_add_device(local->dev.sbd.bus_id,
-+			notify_event->dev_id);
- 
- 	} while (!kthread_should_stop());
- 
- fail_free_irq:
--	free_irq(irq, &dev);
-+	free_irq(irq, &local->dev);
- fail_sb_event_receive_port_destroy:
--	ps3_sb_event_receive_port_destroy(&dev.sbd, irq);
-+	ps3_sb_event_receive_port_destroy(&local->dev.sbd, irq);
- fail_close_device:
--	lv1_close_device(dev.sbd.bus_id, dev.sbd.dev_id);
-+	lv1_close_device(local->dev.sbd.bus_id, local->dev.sbd.dev_id);
- fail_free:
--	kfree(buf);
-+	kfree(local);
- 
- 	probe_task = NULL;
- 
+-	WARN_ON_ONCE(kref_read(&sdp->d_ref) != 1);
+ 	kref_put(&sdp->d_ref, sg_device_destroy);
+ 	scsi_device_put(device);
+ 	module_put(THIS_MODULE);
+-- 
+2.44.0
 
