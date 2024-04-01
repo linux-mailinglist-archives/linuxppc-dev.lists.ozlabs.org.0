@@ -2,89 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33723893C19
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 16:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70367894176
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 18:42:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=j1i7juaL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V7Y5X21bYz3dH8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Apr 2024 01:18:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V7cHy1VnNz3dW8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Apr 2024 03:42:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=j1i7juaL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsavitz@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::f30; helo=mail-qv1-xf30.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V7Y4n3h0Dz2xbC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Apr 2024 01:17:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711981060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CJRxiasyHmUKvqfQpZ1nrM5CdUFwh/nhoJJg5a06Pdg=;
-	b=JVU22thMCzmseuenLau2SCUkZNf6YCWW9ePUqb5n6OmcPzSIPQKcWbEFMFR3k0dabA2FEr
-	TqwP1zXcmPl5nJ6usI8vO4BDOMC0t1+gPQqmJef29DxOdgOoFFOntwvzS7W6tbJ+sUHSuY
-	aoe5yXU4yyVf3RzHL73EN8/3B7VulN8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711981060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CJRxiasyHmUKvqfQpZ1nrM5CdUFwh/nhoJJg5a06Pdg=;
-	b=JVU22thMCzmseuenLau2SCUkZNf6YCWW9ePUqb5n6OmcPzSIPQKcWbEFMFR3k0dabA2FEr
-	TqwP1zXcmPl5nJ6usI8vO4BDOMC0t1+gPQqmJef29DxOdgOoFFOntwvzS7W6tbJ+sUHSuY
-	aoe5yXU4yyVf3RzHL73EN8/3B7VulN8=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-3xfrZn1APIec3MCk2MW0eQ-1; Mon, 01 Apr 2024 10:17:38 -0400
-X-MC-Unique: 3xfrZn1APIec3MCk2MW0eQ-1
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-6e6a35be1b0so4902231a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Apr 2024 07:17:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V7cHB4kw8z3bs2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Apr 2024 03:41:57 +1100 (AEDT)
+Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-698d68337a8so21051546d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Apr 2024 09:41:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1711989714; x=1712594514; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tm96Do3HD9Ni1RnQFtInuSgt43w6ZXYVK1hdTCMkucA=;
+        b=j1i7juaL88YyXLFEQPBSoHPCPBEF8D570kfvQPY+UWYHhqLZK/40TeVSWFSD4dqufc
+         ZWmYKSt22nfT62UkPzsq9ISI3SM/Yare7l814kJQlwA/6duNTlyt+zsSnfHYL5iuXyci
+         9Z036A6Twcw9rW4z9Ab+F4gc737NoHOhvkE78=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711981058; x=1712585858;
+        d=1e100.net; s=20230601; t=1711989714; x=1712594514;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CJRxiasyHmUKvqfQpZ1nrM5CdUFwh/nhoJJg5a06Pdg=;
-        b=VqZjFeuqN0LPgjwU2RvDEamVhkOTfxxq2V1Z9v4gHCePCukizdbwnGy9nOMgCnjRWX
-         r2AD5jcaBGKhxq6A/y+QOn0weFQv2oyZMR4YG0O/A2piLZW3fA38EutdXJsLd5hQn036
-         yY9dOQESZWrcaBUWQN45CgBqKX8iqdewtGNLvwhUN0qXokWKWx9opx+MyQwW51lXk/RT
-         hxyzGP0bRT0hpliV8mzFvP8+1CPpczh6oDUGxenu7ItDnlbQPOypQCBxrMkl5cdwJDXe
-         lmnEuoEnrCvnfC5Q8jF6oJshlCgGaMbCEj7YJc2iQCMbGXPodW3pUyr4kKjJdY+nYG58
-         5olQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdGdLuyav44m+9/PFN7yi1ZsAf2F7DDCOU4guQZ2dRK08IRyc/Kkvkt4IId7DFE3azXW8lxG9W+lzmPk/2Ah6jB4QnFgdYE2LBMhKJnw==
-X-Gm-Message-State: AOJu0YwculuJNI5PR6mEkAzvrEMY0lXjO0Hqph6/Ml1d0w4wI4YR0Emv
-	m9qdog+Fovqpr+PIqgZL6fQLpluj/zlIiALABuKPKgavjFdRC37ISUUB7JA/xBt7yPT7z44+4a7
-	kHcQ32RtMBDa9iIb+LOLuHLyrMLlifx+hs8Az8F+T8uGIK+VKylXg1kICVwALuHOJl9fKF6eM4z
-	biUx7fY+lvKKoWbelsZGG5AJ3AEq6EAROXuaurNw==
-X-Received: by 2002:a05:6808:1995:b0:3c3:8517:3472 with SMTP id bj21-20020a056808199500b003c385173472mr14104556oib.41.1711981057495;
-        Mon, 01 Apr 2024 07:17:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKAaot5gPu/xKNuoiU5ZEryU7ovco8JGNrBFL3wur8CERMVFMJ3iEOAuH9JO+iko79W/n109Mabrud3lV8ZsM=
-X-Received: by 2002:a05:6808:1995:b0:3c3:8517:3472 with SMTP id
- bj21-20020a056808199500b003c385173472mr14104453oib.41.1711981055880; Mon, 01
- Apr 2024 07:17:35 -0700 (PDT)
+        bh=tm96Do3HD9Ni1RnQFtInuSgt43w6ZXYVK1hdTCMkucA=;
+        b=AeUBDhrbfCETjI1y+23Pnag7SgXJWbRkOzYfP/SPbdDvvO/wPS0BGHx0aPB5HHZpgF
+         RWaxIx78qU2gCJ1NddNVQPWc2/AtJJIZVJQvdEvcMmHKBcbs/YeijLtmPRsAlRWrBfzf
+         zlSwLF8UL0xfiB0xjSGRrLwWzkbnPJwnhVJLVDIaG+xZ1nGXmOCsrB8RO5AbCzbF5EGe
+         IM62hegUgdYVrfwrtEabeKQVSGjFs87sJrRPfdtpbIu82nxzC06oMZE7iyYthcaREziN
+         Oe0nxQRlLySJVYkXBHnGlW6JRO0FnXTqrjq8u5sFLBAq1t3t6p+2Ew1ZfgL7Q0sQWJu5
+         m8uw==
+X-Forwarded-Encrypted: i=1; AJvYcCXETy1szbKO+6YmTvXgB3bKozrDc0MIa9IZaQCzvqxSjbYZabrCHMZPXt6+jg9Imai1bxXwTpLW5LFE7ZFxItljnMxtVVXsPDFVQZpq+g==
+X-Gm-Message-State: AOJu0YxQYf8N/FNL2MWAJRo5SQ7NvcBTkmXg9vrOljWGq6esY6TNowyP
+	31JSSiWbSq4fX0sR+/ROua4d/p4n+sHSEm0qDaAu44rLmpgqxBCgtKykNCWQQlRetpjv8GL7J8E
+	=
+X-Google-Smtp-Source: AGHT+IHVzfA5irYiLfFmTWjsGpDMFBxL8tSwB94tHceyLXKQY54NUicg6q2JYdjKMqotmQOp5qI+bQ==
+X-Received: by 2002:ad4:4e6a:0:b0:696:3cab:bc4b with SMTP id ec10-20020ad44e6a000000b006963cabbc4bmr9714401qvb.6.1711989713788;
+        Mon, 01 Apr 2024 09:41:53 -0700 (PDT)
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com. [209.85.160.170])
+        by smtp.gmail.com with ESMTPSA id gv5-20020a056214262500b00696b1050be8sm4660814qvb.133.2024.04.01.09.41.53
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Apr 2024 09:41:53 -0700 (PDT)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-432d55b0fa9so498991cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Apr 2024 09:41:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVUIMYNaJFG3nbDH7VshdS33vDieAcjVWKCYKZc0LEWRufGdbaXPzFsOunqMDEMutS7Hu6OTNI3wm+6DTRfnvR55eslPSOXXY+1KPWnRA==
+X-Received: by 2002:a05:622a:5a89:b0:431:4e0b:d675 with SMTP id
+ fz9-20020a05622a5a8900b004314e0bd675mr1027105qtb.18.1711989713017; Mon, 01
+ Apr 2024 09:41:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240301203023.2197451-1-jsavitz@redhat.com> <87jzmduiva.fsf@kernel.org>
- <CAL1p7m5BoxFDeK0MryQCmTDCeBLN3rMLRGx3cHa6teS02wsgZw@mail.gmail.com>
-In-Reply-To: <CAL1p7m5BoxFDeK0MryQCmTDCeBLN3rMLRGx3cHa6teS02wsgZw@mail.gmail.com>
-From: Joel Savitz <jsavitz@redhat.com>
-Date: Mon, 1 Apr 2024 10:17:19 -0400
-Message-ID: <CAL1p7m5VHGL+-st7zgGA9LPft6DND=qz0ifiD_ki1hLvfRv=7Q@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: align memory_limit to 16MB in early_parse_mem
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20240306125208.71803-1-yaoma@linux.alibaba.com>
+ <20240306125208.71803-5-yaoma@linux.alibaba.com> <87zfuofzld.ffs@tglx> <6109a3e3-ca88-4a4d-86c5-c4eb0d7f6f9c@linux.alibaba.com>
+In-Reply-To: <6109a3e3-ca88-4a4d-86c5-c4eb0d7f6f9c@linux.alibaba.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Mon, 1 Apr 2024 09:41:38 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Xr8-rzANK8oKyEZpk1FZ2dy5HqBXKpk3O29PhG1fRowg@mail.gmail.com>
+Message-ID: <CAD=FV=Xr8-rzANK8oKyEZpk1FZ2dy5HqBXKpk3O29PhG1fRowg@mail.gmail.com>
+Subject: Re: [PATCHv12 4/4] watchdog/softlockup: report the most frequent interrupts
+To: Bitao Hu <yaoma@linux.alibaba.com>, Thomas Gleixner <tglx@linutronix.de>, pmladek@suse.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -98,141 +86,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gonzalo Siero <gsierohu@redhat.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, jan.kiszka@siemens.com, deller@gmx.de, liusong@linux.alibaba.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com, kernelfans@gmail.com, akpm@linux-foundation.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 26, 2024 at 12:45=E2=80=AFAM Joel Savitz <jsavitz@redhat.com> w=
-rote:
->
-> On Fri, Mar 8, 2024 at 5:18=E2=80=AFAM Aneesh Kumar K.V <aneesh.kumar@ker=
-nel.org> wrote:
-> >
-> > Joel Savitz <jsavitz@redhat.com> writes:
-> >
-> > > On 64-bit powerpc, usage of a non-16MB-aligned value for the mem=3D k=
-ernel
-> > > cmdline parameter results in a system hang at boot.
-> > >
-> > > For example, using 'mem=3D4198400K' will always reproduce this issue.
-> > >
-> > > This patch fixes the problem by aligning any argument to mem=3D to 16=
-MB
-> > > corresponding with the large page size on powerpc.
-> > >
-> > > Fixes: 2babf5c2ec2f ("[PATCH] powerpc: Unify mem=3D handling")
-> > > Co-developed-by: Gonzalo Siero <gsierohu@redhat.com>
-> > > Signed-off-by: Gonzalo Siero <gsierohu@redhat.com>
-> > > Signed-off-by: Joel Savitz <jsavitz@redhat.com>
-> > > ---
-> > >  arch/powerpc/kernel/prom.c | 6 +++++-
-> > >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> > > index 0b5878c3125b..8cd3e2445d8a 100644
-> > > --- a/arch/powerpc/kernel/prom.c
-> > > +++ b/arch/powerpc/kernel/prom.c
-> > > @@ -82,8 +82,12 @@ static int __init early_parse_mem(char *p)
-> > >  {
-> > >       if (!p)
-> > >               return 1;
-> > > -
-> > > +#ifdef CONFIG_PPC64
-> > > +     /* Align to 16 MB =3D=3D size of ppc64 large page */
-> > > +     memory_limit =3D ALIGN(memparse(p, &p), 0x1000000);
-> > > +#else
-> > >       memory_limit =3D PAGE_ALIGN(memparse(p, &p));
-> > > +#endif
-> > >       DBG("memory limit =3D 0x%llx\n", memory_limit);
-> > >
-> > >       return 0;
-> > > --
-> > > 2.43.0
-> >
-> > Can you try this change?
-> >
-> > commit 5555bc55e1aa71f545cff31e1eccdb4a2e39df84
-> > Author: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-> > Date:   Fri Mar 8 14:45:26 2024 +0530
-> >
-> >     powerpc/mm: Align memory_limit value specified using mem=3D kernel =
-parameter
-> >
-> >     The value specified for the memory limit is used to set a restricti=
-on on
-> >     memory usage. It is important to ensure that this restriction is wi=
-thin
-> >     the linear map kernel address space range. The hash page table
-> >     translation uses a 16MB page size to map the kernel linear map addr=
-ess
-> >     space. htab_bolt_mapping() function aligns down the size of the ran=
-ge
-> >     while mapping kernel linear address space. Since the memblock limit=
- is
-> >     enforced very early during boot, before we can detect the type of m=
-emory
-> >     translation (radix vs hash), we align the memory limit value specif=
-ied
-> >     as a kernel parameter to 16MB. This alignment value will work for b=
-oth
-> >     hash and radix translations.
-> >
-> >     Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-> >
-> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> > index 0b5878c3125b..9bd965d35352 100644
-> > --- a/arch/powerpc/kernel/prom.c
-> > +++ b/arch/powerpc/kernel/prom.c
-> > @@ -824,8 +824,11 @@ void __init early_init_devtree(void *params)
-> >                 reserve_crashkernel();
-> >         early_reserve_mem();
-> >
-> > -       /* Ensure that total memory size is page-aligned. */
-> > -       limit =3D ALIGN(memory_limit ?: memblock_phys_mem_size(), PAGE_=
-SIZE);
-> > +       if (memory_limit > memblock_phys_mem_size())
-> > +               memory_limit =3D 0;
-> > +
-> > +       /* Align down to 16 MB which is large page size with hash page =
-translation */
-> > +       limit =3D ALIGN_DOWN(memory_limit ?: memblock_phys_mem_size(), =
-SZ_16M);
-> >         memblock_enforce_memory_limit(limit);
-> >
-> >  #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_4K_PAGES)
-> > diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom=
-_init.c
-> > index e67effdba85c..d6410549e141 100644
-> > --- a/arch/powerpc/kernel/prom_init.c
-> > +++ b/arch/powerpc/kernel/prom_init.c
-> > @@ -817,8 +817,8 @@ static void __init early_cmdline_parse(void)
-> >                 opt +=3D 4;
-> >                 prom_memory_limit =3D prom_memparse(opt, (const char **=
-)&opt);
-> >  #ifdef CONFIG_PPC64
-> > -               /* Align to 16 MB =3D=3D size of ppc64 large page */
-> > -               prom_memory_limit =3D ALIGN(prom_memory_limit, 0x100000=
-0);
-> > +               /* Align down to 16 MB which is large page size with ha=
-sh page translation */
-> > +               prom_memory_limit =3D ALIGN_DOWN(prom_memory_limit, SZ_=
-16M);
-> >  #endif
-> >         }
-> >
-> >
->
-> Sorry for the delayed reply. I just tested this patch and it fixes the
-> bug for me.
-
 Hi,
 
-Just a quick follow up on this.
+On Mon, Mar 25, 2024 at 2:48=E2=80=AFAM Bitao Hu <yaoma@linux.alibaba.com> =
+wrote:
+>
+> Hi, Thomas
+>
+> On 2024/3/24 04:43, Thomas Gleixner wrote:
+> > On Wed, Mar 06 2024 at 20:52, Bitao Hu wrote:
+> >> +    if (__this_cpu_read(snapshot_taken)) {
+> >> +            for_each_active_irq(i) {
+> >> +                    count =3D kstat_get_irq_since_snapshot(i);
+> >> +                    tabulate_irq_count(irq_counts_sorted, i, count, N=
+UM_HARDIRQ_REPORT);
+> >> +            }
+> >> +
+> >> +            /*
+> >> +             * We do not want the "watchdog: " prefix on every line,
+> >> +             * hence we use "printk" instead of "pr_crit".
+> >> +             */
+> >
+> > You are not providing any justification why the prefix is not
+> > wanted. Just saying 'We do not want' does not cut it and who is 'We'. I
+> > certainly not.
+> >
+> > I really disagree because the prefixes are very useful for searching lo=
+g
+> > files. So not having it makes it harder to filter out for no reason.
+> >
+>
+>
+> Regarding the use of printk() instead of pr_crit(), I have had a
+> discussion with Liu Song and Douglas in PATCHv1:
+> https://lore.kernel.org/all/CAD=3DFV=3DWEEQeKX=3Dec3Gr-8CKs2K0MaWN3V0-0yO=
+suret0qcB_AA@mail.gmail.com/
+>
+> Please allow me to elaborate on my reasoning. The purpose of the
+> report_cpu_status() function I implemented is similar to that of
+> print_modules(), show_regs(), and dump_stack(). These functions are
+> designed to assist in analyzing the causes of a soft lockup, rather
+> than to report that a soft lockup has occurred. Therefore, I think
+> that adding the "watchdog: " prefix to every line is redundant and
+> not concise. Besides, the existing pr_emerg() in the watchdog.c file
+> is already sufficient for searching useful information in the logs.
+> The information I added, along with the call tree and other data, is
+> located near the line with the "watchdog: " prefix.
+>
+> Are the two reasons I've provided reasonable?
 
-The above patch fixed the bug for me.
+FWIW I don't feel super strongly about this, but I'm leaning towards
+agreeing with Bitao. The sample output from the commit message looks
+like this:
 
-How do we want to proceed?
+[  638.870231] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [swapper/9=
+:0]
+[  638.870825] CPU#9 Utilization every 4s during lockup:
+[  638.871194]  #1:   0% system,          0% softirq,   100% hardirq,
+   0% idle
+[  638.871652]  #2:   0% system,          0% softirq,   100% hardirq,
+   0% idle
+[  638.872107]  #3:   0% system,          0% softirq,   100% hardirq,
+   0% idle
+[  638.872563]  #4:   0% system,          0% softirq,   100% hardirq,
+   0% idle
+[  638.873018]  #5:   0% system,          0% softirq,   100% hardirq,
+   0% idle
+[  638.873494] CPU#9 Detect HardIRQ Time exceeds 50%. Most frequent HardIRQ=
+s:
+[  638.873994]  #1: 330945      irq#7
+[  638.874236]  #2: 31          irq#82
+[  638.874493]  #3: 10          irq#10
+[  638.874744]  #4: 2           irq#89
+[  638.874992]  #5: 1           irq#102
 
-Best,
-Joel Savitz
+...and in my mind the "watchdog: BUG: soft lockup - CPU#9 stuck for
+26s! [swapper/9:0]" line is enough to grep through the dmesg. Having
+all the following lines start with "watchdog:" feels like overkill to
+me, but if you feel strongly that they should then it wouldn't bother
+me too much for them all to have the "watchdog:" prefix.
 
+Could you clarify how strongly you feel about this and whether Bitao
+should spin a v13?
+
+I believe that this is the only point of contention on the patch
+series right now and otherwise it could be ready to land. I know in
+the past Petr has wanted ample time to comment though perhaps the fact
+that it's been ~1 month is enough. Petr: do you have anything that
+needs saying before this patch series lands?
+
+Thanks!
+
+-Doug
