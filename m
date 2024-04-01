@@ -1,88 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D078893AA2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 13:26:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33723893C19
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 16:18:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xe1yzhvm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V7THj349Vz3dkm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 22:26:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V7Y5X21bYz3dH8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Apr 2024 01:18:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xe1yzhvm;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JVU22thM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsavitz@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V7TGw4sQgz3btQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Apr 2024 22:26:15 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 431AT6L5009006;
-	Mon, 1 Apr 2024 11:25:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=hIfWf96+nXLMpBhhld2BYjm2u7wN14KfSGQObB84m1I=;
- b=Xe1yzhvmrfesCCtvXW+PfiCtuUzoVguCAGPadXve2sv4d7LsGHDskb0UYjMEyUlCO9y/
- AflzuKbH4EmZ+cHAxx2T+cSbE/Xjl43JKJDbmJnvvmsQOBW8mcxrmS+keXuIBYeTkVnA
- DollROVVVfrKeDfeYEU1CpexlDZuNgm/GGWHVMFTsgTCNltebSj5YWLX2WJUyHgLMXRd
- /xAqZNIMmTEZJTCmVZ3zm/npRVCPLaMPBRXD5Mvl3HeRflLucW4BfGRLldTkeZNiPhQC
- Uh0+GDOC8zrliYZSpbJhITslXz5vZHPu2Ao1GwwnQU1sjRW5Z1IimmYJsEfrIKyt9hnm QQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x7u7002xj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Apr 2024 11:25:55 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 431BPteG029320;
-	Mon, 1 Apr 2024 11:25:55 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x7u7002xg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Apr 2024 11:25:55 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 431AK559008468;
-	Mon, 1 Apr 2024 11:25:54 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x6w2tr4du-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Apr 2024 11:25:54 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 431BPm2f13238690
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Apr 2024 11:25:51 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD9812004B;
-	Mon,  1 Apr 2024 11:25:48 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 859282004F;
-	Mon,  1 Apr 2024 11:25:46 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.in.ibm.com (unknown [9.204.206.66])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Apr 2024 11:25:46 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com
-Subject: [PATCH v5] arch/powerpc/kvm: Add support for reading VPA counters for pseries guests
-Date: Mon,  1 Apr 2024 16:55:42 +0530
-Message-ID: <20240401112544.51764-1-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V7Y4n3h0Dz2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Apr 2024 01:17:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711981060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CJRxiasyHmUKvqfQpZ1nrM5CdUFwh/nhoJJg5a06Pdg=;
+	b=JVU22thMCzmseuenLau2SCUkZNf6YCWW9ePUqb5n6OmcPzSIPQKcWbEFMFR3k0dabA2FEr
+	TqwP1zXcmPl5nJ6usI8vO4BDOMC0t1+gPQqmJef29DxOdgOoFFOntwvzS7W6tbJ+sUHSuY
+	aoe5yXU4yyVf3RzHL73EN8/3B7VulN8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711981060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CJRxiasyHmUKvqfQpZ1nrM5CdUFwh/nhoJJg5a06Pdg=;
+	b=JVU22thMCzmseuenLau2SCUkZNf6YCWW9ePUqb5n6OmcPzSIPQKcWbEFMFR3k0dabA2FEr
+	TqwP1zXcmPl5nJ6usI8vO4BDOMC0t1+gPQqmJef29DxOdgOoFFOntwvzS7W6tbJ+sUHSuY
+	aoe5yXU4yyVf3RzHL73EN8/3B7VulN8=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-3xfrZn1APIec3MCk2MW0eQ-1; Mon, 01 Apr 2024 10:17:38 -0400
+X-MC-Unique: 3xfrZn1APIec3MCk2MW0eQ-1
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-6e6a35be1b0so4902231a34.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Apr 2024 07:17:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711981058; x=1712585858;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CJRxiasyHmUKvqfQpZ1nrM5CdUFwh/nhoJJg5a06Pdg=;
+        b=VqZjFeuqN0LPgjwU2RvDEamVhkOTfxxq2V1Z9v4gHCePCukizdbwnGy9nOMgCnjRWX
+         r2AD5jcaBGKhxq6A/y+QOn0weFQv2oyZMR4YG0O/A2piLZW3fA38EutdXJsLd5hQn036
+         yY9dOQESZWrcaBUWQN45CgBqKX8iqdewtGNLvwhUN0qXokWKWx9opx+MyQwW51lXk/RT
+         hxyzGP0bRT0hpliV8mzFvP8+1CPpczh6oDUGxenu7ItDnlbQPOypQCBxrMkl5cdwJDXe
+         lmnEuoEnrCvnfC5Q8jF6oJshlCgGaMbCEj7YJc2iQCMbGXPodW3pUyr4kKjJdY+nYG58
+         5olQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdGdLuyav44m+9/PFN7yi1ZsAf2F7DDCOU4guQZ2dRK08IRyc/Kkvkt4IId7DFE3azXW8lxG9W+lzmPk/2Ah6jB4QnFgdYE2LBMhKJnw==
+X-Gm-Message-State: AOJu0YwculuJNI5PR6mEkAzvrEMY0lXjO0Hqph6/Ml1d0w4wI4YR0Emv
+	m9qdog+Fovqpr+PIqgZL6fQLpluj/zlIiALABuKPKgavjFdRC37ISUUB7JA/xBt7yPT7z44+4a7
+	kHcQ32RtMBDa9iIb+LOLuHLyrMLlifx+hs8Az8F+T8uGIK+VKylXg1kICVwALuHOJl9fKF6eM4z
+	biUx7fY+lvKKoWbelsZGG5AJ3AEq6EAROXuaurNw==
+X-Received: by 2002:a05:6808:1995:b0:3c3:8517:3472 with SMTP id bj21-20020a056808199500b003c385173472mr14104556oib.41.1711981057495;
+        Mon, 01 Apr 2024 07:17:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKAaot5gPu/xKNuoiU5ZEryU7ovco8JGNrBFL3wur8CERMVFMJ3iEOAuH9JO+iko79W/n109Mabrud3lV8ZsM=
+X-Received: by 2002:a05:6808:1995:b0:3c3:8517:3472 with SMTP id
+ bj21-20020a056808199500b003c385173472mr14104453oib.41.1711981055880; Mon, 01
+ Apr 2024 07:17:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hmKXj4kRYUK-CrFcHhPSFY7jQMqI5oS3
-X-Proofpoint-ORIG-GUID: e4Af83RIcyZvufTmDqe1ep-PVypF6ZC3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-01_08,2024-03-28_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- clxscore=1015 mlxscore=0 suspectscore=0 malwarescore=0 adultscore=0
- mlxlogscore=999 priorityscore=1501 phishscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2404010081
+References: <20240301203023.2197451-1-jsavitz@redhat.com> <87jzmduiva.fsf@kernel.org>
+ <CAL1p7m5BoxFDeK0MryQCmTDCeBLN3rMLRGx3cHa6teS02wsgZw@mail.gmail.com>
+In-Reply-To: <CAL1p7m5BoxFDeK0MryQCmTDCeBLN3rMLRGx3cHa6teS02wsgZw@mail.gmail.com>
+From: Joel Savitz <jsavitz@redhat.com>
+Date: Mon, 1 Apr 2024 10:17:19 -0400
+Message-ID: <CAL1p7m5VHGL+-st7zgGA9LPft6DND=qz0ifiD_ki1hLvfRv=7Q@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: align memory_limit to 16MB in early_parse_mem
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,181 +98,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Gonzalo Siero <gsierohu@redhat.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PAPR hypervisor has introduced three new counters in the VPA area of
-LPAR CPUs for KVM L2 guest (see [1] for terminology) observability - 2
-for context switches from host to guest and vice versa, and 1 counter
-for getting the total time spent inside the KVM guest. Add a tracepoint
-that enables reading the counters for use by ftrace/perf. Note that this
-tracepoint is only available for nestedv2 API (i.e, KVM on PowerVM).
+On Tue, Mar 26, 2024 at 12:45=E2=80=AFAM Joel Savitz <jsavitz@redhat.com> w=
+rote:
+>
+> On Fri, Mar 8, 2024 at 5:18=E2=80=AFAM Aneesh Kumar K.V <aneesh.kumar@ker=
+nel.org> wrote:
+> >
+> > Joel Savitz <jsavitz@redhat.com> writes:
+> >
+> > > On 64-bit powerpc, usage of a non-16MB-aligned value for the mem=3D k=
+ernel
+> > > cmdline parameter results in a system hang at boot.
+> > >
+> > > For example, using 'mem=3D4198400K' will always reproduce this issue.
+> > >
+> > > This patch fixes the problem by aligning any argument to mem=3D to 16=
+MB
+> > > corresponding with the large page size on powerpc.
+> > >
+> > > Fixes: 2babf5c2ec2f ("[PATCH] powerpc: Unify mem=3D handling")
+> > > Co-developed-by: Gonzalo Siero <gsierohu@redhat.com>
+> > > Signed-off-by: Gonzalo Siero <gsierohu@redhat.com>
+> > > Signed-off-by: Joel Savitz <jsavitz@redhat.com>
+> > > ---
+> > >  arch/powerpc/kernel/prom.c | 6 +++++-
+> > >  1 file changed, 5 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> > > index 0b5878c3125b..8cd3e2445d8a 100644
+> > > --- a/arch/powerpc/kernel/prom.c
+> > > +++ b/arch/powerpc/kernel/prom.c
+> > > @@ -82,8 +82,12 @@ static int __init early_parse_mem(char *p)
+> > >  {
+> > >       if (!p)
+> > >               return 1;
+> > > -
+> > > +#ifdef CONFIG_PPC64
+> > > +     /* Align to 16 MB =3D=3D size of ppc64 large page */
+> > > +     memory_limit =3D ALIGN(memparse(p, &p), 0x1000000);
+> > > +#else
+> > >       memory_limit =3D PAGE_ALIGN(memparse(p, &p));
+> > > +#endif
+> > >       DBG("memory limit =3D 0x%llx\n", memory_limit);
+> > >
+> > >       return 0;
+> > > --
+> > > 2.43.0
+> >
+> > Can you try this change?
+> >
+> > commit 5555bc55e1aa71f545cff31e1eccdb4a2e39df84
+> > Author: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+> > Date:   Fri Mar 8 14:45:26 2024 +0530
+> >
+> >     powerpc/mm: Align memory_limit value specified using mem=3D kernel =
+parameter
+> >
+> >     The value specified for the memory limit is used to set a restricti=
+on on
+> >     memory usage. It is important to ensure that this restriction is wi=
+thin
+> >     the linear map kernel address space range. The hash page table
+> >     translation uses a 16MB page size to map the kernel linear map addr=
+ess
+> >     space. htab_bolt_mapping() function aligns down the size of the ran=
+ge
+> >     while mapping kernel linear address space. Since the memblock limit=
+ is
+> >     enforced very early during boot, before we can detect the type of m=
+emory
+> >     translation (radix vs hash), we align the memory limit value specif=
+ied
+> >     as a kernel parameter to 16MB. This alignment value will work for b=
+oth
+> >     hash and radix translations.
+> >
+> >     Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+> >
+> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> > index 0b5878c3125b..9bd965d35352 100644
+> > --- a/arch/powerpc/kernel/prom.c
+> > +++ b/arch/powerpc/kernel/prom.c
+> > @@ -824,8 +824,11 @@ void __init early_init_devtree(void *params)
+> >                 reserve_crashkernel();
+> >         early_reserve_mem();
+> >
+> > -       /* Ensure that total memory size is page-aligned. */
+> > -       limit =3D ALIGN(memory_limit ?: memblock_phys_mem_size(), PAGE_=
+SIZE);
+> > +       if (memory_limit > memblock_phys_mem_size())
+> > +               memory_limit =3D 0;
+> > +
+> > +       /* Align down to 16 MB which is large page size with hash page =
+translation */
+> > +       limit =3D ALIGN_DOWN(memory_limit ?: memblock_phys_mem_size(), =
+SZ_16M);
+> >         memblock_enforce_memory_limit(limit);
+> >
+> >  #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_4K_PAGES)
+> > diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom=
+_init.c
+> > index e67effdba85c..d6410549e141 100644
+> > --- a/arch/powerpc/kernel/prom_init.c
+> > +++ b/arch/powerpc/kernel/prom_init.c
+> > @@ -817,8 +817,8 @@ static void __init early_cmdline_parse(void)
+> >                 opt +=3D 4;
+> >                 prom_memory_limit =3D prom_memparse(opt, (const char **=
+)&opt);
+> >  #ifdef CONFIG_PPC64
+> > -               /* Align to 16 MB =3D=3D size of ppc64 large page */
+> > -               prom_memory_limit =3D ALIGN(prom_memory_limit, 0x100000=
+0);
+> > +               /* Align down to 16 MB which is large page size with ha=
+sh page translation */
+> > +               prom_memory_limit =3D ALIGN_DOWN(prom_memory_limit, SZ_=
+16M);
+> >  #endif
+> >         }
+> >
+> >
+>
+> Sorry for the delayed reply. I just tested this patch and it fixes the
+> bug for me.
 
-Also maintain an aggregation of the context switch times in vcpu->arch.
-This will be useful in getting the aggregate times with a pmu driver
-which will be upstreamed in the near future.
+Hi,
 
-[1] Terminology:
-a. L1 refers to the VM (LPAR) booted on top of PAPR hypervisor
-b. L2 refers to the KVM guest booted on top of L1.
+Just a quick follow up on this.
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- arch/powerpc/include/asm/kvm_host.h |  5 ++++
- arch/powerpc/include/asm/lppaca.h   | 11 +++++---
- arch/powerpc/kvm/book3s_hv.c        | 40 +++++++++++++++++++++++++++++
- arch/powerpc/kvm/trace_hv.h         | 25 ++++++++++++++++++
- 4 files changed, 78 insertions(+), 3 deletions(-)
+The above patch fixed the bug for me.
 
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 8abac532146e..d953b32dd68a 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -847,6 +847,11 @@ struct kvm_vcpu_arch {
- 	gpa_t nested_io_gpr;
- 	/* For nested APIv2 guests*/
- 	struct kvmhv_nestedv2_io nestedv2_io;
-+
-+	/* Aggregate context switch and guest run time info (in ns) */
-+	u64 l1_to_l2_cs_agg;
-+	u64 l2_to_l1_cs_agg;
-+	u64 l2_runtime_agg;
- #endif
- 
- #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
-diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
-index 61ec2447dabf..bda6b86b9f13 100644
---- a/arch/powerpc/include/asm/lppaca.h
-+++ b/arch/powerpc/include/asm/lppaca.h
-@@ -62,7 +62,8 @@ struct lppaca {
- 	u8	donate_dedicated_cpu;	/* Donate dedicated CPU cycles */
- 	u8	fpregs_in_use;
- 	u8	pmcregs_in_use;
--	u8	reserved8[28];
-+	u8	l2_accumul_cntrs_enable;  /* Enable usage of counters for KVM guest */
-+	u8	reserved8[27];
- 	__be64	wait_state_cycles;	/* Wait cycles for this proc */
- 	u8	reserved9[28];
- 	__be16	slb_count;		/* # of SLBs to maintain */
-@@ -92,9 +93,13 @@ struct lppaca {
- 	/* cacheline 4-5 */
- 
- 	__be32	page_ins;		/* CMO Hint - # page ins by OS */
--	u8	reserved12[148];
-+	u8	reserved12[28];
-+	volatile __be64 l1_to_l2_cs_tb;
-+	volatile __be64 l2_to_l1_cs_tb;
-+	volatile __be64 l2_runtime_tb;
-+	u8 reserved13[96];
- 	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
--	u8	reserved13[96];
-+	u8	reserved14[96];
- } ____cacheline_aligned;
- 
- #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 8e86eb577eb8..fea1c1429975 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4108,6 +4108,37 @@ static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
- 	}
- }
- 
-+static inline int kvmhv_get_l2_accumul(void)
-+{
-+	return get_lppaca()->l2_accumul_cntrs_enable;
-+}
-+
-+static inline void kvmhv_set_l2_accumul(int val)
-+{
-+	get_lppaca()->l2_accumul_cntrs_enable = val;
-+}
-+
-+static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
-+{
-+	struct lppaca *lp = get_lppaca();
-+	u64 l1_to_l2_ns, l2_to_l1_ns, l2_runtime_ns;
-+
-+	l1_to_l2_ns = tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
-+	l2_to_l1_ns = tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
-+	l2_runtime_ns = tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
-+	trace_kvmppc_vcpu_exit_cs_time(vcpu, l1_to_l2_ns, l2_to_l1_ns,
-+					l2_runtime_ns);
-+	lp->l1_to_l2_cs_tb = 0;
-+	lp->l2_to_l1_cs_tb = 0;
-+	lp->l2_runtime_tb = 0;
-+	kvmhv_set_l2_accumul(0);
-+
-+	// Maintain an aggregate of context switch times
-+	vcpu->arch.l1_to_l2_cs_agg += l1_to_l2_ns;
-+	vcpu->arch.l2_to_l1_cs_agg += l2_to_l1_ns;
-+	vcpu->arch.l2_runtime_agg += l2_runtime_ns;
-+}
-+
- static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
- 				     unsigned long lpcr, u64 *tb)
- {
-@@ -4130,6 +4161,11 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
- 	kvmppc_gse_put_u64(io->vcpu_run_input, KVMPPC_GSID_LPCR, lpcr);
- 
- 	accumulate_time(vcpu, &vcpu->arch.in_guest);
-+
-+	/* Enable the guest host context switch time tracking */
-+	if (unlikely(trace_kvmppc_vcpu_exit_cs_time_enabled()))
-+		kvmhv_set_l2_accumul(1);
-+
- 	rc = plpar_guest_run_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id,
- 				  &trap, &i);
- 
-@@ -4156,6 +4192,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	timer_rearm_host_dec(*tb);
- 
-+	/* Record context switch and guest_run_time data */
-+	if (kvmhv_get_l2_accumul())
-+		do_trace_nested_cs_time(vcpu);
-+
- 	return trap;
- }
- 
-diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
-index 8d57c8428531..ab19977c91b4 100644
---- a/arch/powerpc/kvm/trace_hv.h
-+++ b/arch/powerpc/kvm/trace_hv.h
-@@ -491,6 +491,31 @@ TRACE_EVENT(kvmppc_run_vcpu_enter,
- 	TP_printk("VCPU %d: tgid=%d", __entry->vcpu_id, __entry->tgid)
- );
- 
-+TRACE_EVENT(kvmppc_vcpu_exit_cs_time,
-+	TP_PROTO(struct kvm_vcpu *vcpu, u64 l1_to_l2_cs, u64 l2_to_l1_cs,
-+		u64 l2_runtime),
-+
-+	TP_ARGS(vcpu, l1_to_l2_cs, l2_to_l1_cs, l2_runtime),
-+
-+	TP_STRUCT__entry(
-+		__field(int,		vcpu_id)
-+		__field(__u64,		l1_to_l2_cs_ns)
-+		__field(__u64,		l2_to_l1_cs_ns)
-+		__field(__u64,		l2_runtime_ns)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->vcpu_id  = vcpu->vcpu_id;
-+		__entry->l1_to_l2_cs_ns = l1_to_l2_cs;
-+		__entry->l2_to_l1_cs_ns = l2_to_l1_cs;
-+		__entry->l2_runtime_ns = l2_runtime;
-+	),
-+
-+	TP_printk("VCPU %d: l1_to_l2_cs_time=%llu-ns l2_to_l1_cs_time=%llu-ns l2_runtime=%llu-ns",
-+		__entry->vcpu_id,  __entry->l1_to_l2_cs_ns,
-+		__entry->l2_to_l1_cs_ns, __entry->l2_runtime_ns)
-+);
-+
- TRACE_EVENT(kvmppc_run_vcpu_exit,
- 	TP_PROTO(struct kvm_vcpu *vcpu),
- 
--- 
-2.43.2
+How do we want to proceed?
+
+Best,
+Joel Savitz
 
