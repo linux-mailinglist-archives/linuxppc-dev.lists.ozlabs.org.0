@@ -1,75 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50698893801
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 06:33:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE782893895
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 09:09:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gAXGdEkM;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pC80AAS8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V7J771kLKz3dWn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 15:33:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V7Mb33GW7z3fQR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Apr 2024 18:09:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gAXGdEkM;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=toblux.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=thorsten.blum@toblux.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=geoff@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V77vj0SGyz30NP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Apr 2024 09:23:27 +1100 (AEDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-a4e65dec03eso57681166b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 Mar 2024 15:23:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1711923800; x=1712528600; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKPH+CLwGsJH9bz8FRiNgEaC+n8LNksILCOtIEZn2HY=;
-        b=gAXGdEkMA/MaQP0A0hD+1PvCiPLFC2qesUV8MnD0xStSIXmXR3p7YLilczDb4HNqQS
-         lUQDEP/oHFPFX2W9gjTcY3VMm3oo2bpbn1jNkyHKbVBUCfq7n6OG/XXmvtI9CDeROmlz
-         YkLk3U7ekudQ3VYV18R9j33EJxgccWPHsznR2h/k/zPUuEPEUAN65sxuHdTp3vwlqZ1M
-         kn3NBDVkK1HIndzK0+fI03U34sW14/u8RWRxODQtblQaLlmBBwuDkhyZcWekLzcnqtkD
-         Ro28zRex69AIPSArw12HzcfHh8GeEkuJO/VyNN/qdXhUwvp5raWuxXuDAhENTF9OSdsg
-         PZSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711923800; x=1712528600;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HKPH+CLwGsJH9bz8FRiNgEaC+n8LNksILCOtIEZn2HY=;
-        b=HKeUAdAqATnSXvUAe/k1ayH0TZl4riZj/8yPXXAS6sBhFqfsPnnKW0oGaXHQiuszr7
-         VCgHz1MeddEh7FzcwjWG/5QOoRZC3aPZvmuoPKV/typRrsRucvtOTxKNgLt18KP9mqeO
-         1bLZyTqDkrWff/pLWUBLumkQZgXbm4ct3h+kIcmGsC8kHxrOGBqmzfnwDijcmlL+MEZL
-         Sgn+Q0bYrv3jAHHCJqPk1lmwMGuUyMHUR6xbga8TIhRk3QtVZ32Aliw5yYqX7vJLKPJK
-         uw3cPN8dr6ChkGQnzeCBqHsWsYQ/L4PuSLRxnklNWrp8AHxo7bPargP39KftzwZaA0cN
-         zOIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQAq39BUzoYlK4UiwEjdT1ALQtds0JGrM47dtqeOqh23YuILxDztmVYQWH5JK/VHaj/Yihig8fUPzFWuhi0h+1Bq5nffFASS0omSjMhg==
-X-Gm-Message-State: AOJu0YxfTHfImGsrNT+iHlzcpZSYK62iBebE3MScffv25GWNNZwQdNXh
-	66yCsr2W9f73vbM4n55cK7yYLQAZ60SwaEnDffE/9tIpil8wM0ex1mhMQJWRoK0=
-X-Google-Smtp-Source: AGHT+IHPfg6yS1tcXFsGv8kKdk85BHF7ZxtGqSA9n3HWWN8GQVYrb/JPaBBAFDt2iJayUc54A1rx4g==
-X-Received: by 2002:a17:906:3644:b0:a4e:d5d:8fd6 with SMTP id r4-20020a170906364400b00a4e0d5d8fd6mr4645709ejb.60.1711923799952;
-        Sun, 31 Mar 2024 15:23:19 -0700 (PDT)
-Received: from fedora.fritz.box (aftr-82-135-80-212.dynamic.mnet-online.de. [82.135.80.212])
-        by smtp.gmail.com with ESMTPSA id kf16-20020a17090776d000b00a46bf6d890bsm4664137ejc.91.2024.03.31.15.23.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Mar 2024 15:23:19 -0700 (PDT)
-From: Thorsten Blum <thorsten.blum@toblux.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: [PATCH] powerpc: Use str_plural() to fix Coccinelle warning
-Date: Mon,  1 Apr 2024 00:22:50 +0200
-Message-ID: <20240331222249.107467-2-thorsten.blum@toblux.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V7MZB6zKNz2y70
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Apr 2024 18:09:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=faKtwJA5t6Zj+D3Q/jEbeWC+9IIE68VhlZebCZwcy9Y=; b=pC80AAS8EZ4vHufsZXQhhNJXMB
+	pEZ4zygf0sNfgHbd7JHc5VE5r8vplOj8Vdo3RUxGuZj3OM9UhReJOicLxpX1+QY61C88nz5lxjIfg
+	sg7AVzqLO24mjIphRT4DTseRQTfjnua7G0tZICN3mZhOyWNk4Ux23hZQfM7ItidY5DxS9ZcvtELvq
+	2F5Er7a13fIYALE36kvV1kcuaYoXBuzsP9iPq5Zivg1qEU8qYHH1BFZgbDk70vqEhQDvSf+dHN8gY
+	rpOES3fB8J5cnkDomIiqIAd96lW16AN/qj5MdS8bMsnXjsEx8BMLOUbfsLuAH+DFFzx2MSQxg63+M
+	iGiaMIfw==;
+Received: from fpd2fa7e2a.ap.nuro.jp ([210.250.126.42] helo=[192.168.1.8])
+	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rrBml-0000000016F-0yKC;
+	Mon, 01 Apr 2024 07:08:52 +0000
+Message-ID: <d64f06f4-81ae-4ec5-ab3b-d7f7f091e0ac@infradead.org>
+Date: Mon, 1 Apr 2024 16:08:31 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 01 Apr 2024 15:33:20 +1100
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH v2] powerpc: Fix PS3 allmodconfig warning
+From: Geoff Levand <geoff@infradead.org>
+To: Arnd Bergmann <arnd@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@ozlabs.org>
+References: <20240320180333.151043-1-arnd@kernel.org>
+ <415f4af0-f44a-49fb-b1fa-76f64ed09ec6@infradead.org>
+Content-Language: en-US
+In-Reply-To: <415f4af0-f44a-49fb-b1fa-76f64ed09ec6@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,33 +58,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org, Thorsten Blum <thorsten.blum@toblux.com>, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: Kevin Hao <haokexin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Bill Wendling <morbo@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes the following Coccinelle/coccicheck warning reported by
-string_choices.cocci:
+The struct ps3_notification_device in the ps3_probe_thread routine
+is too large to be on the stack, causing a warning for an
+allmodconfig build with clang.
 
-	opportunity for str_plural(tpc)
+Change the struct ps3_notification_device from a variable on the stack
+to a dynamically allocated variable.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
----
- arch/powerpc/kernel/setup-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reported-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Geoff Levand <geoff@infradead.org>
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 01ed1263e1a9..4bd2f87616ba 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -405,7 +405,7 @@ static void __init cpu_init_thread_core_maps(int tpc)
- 		cpumask_set_cpu(i, &threads_core_mask);
+diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
+index 878bc160246e..b18e1c92e554 100644
+--- a/arch/powerpc/platforms/ps3/device-init.c
++++ b/arch/powerpc/platforms/ps3/device-init.c
+@@ -770,49 +770,51 @@ static struct task_struct *probe_task;
  
- 	printk(KERN_INFO "CPU maps initialized for %d thread%s per core\n",
--	       tpc, tpc > 1 ? "s" : "");
-+	       tpc, str_plural(tpc));
- 	printk(KERN_DEBUG " (thread shift is %d)\n", threads_shift);
- }
+ static int ps3_probe_thread(void *data)
+ {
+-	struct ps3_notification_device dev;
++	struct {
++		struct ps3_notification_device dev;
++		u8 buf[512];
++	} *local;
++	struct ps3_notify_cmd *notify_cmd;
++	struct ps3_notify_event *notify_event;
+ 	int res;
+ 	unsigned int irq;
+ 	u64 lpar;
+-	void *buf;
+-	struct ps3_notify_cmd *notify_cmd;
+-	struct ps3_notify_event *notify_event;
  
--- 
-2.44.0
+ 	pr_debug(" -> %s:%u: kthread started\n", __func__, __LINE__);
+ 
+-	buf = kzalloc(512, GFP_KERNEL);
+-	if (!buf)
++	local = kzalloc(sizeof(*local), GFP_KERNEL);
++	if (!local)
+ 		return -ENOMEM;
+ 
+-	lpar = ps3_mm_phys_to_lpar(__pa(buf));
+-	notify_cmd = buf;
+-	notify_event = buf;
++	lpar = ps3_mm_phys_to_lpar(__pa(&local->buf));
++	notify_cmd = (struct ps3_notify_cmd *)&local->buf;
++	notify_event = (struct ps3_notify_event *)&local->buf;
+ 
+ 	/* dummy system bus device */
+-	dev.sbd.bus_id = (u64)data;
+-	dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
+-	dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
++	local->dev.sbd.bus_id = (u64)data;
++	local->dev.sbd.dev_id = PS3_NOTIFICATION_DEV_ID;
++	local->dev.sbd.interrupt_id = PS3_NOTIFICATION_INTERRUPT_ID;
+ 
+-	res = lv1_open_device(dev.sbd.bus_id, dev.sbd.dev_id, 0);
++	res = lv1_open_device(local->dev.sbd.bus_id, local->dev.sbd.dev_id, 0);
+ 	if (res) {
+ 		pr_err("%s:%u: lv1_open_device failed %s\n", __func__,
+ 		       __LINE__, ps3_result(res));
+ 		goto fail_free;
+ 	}
+ 
+-	res = ps3_sb_event_receive_port_setup(&dev.sbd, PS3_BINDING_CPU_ANY,
+-					      &irq);
++	res = ps3_sb_event_receive_port_setup(&local->dev.sbd,
++		PS3_BINDING_CPU_ANY, &irq);
+ 	if (res) {
+ 		pr_err("%s:%u: ps3_sb_event_receive_port_setup failed %d\n",
+ 		       __func__, __LINE__, res);
+ 	       goto fail_close_device;
+ 	}
+ 
+-	spin_lock_init(&dev.lock);
+-	rcuwait_init(&dev.wait);
++	spin_lock_init(&local->dev.lock);
++	rcuwait_init(&local->dev.wait);
+ 
+ 	res = request_irq(irq, ps3_notification_interrupt, 0,
+-			  "ps3_notification", &dev);
++			  "ps3_notification", &local->dev);
+ 	if (res) {
+ 		pr_err("%s:%u: request_irq failed %d\n", __func__, __LINE__,
+ 		       res);
+@@ -823,7 +825,7 @@ static int ps3_probe_thread(void *data)
+ 	notify_cmd->operation_code = 0; /* must be zero */
+ 	notify_cmd->event_mask = 1UL << notify_region_probe;
+ 
+-	res = ps3_notification_read_write(&dev, lpar, 1);
++	res = ps3_notification_read_write(&local->dev, lpar, 1);
+ 	if (res)
+ 		goto fail_free_irq;
+ 
+@@ -834,36 +836,37 @@ static int ps3_probe_thread(void *data)
+ 
+ 		memset(notify_event, 0, sizeof(*notify_event));
+ 
+-		res = ps3_notification_read_write(&dev, lpar, 0);
++		res = ps3_notification_read_write(&local->dev, lpar, 0);
+ 		if (res)
+ 			break;
+ 
+ 		pr_debug("%s:%u: notify event type 0x%llx bus id %llu dev id %llu"
+ 			 " type %llu port %llu\n", __func__, __LINE__,
+-			 notify_event->event_type, notify_event->bus_id,
+-			 notify_event->dev_id, notify_event->dev_type,
+-			 notify_event->dev_port);
++			notify_event->event_type, notify_event->bus_id,
++			notify_event->dev_id, notify_event->dev_type,
++			notify_event->dev_port);
+ 
+ 		if (notify_event->event_type != notify_region_probe ||
+-		    notify_event->bus_id != dev.sbd.bus_id) {
++			notify_event->bus_id != local->dev.sbd.bus_id) {
+ 			pr_warn("%s:%u: bad notify_event: event %llu, dev_id %llu, dev_type %llu\n",
+ 				__func__, __LINE__, notify_event->event_type,
+ 				notify_event->dev_id, notify_event->dev_type);
+ 			continue;
+ 		}
+ 
+-		ps3_find_and_add_device(dev.sbd.bus_id, notify_event->dev_id);
++		ps3_find_and_add_device(local->dev.sbd.bus_id,
++			notify_event->dev_id);
+ 
+ 	} while (!kthread_should_stop());
+ 
+ fail_free_irq:
+-	free_irq(irq, &dev);
++	free_irq(irq, &local->dev);
+ fail_sb_event_receive_port_destroy:
+-	ps3_sb_event_receive_port_destroy(&dev.sbd, irq);
++	ps3_sb_event_receive_port_destroy(&local->dev.sbd, irq);
+ fail_close_device:
+-	lv1_close_device(dev.sbd.bus_id, dev.sbd.dev_id);
++	lv1_close_device(local->dev.sbd.bus_id, local->dev.sbd.dev_id);
+ fail_free:
+-	kfree(buf);
++	kfree(local);
+ 
+ 	probe_task = NULL;
+ 
 
