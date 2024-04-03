@@ -1,73 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0BD897273
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 16:24:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F6989745F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 17:48:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=IOBPWrZa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dYo0Q27d;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8n7Q6W9Xz3vj0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 01:24:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8q0m4dVvz3vXt
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 02:48:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=IOBPWrZa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dYo0Q27d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8n6g1KkYz3cy9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 01:23:38 +1100 (AEDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-dcc73148611so6609825276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 07:23:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712154216; x=1712759016; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iwJNuwyQp3Yvzu+935Rba/rHkgr+XgKaeFBH6ggamVo=;
-        b=IOBPWrZaiIcAgPIIwm5F28YKml+QH/GcWAiuGohXc/MXRBeFZRP+lB9R2bgGz9Xjl7
-         op2FJLu/PkRNOQbPO8G4ykS+XMcTf/QmwIObrTSreXRQqCQYmev7UQ5f2cKRHWJ8+YIx
-         fPnnobSZUDngL/Q2wmxJNu1ZHrk0Fxt1/IfGp6lEZgNUCnmhkwM9xaplMqG/jYx2tE+r
-         KVV2PUI6V2+btpcaeKMYpUnB2TxXa0KZeaJsXlfdis5oUMFSuqr68ddebKvHWHRk6XVL
-         92DKn4TjN9zOf1IBgdPEiooLnqZpk5vxlgzZm72ZX27YUrE4cR1tLr0zXKWUsBkJd3Xb
-         LvqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712154216; x=1712759016;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iwJNuwyQp3Yvzu+935Rba/rHkgr+XgKaeFBH6ggamVo=;
-        b=eUQE2FFR6gvUHsCHfMKyb12BUA7v6vhYtN4qKI4WaeNgBqfabrOzQ/suE1WSSmSRKh
-         biyUW5+RT7/FTeBhbkn6ksn571UKyVtAyi7GtqqFSbJqf63uGVGzs6DGqAzFPEA3C9Yh
-         z5bEDdSZYzIdTGsNUckU+K5FyI2VUdgkPw4qBRh5fCWGn1t0YIBdUEyg0HF5yFA9Ijij
-         uSqeR74uj5yCwhSsOlqOV1sWC6XIAh5xztDw4+aq40BasYt9PznG9IWT/tIjmInQPydH
-         G1eraOEL7Ti0A/dtygkVM7SvaV6wpBBug5mfDRYtBA/vesvqTICwZQ+pMpUY3uzTS+AV
-         3CjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVAlhzMhsZHlHEWP2tt0cKhwH5jF46Lh787+m44R08ed8ir3JWlHp3aU8OryxWLQmNrK0F19iRHYUVPG7GBWoKhRijADZi4F6HOYjSYPQ==
-X-Gm-Message-State: AOJu0YyrzDzn2A9S0RpSWvt0i871dXunoKCmpvbhFrugMcMycHany+LF
-	aAykTwPcxdnpfXZgD3H+5AbQMZrEdgawaFiM18PdEbkEW26egWoT/ORBpD9Ek8jiZMwdjdwik2V
-	rDgfz8FzTOMpjvwD00x5mgqgFZMZOcfGT/c60
-X-Google-Smtp-Source: AGHT+IHARpbXZVqsZEoa5xySsc3G5/CcR814bUWxWQ15mbjsPwETu+5wjQAHS1k9Hq1FLB9FQjXK6aME+vDVPH/zVfk=
-X-Received: by 2002:a25:ab41:0:b0:dcf:a52d:6134 with SMTP id
- u59-20020a25ab41000000b00dcfa52d6134mr2682792ybi.26.1712154215477; Wed, 03
- Apr 2024 07:23:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240402075142.196265-1-wangkefeng.wang@huawei.com>
- <20240402075142.196265-8-wangkefeng.wang@huawei.com> <CAJuCfpFoxP78+P1+4WQcCqMzGv7jpC9V8pR_-R8t8zPUg-t+aA@mail.gmail.com>
- <d5177b0f-db4e-4c78-81f1-5761f08f076d@huawei.com>
-In-Reply-To: <d5177b0f-db4e-4c78-81f1-5761f08f076d@huawei.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 3 Apr 2024 07:23:23 -0700
-Message-ID: <CAJuCfpEKg1wxNwhu9JOsvq9kZM9WUA2MNfH_jb6ZQ0jpGJzEdw@mail.gmail.com>
-Subject: Re: [PATCH 7/7] x86: mm: accelerate pagefault when badaccess
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8q042H1Yz3bsd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 02:48:04 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 6DB3ACE2B77;
+	Wed,  3 Apr 2024 15:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13591C433C7;
+	Wed,  3 Apr 2024 15:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712159279;
+	bh=rrCR4x657hJj+9Z7FfIwTOL0bKqYr1iVATWuKVnBvdc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dYo0Q27dSQQ3Ch8t1bv/4TDEGdVvlFtZiK/Zz2pAtDrV2dGg+D+XOJblloji6lf8f
+	 AT/1G9mjWsRaJTEV3z+NlLz40f+kBk5nFmcrUtgEA41qda5WwW4i8s4RLr/MzdF5zi
+	 YoTjxsD9V0zKYX4yL4N07X1LoysvapSXkS7G6OsnvSJFKJeNikI8cMxk3axKsNBB+y
+	 P6Adfksr8JnIG1LemgmEFRN0C6BpU/ZKYmBXXWJOohD4naX0Imdw+22KIlCXUWOohl
+	 YL80cR6IKID87Ymp816wKnW4iT/VyBYwP0nq6oFeuIpysRTK4u+RGJb+IBGt3Xt9x0
+	 vxIbwg0cDWVFw==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 03 Apr 2024 18:47:51 +0300
+Message-Id: <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
+ "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new trust
+ source
+X-Mailer: aerc 0.17.0
+References: <20240403072131.54935-1-david@sigma-star.at>
+ <20240403072131.54935-7-david@sigma-star.at>
+In-Reply-To: <20240403072131.54935-7-david@sigma-star.at>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,134 +63,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, linux-s390@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, Russell King <linux@armlinux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Andy Lutomirski <luto@kernel.org>, akpm@linux-foundation.org, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arm-kernel@lists.infradead.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux
+ Team <linux-imx@nxp.com>, "Serge E.
+ Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma
+ star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt
+ \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy
+ Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 3, 2024 at 12:58=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
-.com> wrote:
+On Wed Apr 3, 2024 at 10:21 AM EEST, David Gstir wrote:
+> Update the documentation for trusted and encrypted KEYS with DCP as new
+> trust source:
 >
+> - Describe security properties of DCP trust source
+> - Describe key usage
+> - Document blob format
 >
+> Co-developed-by: Richard Weinberger <richard@nod.at>
+> Signed-off-by: Richard Weinberger <richard@nod.at>
+> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> Signed-off-by: David Gstir <david@sigma-star.at>
+> ---
+>  .../security/keys/trusted-encrypted.rst       | 53 +++++++++++++++++++
+>  security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
+>  2 files changed, 72 insertions(+)
 >
-> On 2024/4/3 13:59, Suren Baghdasaryan wrote:
-> > On Tue, Apr 2, 2024 at 12:53=E2=80=AFAM Kefeng Wang <wangkefeng.wang@hu=
-awei.com> wrote:
-> >>
-> >> The vm_flags of vma already checked under per-VMA lock, if it is a
-> >> bad access, directly handle error and return, there is no need to
-> >> lock_mm_and_find_vma() and check vm_flags again.
-> >>
-> >> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> >
-> > Looks safe to me.
-> > Using (mm !=3D NULL) to indicate that we are holding mmap_lock is not
-> > ideal but I guess that works.
-> >
->
-> Yes, I will add this part it into change too,
->
-> The access_error() of vma already checked under per-VMA lock, if it
-> is a bad access, directly handle error, no need to retry with mmap_lock
-> again. In order to release the correct lock, pass the mm_struct into
-> bad_area_access_error(), if mm is NULL, release vma lock, or release
-> mmap_lock. Since the page faut is handled under per-VMA lock, count it
-> as a vma lock event with VMA_LOCK_SUCCESS.
+> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Document=
+ation/security/keys/trusted-encrypted.rst
+> index e989b9802f92..f4d7e162d5e4 100644
+> --- a/Documentation/security/keys/trusted-encrypted.rst
+> +++ b/Documentation/security/keys/trusted-encrypted.rst
+> @@ -42,6 +42,14 @@ safe.
+>           randomly generated and fused into each SoC at manufacturing tim=
+e.
+>           Otherwise, a common fixed test key is used instead.
+> =20
+> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs=
+)
+> +
+> +         Rooted to a one-time programmable key (OTP) that is generally b=
+urnt
+> +         in the on-chip fuses and is accessible to the DCP encryption en=
+gine only.
+> +         DCP provides two keys that can be used as root of trust: the OT=
+P key
+> +         and the UNIQUE key. Default is to use the UNIQUE key, but selec=
+ting
+> +         the OTP key can be done via a module parameter (dcp_use_otp_key=
+).
+> +
+>    *  Execution isolation
+> =20
+>       (1) TPM
+> @@ -57,6 +65,12 @@ safe.
+> =20
+>           Fixed set of operations running in isolated execution environme=
+nt.
+> =20
+> +     (4) DCP
+> +
+> +         Fixed set of cryptographic operations running in isolated execu=
+tion
+> +         environment. Only basic blob key encryption is executed there.
+> +         The actual key sealing/unsealing is done on main processor/kern=
+el space.
+> +
+>    * Optional binding to platform integrity state
+> =20
+>       (1) TPM
+> @@ -79,6 +93,11 @@ safe.
+>           Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
+>           for platform integrity.
+> =20
+> +     (4) DCP
+> +
+> +         Relies on Secure/Trusted boot process (called HAB by vendor) fo=
+r
+> +         platform integrity.
+> +
+>    *  Interfaces and APIs
+> =20
+>       (1) TPM
+> @@ -94,6 +113,11 @@ safe.
+> =20
+>           Interface is specific to silicon vendor.
+> =20
+> +     (4) DCP
+> +
+> +         Vendor-specific API that is implemented as part of the DCP cryp=
+to driver in
+> +         ``drivers/crypto/mxs-dcp.c``.
+> +
+>    *  Threat model
+> =20
+>       The strength and appropriateness of a particular trust source for a=
+ given
+> @@ -129,6 +153,13 @@ selected trust source:
+>       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the devic=
+e
+>       is probed.
+> =20
+> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
+> +
+> +     The DCP hardware device itself does not provide a dedicated RNG int=
+erface,
+> +     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL =
+do have
+> +     a dedicated hardware RNG that is independent from DCP which can be =
+enabled
+> +     to back the kernel RNG.
+> +
+>  Users may override this by specifying ``trusted.rng=3Dkernel`` on the ke=
+rnel
+>  command-line to override the used RNG with the kernel's random number po=
+ol.
+> =20
+> @@ -231,6 +262,19 @@ Usage::
+>  CAAM-specific format.  The key length for new keys is always in bytes.
+>  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+> =20
+> +Trusted Keys usage: DCP
+> +-----------------------
+> +
+> +Usage::
+> +
+> +    keyctl add trusted name "new keylen" ring
+> +    keyctl add trusted name "load hex_blob" ring
+> +    keyctl print keyid
+> +
+> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in =
+format
+> +specific to this DCP key-blob implementation.  The key length for new ke=
+ys is
+> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+> +
+>  Encrypted Keys usage
+>  --------------------
+> =20
+> @@ -426,3 +470,12 @@ string length.
+>  privkey is the binary representation of TPM2B_PUBLIC excluding the
+>  initial TPM2B header which can be reconstructed from the ASN.1 octed
+>  string length.
+> +
+> +DCP Blob Format
+> +---------------
+> +
+> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
+> +   :doc: dcp blob format
+> +
+> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
+> +   :identifiers: struct dcp_blob_fmt
+> diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/tru=
+sted-keys/trusted_dcp.c
+> index 16c44aafeab3..b5f81a05be36 100644
+> --- a/security/keys/trusted-keys/trusted_dcp.c
+> +++ b/security/keys/trusted-keys/trusted_dcp.c
+> @@ -19,6 +19,25 @@
+>  #define DCP_BLOB_VERSION 1
+>  #define DCP_BLOB_AUTHLEN 16
+> =20
+> +/**
+> + * DOC: dcp blob format
+> + *
+> + * The Data Co-Processor (DCP) provides hardware-bound AES keys using it=
+s
+> + * AES encryption engine only. It does not provide direct key sealing/un=
+sealing.
+> + * To make DCP hardware encryption keys usable as trust source, we defin=
+e
+> + * our own custom format that uses a hardware-bound key to secure the se=
+aling
+> + * key stored in the key blob.
+> + *
+> + * Whenever a new trusted key using DCP is generated, we generate a rand=
+om 128-bit
+> + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are us=
+ed to
+> + * encrypt the trusted key payload using AES-128-GCM.
+> + *
+> + * The BEK itself is encrypted using the hardware-bound key using the DC=
+P's AES
+> + * encryption engine with AES-128-ECB. The encrypted BEK, generated nonc=
+e,
+> + * BEK-encrypted payload and authentication tag make up the blob format =
+together
+> + * with a version number, payload length and authentication tag.
+> + */
+> +
+>  /**
+>   * struct dcp_blob_fmt - DCP BLOB format.
+>   *
 
-The part about passing mm_struct is unnecessary IMHO. It explains "how
-you do things" but changelog should describe only "what you do" and
-"why you do that". The rest we can see from the code.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
->
-> Thanks.
->
->
-> > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> >
-> >> ---
-> >>   arch/x86/mm/fault.c | 23 ++++++++++++++---------
-> >>   1 file changed, 14 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> >> index a4cc20d0036d..67b18adc75dd 100644
-> >> --- a/arch/x86/mm/fault.c
-> >> +++ b/arch/x86/mm/fault.c
-> >> @@ -866,14 +866,17 @@ bad_area_nosemaphore(struct pt_regs *regs, unsig=
-ned long error_code,
-> >>
-> >>   static void
-> >>   __bad_area(struct pt_regs *regs, unsigned long error_code,
-> >> -          unsigned long address, u32 pkey, int si_code)
-> >> +          unsigned long address, struct mm_struct *mm,
-> >> +          struct vm_area_struct *vma, u32 pkey, int si_code)
-> >>   {
-> >> -       struct mm_struct *mm =3D current->mm;
-> >>          /*
-> >>           * Something tried to access memory that isn't in our memory =
-map..
-> >>           * Fix it, but check if it's kernel or user first..
-> >>           */
-> >> -       mmap_read_unlock(mm);
-> >> +       if (mm)
-> >> +               mmap_read_unlock(mm);
-> >> +       else
-> >> +               vma_end_read(vma);
-> >>
-> >>          __bad_area_nosemaphore(regs, error_code, address, pkey, si_co=
-de);
-> >>   }
-> >> @@ -897,7 +900,8 @@ static inline bool bad_area_access_from_pkeys(unsi=
-gned long error_code,
-> >>
-> >>   static noinline void
-> >>   bad_area_access_error(struct pt_regs *regs, unsigned long error_code=
-,
-> >> -                     unsigned long address, struct vm_area_struct *vm=
-a)
-> >> +                     unsigned long address, struct mm_struct *mm,
-> >> +                     struct vm_area_struct *vma)
-> >>   {
-> >>          /*
-> >>           * This OSPKE check is not strictly necessary at runtime.
-> >> @@ -927,9 +931,9 @@ bad_area_access_error(struct pt_regs *regs, unsign=
-ed long error_code,
-> >>                   */
-> >>                  u32 pkey =3D vma_pkey(vma);
-> >>
-> >> -               __bad_area(regs, error_code, address, pkey, SEGV_PKUER=
-R);
-> >> +               __bad_area(regs, error_code, address, mm, vma, pkey, S=
-EGV_PKUERR);
-> >>          } else {
-> >> -               __bad_area(regs, error_code, address, 0, SEGV_ACCERR);
-> >> +               __bad_area(regs, error_code, address, mm, vma, 0, SEGV=
-_ACCERR);
-> >>          }
-> >>   }
-> >>
-> >> @@ -1357,8 +1361,9 @@ void do_user_addr_fault(struct pt_regs *regs,
-> >>                  goto lock_mmap;
-> >>
-> >>          if (unlikely(access_error(error_code, vma))) {
-> >> -               vma_end_read(vma);
-> >> -               goto lock_mmap;
-> >> +               bad_area_access_error(regs, error_code, address, NULL,=
- vma);
-> >> +               count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-> >> +               return;
-> >>          }
-> >>          fault =3D handle_mm_fault(vma, address, flags | FAULT_FLAG_VM=
-A_LOCK, regs);
-> >>          if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
-> >> @@ -1394,7 +1399,7 @@ void do_user_addr_fault(struct pt_regs *regs,
-> >>           * we can handle it..
-> >>           */
-> >>          if (unlikely(access_error(error_code, vma))) {
-> >> -               bad_area_access_error(regs, error_code, address, vma);
-> >> +               bad_area_access_error(regs, error_code, address, mm, v=
-ma);
-> >>                  return;
-> >>          }
-> >>
-> >> --
-> >> 2.27.0
-> >>
+I can only test that this does not break a machine without the
+hardware feature.
+
+Is there anyone who could possibly peer test these patches?
+
+BR, Jarkko
