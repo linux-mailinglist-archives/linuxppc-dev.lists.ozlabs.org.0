@@ -1,69 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2D6896B83
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 12:05:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB30896C36
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 12:25:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhscuQkf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bVEntZaB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8gNz5cS2z3vkX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 21:05:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8gqy0Z1Bz3vpk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 21:25:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhscuQkf;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bVEntZaB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=heikki.krogerus@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8gLn11bHz3dXC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 21:03:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8gqB5SKcz3vdC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 21:24:53 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712138625; x=1743674625;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VWKB4YBkBGiUFfx/DCMZTK1YmSwqd9/AxvqBDvCXap8=;
-  b=HhscuQkfs7qo2GbU2VLVbWnTMUKnm046fAEAgTMf+RGOfKO+tInyRqp9
-   0HVCxwcdbjAUxvg+NgH+dAEaXOOEE3WvnYWf1iCodKVEWQCpB8EKbjajX
-   Q2vBuNL7w1ZbTNDRlkEVOms2hUWI9HmTtCyzfqhocLMq99eLTJJPtIL74
-   5v08rUaxDSOJ9srD7qEXWx0iJq2Jv9MNRMteIYz6WAHniAPkphcbcge93
-   1IkIwDF/UKC20q+JAjZPB+nRsGcdIm3WIf9oC7ul5U19Eok2G7FBjSOR1
-   Y/quYZBwRwaTQpTRVGEi97hkA7gSOHIBeydfkRKxMQhrD5uzVLvcVJpSn
-   w==;
-X-CSE-ConnectionGUID: 6iKCf8y/R7CgVPENVyvMkA==
-X-CSE-MsgGUID: w88TSqKDQyaIJdITqjjN0A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="24815784"
+  t=1712139896; x=1743675896;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ESt8CZC/Qd2eEHRQmlwIpFHD3SOwTUjqLs41t4VZMsQ=;
+  b=bVEntZaBTN+wgVg21LpbC2AKZFEmmH18bON8JH82LztMKs8ZfXnlRJJH
+   V4WyVXJQgJr5G4z7dKQeLJg+LCmSdK4wQdEga2ZSg0GOEhO6xeryb1F3v
+   JXl7cTnfg8cEPoWDmLsevqvv7yiBvY++4EIDkSeDMjjIYkkYaLPGbz0xM
+   Nr5a1u3EpSCw1WP7hWsnfwM9He8M066+X2Ir/qu20hcfbxjNH0nczaTWS
+   BcHbMR5FAYNs9jfPZSkcByfMBFSxGqDxa/zy7jG4+QStddf1oa86hpAgz
+   8NRKPy4O5yOFQ+8XEM+DPWUQbWijLqB8hxumWq241E9zdKH4t86G0ONIa
+   g==;
+X-CSE-ConnectionGUID: PicjuoaTSXGuS+ZdqqCgig==
+X-CSE-MsgGUID: x048m4+JTFWkBNvLA2n/qw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7282967"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="24815784"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:02:40 -0700
-X-CSE-ConnectionGUID: SzmvDS0WSoCvkLwEFGrjQw==
-X-CSE-MsgGUID: J622qm1OQHWOdewMfRQApw==
+   d="scan'208";a="7282967"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:24:49 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="937084818"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="23084854"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.24])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:02:37 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	"Oliver O'Halloran" <oohall@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] PCI: Create helper to print TLP Header and Prefix Log
-Date: Wed,  3 Apr 2024 13:02:06 +0300
-Message-Id: <20240403100206.4403-3-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240403100206.4403-1-ilpo.jarvinen@linux.intel.com>
-References: <20240403100206.4403-1-ilpo.jarvinen@linux.intel.com>
+   d="scan'208";a="937084818"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 03 Apr 2024 03:24:46 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 03 Apr 2024 13:24:45 +0300
+Date: Wed, 3 Apr 2024 13:24:45 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v2 2/3] usb: typec: nvidia: drop driver owner assignment
+Message-ID: <Zg0ubZ9P9sCVLOrX@kuha.fi.intel.com>
+References: <20240331091737.19836-1-krzk@kernel.org>
+ <20240331091737.19836-2-krzk@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240331091737.19836-2-krzk@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,144 +70,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ran Wang <ran.wang_1@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add pcie_print_tlp_log() helper to print TLP Header and Prefix Log.
-Print End-End Prefixes only if they are non-zero.
+On Sun, Mar 31, 2024 at 11:17:36AM +0200, Krzysztof Kozlowski wrote:
+> Core in typec_altmode_register_driver() already sets the .owner, so
+> driver does not need to.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Consolidate the few places which currently print TLP using custom
-formatting.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-The first attempt used pr_cont() instead of building a string first but
-it turns out pr_cont() is not compatible with pci_err() but prints on a
-separate line. When I asked about this, Andy Shevchenko suggested
-pr_cont() should not be used in the first place (to eventually get rid
-of it) so pr_cont() is now replaced with building the string first.
+> ---
+> 
+> Changes in v2:
+> 1. None
+> ---
+>  drivers/usb/typec/altmodes/nvidia.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/altmodes/nvidia.c b/drivers/usb/typec/altmodes/nvidia.c
+> index c36769736405..fe70b36f078f 100644
+> --- a/drivers/usb/typec/altmodes/nvidia.c
+> +++ b/drivers/usb/typec/altmodes/nvidia.c
+> @@ -35,7 +35,6 @@ static struct typec_altmode_driver nvidia_altmode_driver = {
+>  	.remove = nvidia_altmode_remove,
+>  	.driver = {
+>  		.name = "typec_nvidia",
+> -		.owner = THIS_MODULE,
+>  	},
+>  };
+>  module_typec_altmode_driver(nvidia_altmode_driver);
+> -- 
+> 2.34.1
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- drivers/pci/pci.c      | 32 ++++++++++++++++++++++++++++++++
- drivers/pci/pcie/aer.c | 10 ++--------
- drivers/pci/pcie/dpc.c |  5 +----
- include/linux/aer.h    |  2 ++
- 4 files changed, 37 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index af230e6e5557..54d4872d14b8 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -9,6 +9,7 @@
-  */
- 
- #include <linux/acpi.h>
-+#include <linux/array_size.h>
- #include <linux/kernel.h>
- #include <linux/delay.h>
- #include <linux/dmi.h>
-@@ -1116,6 +1117,37 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
- }
- EXPORT_SYMBOL_GPL(pcie_read_tlp_log);
- 
-+/**
-+ * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
-+ * @dev:	PCIe device
-+ * @tlp_log:	TLP Log structure
-+ * @pfx:	Internal string prefix (for indentation)
-+ *
-+ * Prints TLP Header and Prefix Log information held by @tlp_log.
-+ */
-+void pcie_print_tlp_log(const struct pci_dev *dev,
-+			const struct pcie_tlp_log *tlp_log, const char *pfx)
-+{
-+	char buf[(10 + 1) * (4 + ARRAY_SIZE(tlp_log->prefix)) + 14 + 1];
-+	unsigned int i;
-+	int len;
-+
-+	len = scnprintf(buf, sizeof(buf), "%#010x %#010x %#010x %#010x",
-+			tlp_log->dw[0], tlp_log->dw[1], tlp_log->dw[2],
-+			tlp_log->dw[3]);
-+
-+	if (tlp_log->prefix[0])
-+		len += scnprintf(buf + len, sizeof(buf) - len, " E-E Prefixes:");
-+	for (i = 0; i < ARRAY_SIZE(tlp_log->prefix); i++) {
-+		if (!tlp_log->prefix[i])
-+			break;
-+		len += scnprintf(buf + len, sizeof(buf) - len,
-+				 " %#010x", tlp_log->prefix[i]);
-+	}
-+
-+	pci_err(dev, "%sTLP Header: %s\n", pfx, buf);
-+}
-+
- /**
-  * pci_restore_bars - restore a device's BAR values (e.g. after wake-up)
-  * @dev: PCI device to have its BARs restored
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index ecc1dea5a208..efb9e728fe94 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -664,12 +664,6 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 	}
- }
- 
--static void __print_tlp_header(struct pci_dev *dev, struct pcie_tlp_log *t)
--{
--	pci_err(dev, "  TLP Header: %08x %08x %08x %08x\n",
--		t->dw[0], t->dw[1], t->dw[2], t->dw[3]);
--}
--
- static void __aer_print_error(struct pci_dev *dev,
- 			      struct aer_err_info *info)
- {
-@@ -724,7 +718,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	__aer_print_error(dev, info);
- 
- 	if (info->tlp_header_valid)
--		__print_tlp_header(dev, &info->tlp);
-+		pcie_print_tlp_log(dev, &info->tlp, "  ");
- 
- out:
- 	if (info->id && info->error_dev_num > 1 && info->id == id)
-@@ -796,7 +790,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 			aer->uncor_severity);
- 
- 	if (tlp_header_valid)
--		__print_tlp_header(dev, &aer->header_log);
-+		pcie_print_tlp_log(dev, &aer->header_log, "  ");
- 
- 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
- 			aer_severity, tlp_header_valid, &aer->header_log);
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 80b1456f95fe..3f8e3b6c7948 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -229,10 +229,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
- 	pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG,
- 			  cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG,
- 			  dpc_tlp_log_len(pdev), &tlp_log);
--	pci_err(pdev, "TLP Header: %#010x %#010x %#010x %#010x\n",
--		tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
--	for (i = 0; i < pdev->dpc_rp_log_size - 5; i++)
--		pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, tlp_log.prefix[i]);
-+	pcie_print_tlp_log(pdev, &tlp_log, "");
- 
- 	if (pdev->dpc_rp_log_size < 5)
- 		goto clear_status;
-diff --git a/include/linux/aer.h b/include/linux/aer.h
-index 2484056feb8d..1e8c61deca65 100644
---- a/include/linux/aer.h
-+++ b/include/linux/aer.h
-@@ -41,6 +41,8 @@ struct aer_capability_regs {
- int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
- 		      unsigned int tlp_len, struct pcie_tlp_log *log);
- unsigned int aer_tlp_log_len(struct pci_dev *dev);
-+void pcie_print_tlp_log(const struct pci_dev *dev,
-+			const struct pcie_tlp_log *tlp_log, const char *pfx);
- 
- #if defined(CONFIG_PCIEAER)
- int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
 -- 
-2.39.2
-
+heikki
