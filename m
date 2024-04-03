@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F629897075
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 15:22:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1002789708D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 15:23:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LBQ3yhgn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aF3b79Qk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8lm32xQMz3w4Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 00:22:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8lmy5ZY1z3wKJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 00:23:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LBQ3yhgn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aF3b79Qk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8lj26jpQz3vx7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 00:19:50 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-29e0229d6b5so5192585a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 06:19:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8lj43J67z3w0y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 00:19:52 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1e034607879so51027315ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 06:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712150388; x=1712755188; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1712150390; x=1712755190; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pjv7Xp9MV0DSDQU0m3fWBF7u8xCRPonxB88RSacFUiY=;
-        b=LBQ3yhgnWT8t8Uy7amGN71Fkg8ydgKO/nfkMcolQouHweSk85o1pFNB9SJhb8OKbDN
-         8/FiKlf9czrIMHyFL0mkVKUUUTfHSl+OFvm/ZGwat7+QS9CUKokJGi8kBllTjEXW2XUU
-         JdRfCPc5G95lax56xh5JwK/DY1F6filbSmN+FrKN1eJnGPH3Nkmmc8jML8a+JcqbHg0s
-         9Z4C8GFjl4z2XZawLREZ+onSyLNbg5LptMfKvSwjipGcVqKKaK1AkkTlY9DSiboGd0Vc
-         NEK2J3OClqcqLZ/DJkAHIMioSQyXmF81zX9oTOoBKtS4zDD2JiHg9krp5IkdaC6sgT5x
-         8gCA==
+        bh=KUpuwFkhA/ZZkaJrm+5DUMvKoRunaI4/ZlB0ejZmZW4=;
+        b=aF3b79Qk8yLcJzk11CZt8+CctAj6us3FJmCknXx4AuuAYbsno5AoNgwPKvrl+igjOz
+         /5yk3VR4kTOQ66up8Z3U2Zmb9A/hXBy4o2aoUDHIGgznRKNaytcueYywIFv6O+i6TN+u
+         6rbrdp9iYr6fWL+9pMc0Pcm6TiAIMvu99ryk8PvSm6hJIC7hoQECKZXvI0g909tAXZyO
+         86DHsSKV2kbIMrRCUerqbuMGuth1zNLdL4fT2KZXu9MDqIv4rhHNgz4F5E0h8OOaj2AU
+         /hxYm9Y5zCYE9bdESYeSafUhTbHcgi7p+HKXl1Uh25v8dKcK/yG+oXCIy2enlYgkWT+M
+         chMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712150388; x=1712755188;
+        d=1e100.net; s=20230601; t=1712150390; x=1712755190;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Pjv7Xp9MV0DSDQU0m3fWBF7u8xCRPonxB88RSacFUiY=;
-        b=DmGfR7fDtjRlNB9t8K7tIsnm+Tg+H0OYlbloClRL9sICE+VWhqNUKLPz0bW0qDrxzE
-         COeF/uEQ0XrQO/3pBiX/eCJF6Q+I53IN1GTAoYYu498OL/1rHPEpBmSC7IJjo0aizyS+
-         3611xYVScTZpEoUKbosnSEiaOnXkf5FlylmWcAhikXw56RhmD3ZkOoaSNubP2jnfHybr
-         T22WmZoN+JzSXhH5Dg6XCOHltE0HE5F7AL8W3ybrSKmc7TCGSDk1wCpj+6VnK33vjxkh
-         ThzO9dV3kqea/gEccbyTqoKTUleppTWXuSY7VVOTY6hJu8l6rj9z/ZC67bsnCGezlxX/
-         VKTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHAKnEFHv6RoJDXPHQmRomFkXSIfvlxp9QCo5aHrjFUzC6+r50PFYo8HnIjbAUOD+QD3OQXlgUthlDqbTSGYa8Md8AI+D98jJ+MfGAhg==
-X-Gm-Message-State: AOJu0Yw0pHeV6ePaybGXFxTD5fzMwn2DsJdQdF9ZJ2tPJaNUQarPWGMF
-	WLHbe3DSXT+Q0MA0u1oQpBHhPRIvpYmczHOmoXvwhQJdnuoqZ9qm
-X-Google-Smtp-Source: AGHT+IH9i3q5NLbj3L3SRhLxC/yUkLElgfzecWcrFNyAnqHWTVhzS/ed731TWMk8XQGzPC81E+r2yQ==
-X-Received: by 2002:a17:90a:fd8b:b0:2a2:b2bd:e1b1 with SMTP id cx11-20020a17090afd8b00b002a2b2bde1b1mr551165pjb.22.1712150388063;
-        Wed, 03 Apr 2024 06:19:48 -0700 (PDT)
+        bh=KUpuwFkhA/ZZkaJrm+5DUMvKoRunaI4/ZlB0ejZmZW4=;
+        b=tO+1o5dS8oKFAg7bd7t7o00tAfF7s11yl0HXciePCdN9ZLdH9HXfgyyg/0r1kC/dzq
+         P/AATHvVN8+Nf/FJrraJQ8SVchEErurq/z+7erEhKADvcOJiltO6U3NyTRV0UmG0ts/p
+         gab8MC2vZIYN1VtTMfCf9weyYtN20WpfMBX+LbgNpEZxxYI9IGAybtBVQ1JXXuiY86m9
+         qUOq6RbhBxqwRwwgI8Bsd9SnMRxUkdeb6EAF1hqPq5M0d3VgRUwqlc0np1XW6XZQxM9+
+         bCRjkwkSSfVrMGPK8D75N6zuYjVxCHQM3tywUunR7/HUZmcvf61Q6pUjksOQJnooz2+5
+         6Igw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbivLpXPYGPNxasrBcZlJpWExZeddPvE0LKSy6QQTA+ZzV3m3dfGRqfleRejwmlZcT7C3ceXWcLJSFOXWuvRshvPDHmD5PjWDnGhthrw==
+X-Gm-Message-State: AOJu0Yw66wXgrfqeYbCYh1mOeUBm/hg5QyRp8/31li7dG/sbDjDXdv4u
+	7XWHXKvT/o5qe4Jy4W4yhIgjuIMH1uTrRwX/KHPIWWBeR1fQfmHe
+X-Google-Smtp-Source: AGHT+IE/2OacMp/2cfvaRksBgAjGZgKxyI++pmI4VDvZRW0+d8012wJeFPX8kGKifNbdvVT4SH77dg==
+X-Received: by 2002:a17:902:f68a:b0:1e2:9205:5254 with SMTP id l10-20020a170902f68a00b001e292055254mr1881147plg.7.1712150389795;
+        Wed, 03 Apr 2024 06:19:49 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id on4-20020a17090b1d0400b002a0777a2b1asm11473160pjb.10.2024.04.03.06.19.46
+        by smtp.gmail.com with ESMTPSA id k10-20020a170902694a00b001e088a9e2bcsm13158796plt.292.2024.04.03.06.19.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 06:19:46 -0700 (PDT)
+        Wed, 03 Apr 2024 06:19:49 -0700 (PDT)
 From: Guenter Roeck <linux@roeck-us.net>
 To: linux-kselftest@vger.kernel.org
-Subject: [PATCH v3 03/15] kunit: Add test cases for backtrace warning suppression
-Date: Wed,  3 Apr 2024 06:19:24 -0700
-Message-Id: <20240403131936.787234-4-linux@roeck-us.net>
+Subject: [PATCH v3 04/15] kunit: Add documentation for warning backtrace suppression API
+Date: Wed,  3 Apr 2024 06:19:25 -0700
+Message-Id: <20240403131936.787234-5-linux@roeck-us.net>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240403131936.787234-1-linux@roeck-us.net>
 References: <20240403131936.787234-1-linux@roeck-us.net>
@@ -84,11 +84,7 @@ Cc: x86@kernel.org, loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add unit tests to verify that warning backtrace suppression works.
-
-If backtrace suppression does _not_ work, the unit tests will likely
-trigger unsuppressed backtraces, which should actually help to get
-the affected architectures / platforms fixed.
+Document API functions for suppressing warning backtraces.
 
 Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
@@ -98,145 +94,58 @@ Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 v2:
 - Rebased to v6.9-rc1
 - Added Tested-by:, Acked-by:, and Reviewed-by: tags
-- Introduced KUNIT_SUPPRESS_BACKTRACE configuration option
 v3:
 - Rebased to v6.9-rc2
 
- lib/kunit/Makefile                     |   7 +-
- lib/kunit/backtrace-suppression-test.c | 104 +++++++++++++++++++++++++
- 2 files changed, 109 insertions(+), 2 deletions(-)
- create mode 100644 lib/kunit/backtrace-suppression-test.c
+ Documentation/dev-tools/kunit/usage.rst | 30 ++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
 
-diff --git a/lib/kunit/Makefile b/lib/kunit/Makefile
-index 545b57c3be48..3eee1bd0ce5e 100644
---- a/lib/kunit/Makefile
-+++ b/lib/kunit/Makefile
-@@ -16,10 +16,13 @@ endif
+diff --git a/Documentation/dev-tools/kunit/usage.rst b/Documentation/dev-tools/kunit/usage.rst
+index 22955d56b379..8d3d36d4103d 100644
+--- a/Documentation/dev-tools/kunit/usage.rst
++++ b/Documentation/dev-tools/kunit/usage.rst
+@@ -157,6 +157,34 @@ Alternatively, one can take full control over the error message by using
+ 	if (some_setup_function())
+ 		KUNIT_FAIL(test, "Failed to setup thing for testing");
  
- # KUnit 'hooks' and bug handling are built-in even when KUnit is built
- # as a module.
--obj-y +=				hooks.o \
--					bug.o
-+obj-y +=				hooks.o
-+obj-$(CONFIG_KUNIT_SUPPRESS_BACKTRACE) += bug.o
++Suppressing warning backtraces
++------------------------------
++
++Some unit tests trigger warning backtraces either intentionally or as side
++effect. Such backtraces are normally undesirable since they distract from
++the actual test and may result in the impression that there is a problem.
++
++Such backtraces can be suppressed. To suppress a backtrace in some_function(),
++use the following code.
++
++.. code-block:: c
++
++	static void some_test(struct kunit *test)
++	{
++		DEFINE_SUPPRESSED_WARNING(some_function);
++
++		START_SUPPRESSED_WARNING(some_function);
++		trigger_backtrace();
++		END_SUPPRESSED_WARNING(some_function);
++	}
++
++SUPPRESSED_WARNING_COUNT() returns the number of suppressed backtraces. If the
++suppressed backtrace was triggered on purpose, this can be used to check if
++the backtrace was actually triggered.
++
++.. code-block:: c
++
++	KUNIT_EXPECT_EQ(test, SUPPRESSED_WARNING_COUNT(some_function), 1);
  
- obj-$(CONFIG_KUNIT_TEST) +=		kunit-test.o
-+ifeq ($(CCONFIG_KUNIT_SUPPRESS_BACKTRACE),y)
-+obj-$(CONFIG_KUNIT_TEST) +=		backtrace-suppression-test.o
-+endif
+ Test Suites
+ ~~~~~~~~~~~
+@@ -857,4 +885,4 @@ For example:
+ 		dev_managed_string = devm_kstrdup(fake_device, "Hello, World!");
  
- # string-stream-test compiles built-in only.
- ifeq ($(CONFIG_KUNIT_TEST),y)
-diff --git a/lib/kunit/backtrace-suppression-test.c b/lib/kunit/backtrace-suppression-test.c
-new file mode 100644
-index 000000000000..47c619283802
---- /dev/null
-+++ b/lib/kunit/backtrace-suppression-test.c
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit test for suppressing warning tracebacks
-+ *
-+ * Copyright (C) 2024, Guenter Roeck
-+ * Author: Guenter Roeck <linux@roeck-us.net>
-+ */
-+
-+#include <kunit/test.h>
-+#include <linux/bug.h>
-+
-+static void backtrace_suppression_test_warn_direct(struct kunit *test)
-+{
-+	DEFINE_SUPPRESSED_WARNING(backtrace_suppression_test_warn_direct);
-+
-+	START_SUPPRESSED_WARNING(backtrace_suppression_test_warn_direct);
-+	WARN(1, "This backtrace should be suppressed");
-+	END_SUPPRESSED_WARNING(backtrace_suppression_test_warn_direct);
-+
-+	KUNIT_EXPECT_EQ(test, SUPPRESSED_WARNING_COUNT(backtrace_suppression_test_warn_direct), 1);
-+}
-+
-+static void trigger_backtrace_warn(void)
-+{
-+	WARN(1, "This backtrace should be suppressed");
-+}
-+
-+static void backtrace_suppression_test_warn_indirect(struct kunit *test)
-+{
-+	DEFINE_SUPPRESSED_WARNING(trigger_backtrace_warn);
-+
-+	START_SUPPRESSED_WARNING(trigger_backtrace_warn);
-+	trigger_backtrace_warn();
-+	END_SUPPRESSED_WARNING(trigger_backtrace_warn);
-+
-+	KUNIT_EXPECT_EQ(test, SUPPRESSED_WARNING_COUNT(trigger_backtrace_warn), 1);
-+}
-+
-+static void backtrace_suppression_test_warn_multi(struct kunit *test)
-+{
-+	DEFINE_SUPPRESSED_WARNING(trigger_backtrace_warn);
-+	DEFINE_SUPPRESSED_WARNING(backtrace_suppression_test_warn_multi);
-+
-+	START_SUPPRESSED_WARNING(backtrace_suppression_test_warn_multi);
-+	START_SUPPRESSED_WARNING(trigger_backtrace_warn);
-+	WARN(1, "This backtrace should be suppressed");
-+	trigger_backtrace_warn();
-+	END_SUPPRESSED_WARNING(trigger_backtrace_warn);
-+	END_SUPPRESSED_WARNING(backtrace_suppression_test_warn_multi);
-+
-+	KUNIT_EXPECT_EQ(test, SUPPRESSED_WARNING_COUNT(backtrace_suppression_test_warn_multi), 1);
-+	KUNIT_EXPECT_EQ(test, SUPPRESSED_WARNING_COUNT(trigger_backtrace_warn), 1);
-+}
-+
-+static void backtrace_suppression_test_warn_on_direct(struct kunit *test)
-+{
-+	DEFINE_SUPPRESSED_WARNING(backtrace_suppression_test_warn_on_direct);
-+
-+	if (!IS_ENABLED(CONFIG_DEBUG_BUGVERBOSE) && !IS_ENABLED(CONFIG_KALLSYMS))
-+		kunit_skip(test, "requires CONFIG_DEBUG_BUGVERBOSE or CONFIG_KALLSYMS");
-+
-+	START_SUPPRESSED_WARNING(backtrace_suppression_test_warn_on_direct);
-+	WARN_ON(1);
-+	END_SUPPRESSED_WARNING(backtrace_suppression_test_warn_on_direct);
-+
-+	KUNIT_EXPECT_EQ(test,
-+			SUPPRESSED_WARNING_COUNT(backtrace_suppression_test_warn_on_direct), 1);
-+}
-+
-+static void trigger_backtrace_warn_on(void)
-+{
-+	WARN_ON(1);
-+}
-+
-+static void backtrace_suppression_test_warn_on_indirect(struct kunit *test)
-+{
-+	DEFINE_SUPPRESSED_WARNING(trigger_backtrace_warn_on);
-+
-+	if (!IS_ENABLED(CONFIG_DEBUG_BUGVERBOSE))
-+		kunit_skip(test, "requires CONFIG_DEBUG_BUGVERBOSE");
-+
-+	START_SUPPRESSED_WARNING(trigger_backtrace_warn_on);
-+	trigger_backtrace_warn_on();
-+	END_SUPPRESSED_WARNING(trigger_backtrace_warn_on);
-+
-+	KUNIT_EXPECT_EQ(test, SUPPRESSED_WARNING_COUNT(trigger_backtrace_warn_on), 1);
-+}
-+
-+static struct kunit_case backtrace_suppression_test_cases[] = {
-+	KUNIT_CASE(backtrace_suppression_test_warn_direct),
-+	KUNIT_CASE(backtrace_suppression_test_warn_indirect),
-+	KUNIT_CASE(backtrace_suppression_test_warn_multi),
-+	KUNIT_CASE(backtrace_suppression_test_warn_on_direct),
-+	KUNIT_CASE(backtrace_suppression_test_warn_on_indirect),
-+	{}
-+};
-+
-+static struct kunit_suite backtrace_suppression_test_suite = {
-+	.name = "backtrace-suppression-test",
-+	.test_cases = backtrace_suppression_test_cases,
-+};
-+kunit_test_suites(&backtrace_suppression_test_suite);
-+
-+MODULE_LICENSE("GPL");
+ 		// Everything is cleaned up automatically when the test ends.
+-	}
+\ No newline at end of file
++	}
 -- 
 2.39.2
 
