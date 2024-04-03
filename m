@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8083896656
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 09:26:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDF8896659
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 09:26:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=shNXlhfN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=OX7/OSfH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8brr3RVjz3vmY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 18:26:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8bsd2ZHDz3vpM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 18:26:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=shNXlhfN;
+	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=OX7/OSfH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8bm11SD7z3bnL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 18:21:53 +1100 (AEDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-415446af364so3311235e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 00:21:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8bm403vLz3dVj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 18:21:55 +1100 (AEDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-41624fe40b2so328105e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 00:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1712128910; x=1712733710; darn=lists.ozlabs.org;
+        d=sigma-star.at; s=google; t=1712128912; x=1712733712; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qXAm+jrLSudJosqOThMSAUphAoCkUssK7J5hWO/tUg8=;
-        b=shNXlhfNX55NxkHuMRxL1H6WAWBYew5mIbB1KFx7q6NvnAF4ifValRErQmRp/CJA08
-         69rN8xDhYIYaEgBDUC//pQeoUopvJiq+5878FSTHHCGoOgPehMAB8qFgInH7EcQIGWbt
-         1nzTcQOUwznJ1UL9ZjpttwlafJFKqMx44hDzKVh7fMmZbQymCzO4bi/662TTNF/nl9Go
-         VIKeOXxWciPlTjEg+VPEIA5KmbZ1BSRmzfdpWc7aWfqX2u51jZpeZaaSzKFt0YhTYSaL
-         eHp9a9odUW2A6Sc9QX6ByX7yuMMp0OjT+wnZ0HTFo6hLGsvuSqnA1vk0pGfM5pgYNyCR
-         o0bg==
+        bh=ht1KLnNvKBCCICp+Y6JpKOSNrIWAe17k5/lz/+k/t0k=;
+        b=OX7/OSfH2O3GRSxyFaRuufBD5c3Y5BruN3Atqp9I6R7Kg+rLQ5m02ASPJRvi7XmcoG
+         RAybcuCCL3ao7jCOEJloCIJ2VjWvD0Cm9cg7HelClFPmSEY0Ln0B+JbdF73fSFextCm/
+         LQYViJA0SR1I3M44gatLMRTWwYcK4/bc5Vc2XtqsiU1QYl7u86mQ6/+TibE/TcnkWkMA
+         fEhzCxt/2YFmY73afTvWf1RnhDl9MgsqIfhI+gfWznqzJ6zDA6FcWf2qGd4LXEmPs+mB
+         2aOQQvlLFyE3U50Wul24WCCGPwybMhwWhgqSG5Lgl+eskex1pjzNj6bOzyQHM+McRu4I
+         2RDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712128910; x=1712733710;
+        d=1e100.net; s=20230601; t=1712128912; x=1712733712;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qXAm+jrLSudJosqOThMSAUphAoCkUssK7J5hWO/tUg8=;
-        b=fJ+70lLLXW9+HscmXEaso/3sKuI31BH6NGVv8pEq2iTl5ezSac9mGBH4ufdSXV3FOj
-         hGArSp2RreWP0ORFw4Z+9kNuo+PNWiAULbsjo3FcKK9IP3DdtErOi69TBUEZofXAy1LC
-         NXQqS8iGEegnSE37S+PFcT3gzxNSVNEz7a/1zbfgZnVfZjREQK9ksJxz9q0GHAmNcpDc
-         Y98DfR2evTPxdawSLO3yE/vMKt0Y7W+GicCONWiChFL6QbwwUtoFYkkh4Fdy8HZwdNRP
-         PwULqdgkaE4M3NcGxaPOMwuXTnzqEs0DNB1DTq4SsuM9/7vPp4u4GRfjZipY6UbfRpRY
-         2xEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWCdE5TXfKG6NrDTpW/OhFfGjFvYVVMpA7xSp6u/FZAtOB0Qey8r0Ylj+e8wH59kN3BncY1JghNIYOHjDny/yufNHNxKYn20eutqBcLQ==
-X-Gm-Message-State: AOJu0YxhEJYERGyJuBEMtlnIiEYgfLmgN2NTLrYtWMgU45NWKKR1HQiR
-	mCiMdCy98ipsTInHcPm200W0NlR9JigoVAz5u1g09nIqjL22VW13h7OxBZPemDg=
-X-Google-Smtp-Source: AGHT+IHMXJyB4E69/ab6cpDC6ve2WzDG37buI/9MLXEGacy21VN01NO4piAk3DTCP7MyWInRIdzfrA==
-X-Received: by 2002:a05:600c:1c14:b0:416:24a1:4313 with SMTP id j20-20020a05600c1c1400b0041624a14313mr358429wms.19.1712128910048;
-        Wed, 03 Apr 2024 00:21:50 -0700 (PDT)
+        bh=ht1KLnNvKBCCICp+Y6JpKOSNrIWAe17k5/lz/+k/t0k=;
+        b=VdgNrfvzDi8O6dIWCUi0F98to4dcDzE9p1iWLRjKYB6IYv5HLvZK1ACJgGexJbnqCC
+         8AwOi/Lt+lZtNCMz+oa3oSIV8/Q/avvBjTwneRALVOqAOHpOFe08dNczU/xbe7T3Ydpa
+         O/Ga6ad7hChiiVB1liOpVBk2JX4PC5FcFABMceWB75hDn+U0/Bezj0Y84a0KF8gosAzu
+         5+fU1NjgufxyRKRiJbXhnj4vqXF3dK0sZfwL5Sniq0G5XDXYs3IRkUiWVllpWRMIf6cF
+         C3nzc39n5axFT6H+OgUmtcmtr7QMVLdtotonznT+1jnXFHC51MNndUQl3FMjtPYraGq+
+         wLQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwVkzyY2hg/H+BlWZh+DrUMCnwk056ZxuM+q1eUCJZpoeaDmz2h9dbXGTRZ9liwr6+qmI1zV1Nwr9oUpGIhd/jaQWlxyu/xrqxViGkUQ==
+X-Gm-Message-State: AOJu0YxWuT2R+NBKPEKcroQ0LjHLNkNBhf4cJaV6nevZGxyTeXQbVMhd
+	RHn7ys/vLLfkMkeKrmldLgN+n3jrYgWv3ZlteU2ck4uUS7HD2B99BDIt/Wo3Z4w=
+X-Google-Smtp-Source: AGHT+IHxnLJChRG6eyzjNgzPrS0ONsTJ00ZbGMzOG5HnqpNOaErE7IvWFJCS+7/AvipAmrK+4XCdlA==
+X-Received: by 2002:a05:600c:2d06:b0:413:e19:337f with SMTP id x6-20020a05600c2d0600b004130e19337fmr3324441wmf.22.1712128912023;
+        Wed, 03 Apr 2024 00:21:52 -0700 (PDT)
 Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id m6-20020a05600c4f4600b004147db8a91asm23762409wmq.40.2024.04.03.00.21.48
+        by smtp.gmail.com with UTF8SMTPSA id f11-20020a05600c4e8b00b004154e48bcdesm17187826wmq.14.2024.04.03.00.21.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Apr 2024 00:21:49 -0700 (PDT)
+        Wed, 03 Apr 2024 00:21:51 -0700 (PDT)
 From: David Gstir <david@sigma-star.at>
 To: Mimi Zohar <zohar@linux.ibm.com>,
 	James Bottomley <jejb@linux.ibm.com>,
 	Jarkko Sakkinen <jarkko@kernel.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v8 5/6] docs: document DCP-backed trusted keys kernel params
-Date: Wed,  3 Apr 2024 09:21:21 +0200
-Message-ID: <20240403072131.54935-6-david@sigma-star.at>
+Subject: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new trust source
+Date: Wed,  3 Apr 2024 09:21:22 +0200
+Message-ID: <20240403072131.54935-7-david@sigma-star.at>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240403072131.54935-1-david@sigma-star.at>
 References: <20240403072131.54935-1-david@sigma-star.at>
@@ -88,50 +88,156 @@ Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marina
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Document the kernel parameters trusted.dcp_use_otp_key
-and trusted.dcp_skip_zk_test for DCP-backed trusted keys.
+Update the documentation for trusted and encrypted KEYS with DCP as new
+trust source:
+
+- Describe security properties of DCP trust source
+- Describe key usage
+- Document blob format
 
 Co-developed-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 Signed-off-by: David Gstir <david@sigma-star.at>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ .../security/keys/trusted-encrypted.rst       | 53 +++++++++++++++++++
+ security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
+ 2 files changed, 72 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 24c02c704049..3a59abf06039 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6698,6 +6698,7 @@
- 			- "tpm"
- 			- "tee"
- 			- "caam"
-+			- "dcp"
- 			If not specified then it defaults to iterating through
- 			the trust source list starting with TPM and assigns the
- 			first trust source as a backend which is initialized
-@@ -6713,6 +6714,18 @@
- 			If not specified, "default" is used. In this case,
- 			the RNG's choice is left to each individual trust source.
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+index e989b9802f92..f4d7e162d5e4 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -42,6 +42,14 @@ safe.
+          randomly generated and fused into each SoC at manufacturing time.
+          Otherwise, a common fixed test key is used instead.
  
-+	trusted.dcp_use_otp_key
-+			This is intended to be used in combination with
-+			trusted.source=dcp and will select the DCP OTP key
-+			instead of the DCP UNIQUE key blob encryption.
++     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
 +
-+	trusted.dcp_skip_zk_test
-+			This is intended to be used in combination with
-+			trusted.source=dcp and will disable the check if the
-+			blob key is all zeros. This is helpful for situations where
-+			having this key zero'ed is acceptable. E.g. in testing
-+			scenarios.
++         Rooted to a one-time programmable key (OTP) that is generally burnt
++         in the on-chip fuses and is accessible to the DCP encryption engine only.
++         DCP provides two keys that can be used as root of trust: the OTP key
++         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
++         the OTP key can be done via a module parameter (dcp_use_otp_key).
 +
- 	tsc=		Disable clocksource stability checks for TSC.
- 			Format: <string>
- 			[x86] reliable: mark tsc clocksource as reliable, this
+   *  Execution isolation
+ 
+      (1) TPM
+@@ -57,6 +65,12 @@ safe.
+ 
+          Fixed set of operations running in isolated execution environment.
+ 
++     (4) DCP
++
++         Fixed set of cryptographic operations running in isolated execution
++         environment. Only basic blob key encryption is executed there.
++         The actual key sealing/unsealing is done on main processor/kernel space.
++
+   * Optional binding to platform integrity state
+ 
+      (1) TPM
+@@ -79,6 +93,11 @@ safe.
+          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
+          for platform integrity.
+ 
++     (4) DCP
++
++         Relies on Secure/Trusted boot process (called HAB by vendor) for
++         platform integrity.
++
+   *  Interfaces and APIs
+ 
+      (1) TPM
+@@ -94,6 +113,11 @@ safe.
+ 
+          Interface is specific to silicon vendor.
+ 
++     (4) DCP
++
++         Vendor-specific API that is implemented as part of the DCP crypto driver in
++         ``drivers/crypto/mxs-dcp.c``.
++
+   *  Threat model
+ 
+      The strength and appropriateness of a particular trust source for a given
+@@ -129,6 +153,13 @@ selected trust source:
+      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
+      is probed.
+ 
++  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
++
++     The DCP hardware device itself does not provide a dedicated RNG interface,
++     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
++     a dedicated hardware RNG that is independent from DCP which can be enabled
++     to back the kernel RNG.
++
+ Users may override this by specifying ``trusted.rng=kernel`` on the kernel
+ command-line to override the used RNG with the kernel's random number pool.
+ 
+@@ -231,6 +262,19 @@ Usage::
+ CAAM-specific format.  The key length for new keys is always in bytes.
+ Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+ 
++Trusted Keys usage: DCP
++-----------------------
++
++Usage::
++
++    keyctl add trusted name "new keylen" ring
++    keyctl add trusted name "load hex_blob" ring
++    keyctl print keyid
++
++"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
++specific to this DCP key-blob implementation.  The key length for new keys is
++always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
++
+ Encrypted Keys usage
+ --------------------
+ 
+@@ -426,3 +470,12 @@ string length.
+ privkey is the binary representation of TPM2B_PUBLIC excluding the
+ initial TPM2B header which can be reconstructed from the ASN.1 octed
+ string length.
++
++DCP Blob Format
++---------------
++
++.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
++   :doc: dcp blob format
++
++.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
++   :identifiers: struct dcp_blob_fmt
+diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
+index 16c44aafeab3..b5f81a05be36 100644
+--- a/security/keys/trusted-keys/trusted_dcp.c
++++ b/security/keys/trusted-keys/trusted_dcp.c
+@@ -19,6 +19,25 @@
+ #define DCP_BLOB_VERSION 1
+ #define DCP_BLOB_AUTHLEN 16
+ 
++/**
++ * DOC: dcp blob format
++ *
++ * The Data Co-Processor (DCP) provides hardware-bound AES keys using its
++ * AES encryption engine only. It does not provide direct key sealing/unsealing.
++ * To make DCP hardware encryption keys usable as trust source, we define
++ * our own custom format that uses a hardware-bound key to secure the sealing
++ * key stored in the key blob.
++ *
++ * Whenever a new trusted key using DCP is generated, we generate a random 128-bit
++ * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
++ * encrypt the trusted key payload using AES-128-GCM.
++ *
++ * The BEK itself is encrypted using the hardware-bound key using the DCP's AES
++ * encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
++ * BEK-encrypted payload and authentication tag make up the blob format together
++ * with a version number, payload length and authentication tag.
++ */
++
+ /**
+  * struct dcp_blob_fmt - DCP BLOB format.
+  *
 -- 
 2.35.3
 
