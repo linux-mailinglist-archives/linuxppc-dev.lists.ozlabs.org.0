@@ -1,44 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59D38968FE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 10:41:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501CD896B71
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 12:04:12 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AWCIU5rT;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8dXG3SRYz3vkY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 19:41:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8gMG0ySqz3bYc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 21:04:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AWCIU5rT;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 03 Apr 2024 21:03:30 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8dST4rfmz3vXc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 19:38:33 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4V8dRP0T1xz17MxK;
-	Wed,  3 Apr 2024 16:37:37 +0800 (CST)
-Received: from dggpemm100001.china.huawei.com (unknown [7.185.36.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 67C731A016C;
-	Wed,  3 Apr 2024 16:38:29 +0800 (CST)
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 3 Apr 2024 16:38:28 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: <akpm@linux-foundation.org>
-Subject: [PATCH v2 7/7] x86: mm: accelerate pagefault when badaccess
-Date: Wed, 3 Apr 2024 16:38:05 +0800
-Message-ID: <20240403083805.1818160-8-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
-References: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8gLV2Rwxz30dn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 21:03:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712138611; x=1743674611;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zMcY2t+u5tG57730wu67hVX3WkpcRHiwmVhu+ZGk6bc=;
+  b=AWCIU5rTGAzrAqQyzXbqcUkw3mqzBr5wsRfOOnA7TYb3b1jLtvse6UbR
+   7VQqZi8GSXq39ocujuFtM93iJzyiPb8U2C7Y4ezfeoJsBgwvChNr2o8vj
+   EWJgWByj50dtteqnFkZk/7lWtVoWjiB1Jf6ZE2u3lJUEi47HJzvMRpTCK
+   DcbPrShigFO8PbvUybP1i00E0855phUczOs345ZijwkQNzVcqxikI0V+a
+   S/iL/TG2ASj71X8BbejpVQ2SxFTRnvIQFEEGEiN10Br1Lf0QXQIhuCUbL
+   hkD/iTgdYZ2YlwAMqgZSdqcvhAljuWU6pCMftTibRsjoh6BI+R0XLmDF4
+   g==;
+X-CSE-ConnectionGUID: RQi0UPNUR6SCNaJdZtZYtw==
+X-CSE-MsgGUID: ry0SoN+PSNW26aLCcAF0+g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="24815750"
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
+   d="scan'208";a="24815750"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:02:21 -0700
+X-CSE-ConnectionGUID: HTPohwHPT7OpZR498eG0uw==
+X-CSE-MsgGUID: jFkbpWRlQsCVwgNVqJ/cgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
+   d="scan'208";a="23084724"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.24])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:02:19 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O'Halloran" <oohall@gmail.com>
+Subject: [PATCH v2 0/2] PCI: Consolidate TLP Log reading and printing
+Date: Wed,  3 Apr 2024 13:02:04 +0300
+Message-Id: <20240403100206.4403-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm100001.china.huawei.com (7.185.36.93)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,91 +72,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, surenb@google.com, linux-arm-kernel@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The access_error() of vma already checked under per-VMA lock, if it
-is a bad access, directly handle error, no need to retry with mmap_lock
-again. In order to release the correct lock, pass the mm_struct into
-bad_area_access_error(), if mm is NULL, release vma lock, or release
-mmap_lock. Since the page faut is handled under per-VMA lock, count it
-as a vma lock event with VMA_LOCK_SUCCESS.
+This series has the remaining patches of the AER & DPC TLP Log handling
+consolidation.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- arch/x86/mm/fault.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+v2:
+- Don't add EXPORT()s
+- Don't include igxbe changes
+- Don't use pr_cont() as it's incompatible with pci_err() and according
+  to Andy Shevchenko should not be used in the first place
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index a4cc20d0036d..67b18adc75dd 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -866,14 +866,17 @@ bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
- 
- static void
- __bad_area(struct pt_regs *regs, unsigned long error_code,
--	   unsigned long address, u32 pkey, int si_code)
-+	   unsigned long address, struct mm_struct *mm,
-+	   struct vm_area_struct *vma, u32 pkey, int si_code)
- {
--	struct mm_struct *mm = current->mm;
- 	/*
- 	 * Something tried to access memory that isn't in our memory map..
- 	 * Fix it, but check if it's kernel or user first..
- 	 */
--	mmap_read_unlock(mm);
-+	if (mm)
-+		mmap_read_unlock(mm);
-+	else
-+		vma_end_read(vma);
- 
- 	__bad_area_nosemaphore(regs, error_code, address, pkey, si_code);
- }
-@@ -897,7 +900,8 @@ static inline bool bad_area_access_from_pkeys(unsigned long error_code,
- 
- static noinline void
- bad_area_access_error(struct pt_regs *regs, unsigned long error_code,
--		      unsigned long address, struct vm_area_struct *vma)
-+		      unsigned long address, struct mm_struct *mm,
-+		      struct vm_area_struct *vma)
- {
- 	/*
- 	 * This OSPKE check is not strictly necessary at runtime.
-@@ -927,9 +931,9 @@ bad_area_access_error(struct pt_regs *regs, unsigned long error_code,
- 		 */
- 		u32 pkey = vma_pkey(vma);
- 
--		__bad_area(regs, error_code, address, pkey, SEGV_PKUERR);
-+		__bad_area(regs, error_code, address, mm, vma, pkey, SEGV_PKUERR);
- 	} else {
--		__bad_area(regs, error_code, address, 0, SEGV_ACCERR);
-+		__bad_area(regs, error_code, address, mm, vma, 0, SEGV_ACCERR);
- 	}
- }
- 
-@@ -1357,8 +1361,9 @@ void do_user_addr_fault(struct pt_regs *regs,
- 		goto lock_mmap;
- 
- 	if (unlikely(access_error(error_code, vma))) {
--		vma_end_read(vma);
--		goto lock_mmap;
-+		bad_area_access_error(regs, error_code, address, NULL, vma);
-+		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-+		return;
- 	}
- 	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
- 	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
-@@ -1394,7 +1399,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	 * we can handle it..
- 	 */
- 	if (unlikely(access_error(error_code, vma))) {
--		bad_area_access_error(regs, error_code, address, vma);
-+		bad_area_access_error(regs, error_code, address, mm, vma);
- 		return;
- 	}
- 
+Ilpo Järvinen (2):
+  PCI: Add TLP Prefix reading into pcie_read_tlp_log()
+  PCI: Create helper to print TLP Header and Prefix Log
+
+ drivers/pci/ats.c             |  2 +-
+ drivers/pci/pci.c             | 66 +++++++++++++++++++++++++++++++----
+ drivers/pci/pcie/aer.c        | 14 +++-----
+ drivers/pci/pcie/dpc.c        | 23 +++++++-----
+ drivers/pci/probe.c           | 14 +++++---
+ include/linux/aer.h           |  7 +++-
+ include/linux/pci.h           |  2 +-
+ include/uapi/linux/pci_regs.h |  2 ++
+ 8 files changed, 98 insertions(+), 32 deletions(-)
+
 -- 
-2.27.0
+2.39.2
 
