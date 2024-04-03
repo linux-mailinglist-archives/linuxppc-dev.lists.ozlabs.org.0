@@ -1,57 +1,129 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F6989745F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 17:48:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9746A89782C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 20:25:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dYo0Q27d;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=feFdmZMH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8q0m4dVvz3vXt
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 02:48:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8tVB2vCRz3vbJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 05:25:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dYo0Q27d;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=feFdmZMH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::4; helo=pr0p264cu014.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PR0P264CU014.outbound.protection.outlook.com (mail-francecentralazlp170120004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8q042H1Yz3bsd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 02:48:04 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 6DB3ACE2B77;
-	Wed,  3 Apr 2024 15:48:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13591C433C7;
-	Wed,  3 Apr 2024 15:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712159279;
-	bh=rrCR4x657hJj+9Z7FfIwTOL0bKqYr1iVATWuKVnBvdc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dYo0Q27dSQQ3Ch8t1bv/4TDEGdVvlFtZiK/Zz2pAtDrV2dGg+D+XOJblloji6lf8f
-	 AT/1G9mjWsRaJTEV3z+NlLz40f+kBk5nFmcrUtgEA41qda5WwW4i8s4RLr/MzdF5zi
-	 YoTjxsD9V0zKYX4yL4N07X1LoysvapSXkS7G6OsnvSJFKJeNikI8cMxk3axKsNBB+y
-	 P6Adfksr8JnIG1LemgmEFRN0C6BpU/ZKYmBXXWJOohD4naX0Imdw+22KIlCXUWOohl
-	 YL80cR6IKID87Ymp816wKnW4iT/VyBYwP0nq6oFeuIpysRTK4u+RGJb+IBGt3Xt9x0
-	 vxIbwg0cDWVFw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Apr 2024 18:47:51 +0300
-Message-Id: <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
- "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new trust
- source
-X-Mailer: aerc 0.17.0
-References: <20240403072131.54935-1-david@sigma-star.at>
- <20240403072131.54935-7-david@sigma-star.at>
-In-Reply-To: <20240403072131.54935-7-david@sigma-star.at>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8tTF36Jjz3dgN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 05:25:03 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fhW4+nmBLqqna4098qwL3tgPfjVq5VK4KLaRsevWBqgooMgmUT4BhNfXAB/ZCwslFIZM0JMScMTrKdH09LUZlCoE2YZKe/MsWsC+l/W0HmRiEDbpIL46MvVvEYOeczZJKtIt0udzM/766PG+x77iRc/Bo51+4lmV+we/sra7PY1wEKcC9mh4POHqcWJwPbZuYqsSa4/LBsVzP31x4L+Jn6IKqQbnqcczlSRe462XD9JwEZo+yQzg6pYK5WCAFam5YcQ3jlcHJz1ZYZWgpeJsuLRW1P3OSBvNB1CYsUOYpRY7vFLeSXtuF64l243MQpHyfXBf4XQUNXAnxBaG2zS49A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rTz+6hCXNIk4Jg+sE/i/CR2zBxILUFdtOCrBgDRiuxg=;
+ b=JptbXlE1FnreEefHx8TR1xmBKmR80TD0unlrPsFvAH/b7ldB/yG3G7Qo/Wu7IacUblrc+r/+ivGUOt9hegmi17o6VlxTKXZtWZvUj+/2qqnLpTvObwzc6FkRHiK64T59qJ0PTpKZFRYt2TZOT8jCZYfCfyUEBzq7+VyYNo9sGM6aOXRND5Y5K5tlFuv+AE8/C25xqfcZJBEI9cCetlEuDBAIumex0MuxtzdmGcL+4DvTuO2rMiobP2FeppvEh71mkdWfxktn8NHNK66KbvO+8Q/RLiny2fMr27DI7jTZ7cbKWVlrjhE04pyvtvrTamSVusA0KBZigG9s4BNKGLDznA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rTz+6hCXNIk4Jg+sE/i/CR2zBxILUFdtOCrBgDRiuxg=;
+ b=feFdmZMHE4Z/Rw/lkjLv3UMoJS//XjJok5YSDgAc2e4Jb95G6MwP+jIZV2QMamQlnxfI4EuJydTvihGIqFpGen2F1jfEFLpnJHI/e/yKYRR4VIcTHiBcLlCVAMfMOIExOGKzbD5Hz0LnuIlkw9bRAwwXwF3d2ZkyfMUsD22lzzBfFUeihxYIIRWkRjlTmt4tDbnNsNcqcrGLaQIHiZO0Zdin8i6gsE2xBsy+CWFYtf4v0+gjnELbS6+i8euCuE2ksdlYd0qJfG/M2RF3H6xiEThsGpkHw0Kc7pUq3d9YZ+RFha06HEuznKTdo+L6RP8p/fsnz7XnZtxMOQTFJ1WutQ==
+Received: from PAZP264MB2991.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f5::13)
+ by MRZP264MB1750.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:a::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.46; Wed, 3 Apr 2024 18:24:38 +0000
+Received: from PAZP264MB2991.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c605:a17e:814a:efab]) by PAZP264MB2991.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c605:a17e:814a:efab%5]) with mapi id 15.20.7409.042; Wed, 3 Apr 2024
+ 18:24:38 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC PATCH 1/8] mm: Provide pagesize to pmd_populate()
+Thread-Topic: [RFC PATCH 1/8] mm: Provide pagesize to pmd_populate()
+Thread-Index:  AQHafsSUDf1gEqeQdEWjl7G6IxKzM7FIoteAgAAuSYCAAU5AAIABPcCAgAB1KACACxhWgA==
+Date: Wed, 3 Apr 2024 18:24:38 +0000
+Message-ID: <dee0b89b-8daf-4003-b26f-f612b14012e0@csgroup.eu>
+References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
+ <54d78f1b7e7f1c671e40b7c0c637380bcb834326.1711377230.git.christophe.leroy@csgroup.eu>
+ <20240325161919.GD6245@nvidia.com>
+ <6e16e042-0143-4a52-b4b7-09cf0022bc3e@csgroup.eu>
+ <20240326150118.GI6245@nvidia.com>
+ <9703878c-c0b0-48ff-a356-d43e8f7391f3@csgroup.eu>
+ <20240327165754.GM946323@nvidia.com>
+In-Reply-To: <20240327165754.GM946323@nvidia.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAZP264MB2991:EE_|MRZP264MB1750:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  yiM03H3r3DDatlak8ZRejnMVseOt3U6/gzbWgLwmQ8s7/kaQG1Ot26e3Fw0ouT3RYtU3nbbFga6c6y+soaa7Fd0D01vYG5arV5hs/MaXdnEptLTSScej7Y7l9oMQAbAdiCzdPcVvF5vm0qJaRO9bAT5W2Get2DcC052Vih5Fmji6ozY/5aRf0i1kepDu3T91LtctQbm4c23amFZjSXOoqKk+fSUJw7QTesUSFSzDvmDV5DVftoS3la17p1HPHdPnv6PawGh7AaasM4MxWtlgvSZnkZCRSQj82949nT1cJ1zZPxoDfqrYv9n9P5cA2qg2wtt3m8qnCFU2SVliqXX9mmxIVRgK7wKwWPhlP1ZqyDebDWu+YyuSN5em/H6zJnI+10v4Z+ZndpSItzNqGbnFs61BjLAFdrMOuroxsNZHbf4JdmplLOYXz+43ORRCC3S38mEY1ybbS2ETPjVoy2ewApSePaENkDBZt92ujqeLWuxcnxU/MNl0X/ccGvxo6zNJSKQTHQr1L/doVBv3oFVHnpVOP6c7ifSNmqT5zTRf10COWYp2uP4Xsv5yTRDMQw/nmsCkcRacOeLqBKeJYD9T9TZb7q5H++plCglYfZKstCV9PKZBNjIUTVD6+SYOtN6PvK3ghe1SuFZt2EObCDsXhIzTHBb/SDGww2xSVYy9ZgA=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAZP264MB2991.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?aENGblhqMFd2bW52ZitZRUQ5LzE2Yk84TkNXRCtvTDBoSEltVjhsNEY0WVYy?=
+ =?utf-8?B?d0QvZ1dmQ1U3YkJKUGV1cENNSDN4QTlxV05KWU1KL1QvZERzMUxIODcwcE1s?=
+ =?utf-8?B?c1ovWE1xWW5oSGRrWVpoMzhUb3ZiR20xUzBCNXNoSzVxVFhEalB0cVo4RlR0?=
+ =?utf-8?B?YXd4YWowclRRbDFrYjF5RndMU2dDYytZQ3ZIUDVBNDFKalVOckJNeVcvVEhl?=
+ =?utf-8?B?R3YwdHgvNjZzaHFEVXJrNDJ3dzY2eUJkdmU2K0lGaEJpNTl3S2dOcWtoSXE3?=
+ =?utf-8?B?SXFnNEc1TUg3ZnRoaytmWWhtcFA4NGZReDFSZDBvUTMxVnNoWDQxMFVHQjQ5?=
+ =?utf-8?B?dC84ZytJdDN2R1lxOUNVTnpMa01IRUdqNDdXeGVQYld5SmFrVlBKUkxpbFFx?=
+ =?utf-8?B?NkV3OFFkU0swbnNqN0JSb21Cd0lzcTVSMWpqVk1FMkxRUGdjc0RWT2NpbUtO?=
+ =?utf-8?B?SzdoYWhIZ1RYelErUWZLTFZHS3JYY2tCYW1DeW9mVnFRNDBRN1Q5a2ZnbzNB?=
+ =?utf-8?B?SDJCZTEvNmhoTVVzWUJZSmlBTXR6ZHlZenRqc0xQQU81VzFCbzI4L1Izbmhx?=
+ =?utf-8?B?ZTA4RWdycklrbnc5UEh0a0Z4TkNSbllESkQxbG5SN0YxUTBoSlJqdHAxb08w?=
+ =?utf-8?B?VUZkbFJSOTFpbm8wNjd2cVpMcWFPYmJWV2Q1U2g4K2UzVXBlcUZSR2tDMFRw?=
+ =?utf-8?B?NFh6VFBDZ1hXc3VoWXAza3pHTzZBaHNQRmptVk1OZ0NkYUk1dE5YVWNJckNN?=
+ =?utf-8?B?QU1CYVp0Y2Y3S2hTZXJ2U0lTRElNdjZuTCtJZ2RPQkloWk53MGlCelVxeTRi?=
+ =?utf-8?B?dktJdmozWHFZb2o3NnA5dk53b0FMdWxZNVB4YU85REVhY1lMRy9hU1YyOHF6?=
+ =?utf-8?B?eTlNTjRQMHhWUmcxZHgvd3FXenVWcStTOTVRb1NSOG9zSHNycUdvMHE3V3gw?=
+ =?utf-8?B?bXpSdEdNYSt4dDJCSVBkTVRLbkM5SE9CMXlwc3NOK3VaY2R0Q2NYMWtqZnBJ?=
+ =?utf-8?B?WXI1N2tZQmRGYmlsRXVJdk1mN1h4eHRmV2lMdGptRVI4MVJPMjU1enlYNHlP?=
+ =?utf-8?B?N3lvaC9ZZVp1N0VBQ2pYZTQwdVRZaStoZFRKMGRxb2c3Vi9aWHFtMUlHUXNh?=
+ =?utf-8?B?eFhGK2Z0akd5YS9SbzAyYjc2dkJRMVg0UFZnS1ZINGh4dHVZdnI3OE4wNzdV?=
+ =?utf-8?B?SFZ4c1JPRVJyY25kT0ttQ01HNjdPYnUvNlVWeUthdENTYXp6dFhsMDFQdnkx?=
+ =?utf-8?B?My9hTEhSNW5HSGpuZU1peUEwM0Y2N2FYVlJaNllkdk5sL3hMSjhINjVzelo0?=
+ =?utf-8?B?RjhRMDl2a1JxUkcxUWZsUzZYdmNnTkYvckJKNVA1eERFcy92RjRlUUg2c3kz?=
+ =?utf-8?B?dHB3U0h2L2MrYU03MEYrWVpRL1NtcElsSi9JZlJsVmljSUp0TFBGVnB3WGxa?=
+ =?utf-8?B?cXN2UzdLdC9JZW1EMGprV29lK1J1UEIzcG1TZHc3N2pYb0JVMy9seUhzQURJ?=
+ =?utf-8?B?Sk1tUjNwSlRObmJoOTUxK2s5OTZTblQ2eS93Z29ranhqV2tDQ0lRZ3MrbGlM?=
+ =?utf-8?B?S3g3OENqVDVWaTM4dmowRFYzSndHb3dLc2h6SitNZUhZTUxYTmlPcU5MNld4?=
+ =?utf-8?B?VGJ6dzFaZG1XYzdISlNwcE9zTHl1SytZeGw0aGlqSlZKVEgyMi94ZndXRHlv?=
+ =?utf-8?B?Z3RlZFBRRzcvN2twdXdBYzZ5a0JWYUpWK3BEVXRnOWFybVhadk5iM3orS2R2?=
+ =?utf-8?B?aDJFdDNEWnMrbE4wc0VreVI2TWhJNkh0T2xTMGZhd0wxbHNFNEtaeEYrYXcx?=
+ =?utf-8?B?SE1Td2E1YWRBY2hheno0eENub01FUk5CVnhXSzZXaDJaUnhheEhobC9Id1pz?=
+ =?utf-8?B?SU8yR1UxMytLZEVER2RtTndJUnhNMjg3RGZ6bkNnQlBrSzFMVnh2VlkrOEhF?=
+ =?utf-8?B?aHZOT09nMDNFem1LZzJvcUxvQWxmWmpWZkJhYVZWaXhPaUR5ZHluUTRoUlk2?=
+ =?utf-8?B?R2I5ZFhKam5rcTdlbE5wOG1CblQzVTFZcHI2RFBoZ0RSaks4NFdJSmlIM2NY?=
+ =?utf-8?B?Vk9jYVR0K2VGSDgyaGcvVVk1UDlyUGpYcGZZbnNwQkhEU1ZMWStNVll0TXkx?=
+ =?utf-8?B?TVRURW5DeTl6cDcvci9MS3V2Nmk3UStFNDBONm12TnRKUVFUR3RNMk93a3Vh?=
+ =?utf-8?B?cHc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0BB4263FAC587E45AE71EA7D05DEBFF6@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAZP264MB2991.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14dd3c6d-66b9-4f46-bf52-08dc540b525b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Apr 2024 18:24:38.2786
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2/+gjQlVIeqVhQTzhWTpvhAOQ9V4tquTCTG0OdXGQzYFnweMOX4dfyzQZgN4OZJJkXVDmrNEToYR4bnqn6MZG/61YJ81tvHBdG6o87SMAYM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1750
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,204 +135,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux
- Team <linux-imx@nxp.com>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma
- star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt
- \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy
- Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Apr 3, 2024 at 10:21 AM EEST, David Gstir wrote:
-> Update the documentation for trusted and encrypted KEYS with DCP as new
-> trust source:
->
-> - Describe security properties of DCP trust source
-> - Describe key usage
-> - Document blob format
->
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  .../security/keys/trusted-encrypted.rst       | 53 +++++++++++++++++++
->  security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
->  2 files changed, 72 insertions(+)
->
-> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Document=
-ation/security/keys/trusted-encrypted.rst
-> index e989b9802f92..f4d7e162d5e4 100644
-> --- a/Documentation/security/keys/trusted-encrypted.rst
-> +++ b/Documentation/security/keys/trusted-encrypted.rst
-> @@ -42,6 +42,14 @@ safe.
->           randomly generated and fused into each SoC at manufacturing tim=
-e.
->           Otherwise, a common fixed test key is used instead.
-> =20
-> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs=
-)
-> +
-> +         Rooted to a one-time programmable key (OTP) that is generally b=
-urnt
-> +         in the on-chip fuses and is accessible to the DCP encryption en=
-gine only.
-> +         DCP provides two keys that can be used as root of trust: the OT=
-P key
-> +         and the UNIQUE key. Default is to use the UNIQUE key, but selec=
-ting
-> +         the OTP key can be done via a module parameter (dcp_use_otp_key=
-).
-> +
->    *  Execution isolation
-> =20
->       (1) TPM
-> @@ -57,6 +65,12 @@ safe.
-> =20
->           Fixed set of operations running in isolated execution environme=
-nt.
-> =20
-> +     (4) DCP
-> +
-> +         Fixed set of cryptographic operations running in isolated execu=
-tion
-> +         environment. Only basic blob key encryption is executed there.
-> +         The actual key sealing/unsealing is done on main processor/kern=
-el space.
-> +
->    * Optional binding to platform integrity state
-> =20
->       (1) TPM
-> @@ -79,6 +93,11 @@ safe.
->           Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
->           for platform integrity.
-> =20
-> +     (4) DCP
-> +
-> +         Relies on Secure/Trusted boot process (called HAB by vendor) fo=
-r
-> +         platform integrity.
-> +
->    *  Interfaces and APIs
-> =20
->       (1) TPM
-> @@ -94,6 +113,11 @@ safe.
-> =20
->           Interface is specific to silicon vendor.
-> =20
-> +     (4) DCP
-> +
-> +         Vendor-specific API that is implemented as part of the DCP cryp=
-to driver in
-> +         ``drivers/crypto/mxs-dcp.c``.
-> +
->    *  Threat model
-> =20
->       The strength and appropriateness of a particular trust source for a=
- given
-> @@ -129,6 +153,13 @@ selected trust source:
->       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the devic=
-e
->       is probed.
-> =20
-> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-> +
-> +     The DCP hardware device itself does not provide a dedicated RNG int=
-erface,
-> +     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL =
-do have
-> +     a dedicated hardware RNG that is independent from DCP which can be =
-enabled
-> +     to back the kernel RNG.
-> +
->  Users may override this by specifying ``trusted.rng=3Dkernel`` on the ke=
-rnel
->  command-line to override the used RNG with the kernel's random number po=
-ol.
-> =20
-> @@ -231,6 +262,19 @@ Usage::
->  CAAM-specific format.  The key length for new keys is always in bytes.
->  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> =20
-> +Trusted Keys usage: DCP
-> +-----------------------
-> +
-> +Usage::
-> +
-> +    keyctl add trusted name "new keylen" ring
-> +    keyctl add trusted name "load hex_blob" ring
-> +    keyctl print keyid
-> +
-> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in =
-format
-> +specific to this DCP key-blob implementation.  The key length for new ke=
-ys is
-> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> +
->  Encrypted Keys usage
->  --------------------
-> =20
-> @@ -426,3 +470,12 @@ string length.
->  privkey is the binary representation of TPM2B_PUBLIC excluding the
->  initial TPM2B header which can be reconstructed from the ASN.1 octed
->  string length.
-> +
-> +DCP Blob Format
-> +---------------
-> +
-> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-> +   :doc: dcp blob format
-> +
-> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-> +   :identifiers: struct dcp_blob_fmt
-> diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/tru=
-sted-keys/trusted_dcp.c
-> index 16c44aafeab3..b5f81a05be36 100644
-> --- a/security/keys/trusted-keys/trusted_dcp.c
-> +++ b/security/keys/trusted-keys/trusted_dcp.c
-> @@ -19,6 +19,25 @@
->  #define DCP_BLOB_VERSION 1
->  #define DCP_BLOB_AUTHLEN 16
-> =20
-> +/**
-> + * DOC: dcp blob format
-> + *
-> + * The Data Co-Processor (DCP) provides hardware-bound AES keys using it=
-s
-> + * AES encryption engine only. It does not provide direct key sealing/un=
-sealing.
-> + * To make DCP hardware encryption keys usable as trust source, we defin=
-e
-> + * our own custom format that uses a hardware-bound key to secure the se=
-aling
-> + * key stored in the key blob.
-> + *
-> + * Whenever a new trusted key using DCP is generated, we generate a rand=
-om 128-bit
-> + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are us=
-ed to
-> + * encrypt the trusted key payload using AES-128-GCM.
-> + *
-> + * The BEK itself is encrypted using the hardware-bound key using the DC=
-P's AES
-> + * encryption engine with AES-128-ECB. The encrypted BEK, generated nonc=
-e,
-> + * BEK-encrypted payload and authentication tag make up the blob format =
-together
-> + * with a version number, payload length and authentication tag.
-> + */
-> +
->  /**
->   * struct dcp_blob_fmt - DCP BLOB format.
->   *
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-I can only test that this does not break a machine without the
-hardware feature.
-
-Is there anyone who could possibly peer test these patches?
-
-BR, Jarkko
+DQoNCkxlIDI3LzAzLzIwMjQgw6AgMTc6NTcsIEphc29uIEd1bnRob3JwZSBhIMOpY3JpdMKgOg0K
+PiBPbiBXZWQsIE1hciAyNywgMjAyNCBhdCAwOTo1ODozNUFNICswMDAwLCBDaHJpc3RvcGhlIExl
+cm95IHdyb3RlOg0KPj4+IEp1c3QgZ2VuZXJhbCByZW1hcmtzIG9uIHRoZSBvbmVzIHdpdGggaHVn
+ZSBwYWdlczoNCj4+Pg0KPj4+ICAgIGhhc2ggNjRrIGFuZCBodWdlcGFnZSAxNk0vMTZHDQo+Pj4g
+ICAgcmFkaXggNjRrL3JhZGl4IGh1Z2VwYWdlIDJNLzFHDQo+Pj4gICAgcmFkaXggNGsvcmFkaXgg
+aHVnZXBhZ2UgMk0vMUcNCj4+PiAgICBub2hhc2ggMzINCj4+PiAgICAgLSBJIHRoaW5rIHRoaXMg
+aXMganVzdCBhIG5vcm1hbCB4ODYgbGlrZSBzY2hlbWU/IFBNRC9QVUQgY2FuIGJlIGENCj4+PiAg
+ICAgICBsZWFmIHdpdGggdGhlIHNhbWUgc2l6ZSBhcyBhIG5leHQgbGV2ZWwgdGFibGUuDQo+Pj4N
+Cj4+PiAgICAgICBEbyBhbnkgb2YgdGhlc2UgY2FzZXMgbmVlZCB0byBrbm93IHRoZSBoaWdoZXIg
+bGV2ZWwgdG8gcGFyc2UgdGhlDQo+Pj4gICAgICAgbG93ZXI/IGVnIGlzIHRoZXJlIGEgMk0gYml0
+IGluIHRoZSBQVUQgaW5kaWNhdGluZyB0aGF0IHRoZSBQTUQNCj4+PiAgICAgICBpcyBhIHRhYmxl
+IG9mIDJNIGxlYWZzIG9yIGRvZXMgZWFjaCBQTUQgZW50cnkgaGF2ZSBhIGJpdA0KPj4+ICAgICAg
+IGluZGljYXRpbmcgaXQgaXMgYSBsZWFmPw0KPj4NCj4+IEZvciBoYXNoIGFuZCByYWRpeCB0aGVy
+ZSBpcyBhIGJpdCB0aGF0IHRlbGxzIGl0IGlzIGxlYWYgKF9QQUdFX1BURSkNCj4+DQo+PiBGb3Ig
+bm9oYXNoMzIvZTUwMCBJIHRoaW5rIHRoZSBkcmF3aW5nIGlzIG5vdCBmdWxsIHJpZ2h0LCB0aGVy
+ZSBpcyBhIGh1Z2UNCj4+IHBhZ2UgZGlyZWN0b3J5IChodWdlcGQpIHdpdGggYSBzaW5nbGUgZW50
+cnkuIEkgdGhpbmsgaXQgc2hvdWxkIGJlDQo+PiBwb3NzaWJsZSB0byBjaGFuZ2UgaXQgdG8gYSBs
+ZWFmIGVudHJ5LCBpdCBzZWVtcyB3ZSBoYXZlIGJpdCBfUEFHRV9TVzENCj4+IGF2YWlsYWJsZSBp
+biB0aGUgUFRFLg0KPiANCj4gSXQgc291bmRzIHRvIG1lIGxpa2UgUFBDIGJyZWFrcyBkb3duIGlu
+dG8gb25seSBhIGNvdXBsZSBmdW5kYW1lbnRhbA0KPiBiZWhhdmlvcnMNCj4gICAtIHg4NiBsaWtl
+IGxlYWYgaW4gbWFueSBwYWdlIGxldmVscy4gVXNlIHRoZSBwZ2QvcHVkL3BtZF9sZWFmKCkgYW5k
+DQo+ICAgICByZWxhdGVkIHRvIGltcGxlbWVudCBpdA0KPiAgIC0gQVJNIGxpa2UgY29udGlnIFBU
+RSB3aXRoaW4gYSBzaW5nbGUgcGFnZSB0YWJsZSBsZXZlbC4gVXNlIHRoZQ0KPiAgICAgY29udGln
+IHN1dGZmIHRvIGltcGxlbWVudCBpdA0KPiAgIC0gQ29udGlnIFBURSBhY3Jvc3MgdHdvIHBhZ2Ug
+dGFibGUgbGV2ZWxzIHdpdGggYSBiaXQgaW4gdGhlDQo+ICAgICBQTUQuIE5lZWRzIG5ldyBzdXBw
+b3J0IGxpa2UgeW91IHNob3dlZA0KPiAgIC0gUGFnZSB0YWJsZSBsZXZlbHMgd2l0aCBhIHZhcmlh
+YmxlIHBhZ2Ugc2l6ZS4gSWUgYSBQVUQgY2FuIHBvaW50IHRvDQo+ICAgICBhIGRpcmVjdG9yeSBv
+ZiA4IHBhZ2VzIG9yIDUxMiBwYWdlcyBvZiBkaWZmZXJlbnQgc2l6ZS4gUHJvYmJhbHkNCj4gICAg
+IG5lZWRzIHNvbWUgbmV3IGNvcmUgc3VwcG9ydCwgYnV0IEkgdGhpbmsgeW91ciBjaGFuZ2VzIHRv
+IHRoZQ0KPiAgICAgKl9vZmZzZXQgZ28gYSBsb25nIHdheSBhbHJlYWR5Lg0KPiANCj4+Pg0KPj4+
+ICAgIGhhc2ggNGsgYW5kIGh1Z2VwYWdlIDE2TS8xNkcNCj4+PiAgICBub2hhc2ggNjQNCj4+PiAg
+ICAgLSBIb3cgZG9lcyB0aGlzIHdvcms/IEkgZ3Vlc3Mgc2luY2UgOHh4IGV4cGxpY2l0bHkgY2Fs
+bHMgb3V0DQo+Pj4gICAgICAgY29uc2VjdXRpdmUgdGhpcyBpcyBhY3R1YWxseSB0aGUgcGdkIGNh
+biBwb2ludCB0byA1MTIgMjU2TQ0KPj4+ICAgICAgIGVudHJpZXMgb3IgOCAxNkcgZW50cmllcz8g
+SWUgdGhlIHRhYmxlIHNpemUgYXQgZWFjaCBsZXZlbCBpcw0KPj4+ICAgICAgIHZhcmFibGU/IE9y
+IGlzIGl0IHRoZSBzYW1lIGFuZCB0aGUgdGFibGUgc2l6ZSBpcyBzdGlsbCA1MTIgYW5kDQo+Pj4g
+ICAgICAgZWFjaCAxNkcgZW50cnkgaXMgcmVwbGljYXRlZCA2NCB0aW1lcz8NCj4+DQo+PiBGb3Ig
+dGhvc2UgaXQgaXMgdXNpbmcgdGhlIGh1Z2UgcGFnZSBkaXJlY3RvcnkgKGh1Z2VwZCkgd2hpY2gg
+Y2FuIGJlDQo+PiBob29rZWQgYXQgYW55IGxldmVsIGFuZCBpcyBhIGRpcmVjdG9yeSBvZiBodWdl
+IHBhZ2VzIG9uIGl0cyBvd24uIFRoZXJlDQo+PiBpcyBubyBjb25zZWN1dGl2ZSBlbnRyaWVzIGlu
+dm9sdmVkIGhlcmUgSSB0aGluaywgYWxsdGhvdWdoIEknbSBub3QNCj4+IGNvbXBsZXRlbHkgc3Vy
+ZS4NCj4+DQo+PiBGb3IgaGFzaDRrIEknbSBub3Qgc3VyZSBob3cgaXQgd29ya3MsIHRoaXMgd2Fz
+IGNoYW5nZWQgYnkgY29tbWl0DQo+PiBlMmIzZDIwMmQxZGIgKCJwb3dlcnBjOiBTd2l0Y2ggMTZH
+QiBhbmQgMTZNQiBleHBsaWNpdCBodWdlcGFnZXMgdG8gYQ0KPj4gZGlmZmVyZW50IHBhZ2UgdGFi
+bGUgZm9ybWF0IikNCj4+DQo+PiBGb3IgdGhlIG5vaGFzaC82NCwgYSBQR0QgZW50cnkgcG9pbnRz
+IGVpdGhlciB0byBhIHJlZ3VsYXIgUFVEIGRpcmVjdG9yeQ0KPj4gb3IgdG8gYSBIVUdFUEQgZGly
+ZWN0b3J5LiBUaGUgc2l6ZSBvZiB0aGUgSFVHRVBEIGRpcmVjdG9yeSBpcyBlbmNvZGVkIGluDQo+
+PiB0aGUgNiBsb3dlciBiaXRzIG9mIHRoZSBQR0QgZW50cnkuDQo+IA0KPiBJZiBpdCBpcyBhIHNv
+ZnR3YXJlIHdhbGtlciB0aGVyZSBtaWdodCBiZSB2YWx1ZSBpbiBqdXN0IGFsaWduaW5nIHRvDQo+
+IHRoZSBjb250aWcgcHRlIHNjaGVtZSBpbiBhbGwgbGV2ZWxzIGFuZCBmb3JnZXR0aW5nIGFib3V0
+IHRoZSB2YXJpYWJsZQ0KPiBzaXplIHBhZ2UgdGFibGUgbGV2ZWxzLiBUaGF0IHF1YXJ0ZXIgcGFn
+ZSBzdHVmZiBpcyBhIFBJVEEgdG8gbWFuYWdlDQo+IHRoZSBtZW1vcnkgYWxsb2NhdGlvbiBmb3Ig
+b24gUFBDIGFueWhvdy4uDQoNCkxvb2tpbmcgb25lIHN0ZXAgZnVydGhlciwgaW50byBub2hhc2gv
+MzIsIEkgc2VlIGEgY2hhbGxlbmdlOiBvbiB0aGF0IA0KcGxhdGZvcm0sIGEgUFRFIGlzIDY0IGJp
+dHMgd2hpbGUgYSBQR0QvUE1EIGVudHJ5IGlzIDMyIGJpdHMuIEl0IGlzIA0KdGhlcmVmb3JlIG5v
+dCBwb3NzaWJsZSBhcyBzdWNoIHRvIGRvIFBNRCBsZWFmIG9yIGNvbnQtUE1EIGxlYWYuDQoNCkkg
+c2VlIHR3byBwb3NzaWJsZSBzb2x1dGlvbnM6DQotIERvdWJsZSB0aGUgc2l6ZSBvZiBQR0QvUE1E
+IGVudHJpZXMsIGJ1dCB0aGVuIHdlIGxvb3NlIGF0b21pY2l0eSB3aGVuIA0KcmVhZGluZyBvciB3
+cml0aW5nIGFuIGVudHJ5LCBjb3VsZCB0aGlzIGJlIGEgcHJvYmxlbSA/DQotIERvIGFzIGZvciB0
+aGUgOHh4LCBpZSBnbyBkb3duIHRvIFBURXMgZXZlbiBmb3IgcGFnZXMgZ3JlYXRlciB0aGFuIDRN
+Lg0KDQpBbnkgdGhvdWdodCA/DQoNCkNocmlzdG9waGUNCg==
