@@ -2,80 +2,117 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2932897118
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 15:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E8B897132
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 15:34:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Crt9rjJH;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RoKipFmf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8lyl5SpKz3vwJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 00:31:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8m1s6Mnwz3wB1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 00:34:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Crt9rjJH;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RoKipFmf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=bagasdotme@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e88::70b; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2070b.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e88::70b])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8lpD4gJ1z3wFh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 00:24:20 +1100 (AEDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1e2178b2cf2so49045415ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 06:24:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712150659; x=1712755459; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rQsFbEjOTqJq35XSrf9t5tKMfoIw0aZp1GIU7FAGSpw=;
-        b=Crt9rjJHBM2tpWj48fTHs5jVZBnuxWntK223bfzxV3CVXbMf3hu2lACz9pAT1zhzGZ
-         xpjbPtTCDz6SM0SB8zFoYA+Qiae5qVvmyrn96+/Bf3kfTh2ADaVjsVafq9Jsojs21z3K
-         Z5W2AM1O8OPD5vkElGAUyL+3vFr+hjZfPyYeL7RkWdbmNDEEclmyt2621REb2XJ2qBgW
-         Lz5jsP5IaWpDyfsmoADTilzKMeJQi+RI17p61iilz8FP7ROM5jc0vMHeGMf6Fn/aJQhq
-         aDHPdhmK5LD9NNmmr/kAw7yp8r8lluyCSxquVRkYvOi+SfWm66z1AZWxknb7hxYFCA8w
-         lZIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712150659; x=1712755459;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rQsFbEjOTqJq35XSrf9t5tKMfoIw0aZp1GIU7FAGSpw=;
-        b=oLrlT2vh/G9xtTjgEOhakGCbFH/KoTrnKxTVRCFba/n+P8BcfpyOcIkIbdmPxOwW/s
-         u6v6pC4n2x6tL/4qL1mh9hPL3uVVVyVGMEs7FosvY6ERmaZK53OOuMrBoaCYQZymGfMz
-         WoqlOMapx7SvfEGmEd9oRLhFOfAc8Xdp3GM5GmsifN6fYkzwh4DPGA5S0DBa9snSI4Tn
-         LGCXhBZa9xXtl32/nilpM4pI0iwQNINvvcwaRFYc8wOvQhw3WDtHefUblRa40A5Yx/xR
-         p3kt/h45HOG7NLQnQjURPQzccZmSuR44UOgCYauZOXHxDhOJIpLKwO2issrSJmkaH+gv
-         BQ1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ9kN8iI6QHza4zULtKA4kyEZq3sM2cCwsrJE0Ez1w61l5YNCF6fXcS7soI+IEgqBOnMLUl/fMI/3ZWA7cLQURgUqDMLHXkewaEFOHLg==
-X-Gm-Message-State: AOJu0YxS9AK2BUyS8aiQlggA3+xEncqszsh2EIP5Fa5rFcpNtu5Q1Vli
-	3OYF1tOOB3Ic0Wm+8kr65ox4t1PJXHYoIHLiVqPLhmFnQWqge3+F
-X-Google-Smtp-Source: AGHT+IFatdNBQSb3VrVYeBX6Z2JShOnIrwB6FOsdyOnRBQXn1pgGepQ/A/buywtE61oYlMx80pUAVQ==
-X-Received: by 2002:a17:902:c94f:b0:1e0:a784:f965 with SMTP id i15-20020a170902c94f00b001e0a784f965mr18876173pla.65.1712150658416;
-        Wed, 03 Apr 2024 06:24:18 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id i15-20020a170902c94f00b001dd02f4c2casm13275916pla.164.2024.04.03.06.24.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 06:24:17 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 9178318108E2D; Wed,  3 Apr 2024 20:24:15 +0700 (WIB)
-Date: Wed, 3 Apr 2024 20:24:15 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: David Gstir <david@sigma-star.at>, Mimi Zohar <zohar@linux.ibm.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new trust
- source
-Message-ID: <Zg1YfyhxO8BwtEfB@archie.me>
-References: <20240403072131.54935-1-david@sigma-star.at>
- <20240403072131.54935-7-david@sigma-star.at>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="naAkpeAgH+6KHC1j"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8m155Zvrz3vcw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 00:33:43 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZZDfxyua8jHTIC6rx9rwJAxkDZsij7jg5P9ZYqHA6RWINu/uBCgJkOHLkOcIxKtAUD4mhfUOn1MQ7zYObgNB6ulxRyX4WDHe/zS1YEFDROsIQYREhPVQaPzMPGGMcVlr8ufK9sMbDddrzBthEq7wciRYOHJ/GsR5heEd20EuoT4Gc4bqayKT0wpn6rtoQq4zX3JNVss9XgxtBJIZHd/aIzqGFDhCt9jaalAUtW8tteUS3VHjk3mJlxu3D0dwJlelzJa5v/7uSI/wvEWmbSnI1pV6YkKABDYoDcSp/yoa+0AQ23RlCXWfa0Ya7rIfR1uHmKxAzt1xM1pHAFkpR9D97g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oKLOv5tMIA7YLZhgO/SWJoz0Qz1dX0FuunDsb/mfeNw=;
+ b=bwr+rfuVpO9/nTp37GGvBJ56zHHNYx4GXWDQqKVG3ByVu/sTIMhKXSDX3Qvs0XBnTDxCA3k/63lK1rKDhLZwcRYXMC7ekCsPq5QuZIWxAt3XcAFxF0ccCBedU87OOo9h0SvpUUYDZkinaTzs3mmwFnNWaenVi6LzZolX9GT/xyoaW6YGYgW+Fz1V2YXbsjhuoWLZEexBk0NyJI4KytgKJXer1rPXvXbhid72HziXd4tzqMxEl0Lgy/uRhx+i+/xjnDcSzH75TFBt1HlyY9Fk7Yh6956BoA93NCwrU/qVoNduvzhodOnwi5ZCeVKP25z5Ly2CjGUUywKK/WngoOrMgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oKLOv5tMIA7YLZhgO/SWJoz0Qz1dX0FuunDsb/mfeNw=;
+ b=RoKipFmfp9jtqbzNTBT+6/cLBLszIUAV9iMP9MRte1/rb9YaK5PHb+blEUxIZVIHMDPI0eHj5zu0okM68Idsm3Pu0p1wHl4qOHCMSz12fufSW6P4zHa2E2irm+f0NMmxZIFvqxoi33iIgX3QIQsAQpzK0b+WjaRoboPOS8V9GDYQO4FFDi8F2dCQ/bfZkmwyP0XcK99ztxTnhTwrweZni12jycwPG6OMOIIBAXtozIIzh3DHlZoXdHUGzu2SJfMUz7pzxyhJ1tCaQtnYmexvUuUIx1bQYcm5TcUprF3LhV04DI91ncll9vlG5r0BlUv2JqrBhgu6SdZUa5I0Em6e4A==
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
+ by SJ0PR12MB6733.namprd12.prod.outlook.com (2603:10b6:a03:477::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Wed, 3 Apr
+ 2024 13:33:23 +0000
+Received: from DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
+ ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7409.042; Wed, 3 Apr 2024
+ 13:33:23 +0000
+Date: Wed, 3 Apr 2024 10:33:22 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 05/13] mm/arch: Provide pud_pfn() fallback
+Message-ID: <20240403133322.GD1723999@nvidia.com>
+References: <20240327152332.950956-1-peterx@redhat.com>
+ <20240327152332.950956-6-peterx@redhat.com>
+ <20240402190549.GA706730@dev-arch.thelio-3990X>
+ <ZgyKLLVZ4vN56uZE@x1n>
+ <20240402225320.GU946323@nvidia.com>
+ <ZgyWUYVdUsAiXCC4@xz-m1.local>
+ <20240403120841.GB1723999@nvidia.com>
+ <3da59746-8acc-4a91-a19d-79a37ac75a8e@csgroup.eu>
+ <20240403130752.GC1723999@nvidia.com>
+ <4b56356e-ac10-4f40-a4c3-7672d6e4a4e5@csgroup.eu>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240403072131.54935-7-david@sigma-star.at>
+In-Reply-To: <4b56356e-ac10-4f40-a4c3-7672d6e4a4e5@csgroup.eu>
+X-ClientProxiedBy: SA9P221CA0008.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:806:25::13) To DM6PR12MB3849.namprd12.prod.outlook.com
+ (2603:10b6:5:1c7::26)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|SJ0PR12MB6733:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	kRL9J8thnfwor5HdOUa7p4yWumKXuEJ2Zx/nEOfAu7eZmhZQbtYSYgivUHRmN7NPVbAbdzl5zSrAZxl78rbXdA3W6yGsh6RTbgIVsLt24ygV/6uIb/rmieQMk8fv5Hwt+uuGpqp84oYXTX4+iU1+wAcbJZGBh8a+r65qZLRYCohk0dLhVGkLiWvOD6/Gvwy+aFZYIxjQ99UTHTYeZub3iP2i8F/PMRUinHC59yoopuZ1FvAfY3Vfv2xJnVpRGkq1Qp60XeldHsaFB1ovppLt9bipnbpqcC94fWs4LfJkyVKFeFupypDHKGX7A4oUYwVxgcMGrTZSwvJudEWOuCC8vtyIeuY8N0XcUI8zHYlFA2Vsx8J3sWCrfClqtvYDWF2TWLPJ/KxE058khRv9zGjWFTRDmzp2cNWIQEqdI41W+pr+hFqXFHTsl8KyqwMQTMGO2SjeaIQ30xJpDtO48v8N/ulUnjbGafIIzxOg/NQ9frwxM1BpN8kiFLzr04eTK9BB97/2apll3b/52vTlIOMJqjb+zPMn/cXggJdTQWX0rSp/u+h0E71zOhDsx2kvEUc02iudNgZinBW7ewtLnY9KxL/P4Ez26AuLHJCItkwjvUI5B7Nw/630Yp+DWx1kCQZsPr7KlCLkd4oXl+WJZ0sGuXXQL2VypqvFGUQ43GnI+RA=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?xcBv7YUxNnJvSEFVCMkOWjjLygPXZUW+DzdYQcnV+Dk6FL3B4XWJy++Khrxf?=
+ =?us-ascii?Q?ErFKtPYjCmy56C6bgmd3owi0MLQ+9DIL/D9hX5AH2sKKBOw4luGhIgx7Qmfh?=
+ =?us-ascii?Q?ZdWp6ls5cd5tf/grSPMILoSWunuJFCxAvdxJOyPeh4+aSw4sMmZRrL1Awgtn?=
+ =?us-ascii?Q?0qKJCYJeGq4D9X5zBT2MHhIyPSaXekURh5Kgjcs1NV8VMw+mMqs+LdpLsFT5?=
+ =?us-ascii?Q?s2o23p43AzSSjRpcQU56UPtM337TGn86m6TFlwCkUtKou/tTqjM1wysdZRkM?=
+ =?us-ascii?Q?fhoYBugN7hDj6LbIZh+FU6zjAQMMLE4hxTeOxw1qP23w0wfytyh+nFrXCJXf?=
+ =?us-ascii?Q?TopsdFlBYsuG+21pyTH5C1HMKmePd9YsVNZh1Qunt+eQp5ctnkaYYQGKIOOf?=
+ =?us-ascii?Q?BNPRrRzxx0atndv+XBgF+py6x8F16XI07pRjmrU4UDqMXUWOG8M6dXQ7ZdzN?=
+ =?us-ascii?Q?RF/LqF+k1uasvKKQhAd7F6vj0/y17s+eedKdivqZRfOBPUPKd9jr3+FtyK+O?=
+ =?us-ascii?Q?mS7TOEq9mdgQ/q0Z7D1yU7/iG2h7z6N7H2DDLJ65YujJpdI2vNJNM+f7gspc?=
+ =?us-ascii?Q?btUY7U0k2zzs2SLcp+uTMUdpftvn0pA0cTbSIWUntiBhAHLPbMoEVVEuHmPC?=
+ =?us-ascii?Q?7ZvnZSPsUr/Kkh89ReOYuDFisChxh5KqOkrUbPcbLCGQsWgAqJe7UFUu7tHN?=
+ =?us-ascii?Q?QrxbHCCs4wfKyZsfToyKvCx0LWhnSW1KzrpxDUNGBnKJZV/g43aecjBrLTka?=
+ =?us-ascii?Q?pCf8rJ/n6zfVNLRAJAxNwVrIQvMHrQFAe6sanHmddoRBrSXzso593CuWy4eA?=
+ =?us-ascii?Q?CV3JlKK388m3Xnjlwo22xVlmen+jvFfgAvgJthYpmLhOK5pU+knhrF8AFDpt?=
+ =?us-ascii?Q?krJZxaULYlS2jhkh+25/J7UFmnDDrvu4HeAhePngt6OKv8f9DlbjMqCJ4moO?=
+ =?us-ascii?Q?zS4V7t7zMWz6ZvHlDd/jMXkaudMms4bp2zyMgjpsI6vAm/lJEjXpv2mI1u6z?=
+ =?us-ascii?Q?SIg/h6hJay7w6R1pLkz6ZyBhlpC96P7gW6poFjkmhkFPJcXIxH1HEz7sBQox?=
+ =?us-ascii?Q?Klr1N73f3k4VINn5rxyF8BkQT0B4ZwsqGFK0DbkvuzbG7wTK7uHfydUUjKu6?=
+ =?us-ascii?Q?tGvvfhoQfOSKcOuFW3u9X3OKFKjQYvnewWr9WU5hMl2I3D2Xlw8GpPEHAWEw?=
+ =?us-ascii?Q?IDF0NZbVlefVj2OQJ595/GCz9wj+9QiU0mP5gU6pr0Qtyg5IJMN8XZgi7AQD?=
+ =?us-ascii?Q?dQGfUQSl9pxOf/mBPOqeW3EBZozpOiZuyPVYKGohX1FdKRxOO+85xZbqo14a?=
+ =?us-ascii?Q?e9U7o/faH3/sdKyhODa1y/CF2xQH34QZYxBjL9BYmUzvbtul4qVa+Tir67GA?=
+ =?us-ascii?Q?0hmLjoIIp3AK5o8IlqPd25FU4t2GmnXmxwyithfKrkTYr/hH5jPilzces5q/?=
+ =?us-ascii?Q?Wjig231txkl60YWZDqGLi5lbin8LoLCTQ9bdX2F9g5emMzRu+GgWSf71tl0o?=
+ =?us-ascii?Q?rtUY6OpH223msQyiMMsWLuu2nKuoKknni5kiEc/MR1bRcepWYdDtuAt/dfsf?=
+ =?us-ascii?Q?pnF7BejALRcCL9OHZaxL6DhVfONM+YBYUM6NkDXM?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d988ea5-e245-486a-93eb-08dc53e2a274
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2024 13:33:23.4534
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JrL5MlnmT3z6hxv0tdPgUiyeUe5lUXFiDsrGMtrbXNgCuXXaiwqyXjaTCtCp1MsD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6733
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,195 +124,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.d
- e>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, WANG Xuerui <kernel@xen0n.name>, Andrea Arcangeli <aarcange@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, Nathan Chancellor <nathan@kernel.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "Kirill A . Shutemov" <kirill@shutemov.name>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, "linux-kernel@vger.kernel.
+ org" <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Apr 03, 2024 at 01:17:06PM +0000, Christophe Leroy wrote:
 
---naAkpeAgH+6KHC1j
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > That commit makes it sounds like the arch supports huge PUD's through
+> > the hugepte mechanism - it says a LTP test failed so something
+> > populated a huge PUD at least??
+> 
+> Not sure, I more see it just like a copy/paste of commit 501b81046701 
+> ("mips: mm: add p?d_leaf() definitions").
+> 
+> The commit message says that the test failed because pmd_leaf() is 
+> missing, it says nothing about PUD.
 
-On Wed, Apr 03, 2024 at 09:21:22AM +0200, David Gstir wrote:
-> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Document=
-ation/security/keys/trusted-encrypted.rst
-> index e989b9802f92..f4d7e162d5e4 100644
-> --- a/Documentation/security/keys/trusted-encrypted.rst
-> +++ b/Documentation/security/keys/trusted-encrypted.rst
-> @@ -42,6 +42,14 @@ safe.
->           randomly generated and fused into each SoC at manufacturing tim=
-e.
->           Otherwise, a common fixed test key is used instead.
-> =20
-> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-> +
-> +         Rooted to a one-time programmable key (OTP) that is generally b=
-urnt
-> +         in the on-chip fuses and is accessible to the DCP encryption en=
-gine only.
-> +         DCP provides two keys that can be used as root of trust: the OT=
-P key
-> +         and the UNIQUE key. Default is to use the UNIQUE key, but selec=
-ting
-> +         the OTP key can be done via a module parameter (dcp_use_otp_key=
-).
-> +
->    *  Execution isolation
-> =20
->       (1) TPM
-> @@ -57,6 +65,12 @@ safe.
-> =20
->           Fixed set of operations running in isolated execution environme=
-nt.
-> =20
-> +     (4) DCP
-> +
-> +         Fixed set of cryptographic operations running in isolated execu=
-tion
-> +         environment. Only basic blob key encryption is executed there.
-> +         The actual key sealing/unsealing is done on main processor/kern=
-el space.
-> +
->    * Optional binding to platform integrity state
-> =20
->       (1) TPM
-> @@ -79,6 +93,11 @@ safe.
->           Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
->           for platform integrity.
-> =20
-> +     (4) DCP
-> +
-> +         Relies on Secure/Trusted boot process (called HAB by vendor) for
-> +         platform integrity.
-> +
->    *  Interfaces and APIs
-> =20
->       (1) TPM
-> @@ -94,6 +113,11 @@ safe.
-> =20
->           Interface is specific to silicon vendor.
-> =20
-> +     (4) DCP
-> +
-> +         Vendor-specific API that is implemented as part of the DCP cryp=
-to driver in
-> +         ``drivers/crypto/mxs-dcp.c``.
-> +
->    *  Threat model
-> =20
->       The strength and appropriateness of a particular trust source for a=
- given
-> @@ -129,6 +153,13 @@ selected trust source:
->       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
->       is probed.
-> =20
-> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-> +
-> +     The DCP hardware device itself does not provide a dedicated RNG int=
-erface,
-> +     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL =
-do have
-> +     a dedicated hardware RNG that is independent from DCP which can be =
-enabled
-> +     to back the kernel RNG.
-> +
->  Users may override this by specifying ``trusted.rng=3Dkernel`` on the ke=
-rnel
->  command-line to override the used RNG with the kernel's random number po=
-ol.
-> =20
-> @@ -231,6 +262,19 @@ Usage::
->  CAAM-specific format.  The key length for new keys is always in bytes.
->  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> =20
-> +Trusted Keys usage: DCP
-> +-----------------------
-> +
-> +Usage::
-> +
-> +    keyctl add trusted name "new keylen" ring
-> +    keyctl add trusted name "load hex_blob" ring
-> +    keyctl print keyid
-> +
-> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in =
-format
-> +specific to this DCP key-blob implementation.  The key length for new ke=
-ys is
-> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> +
->  Encrypted Keys usage
->  --------------------
-> =20
-> @@ -426,3 +470,12 @@ string length.
->  privkey is the binary representation of TPM2B_PUBLIC excluding the
->  initial TPM2B header which can be reconstructed from the ASN.1 octed
->  string length.
-> +
-> +DCP Blob Format
-> +---------------
-> +
-> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-> +   :doc: dcp blob format
-> +
-> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-> +   :identifiers: struct dcp_blob_fmt
-> diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/tru=
-sted-keys/trusted_dcp.c
-> index 16c44aafeab3..b5f81a05be36 100644
-> --- a/security/keys/trusted-keys/trusted_dcp.c
-> +++ b/security/keys/trusted-keys/trusted_dcp.c
-> @@ -19,6 +19,25 @@
->  #define DCP_BLOB_VERSION 1
->  #define DCP_BLOB_AUTHLEN 16
-> =20
-> +/**
-> + * DOC: dcp blob format
-> + *
-> + * The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-> + * AES encryption engine only. It does not provide direct key sealing/un=
-sealing.
-> + * To make DCP hardware encryption keys usable as trust source, we define
-> + * our own custom format that uses a hardware-bound key to secure the se=
-aling
-> + * key stored in the key blob.
-> + *
-> + * Whenever a new trusted key using DCP is generated, we generate a rand=
-om 128-bit
-> + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are us=
-ed to
-> + * encrypt the trusted key payload using AES-128-GCM.
-> + *
-> + * The BEK itself is encrypted using the hardware-bound key using the DC=
-P's AES
-> + * encryption engine with AES-128-ECB. The encrypted BEK, generated nonc=
-e,
-> + * BEK-encrypted payload and authentication tag make up the blob format =
-together
-> + * with a version number, payload length and authentication tag.
-> + */
-> +
->  /**
->   * struct dcp_blob_fmt - DCP BLOB format.
->   *
+AH fair enough, it is probably a C&P then
 
-The doc LGTM, thanks!
-
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---naAkpeAgH+6KHC1j
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZg1YegAKCRD2uYlJVVFO
-oyJuAQCZD3vF43N1Kkz1HmEgp7130tCkVQsyOA9E8/KbWap6iAD/QxxL8dI+KNzG
-9SR+i7e0WhL71RpnBvHq6ovdU/G2iAI=
-=lGz1
------END PGP SIGNATURE-----
-
---naAkpeAgH+6KHC1j--
+Jason
