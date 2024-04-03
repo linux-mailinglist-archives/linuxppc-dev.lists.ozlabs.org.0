@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06519896407
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 07:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FF389640A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 07:31:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BGHuiIW+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pLMpO/3T;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8YJM5Lxmz3dVw
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 16:31:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8YK82F6yz3vXp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 16:31:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BGHuiIW+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pLMpO/3T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b29; helo=mail-yb1-xb29.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2d; helo=mail-yb1-xb2d.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8YHd633fz30hQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 16:30:36 +1100 (AEDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-dc6dcd9124bso5611821276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Apr 2024 22:30:36 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8YHs403vz3cSd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 16:30:49 +1100 (AEDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-dcbd1d4904dso5556293276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Apr 2024 22:30:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712122234; x=1712727034; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1712122246; x=1712727046; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xjRwXgIYbHI7/EpaeeNofMhLW0PpQjYXqswpkTDILa4=;
-        b=BGHuiIW+t9hAguNV/0GemvKN2JOBx6rQcibMPRRtTV4MXYXczc4rHGzquUTfuH5uz5
-         Gw2c1G5zi2SHlH70bUT1BrLXcqWVeXDtAHOEdgEaEnybDZTI+fFJUZdHztOKR6R5LbrS
-         N/5gBVBbkKE+a3SV8+YG/GScYfQmc/JFLitjW5KrQvC9APBfGmaEncK8hdHBULP2wT7v
-         1mxS7CYTbAZ5nWtiRFosD2MKfcWR21IYfI7UTUPB4qNuJecLyUYLGmB35c1Nl4BzrtFO
-         r+arm4daFfGa+53FVxSUsTGNFyj1yZRtKC16oqlMbko4J5y1uIDTvrcXVZqsKGWvS4FP
-         XOgw==
+        bh=0FGC0ogSAewDWnDccn9HyW8lHJXe75+YXBIJHLHFGHI=;
+        b=pLMpO/3TwRtCdJl0+1/tZ+tn0LiXWTOnrPKsoPKfnemEiKZj8BcNnUlowdYatJVZge
+         3SQ0lgQvRkwRQANem0muGmv7Mi2s5wQ8mzZyEd0yfAdpi9RCJxLqarcWiiAR8HiI0cQO
+         SGTb9peiijMoPnpQzMcILqRwIL3nxMltag7l7xTyKhioZNwgNQJyK8MTY55FYd7z6vjo
+         J/w4a0Rg+anuM+V1zOLObe8n0386T5sMZ0jVqgdnQMwKz29gQ+wjF7APrrH61jG5qO21
+         Zjn19WNXSN4M2hYC/yvbUKa9PSQ7EblxSV0wvVcGvixZEHIgcn+JLfUmT6+BR/DnQhpr
+         U0kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712122234; x=1712727034;
+        d=1e100.net; s=20230601; t=1712122246; x=1712727046;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xjRwXgIYbHI7/EpaeeNofMhLW0PpQjYXqswpkTDILa4=;
-        b=RjWY/fS2HROEhmgtjHjHuc52GMVMdY3l1WiDqVfIEB6eiYcHinwOy7NUa2rRJmyOIO
-         GnKHHej9XbryPUfEEdaMzikTwlD/hLKp7fDkgxAjxsokXyNscbg0qp/mGGN19FEjy+HO
-         ao5HV/AptqF4WtOegLin6SOYGWIMMzmEfj7uqA+RqSOASsjUCc6N9efC/R4y0mp3ZRhu
-         AMe/Cwz4uV8qxz+iyKbjHhd9TSyHOaqgbGoxMY/l47omNVHwpkcxnU/lkAUnfrGSnAw3
-         dXrW9vy7OwrHHmM7mBzuB5tUhEJ+mqLJnyDl93zPQYSr1M/7JqtfXskTtQfN28McMu/8
-         GgYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBJRW+jBAirr5F8Jf/fRyKCGAsML57myXZJ4GztsiTgI4QA1C4JV8dys0xhIbywFFQ6o12qbYGs/qlKkihQCKpgWzESczgg2/SYO+Dfw==
-X-Gm-Message-State: AOJu0YzZuiUvsVX9CZtNBnFoaK4tH/mST2Lk5c3wTBoQ9GKlOyUcBtKr
-	rJhtkh4pRsi9jmm5Jal9TB2WkjG0gmS6hAxacix8RjnQmuK7K7a0wrWBBuPLASWUqJQM1peBIos
-	iuw7VE2NvyKEw4Tpa/FM3HsL8dwOpu3jk+I3q
-X-Google-Smtp-Source: AGHT+IHl066AzoRG0Gr5vc7GBxoJormNnixyz6sWIm+hB6NrOtXc39rqcc9VFrh3aZ6js3Cc4KaQDJiExFMSumaxlsk=
-X-Received: by 2002:a05:6902:82:b0:dcc:140a:a71f with SMTP id
- h2-20020a056902008200b00dcc140aa71fmr12187579ybs.60.1712122234350; Tue, 02
- Apr 2024 22:30:34 -0700 (PDT)
+        bh=0FGC0ogSAewDWnDccn9HyW8lHJXe75+YXBIJHLHFGHI=;
+        b=WbqXzxd1C51IZifoc8WOLnWcuv1PoZF8BjO6k6uwFgvhZOQKz3k9UbVM/gWirZFwj6
+         BeAnXDiI4+SndzcjxPGcGI5k9FyycL5LP1712GvzaNsl4pvkJj7Xdo/tOo3mHupcqD6i
+         RgqM8LsdYD/sXut3/TceFDdWPKySYPx/vUp+1PgUgET7ZKVPOO6vvXtTD2WbtuMeESKc
+         6HO/L82FsQXwEr312KOejzY/RpaZyBZPcaCYM9FJgn8U2LNCFeJM5DNCHzzB8QH6ezJa
+         iLcE5tE8Q2WHv/tSadHw3y5+g1fpwhbEm8cGF9bPu0C61A+0lT47lLlVQJ0pq/0RYVgn
+         YSmA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3NRTPBMuQk9zJ4ehO1O7/xthkGa/nTgoqrMnbOMjNAz9sFG/ZLtaH2Cv15JTljF5u5eoGP27hHmnfSQH8VKeDpcxwodO87WAO1O65iw==
+X-Gm-Message-State: AOJu0YyzaefVqW8U6Dc9u+fnbcnrFFVsMgmJ4A/E5HeqDo4QgmPlzRZH
+	jBOOrxwZbloT/Tw8xzfS6b7CZPSPRrxS/yHQqFhm3Itz9QjV2VASXt/qLSSSqQFdH5DYxNJAZHu
+	iolp1hQKLf//IpaQvTXSQs1Wejuk71tLmdOp9
+X-Google-Smtp-Source: AGHT+IERcF+ZJQdvucNfySTOQI0rZqXN5JPmGGJueefxP3/c8KUs6v78wwHnFWFD/9UuBTtutSqFi5LiGSrexLI5jh0=
+X-Received: by 2002:a25:ce10:0:b0:dcc:cadf:3376 with SMTP id
+ x16-20020a25ce10000000b00dcccadf3376mr13231486ybe.18.1712122245862; Tue, 02
+ Apr 2024 22:30:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240402075142.196265-1-wangkefeng.wang@huawei.com>
- <20240402075142.196265-3-wangkefeng.wang@huawei.com> <CAJuCfpGpKup6AOPY08p35S2S+D4ch5XjEB=FM-n9-kU8dZXS5Q@mail.gmail.com>
-In-Reply-To: <CAJuCfpGpKup6AOPY08p35S2S+D4ch5XjEB=FM-n9-kU8dZXS5Q@mail.gmail.com>
+References: <20240402075142.196265-1-wangkefeng.wang@huawei.com> <20240402075142.196265-4-wangkefeng.wang@huawei.com>
+In-Reply-To: <20240402075142.196265-4-wangkefeng.wang@huawei.com>
 From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 2 Apr 2024 22:30:23 -0700
-Message-ID: <CAJuCfpHkrwPp0X65BuYS2SKAkWPJDMNWYPDO+Jr4SmuxoCEsZg@mail.gmail.com>
-Subject: Re: [PATCH 2/7] arm64: mm: accelerate pagefault when VM_FAULT_BADACCESS
+Date: Tue, 2 Apr 2024 22:30:34 -0700
+Message-ID: <CAJuCfpE7txgXZQG=xvzKYtKUs=3V5C9pe7OOzf71BGPfb+Qqxw@mail.gmail.com>
+Subject: Re: [PATCH 3/7] arm: mm: accelerate pagefault when VM_FAULT_BADACCESS
 To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -82,56 +81,40 @@ Cc: x86@kernel.org, linux-s390@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 2, 2024 at 10:19=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
+On Tue, Apr 2, 2024 at 12:53=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
+.com> wrote:
 >
-> On Tue, Apr 2, 2024 at 12:53=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huaw=
-ei.com> wrote:
-> >
-> > The vm_flags of vma already checked under per-VMA lock, if it is a
-> > bad access, directly set fault to VM_FAULT_BADACCESS and handle error,
-> > no need to lock_mm_and_find_vma() and check vm_flags again, the latency
-> > time reduce 34% in lmbench 'lat_sig -P 1 prot lat_sig'.
+> The vm_flags of vma already checked under per-VMA lock, if it is a
+> bad access, directly set fault to VM_FAULT_BADACCESS and handle error,
+> so no need to lock_mm_and_find_vma() and check vm_flags again.
 >
-> The change makes sense to me. Per-VMA lock is enough to keep
-> vma->vm_flags stable, so no need to retry with mmap_lock.
->
-> >
-> > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->
-> > ---
-> >  arch/arm64/mm/fault.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> > index 9bb9f395351a..405f9aa831bd 100644
-> > --- a/arch/arm64/mm/fault.c
-> > +++ b/arch/arm64/mm/fault.c
-> > @@ -572,7 +572,9 @@ static int __kprobes do_page_fault(unsigned long fa=
-r, unsigned long esr,
-> >
-> >         if (!(vma->vm_flags & vm_flags)) {
-> >                 vma_end_read(vma);
-> > -               goto lock_mmap;
-> > +               fault =3D VM_FAULT_BADACCESS;
-> > +               count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
->
-> nit: VMA_LOCK_SUCCESS accounting here seems correct to me but
-> unrelated to the main change. Either splitting into a separate patch
-> or mentioning this additional fixup in the changelog would be helpful.
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-The above nit applies to all the patches after this one, so I won't
-comment on each one separately. If you decide to split or adjust the
-changelog please do that for each patch.
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 
+
+
+> ---
+>  arch/arm/mm/fault.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> > +               goto done;
-> >         }
-> >         fault =3D handle_mm_fault(vma, addr, mm_flags | FAULT_FLAG_VMA_=
-LOCK, regs);
-> >         if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
-> > --
-> > 2.27.0
-> >
+> diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+> index 439dc6a26bb9..5c4b417e24f9 100644
+> --- a/arch/arm/mm/fault.c
+> +++ b/arch/arm/mm/fault.c
+> @@ -294,7 +294,9 @@ do_page_fault(unsigned long addr, unsigned int fsr, s=
+truct pt_regs *regs)
+>
+>         if (!(vma->vm_flags & vm_flags)) {
+>                 vma_end_read(vma);
+> -               goto lock_mmap;
+> +               count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
+> +               fault =3D VM_FAULT_BADACCESS;
+> +               goto bad_area;
+>         }
+>         fault =3D handle_mm_fault(vma, addr, flags | FAULT_FLAG_VMA_LOCK,=
+ regs);
+>         if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
+> --
+> 2.27.0
+>
