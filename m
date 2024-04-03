@@ -1,71 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1E989644E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 08:00:47 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fh5AzAgx;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D57A896468
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 08:14:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8YyP4C4dz3d2c
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 17:00:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8ZFl3fsGz3cN6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 17:14:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fh5AzAgx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8Yxd3wCGz30hQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 17:00:04 +1100 (AEDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-dde0b30ebe2so638555276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Apr 2024 23:00:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712124001; x=1712728801; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wxJSXITYZ9pShDuxFQvxpaL2/3sgcxNx/8xBOuQ2iCk=;
-        b=fh5AzAgxEDciEhCV+osjgqql/mMRp6pMkQe836tzRnyFZYq2TPcKkkzL90q4p3O23r
-         T610yjA5T1USbfXNxoVH9GWyA+x9vm5eY3tpTGUonULzePM+erol6pDll7vAty1AImWV
-         sLoYXt11N/XioDbStNEbCcByinI0IODRjrFGrhlM8E8Qko5V24Tj80yxYWP41tu4qhnu
-         xXpLEn4D2DN0916k6SnKCYNzJOi0PP8CtYTZVOm8fvtHBXxUw0tLvag8ynAF85MScvHU
-         rd9R9Q2U/tInNuNA4m6rON0YT+JRsQXaWDWI6HwxZJHDQJeVQCS1hfmQbd7/dfun2Yu+
-         KaSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712124001; x=1712728801;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wxJSXITYZ9pShDuxFQvxpaL2/3sgcxNx/8xBOuQ2iCk=;
-        b=OyBLsgsUDhVYdUZWMpXKVBYqNqrpMn2swuaKjwAVlAsmpzz6zFHw9QEb+YkhlndrY7
-         te4D3MxhfU1rJSqmNVu3bh8J6sWhXLZvkRxmIRWmBeGmbyI7MByAiErVbSpev9tbgwsh
-         cOVG/TnplzXzy+KTW2a7n2ZfTy68r8SqRZp+seORKVzJXlYDYCOGSN35LXiinRIchLaL
-         bmV0CmBF0yBRiEGytL7Nn8tw+2/wPE4AizIO2o5e81litYsjhY0RL4GAPM5JIXcwT/io
-         bu8B9lgLWmXaPc2hozsnh1dOuXtkX0S4UVPcQUu2CxegAvFYiDyzERYDyXiWSjkHA8Y+
-         +HHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCyi06ms8hGumqq2+lsWdOXQk3t4egCm63xdeabdhZa1Emzp7pJYHzaPIehai7E3cILA0cToCUY7cLeryy0Zq3FbZQOnaEtFAFAmlx1A==
-X-Gm-Message-State: AOJu0YyIw+ga9QsnJx5XAsN8ObNFtIOiz4tMhFmKk8f84xjGA/2lwxyo
-	4bXVrx+LBGgmIlW7Nm7cezP8hu5/rBp+eayaSrH1yIwfRGJBHBGNpwVK+nsRxDtBtfW4NqRsa7K
-	8o9CwsiVD/Ww5jMrcJdYi7pt2WBo/ubSfUGgl
-X-Google-Smtp-Source: AGHT+IHF6yOPrbaSAup7jCog58WXJbC6NgZDiM+ULwuH0tlVvkyDWba5Ohyci7jQvdo5tO0oB+yC5pt2quv+tZIAonY=
-X-Received: by 2002:a25:ef43:0:b0:dcc:4cdc:e98e with SMTP id
- w3-20020a25ef43000000b00dcc4cdce98emr6405675ybm.5.1712124001329; Tue, 02 Apr
- 2024 23:00:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8ZFJ4qhwz2yhZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 17:13:37 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4V8ZBg2jZLz1JB3c;
+	Wed,  3 Apr 2024 14:11:23 +0800 (CST)
+Received: from dggpemm100001.china.huawei.com (unknown [7.185.36.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id A9A6B1402C7;
+	Wed,  3 Apr 2024 14:13:31 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 3 Apr 2024 14:13:30 +0800
+Message-ID: <bcfe8e2e-7ca9-44a8-b6ea-f4d9d789cc10@huawei.com>
+Date: Wed, 3 Apr 2024 14:13:30 +0800
 MIME-Version: 1.0
-References: <20240402075142.196265-1-wangkefeng.wang@huawei.com> <20240402075142.196265-8-wangkefeng.wang@huawei.com>
-In-Reply-To: <20240402075142.196265-8-wangkefeng.wang@huawei.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 2 Apr 2024 22:59:50 -0700
-Message-ID: <CAJuCfpFoxP78+P1+4WQcCqMzGv7jpC9V8pR_-R8t8zPUg-t+aA@mail.gmail.com>
-Subject: Re: [PATCH 7/7] x86: mm: accelerate pagefault when badaccess
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] arm64: mm: accelerate pagefault when
+ VM_FAULT_BADACCESS
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>
+References: <20240402075142.196265-1-wangkefeng.wang@huawei.com>
+ <20240402075142.196265-3-wangkefeng.wang@huawei.com>
+ <CAJuCfpGpKup6AOPY08p35S2S+D4ch5XjEB=FM-n9-kU8dZXS5Q@mail.gmail.com>
+ <CAJuCfpHkrwPp0X65BuYS2SKAkWPJDMNWYPDO+Jr4SmuxoCEsZg@mail.gmail.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <CAJuCfpHkrwPp0X65BuYS2SKAkWPJDMNWYPDO+Jr4SmuxoCEsZg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm100001.china.huawei.com (7.185.36.93)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,102 +59,59 @@ Cc: x86@kernel.org, linux-s390@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 2, 2024 at 12:53=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawei=
-.com> wrote:
->
-> The vm_flags of vma already checked under per-VMA lock, if it is a
-> bad access, directly handle error and return, there is no need to
-> lock_mm_and_find_vma() and check vm_flags again.
->
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-Looks safe to me.
-Using (mm !=3D NULL) to indicate that we are holding mmap_lock is not
-ideal but I guess that works.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+On 2024/4/3 13:30, Suren Baghdasaryan wrote:
+> On Tue, Apr 2, 2024 at 10:19 PM Suren Baghdasaryan <surenb@google.com> wrote:
+>>
+>> On Tue, Apr 2, 2024 at 12:53 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>>>
+>>> The vm_flags of vma already checked under per-VMA lock, if it is a
+>>> bad access, directly set fault to VM_FAULT_BADACCESS and handle error,
+>>> no need to lock_mm_and_find_vma() and check vm_flags again, the latency
+>>> time reduce 34% in lmbench 'lat_sig -P 1 prot lat_sig'.
+>>
+>> The change makes sense to me. Per-VMA lock is enough to keep
+>> vma->vm_flags stable, so no need to retry with mmap_lock.
+>>
+>>>
+>>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>>
+>> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+>>
+>>> ---
+>>>   arch/arm64/mm/fault.c | 4 +++-
+>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>>> index 9bb9f395351a..405f9aa831bd 100644
+>>> --- a/arch/arm64/mm/fault.c
+>>> +++ b/arch/arm64/mm/fault.c
+>>> @@ -572,7 +572,9 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+>>>
+>>>          if (!(vma->vm_flags & vm_flags)) {
+>>>                  vma_end_read(vma);
+>>> -               goto lock_mmap;
+>>> +               fault = VM_FAULT_BADACCESS;
+>>> +               count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
+>>
+>> nit: VMA_LOCK_SUCCESS accounting here seems correct to me but
+>> unrelated to the main change. Either splitting into a separate patch
+>> or mentioning this additional fixup in the changelog would be helpful.
+> 
+> The above nit applies to all the patches after this one, so I won't
+> comment on each one separately. If you decide to split or adjust the
+> changelog please do that for each patch.
 
-> ---
->  arch/x86/mm/fault.c | 23 ++++++++++++++---------
->  1 file changed, 14 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index a4cc20d0036d..67b18adc75dd 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -866,14 +866,17 @@ bad_area_nosemaphore(struct pt_regs *regs, unsigned=
- long error_code,
->
->  static void
->  __bad_area(struct pt_regs *regs, unsigned long error_code,
-> -          unsigned long address, u32 pkey, int si_code)
-> +          unsigned long address, struct mm_struct *mm,
-> +          struct vm_area_struct *vma, u32 pkey, int si_code)
->  {
-> -       struct mm_struct *mm =3D current->mm;
->         /*
->          * Something tried to access memory that isn't in our memory map.=
-.
->          * Fix it, but check if it's kernel or user first..
->          */
-> -       mmap_read_unlock(mm);
-> +       if (mm)
-> +               mmap_read_unlock(mm);
-> +       else
-> +               vma_end_read(vma);
->
->         __bad_area_nosemaphore(regs, error_code, address, pkey, si_code);
->  }
-> @@ -897,7 +900,8 @@ static inline bool bad_area_access_from_pkeys(unsigne=
-d long error_code,
->
->  static noinline void
->  bad_area_access_error(struct pt_regs *regs, unsigned long error_code,
-> -                     unsigned long address, struct vm_area_struct *vma)
-> +                     unsigned long address, struct mm_struct *mm,
-> +                     struct vm_area_struct *vma)
->  {
->         /*
->          * This OSPKE check is not strictly necessary at runtime.
-> @@ -927,9 +931,9 @@ bad_area_access_error(struct pt_regs *regs, unsigned =
-long error_code,
->                  */
->                 u32 pkey =3D vma_pkey(vma);
->
-> -               __bad_area(regs, error_code, address, pkey, SEGV_PKUERR);
-> +               __bad_area(regs, error_code, address, mm, vma, pkey, SEGV=
-_PKUERR);
->         } else {
-> -               __bad_area(regs, error_code, address, 0, SEGV_ACCERR);
-> +               __bad_area(regs, error_code, address, mm, vma, 0, SEGV_AC=
-CERR);
->         }
->  }
->
-> @@ -1357,8 +1361,9 @@ void do_user_addr_fault(struct pt_regs *regs,
->                 goto lock_mmap;
->
->         if (unlikely(access_error(error_code, vma))) {
-> -               vma_end_read(vma);
-> -               goto lock_mmap;
-> +               bad_area_access_error(regs, error_code, address, NULL, vm=
-a);
-> +               count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-> +               return;
->         }
->         fault =3D handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LO=
-CK, regs);
->         if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
-> @@ -1394,7 +1399,7 @@ void do_user_addr_fault(struct pt_regs *regs,
->          * we can handle it..
->          */
->         if (unlikely(access_error(error_code, vma))) {
-> -               bad_area_access_error(regs, error_code, address, vma);
-> +               bad_area_access_error(regs, error_code, address, mm, vma)=
-;
->                 return;
->         }
->
-> --
-> 2.27.0
->
+I will update the change log for each patch, thank for your review and 
+suggestion.
+
+> 
+>>
+>>> +               goto done;
+>>>          }
+>>>          fault = handle_mm_fault(vma, addr, mm_flags | FAULT_FLAG_VMA_LOCK, regs);
+>>>          if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
+>>> --
+>>> 2.27.0
+>>>
