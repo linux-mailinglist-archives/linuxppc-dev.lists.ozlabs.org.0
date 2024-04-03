@@ -2,64 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1C4896C40
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 12:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE1F896D15
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 12:47:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c5s51DVN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=miAlM6p7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8gsb6W7Gz3vq9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 21:26:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8hKV135Sz3vnD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 21:47:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c5s51DVN;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=miAlM6p7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=heikki.krogerus@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8grv6jgvz3vdC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 21:26:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8hJk0Yqhz3vml
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 21:47:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712139984; x=1743675984;
+  t=1712141222; x=1743677222;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=uvNwH5AhBZRtd1Efkm5wZZSPyGfV9X51E6xAbQSgfX8=;
-  b=c5s51DVNa5F4QggDtctMzfAmKm/HmUMB/FDt8tWYcFRBftulRm+bLUEK
-   lF+yS/5J/9/N0/j5S1dVqWgF7o5aWoSEGjUymRk3ZvLMUOeEsG9ZEU8eL
-   iiNNveysP+cRM30Dr9WCXrlQI8Qw+FeWrGDgnaQfIjghFAF4ljRiRfMu8
-   C924gQleDb07jdtqZBiR1XzQsX7ilohy3gjSBi+ub5WNLIMaVPnQbAnxU
-   xcLv5LzTPlLPeQYWe6JjaHXkus4aBgSa55BvfA9G3QS+/CCAAcFJPFYMx
-   jh5EZPD4WEU0WRUATKEzNXN5AKk1vpfTxWRgzBHNzJCwUDBU+a3jjSenT
+  bh=CNEpcz5/OubUYF8ylHtJPsNUYIrlKQyGeuSEe5hO77w=;
+  b=miAlM6p7y132bBlsW+qNctO5RVhvY1a/r7/2IczRpb+jbHI2Ov5USYFp
+   xepmxjxxMPkgaP+l+bG6FC+uPwb71SOvgfVC+S6ZeCWXFq8iytencggdU
+   osFwy4XPLHmMa8vOkC30/ihgswO7yq6+UDZ0u3pUGaM9kqwNYJbJJiQSf
+   EtMZpEKP1EKfTuNNGg9NPj3tELM6z3TzHAXdqJvhSoWtHj//KjUGBoUdm
+   xSuNj2VLW1qJVykkl8pmjF468cxwDrKMy8eaqu9k1ErcBxh1j45W9MWVU
+   5cuLVpN2h98b4Nw2r/G5iUb0d/Ektmh1d0gQcMpunlBiE7P4bxh6YKAo1
    Q==;
-X-CSE-ConnectionGUID: f223GS53QDyhUe5ZnHP/sQ==
-X-CSE-MsgGUID: XYFQ0/rVRWGhhUpBrpMI8w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7283160"
+X-CSE-ConnectionGUID: 5UpnZoEhTGSufmpJeXm+0A==
+X-CSE-MsgGUID: 9XUvPPMiTfS6SWT3vs15Ew==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="24864480"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="7283160"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:26:21 -0700
+   d="scan'208";a="24864480"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:41:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="937084819"
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="915178449"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="937084819"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 03 Apr 2024 03:26:19 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 03 Apr 2024 13:26:18 +0300
-Date: Wed, 3 Apr 2024 13:26:18 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v2 3/3] usb: typec: displayport: drop driver owner
- assignment
-Message-ID: <Zg0uyrXJVzGirRkY@kuha.fi.intel.com>
-References: <20240331091737.19836-1-krzk@kernel.org>
- <20240331091737.19836-3-krzk@kernel.org>
+   d="scan'208";a="915178449"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:41:21 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rry3T-000000015qz-0hJz;
+	Wed, 03 Apr 2024 13:41:19 +0300
+Date: Wed, 3 Apr 2024 13:41:18 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Rob Herring <robh@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] powerpc/52xx: Replace of_gpio.h by proper one
+Message-ID: <Zg0yTnTswS2je9VG@smile.fi.intel.com>
+References: <20240313135645.2066362-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240331091737.19836-3-krzk@kernel.org>
+In-Reply-To: <20240313135645.2066362-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,40 +74,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ran Wang <ran.wang_1@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Anatolij Gustschin <agust@denx.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Mar 31, 2024 at 11:17:37AM +0200, Krzysztof Kozlowski wrote:
-> Core in typec_altmode_register_driver() already sets the .owner, so
-> driver does not need to.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+On Wed, Mar 13, 2024 at 03:56:45PM +0200, Andy Shevchenko wrote:
+> of_gpio.h is deprecated and subject to remove.
+> The driver doesn't use it directly, replace it
+> with what is really being used.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
-> 
-> Changes in v2:
-> 1. New patch
-> ---
->  drivers/usb/typec/altmodes/displayport.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-> index 038dc51f429d..596cd4806018 100644
-> --- a/drivers/usb/typec/altmodes/displayport.c
-> +++ b/drivers/usb/typec/altmodes/displayport.c
-> @@ -802,7 +802,6 @@ static struct typec_altmode_driver dp_altmode_driver = {
->  	.remove = dp_altmode_remove,
->  	.driver = {
->  		.name = "typec_displayport",
-> -		.owner = THIS_MODULE,
->  		.dev_groups = displayport_groups,
->  	},
->  };
-> -- 
-> 2.34.1
+Any comments on this?
 
 -- 
-heikki
+With Best Regards,
+Andy Shevchenko
+
+
