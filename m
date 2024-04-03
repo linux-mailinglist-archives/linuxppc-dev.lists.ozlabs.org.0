@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386FB897C09
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 01:27:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE563897C7C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 01:47:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tTdEFZdZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=cl79fD/d;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V91BC6chRz3vXy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 10:27:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V91dD4mdDz3d4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 10:47:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tTdEFZdZ;
+	dkim=pass (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=cl79fD/d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=2607:f8b0:4864:20::82a; helo=mail-qt1-x82a.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V919S06bzz3cRq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 10:26:51 +1100 (AEDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-4317aff5cfdso2334781cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 16:26:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V91cT0JzCz30NP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 10:46:47 +1100 (AEDT)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-43448ff9be3so2748651cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 16:46:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1712186809; x=1712791609; darn=lists.ozlabs.org;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1712188005; x=1712792805; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HBcn9RQF0khXV9ZVvmQc6tCxymNH19L2614rNh3knFw=;
-        b=tTdEFZdZbG6x23q6ZUmtoId3yJcneYrJHGB3N3z/lHL1ML5p9eg6y02qalRhWEIlSR
-         ABBwVEJAoKAL/ywoI7qZ0hsyXkml0Ke5DKMf44KWfZsFtQ+moZIXt4Rh6nQ+6+m0R9l/
-         fcdVSvMiI5RfnxQHlM5Zx03VM6hBWfIl3oTa7mN4EkowPNeB0TFti1fK1P+MKZCDH6lH
-         GT1U4jdlQaLleRSvuqRacPzSnjV5Gx5lcfZCUBVtPKsnrzko47blgRhGbEQovzHhqKG2
-         AgtoUJymPw4+B7R0yguSrU/wGCX1V/3sDMLkfrGZTLGd4/btANMqWt7eb0FLsyQRWDLf
-         s3eA==
+        bh=XAEOu6ZAgToX5xrdWbP5fG/SmvptjBh1dUJnI3/9gK8=;
+        b=cl79fD/dF3I1MjeTTGcgDCeJMTtWCEToaEVPROXbajcLffHZHoghDTQorjRoahdY0j
+         D1N3Z1yNe6QQw91l5pvJSmxhcjTMfjJkHip58A8c0ZHgsTcVrjsZeClT0O7a7PSGXavi
+         IRxIGTTV5A28uNh7Pvxnqun5EJM20jMzDjBAg1W8/NG/5ZeuRyw2sn0YwKPvz74lbmLG
+         XC3HGHt8DwcQrYvWgxoMKWEcVPc4TJGDpnruNnOfhWbkSuicGy47JKT8tibbuEVOLsWa
+         CLSq5i9YQk8VfNBq3c3cOTpAgEv5AivGme3Avgray0S/lFF/mtpx5XFKdg+wJfxJaXPP
+         NpdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712186809; x=1712791609;
+        d=1e100.net; s=20230601; t=1712188005; x=1712792805;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HBcn9RQF0khXV9ZVvmQc6tCxymNH19L2614rNh3knFw=;
-        b=gr9WHjyjYKxEy5L5zoIOZVKB7O//PuPeCD7X88Bx6tiApyIfsk6auncaup6NXMYlm3
-         FufEVAMce6Nr6L9+TyHYjmyl3xcB64KVoJRnwZo+QiCWt8jDzSb6kOsF85kaS8d3yXCy
-         ckXt8JSHQB3yv0fqd9Ewa2PMJt0jR+123yNLQXr0rf3sI/ht0G95rEgqDrw74U4JolhN
-         ciSsWBCLJn1hRUTj5G81xSkcEA99KLlYDKUp/5klaP1iFLS/wtZr0IPC58eOF9v8JV6Y
-         +mmW66kB5FdjVzYfUruMPNBdRemL5GX6UvMqmKJ7HS6Whz4OR1srHllmPGuBvTEOi3dg
-         rTtw==
-X-Gm-Message-State: AOJu0YyujMlQr7hrUfY3C6i6DS7Tr0qWEa49hRWdhA978T3R/nY2C1Cn
-	tsCeO6EGuqJ0rUl9BQzHbzZ6gqD+RhKum8U4SYXRb9Gr6vmKYH8JDBt7AzJGZuqc5y+gEf1DOME
-	Av14rEwsDVaAfvc5VlgOizu/fEA57SVGwBqUYjjAqb1M3JOg9qNw=
-X-Google-Smtp-Source: AGHT+IHsSnyuoqbKW/soc2+mRtnSGWMTbRhMNBsJqE1Slyi/NI5rBdix/XXtbL6+xdOG9m7FVsnvnJV9N4H6er3T94E=
-X-Received: by 2002:a05:622a:ca:b0:432:b41a:17d4 with SMTP id
- p10-20020a05622a00ca00b00432b41a17d4mr691778qtw.47.1712186809558; Wed, 03 Apr
- 2024 16:26:49 -0700 (PDT)
+        bh=XAEOu6ZAgToX5xrdWbP5fG/SmvptjBh1dUJnI3/9gK8=;
+        b=pkGm4jNTRhEWEnjsugIe859gEUVjPEI6EQbdyY+B/NVc3VFIDbCrx234vGWQbGeZJK
+         Rz8n5ji5+yOr0+dpFXfWdse3jYn3vMAvpmT/xt6PhzpxSamf0zrT5I2Ikc3blOW9AMAn
+         RgVJgGpjGT47VEO7GNZ1ZuflOxBvzV4zSlA9PgqtYPG51etW1L0pk+iqT4B5qYuryXMP
+         5kr1knv5G6RrwFfygCazsJdo2RQnvqBIrppUXsOgnv+N/wDm7uYVJdc2s1dYvRTqyZAc
+         yVRxR9/uoJELUtI+06OMPDIyvGhvOlWaHJhNUkRXYVo902srmKTmfzJzOYP6wFIBxbQD
+         PAwA==
+X-Gm-Message-State: AOJu0Yw/yxevX4hNRKKO9dfpT6dd6UHdJkhbfYN+aL8lRd6tSETVbH9L
+	17an97YdEu07+loAdLd4D4cT3QAVvVOutXO8rcyCChtpdedFOJyTPmHkIi6K+V4E/ozZmMPkrbC
+	eFy+ZDQ8hJKcZWXJFLhHL6kRp8WZANRjYtWfccw==
+X-Google-Smtp-Source: AGHT+IE86C4cI6mhSlVjNrd7GYRP9iJnVqBNonZegmUQItEJKzhRVRBavtnMQfl/Dr8sTGYjRV3i2VRx333RRXokfYY=
+X-Received: by 2002:ac8:5849:0:b0:431:6cc3:8bb6 with SMTP id
+ h9-20020ac85849000000b004316cc38bb6mr854843qth.57.1712188004913; Wed, 03 Apr
+ 2024 16:46:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240402051154.476244-1-rmclure@linux.ibm.com> <20240402051154.476244-6-rmclure@linux.ibm.com>
-In-Reply-To: <20240402051154.476244-6-rmclure@linux.ibm.com>
+References: <20240402051154.476244-1-rmclure@linux.ibm.com> <20240402051154.476244-7-rmclure@linux.ibm.com>
+In-Reply-To: <20240402051154.476244-7-rmclure@linux.ibm.com>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 3 Apr 2024 19:26:12 -0400
-Message-ID: <CA+CK2bBTh_LSAtgx3hzmrrewtQ_rr=FUUmG85MBjAka5TvfdUg@mail.gmail.com>
-Subject: Re: [PATCH v12 05/11] mm/page_table_check: Reinstate address
- parameter in [__]page_table_check_pmd_clear()
+Date: Wed, 3 Apr 2024 19:46:07 -0400
+Message-ID: <CA+CK2bBomXx-yfJCLsFLwduOu_Payg0y-t8D+nJYX4XEJ4bF0A@mail.gmail.com>
+Subject: Re: [PATCH v12 06/11] mm/page_table_check: Reinstate address
+ parameter in [__]page_table_check_pte_clear()
 To: Rohan McLure <rmclure@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -84,8 +84,8 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Tue, Apr 2, 2024 at 1:11=E2=80=AFAM Rohan McLure <rmclure@linux.ibm.com>=
  wrote:
 >
-> This reverts commit 1831414cd729 ("mm/page_table_check: remove unused
-> parameter in [__]page_table_check_pmd_clear").
+> This reverts commit aa232204c468 ("mm/page_table_check: remove unused
+> parameter in [__]page_table_check_pte_clear").
 >
 > Reinstate previously unused parameters for the purpose of supporting
 > powerpc platforms, as many do not encode user/kernel ownership of the
