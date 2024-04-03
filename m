@@ -1,77 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDF8896659
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 09:26:47 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=OX7/OSfH;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C892C896762
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 09:59:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8bsd2ZHDz3vpM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 18:26:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8cZp4vw4z3dRm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 18:58:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=OX7/OSfH;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8bm403vLz3dVj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 18:21:55 +1100 (AEDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-41624fe40b2so328105e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 00:21:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1712128912; x=1712733712; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ht1KLnNvKBCCICp+Y6JpKOSNrIWAe17k5/lz/+k/t0k=;
-        b=OX7/OSfH2O3GRSxyFaRuufBD5c3Y5BruN3Atqp9I6R7Kg+rLQ5m02ASPJRvi7XmcoG
-         RAybcuCCL3ao7jCOEJloCIJ2VjWvD0Cm9cg7HelClFPmSEY0Ln0B+JbdF73fSFextCm/
-         LQYViJA0SR1I3M44gatLMRTWwYcK4/bc5Vc2XtqsiU1QYl7u86mQ6/+TibE/TcnkWkMA
-         fEhzCxt/2YFmY73afTvWf1RnhDl9MgsqIfhI+gfWznqzJ6zDA6FcWf2qGd4LXEmPs+mB
-         2aOQQvlLFyE3U50Wul24WCCGPwybMhwWhgqSG5Lgl+eskex1pjzNj6bOzyQHM+McRu4I
-         2RDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712128912; x=1712733712;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ht1KLnNvKBCCICp+Y6JpKOSNrIWAe17k5/lz/+k/t0k=;
-        b=VdgNrfvzDi8O6dIWCUi0F98to4dcDzE9p1iWLRjKYB6IYv5HLvZK1ACJgGexJbnqCC
-         8AwOi/Lt+lZtNCMz+oa3oSIV8/Q/avvBjTwneRALVOqAOHpOFe08dNczU/xbe7T3Ydpa
-         O/Ga6ad7hChiiVB1liOpVBk2JX4PC5FcFABMceWB75hDn+U0/Bezj0Y84a0KF8gosAzu
-         5+fU1NjgufxyRKRiJbXhnj4vqXF3dK0sZfwL5Sniq0G5XDXYs3IRkUiWVllpWRMIf6cF
-         C3nzc39n5axFT6H+OgUmtcmtr7QMVLdtotonznT+1jnXFHC51MNndUQl3FMjtPYraGq+
-         wLQg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwVkzyY2hg/H+BlWZh+DrUMCnwk056ZxuM+q1eUCJZpoeaDmz2h9dbXGTRZ9liwr6+qmI1zV1Nwr9oUpGIhd/jaQWlxyu/xrqxViGkUQ==
-X-Gm-Message-State: AOJu0YxWuT2R+NBKPEKcroQ0LjHLNkNBhf4cJaV6nevZGxyTeXQbVMhd
-	RHn7ys/vLLfkMkeKrmldLgN+n3jrYgWv3ZlteU2ck4uUS7HD2B99BDIt/Wo3Z4w=
-X-Google-Smtp-Source: AGHT+IHxnLJChRG6eyzjNgzPrS0ONsTJ00ZbGMzOG5HnqpNOaErE7IvWFJCS+7/AvipAmrK+4XCdlA==
-X-Received: by 2002:a05:600c:2d06:b0:413:e19:337f with SMTP id x6-20020a05600c2d0600b004130e19337fmr3324441wmf.22.1712128912023;
-        Wed, 03 Apr 2024 00:21:52 -0700 (PDT)
-Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id f11-20020a05600c4e8b00b004154e48bcdesm17187826wmq.14.2024.04.03.00.21.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Apr 2024 00:21:51 -0700 (PDT)
-From: David Gstir <david@sigma-star.at>
-To: Mimi Zohar <zohar@linux.ibm.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new trust source
-Date: Wed,  3 Apr 2024 09:21:22 +0200
-Message-ID: <20240403072131.54935-7-david@sigma-star.at>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240403072131.54935-1-david@sigma-star.at>
-References: <20240403072131.54935-1-david@sigma-star.at>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8cZK31RZz2yG9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 18:58:30 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4V8cVx6sv3z29lcf;
+	Wed,  3 Apr 2024 15:55:37 +0800 (CST)
+Received: from dggpemm100001.china.huawei.com (unknown [7.185.36.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9387D180063;
+	Wed,  3 Apr 2024 15:58:23 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 3 Apr 2024 15:58:22 +0800
+Message-ID: <d5177b0f-db4e-4c78-81f1-5761f08f076d@huawei.com>
+Date: Wed, 3 Apr 2024 15:58:22 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] x86: mm: accelerate pagefault when badaccess
+Content-Language: en-US
+To: Suren Baghdasaryan <surenb@google.com>
+References: <20240402075142.196265-1-wangkefeng.wang@huawei.com>
+ <20240402075142.196265-8-wangkefeng.wang@huawei.com>
+ <CAJuCfpFoxP78+P1+4WQcCqMzGv7jpC9V8pR_-R8t8zPUg-t+aA@mail.gmail.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <CAJuCfpFoxP78+P1+4WQcCqMzGv7jpC9V8pR_-R8t8zPUg-t+aA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm100001.china.huawei.com (7.185.36.93)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,161 +53,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutroni
- x Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+Cc: x86@kernel.org, linux-s390@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, Russell King <linux@armlinux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Andy Lutomirski <luto@kernel.org>, akpm@linux-foundation.org, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update the documentation for trusted and encrypted KEYS with DCP as new
-trust source:
 
-- Describe security properties of DCP trust source
-- Describe key usage
-- Document blob format
 
-Co-developed-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- .../security/keys/trusted-encrypted.rst       | 53 +++++++++++++++++++
- security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
- 2 files changed, 72 insertions(+)
+On 2024/4/3 13:59, Suren Baghdasaryan wrote:
+> On Tue, Apr 2, 2024 at 12:53 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>>
+>> The vm_flags of vma already checked under per-VMA lock, if it is a
+>> bad access, directly handle error and return, there is no need to
+>> lock_mm_and_find_vma() and check vm_flags again.
+>>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> 
+> Looks safe to me.
+> Using (mm != NULL) to indicate that we are holding mmap_lock is not
+> ideal but I guess that works.
+> 
 
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index e989b9802f92..f4d7e162d5e4 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -42,6 +42,14 @@ safe.
-          randomly generated and fused into each SoC at manufacturing time.
-          Otherwise, a common fixed test key is used instead.
- 
-+     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+         Rooted to a one-time programmable key (OTP) that is generally burnt
-+         in the on-chip fuses and is accessible to the DCP encryption engine only.
-+         DCP provides two keys that can be used as root of trust: the OTP key
-+         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-+         the OTP key can be done via a module parameter (dcp_use_otp_key).
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -57,6 +65,12 @@ safe.
- 
-          Fixed set of operations running in isolated execution environment.
- 
-+     (4) DCP
-+
-+         Fixed set of cryptographic operations running in isolated execution
-+         environment. Only basic blob key encryption is executed there.
-+         The actual key sealing/unsealing is done on main processor/kernel space.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -79,6 +93,11 @@ safe.
-          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
-          for platform integrity.
- 
-+     (4) DCP
-+
-+         Relies on Secure/Trusted boot process (called HAB by vendor) for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -94,6 +113,11 @@ safe.
- 
-          Interface is specific to silicon vendor.
- 
-+     (4) DCP
-+
-+         Vendor-specific API that is implemented as part of the DCP crypto driver in
-+         ``drivers/crypto/mxs-dcp.c``.
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -129,6 +153,13 @@ selected trust source:
-      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
-      is probed.
- 
-+  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+     The DCP hardware device itself does not provide a dedicated RNG interface,
-+     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
-+     a dedicated hardware RNG that is independent from DCP which can be enabled
-+     to back the kernel RNG.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -231,6 +262,19 @@ Usage::
- CAAM-specific format.  The key length for new keys is always in bytes.
- Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: DCP
-+-----------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to this DCP key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
-@@ -426,3 +470,12 @@ string length.
- privkey is the binary representation of TPM2B_PUBLIC excluding the
- initial TPM2B header which can be reconstructed from the ASN.1 octed
- string length.
-+
-+DCP Blob Format
-+---------------
-+
-+.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-+   :doc: dcp blob format
-+
-+.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-+   :identifiers: struct dcp_blob_fmt
-diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
-index 16c44aafeab3..b5f81a05be36 100644
---- a/security/keys/trusted-keys/trusted_dcp.c
-+++ b/security/keys/trusted-keys/trusted_dcp.c
-@@ -19,6 +19,25 @@
- #define DCP_BLOB_VERSION 1
- #define DCP_BLOB_AUTHLEN 16
- 
-+/**
-+ * DOC: dcp blob format
-+ *
-+ * The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-+ * AES encryption engine only. It does not provide direct key sealing/unsealing.
-+ * To make DCP hardware encryption keys usable as trust source, we define
-+ * our own custom format that uses a hardware-bound key to secure the sealing
-+ * key stored in the key blob.
-+ *
-+ * Whenever a new trusted key using DCP is generated, we generate a random 128-bit
-+ * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
-+ * encrypt the trusted key payload using AES-128-GCM.
-+ *
-+ * The BEK itself is encrypted using the hardware-bound key using the DCP's AES
-+ * encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
-+ * BEK-encrypted payload and authentication tag make up the blob format together
-+ * with a version number, payload length and authentication tag.
-+ */
-+
- /**
-  * struct dcp_blob_fmt - DCP BLOB format.
-  *
--- 
-2.35.3
+Yes, I will add this part it into change too,
 
+The access_error() of vma already checked under per-VMA lock, if it
+is a bad access, directly handle error, no need to retry with mmap_lock
+again. In order to release the correct lock, pass the mm_struct into
+bad_area_access_error(), if mm is NULL, release vma lock, or release
+mmap_lock. Since the page faut is handled under per-VMA lock, count it
+as a vma lock event with VMA_LOCK_SUCCESS.
+
+Thanks.
+
+
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> 
+>> ---
+>>   arch/x86/mm/fault.c | 23 ++++++++++++++---------
+>>   1 file changed, 14 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+>> index a4cc20d0036d..67b18adc75dd 100644
+>> --- a/arch/x86/mm/fault.c
+>> +++ b/arch/x86/mm/fault.c
+>> @@ -866,14 +866,17 @@ bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+>>
+>>   static void
+>>   __bad_area(struct pt_regs *regs, unsigned long error_code,
+>> -          unsigned long address, u32 pkey, int si_code)
+>> +          unsigned long address, struct mm_struct *mm,
+>> +          struct vm_area_struct *vma, u32 pkey, int si_code)
+>>   {
+>> -       struct mm_struct *mm = current->mm;
+>>          /*
+>>           * Something tried to access memory that isn't in our memory map..
+>>           * Fix it, but check if it's kernel or user first..
+>>           */
+>> -       mmap_read_unlock(mm);
+>> +       if (mm)
+>> +               mmap_read_unlock(mm);
+>> +       else
+>> +               vma_end_read(vma);
+>>
+>>          __bad_area_nosemaphore(regs, error_code, address, pkey, si_code);
+>>   }
+>> @@ -897,7 +900,8 @@ static inline bool bad_area_access_from_pkeys(unsigned long error_code,
+>>
+>>   static noinline void
+>>   bad_area_access_error(struct pt_regs *regs, unsigned long error_code,
+>> -                     unsigned long address, struct vm_area_struct *vma)
+>> +                     unsigned long address, struct mm_struct *mm,
+>> +                     struct vm_area_struct *vma)
+>>   {
+>>          /*
+>>           * This OSPKE check is not strictly necessary at runtime.
+>> @@ -927,9 +931,9 @@ bad_area_access_error(struct pt_regs *regs, unsigned long error_code,
+>>                   */
+>>                  u32 pkey = vma_pkey(vma);
+>>
+>> -               __bad_area(regs, error_code, address, pkey, SEGV_PKUERR);
+>> +               __bad_area(regs, error_code, address, mm, vma, pkey, SEGV_PKUERR);
+>>          } else {
+>> -               __bad_area(regs, error_code, address, 0, SEGV_ACCERR);
+>> +               __bad_area(regs, error_code, address, mm, vma, 0, SEGV_ACCERR);
+>>          }
+>>   }
+>>
+>> @@ -1357,8 +1361,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+>>                  goto lock_mmap;
+>>
+>>          if (unlikely(access_error(error_code, vma))) {
+>> -               vma_end_read(vma);
+>> -               goto lock_mmap;
+>> +               bad_area_access_error(regs, error_code, address, NULL, vma);
+>> +               count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
+>> +               return;
+>>          }
+>>          fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
+>>          if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
+>> @@ -1394,7 +1399,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+>>           * we can handle it..
+>>           */
+>>          if (unlikely(access_error(error_code, vma))) {
+>> -               bad_area_access_error(regs, error_code, address, vma);
+>> +               bad_area_access_error(regs, error_code, address, mm, vma);
+>>                  return;
+>>          }
+>>
+>> --
+>> 2.27.0
+>>
