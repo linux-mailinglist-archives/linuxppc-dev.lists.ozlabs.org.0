@@ -1,37 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46122897BF0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 01:16:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8CC897BF4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 01:19:14 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=u5Wy7Ao6;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V90xf025Qz3vbD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 10:16:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V910c0qmDz3vXl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 10:19:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=gmail.com (client-ip=62.142.5.82; helo=fgw21-7.mail.saunalahti.fi; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2703 seconds by postgrey-1.37 at boromir; Thu, 04 Apr 2024 10:16:11 AEDT
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=u5Wy7Ao6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V90x801tyz2xcw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 10:16:11 +1100 (AEDT)
-Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id b329e218-f209-11ee-abf4-005056bdd08f;
-	Thu, 04 Apr 2024 01:29:59 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 4 Apr 2024 01:29:56 +0300
-To: Finn Thain <fthain@linux-m68k.org>
-Subject: Re: [PATCH] serial/pmac_zilog: Remove flawed mitigation for rx irq
- flood
-Message-ID: <Zg3YZN-QupyVaTPm@surfacebook.localdomain>
-References: <dda2187e128bfaaf092351812e4538e2e41c17f6.1711599093.git.fthain@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V90zn5hhqz30gK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 10:18:28 +1100 (AEDT)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-432b72c706cso3084251cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Apr 2024 16:18:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1712186306; x=1712791106; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SKTcZ9dm5Vbl1wlfrrPsPH+rEE5K6AdxwiFfzfHWvJw=;
+        b=u5Wy7Ao62R1yavYXDkywcVpCE79kGIXRA+Jk1vmeZ1WjWih9CB90aAI3D8R38IzNCZ
+         JcdbG3t3ZmcnJfOy4g5wKoZWASPhjQqdW4U0I2X/YUnVp109Id4ir4MowqzwLi1bsf5C
+         o6oEmpcXUsgzf9H3ZZWWQnUneZIo+pxnQ8bPpZKrZIK1ggSixIAL7TG5WsJA/5f7q414
+         l16ZdU5CqR2B2sHTweoqryAyWzuIzr6dy7xkaMmlnPtXlyvOvfAuSwYUuGTIthbCgkXi
+         iW1GFV7QBP+cCXAG8UWziqr0PSaPsd5TK0G02XoAH8kbRTLKecMlkcro69Ydq4tsNZfs
+         4gWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712186306; x=1712791106;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SKTcZ9dm5Vbl1wlfrrPsPH+rEE5K6AdxwiFfzfHWvJw=;
+        b=LYvKGyCQ927eeDLAVoSf4ndOD+qy9JMmqxnfTjqHd5ixDUzwFwYvj89k5PbFkda8EX
+         mcNI/BJn3qFh/T/NLI6DOc1a0chR6kVooz7uLncEZrDyAnCnvbGVqFPY9tq5QdoMnQiz
+         QQsynFYpOJSX4WNmOeGsKiLUUoKcevTS0XrAjmiEQn2WeG45h2bWfVlbAe0XJ77wdvWH
+         MD+vsPiMVV8w9zM7ZJ/n6qbbsDnmbuDUj22zRK2wlLp1iqSTHFPovO4ssD/fMU6IGpHS
+         Y8HbbpiFKYRiPJXV10EfKc6nBy6I2eMprvIGzz1n3rQNeRKaauBoExGPR+2TFrTVGSqp
+         HUPQ==
+X-Gm-Message-State: AOJu0Yym0vzPukaUn87TmZRfHQKG0DStBvKa2V9ZJvN2DykBJ12HsRIJ
+	WIYOx+1alGxSRM3m6eBrBub1PkEHpUfJhJUyOW1Q32XbjzyQLMzLwFj77xH4DeTrludM6Pxxjo2
+	7WL8mKyxOQy1xv12kzz3+G7hzNVZDSQyYTVpbXA==
+X-Google-Smtp-Source: AGHT+IG3b6bmTq7JNK9eyjUfDwtFrXblUrguSJgPn1Dj/YB+5OfHknpAtgLCxMMQ0DWYVE9uTRHrd/QnpFOZ9fviQwI=
+X-Received: by 2002:a05:622a:491:b0:434:3e4e:ddf2 with SMTP id
+ p17-20020a05622a049100b004343e4eddf2mr1809297qtx.26.1712186305839; Wed, 03
+ Apr 2024 16:18:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dda2187e128bfaaf092351812e4538e2e41c17f6.1711599093.git.fthain@linux-m68k.org>
+References: <20240402051154.476244-1-rmclure@linux.ibm.com> <20240402051154.476244-2-rmclure@linux.ibm.com>
+In-Reply-To: <20240402051154.476244-2-rmclure@linux.ibm.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 3 Apr 2024 19:17:48 -0400
+Message-ID: <CA+CK2bA397y9aMc-CQwmQk7uhStWWVrx10c94+kfDUbSp5C9Eg@mail.gmail.com>
+Subject: Re: [PATCH v12 01/11] mm/page_table_check: Reinstate address
+ parameter in [__]page_table_check_pud_set()
+To: Rohan McLure <rmclure@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,119 +77,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-m68k@lists.linux-m68k.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: x86@kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thu, Mar 28, 2024 at 03:11:33PM +1100, Finn Thain kirjoitti:
-> The mitigation was intended to stop the irq completely. That might have
-> been better than a hard lock-up but it turns out that you get a crash
-> anyway if you're using pmac_zilog as a serial console.
-> 
-> That's because the pr_err() call in pmz_receive_chars() results in
-> pmz_console_write() attempting to lock a spinlock already locked in
-> pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
-> BUG splat like the one below. (The spinlock at 0x62e140 is the one in
-> struct uart_port.)
-> 
-> Even when it's not fatal, the serial port rx function ceases to work.
-> Also, the iteration limit doesn't play nicely with QEMU. Please see
-> bug report linked below.
-> 
-> A web search for reports of the error message "pmz: rx irq flood" didn't
-> produce anything. So I don't think this code is needed any more. Remove it.
+On Tue, Apr 2, 2024 at 1:11=E2=80=AFAM Rohan McLure <rmclure@linux.ibm.com>=
+ wrote:
+>
+> This reverts commit 6d144436d954 ("mm/page_table_check: remove unused
+> parameter in [__]page_table_check_pud_set").
+>
+> Reinstate previously unused parameters for the purpose of supporting
+> powerpc platforms, as many do not encode user/kernel ownership of the
+> page in the pte, but instead in the address of the access.
+>
+> riscv: Respect change to delete mm, addr parameters from __set_pte_at()
+>
+> This commit also changed calls to __set_pte_at() to use fewer parameters
+> on riscv. Keep that change rather than reverting it, as the signature of
+> __set_pte_at() is changed in a different commit.
+>
+> Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
 
-> [   14.560000] ttyPZ0: pmz: rx irq flood !
-> [   14.560000] BUG: spinlock recursion on CPU#0, swapper/0
-> [   14.560000]  lock: 0x62e140, .magic: dead4ead, .owner: swapper/0, .owner_cpu: 0
-> [   14.560000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.8.0-mac-dbg-preempt-00004-g4143b7b9144a #1
-> [   14.560000] Stack from 0059bcc4:
-> [   14.560000]         0059bcc4 0056316f 0056316f 00002700 004b6444 0059bce4 004ad8c6 0056316f
-> [   14.560000]         0059bd10 004a6546 00556759 0062e140 dead4ead 0059f892 00000000 00000000
-> [   14.560000]         0062e140 0059bde8 005c03d0 0059bd24 0004daf6 0062e140 005567bf 0062e140
-> [   14.560000]         0059bd34 004b64c2 0062e140 00000001 0059bd50 002e15ea 0062e140 00000001
-> [   14.560000]         0059bde7 0059bde8 005c03d0 0059bdac 0005124e 005c03d0 005cdc00 0000002b
-> [   14.560000]         005a3caa 005a3caa 00000000 0059bde8 0004ff00 0059be8b 00038200 000529ba
-> [   14.560000] Call Trace: [<00002700>] ret_from_kernel_thread+0xc/0x14
-> [   14.560000]  [<004b6444>] _raw_spin_lock+0x0/0x28
-> [   14.560000]  [<004ad8c6>] dump_stack+0x10/0x16
-> [   14.560000]  [<004a6546>] spin_dump+0x6e/0x7c
-> [   14.560000]  [<0004daf6>] do_raw_spin_lock+0x9c/0xa6
-> [   14.560000]  [<004b64c2>] _raw_spin_lock_irqsave+0x2a/0x34
-> [   14.560000]  [<002e15ea>] pmz_console_write+0x32/0x9a
-> [   14.560000]  [<0005124e>] console_flush_all+0x112/0x3a2
-> [   14.560000]  [<0004ff00>] console_trylock+0x0/0x7a
-> [   14.560000]  [<00038200>] parameq+0x48/0x6e
-> [   14.560000]  [<000529ba>] __printk_safe_enter+0x0/0x36
-> [   14.560000]  [<0005113c>] console_flush_all+0x0/0x3a2
-> [   14.560000]  [<000542c4>] prb_read_valid+0x0/0x1a
-> [   14.560000]  [<004b65a4>] _raw_spin_unlock+0x0/0x38
-> [   14.560000]  [<0005151e>] console_unlock+0x40/0xb8
-> [   14.560000]  [<00038200>] parameq+0x48/0x6e
-> [   14.560000]  [<002c778c>] __tty_insert_flip_string_flags+0x0/0x14e
-> [   14.560000]  [<00051798>] vprintk_emit+0x156/0x238
-> [   14.560000]  [<00051894>] vprintk_default+0x1a/0x1e
-> [   14.560000]  [<000529a8>] vprintk+0x74/0x86
-> [   14.560000]  [<004a6596>] _printk+0x12/0x16
-> [   14.560000]  [<002e23be>] pmz_receive_chars+0x1cc/0x394
-> [   14.560000]  [<004b6444>] _raw_spin_lock+0x0/0x28
-> [   14.560000]  [<00038226>] parse_args+0x0/0x3a6
-> [   14.560000]  [<004b6466>] _raw_spin_lock+0x22/0x28
-> [   14.560000]  [<002e26b4>] pmz_interrupt+0x12e/0x1e0
-> [   14.560000]  [<00048680>] arch_cpu_idle_enter+0x0/0x8
-> [   14.560000]  [<00054ebc>] __handle_irq_event_percpu+0x24/0x106
-> [   14.560000]  [<004ae576>] default_idle_call+0x0/0x46
-> [   14.560000]  [<00055020>] handle_irq_event+0x30/0x90
-> [   14.560000]  [<00058320>] handle_simple_irq+0x5e/0xc0
-> [   14.560000]  [<00048688>] arch_cpu_idle_exit+0x0/0x8
-> [   14.560000]  [<00054800>] generic_handle_irq+0x3c/0x4a
-> [   14.560000]  [<00002978>] do_IRQ+0x24/0x3a
-> [   14.560000]  [<004ae508>] cpu_idle_poll.isra.0+0x0/0x6e
-> [   14.560000]  [<00002874>] auto_irqhandler_fixup+0x4/0xc
-> [   14.560000]  [<004ae508>] cpu_idle_poll.isra.0+0x0/0x6e
-> [   14.560000]  [<004ae576>] default_idle_call+0x0/0x46
-> [   14.560000]  [<004ae598>] default_idle_call+0x22/0x46
-> [   14.560000]  [<00048710>] do_idle+0x6a/0xf0
-> [   14.560000]  [<000486a6>] do_idle+0x0/0xf0
-> [   14.560000]  [<000367d2>] find_task_by_pid_ns+0x0/0x2a
-> [   14.560000]  [<0005d064>] __rcu_read_lock+0x0/0x12
-> [   14.560000]  [<00048a5a>] cpu_startup_entry+0x18/0x1c
-> [   14.560000]  [<00063a06>] __rcu_read_unlock+0x0/0x26
-> [   14.560000]  [<004ae65a>] kernel_init+0x0/0xfa
-> [   14.560000]  [<0049c5a8>] strcpy+0x0/0x1e
-> [   14.560000]  [<004a6584>] _printk+0x0/0x16
-> [   14.560000]  [<0049c72a>] strlen+0x0/0x22
-> [   14.560000]  [<006452d4>] memblock_alloc_try_nid+0x0/0x82
-> [   14.560000]  [<0063939a>] arch_post_acpi_subsys_init+0x0/0x8
-> [   14.560000]  [<0063991e>] console_on_rootfs+0x0/0x60
-> [   14.560000]  [<00638410>] _sinittext+0x410/0xadc
-> [   14.560000]
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-First of all, please read this
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces-in-commit-messages
-and amend the commit message accordingly.
+For some reason this one was not delivered to the linux-mm mailing list.
 
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-> Cc: linux-m68k@lists.linux-m68k.org
-
-Second, please move these Cc to be after the '---' line
-
-> Link: https://github.com/vivier/qemu-m68k/issues/44
-> Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
-
-Missed Fixes tag?
-
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> ---
-(here is a good location for Cc:)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Pasha
