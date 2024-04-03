@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914438968E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 10:39:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E438968F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 10:40:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V8dTZ329bz3vnv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 19:39:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V8dVr72J3z3w2c
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Apr 2024 19:40:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8dSP2j0rz3cZK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 19:38:29 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4V8dP72twYz1h5XQ;
-	Wed,  3 Apr 2024 16:35:39 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V8dSQ30Yfz3vck
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Apr 2024 19:38:30 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4V8dPs2hLCz1JB4D;
+	Wed,  3 Apr 2024 16:36:17 +0800 (CST)
 Received: from dggpemm100001.china.huawei.com (unknown [7.185.36.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id D79AA18001A;
-	Wed,  3 Apr 2024 16:38:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id C3C161402C7;
+	Wed,  3 Apr 2024 16:38:25 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 3 Apr 2024 16:38:23 +0800
+ 15.1.2507.35; Wed, 3 Apr 2024 16:38:24 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: <akpm@linux-foundation.org>
-Subject: [PATCH v2 2/7] arm64: mm: accelerate pagefault when VM_FAULT_BADACCESS
-Date: Wed, 3 Apr 2024 16:38:00 +0800
-Message-ID: <20240403083805.1818160-3-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 3/7] arm: mm: accelerate pagefault when VM_FAULT_BADACCESS
+Date: Wed, 3 Apr 2024 16:38:01 +0800
+Message-ID: <20240403083805.1818160-4-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
 References: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
@@ -56,32 +56,29 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 The vm_flags of vma already checked under per-VMA lock, if it is a
 bad access, directly set fault to VM_FAULT_BADACCESS and handle error,
-no need to retry with mmap_lock again, the latency time reduces 34% in
-'lat_sig -P 1 prot lat_sig' from lmbench testcase.
-
-Since the page faut is handled under per-VMA lock, count it as a vma lock
-event with VMA_LOCK_SUCCESS.
+no need to retry with mmap_lock again. Since the page faut is handled
+under per-VMA lock, count it as a vma lock event with VMA_LOCK_SUCCESS.
 
 Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- arch/arm64/mm/fault.c | 4 +++-
+ arch/arm/mm/fault.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 9bb9f395351a..405f9aa831bd 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -572,7 +572,9 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 439dc6a26bb9..5c4b417e24f9 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -294,7 +294,9 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
  
  	if (!(vma->vm_flags & vm_flags)) {
  		vma_end_read(vma);
 -		goto lock_mmap;
-+		fault = VM_FAULT_BADACCESS;
 +		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-+		goto done;
++		fault = VM_FAULT_BADACCESS;
++		goto bad_area;
  	}
- 	fault = handle_mm_fault(vma, addr, mm_flags | FAULT_FLAG_VMA_LOCK, regs);
+ 	fault = handle_mm_fault(vma, addr, flags | FAULT_FLAG_VMA_LOCK, regs);
  	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
 -- 
 2.27.0
