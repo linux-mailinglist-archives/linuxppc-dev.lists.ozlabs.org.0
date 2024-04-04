@@ -2,93 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6395B89909A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 23:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F16B68990A1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 23:58:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X7drrplw;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X7drrplw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P8GAzFD1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9Zxz1FNYz3vXM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 08:48:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9b8R4xjZz3dVq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 08:57:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X7drrplw;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=X7drrplw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P8GAzFD1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9ZxF4Vrmz3bp7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 08:48:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712267293;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d56SKhTEmtwwDufddPphJGQfZPKBUJnUzF2wWqxF3/c=;
-	b=X7drrplwCIou89vX3EWjevFB3k1McXSAdYxQHkKnVOQcso0AgIKdnIzEELCEKOAIoD1fwt
-	Gbw+7fHRHMEo2PtwvXA0J/qD6rhU8NUbcRH8wJMDMt9A0eMQFEsyEADKYfapYvdHGOilc1
-	CDRTPJ4V+CnQ3ScdsiOgbH5l5Wi+/MI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712267293;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d56SKhTEmtwwDufddPphJGQfZPKBUJnUzF2wWqxF3/c=;
-	b=X7drrplwCIou89vX3EWjevFB3k1McXSAdYxQHkKnVOQcso0AgIKdnIzEELCEKOAIoD1fwt
-	Gbw+7fHRHMEo2PtwvXA0J/qD6rhU8NUbcRH8wJMDMt9A0eMQFEsyEADKYfapYvdHGOilc1
-	CDRTPJ4V+CnQ3ScdsiOgbH5l5Wi+/MI=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-mJVxAp-aMGiM_jqNuvmgnA-1; Thu, 04 Apr 2024 17:48:12 -0400
-X-MC-Unique: mJVxAp-aMGiM_jqNuvmgnA-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-78d41af5bebso33979685a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Apr 2024 14:48:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712267292; x=1712872092;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d56SKhTEmtwwDufddPphJGQfZPKBUJnUzF2wWqxF3/c=;
-        b=SrkDz11vhWENUhLyELB5AxkDGYFa324ObMHsiVrojloOs01awtABtN7PmQCWGRr137
-         /vawii19/BGV64I6diuHeU701JXeGVHCYC1irZiILeDyx9Q7BnMEK0y0PoWVGcEuz3fn
-         csjD6vmxR/ulYodt100JWgvR8HSb/oHAqNPVmLkBZlTir7BtUEGqdh0cjNUpNdTvv3cb
-         iJge1Tt1yjEh5cAJ3aCjFVDJG3LTPI5ubIvqA8+LTxrRRRRmm1W2L2cm82MClSM1pYkb
-         fSNaDwpawstklhGP8GyZ/mm8glf+NcFZF2SrkX9YmxVwriSbfYkpAcOaMMXanRsBypLO
-         VPqw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnyzFLbfjvgj1AEngYolgfC2glM+X1y+teynGIa6otHxfU+EhuH6eVl7Y8mKrHAKebzwvDvV6oj4GLAAxlJ5TF5GCgGMaYH93bbbiVbw==
-X-Gm-Message-State: AOJu0YwtW3vblxjgtGpDRt6jRvPEdmAgVU2+S1Fn/9v0J4pLIgei9AjD
-	HBnCrwR85GrV0qT+rEwExeCG6gsGS4xdldnXRCA6qW+KgMJlgLciNeZ6CdlSUtV0fLG8Sd9mZNZ
-	byAP4MIllrA/cpsFPXL883q/n5HfxPr/A7gtW8XnCfIy8JMlBloKC6VVHO79ArKI=
-X-Received: by 2002:a05:620a:4710:b0:78d:3b13:f5ab with SMTP id bs16-20020a05620a471000b0078d3b13f5abmr4681200qkb.0.1712267291537;
-        Thu, 04 Apr 2024 14:48:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGchKyZTo6ytc9p0sjvCKGDIoG+ERHoc+VJC1tNlLSTRdcMUNyMf3HEESrAIicSQ8HrtIJ6pQ==
-X-Received: by 2002:a05:620a:4710:b0:78d:3b13:f5ab with SMTP id bs16-20020a05620a471000b0078d3b13f5abmr4680952qkb.0.1712267286207;
-        Thu, 04 Apr 2024 14:48:06 -0700 (PDT)
-Received: from x1n ([99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id wg6-20020a05620a568600b00789e49808ffsm105555qkn.105.2024.04.04.14.48.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 14:48:05 -0700 (PDT)
-Date: Thu, 4 Apr 2024 17:48:03 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v3 00/12] mm/gup: Unify hugetlb, part 2
-Message-ID: <Zg8gEyE4o_VJsTmx@x1n>
-References: <20240321220802.679544-1-peterx@redhat.com>
- <20240322161000.GJ159172@nvidia.com>
- <ZgHJaJSpoeJVEccN@x1n>
- <20240326140252.GH6245@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9b7g0tmjz2yG9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 08:57:18 +1100 (AEDT)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 434LUmUv003750;
+	Thu, 4 Apr 2024 21:57:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=2bKRgmdUOMYS/hhbKEQFlgBWC9yfwgqWculk1r2WkSk=;
+ b=P8GAzFD1SdN5b9rDC7PDpl+LhPNJUHxXF2sKD4YPo49IKYO+Bo7Zwh4X1HL9vEnnsdUY
+ reVURF1j1NozeudVzhVypNXuZnXr3RPEYQNBjSMemLhD4QFdA8Edb8QnS29xt0AJMT15
+ NR4BCrmZt3rW3MkO2cqrOHYqrKq7UdZS2wDpI1dfQoYsQWbHJ20PKJMozG6XD9nYjKPx
+ D5uynJn0hNtJLrxG9sfyPeCv4UN9Uco1CNluy1KzLY1HHL2D5hJRgwEIonmGZn0Dlnhn
+ oPx4Firf4f3FqrfkaP5x+g1hXzhPl1GgFZZn2FQHDVVpznlhSOriJxxxCcZR4v5VJekD 4Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xa461g1e8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 21:57:08 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 434Lv7wP010688;
+	Thu, 4 Apr 2024 21:57:07 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xa461g1e6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 21:57:07 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 434JG1N6003659;
+	Thu, 4 Apr 2024 21:57:07 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x9epyeut3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 21:57:06 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 434Lv4Kh18678378
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Apr 2024 21:57:06 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4121458066;
+	Thu,  4 Apr 2024 21:57:04 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F90058053;
+	Thu,  4 Apr 2024 21:57:04 +0000 (GMT)
+Received: from localhost (unknown [9.61.85.102])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Apr 2024 21:57:04 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        "Naveen
+ N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] selftests/powerpc/papr-vpd: Fix missing variable
+ initialization
+In-Reply-To: <20240404-papr-vpd-test-uninit-lc-v1-1-04cc22d7f799@linux.ibm.com>
+References: <20240404-papr-vpd-test-uninit-lc-v1-1-04cc22d7f799@linux.ibm.com>
+Date: Thu, 04 Apr 2024 16:57:03 -0500
+Message-ID: <87sf007pw0.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20240326140252.GH6245@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zoP-AoqsnyU1cmzVV6GMV39M1xvaxBNg
+X-Proofpoint-GUID: 0_rCOZ4-aa5U1Rzmp08cnrOiLYCnoIWA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-04_18,2024-04-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 mlxscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=756 spamscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404040157
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,88 +101,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, linux-mm@kvack.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-arm-kernel@lists.infradead.org, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 26, 2024 at 11:02:52AM -0300, Jason Gunthorpe wrote:
-> The more I look at this the more I think we need to get to Matthew's
-> idea of having some kind of generic page table API that is not tightly
-> tied to level. Replacing the hugetlb trick of 'everything is a PTE'
-> with 5 special cases in every place seems just horrible.
-> 
->    struct mm_walk_ops {
->        int (*leaf_entry)(struct mm_walk_state *state, struct mm_walk *walk);
->    }
-> 
-> And many cases really want something like:
->    struct mm_walk_state state;
-> 
->    if (!mm_walk_seek_leaf(state, mm, address))
->           goto no_present
->    if (mm_walk_is_write(state)) ..
-> 
-> And detailed walking:
->    for_each_pt_leaf(state, mm, address) {
->        if (mm_walk_is_write(state)) ..
->    }
-> 
-> Replacing it with a mm_walk_state that retains the level or otherwise
-> to allow decoding any entry composes a lot better. Forced Loop
-> unrolling can get back to the current code gen in alot of places.
-> 
-> It also makes the power stuff a bit nicer as the mm_walk_state could
-> automatically retain back pointers to the higher levels in the state
-> struct too...
-> 
-> The puzzle is how to do it and still get reasonable efficient codegen,
-> many operations are going to end up switching on some state->level to
-> know how to decode the entry.
+Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+writes:
+> From: Nathan Lynch <nathanl@linux.ibm.com>
+>
+> The "close handle without consuming VPD" testcase has inconsistent
+> results because it fails to initialize the location code object it
+> passes to ioctl() to create a VPD handle. Initialize the location code
+> to the empty string as intended.
+>
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 
-These discussions are definitely constructive, thanks Jason.  Very helpful.
-
-I thought about this last week but got interrupted.  It does make sense to
-me; it looks pretty generic and it is flexible enough as a top design.  At
-least that's what I thought.
-
-However now when I rethink about it, and look more into the code when I got
-the chance, it turns out this will be a major rewrite of mostly every
-walkers..  it doesn't mean that this is a bad idea, but then I'll need to
-compare the other approach, because there can be a huge difference on when
-we can get that code ready, I think. :)
-
-Consider that what we (or.. I) want to teach the pXd layers are two things
-right now: (1) hugetlb mappings (2) MMIO (PFN) mappings.  That mostly
-shares the generic concept when working on the mm walkers no matter which
-way to go, just different treatment on different type of mem.  (2) is on
-top of current code and new stuff, while (1) is a refactoring to drop
-hugetlb_entry() hook point as the goal.
-
-Taking a simplest mm walker (smaps) as example, I think most codes are
-ready thanks to THP's existance, and also like vm_normal_page[_pmd]() which
-should even already work for pfnmaps; pud layer is missing but that should
-be trivial.  It means we may have chance to drop hugetlb_entry() without an
-huge overhaul yet.
-
-Now the important question I'm asking myself is: do we really need huge p4d
-or even bigger?  It's 512GB on x86, and we said "No 512 GiB pages yet"
-(commit fe1e8c3e963) since 2017 - that is 7 years without chaning this
-fact.  While on non-x86 p4d_leaf() never defined.  Then it's also
-interesting to see how many codes are "ready" to handle p4d entries (by
-looking at p4d_leaf() calls; much easier to see with the removal of the
-rest huge apis..) even if none existed.
-
-So, can we over-engineer too much if we go the generic route now?
-Considering that we already have most of pmd/pud entries around in the mm
-walker ops.  So far it sounds better we leave it for later, until further
-justifed to be useful.  And that won't block it if it ever justified to be
-needed, I'd say it can also be seen as a step forward if I can make it to
-remove hugetlb_entry() first.
-
-Comments welcomed (before I start to work on anything..).
-
-Thanks,
-
--- 
-Peter Xu
-
+Sorry, this wants Fixes: and Reported-by: tags. v2 coming.
