@@ -2,94 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16B68990A1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 23:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A508990F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 00:03:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P8GAzFD1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uadm20zc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9b8R4xjZz3dVq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 08:57:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9bGG5BH0z3vZR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 09:03:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P8GAzFD1;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uadm20zc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9b7g0tmjz2yG9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 08:57:18 +1100 (AEDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 434LUmUv003750;
-	Thu, 4 Apr 2024 21:57:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=2bKRgmdUOMYS/hhbKEQFlgBWC9yfwgqWculk1r2WkSk=;
- b=P8GAzFD1SdN5b9rDC7PDpl+LhPNJUHxXF2sKD4YPo49IKYO+Bo7Zwh4X1HL9vEnnsdUY
- reVURF1j1NozeudVzhVypNXuZnXr3RPEYQNBjSMemLhD4QFdA8Edb8QnS29xt0AJMT15
- NR4BCrmZt3rW3MkO2cqrOHYqrKq7UdZS2wDpI1dfQoYsQWbHJ20PKJMozG6XD9nYjKPx
- D5uynJn0hNtJLrxG9sfyPeCv4UN9Uco1CNluy1KzLY1HHL2D5hJRgwEIonmGZn0Dlnhn
- oPx4Firf4f3FqrfkaP5x+g1hXzhPl1GgFZZn2FQHDVVpznlhSOriJxxxCcZR4v5VJekD 4Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xa461g1e8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Apr 2024 21:57:08 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 434Lv7wP010688;
-	Thu, 4 Apr 2024 21:57:07 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xa461g1e6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Apr 2024 21:57:07 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 434JG1N6003659;
-	Thu, 4 Apr 2024 21:57:07 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x9epyeut3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Apr 2024 21:57:06 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 434Lv4Kh18678378
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Apr 2024 21:57:06 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4121458066;
-	Thu,  4 Apr 2024 21:57:04 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F90058053;
-	Thu,  4 Apr 2024 21:57:04 +0000 (GMT)
-Received: from localhost (unknown [9.61.85.102])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Apr 2024 21:57:04 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        "Naveen
- N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH] selftests/powerpc/papr-vpd: Fix missing variable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9bFV5JjJz3c5J
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 09:02:22 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 527846176A;
+	Thu,  4 Apr 2024 22:02:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E994CC433F1;
+	Thu,  4 Apr 2024 22:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712268138;
+	bh=UgVpT3HlGkIsl+I8fTMWUFls/94yxe0pHH2dt8xmGvw=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Uadm20zcdMHW+MOTrDkoBb0FWza7/1DxmNTaa0eZ/VIvsjvzYFMFIDogoHGXSZLDd
+	 bJ2cHivUyxKc93GQyFd0ajOEsvDOtL1AD8MnO49yTHUBGewqMy7q3VD7RF3SwozEId
+	 EFS0b5tNQ/REuTuARxaR/PNpzxp31Ntf6rmLNEGJBSdqtCWHHQKULUOEyYXutDYTJD
+	 iA98HAvRW+eAwuWBJ7sax4yigBSIil4qAOqMXhm9/okLZJXRii4m16u8180YH5f8bx
+	 +AJxR/3wWcLoX78uhK94O8SiXtqyD8n2bzDeuj4x12/s2/qh7yAEGoQQWNKEFH2QZ3
+	 YODpGYm1oWsRw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D50C0CD1284;
+	Thu,  4 Apr 2024 22:02:17 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Thu, 04 Apr 2024 17:02:09 -0500
+Subject: [PATCH v2] selftests/powerpc/papr-vpd: Fix missing variable
  initialization
-In-Reply-To: <20240404-papr-vpd-test-uninit-lc-v1-1-04cc22d7f799@linux.ibm.com>
-References: <20240404-papr-vpd-test-uninit-lc-v1-1-04cc22d7f799@linux.ibm.com>
-Date: Thu, 04 Apr 2024 16:57:03 -0500
-Message-ID: <87sf007pw0.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zoP-AoqsnyU1cmzVV6GMV39M1xvaxBNg
-X-Proofpoint-GUID: 0_rCOZ4-aa5U1Rzmp08cnrOiLYCnoIWA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-04_18,2024-04-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 mlxscore=0 impostorscore=0 adultscore=0 suspectscore=0
- phishscore=0 mlxlogscore=756 spamscore=0 malwarescore=0 priorityscore=1501
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404040157
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240404-papr-vpd-test-uninit-lc-v2-1-37bff46c65a5@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAGAjD2YC/3WNwQqDMBAFf0Vy7koSU8We+h/Fg93EuqAxJDFYx
+ H9vKvTY4wy8eTsLxpMJ7FbszJtEgRabQV4KhmNvXwZIZ2aSS8UVr8D1zkNyGqIJEVZLliJMCBW
+ v0dSor6JuWF47bwbazvKjyzxSiIt/n0dJfO2vqf42kwABXCFKqZuhadv7RHbdSnrOJS4z647j+
+ ACbLa0PwgAAAA==
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712268137; l=1473;
+ i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
+ bh=bYiOiaClrXV1SOzlLA/y5qVSPUcyHE9ZqM034MU/ORQ=;
+ b=PZ2pQwgASuBN6LNMB7MTOSfo6bFZNALzbSHPPZImCqh1/KrQYGyYdq/674lEj60WEJ3bP6Pe4
+ 6OfduhqsyTwDBGXI4HtY0W2Y03/rHUD94c9xJJW2MOetH+d/wtE5icB
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
+X-Endpoint-Received: by B4 Relay for nathanl@linux.ibm.com/20230206 with
+ auth_id=27
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,19 +78,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Geetika Moolchandani <geetika@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-writes:
-> From: Nathan Lynch <nathanl@linux.ibm.com>
->
-> The "close handle without consuming VPD" testcase has inconsistent
-> results because it fails to initialize the location code object it
-> passes to ioctl() to create a VPD handle. Initialize the location code
-> to the empty string as intended.
->
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Sorry, this wants Fixes: and Reported-by: tags. v2 coming.
+The "close handle without consuming VPD" testcase has inconsistent
+results because it fails to initialize the location code object it
+passes to ioctl() to create a VPD handle. Initialize the location code
+to the empty string as intended.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
+Fixes: 9118c5d32bdd ("powerpc/selftests: Add test for papr-vpd")
+---
+Changes in v2:
+- Add Fixes: and Reported-by: tags.
+- Link to v1: https://lore.kernel.org/r/20240404-papr-vpd-test-uninit-lc-v1-1-04cc22d7f799@linux.ibm.com
+---
+ tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
+index 505294da1b9f..d6f99eb9be65 100644
+--- a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
++++ b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
+@@ -154,7 +154,7 @@ static int dev_papr_vpd_null_handle(void)
+ static int papr_vpd_close_handle_without_reading(void)
+ {
+ 	const int devfd = open(DEVPATH, O_RDONLY);
+-	struct papr_location_code lc;
++	struct papr_location_code lc = { .str = "", };
+ 	int fd;
+ 
+ 	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
+
+---
+base-commit: bfe51886ca544956eb4ff924d1937ac01d0ca9c8
+change-id: 20240403-papr-vpd-test-uninit-lc-306ce6cd5167
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
+
