@@ -2,52 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DB4897DA9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 04:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 248A4897E3E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 06:40:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VyMVQ3zt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DP9mSBmn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V94vT4j5Wz3vZ7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 13:15:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V987W6xfkz3vZQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Apr 2024 15:40:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VyMVQ3zt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DP9mSBmn;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V94tm30rMz3c4M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 13:14:24 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1712196863;
-	bh=0PcvpW5SQPrf4QnOqaQeX/XXu99U3a1qNIXPB0jb71k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VyMVQ3ztogSJTiIgLxBnLkNGFUgd68Qe2KDkfvwgzAo6UXogiTKbR69fLdEZZdu7n
-	 j3iNV2JgacCj30EfVfA0nufM6LLB0HhkUu4/gC0cH9GF15bjP6K55yY/SHfDcHG5LZ
-	 C6A3Ro/1onK6pyPh3jlVC2U8y95oPYSyx7VeOvKtcmV57g7fuqL83rvaMyFKYOVpxw
-	 oxm58pQDGWVdn2ucF5HZ6tep2QVSw9tARy9V9golouCtHYA3Tik7KGkuZEvWcLHYKF
-	 3HCUbzR0cNgClz2PklZaCGNb+9TQaIfvB8jeqaIi2XVH6tgkaEYydsWFGiIh6MP6A8
-	 HT6H386UWr5YA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V986m4gwJz3cGw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Apr 2024 15:40:00 +1100 (AEDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4344QOaP009131;
+	Thu, 4 Apr 2024 04:39:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=fGMDDAqpuyHFT8CKRZIXuj4gzQ7iSrp2EictdMfn1CE=;
+ b=DP9mSBmnzD94+0HDDDTwpCcl/NqzDVUzytUGtkoc9JAg3mGiVEmhdsVbp9aRpiZil3q2
+ hRXuYYZKxSRKAsvJiM+Tvc1rcGrdOuFvUXnROg5EGKJcH6kFbLugbRPrcEiOd7USIj57
+ CMb+4NT6qbOuiXG7G1961fhMeJBCl+RjyY4B45GEoIrSzr4E38Eg5vhEtSsgFONdAcJu
+ 0gDSxYWo+xwcMWpfEbiDDI+l9QVnNVvbsaK1c53YfOraHh8a4D/nYJCExNRHYd/VQlI4
+ 6XEu6ShvG0vKCjiaR2KtsGH3tRS3BLm9YmbRwDnwzXcFceWNd+Wtvv88LSEV6XpiHIju 4A== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x9mw902et-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 04:39:42 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43441Bep008629;
+	Thu, 4 Apr 2024 04:39:41 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x9epw1ysu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 04:39:41 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4344dbUS48103904
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Apr 2024 04:39:39 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 025652004D;
+	Thu,  4 Apr 2024 04:39:37 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 88B222004B;
+	Thu,  4 Apr 2024 04:39:36 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Apr 2024 04:39:36 +0000 (GMT)
+Received: from socotra.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4V94th0jq3z4wcQ;
-	Thu,  4 Apr 2024 13:14:19 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Guenter Roeck <linux@roeck-us.net>, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 15/15] powerpc: Add support for suppressing warning
- backtraces
-In-Reply-To: <20240403131936.787234-16-linux@roeck-us.net>
-References: <20240403131936.787234-1-linux@roeck-us.net>
- <20240403131936.787234-16-linux@roeck-us.net>
-Date: Thu, 04 Apr 2024 13:14:16 +1100
-Message-ID: <874jch98nb.fsf@mail.lhotse>
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 706A36005D;
+	Thu,  4 Apr 2024 15:39:31 +1100 (AEDT)
+From: Rohan McLure <rmclure@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] asm-generic/mmiowb: Mark accesses to fix KCSAN warnings
+Date: Thu,  4 Apr 2024 15:38:53 +1100
+Message-ID: <20240404043855.640578-2-rmclure@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KhBNUZPSy1wpOqZ_MTFza7poyGKrUl6y
+X-Proofpoint-ORIG-GUID: KhBNUZPSy1wpOqZ_MTFza7poyGKrUl6y
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_26,2024-04-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ phishscore=0 mlxlogscore=634 spamscore=0 impostorscore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404040028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,39 +92,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Linux Kernel Functional Testing <lkft@linaro.org>, Guenter Roeck <linux@roeck-us.net>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, netdev@vger.
- kernel.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, gautam@linux.ibm.com, linux-kernel@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, will@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Guenter Roeck <linux@roeck-us.net> writes:
-> Add name of functions triggering warning backtraces to the __bug_table
-> object section to enable support for suppressing WARNING backtraces.
->
-> To limit image size impact, the pointer to the function name is only added
-> to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
-> CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
-> parameter is replaced with a (dummy) NULL parameter to avoid an image size
-> increase due to unused __func__ entries (this is necessary because __func__
-> is not a define but a virtual variable).
->
-> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> v2:
-> - Rebased to v6.9-rc1
-> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
-> - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option
-> v3:
-> - Rebased to v6.9-rc2
->
->  arch/powerpc/include/asm/bug.h | 37 +++++++++++++++++++++++++---------
->  1 file changed, 28 insertions(+), 9 deletions(-)
+Prior to this patch, data races are detectable by KCSAN of the following
+forms:
 
-I ran it through some build and boot tests, LGTM.
+[1] Asynchronous calls to mmiowb_set_pending() from an interrupt context
+    or otherwise outside of a critical section
+[2] Interrupted critical sections, where the interrupt will itself
+    acquire a lock
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+In case [1], calling context does not need an mmiowb() call to be
+issued, otherwise it would do so itself. Such calls to
+mmiowb_set_pending() are either idempotent or no-ops.
 
-cheers
+In case [2], irrespective of when the interrupt occurs, the interrupt
+will acquire and release its locks prior to its return, nesting_count
+will continue balanced. In the worst case, the interrupted critical
+section during a mmiowb_spin_unlock() call observes an mmiowb to be
+pending and afterward is interrupted, leading to an extraneous call to
+mmiowb(). This data race is clearly innocuous.
+
+Resolve KCSAN warnings of type [1] by means of READ_ONCE, WRITE_ONCE.
+As increments and decrements to nesting_count are balanced by interrupt
+contexts, resolve type [2] warnings by simply revoking instrumentation,
+with data_race() rather than READ_ONCE() and WRITE_ONCE(), the memory
+consistency semantics of plain-accesses will still lead to correct
+behaviour.
+
+Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Reported-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+---
+Previously discussed here:
+https://lore.kernel.org/linuxppc-dev/20230510033117.1395895-4-rmclure@linux.ibm.com/
+But pushed back due to affecting other architectures. Reissuing, to
+linuxppc-dev, as it does not enact a functional change.
+---
+ include/asm-generic/mmiowb.h | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/include/asm-generic/mmiowb.h b/include/asm-generic/mmiowb.h
+index 5698fca3bf56..f8c7c8a84e9e 100644
+--- a/include/asm-generic/mmiowb.h
++++ b/include/asm-generic/mmiowb.h
+@@ -37,25 +37,28 @@ static inline void mmiowb_set_pending(void)
+ 	struct mmiowb_state *ms = __mmiowb_state();
+ 
+ 	if (likely(ms->nesting_count))
+-		ms->mmiowb_pending = ms->nesting_count;
++		WRITE_ONCE(ms->mmiowb_pending, ms->nesting_count);
+ }
+ 
+ static inline void mmiowb_spin_lock(void)
+ {
+ 	struct mmiowb_state *ms = __mmiowb_state();
+-	ms->nesting_count++;
++
++	/* Increment need not be atomic. Nestedness is balanced over interrupts. */
++	data_race(ms->nesting_count++);
+ }
+ 
+ static inline void mmiowb_spin_unlock(void)
+ {
+ 	struct mmiowb_state *ms = __mmiowb_state();
++	u16 pending = READ_ONCE(ms->mmiowb_pending);
+ 
+-	if (unlikely(ms->mmiowb_pending)) {
+-		ms->mmiowb_pending = 0;
++	WRITE_ONCE(ms->mmiowb_pending, 0);
++	if (unlikely(pending))
+ 		mmiowb();
+-	}
+ 
+-	ms->nesting_count--;
++	/* Decrement need not be atomic. Nestedness is balanced over interrupts. */
++	data_race(ms->nesting_count--);
+ }
+ #else
+ #define mmiowb_set_pending()		do { } while (0)
+-- 
+2.44.0
+
