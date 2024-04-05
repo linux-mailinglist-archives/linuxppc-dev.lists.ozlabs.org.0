@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBE68998A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 10:57:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CBB8998A5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 10:58:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XoV8LFT6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mihCq5qO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9snX3SYRz3vgg
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 19:57:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9spJ6pjmz3wKR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 19:58:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XoV8LFT6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mihCq5qO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::335; helo=mail-ot1-x335.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32d; helo=mail-ot1-x32d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9sLm1Rd1z3vhJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 19:37:51 +1100 (AEDT)
-Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6e0f43074edso1169603a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Apr 2024 01:37:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9sLq0qJqz3vcC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 19:37:55 +1100 (AEDT)
+Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6e673ffbd79so1140273a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Apr 2024 01:37:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712306269; x=1712911069; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1712306273; x=1712911073; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KVFESOjcVNNLos51ELml5v9t1FTREA6sVge5yqZTLzY=;
-        b=XoV8LFT6cu+YV3B4Jqg77epSOncENwdQ1oLFy1BcXplodHbKMITG/1YsTxirRdwHM1
-         2D2Sl1cNyIBn0ExCGToE8iUmZuxkWVspBw6FdYasSaK8GAth6frismhx+0CDvikCKJzO
-         TCzooEEXG/OcEMjJrli/51u0F/4kvT2WIswxoItwuwIQXw2wifDVleByyMzj/rR+rp6+
-         pnSXjPaq/2bxHnKSfluCpShZHKtFh2FsDwEidkZQ1Q5bwHW+siEK6JQPJSkACeWvwp68
-         huw3wSl/tVo8GvZOLC19z+MSWoYGcHVDVHBlIA8Hk6u1DYpXjArZ8GtB2WGSQC3bgJrH
-         Adxw==
+        bh=/anYJVaYp4+LJwrTuPW6oFGib9vUgK/MVhC5XY9qERY=;
+        b=mihCq5qO/Wm31dRSkWdNFzphq1YwDTi1X/ly1XAmZI/21uSCxOP/vNfaT1Emx1VpBd
+         9lERQzJl5IOsZTcj/ohx/GM2rV3Bs+j9M0+1PURELQx4FRCoW9KE0Iybvqdlf0piGlww
+         3xOQO9+YUdnvgwOFjCbIjMYBIdPWfyawts0ld9Z8MdpeMwUSbtrqIutZzYHz9RkxWRpt
+         T4O4aJP76hs4athogIdm4nNhz6jml0r4I7w/Zc+D3zml6JhI+2qAkwf75mhbFgf0InZb
+         E9RoUC0VebnJxCiM8MEY2xWtjaDSAf5JGfsVtaNb0eoLDrqARjqh99yLhxaX7BzPpEu6
+         RAUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712306269; x=1712911069;
+        d=1e100.net; s=20230601; t=1712306273; x=1712911073;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KVFESOjcVNNLos51ELml5v9t1FTREA6sVge5yqZTLzY=;
-        b=Q5ZaWexzeQJ/WUuigu0iyCLIrWP+v7mD1HQR4tSM06eKZqhFBICYLct3dI6xB5bQk2
-         4LMO2SZB8TMczqMB1m0LUpIp7zPZKDKgu6lQp5u+s+wImUWcR7jfiOnp+XyxUEIlR7ry
-         sO0bC4D5CtY/v9kt/V9F55vzMHja1NLd19rE8hiApbgWdSVc3Za7tcDEGSMkQdLyXtL/
-         7YSQDWQkb1YxKnTo/Lplq09qy+EnHrcLD1gb+aUv8NUVT62K/SbaOUfrml/0huz+rjcb
-         3vzfkw8kqUr7+PndgZX2glFaCz8FwP+dSulk5PyHJoYnDv+5v2gGGWyfUaXK8s1ATbDz
-         KT5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXT4nlQR4B2jIahQvQMAcYz2FZs+bQNr+CJ63FDVLWYYiuiXCURSPzpeKkWWdF6IArT3Yoqps9IFJ7pIZntM7eXtGTsM7kxNHXzqZ4hLg==
-X-Gm-Message-State: AOJu0YydMqd+fr04irrsLK7lcp3742oXRSXDI71Oul2kvJ0ly1NJEzOZ
-	UanZWbff08QXVm9m07pTbXSUpQSS/9VElnWTJgA+gC2/Ax0NhQpW
-X-Google-Smtp-Source: AGHT+IHVOuA69ER65+xddK5ckvCsnmvJfddxakbq65AQZDNkYvQ4G74j7SWW8EQqLdsFts08sTuatQ==
-X-Received: by 2002:a05:6830:13ca:b0:6e6:8564:6672 with SMTP id e10-20020a05683013ca00b006e685646672mr794574otq.25.1712306269104;
-        Fri, 05 Apr 2024 01:37:49 -0700 (PDT)
+        bh=/anYJVaYp4+LJwrTuPW6oFGib9vUgK/MVhC5XY9qERY=;
+        b=nCfxaudIecWWiFpngclLENgu9/UYibOe8dt566cA4h8jURsh0D78REMLD47eUQtCih
+         rl7qw9hXavjcCaVJSjc+igXGZcwk5UNu4P180yi9YJ9XRikrVER7EvX6BC9deZq/HM20
+         ZssChzRZ0J54pjdYjHWApQYlnGI58c5IoCxcTCXchr3oIPzjIKkAJAoJB7OWNZKNz4VY
+         OYcMJbFZ+AntPQtEcZYC0QV+ZsuYjQucTx2rv6Qf20gt2iomWu5YE8YDPoVtXdfNGFN+
+         e8vCly/srnl+zAy7F2rU4arXTrq0U0ZVgxB1OE7ocrtgnv/8CbcYGxvozwewfr2g+g/j
+         lbMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNNsz/KhXb3Q096X/t1Kw8CjR55+rjcPPaa9nnjy54sK+2JIsdR1XWz6TOBoSiNjQLLcXS0FU+/O+UNk0CQq1YdlBHdZBFZVZffFPTDw==
+X-Gm-Message-State: AOJu0Yy6GfMtS9mCTekgaXEbndBDV9DXuHkgPTLWF5VLaAgbY4b/Cwvm
+	g4OKXiV8DD4YARwKpU2+UMGCbrF9ntkbpRAd0BIDeAXnCZ1dW/80X+2lTfti
+X-Google-Smtp-Source: AGHT+IEfFFniJ4CjxEZcpOY//2eHENbvegT1teSegPz3vIaxiVQ8+HEX0Tsj2qjjilKwI2bcCyeYVA==
+X-Received: by 2002:a05:6870:15c4:b0:22e:a70f:158 with SMTP id k4-20020a05687015c400b0022ea70f0158mr910354oad.7.1712306273189;
+        Fri, 05 Apr 2024 01:37:53 -0700 (PDT)
 Received: from wheely.local0.net (124-169-104-130.tpgi.com.au. [124.169.104.130])
-        by smtp.gmail.com with ESMTPSA id y7-20020a63de47000000b005e838b99c96sm808638pgi.80.2024.04.05.01.37.45
+        by smtp.gmail.com with ESMTPSA id y7-20020a63de47000000b005e838b99c96sm808638pgi.80.2024.04.05.01.37.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Apr 2024 01:37:48 -0700 (PDT)
+        Fri, 05 Apr 2024 01:37:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v8 29/35] common/sieve: Support machines without MMU
-Date: Fri,  5 Apr 2024 18:35:30 +1000
-Message-ID: <20240405083539.374995-30-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v8 30/35] powerpc: Add sieve.c common test
+Date: Fri,  5 Apr 2024 18:35:31 +1000
+Message-ID: <20240405083539.374995-31-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240405083539.374995-1-npiggin@gmail.com>
 References: <20240405083539.374995-1-npiggin@gmail.com>
@@ -83,107 +83,48 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Not all powerpc CPUs provide MMU support. Define vm_available() that is
-true by default but archs can override it. Use this to run VM tests.
+Now that sieve copes with lack of MMU support, it can be run by
+powerpc.
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: kvm@vger.kernel.org
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- common/sieve.c      | 14 ++++++++------
- lib/ppc64/asm/mmu.h |  1 -
- lib/ppc64/mmu.c     |  2 +-
- lib/vmalloc.c       |  7 +++++++
- lib/vmalloc.h       |  2 ++
- 5 files changed, 18 insertions(+), 8 deletions(-)
+ powerpc/Makefile.common | 1 +
+ powerpc/sieve.c         | 1 +
+ powerpc/unittests.cfg   | 3 +++
+ 3 files changed, 5 insertions(+)
+ create mode 120000 powerpc/sieve.c
 
-diff --git a/common/sieve.c b/common/sieve.c
-index 8fe05ef13..db084691a 100644
---- a/common/sieve.c
-+++ b/common/sieve.c
-@@ -40,12 +40,14 @@ int main(void)
- 
-     printf("starting sieve\n");
-     test_sieve("static", static_data, STATIC_SIZE);
--    setup_vm();
--    test_sieve("mapped", static_data, STATIC_SIZE);
--    for (i = 0; i < 3; ++i) {
--	v = malloc(VSIZE);
--	test_sieve("virtual", v, VSIZE);
--	free(v);
-+    if (vm_available()) {
-+	    setup_vm();
-+	    test_sieve("mapped", static_data, STATIC_SIZE);
-+	    for (i = 0; i < 3; ++i) {
-+		v = malloc(VSIZE);
-+		test_sieve("virtual", v, VSIZE);
-+		free(v);
-+	    }
-     }
- 
-     return 0;
-diff --git a/lib/ppc64/asm/mmu.h b/lib/ppc64/asm/mmu.h
-index fadeee4bc..eaff0f1f7 100644
---- a/lib/ppc64/asm/mmu.h
-+++ b/lib/ppc64/asm/mmu.h
-@@ -3,7 +3,6 @@
- 
- #include <asm/pgtable.h>
- 
--bool vm_available(void);
- bool mmu_enabled(void);
- void mmu_enable(pgd_t *pgtable);
- void mmu_disable(void);
-diff --git a/lib/ppc64/mmu.c b/lib/ppc64/mmu.c
-index 5307cd862..84be31752 100644
---- a/lib/ppc64/mmu.c
-+++ b/lib/ppc64/mmu.c
-@@ -23,7 +23,7 @@
- 
- static pgd_t *identity_pgd;
- 
--bool vm_available(void)
-+bool vm_available(void) /* weak override */
- {
- 	return cpu_has_radix;
- }
-diff --git a/lib/vmalloc.c b/lib/vmalloc.c
-index 572682576..cf2ef7a70 100644
---- a/lib/vmalloc.c
-+++ b/lib/vmalloc.c
-@@ -206,10 +206,17 @@ void init_alloc_vpage(void *top)
- 	spin_unlock(&lock);
- }
- 
-+bool __attribute__((__weak__)) vm_available(void)
-+{
-+	return true;
-+}
+diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
+index 5871da47a..410a675d9 100644
+--- a/powerpc/Makefile.common
++++ b/powerpc/Makefile.common
+@@ -8,6 +8,7 @@ tests-common = \
+ 	$(TEST_DIR)/selftest.elf \
+ 	$(TEST_DIR)/selftest-migration.elf \
+ 	$(TEST_DIR)/memory-verify.elf \
++	$(TEST_DIR)/sieve.elf \
+ 	$(TEST_DIR)/spapr_hcall.elf \
+ 	$(TEST_DIR)/rtas.elf \
+ 	$(TEST_DIR)/emulator.elf \
+diff --git a/powerpc/sieve.c b/powerpc/sieve.c
+new file mode 120000
+index 000000000..fe299f309
+--- /dev/null
++++ b/powerpc/sieve.c
+@@ -0,0 +1 @@
++../common/sieve.c
+\ No newline at end of file
+diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
+index 0be787f67..351da46a6 100644
+--- a/powerpc/unittests.cfg
++++ b/powerpc/unittests.cfg
+@@ -121,3 +121,6 @@ file = sprs.elf
+ machine = pseries
+ extra_params = -append '-w'
+ groups = migration
 +
- void __setup_vm(void *opaque)
- {
- 	phys_addr_t base, top;
- 
-+	assert_msg(vm_available(), "Virtual memory not available. Must check vm_available() before calling setup_vm()");
-+
- 	if (alloc_ops == &vmalloc_ops)
- 		return;
- 
-diff --git a/lib/vmalloc.h b/lib/vmalloc.h
-index 0269fdde9..e81be39f4 100644
---- a/lib/vmalloc.h
-+++ b/lib/vmalloc.h
-@@ -17,6 +17,8 @@ extern void setup_vm(void);
- /* As above, plus passes an opaque value to setup_mmu(). */
- extern void __setup_vm(void *opaque);
- 
-+/* common/ tests must check availability before calling setup_vm() */
-+extern bool vm_available(void);
- /* Set up paging */
- extern void *setup_mmu(phys_addr_t top, void *opaque);
- /* Walk the page table and resolve the virtual address to a physical address */
++[sieve]
++file = sieve.elf
 -- 
 2.43.0
 
