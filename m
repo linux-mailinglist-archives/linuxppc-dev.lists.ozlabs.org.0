@@ -2,72 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F498994A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 07:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C382D8994D3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 07:55:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aQClWHEo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=yu6iAYkl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9mlt1MkQz3vX7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 16:10:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9nlB49mFz3vb0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 16:55:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aQClWHEo;
+	dkim=pass (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=yu6iAYkl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9ml80gMSz3cSd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 16:10:11 +1100 (AEDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a46a7208eedso244004666b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Apr 2024 22:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712293808; x=1712898608; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NlMY98BD79lBdspG+ouG7M9punegC0XfPjsulWCNnW4=;
-        b=aQClWHEotftU1SeYm8ehUNoLD7kMiEKxwHG40K2zegvuiK25T7jIn/Q6J2xo+j3uQw
-         GujYEoI0XvOkkP94quZQGkiuYCB/Ssaaxon38L/ya15ZkJOH/b4Z0Q/soehbHd4UoaOr
-         O38JnYXcdR6GCM1rcKdBpsmbIim0Bo3kAj7t+crfrkdY0xV6n7y/Y3sb0Cvvc1mnsa4+
-         XD3ufBG7RV1nAbMA0qgnf7c5t9keg3rpU7XwwXXqH8nt/+9nlzN3u/cfBN5R0tpQ38De
-         s6mM3P9JWU5ygBgITsBMBrXe2LUTgp8ob6ywlYAqwjmVi0/aYtgp5eTKXvEUzQRbuq6t
-         8Ncw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712293808; x=1712898608;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NlMY98BD79lBdspG+ouG7M9punegC0XfPjsulWCNnW4=;
-        b=LpoWXts/Y3ilx/XViC/4aOy8u9s+R5bOB3bKm7P9PD2gNKC5q0kq54em/5vjzgXULC
-         cX21Hdkm4y4OiH642KciH6xS9/vnuZ3mEVX5TiTRZ9l8l6F6/Ad7WTngEictIAbKzpTL
-         xBveiyXdNxnPOPwWXbN0hH+67F5iLBIAXb5WbEf40/Bf3zN/9WIOZYIjx6VcA9a2bGr6
-         eZLl7rAaET7u1QO72sHM9HKFmBoORWgQCMTAL32kxGJ73sCwdQXuWoDx+v7mgHN73VDL
-         OMuhGq70fymYQupJ1/u7In3HqNKFEaD8yeLLn5ml5xVg+AMDfuve3p8c/Ps87IfvkiV6
-         CFwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVO44wc/DkC2E1eIJnspzAE/22dlKWEjvuKQ9Mo/TTz81gXQRi74aqd98X83xKXFKDP7c502Cc4p1c7G6QERwoaLutdWj1TAtKQkSSUVw==
-X-Gm-Message-State: AOJu0YzTYjkwuEEUJ2FKyiSc+OebVE3g+vLd5rO+GzaJC0BYDIAKzebP
-	4txE1NZ5kGpoXYhXt0IZLukvA6OAZOsN+mhanHCFBbiXVJ/bhqRQOmZStZnLKUJYiIrfEPAedbW
-	ahxF9U56pjX4qBySj2vcPeC7a794=
-X-Google-Smtp-Source: AGHT+IFNALLC+cLIfNSKBkrLOWuswiELcg0iglPLHWgzh4Faj3pLvLFzDEWHz9/0AFOMJnrf3rlzgjtzvgyHYx2EFkg=
-X-Received: by 2002:a17:906:cce6:b0:a4d:ffcb:1f4e with SMTP id
- ot38-20020a170906cce600b00a4dffcb1f4emr161016ejb.75.1712293807779; Thu, 04
- Apr 2024 22:10:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9nkR6RWqz3dW4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 16:54:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=5+CSatVUX1mB5iLzA7Er8OGguj0pB7lpB5xhAhk7j8k=; t=1712296480;
+	x=1712728480; b=yu6iAYklQY0ixCIy10FMR0RamVOVnivbyA2pM4h237pRCza0fhEe07bjIpsfC
+	h0ojIwhALP4NDXY0R75rMMlZYkZbTupLUR81pshLhPtMXN2/YhPM+2OmLLB9Ousu/afHGk9aKPWwf
+	3dvYwWPfUsVevTaHy6QVz4zw+5uJlrXq3jjnn0n+LclCUxcPxJIk9YIQfagivLz7286gRObN3cELY
+	v4zLOqQlPNDFxXWKe0GiNEXEuI2Ws1Czge7jtJ2cu3kTbumx7y0IRwIm9Lm0qNtKKvHCAUbJCfF4a
+	a6fEbvoBLu7KSTF0h+ZgLRsDSiLt0j6OZC6SmOxLlJegA9qWow==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rscX3-00021j-El; Fri, 05 Apr 2024 07:54:33 +0200
+Message-ID: <cb038940-63fd-4348-bed2-13e1b2844b92@leemhuis.info>
+Date: Fri, 5 Apr 2024 07:54:32 +0200
 MIME-Version: 1.0
-References: <dda2187e128bfaaf092351812e4538e2e41c17f6.1711599093.git.fthain@linux-m68k.org>
- <Zg3YZN-QupyVaTPm@surfacebook.localdomain> <8f234f26-d5e3-66ed-ab0c-86d3c9852b4a@linux-m68k.org>
- <CAHp75VcxLez_Nm0N8=gpWd7SKGd9JF2QXEOOB_gvX3ZtTzj6HQ@mail.gmail.com> <87y19s7bk6.fsf@mail.lhotse>
-In-Reply-To: <87y19s7bk6.fsf@mail.lhotse>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 5 Apr 2024 08:09:31 +0300
-Message-ID: <CAHp75VdM8HgvBJrN_GRXH8XGGdv3Npxg6GR13AW-70jpuU=QOw@mail.gmail.com>
-Subject: Re: [PATCH] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: PPC: Book3S HV nestedv2: Cancel pending HDEC
+ exception
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
+References: <20240313072625.76804-1-vaibhav@linux.ibm.com>
+ <CZYME80BW9P7.3SC4GLHWCDQ9K@wheely>
+ <a4f022e8-1f84-4bbb-b00d-00f1eba1f877@leemhuis.info>
+ <87sf007ax6.fsf@mail.lhotse>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <87sf007ax6.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1712296480;c29130a1;
+X-HE-SMSGID: 1rscX3-00021j-El
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,84 +67,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Finn Thain <fthain@linux-m68k.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-m68k@lists.linux-m68k.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: mikey@neuling.org, Linux kernel regressions list <regressions@lists.linux.dev>, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 5, 2024 at 6:06=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.au=
-> wrote:
-> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
-> > On Thu, Apr 4, 2024 at 2:57=E2=80=AFAM Finn Thain <fthain@linux-m68k.or=
-g> wrote:
-> >> On Thu, 4 Apr 2024, Andy Shevchenko wrote:
-> >
-> >> > > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> >> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> >> > > Cc: Nicholas Piggin <npiggin@gmail.com>
-> >> > > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >> > > Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> >> > > Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-> >> > > Cc: linux-m68k@lists.linux-m68k.org
-> >> >
-> >> > Second, please move these Cc to be after the '---' line
-> >>
-> >> I thought they were placed above the line for audit (and signing)
-> >> purposes.
-> >
-> > I didn't get this, sorry.
-> >
-> >> There are thousands of Cc lines in the mainline commit messages
-> >> since v6.8.
-> >
-> > Having thousands of mistaken cases does not prove it's a good thing to
-> > follow. I answered Jiri why it's better the way I suggested.
-> >
-> >> > > Link: https://github.com/vivier/qemu-m68k/issues/44
-> >> > > Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
-> >> >
-> >> > Missed Fixes tag?
-> >>
-> >> Would this be ok: Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> >> I have to ask because some reviewers do not like to see a Fixes tag ci=
-te
-> >> that commit.
-> >
-> > Yes, or you even may dig into the history.git from history group (see
-> > git.kernel.org) for the real first patch that brought it.
-> >
-> >> > > Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> >> > > ---
-> >> > (here is a good location for Cc:)
-> >>
-> >> Documentation/process/submitting-patches.rst indicats that it should b=
-e
-> >> above the "---" separator together with Acked-by etc. Has this convent=
-ion
-> >> changed recently?
->
-> The docs don't really say where to put the Cc: tags, although they are
-> mentioned along with other tags which clearly are intended to go above
-> the separator.
+On 05.04.24 05:20, Michael Ellerman wrote:
+> "Linux regression tracking (Thorsten Leemhuis)"
+> <regressions@leemhuis.info> writes:
+>> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+>> for once, to make this easily accessible to everyone.
+>>
+>> Was this regression ever resolved? Doesn't look like it, but maybe I
+>> just missed something.
+> 
+> I'm not sure how it ended up on the regression list.
 
-He-h... Documentation needs constant updates too, for one reason or another=
-.
-This is normal process and in particular Cc (rather long) lists needs to be
-reconsidered.
+That is easy to explain: I let lei search for mails containing words
+like regress, bisect, and revert to become aware of regressions that
+might need tracking. And...
 
-> > I see, I will prepare a patch to discuss this aspect.
->
-> FYI there was a discussion about this several years ago, where at least
-> some maintainers agreed that Cc: tags don't add much value and are
-> better placed below the --- separator.
+> IMHO it's not really a regression.
 
-Thanks, I'll definitely read this.
-But I'm 100% sure the environment aspect and mobile device screen
-sizes were not discussed there.
+...sometimes I misjudge or misinterpret something and add it to the
+regression tracking. Looks like that happened here.
 
-> Thread starts here: https://lore.kernel.org/all/87y31eov1l.fsf@concordia.=
-ellerman.id.au/
+Sorry for that and the noise it caused!
 
+#regzbot resolve: invalid: was not really a regression in the first place
 
---=20
-With Best Regards,
-Andy Shevchenko
+Ciao, Thorsten
