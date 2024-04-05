@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E34899818
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 10:39:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE6789981A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 10:40:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TEJr9T4L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kcIX1N+r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9sNZ1X70z3vnT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 19:39:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9sPV2YLMz3dXF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 19:40:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TEJr9T4L;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kcIX1N+r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::235; helo=mail-oi1-x235.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c36; helo=mail-oo1-xc36.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9sJm5fKrz3vYG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 19:36:08 +1100 (AEDT)
-Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3bbbc6e51d0so1050223b6e.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Apr 2024 01:36:08 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9sJr3LHhz3vYM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 19:36:12 +1100 (AEDT)
+Received: by mail-oo1-xc36.google.com with SMTP id 006d021491bc7-5a470320194so1120353eaf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Apr 2024 01:36:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712306166; x=1712910966; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1712306169; x=1712910969; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hN1hRX0cnQA0eHx430zzveXl6A1e4BW3MBeplV5X5sY=;
-        b=TEJr9T4LY0w0mp4qjkCPybEgL4TjCpeDq8yBB4P+O/ORldzi/1IRRc2jjWpEqzWJta
-         u6uyo1zDeezwN84nVoK7QmR/0UwXf68+WX+9diwNjVqWDyjurGF8KzDENvT3AWhRYaro
-         ONYuIifEdQ9yia2tBeMOOEG1IGDjwsnMUKtnYO4dcGPBaFxak8QcvgvirXcGN7VupIU6
-         V1+7cHJgK1fH/jcYzDbrEnxG2Zlqcd0Y1FjbmjnJIN/xOWzhyvmcUO2mEsp9ak/L5eqy
-         AkxVp+I89D7bKoeT47xcfPpinKBIgvW3DPVSl19beNRmnLzOPq6pzLOOZww9kDpRAmyg
-         98qg==
+        bh=zCF8CELi+SjVv+NCZQU1TgZAmwKEyNScC88fkFD6Xtc=;
+        b=kcIX1N+r1losngcADmmfdWYG6y33bWlX406lcM91wBNFPDD+LXAzHz1JVJ9BCuaIw8
+         jetBKxXjXseoaZHMUC6nB1RuNnikjOKFL75V6eoyxhiA1bPJDu2TkqScLHEfe4SyOOiQ
+         V/14cDxbKW9gxPbuJf/9u9KGG8BpIq13WgXz1lvhZpc+iehKj7PNDn+lmQVxIbtO7AVd
+         OIk0P3bbAdSgIkDz1s/2++DP3C30GSLv/WbaKcpMhrpu4prYEw3u8V16B0VHqem7d5co
+         5F4MfiNPf7KzMbX1NDw/gm1zFqEx1SAGmc4eGoZGyaVlvKnLeVCoeuKfgrlBC8rQx2Br
+         x1Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712306166; x=1712910966;
+        d=1e100.net; s=20230601; t=1712306169; x=1712910969;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hN1hRX0cnQA0eHx430zzveXl6A1e4BW3MBeplV5X5sY=;
-        b=t3vE6xjDey2pG64+/aMlho9Fztr5myccuXfSHswzFaqDQDzSbs3gcsN4aCjI/wE4M0
-         zZFzLu71bIwsdlMmmlMTcHYKAfcT6zDfHiWUmK24jO/n1+9udkD/Hqap179tjPknNo9Q
-         W2IqBzv1hRrSWQdZdwarSdhvQZ98P7GOvWLJKGLqJzeiHVpHRcxKp0FUHax7P/eJxQY4
-         zPB7gEZdgkfkhDZcoOAjh4ipFD4ojTVMU7cSlI+/bnkk8wdNGM455y3/RbhTlXvuasTv
-         Jxe17e+CES5oXh9vv9GPOcbh6tGoHF8lCxOHVmnx+LZYnQCZjTxrI16YjZLHtUExubeX
-         YvNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXETNUSd+hyT69J+tx9+hzxLDYDytxKHmyPqiVjsVB7VnpF5tiVEtgbK7swdRbrPES7OEVplGeJvvqrJkCDjn4Zg91fEwo22BXP34V4xQ==
-X-Gm-Message-State: AOJu0YwqixJHBdy0kBtRgMM0OXny5iCEfG0xVF5HC2mKVQ0uWwp2bV2H
-	5yVe8V1qYkb6v0lb7W93aluJnE0qDQkbzulqe+PEILc8gPNVS3SQ
-X-Google-Smtp-Source: AGHT+IE4X/ePynNQWpfbCZfQG6Gt/+FF3DicGox3f+vUkzFG3EidwqU5XM7OOMFn+Ba6KmLfrchbGw==
-X-Received: by 2002:a05:6358:928a:b0:183:8bc6:82b with SMTP id m10-20020a056358928a00b001838bc6082bmr757890rwa.28.1712306165717;
-        Fri, 05 Apr 2024 01:36:05 -0700 (PDT)
+        bh=zCF8CELi+SjVv+NCZQU1TgZAmwKEyNScC88fkFD6Xtc=;
+        b=QrC29UTaYOCJ2h8WIAXyBABE/JRhINJkEIN64HclHxeKbFtNp8kk/Gci+IC/CEj/UZ
+         M04+treGfo7KAIzd862zXNXtimBiNMqwjvDfoAiBJwYvEU3aRALqT7Dzldwp4qMy95Ak
+         VG0WrUg1VfbKANDMw+v5PFSWbrZw0lPRI1SBGzDdWs4q2pRMLdaSwQz0lGNqWs8/+tRc
+         yXmQH9vxtQrH9qBed16bRVTSgFFB3fXHgHPK0rOlv+clqrcUoP0whQJlnwBH7Miu95R+
+         PfHVjNJc5D6zgCLaQO0v4ugKPsrao0HibxAKCnK6CJOpWxyFCtSh/ayWDIWbtbnphqj5
+         O2Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNPkuD+g9sv8dDFiAdfzAZ31MLHquYV+qF+2LaKPNZhPE108FaksWWYtcrzEtLo0MaL6/IL/N9Q5ha7RcSHS+VqP+/atvCFRdYpca2pA==
+X-Gm-Message-State: AOJu0YzFanMwerdq8oSTQ43IuVtajRlBW9OcebqyoXkC1K4fOYKzcE3w
+	dyPyfQPEA2N+pW+KQHeptA35kC/anHDiK3Oi/yxBPzJsPNoBR1KP
+X-Google-Smtp-Source: AGHT+IGBTaBzPlaZbDERwXoO5iqZJmQWJ4Nnt95EUEj71ivqQWdjsvpM4tFM31NCoNdjvudnJ7lMaA==
+X-Received: by 2002:a05:6358:ed18:b0:17f:72ff:221e with SMTP id hy24-20020a056358ed1800b0017f72ff221emr964534rwb.4.1712306169455;
+        Fri, 05 Apr 2024 01:36:09 -0700 (PDT)
 Received: from wheely.local0.net (124-169-104-130.tpgi.com.au. [124.169.104.130])
-        by smtp.gmail.com with ESMTPSA id y7-20020a63de47000000b005e838b99c96sm808638pgi.80.2024.04.05.01.36.02
+        by smtp.gmail.com with ESMTPSA id y7-20020a63de47000000b005e838b99c96sm808638pgi.80.2024.04.05.01.36.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Apr 2024 01:36:05 -0700 (PDT)
+        Fri, 05 Apr 2024 01:36:09 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v8 04/35] (arm|s390): Use migrate_skip in test cases
-Date: Fri,  5 Apr 2024 18:35:05 +1000
-Message-ID: <20240405083539.374995-5-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v8 05/35] arch-run: Add a "continuous" migration option for tests
+Date: Fri,  5 Apr 2024 18:35:06 +1000
+Message-ID: <20240405083539.374995-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240405083539.374995-1-npiggin@gmail.com>
 References: <20240405083539.374995-1-npiggin@gmail.com>
@@ -83,169 +83,219 @@ Cc: Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, Nicholas Piggin <n
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Have tests use the new migrate_skip command in skip paths, rather than
-calling migrate_once to prevent harness reporting an error.
+The cooperative migration protocol is very good to control precise
+pre and post conditions for a migration event. However in some cases
+its intrusiveness to the test program, can mask problems and make
+analysis more difficult.
 
-s390x/migration.c adds a new command that looks like it was missing
-previously.
+For example to stress test migration vs concurrent complicated
+memory access, including TLB refill, ram dirtying, etc., then the
+tight spin at getchar() and resumption of the workload after
+migration is unhelpful.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+This adds a continuous migration mode that directs the harness to
+perform migrations continually. This is added to the migration
+selftests, which also sees cooperative migration iterations reduced
+to avoid increasing test time too much.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arm/gic.c              | 21 ++++++++++++---------
- s390x/migration-cmm.c  |  8 ++++----
- s390x/migration-skey.c |  4 +++-
- s390x/migration.c      |  1 +
- 4 files changed, 20 insertions(+), 14 deletions(-)
+ common/selftest-migration.c | 16 +++++++++--
+ lib/migrate.c               | 18 ++++++++++++
+ lib/migrate.h               |  3 ++
+ scripts/arch-run.bash       | 55 ++++++++++++++++++++++++++++++++-----
+ 4 files changed, 82 insertions(+), 10 deletions(-)
 
-diff --git a/arm/gic.c b/arm/gic.c
-index c950b0d15..bbf828f17 100644
---- a/arm/gic.c
-+++ b/arm/gic.c
-@@ -782,13 +782,15 @@ static void test_its_migration(void)
- 	struct its_device *dev2, *dev7;
- 	cpumask_t mask;
+diff --git a/common/selftest-migration.c b/common/selftest-migration.c
+index 0afd8581c..9a9b61835 100644
+--- a/common/selftest-migration.c
++++ b/common/selftest-migration.c
+@@ -9,12 +9,13 @@
+  */
+ #include <libcflat.h>
+ #include <migrate.h>
++#include <asm/time.h>
  
--	if (its_setup1())
-+	if (its_setup1()) {
-+		migrate_skip();
- 		return;
-+	}
+-#define NR_MIGRATIONS 30
++#define NR_MIGRATIONS 15
  
- 	dev2 = its_get_device(2);
- 	dev7 = its_get_device(7);
- 
--	migrate_once();
-+	migrate();
- 
- 	stats_reset();
- 	cpumask_clear(&mask);
-@@ -819,8 +821,10 @@ static void test_migrate_unmapped_collection(void)
- 	int pe0 = 0;
- 	u8 config;
- 
--	if (its_setup1())
-+	if (its_setup1()) {
-+		migrate_skip();
- 		return;
-+	}
- 
- 	if (!errata(ERRATA_UNMAPPED_COLLECTIONS)) {
- 		report_skip("Skipping test, as this test hangs without the fix. "
-@@ -836,7 +840,7 @@ static void test_migrate_unmapped_collection(void)
- 	its_send_mapti(dev2, 8192, 0, col);
- 	gicv3_lpi_set_config(8192, LPI_PROP_DEFAULT);
- 
--	migrate_once();
-+	migrate();
- 
- 	/* on the destination, map the collection */
- 	its_send_mapc(col, true);
-@@ -875,8 +879,10 @@ static void test_its_pending_migration(void)
- 	void *ptr;
- 	int i;
- 
--	if (its_prerequisites(4))
-+	if (its_prerequisites(4)) {
-+		migrate_skip();
- 		return;
-+	}
- 
- 	dev = its_create_device(2 /* dev id */, 8 /* nb_ites */);
- 	its_send_mapd(dev, true);
-@@ -923,7 +929,7 @@ static void test_its_pending_migration(void)
- 	gicv3_lpi_rdist_enable(pe0);
- 	gicv3_lpi_rdist_enable(pe1);
- 
--	migrate_once();
-+	migrate();
- 
- 	/* let's wait for the 256 LPIs to be handled */
- 	mdelay(1000);
-@@ -970,17 +976,14 @@ int main(int argc, char **argv)
- 	} else if (!strcmp(argv[1], "its-migration")) {
- 		report_prefix_push(argv[1]);
- 		test_its_migration();
--		migrate_once();
- 		report_prefix_pop();
- 	} else if (!strcmp(argv[1], "its-pending-migration")) {
- 		report_prefix_push(argv[1]);
- 		test_its_pending_migration();
--		migrate_once();
- 		report_prefix_pop();
- 	} else if (!strcmp(argv[1], "its-migrate-unmapped-collection")) {
- 		report_prefix_push(argv[1]);
- 		test_migrate_unmapped_collection();
--		migrate_once();
- 		report_prefix_pop();
- 	} else if (strcmp(argv[1], "its-introspection") == 0) {
- 		report_prefix_push(argv[1]);
-diff --git a/s390x/migration-cmm.c b/s390x/migration-cmm.c
-index 43673f18e..b4043a80e 100644
---- a/s390x/migration-cmm.c
-+++ b/s390x/migration-cmm.c
-@@ -55,12 +55,12 @@ int main(void)
+ int main(int argc, char **argv)
  {
- 	report_prefix_push("migration-cmm");
+-	report_prefix_push("migration");
++	report_prefix_push("migration harness");
  
--	if (!check_essa_available())
-+	if (!check_essa_available()) {
- 		report_skip("ESSA is not available");
--	else
-+		migrate_skip();
-+	} else {
- 		test_migration();
--
--	migrate_once();
-+	}
+ 	if (argc > 1 && !strcmp(argv[1], "skip")) {
+ 		migrate_skip();
+@@ -24,7 +25,16 @@ int main(int argc, char **argv)
+ 
+ 		for (i = 0; i < NR_MIGRATIONS; i++)
+ 			migrate_quiet();
+-		report(true, "simple harness stress");
++		report(true, "cooperative migration");
++
++		migrate_begin_continuous();
++		mdelay(2000);
++		migrate_end_continuous();
++		mdelay(1000);
++		migrate_begin_continuous();
++		mdelay(2000);
++		migrate_end_continuous();
++		report(true, "continuous migration");
+ 	}
  
  	report_prefix_pop();
- 	return report_summary();
-diff --git a/s390x/migration-skey.c b/s390x/migration-skey.c
-index 8d6d8ecfe..1a196ae1e 100644
---- a/s390x/migration-skey.c
-+++ b/s390x/migration-skey.c
-@@ -169,6 +169,7 @@ static void test_skey_migration_parallel(void)
- 
- 	if (smp_query_num_cpus() == 1) {
- 		report_skip("need at least 2 cpus for this test");
-+		migrate_skip();
- 		goto error;
- 	}
- 
-@@ -233,6 +234,7 @@ int main(int argc, char **argv)
- 
- 	if (test_facility(169)) {
- 		report_skip("storage key removal facility is active");
-+		migrate_skip();
- 		goto error;
- 	}
- 
-@@ -247,11 +249,11 @@ int main(int argc, char **argv)
- 		break;
- 	default:
- 		print_usage();
-+		migrate_skip();
- 		break;
- 	}
- 
- error:
--	migrate_once();
- 	report_prefix_pop();
- 	return report_summary();
+diff --git a/lib/migrate.c b/lib/migrate.c
+index 1d22196b7..770f76d5c 100644
+--- a/lib/migrate.c
++++ b/lib/migrate.c
+@@ -60,3 +60,21 @@ void migrate_skip(void)
+ 	puts("Skipped VM migration (quiet)\n");
+ 	(void)getchar();
  }
-diff --git a/s390x/migration.c b/s390x/migration.c
-index 269e272de..115afb731 100644
---- a/s390x/migration.c
-+++ b/s390x/migration.c
-@@ -164,6 +164,7 @@ int main(void)
++
++void migrate_begin_continuous(void)
++{
++	puts("Begin continuous migration\n");
++	(void)getchar();
++}
++
++void migrate_end_continuous(void)
++{
++	/*
++	 * Migration can split this output between source and dest QEMU
++	 * output files, print twice and match once to always cope with
++	 * a split.
++	 */
++	puts("End continuous migration\n");
++	puts("End continuous migration (quiet)\n");
++	(void)getchar();
++}
+diff --git a/lib/migrate.h b/lib/migrate.h
+index db6e0c501..35b6703a2 100644
+--- a/lib/migrate.h
++++ b/lib/migrate.h
+@@ -11,3 +11,6 @@ void migrate_quiet(void);
+ void migrate_once(void);
  
- 	if (smp_query_num_cpus() == 1) {
- 		report_skip("need at least 2 cpus for this test");
-+		migrate_skip();
- 		goto done;
- 	}
+ void migrate_skip(void);
++
++void migrate_begin_continuous(void);
++void migrate_end_continuous(void);
+diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+index 4a1aab48d..1901a929f 100644
+--- a/scripts/arch-run.bash
++++ b/scripts/arch-run.bash
+@@ -125,15 +125,17 @@ qmp_events ()
+ filter_quiet_msgs ()
+ {
+ 	grep -v "Now migrate the VM (quiet)" |
++	grep -v "Begin continuous migration (quiet)" |
++	grep -v "End continuous migration (quiet)" |
+ 	grep -v "Skipped VM migration (quiet)"
+ }
  
+ seen_migrate_msg ()
+ {
+ 	if [ $skip_migration -eq 1 ]; then
+-		grep -q -e "Now migrate the VM" < $1
++	        grep -q -e "Now migrate the VM" -e "Begin continuous migration" < $1
+ 	else
+-		grep -q -e "Now migrate the VM" -e "Skipped VM migration" < $1
++	        grep -q -e "Now migrate the VM" -e "Begin continuous migration" -e "Skipped VM migration" < $1
+ 	fi
+ }
+ 
+@@ -161,6 +163,7 @@ run_migration ()
+ 	src_qmpout=/dev/null
+ 	dst_qmpout=/dev/null
+ 	skip_migration=0
++	continuous_migration=0
+ 
+ 	mkfifo ${src_outfifo}
+ 	mkfifo ${dst_outfifo}
+@@ -186,9 +189,12 @@ run_migration ()
+ 	do_migration || return $?
+ 
+ 	while ps -p ${live_pid} > /dev/null ; do
+-		# Wait for test exit or further migration messages.
+-		if ! seen_migrate_msg ${src_out} ;  then
++		if [ ${continuous_migration} -eq 1 ] ; then
++			do_migration || return $?
++		elif ! seen_migrate_msg ${src_out} ;  then
+ 			sleep 0.1
++		elif grep -q "Begin continuous migration" < ${src_out} ; then
++			do_migration || return $?
+ 		elif grep -q "Now migrate the VM" < ${src_out} ; then
+ 			do_migration || return $?
+ 		elif [ $skip_migration -eq 0 ] && grep -q "Skipped VM migration" < ${src_out} ; then
+@@ -218,7 +224,7 @@ do_migration ()
+ 
+ 	# The test must prompt the user to migrate, so wait for the
+ 	# "Now migrate VM" or similar console message.
+-	while ! seen_migrate_msg ${src_out} ; do
++	while [ ${continuous_migration} -eq 0 ] && ! seen_migrate_msg ${src_out} ; do
+ 		if ! ps -p ${live_pid} > /dev/null ; then
+ 			echo > ${dst_infifo}
+ 			qmp ${dst_qmp} '"quit"'> ${dst_qmpout} 2>/dev/null
+@@ -229,12 +235,32 @@ do_migration ()
+ 		sleep 0.1
+ 	done
+ 
++	if grep -q "Begin continuous migration" < ${src_out} ; then
++		if [ ${continuous_migration} -eq 1 ] ; then
++			echo > ${dst_infifo}
++			qmp ${dst_qmp} '"quit"'> ${dst_qmpout} 2>/dev/null
++			echo "ERROR: Continuous migration already begun." >&2
++			qmp ${src_qmp} '"quit"'> ${src_qmpout} 2>/dev/null
++			return 3
++		fi
++		continuous_migration=1
++		echo > ${src_infifo}
++	fi
++
+ 	# Wait until the destination has created the incoming and qmp sockets
+ 	while ! [ -S ${dst_incoming} ] ; do sleep 0.1 ; done
+ 	while ! [ -S ${dst_qmp} ] ; do sleep 0.1 ; done
+ 
+ 	if [ $skip_migration -eq 0 ] && grep -q "Skipped VM migration" < ${src_out} ; then
+ 		# May not get any migrations, exit to main loop for now...
++		# No migrations today, shut down dst in an orderly manner...
++		if [ ${continuous_migration} -eq 1 ] ; then
++			echo > ${dst_infifo}
++			qmp ${dst_qmp} '"quit"'> ${dst_qmpout} 2>/dev/null
++			echo "ERROR: Can't skip in continuous migration." >&2
++			qmp ${src_qmp} '"quit"'> ${src_qmpout} 2>/dev/null
++			return 3
++		fi
+ 		echo > ${dst_infifo}
+ 		qmp ${dst_qmp} '"quit"'> ${dst_qmpout} 2>/dev/null
+ 		echo > ${src_infifo} # Resume src and carry on.
+@@ -266,8 +292,23 @@ do_migration ()
+ 
+ 	qmp ${src_qmp} '"quit"'> ${src_qmpout} 2>/dev/null
+ 
+-	# keypress to dst so getchar completes and test continues
+-	echo > ${dst_infifo}
++	# Should we end continuous migration?
++	if grep -q "End continuous migration" < ${src_out} ; then
++		if [ ${continuous_migration} -eq 0 ] ; then
++			echo "ERROR: Can't end continuous migration when not started." >&2
++			echo > ${dst_infifo}
++			qmp ${dst_qmp} '"quit"'> ${dst_qmpout} 2>/dev/null
++			qmp ${src_qmp} '"quit"'> ${src_qmpout} 2>/dev/null
++			return 3
++		fi
++		continuous_migration=0
++		echo > ${src_infifo}
++	fi
++
++	if [ ${continuous_migration} -eq 0 ]; then
++		# keypress to dst so getchar completes and test continues
++		echo > ${dst_infifo}
++	fi
+ 
+ 	# Wait for the incoming socket being removed, ready for next destination
+ 	while [ -S ${dst_incoming} ] ; do sleep 0.1 ; done
 -- 
 2.43.0
 
