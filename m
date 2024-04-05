@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D023C8993F7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 05:45:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6073989949E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 06:55:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=C81QSD5A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HWP4Mltq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9ksD4ScTz3vYc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 14:45:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9mPg1ZYYz3vXw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 15:55:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=C81QSD5A;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HWP4Mltq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=64.147.123.144; helo=wfout1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22c; helo=mail-oi1-x22c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9krR4H2Tz3d31
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 14:44:37 +1100 (AEDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfout.west.internal (Postfix) with ESMTP id 0977D1C0009E;
-	Thu,  4 Apr 2024 23:44:30 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Thu, 04 Apr 2024 23:44:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1712288670; x=1712375070; bh=YYryhgN6k4zAyvC/eOIu42dxlhfu
-	pw+E0NbxOoGoDXg=; b=C81QSD5AN2lgFOxtYWBrXWwhGfRaN1myhcFPEJtsdna1
-	y3KI7ki6k3LoQ6wanvh7ek7OCGqnuk8La/UKj4YzV50mNwatTsKPAYY3wOo9TWkR
-	1TH/PV+rfnVHnNFV9AMr7l1uft7y5+64d8VirT5vgvMi6QUaFOZrxyfsgy2uXTGU
-	5Ii8y1HpotS7x7jrOEpHoBOQ9t4tyFOCI8uhNL6Ny/qryGILHOvLDlwglpjZDkok
-	LBjfXTN/JKNNPYN9jMJ24rKPrLwAZXo9mtbeyw94TQscJQTPAN7y1wCU1+RSp0Bi
-	oRMifHOt66N8dTO6H7oTYyLslz4mZfrvaSvcS4e44Q==
-X-ME-Sender: <xms:nXMPZrWAi09F-2pkasZh3e4LxYUURcYASuu9XXfN5aFte3fVVGHmiQ>
-    <xme:nXMPZjmH2hhl2bjt2RSrZ5CuVgXf-g0weQBhcVpVmrf9Ae-tm5PVWXZZ0XqGcsPAn
-    Ne9GoZrkfW39p9UqXQ>
-X-ME-Received: <xmr:nXMPZnYhdfi4BpVgPnTJsselG-2LMSF68qraFL4CBAf9zqYU5V4rPAdKVXQP0VBN4rAh1iDjrmXlHVJ-7Qp_FE9kkSgneEE-7a0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefledgjeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcu
-    vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeu
-    heeuleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:nnMPZmWvmndcnC68Z4XcXHk59kNUS7IUTfsRxTvSSJhoPm8cUQW_Kw>
-    <xmx:nnMPZlkw0WmXCIj8Ey7Urnj7JoFoTaODYcuyRudjL79ESfV2E_NIEg>
-    <xmx:nnMPZjcodEDnCWyPaFGcVcUDJsuwW-dAe9V_guzE9DxdrkKXPSZ2EA>
-    <xmx:nnMPZvEa6ASIjTJQYhMcHRfXiODLjWNsgAKvDMHhgA95SSBy43a8pQ>
-    <xmx:nnMPZnn37qv0I34juauWUCcca0SPYmpyQZ3yNtnYZY5ny5gBAYpXi5_L>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Apr 2024 23:44:28 -0400 (EDT)
-Date: Fri, 5 Apr 2024 14:46:17 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Jiri Slaby <jirislaby@kernel.org>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] serial/pmac_zilog: Remove flawed mitigation for rx irq
- flood
-In-Reply-To: <87y19s7bk6.fsf@mail.lhotse>
-Message-ID: <4bddf8ec-97f1-07f6-9c0a-523c102c0a1b@linux-m68k.org>
-References: <dda2187e128bfaaf092351812e4538e2e41c17f6.1711599093.git.fthain@linux-m68k.org> <Zg3YZN-QupyVaTPm@surfacebook.localdomain> <8f234f26-d5e3-66ed-ab0c-86d3c9852b4a@linux-m68k.org> <CAHp75VcxLez_Nm0N8=gpWd7SKGd9JF2QXEOOB_gvX3ZtTzj6HQ@mail.gmail.com>
- <87y19s7bk6.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9mNv4zT8z3dVp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 15:54:21 +1100 (AEDT)
+Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3c3d7e7402dso1250613b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Apr 2024 21:54:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712292857; x=1712897657; darn=lists.ozlabs.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NM65XexEQuUDhr+aIgnkbT0SpwOWl1w3Itz5eH8He64=;
+        b=HWP4MltqFMJZ4cnkxTi4T/2Wt5T7LwnZk6tumGtrWi40NZbbgCzu2XMhDY1ghuu8Di
+         cUwY8xu/2/8lrCUvtjVK/N6cOzMx9JfVcX7+C8gVWh1HdQ2Wh4OqpV671sDvW88uRJIu
+         UnZg+CzXMT2QzTsw7iLZHOFm6I4rCrDcKfeg1VJ4RX3lWX9PujMGwcVyFISkc3+jgmik
+         Rzm62Gs0EmrXTeMG1ILSESEaxjfd3a2gkqYdfomDZTOrAcJ+h4LGyxjmtXCqZsYpCKAk
+         dMOAuRqh3jMWDOg1MmfFOduBbfNUAJH4l30lrmaY2F8eYtf+jmgnPikZWRO5kW9IiCuY
+         LQIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712292857; x=1712897657;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NM65XexEQuUDhr+aIgnkbT0SpwOWl1w3Itz5eH8He64=;
+        b=CmO7qFS9uRQt2ynNQdqMudSOytxI0GmXJdccgXyF3dnRCv1nD02E+nJP7KTaZmjTtv
+         +xr0Nux42Z1XYy0TNRSQWexZv6sGy6BYC+KbccrI66g2QLJUy7OFz62nGBThOJ1sKLsk
+         SOfNfGPSvfNHeADMBF10/I3VEDu0EicvsaFdAY2/FRFtu36p8vrBL/xfizSrT78jilbk
+         zrJQnUcjf6VUbpyLgVGeURZ+y1U9VotqIGcEFHyg0FXK/pCxCsI8vZpASVexYth5VxoD
+         i98OS1rfffztPDTSimBmfbeG8+gKsmo1t9yLNo/3C/Ii0F2C8AdvgDNUVjGKYVYzrnDV
+         QPpA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3v+ck/VLQnH31RLvyJZRZuV86UXjsH8aPJ5MCeRpoBhGlcsrD01wzPpyi+2u5W79VQRDYJWz8HxrDm4UcTqmTn1wEmaq5ZsVaZhFvKA==
+X-Gm-Message-State: AOJu0Yw6rQZNzPv+LNPgWLR889JJp6HjQAYtR5uGe5oPK2MuGUH1Xp2G
+	Mrak0cOEwjf9FnIX0E3ARk9ZYxvG8Bd2opSdRybknppF0HIidi1n
+X-Google-Smtp-Source: AGHT+IGHD0DlwEdgHO7QJ9tkbc1GkMFmfexAQlDtE82V1qn/NLI0Tu7/QDx6d5bnKtEbzA7K44YNSg==
+X-Received: by 2002:a54:451a:0:b0:3c5:d953:3814 with SMTP id l26-20020a54451a000000b003c5d9533814mr381743oil.2.1712292857082;
+        Thu, 04 Apr 2024 21:54:17 -0700 (PDT)
+Received: from localhost (124-169-104-130.tpgi.com.au. [124.169.104.130])
+        by smtp.gmail.com with ESMTPSA id gu11-20020a056a004e4b00b006e6cc93381esm546830pfb.125.2024.04.04.21.54.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Apr 2024 21:54:16 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Apr 2024 14:54:06 +1000
+Message-Id: <D0BX5M9GOA7N.RV1WXBCHI79X@gmail.com>
+To: "Thomas Huth" <thuth@redhat.com>
+Subject: Re: [kvm-unit-tests PATCH v7 07/35] common: add memory dirtying vs
+ migration test
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.17.0
+References: <20240319075926.2422707-1-npiggin@gmail.com>
+ <20240319075926.2422707-8-npiggin@gmail.com>
+ <6821682a-56f8-46aa-8fee-197434723bf5@redhat.com>
+In-Reply-To: <6821682a-56f8-46aa-8fee-197434723bf5@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,38 +83,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri Mar 29, 2024 at 3:37 AM AEST, Thomas Huth wrote:
+> On 19/03/2024 08.58, Nicholas Piggin wrote:
+> > This test stores to a bunch of pages and verifies previous stores,
+> > while being continually migrated. Default runtime is 5 seconds.
+> >=20
+> > Add this test to ppc64 and s390x builds. This can fail due to a QEMU
+> > TCG physical memory dirty bitmap bug, so it is not enabled in unittests
+> > for TCG yet.
+> >=20
+> > The selftest-migration test time is reduced significantly because
+> > this test
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   common/memory-verify.c      | 67 ++++++++++++++++++++++++++++++++++++=
++
+> >   common/selftest-migration.c |  8 ++---
+> >   powerpc/Makefile.common     |  1 +
+> >   powerpc/memory-verify.c     |  1 +
+> >   powerpc/unittests.cfg       |  7 ++++
+> >   s390x/Makefile              |  1 +
+> >   s390x/memory-verify.c       |  1 +
+> >   s390x/unittests.cfg         |  6 ++++
+> >   8 files changed, 88 insertions(+), 4 deletions(-)
+> >   create mode 100644 common/memory-verify.c
+> >   create mode 120000 powerpc/memory-verify.c
+> >   create mode 120000 s390x/memory-verify.c
+> >=20
+> > diff --git a/common/memory-verify.c b/common/memory-verify.c
+> > new file mode 100644
+> > index 000000000..e78fb4338
+> > --- /dev/null
+> > +++ b/common/memory-verify.c
+> > @@ -0,0 +1,67 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Simple memory verification test, used to exercise dirty memory migr=
+ation.
+> > + */
+> > +#include <libcflat.h>
+> > +#include <migrate.h>
+> > +#include <alloc.h>
+> > +#include <asm/page.h>
+> > +#include <asm/time.h>
+> > +
+> > +#define NR_PAGES 32
+> > +
+> > +static unsigned time_sec =3D 5;
+> > +
+> > +static void do_getopts(int argc, char **argv)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i =3D 0; i < argc; ++i) {
+> > +		if (strcmp(argv[i], "-t") =3D=3D 0) {
+> > +			i++;
+> > +			if (i =3D=3D argc)
+> > +				break;
+> > +			time_sec =3D atol(argv[i]);
+> > +		}
+> > +	}
+> > +
+> > +	printf("running for %d secs\n", time_sec);
+> > +}
+> > +
+> > +int main(int argc, char **argv)
+> > +{
+> > +	void *mem =3D malloc(NR_PAGES*PAGE_SIZE);
+>
+> Use alloc_pages(5) instead ? Or add at least some white spaces around "*"=
+.
 
-On Fri, 5 Apr 2024, Michael Ellerman wrote:
+Hmm, alloc_pages is physical? Maybe I should use memalign instead (and
+I'll fix the space). Even though it's not using VM, we might change
+that.
 
-> >> > > ---
-> >> > (here is a good location for Cc:)
-> >>
-> >> Documentation/process/submitting-patches.rst indicats that it should 
-> >> be above the "---" separator together with Acked-by etc. Has this 
-> >> convention changed recently?
-> 
-> The docs don't really say where to put the Cc: tags, although they are 
-> mentioned along with other tags which clearly are intended to go above 
-> the separator.
-> 
+> Apart from that this patch looks sane to me, so with that line fixed:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-I see no ambiguity there. What's the point of copying the message headers 
-into the message body unless it was intended that they form part of the 
-commit log?
+I'll keep your R-B with the memalign change if that's okay.
 
-> > I see, I will prepare a patch to discuss this aspect.
-> 
-> FYI there was a discussion about this several years ago, where at least 
-> some maintainers agreed that Cc: tags don't add much value and are 
-> better placed below the --- separator.
-> 
-
-Maintainers who merge patches almost always add tags. And they can use the 
-Cc tags from the message headers if they wish to. Or they can omit them or 
-remove them. I don't mind. And I'd be happy to resubmit the patch with 
-different tags if that's what is needed by the workflow used by Jiri Slaby 
-or Greg Kroah-Hartman.
+Thanks,
+Nick
