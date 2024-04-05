@@ -1,90 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F8189A556
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 22:04:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D462189A644
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 23:43:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BvuleuUL;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnnysDkV;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnnysDkV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VB8Zb2Cxkz3vgl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 07:04:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VBBnK6lRZz3vb5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 08:43:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BvuleuUL;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnnysDkV;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZnnysDkV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VB8Yt6Ctpz30f8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 07:03:30 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435Jw2ZT010825;
-	Fri, 5 Apr 2024 20:03:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=802JkfxLHpBW4MTlVFkjOaWOkh7SqzuOON2PgS1hCVo=;
- b=BvuleuULtWxUrMBPb8wjECqO4NIMGWx2aAAqwsQvVnt/3tMRAKX/Aeg7apJufQ94EvlD
- kwMA+OgDCOPMxxy0ghTdFypbEHb9ylzrC03ZbzPB4NaEn9TUIWWUrxvVbRyC4SO1lHue
- zxK3Ykso0fhYOBvY3t6tIUkBSASNlXicBn0KALt/fiEsYSB4tdXVL8Eu7WHGimSS//B9
- U/20+sU/n7nBUgpmNGEBRmfpfaN+nRLyU1NlJLVs0ar20vzgxrdSx1DkxGnvd23160z7
- sYSkkwhsrk9tCC6Er2RhBWiAl2yKJtd5GPo4BmGnBcuhz+ev8JEWEHlRHP2HK3BuAHOi yg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaqwhg0au-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 20:03:24 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 435K3N7D020846;
-	Fri, 5 Apr 2024 20:03:23 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaqwhg0as-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 20:03:23 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 435JZlBV009109;
-	Fri, 5 Apr 2024 20:03:22 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x9epy4ebc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 20:03:22 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435K3J4655902508
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Apr 2024 20:03:21 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E9EE5806B;
-	Fri,  5 Apr 2024 20:03:19 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2827358052;
-	Fri,  5 Apr 2024 20:03:19 +0000 (GMT)
-Received: from localhost (unknown [9.61.105.198])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  5 Apr 2024 20:03:19 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, mpe@ellerman.id.au
-Subject: Re: [PATCH] powerpc/pseries: Add pool idle time at LPAR boot
-In-Reply-To: <4b1d3241-2caa-4bd1-b9cc-871d176c409e@linux.ibm.com>
-References: <20240405101340.149171-1-sshegde@linux.ibm.com>
- <87msq86kju.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
- <4b1d3241-2caa-4bd1-b9cc-871d176c409e@linux.ibm.com>
-Date: Fri, 05 Apr 2024 15:03:18 -0500
-Message-ID: <87h6gf7f21.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VBBmc0TMbz3cGY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 08:42:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712353371;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nh8AZu/36vuzSfX/Je7NxWoNvpcer/hOQkOAQFaqnk4=;
+	b=ZnnysDkV95d3IkZdTauVM8cFRBBoqq9y3PdiELk4lqvlnNWeBNLPE37OLq8KMpvsR+FmDj
+	8kCti2lgZp9OCMg6qb2hnNvF1RagS4wNhD42eHq/ZS4Fv4whb7lGbYtRUUhfluofRNGLJj
+	t6zeFeNaLQeq27wsHHGAX67eEzrL8fc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712353371;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nh8AZu/36vuzSfX/Je7NxWoNvpcer/hOQkOAQFaqnk4=;
+	b=ZnnysDkV95d3IkZdTauVM8cFRBBoqq9y3PdiELk4lqvlnNWeBNLPE37OLq8KMpvsR+FmDj
+	8kCti2lgZp9OCMg6qb2hnNvF1RagS4wNhD42eHq/ZS4Fv4whb7lGbYtRUUhfluofRNGLJj
+	t6zeFeNaLQeq27wsHHGAX67eEzrL8fc=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28--B-OIPbwO7OePj2CM9fbhQ-1; Fri, 05 Apr 2024 17:42:49 -0400
+X-MC-Unique: -B-OIPbwO7OePj2CM9fbhQ-1
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-78d438954abso37597185a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Apr 2024 14:42:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712353369; x=1712958169;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nh8AZu/36vuzSfX/Je7NxWoNvpcer/hOQkOAQFaqnk4=;
+        b=uXbqkTZvPfzwaTM+4hPh0yjM9RE/+VVoDTQR2c/QRedKpeLMXXagVH2kEJqdLGzK3S
+         j4OK1048bYmJgHhPkMhAZ/z3FUS9ZTzLY5kwnP0KG1sTJnTaeDPlzFPHGfRneF67xBpf
+         9raXKTVGkE3V0eXtjjRIJVK2Fbg2PxTSCGZTxtpTfBP3EgJZhW20T2kKdyJ8NTwKLNPP
+         2olEcqK2/41WK5h3g+5iW8GYpnsoUkVdgLDwW3tJUEhpgae7si0wR6S0JBTKW/C+JBOY
+         Xbc+8KQx+0EymvZGaUSCgf6ZNm7qaaMmS2HkRVCIXD7cxsBNAnveWFPRauUt586NufLd
+         o72w==
+X-Forwarded-Encrypted: i=1; AJvYcCXZhR7UAxIo3q0E76xcAoeS4rQ6DCMJBB1AUNuVqUIJUqt0mJx3yILL3CkQ7MOx4AHoSu5Ci/JK02gSel12edHneT8kFdLg2rC2j4NWQw==
+X-Gm-Message-State: AOJu0Ywz1ivy6+gK78I9DDgQetNnclPuXAgu20xDvdKthAAYX0U6CKHb
+	m+50E4WuZB7Vr4zVAz+zHoQuA238rLPbZtIsxDd3qIAtPQP669mZ4WNxza4DRinlA5lHC+k3JXl
+	h6VWXyFb/4ViScuf2l46232oVrtPQD90+mhXfNes0djiyCNobheLiVtG6sYLhAK0=
+X-Received: by 2002:a05:620a:24cb:b0:78b:ead0:4e98 with SMTP id m11-20020a05620a24cb00b0078bead04e98mr2827319qkn.5.1712353368792;
+        Fri, 05 Apr 2024 14:42:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYTCLlC89IJBPyweOipCCmgbTuVze3tgI8H3RxcclvMtkthTW+/IyM+0zA0bT9pfKklVWVNA==
+X-Received: by 2002:a05:620a:24cb:b0:78b:ead0:4e98 with SMTP id m11-20020a05620a24cb00b0078bead04e98mr2827279qkn.5.1712353368024;
+        Fri, 05 Apr 2024 14:42:48 -0700 (PDT)
+Received: from x1n ([99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id bl40-20020a05620a1aa800b00789e8405843sm971843qkb.32.2024.04.05.14.42.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Apr 2024 14:42:47 -0700 (PDT)
+Date: Fri, 5 Apr 2024 17:42:44 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v3 00/12] mm/gup: Unify hugetlb, part 2
+Message-ID: <ZhBwVLyHr8WEKSx2@x1n>
+References: <20240321220802.679544-1-peterx@redhat.com>
+ <20240322161000.GJ159172@nvidia.com>
+ <ZgHJaJSpoeJVEccN@x1n>
+ <20240326140252.GH6245@nvidia.com>
+ <Zg8gEyE4o_VJsTmx@x1n>
+ <20240405181633.GH5383@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Orn3WzHTtTLnCpFuf3KqnzIjnyAfgWBY
-X-Proofpoint-GUID: B25vgWFyEl-8OiFcgtC8ekR2ob6yKBgy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-05_23,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 bulkscore=0 malwarescore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404050142
+In-Reply-To: <20240405181633.GH5383@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,140 +102,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, linux-mm@kvack.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-arm-kernel@lists.infradead.org, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Shrikanth Hegde <sshegde@linux.ibm.com> writes:
-> On 4/5/24 6:19 PM, Nathan Lynch wrote:
->> Shrikanth Hegde <sshegde@linux.ibm.com> writes:
->
-> Hi Nathan, Thanks for reviewing this.
->
->>> When there are no options specified for lparstat, it is expected to
->>> give reports since LPAR(Logical Partition) boot. App is an indicator
->>> for available processor pool in an Shared Processor LPAR(SPLPAR). App is
->>> derived using pool_idle_time which is obtained using H_PIC call.
->> 
->> If "App" is short for "Available Procesoor Pool" then it should be
->> written "APP" and the it should be introduced and defined more clearly
->> than this.
->> 
->
-> Ok.I reworded it for v2. 
->
-> yes APP is Available Processor Pool. 
->
->> 
->>> The interval based reports show correct App value while since boot
->>> report shows very high App values. This happens because in that case app
->>> is obtained by dividing pool idle time by LPAR uptime. Since pool idle
->>> time is reported by the PowerVM hypervisor since its boot, it need not
->>> align with LPAR boot. This leads to large App values.
->>>
->>> To fix that export boot pool idle time in lparcfg and powerpc-utils will
->>> use this info to derive App as below for since boot reports.
->>>
->>> App = (pool idle time - boot pool idle time) / (uptime * timebase)
->>>
->>> Results:: Observe app values.
->>> ====================== Shared LPAR ================================
->>> lparstat
->>> System Configuration
->>> type=Shared mode=Uncapped smt=8 lcpu=12 mem=15573440 kB cpus=37 ent=12.00
->>>
->>> reboot
->>> stress-ng --cpu=$(nproc) -t 600
->>> sleep 600
->>> So in this case app is expected to close to 37-6=31.
->>>
->>> ====== 6.9-rc1 and lparstat 1.3.10  =============
->>> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
->>> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
->>> 47.48  0.01  0.00    52.51     0.00  0.00 47.49 69099.72 541547    21
->>>
->>> === With this patch and powerpc-utils patch to do the above equation ===
->>> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
->>> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
->>> 47.48  0.01  0.00    52.51     5.73 47.75 47.49 31.21 541753    21
->>> =====================================================================
->>>
->>> Note: physc, purr/idle purr being inaccurate is being handled in a
->>> separate patch in powerpc-utils tree.
->>>
->>> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
->>> ---
->>> Note:
->>>
->>> This patch needs to merged first in the kernel for the powerpc-utils
->>> patches to work. powerpc-utils patches will be posted to its mailing
->>> list and link would be found in the reply to this patch if available.
->>>
->>> arch/powerpc/platforms/pseries/lparcfg.c | 7 +++++++
->>>  1 file changed, 7 insertions(+)
->>>
->>> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
->>> index f73c4d1c26af..8df4e7c529d7 100644
->>> --- a/arch/powerpc/platforms/pseries/lparcfg.c
->>> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
->>> @@ -184,6 +184,8 @@ static unsigned h_pic(unsigned long *pool_idle_time,
->>>  	return rc;
->>>  }
->>>
->>> +unsigned long boot_pool_idle_time;
->> 
->> Should be static, and u64. Better to use explicitly sized types for data
->> at the kernel-hypervisor boundary.
->
-> Current usage of h_pic doesn't follow this either. Are you suggesting we change that 
-> as well?
+On Fri, Apr 05, 2024 at 03:16:33PM -0300, Jason Gunthorpe wrote:
+> On Thu, Apr 04, 2024 at 05:48:03PM -0400, Peter Xu wrote:
+> > On Tue, Mar 26, 2024 at 11:02:52AM -0300, Jason Gunthorpe wrote:
+> > > The more I look at this the more I think we need to get to Matthew's
+> > > idea of having some kind of generic page table API that is not tightly
+> > > tied to level. Replacing the hugetlb trick of 'everything is a PTE'
+> > > with 5 special cases in every place seems just horrible.
+> > > 
+> > >    struct mm_walk_ops {
+> > >        int (*leaf_entry)(struct mm_walk_state *state, struct mm_walk *walk);
+> > >    }
+> > > 
+> > > And many cases really want something like:
+> > >    struct mm_walk_state state;
+> > > 
+> > >    if (!mm_walk_seek_leaf(state, mm, address))
+> > >           goto no_present
+> > >    if (mm_walk_is_write(state)) ..
+> > > 
+> > > And detailed walking:
+> > >    for_each_pt_leaf(state, mm, address) {
+> > >        if (mm_walk_is_write(state)) ..
+> > >    }
+> > > 
+> > > Replacing it with a mm_walk_state that retains the level or otherwise
+> > > to allow decoding any entry composes a lot better. Forced Loop
+> > > unrolling can get back to the current code gen in alot of places.
+> > > 
+> > > It also makes the power stuff a bit nicer as the mm_walk_state could
+> > > automatically retain back pointers to the higher levels in the state
+> > > struct too...
+> > > 
+> > > The puzzle is how to do it and still get reasonable efficient codegen,
+> > > many operations are going to end up switching on some state->level to
+> > > know how to decode the entry.
+> > 
+> > These discussions are definitely constructive, thanks Jason.  Very helpful.
+> > 
+> > I thought about this last week but got interrupted.  It does make sense to
+> > me; it looks pretty generic and it is flexible enough as a top design.  At
+> > least that's what I thought.
+> 
+> Yeah, exactly..
+> 
+> > However now when I rethink about it, and look more into the code when I got
+> > the chance, it turns out this will be a major rewrite of mostly every
+> > walkers..  
+> 
+> Indeed, it is why it may not be reasonable.
+> 
+> > Consider that what we (or.. I) want to teach the pXd layers are two things
+> > right now: (1) hugetlb mappings (2) MMIO (PFN) mappings.  That mostly
+> > shares the generic concept when working on the mm walkers no matter which
+> > way to go, just different treatment on different type of mem.  (2) is on
+> > top of current code and new stuff, while (1) is a refactoring to drop
+> > hugetlb_entry() hook point as the goal.
+> 
+> Right, I view this as a two pronged attack
+> 
+> One one front you teach the generic pXX_* macros to process huge pages
+> and push that around to the performance walkers like GUP
+> 
+> On another front you want to replace use of the hugepte with the new
+> walkers.
+> 
+> The challenge with the hugepte code is that it is all structured to
+> assume one API that works at all levels and that may be a hard fit to
+> replace with pXX_* functions.
 
-Yes pretty much. h_pic() as currently written and used has some
-problems:
+That's the core of problem, or otherwise I feel like I might be doing
+something else already.  I had a feeling even if it's currently efficient
+for hugetlb, we'll drop that sooner or later.
 
-  static unsigned h_pic(unsigned long *pool_idle_time,
-                        unsigned long *num_procs)
-  {
-          unsigned long rc;
-          unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
-  
-          rc = plpar_hcall(H_PIC, retbuf);
-  
-          *pool_idle_time = retbuf[0];
-          *num_procs = retbuf[1];
-  
-          return rc;
-  }
+The issue is at least hugetlb pgtable format is exactly the same as the
+rest, as large folio grows it will reach the point that we complain more
+than before on having hugetlb does its smart things on its own.
 
-* Coerces the return value of plpar_hcall() to unsigned -- hcall
-  errors are negative.
-* Assigns *pool_idle_time and *num_procs using uninitialized
-  data when H_PIC is unsuccessful.
-* Assigns the outparams unconditionally; would be nicer if it allowed
-  callers to pass NULL so they don't have to provide dummy inputs that
-  aren't even used, as in your change.
-* Should follow Linux -errno return value convention in the absence
-  of a need for the specific hcall status in its callers.
+> 
+> The places that are easy to switch from hugetlb to pXX_* may as well
+> do so.
+> 
+> Other places maybe need a hugetlb replacement that has a similar
+> abstraction level of pointing to any page table level.
 
->>> @@ -801,6 +805,9 @@ static int __init lparcfg_init(void)
->>>  		printk(KERN_ERR "Failed to create powerpc/lparcfg\n");
->>>  		return -EIO;
->>>  	}
->>> +
->>> +	h_pic(&boot_pool_idle_time, &num_procs);
->> 
->> h_pic() can fail, leaving the out parameters uninitialized.
->
-> Naveen pointed to me this a while ago, but I forgot. 
->
-> Currently h_pic return value is not checked at all, either at boor or at runtime. 
-> When it fails, should we re-try or just print a kernel debug? What would be expected 
-> behavior? because if it fails, it would anyway result in wrong values of app even 
-> if the variables are initialized to 0.
+IMHO this depends.
 
-There's nothing in the spec for H_PIC that suggests retrying on failure.
-I'm not really in favor of printing a message about it either; that
-practice tends to result in log noise in non-PowerVM guests.
+Per my current knowledge, hugetlb is only special in three forms:
 
-When H_PIC doesn't work the corresponding lines should not be emitted in
-/proc/powerpc/lparcfg IMO.
+- huge mapping (well, this isn't that special..)
+- cont pte/pmd/...
+- hugepd
+
+The most fancy one is actually hugepd.. but I plan to put that temporarily
+aside - I haven't look at Christophe's series yet, however I think we're
+going to solve orthogonal issues but his work will definitely help me on
+reaching mine, and I want to think through first on my end of things to
+know a plan.  If hugepd has its chance to be generalized, the worst case is
+I'll leverage CONFIG_ARCH_HAS_HUGEPD and only keep hugetlb_entry() for them
+until hugepd became some cont-pxx variance.  Then when I put HAS_HUGEPD
+aside, I don't think it's very complicated, perhaps?
+
+In short, hugetlb mappings shouldn't be special comparing to other huge pXd
+and large folio (cont-pXd) mappings for most of the walkers in my mind, if
+not all.  I need to look at all the walkers and there can be some tricky
+ones, but I believe that applies in general.  It's actually similar to what
+I did with slow gup here.
+
+Like this series, for cont-pXd we'll need multiple walks comparing to
+before (when with hugetlb_entry()), but for that part I'll provide some
+performance tests too, and we also have a fallback plan, which is to detect
+cont-pXd existance, which will also work for large folios.
+
+> 
+> I think if you do the easy places for pXX conversion you will have a
+> good idea about what is needed for the hard places.
+
+Here IMHO we don't need to understand "what is the size of this hugetlb
+vma", or "which level of pgtable does this hugetlb vma pages locate",
+because we may not need that, e.g., when we only want to collect some smaps
+statistics.  "whether it's hugetlb" may matter, though. E.g. in the mm
+walker we see a huge pmd, it can be a thp, it can be a hugetlb (when
+hugetlb_entry removed), we may need extra check later to put things into
+the right bucket, but for the walker itself it doesn't necessarily need
+hugetlb_entry().
+
+> 
+> > Now the important question I'm asking myself is: do we really need huge p4d
+> > or even bigger?
+> 
+> Do we need huge p4d support with folios? Probably not..
+> 
+> huge p4d support for pfnmap, eg in VFIO. Yes I think that is possibly
+> interesting - but I wouldn't ask anyone to do the work :)
+
+Considering it does not yet exist, and we don't have plan to work it out
+(so far), maybe I can see this as a very implicit ack that I can put that
+aside at least of now. :)
+
+> 
+> But then again we come back to power and its big list of page sizes
+> and variety :( Looks like some there have huge sizes at the pgd level
+> at least.
+
+Yeah this is something I want to be super clear, because I may miss
+something: we don't have real pgd pages, right?  Powerpc doesn't even
+define p4d_leaf(), AFAICT.
+
+$ git grep p4d_leaf
+arch/powerpc/mm/book3s64/radix_pgtable.c:               if (p4d_leaf(*p4d)) {
+arch/powerpc/mm/pgtable.c:      if (p4d_leaf(p4d)) {
+arch/powerpc/mm/pgtable_64.c:   if (p4d_leaf(p4d)) {
+arch/powerpc/mm/pgtable_64.c:                   VM_WARN_ON(!p4d_leaf(p4d));
+arch/powerpc/xmon/xmon.c:       if (p4d_leaf(*p4dp)) {
+
+They all constantly return false (which is the fallback)?
+
+> 
+> > So, can we over-engineer too much if we go the generic route now?
+> 
+> Yes we can, and it will probably be slow as well. The pXX macros are
+> the most efficient if code can be adapted to use them.
+> 
+> > Considering that we already have most of pmd/pud entries around in the mm
+> > walker ops.
+> 
+> Yeah, so you add pgd and maybe p4d and then we can don't need any
+> generic thing. If it is easy it would be nice.
+
+I want to double check on above on PowerPC first, otherwise I'd consider
+leaving p4d+ alone, if that looks ok.  It could be that I missed something
+important, Christophe may want to chim in if he has any thoughts or just to
+clarify my mistakes.
+
+Thanks,
+
+-- 
+Peter Xu
+
