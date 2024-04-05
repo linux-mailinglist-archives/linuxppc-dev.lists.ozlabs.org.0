@@ -1,86 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431B3899A76
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 12:15:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F88899AF7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 12:34:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oNUi+/Mt;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xvmxvc54;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9vWb0LHsz3vcM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 21:15:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9vxL6Bl8z3vc0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 21:34:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oNUi+/Mt;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xvmxvc54;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9vVm5SWLz3d2d
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 21:14:56 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435A6K2A006805;
-	Fri, 5 Apr 2024 10:14:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Hx2YDPEnJP9LRZn14VGOIvgB+f/N82JjcJSGoPd5kEk=;
- b=oNUi+/Mtnu8sr0amAB4IlgS4OoIPT9Bu9TxCd+TFvlvREbYuU7x7XEkOyjI8Nonfb+qP
- +S3JQ8vXqIWtrc+7G2rv+K6GYZ//itdaaSS/IePmOZLEVv2I0i/UuvYo1SHhxlUqxKox
- UNzOYfUgShTAFWBv2sB7Klxw/y72TmfT/Afdf2VvjSdB+NCvtSSQOnxwcNTcc6+rObxe
- kD67ilrmrmQqpqwB3IFUKh+A4rAKxMIBjJ7ng+ucSQ2Tr1DnD9rvvoHxVVs/245zAOWW
- vjuAfBdDp7Qdos1jTYweb0VGXtZgL3L4jivZoO9J9YNg3cQS6nr3Vr46fgyfZ2idtRdU CA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaf8400q3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 10:14:18 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 435AEHkI019704;
-	Fri, 5 Apr 2024 10:14:17 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaf8400px-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 10:14:17 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4359YjW2009115;
-	Fri, 5 Apr 2024 10:14:16 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x9epy1t6p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 10:14:16 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435AEAGB30016144
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Apr 2024 10:14:13 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DF98720065;
-	Fri,  5 Apr 2024 10:14:10 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E9C92004E;
-	Fri,  5 Apr 2024 10:14:09 +0000 (GMT)
-Received: from li-c1fdab4c-355a-11b2-a85c-ef242fe9efb4.ibm.com.com (unknown [9.79.178.28])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  5 Apr 2024 10:14:09 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/pseries: Add pool idle time at LPAR boot
-Date: Fri,  5 Apr 2024 15:43:40 +0530
-Message-Id: <20240405101340.149171-1-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qmM6DW13Mo_g3PSs7FAHgHEB6iuAKIcm
-X-Proofpoint-GUID: jk8KrTTZXQgUDbnp9mKlWKxUAl8RFZhJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-05_09,2024-04-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- adultscore=0 mlxscore=0 malwarescore=0 bulkscore=0 spamscore=0
- suspectscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2404010000 definitions=main-2404050075
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9vwd1nvvz3dgN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 21:33:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712313233; x=1743849233;
+  h=date:from:to:cc:subject:message-id;
+  bh=72wIRtZOIbYaYyqyJ3BhCmxGFvks8xfAtY2MJVbrw2g=;
+  b=Xvmxvc54KHoCb7+4vEax6yHgo16SDPQuoozOGdLBUVyeZ09kYIDFcMWc
+   /KB6Kq+vES52BaPh+lIbY4QVo4fLsYYsR6e0pMyJHQTIZwWHWrEp8X6Pn
+   dGxHfQlPUhR0jBAimyJ1MFO/1LtcExj31VqLjiwnDxLp/7xQO5TTyblRp
+   wAloFArwZyr4/zDmUoeNL+ovTJJdubc7VtZigI58hHm7Yxr983RBpHeTu
+   /ccIVI75ip7+V7YulhVpyLX1K2yUAarGM6HkJz9crehggFpJI4N18i99e
+   6a2XqxcssG45VeNWJoGX2BrVkii5SpwYT7e95pCMgnrv64E1Ibfjmeqen
+   Q==;
+X-CSE-ConnectionGUID: 3uW3DY78SFKRBMrWEWPKJQ==
+X-CSE-MsgGUID: oimHHoyKSKi9LkjH3p42iQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="10604953"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="10604953"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 03:33:42 -0700
+X-CSE-ConnectionGUID: v/wTkSQXTlaS3BREpFcEIg==
+X-CSE-MsgGUID: Ngfo306YQ4iTVa7NXpX1Pg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="23762718"
+Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 05 Apr 2024 03:33:40 -0700
+Received: from kbuild by e61807b1d151 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rsgt8-00029A-1w;
+	Fri, 05 Apr 2024 10:33:38 +0000
+Date: Fri, 05 Apr 2024 18:33:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 5a53fade16482b0ce6b3973714cd40fc5bf6b7ef
+Message-ID: <202404051821.wIx9BA43-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,101 +69,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, sshegde@linux.ibm.com, npiggin@gmail.com, mahesh@linux.ibm.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When there are no options specified for lparstat, it is expected to
-give reports since LPAR(Logical Partition) boot. App is an indicator
-for available processor pool in an Shared Processor LPAR(SPLPAR). App is
-derived using pool_idle_time which is obtained using H_PIC call.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 5a53fade16482b0ce6b3973714cd40fc5bf6b7ef  Automatic merge of 'master' into merge (2024-04-05 00:04)
 
-The interval based reports show correct App value while since boot
-report shows very high App values. This happens because in that case app
-is obtained by dividing pool idle time by LPAR uptime. Since pool idle
-time is reported by the PowerVM hypervisor since its boot, it need not
-align with LPAR boot. This leads to large App values.
+elapsed time: 1228m
 
-To fix that export boot pool idle time in lparcfg and powerpc-utils will
-use this info to derive App as below for since boot reports.
+configs tested: 181
+configs skipped: 3
 
-App = (pool idle time - boot pool idle time) / (uptime * timebase)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Results:: Observe app values.
-====================== Shared LPAR ================================
-lparstat
-System Configuration
-type=Shared mode=Uncapped smt=8 lcpu=12 mem=15573440 kB cpus=37 ent=12.00
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240405   gcc  
+arc                   randconfig-002-20240405   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                        neponset_defconfig   gcc  
+arm                   randconfig-001-20240405   gcc  
+arm                   randconfig-002-20240405   clang
+arm                   randconfig-003-20240405   gcc  
+arm                   randconfig-004-20240405   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240405   gcc  
+arm64                 randconfig-002-20240405   gcc  
+arm64                 randconfig-003-20240405   gcc  
+arm64                 randconfig-004-20240405   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240405   gcc  
+csky                  randconfig-002-20240405   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240405   clang
+hexagon               randconfig-002-20240405   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240405   gcc  
+i386         buildonly-randconfig-002-20240405   gcc  
+i386         buildonly-randconfig-003-20240405   clang
+i386         buildonly-randconfig-004-20240405   gcc  
+i386         buildonly-randconfig-005-20240405   clang
+i386         buildonly-randconfig-006-20240405   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240405   clang
+i386                  randconfig-002-20240405   gcc  
+i386                  randconfig-003-20240405   clang
+i386                  randconfig-004-20240405   clang
+i386                  randconfig-005-20240405   clang
+i386                  randconfig-006-20240405   gcc  
+i386                  randconfig-011-20240405   clang
+i386                  randconfig-012-20240405   gcc  
+i386                  randconfig-013-20240405   gcc  
+i386                  randconfig-014-20240405   gcc  
+i386                  randconfig-015-20240405   gcc  
+i386                  randconfig-016-20240405   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240405   gcc  
+loongarch             randconfig-002-20240405   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                         amcore_defconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 decstation_r4k_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240405   gcc  
+nios2                 randconfig-002-20240405   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240405   gcc  
+parisc                randconfig-002-20240405   gcc  
+parisc64                         alldefconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                        cell_defconfig   gcc  
+powerpc               randconfig-001-20240405   clang
+powerpc               randconfig-002-20240405   clang
+powerpc               randconfig-003-20240405   clang
+powerpc                      walnut_defconfig   gcc  
+powerpc64             randconfig-001-20240405   gcc  
+powerpc64             randconfig-002-20240405   gcc  
+powerpc64             randconfig-003-20240405   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240405   clang
+riscv                 randconfig-002-20240405   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240405   clang
+s390                  randconfig-002-20240405   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                ecovec24-romimage_defconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sh                    randconfig-001-20240405   gcc  
+sh                    randconfig-002-20240405   gcc  
+sh                   rts7751r2dplus_defconfig   gcc  
+sh                           sh2007_defconfig   gcc  
+sh                   sh7770_generic_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                       sparc32_defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240405   gcc  
+sparc64               randconfig-002-20240405   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240405   gcc  
+um                    randconfig-002-20240405   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240405   clang
+x86_64       buildonly-randconfig-002-20240405   clang
+x86_64       buildonly-randconfig-003-20240405   gcc  
+x86_64       buildonly-randconfig-004-20240405   gcc  
+x86_64       buildonly-randconfig-005-20240405   clang
+x86_64       buildonly-randconfig-006-20240405   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240405   clang
+x86_64                randconfig-002-20240405   clang
+x86_64                randconfig-003-20240405   clang
+x86_64                randconfig-004-20240405   gcc  
+x86_64                randconfig-005-20240405   clang
+x86_64                randconfig-006-20240405   gcc  
+x86_64                randconfig-011-20240405   clang
+x86_64                randconfig-012-20240405   gcc  
+x86_64                randconfig-013-20240405   gcc  
+x86_64                randconfig-014-20240405   clang
+x86_64                randconfig-015-20240405   gcc  
+x86_64                randconfig-016-20240405   gcc  
+x86_64                randconfig-071-20240405   gcc  
+x86_64                randconfig-072-20240405   gcc  
+x86_64                randconfig-073-20240405   gcc  
+x86_64                randconfig-074-20240405   gcc  
+x86_64                randconfig-075-20240405   gcc  
+x86_64                randconfig-076-20240405   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa                randconfig-001-20240405   gcc  
+xtensa                randconfig-002-20240405   gcc  
 
-reboot
-stress-ng --cpu=$(nproc) -t 600
-sleep 600
-So in this case app is expected to close to 37-6=31.
-
-====== 6.9-rc1 and lparstat 1.3.10  =============
-%user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
------ ----- -----    -----    ----- ----- ----- ----- ----- -----
-47.48  0.01  0.00    52.51     0.00  0.00 47.49 69099.72 541547    21
-
-=== With this patch and powerpc-utils patch to do the above equation ===
-%user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
------ ----- -----    -----    ----- ----- ----- ----- ----- -----
-47.48  0.01  0.00    52.51     5.73 47.75 47.49 31.21 541753    21
-=====================================================================
-
-Note: physc, purr/idle purr being inaccurate is being handled in a
-separate patch in powerpc-utils tree.
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
-Note:
-
-This patch needs to merged first in the kernel for the powerpc-utils
-patches to work. powerpc-utils patches will be posted to its mailing
-list and link would be found in the reply to this patch if available.
-
-arch/powerpc/platforms/pseries/lparcfg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index f73c4d1c26af..8df4e7c529d7 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -184,6 +184,8 @@ static unsigned h_pic(unsigned long *pool_idle_time,
- 	return rc;
- }
-
-+unsigned long boot_pool_idle_time;
-+
- /*
-  * parse_ppp_data
-  * Parse out the data returned from h_get_ppp and h_pic
-@@ -218,6 +220,7 @@ static void parse_ppp_data(struct seq_file *m)
- 		h_pic(&pool_idle_time, &pool_procs);
- 		seq_printf(m, "pool_idle_time=%ld\n", pool_idle_time);
- 		seq_printf(m, "pool_num_procs=%ld\n", pool_procs);
-+		seq_printf(m, "boot_pool_idle_time=%ld\n", boot_pool_idle_time);
- 	}
-
- 	seq_printf(m, "unallocated_capacity_weight=%d\n",
-@@ -792,6 +795,7 @@ static const struct proc_ops lparcfg_proc_ops = {
- static int __init lparcfg_init(void)
- {
- 	umode_t mode = 0444;
-+	unsigned long num_procs;
-
- 	/* Allow writing if we have FW_FEATURE_SPLPAR */
- 	if (firmware_has_feature(FW_FEATURE_SPLPAR))
-@@ -801,6 +805,9 @@ static int __init lparcfg_init(void)
- 		printk(KERN_ERR "Failed to create powerpc/lparcfg\n");
- 		return -EIO;
- 	}
-+
-+	h_pic(&boot_pool_idle_time, &num_procs);
-+
- 	return 0;
- }
- machine_device_initcall(pseries, lparcfg_init);
---
-2.39.3
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
