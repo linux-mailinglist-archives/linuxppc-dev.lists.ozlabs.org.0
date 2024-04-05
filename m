@@ -1,93 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE9F899BB2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 13:15:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636E1899C33
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 13:59:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L2WDI8fO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UF8NNnVz;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UF8NNnVz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9wrj2p2Fz3vYy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 22:15:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9xpx1Jbsz3vbc
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 22:59:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L2WDI8fO;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UF8NNnVz;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UF8NNnVz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9wr06FJCz3vX3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 22:14:56 +1100 (AEDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435B1SZo027428;
-	Fri, 5 Apr 2024 11:14:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=0ufvDreL2dMFe1aC8vuUH6yI08L/UZP/gRqWlOoBERE=;
- b=L2WDI8fOVmja2krYhGJyubOSu2l6aGtktZQ2a57WEyBMZgpq6RlB1ZPemZTCEe1aNL8B
- BQO6SXc384NsRrJcnJMMcQe4K5tqRMjBRo+RlajyIWsiOV5t93VlMOLClK9iWqn6nJ7N
- +47q2WogLFwj/9SOTrb7SFJBtA77Mb++21rBYCocotDjewrtk8fAvmnDZvzjLVcHifzb
- cmc2moIxeAGl4ift/EpE9YojEGPNLKAeQrfCs7Y0sP5TWH/kIapbJVd7RVFUtphL/ZPK
- gtY8AC0KNaB9jNGp3MZQlb88XykFqbmNKN/CJFAGfJg7vN5kG4+mIQJxsXYxWtet/rcx 1Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaf840580-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 11:14:51 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 435BEprb016706;
-	Fri, 5 Apr 2024 11:14:51 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaf84057v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 11:14:50 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4359CarL003612;
-	Fri, 5 Apr 2024 11:14:50 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x9epyj5gk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 11:14:50 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435BElG343647646
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Apr 2024 11:14:49 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4BEA95805A;
-	Fri,  5 Apr 2024 11:14:47 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 859E65803F;
-	Fri,  5 Apr 2024 11:14:45 +0000 (GMT)
-Received: from [9.79.178.28] (unknown [9.79.178.28])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  5 Apr 2024 11:14:45 +0000 (GMT)
-Message-ID: <1caee4ed-2e91-4d64-be6c-f91395db2fb7@linux.ibm.com>
-Date: Fri, 5 Apr 2024 16:44:44 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/pseries: Add pool idle time at LPAR boot
-To: linuxppc-dev@lists.ozlabs.org
-References: <20240405101340.149171-1-sshegde@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20240405101340.149171-1-sshegde@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: A7KkBRB3593GstZZo-qls3o8BAwTXfTX
-X-Proofpoint-GUID: wKCWUXGZnBv-oBpkVl-_Rlc1sNf647Tj
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9xpB6Z4rz3020
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 22:58:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712318304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=W+x0+CoZa6QVpu1rtgd+fH2pAb0xlu8sJLIuEb6A4kU=;
+	b=UF8NNnVzDf/DQIBknZnHp0hw1idQ4fgvBp96CrPquMIa30b2eepda8I+08PWwzRVs8szYi
+	0QHlBqr024GiHJWAOtBErRW+J2qPZ/hxlb95EA+FXJrK3mq/8UQt7lB17w70aRvBO+KIZu
+	mDtXOC9US4jYuhC9Ax1VU0MYiCN8rA0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712318304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=W+x0+CoZa6QVpu1rtgd+fH2pAb0xlu8sJLIuEb6A4kU=;
+	b=UF8NNnVzDf/DQIBknZnHp0hw1idQ4fgvBp96CrPquMIa30b2eepda8I+08PWwzRVs8szYi
+	0QHlBqr024GiHJWAOtBErRW+J2qPZ/hxlb95EA+FXJrK3mq/8UQt7lB17w70aRvBO+KIZu
+	mDtXOC9US4jYuhC9Ax1VU0MYiCN8rA0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-LvYJznJmMXOAGq3bGEzUmg-1; Fri,
+ 05 Apr 2024 07:58:19 -0400
+X-MC-Unique: LvYJznJmMXOAGq3bGEzUmg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 675AB1C05AF2;
+	Fri,  5 Apr 2024 11:58:18 +0000 (UTC)
+Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 20CB240C6CB5;
+	Fri,  5 Apr 2024 11:58:16 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [PATCH 0/4] KVM, mm: remove the .change_pte() MMU notifier and set_pte_at_notify()
+Date: Fri,  5 Apr 2024 07:58:11 -0400
+Message-ID: <20240405115815.3226315-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-05_10,2024-04-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
- mlxlogscore=746 adultscore=0 mlxscore=0 priorityscore=1501 malwarescore=0
- bulkscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
- definitions=main-2404050081
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,17 +77,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, tyreld@linux.ibm.com, mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: kvm-riscv@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, loongarch@lists.linux.dev, David Hildenbrand <david@redhat.com>, Marc Zyngier <maz@kernel.org>, Atish Patra <atishp@atishpatra.org>, linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Bibo Mao <maobibo@loongson.cn>, Sean Christopherson <seanjc@google.com>, Anup Patel <anup@brainfault.org>, kvmarm@lists.linux.dev, Oliver Upton <oliver.upton@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The .change_pte() MMU notifier callback was intended as an optimization
+and for this reason it was initially called without a surrounding
+mmu_notifier_invalidate_range_{start,end}() pair.  It was only ever
+implemented by KVM (which was also the original user of MMU notifiers)
+and the rules on when to call set_pte_at_notify() rather than set_pte_at()
+have always been pretty obscure.
 
+It may seem a miracle that it has never caused any hard to trigger
+bugs, but there's a good reason for that: KVM's implementation has
+been nonfunctional for a good part of its existence.  Already in
+2012, commit 6bdb913f0a70 ("mm: wrap calls to set_pte_at_notify with
+invalidate_range_start and invalidate_range_end", 2012-10-09) changed the
+.change_pte() callback to occur within an invalidate_range_start/end()
+pair; and because KVM unmaps the sPTEs during .invalidate_range_start(),
+.change_pte() has no hope of finding a sPTE to change.
 
-On 4/5/24 3:43 PM, Shrikanth Hegde wrote:
-> When there are no options specified for lparstat, it is expected to
-> give reports since LPAR(Logical Partition) boot. App is an indicator
-> for available processor pool in an Shared Processor LPAR(SPLPAR). App is
-> derived using pool_idle_time which is obtained using H_PIC call.
-> 
-powerpc-utils link: https://groups.google.com/g/powerpc-utils-devel/c/WZFxrm2aCzU 
+Therefore, all the code for .change_pte() can be removed from both KVM
+and mm/, and set_pte_at_notify() can be replaced with just set_pte_at().
+
+Please review!  Also feel free to take the KVM patches through the mm
+tree, as I don't expect any conflicts.
+
+Thanks,
+
+Paolo
+
+Paolo Bonzini (4):
+  KVM: delete .change_pte MMU notifier callback
+  KVM: remove unused argument of kvm_handle_hva_range()
+  mmu_notifier: remove the .change_pte() callback
+  mm: replace set_pte_at_notify() with just set_pte_at()
+
+ arch/arm64/kvm/mmu.c                  | 34 -----------------
+ arch/loongarch/include/asm/kvm_host.h |  1 -
+ arch/loongarch/kvm/mmu.c              | 32 ----------------
+ arch/mips/kvm/mmu.c                   | 30 ---------------
+ arch/powerpc/include/asm/kvm_ppc.h    |  1 -
+ arch/powerpc/kvm/book3s.c             |  5 ---
+ arch/powerpc/kvm/book3s.h             |  1 -
+ arch/powerpc/kvm/book3s_64_mmu_hv.c   | 12 ------
+ arch/powerpc/kvm/book3s_hv.c          |  1 -
+ arch/powerpc/kvm/book3s_pr.c          |  7 ----
+ arch/powerpc/kvm/e500_mmu_host.c      |  6 ---
+ arch/riscv/kvm/mmu.c                  | 20 ----------
+ arch/x86/kvm/mmu/mmu.c                | 54 +--------------------------
+ arch/x86/kvm/mmu/spte.c               | 16 --------
+ arch/x86/kvm/mmu/spte.h               |  2 -
+ arch/x86/kvm/mmu/tdp_mmu.c            | 46 -----------------------
+ arch/x86/kvm/mmu/tdp_mmu.h            |  1 -
+ include/linux/kvm_host.h              |  2 -
+ include/linux/mmu_notifier.h          | 44 ----------------------
+ include/trace/events/kvm.h            | 15 --------
+ kernel/events/uprobes.c               |  5 +--
+ mm/ksm.c                              |  4 +-
+ mm/memory.c                           |  7 +---
+ mm/migrate_device.c                   |  8 +---
+ mm/mmu_notifier.c                     | 17 ---------
+ virt/kvm/kvm_main.c                   | 50 +------------------------
+ 26 files changed, 10 insertions(+), 411 deletions(-)
+
+-- 
+2.43.0
 
