@@ -2,66 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598A589A027
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 16:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5383489A0AC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 17:07:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YxUhgiNo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YN1jK3ZT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VB1Zv0wFgz3vbV
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 01:48:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VB1zv0ng8z3vbj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 02:07:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YxUhgiNo;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YN1jK3ZT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=jani.nikula@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VB1Z62zgLz3d24
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 01:48:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VB1zB65vxz3d39
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 02:06:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712328495; x=1743864495;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=LreOfBm3nT3gJWEyzyhSzgs3L/UNn7htcugC08IxS+o=;
-  b=YxUhgiNoYA3d6XHZ9LgH0W+FzgwKr0UCrXOZQFEwogCxdzHBaIzomOpS
-   Zqj/KYif/8zgypJUd2DhGjqWuSFv15GquF2Fg7ONYCyS4rGFQQkhnmr24
-   XLCL+k1YWKjOpdaSzAb04WCZy6vYE5J5FeWi9GccEwhr1OKA8kS9YGtzn
-   2VSCNViQKboMAEDDuU61RprhcrxRmk6pCdbfD0oUGmJCszXxHmlKsSS1A
-   Hu3Do1JlaZx5+F2Ia/kGO2pd2e7i4SaZ6NrgCEAzPAyHvD3LVRNYz8sQY
-   TlyQpn8RptBUKwcwfjbono/8g7WCmDLBMlPzdL9pCHvTSQWdlAnDC1v5d
+  t=1712329591; x=1743865591;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qlwdvOusJure/L1Yv/zKMo5qRCUbM8BhZMF14KYnllA=;
+  b=YN1jK3ZTGFdc7DKgJxCGy4LviAMEIvXMluJbed3zoygbpWMPWvpSj2oo
+   fgYVaRGm+QejcSsadRN7fwfLMuRNxcrrZUdHPibuuEj8akHO8w5cWLoO6
+   4pEfcD4mQCJqApDmECpvdVe/ZVrxR5EKqaPBVZjvFt/kS8GeU6JrbqJxn
+   x4tdkIpMpRKxvTVXPdt+B/y4z7/zDP0CuiwkH6FHG9Q//4749BYf8UOJj
+   +sqvhg08swABmdof4S2zQL+U0lFNNlDcnqksCeSolRpM0kPtneH+2iXDK
+   FX+sX7mcYdMPo2Q3LZlPmH7GeorH2F3e/7Lt9XOAgxilkPOeOZOfx9zVO
    Q==;
-X-CSE-ConnectionGUID: 0LV9QrspSsiovx9xl23v+A==
-X-CSE-MsgGUID: gzYbBr/nToSfCRDJjlFvLw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="11478912"
+X-CSE-ConnectionGUID: AW9771seTgKGxVVcJnQ9Bg==
+X-CSE-MsgGUID: 6cPSdNeXSHW1uqGCDJgmNQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="18271644"
 X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="11478912"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 07:48:09 -0700
-X-CSE-ConnectionGUID: H55LyW5ASaqr4vhL9J0MYQ==
-X-CSE-MsgGUID: +963A5O0TASYUpMZv+tuJQ==
+   d="scan'208";a="18271644"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 08:06:26 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="915256454"
 X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="23821308"
-Received: from dtorrice-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.41.202])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 07:47:59 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>, Andrzej Hajda
- <andrzej.hajda@intel.com>
-Subject: Re: [Intel-gfx] [PATCH v5 0/7] Introduce __xchg, non-atomic xchg
-In-Reply-To: <Y/y0/VoPAVCXGKp3@hirez.programming.kicks-ass.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230118153529.57695-1-andrzej.hajda@intel.com>
- <Y/ZLH5F8LA3H10aL@hirez.programming.kicks-ass.net>
- <17f40b7c-f98d-789d-fa19-12ec077b756a@intel.com>
- <Y/y0/VoPAVCXGKp3@hirez.programming.kicks-ass.net>
-Date: Fri, 05 Apr 2024 17:47:56 +0300
-Message-ID: <87r0fjc1cz.fsf@intel.com>
+   d="scan'208";a="915256454"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 08:06:23 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rsl92-00000001mBS-3ubw;
+	Fri, 05 Apr 2024 18:06:20 +0300
+Date: Fri, 5 Apr 2024 18:06:20 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v1 1/1] powerpc/52xx: Replace of_gpio.h by proper one
+Message-ID: <ZhATbD18BhW9vnI8@smile.fi.intel.com>
+References: <20240313135645.2066362-1-andriy.shevchenko@linux.intel.com>
+ <Zg0yTnTswS2je9VG@smile.fi.intel.com>
+ <871q7k8ytc.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <871q7k8ytc.fsf@mail.lhotse>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,52 +75,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-snps-arc@lists.infradead.org, Boqun Feng <boqun.feng@gmail.com>, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, intel-gfx@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, loongarch@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 27 Feb 2023, Peter Zijlstra <peterz@infradead.org> wrote:
-> On Thu, Feb 23, 2023 at 10:24:19PM +0100, Andrzej Hajda wrote:
->> On 22.02.2023 18:04, Peter Zijlstra wrote:
->> > On Wed, Jan 18, 2023 at 04:35:22PM +0100, Andrzej Hajda wrote:
->> > 
->> > > Andrzej Hajda (7):
->> > >    arch: rename all internal names __xchg to __arch_xchg
->> > >    linux/include: add non-atomic version of xchg
->> > >    arch/*/uprobes: simplify arch_uretprobe_hijack_return_addr
->> > >    llist: simplify __llist_del_all
->> > >    io_uring: use __xchg if possible
->> > >    qed: use __xchg if possible
->> > >    drm/i915/gt: use __xchg instead of internal helper
->> > 
->> > Nothing crazy in here I suppose, I somewhat wonder why you went through
->> > the trouble, but meh.
->> 
->> If you are asking why I have proposed this patchset, then the answer is
->> simple, 1st I've tried to find a way to move internal i915 helper to core
->> (see patch 7).
->> Then I was looking for possible other users of this helper. And apparently
->> there are many of them, patches 3-7 shows some.
->> 
->> 
->> > 
->> > You want me to take this through te locking tree (for the next cycle,
->> > not this one) where I normally take atomic things or does someone else
->> > want this?
->> 
->> If you could take it I will be happy.
->
-> OK, I'll go queue it in tip/locking/core after -rc1. Thanks!
+On Fri, Apr 05, 2024 at 10:58:55AM +1100, Michael Ellerman wrote:
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+> > On Wed, Mar 13, 2024 at 03:56:45PM +0200, Andy Shevchenko wrote:
+> >> of_gpio.h is deprecated and subject to remove.
+> >> The driver doesn't use it directly, replace it
+> >> with what is really being used.
+> >
+> > Any comments on this?
+> 
+> No comment :)
+> 
+> I'll take it for 6.10, or do you want me to sneak it in as a fix for 6.9?
 
-Is this where the series fell between the cracks, or was there some
-follow-up that I missed?
-
-I think this would still be useful. Andrzej, would you mind rebasing and
-resending if there are no objections?
-
-BR,
-Jani.
-
+Up to you and thank you!
 
 -- 
-Jani Nikula, Intel
+With Best Regards,
+Andy Shevchenko
+
+
