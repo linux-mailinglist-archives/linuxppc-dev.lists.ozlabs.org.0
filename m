@@ -1,71 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8895989A54D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 21:58:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F8189A556
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 22:04:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=OgMVJnTo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BvuleuUL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VB8SJ2Kbkz3vgC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 06:58:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VB8Zb2Cxkz3vgl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 07:04:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=OgMVJnTo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BvuleuUL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com; envelope-from=justinstitt@google.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VB8Rb0FvGz3cWB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 06:58:01 +1100 (AEDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-516d4d80d00so1231338e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Apr 2024 12:58:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712347074; x=1712951874; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=djSDb4ARr+uYrvgN8eRFQUZSJ4nYLrBVFrRGdM6sRAs=;
-        b=OgMVJnTo4YJc+wiQ9OyTEQvcj7GXcSLzC+u20eROuWJfGIZPbzgcH1qVUV9ocMHePG
-         WVzEtdeFzGvt5k32kgWCQeIGv7boq+7nn9F1AW3lpSz/tagqLuiB6liLpUOpfrMK/UWg
-         BcDN2VOQq0Hx4asPTunJi9z73JxKR1ToWSmZz8pbd63unM+vBd/h/RSQ7qhkEmME40A3
-         ThTNLrnt87FFXm99Y1vdBJWvVGuMUvM+DSA+IOLZH4EyAzUhWaa8t4fK6L0ZB9bDgL8+
-         zCeAcGsZKL22IKHZUUFIv84cjxve4MuGFeIqWCeh5rO9/Rhg6mP+7m09P7ZROb2eGMLz
-         jgng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712347074; x=1712951874;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=djSDb4ARr+uYrvgN8eRFQUZSJ4nYLrBVFrRGdM6sRAs=;
-        b=axFTr0BV6M5Fadp37AoMKrWPE2ous3RFCO7I0U7Oq0ohmNWmZj5JivsUuLcmTwhbjQ
-         JPY3EmIx4ylUPDr9wlIorauPTpWXCyd/qYTYq2b8fasfpHfu7Ibhj+7HFdoNN9YYwJzE
-         der6N3EcLs1SKxadHGn96G2f4XVJqJrzYF3SrCfmuPyGY3i088+JUPgWSpkJsGEQgx2d
-         2hUtpQ1j7Eama2tGCBmccmzp+AoI0No5RZglh7cpfH5oYDr57P1OOkZ0HcWRgLsKac24
-         JC+xkFVxiFuW7IpBBI5LmFW9KBcE0V6NHhoyvp4c7AGKL1yusL/WGBh9bzJzxFyOsA1J
-         PZVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVq9WuRnD+e3mFrY+L/QLLDxdC6ke2i+30LwGu+qc7lhv/vsjLdm8eexcRQo2Bcjcl/xTD7cGyLprGxegXOtR2aJYq3jt13MT/9w0RJyQ==
-X-Gm-Message-State: AOJu0Yyb2VSn8YW7SE+ABj/cy9VJ2sBedEQFaS5TgDz76u/ESkM4spjG
-	/ey3NfQdCuJ5bg/Ee40zy2Gv+UE3crZPdN79o/bC1+SZafPHsevo8SOmt9MFsWmkWhglTVAyfJL
-	60D2xvftFczXn90izvv8v10mPrtCENXeZIF7Y
-X-Google-Smtp-Source: AGHT+IEI5tCV/tLIzJl1zhvmYgYEcOj4a8SU+B1nmDwswy/V0l1zUgcxaVh6wGimoJvL8b/VSgyjgbLEs9K12/PT7hU=
-X-Received: by 2002:ac2:55a6:0:b0:513:ca65:8c58 with SMTP id
- y6-20020ac255a6000000b00513ca658c58mr1880055lfg.43.1712347074344; Fri, 05 Apr
- 2024 12:57:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VB8Yt6Ctpz30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 07:03:30 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435Jw2ZT010825;
+	Fri, 5 Apr 2024 20:03:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=802JkfxLHpBW4MTlVFkjOaWOkh7SqzuOON2PgS1hCVo=;
+ b=BvuleuULtWxUrMBPb8wjECqO4NIMGWx2aAAqwsQvVnt/3tMRAKX/Aeg7apJufQ94EvlD
+ kwMA+OgDCOPMxxy0ghTdFypbEHb9ylzrC03ZbzPB4NaEn9TUIWWUrxvVbRyC4SO1lHue
+ zxK3Ykso0fhYOBvY3t6tIUkBSASNlXicBn0KALt/fiEsYSB4tdXVL8Eu7WHGimSS//B9
+ U/20+sU/n7nBUgpmNGEBRmfpfaN+nRLyU1NlJLVs0ar20vzgxrdSx1DkxGnvd23160z7
+ sYSkkwhsrk9tCC6Er2RhBWiAl2yKJtd5GPo4BmGnBcuhz+ev8JEWEHlRHP2HK3BuAHOi yg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaqwhg0au-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 20:03:24 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 435K3N7D020846;
+	Fri, 5 Apr 2024 20:03:23 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xaqwhg0as-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 20:03:23 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 435JZlBV009109;
+	Fri, 5 Apr 2024 20:03:22 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x9epy4ebc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 20:03:22 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435K3J4655902508
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Apr 2024 20:03:21 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E9EE5806B;
+	Fri,  5 Apr 2024 20:03:19 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2827358052;
+	Fri,  5 Apr 2024 20:03:19 +0000 (GMT)
+Received: from localhost (unknown [9.61.105.198])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Apr 2024 20:03:19 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc/pseries: Add pool idle time at LPAR boot
+In-Reply-To: <4b1d3241-2caa-4bd1-b9cc-871d176c409e@linux.ibm.com>
+References: <20240405101340.149171-1-sshegde@linux.ibm.com>
+ <87msq86kju.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <4b1d3241-2caa-4bd1-b9cc-871d176c409e@linux.ibm.com>
+Date: Fri, 05 Apr 2024 15:03:18 -0500
+Message-ID: <87h6gf7f21.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-References: <20240405-ppc-fix-wa-fatal-warnings-clang-v1-1-bdcd969f2ef0@kernel.org>
-In-Reply-To: <20240405-ppc-fix-wa-fatal-warnings-clang-v1-1-bdcd969f2ef0@kernel.org>
-From: Justin Stitt <justinstitt@google.com>
-Date: Fri, 5 Apr 2024 12:57:41 -0700
-Message-ID: <CAFhGd8pcaUqH1z=uywHadFUkNUnK_tkoDzf7P5kOqmgEpx5nwg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: Fix fatal warnings flag for LLVM's integrated assembler
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Orn3WzHTtTLnCpFuf3KqnzIjnyAfgWBY
+X-Proofpoint-GUID: B25vgWFyEl-8OiFcgtC8ekR2ob6yKBgy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-05_23,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 bulkscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404050142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,51 +96,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, llvm@lists.linux.dev, patches@lists.linux.dev, morbo@google.com, bgray@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: naveen.n.rao@linux.ibm.com, tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 5, 2024 at 12:31=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
+Shrikanth Hegde <sshegde@linux.ibm.com> writes:
+> On 4/5/24 6:19 PM, Nathan Lynch wrote:
+>> Shrikanth Hegde <sshegde@linux.ibm.com> writes:
 >
-> When building with LLVM_IAS=3D1, there is an error because
-> '-fatal-warnings' is not recognized as a valid flag:
+> Hi Nathan, Thanks for reviewing this.
 >
->   clang: error: unsupported argument '-fatal-warnings' to option '-Wa,'
+>>> When there are no options specified for lparstat, it is expected to
+>>> give reports since LPAR(Logical Partition) boot. App is an indicator
+>>> for available processor pool in an Shared Processor LPAR(SPLPAR). App is
+>>> derived using pool_idle_time which is obtained using H_PIC call.
+>> 
+>> If "App" is short for "Available Procesoor Pool" then it should be
+>> written "APP" and the it should be introduced and defined more clearly
+>> than this.
+>> 
 >
-> Use the double hyphen version of the flag, '--fatal-warnings', which
-> works with both the GNU assembler and LLVM's integrated assembler.
+> Ok.I reworded it for v2. 
 >
-> Fixes: 608d4a5ca563 ("powerpc: Error on assembly warnings")
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> yes APP is Available Processor Pool. 
+>
+>> 
+>>> The interval based reports show correct App value while since boot
+>>> report shows very high App values. This happens because in that case app
+>>> is obtained by dividing pool idle time by LPAR uptime. Since pool idle
+>>> time is reported by the PowerVM hypervisor since its boot, it need not
+>>> align with LPAR boot. This leads to large App values.
+>>>
+>>> To fix that export boot pool idle time in lparcfg and powerpc-utils will
+>>> use this info to derive App as below for since boot reports.
+>>>
+>>> App = (pool idle time - boot pool idle time) / (uptime * timebase)
+>>>
+>>> Results:: Observe app values.
+>>> ====================== Shared LPAR ================================
+>>> lparstat
+>>> System Configuration
+>>> type=Shared mode=Uncapped smt=8 lcpu=12 mem=15573440 kB cpus=37 ent=12.00
+>>>
+>>> reboot
+>>> stress-ng --cpu=$(nproc) -t 600
+>>> sleep 600
+>>> So in this case app is expected to close to 37-6=31.
+>>>
+>>> ====== 6.9-rc1 and lparstat 1.3.10  =============
+>>> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
+>>> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
+>>> 47.48  0.01  0.00    52.51     0.00  0.00 47.49 69099.72 541547    21
+>>>
+>>> === With this patch and powerpc-utils patch to do the above equation ===
+>>> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
+>>> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
+>>> 47.48  0.01  0.00    52.51     5.73 47.75 47.49 31.21 541753    21
+>>> =====================================================================
+>>>
+>>> Note: physc, purr/idle purr being inaccurate is being handled in a
+>>> separate patch in powerpc-utils tree.
+>>>
+>>> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+>>> ---
+>>> Note:
+>>>
+>>> This patch needs to merged first in the kernel for the powerpc-utils
+>>> patches to work. powerpc-utils patches will be posted to its mailing
+>>> list and link would be found in the reply to this patch if available.
+>>>
+>>> arch/powerpc/platforms/pseries/lparcfg.c | 7 +++++++
+>>>  1 file changed, 7 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+>>> index f73c4d1c26af..8df4e7c529d7 100644
+>>> --- a/arch/powerpc/platforms/pseries/lparcfg.c
+>>> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
+>>> @@ -184,6 +184,8 @@ static unsigned h_pic(unsigned long *pool_idle_time,
+>>>  	return rc;
+>>>  }
+>>>
+>>> +unsigned long boot_pool_idle_time;
+>> 
+>> Should be static, and u64. Better to use explicitly sized types for data
+>> at the kernel-hypervisor boundary.
+>
+> Current usage of h_pic doesn't follow this either. Are you suggesting we change that 
+> as well?
 
-Nice catch.
+Yes pretty much. h_pic() as currently written and used has some
+problems:
 
-Reviewed-by: Justin Stitt <justinstitt@google.com>
+  static unsigned h_pic(unsigned long *pool_idle_time,
+                        unsigned long *num_procs)
+  {
+          unsigned long rc;
+          unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
+  
+          rc = plpar_hcall(H_PIC, retbuf);
+  
+          *pool_idle_time = retbuf[0];
+          *num_procs = retbuf[1];
+  
+          return rc;
+  }
 
-> ---
->  arch/powerpc/Kbuild | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+* Coerces the return value of plpar_hcall() to unsigned -- hcall
+  errors are negative.
+* Assigns *pool_idle_time and *num_procs using uninitialized
+  data when H_PIC is unsuccessful.
+* Assigns the outparams unconditionally; would be nicer if it allowed
+  callers to pass NULL so they don't have to provide dummy inputs that
+  aren't even used, as in your change.
+* Should follow Linux -errno return value convention in the absence
+  of a need for the specific hcall status in its callers.
+
+>>> @@ -801,6 +805,9 @@ static int __init lparcfg_init(void)
+>>>  		printk(KERN_ERR "Failed to create powerpc/lparcfg\n");
+>>>  		return -EIO;
+>>>  	}
+>>> +
+>>> +	h_pic(&boot_pool_idle_time, &num_procs);
+>> 
+>> h_pic() can fail, leaving the out parameters uninitialized.
 >
-> diff --git a/arch/powerpc/Kbuild b/arch/powerpc/Kbuild
-> index da862e9558bc..571f260b0842 100644
-> --- a/arch/powerpc/Kbuild
-> +++ b/arch/powerpc/Kbuild
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -subdir-ccflags-$(CONFIG_PPC_WERROR) :=3D -Werror -Wa,-fatal-warnings
-> -subdir-asflags-$(CONFIG_PPC_WERROR) :=3D -Wa,-fatal-warnings
-> +subdir-ccflags-$(CONFIG_PPC_WERROR) :=3D -Werror -Wa,--fatal-warnings
-> +subdir-asflags-$(CONFIG_PPC_WERROR) :=3D -Wa,--fatal-warnings
+> Naveen pointed to me this a while ago, but I forgot. 
 >
->  obj-y +=3D kernel/
->  obj-y +=3D mm/
->
-> ---
-> base-commit: bfe51886ca544956eb4ff924d1937ac01d0ca9c8
-> change-id: 20240405-ppc-fix-wa-fatal-warnings-clang-603f0ebb0133
->
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
->
+> Currently h_pic return value is not checked at all, either at boor or at runtime. 
+> When it fails, should we re-try or just print a kernel debug? What would be expected 
+> behavior? because if it fails, it would anyway result in wrong values of app even 
+> if the variables are initialized to 0.
+
+There's nothing in the spec for H_PIC that suggests retrying on failure.
+I'm not really in favor of printing a message about it either; that
+practice tends to result in log noise in non-PowerVM guests.
+
+When H_PIC doesn't work the corresponding lines should not be emitted in
+/proc/powerpc/lparcfg IMO.
