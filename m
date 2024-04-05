@@ -1,75 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFD4899C45
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 14:02:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B12899D8C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 14:50:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jn3Ed/BF;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jn3Ed/BF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Gqihi/Fy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4V9xtN5tP3z3vqT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 23:02:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4V9yyf3VgWz3vXw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Apr 2024 23:50:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jn3Ed/BF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jn3Ed/BF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Gqihi/Fy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9xpG52c3z3c9r
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 22:58:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712318308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bNbIAMV3AIIh+finZC0kYCtErDA0HoO+gaZWe4mDURE=;
-	b=Jn3Ed/BFsSdJZ2jFrWDfg9m4gT7KE5nLaxmOOYPdBQlCBt2jLPcNPTePdDGlUkeZKYRZWT
-	2SANn5saA18wTPcpiJkDZCip6gQ1w0Nex2oE/jWMP+xhTMJj/+kSjkjDsYsaQGYFKaPvZC
-	nMadEha8VgS1ZM7JJUxk5qnuprnINBg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712318308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bNbIAMV3AIIh+finZC0kYCtErDA0HoO+gaZWe4mDURE=;
-	b=Jn3Ed/BFsSdJZ2jFrWDfg9m4gT7KE5nLaxmOOYPdBQlCBt2jLPcNPTePdDGlUkeZKYRZWT
-	2SANn5saA18wTPcpiJkDZCip6gQ1w0Nex2oE/jWMP+xhTMJj/+kSjkjDsYsaQGYFKaPvZC
-	nMadEha8VgS1ZM7JJUxk5qnuprnINBg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-216-j7EJIyIYM6OGTJqf_yp9KQ-1; Fri, 05 Apr 2024 07:58:23 -0400
-X-MC-Unique: j7EJIyIYM6OGTJqf_yp9KQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 584B885CF01;
-	Fri,  5 Apr 2024 11:58:22 +0000 (UTC)
-Received: from virtlab701.virt.lab.eng.bos.redhat.com (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D080D40C6CB5;
-	Fri,  5 Apr 2024 11:58:20 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH 4/4] mm: replace set_pte_at_notify() with just set_pte_at()
-Date: Fri,  5 Apr 2024 07:58:15 -0400
-Message-ID: <20240405115815.3226315-5-pbonzini@redhat.com>
-In-Reply-To: <20240405115815.3226315-1-pbonzini@redhat.com>
-References: <20240405115815.3226315-1-pbonzini@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4V9yxt3wn4z3d2B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Apr 2024 23:50:09 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435BvWSr026575;
+	Fri, 5 Apr 2024 12:50:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=8zUxzH4jR8KguJeyrJn5hfMUpBSVUP/5jq3hCWeWfu4=;
+ b=Gqihi/FyH1ahZuLqxQSQUoz8s9xyh9Fw08MoBtzT6ArZLjhQHKH+OW5zVgPrdi/E5tWw
+ 8QXEfPPpPARRvhaFPzXxn6lHaQIvMejgLh2nOPZ9aoPDeNL5rccM0DAMwUrwse7qr0Bw
+ Xwfpsg3np4iJK5CYX6PUlaxHcHkS4M8iNvPzjVCgP52SE3PM43u6U1PemzTPx5Sou3Iz
+ Nfiar3llQ7c3KiQc9oyjJy4qwoJZRk8BQtY2QnuvIotfsT+xWRawY8DRUhhbclCX0Wb4
+ TcEYcII0aJZuRufdbZhkPk0fhqtPKHsoPqZC2Hnc5oCSpueJEGUpu5z8D9+x/xw0ttVE Mg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xagvj04hp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 12:50:03 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 435Co3q9002688;
+	Fri, 5 Apr 2024 12:50:03 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xagvj04hm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 12:50:03 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4359aRqq003627;
+	Fri, 5 Apr 2024 12:50:02 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x9epyjj4x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 12:50:02 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435CnxAV32703186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Apr 2024 12:50:01 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D8C2E58063;
+	Fri,  5 Apr 2024 12:49:57 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF33458069;
+	Fri,  5 Apr 2024 12:49:57 +0000 (GMT)
+Received: from localhost (unknown [9.61.25.174])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Apr 2024 12:49:57 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc/pseries: Add pool idle time at LPAR boot
+In-Reply-To: <20240405101340.149171-1-sshegde@linux.ibm.com>
+References: <20240405101340.149171-1-sshegde@linux.ibm.com>
+Date: Fri, 05 Apr 2024 07:49:57 -0500
+Message-ID: <87msq86kju.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VQVNzO6xvlfbS5BlobiPuNmnCMFXFYdI
+X-Proofpoint-ORIG-GUID: ZharfL1cOhKl0JxNRnXsiicXyEYN4m2j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-05_10,2024-04-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ suspectscore=0 mlxlogscore=999 clxscore=1015 phishscore=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404050092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,118 +94,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-riscv@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, loongarch@lists.linux.dev, David Hildenbrand <david@redhat.com>, Marc Zyngier <maz@kernel.org>, Atish Patra <atishp@atishpatra.org>, linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Bibo Mao <maobibo@loongson.cn>, Sean Christopherson <seanjc@google.com>, Anup Patel <anup@brainfault.org>, kvmarm@lists.linux.dev, Oliver Upton <oliver.upton@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org
+Cc: tyreld@linux.ibm.com, sshegde@linux.ibm.com, npiggin@gmail.com, mahesh@linux.ibm.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the demise of the .change_pte() MMU notifier callback, there is no
-notification happening in set_pte_at_notify().  It is a synonym of
-set_pte_at() and can be replaced with it.
+Shrikanth Hegde <sshegde@linux.ibm.com> writes:
+> When there are no options specified for lparstat, it is expected to
+> give reports since LPAR(Logical Partition) boot. App is an indicator
+> for available processor pool in an Shared Processor LPAR(SPLPAR). App is
+> derived using pool_idle_time which is obtained using H_PIC call.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/linux/mmu_notifier.h | 2 --
- kernel/events/uprobes.c      | 5 ++---
- mm/ksm.c                     | 4 ++--
- mm/memory.c                  | 7 +------
- mm/migrate_device.c          | 8 ++------
- 5 files changed, 7 insertions(+), 19 deletions(-)
+If "App" is short for "Available Procesoor Pool" then it should be
+written "APP" and the it should be introduced and defined more clearly
+than this.
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index 8c72bf651606..d39ebb10caeb 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -657,6 +657,4 @@ static inline void mmu_notifier_synchronize(void)
- 
- #endif /* CONFIG_MMU_NOTIFIER */
- 
--#define set_pte_at_notify set_pte_at
--
- #endif /* _LINUX_MMU_NOTIFIER_H */
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index e4834d23e1d1..f4523b95c945 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -18,7 +18,6 @@
- #include <linux/sched/coredump.h>
- #include <linux/export.h>
- #include <linux/rmap.h>		/* anon_vma_prepare */
--#include <linux/mmu_notifier.h>	/* set_pte_at_notify */
- #include <linux/swap.h>		/* folio_free_swap */
- #include <linux/ptrace.h>	/* user_enable_single_step */
- #include <linux/kdebug.h>	/* notifier mechanism */
-@@ -195,8 +194,8 @@ static int __replace_page(struct vm_area_struct *vma, unsigned long addr,
- 	flush_cache_page(vma, addr, pte_pfn(ptep_get(pvmw.pte)));
- 	ptep_clear_flush(vma, addr, pvmw.pte);
- 	if (new_page)
--		set_pte_at_notify(mm, addr, pvmw.pte,
--				  mk_pte(new_page, vma->vm_page_prot));
-+		set_pte_at(mm, addr, pvmw.pte,
-+			   mk_pte(new_page, vma->vm_page_prot));
- 
- 	folio_remove_rmap_pte(old_folio, old_page, vma);
- 	if (!folio_mapped(old_folio))
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 8c001819cf10..108a4d167824 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -1345,7 +1345,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct page *page,
- 		if (pte_write(entry))
- 			entry = pte_wrprotect(entry);
- 
--		set_pte_at_notify(mm, pvmw.address, pvmw.pte, entry);
-+		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
- 	}
- 	*orig_pte = entry;
- 	err = 0;
-@@ -1447,7 +1447,7 @@ static int replace_page(struct vm_area_struct *vma, struct page *page,
- 	 * See Documentation/mm/mmu_notifier.rst
- 	 */
- 	ptep_clear_flush(vma, addr, ptep);
--	set_pte_at_notify(mm, addr, ptep, newpte);
-+	set_pte_at(mm, addr, ptep, newpte);
- 
- 	folio = page_folio(page);
- 	folio_remove_rmap_pte(folio, page, vma);
-diff --git a/mm/memory.c b/mm/memory.c
-index f2bc6dd15eb8..9a6f4d8aa379 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3327,13 +3327,8 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 		ptep_clear_flush(vma, vmf->address, vmf->pte);
- 		folio_add_new_anon_rmap(new_folio, vma, vmf->address);
- 		folio_add_lru_vma(new_folio, vma);
--		/*
--		 * We call the notify macro here because, when using secondary
--		 * mmu page tables (such as kvm shadow page tables), we want the
--		 * new page to be mapped directly into the secondary page table.
--		 */
- 		BUG_ON(unshare && pte_write(entry));
--		set_pte_at_notify(mm, vmf->address, vmf->pte, entry);
-+		set_pte_at(mm, vmf->address, vmf->pte, entry);
- 		update_mmu_cache_range(vmf, vma, vmf->address, vmf->pte, 1);
- 		if (old_folio) {
- 			/*
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index b6c27c76e1a0..66206734b1b9 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -664,13 +664,9 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
- 	if (flush) {
- 		flush_cache_page(vma, addr, pte_pfn(orig_pte));
- 		ptep_clear_flush(vma, addr, ptep);
--		set_pte_at_notify(mm, addr, ptep, entry);
--		update_mmu_cache(vma, addr, ptep);
--	} else {
--		/* No need to invalidate - it was non-present before */
--		set_pte_at(mm, addr, ptep, entry);
--		update_mmu_cache(vma, addr, ptep);
- 	}
-+	set_pte_at(mm, addr, ptep, entry);
-+	update_mmu_cache(vma, addr, ptep);
- 
- 	pte_unmap_unlock(ptep, ptl);
- 	*src = MIGRATE_PFN_MIGRATE;
--- 
-2.43.0
 
+> The interval based reports show correct App value while since boot
+> report shows very high App values. This happens because in that case app
+> is obtained by dividing pool idle time by LPAR uptime. Since pool idle
+> time is reported by the PowerVM hypervisor since its boot, it need not
+> align with LPAR boot. This leads to large App values.
+>
+> To fix that export boot pool idle time in lparcfg and powerpc-utils will
+> use this info to derive App as below for since boot reports.
+>
+> App = (pool idle time - boot pool idle time) / (uptime * timebase)
+>
+> Results:: Observe app values.
+> ====================== Shared LPAR ================================
+> lparstat
+> System Configuration
+> type=Shared mode=Uncapped smt=8 lcpu=12 mem=15573440 kB cpus=37 ent=12.00
+>
+> reboot
+> stress-ng --cpu=$(nproc) -t 600
+> sleep 600
+> So in this case app is expected to close to 37-6=31.
+>
+> ====== 6.9-rc1 and lparstat 1.3.10  =============
+> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
+> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
+> 47.48  0.01  0.00    52.51     0.00  0.00 47.49 69099.72 541547    21
+>
+> === With this patch and powerpc-utils patch to do the above equation ===
+> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
+> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
+> 47.48  0.01  0.00    52.51     5.73 47.75 47.49 31.21 541753    21
+> =====================================================================
+>
+> Note: physc, purr/idle purr being inaccurate is being handled in a
+> separate patch in powerpc-utils tree.
+>
+> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> ---
+> Note:
+>
+> This patch needs to merged first in the kernel for the powerpc-utils
+> patches to work. powerpc-utils patches will be posted to its mailing
+> list and link would be found in the reply to this patch if available.
+>
+> arch/powerpc/platforms/pseries/lparcfg.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+> index f73c4d1c26af..8df4e7c529d7 100644
+> --- a/arch/powerpc/platforms/pseries/lparcfg.c
+> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
+> @@ -184,6 +184,8 @@ static unsigned h_pic(unsigned long *pool_idle_time,
+>  	return rc;
+>  }
+>
+> +unsigned long boot_pool_idle_time;
+
+Should be static, and u64. Better to use explicitly sized types for data
+at the kernel-hypervisor boundary.
+
+> +
+>  /*
+>   * parse_ppp_data
+>   * Parse out the data returned from h_get_ppp and h_pic
+> @@ -218,6 +220,7 @@ static void parse_ppp_data(struct seq_file *m)
+>  		h_pic(&pool_idle_time, &pool_procs);
+>  		seq_printf(m, "pool_idle_time=%ld\n", pool_idle_time);
+>  		seq_printf(m, "pool_num_procs=%ld\n", pool_procs);
+> +		seq_printf(m, "boot_pool_idle_time=%ld\n", boot_pool_idle_time);
+
+If boot_pool_idle_time is unsigned then the format string should be %ul
+or similar, not %ld.
+
+>  	}
+>
+>  	seq_printf(m, "unallocated_capacity_weight=%d\n",
+> @@ -792,6 +795,7 @@ static const struct proc_ops lparcfg_proc_ops = {
+>  static int __init lparcfg_init(void)
+>  {
+>  	umode_t mode = 0444;
+> +	unsigned long num_procs;
+>
+>  	/* Allow writing if we have FW_FEATURE_SPLPAR */
+>  	if (firmware_has_feature(FW_FEATURE_SPLPAR))
+> @@ -801,6 +805,9 @@ static int __init lparcfg_init(void)
+>  		printk(KERN_ERR "Failed to create powerpc/lparcfg\n");
+>  		return -EIO;
+>  	}
+> +
+> +	h_pic(&boot_pool_idle_time, &num_procs);
+
+h_pic() can fail, leaving the out parameters uninitialized.
+
+> +
+>  	return 0;
+>  }
+>  machine_device_initcall(pseries, lparcfg_init);
+> --
+> 2.39.3
