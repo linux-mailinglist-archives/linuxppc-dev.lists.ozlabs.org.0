@@ -1,74 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E804889A89E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 05:20:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF4489ADCA
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Apr 2024 03:02:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ooTiwkUK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HYazYNyp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VBLGB5MsQz3vdR
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Apr 2024 14:20:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VBv880bG1z3vZx
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Apr 2024 11:02:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ooTiwkUK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HYazYNyp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=103.168.172.150; helo=fout7-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VBLFR00hkz3dVp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 14:19:52 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfout.nyi.internal (Postfix) with ESMTP id AB0F913800C6;
-	Fri,  5 Apr 2024 23:19:48 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Fri, 05 Apr 2024 23:19:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1712373588; x=1712459988; bh=9kul5wYSciMTZEU/ffUWZ8gwme9H
-	jWu3Wnb8YIqDLsk=; b=ooTiwkUKPhqW9zfzDZVT3t/TwKbGTeukyQ4L0eHI7FMv
-	fu2q2wSYhfbk2jjYyI79BJ9vJ5UB4/FWTSOjn12RWZ/kxPypStmk6egXL5gHeDok
-	Iocho1g/7BznBTiKa5E4QQVq+pXilIyNR5+Ijbxp4QN0RAqt0E8sTNM23+ZSF7Ra
-	ojM7WTN9HlJPvg01UFgme3wy3+WzWBYQXSOCuVBejHua7G9sefeUdklA9Dld3i9+
-	7x4WzRhlxgXoysfUO+r2ms3FKpTumVIOY+eYv1ZvNnAxCuXE2ofJMCZNc6fwajWj
-	CePqWoYYYT/OXE3GQI8GbkBa80qBAmFs0Hv6+M1Qfw==
-X-ME-Sender: <xms:Ur8QZuD8CT1UgC2Ds_aeWUmZvG7k3rQ_eX6fvm6SCS3sviG2kXOL1Q>
-    <xme:Ur8QZogH6Jyrkz30kjfkMt-_EmsjoqVYpN1lphw-cgCMiruvqWvzxtId2lyx6l8JU
-    rpJCQKR6aVGCqvyrQI>
-X-ME-Received: <xmr:Ur8QZhm9Tx7fRhWNb6GpVtDOu2okZdG2SZjuYn9I-NI03ZJvLu2MNDfLtmCvWzJKSlDgIoqFANhKgnoRh1rTREAmL4UVNJgj27w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeguddgieelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcu
-    vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeu
-    heeuleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:Ur8QZsxlx9GVIg02xww6XF9wTSF1HVYFdDDg3IL3dCX74TB4rf7cfw>
-    <xmx:Ur8QZjRkr3MDJRNQqfySKoKF3SnOkXjUIMk2DyozNbelevevHUqjqQ>
-    <xmx:Ur8QZnb-is7g2j0VuIVznGeNBrxJmDGGRbQUGGw_GUDkpPlCOhysHQ>
-    <xmx:Ur8QZsTtMS3xpqUGF7dxI1A7sGSSaN1Rqs6qLMD9_kErmZGlU6GRuA>
-    <xmx:VL8QZhBxeJD7YIEcwdZTCg1evymGUe6vlmyeyGzewfTlaE1QTvbhybbU>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Apr 2024 23:19:44 -0400 (EDT)
-Date: Sat, 6 Apr 2024 14:21:33 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] serial/pmac_zilog: Remove flawed mitigation for rx
- irq flood
-In-Reply-To: <87v84w7be3.fsf@mail.lhotse>
-Message-ID: <2cb53463-897b-8f3f-7238-9fe87622b54d@linux-m68k.org>
-References: <0df45bedded1249f6c6ec2c2fb0d9879da1841b7.1712273040.git.fthain@linux-m68k.org> <87v84w7be3.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VBNwf0vnjz3dwr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Apr 2024 16:20:34 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 0D4D5CE2777;
+	Sat,  6 Apr 2024 05:20:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3C5A9C433C7;
+	Sat,  6 Apr 2024 05:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712380828;
+	bh=TBj/hcnPrvS19ZOluMZ12evt8AeDaDrUTBeM5kaTuKY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=HYazYNypOS+iPe/PmwIZVgrP0OAjOmuWcCZaXmQBd5/DF3DU2Cm7HK1KTLKVM8W2j
+	 EfdrhznuDsHvbEh7NeV1r2EDMVkxTqo+hmKt5MdFIcqj68UTB4u7gvHG6geAe3ArfV
+	 cYxb7yc2nqhO3pPj8ToTFIgL78NntzPlzi3tNk1u8F7N5z7SqSGJ1Z/QhHbUaQaR1j
+	 GTv/7bDPNNXqFXoXNMGCl3bjIAtmML/lX++bgYkRjXumLNf6dEzpQPrpxdPeyVgSKh
+	 czfxRuHIWxcuBJ6wGSXEzVfHmRCYmRJdToESEDFulu3u4HF5IZUSSU3tkxxLhyQRAI
+	 TbkNIwkM8MMRA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 19C9BD84BAC;
+	Sat,  6 Apr 2024 05:20:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 00/34] address all -Wunused-const warnings
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id:  <171238082809.31617.17365732495689756509.git-patchwork-notify@kernel.org>
+Date: Sat, 06 Apr 2024 05:20:28 +0000
+References: <20240403080702.3509288-1-arnd@kernel.org>
+In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+X-Mailman-Approved-At: Sun, 07 Apr 2024 11:01:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,20 +62,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-m68k@lists.linux-m68k.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Shyam-sundar.S-k@amd.com, heiko@sntech.de, rafael@kernel.org, dri-devel@lists.freedesktop.org, benjamin.tissoires@redhat.com, srinivas.pandruvada@linux.intel.com, hch@lst.de, linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org, linux-sound@vger.kernel.org, abbotti@mev.co.uk, linux-omap@vger.kernel.org, trond.myklebust@hammerspace.com, elder@kernel.org, kristo@kernel.org, chenxiang66@hisilicon.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, hsweeten@visionengravers.com, iyappan@os.amperecomputing.com, linux-crypto@vger.kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, alexandre.belloni@bootlin.com, markuss.broks@gmail.com, hvaibhav.linux@gmail.com, linux-i2c@vger.kernel.org, lars@metafoo.de, minyard@acm.org, deller@gmx.de, lee@kernel.org, linux-clk@vger.kernel.org, linux-rockchip@lists.infradead.org, iommu@lists.linu
+ x.dev, yisen.zhuang@huawei.com, lenb@kernel.org, andi.shyti@kernel.org, michael.hennerich@analog.com, linux-kbuild@vger.kernel.org, linux-arm-msm@vger.kernel.org, greybus-dev@lists.linaro.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, neil.armstrong@linaro.org, sboyd@kernel.org, jarkko@kernel.org, anna@kernel.org, linux-integrity@vger.kernel.org, alsa-devel@alsa-project.org, jic23@kernel.org, linux-efi@vger.kernel.org, linux-iio@vger.kernel.org, linux-fpga@vger.kernel.org, linux-fbdev@vger.kernel.org, kasan-dev@googlegroups.com, jirislaby@kernel.org, linux-rtc@vger.kernel.org, stf_xl@wp.pl, masahiroy@kernel.org, linux-staging@lists.linux.dev, linux-input@vger.kernel.org, ychuang3@nuvoton.com, keescook@chromium.org, arnd@arndb.de, jikos@kernel.org, robin.murphy@arm.com, rostedt@goodmis.org, nathan@kernel.org, broonie@kernel.org, mdf@kernel.org, openipmi-developer@lists.sourceforge.net, linux-nfs@vger.kernel.org, martin.petersen@oracle.com, dmitry.torokh
+ ov@gmail.com, sre@kernel.org, peda@axentia.se, linux-stm32@st-md-mailman.stormreply.com, tony@atomide.com, liviu.dudau@arm.com, alexandre.torgue@foss.st.com, linux-ide@vger.kernel.org, peterhuewe@gmx.de, ardb@kernel.org, linux-leds@vger.kernel.org, herbert@gondor.apana.org.au, linux-scsi@vger.kernel.org, vkoul@kernel.org, linux-serial@vger.kernel.org, kuba@kernel.org, mhiramat@kernel.org, kvalo@kernel.org, john.allen@amd.com, netdev@vger.kernel.org, andersson@kernel.org, tiwai@suse.com, krzysztof.kozlowski@linaro.org, dlemoal@kernel.org, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 5 Apr 2024, Michael Ellerman wrote:
+Hello:
 
-> I assume you have tested this on an actual pmac, as well as qemu?
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed,  3 Apr 2024 10:06:18 +0200 you wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
+> Compilers traditionally warn for unused 'static' variables, but not
+> if they are constant. The reason here is a custom for C++ programmers
+> to define named constants as 'static const' variables in header files
+> instead of using macros or enums.
+> 
+> [...]
 
-I tested the patched driver and its console functionality using Zilog SCC 
-hardware in a Mac IIci, as well as QEMU's q800 virtual machine.
+Here is the summary with links:
+  - [05/34] 3c515: remove unused 'mtu' variable
+    https://git.kernel.org/netdev/net-next/c/17b35355c2c6
+  - [19/34] sunrpc: suppress warnings for unused procfs functions
+    (no matching commit)
+  - [26/34] isdn: kcapi: don't build unused procfs code
+    https://git.kernel.org/netdev/net-next/c/91188544af06
+  - [28/34] net: xgbe: remove extraneous #ifdef checks
+    https://git.kernel.org/netdev/net-next/c/0ef416e045ad
+  - [33/34] drivers: remove incorrect of_match_ptr/ACPI_PTR annotations
+    (no matching commit)
 
-That should suffice from a code coverage point-of-view, since 
-pmz_receive_chars() is portable and independent of CONFIG_PPC_PMAC.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Moreover, I don't know how to get my PowerMac G3 to execute the kludge 
-that's to be removed here. I can't prove it's impossible, though.
+
