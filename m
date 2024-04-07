@@ -2,56 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C2A89B33A
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Apr 2024 19:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F4189B341
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Apr 2024 19:20:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rFdEJm1w;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vy+JfL7+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VCJft54wBz3vYR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 03:11:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VCJsJ4zl5z3vYb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 03:20:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rFdEJm1w;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vy+JfL7+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCJfB217Dz30dn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 03:11:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=kg2S3x2yOJGis3rtc5Z5MAarSwFcmW75wBMPuHRwNRU=; b=rFdEJm1w7fEqh962Bb5YCtbpYQ
-	7EZX3w0V6D/8wIkzUXe0VjWbhOcBi4xACUsn1BDEO0S220fsvHf0SmP8muNEEVbwHFRcoSQi1Ttcj
-	s1zVYyJubBuXiyIg6uTrzpr5Lh3OU1UriRcxnews21M/54XzmK88lUR6ToWYQfQD/wB0vKoHjTFDg
-	TdtP8n7aHQk+ce33PGZ4xe1jTa655xdbo3KjRcq2GkeLXA3AzftPu2hFMFfh/jWeU9neERej81Dzl
-	8LSS0rqByp9EcDX18Q+m3rl+rj8P9VEP2SWzL5SaH0BE0MQ5PJicRFFInxUVf3v7LHKzG3lM1HdH0
-	AWhOaj9Q==;
-Received: from [50.53.2.121] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rtW2w-0000000D7D3-01EW;
-	Sun, 07 Apr 2024 17:11:10 +0000
-Message-ID: <3c5ca52f-8144-4214-a6e3-35d9139fa6a7@infradead.org>
-Date: Sun, 7 Apr 2024 10:11:09 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCJrY0hNMz3brL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 03:20:12 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 437GxAvB025509;
+	Sun, 7 Apr 2024 17:19:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=F86vIyT96NLScE6Zk6mOrLIIbnCvATnEMB/X/BdWurM=;
+ b=Vy+JfL7+GdlmHij4DY9+FF6bZBGKIzybu3H9TGxNhGMOiNojOX6vU1kcZiUile2ZWzzj
+ xdBoUwoyOtYP6C2NH8E73yzr2geuDlQWgZsDTp5+Iatp3+IrlT56kZKLZgVECtOMYtPR
+ LkTDs7Vdk/Yc3lJ1Mhn4FEZpQa9kh78F+6mul9elFYjbxv3mkUAXeNoCQwKRAvQioEsg
+ vgXqRrAovajP2pMj78xg4rCIrdAvqZLlapXXlRbIUAU2z5zYjzt5z1bvp1jNwpY6p5vk
+ Fclj73uOz2kJ1MmHrqV2Io+jRhoaAhECrFGmyWtX2RAlax5j2OLWRZiZvB7LbEkaYT1J Ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xbyf4r11k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 07 Apr 2024 17:19:12 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 437HJBOd027129;
+	Sun, 7 Apr 2024 17:19:11 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xbyf4r11d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 07 Apr 2024 17:19:11 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 437EiDmP021485;
+	Sun, 7 Apr 2024 17:19:10 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xbjxkb7y6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 07 Apr 2024 17:19:10 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 437HJ5ah37552504
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 7 Apr 2024 17:19:07 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F2FE620049;
+	Sun,  7 Apr 2024 17:19:04 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C46CC20040;
+	Sun,  7 Apr 2024 17:19:03 +0000 (GMT)
+Received: from osiris (unknown [9.179.2.159])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Sun,  7 Apr 2024 17:19:03 +0000 (GMT)
+Date: Sun, 7 Apr 2024 19:19:02 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v2 0/7] arch/mm/fault: accelerate pagefault when badaccess
+Message-ID: <20240407171902.5958-A-hca@linux.ibm.com>
+References: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
+ <20240403134539.fde3a6c594f2d88409be30ed@linux-foundation.org>
+ <4d45fffc-877a-4ad1-ad02-a33341e467e7@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next 3/3] powerpc/rtas: Add kernel-doc comments to
- smp_startup_cpu()
-To: Yang Li <yang.lee@linux.alibaba.com>, arnd@arndb.de, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
- naveen.n.rao@linux.ibm.com
-References: <20240407063952.36270-1-yang.lee@linux.alibaba.com>
- <20240407063952.36270-3-yang.lee@linux.alibaba.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240407063952.36270-3-yang.lee@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4d45fffc-877a-4ad1-ad02-a33341e467e7@huawei.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Y3MmKFoPZYTA6URYFqSoHvL5OT_14Ypp
+X-Proofpoint-ORIG-GUID: Ts9vZ863gBFIi5c6rKKJKZ5ZbhTxcstc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-07_11,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=950 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxscore=0 spamscore=0 impostorscore=0 adultscore=0 clxscore=1011
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2404010000 definitions=main-2404070139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,43 +97,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, surenb@google.com, linux-arm-kernel@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 4/6/24 11:39 PM, Yang Li wrote:
-> This commit adds kernel-doc style comments with complete parameter
-> descriptions for the function smp_startup_cpu().
+On Sun, Apr 07, 2024 at 03:49:53PM +0800, Kefeng Wang wrote:
+> On 2024/4/4 4:45, Andrew Morton wrote:
+> > On Wed, 3 Apr 2024 16:37:58 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+> > 
+> > > After VMA lock-based page fault handling enabled, if bad access met
+> > > under per-vma lock, it will fallback to mmap_lock-based handling,
+> > > so it leads to unnessary mmap lock and vma find again. A test from
+> > > lmbench shows 34% improve after this changes on arm64,
+> > > 
+> > >    lat_sig -P 1 prot lat_sig 0.29194 -> 0.19198
+> > > 
+> > > Only build test on other archs except arm64.
+> > 
+> > Thanks.  So we now want a bunch of architectures to runtime test this.  Do
+> > we have a selftest in place which will adequately do this?
 > 
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-> ---
->  arch/powerpc/platforms/cell/smp.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/cell/smp.c b/arch/powerpc/platforms/cell/smp.c
-> index 30394c6f8894..bdb7adde798d 100644
-> --- a/arch/powerpc/platforms/cell/smp.c
-> +++ b/arch/powerpc/platforms/cell/smp.c
-> @@ -55,6 +55,8 @@ static cpumask_t of_spin_map;
->  /**
->   * smp_startup_cpu() - start the given cpu
->   *
-> + * @lcpu: Logical CPU ID of the CPU to be started.
+> I don't find such selftest, and badaccess would lead to coredump, the
+> performance should not affect most scene, so no selftest is acceptable.
+> lmbench is easy to use to measure the performance.
 
-Does this work with the blank line between the function and parameter?
-(i.e., no kernel-doc warnings?)
-
-Usually it's done without the extra line.
-Otherwise the additional line for @lcpu: looks good to me.
-
-Thanks.
-
-> + *
->   * At boot time, there is nothing to do for primary threads which were
->   * started from Open Firmware.  For anything else, call RTAS with the
->   * appropriate start location.
-
--- 
-#Randy
+The rationale for this series (performance improvement) is a bit odd,
+since I would expect that the changed code is usually never executed.
