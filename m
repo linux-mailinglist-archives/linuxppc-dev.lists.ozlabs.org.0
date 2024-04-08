@@ -1,63 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C50D89C7B8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 17:02:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E306289C7F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 17:16:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iPVzIBvT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CYWjBrT3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VCskq5c0qz3vZb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 01:02:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VCt3l4ddnz3dWh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 01:16:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iPVzIBvT;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CYWjBrT3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCsk82rK9z3cM4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Apr 2024 01:01:36 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 0391DCE1414
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 15:01:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC553C433B2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 15:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712588493;
-	bh=EITVdlJtkrnylLXhed9Pr1DfYAyVTQ3XvaUDh63E534=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iPVzIBvT/iSK03mJ74WyCdtfwrYQ0FIvhL5K8YMXOWzUcxtAW1X9DNCrqtBiFjfyi
-	 tl90sPwPpZ5rbnlWkWlrmucbJbApIpssRcLEk4bwAVt6FxwLnhmycj60p3s5ZulGuY
-	 Oi6kb5XzN6oeZLDaCEoYGMUGaCwA36s9aVa2vFCs+0r3L2ACNZZS6RJMIMK7lmGxXl
-	 LZaKWREq5eaTZ8dEmqubeluPfq1pepZhLI9FVjpANsP8XqyeISOYtrQC8gZ/KN/t0I
-	 J4RLdMza2ntow+e8CC8hAcBjXsrybDusTaZepo397svH4xSl9ToXUzq+mYubuhRT/b
-	 17pKAxdggeVsA==
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6ea1572136eso453454a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Apr 2024 08:01:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUzBv+3I2ybb7nVgiiJ5/HBJktM1gHKyTdmcCYfoycXuTMU5sdNLyQKknGqvDEyxDkaBS0NuZwBJNiK/jM15fNFfQSe/7YFT5S1+I3CRA==
-X-Gm-Message-State: AOJu0YxV9lRc8aEsvpQDKmkyoZqk5aF32so0NZOrbJGLh1qaLtDBMbAY
-	Lwrp1vt0gAbM8oLdmRxBuaVZRZe1j2pR9d3OOkpT48R9gKYbLzZUKNTpD6a9z6rULBJYj6NA9EI
-	DOvLb1AOWgm7WlTDvDfggN+1dpAg=
-X-Google-Smtp-Source: AGHT+IE7BjvtTOsOgPqYkXR1Qq+KOOG/nJtiEyKbfNUuvRcPpCIK8D3B6ZYbWXxS6qJ87RK9Jxd6UH195uv+p6a4TTw=
-X-Received: by 2002:a05:6808:603:b0:3c5:f534:e2c7 with SMTP id
- y3-20020a056808060300b003c5f534e2c7mr2839026oih.1.1712588493105; Mon, 08 Apr
- 2024 08:01:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCt2y1TJ8z3cFN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Apr 2024 01:16:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=ank4NMo0tMOsvsZKPxmhfr9ZiRm9h5CIvfJM5C8UMkw=; b=CYWjBrT3mgKQB/fI+Fy50FMMxh
+	mrprDMPN3zNdYEN9H0lA/4wcDoClx7stMGrhAjQS4hkORYa2qup79ex7sfDdhLyNwXkHBdBw7QSbw
+	Xzw5ytjmTtEB8EBdwF3M3LGP+g+5hhvma65zNyMc4NrkkbJG6RIXLaNmFiAU6VX5nZr9FnmLxKU8r
+	dfoRmGwIMYYPvY2Bj7G65PoKWUBrSAYplWKos63LC9A7f7VImotpwdxI+Dq2hchC0VyFIGAB56A00
+	p5fNaUp8rRhOAAmtSzqx+fOUdcNInov2dGPaMTJN6MLL4uN5+ZoMCDVVQvcu+U7M3insqoLzmwn/4
+	80WrkbQA==;
+Received: from [50.53.2.121] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rtqj2-0000000Fzyh-41mP;
+	Mon, 08 Apr 2024 15:16:01 +0000
+Message-ID: <e2ca307d-1d8a-49e9-b374-73ec50965464@infradead.org>
+Date: Mon, 8 Apr 2024 08:15:58 -0700
 MIME-Version: 1.0
-References: <cover.1712410202.git.lukas@wunner.de>
-In-Reply-To: <cover.1712410202.git.lukas@wunner.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Apr 2024 17:01:22 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hOHCSp8-8EZjuGAOR0QSH3CcvokG3uBGAKFFpTrkqQRA@mail.gmail.com>
-Message-ID: <CAJZ5v0hOHCSp8-8EZjuGAOR0QSH3CcvokG3uBGAKFFpTrkqQRA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
-To: Lukas Wunner <lukas@wunner.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next 2/3 v2] powerpc: Fix kernel-doc comments in
+ fsl_gtm.c
+To: Yang Li <yang.lee@linux.alibaba.com>, arnd@arndb.de, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com
+References: <20240408053109.96360-1-yang.lee@linux.alibaba.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240408053109.96360-1-yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,45 +62,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: intel-gvt-dev@lists.freedesktop.org, Jean Delvare <jdelvare@suse.com>, Zhi Wang <zhi.wang.linux@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-kernel@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, linux-acpi@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, linux-modules@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 6, 2024 at 3:52=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
-:
->
-> For my upcoming PCI device authentication v2 patches, I have the need
-> to expose a simple buffer in virtual memory as a bin_attribute.
->
-> It turns out we've duplicated the ->read() callback for such simple
-> buffers a fair number of times across the tree.
->
-> So instead of reinventing the wheel, I decided to introduce a common
-> helper and eliminate all duplications I could find.
->
-> I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
-> name. ;)
->
-> Lukas Wunner (2):
->   sysfs: Add sysfs_bin_attr_simple_read() helper
->   treewide: Use sysfs_bin_attr_simple_read() helper
->
->  arch/powerpc/platforms/powernv/opal.c              | 10 +-------
->  drivers/acpi/bgrt.c                                |  9 +-------
->  drivers/firmware/dmi_scan.c                        | 12 ++--------
->  drivers/firmware/efi/rci2-table.c                  | 10 +-------
->  drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++-----------=
------
->  .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
->  fs/sysfs/file.c                                    | 27 ++++++++++++++++=
-++++++
->  include/linux/sysfs.h                              | 15 ++++++++++++
->  init/initramfs.c                                   | 10 +-------
->  kernel/module/sysfs.c                              | 13 +----------
->  10 files changed, 56 insertions(+), 85 deletions(-)
->
-> --
 
-For the series
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 4/7/24 10:31 PM, Yang Li wrote:
+> Fix some function names in kernel-doc comments.
+> 
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+
+> ---
+>  arch/powerpc/sysdev/fsl_gtm.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/sysdev/fsl_gtm.c b/arch/powerpc/sysdev/fsl_gtm.c
+> index 39186ad6b3c3..3dabc9621810 100644
+> --- a/arch/powerpc/sysdev/fsl_gtm.c
+> +++ b/arch/powerpc/sysdev/fsl_gtm.c
+> @@ -77,7 +77,7 @@ struct gtm {
+>  static LIST_HEAD(gtms);
+>  
+>  /**
+> - * gtm_get_timer - request GTM timer to use it with the rest of GTM API
+> + * gtm_get_timer16 - request GTM timer to use it with the rest of GTM API
+>   * Context:	non-IRQ
+>   *
+>   * This function reserves GTM timer for later use. It returns gtm_timer
+> @@ -110,7 +110,7 @@ struct gtm_timer *gtm_get_timer16(void)
+>  EXPORT_SYMBOL(gtm_get_timer16);
+>  
+>  /**
+> - * gtm_get_specific_timer - request specific GTM timer
+> + * gtm_get_specific_timer16 - request specific GTM timer
+>   * @gtm:	specific GTM, pass here GTM's device_node->data
+>   * @timer:	specific timer number, Timer1 is 0.
+>   * Context:	non-IRQ
+> @@ -260,7 +260,7 @@ int gtm_set_timer16(struct gtm_timer *tmr, unsigned long usec, bool reload)
+>  EXPORT_SYMBOL(gtm_set_timer16);
+>  
+>  /**
+> - * gtm_set_exact_utimer16 - (re)set 16 bits timer
+> + * gtm_set_exact_timer16 - (re)set 16 bits timer
+>   * @tmr:	pointer to the gtm_timer structure obtained from gtm_get_timer
+>   * @usec:	timer interval in microseconds
+>   * @reload:	if set, the timer will reset upon expiry rather than
+
+-- 
+#Randy
