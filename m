@@ -2,57 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A2589B73E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 07:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A4189B79C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 08:29:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1yWZ8c3a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=GU7kB4ph;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VCdMr6zhzz3dXN
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 15:44:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VCfLs2QBnz3vX0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 16:29:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1yWZ8c3a;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=GU7kB4ph;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=philmd@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCdM84SThz3bfS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 15:44:19 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id CD655CE0C61;
-	Mon,  8 Apr 2024 05:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D56FC433F1;
-	Mon,  8 Apr 2024 05:44:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712555054;
-	bh=vMTO+JCxJ/pC8pUOQVFfrJmUCn0gHKZBHp2mN8vrUkY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1yWZ8c3afHE2SqsjmwsiwlagPW2l0wHd6orMPdWrLRaIm4oevC51UhVuVWvEMsD78
-	 HMK8Rnmq2St49ROmoMrJe9eqkhIJClsPRUAFWerMk3yzPPSzyhGZ5mpq7FhIV13v0r
-	 NAYbYrf+vMkX3iWja7ouU1FF3yCxfW+KqwaKWPbE=
-Date: Mon, 8 Apr 2024 07:44:10 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Subject: Re: [PATCH] serial/pmac_zilog: Remove flawed mitigation for rx irq
- flood
-Message-ID: <2024040843-plug-thirstily-e478@gregkh>
-References: <dda2187e128bfaaf092351812e4538e2e41c17f6.1711599093.git.fthain@linux-m68k.org>
- <Zg3YZN-QupyVaTPm@surfacebook.localdomain>
- <8f234f26-d5e3-66ed-ab0c-86d3c9852b4a@linux-m68k.org>
- <CAHp75VcxLez_Nm0N8=gpWd7SKGd9JF2QXEOOB_gvX3ZtTzj6HQ@mail.gmail.com>
- <87y19s7bk6.fsf@mail.lhotse>
- <4bddf8ec-97f1-07f6-9c0a-523c102c0a1b@linux-m68k.org>
- <87v84sbexv.fsf@mail.lhotse>
- <b1553164-18db-4f5c-b1a5-28a393d64941@kernel.org>
- <3adf561b-2d6b-47be-8fca-2a26ee738670@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCfL46QMgz2xKQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 16:28:26 +1000 (AEST)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-56e6282dd72so399220a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Apr 2024 23:28:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712557700; x=1713162500; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z6EgD/Muel3BqCojSMMdXuM1Td/LzqFDog01ouaIAt4=;
+        b=GU7kB4phgiLkSm4tBrfaMWS/dC7gsF7A5kFiW/Zx9Y7lysQmuqupoQAlifVdAdvne2
+         h+ZUKlQ40OTNi8hXAeBXmletuX9rIs4jP2Si3KYcAfj5/R4fsAVzAmQNqIXs9P0L5x20
+         v6TL0MDOcJ56JbiFL3ocUCSSeLwprXnHGrJylVjTu8/W9HEqMqQ0bhtNnTgKxAc60oyG
+         m43yBJ6P3locDelrkoh0z35nxSWSJlIhIBozJmv+SQehzH5lqzObS15ykj3CJ876riCK
+         DrvaJwiTJu05l57/aL4rA9VKu5Deqtri/omCy9WKYvWKRlmBirzRGa4THbjT9lZUZ4fn
+         fO1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712557700; x=1713162500;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z6EgD/Muel3BqCojSMMdXuM1Td/LzqFDog01ouaIAt4=;
+        b=qxgMMZqfRrjJSx4+dmKxWQXFH8wkji7ieq/vhULU8/kDL0ZuPuiuFqCPMplzG1ZohT
+         oCkLuOPK1Df+mOlMjYaYxR1GHxhZKaXk2/vrMkRY32SqK7iaTj1kvm7kxOqSFU4DS7JN
+         luytPoxx+jw32Sx8kvgMGehBnHDL5CVxlS5Jb12Eid6t3c+6V/c3lnh20OCwpxomCDbe
+         F+2tAyOQZ4cSXW1V2poYti4ydUIonr9TWYMHyv/U4BoYqxA/+766mEk3RRsT0+gpXRhx
+         2q2aUz9opkv9rPan1gEumMI9gM6GJk7tY2km///+VBoXJm7codyL/lk56XXK/RYPwYxh
+         XrFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQXoNP8OzS/w10zESYuSuNskFzToYVqT8lsthwAdEVQtLtdv4zZAIxDiNPKqTpJPyKjtFH+bYZ/0VWmxr4iN6ikn16ETYx/XPYy/Sh2g==
+X-Gm-Message-State: AOJu0YxZGQiG0VbLt7Ng2EzI4mdAMMgZEs3oy5ZvQNaJBSlhrW5USaK3
+	9MgearKiGIEOYu8pXUoL2s2+BMFatGibm/oGtXAcT7/lZz2iPTNOZZcj70jqmyM=
+X-Google-Smtp-Source: AGHT+IEW7NFlAXtt0eb3qEVFrk9JxABFiNRfMx5pOzC0ESg5/RMCffY6KCodQ4v8J7x5a4GlkvTfcw==
+X-Received: by 2002:a50:bae3:0:b0:56c:18d5:1e27 with SMTP id x90-20020a50bae3000000b0056c18d51e27mr5576700ede.5.1712557699936;
+        Sun, 07 Apr 2024 23:28:19 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.144.67])
+        by smtp.gmail.com with ESMTPSA id k19-20020aa7c393000000b0056bfb7004basm3538428edq.90.2024.04.07.23.28.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Apr 2024 23:28:19 -0700 (PDT)
+Message-ID: <2e481816-2b06-432c-b09c-e92e230debe8@linaro.org>
+Date: Mon, 8 Apr 2024 08:28:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3adf561b-2d6b-47be-8fca-2a26ee738670@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] mm: replace set_pte_at_notify() with just
+ set_pte_at()
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <20240405115815.3226315-1-pbonzini@redhat.com>
+ <20240405115815.3226315-5-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240405115815.3226315-5-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,28 +84,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Finn Thain <fthain@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kvm-riscv@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, loongarch@lists.linux.dev, David Hildenbrand <david@redhat.com>, Marc Zyngier <maz@kernel.org>, Atish Patra <atishp@atishpatra.org>, linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Bibo Mao <maobibo@loongson.cn>, Sean Christopherson <seanjc@google.com>, Anup Patel <anup@brainfault.org>, kvmarm@lists.linux.dev, Oliver Upton <oliver.upton@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 08, 2024 at 07:37:22AM +0200, Jiri Slaby wrote:
-> On 08. 04. 24, 7:32, Jiri Slaby wrote:
-> > On 08. 04. 24, 7:29, Michael Ellerman wrote:
-> > > Many maintainers won't drop Cc: tags if they are there in the submitted
-> > > patch. So I agree with Andy that we should encourage folks not to add
-> > > them in the first place.
-> > 
-> > But fix the docs first.
-> > 
-> > I am personally not biased to any variant (as in: I don't care where CCs
-> > live in a patch).
+On 5/4/24 13:58, Paolo Bonzini wrote:
+> With the demise of the .change_pte() MMU notifier callback, there is no
+> notification happening in set_pte_at_notify().  It is a synonym of
+> set_pte_at() and can be replaced with it.
 > 
-> OTOH, as a submitter, it's a major PITA to carry CCs in notes (to have those
-> under the --- line). Esp. when I have patches in a queue for years.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   include/linux/mmu_notifier.h | 2 --
+>   kernel/events/uprobes.c      | 5 ++---
+>   mm/ksm.c                     | 4 ++--
+>   mm/memory.c                  | 7 +------
+>   mm/migrate_device.c          | 8 ++------
+>   5 files changed, 7 insertions(+), 19 deletions(-)
 
-Agreed, let's keep them where they are in the signed-off-by area, it's
-not hurting or harming anything to have them there.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-thanks,
-
-greg k-h
