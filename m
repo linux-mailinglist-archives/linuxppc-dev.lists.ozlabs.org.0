@@ -1,68 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C5389BA60
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 10:33:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC7389BA7A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 10:40:04 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Y9m7Rpw/;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VCj6N5WX5z3vbc
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 18:33:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VCjFt40B7z3vYn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 18:40:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.176; helo=mail-yb1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Y9m7Rpw/;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133; helo=out30-133.freemail.mail.aliyun.com; envelope-from=yang.lee@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCj5w0Rxsz3dJ0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 18:33:06 +1000 (AEST)
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dbed179f0faso3725914276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Apr 2024 01:33:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712565183; x=1713169983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3bnKadFFQKfZtqlQN85uKX1QN2funm0jGKmok0O/bf4=;
-        b=kSfo1934hQ5WMvRaxMNM3bvvotuo/3aSz3GHxCaG04K5FJknlxy5B30TTVYk/A+73T
-         +8QdhbcK8t3ntSqIFmrjP7DBazgbOJQmnhT2Vt45qO/N+KuyBdo3SszzTc6go4ZOIM/B
-         tD+oOeZJKX+WqDt+rflVA6tBJTvL/GvaeWCYYjHonRDf6cUhYHoXjuhiMsbhpgugWyK2
-         X6t5EFU9bFywfutztbCgxpKCNh8CiyANmMyoyKmjJLps+VRm+XvV2TX06zTvluRmG31S
-         NgBEZZexQCE1/ujBna5EaBRNx3rUJNS+DTiWPBixwLaUkHdIU8zr/70hhVCRBbrkXEmi
-         CpLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXlvoLWcxaNaK+kVHZSdX5ecMdNhvrjAB8tTICfIZxwa+tXj3WInCxRU0VCVkGUmcADn4aWfdI4PHRJIsEHJiHaTkVsVzQ+cf0zek/jhw==
-X-Gm-Message-State: AOJu0YyevEWPjZaEp81oCKI2MPjmB+D7B6sTT5hvICsOr050meoepvsE
-	fYgXeHO7YClxLMoo/2TLgrsWTQ4yyMKSjwgY9MAi3JEnRKGI7g+vcxqao6rATB0=
-X-Google-Smtp-Source: AGHT+IGz7dI3psovG3IGbJNTjnsMeP0GxyeiTUEa92Xi/HzwxRfTsCk3gB1NjDOVNPokPdVM/NK4EA==
-X-Received: by 2002:a25:b322:0:b0:dd6:7c00:5cdb with SMTP id l34-20020a25b322000000b00dd67c005cdbmr5991920ybj.14.1712565182929;
-        Mon, 08 Apr 2024 01:33:02 -0700 (PDT)
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com. [209.85.128.182])
-        by smtp.gmail.com with ESMTPSA id f123-20020a255181000000b00dcdba3056e9sm1334659ybb.25.2024.04.08.01.33.02
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 01:33:02 -0700 (PDT)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6154a3df493so35617157b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Apr 2024 01:33:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXb9A6fvsZTCF7MRjqaizuj5On+OcDZrxFYLhNXZIYXhEAdZfbMdkE1fhaLBhFLLDYBfczdl/cAjo4JpQJa1Rc33VEmTO3ztgiMWDbnjw==
-X-Received: by 2002:a25:ab2f:0:b0:ddd:7a62:59b0 with SMTP id
- u44-20020a25ab2f000000b00ddd7a6259b0mr5993867ybi.15.1712565182435; Mon, 08
- Apr 2024 01:33:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCjF92NrJz3cNt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 18:39:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1712565559; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=HdClZ6EubvaDzPpcaQCtO2EUiZbaVzikLkeNDLVNikU=;
+	b=Y9m7Rpw/ybZlZDvxnL+7+Czhq1BMzfVYS2gfHF6KdHxTedHye0w0VfUJ3mXFkzwRmyRReyC1fPREODRnuF4QlBO6gCfNeR0V4U9QmsM7s/7mfZNTav6xBhy705Cs0k1VozKXWC/v5neQf/PvirsbySFPNw0OnYoL2nFizCWQm7M=
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0W46ePOA_1712565557;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0W46ePOA_1712565557)
+          by smtp.aliyun-inc.com;
+          Mon, 08 Apr 2024 16:39:18 +0800
+From: Yang Li <yang.lee@linux.alibaba.com>
+To: rdunlap@infradead.org,
+	arnd@arndb.de,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	aneesh.kumar@kernel.org,
+	naveen.n.rao@linux.ibm.com
+Subject: [PATCH -next 1/3 v2] powerpc: boot: Fix kernel-doc param for partial_decompress
+Date: Mon,  8 Apr 2024 16:39:16 +0800
+Message-Id: <20240408083916.123369-1-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
-References: <dda2187e128bfaaf092351812e4538e2e41c17f6.1711599093.git.fthain@linux-m68k.org>
- <Zg3YZN-QupyVaTPm@surfacebook.localdomain> <8f234f26-d5e3-66ed-ab0c-86d3c9852b4a@linux-m68k.org>
- <CAHp75VcxLez_Nm0N8=gpWd7SKGd9JF2QXEOOB_gvX3ZtTzj6HQ@mail.gmail.com>
- <87y19s7bk6.fsf@mail.lhotse> <4bddf8ec-97f1-07f6-9c0a-523c102c0a1b@linux-m68k.org>
- <87v84sbexv.fsf@mail.lhotse> <b1553164-18db-4f5c-b1a5-28a393d64941@kernel.org>
- <3adf561b-2d6b-47be-8fca-2a26ee738670@kernel.org>
-In-Reply-To: <3adf561b-2d6b-47be-8fca-2a26ee738670@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 8 Apr 2024 10:32:50 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdX+sZCUs7a-z07y-27t7RFqRg6y8M98XqExLy0qU=aVOA@mail.gmail.com>
-Message-ID: <CAMuHMdX+sZCUs7a-z07y-27t7RFqRg6y8M98XqExLy0qU=aVOA@mail.gmail.com>
-Subject: Re: [PATCH] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
-To: Jiri Slaby <jirislaby@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,47 +56,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Finn Thain <fthain@linux-m68k.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-m68k@lists.linux-m68k.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Yang Li <yang.lee@linux.alibaba.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jiri,
+Fix the kernel-doc annotation for the 'skip' parameter in the
+partial_decompress() function by adding a missing underscore and colon.
 
-On Mon, Apr 8, 2024 at 7:37=E2=80=AFAM Jiri Slaby <jirislaby@kernel.org> wr=
-ote:
-> On 08. 04. 24, 7:32, Jiri Slaby wrote:
-> > On 08. 04. 24, 7:29, Michael Ellerman wrote:
-> >> Many maintainers won't drop Cc: tags if they are there in the submitte=
-d
-> >> patch. So I agree with Andy that we should encourage folks not to add
-> >> them in the first place.
-> >
-> > But fix the docs first.
-> >
-> > I am personally not biased to any variant (as in: I don't care where CC=
-s
-> > live in a patch).
->
-> OTOH, as a submitter, it's a major PITA to carry CCs in notes (to have
-> those under the --- line). Esp. when I have patches in a queue for years.
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
+ arch/powerpc/boot/decompress.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-(Good to discover I'm not the only one carrying Very Old Patches ;-)
+diff --git a/arch/powerpc/boot/decompress.c b/arch/powerpc/boot/decompress.c
+index 977eb15a6d17..6835cb53f034 100644
+--- a/arch/powerpc/boot/decompress.c
++++ b/arch/powerpc/boot/decompress.c
+@@ -101,7 +101,7 @@ static void print_err(char *s)
+  * @input_size:  length of the input buffer
+  * @outbuf:      output buffer
+  * @output_size: length of the output buffer
+- * @skip         number of output bytes to ignore
++ * @_skip:       number of output bytes to ignore
+  *
+  * This function takes compressed data from inbuf, decompresses and write it to
+  * outbuf. Once output_size bytes are written to the output buffer, or the
+-- 
+2.20.1.7.g153144c
 
-> How do people handle that? (Like rebases on current kernel.)
-
-Keep them under the --- line in the actual commits, just like your
-changelog? All of that is retained when rebasing.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
