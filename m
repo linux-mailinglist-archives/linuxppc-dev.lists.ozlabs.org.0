@@ -1,54 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A09A89B6D8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 06:25:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4330D89B6FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 06:49:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Sp3Bdtn6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KWjK23+y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VCbcT1SsQz3dTn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 14:25:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VCc7M04jKz3vYx
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 14:49:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Sp3Bdtn6;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KWjK23+y;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCbbm0flbz3bX3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 14:25:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCc6d3pnbz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 14:48:25 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1712550306;
-	bh=9IeDw0jg/iSTJmzT7tMO0PqrDYTpMdttta7G5B8J0DU=;
+	s=201909; t=1712551705;
+	bh=IpU2QpSZg46kAHUBDGrgW+pdugVyxW5ZiVLWGqq1RMo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Sp3Bdtn6OeC5sT0aJW+ARoTMwpGJXNh2PfiiwcMeknb0msWMDsNBeMvK3/N1panIm
-	 w1id8AW0E/7VWJijXUeioUu4O03AoJN71R9c+Mj4GgYFLa8juXRm9/XFNs9LAHEL/r
-	 8bo7i0xsE94Rek0Df80966YGFSRr+/i6DoZYiqSeXuRUG1TFp7ul+lwC5a8m+CT2Ic
-	 MjUbVGviYLiGRRfAwzbfEYzPj4TGVXz9UDnit9OmSPSz5JueW/6Z0/k/MI9qTtkT+o
-	 ko4XWCodSXIjmZZUjht05XmXt7EYbebVf3yjnF7+Hl2RdQNB7ab1bI/8I+5n05znZC
-	 XorIO5MG1GpyQ==
+	b=KWjK23+yiyYGRGatLbITytavO0r4Q0wv49xIFeUm+MS8qa0QSsQFOIMq5Swy1LbnY
+	 3OLH0f68FILNILH444xqAV4UFrx5k3CpND+p0N9a0+5dwcGPVns41StOJMLUqovw9Q
+	 g0kjD18aSWvTO+BOk8ImUHzeri1rIEjmhmwyvhPErOCl3OJ0h8TsHO9MAnSLK/vnK4
+	 +XrsXnGCejwS2EUPRgdeKOD1OFQjOLGjbjQ8ZrWddbLQWdasjj3zTRBTmTmS4WdBKn
+	 7/fjhfmEb7aUjszUEgKkbEcX/blOz3Sdxp7VmKEhLSzSITaUozgadzGuxeHrt2yt0P
+	 OBYUG6c8Osdbg==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VCbbh6SRFz4wxt;
-	Mon,  8 Apr 2024 14:25:04 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VCc6b6RhPz4wjF;
+	Mon,  8 Apr 2024 14:48:23 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Yang Li <yang.lee@linux.alibaba.com>, arnd@arndb.de, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
- naveen.n.rao@linux.ibm.com
-Subject: Re: [PATCH -next 1/3] powerpc: boot: Fix a typo in
- partial_decompress() comment
-In-Reply-To: <20240407063952.36270-1-yang.lee@linux.alibaba.com>
-References: <20240407063952.36270-1-yang.lee@linux.alibaba.com>
-Date: Mon, 08 Apr 2024 14:25:04 +1000
-Message-ID: <874jcccwgv.fsf@mail.lhotse>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, Greg
+ Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] MAINTAINERS: Drop Li Yang as their email address
+ stopped working
+In-Reply-To: <20240405072042.697182-2-u.kleine-koenig@pengutronix.de>
+References: <20240405072042.697182-2-u.kleine-koenig@pengutronix.de>
+Date: Mon, 08 Apr 2024 14:48:23 +1000
+Message-ID: <871q7gcve0.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,35 +61,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yang Li <yang.lee@linux.alibaba.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>, kernel@pengutronix.de, vladimir.oltean@nxp.com, Shawn Guo <shawnguo@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Yang Li <yang.lee@linux.alibaba.com> writes:
-> This commit adds kernel-doc style comments with complete parameter
-> descriptions for the function partial_decompress().
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
+> When sending a patch to (among others) Li Yang the nxp MTA replied that
+> the address doesn't exist and so the mail couldn't be delivered. The
+> error code was 550, so at least technically that's not a temporal issue.
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
+>
+> I added the affected maintainers and lists to Cc:, maybe someone there
+> knows if this issue is only temporal?
 
-This change log doesn't match the subject or the patch.
+Apparently not. See https://lore.kernel.org/all/20240219153016.ntltc76bphwr=
+v6hn@skbuf/
+
+  Leo Li (Li Yang) is no longer with NXP.
+
 
 cheers
 
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-> ---
->  arch/powerpc/boot/decompress.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> @Greg: Given that I noticed the non-existing address when sending an usb
+> patch, I suggest you care for application of this patch (iff it should
+> be applied now). If Li Yang disappeared indeed, I'd prefer to drop the
+> contact from MAINTAINERS early to not give wrong expectations to
+> contributors.
 >
-> diff --git a/arch/powerpc/boot/decompress.c b/arch/powerpc/boot/decompress.c
-> index 977eb15a6d17..6835cb53f034 100644
-> --- a/arch/powerpc/boot/decompress.c
-> +++ b/arch/powerpc/boot/decompress.c
-> @@ -101,7 +101,7 @@ static void print_err(char *s)
->   * @input_size:  length of the input buffer
->   * @outbuf:      output buffer
->   * @output_size: length of the output buffer
-> - * @skip         number of output bytes to ignore
-> + * @_skip:       number of output bytes to ignore
->   *
->   * This function takes compressed data from inbuf, decompresses and write it to
->   * outbuf. Once output_size bytes are written to the output buffer, or the
-> -- 
-> 2.20.1.7.g153144c
+> Best regards
+> Uwe
+>
+>  MAINTAINERS | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7c121493f43d..be19aad15045 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2191,7 +2191,6 @@ N:	mxs
+>=20=20
+>  ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE
+>  M:	Shawn Guo <shawnguo@kernel.org>
+> -M:	Li Yang <leoyang.li@nxp.com>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
+> @@ -8523,7 +8522,6 @@ S:	Maintained
+>  F:	drivers/video/fbdev/fsl-diu-fb.*
+>=20=20
+>  FREESCALE DMA DRIVER
+> -M:	Li Yang <leoyang.li@nxp.com>
+>  M:	Zhang Wei <zw@zh-kernel.org>
+>  L:	linuxppc-dev@lists.ozlabs.org
+>  S:	Maintained
+> @@ -8688,10 +8686,9 @@ F:	drivers/soc/fsl/qe/tsa.h
+>  F:	include/dt-bindings/soc/cpm1-fsl,tsa.h
+>=20=20
+>  FREESCALE QUICC ENGINE UCC ETHERNET DRIVER
+> -M:	Li Yang <leoyang.li@nxp.com>
+>  L:	netdev@vger.kernel.org
+>  L:	linuxppc-dev@lists.ozlabs.org
+> -S:	Maintained
+> +S:	Orphan
+>  F:	drivers/net/ethernet/freescale/ucc_geth*
+>=20=20
+>  FREESCALE QUICC ENGINE UCC HDLC DRIVER
+> @@ -8708,10 +8705,9 @@ S:	Maintained
+>  F:	drivers/tty/serial/ucc_uart.c
+>=20=20
+>  FREESCALE SOC DRIVERS
+> -M:	Li Yang <leoyang.li@nxp.com>
+>  L:	linuxppc-dev@lists.ozlabs.org
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> -S:	Maintained
+> +S:	Orphan
+>  F:	Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+>  F:	Documentation/devicetree/bindings/soc/fsl/
+>  F:	drivers/soc/fsl/
+> @@ -8745,10 +8741,9 @@ F:	Documentation/devicetree/bindings/sound/fsl,qmc=
+-audio.yaml
+>  F:	sound/soc/fsl/fsl_qmc_audio.c
+>=20=20
+>  FREESCALE USB PERIPHERAL DRIVERS
+> -M:	Li Yang <leoyang.li@nxp.com>
+>  L:	linux-usb@vger.kernel.org
+>  L:	linuxppc-dev@lists.ozlabs.org
+> -S:	Maintained
+> +S:	Orphan
+>  F:	drivers/usb/gadget/udc/fsl*
+>=20=20
+>  FREESCALE USB PHY DRIVER
+>
+> base-commit: c85af715cac0a951eea97393378e84bb49384734
+> --=20
+> 2.43.0
