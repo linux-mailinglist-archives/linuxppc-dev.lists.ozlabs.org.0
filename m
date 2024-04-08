@@ -1,70 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD9C89BBC3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 11:32:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4EB89BD64
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 12:38:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=bfcnoJT+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HAJzuBNs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VCkQr2b01z3vX7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 19:32:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VClv02L4Xz3dVX
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Apr 2024 20:38:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=bfcnoJT+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HAJzuBNs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=64.147.123.152; helo=wfhigh1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from wfhigh1-smtp.messagingengine.com (wfhigh1-smtp.messagingengine.com [64.147.123.152])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCkQ56YX4z3d2S
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 19:32:11 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 982A7180011C;
-	Mon,  8 Apr 2024 05:32:05 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Mon, 08 Apr 2024 05:32:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1712568725; x=1712655125; bh=6/G3q7w8RbEyu
-	FhhtNgh7QXuPLfMG6eTAQmhdSZyUho=; b=bfcnoJT+rIPCc9WTuyJZ90kzRHSOk
-	v+HdMhdzUdfW1efA00XCKwkQ8HE2pIley67LOhz7uDQ7Joy0ssXOTiOFJnetet8f
-	OPU1kLGvgZ4S/EMjd7drRpI/I3k8MNnzlliSGryYV7anYjGVX68bnGA5/iK5yFDw
-	ibTmWDP5r0ZS+KD84fbg17nNd0AySMMahIuQMP8ZC5b71yESF23xkODHEyJ9v0+P
-	EYy9uPmPpktdTQVI3ktZL/e4baRINJyS6uZ9qvZ9hMkE5Lx8PFsRcJZahpiiW+Jk
-	u5bGiHNN5oqi5UdpevTgCFXWaDVsQckdS0XMFbh3RNxkNzrwTD6fBkSVQ==
-X-ME-Sender: <xms:lLkTZplfTkJe9pJz1rCoJcDjpqTPcEmimm3apJ1VWnhupDQNmDWMQw>
-    <xme:lLkTZk1GRLzKPlowigYZ6m6K0UgkKGYQxDQy4ap-9DXfsAIt8JCH3oZ8k6O3gNU-G
-    1Xn662C0pCMADKLuD4>
-X-ME-Received: <xmr:lLkTZvp0lwzhZ-PmP_u5fT5_hhN5T9m851Q89IkWCcU6nqdnr7cZ-5Nw1tyLCc0s-ah0DZUY8qNKYtuKxbBm4ANiFN491DxMMVI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudegiedgudejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepvfevkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghi
-    nhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrh
-    hnpefftdekheelvddvtdetudelhfehhfejjeeuudeileettdeuleeigeefkeehvdevffen
-    ucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhi
-    nhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:lLkTZpnW8FYJAYWpZVyqzrojcb1Fc33HlL8ue9PA3lQ0S-ekU02eHQ>
-    <xmx:lLkTZn2ZqCSvTAindZMKK8DPQ5LaodKoVLxppVzNl3HpAbo1qw5Kpg>
-    <xmx:lLkTZotE0nuRbO_nisM7Cgs213CsDO73U6X2vIL0rCBP0GOBg0htFA>
-    <xmx:lLkTZrWi3c7DYC81O-MygdtBybl9EhatpQ6db1b6kgucHP5TOHSkOA>
-    <xmx:lbkTZu1iukWOt7h6iHDq1vghN_guy7LnSoBqzAo8595fjpWle76hDS4o>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Apr 2024 05:32:00 -0400 (EDT)
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-    Jiri Slaby <jirislaby@kernel.org>
-Message-Id: <e853cf2c762f23101cd2ddec0cc0c2be0e72685f.1712568223.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v3] serial/pmac_zilog: Remove flawed mitigation for rx irq flood
-Date: Mon, 08 Apr 2024 19:23:43 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VCkRp3PG5z2xQH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Apr 2024 19:33:42 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4389674X018763;
+	Mon, 8 Apr 2024 09:33:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=HRb08lOvL/RkQcGPtpnIO47HiV3JbnaC5Kla4WlkdPg=;
+ b=HAJzuBNsO2JwyXcSUPA5KKjMXoa85ATgDBDMdlUVrWrD4LTczUD9Nzq1exAuSBYIXiod
+ e0MbeFjiTJ8BhZHNrUhGGDzWKY8EITc7XduqdLDZ5GctKya+kVyoKq/IkOu0SedUx2z5
+ pQp8LeJGmQfs2CM+LTbmD/KJRvxg9VmuuBuJ1NKV4C1xxrojFpma6UqwA03Fy2zslw5J
+ vQkdyyQm/5xiBkjpSpVWZG0r2JfzA51m5ovZNnFXMysbeE8Tuv+bGvb6/0yFAENxHcVu
+ qAKQ1mFWZTC2QuNZ6UtiF13rTIvo2INwrArwDWHsJE6MYCmUQBSAMU8Fvb7Q48Tb74E1 6A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xcahageb0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 09:33:21 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4389WAD8027701;
+	Mon, 8 Apr 2024 09:33:20 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xcahageav-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 09:33:20 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4388CHai022664;
+	Mon, 8 Apr 2024 09:33:19 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xbhqnqanr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 09:33:19 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4389XFRb40632662
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Apr 2024 09:33:17 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7ADC2004B;
+	Mon,  8 Apr 2024 09:33:14 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 43F2D20040;
+	Mon,  8 Apr 2024 09:33:11 +0000 (GMT)
+Received: from osiris (unknown [9.171.19.167])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  8 Apr 2024 09:33:11 +0000 (GMT)
+Date: Mon, 8 Apr 2024 11:33:09 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Allen Pais <apais@linux.microsoft.com>
+Subject: Re: [PATCH 7/9] s390: Convert from tasklet to BH workqueue
+Message-ID: <20240408093309.9447-A-hca@linux.ibm.com>
+References: <20240327160314.9982-1-apais@linux.microsoft.com>
+ <20240327160314.9982-8-apais@linux.microsoft.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327160314.9982-8-apais@linux.microsoft.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: iEx_GL3tt0mvzHnM4XY0RznJTIWn8Sle
+X-Proofpoint-GUID: YubKogQl91W9lviSSqhJG7ZeEe8HfK38
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_07,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1011 phishscore=0
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 adultscore=0 spamscore=0
+ bulkscore=0 mlxlogscore=816 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2404010000 definitions=main-2404080073
+X-Mailman-Approved-At: Mon, 08 Apr 2024 20:38:15 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,91 +98,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, stable@kernel.org
+Cc: imx@lists.linux.dev, ulf.hansson@linaro.org, oneukum@suse.com, duncan.sands@free.fr, hayashi.kunihiko@socionext.com, linux-mmc@vger.kernel.org, aubin.constans@microchip.com, linus.walleij@linaro.org, Frank.Li@nxp.com, linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org, HaraldWelte@viatech.com, paul@crapouillou.net, linux-tegra@vger.kernel.org, netdev@vger.kernel.org, maintainers@bluecherrydvr.com, peter.ujfalusi@gmail.com, manivannan.sadhasivam@linaro.org, linux-riscv@lists.infradead.org, kys@microsoft.com, robert.jarzmik@free.fr, haijie1@huawei.com, linux-renesas-soc@vger.kernel.org, wei.liu@kernel.org, linux-omap@vger.kernel.org, florian.fainelli@broadcom.com, linux-rdma@vger.kernel.org, vireshk@kernel.org, jassisinghbrar@gmail.com, decui@microsoft.com, wangzhou1@hisilicon.com, jernej.skrabec@gmail.com, jh80.chung@samsung.com, zw@zh-kernel.org, wens@csie.org, stern@rowland.harvard.edu, linux-arm-msm@vger.kernel.org, orsonzhai@gmail.com, pierre@ossman.eu, linux-mips@vger.ke
+ rnel.org, Eugeniy.Paltsev@synopsys.com, patrice.chotard@foss.st.com, asahi@lists.linux.dev, brucechang@via.com.tw, keescook@chromium.org, oakad@yahoo.com, sven@svenpeter.dev, rjui@broadcom.com, s.hauer@pengutronix.de, sean.wang@mediatek.com, linux-actions@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, haojian.zhuang@gmail.com, mirq-linux@rere.qmqm.pl, dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, baolin.wang@linux.alibaba.com, matthias.bgg@gmail.com, openipmi-developer@lists.sourceforge.net, mchehab@kernel.org, linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com, sbranden@broadcom.com, logang@deltatee.com, andersson@kernel.org, marcan@marcan.st, haiyangz@microsoft.com, linux-kernel@vger.kernel.org, leoyang.li@nxp.com, konrad.dybcio@linaro.org, linux-sunxi@lists.linux.dev, vkoul@kernel.org, linux-s390@vger.kernel.org, mhiramat@kernel.org, zhang.lyra@gmail.com, tj@kernel.org, manuel.lauss@gmail.com, 
+ linux-media@vger.kernel.org, shawnguo@kernel.org, afaerber@suse.de, daniel@zonque.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The mitigation was intended to stop the irq completely. That may be
-better than a hard lock-up but it turns out that you get a crash anyway
-if you're using pmac_zilog as a serial console:
+On Wed, Mar 27, 2024 at 04:03:12PM +0000, Allen Pais wrote:
+> The only generic interface to execute asynchronously in the BH context is
+> tasklet; however, it's marked deprecated and has some design flaws. To
+> replace tasklets, BH workqueue support was recently added. A BH workqueue
+> behaves similarly to regular workqueues except that the queued work items
+> are executed in the BH context.
+> 
+> This patch converts drivers/infiniband/* from tasklet to BH workqueue.
+> 
+> Based on the work done by Tejun Heo <tj@kernel.org>
+> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
 
-ttyPZ0: pmz: rx irq flood !
-BUG: spinlock recursion on CPU#0, swapper/0
+I guess this dependency is a hard requirement due to commit 134874e2eee9
+("workqueue: Allow cancel_work_sync() and disable_work() from atomic contexts
+on BH work items")?
 
-That's because the pr_err() call in pmz_receive_chars() results in
-pmz_console_write() attempting to lock a spinlock already locked in
-pmz_interrupt(). With CONFIG_DEBUG_SPINLOCK=y, this produces a fatal
-BUG splat. The spinlock in question is the one in struct uart_port.
+> ---
+>  drivers/s390/block/dasd.c              | 42 ++++++++++++------------
+>  drivers/s390/block/dasd_int.h          | 10 +++---
+>  drivers/s390/char/con3270.c            | 27 ++++++++--------
+>  drivers/s390/crypto/ap_bus.c           | 24 +++++++-------
+>  drivers/s390/crypto/ap_bus.h           |  2 +-
+>  drivers/s390/crypto/zcrypt_msgtype50.c |  2 +-
+>  drivers/s390/crypto/zcrypt_msgtype6.c  |  4 +--
+>  drivers/s390/net/ctcm_fsms.c           |  4 +--
+>  drivers/s390/net/ctcm_main.c           | 15 ++++-----
+>  drivers/s390/net/ctcm_main.h           |  5 +--
+>  drivers/s390/net/ctcm_mpc.c            | 12 +++----
+>  drivers/s390/net/ctcm_mpc.h            |  7 ++--
+>  drivers/s390/net/lcs.c                 | 26 +++++++--------
+>  drivers/s390/net/lcs.h                 |  2 +-
+>  drivers/s390/net/qeth_core_main.c      |  2 +-
+>  drivers/s390/scsi/zfcp_qdio.c          | 45 +++++++++++++-------------
+>  drivers/s390/scsi/zfcp_qdio.h          |  9 +++---
+>  17 files changed, 117 insertions(+), 121 deletions(-)
 
-Even when it's not fatal, the serial port rx function ceases to work.
-Also, the iteration limit doesn't play nicely with QEMU, as can be
-seen in the bug report linked below.
+I'm asking since this patch comes with multiple compile errors. Probably due
+to lack of cross compiler tool chain on your side.
 
-A web search for other reports of the error message "pmz: rx irq flood"
-didn't produce anything. So I don't think this code is needed any more.
-Remove it.
-
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: stable@kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Link: https://github.com/vivier/qemu-m68k/issues/44
-Link: https://lore.kernel.org/all/1078874617.9746.36.camel@gaston/
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
----
-Changed since v1:
- - Reworked commit log according to comments from Andy Shevchenko.
-
-Changed since v2:
- - Added Acked-by and Cc tags.
----
- drivers/tty/serial/pmac_zilog.c | 14 --------------
- 1 file changed, 14 deletions(-)
-
-diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
-index c8bf08c19c64..77691fbbf779 100644
---- a/drivers/tty/serial/pmac_zilog.c
-+++ b/drivers/tty/serial/pmac_zilog.c
-@@ -210,7 +210,6 @@ static bool pmz_receive_chars(struct uart_pmac_port *uap)
- {
- 	struct tty_port *port;
- 	unsigned char ch, r1, drop, flag;
--	int loops = 0;
- 
- 	/* Sanity check, make sure the old bug is no longer happening */
- 	if (uap->port.state == NULL) {
-@@ -291,24 +290,11 @@ static bool pmz_receive_chars(struct uart_pmac_port *uap)
- 		if (r1 & Rx_OVR)
- 			tty_insert_flip_char(port, 0, TTY_OVERRUN);
- 	next_char:
--		/* We can get stuck in an infinite loop getting char 0 when the
--		 * line is in a wrong HW state, we break that here.
--		 * When that happens, I disable the receive side of the driver.
--		 * Note that what I've been experiencing is a real irq loop where
--		 * I'm getting flooded regardless of the actual port speed.
--		 * Something strange is going on with the HW
--		 */
--		if ((++loops) > 1000)
--			goto flood;
- 		ch = read_zsreg(uap, R0);
- 		if (!(ch & Rx_CH_AV))
- 			break;
- 	}
- 
--	return true;
-- flood:
--	pmz_interrupt_control(uap, 0);
--	pmz_error("pmz: rx irq flood !\n");
- 	return true;
- }
- 
--- 
-2.39.3
-
+If the above wouldn't be a hard dependency I'd say we could take those parts
+of your patch which are fine into the s390 tree for 6.10, fix the rest, and
+schedule that as well for 6.10 via the s390 tree.
