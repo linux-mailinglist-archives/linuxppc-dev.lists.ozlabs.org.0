@@ -2,49 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C5589D4C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 10:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E4689D4ED
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 10:54:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CjUtumo0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lNpmlzQL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDKM91JCFz3vZ9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 18:46:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VDKX4542gz3vYh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 18:54:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CjUtumo0;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lNpmlzQL;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDKLL66X4z30gK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Apr 2024 18:46:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDKWN4mVxz30fh
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Apr 2024 18:53:52 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1712652362;
-	bh=8C5Zd7KFg+VaVbXLO/DDkwh9Zx1FAb8TYggRa0PUA08=;
+	s=201909; t=1712652832;
+	bh=n2NkYD5ALou1bAVVYZN89InnCEaR3zlmB6pBb07YURQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CjUtumo021QlqGOmFhCj4Xc7cB8O5Y2s8NRExYdFBlrqt2KO0/6Br7ZBlM603duGQ
-	 m0WSPfordKltiagx/c45LjLaPJ+yO9UMKufHadRcjb9R6k+LjKW4RF0lgP8WhpykX9
-	 i8wKDk4pLW3Oh3SoXEJE3l5khBNLqn88fTTjfCtTcl3gRWWBGfjqnpp7mRI7XVkgw0
-	 5aw4lMjNVBlXqNfggGgv74tMbTLnX4OTwUFqi/qn5xC7OpCiI9aGzYS1GuvdPtPjDr
-	 EF7gUczTt+179uB/YAn/IpMU3feHTgLw3RS1RSNMAMkNB2gvDH3Wv4R5F8WQjJ2sfj
-	 xE12LAKUhkX5w==
+	b=lNpmlzQLgZX0M9iUrm9UJakKOmEtuKy8gfUWUs8AzJtJJGAnXOiST9+cKxwy2kKJi
+	 SdtNzoXJ8j+UXFtNT47O7bOGOOBSUl0Ym6kID/lvNobgho8gDt9iPOzj3mzfmK0BbW
+	 gh3JqiSuhPVI8lePECGkE+E4C/dkFFfIN5yfKoHJjlDsJWzBmUaTMh6SNlJhAAWNme
+	 xHI+t8SowLsO/OUpZJ1xbnUOGeMdzTpYSkt4acsfqaQcPa+710QNEn2SjHb6NLE5Er
+	 WJRxdrTotgKoe4kx2YDERXewVNHC0ktpTGSnB+bGmIsI/NtiurWlpQkXMn6RT/HUPa
+	 MoBrTzlsjLTkw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VDKLL37lQz4wqM;
-	Tue,  9 Apr 2024 18:46:02 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VDKWN3F9pz4wxt;
+	Tue,  9 Apr 2024 18:53:52 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Lidong Zhong <lidong.zhong@suse.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries: remove returning ENODEV when uevent is
- triggered
-In-Reply-To: <20240323084737.12986-1-lidong.zhong@suse.com>
-References: <20240323084737.12986-1-lidong.zhong@suse.com>
-Date: Tue, 09 Apr 2024 18:46:00 +1000
-Message-ID: <877ch6c4af.fsf@mail.lhotse>
+To: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: Enforce hcall result buffer validity
+ and size
+In-Reply-To: <20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com>
+References: <20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com>
+Date: Tue, 09 Apr 2024 18:53:52 +1000
+Message-ID: <874jcac3xb.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,74 +61,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lidong.zhong@suse.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Lidong,
-
-Thanks for the patch.
-
-I'm not an expert on udev etc. so apologies if any of these questions
-are stupid.
-
-Lidong Zhong <lidong.zhong@suse.com> writes:
-> We have noticed the following nuisance messages during boot
+Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+writes:
+> From: Nathan Lynch <nathanl@linux.ibm.com>
 >
-> [    7.120610][ T1060] vio vio: uevent: failed to send synthetic uevent
-> [    7.122281][ T1060] vio 4000: uevent: failed to send synthetic uevent
-> [    7.122304][ T1060] vio 4001: uevent: failed to send synthetic uevent
-> [    7.122324][ T1060] vio 4002: uevent: failed to send synthetic uevent
-> [    7.122345][ T1060] vio 4004: uevent: failed to send synthetic uevent
+> plpar_hcall(), plpar_hcall9(), and related functions expect callers to
+> provide valid result buffers of certain minimum size. Currently this
+> is communicated only through comments in the code and the compiler has
+> no idea.
 >
-> It's caused by either vio_register_device_node() failed to set dev->of_node or
-> the missing "compatible" property. Try return as much information as possible
-> instead of a failure.
+> For example, if I write a bug like this:
+>
+>   long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
+>   plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
+>
+> This compiles with no diagnostics emitted, but likely results in stack
+> corruption at runtime when plpar_hcall9() stores results past the end
+> of the array. (To be clear this is a contrived example and I have not
+> found a real instance yet.)
 
-Does udev etc. cope with that? Can we just change the content of the
-MODALIAS value like that?
+We did have some real stack corruption bugs in the past.
 
-With this patch we'll start emitting uevents for devices we previously
-didn't. I guess that's OK because nothing is expecting them?
+I referred to them in my previous (much uglier) attempt at a fix:
 
-Can you include a log of udev showing the event firing and that nothing
-breaks.
+  https://patchwork.ozlabs.org/project/linuxppc-dev/patch/1476780032-21643-2-git-send-email-mpe@ellerman.id.au/
 
-On my system here I see nothing matches the devices except for libvpd,
-which seems to match lots of things.
+Annoyingly I didn't describe them in any detail, but at least one of them was:
 
-> diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
-> index 90ff85c879bf..62961715ca24 100644
-> --- a/arch/powerpc/platforms/pseries/vio.c
-> +++ b/arch/powerpc/platforms/pseries/vio.c
-> @@ -1593,12 +1593,13 @@ static int vio_hotplug(const struct device *dev, struct kobj_uevent_env *env)
->  
->  	dn = dev->of_node;
->  	if (!dn)
-> -		return -ENODEV;
-> +		goto out;
->  	cp = of_get_property(dn, "compatible", NULL);
->  	if (!cp)
-> -		return -ENODEV;
-> -
-> -	add_uevent_var(env, "MODALIAS=vio:T%sS%s", vio_dev->type, cp);
-> +		add_uevent_var(env, "MODALIAS=vio:T%s", vio_dev->type);
+  24c65bc7037e ("hwrng: pseries - port to new read API and fix stack corruption")
 
-If it's OK to skip the compatible property then we don't need the
-of_node at all, and we could always emit this, even when of_node is not
-available.
+Will this catch a case like that? Where the too-small buffer is not
+declared locally but rather comes into the function as a pointer?
 
-> +    else
-> +		add_uevent_var(env, "MODALIAS=vio:T%sS%s", vio_dev->type, cp);
-> +out:
->  	return 0;
->  }
+> To make this class of error less likely, we can use explicitly-sized
+> array parameters instead of pointers in the declarations for the hcall
+> APIs. When compiled with -Warray-bounds[1], the code above now
+> provokes a diagnostic like this:
+>
+> error: array argument is too small;
+> is of size 32, callee requires at least 72 [-Werror,-Warray-bounds]
+>    60 |                 plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
+>       |                 ^                                   ~~~~~~
+>
+> [1] Enabled for LLVM builds but not GCC for now. See commit
+>     0da6e5fd6c37 ("gcc: disable '-Warray-bounds' for gcc-13 too") and
+>     related changes.
 
-I think we also should update the vio modalias_show() to follow the same
-logic, otherwise the uevent MODALIAS value and the modalias file won't
-match which is confusing.
-
-Preferably vio_hotplug() and modalias_show() would just call a common
-helper.
+clang build coverage is pretty good these days, so I think it's still
+worth doing.
 
 cheers
+
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+> index a41e542ba94d..39cd1ca4ccb9 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -524,7 +524,7 @@ long plpar_hcall_norets_notrace(unsigned long opcode, ...);
+>   * Used for all but the craziest of phyp interfaces (see plpar_hcall9)
+>   */
+>  #define PLPAR_HCALL_BUFSIZE 4
+> -long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
+> +long plpar_hcall(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+>  
+>  /**
+>   * plpar_hcall_raw: - Make a hypervisor call without calculating hcall stats
+> @@ -538,7 +538,7 @@ long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
+>   * plpar_hcall, but plpar_hcall_raw works in real mode and does not
+>   * calculate hypervisor call statistics.
+>   */
+> -long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
+> +long plpar_hcall_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+>  
+>  /**
+>   * plpar_hcall9: - Make a pseries hypervisor call with up to 9 return arguments
+> @@ -549,8 +549,8 @@ long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
+>   * PLPAR_HCALL9_BUFSIZE to size the return argument buffer.
+>   */
+>  #define PLPAR_HCALL9_BUFSIZE 9
+> -long plpar_hcall9(unsigned long opcode, unsigned long *retbuf, ...);
+> -long plpar_hcall9_raw(unsigned long opcode, unsigned long *retbuf, ...);
+> +long plpar_hcall9(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
+> +long plpar_hcall9_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
+>  
+>  /* pseries hcall tracing */
+>  extern struct static_key hcall_tracepoint_key;
+>
+> ---
+> base-commit: bfe51886ca544956eb4ff924d1937ac01d0ca9c8
+> change-id: 20240408-pseries-hvcall-retbuf-c47c4d70d847
+>
+> Best regards,
+> -- 
+> Nathan Lynch <nathanl@linux.ibm.com>
