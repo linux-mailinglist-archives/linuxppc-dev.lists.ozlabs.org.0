@@ -2,70 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2D289E116
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 19:08:31 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NBgg4PJf;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 4607589E191
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Apr 2024 19:29:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDXV40qZJz3vYb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 03:08:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VDXxk0HQMz3vbl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 03:28:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=NBgg4PJf;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=jstultz@google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDXTH29zhz30gK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 03:07:46 +1000 (AEST)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-41687826509so3045e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Apr 2024 10:07:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712682463; x=1713287263; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qsBq0cy8GlGyTLsFzDWh0JUEGzZ8zL8Mw/WsALeBfxM=;
-        b=NBgg4PJfV1QaaQA9H/ZhCEryI7g/NVTaAhHzGx3BzivP8ZFLZzu9DPOw19bBwaNHRo
-         eg5tGQb+CbNLFvGHqmFdCmmRsB3mRRi7fTR8b3numcb6RAWanuh6Z2eDJKO3iY4OYPVb
-         59hs5bYZoRI6JhrYG+NhhOQpQpvSerwS0ze55aZszlTgzzFVpEmLiaDQ2UnXecBXxufB
-         rmDpQh/KjoQeLC9psiIMBuZzynU9GXTEFQLw+QSY3vrGF19x1pNaU8+qL2V6QDcDtemS
-         bw1GojuOfm6uGKIxgQ25M4pwOLd0uesOur0KnYz0N9vHllY3Ecx9OwGf9RaTmAac8BFo
-         n+bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712682463; x=1713287263;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qsBq0cy8GlGyTLsFzDWh0JUEGzZ8zL8Mw/WsALeBfxM=;
-        b=VHx2oj+jw0zNjsnfG3ZNtxpAzTAq34IcCdYMSnLcsqnJ8Wv+IZlce3ykIchPsxsTim
-         +/VERatRvTkRdE9oALg72nso3NUSEwbIVrHbAWJFtacGpO4pwGSHNMaqh6QWWaPqsYgI
-         nXcMNxeQJFAeVcBfVVvpLDzaVOZnio65vNzHEyC6CcrJx+3b2Hz2KqoLqpjLQCOd6Sdx
-         FFFiL7wyjm44q/9LpnJQq73fB6VlbVxMha/F8jk+q0jSCeLrR8x1CDEFlmWZUuKTTsJV
-         qhtZIKZtH9OawTJ1Xvcsg1N/v2WohZpgcZRx3zg1RRThczmj6oz/0cPrKnoAlC26Bwcp
-         Kbzw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlTKIR0U8UOMDUk+CSnnyGn65GFyVn3k25mpEaStNxjyvnVk4+LYJjslqOZaJCIgquEViyOhmkV4OeXe7BnRIFo75W1/D+kxdpx6xlfA==
-X-Gm-Message-State: AOJu0YzY6Dfxzx4WUyXnexGkaCJ5Jel6lzP4EPZaglmgrKJvW5ifLr79
-	7AqU4YUvN7cQBA/aEHQngrP82fySLUTL6Ek9zEmNEN/g6yfbklHNFmh+n87pe4qj6+4uDzQgMkj
-	cXUmu32s79fm7nTKJkNwmrTwNsyqPHxrPF0A=
-X-Google-Smtp-Source: AGHT+IEEpJwqd6S7g8HTA9AUAVkouCdLTgaK8Qrafsc/GrNIeR6yWteoZFEb2wHAnEnwAyAcW7FiUqeH8KOEXFfmP5c=
-X-Received: by 2002:a05:600c:1987:b0:416:57f5:b426 with SMTP id
- t7-20020a05600c198700b0041657f5b426mr184824wmq.1.1712682462632; Tue, 09 Apr
- 2024 10:07:42 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDXxH4SJKz3d2c
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 03:28:33 +1000 (AEST)
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1ruFGD-0001dT-16; Tue, 09 Apr 2024 19:27:53 +0200
+Message-ID: <4c6164e5-bcfd-4172-a76e-db989f729a8a@pengutronix.de>
+Date: Tue, 9 Apr 2024 19:27:44 +0200
 MIME-Version: 1.0
-References: <20240409062639.3393-1-adrian.hunter@intel.com>
-In-Reply-To: <20240409062639.3393-1-adrian.hunter@intel.com>
-From: John Stultz <jstultz@google.com>
-Date: Tue, 9 Apr 2024 10:07:30 -0700
-Message-ID: <CANDhNCqx14CU9TwwkWqgUY9ucgaQZ8DwNmG+m==XrOziSfOS0Q@mail.gmail.com>
-Subject: Re: [PATCH] vdso: Fix powerpc build U64_MAX undeclared error
-To: Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [EXT] [PATCH v8 3/6] KEYS: trusted: Introduce NXP DCP-backed
+ trusted keys
+Content-Language: en-US
+To: Kshitiz Varshney <kshitiz.varshney@nxp.com>,
+ David Gstir <david@sigma-star.at>, Mimi Zohar <zohar@linux.ibm.com>,
+ James Bottomley <jejb@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>
+References: <20240403072131.54935-1-david@sigma-star.at>
+ <20240403072131.54935-4-david@sigma-star.at>
+ <DB6PR04MB31904A8EB8B481A530C90CBB8F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <DB6PR04MB31904A8EB8B481A530C90CBB8F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,31 +54,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Gaurav Jain <gaurav.jain@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, dl-linux-imx <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pankaj Gupta <pankaj.gupta@nxp.com>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Shawn Guo <shawnguo@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kern
+ el@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Varun Sethi <V.Sethi@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 8, 2024 at 11:27=E2=80=AFPM Adrian Hunter <adrian.hunter@intel.=
-com> wrote:
->
-> U64_MAX is not in include/vdso/limits.h, although that isn't noticed on x=
-86
-> because x86 includes include/linux/limits.h indirectly. However powerpc
-> is more selective, resulting in the following build error:
->
->   In file included from <command-line>:
->   lib/vdso/gettimeofday.c: In function 'vdso_calc_ns':
->   lib/vdso/gettimeofday.c:11:33: error: 'U64_MAX' undeclared
->      11 | # define VDSO_DELTA_MASK(vd)    U64_MAX
->         |                                 ^~~~~~~
->
-> Use ULLONG_MAX instead which will work just as well and is in
-> include/vdso/limits.h.
->
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/all/20240409124905.6816db37@canb.auug.org=
-.au/
-> Fixes: c8e3a8b6f2e6 ("vdso: Consolidate vdso_calc_delta()")
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Hello Kshitiz,
 
-Acked-by: John Stultz <jstultz@google.com>
+On 09.04.24 12:54, Kshitiz Varshney wrote:
+> Hi David,
+>> +       b->fmt_version = DCP_BLOB_VERSION;
+>> +       get_random_bytes(b->nonce, AES_KEYSIZE_128);
+>> +       get_random_bytes(b->blob_key, AES_KEYSIZE_128);
+> 
+> We can use HWRNG instead of using kernel RNG. Please refer drivers/char/hw_random/imx-rngc.c 
+
+imx-rngc can be enabled and used to seed the kernel entropy pool. Adding
+direct calls into imx-rngc here only introduces duplicated code at no extra
+benefit.
+
+Cheers,
+Ahmad
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
