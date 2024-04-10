@@ -1,47 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636AB89ED2F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 10:08:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202E889ED87
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 10:26:12 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=KDPNsaBu;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDwSL0rY0z3vYJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 18:08:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VDwrx6Mlzz3vZ7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 18:26:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=KDPNsaBu;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDwRs5Yx8z3bWH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 18:07:49 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4VDwQn2tqGz1GGhl;
-	Wed, 10 Apr 2024 16:06:57 +0800 (CST)
-Received: from dggpemm100001.china.huawei.com (unknown [7.185.36.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5D373140154;
-	Wed, 10 Apr 2024 16:07:43 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 10 Apr 2024 16:07:42 +0800
-Message-ID: <ac978061-ce1a-40a4-8b0a-61883b42bea7@huawei.com>
-Date: Wed, 10 Apr 2024 16:07:41 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDwrF1dJ0z3bWH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 18:25:31 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 3E5C6CE2645;
+	Wed, 10 Apr 2024 08:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222B4C433F1;
+	Wed, 10 Apr 2024 08:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712737529;
+	bh=Dhybrf/jRqbpyhuhIWlZvPbxMVOS0VFGt4WJR1DnMNo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KDPNsaBudn+n4+RXzxU38zA293P9i01hK4pr+EzsNlygvUAPOjzwvf/oUbikrXg95
+	 /N9KFTY1uuvoJgBUoJH4BkRDQEIr3X5LSBVt6P6w3X2XFz+Etf1/yCAYNPWYH2L813
+	 KkAO4Cql9cMJLXpMa0g0EbkaGil+/s1j6TdGGz4k=
+Date: Wed, 10 Apr 2024 10:25:26 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] MAINTAINERS: Drop Li Yang as their email address stopped
+ working
+Message-ID: <2024041010-neuron-vividness-8202@gregkh>
+References: <20240405072042.697182-2-u.kleine-koenig@pengutronix.de>
+ <20240409144204.00cc76ce@kernel.org>
+ <u4bhjzjr4jjx26r3r4jupqd5u273xsvuyfzq5ecv6binoyoqzq@5zib23vgtlsx>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] riscv: mm: accelerate pagefault when badaccess
-Content-Language: en-US
-To: Alexandre Ghiti <alex@ghiti.fr>, <akpm@linux-foundation.org>
-References: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
- <20240403083805.1818160-6-wangkefeng.wang@huawei.com>
- <8fe1a53f-f031-4423-97e1-28d93d0cd59e@ghiti.fr>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <8fe1a53f-f031-4423-97e1-28d93d0cd59e@ghiti.fr>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm100001.china.huawei.com (7.185.36.93)
+In-Reply-To: <u4bhjzjr4jjx26r3r4jupqd5u273xsvuyfzq5ecv6binoyoqzq@5zib23vgtlsx>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,75 +59,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, linux-s390@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, Russell King <linux@armlinux.org.uk>, surenb@google.com, Dave Hansen <dave.hansen@linux.intel.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>, kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2024/4/10 15:32, Alexandre Ghiti wrote:
-> Hi Kefeng,
+On Wed, Apr 10, 2024 at 08:42:06AM +0200, Uwe Kleine-K�nig wrote:
+> On Tue, Apr 09, 2024 at 02:42:04PM -0700, Jakub Kicinski wrote:
+> > On Fri,  5 Apr 2024 09:20:41 +0200 Uwe Kleine-K�nig wrote:
+> > > When sending a patch to (among others) Li Yang the nxp MTA replied that
+> > > the address doesn't exist and so the mail couldn't be delivered. The
+> > > error code was 550, so at least technically that's not a temporal issue.
+> > > 
+> > > Signed-off-by: Uwe Kleine-K�nig <u.kleine-koenig@pengutronix.de>
+> > 
+> > FWIW it's eaac25d026a1 in net, thanks!
 > 
-> On 03/04/2024 10:38, Kefeng Wang wrote:
->> The access_error() of vma already checked under per-VMA lock, if it
->> is a bad access, directly handle error, no need to retry with mmap_lock
->> again. Since the page faut is handled under per-VMA lock, count it as
->> a vma lock event with VMA_LOCK_SUCCESS.
->>
->> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>   arch/riscv/mm/fault.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
->> index 3ba1d4dde5dd..b3fcf7d67efb 100644
->> --- a/arch/riscv/mm/fault.c
->> +++ b/arch/riscv/mm/fault.c
->> @@ -292,7 +292,10 @@ void handle_page_fault(struct pt_regs *regs)
->>       if (unlikely(access_error(cause, vma))) {
->>           vma_end_read(vma);
->> -        goto lock_mmap;
->> +        count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
->> +        tsk->thread.bad_cause = SEGV_ACCERR;
-> 
-> 
-> I think we should use the cause variable here instead of SEGV_ACCERR, as 
-> bad_cause is a riscv internal status which describes the real fault that 
-> happened.
+> Greg also picked it up, it's fbdd90334a6205e8a99d0bc2dfc738ee438f00bc in
+> https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-linus
+> . Both are included in next-20240410. I guess that's not a big problem.
+> (And please prevent that the patch is dropped from both trees as it's
+> already included in the other :-)
 
-Oh, I see, it is exception causes on riscv, so it should be
+We already got a report from linux-next about this, it's fine, we will
+both keep it.
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index b3fcf7d67efb..5224f3733802 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -293,8 +293,8 @@ void handle_page_fault(struct pt_regs *regs)
-         if (unlikely(access_error(cause, vma))) {
-                 vma_end_read(vma);
-                 count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
--               tsk->thread.bad_cause = SEGV_ACCERR;
--               bad_area_nosemaphore(regs, code, addr);
-+               tsk->thread.bad_cause = cause;
-+               bad_area_nosemaphore(regs, SEGV_ACCERR, addr);
-                 return;
-         }
+thanks,
 
-Hi Alex, could you help to check it?
-
-Hi Andrew, please help to squash it after Alex ack it.
-
-Thanks both.
-
-
-> 
-> Thanks,
-> 
-> Alex
-> 
-> 
->> +        bad_area_nosemaphore(regs, code, addr);
->> +        return;
->>       }
->>       fault = handle_mm_fault(vma, addr, flags | FAULT_FLAG_VMA_LOCK, 
->> regs);
+greg k-h
