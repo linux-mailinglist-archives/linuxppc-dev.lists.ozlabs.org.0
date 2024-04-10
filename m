@@ -2,51 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA24B89EB19
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 08:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816F389EB30
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 08:45:53 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Asj7+RZD;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDtYs4Wf1z3vbd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 16:42:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VDtdC252kz3dXC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 16:45:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Asj7+RZD;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDtYP0d3Vz30fm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 16:42:30 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ruReq-0007RM-FZ; Wed, 10 Apr 2024 08:42:08 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ruReo-00BRVQ-DH; Wed, 10 Apr 2024 08:42:06 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ruReo-00HOKB-0z;
-	Wed, 10 Apr 2024 08:42:06 +0200
-Date: Wed, 10 Apr 2024 08:42:06 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: Drop Li Yang as their email address stopped
- working
-Message-ID: <u4bhjzjr4jjx26r3r4jupqd5u273xsvuyfzq5ecv6binoyoqzq@5zib23vgtlsx>
-References: <20240405072042.697182-2-u.kleine-koenig@pengutronix.de>
- <20240409144204.00cc76ce@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDtcT1DZzz30fm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 16:45:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1712731506; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ebzbpFm8mKtEwX879U96DPZbzdY2iwe+NayJYElOkPM=;
+	b=Asj7+RZD2qJ3sk6kwrOGu/K8WACsgX4zQ/QnqQtLILH+U2iD9p19DDk+0mOnW/oklBThk5AI4z1MOorrcyXMNXUw7GLF6c9SN5gkXoJD0tFDaHt4nfwWIlWqU4joGLO/HjZxwvLcQJLpndBh9KPxU5llzB+d7hRcqatQjbraZF8=
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W4GtVHI_1712731503;
+Received: from 30.178.67.212(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W4GtVHI_1712731503)
+          by smtp.aliyun-inc.com;
+          Wed, 10 Apr 2024 14:45:04 +0800
+Message-ID: <f3c7ef07-8fad-4ef6-9095-16e4bd734477@linux.alibaba.com>
+Date: Wed, 10 Apr 2024 14:45:02 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qezoggtwtmgqqqvk"
-Content-Disposition: inline
-In-Reply-To: <20240409144204.00cc76ce@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv12 1/4] genirq: Provide a snapshot mechanism for interrupt
+ statistics
+To: Thomas Gleixner <tglx@linutronix.de>, dianders@chromium.org,
+ liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+ jan.kiszka@siemens.com
+References: <20240306125208.71803-1-yaoma@linux.alibaba.com>
+ <20240306125208.71803-2-yaoma@linux.alibaba.com> <87frvu7t85.ffs@tglx>
+Content-Language: en-US
+From: Bitao Hu <yaoma@linux.alibaba.com>
+In-Reply-To: <87frvu7t85.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,52 +60,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>, kernel@pengutronix.de, netdev@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
---qezoggtwtmgqqqvk
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2024/4/9 17:58, Thomas Gleixner wrote:
+> 
+> This does not apply anymore.
+OK, I will update this patch based on the latest kernel code.
+> 
+> Also can you please split this apart to convert kstat_irqs to a struct
+> with just the count in it and then add the snapshot mechanics on top.
+> 
+OK, I will split this patch into two. The changelog for the first patch
+will be as follows.
 
-On Tue, Apr 09, 2024 at 02:42:04PM -0700, Jakub Kicinski wrote:
-> On Fri,  5 Apr 2024 09:20:41 +0200 Uwe Kleine-K=F6nig wrote:
-> > When sending a patch to (among others) Li Yang the nxp MTA replied that
-> > the address doesn't exist and so the mail couldn't be delivered. The
-> > error code was 550, so at least technically that's not a temporal issue.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> FWIW it's eaac25d026a1 in net, thanks!
+genirq: Convert kstat_irqs to a struct
 
-Greg also picked it up, it's fbdd90334a6205e8a99d0bc2dfc738ee438f00bc in
-https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-linus
-=2E Both are included in next-20240410. I guess that's not a big problem.
-(And please prevent that the patch is dropped from both trees as it's
-already included in the other :-)
+The irq_desc::kstat_irqs member is a per-CPU variable of type int, and
+it is only capable of counting. The snapshot mechanism for interrupt
+statistics will be added soon, which requires an additional variable to
+store snapshot. To facilitate expansion, convert kstat_irqs here to
+a struct containing only the count.
 
-Best regards
-Uwe
+By the way, what do you think of my reason for using printk() instead of
+pr_crit()? Should I change this part of the code in v13?
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Besides, are there any other issues with this set of patches? I hope we
+can resolve all points of contention in v13.
 
---qezoggtwtmgqqqvk
-Content-Type: application/pgp-signature; name="signature.asc"
+Best Regards,
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYWNL0ACgkQj4D7WH0S
-/k5wNAf+MJDdbm33k3wubemVjjqKUK3f6FxXQe4t7lCMtz5sI0KpYVCrJhtHd0LK
-Ml2eGbqb9oiNe5Uzf+DtMLAfrEGD0nKi4ILU18nmZwIGgqDslReXcKGZgbHZ0VMU
-/HvqSZfEi+ePr+n7yZ4rF2bdpwzrUsJjRpqsUKqhB3OsZep3zgXjOeedd+g3vtXR
-RBMcHTVhin3cVtMV3HoXfL7IDqL2S9tvRLxovSxZGHnCYbnZwS2jEuk6oyx9AwXh
-ykjeo7C+PNBKzDUsLfwqk9GwKBzeMeRxsjCvhQpls8uzKJJEPUfEsmcuv8geHk4b
-BEKAyo3PsJjIffwle960ADMQG+Xqig==
-=bfVT
------END PGP SIGNATURE-----
-
---qezoggtwtmgqqqvk--
+	Bitao Hu
