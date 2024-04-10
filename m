@@ -1,53 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202E889ED87
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 10:26:12 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=KDPNsaBu;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA50A89F104
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 13:39:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDwrx6Mlzz3vZ7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 18:26:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VF17h3MyHz3vbv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 21:39:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=KDPNsaBu;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDwrF1dJ0z3bWH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 18:25:31 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 3E5C6CE2645;
-	Wed, 10 Apr 2024 08:25:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222B4C433F1;
-	Wed, 10 Apr 2024 08:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712737529;
-	bh=Dhybrf/jRqbpyhuhIWlZvPbxMVOS0VFGt4WJR1DnMNo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KDPNsaBudn+n4+RXzxU38zA293P9i01hK4pr+EzsNlygvUAPOjzwvf/oUbikrXg95
-	 /N9KFTY1uuvoJgBUoJH4BkRDQEIr3X5LSBVt6P6w3X2XFz+Etf1/yCAYNPWYH2L813
-	 KkAO4Cql9cMJLXpMa0g0EbkaGil+/s1j6TdGGz4k=
-Date: Wed, 10 Apr 2024 10:25:26 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] MAINTAINERS: Drop Li Yang as their email address stopped
- working
-Message-ID: <2024041010-neuron-vividness-8202@gregkh>
-References: <20240405072042.697182-2-u.kleine-koenig@pengutronix.de>
- <20240409144204.00cc76ce@kernel.org>
- <u4bhjzjr4jjx26r3r4jupqd5u273xsvuyfzq5ecv6binoyoqzq@5zib23vgtlsx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VF17D1nHyz30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 21:38:48 +1000 (AEST)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VF17B15kWz4wx6;
+	Wed, 10 Apr 2024 21:38:46 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VF17B0HGSz4wx5;
+	Wed, 10 Apr 2024 21:38:44 +1000 (AEST)
+From: Michael Ellerman <michaele@au1.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Andrew Donnellan
+ <ajd@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-scsi@vger.kernel.org"
+ <linux-scsi@vger.kernel.org>
+Subject: Re: [PATCH 2/2] MAINTAINERS: Make cxl obsolete
+In-Reply-To: <0dd09e90-440d-46f0-827e-cbef93ce72c6@csgroup.eu>
+References: <20240409031027.41587-1-ajd@linux.ibm.com>
+ <20240409031027.41587-2-ajd@linux.ibm.com> <87bk6jb17s.fsf@mail.lhotse>
+ <0dd09e90-440d-46f0-827e-cbef93ce72c6@csgroup.eu>
+Date: Wed, 10 Apr 2024 21:38:44 +1000
+Message-ID: <87o7aha1mj.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <u4bhjzjr4jjx26r3r4jupqd5u273xsvuyfzq5ecv6binoyoqzq@5zib23vgtlsx>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,30 +51,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>, kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>, Shawn Guo <shawnguo@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: "fbarrat@linux.ibm.com" <fbarrat@linux.ibm.com>, "ukrishn@linux.ibm.com" <ukrishn@linux.ibm.com>, "manoj@linux.ibm.com" <manoj@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 10, 2024 at 08:42:06AM +0200, Uwe Kleine-König wrote:
-> On Tue, Apr 09, 2024 at 02:42:04PM -0700, Jakub Kicinski wrote:
-> > On Fri,  5 Apr 2024 09:20:41 +0200 Uwe Kleine-König wrote:
-> > > When sending a patch to (among others) Li Yang the nxp MTA replied that
-> > > the address doesn't exist and so the mail couldn't be delivered. The
-> > > error code was 550, so at least technically that's not a temporal issue.
-> > > 
-> > > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > 
-> > FWIW it's eaac25d026a1 in net, thanks!
-> 
-> Greg also picked it up, it's fbdd90334a6205e8a99d0bc2dfc738ee438f00bc in
-> https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-linus
-> . Both are included in next-20240410. I guess that's not a big problem.
-> (And please prevent that the patch is dropped from both trees as it's
-> already included in the other :-)
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 09/04/2024 =C3=A0 06:37, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Andrew Donnellan <ajd@linux.ibm.com> writes:
+>>> The cxl driver is no longer actively maintained and we intend to remove=
+ it
+>>> in a future kernel release. Change its status to obsolete, and update t=
+he
+>>> sysfs ABI documentation accordingly.
+>>>
+>>> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+>>> ---
+>>>   Documentation/ABI/{testing =3D> obsolete}/sysfs-class-cxl | 3 +++
+>>>   MAINTAINERS                                             | 4 ++--
+>>>   2 files changed, 5 insertions(+), 2 deletions(-)
+>>>   rename Documentation/ABI/{testing =3D> obsolete}/sysfs-class-cxl (99%)
+>>=20
+>> This is a good start, but I suspect if there are any actual users they
+>> are not going to be monitoring the status of cxl in the MAINTAINERS file=
+ :)
+>>=20
+>> I think we should probably modify Kconfig so that anyone who's using cxl
+>> on purpose has some chance to notice before we remove it.
+>>=20
+>> Something like the patch below. Anyone who has an existing config and
+>> runs oldconfig will get a prompt, eg:
+>>=20
+>>    Deprecated support for IBM Coherent Accelerators (CXL) (DEPRECATED_CX=
+L) [N/m/y/?] (NEW)
+>>=20
+>> Folks who just use defconfig etc. won't notice any change which is a
+>> pity. We could also change the default to n, but that risks breaking
+>> someone's machine. Maybe we do that in a another releases time.
+>
+> When I boot one of my boards I see:
+>
+> [    0.641090] mcr3000-hwmon 10000800.hwmon: hwmon_device_register() is=20
+> deprecated. Please convert the driver to use=20
+> hwmon_device_register_with_info().
+>
+> Could we do something similar, write a message at boottime when the CXL=20
+> driver gets probed ?
 
-We already got a report from linux-next about this, it's fine, we will
-both keep it.
+Yeah, I think so.
 
-thanks,
+There's still the problem that people tend not to look at dmesg until
+something breaks, but at least we can try and get their attention.
 
-greg k-h
+cheers
