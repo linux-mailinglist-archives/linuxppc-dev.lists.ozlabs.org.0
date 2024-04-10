@@ -1,92 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6D489FD78
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 18:54:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924B589FDA3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 19:03:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JF4hql+8;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JF4hql+8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=y09VKzG+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VF86s5VPPz3vfp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 02:53:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VF8KY2cHMz3vdS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 03:03:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JF4hql+8;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JF4hql+8;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=y09VKzG+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsavitz@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VF8653jgrz3vb3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 02:53:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712767993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KlddPZxMxfFFdReOuFZj/5SHihq3pB3QhO9d2mti7JU=;
-	b=JF4hql+8AyWM4CxQZFon6CmVYUdZidPTrfTYcDAM0fDnVm9snQSYPaL9BiV4xiny3kkULm
-	d+ll41Ew2bYs+3dJAcLo99bu3YGhAMciisZ/B7J4PnFb1bB7t7ciT1oyg2/Hw/f33YEdlt
-	hBq65xa4ojrj8pgCOGsKRjQQ1c3uxhI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712767993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KlddPZxMxfFFdReOuFZj/5SHihq3pB3QhO9d2mti7JU=;
-	b=JF4hql+8AyWM4CxQZFon6CmVYUdZidPTrfTYcDAM0fDnVm9snQSYPaL9BiV4xiny3kkULm
-	d+ll41Ew2bYs+3dJAcLo99bu3YGhAMciisZ/B7J4PnFb1bB7t7ciT1oyg2/Hw/f33YEdlt
-	hBq65xa4ojrj8pgCOGsKRjQQ1c3uxhI=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-rU4h55bhNiew-onh99BkzQ-1; Wed, 10 Apr 2024 12:53:10 -0400
-X-MC-Unique: rU4h55bhNiew-onh99BkzQ-1
-Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-479b8904e6eso1490767137.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 09:53:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VF8Jp0x0Xz30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 03:02:32 +1000 (AEST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3c5fea1bb42so376169b6e.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 10:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712768548; x=1713373348; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uMoPP11thXk4/7UbTWGCDNVZtlBCq9YfZi08dxGpwkM=;
+        b=y09VKzG+ljFg4wpi1EW4d/+PpFeJRloeC32G5KnKOzUHDm0874lLGO0QWSjZ4NpsEx
+         4XDUCxDu8yddtPSZB4XkMAlclBwH90JNfsa9GMq3T0DFQXYhdmThA2FEtbvOWclU+SgD
+         jMqAkyybXR8MornWW0CvOEEJdhx33s0iV5amMTi+pa/7aEHLLHcAElx5gz1KhDVN5TsK
+         yEi6aHg+zm5k7PlATZNmkLKTwYhBfbKCHpPJskAAATfPDjqxvo9d53oJCjZAd4Gwkxnq
+         1ZO/Lj2ofmUhlA3+E8AUsN2qsIH4l795TELRrL6yaoexY+kZAqkmgQnsRokF4Y90ZEYY
+         ogww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712767990; x=1713372790;
+        d=1e100.net; s=20230601; t=1712768548; x=1713373348;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KlddPZxMxfFFdReOuFZj/5SHihq3pB3QhO9d2mti7JU=;
-        b=VOlNvL2pGfzgc68qYiRIwC3UaUYyNaKRfgLI3ZxM5iBMhpKKCmg6f2Co5vTQiXYCf9
-         Y/QzNMU0OMz0AxLUlKBlMzExK0zr2t2mObYHXRW9jtjvqcDWslgdRSLydw5eSyJrEEy+
-         qD54FpUYw8FyYmh4OgZ6TfyS8yuz+PHJKW4AO+kCE7/7dq0FJmTFIIrrLD8rYxEeHUs4
-         38e/VXlkIN69ops6UN3zzNshT3ZC/A+bxP7lHZzYqDEy+nMEB3BYxze3IMF4tatqIcDb
-         0h2KwhoVo9MgnHIfhHposHkx/uRBRTNI1WUWBnu6fIqjW4Ps7lTPa+zFNHR51/U99Nhg
-         OwGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzK0zHSpJIOs4FrqeeWI7C0K5AuJN1rblnUkYnsKJrG2e2yrx9xncQUz2g4qgk1buP6bclMporKZz0LKBebUTNH1v16AJMWwqdmCzPVA==
-X-Gm-Message-State: AOJu0YyuezhxpxxZZE1pYPMB1DK07QdqMRoWdHpPWvoUK/632Q+v6sAV
-	FBrVfGY8iqaYJ+2705jFIY/EKWSdf+7WMfa/40YHYW1v+dZMxACnl8Nm797VNXwPtqg6ft9TNIR
-	LKeWO4I282OWiDRXUr5tMFxc39SwPZ/LIa3tam4N8iX+YJFSa/cc2YLvZJYgTmZqN5CJPC9Z06y
-	tR43L3Iybfvs6IjHjEXo6XklA+UxmwK2e+qCcsJQ==
-X-Received: by 2002:a05:6102:955:b0:47a:317f:eff7 with SMTP id a21-20020a056102095500b0047a317feff7mr450281vsi.0.1712767990094;
-        Wed, 10 Apr 2024 09:53:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHRV5DLBFYMOImJA2ctjr0M3wUT0pvxqzCmawzQbF7B0UfSi2ElF9+rYYd+50ET+UTbyrBS9zA7qjbu22HjDvo=
-X-Received: by 2002:a05:6102:955:b0:47a:317f:eff7 with SMTP id
- a21-20020a056102095500b0047a317feff7mr450259vsi.0.1712767989684; Wed, 10 Apr
- 2024 09:53:09 -0700 (PDT)
+        bh=uMoPP11thXk4/7UbTWGCDNVZtlBCq9YfZi08dxGpwkM=;
+        b=hq7zmoVgh4ZKvx+3r8Z2+Qd9ZebY78esRwtTo3rkkZRmbu+G+UOvMeSloyLLlbSsra
+         4Ng25REbf6slQqiojvgS1WKOHuRrxZiHqHw9YRr10Osi+J9jzupQfLpO8IWbw4snLeY3
+         PESeediT2PiR8SnBWzYeVhNkluzKpdhEpBEm9A/ul4eRAlrfQYmOFOGHK63FPRZzH1h2
+         5lDB1q23SbAghO2zj5sMQtX+KN6EmElZzRjeY4H300qLg2kIzfDpDV+JgjFHP4Cz0TV3
+         sRH6DnUF8VlWBzWd/EHCsuLqlCF9qEIkPDg72IEn+LzTSmGeyJjqBdY3eEFV+/JR9Ga9
+         1kxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYmMvCgrt7quRmVJPeUYjQxcE/WqhtrRzYtxQqdnJUkKiclxQ3Twoci7OKLX7yPXsSj/ivw3NlqI4er3og8zhoIg59EU3SMfkEE09s2Q==
+X-Gm-Message-State: AOJu0Yxg+sD0XUzmUxa9JAAp0CM8Og3dsNjQWwWRvN9I4gx0TVkvMo85
+	N74wP32F1OHTGF2w/5yWWN+zE8xCKbRxdW0tnZra2i64MD+0kwzB5G8KA9+GtKePQ5as3LsWNvH
+	TJ0xJUePSb4JhQYWWY8CqfgBtf0/KvWmSV1hzvg==
+X-Google-Smtp-Source: AGHT+IFNF1nhZXvybXgcJEFh8M4RKpKSYief0sXA9TsDfyic6FFts1F5HiYeJTzbEnw67nBhXnq5gM9nLeSrRUK3LkY=
+X-Received: by 2002:a05:6808:20a3:b0:3c5:f831:5f33 with SMTP id
+ s35-20020a05680820a300b003c5f8315f33mr3792446oiw.16.1712768548028; Wed, 10
+ Apr 2024 10:02:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240301203023.2197451-1-jsavitz@redhat.com> <87jzmduiva.fsf@kernel.org>
- <CAL1p7m5BoxFDeK0MryQCmTDCeBLN3rMLRGx3cHa6teS02wsgZw@mail.gmail.com>
- <CAL1p7m5VHGL+-st7zgGA9LPft6DND=qz0ifiD_ki1hLvfRv=7Q@mail.gmail.com>
- <CAL1p7m7f=b_qJrU8qea2n1+-1KzEVLMOpY9ov5fH2ZZxGrDK5A@mail.gmail.com> <39df36ad-91a4-4bc1-bec9-a1b3ea619200@csgroup.eu>
-In-Reply-To: <39df36ad-91a4-4bc1-bec9-a1b3ea619200@csgroup.eu>
-From: Joel Savitz <jsavitz@redhat.com>
-Date: Wed, 10 Apr 2024 12:52:53 -0400
-Message-ID: <CAL1p7m7WY8bJPWUNiyE6kidkyk7hELPhhtt3PzOWK9uPHiOW9w@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: align memory_limit to 16MB in early_parse_mem
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20240410153212.127477-1-adrian.hunter@intel.com>
+In-Reply-To: <20240410153212.127477-1-adrian.hunter@intel.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 10 Apr 2024 22:32:16 +0530
+Message-ID: <CA+G9fYsZcOv+tE09K20b7G=4s9D=HxAYwMV_zx0oWa1r2mqdrg@mail.gmail.com>
+Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
+To: Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -100,172 +77,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gonzalo Siero <gsierohu@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Benjamin Gray <bgray@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 10, 2024 at 11:31=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+On Wed, 10 Apr 2024 at 21:02, Adrian Hunter <adrian.hunter@intel.com> wrote=
+:
 >
+> BUG() does not return, and arch implementations of BUG() use unreachable(=
+)
+> or other non-returning code. However with !CONFIG_BUG, the default
+> implementation is often used instead, and that does not do that. x86 alwa=
+ys
+> uses its own implementation, but powerpc with !CONFIG_BUG gives a build
+> error:
 >
+>   kernel/time/timekeeping.c: In function =E2=80=98timekeeping_debug_get_n=
+s=E2=80=99:
+>   kernel/time/timekeeping.c:286:1: error: no return statement in function
+>   returning non-void [-Werror=3Dreturn-type]
 >
-> Le 10/04/2024 =C3=A0 17:22, Joel Savitz a =C3=A9crit :
-> > [Vous ne recevez pas souvent de courriers de jsavitz@redhat.com. D=C3=
-=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSend=
-erIdentification ]
-> >
-> > On Mon, Apr 1, 2024 at 10:17=E2=80=AFAM Joel Savitz <jsavitz@redhat.com=
-> wrote:
-> >>
-> >> On Tue, Mar 26, 2024 at 12:45=E2=80=AFAM Joel Savitz <jsavitz@redhat.c=
-om> wrote:
-> >>>
-> >>> On Fri, Mar 8, 2024 at 5:18=E2=80=AFAM Aneesh Kumar K.V <aneesh.kumar=
-@kernel.org> wrote:
-> >>>>
-> >>>> Joel Savitz <jsavitz@redhat.com> writes:
-> >>>>
-> >>>>> On 64-bit powerpc, usage of a non-16MB-aligned value for the mem=3D=
- kernel
-> >>>>> cmdline parameter results in a system hang at boot.
-> >>>>>
-> >>>>> For example, using 'mem=3D4198400K' will always reproduce this issu=
-e.
-> >>>>>
-> >>>>> This patch fixes the problem by aligning any argument to mem=3D to =
-16MB
-> >>>>> corresponding with the large page size on powerpc.
-> >>>>>
-> >>>>> Fixes: 2babf5c2ec2f ("[PATCH] powerpc: Unify mem=3D handling")
-> >>>>> Co-developed-by: Gonzalo Siero <gsierohu@redhat.com>
-> >>>>> Signed-off-by: Gonzalo Siero <gsierohu@redhat.com>
-> >>>>> Signed-off-by: Joel Savitz <jsavitz@redhat.com>
-> >>>>> ---
-> >>>>>   arch/powerpc/kernel/prom.c | 6 +++++-
-> >>>>>   1 file changed, 5 insertions(+), 1 deletion(-)
-> >>>>>
-> >>>>> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.=
-c
-> >>>>> index 0b5878c3125b..8cd3e2445d8a 100644
-> >>>>> --- a/arch/powerpc/kernel/prom.c
-> >>>>> +++ b/arch/powerpc/kernel/prom.c
-> >>>>> @@ -82,8 +82,12 @@ static int __init early_parse_mem(char *p)
-> >>>>>   {
-> >>>>>        if (!p)
-> >>>>>                return 1;
-> >>>>> -
-> >>>>> +#ifdef CONFIG_PPC64
-> >>>>> +     /* Align to 16 MB =3D=3D size of ppc64 large page */
-> >>>>> +     memory_limit =3D ALIGN(memparse(p, &p), 0x1000000);
-> >>>>> +#else
-> >>>>>        memory_limit =3D PAGE_ALIGN(memparse(p, &p));
-> >>>>> +#endif
-> >>>>>        DBG("memory limit =3D 0x%llx\n", memory_limit);
-> >>>>>
-> >>>>>        return 0;
-> >>>>> --
-> >>>>> 2.43.0
-> >>>>
-> >>>> Can you try this change?
-> >>>>
-> >>>> commit 5555bc55e1aa71f545cff31e1eccdb4a2e39df84
-> >>>> Author: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-> >>>> Date:   Fri Mar 8 14:45:26 2024 +0530
-> >>>>
-> >>>>      powerpc/mm: Align memory_limit value specified using mem=3D ker=
-nel parameter
-> >>>>
-> >>>>      The value specified for the memory limit is used to set a restr=
-iction on
-> >>>>      memory usage. It is important to ensure that this restriction i=
-s within
-> >>>>      the linear map kernel address space range. The hash page table
-> >>>>      translation uses a 16MB page size to map the kernel linear map =
-address
-> >>>>      space. htab_bolt_mapping() function aligns down the size of the=
- range
-> >>>>      while mapping kernel linear address space. Since the memblock l=
-imit is
-> >>>>      enforced very early during boot, before we can detect the type =
-of memory
-> >>>>      translation (radix vs hash), we align the memory limit value sp=
-ecified
-> >>>>      as a kernel parameter to 16MB. This alignment value will work f=
-or both
-> >>>>      hash and radix translations.
-> >>>>
-> >>>>      Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-> >>>>
-> >>>> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> >>>> index 0b5878c3125b..9bd965d35352 100644
-> >>>> --- a/arch/powerpc/kernel/prom.c
-> >>>> +++ b/arch/powerpc/kernel/prom.c
-> >>>> @@ -824,8 +824,11 @@ void __init early_init_devtree(void *params)
-> >>>>                  reserve_crashkernel();
-> >>>>          early_reserve_mem();
-> >>>>
-> >>>> -       /* Ensure that total memory size is page-aligned. */
-> >>>> -       limit =3D ALIGN(memory_limit ?: memblock_phys_mem_size(), PA=
-GE_SIZE);
-> >>>> +       if (memory_limit > memblock_phys_mem_size())
-> >>>> +               memory_limit =3D 0;
-> >>>> +
-> >>>> +       /* Align down to 16 MB which is large page size with hash pa=
-ge translation */
-> >>>> +       limit =3D ALIGN_DOWN(memory_limit ?: memblock_phys_mem_size(=
-), SZ_16M);
-> >>>>          memblock_enforce_memory_limit(limit);
-> >>>>
-> >>>>   #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_PPC_4K_PAGES)
-> >>>> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/p=
-rom_init.c
-> >>>> index e67effdba85c..d6410549e141 100644
-> >>>> --- a/arch/powerpc/kernel/prom_init.c
-> >>>> +++ b/arch/powerpc/kernel/prom_init.c
-> >>>> @@ -817,8 +817,8 @@ static void __init early_cmdline_parse(void)
-> >>>>                  opt +=3D 4;
-> >>>>                  prom_memory_limit =3D prom_memparse(opt, (const cha=
-r **)&opt);
-> >>>>   #ifdef CONFIG_PPC64
-> >>>> -               /* Align to 16 MB =3D=3D size of ppc64 large page */
-> >>>> -               prom_memory_limit =3D ALIGN(prom_memory_limit, 0x100=
-0000);
-> >>>> +               /* Align down to 16 MB which is large page size with=
- hash page translation */
-> >>>> +               prom_memory_limit =3D ALIGN_DOWN(prom_memory_limit, =
-SZ_16M);
-> >>>>   #endif
-> >>>>          }
-> >>>>
-> >>>>
-> >>>
-> >>> Sorry for the delayed reply. I just tested this patch and it fixes th=
-e
-> >>> bug for me.
-> >>
-> >> Hi,
-> >>
-> >> Just a quick follow up on this.
-> >>
-> >> The above patch fixed the bug for me.
-> >>
-> >> How do we want to proceed?
-> >>
-> >> Best,
-> >> Joel Savitz
-> >
-> > Hi,
-> >
-> > I haven't heard anything on this thread so I'm just sending a quick fol=
-low up.
-> >
-> > Do we want to merge this
-> >
+> Add unreachable() to default !CONFIG_BUG BUG() implementation.
 >
-> Is it the same as
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20240403083611.17=
-2833-1-aneesh.kumar@kernel.org/
-> ?
+> Fixes: e8e9d21a5df6 ("timekeeping: Refactor timekeeping helpers")
+> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Closes: https://lore.kernel.org/all/CA+G9fYvjdZCW=3D7ZGxS6A_3bysjQ56YF7S-=
++PNLQ_8a4DKh1Bhg@mail.gmail.com/
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Yes that appears to be the case.
+This patch applied on top of today's Linux next-20240410 tag and
+build test pass.
 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+> ---
+>  include/asm-generic/bug.h | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+
+--
+Linaro LKFT
+https://lkft.linaro.org
