@@ -2,110 +2,127 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCA889E90B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 06:39:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D59689E946
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 06:55:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aMpVxyZf;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=fiD1xHns;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDqq650nBz3vZP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 14:39:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VDrB20FvKz3vZ0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 14:55:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aMpVxyZf;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=fiD1xHns;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDqpN0wtfz3bX3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 14:38:36 +1000 (AEST)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VDqpN0n2bz4wx6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 14:38:36 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4VDqpN0hqHz4wx5; Wed, 10 Apr 2024 14:38:36 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aMpVxyZf;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::4; helo=pr0p264cu014.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PR0P264CU014.outbound.protection.outlook.com (mail-francecentralazlp170120004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4VDqpM5Mtjz4wnr;
-	Wed, 10 Apr 2024 14:38:35 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43A4WIIA032599;
-	Wed, 10 Apr 2024 04:38:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : content-transfer-encoding : in-reply-to; s=pp1;
- bh=OUUWR96vfE3iApD8K91WsQCm1zqCydalCH/5mNdcs9E=;
- b=aMpVxyZfGQIy+dU6UTQdZf5oMFkahS+Urno1aHBRWGTNQMET5lNLDe24lTcgPKiukOxt
- 7lV65TlMl92JMvMD0kLwU9RfpFSvoPYKsUAHwtkNcNo7Rk8PoComR0KvC8nziqnqJGLT
- ess0pfPXUR8+Nt9rnKJ/dBz/UtBxn515oeQpyc7IuZ+xw0wWmzT6Adc13zsiqtmDgzPT
- vlAwzGK4KX2SNq+elrxLwEF241L85xczHSUCHm4oigMvoeIbDTtY/ZwVWxJrHeyDcBMQ
- kGSrQCe6G8/oAnbGDr8Ex6qLHlIVVh36/UdiHTB4RxSlYO6kbivJ48IHlgeQoK8DDIGy zQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xdktv80gs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 04:38:32 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43A4cWww009350;
-	Wed, 10 Apr 2024 04:38:32 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xdktv80gp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 04:38:32 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43A2GQbW016971;
-	Wed, 10 Apr 2024 04:38:31 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xbke2j5g5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 04:38:31 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43A4cPU449414550
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Apr 2024 04:38:27 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A125720043;
-	Wed, 10 Apr 2024 04:38:25 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C90A20040;
-	Wed, 10 Apr 2024 04:38:24 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.109.248.226])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 10 Apr 2024 04:38:23 +0000 (GMT)
-Date: Wed, 10 Apr 2024 10:08:21 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v4] powerpc: Avoid nmi_enter/nmi_exit in real mode
- interrupt.
-Message-ID: <nv5gv3pymozjyctxr4x7vmb3qip2figvj2qtmhs7ohwspvylf4@s3wcsjkdllwv>
-References: <20240214095146.1527369-1-mahesh@linux.ibm.com>
- <87edcmnu7o.fsf@mail.lhotse>
- <8d973907-8e86-4b9f-8995-cf3a8621f6b6@linux.ibm.com>
- <874jdhno19.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDr9K3ZBKz3bX3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 14:54:58 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fm4jeEhnwkSR2c4ZEFFQXM/M7tEkrnogkCttf4Rf5nmkciuKGc/rQY631e3RynZD+ooMonOmP3aswf1SRDu1lAj1+SHPgYtvuaVZzWvqoSkyKCDFgd6F0E+LGATT4uW84/fKN9rSYYFXlbIJ3AT1nrXFZthu+a8++bJ+1m1juzMUUH2vt0xxZKhSHi35HnP4gDGgeZIVo+FDEpd3JH3HtQXNmlMCWeXBWmZKplevkktBEj+g9LGKNYYEUaSRYW+Bdb52vx1T5S+5YPOwOd9IgHxR/fbxvej6XppU+S8h54yaOO3xKlJ/XAKt2TngUfSklCsCV5LvDOUiD1yhRS9s7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yAecOh7cN5NBus7bfQbmaoBmFSBW049aAnd763+cMQk=;
+ b=Dw5oMqMNVKDvzA+UqJrXVzxjxqs9/msPCimwmHP7GoREbPz/AajL40byhdFYi5bMPy2MAD7lEhMRmg+MjuG7eQnwc3/9c7UOntcCXKVVBjnatjGOaoJbIE8AKjWKnB7SWO5jLcaDNSaGBE36XE+a+OUQ7s9cM1bz5WvJeThrOhEFN9M+YpikE5A1hjZJntKYB711rh0cYT8HikJA9ERPwt7AqUJtRjcoMJGR8aCGS+IteQfiYqgxEom4ykg5wmdRcSVRBFAimnarDFhPrVkx+RFbhuaGsjABZumq3y2S284LGsgzCmjlANxMyNYM+OvnwfEkZfKfju7/4DU+Kk3iIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yAecOh7cN5NBus7bfQbmaoBmFSBW049aAnd763+cMQk=;
+ b=fiD1xHnstdMVoJMyhnG/kjFG3YWi2BtOgCNpApOatVBnH3E9kE3sD45MnymD3WF04fkkrfM4CbHKb/3wUv3N22HXmDc2CqYhSAogi3nAOO5b1wKPyvvK+UXjev+8h8e2nK2ONKPlJesVi4XnuORbHBsD/lbpZ0jIXaKEjPTHtZ1CJjE9U7/ywVwnI1uqcKY7V4qxB8bg9y8uo3GljWcyHGJF2QQS1Xb7A9vklmIOLB97KPYrDx8XrA3r2tiA7g6q99wq7nIsfn/22yfWixk07VAJGXhgnQ3baLM/RVHB3MDfCjm5WtOCeudTyIffxyz9mNYYAf2OW3zyJSNampa+Sg==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB3084.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Wed, 10 Apr
+ 2024 04:54:32 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb%7]) with mapi id 15.20.7409.053; Wed, 10 Apr 2024
+ 04:54:31 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
+	Qiang Zhao <qiang.zhao@nxp.com>
+Subject: Re: [RESEND PATCH net v4 1/2] soc: fsl: qbman: Always disable
+ interrupts when taking cgr_lock
+Thread-Topic: [RESEND PATCH net v4 1/2] soc: fsl: qbman: Always disable
+ interrupts when taking cgr_lock
+Thread-Index: AQHaYCubjcVZXHC2JE29sDLam0ymSLER0LwAgE91RAA=
+Date: Wed, 10 Apr 2024 04:54:31 +0000
+Message-ID: <e0e1518c-9319-4af9-9b7d-3eb985f2e6da@csgroup.eu>
+References: <20240215162327.3663092-1-sean.anderson@seco.com>
+ <20240219153016.ntltc76bphwrv6hn@skbuf>
+In-Reply-To: <20240219153016.ntltc76bphwrv6hn@skbuf>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB3084:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  vPwPWAmRc1qMg301xViaqi/y8SuzRm+O9+zwCnmuhmhMBCktza2WfqDbKtnPnSRHGLi1DwpSz7F9rOuvhORK90XVSF1FrAAL1iCUYedrwlixJ7f4Dgr4pl4crXlyuQonuP2cpF22IKtMZS1deRXkl5WgLAFQu/4FczJdRvPzLyJC+veXll9PIZb2uE0JzzGaTlACQbAp069VjkK8ZENg6xNmViKrsvVnbF1JT8Pe0Z2aS7QEx4WdX02XppfbTGpxfKlEOgumUasLJezIzU5ymxy/HlVkkfX9DhmOtMFA5JSHrgUwt2VarN27vQdWJmNZHswJrPkKNyl8PMP9xwaWN+VU3DYjWZTKW/vXTeylDHMOz5EBzrTH+/J21zLlemTxdj2KpE8X+IH6wgqwshh7Idu5JX68AVWE/wN5yyDEpQ0Pd2Twu70Zo3HsQBk8Bmq5G9qHG5/Zds0ZVqHAeAPEYDtAK8Fgxl2BvHqGGjYw5abYxXwUXFWEZoFIFjcas02RupQbWyA+ke2D4KgGQGfHQC8o4S+cpNDYuA5VR8bxAIXOME4byFhS8SlN3DwtIsCE+lEu6BCVibm7maZKFWB/OQ4fu5rbL7lh47MuDoaqQ6RH4YOJfZaHmSZF9MfFgDpMcD6UdB7yhe5kJ8t/cgihqkq7ClGyRLAr0yoMUua9YVc=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015)(366007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?QnMrN1YvSkFiMTI5KzJzemMwY2Y4SFRGNmZWUHY3RWJXSHlMa0lrTUUvb3Vh?=
+ =?utf-8?B?b2J4NUNjODBIUzRFQTFhRVJ1eVdpa0UvNlJpbGNRMklNdGN3U0FUS2Z2ck1K?=
+ =?utf-8?B?NVd4dFBxdEpyKzl0bVlQRU5qZEtwMXJmRy9CSW92eFVCTWxBUW1waHhZMjB6?=
+ =?utf-8?B?b0x0OW1wTlFqQVNZMElnTVFXREE2U1F4L2xTejZ1OTAvaTRxak4zN1NDY1pj?=
+ =?utf-8?B?ODl6WEtLN3NvQk55Z2FQTytGSUZuZnRUVmEwSkhVNTB6alAzQWw1VGI0b2lH?=
+ =?utf-8?B?ait4c0FxZ1dYaVc2M1ZjYVZna1Y4N2Y0NHdzUnN0UGF1VWhvb2ZHNkRIanFX?=
+ =?utf-8?B?bU5kVkVXMnQvTkFxdW9ZWjdtWjNBR3Rpc1ZyckczZEtPdDc2MHNUOFlvc3R1?=
+ =?utf-8?B?ck9kR3FGZ1lCeXpKdFRYNmFueTZRUGV3eEVzbmdrMkJQZ1Z5ZjhPVVJnTktp?=
+ =?utf-8?B?dklOTGVzK2ZLVy9xNHpFdzNtaWpmVmp5cUUyWGhab2p0U3Q1ZUppcFMvUURN?=
+ =?utf-8?B?QWJCQlJWd3I3T1dueXhNcnZicWhiQlY0UnNOdU8vSmZHY1JJOThQRVNBMmgz?=
+ =?utf-8?B?UlhjM1BHd0RCWDZOSUJURVl2UDhDT0UwVGJ0SU9xMXczRTI3dW1JNFBXZmcr?=
+ =?utf-8?B?dklTbWxoZlJZa3dQZVp4U1JNRUMvOTM5WXA2S041RVpVRTgySjl1YTNoeDcv?=
+ =?utf-8?B?S2xXdExZMTBBNUlZVDFWcWhoaEpIVG9mRXNDTzdxY2J3ZkhOQk45RmcxMlZH?=
+ =?utf-8?B?c3RLN0l4aC9nR2pSRWtucTNaOVkzdWlDWld1bEJqL1hISGpoMFhPcENpOGJp?=
+ =?utf-8?B?OUw0a2dzTVFJRHZYbnEyNksxZEQxR0hKM3dLTHJmMFNGbFJjeW1pTnU2LzNl?=
+ =?utf-8?B?QWZTY3FrekJHZGNTS3V1Z2ZWY1JGSHlSK3ZPSVNucU9wbmk4L1ZhMnFKZkgy?=
+ =?utf-8?B?UzVoM1hDQS9ONHE1ZXhSNzMxYm8rSG9qZlQ5M042Rng3UDlLZGZ2cnczZzR4?=
+ =?utf-8?B?eXpQU2srMTAvR2l0dVRhanZWVHpmR0x4QmlnRVVqNVJ1SmpUeVN4WTQ5THNW?=
+ =?utf-8?B?NjJWNUxnRStsUjhQZllKTUpwek1ESmd3cHlSVnRuTC9FRE5KMnhUQmdzc0h5?=
+ =?utf-8?B?UW4wVW5xemdQTzZPL21OUk0vRnRRT3RUdFBvaHQxNFdJRitFTldwaXk4anE1?=
+ =?utf-8?B?Tk05Y3Y4ZlZqM2RHY3liNFpGVWloOEdwZXhEUWVNVlpQYXlHV2o4WkdQL1Bt?=
+ =?utf-8?B?dG5GUVk2ellVZVJOZnpmejV2YWUwc2JSSDJMWXBZck1aTDZoSjRIOUdCLzFY?=
+ =?utf-8?B?cWFyeHJhcTc5Tk5NVE53R1NvV0FDUnArVUV3aFhIRHk5VllkWkd0SEJINXRW?=
+ =?utf-8?B?SWszUTJJQzFmcVdlcVdKV1JmVVFQamgxNkRhRWcrRVZWWFNZbGJlTmNOVzFa?=
+ =?utf-8?B?MEhGL0VycDF2ZFUvamxyN2RPRlJIOXJVV0FBaUdwR3YwZEJybmQ1blpyRVBp?=
+ =?utf-8?B?K3Ira2tvZllzM014ZlZlUTZhcXJnTjRlcWtxVXVSVzlmeDVONE5SVlQrcFdu?=
+ =?utf-8?B?d3d1aVc5ZVRxUS9HNWhwT0N4b2MyS015Zi9EaDBVd0NibmNpRDBBZjYrSXF3?=
+ =?utf-8?B?WmpDbkI5Tk95SEQ2VDl1YzlMdUdNK0tGZTU1MzBORmVUVWd2Vi9mb2dOVmlL?=
+ =?utf-8?B?VDMvaWEzN2xUNWlWMkExVENSZXcyVDc1MDY1cEthNHhRNFE3cnhadzRqMGIx?=
+ =?utf-8?B?UXJ5S1FwYnMwc1l2VERhQVRubGZUdHRmRGxlMHQ1eWNCd1V1OFpqdGN1UmpN?=
+ =?utf-8?B?VFZRREVwQlNqNzNBYWg1eHo3Tm1EVGJqKzhPRXBGaEVjd1ZzNVNyL0krSGYw?=
+ =?utf-8?B?eVVXbnEwRFdvUEdPc2xnZ1BMMThPSGtoYTA4bWY2eHphYXN5NnYybnF3cThr?=
+ =?utf-8?B?YmlzRG5CSjBnM3VlWEUxa3d5c3g0cjgvS0FJRWRWaGNYWm91K0ZLcklvMFVz?=
+ =?utf-8?B?ZWJESmg5MjFLamxtYzRzaC9zNm8wbDJIR2x6cWhMVXpudkpqbkNNelZyeVMz?=
+ =?utf-8?B?OUNBbE8vVUpsd3hiL0xSV2puRDVaajFTK2Ftd1NSOFR6SGRBTnF3aTJxOGth?=
+ =?utf-8?B?MFo3MHBjMkZrdkxIZytZMnZIRXlCeDJnc01KTkwwZko0cFBGMXJjVGxDMkd1?=
+ =?utf-8?Q?RlbzGgKNECsD686Mz+2uu2pbmSqZW7SQvGtey23sUl5P?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <33E73981F15FC04FAA6DF934700D8EDD@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <874jdhno19.fsf@mail.lhotse>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LS0IlzKEel6oYcGWtwCmkccEjdBABYAN
-X-Proofpoint-ORIG-GUID: jCR5LXBDzsJ_E_49vltw2QmdsWL9JUe7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-09_12,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=630 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404100031
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e560a9a3-e5c7-4f3f-378a-08dc591a4f72
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2024 04:54:31.6291
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rjvXYKqWDLbCkeuj9VLOrxZaLM1npr72+Y1ojzeXN9LWPclSmEABO5fe8hKNW1obk5KcsUZC+PH175HRtzXhPNPcXICwJ3z0OHmHXJ94W9E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB3084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,83 +134,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Sean Anderson <sean.anderson@seco.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Roy Pledge <roy.pledge@nxp.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Scott Wood <oss@buserror.net>, Eric Dumazet <edumazet@google.com>, Camelia Groza <camelia.groza@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2024-03-08 19:08:50 Fri, Michael Ellerman wrote:
-> Aneesh Kumar K V <aneesh.kumar@linux.ibm.com> writes:
-> > On 3/7/24 5:13 PM, Michael Ellerman wrote:
-> >> Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
-> >>> nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
-> >>> crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
-> >>> interrupt handler) if percpu allocation comes from vmalloc area.
-> >>>
-> >>> Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
-> >>> wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
-> >>> percpu allocation is from the embedded first chunk. However with
-> >>> CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
-> >>> allocation can come from the vmalloc area.
-> >>>
-> >>> With kernel command line "percpu_alloc=page" we can force percpu allocation
-> >>> to come from vmalloc area and can see kernel crash in machine_check_early:
-> >>>
-> >>> [    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
-> >>> [    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
-> >>> [    1.215719] --- interrupt: 200
-> >>> [    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
-> >>> [    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
-> >>> [    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
-> >>>
-> >>> Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
-> >>> first chunk is not embedded.
-> >> 
-> >> My system (powernv) doesn't even boot with percpu_alloc=page.
-> >
-> >
-> > Can you share the crash details?
-> 
-> Yes but it's not pretty :)
-> 
->   [    1.725257][  T714] systemd-journald[714]: Collecting audit messages is disabled.
->   [    1.729401][    T1] systemd[1]: Finished systemd-tmpfiles-setup-dev.service - Create Static Device Nodes in /dev.
->   [^[[0;32m  OK  ^[[0m] Finished ^[[0;1;39msystemd-tmpfiles-…reate Static Device Nodes in /dev.
->   [    1.773902][   C22] Disabling lock debugging due to kernel taint
->   [    1.773905][   C23] Oops: Machine check, sig: 7 [#1]
->   [    1.773911][   C23] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
->   [    1.773916][   C23] Modules linked in:
->   [    1.773920][   C23] CPU: 23 PID: 0 Comm: swapper/23 Tainted: G   M               6.8.0-rc7-02500-g23515c370cbb #1
->   [    1.773924][   C23] Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
->   [    1.773926][   C23] NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
->   [    1.773929][   C23] REGS: c000000fffa6ef50 TRAP: 0000   Tainted: G   M                (6.8.0-rc7-02500-g23515c370cbb)
->   [    1.773932][   C23] MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
->   [    1.773937][   C23] CFAR: 0000000000000000 IRQMASK: 3 
->   [    1.773937][   C23] GPR00: 0000000000000000 c000000fffa6efe0 c000000fffa6efb0 0000000000000000 
->   [    1.773937][   C23] GPR04: c00000000003d8c0 c000000001f5f000 0000000000000000 0000000000000103 
->   [    1.773937][   C23] GPR08: 0000000000000003 653a0d962a590300 0000000000000000 0000000000000000 
->   [    1.773937][   C23] GPR12: c000000fffa6f280 0000000000000000 c0000000000084a4 0000000000000000 
->   [    1.773937][   C23] GPR16: 0000000053474552 0000000000000000 c00000000003d8c0 c000000fffa6f280 
->   [    1.773937][   C23] GPR20: c000000001f5f000 c000000fffa6f340 c000000fffa6f2e8 0000000000000000 
->   [    1.773937][   C23] GPR24: 0007fffffecf0000 c0000000065bbb80 0000000000550102 c000000002172b20 
->   [    1.773937][   C23] GPR28: 0000000000000000 0000000053474552 0000000000000000 c000000ffffc6d80 
->   [    1.773982][   C23] NIP [0000000000000000] 0x0
->   [    1.773988][   C23] LR [0000000000000000] 0x0
->   [    1.773990][   C23] Call Trace:
->   [    1.773991][   C23] [c000000fffa6efe0] [c000000001f5f000] .TOC.+0x0/0xa1000 (unreliable)
->   [    1.773999][   C23] Code: XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX 
->   [    1.774021][   C23] ---[ end trace 0000000000000000 ]---
-> 
-> Something has gone badly wrong.
-> 
-> That was a test kernel with some other commits, but nothing that should
-> cause that. Removing percpu_alloc=page fix it.
-
-So, when I try this without my patch "Avoid nmi_enter/nmi_exit in real
-mode interrupt", I see this getting recreated. However, I was not able
-to recrate this even once with my changes. Are you able to see this
-crash with my patch ?
-
-Thanks,
--Mahesh.
-
+SGkgVmxhZGltaXIsDQoNCkxlIDE5LzAyLzIwMjQgw6AgMTY6MzAsIFZsYWRpbWlyIE9sdGVhbiBh
+IMOpY3JpdMKgOg0KPiBIaSBTZWFuLA0KPiANCj4gT24gVGh1LCBGZWIgMTUsIDIwMjQgYXQgMTE6
+MjM6MjZBTSAtMDUwMCwgU2VhbiBBbmRlcnNvbiB3cm90ZToNCj4+IHNtcF9jYWxsX2Z1bmN0aW9u
+X3NpbmdsZSBkaXNhYmxlcyBJUlFzIHdoZW4gZXhlY3V0aW5nIHRoZSBjYWxsYmFjay4gVG8NCj4+
+IHByZXZlbnQgZGVhZGxvY2tzLCB3ZSBtdXN0IGRpc2FibGUgSVJRcyB3aGVuIHRha2luZyBjZ3Jf
+bG9jayBlbHNld2hlcmUuDQo+PiBUaGlzIGlzIGFscmVhZHkgZG9uZSBieSBxbWFuX3VwZGF0ZV9j
+Z3IgYW5kIHFtYW5fZGVsZXRlX2NncjsgZml4IHRoZQ0KPj4gb3RoZXIgbG9ja2Vycy4NCj4+DQo+
+PiBGaXhlczogOTZmNDEzZjQ3Njc3ICgic29jL2ZzbC9xYm1hbjogZml4IGlzc3VlIGluIHFtYW5f
+ZGVsZXRlX2Nncl9zYWZlKCkiKQ0KPj4gQ0M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4+IFNp
+Z25lZC1vZmYtYnk6IFNlYW4gQW5kZXJzb24gPHNlYW4uYW5kZXJzb25Ac2Vjby5jb20+DQo+PiBS
+ZXZpZXdlZC1ieTogQ2FtZWxpYSBHcm96YSA8Y2FtZWxpYS5ncm96YUBueHAuY29tPg0KPj4gVGVz
+dGVkLWJ5OiBWbGFkaW1pciBPbHRlYW4gPHZsYWRpbWlyLm9sdGVhbkBueHAuY29tPg0KPj4gLS0t
+DQo+PiBJIGdvdCBubyByZXNwb25zZSB0aGUgZmlyc3QgdGltZSBJIHNlbnQgdGhpcywgc28gSSBh
+bSByZXNlbmRpbmcgdG8gbmV0Lg0KPj4gVGhpcyBpc3N1ZSB3YXMgaW50cm9kdWNlZCBpbiBhIHNl
+cmllcyB3aGljaCB3ZW50IHRocm91Z2ggbmV0LCBzbyBJIGhvcGUNCj4+IGl0IG1ha2VzIHNlbnNl
+IHRvIHRha2UgaXQgdmlhIG5ldC4NCj4+DQo+PiBbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcv
+bGludXgtYXJtLWtlcm5lbC8yMDI0MDEwODE2MTkwNC4yODY1MDkzLTEtc2Vhbi5hbmRlcnNvbkBz
+ZWNvLmNvbS8NCj4+DQo+PiAobm8gY2hhbmdlcyBzaW5jZSB2MykNCj4+DQo+PiBDaGFuZ2VzIGlu
+IHYzOg0KPj4gLSBDaGFuZ2UgYmxhbWVkIGNvbW1pdCB0byBzb21ldGhpbmcgbW9yZSBhcHByb3By
+aWF0ZQ0KPj4NCj4+IENoYW5nZXMgaW4gdjI6DQo+PiAtIEZpeCBvbmUgYWRkaXRpb25hbCBjYWxs
+IHRvIHNwaW5fdW5sb2NrDQo+IA0KPiBMZW8gTGkgKExpIFlhbmcpIGlzIG5vIGxvbmdlciB3aXRo
+IE5YUC4gVW50aWwgd2UgZmlndXJlIG91dCB3aXRoaW4gTlhQDQo+IGhvdyB0byBjb250aW51ZSB3
+aXRoIHRoZSBtYWludGFpbmVyc2hpcCBvZiBkcml2ZXJzL3NvYy9mc2wvLCB5ZXMsIHBsZWFzZQ0K
+PiBjb250aW51ZSB0byBzdWJtaXQgdGhpcyBzZXJpZXMgdG8gJ25ldCcuIEkgd291bGQgYWxzbyBs
+aWtlIHRvIHBvaW50DQo+IG91dCB0byBBcm5kIHRoYXQgdGhpcyBpcyB0aGUgY2FzZS4NCj4gDQo+
+IEFybmQsIGEgbGFyZ2UgcG9ydGlvbiBvZiBkcml2ZXJzL3NvYy9mc2wvIGlzIG5ldHdvcmtpbmct
+cmVsYXRlZA0KPiAoZHBpbywgcWJtYW4pLiBXb3VsZCBpdCBtYWtlIHNlbnNlIHRvIHRyYW5zZmVy
+IHRoZSBtYWludGFpbmVyc2hpcA0KPiBvZiB0aGVzZSB1bmRlciB0aGUgcmVzcGVjdGl2ZSBuZXR3
+b3JraW5nIGRyaXZlcnMsIHRvIHNpbXBsaWZ5IHRoZQ0KPiBwcm9jZWR1cmVzPw0KDQpJIHNlZSBG
+UkVFU0NBTEUgUVVJQ0MgRU5HSU5FIExJQlJBUlkgKGRyaXZlcnMvc29jL2ZzbC9xZS8pIGlzIG1h
+aW50YWluZWQgDQpieSBRaWFuZyBaaGFvIDxxaWFuZy56aGFvQG54cC5jb20+IGJ1dCBJIGNhbid0
+IGZpbmQgYW55IG1haWwgZnJvbSBoaW0gaW4gDQp0aGUgcGFzdCA0IHllYXJzIGluIGxpbnV4cHBj
+LWRldiBsaXN0LCBhbmQgZXZlcnl0aW1lIEkgd2FudGVkIHRvIHN1Ym1pdCANCnNvbWV0aGluZyBJ
+IG9ubHkgZ290IHJlc3BvbnNlcyBmcm9tIExlbyBMeS4NCg0KVGhlIGxhc3QgY29tbWl0IGhlIHJl
+dmlld2VkIGlzIDY2MWVhMjVlNTMxOSAoInNvYzogZnNsOiBxZTogUmVwbGFjZSANCm9uZS1lbGVt
+ZW50IGFycmF5IGFuZCB1c2Ugc3RydWN0X3NpemUoKSBoZWxwZXIiKSwgaXQgd2FzIGluIE1heSAy
+MDIwLg0KDQpJcyBoZSBzdGlsbCB3b3JraW5nIGF0IE5YUCBhbmQgYWN0aXZlbHkgbWFpbnRhaW5p
+bmcgdGhhdCBsaWJyYXJ5ID8gDQpLZWVwaW5nIHRoaXMgcGFydCBtYWludGFpbmVkIGlzIHZpdGFs
+IGZvciBtZSBhcyB0aGlzIFNPQyBpcyBlbWJlZGRlZCBpbiANCnRoZSB0d28gcG93ZXJwYyBwbGF0
+Zm9ybSBJIG1haW50YWluICg4eHggYW5kIDgzeHgpLg0KDQpJZiBRaWFuZyBaaGFvIGlzIG5vdCBh
+YmxlIHRvIGFjdGl2YWx5IG1haW50YWluIHRoYXQgU09DIGFueW1vcmUsIEkgDQp2b2xvbnRlZXIg
+dG8gbWFpbnRhaW4gaXQuDQoNClRoYW5rcw0KQ2hyaXN0b3BoZQ0K
