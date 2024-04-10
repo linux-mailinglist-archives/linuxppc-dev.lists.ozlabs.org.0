@@ -2,38 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C3489EC21
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 09:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56AC689F05B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 13:08:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDvhX6zKcz3dXP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 17:33:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VF0Sc1Cqtz3vbb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 21:08:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ghiti.fr (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=lists.ozlabs.org)
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sre@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDvh456yBz3bv3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 17:33:24 +1000 (AEST)
-Received: from relay2-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::222])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id E62A9C0FCA
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 07:33:16 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 45A9B40006;
-	Wed, 10 Apr 2024 07:32:51 +0000 (UTC)
-Message-ID: <8fe1a53f-f031-4423-97e1-28d93d0cd59e@ghiti.fr>
-Date: Wed, 10 Apr 2024 09:32:51 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDwKq683Yz3bX3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 18:02:39 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 019B5CE2645;
+	Wed, 10 Apr 2024 08:02:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDFDC43390;
+	Wed, 10 Apr 2024 08:02:36 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 324081063262; Wed, 10 Apr 2024 10:02:32 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
+In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+Subject: Re: (subset) [PATCH 00/34] address all -Wunused-const warnings
+Message-Id: <171273615213.1094883.18382201508159771859.b4-ty@collabora.com>
+Date: Wed, 10 Apr 2024 10:02:32 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] riscv: mm: accelerate pagefault when badaccess
-Content-Language: en-US
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, akpm@linux-foundation.org
-References: <20240403083805.1818160-1-wangkefeng.wang@huawei.com>
- <20240403083805.1818160-6-wangkefeng.wang@huawei.com>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20240403083805.1818160-6-wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
+X-Mailer: b4 0.13.0
+X-Mailman-Approved-At: Wed, 10 Apr 2024 21:08:28 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,48 +46,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, linux-s390@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, linuxppc-dev@lists.ozlabs.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, Russell King <linux@armlinux.org.uk>, surenb@google.com, Dave Hansen <dave.hansen@linux.intel.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Andy Lutomirski <luto@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Heiko Stuebner <heiko@sntech.de>, "Rafael J. Wysocki" <rafael@kernel.org>, dri-devel@lists.freedesktop.org, Benjamin Tissoires <benjamin.tissoires@redhat.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Christoph Hellwig <hch@lst.de>, linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org, linux-sound@vger.kernel.org, Ian Abbott <abbotti@mev.co.uk>, linux-omap@vger.kernel.org, Trond Myklebust <trond.myklebust@hammerspace.com>, Alex Elder <elder@kernel.org>, Tero Kristo <kristo@kernel.org>, Xiang Chen <chenxiang66@hisilicon.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org, H Hartley Sweeten <hsweeten@visionengravers.com>, Iyappan Subramanian <iyappan@os.amperecomputing.com>, linux-crypto@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Alexandre Be
+ lloni <alexandre.belloni@bootlin.com>, Markuss Broks <markuss.broks@gmail.com>, Vaibhav Hiremath <hvaibhav.linux@gmail.com>, linux-i2c@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Corey Minyard <minyard@acm.org>, Helge Deller <deller@gmx.de>, Lee Jones <lee@kernel.org>, linux-clk@vger.kernel.org, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, Yisen Zhuang <yisen.zhuang@huawei.com>, Len Brown <lenb@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, linux-kbuild@vger.kernel.org, linux-arm-msm@vger.kernel.org, greybus-dev@lists.linaro.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, Anna Schumaker <anna@kernel.org>, linux-integrity@vger.kernel.org, alsa-devel@alsa-project.org, Jonathan Cameron <jic23@kernel.org>, linux-efi@vger.kernel.org, linux-iio@vger.kernel.org, linux-fpga
+ @vger.kernel.org, linux-fbdev@vger.kernel.org, kasan-dev@googlegroups.com, Jiri Slaby <jirislaby@kernel.org>, linux-rtc@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>, Masahiro Yamada <masahiroy@kernel.org>, linux-staging@lists.linux.dev, linux-input@vger.kernel.org, Jacky Huang <ychuang3@nuvoton.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jikos@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, Mark Brown <broonie@kernel.org>, Moritz Fischer <mdf@kernel.org>, openipmi-developer@lists.sourceforge.net, linux-nfs@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Sebastian Reichel <sre@kernel.org>, Peter Rosin <peda@axentia.se>, linux-stm32@st-md-mailman.stormreply.com, Tony Lindgren <tony@atomide.com>, Liviu Dudau <liviu.dudau@arm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-ide@vger.kerne
+ l.org, Peter Huewe <peterhuewe@gmx.de>, Ard Biesheuvel <ardb@kernel.org>, linux-leds@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Kalle Valo <kvalo@kernel.org>, John Allen <john.allen@amd.com>, netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, Takashi Iwai <tiwai@suse.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Damien Le Moal <dlemoal@kernel.org>, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kefeng,
 
-On 03/04/2024 10:38, Kefeng Wang wrote:
-> The access_error() of vma already checked under per-VMA lock, if it
-> is a bad access, directly handle error, no need to retry with mmap_lock
-> again. Since the page faut is handled under per-VMA lock, count it as
-> a vma lock event with VMA_LOCK_SUCCESS.
->
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->   arch/riscv/mm/fault.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-> index 3ba1d4dde5dd..b3fcf7d67efb 100644
-> --- a/arch/riscv/mm/fault.c
-> +++ b/arch/riscv/mm/fault.c
-> @@ -292,7 +292,10 @@ void handle_page_fault(struct pt_regs *regs)
->   
->   	if (unlikely(access_error(cause, vma))) {
->   		vma_end_read(vma);
-> -		goto lock_mmap;
-> +		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-> +		tsk->thread.bad_cause = SEGV_ACCERR;
+On Wed, 03 Apr 2024 10:06:18 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Compilers traditionally warn for unused 'static' variables, but not
+> if they are constant. The reason here is a custom for C++ programmers
+> to define named constants as 'static const' variables in header files
+> instead of using macros or enums.
+> 
+> [...]
 
+Applied, thanks!
 
-I think we should use the cause variable here instead of SEGV_ACCERR, as 
-bad_cause is a riscv internal status which describes the real fault that 
-happened.
+[09/34] power: rt9455: hide unused rt9455_boost_voltage_values
+        commit: 452d8950db3e839aba1bb13bc5378f4bac11fa04
 
-Thanks,
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
 
-Alex
-
-
-> +		bad_area_nosemaphore(regs, code, addr);
-> +		return;
->   	}
->   
->   	fault = handle_mm_fault(vma, addr, flags | FAULT_FLAG_VMA_LOCK, regs);
