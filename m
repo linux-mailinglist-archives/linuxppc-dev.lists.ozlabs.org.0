@@ -2,32 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A028A030D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 00:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FA58A0307
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 00:14:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Iq72dBmA;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ZAtfnjHH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFHF861mjz3vbh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 08:14:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFHDJ6SCDz3cRq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 08:14:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Iq72dBmA;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ZAtfnjHH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.5; helo=m16.mail.163.com; envelope-from=sensor1010@163.com; receiver=lists.ozlabs.org)
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VF3rb1lHfz2yD6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 23:41:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.3; helo=m16.mail.163.com; envelope-from=sensor1010@163.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 134 seconds by postgrey-1.37 at boromir; Wed, 10 Apr 2024 23:26:06 AEST
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VF3W26D34z3blb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 23:26:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=0k9vD
-	y3IhLXKl1/oPUacgobANip3sPaFSxC+sZynpEs=; b=Iq72dBmA27lcU+nCiBTiJ
-	zRkACXIYwe+9VHpKiNizbk3ppnXB8hp20uIQdyhzgscR19FZTocSHrlOtBpEwNBm
-	t5fAP8wxxkw2dEPQydho9TgBntIngUQXmg8W/hfFgbqG915+RzHy3mfuDjJsyZsj
-	P32dDGH1FZj2W9yPJjx2bs=
+	y3IhLXKl1/oPUacgobANip3sPaFSxC+sZynpEs=; b=ZAtfnjHHXPSjAYMgeE5As
+	oEorvp1cnCmONXS9I7yt+O8y+vUhsPUV+i4sBETUDOwf6yd96abr/tmkE7sgwBfA
+	kaokf5MITki6RIoVELqJDQsJHSmzZkKGuPM5qM6DkHGV35t/IvK0orGarfIO5chD
+	PmFKDwkSbkrVa0JPcfCoi0=
 Received: from localhost.localdomain (unknown [101.86.11.106])
-	by gzga-smtp-mta-g1-5 (Coremail) with SMTP id _____wDnLyFjkhZmXX3aAg--.54775S4;
-	Wed, 10 Apr 2024 21:21:55 +0800 (CST)
+	by gzga-smtp-mta-g2-1 (Coremail) with SMTP id _____wDnN9+3khZm9NnPAg--.11748S4;
+	Wed, 10 Apr 2024 21:23:27 +0800 (CST)
 From: Lizhe <sensor1010@163.com>
 To: rafael@kernel.org,
 	viresh.kumar@linaro.org,
@@ -54,18 +55,18 @@ To: rafael@kernel.org,
 	matthias.bgg@gmail.com,
 	angelogioacchino.delregno@collabora.com
 Subject: [PATCH] cpufreq: Covert to exit callback returning void
-Date: Wed, 10 Apr 2024 06:21:31 -0700
-Message-Id: <20240410132132.3526-1-sensor1010@163.com>
+Date: Wed, 10 Apr 2024 06:22:47 -0700
+Message-Id: <20240410132247.3587-1-sensor1010@163.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wDnLyFjkhZmXX3aAg--.54775S4
+X-CM-TRANSID: _____wDnN9+3khZm9NnPAg--.11748S4
 X-Coremail-Antispam: 1Uf129KBjvAXoWfXw47Cw45Gr1fZr45GFWfKrg_yoW8uw18Xo
 	WfXFyrG3W8Gryxtw1DAa1xtFZrZanFk3Z5Jws8XFs0gasFyF17XrZrtr45JF1fWay5KrWx
 	Z3Wjgwn3Ar4xGr1Un29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRC89MUUUUU
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRCHqcDUUUU
 X-Originating-IP: [101.86.11.106]
-X-CM-SenderInfo: 5vhq20jurqiii6rwjhhfrp/1tbiSBe8q2XAk1gLbQAAsA
+X-CM-SenderInfo: 5vhq20jurqiii6rwjhhfrp/1tbiKA+8q2XAk1Y-GgAAs1
 X-Mailman-Approved-At: Thu, 11 Apr 2024 08:13:29 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
