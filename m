@@ -1,115 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D5389E652
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 01:45:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6738389E7F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 03:54:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nAcjPDAW;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=c1GDUwlX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VDjHl4vB1z3vbW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 09:45:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VDm8l0xCqz3vf3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Apr 2024 11:54:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=nAcjPDAW;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=c1GDUwlX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2418::700; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on20700.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::700])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=lidong.zhong@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDjGt5r2vz3cGK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 09:44:19 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Xi+3pvDvOVxI5yXfdGGEQhgvZpb+NKDP96OnbU3lTPZxmfFJxuI72YaIEktEJdLDtS8dTtF5+dxEgaFKn9dpdjO0dGfgBdUOa0iRMybTAJeVRfTAu723wxZN6FbbR4/fv+4hjZHbdXrfr1wrOMiJgn62bIjnIYoHRGhsvcmWOZ0DUh1EMKip5LvYZSK8qCwlhCKukGFl9bPmD+CvaL6AGhFIXo6KD3cYeAz8rIprwihx3zLcPjOxaDtoLn2x8POp/Lj/0Ql5pUS4O3awxM4iUwrezebj4mEm0SO6zVxKCbAffkwddfFN9XfdJvllRi4M4vv9rl0tWRjlaERwjN/UOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZtYTOEh4QaWorr43L3gIXx64bhliZyCJB+XpBOpnfnY=;
- b=acpbnNMFSjuW2F/GF7XDJ2VI4xwM9sVYi7kcXFseCy5rM6Bser2UxfQtZHDM5PgFXLLakEAzgJOeLqARrZer0PydIAZh8YGsGIAzp8+sf40tFPy7EQMAcY+XRWEyfBrUJJyVZUbsz7GqvpmeQP7j4u6YnNB/c5B5w7g8tUWxQEljmAXWmaMTBFehxY+yfm4wZoDG4A9WvvE6ClJn3JlxB8HILipb0XM3QdU/s0OIosMVePW52tGx75UHawEnHdT3da11Wi0iqWS4x+SFGWTm5x0lyqUScllgEdZjWgL0jm3qISuW/mNiSZ0B87Z2iTqDAsMoajACRXBI2/r2UPpoiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZtYTOEh4QaWorr43L3gIXx64bhliZyCJB+XpBOpnfnY=;
- b=nAcjPDAW0kACTUv5lj0Y/8tRiH/b3l1rt3VC8DswdR/Y9x2JskqMcO5yof+yx1xoRzs+RhlUszlFJMCKFqKyGM/j3Z9wb53p6NMN3vUnPidrWJp8kWBmWhsqbEv05qZSU5gy8xb6InpN6aX8Jwi3muJRcFYzks21wyEutN1UQCgGFkrObwsw4KRhQyTuc72hx3p57wOaubPe21ByEu9vigKyRRkTW5xHDP/i7Xhz+6MMX/7z3FVNi1iMZkv6ZQTS6wX7tBsYQBNN8qqx5EPXlYxlBTm3L3Gnii4tQ8ort7+34j5WkmL0/JgoscbdAbCqcco4TbKwwTTrFdM3JxTocQ==
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by CY5PR12MB6371.namprd12.prod.outlook.com (2603:10b6:930:f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Tue, 9 Apr
- 2024 23:43:57 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::6aec:dbca:a593:a222%5]) with mapi id 15.20.7409.053; Tue, 9 Apr 2024
- 23:43:57 +0000
-Date: Tue, 9 Apr 2024 20:43:55 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v3 00/12] mm/gup: Unify hugetlb, part 2
-Message-ID: <20240409234355.GJ5383@nvidia.com>
-References: <20240321220802.679544-1-peterx@redhat.com>
- <20240322161000.GJ159172@nvidia.com>
- <ZgHJaJSpoeJVEccN@x1n>
- <20240326140252.GH6245@nvidia.com>
- <Zg8gEyE4o_VJsTmx@x1n>
- <20240405181633.GH5383@nvidia.com>
- <ZhBwVLyHr8WEKSx2@x1n>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZhBwVLyHr8WEKSx2@x1n>
-X-ClientProxiedBy: BL1PR13CA0252.namprd13.prod.outlook.com
- (2603:10b6:208:2ba::17) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VDlWX1kgRz3cGM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Apr 2024 11:25:25 +1000 (AEST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-a4702457ccbso796655966b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Apr 2024 18:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1712712318; x=1713317118; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qHskHxOjXRxdHV5MIwi98uE+vZrjMmV+/F7gXBcSf5Y=;
+        b=c1GDUwlXcoGdbzcAnyoF7lsZI1IXBXEgKHcUVDhJLUu0sw0gn6K5lE3kHLsFwYut2b
+         4IAcSsfcStOMN2SWMYPX7sx7DCNOpIFEtW7orcuFwR5Uix3O021AxgJMzzQMxsEpaBnW
+         Xzz/5PlweWcb+MkWCYLoNSy02K/cZgu6Vr/m/hHsBkORAqAbB5/ZDF4RjgUK0naNKuB7
+         Pvv3rxUUmU2HS53JT0mxtnGgCMOuX9dXAq+ctXt07aC1JXllYDacarOI1VdEhv2ma7tS
+         2qJzmc7PCLDMCM5b9zt8apJG1ri6VK8zN1UDGuaxFqYe6OYgM0WGbzqZRhyOx1Fsq6X/
+         PUfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712712318; x=1713317118;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qHskHxOjXRxdHV5MIwi98uE+vZrjMmV+/F7gXBcSf5Y=;
+        b=KHAglHpSVEPIOWWKXZbMX38Jlw1nfP8b8HcwEl9HkkLvIjQt5XBJWWm6V8pGPYReEG
+         GtDdD1+yU5j1pL6CiLIYTX5nYN9Ct8PwNpzBLRo/GTikT/mbn64OW0DeSodCkAtmfAxQ
+         EipiTTpT5Zs1ivJ89NH7dEOaRvvradaIU/aJjMEMfwjCyexwAVTBkSFjt10FD4/3kJqV
+         YbTrh6oFRUPLaIWG9nYSXE2hbk3KeCTtU1YLKJt4ovOxPeClcWjkSb4Qi8bzwGzz8ZCY
+         wNzVeSGcqaYcxYO4YraE4gxOGYgdMfMPycbvIh3pBEp+lKBEasxPbctjgxgO5dRhhOeh
+         85tA==
+X-Gm-Message-State: AOJu0YyORZ4YkqK3adsvJKf0YP5/2brlmJc3REBBEBiHEZjqXqYijOqc
+	HAGiIodMDJ3r0gOsjGN71DUUyyuVR1jOtSZGXQQeHsm4mDQ0yMp1JRS61fH9LKOanLoR9v3BwRQ
+	46N2bbVW4vAWyt0EgpI0LES6zI/9wDTV5BBzREg==
+X-Google-Smtp-Source: AGHT+IEpFBKM11qVgrl9H2TVPciwm8Tex3+9hr6fILkDzZYUkTV/MUEmIRE2iPxF92gYnzC/5BLSd0hV2I/h1QjnlKA=
+X-Received: by 2002:a17:907:7890:b0:a51:bed9:2ca9 with SMTP id
+ ku16-20020a170907789000b00a51bed92ca9mr680033ejc.54.1712712318151; Tue, 09
+ Apr 2024 18:25:18 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|CY5PR12MB6371:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	iXQTxovTY807gc9Dbk5H0zd9d0njVbKMhGDXOQQ6ZTfgqyaFPOgiRx4Mm4bl0xB8/31350HIhR084ItECUUS9eEcpvJqW3JxtpmM59l+Nu2rQCGLcq4OISstEP3jYYHjaDUN8g5XVvgfMUvzafeYWdwIrDNHzODw8jTGuwRjiYTmswad9tTkbQmFH8XKGqebBpVt/IcchePxCyZcJ6YmacEx5O4zWVPpkfj3gBLD8YVroioVW8QUWelKirZsM3CD6Kml3GZsn5G6nNUhqMG88wk/GJRjfobkkcxRAGqR0BsiyBXIA6j95P7wnfrNs07dGJbcKq51rcL3V6CjHtoEJRIIKQGqVMyvHKxdb1ikHXTH7dmFZA+uWT3b8biLb0OfshoICsnk0pZLix2Q8FALh1vvX/Y6OB61pAR2koybkQimnh5CCHlf/RmEfnTxIYkeUQIe2CoBvUnmsfTJEQ8H2Olwuijj2tn0a7t26qisAnGPCwrBOrP0RZGSz7czl0awcF4UB4aH4Ba02cVp/JkguACxwR2bRXlWx1VStVtu52JNseiF73W3+DGuGK5BXNlooS3TDobd+CE4AgVZlKDeLiYr9rGDnhWKgjts2A/J2Wb2BH8XY81uonrjBpgM/v5lL6OzW9Hch0PRZqIzzcx9cburqln0VWUxWN25AOVSMnI=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(7416005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?LsbAex/tFaOhbX5oXZtD2xnKSHaLeub2PpPUmpl9Y4EinNTpaBVG8vnUJOWG?=
- =?us-ascii?Q?e/y7V8hJtgWVDC0rkXlLnKpc4TtC+9zKlae4wCl+pXU85lIFDQP9seYfJLYF?=
- =?us-ascii?Q?oEANW1pktsvHbr6OZlSh8TkvzUGe6e/jJG6J6c9OJQjl3yAZKkRj2KAmAGuC?=
- =?us-ascii?Q?7DWJR4SyjRGOln34+eJDGyo8OkRjSfnSmjkvn9UnXoTMqdzh8c08s1CVxqin?=
- =?us-ascii?Q?piyxmajEGbJ8xSYtlc0qHVZZT9r4PqnZazYJUu3h2sFb8WULeXkEcjRn+2/T?=
- =?us-ascii?Q?CL+wwDvuFk6ycyTyatRwdWkvZoR0xMP+3nqLp/aiLN1nJxiRf4EKH5BK0F5K?=
- =?us-ascii?Q?+O7CmocJ4fIGpWNwXj/2sDYpUykq58u2jZGwxFlvEpxy3/Fg95YGadeOowqC?=
- =?us-ascii?Q?J+RRMpxr0mF3gqyrSxQ6lu/QEgIMXeedjrl4a0tO6kmQqs+93a3I2lKgHdGw?=
- =?us-ascii?Q?tHUTHInOH6556qlhkMptj5KeK2r92pPeG1U5+zY0NlgaGexxpnT7/GJWW6TR?=
- =?us-ascii?Q?q+3WGX1ffFsk2yQAXMuvYVBDewEWi+zUKnHdxpxa1CMK0hqJyqdzUb3K7VrJ?=
- =?us-ascii?Q?aWW/9BqXWMPBJT/7M4mNzozLBLiKipDlaQ4C4nq/UJuj8XfMWsvUf4O+Styo?=
- =?us-ascii?Q?aEM9YwlIG4AzxxV65ZXH5BFJ0mSMo/rQpd++4tWJth8cLrfMwhUvgTl+exbk?=
- =?us-ascii?Q?SjKlTW7yGaKIIIUAM35bfS7SVK4W7J4l+D5ymCFCH8M6QIgEM5ZlTU7hwL/m?=
- =?us-ascii?Q?E++4/wtyRULEQd04V1YCuUZYMEX1+8NzhrE2eOuOoNMle0O3+c/qPvXv125V?=
- =?us-ascii?Q?niP47nXoiMGXvSd9+GyYUnNkuwfiiXa9bqEXTRdwtAp2zNerQslFSA9j48yO?=
- =?us-ascii?Q?0iWeN6EroSDCvRyhpTrj5HFTtpwjaCCglGLgXYe68aOxiDLqmXHuw/1f7NzZ?=
- =?us-ascii?Q?ER4NULBHpqZW/H77fQLVa3KpkFueTW0qCMAaxz+2zEMC/WZwzSJnh6cc6wpg?=
- =?us-ascii?Q?n2iVCPxpVhLcNm6LNkPBKDpcaemM65as+I39xolAOodWS0sVi02NmxWG95KC?=
- =?us-ascii?Q?J48e5+W/77mvgrt8p/1edxo10TGzDdBSUj6fqojnZaDjGVeaQa5j/l7mRIgT?=
- =?us-ascii?Q?YtW5amIZHFu1ScXv7QvJ8JUMuLKNyznJPJdNikPmoFc9Z3FKoAuwRo5FFkzA?=
- =?us-ascii?Q?iziyqOneDlKtDUTooHdz+6xef+7poKlK1II4pe4VCX0xj9/3U/8XwSMNRKlX?=
- =?us-ascii?Q?TcaQNtPGsdwlAcj9ZqrZq+7V9FS5MBHoN3oHgIPv4X1pi531SZUmJEAiMuvP?=
- =?us-ascii?Q?laDiXae2IQ1TM1+QqUu/Taey/VgL0nJya/bbhVQu6XU1p4NiIOZ8BitSojst?=
- =?us-ascii?Q?iXuUC1TEBRedIsRztPhmsrARqVSkLxjmuJrEvbnGHPVMDfkXz26fvgLAtSPr?=
- =?us-ascii?Q?yKaQLoVnWrBmbcqfaf1OF4dse5IietzKQddHb/62jAYx/USjB0FD7vL/PMBH?=
- =?us-ascii?Q?DT2+xLhhAtDQE4+/Ho/512dmzC9N4te2pdMA4wHNbAXfSISUOsAxb9UM/m8S?=
- =?us-ascii?Q?ihV6z0q3kuX/QAwP5flrKN0tCFCiLbrObP4TA0aC?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85e3d269-d78b-41b7-d9ce-08dc58eeec68
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2024 23:43:57.2831
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W8tC1X3VQ0gDilRgFzcj7VTWoVsSZCmOuOX+sy3uB0ahEU1M7HHxIrKg+VfaSHQA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6371
+References: <20240323084737.12986-1-lidong.zhong@suse.com> <877ch6c4af.fsf@mail.lhotse>
+In-Reply-To: <877ch6c4af.fsf@mail.lhotse>
+From: Lidong Zhong <lidong.zhong@suse.com>
+Date: Wed, 10 Apr 2024 09:25:06 +0800
+Message-ID: <CANzB8FRRKh=r8ByUxhyXu3jiLf_CcKm+wN4_GfZDiVQ6g3b4KA@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/pseries: remove returning ENODEV when uevent is triggered
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: multipart/alternative; boundary="000000000000538d020615b3e9aa"
+X-Mailman-Approved-At: Wed, 10 Apr 2024 11:53:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,69 +75,393 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Yang Shi <shy828301@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, linux-mm@kvack.org, linux-riscv@lists.infradead.org, Andrea Arcangeli <aarcange@redhat.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, linux-arm-kernel@lists.infradead.org, Axel Rasmussen <axelrasmussen@google.com>, Rik van Riel <riel@surriel.com>, John Hubbard <jhubbard@nvidia.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 05, 2024 at 05:42:44PM -0400, Peter Xu wrote:
-> In short, hugetlb mappings shouldn't be special comparing to other huge pXd
-> and large folio (cont-pXd) mappings for most of the walkers in my mind, if
-> not all.  I need to look at all the walkers and there can be some tricky
-> ones, but I believe that applies in general.  It's actually similar to what
-> I did with slow gup here.
+--000000000000538d020615b3e9aa
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I think that is the big question, I also haven't done the research to
-know the answer.
+Hi Michael,
 
-At this point focusing on moving what is reasonable to the pXX_* API
-makes sense to me. Then reviewing what remains and making some
-decision.
+Thanks for your reply.
 
-> Like this series, for cont-pXd we'll need multiple walks comparing to
-> before (when with hugetlb_entry()), but for that part I'll provide some
-> performance tests too, and we also have a fallback plan, which is to detect
-> cont-pXd existance, which will also work for large folios.
+On Tue, Apr 9, 2024 at 4:46=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.au=
+> wrote:
 
-I think we can optimize this pretty easy.
- 
-> > I think if you do the easy places for pXX conversion you will have a
-> > good idea about what is needed for the hard places.
-> 
-> Here IMHO we don't need to understand "what is the size of this hugetlb
-> vma"
+> Hi Lidong,
+>
+> Thanks for the patch.
+>
+> I'm not an expert on udev etc. so apologies if any of these questions
+> are stupid.
+>
+> Lidong Zhong <lidong.zhong@suse.com> writes:
+> > We have noticed the following nuisance messages during boot
+> >
+> > [    7.120610][ T1060] vio vio: uevent: failed to send synthetic uevent
+> > [    7.122281][ T1060] vio 4000: uevent: failed to send synthetic ueven=
+t
+> > [    7.122304][ T1060] vio 4001: uevent: failed to send synthetic ueven=
+t
+> > [    7.122324][ T1060] vio 4002: uevent: failed to send synthetic ueven=
+t
+> > [    7.122345][ T1060] vio 4004: uevent: failed to send synthetic ueven=
+t
+> >
+> > It's caused by either vio_register_device_node() failed to set
+> dev->of_node or
+> > the missing "compatible" property. Try return as much information as
+> possible
+> > instead of a failure.
+>
+> Does udev etc. cope with that? Can we just change the content of the
+> MODALIAS value like that?
+>
+> With this patch we'll start emitting uevents for devices we previously
+> didn't. I guess that's OK because nothing is expecting them?
+>
+> Can you include a log of udev showing the event firing and that nothing
+> breaks.
+>
+> On my system here I see nothing matches the devices except for libvpd,
+> which seems to match lots of things.
+>
 
-Yeh, I never really understood why hugetlb was linked to the VMA.. The
-page table is self describing, obviously.
+It's an issue reported by our customer. I am sorry I can't provide more
+information because I  don't have the environment
+to reproduce this issue. The only related log I got is shown below:
 
-> or "which level of pgtable does this hugetlb vma pages locate",
+Feb 07 14:08:03 rb3i0060 udevadm[623]: vio: Failed to write 'add' to
+'/sys/devices/vio/uevent', ignoring: No such device
 
-Ditto
+Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /devices/vio: failed to send
+uevent
 
-> because we may not need that, e.g., when we only want to collect some smaps
-> statistics.  "whether it's hugetlb" may matter, though. E.g. in the mm
-> walker we see a huge pmd, it can be a thp, it can be a hugetlb (when
-> hugetlb_entry removed), we may need extra check later to put things into
-> the right bucket, but for the walker itself it doesn't necessarily need
-> hugetlb_entry().
+Feb 07 14:08:03 rb3i0060 kernel: vio vio: uevent: failed to send synthetic
+uevent
 
-Right, places may still need to know it is part of a huge VMA because we
-have special stuff linked to that.
+Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /devices/vio/4000: failed to
+send uevent
 
-> > But then again we come back to power and its big list of page sizes
-> > and variety :( Looks like some there have huge sizes at the pgd level
-> > at least.
-> 
-> Yeah this is something I want to be super clear, because I may miss
-> something: we don't have real pgd pages, right?  Powerpc doesn't even
-> define p4d_leaf(), AFAICT.
+Feb 07 14:08:03 rb3i0060 kernel: vio 4000: uevent: failed to send synthetic
+uevent
 
-AFAICT it is because it hides it all in hugepd.
+Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /devices/vio/4001: failed to
+send uevent
 
-If the goal is to purge hugepd then some of the options might turn out
-to convert hugepd into huge p4d/pgd, as I understand it. It would be
-nice to have certainty on this at least.
+Feb 07 14:08:03 rb3i0060 kernel: vio 4001: uevent: failed to send synthetic
+uevent
 
-We have effectively three APIs to parse a single page table and
-currently none of the APIs can return 100% of the data for power.
+Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /devices/vio/4002: failed to
+send uevent
 
-Jason
+Feb 07 14:08:03 rb3i0060 kernel: vio 4002: uevent: failed to send synthetic
+uevent
+
+Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /devices/vio/4004: failed to
+send uevent
+
+Feb 07 14:08:03 rb3i0060 kernel: vio 4004: uevent: failed to send synthetic
+uevent
+
+Feb 07 14:08:03 rb3i0060 udevadm[623]: 4000: Failed to write 'add' to
+'/sys/devices/vio/4000/uevent', ignoring: No such device
+
+Feb 07 14:08:03 rb3i0060 udevadm[623]: 4001: Failed to write 'add' to
+'/sys/devices/vio/4001/uevent', ignoring: No such device
+
+Feb 07 14:08:03 rb3i0060 udevadm[623]: 4002: Failed to write 'add' to
+'/sys/devices/vio/4002/uevent', ignoring: No such device
+
+Feb 07 14:08:03 rb3i0060 udevadm[623]: 4004: Failed to write 'add' to
+'/sys/devices/vio/4004/uevent', ignoring: No such device
+
+systemd-udev-trigger service calls 'udevadm trigger --type=3Ddevices
+--action=3Dadd' and kernel returns -ENODEV because either
+dev->of_node is NULL or 'compatible' property is not present.  Similar
+cases were already reported after some search, for example
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1827162
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1845319
+I don't think it causes real problems but confusion to users.
+
+
+> > diff --git a/arch/powerpc/platforms/pseries/vio.c
+> b/arch/powerpc/platforms/pseries/vio.c
+> > index 90ff85c879bf..62961715ca24 100644
+> > --- a/arch/powerpc/platforms/pseries/vio.c
+> > +++ b/arch/powerpc/platforms/pseries/vio.c
+> > @@ -1593,12 +1593,13 @@ static int vio_hotplug(const struct device *dev=
+,
+> struct kobj_uevent_env *env)
+> >
+> >       dn =3D dev->of_node;
+> >       if (!dn)
+> > -             return -ENODEV;
+> > +             goto out;
+> >       cp =3D of_get_property(dn, "compatible", NULL);
+> >       if (!cp)
+> > -             return -ENODEV;
+> > -
+> > -     add_uevent_var(env, "MODALIAS=3Dvio:T%sS%s", vio_dev->type, cp);
+> > +             add_uevent_var(env, "MODALIAS=3Dvio:T%s", vio_dev->type);
+>
+> If it's OK to skip the compatible property then we don't need the
+> of_node at all, and we could always emit this, even when of_node is not
+> available.
+>
+
+You mean something like this?
+@@ -1592,13 +1592,10 @@ static int vio_hotplug(const struct device *dev,
+struct kobj_uevent_env *env)
+        const char *cp;
+
+        dn =3D dev->of_node;
+-       if (!dn)
+-               return -ENODEV;
+-       cp =3D of_get_property(dn, "compatible", NULL);
+-       if (!cp)
+-               return -ENODEV;
+-
+-       add_uevent_var(env, "MODALIAS=3Dvio:T%sS%s", vio_dev->type, cp);
++       if (dn && (cp =3D of_get_property(dn, "compatible", NULL))
++               add_uevent_var(env, "MODALIAS=3Dvio:T%sS%s", vio_dev->type,
+cp);
++       else
++               add_uevent_var(env, "MODALIAS=3Dvio:T%s", vio_dev->type);
+        return 0;
+
+
+>
+> > +    else
+> > +             add_uevent_var(env, "MODALIAS=3Dvio:T%sS%s", vio_dev->typ=
+e,
+> cp);
+> > +out:
+> >       return 0;
+> >  }
+>
+> I think we also should update the vio modalias_show() to follow the same
+> logic, otherwise the uevent MODALIAS value and the modalias file won't
+> match which is confusing.
+>
+> Preferably vio_hotplug() and modalias_show() would just call a common
+> helper.
+>
+> cheers
+>
+
+Thanks for the suggestion. I'll send a v2 patch.
+
+
+--=20
+Regards,
+Lidong Zhong
+
+--000000000000538d020615b3e9aa
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi Michael,</div><div><br></div><div>Thanks for your =
+reply.=C2=A0</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"=
+gmail_attr">On Tue, Apr 9, 2024 at 4:46=E2=80=AFPM Michael Ellerman &lt;<a =
+href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au</a>&gt; wrote:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Lidong,<br>
+<br>
+Thanks for the patch.<br>
+<br>
+I&#39;m not an expert on udev etc. so apologies if any of these questions<b=
+r>
+are stupid.<br>
+<br>
+Lidong Zhong &lt;<a href=3D"mailto:lidong.zhong@suse.com" target=3D"_blank"=
+>lidong.zhong@suse.com</a>&gt; writes:<br>
+&gt; We have noticed the following nuisance messages during boot<br>
+&gt;<br>
+&gt; [=C2=A0 =C2=A0 7.120610][ T1060] vio vio: uevent: failed to send synth=
+etic uevent<br>
+&gt; [=C2=A0 =C2=A0 7.122281][ T1060] vio 4000: uevent: failed to send synt=
+hetic uevent<br>
+&gt; [=C2=A0 =C2=A0 7.122304][ T1060] vio 4001: uevent: failed to send synt=
+hetic uevent<br>
+&gt; [=C2=A0 =C2=A0 7.122324][ T1060] vio 4002: uevent: failed to send synt=
+hetic uevent<br>
+&gt; [=C2=A0 =C2=A0 7.122345][ T1060] vio 4004: uevent: failed to send synt=
+hetic uevent<br>
+&gt;<br>
+&gt; It&#39;s caused by either vio_register_device_node() failed to set dev=
+-&gt;of_node or<br>
+&gt; the missing &quot;compatible&quot; property. Try return as much inform=
+ation as possible<br>
+&gt; instead of a failure.<br>
+<br>
+Does udev etc. cope with that? Can we just change the content of the<br>
+MODALIAS value like that?<br>
+<br>
+With this patch we&#39;ll start emitting uevents for devices we previously<=
+br>
+didn&#39;t. I guess that&#39;s OK because nothing is expecting them?<br>
+<br>
+Can you include a log of udev showing the event firing and that nothing<br>
+breaks.<br>
+<br>
+On my system here I see nothing matches the devices except for libvpd,<br>
+which seems to match lots of things.<br></blockquote><div><br></div><div>It=
+&#39;s an issue reported by our customer. I am sorry I can&#39;t provide mo=
+re information because I=C2=A0 don&#39;t have the environment</div><div>to =
+reproduce this issue. The only related log I got is shown below:</div><div>=
+<br></div><div>Feb 07 14:08:03 rb3i0060 udevadm[623]: vio: Failed to write =
+&#39;add&#39; to &#39;/sys/devices/vio/uevent&#39;, ignoring: No such devic=
+e =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>Feb 07 14:08:03 rb3i0060 kernel: syn=
+th uevent: /devices/vio: failed to send uevent =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0</d=
+iv><div>Feb 07 14:08:03 rb3i0060 kernel: vio vio: uevent: failed to send sy=
+nthetic uevent =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>Feb 07 14:08:03 rb3i0060 kerne=
+l: synth uevent: /devices/vio/4000: failed to send uevent =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>Feb 07 14=
+:08:03 rb3i0060 kernel: vio 4000: uevent: failed to send synthetic uevent =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 <br>Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /de=
+vices/vio/4001: failed to send uevent =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>Feb 07 14:08:03 rb3i0060 k=
+ernel: vio 4001: uevent: failed to send synthetic uevent =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 <br>Feb 07 14:08:03 rb3i0060 kernel: synth uevent: /devices/vio/4002: f=
+ailed to send uevent =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0<br>Feb 07 14:08:03 rb3i0060 kernel: vio 4002: u=
+event: failed to send synthetic uevent =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>Feb 07 14:0=
+8:03 rb3i0060 kernel: synth uevent: /devices/vio/4004: failed to send ueven=
+t =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0<br>Feb 07 14:08:03 rb3i0060 kernel: vio 4004: uevent: failed to send=
+ synthetic uevent =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>Feb 07 14:08:03 rb3i0060 udevadm=
+[623]: 4000: Failed to write &#39;add&#39; to &#39;/sys/devices/vio/4000/ue=
+vent&#39;, ignoring: No such device =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>Feb 07 14:08:03 rb3i00=
+60 udevadm[623]: 4001: Failed to write &#39;add&#39; to &#39;/sys/devices/v=
+io/4001/uevent&#39;, ignoring: No such device =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>Feb 07 14:0=
+8:03 rb3i0060 udevadm[623]: 4002: Failed to write &#39;add&#39; to &#39;/sy=
+s/devices/vio/4002/uevent&#39;, ignoring: No such device =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>F=
+eb 07 14:08:03 rb3i0060 udevadm[623]: 4004: Failed to write &#39;add&#39; t=
+o &#39;/sys/devices/vio/4004/uevent&#39;, ignoring: No such device=C2=A0<br=
+></div><div><br></div><div>systemd-udev-trigger service calls &#39;udevadm =
+trigger --type=3Ddevices --action=3Dadd&#39; and kernel returns -ENODEV bec=
+ause either=C2=A0<br></div><div>dev-&gt;of_node is NULL or &#39;compatible&=
+#39; property is not present.=C2=A0 Similar cases were already reported aft=
+er some search, for example</div><div><a href=3D"https://bugs.launchpad.net=
+/ubuntu/+source/linux/+bug/1827162">https://bugs.launchpad.net/ubuntu/+sour=
+ce/linux/+bug/1827162</a><br></div><div><a href=3D"https://bugs.launchpad.n=
+et/ubuntu/+source/linux/+bug/1845319">https://bugs.launchpad.net/ubuntu/+so=
+urce/linux/+bug/1845319</a><br></div><div>I don&#39;t think it causes real =
+problems but confusion to users.<br></div><div><br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
+<br>
+&gt; diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platf=
+orms/pseries/vio.c<br>
+&gt; index 90ff85c879bf..62961715ca24 100644<br>
+&gt; --- a/arch/powerpc/platforms/pseries/vio.c<br>
+&gt; +++ b/arch/powerpc/platforms/pseries/vio.c<br>
+&gt; @@ -1593,12 +1593,13 @@ static int vio_hotplug(const struct device *de=
+v, struct kobj_uevent_env *env)<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0dn =3D dev-&gt;of_node;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!dn)<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -ENODEV;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto out;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0cp =3D of_get_property(dn, &quot;compatible&=
+quot;, NULL);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!cp)<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -ENODEV;<br>
+&gt; -<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0add_uevent_var(env, &quot;MODALIAS=3Dvio:T%sS%s&q=
+uot;, vio_dev-&gt;type, cp);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0add_uevent_var(env, &=
+quot;MODALIAS=3Dvio:T%s&quot;, vio_dev-&gt;type);<br>
+<br>
+If it&#39;s OK to skip the compatible property then we don&#39;t need the<b=
+r>
+of_node at all, and we could always emit this, even when of_node is not<br>
+available.<br></blockquote><div><br></div><div>You mean something like this=
+?</div>@@ -1592,13 +1592,10 @@ static int vio_hotplug(const struct device *=
+dev, struct kobj_uevent_env *env)<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 const char=
+ *cp;<br>=C2=A0<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 dn =3D dev-&gt;of_node;<br>-=
+ =C2=A0 =C2=A0 =C2=A0 if (!dn)<br>- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 return -ENODEV;<br>- =C2=A0 =C2=A0 =C2=A0 cp =3D of_get_property=
+(dn, &quot;compatible&quot;, NULL);<br>- =C2=A0 =C2=A0 =C2=A0 if (!cp)<br>-=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -ENODEV;<br>-<br>-=
+ =C2=A0 =C2=A0 =C2=A0 add_uevent_var(env, &quot;MODALIAS=3Dvio:T%sS%s&quot;=
+, vio_dev-&gt;type, cp);<br>+ =C2=A0 =C2=A0 =C2=A0 if (dn &amp;&amp; (cp =
+=3D of_get_property(dn, &quot;compatible&quot;, NULL))<br>+ =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 add_uevent_var(env, &quot;MODALIAS=3Dvio=
+:T%sS%s&quot;, vio_dev-&gt;type, cp);<br>+ =C2=A0 =C2=A0 =C2=A0 else<br>+ =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 add_uevent_var(env, &quot;=
+MODALIAS=3Dvio:T%s&quot;, vio_dev-&gt;type);<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ return 0;<br><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
+:1ex">
+<br>
+&gt; +=C2=A0 =C2=A0 else<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0add_uevent_var(env, &=
+quot;MODALIAS=3Dvio:T%sS%s&quot;, vio_dev-&gt;type, cp);<br>
+&gt; +out:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;<br>
+&gt;=C2=A0 }<br>
+<br>
+I think we also should update the vio modalias_show() to follow the same<br=
+>
+logic, otherwise the uevent MODALIAS value and the modalias file won&#39;t<=
+br>
+match which is confusing.<br>
+<br>
+Preferably vio_hotplug() and modalias_show() would just call a common<br>
+helper.<br>
+<br>
+cheers<br>
+</blockquote></div><br clear=3D"all"><div>Thanks for the suggestion. I&#39;=
+ll send a v2 patch.</div><div><br></div><div><br></div><span class=3D"gmail=
+_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"=
+><div dir=3D"ltr">Regards,<div>Lidong Zhong</div></div></div></div>
+
+--000000000000538d020615b3e9aa--
