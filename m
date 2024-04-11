@@ -1,53 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61538A097B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:16:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBEB8A097E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:16:56 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PoTjX5JU;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFWFr3sG7z3vcT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:16:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFWGZ35cdz3vdj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:16:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PoTjX5JU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFWF10jkcz3vY0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:15:33 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ruoeG-0003hE-DG; Thu, 11 Apr 2024 09:15:04 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ruoeF-00Bdrr-Mg; Thu, 11 Apr 2024 09:15:03 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ruoeF-000PVS-1v;
-	Thu, 11 Apr 2024 09:15:03 +0200
-Date: Thu, 11 Apr 2024 09:15:03 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Corey Minyard <minyard@acm.org>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Joel Stanley <joel@jms.id.au>, Avi Fishman <avifishman70@gmail.com>, 
-	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>
-Subject: Re: [PATCH 0/6] ipmi: Convert to platform remove callback returning
- void
-Message-ID: <3uhfeeahn2u23mxyumyxcyx4kmcxzczipkan7eqh4aslsmhxyz@zgsmwj2jvb2v>
-References: <cover.1709655755.git.u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFWFW4lptz3vZt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:15:59 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 59E14CE2F2D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 07:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988BDC43399
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 07:15:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712819756;
+	bh=EGxUFWIY3FhDr3OERYjKXmTSAvHQ47fM+usiXa4A2Co=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PoTjX5JUmRzsaa0P9y56kJydskXtPGFPN262bWdaHgDQod2o3roC0PZCNerABsCwG
+	 bfYoknQIk2nufau511D9CeAz99/c+XBDYy9O7yS9Z1jFNFtUA7xvKQxJ/mBKdpOcAQ
+	 8oBKA5LroCCkdcvSrmvcnHz8S4wEMgGzlbJBgQOBAwfoqFEvq51qHBY4tBRmieeKdp
+	 K1V/z2yZw+dZ7cxWukX9RlSxbg26oONq6miKxZS20ViA44IL5h1YPGHEH4QM1NDmps
+	 q4uBHpt3fB7RefgLPmbmEkh8QFaXUgnwKcsoM6Ruke9SxJbcWtDtjMPnbo5XIn7C6E
+	 5gAsmHwkNvlMw==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d48d75ab70so102290651fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 00:15:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7Wt8oLNok3rBG17Z/oB/uuSf3YRi4pqeYNnnI7P/1LohehijsjJ3N5zQGTlHdeiNhUyN31jTeXv/jPjOJKdoSm1SorblDc0435ubKvg==
+X-Gm-Message-State: AOJu0Yzp6fNRUeNEERC0wdw/BaS8czwi5/FE8Xzy06CaUG42EXcSxuzr
+	mmu4seepX7uNaaOx+5GDhHGMJTDgA+f8EZbIFPiBUoL77yvate0QZJ0jTUDL4rk3pC0dLFIXrlc
+	VDMyTbXopU81SjcOfGoE1kCoRLJ8=
+X-Google-Smtp-Source: AGHT+IEIbzlNGUw7dH6rrBUAPRiam7orrjfOi6n1jf8KoAxJeALyXjve8wFV4wHUyAY7FtZhkFPztybk10CRfm7afS8=
+X-Received: by 2002:a05:651c:211e:b0:2d8:d8b5:73d4 with SMTP id
+ a30-20020a05651c211e00b002d8d8b573d4mr2830394ljq.4.1712819754902; Thu, 11 Apr
+ 2024 00:15:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lcngjfs7wpvalyyt"
-Content-Disposition: inline
-In-Reply-To: <cover.1709655755.git.u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+References: <20240329072441.591471-1-samuel.holland@sifive.com>
+ <20240329072441.591471-14-samuel.holland@sifive.com> <87wmp4oo3y.fsf@linaro.org>
+ <75a37a4b-f516-40a3-b6b5-4aa1636f9b60@sifive.com> <87wmp4ogoe.fsf@linaro.org> <4c8e63d6-ba33-47fe-8150-59eba8babf2d@sifive.com>
+In-Reply-To: <4c8e63d6-ba33-47fe-8150-59eba8babf2d@sifive.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 11 Apr 2024 09:15:43 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGW5XQxXrYaPhT6sCjH7s0EwqzNjWies3b8UWnUBW5Ngw@mail.gmail.com>
+Message-ID: <CAMj1kXGW5XQxXrYaPhT6sCjH7s0EwqzNjWies3b8UWnUBW5Ngw@mail.gmail.com>
+Subject: Re: [PATCH v4 13/15] drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
+To: Samuel Holland <samuel.holland@sifive.com>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +70,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Fair <benjaminfair@google.com>, linux-aspeed@lists.ozlabs.org, Patrick Venture <venture@google.com>, openbmc@lists.ozlabs.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nancy Yuen <yuenn@google.com>, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, openipmi-developer@lists.sourceforge.net, Andrew Jeffery <andrew@codeconstruct.com.au>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, Thiago Jung Bauermann <thiago.bauermann@linaro.org>, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@lst.de>, loongarch@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+(cc Arnd)
 
---lcngjfs7wpvalyyt
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, 11 Apr 2024 at 03:11, Samuel Holland <samuel.holland@sifive.com> wrote:
+>
+> Hi Thiago,
+>
+> On 2024-04-10 8:02 PM, Thiago Jung Bauermann wrote:
+> > Samuel Holland <samuel.holland@sifive.com> writes:
+> >> On 2024-04-10 5:21 PM, Thiago Jung Bauermann wrote:
+> >>>
+> >>> Unfortunately this patch causes build failures on arm with allyesconfig
+> >>> and allmodconfig. Tested with next-20240410.
+> >
+> > <snip>
+> >
+> >> In both cases, the issue is that the toolchain requires runtime support to
+> >> convert between `unsigned long long` and `double`, even when hardware FP is
+> >> enabled. There was some past discussion about GCC inlining some of these
+> >> conversions[1], but that did not get implemented.
+> >
+> > Thank you for the explanation and the bugzilla reference. I added a
+> > comment there mentioning that the problem came up again with this patch
+> > series.
+> >
+> >> The short-term fix would be to drop the `select ARCH_HAS_KERNEL_FPU_SUPPORT` for
+> >> 32-bit arm until we can provide these runtime library functions.
+> >
+> > Does this mean that patch 2 in this series:
+> >
+> > [PATCH v4 02/15] ARM: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+> >
+> > will be dropped?
+>
+> No, because later patches in the series (3, 6) depend on the definition of
+> CC_FLAGS_FPU from that patch. I will need to send a fixup patch unless I can
+> find a GPL-2 compatible implementation of the runtime library functions.
+>
 
-Hello,
+Is there really a point to doing that? Do 32-bit ARM systems even have
+enough address space to the map the BARs of the AMD GPUs that need
+this support?
 
-On Tue, Mar 05, 2024 at 05:26:57PM +0100, Uwe Kleine-K=F6nig wrote:
-> this series converts all drivers below drivers/char/ipmi to struct
-> platform_driver::remove_new(). See commit 5c5a7680e67b ("platform: Provid=
-e a
-> remove callback that returns no value") for an extended explanation and t=
-he
-> eventual goal.
->=20
-> All conversations are trivial, because their .remove() callbacks
-> returned zero unconditionally.
->=20
-> There are no interdependencies between these patches, so they could be
-> picked up individually. But I'd hope that they get picked up all
-> together by Corey.
+Given that this was not enabled before, I don't think the upshot of
+this series should be that we enable support for something on 32-bit
+ARM that may cause headaches down the road without any benefit.
 
-Apart from a (positive) review reply I didn't get any feedback to this
-series. My quest to change the prototype of struct
-platform_driver::remove depends on these patches, so it would be great
-if they made it in during the next merge window.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---lcngjfs7wpvalyyt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmYXjfYACgkQj4D7WH0S
-/k5niAgApNMQneCEXf2z/4f0oMw7n29zB1VBA8XqNBe8gywAwtS/EIYj+LTG2anz
-YAwL1f4zIxTxn3XvSroSLY1oQXVdCEXgVOUaBzmBdDqhcp71M1+RiQ1ihROhFN/7
-LoWdNpmjMSZKGe53xy2t0uFeIOQ0GhS5POyZ+YMN/MCbTXwqO2BhEJFKOVf13oDT
-gtDaoLPom1R/TIqsVXzjj9qq9r68Lgt21ELjpu4dAr9ZElsiezenS67LKWMgbqTq
-o5oupsG/zwlOSYmOeXKWo/CuIVBwXMbQwKIzuRZc32zDJhVD5U4F0h0F/tAgMsTB
-z2FsEhWmTytqEVPVdMij2fk7MuaICw==
-=MgkB
------END PGP SIGNATURE-----
-
---lcngjfs7wpvalyyt--
+So I'd prefer a fixup patch that opts ARM out of this over adding
+support code for 64-bit conversions.
