@@ -2,67 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C378C8A0984
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD5D8A09D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:32:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MkzPdBdB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=fAFRq2a4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=DzSFGGOr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFWHM42pdz3vjs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:17:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFWcb28d4z3vZl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:32:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MkzPdBdB;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=fAFRq2a4;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=DzSFGGOr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.156; helo=wfhigh5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFWGF72p4z3vcC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:16:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712819798; x=1744355798;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1xYOPTuqtpTLVmhwlopOxLtF8xWMfDY79SUp6Zprkhs=;
-  b=MkzPdBdB3NxuwVQ6nGHjpdq6X8byemltSKc4uJuoXmrl4cOfSNHVGKwN
-   BuUFzgWgiCc/2zd7R8gl1c0GxmxgMTtQCkYTecV3Kr/Z/nLbvKWw6Inp/
-   5t9USO34S1555GAeWaYxtqnHGy1sqJv9j4e9XKp1IlD0ev7PetfHiBDXa
-   Ko/NsSnLbBUEA/WCvQEva6zjFWC6qu4Ybpo5BwmV+d9hw/N9xMHH7Sxtj
-   gvdD+/Kx4OqNQ/jseUo9NwCBE8VAg2uWoL+G56vGLcubML/W32ZOMc7a8
-   nbz3YmSSQRo6T26h/tL3R8GF7xYF6VeN2XTdIl+SLzsrJAsKZaZenDgbh
-   Q==;
-X-CSE-ConnectionGUID: v+zrGy7VRimRybu8JPUQCQ==
-X-CSE-MsgGUID: 9s41envOQmSs0+TrE4eSpg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="33614641"
-X-IronPort-AV: E=Sophos;i="6.07,192,1708416000"; 
-   d="scan'208";a="33614641"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 00:16:33 -0700
-X-CSE-ConnectionGUID: 9K0+1AyfRha/RGU+uETIcQ==
-X-CSE-MsgGUID: gRrxQhn1TSy0zaj59tdxaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,192,1708416000"; 
-   d="scan'208";a="20894302"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.251.215.66])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 00:16:20 -0700
-Message-ID: <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
-Date: Thu, 11 Apr 2024 10:16:16 +0300
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFWbr6nSkz3cxn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:31:52 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 81E2218000CB;
+	Thu, 11 Apr 2024 03:31:48 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 11 Apr 2024 03:31:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1712820708; x=1712907108; bh=ss9obh18Sk
+	iQHEXzh7qcLFdvdlxpa80B0Z7MJyyJWOs=; b=fAFRq2a4RR5m0uoGjxvbSDZhhg
+	XBLt22beIqBHO1PhCVLZIYorAfbGnpIs6i0KjnrNMag6CtHF8mAtIX4+g4JkM/y4
+	oNakw3qvrAtMITJTRe3dP5XCRbSlUNRMtgb+FJogTSdTceTcdRzappHrax+eWmGC
+	C48KZTiW2+745Tpmz56zPJgFu5sXmnDOXQgOHhBxECqtppJaW42Os3TNEDRkpPfI
+	7xKy28dP14Q+rdv1IglqoN1MM2Wo71oJ88dpxu76wssTF5yL3dssA5ZNSuq2aEsa
+	sQ7EBo/MLbjI9e+DTEeltLlDImftLLOUzlWPomQgt5r5GI+C7bz29lbepBoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1712820708; x=1712907108; bh=ss9obh18SkiQHEXzh7qcLFdvdlxp
+	a80B0Z7MJyyJWOs=; b=DzSFGGOr+zqR4sfSmeOxAZvA6tvMP0LGFanC2+BgYdJy
+	+4hbOwbt0daWkKElaJ7hw1qTgNt7659JrHfKx7+c2NRv2nXqcVlsOuvhc37YXOZ6
+	/5MKG6iTFCQ6aufnWu+0iv1mQHtdHJ4K9QX9ZNac5sLfv829dYcU7OrtBhvzAPeJ
+	qvI5fpyEZjo1rJqt0In+B4EMVZTz3BIN6xIPeqBy76lVWIdHpPj7mI1hWq7dyIWT
+	CnWqJQpCHMCE2NVdUfy2AgXYjJNlhFvPsLF/BoiRix4BR68kBN/e6viA7DoExAkP
+	1lsK1ob4cyEjdsraiMT0hwoBXzOe78DNkW/8wTm9dg==
+X-ME-Sender: <xms:45EXZr7T_OnGStrr7SKzpEUpju9NZAoJ-lpF9Idxf_AAZawFa25PqQ>
+    <xme:45EXZg74AAZ239bjRLX7EeRcHaT8wGi_jFHosNYQYKIaCYvcpDRxLFrBw8T1Wh8fR
+    jo4RGsgbbTYIfp5aDQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddujecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:45EXZieKjjVog6Wf67CQD8NJtTers1M6KFeWe75e-UlBkt2QP7uJXg>
+    <xmx:45EXZsJIp1DUMatuZM3plg1HZpaO63G81PNWgtOVl7mQ4q3U6QDMgA>
+    <xmx:45EXZvIKtC1NGjybHKKb-88n2S8h7w1gUs0XzOcd8JC5HH3wCWVBpA>
+    <xmx:45EXZlyxfKvoW4q6bfCKoSeKRYfJBEypsh0ZQzt4uZT200LeFEQ3Rw>
+    <xmx:45EXZuaOX9x1nVPc-UnZtz-zaIuHLseO3kmjE2oKiQEaEOt4QcV-JewM>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 5E761B60092; Thu, 11 Apr 2024 03:31:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
-To: Arnd Bergmann <arnd@arndb.de>
-References: <20240410153212.127477-1-adrian.hunter@intel.com>
- <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-Id: <c0e170f7-5498-40ed-ba35-2ac392c2dd2a@app.fastmail.com>
+In-Reply-To:  <CAMj1kXGW5XQxXrYaPhT6sCjH7s0EwqzNjWies3b8UWnUBW5Ngw@mail.gmail.com>
+References: <20240329072441.591471-1-samuel.holland@sifive.com>
+ <20240329072441.591471-14-samuel.holland@sifive.com>
+ <87wmp4oo3y.fsf@linaro.org> <75a37a4b-f516-40a3-b6b5-4aa1636f9b60@sifive.com>
+ <87wmp4ogoe.fsf@linaro.org> <4c8e63d6-ba33-47fe-8150-59eba8babf2d@sifive.com>
+ <CAMj1kXGW5XQxXrYaPhT6sCjH7s0EwqzNjWies3b8UWnUBW5Ngw@mail.gmail.com>
+Date: Thu, 11 Apr 2024 09:31:27 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Ard Biesheuvel" <ardb@kernel.org>,
+ "Samuel Holland" <samuel.holland@sifive.com>
+Subject: Re: [PATCH v4 13/15] drm/amd/display: Use ARCH_HAS_KERNEL_FPU_SUPPORT
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,38 +97,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-s390@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, Thiago Jung Bauermann <thiago.bauermann@linaro.org>, x86@kernel.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@lst.de>, loongarch@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/04/24 10:04, Arnd Bergmann wrote:
-> On Wed, Apr 10, 2024, at 17:32, Adrian Hunter wrote:
->> BUG() does not return, and arch implementations of BUG() use unreachable()
->> or other non-returning code. However with !CONFIG_BUG, the default
->> implementation is often used instead, and that does not do that. x86 always
->> uses its own implementation, but powerpc with !CONFIG_BUG gives a build
->> error:
+On Thu, Apr 11, 2024, at 09:15, Ard Biesheuvel wrote:
+> On Thu, 11 Apr 2024 at 03:11, Samuel Holland <samuel.holland@sifive.com> wrote:
+>> On 2024-04-10 8:02 PM, Thiago Jung Bauermann wrote:
+>> > Samuel Holland <samuel.holland@sifive.com> writes:
 >>
->>   kernel/time/timekeeping.c: In function ‘timekeeping_debug_get_ns’:
->>   kernel/time/timekeeping.c:286:1: error: no return statement in function
->>   returning non-void [-Werror=return-type]
+>> >> The short-term fix would be to drop the `select ARCH_HAS_KERNEL_FPU_SUPPORT` for
+>> >> 32-bit arm until we can provide these runtime library functions.
+>> >
+>> > Does this mean that patch 2 in this series:
+>> >
+>> > [PATCH v4 02/15] ARM: Implement ARCH_HAS_KERNEL_FPU_SUPPORT
+>> >
+>> > will be dropped?
 >>
->> Add unreachable() to default !CONFIG_BUG BUG() implementation.
-> 
-> I'm a bit worried about this patch, since we have had problems
-> with unreachable() inside of BUG() in the past, and as far as I
-> can remember, the current version was the only one that
-> actually did the right thing on all compilers.
-> 
-> One problem with an unreachable() annotation here is that if
-> a compiler misanalyses the endless loop, it can decide to
-> throw out the entire code path leading up to it and just
-> run into undefined behavior instead of printing a BUG()
-> message.
-> 
-> Do you know which compiler version show the warning above?
+>> No, because later patches in the series (3, 6) depend on the definition of
+>> CC_FLAGS_FPU from that patch. I will need to send a fixup patch unless I can
+>> find a GPL-2 compatible implementation of the runtime library functions.
+>>
+>
+> Is there really a point to doing that? Do 32-bit ARM systems even have
+> enough address space to the map the BARs of the AMD GPUs that need
+> this support?
+>
+> Given that this was not enabled before, I don't think the upshot of
+> this series should be that we enable support for something on 32-bit
+> ARM that may cause headaches down the road without any benefit.
+>
+> So I'd prefer a fixup patch that opts ARM out of this over adding
+> support code for 64-bit conversions.
 
-Original report has a list
+I have not found any dts file for a 32-bit platform with support
+for a 64-bit prefetchable BAR, and there are very few that even
+have a pcie slot (as opposed on on-board devices) you could
+plug a card into.
 
-	https://lore.kernel.org/all/CA+G9fYvjdZCW=7ZGxS6A_3bysjQ56YF7S-+PNLQ_8a4DKh1Bhg@mail.gmail.com/
+That said, I also don't think we should encourage the use of
+floating-point code in random device drivers. There is really
+no excuse for the amdgpu driver to use floating point math
+here, and we should get AMD to fix their driver instead.
 
+     Arnd
