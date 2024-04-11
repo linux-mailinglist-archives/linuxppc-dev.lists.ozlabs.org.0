@@ -2,51 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376688A19BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 18:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5B88A19C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 18:19:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eRW/q4WS;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ISpH3VVU;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ISpH3VVU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFlJ406SDz3vxK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 02:19:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFlJr2yD8z3wDV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 02:19:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eRW/q4WS;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ISpH3VVU;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ISpH3VVU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFl1w1gD0z3vfF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 02:06:44 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7DC02620F0;
-	Thu, 11 Apr 2024 16:06:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A810C4AF09;
-	Thu, 11 Apr 2024 16:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712851602;
-	bh=GpS8ytfjSzE76nC42qU8VRxGL9fjdKFDqm8vIE1x4YY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRW/q4WS++c0r4pBuIO3O4Xg4RhucjdHqnNZoi79AHoLhQPJWC7o5buwGGFBPvniC
-	 VKRspPAvG+oxGO/Mu52T5QZWLHipAdpse5TDkTXl4UCRQQbTzoV2tVhPjQUCAlmNo0
-	 NG232/NssiPa7JNKn0tv4mghHev6HdVbKr+LbbRCokaCTTwVdChPLdcxxCtgfIMnpO
-	 Z1hyZ7UoVGi2N4el/7GuNUEzPhXZ5vzgMOKVlVVadMtRh3z+39u712GiPM9IWHw2qe
-	 adjgDWeIItjJVb1bdKVNluXidKTvt1LLI9M1CnLR4urws3bFChygnRYjAkvNDCL/IG
-	 2uw/kGGX3wdrg==
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 7/7] x86/module: enable ROX caches for module text
-Date: Thu, 11 Apr 2024 19:05:26 +0300
-Message-ID: <20240411160526.2093408-8-rppt@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240411160526.2093408-1-rppt@kernel.org>
-References: <20240411160526.2093408-1-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFlDM54cHz3vkX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 02:15:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712852142;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jZmlfwQwEwqX8N6AuyRgtrgEEEIO7a43RiQoCYN1PMM=;
+	b=ISpH3VVUbcrbPvxbJI0k5w9kiSbUFQibRu6ac3nrfCKLDMHiuCyb9ZFTU5WfnxGSxP3mMc
+	fXG2lI2eIqzyMwAe8bBYbnIQml9Zc0JrX9ei8WnMIwUfh6xHOdVQlRzUK/xQ1IDEmMjFh4
+	pW45RLXPK3m6mzag7XTlhO0W02cyjBE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712852142;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jZmlfwQwEwqX8N6AuyRgtrgEEEIO7a43RiQoCYN1PMM=;
+	b=ISpH3VVUbcrbPvxbJI0k5w9kiSbUFQibRu6ac3nrfCKLDMHiuCyb9ZFTU5WfnxGSxP3mMc
+	fXG2lI2eIqzyMwAe8bBYbnIQml9Zc0JrX9ei8WnMIwUfh6xHOdVQlRzUK/xQ1IDEmMjFh4
+	pW45RLXPK3m6mzag7XTlhO0W02cyjBE=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-261-VdYSjX84MRCJq_Qu2HTTRg-1; Thu, 11 Apr 2024 12:15:40 -0400
+X-MC-Unique: VdYSjX84MRCJq_Qu2HTTRg-1
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-6ea19a84c22so10644a34.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 09:15:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712852140; x=1713456940;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jZmlfwQwEwqX8N6AuyRgtrgEEEIO7a43RiQoCYN1PMM=;
+        b=H3RXlV/D3z03hI8wXEy3x0gPUcl8+Zw1TkYY8LQiKBWLcLCIhS8TH8YfOJTTrX/eij
+         GNbaXondEcxJw589c535DxXf3KQYF+DMMWEvrwfi4bTb7+t6cWhp7jzOnxdgdP7BBxeO
+         LLbJMLN/enUGJm4pD9wJvcugJHmt+IqrwYF/VSfXhNihPyYyi+u7rAE/drEkRFFDYLqx
+         08T+Fg7E9DvTWmtmriqMiu7T4ixdks7wxzOFMJRKxyi1ORKjeJXw204pm/p/llPLBFRa
+         hC84sZQM0ciJX8/UvwnuVg/8y0QjRIyRyfn1lF0pXYpd8RYInC/k45CofeUkEXpnL0JH
+         sg7g==
+X-Forwarded-Encrypted: i=1; AJvYcCU4ZnwxttYP+6aU5VHDzvru3tVKQFPmVW45zBQ6Kw+vl01Mvj9OJrR/vyyKuUn3qG/K5xOWg+ZBcMMR2+tqrYC9iqMfNzsIAOHySaeBSw==
+X-Gm-Message-State: AOJu0YyTSNyBcRfLide5JkAUa8K2a+/un+lJmLmTG4Nr0uyrdVNt1K7D
+	nYXIfZS3D+hmhvCEqxIzFmP9lc2n88EgiN32Y5H9EfWsnvuIB434oNbY+NUJHWX9cwacVPrUrs5
+	MEkzj9IUH+drDDcmMjEj4n3Ba19Id6t/2rtFsyfUVN4PaI/juXEgIRpKBCes+aps=
+X-Received: by 2002:a05:6870:7183:b0:222:81cc:ac9c with SMTP id d3-20020a056870718300b0022281ccac9cmr6146574oah.5.1712852139654;
+        Thu, 11 Apr 2024 09:15:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHX6QtF5SydubwLrtRDzMOYoSKh757kSXH1BgbFRQt1iTYEViuMR5roQkhSWQN8EQKuvV3vQ==
+X-Received: by 2002:a05:6870:7183:b0:222:81cc:ac9c with SMTP id d3-20020a056870718300b0022281ccac9cmr6146547oah.5.1712852139258;
+        Thu, 11 Apr 2024 09:15:39 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id bi36-20020a05620a31a400b0078d677e72f3sm1195367qkb.118.2024.04.11.09.15.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Apr 2024 09:15:38 -0700 (PDT)
+Date: Thu, 11 Apr 2024 12:15:36 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH 0/8] Reimplement huge pages without hugepd on powerpc
+ 8xx
+Message-ID: <ZhgMqF7SNaISrYMJ@x1n>
+References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
+ <20240325163840.GF6245@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240325163840.GF6245@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,70 +100,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Song Liu <song@kernel.org>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Christoph Hellwig <hch@infradead.org>, linux-trace-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Lorenzo Stoakes <lstoakes@gmail.com>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, Luis Chamberlain <mcgrof@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-modules@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
- , Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+On Mon, Mar 25, 2024 at 01:38:40PM -0300, Jason Gunthorpe wrote:
+> On Mon, Mar 25, 2024 at 03:55:53PM +0100, Christophe Leroy wrote:
+> > This series reimplements hugepages with hugepd on powerpc 8xx.
+> > 
+> > Unlike most architectures, powerpc 8xx HW requires a two-level
+> > pagetable topology for all page sizes. So a leaf PMD-contig approach
+> > is not feasible as such.
+> > 
+> > Possible sizes are 4k, 16k, 512k and 8M.
+> > 
+> > First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD entries
+> > must point to a single entry level-2 page table. Until now that was
+> > done using hugepd. This series changes it to use standard page tables
+> > where the entry is replicated 1024 times on each of the two pagetables
+> > refered by the two associated PMD entries for that 8M page.
+> > 
+> > At the moment it has to look into each helper to know if the
+> > hugepage ptep is a PTE or a PMD in order to know it is a 8M page or
+> > a lower size. I hope this can me handled by core-mm in the future.
+> > 
+> > There are probably several ways to implement stuff, so feedback is
+> > very welcome.
+> 
+> I thought it looks pretty good!
 
-Enable execmem's cache of PMD_SIZE'ed pages mapped as ROX for module
-text allocations.
+I second it.
 
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
----
- arch/x86/mm/init.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+I saw the discussions in patch 1.  Christophe, I suppose you're exploring
+the big hammer over hugepd, and perhaps went already with the 32bit pmd
+solution for nohash/32bit challenge you mentioned?
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 8e8cd0de3af6..049a8b4c64e2 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -1102,9 +1102,23 @@ unsigned long arch_max_swapfile_size(void)
- #endif
- 
- #ifdef CONFIG_EXECMEM
-+static void execmem_invalidate(void *ptr, size_t size, bool writeable)
-+{
-+	/* fill memory with INT3 instructions */
-+	if (writeable)
-+		memset(ptr, 0xcc, size);
-+	else
-+		text_poke_set(ptr, 0xcc, size);
-+}
-+
- static struct execmem_info execmem_info __ro_after_init = {
-+	.invalidate = execmem_invalidate,
- 	.ranges = {
--		[EXECMEM_DEFAULT] = {
-+		[EXECMEM_MODULE_TEXT] = {
-+			.flags = EXECMEM_KASAN_SHADOW | EXECMEM_ROX_CACHE,
-+			.alignment = MODULE_ALIGN,
-+		},
-+		[EXECMEM_KPROBES...EXECMEM_MODULE_DATA] = {
- 			.flags = EXECMEM_KASAN_SHADOW,
- 			.alignment = MODULE_ALIGN,
- 		},
-@@ -1119,9 +1133,16 @@ struct execmem_info __init *execmem_arch_setup(void)
- 		offset = get_random_u32_inclusive(1, 1024) * PAGE_SIZE;
- 
- 	start = MODULES_VADDR + offset;
--	execmem_info.ranges[EXECMEM_DEFAULT].start = start;
--	execmem_info.ranges[EXECMEM_DEFAULT].end = MODULES_END;
--	execmem_info.ranges[EXECMEM_DEFAULT].pgprot = PAGE_KERNEL;
-+
-+	for (int i = EXECMEM_MODULE_TEXT; i < EXECMEM_TYPE_MAX; i++) {
-+		struct execmem_range *r = &execmem_info.ranges[i];
-+
-+		r->start = start;
-+		r->end = MODULES_END;
-+		r->pgprot = PAGE_KERNEL;
-+	}
-+
-+	execmem_info.ranges[EXECMEM_MODULE_TEXT].pgprot = PAGE_KERNEL_ROX;
- 
- 	return &execmem_info;
- }
+I'm trying to position my next step; it seems like at least I should not
+adding any more hugepd code, then should I go with ARCH_HAS_HUGEPD checks,
+or you're going to have an RFC soon then I can base on top?
+
+Thanks,
+
 -- 
-2.43.0
+Peter Xu
 
