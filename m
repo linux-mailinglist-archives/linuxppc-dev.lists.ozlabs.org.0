@@ -2,55 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945348A0613
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 04:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9842F8A0916
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:06:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CBQwymop;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nCoMyMQq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=lWfIK3An;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFP8Q3409z3vZ5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 12:41:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFW263gNbz3vYb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:06:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CBQwymop;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nCoMyMQq;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=lWfIK3An;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.155; helo=wfhigh4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wfhigh4-smtp.messagingengine.com (wfhigh4-smtp.messagingengine.com [64.147.123.155])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFP7j4DThz3cQm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 12:40:33 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 89396CE2E69;
-	Thu, 11 Apr 2024 02:40:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 77201C433C7;
-	Thu, 11 Apr 2024 02:40:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712803228;
-	bh=Zmk1fk70Hqu5bNMkAwUutOzHTLESrot20KQz6j4g7Wo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CBQwymop1NuQqMI2sUsffEk0jvsHjzsJsMfqKvAvN1VJ7vWGsI+vbyndwP2eAdfzx
-	 NIk3/pYQ1icJIH84HPo7L8s0zJ2TEfPBJ+cdDgB7Bos3n3Jxqx8G7bkpqi9XTd2/Br
-	 fpRcPISV1tu15K2mgCf4Uexu4e53B/P2ri0Ju5ZvHTI0Kl+eGhwbhYS9UhqJubb3Ip
-	 LViONdW5U5kPtuQSfX0Qbown6LuNfippQC0mcIzw30VFb3pUGmDSE+gS7CtWTsCewr
-	 vzcp1hvpt5oDFWQaucm+jH3KbylH2vVHoKd5fuh+dwuPczUpvRDSfW6Dji4s0EJYzJ
-	 /HUkCNMLqO+PQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 68382D6030E;
-	Thu, 11 Apr 2024 02:40:28 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFW1G6NmKz3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:05:21 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id B7F8C18000E8;
+	Thu, 11 Apr 2024 03:05:13 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 11 Apr 2024 03:05:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1712819113;
+	 x=1712905513; bh=0R8ETRF6202lFso/GqWWlr/9xraGDGSFm0XJFifGRw0=; b=
+	nCoMyMQq0XWmXVKUNWJxBDvPSDAVJhd0HJr+9THx5qllv2piGTza6F6vc0lb7+Hh
+	NOcfPv8+FkB5U1c1Xp2Zef/C1oRsybJz7Fue4j2TCCCtxTJxLW/Fr0XLziS+ofnM
+	DzGqvPlcm5J4JgeC6ezccDjj1BYHUrudxEZbeTmBhoeUoLWrSfUTHsfylwbHu4cY
+	CzlEXOCrFHrlqdYXYWBxTkjtoxjPTakGnaQHpq/lVoTof2OHQqzL0vbBxIVO1JXH
+	0W2QsGe4bXf+u5q89ynFY4hljhg+ovqv8qKunly5D8CeW9RCLQjcTTPEb6+vQVWP
+	ssARpsDZVMLTWg+Y3x3kxA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712819113; x=
+	1712905513; bh=0R8ETRF6202lFso/GqWWlr/9xraGDGSFm0XJFifGRw0=; b=l
+	WfIK3Ani950kaPDZ76durVahYSqY9YXccfZ2GtEHt2QMNiQl0QzqpBZtsNg8La4O
+	hrVE/UO8tDSkCcXHqHdZUvW+ku4yLwCUIskbeGS8qOCh7u3KWiEfFRffaruRiDVR
+	CnEZKM17Zut8zhk61exiVcY66tEXYfDRT9Qt36uaFI/AWC2oHx3ag0IavcbfpMGU
+	53jKQqtJk4FYs/7uwI9IEYT0F5wFXaCcWFxYbQ4ovjMgikfEa/MJwpYOsTR10vTU
+	Yqb+nPD8aYCoRdNben2Ketdmx2W1FdeI253ZWdiUt1FswIpP9j930vxPUnSz7Cj+
+	YsI3n40oan7Oc+ZN9dBRQ==
+X-ME-Sender: <xms:qIsXZvxMzFs5hCeZ7qXfi1DutU_SrF5gY3brmqWyVO2mNissf6b9gg>
+    <xme:qIsXZnRLbWscdvivXT060IG7Q4KEyYhtxSloItLQd_onIH0KibgRXHHryDdVo5RQT
+    uyNXmTi2InWcOsT-x8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudek
+    tdfgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:qIsXZpWwow1-0VAoJat2Ec6LvVrv9B7RUkDR4Gd8unFGacMVlWY_ZA>
+    <xmx:qIsXZph5lyMdDC90tD9tXDJG_Iyfj7O8dQn0uldYyW2VopR-BHw8Rw>
+    <xmx:qIsXZhAaIWNvLUbsVUuEaU00lJNJPyrac_BMgayK57ZmQYmP2wvAYQ>
+    <xmx:qIsXZiIVKVqs2W0zkVASfInAWs5AJ_RzZvAcj3v1WngXbbtDqe8DDw>
+    <xmx:qYsXZisG0CYvxNoLsrKIzPiqrX8pCxuMrb75Al7-PoYIXvOdoy5-69JC>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 18C03B60092; Thu, 11 Apr 2024 03:05:12 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: wan: fsl_qmc_hdlc: Convert to platform remove
- callback returning void
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <171280322842.23404.11616120911781131170.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Apr 2024 02:40:28 +0000
-References: <20240409091203.39062-2-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20240409091203.39062-2-u.kleine-koenig@pengutronix.de>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=3Cu=2Ekleine-koenig=40pengutronix=2Ede=3E?=@ci.codeaurora.org
+Message-Id: <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
+In-Reply-To: <20240410153212.127477-1-adrian.hunter@intel.com>
+References: <20240410153212.127477-1-adrian.hunter@intel.com>
+Date: Thu, 11 Apr 2024 09:04:50 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Adrian Hunter" <adrian.hunter@intel.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,35 +96,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andriy.shevchenko@linux.intel.com, herve.codina@bootlin.com, netdev@vger.kernel.org, edumazet@google.com, kernel@pengutronix.de, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-s390@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+On Wed, Apr 10, 2024, at 17:32, Adrian Hunter wrote:
+> BUG() does not return, and arch implementations of BUG() use unreachab=
+le()
+> or other non-returning code. However with !CONFIG_BUG, the default
+> implementation is often used instead, and that does not do that. x86 a=
+lways
+> uses its own implementation, but powerpc with !CONFIG_BUG gives a build
+> error:
+>
+>   kernel/time/timekeeping.c: In function =E2=80=98timekeeping_debug_ge=
+t_ns=E2=80=99:
+>   kernel/time/timekeeping.c:286:1: error: no return statement in funct=
+ion
+>   returning non-void [-Werror=3Dreturn-type]
+>
+> Add unreachable() to default !CONFIG_BUG BUG() implementation.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I'm a bit worried about this patch, since we have had problems
+with unreachable() inside of BUG() in the past, and as far as I
+can remember, the current version was the only one that
+actually did the right thing on all compilers.
 
-On Tue,  9 Apr 2024 11:12:04 +0200 you wrote:
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is ignored (apart
-> from emitting a warning) and this typically results in resource leaks.
-> 
-> To improve here there is a quest to make the remove callback return
-> void. In the first step of this quest all drivers are converted to
-> .remove_new(), which already returns void. Eventually after all drivers
-> are converted, .remove_new() will be renamed to .remove().
-> 
-> [...]
+One problem with an unreachable() annotation here is that if
+a compiler misanalyses the endless loop, it can decide to
+throw out the entire code path leading up to it and just
+run into undefined behavior instead of printing a BUG()
+message.
 
-Here is the summary with links:
-  - [net-next] net: wan: fsl_qmc_hdlc: Convert to platform remove callback returning void
-    https://git.kernel.org/netdev/net-next/c/07409cf72844
+Do you know which compiler version show the warning above?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+     Arnd
