@@ -1,56 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1D08A0FFA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 12:29:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C688A12EB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 13:28:08 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=k16UMDS3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=NPqmVCml;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFbXs12bqz3vd0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 20:29:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFcrQ0Qbvz3vbB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 21:28:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 70 seconds by postgrey-1.37 at boromir; Thu, 11 Apr 2024 20:29:10 AEST
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=k16UMDS3;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=NPqmVCml;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.150; helo=wfout7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wfout7-smtp.messagingengine.com (wfout7-smtp.messagingengine.com [64.147.123.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFbXQ45FFz30gK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 20:29:09 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-37-dtAk8lfNPqaLMtFIigBSZg-1; Thu, 11 Apr 2024 11:27:51 +0100
-X-MC-Unique: dtAk8lfNPqaLMtFIigBSZg-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 11 Apr
- 2024 11:27:23 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Thu, 11 Apr 2024 11:27:23 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Adrian Hunter' <adrian.hunter@intel.com>, Arnd Bergmann <arnd@arndb.de>
-Subject: RE: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
-Thread-Topic: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
-Thread-Index: AQHai+8rQSO3zfnELkWMcaajEoNC87Fi2ofw
-Date: Thu, 11 Apr 2024 10:27:23 +0000
-Message-ID: <a0776e05c5074da2b8394926b2f787a2@AcuMS.aculab.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFcqY2yn4z3bpp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 21:27:20 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id ADBF71C00137;
+	Thu, 11 Apr 2024 07:27:14 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 11 Apr 2024 07:27:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1712834834;
+	 x=1712921234; bh=HHmF8u/Kgp0w2MiOBXchBKlXBDAOLG0zhFsdn3Q3LKU=; b=
+	k16UMDS3YHupSnmwEP0/HA0z1W0kHE8mUnFxzHkqIsGKnqejihmaLKS+ydgZZHPZ
+	4k/nfA6B8mGj6p0fe3q7vkhgn+Ft5kLluwBHTZbpzdSU+wi9oe2OfZfgF6nR1Q9w
+	NUjaGTPYqJkI69McIYxvmOwMD2F0ZLmG8S/FwlNusmpA66o0fKNa0t574OQ+BNdb
+	lmL7X2Qxx84toenW4EYPEQ7Gx6MHJfJBf/CxcVIavumaMnmIXMmgymZPtk2Q0p41
+	DjITQCF+YdPpOoU9hHdWEilPrOwsBPfcblfDrRfoEKMVdmIuxootB8arnUUdGlKo
+	AiSoKEveNjbKxJ04sRyWag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712834834; x=
+	1712921234; bh=HHmF8u/Kgp0w2MiOBXchBKlXBDAOLG0zhFsdn3Q3LKU=; b=N
+	PqmVCmlO8qu+ao6PmlZfi7Y24d44/jfZRx5qxQcAoXLlkiCUOasykG+E2JdPz3AZ
+	nl5qHdIkvbM8XMASmY5PwAcjKoWD574XPtl7j2flIWHqTMOucjHbASYq9+JaNTXT
+	V1t29oYeUFnYMkhjJPZoysmKH4tIkX24d/ciI2xBu6dUAfycWkl2gQD5vhP9jJzH
+	BjZQtLLGTw6xJTY+IdtxafZ396fVFhLcz/cb2KCCGploBDTbAXH5WNtk/GXoGgTf
+	UgfpTOJkURzvrYBdRLlN4pEl059sxLKC0h1YBsNYbYc5cic0wIeAfGw4rxjyST3t
+	HQ1WLOIhvcuLROPRf/xhA==
+X-ME-Sender: <xms:EckXZp_JMGVr04CcPO7Zi8vlSysZ4dGB6jHuu9Jmk78K0zYGeoRx-Q>
+    <xme:EckXZtvOdPNfmi5oNB1_mZPSAusDzHoHjx5Qvf_oivfbtPfPFNBGAx-qxjaH_0SAX
+    iLemeul88EkI1JrL38>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehkedggeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
+    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:EckXZnAt2S3P-B4UONMSL2sxDqEy28T02-OW3kU-0CtPKbnzG3Xzww>
+    <xmx:EckXZtdkbuyl5tUZneukUa8ax4-H1O5f2yb3bjfdoHgsoQ2ofnTbqA>
+    <xmx:EckXZuPdEX4JvNTAFe0W1u82Yp87aPaFB5jg8pNCdf7OKL_4LSvvsg>
+    <xmx:EckXZvkHIKP5vqZVZF1sC-kRvHGTGAIQa3365tAcLRW-xAhSp0JmQw>
+    <xmx:EskXZj-lCmKV2uVI2uldem5i9qYjtVjQscgpTn-bkl5DAOWQsRzSqHyn>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 05606B60092; Thu, 11 Apr 2024 07:27:12 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
+MIME-Version: 1.0
+Message-Id: <dd6653b2-3a88-4b95-af13-c6fda5b27b39@app.fastmail.com>
+In-Reply-To: <4d429a10-eb45-4262-8e74-69af810ef1ac@intel.com>
 References: <20240410153212.127477-1-adrian.hunter@intel.com>
  <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
  <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
- <cac3f357-0dc2-46ba-9ea0-7b1f4278e8ff@app.fastmail.com>
- <0fd5e869-720f-41bb-9f0f-c0f3925ffc1b@intel.com>
-In-Reply-To: <0fd5e869-720f-41bb-9f0f-c0f3925ffc1b@intel.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+ <a434248a-1e9f-4f4f-8f90-d36d8e979f53@csgroup.eu>
+ <ff9d7032-a3b6-4ecd-ac26-d7d4a06a5c7f@csgroup.eu>
+ <4d429a10-eb45-4262-8e74-69af810ef1ac@intel.com>
+Date: Thu, 11 Apr 2024 13:26:52 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Adrian Hunter" <adrian.hunter@intel.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,69 +101,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter
- Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo
- Frascino <vincenzo.frascino@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, "x86@kernel.org" <x86@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko
- Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav
- Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria
- Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy
- Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sven Schnelle <svens@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, "x86@kernel.org" <x86@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sven Sch
+ nelle <svens@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogQWRyaWFuIEh1bnRlcg0KPiBTZW50OiAxMSBBcHJpbCAyMDI0IDEwOjA0DQo+IA0KPiBP
-biAxMS8wNC8yNCAxMDo1NiwgQXJuZCBCZXJnbWFubiB3cm90ZToNCj4gPiBPbiBUaHUsIEFwciAx
-MSwgMjAyNCwgYXQgMDk6MTYsIEFkcmlhbiBIdW50ZXIgd3JvdGU6DQo+ID4+IE9uIDExLzA0LzI0
-IDEwOjA0LCBBcm5kIEJlcmdtYW5uIHdyb3RlOg0KPiA+Pj4gT24gV2VkLCBBcHIgMTAsIDIwMjQs
-IGF0IDE3OjMyLCBBZHJpYW4gSHVudGVyIHdyb3RlOg0KPiA+Pj4+IEJVRygpIGRvZXMgbm90IHJl
-dHVybiwgYW5kIGFyY2ggaW1wbGVtZW50YXRpb25zIG9mIEJVRygpIHVzZSB1bnJlYWNoYWJsZSgp
-DQo+ID4+Pj4gb3Igb3RoZXIgbm9uLXJldHVybmluZyBjb2RlLiBIb3dldmVyIHdpdGggIUNPTkZJ
-R19CVUcsIHRoZSBkZWZhdWx0DQo+ID4+Pj4gaW1wbGVtZW50YXRpb24gaXMgb2Z0ZW4gdXNlZCBp
-bnN0ZWFkLCBhbmQgdGhhdCBkb2VzIG5vdCBkbyB0aGF0LiB4ODYgYWx3YXlzDQo+ID4+Pj4gdXNl
-cyBpdHMgb3duIGltcGxlbWVudGF0aW9uLCBidXQgcG93ZXJwYyB3aXRoICFDT05GSUdfQlVHIGdp
-dmVzIGEgYnVpbGQNCj4gPj4+PiBlcnJvcjoNCj4gPj4+Pg0KPiA+Pj4+ICAga2VybmVsL3RpbWUv
-dGltZWtlZXBpbmcuYzogSW4gZnVuY3Rpb24g4oCYdGltZWtlZXBpbmdfZGVidWdfZ2V0X25z4oCZ
-Og0KPiA+Pj4+ICAga2VybmVsL3RpbWUvdGltZWtlZXBpbmcuYzoyODY6MTogZXJyb3I6IG5vIHJl
-dHVybiBzdGF0ZW1lbnQgaW4gZnVuY3Rpb24NCj4gPj4+PiAgIHJldHVybmluZyBub24tdm9pZCBb
-LVdlcnJvcj1yZXR1cm4tdHlwZV0NCj4gPj4+Pg0KPiA+Pj4+IEFkZCB1bnJlYWNoYWJsZSgpIHRv
-IGRlZmF1bHQgIUNPTkZJR19CVUcgQlVHKCkgaW1wbGVtZW50YXRpb24uDQo+ID4+Pg0KPiA+Pj4g
-SSdtIGEgYml0IHdvcnJpZWQgYWJvdXQgdGhpcyBwYXRjaCwgc2luY2Ugd2UgaGF2ZSBoYWQgcHJv
-YmxlbXMNCj4gPj4+IHdpdGggdW5yZWFjaGFibGUoKSBpbnNpZGUgb2YgQlVHKCkgaW4gdGhlIHBh
-c3QsIGFuZCBhcyBmYXIgYXMgSQ0KPiA+Pj4gY2FuIHJlbWVtYmVyLCB0aGUgY3VycmVudCB2ZXJz
-aW9uIHdhcyB0aGUgb25seSBvbmUgdGhhdA0KPiA+Pj4gYWN0dWFsbHkgZGlkIHRoZSByaWdodCB0
-aGluZyBvbiBhbGwgY29tcGlsZXJzLg0KPiA+Pj4NCj4gPj4+IE9uZSBwcm9ibGVtIHdpdGggYW4g
-dW5yZWFjaGFibGUoKSBhbm5vdGF0aW9uIGhlcmUgaXMgdGhhdCBpZg0KPiA+Pj4gYSBjb21waWxl
-ciBtaXNhbmFseXNlcyB0aGUgZW5kbGVzcyBsb29wLCBpdCBjYW4gZGVjaWRlIHRvDQo+ID4+PiB0
-aHJvdyBvdXQgdGhlIGVudGlyZSBjb2RlIHBhdGggbGVhZGluZyB1cCB0byBpdCBhbmQganVzdA0K
-PiA+Pj4gcnVuIGludG8gdW5kZWZpbmVkIGJlaGF2aW9yIGluc3RlYWQgb2YgcHJpbnRpbmcgYSBC
-VUcoKQ0KPiA+Pj4gbWVzc2FnZS4NCj4gPj4+DQo+ID4+PiBEbyB5b3Uga25vdyB3aGljaCBjb21w
-aWxlciB2ZXJzaW9uIHNob3cgdGhlIHdhcm5pbmcgYWJvdmU/DQo+ID4+DQo+ID4+IE9yaWdpbmFs
-IHJlcG9ydCBoYXMgYSBsaXN0DQo+ID4+DQo+ID4NCj4gPiBJdCBsb29rcyBsaWtlIGl0J3MgYWxs
-IHZlcnNpb25zIG9mIGdjYywgdGhvdWdoIG5vIHZlcnNpb25zDQo+ID4gb2YgY2xhbmcgc2hvdyB0
-aGUgd2FybmluZ3MuIEkgZGlkIGEgZmV3IG1vcmUgdGVzdHMgYW5kIGNvdWxkDQo+ID4gbm90IGZp
-bmQgYW55IGRpZmZlcmVuY2VzIG9uIGFjdHVhbCBjb2RlIGdlbmVyYXRpb24sIGJ1dA0KPiA+IEkn
-ZCBzdGlsbCBmZWVsIG1vcmUgY29tZm9ydGFibGUgY2hhbmdpbmcgdGhlIGNhbGxlciB0aGFuDQo+
-ID4gdGhlIEJVRygpIG1hY3JvLiBJdCdzIHRyaXZpYWwgdG8gYWRkIGEgJ3JldHVybiAwJyB0aGVy
-ZS4NCj4gDQo+IEFGQUlDVCBldmVyeSBpbXBsZW1lbnRhdGlvbiBvZiBCVUcoKSBleGNlcHQgdGhp
-cyBvbmUgaGFzDQo+IHVucmVhY2hhYmxlKCkgb3IgZXF1aXZhbGVudCwgc28gdGhhdCBpbmNvbnNp
-c3RlbmN5IHNlZW1zDQo+IHdyb25nLg0KPiANCj4gQ291bGQgYWRkICdyZXR1cm4gMCcsIGJ1dCBJ
-IGRvIG5vdGljZSBvdGhlciBjYXNlcw0KPiB3aGVyZSBhIGZ1bmN0aW9uIGRvZXMgbm90IGhhdmUg
-YSByZXR1cm4gdmFsdWUsIHN1Y2ggYXMNCj4gY3B1c19oYXZlX2ZpbmFsX2Jvb3RfY2FwKCksIHNv
-IHRoZXJlIGlzIGFscmVhZHkgYW4gZXhwZWN0YXRpb24NCj4gdGhhdCB0aGF0IGlzIE9LLg0KDQpJ
-c24ndCB0aGF0IGxpa2VseSB0byBnZW5lcmF0ZSBhbiAndW5yZWFjaGFibGUgY29kZScgd2Fybmlu
-Zz8NCkkgYW55IGNhc2UgdGhlIGNvbXBpbGVyIGNhbiBnZW5lcmF0ZSBiZXR0ZXIgY29kZSBmb3Ig
-dGhlIG5vbi1CVUcoKQ0KcGF0aCBpZiBpdCBrbm93cyBCVUcoKSBkb2Vzbid0IHJldHVybi4NCihB
-bmQgY29uZnVzZSBzdGFjayBiYWNrLXRyYWNlIGNvZGUgaW4gdGhlIHByb2Nlc3MuKQ0KDQo+IA0K
-PiA+IEFub3RoZXIgaW50ZXJlc3Rpbmcgb2JzZXJ2YXRpb24gaXMgdGhhdCBjbGFuZy0xMSBhbmQg
-ZWFybGllcg0KPiA+IHZlcnNpb25zIGVuZCB1cCBza2lwcGluZyB0aGUgZW5kbGVzcyBsb29wLCBi
-b3RoIHdpdGggYW5kDQo+ID4gd2l0aG91dCB0aGUgX19idWlsdGluX3VucmVhY2hhYmxlLCBzZWUN
-Cj4gPiBodHRwczovL2dvZGJvbHQub3JnL3ovYXFhOXpxejh4DQo+IA0KPiBBZGRpbmcgdm9sYXRp
-bGUgYXNtKCIiKSB0byB0aGUgbG9vcCB3b3VsZCBwcm9iYWJseSBmaXggdGhhdCwNCj4gYnV0IGl0
-IHNlZW1zIGxpa2UgYSBzZXBhcmF0ZSBpc3N1ZS4NCg0KSSdkIGd1ZXNzIGJhcnJpZXIoKSB3b3Vs
-ZCBiZSBiZXR0ZXIuDQpJdCBtaWdodCBiZSBuZWVkZWQgYmVmb3JlIHRoZSBsb29wc3RvcCBmb3Ig
-b3RoZXIgcmVhc29ucy4NClRoZSBjb21waWxlciBtaWdodCBiZSBqdXN0IG1vdmluZyBjb2RlIGJl
-bG93IHRoZSBsb29wIGFuZCB0aGVuDQpkaXNjYXJkaW5nIGl0IGFzIHVucmVhY2hhYmxlLg0KDQoJ
-RGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1v
-dW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEz
-OTczODYgKFdhbGVzKQ0K
+On Thu, Apr 11, 2024, at 11:27, Adrian Hunter wrote:
+> On 11/04/24 11:22, Christophe Leroy wrote:
+>> Le 11/04/2024 =C3=A0 10:12, Christophe Leroy a =C3=A9crit=C2=A0:
+>>>
+>>> Looking at the report, I think the correct fix should be to use=20
+>>> BUILD_BUG() instead of BUG()
+>>=20
+>> I confirm the error goes away with the following change to next-20240=
+411=20
+>> on powerpc tinyconfig with gcc 13.2
+>>=20
+>> diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+>> index 4e18db1819f8..3d5ac0cdd721 100644
+>> --- a/kernel/time/timekeeping.c
+>> +++ b/kernel/time/timekeeping.c
+>> @@ -282,7 +282,7 @@ static inline void timekeeping_check_update(struc=
+t=20
+>> timekeeper *tk, u64 offset)
+>>   }
+>>   static inline u64 timekeeping_debug_get_ns(const struct tk_read_bas=
+e *tkr)
+>>   {
+>> -	BUG();
+>> +	BUILD_BUG();
+>>   }
+>>   #endif
+>>=20
+>
+> That is fragile because it depends on defined(__OPTIMIZE__),
+> so it should still be:
 
+If there is a function that is defined but that must never be
+called, I think we are doing something wrong. Before
+e8e9d21a5df6 ("timekeeping: Refactor timekeeping helpers"),
+the #ifdef made some sense, but now the #else is not really
+that useful.
+
+Ideally we would make timekeeping_debug_get_delta() and
+timekeeping_check_update() just return in case of
+!IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING), but unfortunately
+the code uses some struct members that are undefined then.
+
+The patch below moves the #ifdef check into these functions,
+which is not great, but it avoids defining useless
+functions. Maybe there is a better way here. How about
+just removing the BUG()?
+
+     Arnd
+
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 4e18db1819f8..16c6dba64dd6 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -195,12 +195,11 @@ static inline u64 tk_clock_read(const struct tk_re=
+ad_base *tkr)
+        return clock->read(clock);
+ }
+=20
+-#ifdef CONFIG_DEBUG_TIMEKEEPING
+ #define WARNING_FREQ (HZ*300) /* 5 minute rate-limiting */
+=20
+ static void timekeeping_check_update(struct timekeeper *tk, u64 offset)
+ {
+-
++#ifdef CONFIG_DEBUG_TIMEKEEPING
+        u64 max_cycles =3D tk->tkr_mono.clock->max_cycles;
+        const char *name =3D tk->tkr_mono.clock->name;
+=20
+@@ -235,12 +234,19 @@ static void timekeeping_check_update(struct timeke=
+eper *tk, u64 offset)
+                }
+                tk->overflow_seen =3D 0;
+        }
++#endif
+ }
+=20
+ static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *t=
+kr, u64 cycles);
+=20
+-static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *t=
+kr)
++static u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
++{
++       return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
++}
++
++static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+ {
++#ifdef CONFIG_DEBUG_TIMEKEEPING
+        struct timekeeper *tk =3D &tk_core.timekeeper;
+        u64 now, last, mask, max, delta;
+        unsigned int seq;
+@@ -275,16 +281,10 @@ static inline u64 timekeeping_debug_get_ns(const s=
+truct tk_read_base *tkr)
+=20
+        /* timekeeping_cycles_to_ns() handles both under and overflow */
+        return timekeeping_cycles_to_ns(tkr, now);
+-}
+ #else
+-static inline void timekeeping_check_update(struct timekeeper *tk, u64 =
+offset)
+-{
+-}
+-static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *t=
+kr)
+-{
+-       BUG();
+-}
++       return __timekeeping_get_ns(tkr);
+ #endif
++}
+=20
+ /**
+  * tk_setup_internals - Set up internals to use clocksource clock.
+@@ -390,19 +390,6 @@ static inline u64 timekeeping_cycles_to_ns(const st=
+ruct tk_read_base *tkr, u64 c
+        return ((delta * tkr->mult) + tkr->xtime_nsec) >> tkr->shift;
+ }
+=20
+-static __always_inline u64 __timekeeping_get_ns(const struct tk_read_ba=
+se *tkr)
+-{
+-       return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
+-}
+-
+-static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+-{
+-       if (IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING))
+-               return timekeeping_debug_get_ns(tkr);
+-
+-       return __timekeeping_get_ns(tkr);
+-}
+-
+ /**
+  * update_fast_timekeeper - Update the fast and NMI safe monotonic time=
+keeper.
+  * @tkr: Timekeeping readout base from which we take the update
