@@ -1,56 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F848A0A5D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:46:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD5D8A0AAC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 09:57:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=kmGKHIFX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=d9+E4i57;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=RbS33kss;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFWw64Dq0z3vYq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:45:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFX8y3lsPz3dWv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 17:57:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=kmGKHIFX;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=d9+E4i57;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=RbS33kss;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.111; helo=out30-111.freemail.mail.aliyun.com; envelope-from=yaoma@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.156; helo=wfhigh5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFWqT4QTbz3vZG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:41:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1712821313; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=mk+s9eBdZfZCpexz66U97EPfuTe77mlB+c6S3kAOnRs=;
-	b=kmGKHIFXv4f3vfQp44pQBzvcdZ+w1VWUar/F7EWwJfNF54cKAJQkvHOvA7P5boAz6bKTAIDyaaQH+XF93/Col1sPfzLmM34U8kGc1teJIy9nvBClpJyEPl8/j9UwZ5TyQWyBNpAfTs9qQNb7NoWCYmVasPd8klsvHiWnVb01+Is=
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W4KbQC1_1712821310;
-Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W4KbQC1_1712821310)
-          by smtp.aliyun-inc.com;
-          Thu, 11 Apr 2024 15:41:52 +0800
-From: Bitao Hu <yaoma@linux.alibaba.com>
-To: dianders@chromium.org,
-	tglx@linutronix.de,
-	liusong@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	pmladek@suse.com,
-	kernelfans@gmail.com,
-	deller@gmx.de,
-	npiggin@gmail.com,
-	tsbogend@alpha.franken.de,
-	James.Bottomley@HansenPartnership.com,
-	jan.kiszka@siemens.com
-Subject: [PATCHv13 5/5] watchdog/softlockup: report the most frequent interrupts
-Date: Thu, 11 Apr 2024 15:41:34 +0800
-Message-Id: <20240411074134.30922-6-yaoma@linux.alibaba.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-In-Reply-To: <20240411074134.30922-1-yaoma@linux.alibaba.com>
-References: <20240411074134.30922-1-yaoma@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFX8D3pkhz3cQm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 17:56:28 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 4D79918000CC;
+	Thu, 11 Apr 2024 03:56:24 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 11 Apr 2024 03:56:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1712822183;
+	 x=1712908583; bh=zk6i+umTyqQ2sjjzFSCP6SVPCsrRTnkpJSOyeCle8go=; b=
+	d9+E4i572HTs+ZUDv+4wxY7sIYZ6JBTwR3qKkLVn6u5ttwY+zMBU3l5EXcPjDpdy
+	LSOJlDSzNO3hCPkycdRjOp715zZ4FBV4IZLw+m1cuWtZnIvnyqVKw4QjfY6uEVeL
+	n0y6R6arw1xtFT6xFHvcS8LgUasXiYk8Hupp+T8EyYWKTqV/P/mUwFR2dYQlZFJr
+	Z6bzVsuSsrX/SXHQP9WakT8nylj5/sHhIUI7uy2DCVtY2v0nASjXc6QYxCidhNo1
+	kP1gcBAubl+eofj0hlNrumb2acTk/NsLGZAT8zq9dEgzAbPyt+zwqhwnXXKl+4Wr
+	ZV1dSpZ3I73v5ZkdpYYmzw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712822183; x=
+	1712908583; bh=zk6i+umTyqQ2sjjzFSCP6SVPCsrRTnkpJSOyeCle8go=; b=R
+	bS33kss5H2v9tE8PU1SY4Yy0me3uG8ts3LzHQ9/H4Xr0GyFbTwq34kuCLGjk1Vsv
+	3uPyV6yZZZRAZCMvXrzbptzhMhrGaOA/WENhAAvbDwbTpTh49JkZQwgepBcHke9M
+	DMOQy2WcJNBiTfgMYhTULYlKeJ+TFnIUgd2zzUCztyJwGCJXocCLSBAsMbN6Rm+b
+	dKZdvf/NuP2lR5X2bH77WbxsdfQPb7cH3EPoZbwRCWsu9Sxhy3RTd7zPNHSsn/Qp
+	jSvdTROGk/wJ4ZATiAEKCmKjXyv+LRNPipcQzMDq1BervYo7aVv5EZ2SL3sWe3hR
+	p58EWUyz+x7E/VNiv6kgw==
+X-ME-Sender: <xms:p5cXZlqHPTrWQ9F5RSEBvr_pxKfT4pMGVayVQzma-3V7vC63Ygn8-w>
+    <xme:p5cXZnqZuy4NeXltjrqtvPmT1dus_EmOaF3ZQNWhOteNddDYQ_M5pvCMlkZBLMbjB
+    UcAjb7sm5lkRd3v1Qs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehjedguddvvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepleefgfeuveeigfduudeufeeuffekleelieejleekgfdugfeuleeltddu
+    udeigedvnecuffhomhgrihhnpehgohgusgholhhtrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:p5cXZiNNnLE0VGKhhD5dGgpfULvxYTwzIfmhcqE3YcJ5Q-8BHetmzw>
+    <xmx:p5cXZg62Aci5JJzRPu5csSwJWXf9qgjoIcergon-dCqdTJLxJkm-DQ>
+    <xmx:p5cXZk7cdueQUYtBCJrrjji2BCrrTPFxuf3aagBRA1p94nXjmtimkQ>
+    <xmx:p5cXZoh9WJR8Q56_soQLHhByORD7iZg1vTmafJ-Cy2vJBPVSS0-uVw>
+    <xmx:p5cXZgN_wP2Tw_gAhDM2NCEATsygK7YANquA2EoNI3wZW2fbkYHAXDrq>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 4DA51B60093; Thu, 11 Apr 2024 03:56:23 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <cac3f357-0dc2-46ba-9ea0-7b1f4278e8ff@app.fastmail.com>
+In-Reply-To: <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
+References: <20240410153212.127477-1-adrian.hunter@intel.com>
+ <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
+ <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
+Date: Thu, 11 Apr 2024 09:56:02 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Adrian Hunter" <adrian.hunter@intel.com>
+Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,210 +97,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-s390@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the watchdog determines that the current soft lockup is due
-to an interrupt storm based on CPU utilization, reporting the
-most frequent interrupts could be good enough for further
-troubleshooting.
+On Thu, Apr 11, 2024, at 09:16, Adrian Hunter wrote:
+> On 11/04/24 10:04, Arnd Bergmann wrote:
+>> On Wed, Apr 10, 2024, at 17:32, Adrian Hunter wrote:
+>>> BUG() does not return, and arch implementations of BUG() use unreach=
+able()
+>>> or other non-returning code. However with !CONFIG_BUG, the default
+>>> implementation is often used instead, and that does not do that. x86=
+ always
+>>> uses its own implementation, but powerpc with !CONFIG_BUG gives a bu=
+ild
+>>> error:
+>>>
+>>>   kernel/time/timekeeping.c: In function =E2=80=98timekeeping_debug_=
+get_ns=E2=80=99:
+>>>   kernel/time/timekeeping.c:286:1: error: no return statement in fun=
+ction
+>>>   returning non-void [-Werror=3Dreturn-type]
+>>>
+>>> Add unreachable() to default !CONFIG_BUG BUG() implementation.
+>>=20
+>> I'm a bit worried about this patch, since we have had problems
+>> with unreachable() inside of BUG() in the past, and as far as I
+>> can remember, the current version was the only one that
+>> actually did the right thing on all compilers.
+>>=20
+>> One problem with an unreachable() annotation here is that if
+>> a compiler misanalyses the endless loop, it can decide to
+>> throw out the entire code path leading up to it and just
+>> run into undefined behavior instead of printing a BUG()
+>> message.
+>>=20
+>> Do you know which compiler version show the warning above?
+>
+> Original report has a list
+>
 
-Below is an example of interrupt storm. The call tree does not
-provide useful information, but we can analyze which interrupt
-caused the soft lockup by comparing the counts of interrupts.
+It looks like it's all versions of gcc, though no versions
+of clang show the warnings. I did a few more tests and could
+not find any differences on actual code generation, but
+I'd still feel more comfortable changing the caller than
+the BUG() macro. It's trivial to add a 'return 0' there.
 
-[  638.870231] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [swapper/9:0]
-[  638.870825] CPU#9 Utilization every 4s during lockup:
-[  638.871194]  #1:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.871652]  #2:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.872107]  #3:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.872563]  #4:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.873018]  #5:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.873494] CPU#9 Detect HardIRQ Time exceeds 50%. Most frequent HardIRQs:
-[  638.873994]  #1: 330945      irq#7
-[  638.874236]  #2: 31          irq#82
-[  638.874493]  #3: 10          irq#10
-[  638.874744]  #4: 2           irq#89
-[  638.874992]  #5: 1           irq#102
-...
-[  638.875313] Call trace:
-[  638.875315]  __do_softirq+0xa8/0x364
+Another interesting observation is that clang-11 and earlier
+versions end up skipping the endless loop, both with and
+without the __builtin_unreachable, see
+https://godbolt.org/z/aqa9zqz8x
 
-Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
-Reviewed-by: Liu Song <liusong@linux.alibaba.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
----
- kernel/watchdog.c | 116 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 112 insertions(+), 4 deletions(-)
+clang-12 and above do work like gcc, so I guess that is good.
 
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index ef8ebd31fdab..d12ff74889ed 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -12,22 +12,25 @@
- 
- #define pr_fmt(fmt) "watchdog: " fmt
- 
--#include <linux/mm.h>
- #include <linux/cpu.h>
--#include <linux/nmi.h>
- #include <linux/init.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
- #include <linux/kernel_stat.h>
-+#include <linux/kvm_para.h>
- #include <linux/math64.h>
-+#include <linux/mm.h>
- #include <linux/module.h>
-+#include <linux/nmi.h>
-+#include <linux/stop_machine.h>
- #include <linux/sysctl.h>
- #include <linux/tick.h>
-+
- #include <linux/sched/clock.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/isolation.h>
--#include <linux/stop_machine.h>
- 
- #include <asm/irq_regs.h>
--#include <linux/kvm_para.h>
- 
- static DEFINE_MUTEX(watchdog_mutex);
- 
-@@ -418,13 +421,105 @@ static void print_cpustat(void)
- 	}
- }
- 
-+#define HARDIRQ_PERCENT_THRESH          50
-+#define NUM_HARDIRQ_REPORT              5
-+struct irq_counts {
-+	int irq;
-+	u32 counts;
-+};
-+
-+static DEFINE_PER_CPU(bool, snapshot_taken);
-+
-+/* Tabulate the most frequent interrupts. */
-+static void tabulate_irq_count(struct irq_counts *irq_counts, int irq, u32 counts, int rank)
-+{
-+	int i;
-+	struct irq_counts new_count = {irq, counts};
-+
-+	for (i = 0; i < rank; i++) {
-+		if (counts > irq_counts[i].counts)
-+			swap(new_count, irq_counts[i]);
-+	}
-+}
-+
-+/*
-+ * If the hardirq time exceeds HARDIRQ_PERCENT_THRESH% of the sample_period,
-+ * then the cause of softlockup might be interrupt storm. In this case, it
-+ * would be useful to start interrupt counting.
-+ */
-+static bool need_counting_irqs(void)
-+{
-+	u8 util;
-+	int tail = __this_cpu_read(cpustat_tail);
-+
-+	tail = (tail + NUM_HARDIRQ_REPORT - 1) % NUM_HARDIRQ_REPORT;
-+	util = __this_cpu_read(cpustat_util[tail][STATS_HARDIRQ]);
-+	return util > HARDIRQ_PERCENT_THRESH;
-+}
-+
-+static void start_counting_irqs(void)
-+{
-+	if (!__this_cpu_read(snapshot_taken)) {
-+		kstat_snapshot_irqs();
-+		__this_cpu_write(snapshot_taken, true);
-+	}
-+}
-+
-+static void stop_counting_irqs(void)
-+{
-+	__this_cpu_write(snapshot_taken, false);
-+}
-+
-+static void print_irq_counts(void)
-+{
-+	unsigned int i, count;
-+	struct irq_counts irq_counts_sorted[NUM_HARDIRQ_REPORT] = {
-+		{-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}
-+	};
-+
-+	if (__this_cpu_read(snapshot_taken)) {
-+		for_each_active_irq(i) {
-+			count = kstat_get_irq_since_snapshot(i);
-+			tabulate_irq_count(irq_counts_sorted, i, count, NUM_HARDIRQ_REPORT);
-+		}
-+
-+		/*
-+		 * Outputting the "watchdog" prefix on every line is redundant and not
-+		 * concise, and the original alarm information is sufficient for
-+		 * positioning in logs, hence here printk() is used instead of pr_crit().
-+		 */
-+		printk(KERN_CRIT "CPU#%d Detect HardIRQ Time exceeds %d%%. Most frequent HardIRQs:\n",
-+		       smp_processor_id(), HARDIRQ_PERCENT_THRESH);
-+
-+		for (i = 0; i < NUM_HARDIRQ_REPORT; i++) {
-+			if (irq_counts_sorted[i].irq == -1)
-+				break;
-+
-+			printk(KERN_CRIT "\t#%u: %-10u\tirq#%d\n",
-+			       i + 1, irq_counts_sorted[i].counts,
-+			       irq_counts_sorted[i].irq);
-+		}
-+
-+		/*
-+		 * If the hardirq time is less than HARDIRQ_PERCENT_THRESH% in the last
-+		 * sample_period, then we suspect the interrupt storm might be subsiding.
-+		 */
-+		if (!need_counting_irqs())
-+			stop_counting_irqs();
-+	}
-+}
-+
- static void report_cpu_status(void)
- {
- 	print_cpustat();
-+	print_irq_counts();
- }
- #else
- static inline void update_cpustat(void) { }
- static inline void report_cpu_status(void) { }
-+static inline bool need_counting_irqs(void) { return false; }
-+static inline void start_counting_irqs(void) { }
-+static inline void stop_counting_irqs(void) { }
- #endif
- 
- /*
-@@ -528,6 +623,18 @@ static int is_softlockup(unsigned long touch_ts,
- 			 unsigned long now)
- {
- 	if ((watchdog_enabled & WATCHDOG_SOFTOCKUP_ENABLED) && watchdog_thresh) {
-+		/*
-+		 * If period_ts has not been updated during a sample_period, then
-+		 * in the subsequent few sample_periods, period_ts might also not
-+		 * be updated, which could indicate a potential softlockup. In
-+		 * this case, if we suspect the cause of the potential softlockup
-+		 * might be interrupt storm, then we need to count the interrupts
-+		 * to find which interrupt is storming.
-+		 */
-+		if (time_after_eq(now, period_ts + get_softlockup_thresh() / NUM_SAMPLE_PERIODS) &&
-+		    need_counting_irqs())
-+			start_counting_irqs();
-+
- 		/* Warn about unreasonable delays. */
- 		if (time_after(now, period_ts + get_softlockup_thresh()))
- 			return now - touch_ts;
-@@ -550,6 +657,7 @@ static DEFINE_PER_CPU(struct cpu_stop_work, softlockup_stop_work);
- static int softlockup_fn(void *data)
- {
- 	update_touch_ts();
-+	stop_counting_irqs();
- 	complete(this_cpu_ptr(&softlockup_completion));
- 
- 	return 0;
--- 
-2.37.1 (Apple Git-137.1)
-
+     Arnd
