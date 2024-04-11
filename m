@@ -2,92 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C688A12EB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 13:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 074418A153E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 15:06:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=k16UMDS3;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=NPqmVCml;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=beT4DTQy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=iHB5ETUr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFcrQ0Qbvz3vbB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 21:28:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFg2N5fJsz3vbS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 23:06:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=k16UMDS3;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=NPqmVCml;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=beT4DTQy;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=iHB5ETUr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.150; helo=wfout7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from wfout7-smtp.messagingengine.com (wfout7-smtp.messagingengine.com [64.147.123.150])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.151; helo=fout8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFcqY2yn4z3bpp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 21:27:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFg1Y1k30z3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 23:06:08 +1000 (AEST)
 Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id ADBF71C00137;
-	Thu, 11 Apr 2024 07:27:14 -0400 (EDT)
+	by mailfout.nyi.internal (Postfix) with ESMTP id 276C0138025B;
+	Thu, 11 Apr 2024 09:06:04 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Thu, 11 Apr 2024 07:27:17 -0400
+  by compute5.internal (MEProxy); Thu, 11 Apr 2024 09:06:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1712834834;
-	 x=1712921234; bh=HHmF8u/Kgp0w2MiOBXchBKlXBDAOLG0zhFsdn3Q3LKU=; b=
-	k16UMDS3YHupSnmwEP0/HA0z1W0kHE8mUnFxzHkqIsGKnqejihmaLKS+ydgZZHPZ
-	4k/nfA6B8mGj6p0fe3q7vkhgn+Ft5kLluwBHTZbpzdSU+wi9oe2OfZfgF6nR1Q9w
-	NUjaGTPYqJkI69McIYxvmOwMD2F0ZLmG8S/FwlNusmpA66o0fKNa0t574OQ+BNdb
-	lmL7X2Qxx84toenW4EYPEQ7Gx6MHJfJBf/CxcVIavumaMnmIXMmgymZPtk2Q0p41
-	DjITQCF+YdPpOoU9hHdWEilPrOwsBPfcblfDrRfoEKMVdmIuxootB8arnUUdGlKo
-	AiSoKEveNjbKxJ04sRyWag==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1712840764;
+	 x=1712927164; bh=yj3L41BBACRzg4qgbnEqB1wd5tAnTER3vhd4irRjfD0=; b=
+	beT4DTQyVXapX9VjkjPwhPXdHURnM/ZCCDls9VSQvZ8jnWlZeo/nciiuyV20/Kt5
+	QSIvDXPNpWMfdNCSMEZlAg2qvGK4qSrETVZkcVNW/Rzqn9sPNV2RmNKthjLnBElO
+	PSdTY8BOa2uIzcj3cNr97247hhrF5OgHkvr6e3ID3MrM82S+YN+F+ki9pH7RlaD7
+	srA3Xh0N0ptDWxMRt+vxYwjHkoqjsbei9U6aDHj44C1fxYygKrdo50pNnz1vpHo3
+	Gg6bTlsUiFzO70iavY0+M7qfca3ERWSO1riSHIQFgdjRIMNjUsJeC+kyips3x6zc
+	gvG38wCdhwIAIuSNrQE+0w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712834834; x=
-	1712921234; bh=HHmF8u/Kgp0w2MiOBXchBKlXBDAOLG0zhFsdn3Q3LKU=; b=N
-	PqmVCmlO8qu+ao6PmlZfi7Y24d44/jfZRx5qxQcAoXLlkiCUOasykG+E2JdPz3AZ
-	nl5qHdIkvbM8XMASmY5PwAcjKoWD574XPtl7j2flIWHqTMOucjHbASYq9+JaNTXT
-	V1t29oYeUFnYMkhjJPZoysmKH4tIkX24d/ciI2xBu6dUAfycWkl2gQD5vhP9jJzH
-	BjZQtLLGTw6xJTY+IdtxafZ396fVFhLcz/cb2KCCGploBDTbAXH5WNtk/GXoGgTf
-	UgfpTOJkURzvrYBdRLlN4pEl059sxLKC0h1YBsNYbYc5cic0wIeAfGw4rxjyST3t
-	HQ1WLOIhvcuLROPRf/xhA==
-X-ME-Sender: <xms:EckXZp_JMGVr04CcPO7Zi8vlSysZ4dGB6jHuu9Jmk78K0zYGeoRx-Q>
-    <xme:EckXZtvOdPNfmi5oNB1_mZPSAusDzHoHjx5Qvf_oivfbtPfPFNBGAx-qxjaH_0SAX
-    iLemeul88EkI1JrL38>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehkedggeduucetufdoteggodetrfdotf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712840764; x=
+	1712927164; bh=yj3L41BBACRzg4qgbnEqB1wd5tAnTER3vhd4irRjfD0=; b=i
+	HB5ETUr01AhS0wBRoP6D0jH8qNl/9c1nhUBdv0B3Dfnjh8qTr4/n0JGzsSz6Fod0
+	j9JXff6yOtVRy3nmLrZt3I7ma7Dc6chD41WCFXvBGhmNow+Ctl/l/KRAf9tFUgRD
+	Tep0m4+npFqHts87z7IKjSYAoR03rB2Hid0ThQ7Bs4ydXomNaxn2+48F06h+Ai2S
+	8J/zdRPmKRLFOmmzvud7mcZLWBRJCdXEh/32+CnBm3vE+MQ8uH7eXLkEpBGh3CcL
+	K17eDgvryQL8tDfImuaGcdv1yGumwv6nduafJtsjsuKMu+ocN9M/80ih/l3G9GRy
+	PuGYHXYva62LWR1AMv3Pw==
+X-ME-Sender: <xms:OuAXZpDP_dsT5ECfjNFjYbmlgwtgrsce17kShjG5fbvlQvgcU3ROoA>
+    <xme:OuAXZnjcQjSF1HhAnOcj1qasYyVXOTegxXbe8Lz9NB8Jhh7zI2iHahWL8pS3dF7zN
+    XaQp5szmEk_rOTvkxk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehkedgieduucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
     rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:EckXZnAt2S3P-B4UONMSL2sxDqEy28T02-OW3kU-0CtPKbnzG3Xzww>
-    <xmx:EckXZtdkbuyl5tUZneukUa8ax4-H1O5f2yb3bjfdoHgsoQ2ofnTbqA>
-    <xmx:EckXZuPdEX4JvNTAFe0W1u82Yp87aPaFB5jg8pNCdf7OKL_4LSvvsg>
-    <xmx:EckXZvkHIKP5vqZVZF1sC-kRvHGTGAIQa3365tAcLRW-xAhSp0JmQw>
-    <xmx:EskXZj-lCmKV2uVI2uldem5i9qYjtVjQscgpTn-bkl5DAOWQsRzSqHyn>
+    htthgvrhhnpefgkeeuleegieeghfduudeltdekfeffjeeuleehleefudettddtgfevueef
+    feeigeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:OuAXZkkHjJhpq-znzUOIFXxPGrOSG_RbON5nK9ERCI0vIUyXSOqJ9A>
+    <xmx:OuAXZjwcWgyyKd_sj3c4YoF3pahZKhxPOvFXD3pJsmp1fD988lFPnQ>
+    <xmx:OuAXZuSxT4Mnc3kr-8fJgSJZipdpvdg4-mCmtR-iyMbzGtIhnSahog>
+    <xmx:OuAXZmYy2Lk0FzuBtsseotdcsoHsPYFt-UOdp44tiHza0Yj3qVEt2A>
+    <xmx:POAXZsnqYF5uSSbA0rka_l_foY-XGEg88Thvb2s23eW3mc1zKwaoEKRW>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 05606B60092; Thu, 11 Apr 2024 07:27:12 -0400 (EDT)
+	id 5E9FFB6008F; Thu, 11 Apr 2024 09:06:02 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
 MIME-Version: 1.0
-Message-Id: <dd6653b2-3a88-4b95-af13-c6fda5b27b39@app.fastmail.com>
-In-Reply-To: <4d429a10-eb45-4262-8e74-69af810ef1ac@intel.com>
-References: <20240410153212.127477-1-adrian.hunter@intel.com>
- <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
- <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
- <a434248a-1e9f-4f4f-8f90-d36d8e979f53@csgroup.eu>
- <ff9d7032-a3b6-4ecd-ac26-d7d4a06a5c7f@csgroup.eu>
- <4d429a10-eb45-4262-8e74-69af810ef1ac@intel.com>
-Date: Thu, 11 Apr 2024 13:26:52 +0200
+Message-Id: <cc62b891-d636-4d70-8792-eebcb5c7c5d5@app.fastmail.com>
+In-Reply-To: <e0e1518c-9319-4af9-9b7d-3eb985f2e6da@csgroup.eu>
+References: <20240215162327.3663092-1-sean.anderson@seco.com>
+ <20240219153016.ntltc76bphwrv6hn@skbuf>
+ <e0e1518c-9319-4af9-9b7d-3eb985f2e6da@csgroup.eu>
+Date: Thu, 11 Apr 2024 15:05:41 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Adrian Hunter" <adrian.hunter@intel.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Vladimir Oltean" <vladimir.oltean@nxp.com>,
+ "Qiang Zhao" <qiang.zhao@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Herve Codina" <herve.codina@bootlin.com>
+Subject: Re: [RESEND PATCH net v4 1/2] soc: fsl: qbman: Always disable interrupts when
+ taking cgr_lock
 Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -101,145 +101,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, "x86@kernel.org" <x86@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sven Sch
- nelle <svens@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Sean Anderson <sean.anderson@seco.com>, Netdev <netdev@vger.kernel.org>, Roy Pledge <roy.pledge@nxp.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, Scott Wood <oss@buserror.net>, Eric Dumazet <edumazet@google.com>, Camelia Groza <camelia.groza@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 11, 2024, at 11:27, Adrian Hunter wrote:
-> On 11/04/24 11:22, Christophe Leroy wrote:
->> Le 11/04/2024 =C3=A0 10:12, Christophe Leroy a =C3=A9crit=C2=A0:
+On Wed, Apr 10, 2024, at 06:54, Christophe Leroy wrote:
+> Le 19/02/2024 =C3=A0 16:30, Vladimir Oltean a =C3=A9crit=C2=A0:
+>> On Thu, Feb 15, 2024 at 11:23:26AM -0500, Sean Anderson wrote:
+>>> smp_call_function_single disables IRQs when executing the callback. =
+To
+>>> prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhe=
+re.
+>>> This is already done by qman_update_cgr and qman_delete_cgr; fix the
+>>> other lockers.
 >>>
->>> Looking at the report, I think the correct fix should be to use=20
->>> BUILD_BUG() instead of BUG()
+>>> Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_sa=
+fe()")
+>>> CC: stable@vger.kernel.org
+>>> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+>>> Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
+>>> Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+>>> ---
+>>> I got no response the first time I sent this, so I am resending to n=
+et.
+>>> This issue was introduced in a series which went through net, so I h=
+ope
+>>> it makes sense to take it via net.
+>>>
+>>> [1] https://lore.kernel.org/linux-arm-kernel/20240108161904.2865093-=
+1-sean.anderson@seco.com/
+>>>
+>>> (no changes since v3)
+>>>
+>>> Changes in v3:
+>>> - Change blamed commit to something more appropriate
+>>>
+>>> Changes in v2:
+>>> - Fix one additional call to spin_unlock
 >>=20
->> I confirm the error goes away with the following change to next-20240=
-411=20
->> on powerpc tinyconfig with gcc 13.2
+>> Leo Li (Li Yang) is no longer with NXP. Until we figure out within NXP
+>> how to continue with the maintainership of drivers/soc/fsl/, yes, ple=
+ase
+>> continue to submit this series to 'net'. I would also like to point
+>> out to Arnd that this is the case.
 >>=20
->> diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
->> index 4e18db1819f8..3d5ac0cdd721 100644
->> --- a/kernel/time/timekeeping.c
->> +++ b/kernel/time/timekeeping.c
->> @@ -282,7 +282,7 @@ static inline void timekeeping_check_update(struc=
+>> Arnd, a large portion of drivers/soc/fsl/ is networking-related
+>> (dpio, qbman). Would it make sense to transfer the maintainership
+>> of these under the respective networking drivers, to simplify the
+>> procedures?
+
+If there are parts that are only used by networking, I'm definitely
+fine with moving those out of drivers/soc into the respective users,
+but as far as I can tell, all the code there is shared by multiple
+subsystems (crypto, dma, usb, ...), so that would likely require
+at least a reorganization.
+
+> I see FREESCALE QUICC ENGINE LIBRARY (drivers/soc/fsl/qe/) is maintain=
+ed=20
+> by Qiang Zhao <qiang.zhao@nxp.com> but I can't find any mail from him =
+in=20
+> the past 4 years in linuxppc-dev list, and everytime I wanted to submi=
 t=20
->> timekeeper *tk, u64 offset)
->>   }
->>   static inline u64 timekeeping_debug_get_ns(const struct tk_read_bas=
-e *tkr)
->>   {
->> -	BUG();
->> +	BUILD_BUG();
->>   }
->>   #endif
->>=20
+> something I only got responses from Leo Ly.
 >
-> That is fragile because it depends on defined(__OPTIMIZE__),
-> so it should still be:
+> The last commit he reviewed is 661ea25e5319 ("soc: fsl: qe: Replace=20
+> one-element array and use struct_size() helper"), it was in May 2020.
+>
+> Is he still working at NXP and actively maintaining that library ?=20
+> Keeping this part maintained is vital for me as this SOC is embedded i=
+n=20
+> the two powerpc platform I maintain (8xx and 83xx).
+>
+> If Qiang Zhao is not able to activaly maintain that SOC anymore, I=20
+> volonteer to maintain it.
 
-If there is a function that is defined but that must never be
-called, I think we are doing something wrong. Before
-e8e9d21a5df6 ("timekeeping: Refactor timekeeping helpers"),
-the #ifdef made some sense, but now the #else is not really
-that useful.
+Thanks, much appreciated. The QE driver is also used on
+arm64/ls1043a, but I have not seen any email or pull requests
+from Qiang Zhao for that driver either.
 
-Ideally we would make timekeeping_debug_get_delta() and
-timekeeping_check_update() just return in case of
-!IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING), but unfortunately
-the code uses some struct members that are undefined then.
+The previous setup was that Li Yang picked up patches for
+anything under drivers/soc/fsl/ and forwarded them to
+soc@kernel.org for me to pick up.
 
-The patch below moves the #ifdef check into these functions,
-which is not great, but it avoids defining useless
-functions. Maybe there is a better way here. How about
-just removing the BUG()?
+I would very much like to get back to the state of having
+one or two maintainers for all of drivers/soc/fsl/ and
+not have to worry about individual drivers under it when
+they are all maintained by different people.
 
-     Arnd
+Shawn Guo is already maintaining the arm64 side of
+Layerscape in addition to the i.MX code. Herve Codina in
+turn has taken responsibility for qe/qmc.c and qe/tsa.c.
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 4e18db1819f8..16c6dba64dd6 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -195,12 +195,11 @@ static inline u64 tk_clock_read(const struct tk_re=
-ad_base *tkr)
-        return clock->read(clock);
- }
-=20
--#ifdef CONFIG_DEBUG_TIMEKEEPING
- #define WARNING_FREQ (HZ*300) /* 5 minute rate-limiting */
-=20
- static void timekeeping_check_update(struct timekeeper *tk, u64 offset)
- {
--
-+#ifdef CONFIG_DEBUG_TIMEKEEPING
-        u64 max_cycles =3D tk->tkr_mono.clock->max_cycles;
-        const char *name =3D tk->tkr_mono.clock->name;
-=20
-@@ -235,12 +234,19 @@ static void timekeeping_check_update(struct timeke=
-eper *tk, u64 offset)
-                }
-                tk->overflow_seen =3D 0;
-        }
-+#endif
- }
-=20
- static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *t=
-kr, u64 cycles);
-=20
--static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *t=
-kr)
-+static u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
-+{
-+       return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
-+}
-+
-+static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
- {
-+#ifdef CONFIG_DEBUG_TIMEKEEPING
-        struct timekeeper *tk =3D &tk_core.timekeeper;
-        u64 now, last, mask, max, delta;
-        unsigned int seq;
-@@ -275,16 +281,10 @@ static inline u64 timekeeping_debug_get_ns(const s=
-truct tk_read_base *tkr)
-=20
-        /* timekeeping_cycles_to_ns() handles both under and overflow */
-        return timekeeping_cycles_to_ns(tkr, now);
--}
- #else
--static inline void timekeeping_check_update(struct timekeeper *tk, u64 =
-offset)
--{
--}
--static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *t=
-kr)
--{
--       BUG();
--}
-+       return __timekeeping_get_ns(tkr);
- #endif
-+}
-=20
- /**
-  * tk_setup_internals - Set up internals to use clocksource clock.
-@@ -390,19 +390,6 @@ static inline u64 timekeeping_cycles_to_ns(const st=
-ruct tk_read_base *tkr, u64 c
-        return ((delta * tkr->mult) + tkr->xtime_nsec) >> tkr->shift;
- }
-=20
--static __always_inline u64 __timekeeping_get_ns(const struct tk_read_ba=
-se *tkr)
--{
--       return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
--}
--
--static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
--{
--       if (IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING))
--               return timekeeping_debug_get_ns(tkr);
--
--       return __timekeeping_get_ns(tkr);
--}
--
- /**
-  * update_fast_timekeeper - Update the fast and NMI safe monotonic time=
-keeper.
-  * @tkr: Timekeeping readout base from which we take the update
+Maybe you can pick one more more maintainers for
+drivers/soc/fsl/ between the three of you to collect
+patches into a git branch and send pull requests to
+soc@kernel.org?
+
+      Arnd
