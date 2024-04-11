@@ -1,63 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AB98A20AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 23:11:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74D08A21DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 00:43:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=kv3VYS1n;
-	dkim=fail reason="signature verification failed" header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=2lz6/kgt;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=jW2k2sHO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFsn027HFz3vYq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 07:11:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFvr8492xz3vZl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 08:43:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=kv3VYS1n;
-	dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=2lz6/kgt;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=jW2k2sHO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mailrelay1-1.pub.mailoutpod2-cph3.one.com (client-ip=46.30.211.176; helo=mailrelay1-1.pub.mailoutpod2-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=lists.ozlabs.org)
-Received: from mailrelay1-1.pub.mailoutpod2-cph3.one.com (mailrelay1-1.pub.mailoutpod2-cph3.one.com [46.30.211.176])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFsm83lLlz3dng
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 07:10:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=rsa1;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=8iZCIbXv/o+9vFGi/T/APUrhuAqs9LM6RRA1ferZ2wg=;
-	b=kv3VYS1nb+1jhVe9oEyryqOQdogTQlFfldT5zGFYz9zCFOW49UnzyKwrJoDnpG5By8Wz6/89q37/J
-	 74y1ANyGrc4+nAdiZLdwTQ7At1BMHShrpW21ksmQCnho4ndLVURK71dGIBPbwAmFDNXGQ3nhWfJORf
-	 kv6U7sF+UeIM9uVpTWy6T9yWjx+pcsw/GMhx3KJhDEBn/z0Ta31X9WEj03K6p1on5B6YlTztmnenxM
-	 6t/dz3ghpSDNSSOo+Nh+gwCqPRCFFIbfiAkM9VZsrPcOKFRvNMfm1iQmPZN5y4JbJlPGl97XHjBdfO
-	 1z6v1BSheYGCsHilS105+mOpPAp8U2Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=ed1;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=8iZCIbXv/o+9vFGi/T/APUrhuAqs9LM6RRA1ferZ2wg=;
-	b=2lz6/kgt5Ws9Bwhsrc83nOkDSczAnngGL2Yh8km6qYY8h6ibpExr6aVD63x7Bbyn4q9jSyAbA/9ij
-	 5z3+8uwDQ==
-X-HalOne-ID: 9634f2b2-f845-11ee-b2f6-516168859393
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 9634f2b2-f845-11ee-b2f6-516168859393;
-	Thu, 11 Apr 2024 20:53:48 +0000 (UTC)
-Date: Thu, 11 Apr 2024 22:53:46 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v4 06/15] mm/execmem, arch: convert simple overrides of
- module_alloc to execmem
-Message-ID: <20240411205346.GA66667@ravnborg.org>
-References: <20240411160051.2093261-1-rppt@kernel.org>
- <20240411160051.2093261-7-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFvqN5dm7z3cSd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 08:43:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1712875392;
+	bh=l6sGqsLkE9VvY8OPheWWPPl3KOp7bzJWio9ew4U591c=;
+	h=Date:From:To:Cc:Subject:From;
+	b=jW2k2sHORZZPkeGuVaDC2srfWSaAWGtAIWexg9Os3WXMombNRfGC2NscXnZzhZMub
+	 8gky0KjFPHkffaD5m1rPm7cW0jR3pZOY6FgtAjbZ8TGSbzURADViNg2mS+k2Ig3uLQ
+	 SsDjMktXxzg99SPmWJhsd6ETIi8DKkFANaS13wgCMt2M60yoIqWuaQVw2uaUaQnBp+
+	 N8XJ1Z/cl7mtAW6uKKFxFuatA8GJNYp1FNJdwQxZWYiSyZGslfMmLnSC17+FJ0vgVS
+	 srEqnGfX+RDmH9+D8Ul7Rkcr6s2n+DDTAlYbS4alexWdjkDWnRA84btp7sOclyJjpX
+	 tlkNQDKcyek4A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VFvqN3Xr9z4wcb;
+	Fri, 12 Apr 2024 08:43:12 +1000 (AEST)
+Date: Fri, 12 Apr 2024 08:43:10 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Greg KH <greg@kroah.com>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: linux-next: duplicate patch in the driver-core.current tree
+Message-ID: <20240412084310.035f018d@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240411160051.2093261-7-rppt@kernel.org>
+Content-Type: multipart/signed; boundary="Sig_/Pbd5qS_hA7P5TURchJeP+18";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,118 +56,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Donald Dutile <ddutile@redhat.com>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-trace-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev
- >, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>, Eric Chanudet <echanude@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mike.
+--Sig_/Pbd5qS_hA7P5TURchJeP+18
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 11, 2024 at 07:00:42PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> 
-> Several architectures override module_alloc() only to define address
-> range for code allocations different than VMALLOC address space.
-> 
-> Provide a generic implementation in execmem that uses the parameters for
-> address space ranges, required alignment and page protections provided
-> by architectures.
-> 
-> The architectures must fill execmem_info structure and implement
-> execmem_arch_setup() that returns a pointer to that structure. This way the
-> execmem initialization won't be called from every architecture, but rather
-> from a central place, namely a core_initcall() in execmem.
-> 
-> The execmem provides execmem_alloc() API that wraps __vmalloc_node_range()
-> with the parameters defined by the architectures.  If an architecture does
-> not implement execmem_arch_setup(), execmem_alloc() will fall back to
-> module_alloc().
-> 
-> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> ---
+Hi all,
 
-This code snippet could be more readable ...
-> diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
-> index 66c45a2764bc..b70047f944cc 100644
-> --- a/arch/sparc/kernel/module.c
-> +++ b/arch/sparc/kernel/module.c
-> @@ -14,6 +14,7 @@
->  #include <linux/string.h>
->  #include <linux/ctype.h>
->  #include <linux/mm.h>
-> +#include <linux/execmem.h>
->  
->  #include <asm/processor.h>
->  #include <asm/spitfire.h>
-> @@ -21,34 +22,26 @@
->  
->  #include "entry.h"
->  
-> +static struct execmem_info execmem_info __ro_after_init = {
-> +	.ranges = {
-> +		[EXECMEM_DEFAULT] = {
->  #ifdef CONFIG_SPARC64
-> -
-> -#include <linux/jump_label.h>
-> -
-> -static void *module_map(unsigned long size)
-> -{
-> -	if (PAGE_ALIGN(size) > MODULES_LEN)
-> -		return NULL;
-> -	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
-> -				GFP_KERNEL, PAGE_KERNEL, 0, NUMA_NO_NODE,
-> -				__builtin_return_address(0));
-> -}
-> +			.start = MODULES_VADDR,
-> +			.end = MODULES_END,
->  #else
-> -static void *module_map(unsigned long size)
-> +			.start = VMALLOC_START,
-> +			.end = VMALLOC_END,
-> +#endif
-> +			.alignment = 1,
-> +		},
-> +	},
-> +};
-> +
-> +struct execmem_info __init *execmem_arch_setup(void)
->  {
-> -	return vmalloc(size);
-> -}
-> -#endif /* CONFIG_SPARC64 */
-> -
-> -void *module_alloc(unsigned long size)
-> -{
-> -	void *ret;
-> -
-> -	ret = module_map(size);
-> -	if (ret)
-> -		memset(ret, 0, size);
-> +	execmem_info.ranges[EXECMEM_DEFAULT].pgprot = PAGE_KERNEL;
->  
-> -	return ret;
-> +	return &execmem_info;
->  }
->  
->  /* Make generic code ignore STT_REGISTER dummy undefined symbols.  */
+The following commit is also in the powerpc-fixes tree as a different
+commit (but the same patch):
 
-... if the following was added:
+  156539fd6501 ("Documentation: embargoed-hardware-issues.rst: Add myself f=
+or Power")
 
-diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
-index 9e85d57ac3f2..62bcafe38b1f 100644
---- a/arch/sparc/include/asm/pgtable_32.h
-+++ b/arch/sparc/include/asm/pgtable_32.h
-@@ -432,6 +432,8 @@ static inline int io_remap_pfn_range(struct vm_area_struct *vma,
+This is commit
 
- #define VMALLOC_START           _AC(0xfe600000,UL)
- #define VMALLOC_END             _AC(0xffc00000,UL)
-+#define MODULES_VADDR           VMALLOC_START
-+#define MODULES_END             VMALLOC_END
+  36627111b568 ("Documentation: embargoed-hardware-issues.rst: Add myself f=
+or Power")
 
+in the powerpc-fixes tree.
 
-Then the #ifdef CONFIG_SPARC64 could be dropped and the code would be
-the same for 32 and 64 bits.
+--=20
+Cheers,
+Stephen Rothwell
 
-Just a drive-by comment.
+--Sig_/Pbd5qS_hA7P5TURchJeP+18
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-	Sam
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmYYZ34ACgkQAVBC80lX
+0Gw6eggAkf8O7uzCnhPw8CaP0yOZTph3HcrxefYLKfeFEmQU5VAow3gd61FRh0IE
+5qz+8neJuwW9Wac0qgvgilJTD6Gj17250gkg/c8AEqCXWcCST2AvNIdGSLJKs9Hx
+hIfIgr4LdbElWdKQzmbP1np2H2Ya1RROD8go5U/KHkRcEQRXge9GoOWsHWYqbCpk
+hgcP+bmvmFXvqHGDephq2Tk91QaZz8zdk1PbWxZNyorb+DG3ZhbuwTDEV47SLwsP
+sAib5wWi/JzdNKtcyaqxWuKJ9EL27TWdI3gU8D7fH1ZgFbkf9OhKZ8TwxtRriSrx
+H/YR7H3IXoK2GGYXwNhZH+8aRPPgLQ==
+=bYQM
+-----END PGP SIGNATURE-----
+
+--Sig_/Pbd5qS_hA7P5TURchJeP+18--
