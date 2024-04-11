@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C028A194E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 18:04:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DD68A1951
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Apr 2024 18:05:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tr6HQHuJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M1GXndAQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VFkzV6xDDz3vp6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 02:04:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VFl0H3mJ4z3vqZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 02:05:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tr6HQHuJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M1GXndAQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFkwq08VQz3vbP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 02:02:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VFkx22Gb6z3vXd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 02:02:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id B4CD6CE179F;
+	by sin.source.kernel.org (Postfix) with ESMTP id 1A15CCE16D9;
+	Thu, 11 Apr 2024 16:02:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818CFC2BD10;
 	Thu, 11 Apr 2024 16:02:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2470CC113CE;
-	Thu, 11 Apr 2024 16:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712851337;
-	bh=Q5aCDGAMhe9LWjmBOe0KfqvsLthVcLCeaQ3ItO7ykso=;
+	s=k20201202; t=1712851347;
+	bh=et4MgsnYGm8cVKv9jXBAzJOVzMpXCbC7LVUAQwPu1L8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tr6HQHuJ8bxaf7OwaHK0F7En4SSz1IUTUfCAsoEJfXYQ68T9i5iWX0ALZ/A23xhSl
-	 x1WbhFcpAYaTPmEvUVS9U2aNFPWZlDPMHCUPZkf5vSVjwFCLmtt8uvANdfkxoGqZTd
-	 a1NknNkrI4pxKAUc1ytaULkAqpK2FqN4GXTgQYPBvn7AjeqZm5o+pz4sJEjapq5Qiy
-	 WAkomqudI+SeGMXoQBTrxCtfCrYHYhtxyvZVEmaeObqzjIL1fR3qE9uKM63K8jvBr6
-	 p3sT+9xfpJXzwz91JLZWiUeMKeRCNdTllJ9qFgdoPAG2LiQO3/UfBlsSHrPYQDyxgf
-	 s30+fws1oHu9g==
+	b=M1GXndAQP3oIWJF2kKyNlpiiJSFO7nmNgf4MIU0ERGhKxhpSGaH9nxwDuLhsV3Xqy
+	 oWFbKUT/il9FmwUQEyH0r/e2BlemPH7VRA1ywsfVtoDfKNcIa4f2do77HzqxqdrG6t
+	 QlP+gFMeCVi6VrLKqby9Dn5q7YBcfKh9PkLfkItK2qs1Sx2MUlI4qvR4Q73oKj8gOV
+	 YIq1zu3Q38f4fDlPFB+klMICo31RMpMdTnPu5jG0/g9T75phgJPr5vjbKe2lBvj3yQ
+	 QDLR8IEPEAv5EEBMbPsUOffQmtDM0+zqars1F9uzRfdyUjJWSeVO38WX+SrdXXfWIy
+	 bNoL6A2CTDgVQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 03/15] nios2: define virtual address space for modules
-Date: Thu, 11 Apr 2024 19:00:39 +0300
-Message-ID: <20240411160051.2093261-4-rppt@kernel.org>
+Subject: [PATCH v4 04/15] module: make module_memory_{alloc,free} more self-contained
+Date: Thu, 11 Apr 2024 19:00:40 +0300
+Message-ID: <20240411160051.2093261-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240411160051.2093261-1-rppt@kernel.org>
 References: <20240411160051.2093261-1-rppt@kernel.org>
@@ -65,69 +65,129 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-nios2 uses kmalloc() to implement module_alloc() because CALL26/PCREL26
-cannot reach all of vmalloc address space.
+Move the logic related to the memory allocation and freeing into
+module_memory_alloc() and module_memory_free().
 
-Define module space as 32MiB below the kernel base and switch nios2 to
-use vmalloc for module allocations.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/nios2/include/asm/pgtable.h |  5 ++++-
- arch/nios2/kernel/module.c       | 19 ++++---------------
- 2 files changed, 8 insertions(+), 16 deletions(-)
+ kernel/module/main.c | 64 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 25 deletions(-)
 
-diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-index d052dfcbe8d3..eab87c6beacb 100644
---- a/arch/nios2/include/asm/pgtable.h
-+++ b/arch/nios2/include/asm/pgtable.h
-@@ -25,7 +25,10 @@
- #include <asm-generic/pgtable-nopmd.h>
- 
- #define VMALLOC_START		CONFIG_NIOS2_KERNEL_MMU_REGION_BASE
--#define VMALLOC_END		(CONFIG_NIOS2_KERNEL_REGION_BASE - 1)
-+#define VMALLOC_END		(CONFIG_NIOS2_KERNEL_REGION_BASE - SZ_32M - 1)
-+
-+#define MODULES_VADDR		(CONFIG_NIOS2_KERNEL_REGION_BASE - SZ_32M)
-+#define MODULES_END		(CONFIG_NIOS2_KERNEL_REGION_BASE - 1)
- 
- struct mm_struct;
- 
-diff --git a/arch/nios2/kernel/module.c b/arch/nios2/kernel/module.c
-index 76e0a42d6e36..9c97b7513853 100644
---- a/arch/nios2/kernel/module.c
-+++ b/arch/nios2/kernel/module.c
-@@ -21,23 +21,12 @@
- 
- #include <asm/cacheflush.h>
- 
--/*
-- * Modules should NOT be allocated with kmalloc for (obvious) reasons.
-- * But we do it for now to avoid relocation issues. CALL26/PCREL26 cannot reach
-- * from 0x80000000 (vmalloc area) to 0xc00000000 (kernel) (kmalloc returns
-- * addresses in 0xc0000000)
-- */
- void *module_alloc(unsigned long size)
- {
--	if (size == 0)
--		return NULL;
--	return kmalloc(size, GFP_KERNEL);
--}
--
--/* Free memory returned from module_alloc */
--void module_memfree(void *module_region)
--{
--	kfree(module_region);
-+	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
-+				    GFP_KERNEL, PAGE_KERNEL_EXEC,
-+				    VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
-+				    __builtin_return_address(0));
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index e1e8a7a9d6c1..5b82b069e0d3 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1203,15 +1203,44 @@ static bool mod_mem_use_vmalloc(enum mod_mem_type type)
+ 		mod_mem_type_is_core_data(type);
  }
  
- int apply_relocate_add(Elf32_Shdr *sechdrs, const char *strtab,
+-static void *module_memory_alloc(unsigned int size, enum mod_mem_type type)
++static int module_memory_alloc(struct module *mod, enum mod_mem_type type)
+ {
++	unsigned int size = PAGE_ALIGN(mod->mem[type].size);
++	void *ptr;
++
++	mod->mem[type].size = size;
++
+ 	if (mod_mem_use_vmalloc(type))
+-		return vzalloc(size);
+-	return module_alloc(size);
++		ptr = vmalloc(size);
++	else
++		ptr = module_alloc(size);
++
++	if (!ptr)
++		return -ENOMEM;
++
++	/*
++	 * The pointer to these blocks of memory are stored on the module
++	 * structure and we keep that around so long as the module is
++	 * around. We only free that memory when we unload the module.
++	 * Just mark them as not being a leak then. The .init* ELF
++	 * sections *do* get freed after boot so we *could* treat them
++	 * slightly differently with kmemleak_ignore() and only grey
++	 * them out as they work as typical memory allocations which
++	 * *do* eventually get freed, but let's just keep things simple
++	 * and avoid *any* false positives.
++	 */
++	kmemleak_not_leak(ptr);
++
++	memset(ptr, 0, size);
++	mod->mem[type].base = ptr;
++
++	return 0;
+ }
+ 
+-static void module_memory_free(void *ptr, enum mod_mem_type type)
++static void module_memory_free(struct module *mod, enum mod_mem_type type)
+ {
++	void *ptr = mod->mem[type].base;
++
+ 	if (mod_mem_use_vmalloc(type))
+ 		vfree(ptr);
+ 	else
+@@ -1229,12 +1258,12 @@ static void free_mod_mem(struct module *mod)
+ 		/* Free lock-classes; relies on the preceding sync_rcu(). */
+ 		lockdep_free_key_range(mod_mem->base, mod_mem->size);
+ 		if (mod_mem->size)
+-			module_memory_free(mod_mem->base, type);
++			module_memory_free(mod, type);
+ 	}
+ 
+ 	/* MOD_DATA hosts mod, so free it at last */
+ 	lockdep_free_key_range(mod->mem[MOD_DATA].base, mod->mem[MOD_DATA].size);
+-	module_memory_free(mod->mem[MOD_DATA].base, MOD_DATA);
++	module_memory_free(mod, MOD_DATA);
+ }
+ 
+ /* Free a module, remove from lists, etc. */
+@@ -2225,7 +2254,6 @@ static int find_module_sections(struct module *mod, struct load_info *info)
+ static int move_module(struct module *mod, struct load_info *info)
+ {
+ 	int i;
+-	void *ptr;
+ 	enum mod_mem_type t = 0;
+ 	int ret = -ENOMEM;
+ 
+@@ -2234,26 +2262,12 @@ static int move_module(struct module *mod, struct load_info *info)
+ 			mod->mem[type].base = NULL;
+ 			continue;
+ 		}
+-		mod->mem[type].size = PAGE_ALIGN(mod->mem[type].size);
+-		ptr = module_memory_alloc(mod->mem[type].size, type);
+-		/*
+-                 * The pointer to these blocks of memory are stored on the module
+-                 * structure and we keep that around so long as the module is
+-                 * around. We only free that memory when we unload the module.
+-                 * Just mark them as not being a leak then. The .init* ELF
+-                 * sections *do* get freed after boot so we *could* treat them
+-                 * slightly differently with kmemleak_ignore() and only grey
+-                 * them out as they work as typical memory allocations which
+-                 * *do* eventually get freed, but let's just keep things simple
+-                 * and avoid *any* false positives.
+-		 */
+-		kmemleak_not_leak(ptr);
+-		if (!ptr) {
++
++		ret = module_memory_alloc(mod, type);
++		if (ret) {
+ 			t = type;
+ 			goto out_enomem;
+ 		}
+-		memset(ptr, 0, mod->mem[type].size);
+-		mod->mem[type].base = ptr;
+ 	}
+ 
+ 	/* Transfer each section which specifies SHF_ALLOC */
+@@ -2296,7 +2310,7 @@ static int move_module(struct module *mod, struct load_info *info)
+ 	return 0;
+ out_enomem:
+ 	for (t--; t >= 0; t--)
+-		module_memory_free(mod->mem[t].base, t);
++		module_memory_free(mod, t);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
