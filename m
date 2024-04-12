@@ -1,62 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405D28A2EE0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 15:08:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5B78A2F20
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 15:16:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mlWYRY6R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hNXxGfwR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VGH1h5dN0z3vXd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 23:08:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VGHC14Sx9z3vYq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 23:16:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mlWYRY6R;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hNXxGfwR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VGH0x11NXz3dWv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 23:07:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VGHBK2YRZz3dWw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 23:15:53 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BC97462260;
-	Fri, 12 Apr 2024 13:07:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C47CC113CC;
-	Fri, 12 Apr 2024 13:07:42 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id BECFACE390B;
+	Fri, 12 Apr 2024 13:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9713C113CC;
+	Fri, 12 Apr 2024 13:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712927262;
-	bh=WXXIdGk+X4xSO8A0Mdd/JdZXvSOz7cKKHzKcx7zp/e4=;
+	s=k20201202; t=1712927747;
+	bh=FKqbsMvb1Xrvl10w52+WrBW+b+Xl/+V6fjfICrYPU7k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mlWYRY6R+uO4KNbt8cIf64MguVd8/GHUg7jqEfibnb2j2yYOr842hoff3W6jZ2W6Q
-	 BRWCuZA/oNlXy6/0CFH3viAXrc8qD5Z1kg2VqyfMrkRlL0GkKt6FGGkq7vjol+/rWf
-	 xhKn1pcS/RFNPqEmpu+De8hHFtcOYW9290Q6wreBB+LuxJjv7MvmphVuMNI5yVeK6v
-	 8LwCZ6+IMlvHhnGCu56SknAEpcfLvStMVcRpKtbhCnCjRQrnLJanixlnZPvxJPcLtA
-	 DyvXUuh5xMgv1rPhe/ETCYBkM2o42kXk36Yi7g8UEQFJ2zPIyYqG+w5RiuGqXWqE3I
-	 xnLxdM3U5CxIw==
+	b=hNXxGfwROQadhM8Bfbt+o+cnTXnED3hgcPxC3tVUCneuZRNBRjyi/d+yoDq4MShLU
+	 BzlqesGL+iEiNxIpyPWttOqnp5mN+bQ8esIt4yACop1/8/lN0FkLd+yGn6r9/ph419
+	 5XjJnNDe00k1azgNbQZC7Hi5qn44t5jY3huX6tvwqa7YZLp0Ov44ngjAq5DyWgWus3
+	 SQ2CseSUBen+1DzOq19HixEPvPa4dqaz6G6KEsBrH/yaR3gsq9qX8u/zjaP8xlnCgM
+	 eNZYWtBPpVaO64Wx6qlGvkCEc4FRHLTnG38BQZmA/XvqY24QIRJS7MfB/vq96MS5JW
+	 1ho9eqwZ3K5xA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1rvGd1-003tLC-MV;
-	Fri, 12 Apr 2024 14:07:39 +0100
-Date: Fri, 12 Apr 2024 14:07:38 +0100
-Message-ID: <86le5isp9h.wl-maz@kernel.org>
+	id 1rvGkr-003tYh-Gi;
+	Fri, 12 Apr 2024 14:15:45 +0100
+Date: Fri, 12 Apr 2024 14:15:44 +0100
+Message-ID: <86jzl2sovz.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 0/4] KVM, mm: remove the .change_pte() MMU notifier and set_pte_at_notify()
-In-Reply-To: <20240405115815.3226315-1-pbonzini@redhat.com>
+To: Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
+In-Reply-To: <20240412104408.GA27645@willie-the-truck>
 References: <20240405115815.3226315-1-pbonzini@redhat.com>
+	<20240405115815.3226315-2-pbonzini@redhat.com>
+	<20240412104408.GA27645@willie-the-truck>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
 X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, oliver.upton@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, tsbogend@alpha.franken.de, npiggin@gmail.com, anup@brainfault.org, atishp@atishpatra.org, seanjc@google.com, akpm@linux-foundation.org, david@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+X-SA-Exim-Rcpt-To: will@kernel.org, pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, oliver.upton@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, tsbogend@alpha.franken.de, npiggin@gmail.com, anup@brainfault.org, atishp@atishpatra.org, seanjc@google.com, akpm@linux-foundation.org, david@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -70,75 +72,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Anup Patel <anup@brainfault.org>, Sean Christopherson <seanjc@google.com>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Anup Patel <anup@brainfault.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 05 Apr 2024 12:58:11 +0100,
-Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Fri, 12 Apr 2024 11:44:09 +0100,
+Will Deacon <will@kernel.org> wrote:
 > 
-> The .change_pte() MMU notifier callback was intended as an optimization
-> and for this reason it was initially called without a surrounding
-> mmu_notifier_invalidate_range_{start,end}() pair.  It was only ever
-> implemented by KVM (which was also the original user of MMU notifiers)
-> and the rules on when to call set_pte_at_notify() rather than set_pte_at()
-> have always been pretty obscure.
+> On Fri, Apr 05, 2024 at 07:58:12AM -0400, Paolo Bonzini wrote:
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > index dc04bc767865..ff17849be9f4 100644
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -1768,40 +1768,6 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> >  	return false;
+> >  }
+> >  
+> > -bool kvm_set_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> > -{
+> > -	kvm_pfn_t pfn = pte_pfn(range->arg.pte);
+> > -
+> > -	if (!kvm->arch.mmu.pgt)
+> > -		return false;
+> > -
+> > -	WARN_ON(range->end - range->start != 1);
+> > -
+> > -	/*
+> > -	 * If the page isn't tagged, defer to user_mem_abort() for sanitising
+> > -	 * the MTE tags. The S2 pte should have been unmapped by
+> > -	 * mmu_notifier_invalidate_range_end().
+> > -	 */
+> > -	if (kvm_has_mte(kvm) && !page_mte_tagged(pfn_to_page(pfn)))
+> > -		return false;
+> > -
+> > -	/*
+> > -	 * We've moved a page around, probably through CoW, so let's treat
+> > -	 * it just like a translation fault and the map handler will clean
+> > -	 * the cache to the PoC.
+> > -	 *
+> > -	 * The MMU notifiers will have unmapped a huge PMD before calling
+> > -	 * ->change_pte() (which in turn calls kvm_set_spte_gfn()) and
+> > -	 * therefore we never need to clear out a huge PMD through this
+> > -	 * calling path and a memcache is not required.
+> > -	 */
+> > -	kvm_pgtable_stage2_map(kvm->arch.mmu.pgt, range->start << PAGE_SHIFT,
+> > -			       PAGE_SIZE, __pfn_to_phys(pfn),
+> > -			       KVM_PGTABLE_PROT_R, NULL, 0);
+> > -
+> > -	return false;
+> > -}
+> > -
+> >  bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+> >  {
+> >  	u64 size = (range->end - range->start) << PAGE_SHIFT;
 > 
-> It may seem a miracle that it has never caused any hard to trigger
-> bugs, but there's a good reason for that: KVM's implementation has
-> been nonfunctional for a good part of its existence.  Already in
-> 2012, commit 6bdb913f0a70 ("mm: wrap calls to set_pte_at_notify with
-> invalidate_range_start and invalidate_range_end", 2012-10-09) changed the
-> .change_pte() callback to occur within an invalidate_range_start/end()
-> pair; and because KVM unmaps the sPTEs during .invalidate_range_start(),
-> .change_pte() has no hope of finding a sPTE to change.
+> Thanks. It's nice to see this code retire:
 > 
-> Therefore, all the code for .change_pte() can be removed from both KVM
-> and mm/, and set_pte_at_notify() can be replaced with just set_pte_at().
+> Acked-by: Will Deacon <will@kernel.org>
 > 
-> Please review!  Also feel free to take the KVM patches through the mm
-> tree, as I don't expect any conflicts.
-> 
-> Thanks,
-> 
-> Paolo
-> 
-> Paolo Bonzini (4):
->   KVM: delete .change_pte MMU notifier callback
->   KVM: remove unused argument of kvm_handle_hva_range()
->   mmu_notifier: remove the .change_pte() callback
->   mm: replace set_pte_at_notify() with just set_pte_at()
-> 
->  arch/arm64/kvm/mmu.c                  | 34 -----------------
->  arch/loongarch/include/asm/kvm_host.h |  1 -
->  arch/loongarch/kvm/mmu.c              | 32 ----------------
->  arch/mips/kvm/mmu.c                   | 30 ---------------
->  arch/powerpc/include/asm/kvm_ppc.h    |  1 -
->  arch/powerpc/kvm/book3s.c             |  5 ---
->  arch/powerpc/kvm/book3s.h             |  1 -
->  arch/powerpc/kvm/book3s_64_mmu_hv.c   | 12 ------
->  arch/powerpc/kvm/book3s_hv.c          |  1 -
->  arch/powerpc/kvm/book3s_pr.c          |  7 ----
->  arch/powerpc/kvm/e500_mmu_host.c      |  6 ---
->  arch/riscv/kvm/mmu.c                  | 20 ----------
->  arch/x86/kvm/mmu/mmu.c                | 54 +--------------------------
->  arch/x86/kvm/mmu/spte.c               | 16 --------
->  arch/x86/kvm/mmu/spte.h               |  2 -
->  arch/x86/kvm/mmu/tdp_mmu.c            | 46 -----------------------
->  arch/x86/kvm/mmu/tdp_mmu.h            |  1 -
->  include/linux/kvm_host.h              |  2 -
->  include/linux/mmu_notifier.h          | 44 ----------------------
->  include/trace/events/kvm.h            | 15 --------
->  kernel/events/uprobes.c               |  5 +--
->  mm/ksm.c                              |  4 +-
->  mm/memory.c                           |  7 +---
->  mm/migrate_device.c                   |  8 +---
->  mm/mmu_notifier.c                     | 17 ---------
->  virt/kvm/kvm_main.c                   | 50 +------------------------
->  26 files changed, 10 insertions(+), 411 deletions(-)
-> 
+> Also, if you're in the business of hacking the MMU notifier code, it
+> would be really great to change the .clear_flush_young() callback so
+> that the architecture could handle the TLB invalidation. At the moment,
+> the core KVM code invalidates the whole VMID courtesy of 'flush_on_ret'
+> being set by kvm_handle_hva_range(), whereas we could do a much
+> lighter-weight and targetted TLBI in the architecture page-table code
+> when we actually update the ptes for small ranges.
 
-Reviewed-by: Marc Zyngier <maz@kernel.org>
+Indeed, and I was looking at this earlier this week as it has a pretty
+devastating effect with NV (it blows the shadow S2 for that VMID, with
+costly consequences).
+
+In general, it feels like the TLB invalidation should stay with the
+code that deals with the page tables, as it has a pretty good idea of
+what needs to be invalidated and how -- specially on architectures
+that have a HW-broadcast facility like arm64.
+
+Thanks,
 
 	M.
 
