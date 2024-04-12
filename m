@@ -2,48 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133BF8A2573
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 07:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FAF8A2619
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 08:03:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ILoP8DVH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Z3GorIVd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VG4Rc60ZJz3dlY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 15:11:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VG5bc5G2wz3vbl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 16:03:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ILoP8DVH;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Z3GorIVd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VG4Qr5Yqzz3dVq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 15:10:59 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id AF0EACE2396;
-	Fri, 12 Apr 2024 05:10:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE21C2BBFC;
-	Fri, 12 Apr 2024 05:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712898654;
-	bh=n1nTu7+xRC3qxpPaBRrMAeZo5K6PsyIpi+vTtIf4SBo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ILoP8DVHM+rOWyAyCSwYjPNpJ2HCEgAYwuctUOVN0QqrGrfMCQuqgxgmb1tLe02Pr
-	 +Y/QcLsY2TXSsIu2rVfZl7evevaPh4DSpFXzcikhfjw2eJ/wNFc7W7w8VGwU5jItfk
-	 paI4rGE3T87LBEJtbbsMMvviLgHp1bMal/Ec5NI0=
-Date: Fri, 12 Apr 2024 07:10:51 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: li.hao40@zte.com.cn
-Subject: Re: [PATCH] tty: hvc: wakeup hvc console immediately when needed
-Message-ID: <2024041237-shifty-unethical-4a5d@gregkh>
-References: <20240412113848167egmP7kBg1Qm5sxfwGALG-@zte.com.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VG5Zs1r1dz3dWg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 16:02:59 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1e4f341330fso5767805ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 23:02:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712901776; x=1713506576; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UOC8VAGw4i+hxCTWqMI13CQ+qXiRk+B8ACq5S9OFfwo=;
+        b=Z3GorIVdhx16taUUqS1cgDObc8WutEwy27fLutFhmPAPX/WumrsQYdknzn7OHSiQk3
+         6DceckN0mxVs9+9C0eTgDIxnQjiNZlxS6ckhD60u5cXZCZpxveItzRjdkDyGb0CjiUoZ
+         VmZ8YjY8IwKgDIB1e9ADNKEil7dh/ufTD5SdDhKG6jaL88j74n3aZjK4QuNCwGpkU193
+         ue+zkoDM5iqki08FJ4VH7y+bW7U2ZdFl8u99QYOrTeMD2d2IJpwVV37pDEMjIOhHPszM
+         LFPBOD9iKhKpY06x/6dqJ0pIAnILQlfvDczcTADty6bny2N6xRyIIpHvemWHmPCLoDS2
+         QgAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712901776; x=1713506576;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UOC8VAGw4i+hxCTWqMI13CQ+qXiRk+B8ACq5S9OFfwo=;
+        b=kdKJMpYSzTBFM90YhiRWOxe26gP/M87ZmrG+1rE52vC7ftvqASalANA18sr/1pCECR
+         cnvHkzc3oziR3+px3z3yrchYTnWE8s5pZ7PYh9x6PKO9GMK9eCYd/4+acgVGwXg5XmGH
+         QDAtnvs+GRLsi/RlteU7ys1yaVbPlAfn5wG9ksG+eAQqxepX4B6DNUfNiwCaGnvGGI6/
+         IddswSwlGtMr7fyrxjev/hccsptaN6xagJk9lE/iSpHr0p84FioakfOeDv9LmTyO2CtR
+         wjUHrqGbHPYjSN7dts3WWTQl9ShjKd7CNUgRkLkf0ehioaY2AUPWMzLBgk4KaaNwMlG0
+         N12A==
+X-Forwarded-Encrypted: i=1; AJvYcCXIYSx3tIEWjkQ3tPijJkycogzDZ86GvVteKgTumdH9qAUFy7z8MEgKiOZA1FNNuvLt92s1/LH7bDFfXicTAi0DrfzZl4D2xUr7P8IBXw==
+X-Gm-Message-State: AOJu0YygsPRoNdR9V51x7wmSNMrlQR4xEDHnGkabl8tDYR06reS4Bup1
+	7I7asF+ioIJ2FECpX/dMxHh4D0YwfQckE1hOpH8/6rnGYFCZsWfWCNz0Fbsdmh8=
+X-Google-Smtp-Source: AGHT+IGvWhNQNRl+dOMxKzEQeMoIVBqZynwnZsjtpEm0vi0PMHQYwTtE0HIB6t53qpjTxft80Fvx7A==
+X-Received: by 2002:a17:902:b48e:b0:1e3:f2d0:1a4d with SMTP id y14-20020a170902b48e00b001e3f2d01a4dmr1563677plr.45.1712901775863;
+        Thu, 11 Apr 2024 23:02:55 -0700 (PDT)
+Received: from localhost ([122.172.85.136])
+        by smtp.gmail.com with ESMTPSA id u22-20020a1709026e1600b001e2ba8605dfsm603815plk.150.2024.04.11.23.02.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Apr 2024 23:02:55 -0700 (PDT)
+Date: Fri, 12 Apr 2024 11:32:53 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Lizhe <sensor1010@163.com>
+Subject: Re: [PATCH] cpufreq: Covert to exit callback returning void
+Message-ID: <20240412060253.5zzc72mkmmz3xr72@vireshk-i7>
+References: <20240410132247.3587-1-sensor1010@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240412113848167egmP7kBg1Qm5sxfwGALG-@zte.com.cn>
+In-Reply-To: <20240410132247.3587-1-sensor1010@163.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,116 +78,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, jirislaby@kernel.org, linux-kernel@vger.kernel.org
+Cc: rafael@kernel.org, linux-tegra@vger.kernel.org, ray.huang@amd.com, srinivas.pandruvada@linux.intel.com, alyssa@rosenzweig.io, khilman@kernel.org, linux-pm@vger.kernel.org, jonathanh@nvidia.com, aneesh.kumar@kernel.org, bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org, naveen.n.rao@linux.ibm.com, lenb@kernel.org, sven@svenpeter.dev, linux-arm-msm@vger.kernel.org, npiggin@gmail.com, linux-mediatek@lists.infradead.org, mmayer@broadcom.com, matthias.bgg@gmail.com, linux-omap@vger.kernel.org, cristian.marussi@arm.com, angelogioacchino.delregno@collabora.com, andersson@kernel.org, marcan@marcan.st, linux-kernel@vger.kernel.org, konrad.dybcio@linaro.org, thierry.reding@gmail.com, asahi@lists.linux.dev, sudeep.holla@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 12, 2024 at 11:38:48AM +0800, li.hao40@zte.com.cn wrote:
-> From: Li Hao <li.hao40@zte.com.cn>
+On 10-04-24, 06:22, Lizhe wrote:
+> For the exit() callback function returning an int type value.
+> this leads many driver authors mistakenly believing that error
+> handling can be performed by returning an error code. However.
+> the returned value is ignore, and to improve this situation.
+> it is proposed to modify the return type of the exit() callback
+> function to void
 > 
-> Cancel the do_wakeup flag in hvc_struct, and change it to immediately
-> wake up tty when hp->n_outbuf is 0 in hvc_push().
-> 
-> When we receive a key input character, the interrupt handling function
-> hvc_handle_interrupt() will be executed, and the echo thread
-> flush_to_ldisc() will be added to the queue.
-> 
-> If the user is currently using tcsetattr(), a hang may occur. tcsetattr()
-> enters kernel and waits for hp->n_outbuf to become 0 via
-> tty_wait_until_sent(). If the echo thread finishes executing before
-> reaching tty_wait_until_sent (for example, put_chars() takes too long),
-> it will cause while meeting the wakeup condition (hp->do_wakeup = 1),
-> tty_wait_until_sent() cannot be woken up (missed the tty_wakeup() of
-> this round's tty_poll). Unless the next key input character comes,
-> hvc_poll will be executed, and tty_wakeup() will be performed through
-> the do_wakeup flag.
-> 
-> Signed-off-by: Li Hao <li.hao40@zte.com.cn>
+> Signed-off-by: Lizhe <sensor1010@163.com>
 > ---
->  drivers/tty/hvc/hvc_console.c | 12 +++++-------
->  drivers/tty/hvc/hvc_console.h |  1 -
->  2 files changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
-> index cd1f657f7..2fa90d938 100644
-> --- a/drivers/tty/hvc/hvc_console.c
-> +++ b/drivers/tty/hvc/hvc_console.c
-> @@ -476,11 +476,13 @@ static void hvc_hangup(struct tty_struct *tty)
->  static int hvc_push(struct hvc_struct *hp)
->  {
->  	int n;
-> +	struct tty_struct *tty;
-> 
->  	n = hp->ops->put_chars(hp->vtermno, hp->outbuf, hp->n_outbuf);
-> +	tty = tty_port_tty_get(&hp->port);
->  	if (n <= 0) {
->  		if (n == 0 || n == -EAGAIN) {
-> -			hp->do_wakeup = 1;
-> +			tty_wakeup(tty);
->  			return 0;
->  		}
->  		/* throw away output on error; this happens when
-> @@ -491,7 +493,7 @@ static int hvc_push(struct hvc_struct *hp)
->  	if (hp->n_outbuf > 0)
->  		memmove(hp->outbuf, hp->outbuf + n, hp->n_outbuf);
->  	else
-> -		hp->do_wakeup = 1;
-> +		tty_wakeup(tty);
-> 
->  	return n;
->  }
-> @@ -739,11 +741,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
->  	poll_mask |= HVC_POLL_READ;
-> 
->   out:
-> -	/* Wakeup write queue if necessary */
-> -	if (hp->do_wakeup) {
-> -		hp->do_wakeup = 0;
-> -		tty_wakeup(tty);
-> -	}
-> +	/* Wakeup in hvc_push */
->   bail:
->  	spin_unlock_irqrestore(&hp->lock, flags);
-> 
-> diff --git a/drivers/tty/hvc/hvc_console.h b/drivers/tty/hvc/hvc_console.h
-> index cf4c1af08..6622f71ba 100644
-> --- a/drivers/tty/hvc/hvc_console.h
-> +++ b/drivers/tty/hvc/hvc_console.h
-> @@ -36,7 +36,6 @@ struct hvc_struct {
->  	struct tty_port port;
->  	spinlock_t lock;
->  	int index;
-> -	int do_wakeup;
->  	int outbuf_size;
->  	int n_outbuf;
->  	uint32_t vtermno;
-> -- 
-> 2.25.1
+>  drivers/cpufreq/acpi-cpufreq.c         | 4 +---
+>  drivers/cpufreq/amd-pstate.c           | 7 ++-----
+>  drivers/cpufreq/apple-soc-cpufreq.c    | 4 +---
+>  drivers/cpufreq/bmips-cpufreq.c        | 4 +---
+>  drivers/cpufreq/cppc_cpufreq.c         | 3 +--
+>  drivers/cpufreq/cpufreq-dt.c           | 3 +--
+>  drivers/cpufreq/e_powersaver.c         | 3 +--
+>  drivers/cpufreq/intel_pstate.c         | 4 +---
+>  drivers/cpufreq/mediatek-cpufreq-hw.c  | 4 +---
+>  drivers/cpufreq/mediatek-cpufreq.c     | 4 +---
+>  drivers/cpufreq/omap-cpufreq.c         | 3 +--
+>  drivers/cpufreq/pasemi-cpufreq.c       | 6 ++----
+>  drivers/cpufreq/powernow-k6.c          | 3 +--
+>  drivers/cpufreq/powernow-k7.c          | 3 +--
+>  drivers/cpufreq/powernow-k8.c          | 4 +---
+>  drivers/cpufreq/powernv-cpufreq.c      | 4 +---
+>  drivers/cpufreq/ppc_cbe_cpufreq.c      | 3 +--
+>  drivers/cpufreq/qcom-cpufreq-hw.c      | 4 +---
+>  drivers/cpufreq/qoriq-cpufreq.c        | 4 +---
+>  drivers/cpufreq/scmi-cpufreq.c         | 4 +---
+>  drivers/cpufreq/scpi-cpufreq.c         | 4 +---
+>  drivers/cpufreq/sh-cpufreq.c           | 4 +---
+>  drivers/cpufreq/sparc-us2e-cpufreq.c   | 3 +--
+>  drivers/cpufreq/sparc-us3-cpufreq.c    | 3 +--
+>  drivers/cpufreq/speedstep-centrino.c   | 4 +---
+>  drivers/cpufreq/tegra194-cpufreq.c     | 4 +---
+>  drivers/cpufreq/vexpress-spc-cpufreq.c | 3 +--
+>  27 files changed, 29 insertions(+), 74 deletions(-)
 
-Hi,
+I have discarded all emails with following subject line:
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+"cpufreq: Convert to exit callback returning void".
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+While you have sent decent patches for removing the empty exit callbacks, the
+way you have handled these changes is not correct.
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+Don't send any patches for now and please wait and understand what's being asked
+from you.
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+This change you are trying to make is okay and sensible, but you can not send
+random patches to the list just like that. You are wasting everyone's time here
+including yourself.
 
-thanks,
+Now what we expect here is a single commit (with version history), which changes
+all the users of the exit() function (each and every cpufreq driver) and
+cpufreq.h and cpufreq.c. That change should compile fine and break none of the
+platforms compilation.
 
-greg k-h's patch email bot
+Please don't send more of these patches unless this is done.
+
+-- 
+viresh
