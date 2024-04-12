@@ -2,52 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA068A2DFC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 14:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405D28A2EE0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 15:08:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IOU+aZGz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mlWYRY6R;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VGFhX1084z3vXX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 22:08:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VGH1h5dN0z3vXd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 23:08:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IOU+aZGz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mlWYRY6R;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VGFgl6lkwz3dDq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 22:07:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1712923664;
-	bh=+6L46Us/2qlRhhkFSf/ej11Qri1UigkSqyiqW3R+DUI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=IOU+aZGzxjVQGUXs2pw3MGEBG639NiwT0y6sGprZHf7Os4Du4lZbd15clakEZjfA+
-	 7spFZncmALJZjPxb2riROX0JC7IU4Q1+CxgnGF72ggg8kTz0BP9FBCNClXs+yKVZz+
-	 FFh+dls+x7OSoR+55xOG4T9SohJuAwfG1KoS6LuKG/w94nhF4o6FzkH98j4AHeGTVb
-	 cW2Ks+0fefdPnSaIjKrz5voEW0QgS52f/Rbe8TUPGHD/a9cR2WDdzkYJtCt2dIOgSb
-	 OVKC3O4ITvcuykiPCyOrXF9qQM1DqHG8s+/9g/Iu6DgxzMotp878IQIXxaehv86OBn
-	 XWMy5lQ5sDmrA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VGFgd3XgTz4wnr;
-	Fri, 12 Apr 2024 22:07:41 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vignesh Balasubramanian <vigbalas@amd.com>,
- linux-kernel@vger.kernel.org, linux-toolchains@vger.kernel.org
-Subject: Re: [PATCH 1/1] Replace macro "ARCH_HAVE_EXTRA_ELF_NOTES" with kconfig
-In-Reply-To: <20240412062138.1132841-2-vigbalas@amd.com>
-References: <20240412062138.1132841-1-vigbalas@amd.com>
- <20240412062138.1132841-2-vigbalas@amd.com>
-Date: Fri, 12 Apr 2024 22:07:39 +1000
-Message-ID: <87il0mdbsk.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VGH0x11NXz3dWv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 23:07:45 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id BC97462260;
+	Fri, 12 Apr 2024 13:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C47CC113CC;
+	Fri, 12 Apr 2024 13:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712927262;
+	bh=WXXIdGk+X4xSO8A0Mdd/JdZXvSOz7cKKHzKcx7zp/e4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mlWYRY6R+uO4KNbt8cIf64MguVd8/GHUg7jqEfibnb2j2yYOr842hoff3W6jZ2W6Q
+	 BRWCuZA/oNlXy6/0CFH3viAXrc8qD5Z1kg2VqyfMrkRlL0GkKt6FGGkq7vjol+/rWf
+	 xhKn1pcS/RFNPqEmpu+De8hHFtcOYW9290Q6wreBB+LuxJjv7MvmphVuMNI5yVeK6v
+	 8LwCZ6+IMlvHhnGCu56SknAEpcfLvStMVcRpKtbhCnCjRQrnLJanixlnZPvxJPcLtA
+	 DyvXUuh5xMgv1rPhe/ETCYBkM2o42kXk36Yi7g8UEQFJ2zPIyYqG+w5RiuGqXWqE3I
+	 xnLxdM3U5CxIw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rvGd1-003tLC-MV;
+	Fri, 12 Apr 2024 14:07:39 +0100
+Date: Fri, 12 Apr 2024 14:07:38 +0100
+Message-ID: <86le5isp9h.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 0/4] KVM, mm: remove the .change_pte() MMU notifier and set_pte_at_notify()
+In-Reply-To: <20240405115815.3226315-1-pbonzini@redhat.com>
+References: <20240405115815.3226315-1-pbonzini@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, oliver.upton@linux.dev, zhaotianrui@loongson.cn, maobibo@loongson.cn, tsbogend@alpha.franken.de, npiggin@gmail.com, anup@brainfault.org, atishp@atishpatra.org, seanjc@google.com, akpm@linux-foundation.org, david@redhat.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,85 +70,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: felix.willgerodt@intel.com, matz@suse.de, keescook@chromium.org, jhb@FreeBSD.org, bpetkov@amd.com, binutils@sourceware.org, x86@kernel.org, aneesh.kumar@kernel.org, linux-mm@kvack.org, Vignesh Balasubramanian <vigbalas@amd.com>, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, ebiederm@xmission.com
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Anup Patel <anup@brainfault.org>, Sean Christopherson <seanjc@google.com>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-trace-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vignesh Balasubramanian <vigbalas@amd.com> writes:
-> "ARCH_HAVE_EXTRA_ELF_NOTES" enables an extra note section in the
-> core dump. Kconfig variable is preferred over ARCH_HAVE_* macro.
->
-> Co-developed-by: Jini Susan George <jinisusan.george@amd.com>
-> Signed-off-by: Jini Susan George <jinisusan.george@amd.com>
-> Signed-off-by: Vignesh Balasubramanian <vigbalas@amd.com>
-> ---
->  arch/Kconfig                   | 9 +++++++++
->  arch/powerpc/Kconfig           | 1 +
->  arch/powerpc/include/asm/elf.h | 2 --
->  include/linux/elf.h            | 2 +-
->  4 files changed, 11 insertions(+), 3 deletions(-)
+On Fri, 05 Apr 2024 12:58:11 +0100,
+Paolo Bonzini <pbonzini@redhat.com> wrote:
+> 
+> The .change_pte() MMU notifier callback was intended as an optimization
+> and for this reason it was initially called without a surrounding
+> mmu_notifier_invalidate_range_{start,end}() pair.  It was only ever
+> implemented by KVM (which was also the original user of MMU notifiers)
+> and the rules on when to call set_pte_at_notify() rather than set_pte_at()
+> have always been pretty obscure.
+> 
+> It may seem a miracle that it has never caused any hard to trigger
+> bugs, but there's a good reason for that: KVM's implementation has
+> been nonfunctional for a good part of its existence.  Already in
+> 2012, commit 6bdb913f0a70 ("mm: wrap calls to set_pte_at_notify with
+> invalidate_range_start and invalidate_range_end", 2012-10-09) changed the
+> .change_pte() callback to occur within an invalidate_range_start/end()
+> pair; and because KVM unmaps the sPTEs during .invalidate_range_start(),
+> .change_pte() has no hope of finding a sPTE to change.
+> 
+> Therefore, all the code for .change_pte() can be removed from both KVM
+> and mm/, and set_pte_at_notify() can be replaced with just set_pte_at().
+> 
+> Please review!  Also feel free to take the KVM patches through the mm
+> tree, as I don't expect any conflicts.
+> 
+> Thanks,
+> 
+> Paolo
+> 
+> Paolo Bonzini (4):
+>   KVM: delete .change_pte MMU notifier callback
+>   KVM: remove unused argument of kvm_handle_hva_range()
+>   mmu_notifier: remove the .change_pte() callback
+>   mm: replace set_pte_at_notify() with just set_pte_at()
+> 
+>  arch/arm64/kvm/mmu.c                  | 34 -----------------
+>  arch/loongarch/include/asm/kvm_host.h |  1 -
+>  arch/loongarch/kvm/mmu.c              | 32 ----------------
+>  arch/mips/kvm/mmu.c                   | 30 ---------------
+>  arch/powerpc/include/asm/kvm_ppc.h    |  1 -
+>  arch/powerpc/kvm/book3s.c             |  5 ---
+>  arch/powerpc/kvm/book3s.h             |  1 -
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c   | 12 ------
+>  arch/powerpc/kvm/book3s_hv.c          |  1 -
+>  arch/powerpc/kvm/book3s_pr.c          |  7 ----
+>  arch/powerpc/kvm/e500_mmu_host.c      |  6 ---
+>  arch/riscv/kvm/mmu.c                  | 20 ----------
+>  arch/x86/kvm/mmu/mmu.c                | 54 +--------------------------
+>  arch/x86/kvm/mmu/spte.c               | 16 --------
+>  arch/x86/kvm/mmu/spte.h               |  2 -
+>  arch/x86/kvm/mmu/tdp_mmu.c            | 46 -----------------------
+>  arch/x86/kvm/mmu/tdp_mmu.h            |  1 -
+>  include/linux/kvm_host.h              |  2 -
+>  include/linux/mmu_notifier.h          | 44 ----------------------
+>  include/trace/events/kvm.h            | 15 --------
+>  kernel/events/uprobes.c               |  5 +--
+>  mm/ksm.c                              |  4 +-
+>  mm/memory.c                           |  7 +---
+>  mm/migrate_device.c                   |  8 +---
+>  mm/mmu_notifier.c                     | 17 ---------
+>  virt/kvm/kvm_main.c                   | 50 +------------------------
+>  26 files changed, 10 insertions(+), 411 deletions(-)
+> 
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-cheers
+	M.
 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 9f066785bb71..143f021c8a76 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -502,6 +502,15 @@ config MMU_LAZY_TLB_SHOOTDOWN
->  config ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	bool
->  
-> +config ARCH_HAVE_EXTRA_ELF_NOTES
-> +	bool
-> +	help
-> +	  An architecture should select this in order to enable adding an
-> +	  arch-specific ELF note section to core files. It must provide two
-> +	  functions: elf_coredump_extra_notes_size() and
-> +	  elf_coredump_extra_notes_write() which are invoked by the ELF core
-> +	  dumper.
-> +
->  config ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
->  	bool
->  
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 1c4be3373686..c45fa9d7fb76 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -156,6 +156,7 @@ config PPC
->  	select ARCH_HAS_UACCESS_FLUSHCACHE
->  	select ARCH_HAS_UBSAN
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> +	select ARCH_HAVE_EXTRA_ELF_NOTES        if SPU_BASE
->  	select ARCH_KEEP_MEMBLOCK
->  	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/elf.h
-> index 79f1c480b5eb..bb4b94444d3e 100644
-> --- a/arch/powerpc/include/asm/elf.h
-> +++ b/arch/powerpc/include/asm/elf.h
-> @@ -127,8 +127,6 @@ extern int arch_setup_additional_pages(struct linux_binprm *bprm,
->  /* Notes used in ET_CORE. Note name is "SPU/<fd>/<filename>". */
->  #define NT_SPU		1
->  
-> -#define ARCH_HAVE_EXTRA_ELF_NOTES
-> -
->  #endif /* CONFIG_SPU_BASE */
->  
->  #ifdef CONFIG_PPC64
-> diff --git a/include/linux/elf.h b/include/linux/elf.h
-> index c9a46c4e183b..5c402788da19 100644
-> --- a/include/linux/elf.h
-> +++ b/include/linux/elf.h
-> @@ -65,7 +65,7 @@ extern Elf64_Dyn _DYNAMIC [];
->  struct file;
->  struct coredump_params;
->  
-> -#ifndef ARCH_HAVE_EXTRA_ELF_NOTES
-> +#ifndef CONFIG_ARCH_HAVE_EXTRA_ELF_NOTES
->  static inline int elf_coredump_extra_notes_size(void) { return 0; }
->  static inline int elf_coredump_extra_notes_write(struct coredump_params *cprm) { return 0; }
->  #else
-> -- 
-> 2.34.1
+-- 
+Without deviation from the norm, progress is not possible.
