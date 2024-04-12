@@ -2,71 +2,130 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FAF8A2619
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 08:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 422658A2635
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 08:08:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Z3GorIVd;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=YrwtIkIx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VG5bc5G2wz3vbl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 16:03:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VG5j80P7Gz3vc7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 16:08:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Z3GorIVd;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=YrwtIkIx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::4; helo=pr0p264cu014.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PR0P264CU014.outbound.protection.outlook.com (mail-francecentralazlp170120004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VG5Zs1r1dz3dWg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 16:02:59 +1000 (AEST)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1e4f341330fso5767805ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Apr 2024 23:02:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712901776; x=1713506576; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UOC8VAGw4i+hxCTWqMI13CQ+qXiRk+B8ACq5S9OFfwo=;
-        b=Z3GorIVdhx16taUUqS1cgDObc8WutEwy27fLutFhmPAPX/WumrsQYdknzn7OHSiQk3
-         6DceckN0mxVs9+9C0eTgDIxnQjiNZlxS6ckhD60u5cXZCZpxveItzRjdkDyGb0CjiUoZ
-         VmZ8YjY8IwKgDIB1e9ADNKEil7dh/ufTD5SdDhKG6jaL88j74n3aZjK4QuNCwGpkU193
-         ue+zkoDM5iqki08FJ4VH7y+bW7U2ZdFl8u99QYOrTeMD2d2IJpwVV37pDEMjIOhHPszM
-         LFPBOD9iKhKpY06x/6dqJ0pIAnILQlfvDczcTADty6bny2N6xRyIIpHvemWHmPCLoDS2
-         QgAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712901776; x=1713506576;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UOC8VAGw4i+hxCTWqMI13CQ+qXiRk+B8ACq5S9OFfwo=;
-        b=kdKJMpYSzTBFM90YhiRWOxe26gP/M87ZmrG+1rE52vC7ftvqASalANA18sr/1pCECR
-         cnvHkzc3oziR3+px3z3yrchYTnWE8s5pZ7PYh9x6PKO9GMK9eCYd/4+acgVGwXg5XmGH
-         QDAtnvs+GRLsi/RlteU7ys1yaVbPlAfn5wG9ksG+eAQqxepX4B6DNUfNiwCaGnvGGI6/
-         IddswSwlGtMr7fyrxjev/hccsptaN6xagJk9lE/iSpHr0p84FioakfOeDv9LmTyO2CtR
-         wjUHrqGbHPYjSN7dts3WWTQl9ShjKd7CNUgRkLkf0ehioaY2AUPWMzLBgk4KaaNwMlG0
-         N12A==
-X-Forwarded-Encrypted: i=1; AJvYcCXIYSx3tIEWjkQ3tPijJkycogzDZ86GvVteKgTumdH9qAUFy7z8MEgKiOZA1FNNuvLt92s1/LH7bDFfXicTAi0DrfzZl4D2xUr7P8IBXw==
-X-Gm-Message-State: AOJu0YygsPRoNdR9V51x7wmSNMrlQR4xEDHnGkabl8tDYR06reS4Bup1
-	7I7asF+ioIJ2FECpX/dMxHh4D0YwfQckE1hOpH8/6rnGYFCZsWfWCNz0Fbsdmh8=
-X-Google-Smtp-Source: AGHT+IGvWhNQNRl+dOMxKzEQeMoIVBqZynwnZsjtpEm0vi0PMHQYwTtE0HIB6t53qpjTxft80Fvx7A==
-X-Received: by 2002:a17:902:b48e:b0:1e3:f2d0:1a4d with SMTP id y14-20020a170902b48e00b001e3f2d01a4dmr1563677plr.45.1712901775863;
-        Thu, 11 Apr 2024 23:02:55 -0700 (PDT)
-Received: from localhost ([122.172.85.136])
-        by smtp.gmail.com with ESMTPSA id u22-20020a1709026e1600b001e2ba8605dfsm603815plk.150.2024.04.11.23.02.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Apr 2024 23:02:55 -0700 (PDT)
-Date: Fri, 12 Apr 2024 11:32:53 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Lizhe <sensor1010@163.com>
-Subject: Re: [PATCH] cpufreq: Covert to exit callback returning void
-Message-ID: <20240412060253.5zzc72mkmmz3xr72@vireshk-i7>
-References: <20240410132247.3587-1-sensor1010@163.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VG5hM5GR6z30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 16:07:46 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G7k412+CwiWXy21ulu6VQy0QzlRA1+LEnVfC9bb8GDF+ia/icwsRnbgv0SW/ZQMAImDQql9t0/z4NNS7y0XDGonNnTi/FgRqgRRJDZOay+weyjQ2KIKMljcXaBPPUABrhcDAOQBIB1eCBGnnoA3PTBRFdXRU5/3t+yZHfaI+XyY00tfqZd01J1fQzQiDZrXEDl30oeyTjuOyfDXft/+1+auTITVGG+bnDyrIrbHYHhIzMrg27atGuWhSBrd6NbczvKCUhV3IxveepU8yXziln3Z2QddjtAX2vsaZe8TSyVrRR9Dj0WsPtygx9jOE+Sk3kYeHr1CRLQKSEdZdo7f6NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VCtLZZmUM4apZPEn/X9Sc5KLnL2dyWx2scMhnNFp8jg=;
+ b=EoPKE/LrZ9p9XqpHM4SVmJ0V+RrBIgB7Tdn0lUcMXmHCIvCmgtI+JhU0RZA6GNcsCX/QskabcpoxlLzbBZYP4E5tmZkGx6pxWRew2gDXg1r1it9X/OL8fjNdZJ9/GHY3xJ0DEYnenJkZOoj0w9LJ91WC3It/T6s9Kbdzcx0K2e9kMdZxf53sgp1QBAuHCJ9n+ae9RsVlYrM+JEgk4dfQFartWffNmJJEtEQIpaQKmT9+C6POLrPTr4XDLuor9wifgj/hfvu6+AiKrJjJCnb8H8jgecFYYnFTlI/tETcjLCQ/zP+QjkjWx+z832/Fb7IkPgwqrL+SVtWHTDuZBOmpFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VCtLZZmUM4apZPEn/X9Sc5KLnL2dyWx2scMhnNFp8jg=;
+ b=YrwtIkIxnLGFjUQ5u70frnHSntwEUiGb6FTsQSd5aJWz85TL/j3Lh3H5yrVLOoWeDfSwAyk8IImbjMI5gtL+yF50cooVScLO2KkrDP7Yy1DlXJWNT73n28SfOos2ejieZXuxBNj82shj1XewMejY82H4uuDqP9/E3h5W7o5j1Np2wyfMTptMFHSKtUf9HHCn/axyySzCFjCRuYsabt5E1MIyFHTfpKElOIDIl953CNXGTS8uABfk4XoSXjB6tm54Ku4Ln4F2awVyrAvpxun8DeCzUnZgHzt7jBu7Hm6hHycKoKFQZGTVYnTptkbsxpNBDrWb+Oh3CiwGKDZ/oytrYw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB3626.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:145::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Fri, 12 Apr
+ 2024 06:07:19 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb%7]) with mapi id 15.20.7409.053; Fri, 12 Apr 2024
+ 06:07:19 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Mike Rapoport <rppt@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 2/7] mm: vmalloc: don't account for number of nodes
+ for HUGE_VMAP allocations
+Thread-Topic: [RFC PATCH 2/7] mm: vmalloc: don't account for number of nodes
+ for HUGE_VMAP allocations
+Thread-Index: AQHajCouSrFGoyjUSEe9FLrHXKhqTrFkJwQA
+Date: Fri, 12 Apr 2024 06:07:19 +0000
+Message-ID: <9217c95a-39f6-49ce-9857-ee2eebdb7a16@csgroup.eu>
+References: <20240411160526.2093408-1-rppt@kernel.org>
+ <20240411160526.2093408-3-rppt@kernel.org>
+In-Reply-To: <20240411160526.2093408-3-rppt@kernel.org>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB3626:EE_
+x-ms-office365-filtering-correlation-id: 0074e096-56fa-4d8f-0d49-08dc5ab6cfbd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  izsbZpA25isfwXRGocYvvL7cti9peX23dC+0ucoZNh2zg1Dq/PL0LhmMipH8XUZVUyneyJ5uNQqceMG6ROswFFJqfO3u+VFIpxOXE9CWU7S2tL8eKEOVbFUn34EPyPond8xkV6kcYg+e/+3hVo0rNtuhqEqblxspKvwSQ1qNccn/nAnjaCcyqnD0P4yIRk+bIZDe+LKtdowhukpSncm6G0W9zX5pPpL9/Eyd3OktYxngGK9W18g+jcYKEAmj6yf6srPfLuVssSyTGcbTt1akWFhAmJbUVNAgm7JH7BXbw2Mm0kNOff+ulmhFzk4UQYl1QZDqP8YCh7CAbEqcIurEQlnd5mwkxNzf7h94r7gsPGi7VPRWHj4gW5Nundxg0or6w9dcYBEsYitHQntDEV2Z3EbbYyi9GU9iK8vhE4cdGKtYxdW5Vms2zbTX5xOj12Bh7mQpc+R2Y693FeqrGl9v7LbRQOYoTAzLUbo/XGyP8F8YAwoxBOAjhC9ibFwwuHLt+IK4eE8LDPjg4msA4YlvTYOAObhHi08zfv0b683LHUIW4W+pdP4SBC6wpTAhS7AXe5t1POFTcRaHsiMynCsuRXPjX/K6hRcPPIVqvEYuSELLvRgS/zrOfiNnDte1CxrXVqynrpT2YplrHUEz8doDExj0c+Mm9hPSgQhv45DhT3Mv5QMWYMreaZOSz3uX/HWMqK1t08iuQz4flUcIFK/j6pf3wTxL2Zd20R/NQ5D05HI=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(366007)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?TTYrUE4yTC9taTVLWEtWUGd0MHpqY2pYL3FST09Yb2t4K3QwNHVDZzFzYTNS?=
+ =?utf-8?B?WncxK0lnY0x3cWRtS0ZzU2p1eFBXQmFTZDA3YXFvMUpQZE9LRStJZXlxZG51?=
+ =?utf-8?B?UFZjR1VFK1RWNlRwUzdZTU5ORFI4ZTcvTGVmVFhLN1hsN2ZMZGExQURhWHph?=
+ =?utf-8?B?QklGRUJuVmJUUW51amN0M0RXdnNGdHVsWFlSN2psRnFKSkRnUnZPeWdyRHJp?=
+ =?utf-8?B?M1VKdVpKTDEwRmp2Smx0eDlVL3ljNWh5VTdUY2dSUW1BSVE0ejQ0SmVWWndE?=
+ =?utf-8?B?RTRDQWxESUFhVWV4R0xWbU8rM1gxc3FCcFlGMkFEQ0pYNjdmN1Y1ZmFJQlJy?=
+ =?utf-8?B?UlovY1p5eUZqUTBxdHNuRUQ1emxzQ3Q4UlRQa0JvOTlMTHJZVUI1WlZkKzRK?=
+ =?utf-8?B?cXQ4akhrY1YwbEpPQ1VCNHBSMFFpUnFYVGJwL1U3QkFsc0JUc0VsNGhnQ2kz?=
+ =?utf-8?B?YTROV1hSUnRGUmQ4NllNVXlyVElpQ3BNSGdtNy8zbk8zWERoSzdEV1ZWdFZw?=
+ =?utf-8?B?MWd6WUFzYlZPM1NlNmxGSUxZdWtuVjVOWUNDZzVkc0RxNUg0U1czL2dtL3Zq?=
+ =?utf-8?B?TU44ZVJnWlF6d3VtTmtMcXBPSVgzMDJWMEwxMnFEbGhjdndoMmdVWktjeTZu?=
+ =?utf-8?B?YmVZNWo2VElqZjRBS0tkbWowLzlqZEFnbjlxamVkckg5K1RUSWlvcURUNVdo?=
+ =?utf-8?B?WG5yZVBtWmhpVkpHd20zaXhpTUo0dHJDcU9hZ3Q5S1JXMktFZ2FJMkR1OU9M?=
+ =?utf-8?B?Y25LUm5tWHN0OHdsSGlFSEwrOUZNQXNRRDZmNFNvTVBxV0k2L3ZxNmhncEpz?=
+ =?utf-8?B?dVRIMWtkb0I3WUczYmRmN01QeGVQOTJGSzRTN0VtM1EyWDV3MEZhNnhicHRW?=
+ =?utf-8?B?UFpueHFuOVFrOUhZSENuMlV4M2lIcHBwNzYxT3VsK1FlSU05blhjVmoxc2M3?=
+ =?utf-8?B?eW5yaUVZNjdNd1RpSnBpUlVYdkJzaG44Z3pxZERUcEJ3d2ZIbkYrTVlkbUtL?=
+ =?utf-8?B?VlhRblMrcC9GeHNxZUluQkJCWjhLVDB0ckE4WmswbllUbFVpMkFRVkZaYTdM?=
+ =?utf-8?B?QXJMbzRkTUFFVWVvMWlGS081eVIra2drRFltRDZaeE5LZUNzVGZaa21MN2R6?=
+ =?utf-8?B?dGtoSWN5UXJ4S29NMk1pL1V3UmQrU2JZSEFicC9xRDhsTnMwTG9qY3RmWGUv?=
+ =?utf-8?B?Tmp6WDFFR3Npbk0wNXByZ2tQMjlsL0RabFkyL3cyenlBNFVrVUIrNk4yTDZD?=
+ =?utf-8?B?dU5NTjNHbWNGMkVsNWgwKzh0Ym1PNGpzcjZzeDNGdCtQcWFwb0d2RE5rRjVX?=
+ =?utf-8?B?MDc1a052ZGNpQWF3WS9KVHo5Y2xGSkJpVDJZZFhxU0w5UWJVZkJ2Z2gyNHNa?=
+ =?utf-8?B?SHBTd2tmS1BjSjlZcU5jN2dEQTJncGpwMllOVS9Gd1ovL05nWGswYW5EMkVp?=
+ =?utf-8?B?UllTRi9wanFRMTd6bjZrRDF6Q2VIQUtCZjVGREVvMjRZUTBiaE9WcWlGMUFB?=
+ =?utf-8?B?U1NqYmFVZHdCL1ZKcTgycVVwN3FCYjh2MzYwVmF5TFAyY3E5VlNOUmhGSmV4?=
+ =?utf-8?B?bXpSbVBTMVZ2bWtDLzJzdkM1eld2TjNzUmUzMDJtbkkxMzZjWWgrQnZQVXJl?=
+ =?utf-8?B?TmtMRmhqZTZIbjhoYlhEVncxb0w3emhuZGZneFVZQk13MUJUZkd2LzkwbnZD?=
+ =?utf-8?B?aUptdFJ3Uk51bFRTQ3o1UjZadVVpTlRoeEZ3UENPU3VWSGVTNzd2bElWZlRl?=
+ =?utf-8?B?WE5RR0NHb2o4N0h2Q2NYTXZBRHQ2YnkxV2IwaTU1T1VhR2RqSW1SRmU1Q01M?=
+ =?utf-8?B?T1c5MHU3Ym9xMTQ1TnFwNjdnN0dmQ283SnVIUitva3UzaXBZLy9KUGY5WXdE?=
+ =?utf-8?B?Um5YZG5EcGo0aUdJMnZiOVNEaCswTnE1YnZLQ2NkUVFoWHFxUWQwRGN1WTNo?=
+ =?utf-8?B?TVdmVVg1c1k1YWJOSC9rOVlaQmRCOUx2RFhZSmVpWkphOGpHb0N6Mnl5c0pJ?=
+ =?utf-8?B?dkRxRzhiTzBrQW9PUUFNdVVabkVxOWs5SG84ZE5mcmVwMDNTeU5WTXFqZmNI?=
+ =?utf-8?B?SGJlRXFxNHB1S3NCN1d5WmZBTG9UMzcyeHBSMW8zaVlBQU1DNU1Wd3V5bmhX?=
+ =?utf-8?B?WDFTSlkvaTFWSUIvSkdydlBuNzBEU3FaMDdFZ25IM1c2ZWpCaG96cDBpMkJv?=
+ =?utf-8?B?L0E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <89340A390489FE418D98F718ABAD4B26@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240410132247.3587-1-sensor1010@163.com>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0074e096-56fa-4d8f-0d49-08dc5ab6cfbd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Apr 2024 06:07:19.5069
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Yq5Ymt19cJDsoLY25zKtmPvXU0rgWBmXhHy/D5kncbqWx7FlrTMN9Z1HWfzvLyp+U8CRCTN7eOfrUGLCaBMlx5mbRNwuH7MAlURd9neCIOc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB3626
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,69 +137,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rafael@kernel.org, linux-tegra@vger.kernel.org, ray.huang@amd.com, srinivas.pandruvada@linux.intel.com, alyssa@rosenzweig.io, khilman@kernel.org, linux-pm@vger.kernel.org, jonathanh@nvidia.com, aneesh.kumar@kernel.org, bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org, naveen.n.rao@linux.ibm.com, lenb@kernel.org, sven@svenpeter.dev, linux-arm-msm@vger.kernel.org, npiggin@gmail.com, linux-mediatek@lists.infradead.org, mmayer@broadcom.com, matthias.bgg@gmail.com, linux-omap@vger.kernel.org, cristian.marussi@arm.com, angelogioacchino.delregno@collabora.com, andersson@kernel.org, marcan@marcan.st, linux-kernel@vger.kernel.org, konrad.dybcio@linaro.org, thierry.reding@gmail.com, asahi@lists.linux.dev, sudeep.holla@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Song Liu <song@kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>, "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, Helge Deller <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Christoph Hellwig <hch@infradead.org>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Lorenzo Stoakes <lstoakes@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Luis Chambe
+ rlain <mcgrof@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10-04-24, 06:22, Lizhe wrote:
-> For the exit() callback function returning an int type value.
-> this leads many driver authors mistakenly believing that error
-> handling can be performed by returning an error code. However.
-> the returned value is ignore, and to improve this situation.
-> it is proposed to modify the return type of the exit() callback
-> function to void
-> 
-> Signed-off-by: Lizhe <sensor1010@163.com>
-> ---
->  drivers/cpufreq/acpi-cpufreq.c         | 4 +---
->  drivers/cpufreq/amd-pstate.c           | 7 ++-----
->  drivers/cpufreq/apple-soc-cpufreq.c    | 4 +---
->  drivers/cpufreq/bmips-cpufreq.c        | 4 +---
->  drivers/cpufreq/cppc_cpufreq.c         | 3 +--
->  drivers/cpufreq/cpufreq-dt.c           | 3 +--
->  drivers/cpufreq/e_powersaver.c         | 3 +--
->  drivers/cpufreq/intel_pstate.c         | 4 +---
->  drivers/cpufreq/mediatek-cpufreq-hw.c  | 4 +---
->  drivers/cpufreq/mediatek-cpufreq.c     | 4 +---
->  drivers/cpufreq/omap-cpufreq.c         | 3 +--
->  drivers/cpufreq/pasemi-cpufreq.c       | 6 ++----
->  drivers/cpufreq/powernow-k6.c          | 3 +--
->  drivers/cpufreq/powernow-k7.c          | 3 +--
->  drivers/cpufreq/powernow-k8.c          | 4 +---
->  drivers/cpufreq/powernv-cpufreq.c      | 4 +---
->  drivers/cpufreq/ppc_cbe_cpufreq.c      | 3 +--
->  drivers/cpufreq/qcom-cpufreq-hw.c      | 4 +---
->  drivers/cpufreq/qoriq-cpufreq.c        | 4 +---
->  drivers/cpufreq/scmi-cpufreq.c         | 4 +---
->  drivers/cpufreq/scpi-cpufreq.c         | 4 +---
->  drivers/cpufreq/sh-cpufreq.c           | 4 +---
->  drivers/cpufreq/sparc-us2e-cpufreq.c   | 3 +--
->  drivers/cpufreq/sparc-us3-cpufreq.c    | 3 +--
->  drivers/cpufreq/speedstep-centrino.c   | 4 +---
->  drivers/cpufreq/tegra194-cpufreq.c     | 4 +---
->  drivers/cpufreq/vexpress-spc-cpufreq.c | 3 +--
->  27 files changed, 29 insertions(+), 74 deletions(-)
-
-I have discarded all emails with following subject line:
-
-"cpufreq: Convert to exit callback returning void".
-
-While you have sent decent patches for removing the empty exit callbacks, the
-way you have handled these changes is not correct.
-
-Don't send any patches for now and please wait and understand what's being asked
-from you.
-
-This change you are trying to make is okay and sensible, but you can not send
-random patches to the list just like that. You are wasting everyone's time here
-including yourself.
-
-Now what we expect here is a single commit (with version history), which changes
-all the users of the exit() function (each and every cpufreq driver) and
-cpufreq.h and cpufreq.c. That change should compile fine and break none of the
-platforms compilation.
-
-Please don't send more of these patches unless this is done.
-
--- 
-viresh
+DQoNCkxlIDExLzA0LzIwMjQgw6AgMTg6MDUsIE1pa2UgUmFwb3BvcnQgYSDDqWNyaXTCoDoNCj4g
+RnJvbTogIk1pa2UgUmFwb3BvcnQgKElCTSkiIDxycHB0QGtlcm5lbC5vcmc+DQo+IA0KPiB2bWFs
+bG9jIGFsbG9jYXRpb25zIHdpdGggVk1fQUxMT1dfSFVHRV9WTUFQIHRoYXQgZG8gbm90IGV4cGxp
+Y3RseQ0KPiBzcGVjaWZ5IG5vZGUgSUQgd2lsbCB1c2UgaHVnZSBwYWdlcyBvbmx5IGlmIHNpemVf
+cGVyX25vZGUgaXMgbGFyZ2VyIHRoYW4NCj4gUE1EX1NJWkUuDQo+IFN0aWxsIHRoZSBhY3R1YWwg
+YWxsb2NhdGVkIG1lbW9yeSBpcyBub3QgZGlzdHJpYnV0ZWQgYmV0d2VlbiBub2RlcyBhbmQNCj4g
+dGhlcmUgaXMgbm8gYWR2YW50YWdlIGluIHN1Y2ggYXBwcm9hY2guDQo+IE9uIHRoZSBjb250cmFy
+eSwgQlBGIGFsbG9jYXRlcyBQTURfU0laRSAqIG51bV9wb3NzaWJsZV9ub2RlcygpIGZvciBlYWNo
+DQo+IG5ldyBicGZfcHJvZ19wYWNrLCB3aGlsZSBpdCBjb3VsZCBkbyB3aXRoIFBNRF9TSVpFJ2Vk
+IHBhY2tzLg0KPiANCj4gRG9uJ3QgYWNjb3VudCBmb3IgbnVtYmVyIG9mIG5vZGVzIGZvciBWTV9B
+TExPV19IVUdFX1ZNQVAgd2l0aA0KPiBOVU1BX05PX05PREUgYW5kIHVzZSBodWdlIHBhZ2VzIHdo
+ZW5ldmVyIHRoZSByZXF1ZXN0ZWQgYWxsb2NhdGlvbiBzaXplDQo+IGlzIGxhcmdlciB0aGFuIFBN
+RF9TSVpFLg0KDQpQYXRjaCBsb29rcyBvayBidXQgbWVzc2FnZSBpcyBjb25mdXNpbmcuIFdlIGFs
+c28gdXNlIGh1Z2UgcGFnZXMgYXQgUFRFIA0Kc2l6ZSwgZm9yIGluc3RhbmNlIDUxMmsgcGFnZXMg
+b3IgMTZrIHBhZ2VzIG9uIHBvd2VycGMgOHh4LCB3aGlsZSANClBNRF9TSVpFIGlzIDRNLg0KDQpD
+aHJpc3RvcGhlDQoNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IE1pa2UgUmFwb3BvcnQgKElCTSkgPHJw
+cHRAa2VybmVsLm9yZz4NCj4gLS0tDQo+ICAgbW0vdm1hbGxvYy5jIHwgOSArKy0tLS0tLS0NCj4g
+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQ0KPiANCj4g
+ZGlmZiAtLWdpdCBhL21tL3ZtYWxsb2MuYyBiL21tL3ZtYWxsb2MuYw0KPiBpbmRleCAyMmFhNjNm
+NGVmNjMuLjVmYzhiNTE0ZTQ1NyAxMDA2NDQNCj4gLS0tIGEvbW0vdm1hbGxvYy5jDQo+ICsrKyBi
+L21tL3ZtYWxsb2MuYw0KPiBAQCAtMzczNyw4ICszNzM3LDYgQEAgdm9pZCAqX192bWFsbG9jX25v
+ZGVfcmFuZ2UodW5zaWduZWQgbG9uZyBzaXplLCB1bnNpZ25lZCBsb25nIGFsaWduLA0KPiAgIAl9
+DQo+ICAgDQo+ICAgCWlmICh2bWFwX2FsbG93X2h1Z2UgJiYgKHZtX2ZsYWdzICYgVk1fQUxMT1df
+SFVHRV9WTUFQKSkgew0KPiAtCQl1bnNpZ25lZCBsb25nIHNpemVfcGVyX25vZGU7DQo+IC0NCj4g
+ICAJCS8qDQo+ICAgCQkgKiBUcnkgaHVnZSBwYWdlcy4gT25seSB0cnkgZm9yIFBBR0VfS0VSTkVM
+IGFsbG9jYXRpb25zLA0KPiAgIAkJICogb3RoZXJzIGxpa2UgbW9kdWxlcyBkb24ndCB5ZXQgZXhw
+ZWN0IGh1Z2UgcGFnZXMgaW4NCj4gQEAgLTM3NDYsMTMgKzM3NDQsMTAgQEAgdm9pZCAqX192bWFs
+bG9jX25vZGVfcmFuZ2UodW5zaWduZWQgbG9uZyBzaXplLCB1bnNpZ25lZCBsb25nIGFsaWduLA0K
+PiAgIAkJICogc3VwcG9ydGluZyB0aGVtLg0KPiAgIAkJICovDQo+ICAgDQo+IC0JCXNpemVfcGVy
+X25vZGUgPSBzaXplOw0KPiAtCQlpZiAobm9kZSA9PSBOVU1BX05PX05PREUpDQo+IC0JCQlzaXpl
+X3Blcl9ub2RlIC89IG51bV9vbmxpbmVfbm9kZXMoKTsNCj4gLQkJaWYgKGFyY2hfdm1hcF9wbWRf
+c3VwcG9ydGVkKHByb3QpICYmIHNpemVfcGVyX25vZGUgPj0gUE1EX1NJWkUpDQo+ICsJCWlmIChh
+cmNoX3ZtYXBfcG1kX3N1cHBvcnRlZChwcm90KSAmJiBzaXplID49IFBNRF9TSVpFKQ0KPiAgIAkJ
+CXNoaWZ0ID0gUE1EX1NISUZUOw0KPiAgIAkJZWxzZQ0KPiAtCQkJc2hpZnQgPSBhcmNoX3ZtYXBf
+cHRlX3N1cHBvcnRlZF9zaGlmdChzaXplX3Blcl9ub2RlKTsNCj4gKwkJCXNoaWZ0ID0gYXJjaF92
+bWFwX3B0ZV9zdXBwb3J0ZWRfc2hpZnQoc2l6ZSk7DQo+ICAgDQo+ICAgCQlhbGlnbiA9IG1heChy
+ZWFsX2FsaWduLCAxVUwgPDwgc2hpZnQpOw0KPiAgIAkJc2l6ZSA9IEFMSUdOKHJlYWxfc2l6ZSwg
+MVVMIDw8IHNoaWZ0KTsNCg==
