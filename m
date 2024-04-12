@@ -2,97 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66AF8A30B6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 16:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 046028A31A0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Apr 2024 16:55:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XDtYIR1n;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bigicfkY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QgRiuPdT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VGJsv3Hztz3w34
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Apr 2024 00:31:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VGKNs5h7wz3vhW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Apr 2024 00:55:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XDtYIR1n;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bigicfkY;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QgRiuPdT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3h0szzgykdficyu73w08805y.w86527eh99w-xyf52cdc.8j5uvc.8b0@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VGJs62wDdz3dWw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Apr 2024 00:31:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712932262;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5gvIPcFWYwEFpmmOj32QPWexxorRFZ+mmSvRstzL0kU=;
-	b=XDtYIR1n6iSdsHvy27IMipSEjegKy7mTt+VV//kPOF1q4J/Sq/IPfKMz0iSkjgiSZEnDtT
-	4lO7VGc8btICl27LRX0UznS986E28Yi8IUpPS6uPqeTLiv3pSJIShmJla3jPTzTu6GJiEH
-	MfrvLl2I38HmbD9oqLVy+l2II0R5ciA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712932263;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5gvIPcFWYwEFpmmOj32QPWexxorRFZ+mmSvRstzL0kU=;
-	b=bigicfkYQxbGmPLRmJYEDakmHHkg52Y7RwFeRguq6zoSD2qojA4l7SKeIWTwRF1FBb/7a8
-	Qb3Ix3mlUH+DVoCPLhs0551zl+rhzZfXTXIx/65oFAfepNI+TjygFWaqMSi0dW9xro8ZXY
-	xCXOKAe2aePqWxQlz9Vc2hdYVTxmZBo=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-QC1EMu_0M2a3MCwzp8rbOg-1; Fri, 12 Apr 2024 10:31:01 -0400
-X-MC-Unique: QC1EMu_0M2a3MCwzp8rbOg-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-436507937ecso3033961cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 07:31:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VGKN604wRz3vbZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Apr 2024 00:54:28 +1000 (AEST)
+Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-6ed33476d82so978134b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Apr 2024 07:54:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1712933664; x=1713538464; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZrmdCrVWtwb7lFW6AyHWbgOgdloa5ymd2fy0iQuLqTo=;
+        b=QgRiuPdTb/d17Dd1q+/1zcBuF8dZOzscAsTP/UrqLiqwhM6lr+H22rPiVkyh6tfpHh
+         MBdtTljEXsU6+UkGKKaPZI8kIx474iC+n9M2WMhNocmaquNXzQuF4lqUS5MjA08SbvNL
+         pf893o/7+E5qUFfxIfCYasJq2QJM4PQZQ42LNsgDgDhRDGHha+n5ElXWLGeKpOJKZoZO
+         8R1tAdN3kue8YJFcQrDocUzX0yZdbBeSu6YwdFXHEoF4nCgv42eEVy0O9PX3o51Eccoh
+         vyuth75NeS7XGq/MyQNaVKO4ot5U43wuFxdWqt2LLX4QLb53bTcEhkRX5GZz4rm7RZdc
+         69xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712932260; x=1713537060;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5gvIPcFWYwEFpmmOj32QPWexxorRFZ+mmSvRstzL0kU=;
-        b=dNssjy2t494u4wZ5pm2TOojN8x+lGdEDWhpqYJoyEukw5wWp5mxhRc2V5LHFpcOe7F
-         aspAZb1EuKSw3JiHp4V9S1QUQOcdLx6cyHAkh0qFkOsx3Dp/gt1KNUisA26v4V/G2Yxt
-         2NECtUfHavUqYND5NCiTWaSqh6c3tkkcdU4cehGHBb53lOtJ+NjNNa1tHrCQZtu0qYL7
-         4nVR5epIWyzzYf0NzogLInSne7lX/ZgJ9zUXtLadIn7WVMZgzLuqPYqVakSmEOzgkRf5
-         T0yuNZoChlo96oy4S7nC8pHAGsrBRgY5XHkKLXX9unkOymOw4j0tIjmdpzktaIZ6W2//
-         CVbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVyGRibkFGIxyodC99n26CLQwxuPrivC1V0nkzTaSwWTHdE1XDJKe1BOXHA/+o7qYGZennPiIBTzDvD5RjgqPjpa1fws3sYsCR2ygAsyQ==
-X-Gm-Message-State: AOJu0YwjmPTLtYrDLd711taHDHcVFQsPdKdTnk6LH5gW0NKeHQRxutaF
-	1aZk2h3Lqvlr3frRR8jQzXj9suGFbYXBHN0g7+rFpF9cHzBV/iAVol9hqeF02i0WD9t6teQyih3
-	bcdZfDhUxPoNitSCR4NVfkNhzjzpvyOs/CZYRhhTobo29d/J3qaeMWOthVs86mTM=
-X-Received: by 2002:a05:6214:27ec:b0:699:1c74:bd54 with SMTP id jt12-20020a05621427ec00b006991c74bd54mr3044512qvb.3.1712932260282;
-        Fri, 12 Apr 2024 07:31:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGDgbuVeaiYa+iRpf0cfy8PiIaqZ4WRcM9oHh6Gsf+qbEBfhxoFcZIHBXMGQOqhTvyFuTiFRw==
-X-Received: by 2002:a05:6214:27ec:b0:699:1c74:bd54 with SMTP id jt12-20020a05621427ec00b006991c74bd54mr3044473qvb.3.1712932259555;
-        Fri, 12 Apr 2024 07:30:59 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id r26-20020a0c9e9a000000b0069b5c6f074bsm514693qvd.112.2024.04.12.07.30.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Apr 2024 07:30:59 -0700 (PDT)
-Date: Fri, 12 Apr 2024 10:30:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 0/8] Reimplement huge pages without hugepd on powerpc
- 8xx
-Message-ID: <ZhlFokakZo3c90C6@x1n>
-References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
- <20240325163840.GF6245@nvidia.com>
- <ZhgMqF7SNaISrYMJ@x1n>
- <d236ce4a-1dde-4ee9-8cef-fe96242c2f4b@csgroup.eu>
-MIME-Version: 1.0
-In-Reply-To: <d236ce4a-1dde-4ee9-8cef-fe96242c2f4b@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20230601; t=1712933664; x=1713538464;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZrmdCrVWtwb7lFW6AyHWbgOgdloa5ymd2fy0iQuLqTo=;
+        b=ogjaeYoiCCpbTwuITHroNqxzmlFZd0PcPH5krFcjqkVfTg1orXNJeMNpvREiBTnhHD
+         7FHu267iaEF+zQ0KKJTTnVzmB9RAaYMjhoDVtPu47tS7RmKUI+x8AaCzj6uMKAIL+l0a
+         KksdqUOPtVcc3KIsS5Aas5WTfiVTz+f2rxHTGmFJOKX0MUj8NY6XHZYDU4UBsWlaDL5X
+         5++Xl3tpfc/a/9NYkXKkcuO/y5pASX8DGnGP/mnPGhARX9TrbKe80U66U5KrFK7pWcZM
+         BS2NKvo4wpyufluR2hqItTyl/a98/X1dpDgOvG3GzZd80mxGN5bxPl62xXt3ONWIQVTo
+         e72g==
+X-Forwarded-Encrypted: i=1; AJvYcCXq0SdF1vqpzz6YuZeKlNEzv5zs8RFpfkwhyexB7Bw8G+7yV9rp6KU95jdQ386xHHeCEBcpy3id8npcd4Mc2kwh/qGoNbsXUoLKMtgD8g==
+X-Gm-Message-State: AOJu0Yy0e87y1zmVJeTnoS/VkpjJIe0yv24RVgmpTLvwe7Zgmuj7ICcc
+	ftjgFxQhfP7CxnU81ZjiQ2kSD236GGpvy2g1SW+NJ1+rYEaOc+JqoLnWnoAnMQobo1P3NQc8Jk/
+	/lw==
+X-Google-Smtp-Source: AGHT+IE8CrGE6yHurBu6oRRUdhNStzcxsQMqGws9O1toyt+VIrjo1lbnGIr3E72VqB9zErBllk+K4v4iLAw=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6a00:2d94:b0:6ed:95ce:3417 with SMTP id
+ fb20-20020a056a002d9400b006ed95ce3417mr191844pfb.5.1712933663717; Fri, 12 Apr
+ 2024 07:54:23 -0700 (PDT)
+Date: Fri, 12 Apr 2024 07:54:22 -0700
+In-Reply-To: <86jzl2sovz.wl-maz@kernel.org>
+Mime-Version: 1.0
+References: <20240405115815.3226315-1-pbonzini@redhat.com> <20240405115815.3226315-2-pbonzini@redhat.com>
+ <20240412104408.GA27645@willie-the-truck> <86jzl2sovz.wl-maz@kernel.org>
+Message-ID: <ZhlLHtfeSHk9gRRO@google.com>
+Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,90 +76,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Will Deacon <will@kernel.org>, Anup Patel <anup@brainfault.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 12, 2024 at 02:08:03PM +0000, Christophe Leroy wrote:
+On Fri, Apr 12, 2024, Marc Zyngier wrote:
+> On Fri, 12 Apr 2024 11:44:09 +0100, Will Deacon <will@kernel.org> wrote:
+> > On Fri, Apr 05, 2024 at 07:58:12AM -0400, Paolo Bonzini wrote:
+> > Also, if you're in the business of hacking the MMU notifier code, it
+> > would be really great to change the .clear_flush_young() callback so
+> > that the architecture could handle the TLB invalidation. At the moment,
+> > the core KVM code invalidates the whole VMID courtesy of 'flush_on_ret'
+> > being set by kvm_handle_hva_range(), whereas we could do a much
+> > lighter-weight and targetted TLBI in the architecture page-table code
+> > when we actually update the ptes for small ranges.
 > 
+> Indeed, and I was looking at this earlier this week as it has a pretty
+> devastating effect with NV (it blows the shadow S2 for that VMID, with
+> costly consequences).
 > 
-> Le 11/04/2024 à 18:15, Peter Xu a écrit :
-> > On Mon, Mar 25, 2024 at 01:38:40PM -0300, Jason Gunthorpe wrote:
-> >> On Mon, Mar 25, 2024 at 03:55:53PM +0100, Christophe Leroy wrote:
-> >>> This series reimplements hugepages with hugepd on powerpc 8xx.
-> >>>
-> >>> Unlike most architectures, powerpc 8xx HW requires a two-level
-> >>> pagetable topology for all page sizes. So a leaf PMD-contig approach
-> >>> is not feasible as such.
-> >>>
-> >>> Possible sizes are 4k, 16k, 512k and 8M.
-> >>>
-> >>> First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD entries
-> >>> must point to a single entry level-2 page table. Until now that was
-> >>> done using hugepd. This series changes it to use standard page tables
-> >>> where the entry is replicated 1024 times on each of the two pagetables
-> >>> refered by the two associated PMD entries for that 8M page.
-> >>>
-> >>> At the moment it has to look into each helper to know if the
-> >>> hugepage ptep is a PTE or a PMD in order to know it is a 8M page or
-> >>> a lower size. I hope this can me handled by core-mm in the future.
-> >>>
-> >>> There are probably several ways to implement stuff, so feedback is
-> >>> very welcome.
-> >>
-> >> I thought it looks pretty good!
-> > 
-> > I second it.
-> > 
-> > I saw the discussions in patch 1.  Christophe, I suppose you're exploring
-> > the big hammer over hugepd, and perhaps went already with the 32bit pmd
-> > solution for nohash/32bit challenge you mentioned?
-> > 
-> > I'm trying to position my next step; it seems like at least I should not
-> > adding any more hugepd code, then should I go with ARCH_HAS_HUGEPD checks,
-> > or you're going to have an RFC soon then I can base on top?
-> 
-> Depends on what you expect by "soon".
-> 
-> I sure won't be able to send any RFC before end of April.
-> 
-> Should be possible to have something during May.
+> In general, it feels like the TLB invalidation should stay with the
+> code that deals with the page tables, as it has a pretty good idea of
+> what needs to be invalidated and how -- specially on architectures
+> that have a HW-broadcast facility like arm64.
 
-That's good enough, thanks.  I'll see what is the best I can do.
+Would this be roughly on par with an in-line flush on arm64?  The simpler, more
+straightforward solution would be to let architectures override flush_on_ret,
+but I would prefer something like the below as x86 can also utilize a range-based
+flush when running as a nested hypervisor.
 
-Then do you think I can leave p4d/pgd leaves alone?  Please check the other
-email where I'm not sure whether pgd leaves ever existed for any of
-PowerPC.  That's so far what I plan to do, on teaching pgtable walkers
-recognize pud and lower for all leaves.  Then if Power can switch from
-hugepd to this it should just work.
-
-Even if pgd exists (then something I overlooked..), I'm wondering whether
-we can push that downwards to be either pud/pmd (and looks like we all
-agree p4d is never used on Power).  That may involve some pgtable
-operations moving from pgd level to lower, e.g. my pure imagination would
-look like starting with:
-
-#define PTE_INDEX_SIZE	PTE_SHIFT
-#define PMD_INDEX_SIZE	0
-#define PUD_INDEX_SIZE	0
-#define PGD_INDEX_SIZE	(32 - PGDIR_SHIFT)
-
-To:
-
-#define PTE_INDEX_SIZE	PTE_SHIFT
-#define PMD_INDEX_SIZE	(32 - PMD_SHIFT)
-#define PUD_INDEX_SIZE	0
-#define PGD_INDEX_SIZE	0
-
-And the rest will need care too.  I hope moving downward is easier
-(e.g. the walker should always exist for lower levels but not always for
-higher levels), but I actually have little idea on whether there's any
-other implications, so please bare with me on stupid mistakes.
-
-I just hope pgd leaves don't exist already, then I think it'll be simpler.
-
-Thanks,
-
--- 
-Peter Xu
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index ff0a20565f90..b65116294efe 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -601,6 +601,7 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+        struct kvm_gfn_range gfn_range;
+        struct kvm_memory_slot *slot;
+        struct kvm_memslots *slots;
++       bool need_flush = false;
+        int i, idx;
+ 
+        if (WARN_ON_ONCE(range->end <= range->start))
+@@ -653,10 +654,22 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+                                        break;
+                        }
+                        r.ret |= range->handler(kvm, &gfn_range);
++
++                       /*
++                        * Use a precise gfn-based TLB flush when possible, as
++                        * most mmu_notifier events affect a small-ish range.
++                        * Fall back to a full TLB flush if the gfn-based flush
++                        * fails, and don't bother trying the gfn-based flush
++                        * if a full flush is already pending.
++                        */
++                       if (range->flush_on_ret && !need_flush && r.ret &&
++                           kvm_arch_flush_remote_tlbs_range(kvm, gfn_range.start
++                                                            gfn_range.end - gfn_range.start + 1))
++                               need_flush = true;
+                }
+        }
+ 
+-       if (range->flush_on_ret && r.ret)
++       if (need_flush)
+                kvm_flush_remote_tlbs(kvm);
+ 
+        if (r.found_memslot)
 
