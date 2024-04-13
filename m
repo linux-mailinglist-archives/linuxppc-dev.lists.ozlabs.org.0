@@ -2,105 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861698A3E62
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Apr 2024 22:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FBD8A3EB7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Apr 2024 23:25:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ccn8w4ht;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ht8VVQRf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VH4Pg2Gskz3vqY
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Apr 2024 06:13:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VH61D3sRRz3vsQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Apr 2024 07:25:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ccn8w4ht;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ht8VVQRf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2409::601; helo=nam04-dm6-obe.outbound.protection.outlook.com; envelope-from=jhubbard@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2409::601])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VH4Nx5v1mz3vkD
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Apr 2024 06:12:47 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HUEVyDVbrG8K+tLel9BNv4Z5t63FwSTOmz+g+XXdF8mjM/zzhgrwCmTsqhQdDqif/zfjsZT6o58CD3M0jyJ5fM25mIXbWV06EhBpaLpcKhxMpdGu2m19xAK5KqQmxY1hRo1f6V+mi6q+17JdrrSf9y7ayMN4l0OWVM4A31QRtSWv4Q/15PYcQrURtMGw2OnxfBcZKqyD1HvdcjPhxUtofn6K7Wi4HrjXO5nsGpUn4RNnhyEFjM+0fe+eGnotL3X9KHrgFVuxouMfv8ncM6JyDV+mPoBdF/mAqxQR6U/3vBdn5Vsg8LYsk1CwBW4jF6bbXlSyp/zpXJV9MZBtLF52KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w1dU1IB96tlkruBZtXgTUb+RzON86jsl2WlPUA31/EM=;
- b=Bn0zXH4tziyPmaKbZkrgs9omZ8WiZVlS1tKnS88lGIQ5OhIYNtLuXGEJ+DSY7MsAOprAj4XY1VY0gla24gPXQ0IlgwJHBJFCUfi4Wrfbiw+ADsCICmuJPlMaIbzpZsPGdHiPz0wWfF90syl0NuD4YC2id8Bg1ZvpXwH2kX8Duao8nSHorLGOk+NikIvavOxG9P5XTYDtfu0mfL1+gG754/Hs0nLsdb5L72HcesEDsny82syyTbaxhWiyIs4F3LvRx+z38zFadI6nUehkvOOSt2nkNZ0tQr1RYs+oYKeJ2OKcm3Das3hKGZqYKRJ9/l7XjxSktmIZx1X3xqpyi0G78w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w1dU1IB96tlkruBZtXgTUb+RzON86jsl2WlPUA31/EM=;
- b=ccn8w4hthDc8Um+YTEHRtzpYLIj2iYVXP551udB3zmidxNG36Q42KWV0ppUerXx+rDn2G5rGN09ubudDFuDajew1LJTFsuW7+/vHh6fqxLyPP0QyRludIEQ1znk7sLxSYCEIai2q6U02AyP1qthy6vBGE2i7npR3Eqj390J/lD7/03mVJEb9w6E1+cdxBOofpW34x4G3Fdxzz9RneVnwF+YNNzHDh0swIhpevHLIFaXn/K5yv7+I9mjSKtuuYD8pER+miLlCOi6KVDtRx1H9G3PybhAd1IaoQiGmAXxA1vfrZTi8U1NvmVfTqgS7oiKJPo8hyRT8hfwOFftD1ltlRA==
-Received: from CH2PR02CA0030.namprd02.prod.outlook.com (2603:10b6:610:4e::40)
- by SJ2PR12MB7918.namprd12.prod.outlook.com (2603:10b6:a03:4cc::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.54; Sat, 13 Apr
- 2024 20:12:28 +0000
-Received: from CH2PEPF00000147.namprd02.prod.outlook.com
- (2603:10b6:610:4e:cafe::6a) by CH2PR02CA0030.outlook.office365.com
- (2603:10b6:610:4e::40) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.31 via Frontend
- Transport; Sat, 13 Apr 2024 20:12:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH2PEPF00000147.mail.protection.outlook.com (10.167.244.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7452.22 via Frontend Transport; Sat, 13 Apr 2024 20:12:27 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sat, 13 Apr
- 2024 13:12:14 -0700
-Received: from [10.110.48.28] (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Sat, 13 Apr
- 2024 13:12:13 -0700
-Message-ID: <d495cdde-71e9-4476-acbb-5afe05229ca1@nvidia.com>
-Date: Sat, 13 Apr 2024 13:12:13 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] mm: use "GUP-fast" instead "fast GUP" in remaining
- comments
-To: David Hildenbrand <david@redhat.com>, <linux-kernel@vger.kernel.org>
-References: <20240402125516.223131-1-david@redhat.com>
- <20240402125516.223131-4-david@redhat.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20240402125516.223131-4-david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.126.230.35]
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000147:EE_|SJ2PR12MB7918:EE_
-X-MS-Office365-Filtering-Correlation-Id: a0aaa0a6-70c6-472c-e044-08dc5bf60abf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	MjNVtL4LM6YK6isq4wiC8G4q8ELWNqm50rFIV6H+AkQtPk+GNTw1bypC5EjFciw0xtsNof2pxnozwmce5kJhp/UKNGsBchZdVd57/QS3woqC9fpotDv8P+94mug9Qf8sZK8laLf1JDgSbzCi5zTiKMN/k4+uqV+wEkI9OEsegekIJXERp4onv3JmvZGJwEh1NVivpGH6lTzllKAnK/xnEacIOgtAODTrv0AdzAzyF9ds0wG/RndBT+dJI1xQzJ0E9+NhOyM/jJAzNKmRzKchsEE3dTMroOA7el2vmvBvx2JB6qy21uRQeNNivbmCVZH7jkr6HvyI1JjiEYb9XfLnc023Q0V1r6qQkxB7J2q7vAi9V57pNTfjqwVnguB5TlqwZ+hE4p7q7aqolWpHtjZEOLDyGmPAuavVXib7XqXKjG3Xh6DFUOxLSIvVNJ0Zev4v17HsRH0/UlyMIh/X1djxTtymLetHYnTv50FYvUWayq4Y0S3mwe9J6WE17YBbZCklEmiTKgcvuZ1Gc33DjkjdSrdMT30eG0/T6p4YtcWU3n/WZUNnsRiwuFxHicp8MsLNN9aXbMOa2CUM0/1G+nloeyJ44xMZB0/FBVOaCyAxZeMn8o2vOmMT4DUOcPykhKwQyJ81uQq3WBLkfVr+6HWpsuJhKqSLfPCpBLTNC24e0gnSvqPkm387Me51zAyx+uC0oeFRFtx4kqrgAiWY0zDLntM4WVVzD2Yw/grQJCLhM+s1mY8b6mRGtqVG6+U8buR9
-X-Forefront-Antispam-Report: 	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(82310400014)(376005)(36860700004)(7416005)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2024 20:12:27.8478
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0aaa0a6-70c6-472c-e044-08dc5bf60abf
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	CH2PEPF00000147.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7918
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VH60T0CyZz3vm6
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Apr 2024 07:25:12 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 436626034B;
+	Sat, 13 Apr 2024 21:25:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01F6C113CD;
+	Sat, 13 Apr 2024 21:25:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713043507;
+	bh=fWaZr02lXTk8vECphDiwIWtfs63IwnIajLCUTzl+yQQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ht8VVQRfKStNVTDput5TStcrXO3vCmLyURXGRHMiofLuo0f5aDqTg5dTSM4Mf69nt
+	 6zfN0dvorP9u2CFFnEId/THX8jb1kX7N6b9aEI7V8NbtR+TZkuWRPYDqKiHqUEpreF
+	 8AVtDndGvq6jZAsyE4zYAMorJJXbrWPrnE2Fxq9Mu744XPfxsg6MFAsla8Tg1IyL/Z
+	 v8wYxt7hz4jw772i0JwSsIpTFyhSXT1DcMdicllbj44CdE0qWgPRy9Xhp8CeYV1Rha
+	 KvJsJLZSZ91rvXzoNgNuH/B/DrSw6Fki5hexSzFHx7DMhYRVdwIMI9aF2jJkA7F8WC
+	 DoTBJvleCViMQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 14 Apr 2024 00:24:58 +0300
+Message-Id: <D0JB8N9GEF25.34YVMTSVZRKZJ@kernel.org>
+Subject: Re: [EXT] Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as
+ new trust source
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Kshitiz Varshney" <kshitiz.varshney@nxp.com>, "David Gstir"
+ <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>, "James
+ Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
+X-Mailer: aerc 0.17.0
+References: <20240403072131.54935-1-david@sigma-star.at>
+ <20240403072131.54935-7-david@sigma-star.at>
+ <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
+ <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
+In-Reply-To: <
+ <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,29 +67,266 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, Peter Xu <peterx@redhat.com>, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, Mike
- Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Gaurav Jain <gaurav.jain@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James
+ Morris <jmorris@namei.org>, dl-linux-imx <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E.
+ McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pankaj Gupta <pankaj.gupta@nxp.com>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt
+ \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Li
+ Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, Varun Sethi <V.Sethi@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/2/24 5:55 AM, David Hildenbrand wrote:
-> Let's fixup the remaining comments to consistently call that thing
-> "GUP-fast". With this change, we consistently call it "GUP-fast".
-> 
-> Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   mm/filemap.c    | 2 +-
->   mm/khugepaged.c | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
+On Tue Apr 9, 2024 at 12:48 PM EEST, Kshitiz Varshney wrote:
+> Hi Jarkko,
+>
+>
+> > -----Original Message-----
+> > From: Jarkko Sakkinen <jarkko@kernel.org>
+> > Sent: Wednesday, April 3, 2024 9:18 PM
+> > To: David Gstir <david@sigma-star.at>; Mimi Zohar <zohar@linux.ibm.com>=
+;
+> > James Bottomley <jejb@linux.ibm.com>; Herbert Xu
+> > <herbert@gondor.apana.org.au>; David S. Miller <davem@davemloft.net>
+> > Cc: Shawn Guo <shawnguo@kernel.org>; Jonathan Corbet
+> > <corbet@lwn.net>; Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix
+> > Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> > <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; Ahmad Fatoum
+> > <a.fatoum@pengutronix.de>; sigma star Kernel Team
+> > <upstream+dcp@sigma-star.at>; David Howells <dhowells@redhat.com>; Li
+> > Yang <leoyang.li@nxp.com>; Paul Moore <paul@paul-moore.com>; James
+> > Morris <jmorris@namei.org>; Serge E. Hallyn <serge@hallyn.com>; Paul E.
+> > McKenney <paulmck@kernel.org>; Randy Dunlap <rdunlap@infradead.org>;
+> > Catalin Marinas <catalin.marinas@arm.com>; Rafael J. Wysocki
+> > <rafael.j.wysocki@intel.com>; Tejun Heo <tj@kernel.org>; Steven Rostedt
+> > (Google) <rostedt@goodmis.org>; linux-doc@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; linux-integrity@vger.kernel.org;
+> > keyrings@vger.kernel.org; linux-crypto@vger.kernel.org; linux-arm-
+> > kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org; linux-securi=
+ty-
+> > module@vger.kernel.org; Richard Weinberger <richard@nod.at>; David
+> > Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> > Subject: [EXT] Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as n=
+ew
+> > trust source
+> >=20
+> > Caution: This is an external email. Please take care when clicking link=
+s or
+> > opening attachments. When in doubt, report the message using the 'Repor=
+t
+> > this email' button
+> >=20
+> >=20
+> > On Wed Apr 3, 2024 at 10:21 AM EEST, David Gstir wrote:
+> > > Update the documentation for trusted and encrypted KEYS with DCP as
+> > > new trust source:
+> > >
+> > > - Describe security properties of DCP trust source
+> > > - Describe key usage
+> > > - Document blob format
+> > >
+> > > Co-developed-by: Richard Weinberger <richard@nod.at>
+> > > Signed-off-by: Richard Weinberger <richard@nod.at>
+> > > Co-developed-by: David Oberhollenzer
+> > > <david.oberhollenzer@sigma-star.at>
+> > > Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at=
+>
+> > > Signed-off-by: David Gstir <david@sigma-star.at>
+> > > ---
+> > >  .../security/keys/trusted-encrypted.rst       | 53 +++++++++++++++++=
+++
+> > >  security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
+> > >  2 files changed, 72 insertions(+)
+> > >
+> > > diff --git a/Documentation/security/keys/trusted-encrypted.rst
+> > > b/Documentation/security/keys/trusted-encrypted.rst
+> > > index e989b9802f92..f4d7e162d5e4 100644
+> > > --- a/Documentation/security/keys/trusted-encrypted.rst
+> > > +++ b/Documentation/security/keys/trusted-encrypted.rst
+> > > @@ -42,6 +42,14 @@ safe.
+> > >           randomly generated and fused into each SoC at manufacturing=
+ time.
+> > >           Otherwise, a common fixed test key is used instead.
+> > >
+> > > +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX
+> > > + SoCs)
+> > > +
+> > > +         Rooted to a one-time programmable key (OTP) that is general=
+ly
+> > burnt
+> > > +         in the on-chip fuses and is accessible to the DCP encryptio=
+n engine
+> > only.
+> > > +         DCP provides two keys that can be used as root of trust: th=
+e OTP
+> > key
+> > > +         and the UNIQUE key. Default is to use the UNIQUE key, but s=
+electing
+> > > +         the OTP key can be done via a module parameter
+> > (dcp_use_otp_key).
+> > > +
+> > >    *  Execution isolation
+> > >
+> > >       (1) TPM
+> > > @@ -57,6 +65,12 @@ safe.
+> > >
+> > >           Fixed set of operations running in isolated execution envir=
+onment.
+> > >
+> > > +     (4) DCP
+> > > +
+> > > +         Fixed set of cryptographic operations running in isolated e=
+xecution
+> > > +         environment. Only basic blob key encryption is executed the=
+re.
+> > > +         The actual key sealing/unsealing is done on main processor/=
+kernel
+> > space.
+> > > +
+> > >    * Optional binding to platform integrity state
+> > >
+> > >       (1) TPM
+> > > @@ -79,6 +93,11 @@ safe.
+> > >           Relies on the High Assurance Boot (HAB) mechanism of NXP So=
+Cs
+> > >           for platform integrity.
+> > >
+> > > +     (4) DCP
+> > > +
+> > > +         Relies on Secure/Trusted boot process (called HAB by vendor=
+) for
+> > > +         platform integrity.
+> > > +
+> > >    *  Interfaces and APIs
+> > >
+> > >       (1) TPM
+> > > @@ -94,6 +113,11 @@ safe.
+> > >
+> > >           Interface is specific to silicon vendor.
+> > >
+> > > +     (4) DCP
+> > > +
+> > > +         Vendor-specific API that is implemented as part of the DCP =
+crypto
+> > driver in
+> > > +         ``drivers/crypto/mxs-dcp.c``.
+> > > +
+> > >    *  Threat model
+> > >
+> > >       The strength and appropriateness of a particular trust source
+> > > for a given @@ -129,6 +153,13 @@ selected trust source:
+> > >       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure
+> > the device
+> > >       is probed.
+> > >
+> > > +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs=
+)
+> > > +
+> > > +     The DCP hardware device itself does not provide a dedicated RNG
+> > interface,
+> > > +     so the kernel default RNG is used. SoCs with DCP like the i.MX6=
+ULL do
+> > have
+> > > +     a dedicated hardware RNG that is independent from DCP which can=
+ be
+> > enabled
+> > > +     to back the kernel RNG.
+> > > +
+> > >  Users may override this by specifying ``trusted.rng=3Dkernel`` on th=
+e
+> > > kernel  command-line to override the used RNG with the kernel's rando=
+m
+> > number pool.
+> > >
+> > > @@ -231,6 +262,19 @@ Usage::
+> > >  CAAM-specific format.  The key length for new keys is always in byte=
+s.
+> > >  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+> > >
+> > > +Trusted Keys usage: DCP
+> > > +-----------------------
+> > > +
+> > > +Usage::
+> > > +
+> > > +    keyctl add trusted name "new keylen" ring
+> > > +    keyctl add trusted name "load hex_blob" ring
+> > > +    keyctl print keyid
+> > > +
+> > > +"keyctl print" returns an ASCII hex copy of the sealed key, which is
+> > > +in format specific to this DCP key-blob implementation.  The key
+> > > +length for new keys is always in bytes. Trusted Keys can be 32 - 128=
+ bytes
+> > (256 - 1024 bits).
+> > > +
+> > >  Encrypted Keys usage
+> > >  --------------------
+> > >
+> > > @@ -426,3 +470,12 @@ string length.
+> > >  privkey is the binary representation of TPM2B_PUBLIC excluding the
+> > > initial TPM2B header which can be reconstructed from the ASN.1 octed
+> > > string length.
+> > > +
+> > > +DCP Blob Format
+> > > +---------------
+> > > +
+> > > +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
+> > > +   :doc: dcp blob format
+> > > +
+> > > +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
+> > > +   :identifiers: struct dcp_blob_fmt
+> > > diff --git a/security/keys/trusted-keys/trusted_dcp.c
+> > > b/security/keys/trusted-keys/trusted_dcp.c
+> > > index 16c44aafeab3..b5f81a05be36 100644
+> > > --- a/security/keys/trusted-keys/trusted_dcp.c
+> > > +++ b/security/keys/trusted-keys/trusted_dcp.c
+> > > @@ -19,6 +19,25 @@
+> > >  #define DCP_BLOB_VERSION 1
+> > >  #define DCP_BLOB_AUTHLEN 16
+> > >
+> > > +/**
+> > > + * DOC: dcp blob format
+> > > + *
+> > > + * The Data Co-Processor (DCP) provides hardware-bound AES keys usin=
+g
+> > > +its
+> > > + * AES encryption engine only. It does not provide direct key
+> > sealing/unsealing.
+> > > + * To make DCP hardware encryption keys usable as trust source, we
+> > > +define
+> > > + * our own custom format that uses a hardware-bound key to secure th=
+e
+> > > +sealing
+> > > + * key stored in the key blob.
+> > > + *
+> > > + * Whenever a new trusted key using DCP is generated, we generate a
+> > > +random 128-bit
+> > > + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce ar=
+e
+> > > +used to
+> > > + * encrypt the trusted key payload using AES-128-GCM.
+> > > + *
+> > > + * The BEK itself is encrypted using the hardware-bound key using th=
+e
+> > > +DCP's AES
+> > > + * encryption engine with AES-128-ECB. The encrypted BEK, generated
+> > > +nonce,
+> > > + * BEK-encrypted payload and authentication tag make up the blob
+> > > +format together
+> > > + * with a version number, payload length and authentication tag.
+> > > + */
+> > > +
+> > >  /**
+> > >   * struct dcp_blob_fmt - DCP BLOB format.
+> > >   *
+> >=20
+> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >=20
+> > I can only test that this does not break a machine without the hardware
+> > feature.
+> >=20
+> > Is there anyone who could possibly peer test these patches?
+> I am already working on testing this patchset on i.MX6 platform.
+> Regards,
+> Kshitiz
 
-Yes, everything is changed over now, confirmed.
+OK great.
 
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-
-
-thanks,
--- 
-John Hubbard
-NVIDIA
-
+BR, Jarkko
