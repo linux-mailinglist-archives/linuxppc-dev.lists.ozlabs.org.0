@@ -2,74 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BBF8A41F5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Apr 2024 12:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AA28A45FA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 00:43:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VoL+5pGZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ooE7y/Qj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VHRwG2YPsz3dtJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Apr 2024 20:52:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VHlhh30Hhz3vY8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 08:43:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VoL+5pGZ;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ooE7y/Qj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::c35; helo=mail-oo1-xc35.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VHRvV2QJYz3bxZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Apr 2024 20:52:03 +1000 (AEST)
-Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-5aa241232faso2079449eaf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Apr 2024 03:52:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713091920; x=1713696720; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=z86tADjA34jPDvp0sH69LSJjWH6CGCLDMrpq88/Jt4c=;
-        b=VoL+5pGZ30CZ8a5qTlsfKtwgs7wb7DwgpcFYJEj5TXtmvU7wb6rFWKhSKDIHf5wnRa
-         PSUp2eIdyyLGYT0R13JZ+mgsCBOvR4xRCNZe3RiXWZQ+YlWXFtfAS3D4xsWCtl7Cj50W
-         3N5kyBQoc+wAO4kltVGp9TP+J0wzElzNOgBKLsFpT3nu6rGsDVfUlOMEpW0JaL3QsCV+
-         CUPFeua3u1ksF3n0Fe2JEkaV5unxB4Rl0o1j2IbU3For/8sJDnM8aZCp9AqJZaibAwen
-         Vf2wFy5XPcNNXak2wyC7ZXUAy2u1s1N8xiFNEteYEw9lE2OwiE+lVpvSgfQ3Ml55u4BX
-         qFHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713091920; x=1713696720;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z86tADjA34jPDvp0sH69LSJjWH6CGCLDMrpq88/Jt4c=;
-        b=w6h/svOA9SptEtG05SsM/1btrboRKMK2yuhbf7O5UGT/UKhSxlK1MGsrCmDMhTs/nB
-         Q6GHjB3uJmFqnBBpw39m7EZLmbqDdvmClSZ8JfceM8abJgeSg1xeKcS7Z6YlU7P6/4pL
-         27+t+UcAc38ySN0J14lI1tQhkR+1wBi1Y8PXaoW/lr3d+frut3j9mKeL7i460c+TDxhy
-         biZ2Ie7sX3xYxuS/LSlaARHgHpVObf0I/mCtlXpYYqbAvabQynFzFDiT11ZWT0wBvQF4
-         v6CQx6omU5MTKCukjR9ZdEOXa+NrPEhUcOtYCT3R0ny99YGiXHQmVH9hVbhsLEeUqMWi
-         aLyA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxNVmrnK0umlsKh9XsdI+h4gRtnU5At+8hyVkm983JfT/IvBHaqsmC5f09TABqpqYhtUNzkIWmrso2hQaSNkBpR+4GX/apuQe2hh2EqQ==
-X-Gm-Message-State: AOJu0Yz7d/+YP/m/KoQsSM+Q8usOABuTR6L0LiOUPH318ASIa/yinJwE
-	+MhHw5Qy5txauiFLNvPJXLCIx5mJ/t6Z9H7PPXtrQIjNoGhhFlnzGnoAWiKvkA==
-X-Google-Smtp-Source: AGHT+IHG73jN0JyTXE5YMG9IYvVbYRtG5PEk5LWJ00N9WZxttyYSYCMKrPxspcM2aGpT1bTva1r7xA==
-X-Received: by 2002:a05:6808:218c:b0:3c5:eddb:47c1 with SMTP id be12-20020a056808218c00b003c5eddb47c1mr9182957oib.5.1713091919486;
-        Sun, 14 Apr 2024 03:51:59 -0700 (PDT)
-Received: from thinkpad ([120.60.136.171])
-        by smtp.gmail.com with ESMTPSA id im22-20020a170902bb1600b001dcfaf4db22sm5944167plb.2.2024.04.14.03.51.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Apr 2024 03:51:59 -0700 (PDT)
-Date: Sun, 14 Apr 2024 16:21:48 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v12 8/8] PCI: endpoint: Remove "core_init_notifier" flag
-Message-ID: <20240414105148.GC2294@thinkpad>
-References: <20240327-pci-dbi-rework-v12-8-082625472414@linaro.org>
- <20240412202216.GA14590@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VHlgr2m7Nz3bq0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 08:43:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1713134583;
+	bh=4YxIT04d5iT4t/9CWLf2dJs39GSU2JGwBCGJMwje3e4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ooE7y/QjtRNgxNbD/iBXfW+vLDiRSXCPipXLjAPSVBegCGtlgGWZiackaWHNluCyN
+	 5pU/pPht+GdlCVH7KenaDnUCSi76PMEKI8aZZE8n/2H2ge/wdXDEyNqNW3qJw17axm
+	 InHjB1XcIctesdyRBXNz4dcMJOI38JH9v0niQ+CbHZ676+tnh2VVRE3/Xbp4NE2xAh
+	 J5oYOFjdK5ffaKKQUcRrKJp4V6mjuq+p2ok1cG35PquEzalCDnOREc+hlQxDdjRvho
+	 jEuuOnL8CEEPNcpWKqAyZa2z4QjCLcZqZqMGlzBxjZaPB9Y5/Ykw7eucwjdX0shbJ0
+	 MlMR8xtLzoDag==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VHlgb16rBz4wcR;
+	Mon, 15 Apr 2024 08:42:51 +1000 (AEST)
+Date: Mon, 15 Apr 2024 08:42:50 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 1/3] x86/cpu: Actually turn off mitigations by default
+ for SPECULATION_MITIGATIONS=n
+Message-ID: <20240415084250.7b00ea63@canb.auug.org.au>
+In-Reply-To: <87bk6dd2l4.fsf@mail.lhotse>
+References: <20240409175108.1512861-1-seanjc@google.com>
+	<20240409175108.1512861-2-seanjc@google.com>
+	<20240413115324.53303a68@canb.auug.org.au>
+	<87edb9d33r.fsf@mail.lhotse>
+	<87bk6dd2l4.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240412202216.GA14590@bhelgaas>
+Content-Type: multipart/signed; boundary="Sig_/hV./THoU9xeCGcZYyAV1HiA";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,82 +63,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, NXP Linux Team <linux-imx@nxp.com>, Shawn Lin <shawn.lin@rock-chips.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-ke
- rnel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linux-arch@vger.kernel.org, x86@kernel.org, Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Josh Poimboeuf <jpoimboe@kernel.org>, Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 12, 2024 at 03:22:16PM -0500, Bjorn Helgaas wrote:
-> On Wed, Mar 27, 2024 at 02:43:37PM +0530, Manivannan Sadhasivam wrote:
-> > "core_init_notifier" flag is set by the glue drivers requiring refclk from
-> > the host to complete the DWC core initialization. Also, those drivers will
-> > send a notification to the EPF drivers once the initialization is fully
-> > completed using the pci_epc_init_notify() API. Only then, the EPF drivers
-> > will start functioning.
-> > 
-> > For the rest of the drivers generating refclk locally, EPF drivers will
-> > start functioning post binding with them. EPF drivers rely on the
-> > 'core_init_notifier' flag to differentiate between the drivers.
-> > Unfortunately, this creates two different flows for the EPF drivers.
-> > 
-> > So to avoid that, let's get rid of the "core_init_notifier" flag and follow
-> > a single initialization flow for the EPF drivers. This is done by calling
-> > the dw_pcie_ep_init_notify() from all glue drivers after the completion of
-> > dw_pcie_ep_init_registers() API. This will allow all the glue drivers to
-> > send the notification to the EPF drivers once the initialization is fully
-> > completed.
-> 
-> Thanks for doing this!  I think this is a significantly nicer
-> solution than core_init_notifier was.
-> 
-> One question: both qcom and tegra194 call dw_pcie_ep_init_registers()
-> from an interrupt handler, but they register that handler in a
-> different order with respect to dw_pcie_ep_init().
-> 
-> I don't know what actually starts the process that leads to the
-> interrupt, but if it's dw_pcie_ep_init(), then one of these (qcom, I
-> think) must be racy:
-> 
+--Sig_/hV./THoU9xeCGcZYyAV1HiA
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Your analysis is correct. But there is no race observed as of now since the IRQ
-will only be enabled by configuring the endpoint using configfs interface and
-right now I use an init script to do that. By that time, the driver would've
-already probed completely.
+Hi all,
 
-But there is a slight chance that if the driver gets loaded as a module and the
-userspace script starts configuring the endpoint interface using inotify watch
-or something similar, then race could occur since the IRQ handler may not be
-registered at that point.
+On Sat, 13 Apr 2024 19:38:47 +1000 Michael Ellerman <mpe@ellerman.id.au> wr=
+ote:
+>
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > Stephen Rothwell <sfr@canb.auug.org.au> writes: =20
+> ...
+> >> On Tue,  9 Apr 2024 10:51:05 -0700 Sean Christopherson <seanjc@google.=
+com> wrote: =20
+> ...
+> >>> diff --git a/kernel/cpu.c b/kernel/cpu.c
+> >>> index 8f6affd051f7..07ad53b7f119 100644
+> >>> --- a/kernel/cpu.c
+> >>> +++ b/kernel/cpu.c
+> >>> @@ -3207,7 +3207,8 @@ enum cpu_mitigations {
+> >>>  };
+> >>> =20
+> >>>  static enum cpu_mitigations cpu_mitigations __ro_after_init =3D
+> >>> -	CPU_MITIGATIONS_AUTO;
+> >>> +	IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
+> >>> +						     CPU_MITIGATIONS_OFF;
+> >>> =20
+> >>>  static int __init mitigations_parse_cmdline(char *arg)
+> >>>  { =20
+>=20
+> I think a minimal workaround/fix would be:
+>=20
+> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+> index 2b8fd6bb7da0..290be2f9e909 100644
+> --- a/drivers/base/Kconfig
+> +++ b/drivers/base/Kconfig
+> @@ -191,6 +191,10 @@ config GENERIC_CPU_AUTOPROBE
+>  config GENERIC_CPU_VULNERABILITIES
+>         bool
+>=20
+> +config SPECULATION_MITIGATIONS
+> +       def_bool y
+> +       depends on !X86
+> +
+>  config SOC_BUS
+>         bool
+>         select GLOB
 
->   qcom_pcie_ep_probe
->     dw_pcie_ep_init                                             <- A
->     qcom_pcie_ep_enable_irq_resources
->       devm_request_threaded_irq(qcom_pcie_ep_perst_irq_thread)  <- B
-> 
->   qcom_pcie_ep_perst_irq_thread
->     qcom_pcie_perst_deassert
->       dw_pcie_ep_init_registers
-> 
->   tegra_pcie_dw_probe
->     tegra_pcie_config_ep
->       devm_request_threaded_irq(tegra_pcie_ep_pex_rst_irq)      <- B
->       dw_pcie_ep_init                                           <- A
-> 
->   tegra_pcie_ep_pex_rst_irq
->     pex_ep_event_pex_rst_deassert
->       dw_pcie_ep_init_registers
-> 
-> Whatever the right answer is, I think qcom and tegra194 should both
-> order dw_pcie_ep_init() and the devm_request_threaded_irq() the same
-> way.
-> 
+The original commit is now in Linus' tree.
 
-Agree. The right way is to register the IRQ handler first and then do
-dw_pcie_ep_init(). I will fix it in the qcom driver.
+--=20
+Cheers,
+Stephen Rothwell
 
-Thanks for spotting!
+--Sig_/hV./THoU9xeCGcZYyAV1HiA
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-- Mani
+-----BEGIN PGP SIGNATURE-----
 
--- 
-மணிவண்ணன் சதாசிவம்
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmYcW+oACgkQAVBC80lX
+0GzNlAf8CJkJCFVxONVRLci2DamLPZ4T4ZsMm4OWVge3NTf2ODxR5/6fodpWAuOx
+Z4FTB9mMAJeazuf6SM1+K6bxNw3KKkfD9iexpu/bGgFgwJdZnObQp3NzxxGodpLp
+sf9Fr8TjVXNjgXvmi0rCfLuBqZ3dfCxWSIWc1YgG1FgGdNu2XzEjYmllpmLqas2n
+HG31in38tgVrVuwKMsIKX5Ma/qGGXFSTRWE0NETTzgCXJJQnXfm9VEEVrRzEHnl0
+OGT6Y7IrdqT6XA9Lck1W6X97inzLj0GDGCdQjaqYsNwgjY39jQWNyU1mzi8BZQJk
+CY2veoa0e7AKDZ7ZR/xMAebrEE7ahg==
+=91NG
+-----END PGP SIGNATURE-----
+
+--Sig_/hV./THoU9xeCGcZYyAV1HiA--
