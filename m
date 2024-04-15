@@ -2,94 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF718A5696
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 17:36:45 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nsCdW1U5;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=s/cIWt86;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF258A57C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 18:30:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJB9Q3GPVz3vZF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 01:36:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJCLv6pZJz3vcZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 02:29:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nsCdW1U5;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=s/cIWt86;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.148; helo=fout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perches.com (client-ip=216.40.44.10; helo=relay.hostedemail.com; envelope-from=joe@perches.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 564 seconds by postgrey-1.37 at boromir; Tue, 16 Apr 2024 02:29:35 AEST
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJB8Y202Vz3cCt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 01:35:55 +1000 (AEST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id E4015138008C;
-	Mon, 15 Apr 2024 11:35:51 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 15 Apr 2024 11:35:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1713195351; x=1713281751; bh=NKyHVd6O5G
-	xyMIbK6qGm5hs8jJkIZEH0cqFINvkbpUA=; b=nsCdW1U51jfzeMkyZHn0Fbb0ao
-	ikCGQ2m8sEt8IzFsf2Y91pKjA743pr4et54buHMJ18+wfoUyu3+1T7yMo0N3EMsh
-	hWjPJIREZSzKTcUCEwZ+QOl5GTgcvtYkLYF8kUBxyhPLhWyBqgrc2SVV9U17rNDy
-	uauUhhaFKZCVAoxZz5Ay8zxq6zC5i36nA5JnhbLa/v7qbxKR6I4MkRKkYjADdOwu
-	4G7RGEeqWX6T097kMoVwWJ+r5PcR3IIsqplnh0PtQe2jVoqaDAISxlQPXrzetgBj
-	MnxKIeEe20mYTZhOWN/bDJRJ7r8ycT0+eC4hE62WUXfgrQ1hKQQ03IJMXb5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1713195351; x=1713281751; bh=NKyHVd6O5GxyMIbK6qGm5hs8jJkI
-	ZEH0cqFINvkbpUA=; b=s/cIWt866OUPpq+SGeHRpY+cwbQKV7lcLczMsPVcaV/F
-	EDnq1h1asCSMTzxemSxR94D2ne4gbYsHdeW+1AE4cLr13usIaEG1EmVhoxDB3rve
-	7rnXELuXrBx6N01XziYoAIXPdiiVtB9/rEpj5wwnZEaUXRzeTtT3+8mjFrYxPvaf
-	noJ0OL90mNlKaBMKarEqwh4VwXAIXzOaRS+a7BEvH4XRSIRd621Izyrg2gW8Elfo
-	yj2nhZYxmIVYNuW5NkjZe5L1JDtE5GxMvxO1iDpmvKbT2qOwIJ4LwbFHFv10qZ3K
-	Gcog4XGLOGqSWPm2WqhKCJYrtYPFK11WR1PuT62lLw==
-X-ME-Sender: <xms:V0kdZl5-Ks5H4ZIMsueKvNzcseWUdcxlN1bHo3L0FXNmQAsoQ3hquA>
-    <xme:V0kdZi5ePkAR-UV1hDdBO-DisyYak1ddjUBzwzTSUMNH0IoJtrRPE_mkO6L2fNfZk
-    9Hx0bBdT-m6Ozfx9O8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejvddgledvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:V0kdZsfF8xA-hXd_nvSYSobS20nFGN0x9XjtFi1OVnyGUtW02lPinQ>
-    <xmx:V0kdZuJr02V0bjMWLu1OYgLN3jcRy0kJ6DD5ZaM4sJ1lo4Ma5OpIgA>
-    <xmx:V0kdZpK_jfoTK42y2-Lb5lgs7xKkOdfc1q9LaoaXqDQWTjQuEfBrNw>
-    <xmx:V0kdZnxZ9r8LEj0Ct9uR5wPh--IidebIgB3b5JmFA7rg4QgbW2ftZA>
-    <xmx:V0kdZn2NOqZbkoIdGySo0kb7whsiu5YeDLfPLZVeDsnKGEuee0WQkEjg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id E9918B6008D; Mon, 15 Apr 2024 11:35:50 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJCLR6gJ1z2xYY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 02:29:34 +1000 (AEST)
+Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECEA4A060C;
+	Mon, 15 Apr 2024 16:20:02 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf12.hostedemail.com (Postfix) with ESMTPA id 25AC719;
+	Mon, 15 Apr 2024 16:20:00 +0000 (UTC)
+Message-ID: <03f357e6c16d13924b705513446e4eac37e38a99.camel@perches.com>
+Subject: Re: [PATCH] PCI/AER: Print error message as per the TODO
+From: Joe Perches <joe@perches.com>
+To: Abhinav Jain <jain.abhinav177@gmail.com>, mahesh@linux.ibm.com, 
+	oohall@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 15 Apr 2024 09:19:59 -0700
+In-Reply-To: <20240415161055.8316-1-jain.abhinav177@gmail.com>
+References: <20240415161055.8316-1-jain.abhinav177@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Message-Id: <e0cf6827-06c2-4212-848c-10d275c75546@app.fastmail.com>
-In-Reply-To: <875xwjcqpl.fsf@mail.lhotse>
-References: <20240410153212.127477-1-adrian.hunter@intel.com>
- <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
- <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
- <a434248a-1e9f-4f4f-8f90-d36d8e979f53@csgroup.eu>
- <ff9d7032-a3b6-4ecd-ac26-d7d4a06a5c7f@csgroup.eu>
- <4d429a10-eb45-4262-8e74-69af810ef1ac@intel.com>
- <dd6653b2-3a88-4b95-af13-c6fda5b27b39@app.fastmail.com>
- <875xwjcqpl.fsf@mail.lhotse>
-Date: Mon, 15 Apr 2024 17:35:30 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Michael Ellerman" <mpe@ellerman.id.au>,
- "Adrian Hunter" <adrian.hunter@intel.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
-Content-Type: text/plain
+X-Rspamd-Queue-Id: 25AC719
+X-Spam-Status: No, score=-1.19
+X-Stat-Signature: 77e1p4uka3bqt7e7ii1uor3ehdgef6hp
+X-Rspamd-Server: rspamout05
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+mInIM+0CNX9KiE6s0STSXDV9arJlA+oo=
+X-HE-Tag: 1713198000-709223
+X-HE-Meta: U2FsdGVkX18fRK6pvB4sqjrD+Hoi7VifTu0b/kmK1fLRq+6B3315wuHjJaVxwsG3ryHMye27wG92hwxaE84zKznFV1zdpaNmTJ2xB8DEbZshNqhjvOu22m9mjY8RFR1Hka4ZE9kfGrep6llNfaDZ9WmRCRfYMRWqkhV3SuYQsPxaG+BJVarT1Q4Du+CM6d08EhHIODww0VeyqdEAvD4KUqWuL47rgeAgHsM15SJy/OWPpDQS+3/c45vgN9oMm8wPJ87a9a82vl2KAfLVrGD/kgMIuNwILrYGNmJ6/e7U5TwlI43oa3xcOPtGoMKVLmhX
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,48 +54,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, "x86@kernel.org" <x86@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sven Sch
- nelle <svens@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 15, 2024, at 04:19, Michael Ellerman wrote:
-> "Arnd Bergmann" <arnd@arndb.de> writes:
->> On Thu, Apr 11, 2024, at 11:27, Adrian Hunter wrote:
->>> On 11/04/24 11:22, Christophe Leroy wrote:
->>>
->>> That is fragile because it depends on defined(__OPTIMIZE__),
->>> so it should still be:
->>
->> If there is a function that is defined but that must never be
->> called, I think we are doing something wrong.
->
-> It's a pretty inevitable result of using IS_ENABLED(), which the docs
-> encourage people to use.
+On Mon, 2024-04-15 at 16:10 +0000, Abhinav Jain wrote:
+> Add a pr_err() to print the add device error in find_device_iter()
+[]
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+[]
+> @@ -885,7 +885,8 @@ static int find_device_iter(struct pci_dev *dev, void=
+ *data)
+>  		/* List this device */
+>  		if (add_error_device(e_info, dev)) {
+>  			/* We cannot handle more... Stop iteration */
+> -			/* TODO: Should print error message here? */
+> +			pr_err("find_device_iter: Cannot handle more devices.
+> +					Stopping iteration");
 
-Using IS_ENABLED() is usually a good idea, as it helps avoid
-adding extra #ifdef checks and just drops static functions as
-dead code, or lets you call extern functions that are conditionally
-defined in a different file.
+You are adding unnecessary whitespace after the period.
+String concatenation keeps _all_ the whitespace.
 
-The thing is that here it does not do either of those and
-adds more complexity than it avoids.
+The format is fine on a single line too.
 
-> In this case it could easily be turned into a build error by just making
-> it an extern rather than a static inline.
->
-> But I think Christophe's solution is actually better, because it's more
-> explicit, ie. this function should not be called and if it is that's a
-> build time error.
+Something like:
 
-I haven't seen a good solution here. Ideally we'd just define
-the functions unconditionally and have IS_ENABLED() take care
-of letting the compiler drop them silently, but that doesn't
-build because of missing struct members.
+		pr_notice("%s: Cannot handle more devices - iteration stopped\n",
+			  __func__);
 
-I won't object to either an 'extern' declaration or the
-'BUILD_BUG_ON()' if you and others prefer that, both are better
-than BUG() here. I still think my suggestion would be a little
-simpler.
-
-     Arnd
