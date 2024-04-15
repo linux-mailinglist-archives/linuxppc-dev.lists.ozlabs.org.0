@@ -2,50 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83D48A5448
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 16:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF718A5696
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 17:36:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h8ux2kJ9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nsCdW1U5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=s/cIWt86;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJ8pz5Tygz3vZX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 00:35:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJB9Q3GPVz3vZF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 01:36:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h8ux2kJ9;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nsCdW1U5;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=s/cIWt86;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.148; helo=fout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJ8pG6TMQz30Pn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 00:35:02 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 78965CE0DFC;
-	Mon, 15 Apr 2024 14:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707A5C113CC;
-	Mon, 15 Apr 2024 14:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713191700;
-	bh=iY4lgc0Rhhg0QzocM/HxB+V+JgnIN6Pz/U6ay5f9MVA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=h8ux2kJ9VPc31EUKRstPFxlBtLqgAikyAAiDVJYFMkbo8mtxrOyOOK3NcACc+y8Ud
-	 iXpqVF0MEx6sJdy9lY0wvSVKeeW8uxfxRN67mmZIVLth3xLTpCnMe7hyPn5vAXAEap
-	 YJVO2lf3xgNEtO0oSJyygdI7v9QUj7HOXxZHY9dCiUhkDO7nzPi891PYd/BxHxCsHv
-	 UyVxwOClfOgHueSz5EuCeCSIoFui/BN6bMZkuezCEt2p/LTzprmU9aAAuHUtmtAdXW
-	 zFxLHFLFtq8kkv6xT1YhX19MuFUhTUT9zOppzKw1mDSETuxGYDPKQceVsXviKNPbDv
-	 gZmkSaNAV4YtQ==
-Date: Mon, 15 Apr 2024 09:34:58 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Subject: Re: [PATCH v12 2/8] PCI: dwc: ep: Add Kernel-doc comments for APIs
-Message-ID: <20240415143458.GA111010@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJB8Y202Vz3cCt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 01:35:55 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id E4015138008C;
+	Mon, 15 Apr 2024 11:35:51 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 15 Apr 2024 11:35:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1713195351; x=1713281751; bh=NKyHVd6O5G
+	xyMIbK6qGm5hs8jJkIZEH0cqFINvkbpUA=; b=nsCdW1U51jfzeMkyZHn0Fbb0ao
+	ikCGQ2m8sEt8IzFsf2Y91pKjA743pr4et54buHMJ18+wfoUyu3+1T7yMo0N3EMsh
+	hWjPJIREZSzKTcUCEwZ+QOl5GTgcvtYkLYF8kUBxyhPLhWyBqgrc2SVV9U17rNDy
+	uauUhhaFKZCVAoxZz5Ay8zxq6zC5i36nA5JnhbLa/v7qbxKR6I4MkRKkYjADdOwu
+	4G7RGEeqWX6T097kMoVwWJ+r5PcR3IIsqplnh0PtQe2jVoqaDAISxlQPXrzetgBj
+	MnxKIeEe20mYTZhOWN/bDJRJ7r8ycT0+eC4hE62WUXfgrQ1hKQQ03IJMXb5Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1713195351; x=1713281751; bh=NKyHVd6O5GxyMIbK6qGm5hs8jJkI
+	ZEH0cqFINvkbpUA=; b=s/cIWt866OUPpq+SGeHRpY+cwbQKV7lcLczMsPVcaV/F
+	EDnq1h1asCSMTzxemSxR94D2ne4gbYsHdeW+1AE4cLr13usIaEG1EmVhoxDB3rve
+	7rnXELuXrBx6N01XziYoAIXPdiiVtB9/rEpj5wwnZEaUXRzeTtT3+8mjFrYxPvaf
+	noJ0OL90mNlKaBMKarEqwh4VwXAIXzOaRS+a7BEvH4XRSIRd621Izyrg2gW8Elfo
+	yj2nhZYxmIVYNuW5NkjZe5L1JDtE5GxMvxO1iDpmvKbT2qOwIJ4LwbFHFv10qZ3K
+	Gcog4XGLOGqSWPm2WqhKCJYrtYPFK11WR1PuT62lLw==
+X-ME-Sender: <xms:V0kdZl5-Ks5H4ZIMsueKvNzcseWUdcxlN1bHo3L0FXNmQAsoQ3hquA>
+    <xme:V0kdZi5ePkAR-UV1hDdBO-DisyYak1ddjUBzwzTSUMNH0IoJtrRPE_mkO6L2fNfZk
+    9Hx0bBdT-m6Ozfx9O8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejvddgledvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:V0kdZsfF8xA-hXd_nvSYSobS20nFGN0x9XjtFi1OVnyGUtW02lPinQ>
+    <xmx:V0kdZuJr02V0bjMWLu1OYgLN3jcRy0kJ6DD5ZaM4sJ1lo4Ma5OpIgA>
+    <xmx:V0kdZpK_jfoTK42y2-Lb5lgs7xKkOdfc1q9LaoaXqDQWTjQuEfBrNw>
+    <xmx:V0kdZnxZ9r8LEj0Ct9uR5wPh--IidebIgB3b5JmFA7rg4QgbW2ftZA>
+    <xmx:V0kdZn2NOqZbkoIdGySo0kb7whsiu5YeDLfPLZVeDsnKGEuee0WQkEjg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id E9918B6008D; Mon, 15 Apr 2024 11:35:50 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240415140015.GJ7537@thinkpad>
+Message-Id: <e0cf6827-06c2-4212-848c-10d275c75546@app.fastmail.com>
+In-Reply-To: <875xwjcqpl.fsf@mail.lhotse>
+References: <20240410153212.127477-1-adrian.hunter@intel.com>
+ <87be83da-6102-483d-b1dc-a77eecc9f780@app.fastmail.com>
+ <c9f382b2-cd96-4ee3-ad68-95381d9e09c0@intel.com>
+ <a434248a-1e9f-4f4f-8f90-d36d8e979f53@csgroup.eu>
+ <ff9d7032-a3b6-4ecd-ac26-d7d4a06a5c7f@csgroup.eu>
+ <4d429a10-eb45-4262-8e74-69af810ef1ac@intel.com>
+ <dd6653b2-3a88-4b95-af13-c6fda5b27b39@app.fastmail.com>
+ <875xwjcqpl.fsf@mail.lhotse>
+Date: Mon, 15 Apr 2024 17:35:30 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Adrian Hunter" <adrian.hunter@intel.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] bug: Fix no-return-statement warning with !CONFIG_BUG
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,39 +101,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, NXP Linux Team <linux-imx@nxp.com>, Shawn Lin <shawn.lin@rock-chips.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas
- @google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, "x86@kernel.org" <x86@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Gleixner <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sven Sch
+ nelle <svens@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 15, 2024 at 07:30:15PM +0530, Manivannan Sadhasivam wrote:
-> On Fri, Apr 12, 2024 at 02:58:36PM -0500, Bjorn Helgaas wrote:
-> > On Wed, Mar 27, 2024 at 02:43:31PM +0530, Manivannan Sadhasivam wrote:
-> > > All of the APIs are missing the Kernel-doc comments. Hence, add them.
-> > 
-> > > + * dw_pcie_ep_reset_bar - Reset endpoint BAR
-> > 
-> > Apparently this resets @bar for every function of the device, so it's
-> > not just a single BAR?
-> 
-> Right. It should've been 'Reset endpoint BARs'. And the API name is also
-> misleading, but that is not the scope of this series.
+On Mon, Apr 15, 2024, at 04:19, Michael Ellerman wrote:
+> "Arnd Bergmann" <arnd@arndb.de> writes:
+>> On Thu, Apr 11, 2024, at 11:27, Adrian Hunter wrote:
+>>> On 11/04/24 11:22, Christophe Leroy wrote:
+>>>
+>>> That is fragile because it depends on defined(__OPTIMIZE__),
+>>> so it should still be:
+>>
+>> If there is a function that is defined but that must never be
+>> called, I think we are doing something wrong.
+>
+> It's a pretty inevitable result of using IS_ENABLED(), which the docs
+> encourage people to use.
 
-Maybe just this for now:
+Using IS_ENABLED() is usually a good idea, as it helps avoid
+adding extra #ifdef checks and just drops static functions as
+dead code, or lets you call extern functions that are conditionally
+defined in a different file.
 
-s/Reset endpoint BAR/Reset @bar of every function/
+The thing is that here it does not do either of those and
+adds more complexity than it avoids.
 
-> > > + * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
-> > > + * @ep: DWC EP device
-> > > + * @func_no: Function number of the endpoint
-> > > + *
-> > > + * Return: 0 if success, errono otherwise.
-> > 
-> > s/errono/errno/ (another instance below)
-> 
-> ah, thanks for spotting. Since this series is already merged, I hope
-> Krzysztof can ammend this.
+> In this case it could easily be turned into a build error by just making
+> it an extern rather than a static inline.
+>
+> But I think Christophe's solution is actually better, because it's more
+> explicit, ie. this function should not be called and if it is that's a
+> build time error.
 
-Sounds good, thanks!
+I haven't seen a good solution here. Ideally we'd just define
+the functions unconditionally and have IS_ENABLED() take care
+of letting the compiler drop them silently, but that doesn't
+build because of missing struct members.
 
-Bjorn
+I won't object to either an 'extern' declaration or the
+'BUILD_BUG_ON()' if you and others prefer that, both are better
+than BUG() here. I still think my suggestion would be a little
+simpler.
+
+     Arnd
