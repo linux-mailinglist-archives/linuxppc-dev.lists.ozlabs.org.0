@@ -2,47 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF258A57C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 18:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F13D8A583D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 18:53:53 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n9583Q6y;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJCLv6pZJz3vcZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 02:29:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJCtQ6kjmz3vX3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 02:53:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perches.com (client-ip=216.40.44.10; helo=relay.hostedemail.com; envelope-from=joe@perches.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 564 seconds by postgrey-1.37 at boromir; Tue, 16 Apr 2024 02:29:35 AEST
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n9583Q6y;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJCLR6gJ1z2xYY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 02:29:34 +1000 (AEST)
-Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECEA4A060C;
-	Mon, 15 Apr 2024 16:20:02 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf12.hostedemail.com (Postfix) with ESMTPA id 25AC719;
-	Mon, 15 Apr 2024 16:20:00 +0000 (UTC)
-Message-ID: <03f357e6c16d13924b705513446e4eac37e38a99.camel@perches.com>
-Subject: Re: [PATCH] PCI/AER: Print error message as per the TODO
-From: Joe Perches <joe@perches.com>
-To: Abhinav Jain <jain.abhinav177@gmail.com>, mahesh@linux.ibm.com, 
-	oohall@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 15 Apr 2024 09:19:59 -0700
-In-Reply-To: <20240415161055.8316-1-jain.abhinav177@gmail.com>
-References: <20240415161055.8316-1-jain.abhinav177@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJCsk6j3Sz3d2m
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 02:53:14 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 9732BCE0E42;
+	Mon, 15 Apr 2024 16:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57527C113CC;
+	Mon, 15 Apr 2024 16:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713199989;
+	bh=xJZBsBz/ovkewwHaqkWgEKUCLl3sCJ9igaEyaiYi248=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n9583Q6y/kVDUsC/Sk35DHsUlzQxomP4brOeJWEqMK5tTGdFfL5yXDBwNh/dc1R8t
+	 OnTvm1XERGxz1JxTUG2JWpufMQFhEpCf0upLztHBi97mz83HQzMB81Cj+bMHmQeLrO
+	 vdSyDt4foue7u5p0z1MAb6dHJ1a7FzO8x/EelybB33sZUvBK4gAoiim0DQVOThRBq2
+	 3ERPw7wOWw5Nw3DB6b+PtiKpkHgDPedzRaGZsUTWRIfT1yQsmJ+qNm4oAZ/M1rF747
+	 dHBdlhRGfIq7wIyTjPR6B4GdpTUD5V0JGj4lcLZS8oQu4cdKYlcTv5ldjuZ1AicK/r
+	 qCFC3y/AMEfuA==
+Date: Mon, 15 Apr 2024 19:51:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v4 05/15] mm: introduce execmem_alloc() and execmem_free()
+Message-ID: <Zh1bKAaD7nLyJ9ya@kernel.org>
+References: <20240411160051.2093261-1-rppt@kernel.org>
+ <20240411160051.2093261-6-rppt@kernel.org>
+ <20240415075241.GF40213@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 25AC719
-X-Spam-Status: No, score=-1.19
-X-Stat-Signature: 77e1p4uka3bqt7e7ii1uor3ehdgef6hp
-X-Rspamd-Server: rspamout05
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+mInIM+0CNX9KiE6s0STSXDV9arJlA+oo=
-X-HE-Tag: 1713198000-709223
-X-HE-Meta: U2FsdGVkX18fRK6pvB4sqjrD+Hoi7VifTu0b/kmK1fLRq+6B3315wuHjJaVxwsG3ryHMye27wG92hwxaE84zKznFV1zdpaNmTJ2xB8DEbZshNqhjvOu22m9mjY8RFR1Hka4ZE9kfGrep6llNfaDZ9WmRCRfYMRWqkhV3SuYQsPxaG+BJVarT1Q4Du+CM6d08EhHIODww0VeyqdEAvD4KUqWuL47rgeAgHsM15SJy/OWPpDQS+3/c45vgN9oMm8wPJ87a9a82vl2KAfLVrGD/kgMIuNwILrYGNmJ6/e7U5TwlI43oa3xcOPtGoMKVLmhX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240415075241.GF40213@noisy.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,31 +60,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Donald Dutile <ddutile@redhat.com>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-trace-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev
+ >, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>, Eric Chanudet <echanude@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2024-04-15 at 16:10 +0000, Abhinav Jain wrote:
-> Add a pr_err() to print the add device error in find_device_iter()
-[]
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-[]
-> @@ -885,7 +885,8 @@ static int find_device_iter(struct pci_dev *dev, void=
- *data)
->  		/* List this device */
->  		if (add_error_device(e_info, dev)) {
->  			/* We cannot handle more... Stop iteration */
-> -			/* TODO: Should print error message here? */
-> +			pr_err("find_device_iter: Cannot handle more devices.
-> +					Stopping iteration");
+On Mon, Apr 15, 2024 at 09:52:41AM +0200, Peter Zijlstra wrote:
+> On Thu, Apr 11, 2024 at 07:00:41PM +0300, Mike Rapoport wrote:
+> > +/**
+> > + * enum execmem_type - types of executable memory ranges
+> > + *
+> > + * There are several subsystems that allocate executable memory.
+> > + * Architectures define different restrictions on placement,
+> > + * permissions, alignment and other parameters for memory that can be used
+> > + * by these subsystems.
+> > + * Types in this enum identify subsystems that allocate executable memory
+> > + * and let architectures define parameters for ranges suitable for
+> > + * allocations by each subsystem.
+> > + *
+> > + * @EXECMEM_DEFAULT: default parameters that would be used for types that
+> > + * are not explcitly defined.
+> > + * @EXECMEM_MODULE_TEXT: parameters for module text sections
+> > + * @EXECMEM_KPROBES: parameters for kprobes
+> > + * @EXECMEM_FTRACE: parameters for ftrace
+> > + * @EXECMEM_BPF: parameters for BPF
+> > + * @EXECMEM_TYPE_MAX:
+> > + */
+> > +enum execmem_type {
+> > +	EXECMEM_DEFAULT,
+> > +	EXECMEM_MODULE_TEXT = EXECMEM_DEFAULT,
+> > +	EXECMEM_KPROBES,
+> > +	EXECMEM_FTRACE,
+> > +	EXECMEM_BPF,
+> > +	EXECMEM_TYPE_MAX,
+> > +};
+> 
+> Can we please get a break-down of how all these types are actually
+> different from one another?
+> 
+> I'm thinking some platforms have a tiny immediate space (arm64 comes to
+> mind) and has less strict placement constraints for some of them?
 
-You are adding unnecessary whitespace after the period.
-String concatenation keeps _all_ the whitespace.
+loongarch, mips, nios2 and sparc define modules address space different
+from vmalloc and use that for modules, kprobes and bpf (where supported).
 
-The format is fine on a single line too.
+parisc uses vmalloc range for everything, but it sets permissions to
+PAGE_KERNEL_RWX because it's PAGE_KERNEL_EXEC is read only and it lacks
+set_memory_* APIs.
 
-Something like:
+arm has an address space for modules, but it fall back to the entire
+vmalloc with CONFIG_ARM_MODULE_PLTS=y.
 
-		pr_notice("%s: Cannot handle more devices - iteration stopped\n",
-			  __func__);
+arm64 uses different ranges for modules and bpf/kprobes. For kprobes it
+does vmalloc(PAGE_KERNEL_ROX) and for bpf just plain vmalloc().
+For modules arm64 first tries to allocated from 128M below kernel_end and
+if that fails it uses 2G below kernel_end as a fallback.
 
+powerpc uses vmalloc space for everything for some configurations. For
+book3s-32 and 8xx it defines two ranges that are used for module text,
+kprobes and bpf and the module data can be allocated anywhere in vmalloc.
+
+riscv has an address space for modules, a different address space for bpf
+and uses vmalloc space for kprobes.
+
+s390 and x86 have modules address space and use that space for all
+executable allocations.
+
+The EXECMEM_FTRACE type is only used on s390 and x86 and for now it's there
+more for completeness rather to denote special constraints or properties.
+
+-- 
+Sincerely yours,
+Mike.
