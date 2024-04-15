@@ -1,101 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260148A750A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 21:41:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2008A7609
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 23:00:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jgy+Qg9u;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NQuEHSDq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=fVFZT85i;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJvYZ6Hk4z3vX0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 05:41:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJxJ941TLz3vYq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 07:00:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jgy+Qg9u;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NQuEHSDq;
+	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=fVFZT85i;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.152.46; helo=mx0b-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
+Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJxHR3FhKz30f8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 06:59:30 +1000 (AEST)
+Received: from pps.filterd (m0355091.ppops.net [127.0.0.1])
+	by mx0b-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GFQBHE026682;
+	Tue, 16 Apr 2024 17:24:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
+	message-id:in-reply-to:references:to:cc:from:date:subject; s=
+	DKIM202306; bh=Oc2SUwX6uzMkXCJf4ZSU5CLVXrP2N2CrXvm6EA3BRc0=; b=f
+	VFZT85i9fG9UZIMquW7lOcKAq20DOeCPjOdPiSoX40Uy/gdhpas7agKPawUQhT7x
+	jlu6AEhZt7ljLk2n20UpKTnolmUli9RA4S94pfqgo82LJmyfQGSWX+2ckqN3E3a6
+	jp+/jciyo6S9UM3hNfRiVNfOIKTGmn3Gd7Kqf7Fg+ODOygCLrVJKEFbUu3tVWAti
+	fadgXso/3HtOEdqpW7Sq+tQ8RIqcbtaSSGSjhS7q9YsinUy0LnphQn2+GK2iDP1m
+	aaqJyHM7uz4vWoEonBp43YZWPoTF4kyTlWY8hHQneojPAs3B2gfooI2z9rSq2qK+
+	8Td0+HxT5kbdpLFNyLd1A==
+Received: from va32lpfpp04.lenovo.com ([104.232.228.24])
+	by mx0b-00823401.pphosted.com (PPS) with ESMTPS id 3xhjbek979-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 17:24:57 +0000 (GMT)
+Received: from va32lmmrp01.lenovo.com (va32lmmrp01.mot.com [10.62.177.113])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by va32lpfpp04.lenovo.com (Postfix) with ESMTPS id 4VJrWs1Wv3zj9hH;
+	Tue, 16 Apr 2024 17:24:57 +0000 (UTC)
+Received: from ilclbld243.mot.com (ilclbld243.mot.com [100.64.22.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJvXq461hz2xQ7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 05:40:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713296455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2/Ml3SF+cSrbD320vnXWBxDDeH0gsE7DWJx9HUiNlVQ=;
-	b=Jgy+Qg9u2xMxKL5BV4b4UX2TZqAq8oaoOpyM+2J/3RQU7ZSpFO+GkMLINPia96PKfRi/Gk
-	WUnssEgUQc8J6fLHhmARAKI4KXBR/yAjfy/UsbhWuLxkklenbJSBlKrOnFNHyCaWU0hsFI
-	VOz0kv7bUMO180Iy69MODmKWCVxIMHE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713296456;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2/Ml3SF+cSrbD320vnXWBxDDeH0gsE7DWJx9HUiNlVQ=;
-	b=NQuEHSDqjwAbF/rx7vWHL7ZcjqgCEwzB+TUXtcovxtLGkXc338gvhMzRLvPFF96APaqmeQ
-	DXdHqJfxFIDVuXNCuUjXJmtf7j/+pwApQ8hbVi1vBQBLbl5WV2rQWMiIuTEP1RA+ULBl5E
-	cOilkL/d2cBHmXqa2tnq5TtF9SDFZn0=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-205-woO_MxFoPhuWsTZS0Fh4EA-1; Tue, 16 Apr 2024 15:40:54 -0400
-X-MC-Unique: woO_MxFoPhuWsTZS0Fh4EA-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4311d908f3cso24785391cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 12:40:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713296453; x=1713901253;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2/Ml3SF+cSrbD320vnXWBxDDeH0gsE7DWJx9HUiNlVQ=;
-        b=SAX7ykFsKX+RhRRJTS3w67QFTot8j8bzWvkQvkvu8VkZOv2iv4RUvH9Z1gfTMpECsO
-         4S+o4XhOdIF8Nz1XGCXDursCccwNM5l0wx/4OGYo6osrZeft/0w+mz3BuvYAwhtLbDWb
-         KD7kORJUGgezkjX9MznKxJ2ySgMosN6RiL8uxRdLfqgP+o0yexAbZQY+KDCn2IjkGVuT
-         Xzu1ZFK0dq4stXOcDjJV8ND7vC6nwak/Mtr5FswgD5pin3PwU060iNCYoyGK8ZCpFN1s
-         oZzLzcUItxm24Eym933hMWv9L4ZmRbZs9MZEyLenrOjOXwE2Jgnq9zP6PXV/ItARB4ae
-         i46w==
-X-Forwarded-Encrypted: i=1; AJvYcCUHIQsjl4TI55I0GFDtXdwPLXVfkMEsZetC8nC/iCIlpXep1Y+YcD42CeqXie/cjbYE6qGKnknj2Ad0Bpj7uTOBzzkAFigvg6Q3KLV6Eg==
-X-Gm-Message-State: AOJu0YxsE5I+usDo8tTpv6CmgRSh0wfc22D/ZvjBCnEHcmCg75AiJBxD
-	QYHhVI2GDL+VZKNQF0swA55Lll/9tGnPVbDPDNGA/4HXMfwQasCBQ3an4+PeOrnZqB3IMpptbQl
-	R7g8KVNzR1m1pH7T69DgQ/H0cEttrHewdxgYNj9JCE1hnYUSb5Ei6SHDQubsnpNs=
-X-Received: by 2002:a0c:d64a:0:b0:69b:6124:1ac5 with SMTP id e10-20020a0cd64a000000b0069b61241ac5mr12574627qvj.6.1713296453254;
-        Tue, 16 Apr 2024 12:40:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFM2TMuxlTE64M5wRSrKp9X4hT8djPoNFx5MjBvlHy4YWGI0mZHWgHn5d59fTUt+Qi0LQ06Yw==
-X-Received: by 2002:a0c:d64a:0:b0:69b:6124:1ac5 with SMTP id e10-20020a0cd64a000000b0069b61241ac5mr12574601qvj.6.1713296452672;
-        Tue, 16 Apr 2024 12:40:52 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id v17-20020a0ced51000000b0069b7edb9665sm2468071qvq.19.2024.04.16.12.40.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 12:40:52 -0700 (PDT)
-Date: Tue, 16 Apr 2024 15:40:50 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 0/8] Reimplement huge pages without hugepd on powerpc
- 8xx
-Message-ID: <Zh7UQl5kMd_Q1ow-@x1n>
-References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
- <20240325163840.GF6245@nvidia.com>
- <ZhgMqF7SNaISrYMJ@x1n>
- <d236ce4a-1dde-4ee9-8cef-fe96242c2f4b@csgroup.eu>
- <ZhlFokakZo3c90C6@x1n>
- <d3a4c5a6-0fd6-4518-a76b-04dcf2ea2f2c@csgroup.eu>
- <8f7d4343-6bfd-4c1c-aeaf-350abde770ca@csgroup.eu>
-MIME-Version: 1.0
-In-Reply-To: <8f7d4343-6bfd-4c1c-aeaf-350abde770ca@csgroup.eu>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+	(Authenticated sender: mbland)
+	by va32lmmrp01.lenovo.com (Postfix) with ESMTPSA id 4VJrWs17Mmz2VZS6;
+	Tue, 16 Apr 2024 17:24:57 +0000 (UTC)
+Message-Id: <20240416122254.868007168-6-mbland@motorola.com>
+In-Reply-To: <20240416122254.868007168-1-mbland@motorola.com>
+References: <20240416122254.868007168-1-mbland@motorola.com>
+To: linux-mm@kvack.org
+From: Maxwell Bland <mbland@motorola.com>
+Date: Mon, 15 Apr 2024 14:51:32 -0500
+Subject: [PATCH 5/5] ptdump: add state parameter for non-leaf callback
+X-Proofpoint-ORIG-GUID: Obuaco9Ts8gQobghqAGopelkIlnGG11N
+X-Proofpoint-GUID: Obuaco9Ts8gQobghqAGopelkIlnGG11N
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-16_14,2024-04-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 impostorscore=0 suspectscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0
+ mlxlogscore=960 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404160108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,215 +77,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, linux-s390@vger.kernel.org, Yu Chien Peter Lin <peterlin@andestech.com>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Maxwell Bland <mbland@motorola.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-a
+ rm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Song Shuai <suagrfillet@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 16, 2024 at 10:58:33AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 15/04/2024 à 21:12, Christophe Leroy a écrit :
-> > 
-> > 
-> > Le 12/04/2024 à 16:30, Peter Xu a écrit :
-> >> On Fri, Apr 12, 2024 at 02:08:03PM +0000, Christophe Leroy wrote:
-> >>>
-> >>>
-> >>> Le 11/04/2024 à 18:15, Peter Xu a écrit :
-> >>>> On Mon, Mar 25, 2024 at 01:38:40PM -0300, Jason Gunthorpe wrote:
-> >>>>> On Mon, Mar 25, 2024 at 03:55:53PM +0100, Christophe Leroy wrote:
-> >>>>>> This series reimplements hugepages with hugepd on powerpc 8xx.
-> >>>>>>
-> >>>>>> Unlike most architectures, powerpc 8xx HW requires a two-level
-> >>>>>> pagetable topology for all page sizes. So a leaf PMD-contig approach
-> >>>>>> is not feasible as such.
-> >>>>>>
-> >>>>>> Possible sizes are 4k, 16k, 512k and 8M.
-> >>>>>>
-> >>>>>> First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD 
-> >>>>>> entries
-> >>>>>> must point to a single entry level-2 page table. Until now that was
-> >>>>>> done using hugepd. This series changes it to use standard page tables
-> >>>>>> where the entry is replicated 1024 times on each of the two 
-> >>>>>> pagetables
-> >>>>>> refered by the two associated PMD entries for that 8M page.
-> >>>>>>
-> >>>>>> At the moment it has to look into each helper to know if the
-> >>>>>> hugepage ptep is a PTE or a PMD in order to know it is a 8M page or
-> >>>>>> a lower size. I hope this can me handled by core-mm in the future.
-> >>>>>>
-> >>>>>> There are probably several ways to implement stuff, so feedback is
-> >>>>>> very welcome.
-> >>>>>
-> >>>>> I thought it looks pretty good!
-> >>>>
-> >>>> I second it.
-> >>>>
-> >>>> I saw the discussions in patch 1.  Christophe, I suppose you're 
-> >>>> exploring
-> >>>> the big hammer over hugepd, and perhaps went already with the 32bit pmd
-> >>>> solution for nohash/32bit challenge you mentioned?
-> >>>>
-> >>>> I'm trying to position my next step; it seems like at least I should 
-> >>>> not
-> >>>> adding any more hugepd code, then should I go with ARCH_HAS_HUGEPD 
-> >>>> checks,
-> >>>> or you're going to have an RFC soon then I can base on top?
-> >>>
-> >>> Depends on what you expect by "soon".
-> >>>
-> >>> I sure won't be able to send any RFC before end of April.
-> >>>
-> >>> Should be possible to have something during May.
-> >>
-> >> That's good enough, thanks.  I'll see what is the best I can do.
-> >>
-> >> Then do you think I can leave p4d/pgd leaves alone?  Please check the 
-> >> other
-> >> email where I'm not sure whether pgd leaves ever existed for any of
-> >> PowerPC.  That's so far what I plan to do, on teaching pgtable walkers
-> >> recognize pud and lower for all leaves.  Then if Power can switch from
-> >> hugepd to this it should just work.
-> > 
-> > Well, if I understand correctly, something with no PMD will include 
-> > <asm-generic/pgtable-nopmd.h> and will therefore only have .... pmd 
-> > entries (hence no pgd/p4d/pud entries). Looks odd but that's what it is. 
-> > pgd_populate(), p4d_populate(), pud_populate() are all "do { } while 
-> > (0)" and only pmd_populate exists. So only pmd_leaf() will exist in that 
-> > case.
-> > 
-> > And therefore including <asm-generic/pgtable-nop4d.h> means .... you 
-> > have p4d entries. Doesn't mean you have p4d_leaf() but that needs to be 
-> > checked.
-> > 
-> > 
-> >>
-> >> Even if pgd exists (then something I overlooked..), I'm wondering whether
-> >> we can push that downwards to be either pud/pmd (and looks like we all
-> >> agree p4d is never used on Power).  That may involve some pgtable
-> >> operations moving from pgd level to lower, e.g. my pure imagination would
-> >> look like starting with:
-> > 
-> > Yes I think there is no doubt that p4d is never used:
-> > 
-> > arch/powerpc/include/asm/book3s/32/pgtable.h:#include 
-> > <asm-generic/pgtable-nopmd.h>
-> > arch/powerpc/include/asm/book3s/64/pgtable.h:#include 
-> > <asm-generic/pgtable-nop4d.h>
-> > arch/powerpc/include/asm/nohash/32/pgtable.h:#include 
-> > <asm-generic/pgtable-nopmd.h>
-> > arch/powerpc/include/asm/nohash/64/pgtable-4k.h:#include 
-> > <asm-generic/pgtable-nop4d.h>
-> > 
-> > But that means that PPC32 have pmd entries and PPC64 have p4d entries ...
-> > 
-> >>
-> >> #define PTE_INDEX_SIZE    PTE_SHIFT
-> >> #define PMD_INDEX_SIZE    0
-> >> #define PUD_INDEX_SIZE    0
-> >> #define PGD_INDEX_SIZE    (32 - PGDIR_SHIFT)
-> >>
-> >> To:
-> >>
-> >> #define PTE_INDEX_SIZE    PTE_SHIFT
-> >> #define PMD_INDEX_SIZE    (32 - PMD_SHIFT)
-> >> #define PUD_INDEX_SIZE    0
-> >> #define PGD_INDEX_SIZE    0
-> > 
-> > But then you can't anymore have #define PTRS_PER_PMD 1 from 
-> > <asm-generic/pgtable-nop4d.h>
-> > 
-> >>
-> >> And the rest will need care too.  I hope moving downward is easier
-> >> (e.g. the walker should always exist for lower levels but not always for
-> >> higher levels), but I actually have little idea on whether there's any
-> >> other implications, so please bare with me on stupid mistakes.
-> >>
-> >> I just hope pgd leaves don't exist already, then I think it'll be 
-> >> simpler.
-> >>
-> >> Thanks,
-> >>
-> 
-> Digging into asm-generic/pgtable-nopmd.h, I see a definition of 
-> pud_leaf() always returning 0, introduced by commit 2c8a81dc0cc5 
-> ("riscv/mm: fix two page table check related issues")
-> 
-> So should asm-generic/pgtable-nopud.h contain the same for p4d_leaf() 
+ptdump can now note non-leaf descriptor entries, a useful addition for
+debugging table descriptor permissions when working on related code
 
-I think should be yes for this, and..
+Signed-off-by: Maxwell Bland <mbland@motorola.com>
+---
+ arch/arm64/mm/ptdump.c          |  6 ++++--
+ arch/powerpc/mm/ptdump/ptdump.c |  2 ++
+ arch/riscv/mm/ptdump.c          |  6 ++++--
+ arch/s390/mm/dump_pagetables.c  |  6 ++++--
+ arch/x86/mm/dump_pagetables.c   |  3 ++-
+ include/linux/ptdump.h          |  1 +
+ mm/ptdump.c                     | 13 +++++++++++++
+ 7 files changed, 30 insertions(+), 7 deletions(-)
 
-> and asm-generic/pgtable-nop4d.h contain the same for pgd_leaf() ?
-
-.. probably no for this?  It seems pgd is just slightly special.
-
-Firstly, I notice that the -nopmd.h actually includes -nopud.h already, and
-further that includes -nop4d.h.  It means we can only have below options:
-
-  a) nopmd + nopud + nop4d
-  b) nopud + nop4d
-  c) nop4d
-
-It should also mean we can't randomly choose which layer to skip with the
-current header arrangements.. at the meantime, all 32bit PowerPC should
-perhaps fall into a), while 64 bits fall into c).  That looks all fine for
-now.
-
-Above p4d_leaf()==false [1] should be fine when -nopud.h included, because
-that already included nop4d.h, it means "p4d level is skipped" in the
-pgtable.  Then it doesn't make sense if p4d_leaf() can ever return true.
-That's the same when pud_leaf()==false looks sane when an arch included
--nopmd.h as that in turn implies -nopud too.
-
-pgd seems different, because -nop4d.h didn't include anything else like
-"-nopgd.h"..  so I don't see further implication on pgd sololy from the
-headers. I guess that's also why 32bit Power uses pgd+pte for the two
-levels; it looks like pgd is special among the others.
-
-However I think it still didn't mean that we can't push pgd to pmd, making
-pgd+pte into pmd+pte.  Though here we may want to move from:
-
-  #include <asm-generic/pgtable-nopmd.h>
-  (pmd/pud/p4d not used)
-
-Into:
-
-  #include <asm-generic/pgtable-nopud.h>
-  (pud/p4d not used)
-
-Then we may need to provide something similar to what's in -nopXd.h for
-pgds.
-
-But let's loop back to the very beginning: I don't think we have either pgd
-leaves or p4d leaves for PowerPC.  Note that hugepd looks possible to exist
-in pgd entries (per wiki page [1]), however I don't even think it's true in
-reality, as I mentioned elsewhere on reading __find_linux_pte() and it
-always go directly into p4d.  I highly doubt in reality the "pgd hugepd
-entries" are actually processed by the p4d layer here:
-
-	if (is_hugepd(__hugepd(p4d_val(p4d)))) {
-		hpdp = (hugepd_t *)&p4d;
-		goto out_huge;
-	}
-
-Because when with "nop4d" it doesn't mean "there is no p4d" but what it
-really meant is "we have only one p4d entry (which is actually exactly the
-pgd entry..)".  After all, is_hugepd() works for all levels.
-
-Taking E500 nohash 32 as example, it has these:
-
-  "pgd entry covering 2M" -> "hugepd with one hugepte covering one 4M hugepage"
-                                   ^
-  "pgd entry covering 2M" ---------+
-
-I suspect this "pgd covering 2M" is processed by the p4d code above, rather
-than pgd level.  Then in the future world where there's no hugepd, it'll
-naturally become a pgtable page at pte level.
-
-Thanks,
-
-[1] https://github.com/linuxppc/wiki/wiki/Huge-pages
-
+diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
+index 796231a4fd63..1a6f4a3513e5 100644
+--- a/arch/arm64/mm/ptdump.c
++++ b/arch/arm64/mm/ptdump.c
+@@ -299,7 +299,8 @@ void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
+ 			.range = (struct ptdump_range[]){
+ 				{info->base_addr, end},
+ 				{0, 0}
+-			}
++			},
++			.note_non_leaf = false
+ 		}
+ 	};
+ 
+@@ -335,7 +336,8 @@ bool ptdump_check_wx(void)
+ 			.range = (struct ptdump_range[]) {
+ 				{_PAGE_OFFSET(vabits_actual), ~0UL},
+ 				{0, 0}
+-			}
++			},
++			.note_non_leaf = false
+ 		}
+ 	};
+ 
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 9dc239967b77..89e673f5fd3d 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -307,6 +307,7 @@ static int ptdump_show(struct seq_file *m, void *v)
+ 		.ptdump = {
+ 			.note_page = note_page,
+ 			.range = ptdump_range,
++			.note_non_leaf = false
+ 		}
+ 	};
+ 
+@@ -340,6 +341,7 @@ bool ptdump_check_wx(void)
+ 		.ptdump = {
+ 			.note_page = note_page,
+ 			.range = ptdump_range,
++			.note_non_leaf = false
+ 		}
+ 	};
+ 
+diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
+index 1289cc6d3700..b355633afcaf 100644
+--- a/arch/riscv/mm/ptdump.c
++++ b/arch/riscv/mm/ptdump.c
+@@ -328,7 +328,8 @@ static void ptdump_walk(struct seq_file *s, struct ptd_mm_info *pinfo)
+ 			.range = (struct ptdump_range[]) {
+ 				{pinfo->base_addr, pinfo->end},
+ 				{0, 0}
+-			}
++			},
++			.note_non_leaf = false
+ 		}
+ 	};
+ 
+@@ -350,7 +351,8 @@ bool ptdump_check_wx(void)
+ 			.range = (struct ptdump_range[]) {
+ 				{KERN_VIRT_START, ULONG_MAX},
+ 				{0, 0}
+-			}
++			},
++			.note_non_leaf = false
+ 		}
+ 	};
+ 
+diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
+index ffd07ed7b4af..6468cfd53e2a 100644
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -200,7 +200,8 @@ bool ptdump_check_wx(void)
+ 			.range = (struct ptdump_range[]) {
+ 				{.start = 0, .end = max_addr},
+ 				{.start = 0, .end = 0},
+-			}
++			},
++			.note_non_leaf = false
+ 		},
+ 		.seq = NULL,
+ 		.level = -1,
+@@ -239,7 +240,8 @@ static int ptdump_show(struct seq_file *m, void *v)
+ 			.range = (struct ptdump_range[]) {
+ 				{.start = 0, .end = max_addr},
+ 				{.start = 0, .end = 0},
+-			}
++			},
++			.note_non_leaf = false
+ 		},
+ 		.seq = m,
+ 		.level = -1,
+diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
+index 89079ea73e65..43f00dfb955f 100644
+--- a/arch/x86/mm/dump_pagetables.c
++++ b/arch/x86/mm/dump_pagetables.c
+@@ -380,7 +380,8 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
+ 		.ptdump = {
+ 			.note_page	= note_page,
+ 			.effective_prot = effective_prot,
+-			.range		= ptdump_ranges
++			.range		= ptdump_ranges,
++			.note_non_leaf  = false
+ 		},
+ 		.level = -1,
+ 		.to_dmesg	= dmesg,
+diff --git a/include/linux/ptdump.h b/include/linux/ptdump.h
+index 8dbd51ea8626..b3e793a5c77f 100644
+--- a/include/linux/ptdump.h
++++ b/include/linux/ptdump.h
+@@ -16,6 +16,7 @@ struct ptdump_state {
+ 			  int level, u64 val);
+ 	void (*effective_prot)(struct ptdump_state *st, int level, u64 val);
+ 	const struct ptdump_range *range;
++	bool note_non_leaf;
+ };
+ 
+ bool ptdump_walk_pgd_level_core(struct seq_file *m,
+diff --git a/mm/ptdump.c b/mm/ptdump.c
+index 106e1d66e9f9..97da7a765b22 100644
+--- a/mm/ptdump.c
++++ b/mm/ptdump.c
+@@ -41,6 +41,9 @@ static int ptdump_pgd_entry(pgd_t *pgd, unsigned long addr,
+ 	if (st->effective_prot)
+ 		st->effective_prot(st, 0, pgd_val(val));
+ 
++	if (st->note_non_leaf && !pgd_leaf(val))
++		st->note_page(st, addr, 0, pgd_val(val));
++
+ 	if (pgd_leaf(val)) {
+ 		st->note_page(st, addr, 0, pgd_val(val));
+ 		walk->action = ACTION_CONTINUE;
+@@ -64,6 +67,9 @@ static int ptdump_p4d_entry(p4d_t *p4d, unsigned long addr,
+ 	if (st->effective_prot)
+ 		st->effective_prot(st, 1, p4d_val(val));
+ 
++	if (st->note_non_leaf && !p4d_leaf(val))
++		st->note_page(st, addr, 1, p4d_val(val));
++
+ 	if (p4d_leaf(val)) {
+ 		st->note_page(st, addr, 1, p4d_val(val));
+ 		walk->action = ACTION_CONTINUE;
+@@ -87,6 +93,9 @@ static int ptdump_pud_entry(pud_t *pud, unsigned long addr,
+ 	if (st->effective_prot)
+ 		st->effective_prot(st, 2, pud_val(val));
+ 
++	if (st->note_non_leaf && !pud_leaf(val))
++		st->note_page(st, addr, 2, pud_val(val));
++
+ 	if (pud_leaf(val)) {
+ 		st->note_page(st, addr, 2, pud_val(val));
+ 		walk->action = ACTION_CONTINUE;
+@@ -108,6 +117,10 @@ static int ptdump_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 
+ 	if (st->effective_prot)
+ 		st->effective_prot(st, 3, pmd_val(val));
++
++	if (st->note_non_leaf && !pmd_leaf(val))
++		st->note_page(st, addr, 3, pmd_val(val));
++
+ 	if (pmd_leaf(val)) {
+ 		st->note_page(st, addr, 3, pmd_val(val));
+ 		walk->action = ACTION_CONTINUE;
 -- 
-Peter Xu
+2.39.2
 
