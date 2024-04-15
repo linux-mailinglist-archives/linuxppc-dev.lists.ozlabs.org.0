@@ -2,50 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A698A4970
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 09:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE3E8A49BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 10:04:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=q4YHS8Fj;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=hKFfLh3Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VHzwH4qr5z3dWH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 17:54:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJ07t2Zrcz3cy9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 18:04:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=hKFfLh3Z;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VHzv7501Wz2xWS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 17:53:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJ0745QJSz303d
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 18:04:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8YIeaNZhu2VwYrI498gRkCoUAUbEjZA2ART1G/gViK0=; b=q4YHS8FjBEAnMbuDl+TMKsEKGP
-	DM6iyFt6uA7Bo5adMws5/s0t1+j9HugdPjdNQD0yCOEfV7ZoW+QC17+eG/HZdmmEoyHPU8JoOx9XL
-	7Fx3fT7PsknHnmu65yuhapSgCRz6CXa3c6A/kM7Sga97giJ17RK2CcTur3HI5Bz9lkxAWJiegTEQD
-	TRBs7jlUSsh22rwhDKkQsCKrJadSsFPPtwcG8DzvOoayr4YqBfDfQ7mNeiHohXm2HpjY17hnCJFMz
-	Wnf5Q5krVNT8G7J3KzkDXMsJA5bvEb5NAjurd+XnOU9adVQGbZMEFeMoQqJ3YmHp5tNlP8wxE1yRv
-	RKdldQfQ==;
+	bh=SnC5QhRh3mlXbiY7BQLXM/Gh385CPpYbuU5jeG1ji44=; b=hKFfLh3ZzFSzJGPDsRiopYa0ZT
+	efNxCJqPzVqpITxLJsqCQRDO/uvf69qkc9BXqmWr7IXteAQce+itGNJYH8NcZtrv9mowEIaYK6OnE
+	zu1E4zjHKlTRzhIC1ZV1QOADiXZdrVLff1qYNP1JR24KuBKOy5EmbA81XuxsDuKJyy+iJ89PdOUI/
+	efJhNT73J6k+ohWLAe+NOaJ0tLI7iHDK5KHmXtq9go12IpYLvh58Vu6qfltj09NU88Ez/5/ao6M2e
+	ksvVbHfa9e2PLeJq7LlMBgltQx/i+r0JGyYLxMjQF0iD8WvUaOibeLqFhJKeJcs34Gs9iz6tlyZPZ
+	lKITRWCQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwH8s-0000000AT0A-1En1;
-	Mon, 15 Apr 2024 07:52:44 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rwHJC-0000000FFhi-3aDy;
+	Mon, 15 Apr 2024 08:03:22 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E025B30040C; Mon, 15 Apr 2024 09:52:41 +0200 (CEST)
-Date: Mon, 15 Apr 2024 09:52:41 +0200
+	id 12C5730040C; Mon, 15 Apr 2024 10:03:22 +0200 (CEST)
+Date: Mon, 15 Apr 2024 10:03:21 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v4 05/15] mm: introduce execmem_alloc() and execmem_free()
-Message-ID: <20240415075241.GF40213@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH v4 06/15] mm/execmem, arch: convert simple overrides of
+ module_alloc to execmem
+Message-ID: <20240415080321.GG40213@noisy.programming.kicks-ass.net>
 References: <20240411160051.2093261-1-rppt@kernel.org>
- <20240411160051.2093261-6-rppt@kernel.org>
+ <20240411160051.2093261-7-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240411160051.2093261-6-rppt@kernel.org>
+In-Reply-To: <20240411160051.2093261-7-rppt@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,37 +66,114 @@ Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catali
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 11, 2024 at 07:00:41PM +0300, Mike Rapoport wrote:
-> +/**
-> + * enum execmem_type - types of executable memory ranges
-> + *
-> + * There are several subsystems that allocate executable memory.
-> + * Architectures define different restrictions on placement,
-> + * permissions, alignment and other parameters for memory that can be used
-> + * by these subsystems.
-> + * Types in this enum identify subsystems that allocate executable memory
-> + * and let architectures define parameters for ranges suitable for
-> + * allocations by each subsystem.
-> + *
-> + * @EXECMEM_DEFAULT: default parameters that would be used for types that
-> + * are not explcitly defined.
-> + * @EXECMEM_MODULE_TEXT: parameters for module text sections
-> + * @EXECMEM_KPROBES: parameters for kprobes
-> + * @EXECMEM_FTRACE: parameters for ftrace
-> + * @EXECMEM_BPF: parameters for BPF
-> + * @EXECMEM_TYPE_MAX:
-> + */
-> +enum execmem_type {
-> +	EXECMEM_DEFAULT,
-> +	EXECMEM_MODULE_TEXT = EXECMEM_DEFAULT,
-> +	EXECMEM_KPROBES,
-> +	EXECMEM_FTRACE,
-> +	EXECMEM_BPF,
-> +	EXECMEM_TYPE_MAX,
+On Thu, Apr 11, 2024 at 07:00:42PM +0300, Mike Rapoport wrote:
+> +static struct execmem_info execmem_info __ro_after_init = {
+> +	.ranges = {
+> +		[EXECMEM_DEFAULT] = {
+> +			.start = MODULES_VADDR,
+> +			.end = MODULES_END,
+> +			.alignment = 1,
+> +		},
+> +	},
 > +};
+> +
+> +struct execmem_info __init *execmem_arch_setup(void)
+>  {
+> +	execmem_info.ranges[EXECMEM_DEFAULT].pgprot = PAGE_KERNEL;
+> +
+> +	return &execmem_info;
+>  }
 
-Can we please get a break-down of how all these types are actually
-different from one another?
+> +static struct execmem_info execmem_info __ro_after_init = {
+> +	.ranges = {
+> +		[EXECMEM_DEFAULT] = {
+> +			.start = MODULES_VADDR,
+> +			.end = MODULES_END,
+> +			.pgprot = PAGE_KERNEL_EXEC,
+> +			.alignment = 1,
+> +		},
+> +	},
+> +};
+> +
+> +struct execmem_info __init *execmem_arch_setup(void)
+>  {
+> +	return &execmem_info;
+>  }
 
-I'm thinking some platforms have a tiny immediate space (arm64 comes to
-mind) and has less strict placement constraints for some of them?
+> +static struct execmem_info execmem_info __ro_after_init = {
+> +	.ranges = {
+> +		[EXECMEM_DEFAULT] = {
+> +			.pgprot = PAGE_KERNEL_RWX,
+> +			.alignment = 1,
+> +		},
+> +	},
+> +};
+> +
+> +struct execmem_info __init *execmem_arch_setup(void)
+>  {
+> +	execmem_info.ranges[EXECMEM_DEFAULT].start = VMALLOC_START;
+> +	execmem_info.ranges[EXECMEM_DEFAULT].end = VMALLOC_END;
+> +
+> +	return &execmem_info;
+>  }
+
+> +static struct execmem_info execmem_info __ro_after_init = {
+> +	.ranges = {
+> +		[EXECMEM_DEFAULT] = {
+> +			.pgprot = PAGE_KERNEL,
+> +			.alignment = 1,
+> +		},
+> +	},
+> +};
+> +
+> +struct execmem_info __init *execmem_arch_setup(void)
+>  {
+> +	execmem_info.ranges[EXECMEM_DEFAULT].start = MODULES_VADDR;
+> +	execmem_info.ranges[EXECMEM_DEFAULT].end = MODULES_END;
+> +
+> +	return &execmem_info;
+>  }
+
+> +static struct execmem_info execmem_info __ro_after_init = {
+> +	.ranges = {
+> +		[EXECMEM_DEFAULT] = {
+>  #ifdef CONFIG_SPARC64
+> +			.start = MODULES_VADDR,
+> +			.end = MODULES_END,
+>  #else
+> +			.start = VMALLOC_START,
+> +			.end = VMALLOC_END,
+> +#endif
+> +			.alignment = 1,
+> +		},
+> +	},
+> +};
+> +
+> +struct execmem_info __init *execmem_arch_setup(void)
+>  {
+> +	execmem_info.ranges[EXECMEM_DEFAULT].pgprot = PAGE_KERNEL;
+>  
+> +	return &execmem_info;
+>  }
+
+I'm amazed by the weird and inconsistent breakup of initializations.
+
+What exactly is wrong with something like:
+
+static struct execmem_info execmem_info __ro_after_init;
+
+struct execmem_info __init *execmem_arch_setup(void)
+{
+	execmem_info = (struct execmem_info){
+		.ranges = {
+			[EXECMEM_DEFAULT] = {
+				.start	= MODULES_VADDR,
+				.end	= MODULES_END,
+				.pgprot	= PAGE_KERNEL,
+				.alignment = 1,
+			},
+		},
+	};
+	return &execmem_info;
+}
+
