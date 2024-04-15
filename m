@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324AA8A4F02
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 14:28:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299408A528A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 16:01:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DTEXAucD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FSbVVUT/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJ5zv2yLYz3dWc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 22:28:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJ83G0DK0z3vbF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 00:01:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DTEXAucD;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FSbVVUT/;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJ5zB2WG6z3cnv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 22:27:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1713184054;
-	bh=Kg0IaaFvkx0vPahWnl4bGsKUwrTtxLTCmAqwqLLNhTg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DTEXAucDsJ8VGX3CWQW/+zFc9hYesJ1AQoYC/tgDzYYvxzgwWttp7PwmjONSIIknC
-	 voyIOgLBNjIKat/sXBpgag8hT7NbXvQ5zdBhhCXTp9ejd8f+3KuYJeGPDLi/dONU8Z
-	 FT19bxOAVbxsILJSynJuocMSKUA/4GeE9bGycq3LrCttC7cObYxFS6vcItJZERXO5f
-	 wQhPf3T4PcISwrjwyawazbTwIiEpXZrneAENXkD0xQvstWH1tbQLPC2c2hCn2jTvSQ
-	 xurQyggaf4ZdWOzQhAucric3Rb8cBh37xdKCtze3QQ10u78cZjw4WKZL4nys0/J1jr
-	 G1l/OvnLUYpgA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VJ5z968qgz4wcb;
-	Mon, 15 Apr 2024 22:27:33 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV nestedv2: Cancel pending DEC
- exception
-In-Reply-To: <20240415035731.103097-1-vaibhav@linux.ibm.com>
-References: <20240415035731.103097-1-vaibhav@linux.ibm.com>
-Date: Mon, 15 Apr 2024 22:27:32 +1000
-Message-ID: <8734rmdd57.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJ82T432Nz3bpp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 00:00:33 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 8EC41CE0C68;
+	Mon, 15 Apr 2024 14:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE32C113CC;
+	Mon, 15 Apr 2024 14:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713189629;
+	bh=vUMXX+OgsKDFjriUPXzBwg0hyHz5um7sSrP3ByWxMtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FSbVVUT/4O8CWWGyMHoZTZGbTja7KlLC+eTrlDIe7uQpHmiMUwxOMo9nNqqNtBHCM
+	 f0Yik9mTfrz/vmnMcHyrxCQ8WhYFMxN3fxIkqRNqPWxu0ZeIfqNcNEdZkkeMeGTOLX
+	 jIOWZp/+dDcXG/znc304kX2D2TjXDBJqVy9pI4MMQVSnG+1UX8FTfk96Gq7795b6Kx
+	 3EX6QiFGVPh0YCWMK+1VL8vr2s8cVUePkED2SMZYXUSRR/8Dlh3GDq1uk1fWqrdoCl
+	 fTSUvxJf/lxnj1lCskcjF47NmnYnbl9ztuqRhAZxknTZhTHnFDz4Qh56YhqQiNh48J
+	 7GQtk7v8ri9Ew==
+Date: Mon, 15 Apr 2024 19:30:15 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v12 2/8] PCI: dwc: ep: Add Kernel-doc comments for APIs
+Message-ID: <20240415140015.GJ7537@thinkpad>
+References: <20240327-pci-dbi-rework-v12-2-082625472414@linaro.org>
+ <20240412195836.GA13344@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240412195836.GA13344@bhelgaas>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,70 +60,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, Nicholas Piggin <npiggin@gmail.com>, David.Laight@ACULAB.COM, kconsul@linux.vnet.ibm.com, Vaibhav Jain <vaibhav@linux.ibm.com>, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, NXP Linux Team <linux-imx@nxp.com>, Shawn Lin <shawn.lin@rock-chips.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas
+ @google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
-> This reverts commit 180c6b072bf3 ("KVM: PPC: Book3S HV nestedv2: Do not
-> cancel pending decrementer exception") [1] which prevented canceling a
-> pending HDEC exception for nestedv2 KVM guests. It was done to avoid
-> overhead of a H_GUEST_GET_STATE hcall to read the 'DEC expiry TB' register
-> which was higher compared to handling extra decrementer exceptions.
->
-> However recent benchmarks indicate that overhead of not handling 'DECR'
-> expiry for Nested KVM Guest(L2) is higher and results in much larger exits
-> to Pseries Host(L1) as indicated by the Unixbench-arithoh bench[2]
+On Fri, Apr 12, 2024 at 02:58:36PM -0500, Bjorn Helgaas wrote:
+> On Wed, Mar 27, 2024 at 02:43:31PM +0530, Manivannan Sadhasivam wrote:
+> > All of the APIs are missing the Kernel-doc comments. Hence, add them.
+> 
+> > + * dw_pcie_ep_reset_bar - Reset endpoint BAR
+> 
+> Apparently this resets @bar for every function of the device, so it's
+> not just a single BAR?
+> 
 
-Any reason you chose that benchmark? At least on my system it seems to
-compile to an infinite loop incrementing a single register.
+Right. It should've been 'Reset endpoint BARs'. And the API name is also
+misleading, but that is not the scope of this series.
 
-Presumably the change is still good, but a more well known benchmark
-would be good, even if it's just stress-ng, at least that's a bit more
-standard.
+> > + * dw_pcie_ep_raise_intx_irq - Raise INTx IRQ to the host
+> > + * @ep: DWC EP device
+> > + * @func_no: Function number of the endpoint
+> > + *
+> > + * Return: 0 if success, errono otherwise.
+> 
+> s/errono/errno/ (another instance below)
+> 
 
-cheers
+ah, thanks for spotting. Since this series is already merged, I hope Krzysztof
+can ammend this.
 
-> Metric	    	      | Current upstream    | Revert [1]  | Difference %
-> ========================================================================
-> arithoh-count (10)    |	3244831634	    | 3403089673  | +04.88%
-> kvm_hv:kvm_guest_exit |	513558		    | 152441	  | -70.32%
-> probe:kvmppc_gsb_recv |	28060		    | 28110	  | +00.18%
->
-> N=1
->
-> As indicated by the data above that reverting [1] results in substantial
-> reduction in number of L2->L1 exits with only slight increase in number of
-> H_GUEST_GET_STATE hcalls to read the value of 'DEC expiry TB'. This results
-> in an overall ~4% improvement of arithoh[2] throughput.
->
-> [1] commit 180c6b072bf3 ("KVM: PPC: Book3S HV nestedv2: Do not cancel pending decrementer exception")
-> [2] https://github.com/kdlucas/byte-unixbench/
->
-> Fixes: 180c6b072bf3 ("KVM: PPC: Book3S HV nestedv2: Do not cancel pending decrementer exception")
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->
-> ---
-> Changelog:
-> Since v1: https://lore.kernel.org/all/20240313072625.76804-1-vaibhav@linux.ibm.com
-> * Updated/Corrected patch title and description
-> * Included data on test benchmark results for Unixbench-arithoh bench.
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 8e86eb577eb8..692a7c6f5fd9 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4857,7 +4857,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->  	 * entering a nested guest in which case the decrementer is now owned
->  	 * by L2 and the L1 decrementer is provided in hdec_expires
->  	 */
-> -	if (!kvmhv_is_nestedv2() && kvmppc_core_pending_dec(vcpu) &&
-> +	if (kvmppc_core_pending_dec(vcpu) &&
->  			((tb < kvmppc_dec_expires_host_tb(vcpu)) ||
->  			 (trap == BOOK3S_INTERRUPT_SYSCALL &&
->  			  kvmppc_get_gpr(vcpu, 3) == H_ENTER_NESTED)))
-> -- 
-> 2.44.0
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
