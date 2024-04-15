@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F13D8A583D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 18:53:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1628A5865
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 19:02:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n9583Q6y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JQhmkrbx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJCtQ6kjmz3vX3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 02:53:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJD4L4l27z3vXd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 03:02:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n9583Q6y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JQhmkrbx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJCsk6j3Sz3d2m
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 02:53:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJD3Y0krmz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 03:01:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 9732BCE0E42;
-	Mon, 15 Apr 2024 16:53:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57527C113CC;
-	Mon, 15 Apr 2024 16:52:57 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8274560EE1;
+	Mon, 15 Apr 2024 17:01:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14FBC32783;
+	Mon, 15 Apr 2024 17:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713199989;
-	bh=xJZBsBz/ovkewwHaqkWgEKUCLl3sCJ9igaEyaiYi248=;
+	s=k20201202; t=1713200500;
+	bh=i8/bH2GflHHwL9Q6O831fT+UJyy/N/JxZRrEitYoDU4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n9583Q6y/kVDUsC/Sk35DHsUlzQxomP4brOeJWEqMK5tTGdFfL5yXDBwNh/dc1R8t
-	 OnTvm1XERGxz1JxTUG2JWpufMQFhEpCf0upLztHBi97mz83HQzMB81Cj+bMHmQeLrO
-	 vdSyDt4foue7u5p0z1MAb6dHJ1a7FzO8x/EelybB33sZUvBK4gAoiim0DQVOThRBq2
-	 3ERPw7wOWw5Nw3DB6b+PtiKpkHgDPedzRaGZsUTWRIfT1yQsmJ+qNm4oAZ/M1rF747
-	 dHBdlhRGfIq7wIyTjPR6B4GdpTUD5V0JGj4lcLZS8oQu4cdKYlcTv5ldjuZ1AicK/r
-	 qCFC3y/AMEfuA==
-Date: Mon, 15 Apr 2024 19:51:52 +0300
+	b=JQhmkrbxlkokAIFsbHYvCZlDdyYFqLoERLQD9UjXNswKquLP0xtcV1u+YOoMVBYzN
+	 Sb7LZUsXfhw2SSDicmJPXX6wJEySR7qXgqeF6WRCMsTmaxb6dTEEvdKVJ2QF8xV73M
+	 zWVAeo2j5d2mIhRamGxbmxaN76CTvh0ZT5e287zxh62+7uCraDbeX1crXvejWzPawj
+	 XA+nSfS1WF1QUSKZ+OwNWlmE2LS69a8cbAEH8Ow0G8h8jNNt9mOeOurVvGxQejJFIq
+	 lJWV1cL3Cak0wByUAJkuz9CCwdQLw1/FNbKBb/4i5MFAWn2PKkhEyDcE8g7rJ9Kbjc
+	 EpnrFltAXi4ng==
+Date: Mon, 15 Apr 2024 20:00:26 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 05/15] mm: introduce execmem_alloc() and execmem_free()
-Message-ID: <Zh1bKAaD7nLyJ9ya@kernel.org>
-References: <20240411160051.2093261-1-rppt@kernel.org>
- <20240411160051.2093261-6-rppt@kernel.org>
- <20240415075241.GF40213@noisy.programming.kicks-ass.net>
+Subject: Re: [RFC PATCH 6/7] execmem: add support for cache of large ROX pages
+Message-ID: <Zh1dKkFr6zdBh2Kz@kernel.org>
+References: <20240411160526.2093408-1-rppt@kernel.org>
+ <20240411160526.2093408-7-rppt@kernel.org>
+ <20240415104750.GJ40213@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240415075241.GF40213@noisy.programming.kicks-ass.net>
+In-Reply-To: <20240415104750.GJ40213@noisy.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,74 +60,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Donald Dutile <ddutile@redhat.com>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-trace-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev
- >, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>, Eric Chanudet <echanude@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Song Liu <song@kernel.org>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Christoph Hellwig <hch@infradead.org>, linux-trace-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Lorenzo Stoakes <lstoakes@gmail.com>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 15, 2024 at 09:52:41AM +0200, Peter Zijlstra wrote:
-> On Thu, Apr 11, 2024 at 07:00:41PM +0300, Mike Rapoport wrote:
-> > +/**
-> > + * enum execmem_type - types of executable memory ranges
-> > + *
-> > + * There are several subsystems that allocate executable memory.
-> > + * Architectures define different restrictions on placement,
-> > + * permissions, alignment and other parameters for memory that can be used
-> > + * by these subsystems.
-> > + * Types in this enum identify subsystems that allocate executable memory
-> > + * and let architectures define parameters for ranges suitable for
-> > + * allocations by each subsystem.
-> > + *
-> > + * @EXECMEM_DEFAULT: default parameters that would be used for types that
-> > + * are not explcitly defined.
-> > + * @EXECMEM_MODULE_TEXT: parameters for module text sections
-> > + * @EXECMEM_KPROBES: parameters for kprobes
-> > + * @EXECMEM_FTRACE: parameters for ftrace
-> > + * @EXECMEM_BPF: parameters for BPF
-> > + * @EXECMEM_TYPE_MAX:
-> > + */
-> > +enum execmem_type {
-> > +	EXECMEM_DEFAULT,
-> > +	EXECMEM_MODULE_TEXT = EXECMEM_DEFAULT,
-> > +	EXECMEM_KPROBES,
-> > +	EXECMEM_FTRACE,
-> > +	EXECMEM_BPF,
-> > +	EXECMEM_TYPE_MAX,
-> > +};
+On Mon, Apr 15, 2024 at 12:47:50PM +0200, Peter Zijlstra wrote:
+> On Thu, Apr 11, 2024 at 07:05:25PM +0300, Mike Rapoport wrote:
 > 
-> Can we please get a break-down of how all these types are actually
-> different from one another?
+> > To populate the cache, a writable large page is allocated from vmalloc with
+> > VM_ALLOW_HUGE_VMAP, filled with invalid instructions and then remapped as
+> > ROX.
 > 
-> I'm thinking some platforms have a tiny immediate space (arm64 comes to
-> mind) and has less strict placement constraints for some of them?
+> > +static void execmem_invalidate(void *ptr, size_t size, bool writable)
+> > +{
+> > +	if (execmem_info->invalidate)
+> > +		execmem_info->invalidate(ptr, size, writable);
+> > +	else
+> > +		memset(ptr, 0, size);
+> > +}
+> 
+> +static void execmem_invalidate(void *ptr, size_t size, bool writeable)
+> +{
+> +       /* fill memory with INT3 instructions */
+> +       if (writeable)
+> +               memset(ptr, 0xcc, size);
+> +       else
+> +               text_poke_set(ptr, 0xcc, size);
+> +}
+> 
+> Thing is, 0xcc (aka INT3_INSN_OPCODE) is not an invalid instruction.
+> It raises #BP not #UD.
 
-loongarch, mips, nios2 and sparc define modules address space different
-from vmalloc and use that for modules, kprobes and bpf (where supported).
-
-parisc uses vmalloc range for everything, but it sets permissions to
-PAGE_KERNEL_RWX because it's PAGE_KERNEL_EXEC is read only and it lacks
-set_memory_* APIs.
-
-arm has an address space for modules, but it fall back to the entire
-vmalloc with CONFIG_ARM_MODULE_PLTS=y.
-
-arm64 uses different ranges for modules and bpf/kprobes. For kprobes it
-does vmalloc(PAGE_KERNEL_ROX) and for bpf just plain vmalloc().
-For modules arm64 first tries to allocated from 128M below kernel_end and
-if that fails it uses 2G below kernel_end as a fallback.
-
-powerpc uses vmalloc space for everything for some configurations. For
-book3s-32 and 8xx it defines two ranges that are used for module text,
-kprobes and bpf and the module data can be allocated anywhere in vmalloc.
-
-riscv has an address space for modules, a different address space for bpf
-and uses vmalloc space for kprobes.
-
-s390 and x86 have modules address space and use that space for all
-executable allocations.
-
-The EXECMEM_FTRACE type is only used on s390 and x86 and for now it's there
-more for completeness rather to denote special constraints or properties.
+Do you mean that _invalidate is a poor name choice or that it's necessary
+to use an instruction that raises #UD?
 
 -- 
 Sincerely yours,
