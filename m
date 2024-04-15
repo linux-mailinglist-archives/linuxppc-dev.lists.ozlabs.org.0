@@ -1,36 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D551D8A594C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 19:37:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3B48A598C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Apr 2024 20:04:26 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=K3BIBsy9;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJDsB4lqqz3vcX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 03:37:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJFRr1QJjz3vb8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 04:04:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJDrn74jFz3cCt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 03:37:27 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30ED11515;
-	Mon, 15 Apr 2024 10:37:23 -0700 (PDT)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.38.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6579A3F64C;
-	Mon, 15 Apr 2024 10:36:49 -0700 (PDT)
-Date: Mon, 15 Apr 2024 18:36:39 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 05/15] mm: introduce execmem_alloc() and execmem_free()
-Message-ID: <Zh1lnIdgFeM1o8S5@FVFF77S0Q05N.cambridge.arm.com>
-References: <20240411160051.2093261-1-rppt@kernel.org>
- <20240411160051.2093261-6-rppt@kernel.org>
- <20240415075241.GF40213@noisy.programming.kicks-ass.net>
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=K3BIBsy9;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJFR212vnz3dTr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 04:03:40 +1000 (AEST)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6ed5109d924so2996725b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 11:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1713204216; x=1713809016; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L4sux801NSFwuuMhJbH9Cvh1/+fruiCubgx731NNdqY=;
+        b=K3BIBsy9NRvKIDl6fbGYZrNdhn/iizWIfO1PNWl/eNNT3BeuMJFAlj9jRVuHdBrf7x
+         H8bYpVVghFTDHgRocqXJ7Yn1pBzRfgwGIWdz3nTwfN2Hlj/ES2WrpZkjvkEz31t3TpHb
+         ywY6IOfV16C9IJVGbbwK9wU8/UVBXLKQT22pA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713204216; x=1713809016;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L4sux801NSFwuuMhJbH9Cvh1/+fruiCubgx731NNdqY=;
+        b=P1ooBv5Hh42ngi8vnZG6d4853+4pKnvfYlyMnKcSpD64aovWOZRgLt2/zN4pJ4yhvy
+         7x8rbR+hvG8LaSTsOSEa4sRZwX3mPO2hfdu4y7xowRW3Jz9FEeWtxhJdgRkM+bJrLhXH
+         ma3KPnx2ZS/C4zPHwpFQNswRMk3SLjOfePipUhFkZGr/J6RWc29FXgIKstK08V3U8lcO
+         BR48QLwGVtiSJ+PLyRp3hZuAQo1qscWUokR6FsI7ZkPjjP1RA8Kc2GEZjFWNfm2quyHr
+         MKoYWBeS5V22cQaI8lcHPA9mbPHo7d3Y8mhiUD8zrJWikpXZqw20WmxU9n0cuYHYLXN3
+         B9IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUA/+i2CQ7tloRIsmvuRmuHz0Zw647TPmTrkHOE8HYWHe3KImxiu5SqZASSZtDi+KdFAvbsBe0yFbhr4sGKWP2zTNcisHQRhnGW1jgZcA==
+X-Gm-Message-State: AOJu0YxqsoS/xMOhkUQuQ4bEUwhMCYyKkHKXV5iE7F94TKK/tRiN4720
+	xjNRt7DKSJeLAu89rb3sOmopmjwfP0HjcN7iopr1n4Si6NBrwHZrgs5iFNtn5w==
+X-Google-Smtp-Source: AGHT+IFIWOUYwYEZlxNFBi0wlOTgNr/4Lo8wgfnaN7h0tXPTNOrYhumHaZQ1GyIfyPJrf/G0omoagQ==
+X-Received: by 2002:a05:6a21:47cb:b0:1a9:3cda:dc3c with SMTP id as11-20020a056a2147cb00b001a93cdadc3cmr9909409pzc.61.1713204216367;
+        Mon, 15 Apr 2024 11:03:36 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id fh39-20020a056a00392700b006e69a142458sm7452150pfb.213.2024.04.15.11.03.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 11:03:35 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: linux-kernel@vger.kernel.org,
+	linux-toolchains@vger.kernel.org,
+	Vignesh Balasubramanian <vigbalas@amd.com>
+Subject: Re: [PATCH 0/1] Replace the macro "ARCH_HAVE_EXTRA_ELF_NOTES" with kconfig
+Date: Mon, 15 Apr 2024 11:03:32 -0700
+Message-Id: <171320421021.253137.15736984105365154364.b4-ty@chromium.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240412062138.1132841-1-vigbalas@amd.com>
+References: <20240412062138.1132841-1-vigbalas@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240415075241.GF40213@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,80 +79,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Donald Dutile <ddutile@redhat.com>, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-trace-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh
-  Nguyen <dinguyen@kernel.org>, "Bj\"orn T\"opel" <bjorn@kernel.org>, Eric Chanudet <echanude@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: felix.willgerodt@intel.com, matz@suse.de, Kees Cook <keescook@chromium.org>, jhb@FreeBSD.org, bpetkov@amd.com, binutils@sourceware.org, x86@kernel.org, aneesh.kumar@kernel.org, linux-mm@kvack.org, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, ebiederm@xmission.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 15, 2024 at 09:52:41AM +0200, Peter Zijlstra wrote:
-> On Thu, Apr 11, 2024 at 07:00:41PM +0300, Mike Rapoport wrote:
-> > +/**
-> > + * enum execmem_type - types of executable memory ranges
-> > + *
-> > + * There are several subsystems that allocate executable memory.
-> > + * Architectures define different restrictions on placement,
-> > + * permissions, alignment and other parameters for memory that can be used
-> > + * by these subsystems.
-> > + * Types in this enum identify subsystems that allocate executable memory
-> > + * and let architectures define parameters for ranges suitable for
-> > + * allocations by each subsystem.
-> > + *
-> > + * @EXECMEM_DEFAULT: default parameters that would be used for types that
-> > + * are not explcitly defined.
-> > + * @EXECMEM_MODULE_TEXT: parameters for module text sections
-> > + * @EXECMEM_KPROBES: parameters for kprobes
-> > + * @EXECMEM_FTRACE: parameters for ftrace
-> > + * @EXECMEM_BPF: parameters for BPF
-> > + * @EXECMEM_TYPE_MAX:
-> > + */
-> > +enum execmem_type {
-> > +	EXECMEM_DEFAULT,
-> > +	EXECMEM_MODULE_TEXT = EXECMEM_DEFAULT,
-> > +	EXECMEM_KPROBES,
-> > +	EXECMEM_FTRACE,
-> > +	EXECMEM_BPF,
-> > +	EXECMEM_TYPE_MAX,
-> > +};
+On Fri, 12 Apr 2024 11:51:37 +0530, Vignesh Balasubramanian wrote:
+> This patch replaces the macro "ARCH_HAVE_EXTRA_ELF_NOTES" with kconfig
+> as discussed here
+> https://lore.kernel.org/lkml/CA+55aFxDk9_cmo4SPYMgG_WQ+_g5e_v6O-HEtQ_nTs-q1zjykg@mail.gmail.com/
+> It is a pre-requisite patch for the review
+> https://lore.kernel.org/lkml/20240314112359.50713-1-vigbalas@amd.com/
+> I have split this patch as suggested in the review comment
+> https://lore.kernel.org/lkml/87o7bg31jd.fsf@mail.lhotse/
 > 
-> Can we please get a break-down of how all these types are actually
-> different from one another?
-> 
-> I'm thinking some platforms have a tiny immediate space (arm64 comes to
-> mind) and has less strict placement constraints for some of them?
+> [...]
 
-Yeah, and really I'd *much* rather deal with that in arch code, as I have said
-several times.
+Applied to for-next/execve, thanks!
 
-For arm64 we have two bsaic restrictions: 
+[1/1] Replace macro "ARCH_HAVE_EXTRA_ELF_NOTES" with kconfig
+      https://git.kernel.org/kees/c/a9c3475dd67b
 
-1) Direct branches can go +/-128M
-   We can expand this range by having direct branches go to PLTs, at a
-   performance cost.
+Take care,
 
-2) PREL32 relocations can go +/-2G
-   We cannot expand this further.
+-- 
+Kees Cook
 
-* We don't need to allocate memory for ftrace. We do not use trampolines.
-
-* Kprobes XOL areas don't care about either of those; we don't place any
-  PC-relative instructions in those. Maybe we want to in future.
-
-* Modules care about both; we'd *prefer* to place them within +/-128M of all
-  other kernel/module code, but if there's no space we can use PLTs and expand
-  that to +/-2G. Since modules can refreence other modules, that ends up
-  actually being halved, and modules have to fit within some 2G window that
-  also covers the kernel.
-
-* I'm not sure about BPF's requirements; it seems happy doing the same as
-  modules.
-
-So if we *must* use a common execmem allocator, what we'd reall want is our own
-types, e.g.
-
-	EXECMEM_ANYWHERE
-	EXECMEM_NOPLT
-	EXECMEM_PREL32
-
-... and then we use those in arch code to implement module_alloc() and friends.
-
-Mark.
