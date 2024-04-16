@@ -1,36 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE548A68ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 12:46:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE6B8A68A7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 12:39:51 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZVPLla6S;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJggp19Ctz3vcT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 20:46:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJgXN5h9pz3vZg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 20:39:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJggP24jwz2ygY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 20:45:52 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 43GAcL6I005112;
-	Tue, 16 Apr 2024 05:38:21 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 43GAcJln005111;
-	Tue, 16 Apr 2024 05:38:19 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Tue, 16 Apr 2024 05:38:19 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: powerpc: io-defs.h:43:1: error: performing pointer arithmetic on a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
-Message-ID: <20240416103819.GQ19790@gate.crashing.org>
-References: <CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZVPLla6S;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJgWd2xLdz3d24
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 20:39:09 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A4CDC6119D;
+	Tue, 16 Apr 2024 10:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09477C2BD10;
+	Tue, 16 Apr 2024 10:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713263944;
+	bh=hNctvS/WLFpY8f2jueQ+vJMsiRhGdgQTThlnjXrGA70=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=ZVPLla6S9+Tm1Fb+FVhWPDVKcuu+6k0rW8chZ8aT2kCKbVqG5LrvJTt9RKRoTRWhe
+	 v6i9WRn8wbd2K+AwPMonuYOfSG/rReMCZD0Z++Yx3f34NkGPAqRyiFZvZ4tOq6XKpF
+	 h9x+cEYVU9e9C0UWqfnE+CFL3rYOLabGy5JMr3Q2Wjg/4zfK6IIxFXprG3VUuxAaGC
+	 SDnxyILS5AHGbqwUC7iC8948jrTjpaIXw1Mv5m2pADi6d7+aysqrdufqU0LP+m81RA
+	 rmZm7QR+lO1q3BXqo6/hr++Mnt8qpZJSoW/noANqQAz+QRVtdl3ZBp8aig/sEtAopa
+	 IlrBn1zWSHrXQ==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh+dt@kernel.org, 
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+ shengjiu.wang@gmail.com, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com, 
+ perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org, 
+ linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1713165456-3494-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1713165456-3494-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 0/2] ASoC: fsl-asoc-card: add wm8904 codec support
+Message-Id: <171326394076.1668526.17357841814427298563.b4-ty@kernel.org>
+Date: Tue, 16 Apr 2024 19:39:00 +0900
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,22 +65,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Linux Regressions <regressions@lists.linux.dev>, Arnd Bergmann <arnd@arndb.de>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Jeff Xu <jeffxu@chromium.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 16, 2024 at 03:02:52PM +0530, Naresh Kamboju wrote:
-> In file included from arch/powerpc/include/asm/io.h:672:
-> arch/powerpc/include/asm/io-defs.h:43:1: error: performing pointer
-> arithmetic on a null pointer has undefined behavior
-> [-Werror,-Wnull-pointer-arithmetic]
+On Mon, 15 Apr 2024 15:17:34 +0800, Shengjiu Wang wrote:
+> add wm8904 codec support in fsl-asoc-card.
+> 
+> Shengjiu Wang (2):
+>   ASoC: fsl-asoc-card: add wm8904 codec support
+>   ASoC: dt-bindings: fsl-asoc-card: Add compatbile string for wm8904
+>     codec
+> 
+> [...]
 
-It is not UB, but just undefined: the program is meaningless.
+Applied to
 
-It is not a null pointer but even a null pointer constant here.  It
-matters in places, including here.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-It would help if the warnings were more correct :-(
+Thanks!
 
+[1/2] ASoC: fsl-asoc-card: add wm8904 codec support
+      commit: 51f67862ea6ea83f9fa4cda2e59d7bfd4387f63b
+[2/2] ASoC: dt-bindings: fsl-asoc-card: Add compatbile string for wm8904 codec
+      commit: 62c48dd33b4f2e037554d1322ae4f9f60e9461ef
 
-Segher
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
