@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D870C8A7839
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 01:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E797C8A7884
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 01:18:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=SolvqlvV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=4lUpLmqj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJzyQ5VZVz3vYV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 08:59:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VK0NC4sFrz3vdy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 09:18:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=SolvqlvV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=4lUpLmqj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.152.46; helo=mx0b-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.148.104; helo=mx0a-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00823401.pphosted.com (mx0a-00823401.pphosted.com [148.163.148.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJzxb5NnVz30hQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 08:59:13 +1000 (AEST)
-Received: from pps.filterd (m0355090.ppops.net [127.0.0.1])
-	by m0355090.ppops.net (8.17.1.24/8.17.1.24) with ESMTP id 43GEXrjS031887;
-	Tue, 16 Apr 2024 17:24:57 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJy711wN1z3dTB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 07:37:16 +1000 (AEST)
+Received: from pps.filterd (m0355087.ppops.net [127.0.0.1])
+	by mx0a-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GFWDc3006788;
+	Tue, 16 Apr 2024 17:12:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
-	message-id:to:cc:from:date:subject; s=DKIM202306; bh=2/+dIqzISm4
-	HW8XR6l5FpwwTpbfMt78jX0a3kMrPooU=; b=SolvqlvVeEOjkEw0Mfw/sd/8/ot
-	TsfiEGZZja2kdjDzKEYOW9/aS24NkmlJ6tdI+Cgag2ptvGjbp30Xln2h7funf0gT
-	BLOndgDSy/av5W2JlacRZfEKMPfWmKX+VGLFY8UPm74eDw6DB0NdJHXEt4u0qN1m
-	cQHdsfe+VHO3+k0LVOg8xxeriOjh8wpt7Rt5tkzWSuTlwb28z2IPitn08E3uiFC1
-	0jYRGM31ajc/4yMeBDn1X/MQXTdLgzUqbEJ0THkaFOcXlplfu1FenxPbVSnBKQ9j
-	Ps8ZT9LJ/VqctuMg8lc5IjxObtHrPNs8v5D7WaR12QE9O8AmxlrTl0qAafg==
-Received: from va32lpfpp02.lenovo.com ([104.232.228.22])
-	by m0355090.ppops.net (PPS) with ESMTPS id 3xhrya9dpw-1
+	message-id:to:cc:date:from; s=DKIM202306; bh=AyTrvsZSwARaCj1O2qp
+	psG4We3imhy0SwsYp/9clrq8=; b=4lUpLmqjZ4I19okvrxEElAOHjR0hfs04OL9
+	AYoIe1JDM2vco9iDZdtrv4scMYjUZv0JhQOJ1+S0A0kfPEAjQcFr6GzED1t5HQpu
+	mInbsl5eq07qL967wg82eqlMO+sDvkfEM/hh7McVN6H1zIPhNFnPS8Ev14mSx++J
+	UJr+lLrplxEUw/4+qLZgs/KwF8tZN6NHMGCVKDePilCvh3g2tohKgyJEPG1MeE+L
+	qNS8SArKyM5tjBWUI+TJSuaB+EKdtpoc6mLQdaKtOOFg4ix8HKdjaVk2gfEtOKXd
+	kFp7jweo3ZBhjUya/Wa5mIFz232N00HCClshX5Ixlq+/KUdpavA==
+Received: from va32lpfpp04.lenovo.com ([104.232.228.24])
+	by mx0a-00823401.pphosted.com (PPS) with ESMTPS id 3xhfb73qgg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 17:24:57 +0000 (GMT)
+	Tue, 16 Apr 2024 17:12:42 +0000 (GMT)
 Received: from va32lmmrp01.lenovo.com (va32lmmrp01.mot.com [10.62.177.113])
 	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by va32lpfpp02.lenovo.com (Postfix) with ESMTPS id 4VJrWs0n42z53xyX;
-	Tue, 16 Apr 2024 17:24:57 +0000 (UTC)
+	by va32lpfpp04.lenovo.com (Postfix) with ESMTPS id 4VJrFj0bcvzbbbK;
+	Tue, 16 Apr 2024 17:12:41 +0000 (UTC)
 Received: from ilclbld243.mot.com (ilclbld243.mot.com [100.64.22.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: mbland)
-	by va32lmmrp01.lenovo.com (Postfix) with ESMTPSA id 4VJrWs0XQ6z2VZRf;
-	Tue, 16 Apr 2024 17:24:57 +0000 (UTC)
-Message-Id: <20240416122254.868007168-1-mbland@motorola.com>
+	by va32lmmrp01.lenovo.com (Postfix) with ESMTPSA id 4VJrFj0Nx6z2VZRf;
+	Tue, 16 Apr 2024 17:12:41 +0000 (UTC)
+Message-Id: <20240416120827.062020959-1-mbland@motorola.com>
 To: linux-mm@kvack.org
-From: Maxwell Bland <mbland@motorola.com>
-Date: Mon, 15 Apr 2024 15:16:08 -0500
-Subject: [PATCH 0/5] mm: code and data partitioning improvements
-X-Proofpoint-ORIG-GUID: vSRvg_yzr5e2ij9r_RJZHMk7igMKbit5
-X-Proofpoint-GUID: vSRvg_yzr5e2ij9r_RJZHMk7igMKbit5
+Date: Tue, 16 Apr 2024 17:12:41 +0000 (UTC)
+From: mbland@motorola.com
+X-Proofpoint-GUID: 1a7hlKm2ucUem2p-jPjlpOxqjrnRUvhn
+X-Proofpoint-ORIG-GUID: 1a7hlKm2ucUem2p-jPjlpOxqjrnRUvhn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-16_14,2024-04-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
- malwarescore=0 spamscore=0 phishscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404160108
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ mlxscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1011 mlxlogscore=999 phishscore=0 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404160107
+X-Mailman-Approved-At: Wed, 17 Apr 2024 09:15:59 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,9 +74,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Maxwell Bland <mbland@motorola.com>, linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, Conor Dooley <conor.dooley@microchip.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Maxwell Bland <mbland@motorola.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
+linux-kernel@vger.kernel.org,
+linux-arm-kernel@lists.infradead.org,
+linux-riscv@lists.infradead.org,
+linuxppc-dev@lists.ozlabs.org,
+Mark Rutland <mark.rutland@arm.com>,
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Christoph Hellwig <hch@infradead.org>,
+Christophe Leroy <christophe.leroy@csgroup.eu>,
+David Hildenbrand <david@redhat.com>,
+Conor Dooley <conor.dooley@microchip.com>
+From: Maxwell Bland <mbland@motorola.com>
+Date: Mon, 15 Apr 2024 15:16:08 -0500
+Subject: [PATCH 0/5] mm: code and data partitioning improvements
 
 Managing allocations to ensure code and data pages are not interleaved
 is not possible prior to this patch, as ASLR requires programming a
