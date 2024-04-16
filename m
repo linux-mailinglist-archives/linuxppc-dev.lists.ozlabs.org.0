@@ -1,55 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285AC8A6968
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 13:10:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1980B8A696F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 13:11:59 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LTB6+F04;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJhCj6Yklz3vZm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 21:10:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJhFS6CL2z3vfZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 21:11:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LTB6+F04;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJhCH04Qxz3vZg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 21:10:01 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-255-LPfE2IzbO0utuOqpskCb8A-1; Tue, 16 Apr 2024 12:09:55 +0100
-X-MC-Unique: LPfE2IzbO0utuOqpskCb8A-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 16 Apr
- 2024 12:09:27 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Tue, 16 Apr 2024 12:09:27 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Segher Boessenkool' <segher@kernel.crashing.org>, Naresh Kamboju
-	<naresh.kamboju@linaro.org>
-Subject: RE: powerpc: io-defs.h:43:1: error: performing pointer arithmetic on
- a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
-Thread-Topic: powerpc: io-defs.h:43:1: error: performing pointer arithmetic on
- a null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
-Thread-Index: AQHaj+s965G0tAMqzUOctdh7rJqb8rFqvAFg
-Date: Tue, 16 Apr 2024 11:09:26 +0000
-Message-ID: <1d0de2bee67643bfa5a561e70133db75@AcuMS.aculab.com>
-References: <CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com>
- <20240416103819.GQ19790@gate.crashing.org>
-In-Reply-To: <20240416103819.GQ19790@gate.crashing.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJhDl2KCzz2ygY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 21:11:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1713265877;
+	bh=ZM/Kn+8UkuIqH7dSUrgkALqX2sFZu1tAf9iAD/x7XuM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LTB6+F04dq0c2A9vGjdft01NvBtN7BE1s7hBFglEQeOgGLMZ8lhGSvwhgamz3zdUw
+	 3LOFOGAE8/69f5wjWDrFwFeywpUpkxUOsNTUPdSBqDxlizHom70fy+HGtKeWzbOmZE
+	 8ubI3+yDLj3N/2MnNLCuoA4+Aq8ZuD2XB8lHJavB2F/v4AgKxIuU7J4aUnkE/18pi5
+	 y2cVry8DRgTrqzpXW05YnuQ2MoPsb+3UECVYNA3zp20sf3yGFp6RARvbtTBUET+zd4
+	 8qw/x/HqneNONDno8GHtmrjjMlSabWz9T+pHjLGZ/DGvvazDUjzYg3oKs5SvnFWbUD
+	 T9duxh5ZTeljA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VJhDg5c14z4wd3;
+	Tue, 16 Apr 2024 21:11:15 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Markus Elfring <Markus.Elfring@web.de>, linuxppc-dev@lists.ozlabs.org,
+ kernel-janitors@vger.kernel.org, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>
+Subject: Re: [0/2] powerpc/powernv/vas: Adjustments for two function
+ implementations
+In-Reply-To: <ee6022b8-3aeb-4e6e-99f5-2668dd344e0a@web.de>
+References: <7be66990-de9e-488b-ad6d-fafd1c7bb34c@web.de>
+ <ee6022b8-3aeb-4e6e-99f5-2668dd344e0a@web.de>
+Date: Tue, 16 Apr 2024 21:11:15 +1000
+Message-ID: <87plupbm0c.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,40 +63,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Linux Regressions <regressions@lists.linux.dev>, Arnd Bergmann <arnd@arndb.de>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, open list <linux-kernel@vger.kernel.org>, "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>, Nathan Chancellor <nathan@kernel.org>, Jeff Xu <jeffxu@chromium.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Segher Boessenkool
-> Sent: 16 April 2024 11:38
->=20
-> On Tue, Apr 16, 2024 at 03:02:52PM +0530, Naresh Kamboju wrote:
-> > In file included from arch/powerpc/include/asm/io.h:672:
-> > arch/powerpc/include/asm/io-defs.h:43:1: error: performing pointer
-> > arithmetic on a null pointer has undefined behavior
-> > [-Werror,-Wnull-pointer-arithmetic]
->=20
-> It is not UB, but just undefined: the program is meaningless.
->=20
-> It is not a null pointer but even a null pointer constant here.  It
-> matters in places, including here.
->=20
-> It would help if the warnings were more correct :-(
+Markus Elfring <Markus.Elfring@web.de> writes:
+>> A few update suggestions were taken into account
+>> from static source code analysis.
+>>
+>> Markus Elfring (2):
+>
+> I would appreciate a bit more information about the reasons
+> why this patch series was rejected.
+>
+>
+>>   One function call less in vas_window_alloc() after error detection
+>
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/1f1c21cf-c34c-418c-b00c-8e6474f12612@web.de/
 
-Isn't it only a problem because the NULL pointer isn't required to
-be the all-zero bit pattern?
+It introduced a new goto and label to avoid a kfree(NULL) call, but
+kfree() explicitly accepts NULL and handles it. So it complicates the
+source code for no gain.
 
-So when do we get a warning from using memset() on a structure
-that contains pointers? Since it is equally buggy.
+>>   Return directly after a failed kasprintf() in map_paste_region()
+>
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/f46f04bc-613c-4e98-b602-4c5120556b09@web.de/
 
-Has anyone ever seen a system where NULL wasn't 'all zeros'?
-I've used a system where the 'native' invalid pointer was 'all ones',
-but even there the C code used 'all zeros'.
+Basically the same reasoning. And it also changes the function from
+having two return paths (success and error), to three.
 
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+cheers
