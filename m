@@ -2,50 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E198A7544
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 22:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9417D8A7607
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 22:59:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=cjZZt45z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ybiy9Rlo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJwDg6mQmz3vYh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 06:12:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJxH12yLSz3vY8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 06:59:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=cjZZt45z;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ybiy9Rlo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJwCy4fl7z3cPm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 06:11:25 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 7AFA2CE113D;
-	Tue, 16 Apr 2024 20:11:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947A5C3277B;
-	Tue, 16 Apr 2024 20:11:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1713298281;
-	bh=vH93qz9QypmdrxTbfPnlMTMImwmxiAcyrlntd9a+0o0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cjZZt45zzFNVvRVLLkIaQ69+5t4zoCNBaDZANtTYyKIzGiPWX0wB/I6nLAB1CxgDP
-	 LyDiexeqmuMVOpNvYwYTEYfDw/QqbKIpHEnEylNsfU0Nr6S5UXmnG60k+iAegOG4s6
-	 wUvuXfyB5LNQoRUHmF5B7VHXvfaARZL14SvNsgdE=
-Date: Tue, 16 Apr 2024 13:11:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Maxwell Bland <mbland@motorola.com>
-Subject: Re: [PATCH 5/5] ptdump: add state parameter for non-leaf callback
-Message-Id: <20240416131120.a801ff03a6d0bbec0e9151c8@linux-foundation.org>
-In-Reply-To: <20240416122254.868007168-6-mbland@motorola.com>
-References: <20240416122254.868007168-1-mbland@motorola.com>
-	<20240416122254.868007168-6-mbland@motorola.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJxGD1jF5z30gp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 06:58:26 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43GKwGHN005540;
+	Tue, 16 Apr 2024 20:58:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Rim4boJJ20Vy6umvUBwEr+B1LTovSAopxkoYI6ZHWoM=;
+ b=Ybiy9RloDQqK56LDUGmQkc2/GP/GBUNepYdGZYG00WjUJOHlgdBBfTQg+WqfDhJN7nyK
+ yKRdQGUdP4yDbh/2LwYFp2V2WnLtjEr4fvhNR2J0YU6ya9Bmji2HF5EYfLt4R9xvZzCj
+ 7wIGOs9CzXRxg3CjDB+oB069xIe8oNkpLIwFQJPai+qA+niLGNCewDfxI/bSKbNiR2w6
+ Lc1Wzn7gEdMeaCGbm3NOajKRtnC/JxyGRGLS954TTXoCgqfmJ6GtTHiSqkHEyRpQ064r
+ pa3xDVs+hhpwC5fJ797eAHvCrj5rACUmvSVtJYyMVeIKY+bR0IZXQANKm/vuGy7FUluR +w== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xj0u1g00d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 20:58:16 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43GK1QOG021343;
+	Tue, 16 Apr 2024 20:58:15 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xg6kkg45p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 20:58:15 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43GKwC4o66126280
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Apr 2024 20:58:14 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D84975806D;
+	Tue, 16 Apr 2024 20:58:11 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 664AE58069;
+	Tue, 16 Apr 2024 20:58:11 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.177.160])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Apr 2024 20:58:11 +0000 (GMT)
+From: Gaurav Batra <gbatra@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/pseries/iommu: LPAR panics when rebooted with a frozen PE
+Date: Tue, 16 Apr 2024 15:58:10 -0500
+Message-Id: <20240416205810.28754-1-gbatra@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FFIbu3AmgFr5jzFif36LvECCj2PoSxqU
+X-Proofpoint-ORIG-GUID: FFIbu3AmgFr5jzFif36LvECCj2PoSxqU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-16_18,2024-04-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ mlxlogscore=999 impostorscore=0 mlxscore=0 priorityscore=1501
+ malwarescore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2404010000 definitions=main-2404160134
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,45 +86,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, linux-s390@vger.kernel.org, Yu Chien Peter Lin <peterlin@andestech.com>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.i
- nfradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Song Shuai <suagrfillet@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 15 Apr 2024 14:51:32 -0500 Maxwell Bland <mbland@motorola.com> wrote:
+At the time of LPAR reboot, partition firmware provides Open Firmware
+property ibm,dma-window for the PE. This property is provided on the PCI
+bus the PE is attached to.
 
-> ptdump can now note non-leaf descriptor entries, a useful addition for
-> debugging table descriptor permissions when working on related code
-> 
-> Signed-off-by: Maxwell Bland <mbland@motorola.com>
-> ---
->  arch/arm64/mm/ptdump.c          |  6 ++++--
->  arch/powerpc/mm/ptdump/ptdump.c |  2 ++
->  arch/riscv/mm/ptdump.c          |  6 ++++--
->  arch/s390/mm/dump_pagetables.c  |  6 ++++--
->  arch/x86/mm/dump_pagetables.c   |  3 ++-
->  include/linux/ptdump.h          |  1 +
->  mm/ptdump.c                     | 13 +++++++++++++
->  7 files changed, 30 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
-> index 796231a4fd63..1a6f4a3513e5 100644
-> --- a/arch/arm64/mm/ptdump.c
-> +++ b/arch/arm64/mm/ptdump.c
-> @@ -299,7 +299,8 @@ void ptdump_walk(struct seq_file *s, struct ptdump_info *info)
->  			.range = (struct ptdump_range[]){
->  				{info->base_addr, end},
->  				{0, 0}
-> -			}
-> +			},
-> +			.note_non_leaf = false
->  		}
+There are execptions where the partition firmware might not provide this
+property for the PE at the time of LPAR reboot. One of the scenario is
+where the firmware has frozen the PE due to some error conditions. This
+PE is frozen for 24 hours or unless the whole system is reinitialized.
 
-It would be acceptable to omit all of these and rely upon the runtime
-zeroing which the compiler will emit.
+Within this time frame, if the LPAR is rebooted, the frozen PE will be
+presented to the LPAR but ibm,dma-window property could be missing.
 
-Documentation/arch/arm64/ptdump.rst might need updating.
+Today, under these circumstances, the LPAR oopses with NULL pointer
+dereference, when configuring the PCI bus the PE is attached to.
 
-Please include sample output in the changelog so we can better
-understand the user's view of this change.
+BUG: Kernel NULL pointer dereference on read at 0x000000c8
+Faulting instruction address: 0xc0000000001024c0
+Oops: Kernel access of bad area, sig: 7 [#1]
+LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+Modules linked in:
+Supported: Yes
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.4.0-150600.9-default #1
+Hardware name: IBM,9043-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_023) hv:phyp pSeries
+NIP:  c0000000001024c0 LR: c0000000001024b0 CTR: c000000000102450
+REGS: c0000000037db5c0 TRAP: 0300   Not tainted  (6.4.0-150600.9-default)
+MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 28000822  XER: 00000000
+CFAR: c00000000010254c DAR: 00000000000000c8 DSISR: 00080000 IRQMASK: 0
+...
+NIP [c0000000001024c0] pci_dma_bus_setup_pSeriesLP+0x70/0x2a0
+LR [c0000000001024b0] pci_dma_bus_setup_pSeriesLP+0x60/0x2a0
+Call Trace:
+	pci_dma_bus_setup_pSeriesLP+0x60/0x2a0 (unreliable)
+	pcibios_setup_bus_self+0x1c0/0x370
+	__of_scan_bus+0x2f8/0x330
+	pcibios_scan_phb+0x280/0x3d0
+	pcibios_init+0x88/0x12c
+	do_one_initcall+0x60/0x320
+	kernel_init_freeable+0x344/0x3e4
+	kernel_init+0x34/0x1d0
+	ret_from_kernel_user_thread+0x14/0x1c
+
+Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index e8c4129697b1..e808d5b1fa49 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -786,8 +786,16 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+ 	 * parent bus. During reboot, there will be ibm,dma-window property to
+ 	 * define DMA window. For kdump, there will at least be default window or DDW
+ 	 * or both.
++	 * There is an exception to the above. In case the PE goes into frozen
++	 * state, firmware may not provide ibm,dma-window property at the time
++	 * of LPAR reboot.
+ 	 */
+ 
++	if (!pdn) {
++		pr_debug("  no ibm,dma-window property !\n");
++		return;
++	}
++
+ 	ppci = PCI_DN(pdn);
+ 
+ 	pr_debug("  parent is %pOF, iommu_table: 0x%p\n",
+
+base-commit: 2c71fdf02a95b3dd425b42f28fd47fb2b1d22702
+-- 
+2.39.3 (Apple Git-146)
 
