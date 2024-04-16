@@ -1,99 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F3D8A65C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 10:11:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91488A672E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 11:33:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aBix3J65;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TxCsEu75;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJcF45h5jz3vgX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 18:11:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJf4F3Zt4z3vY4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 19:33:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aBix3J65;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=TxCsEu75;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::a2a; helo=mail-vk1-xa2a.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJcBv3M0Mz3dWr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 18:09:27 +1000 (AEST)
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VJcBv2vLjz4x1d
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 18:09:27 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4VJcBv2rbsz4x1t; Tue, 16 Apr 2024 18:09:27 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aBix3J65;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4VJcBv0PS0z4x1d
-	for <linuxppc-dev@ozlabs.org>; Tue, 16 Apr 2024 18:09:26 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43G7s0lX003004;
-	Tue, 16 Apr 2024 08:09:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=X9ofJhcGjn1LqA188ZnlGMgYm1UzzZSR1N6CJNsGbZ8=;
- b=aBix3J65JZkMdazzZQt04jixIz7NLow8c13+o9mismnlbMhesu8eF9C3k3nPXq8m8kBb
- GTHmfRsKdGS/o3TSmuab1StVRzivNceOHJE2L2WkmHzgOEaQ+4NXHLD89thHVymf2JPT
- ilqh3OR8pTGsrhug8qgRJ/thtelnFbEZzGJ6SrwyxXhnjGWwaCgAYxXJnKwZKi8IlSTW
- pOOLcDq9ZRycXgWCIEsmCq5II+J8ZvfPja1ckq92uisNw/V5IozEOAPjeJZ7/eg2Iix6
- ++AXXg/9fLMDsFBK3JKyqPVdta2XGkp+DqSS1x/NPbRNOMGuXM6/N7/VU+pfVkS3vmiX Dw== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xhjrngbfj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 08:09:14 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43G66JKp023575;
-	Tue, 16 Apr 2024 08:09:13 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xg5cnvws0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 08:09:13 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43G8972733161764
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Apr 2024 08:09:09 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD4522004B;
-	Tue, 16 Apr 2024 08:09:07 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 78B822005A;
-	Tue, 16 Apr 2024 08:09:04 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.85.254])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 16 Apr 2024 08:09:04 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v9 3/3] Documentation/powerpc: update fadump implementation details
-Date: Tue, 16 Apr 2024 13:38:48 +0530
-Message-ID: <20240416080848.347602-4-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240416080848.347602-1-sourabhjain@linux.ibm.com>
-References: <20240416080848.347602-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJf3W2hwlz3bWH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 19:33:09 +1000 (AEST)
+Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-4daa8e14afbso1378456e0c.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 02:33:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713259984; x=1713864784; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ndrnd625fhH+o+1Q6bsYpoaFuC2gIYmA4glyfnWSIIc=;
+        b=TxCsEu75/irheikAoHfIyUK9WigEQ40HdEiF65Op+VZRHhs54qkbm+/bDvsZhVGl9t
+         joGZMMb7dPp+LHl5nvQgVX+G3B1iex0yyZt9zCYfDcsBbsrEyERWpowo7zw/Psk1XXAy
+         OnEz9XtScGaSx6A8ej+j8SoYjeclwV2mABKBDm2zJPlXOsz66vzkqEUgoVKu+XD8aEuE
+         KiqnXlfMFnkknh/vCx8k3wX9GDs4s6+GJEPbOS3o62bbvTpaAZ6ideJ2x6Hw1eeQV0th
+         /NklQmfkSUV3g2JyL0J76zRU5XHDCEcdjKGsT9cnvxcl2nwvs6S3wtzHy1uR8XCamu+t
+         knIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713259984; x=1713864784;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ndrnd625fhH+o+1Q6bsYpoaFuC2gIYmA4glyfnWSIIc=;
+        b=gMXqEGOfAKHKesBYHMbAP89rg8aanR7JXm0L34X13ANIDHFFaAOc+cNBdAWfFMs0M+
+         ENnC8ATpGcSB55HiPFjsapYNAMc3/BXK/zmIZG2oa3tCatcP2unl5ZARyi/gfkxtMx/N
+         X3iE5vCfbBMv46GrP9wn5KdtT+G4Toy4ub3pUMq1kuNX4MG6iJxZYyok4pBCwjSefZVJ
+         2/836kKIlEgavAH6/dlGA9fpBdSt3yyOD/SKGIeFSwdayDBwwizHwxOovYq2osD9/Hf+
+         1EPWKLYt6yFB1B+ZM2ADDZvccYDhNH+P5q2Hgd34g9lfYdMdM25y2VClH6fF6LYt5Zzi
+         dwyg==
+X-Forwarded-Encrypted: i=1; AJvYcCWu3Mx41aYJtVX3Walp8p3OTmE5+jtOHGobobDt2LxYIOUpdNPqZBY3z1ODvQa7qaYoTB0ip6ILg4VhQrxkQ/ESx71QB7Ul9fdlnKL3JQ==
+X-Gm-Message-State: AOJu0Yzl7hIEOPA+laPkXmUUxJC7PXBb0xhHpMsp65wwOg6N3VKEBquJ
+	8iDjdVhUfIcAaUq0Iqdow2qseudRb0S3DRHw3bF+7vSVLL06gsYnuTQ6q32WT/VHyZpHiN2oF8B
+	+uyeCK5FPmK8/rJrVMNkCvYjPtIzMYtcuAU1b8Q==
+X-Google-Smtp-Source: AGHT+IG8D9vuAHmYC+KaM43JW5eMv7zVIbneQHVp8QBSV8dIrkMNPPOSsaQF76mhGJzEt5W5Jxc6s2f74IzVPZ0IMx8=
+X-Received: by 2002:a05:6122:31a9:b0:4da:aabe:6f6c with SMTP id
+ ch41-20020a05612231a900b004daaabe6f6cmr10367344vkb.7.1713259983821; Tue, 16
+ Apr 2024 02:33:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WJHNa6efvloQPkcH8hy2j6S8wrhunKUU
-X-Proofpoint-ORIG-GUID: WJHNa6efvloQPkcH8hy2j6S8wrhunKUU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-16_04,2024-04-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0 clxscore=1015
- spamscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2404010000 definitions=main-2404160049
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 16 Apr 2024 15:02:52 +0530
+Message-ID: <CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com>
+Subject: powerpc: io-defs.h:43:1: error: performing pointer arithmetic on a
+ null pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
+To: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Linux Regressions <regressions@lists.linux.dev>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,170 +74,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Aditya Gupta <adityag@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, Nathan Chancellor <nathan@kernel.org>, Jeff Xu <jeffxu@chromium.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dan Carpenter <dan.carpenter@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The patch titled ("powerpc: make fadump resilient with memory add/remove
-events") has made significant changes to the implementation of fadump,
-particularly on elfcorehdr creation and fadump crash info header
-structure. Therefore, updating the fadump implementation documentation
-to reflect those changes.
+The Powerpc clang builds failed due to following warnings / errors on the
+Linux next-20240416 tag.
 
-Following updates are done to firmware assisted dump documentation:
+Powerpc:
+ - tqm8xx_defconfig + clang-17 - Failed
+ - allnoconfig + clang-17 - Failed
+ - tinyconfig + clang-17 - Failed
 
-1. The elfcorehdr is no longer stored after fadump HDR in the reserved
-   dump area. Instead, the second kernel dynamically allocates memory
-   for the elfcorehdr within the address range from 0 to the boot memory
-   size. Therefore, update figures 1 and 2 of Memory Reservation during
-   the first and second kernels to reflect this change.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-2. A version field has been added to the fadump header to manage the
-   future changes to fadump crash info header structure without changing
-   the fadump header magic number in the future. Therefore, remove the
-   corresponding TODO from the document.
+Build log:
+--------
+In file included from arch/powerpc/kernel/ptrace/ptrace.c:19:
+In file included from include/linux/syscalls.h:93:
+In file included from include/trace/syscall.h:7:
+In file included from include/linux/trace_events.h:9:
+In file included from include/linux/hardirq.h:11:
+In file included from arch/powerpc/include/asm/hardirq.h:6:
+In file included from include/linux/irq.h:20:
+In file included from include/linux/io.h:14:
+In file included from arch/powerpc/include/asm/io.h:672:
+arch/powerpc/include/asm/io-defs.h:43:1: error: performing pointer
+arithmetic on a null pointer has undefined behavior
+[-Werror,-Wnull-pointer-arithmetic]
+   43 | DEF_PCI_AC_NORET(insb, (unsigned long p, void *b, unsigned long c),
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   44 |                  (p, b, c), pio, p)
+      |                  ~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
----
- .../arch/powerpc/firmware-assisted-dump.rst   | 91 +++++++++----------
- 1 file changed, 42 insertions(+), 49 deletions(-)
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240416/testrun/23495171/suite/build/test/clang-17-tqm8xx_defconfig/details/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2fAvI3mKJ0dTHcazPrLl2zNF9JO/
 
-diff --git a/Documentation/arch/powerpc/firmware-assisted-dump.rst b/Documentation/arch/powerpc/firmware-assisted-dump.rst
-index e363fc48529a..7e37aadd1f77 100644
---- a/Documentation/arch/powerpc/firmware-assisted-dump.rst
-+++ b/Documentation/arch/powerpc/firmware-assisted-dump.rst
-@@ -134,12 +134,12 @@ that are run. If there is dump data, then the
- memory is held.
- 
- If there is no waiting dump data, then only the memory required to
--hold CPU state, HPTE region, boot memory dump, FADump header and
--elfcore header, is usually reserved at an offset greater than boot
--memory size (see Fig. 1). This area is *not* released: this region
--will be kept permanently reserved, so that it can act as a receptacle
--for a copy of the boot memory content in addition to CPU state and
--HPTE region, in the case a crash does occur.
-+hold CPU state, HPTE region, boot memory dump, and FADump header is
-+usually reserved at an offset greater than boot memory size (see Fig. 1).
-+This area is *not* released: this region will be kept permanently
-+reserved, so that it can act as a receptacle for a copy of the boot
-+memory content in addition to CPU state and HPTE region, in the case
-+a crash does occur.
- 
- Since this reserved memory area is used only after the system crash,
- there is no point in blocking this significant chunk of memory from
-@@ -153,22 +153,22 @@ that were present in CMA region::
- 
-   o Memory Reservation during first kernel
- 
--  Low memory                                                 Top of memory
--  0    boot memory size   |<--- Reserved dump area --->|       |
--  |           |           |    Permanent Reservation   |       |
--  V           V           |                            |       V
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--  |           |           |///|////|  DUMP | HDR | ELF |////|  |
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--        |                   ^    ^     ^      ^           ^
--        |                   |    |     |      |           |
--        \                  CPU  HPTE   /      |           |
--         ------------------------------       |           |
--      Boot memory content gets transferred    |           |
--      to reserved area by firmware at the     |           |
--      time of crash.                          |           |
--                                          FADump Header   |
--                                           (meta area)    |
-+  Low memory                                                  Top of memory
-+  0    boot memory size   |<------ Reserved dump area ----->|     |
-+  |           |           |      Permanent Reservation      |     |
-+  V           V           |                                 |     V
-+  +-----------+-----/ /---+---+----+-----------+-------+----+-----+
-+  |           |           |///|////|    DUMP   |  HDR  |////|     |
-+  +-----------+-----/ /---+---+----+-----------+-------+----+-----+
-+        |                   ^    ^       ^         ^      ^
-+        |                   |    |       |         |      |
-+        \                  CPU  HPTE     /         |      |
-+         --------------------------------          |      |
-+      Boot memory content gets transferred         |      |
-+      to reserved area by firmware at the          |      |
-+      time of crash.                               |      |
-+                                           FADump Header  |
-+                                            (meta area)   |
-                                                           |
-                                                           |
-                       Metadata: This area holds a metadata structure whose
-@@ -186,13 +186,20 @@ that were present in CMA region::
-   0      boot memory size                                      |
-   |           |<------------ Crash preserved area ------------>|
-   V           V           |<--- Reserved dump area --->|       |
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--  |           |           |///|////|  DUMP | HDR | ELF |////|  |
--  +-----------+-----/ /---+---+----+-------+-----+-----+----+--+
--        |                                           |
--        V                                           V
--   Used by second                             /proc/vmcore
--   kernel to boot
-+  +----+---+--+-----/ /---+---+----+-------+-----+-----+-------+
-+  |    |ELF|  |           |///|////|  DUMP | HDR |/////|       |
-+  +----+---+--+-----/ /---+---+----+-------+-----+-----+-------+
-+       |   |  |                            |     |             |
-+       -----  ------------------------------     ---------------
-+         \              |                               |
-+           \            |                               |
-+             \          |                               |
-+               \        |    ----------------------------
-+                 \      |   /
-+                   \    |  /
-+                     \  | /
-+                  /proc/vmcore
-+
- 
-         +---+
-         |///| -> Regions (CPU, HPTE & Metadata) marked like this in the above
-@@ -200,6 +207,12 @@ that were present in CMA region::
-                  does not have CPU & HPTE regions while Metadata region is
-                  not supported on pSeries currently.
- 
-+        +---+
-+        |ELF| -> elfcorehdr, it is created in second kernel after crash.
-+        +---+
-+
-+        Note: Memory from 0 to the boot memory size is used by second kernel
-+
-                    Fig. 2
- 
- 
-@@ -353,26 +366,6 @@ TODO:
-  - Need to come up with the better approach to find out more
-    accurate boot memory size that is required for a kernel to
-    boot successfully when booted with restricted memory.
-- - The FADump implementation introduces a FADump crash info structure
--   in the scratch area before the ELF core header. The idea of introducing
--   this structure is to pass some important crash info data to the second
--   kernel which will help second kernel to populate ELF core header with
--   correct data before it gets exported through /proc/vmcore. The current
--   design implementation does not address a possibility of introducing
--   additional fields (in future) to this structure without affecting
--   compatibility. Need to come up with the better approach to address this.
--
--   The possible approaches are:
--
--	1. Introduce version field for version tracking, bump up the version
--	whenever a new field is added to the structure in future. The version
--	field can be used to find out what fields are valid for the current
--	version of the structure.
--	2. Reserve the area of predefined size (say PAGE_SIZE) for this
--	structure and have unused area as reserved (initialized to zero)
--	for future field additions.
--
--   The advantage of approach 1 over 2 is we don't need to reserve extra space.
- 
- Author: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
- 
--- 
-2.43.0
-
+--
+Linaro LKFT
+https://lkft.linaro.org
