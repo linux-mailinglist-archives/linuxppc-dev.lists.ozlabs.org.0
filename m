@@ -1,54 +1,142 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70A08A6274
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 06:35:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7440F8A629B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 06:51:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=HVSM+zjo;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e/U6Ws2p;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e/U6Ws2p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJWSB4c19z3vg2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 14:35:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJWpd1pR4z3vXY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 14:51:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=HVSM+zjo;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e/U6Ws2p;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e/U6Ws2p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.121; helo=smtp-relay-canonical-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=lists.ozlabs.org)
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJWPw14jCz3dV3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 14:33:40 +1000 (AEST)
-Received: from localhost.localdomain (unknown [10.101.196.174])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 967B740B81;
-	Tue, 16 Apr 2024 04:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1713242017;
-	bh=UKp3++ga9pwOFwfl9SX2I6VDxPYriu1Ld2SUETczxGc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=HVSM+zjoih8kwdzAuFBkJV2cPYIwRhYPOwAILzUUKOxOs2S6WamM4+DSseiYTl7Ub
-	 sjM/XvtIglSMtgEcAtxZK1BphiT80MMW8qckz+uDLyip/Dfna435NZYLQsXGuABpDw
-	 45FO5eBgstUKt2atiemkYGev6LytrI7FsR2B2GH3y4ePFdbFcUjmlDOb7AW6KB+jia
-	 tCm8E28ZtJKTf7LNAi0rpIp8pGVEsCvnfRg1uBWJrIkJ+nUxXOVWGLPYhdEjXUKtGX
-	 6R5A/VxDwA4OA7Tw93nBLNnIZ8bUhThFtiLXRVwpkwKmI7lrsYrFOxX1WvGjXkKUp/
-	 85JVXVLr39SWg==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: bhelgaas@google.com
-Subject: [PATCH v8 3/3] PCI/DPC: Disable DPC service on suspend
-Date: Tue, 16 Apr 2024 12:32:25 +0800
-Message-Id: <20240416043225.1462548-3-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240416043225.1462548-1-kai.heng.feng@canonical.com>
-References: <20240416043225.1462548-1-kai.heng.feng@canonical.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJWnv0hBvz3dLl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 14:50:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713243055;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hUMvOI44LQITn0QQfxWuxppp606ZUuM5f4XktOIdKpI=;
+	b=e/U6Ws2p8THE53zPaD2KBTuzdCOvOCC4pRANi9+0Aesbt9pzVRRhbuOjD1+31kxtfLGlqi
+	Qcr05H8HzY2lUcWey4aw4UJrHdeaOYBLARkAXb1JX4ak0BPg2qeLuFBhOFSbvtmCNnZaMI
+	vuehOzvNFxjw/3ZdFttg4hggWFRK8r0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713243055;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hUMvOI44LQITn0QQfxWuxppp606ZUuM5f4XktOIdKpI=;
+	b=e/U6Ws2p8THE53zPaD2KBTuzdCOvOCC4pRANi9+0Aesbt9pzVRRhbuOjD1+31kxtfLGlqi
+	Qcr05H8HzY2lUcWey4aw4UJrHdeaOYBLARkAXb1JX4ak0BPg2qeLuFBhOFSbvtmCNnZaMI
+	vuehOzvNFxjw/3ZdFttg4hggWFRK8r0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-168-8DNsI-kfPAeaKb2EqWImNA-1; Tue, 16 Apr 2024 00:50:52 -0400
+X-MC-Unique: 8DNsI-kfPAeaKb2EqWImNA-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-56e68d12097so1408866a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 21:50:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713243052; x=1713847852;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hUMvOI44LQITn0QQfxWuxppp606ZUuM5f4XktOIdKpI=;
+        b=DF/Ncn0kTcdwUZjN5sGEEOjUWgVy1nSVop198onPVBrUw5rpgXbxvQUd6/oWTDDReh
+         5soU1jsUQMesVjaTfmw2JmK/HIZmhg3wlBq1vUCdkStikDVhIIy6iDRwJ7N9H/VevXw2
+         01s3EABy7GvS2hDPGjeezJs36RSRcCIxpBSFkqWcuPu+tf3dPZXuxXZOk2HrJjuxSH2R
+         ttz9IU2Ss6upWpNu0kCCmPYEEz2AlIjXmSE2rQ7JEQbsdjvwMCSTjpOYMr9mIRvBBjlb
+         aBHXNUmvjhcBFEmoAXU0l8nG8RRf9afWvY22VYaGrLzXaMf4kYGtNegGz7N3zrcCaYiP
+         VR9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUrZ/4gHZu8df5+DSBWzaqOF1NdrQDOtfY0XsuH/XbqEB5tmDQQhhFmbLBmHvNibKIhIYaBnkiVZh4A+wsjtqwgSVWPMslk7v5ztBz47Q==
+X-Gm-Message-State: AOJu0YxpwRU2q4m4YAdHdsQL27lInJcjab6T6UgNr+2eq1JPZyrA4jB5
+	S4Y64vyhhrMtQwW9BFJEdaA/eINLFUiMekJ0urEq0JF4fyxUXxq+Qp6eTTAtC6cnW4QrPg61HaC
+	zCZROTqmmVuD5A2ynuXmh2Sp0Lw4lNVDT213p2G3bl7k9JstlSQOniJX+SiQT9yc=
+X-Received: by 2002:a50:9b53:0:b0:56d:f637:4515 with SMTP id a19-20020a509b53000000b0056df6374515mr7177618edj.42.1713243051863;
+        Mon, 15 Apr 2024 21:50:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7YK9mWnBYKfr61YvddWRbU4muyppecHDHP8vmEPrtiwDcag/GTEQQUt6A2tVbOEJ+/qlDtg==
+X-Received: by 2002:a50:9b53:0:b0:56d:f637:4515 with SMTP id a19-20020a509b53000000b0056df6374515mr7177612edj.42.1713243051583;
+        Mon, 15 Apr 2024 21:50:51 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-179-50.web.vodafone.de. [109.43.179.50])
+        by smtp.gmail.com with ESMTPSA id e21-20020a056402105500b0056e685b1d45sm5638987edu.87.2024.04.15.21.50.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Apr 2024 21:50:51 -0700 (PDT)
+Message-ID: <75b85c85-1c82-487b-91dd-024c2e7163e1@redhat.com>
+Date: Tue, 16 Apr 2024 06:50:50 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v8 03/35] migration: Add a migrate_skip
+ command
+To: Nicholas Piggin <npiggin@gmail.com>, Nico Boehr <nrb@linux.ibm.com>
+References: <20240405083539.374995-1-npiggin@gmail.com>
+ <20240405083539.374995-4-npiggin@gmail.com>
+ <171259197029.48513.5232971921641010684@t14-nrb>
+ <D0L83A745KF8.1KXG6GEDFXSZD@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <D0L83A745KF8.1KXG6GEDFXSZD@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,165 +148,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kch@nvidia.com, regressions@lists.linux.dev, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>, oohall@gmail.com, hare@suse.de, bagasdotme@gmail.com, kbusch@kernel.org, gloriouseggroll@gmail.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, sagi@grimberg.me
+Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the power rail gets cut off, the hardware can create some electric
-noise on the link that triggers AER. If IRQ is shared between AER with
-PME, such AER noise will cause a spurious wakeup on system suspend.
+On 16/04/2024 05.22, Nicholas Piggin wrote:
+> On Tue Apr 9, 2024 at 1:59 AM AEST, Nico Boehr wrote:
+>> Quoting Nicholas Piggin (2024-04-05 10:35:04)
+>> [...]
+>>> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+>>> index 39419d4e2..4a1aab48d 100644
+>>> --- a/scripts/arch-run.bash
+>>> +++ b/scripts/arch-run.bash
+>> [...]
+>>> @@ -179,8 +189,11 @@ run_migration ()
+>>>                  # Wait for test exit or further migration messages.
+>>>                  if ! seen_migrate_msg ${src_out} ;  then
+>>>                          sleep 0.1
+>>> -               else
+>>> +               elif grep -q "Now migrate the VM" < ${src_out} ; then
+>>>                          do_migration || return $?
+>>> +               elif [ $skip_migration -eq 0 ] && grep -q "Skipped VM migration" < ${src_out} ; then
+>>> +                       echo > ${src_infifo} # Resume src and carry on.
+>>> +                       break;
+>>
+>> If I understand the code correctly, this simply makes the test PASS when
+>> migration is skipped, am I wrong?
+> 
+> This just gets the harness past the wait-for-migration phase, it
+> otherwise should not change behaviour.
+> 
+>> If so, can we set ret=77 here so we get a nice SKIP?
+> 
+> The harness _should_ still scan the status value printed by the
+> test case when it exits. Is it not working as expected? We
+> certainly should be able to make it SKIP.
 
-When the power rail gets back, the firmware of the device resets itself
-and can create unexpected behavior like sending PTM messages. If DPC is
-enabled, the DPC reset happens before driver's resume routine. The DPC
-reset usually fails because the device is not in the right state, and
-the resume also fails because the device is being reset by hardware. If
-the scenario happens to device like NVMe, it means the whole system
-resume fails.
+I just gave it a try (by modifying the selftest-migration-skip test 
+accordingly), and it seems to work fine, so I think this patch here should 
+be ok.
 
-As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power
-Management", TLP and DLLP transmission are disabled for a Link in L2/L3
-Ready (D3hot), L2 (D3cold with aux power) and L3 (D3cold) states. So if
-the power will be turned off during suspend process, disable DPC service
-and re-enable it during the resume process. This should not affect the
-basic functionality.
+  Thomas
 
-Furthermore, since DPC depends on AER to function, and AER is disabled
-in previous patch, also disable DPC here.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v8:
- - Wording.
- - Add more bug reports.
-
-v7:
- - Wording.
- - Disable DPC completely (again) if power will be turned off
-
-v6:
-v5:
- - Wording.
-
-v4:
-v3:
- - No change.
-
-v2:
- - Only disable DPC IRQ.
- - No more check on PME IRQ#.
-
- drivers/pci/pcie/dpc.c | 57 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index a668820696dc..7682ac4d6a89 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -14,6 +14,7 @@
- #include <linux/interrupt.h>
- #include <linux/init.h>
- #include <linux/pci.h>
-+#include <linux/suspend.h>
- 
- #include "portdrv.h"
- #include "../pci.h"
-@@ -412,13 +413,34 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	}
- }
- 
-+static void dpc_enable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~PCI_EXP_DPC_CTL_EN_MASK;
-+	ctl |= PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
-+static void dpc_disable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
- #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
- static int dpc_probe(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
- 	struct device *device = &dev->device;
- 	int status;
--	u16 ctl, cap;
-+	u16 cap;
- 
- 	if (!pcie_aer_is_native(pdev) && !pcie_ports_dpc_native)
- 		return -ENOTSUPP;
-@@ -433,11 +455,7 @@ static int dpc_probe(struct pcie_device *dev)
- 	}
- 
- 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
--
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~PCI_EXP_DPC_CTL_EN_MASK;
--	ctl |= PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_enable(dev);
- 
- 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
- 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
-@@ -450,14 +468,29 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
--static void dpc_remove(struct pcie_device *dev)
-+static int dpc_suspend(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
--	u16 ctl;
- 
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	if (pci_ancestor_pr3_present(pdev) || pm_suspend_via_firmware())
-+		dpc_disable(dev);
-+
-+	return 0;
-+}
-+
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+
-+	if (pci_ancestor_pr3_present(pdev) || pm_resume_via_firmware())
-+		dpc_enable(dev);
-+
-+	return 0;
-+}
-+
-+static void dpc_remove(struct pcie_device *dev)
-+{
-+	dpc_disable(dev);
- }
- 
- static struct pcie_port_service_driver dpcdriver = {
-@@ -465,6 +498,8 @@ static struct pcie_port_service_driver dpcdriver = {
- 	.port_type	= PCIE_ANY_PORT,
- 	.service	= PCIE_PORT_SERVICE_DPC,
- 	.probe		= dpc_probe,
-+	.suspend	= dpc_suspend,
-+	.resume		= dpc_resume,
- 	.remove		= dpc_remove,
- };
- 
--- 
-2.34.1
 
