@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78688A787D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 01:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6D58A7883
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 01:18:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=5bQZz5gG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=Qla0/1la;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VK0Kd3dt0z3vZh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 09:16:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VK0MN24NVz3vcC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 09:18:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=5bQZz5gG;
+	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=Qla0/1la;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.148.104; helo=mx0a-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 137 seconds by postgrey-1.37 at boromir; Wed, 17 Apr 2024 03:15:19 AEST
-Received: from mx0a-00823401.pphosted.com (mx0a-00823401.pphosted.com [148.163.148.104])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.152.46; helo=mx0b-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
+Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJrJl4z78z2ygY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 03:15:18 +1000 (AEST)
-Received: from pps.filterd (m0355088.ppops.net [127.0.0.1])
-	by m0355088.ppops.net (8.17.1.24/8.17.1.24) with ESMTP id 43GEMQKi020101;
-	Tue, 16 Apr 2024 17:12:43 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJv4d2sPxz3fQR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 05:20:00 +1000 (AEST)
+Received: from pps.filterd (m0355091.ppops.net [127.0.0.1])
+	by mx0b-00823401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GGDbkO026743;
+	Tue, 16 Apr 2024 19:19:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
-	message-id:in-reply-to:references:to:cc:date:from; s=DKIM202306;
-	 bh=0DmzzJZbYc/xYD7mMOXY/jAogi5GP4/ooHS3OM87fAA=; b=5bQZz5gGB5F4
-	xMPtJwWf01XyxZR12Il29HX9VH5OtPpJFv3Az03GayPb2K274jzSVVIB0/HB7OWe
-	w7C/LdeoM2Wx+mXbBVFHy/GSnhR4nMSSOZdBa0fWkhfA4L0hElYF7iHtHhKl6B+w
-	DRrF+7ZVpg4CF5YSI4K06KshIfuS51nw76GgROKyxYS8P0dohFT7brVxx9PGcfMJ
-	wVcYUarOAKiQW3/8SNRBPixK5La3sIG5lUegldI3d/6o0bPpNkoAWvI2rAU8eI0F
-	iz7aU3G+lb2GIj+gxiqM3cA/zg01/7NwvWPo9BY4HI8yInhkO7CCHRo0tIowkApd
-	Y2FxnBy0UA==
-Received: from va32lpfpp03.lenovo.com ([104.232.228.23])
-	by m0355088.ppops.net (PPS) with ESMTPS id 3xha684e8s-1
+	message-id:in-reply-to:references:to:cc:from:subject:date; s=
+	DKIM202306; bh=9vTyU2l3t+ufezl9NM7trdVAZw+NQOYaPFZvexa2H5c=; b=Q
+	la0/1lagQ+CRwBPmfuSMHqN/BmkLBAxYzvtE5AgErO/S0QtIQyXCkBGaZQh/o+e8
+	U1sruERg1FQY7Gxhx1ZDI55iL21Ck2ejCYnX2DFnh2/85yarjsbufcIcWAcqpsQu
+	QChNWY0l++bLFGpMgyifp69z9tpd43PzV6VWZGrbPF/BxpdxqrmwKyHobmPvQ2Xy
+	qR8+dgxqO2ZJCLu8z0+M5RxIKSr4iBso5Cy+2TZBJgpxFGxsraDqmmcN9xQxQ4XR
+	uH5BYRrkhUDg7Syx5AgOy2XBoSs7JlpQ47UYf+5hTgmf4b/1YkF5y4GxQO+ngpCS
+	sSghLiKpHLFrj734kjoNQ==
+Received: from va32lpfpp04.lenovo.com ([104.232.228.24])
+	by mx0b-00823401.pphosted.com (PPS) with ESMTPS id 3xhjbekf1q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 17:12:42 +0000 (GMT)
-Received: from va32lmmrp01.lenovo.com (va32lmmrp01.mot.com [10.62.177.113])
+	Tue, 16 Apr 2024 19:19:22 +0000 (GMT)
+Received: from va32lmmrp02.lenovo.com (va32lmmrp02.mot.com [10.62.176.191])
 	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by va32lpfpp03.lenovo.com (Postfix) with ESMTPS id 4VJrFj1KH2z4ygs5;
-	Tue, 16 Apr 2024 17:12:41 +0000 (UTC)
+	by va32lpfpp04.lenovo.com (Postfix) with ESMTPS id 4VJv3t0jJrzgK7d;
+	Tue, 16 Apr 2024 19:19:22 +0000 (UTC)
 Received: from ilclbld243.mot.com (ilclbld243.mot.com [100.64.22.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: mbland)
-	by va32lmmrp01.lenovo.com (Postfix) with ESMTPSA id 4VJrFj0cKvz2VZRf;
-	Tue, 16 Apr 2024 17:12:41 +0000 (UTC)
-Message-Id: <20240416120827.062020959-4-mbland@motorola.com>
-In-Reply-To: <20240416120827.062020959-1-mbland@motorola.com>
-References: <20240416120827.062020959-1-mbland@motorola.com>
+	by va32lmmrp02.lenovo.com (Postfix) with ESMTPSA id 4VJv3t09CVz2Z11p;
+	Tue, 16 Apr 2024 19:19:22 +0000 (UTC)
+Message-Id: <20240416122254.868007168-4-mbland@motorola.com>
+In-Reply-To: <20240416122254.868007168-1-mbland@motorola.com>
+References: <20240416122254.868007168-1-mbland@motorola.com>
 To: linux-mm@kvack.org
-Date: Tue, 16 Apr 2024 17:12:41 +0000 (UTC)
-From: mbland@motorola.com
-X-Proofpoint-GUID: FGC9CtmcKIG4zrGhhqcukKhqjyBC3rVq
-X-Proofpoint-ORIG-GUID: FGC9CtmcKIG4zrGhhqcukKhqjyBC3rVq
+From: Maxwell Bland <mbland@motorola.com>
+Subject: [PATCH 3/5 RESEND] mm: add vaddr param to pmd_populate_kernel
+Date: Tue, 16 Apr 2024 14:18:17 -0500
+X-Proofpoint-ORIG-GUID: ums4jeNcJVpj771Dp40VIiexoS2QWl9Y
+X-Proofpoint-GUID: ums4jeNcJVpj771Dp40VIiexoS2QWl9Y
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-16_14,2024-04-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- mlxlogscore=999 phishscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404160107
+ definitions=2024-04-16_16,2024-04-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 impostorscore=0 suspectscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404160120
 X-Mailman-Approved-At: Wed, 17 Apr 2024 09:15:59 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,124 +78,13 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxwell Bland <mbland@motorola.com>
+Cc: linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Sia Jee Heng <jeeheng.sia@starfivetech.com>, Huacai Chen <chenhuacai@kernel.org>, Christoph Hellwig <hch@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sam Creasey <sammy@sammy.net>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Mason Huo <mason.huo@starfivetech.com>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Andrey Konovalov <andreyknvl@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, Tejun Heo <tj@kernel
+ .org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, WANG Xuerui <kernel@xen0n.name>, Christoph Lameter <cl@linux.com>, Nikhil V <quic_nprakash@quicinc.com>, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>, Hugh Dickins <hughd@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Dennis Zhou <dennis@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>, Maxwell Bland <mbland@motorola.com>, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Muchun Song <muchun.song@linux.dev>, Dinh Nguyen <dinguyen@kernel.org>, Tianrui Zhao <zhaotianrui@l
+ oongson.cn>, Andreas Larsson <andreas@gaisler.com>, Peter Xu <peterx@redhat.com>, kasan-dev@googlegroups.com, Breno Leitao <leitao@debian.org>, Will Deacon <will@kernel.org>, linux-csky@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linux-snps-arc@lists.infradead.org, Marco Elver <elver@google.com>, Arnd Bergmann <arnd@arndb.de>, Song Shuai <songshuaishuai@tinylab.org>, Borislav Petkov <bp@alien8.de>, Qi Zheng <zhengqi.arch@bytedance.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-alpha@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>, kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Jiangfeng Xiao <xiaojiangfeng@huawei.com>, Alexander Potapenko <glider@google.com>, Jisheng Zhang <jszh
+ ang@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Vincenzo Frascino <vincenzo.frascino@arm.com>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Bibo Mao <maobibo@loongson.cn>, Paul Walmsley <paul.walmsley@sifive.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Michal Simek <monstr@monstr.eu>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Kent Overstreet <kent.overstreet@linux.dev>, linux-mips@vger.kernel.org, Palmer Dabbelt
+  <palmer@dabbelt.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
-
-Richard Henderson <richard.henderson@linaro.org>,
-Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-Matt Turner <mattst88@gmail.com>,
-Vineet Gupta <vgupta@kernel.org>,
-Alexander Potapenko <glider@google.com>,
-Marco Elver <elver@google.com>,
-Dmitry Vyukov <dvyukov@google.com>,
-Russell King <linux@armlinux.org.uk>,
-Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-Andrey Konovalov <andreyknvl@gmail.com>,
-Vincenzo Frascino <vincenzo.frascino@arm.com>,
-Catalin Marinas <catalin.marinas@arm.com>,
-Will Deacon <will@kernel.org>,
-Guo Ren <guoren@kernel.org>,
-Brian Cain <bcain@quicinc.com>,
-Huacai Chen <chenhuacai@kernel.org>,
-WANG Xuerui <kernel@xen0n.name>,
-Geert Uytterhoeven <geert@linux-m68k.org>,
-Sam Creasey <sammy@sammy.net>,
-Michal Simek <monstr@monstr.eu>,
-Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-Dinh Nguyen <dinguyen@kernel.org>,
-Jonas Bonn <jonas@southpole.se>,
-Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-Stafford Horne <shorne@gmail.com>,
-"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-Helge Deller <deller@gmx.de>,
-Michael Ellerman <mpe@ellerman.id.au>,
-Nicholas Piggin <npiggin@gmail.com>,
-Christophe Leroy <christophe.leroy@csgroup.eu>,
-"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-Paul Walmsley <paul.walmsley@sifive.com>,
-Palmer Dabbelt <palmer@dabbelt.com>,
-Albert Ou <aou@eecs.berkeley.edu>,
-Heiko Carstens <hca@linux.ibm.com>,
-Vasily Gorbik <gor@linux.ibm.com>,
-Alexander Gordeev <agordeev@linux.ibm.com>,
-Christian Borntraeger <borntraeger@linux.ibm.com>,
-Sven Schnelle <svens@linux.ibm.com>,
-Yoshinori Sato <ysato@users.sourceforge.jp>,
-Rich Felker <dalias@libc.org>,
-John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-"David S. Miller" <davem@davemloft.net>,
-Andreas Larsson <andreas@gaisler.com>,
-Richard Weinberger <richard@nod.at>,
-Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-Johannes Berg <johannes@sipsolutions.net>,
-Thomas Gleixner <tglx@linutronix.de>,
-Ingo Molnar <mingo@redhat.com>,
-Borislav Petkov <bp@alien8.de>,
-Dave Hansen <dave.hansen@linux.intel.com>,
-x86@kernel.org,
-"H. Peter Anvin" <hpa@zytor.com>,
-Andy Lutomirski <luto@kernel.org>,
-Peter Zijlstra <peterz@infradead.org>,
-Chris Zankel <chris@zankel.net>,
-Max Filippov <jcmvbkbc@gmail.com>,
-Andrew Morton <akpm@linux-foundation.org>,
-Muchun Song <muchun.song@linux.dev>,
-Dennis Zhou <dennis@kernel.org>,
-Tejun Heo <tj@kernel.org>,
-Christoph Lameter <cl@linux.com>,
-Maxwell Bland <mbland@motorola.com>,
-Linus Walleij <linus.walleij@linaro.org>,
-David Hildenbrand <david@redhat.com>,
-Arnd Bergmann <arnd@arndb.de>,
-Ard Biesheuvel <ardb@kernel.org>,
-Ryan Roberts <ryan.roberts@arm.com>,
-Mark Rutland <mark.rutland@arm.com>,
-Nikhil V <quic_nprakash@quicinc.com>,
-Rick Edgecombe <rick.p.edgecombe@intel.com>,
-Baolin Wang <baolin.wang@linux.alibaba.com>,
-Bibo Mao <maobibo@loongson.cn>,
-Tianrui Zhao <zhaotianrui@loongson.cn>,
-Randy Dunlap <rdunlap@infradead.org>,
-Vlastimil Babka <vbabka@suse.cz>,
-Kent Overstreet <kent.overstreet@linux.dev>,
-Peter Xu <peterx@redhat.com>,
-Jiangfeng Xiao <xiaojiangfeng@huawei.com>,
-Alexandre Ghiti <alexghiti@rivosinc.com>,
-Jisheng Zhang <jszhang@kernel.org>,
-Conor Dooley <conor.dooley@microchip.com>,
-Mason Huo <mason.huo@starfivetech.com>,
-Sia Jee Heng <jeeheng.sia@starfivetech.com>,
-Song Shuai <songshuaishuai@tinylab.org>,
-Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-Qi Zheng <zhengqi.arch@bytedance.com>,
-Hugh Dickins <hughd@google.com>,
-Jason Gunthorpe <jgg@ziepe.ca>,
-Breno Leitao <leitao@debian.org>,
-Josh Poimboeuf <jpoimboe@kernel.org>,
-linux-alpha@vger.kernel.org,
-linux-kernel@vger.kernel.org,
-linux-snps-arc@lists.infradead.org,
-kasan-dev@googlegroups.com,
-linux-arm-kernel@lists.infradead.org,
-linux-csky@vger.kernel.org,
-linux-hexagon@vger.kernel.org,
-loongarch@lists.linux.dev,
-linux-m68k@lists.linux-m68k.org,
-linux-mips@vger.kernel.org,
-kvm@vger.kernel.org,
-linux-openrisc@vger.kernel.org,
-linux-parisc@vger.kernel.org,
-linuxppc-dev@lists.ozlabs.org,
-linux-riscv@lists.infradead.org,
-linux-s390@vger.kernel.org,
-linux-sh@vger.kernel.org,
-sparclinux@vger.kernel.org,
-linux-um@lists.infradead.org
-From: Maxwell Bland <mbland@motorola.com>
-Date: Fri, 5 Apr 2024 13:37:00 -0500
-Subject: [PATCH 3/5] mm: add vaddr param to pmd_populate_kernel
 
 This patch affords each architecture the ability to condition the
 population of page middle directory entries on the virtual address being
