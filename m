@@ -1,50 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B738A6FE2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 17:34:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DD98A748A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 21:20:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rz1Szidj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=4+Btd8dy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJp4L1LPcz3vbT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 01:34:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJv5C1fSvz3vbB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Apr 2024 05:20:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rz1Szidj;
+	dkim=pass (2048-bit key; unprotected) header.d=motorola.com header.i=@motorola.com header.a=rsa-sha256 header.s=DKIM202306 header.b=4+Btd8dy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=motorola.com (client-ip=148.163.152.46; helo=mx0b-00823401.pphosted.com; envelope-from=mbland@motorola.com; receiver=lists.ozlabs.org)
+Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJv4V0K5lz3cp1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 05:19:51 +1000 (AEST)
+Received: from pps.filterd (m0355090.ppops.net [127.0.0.1])
+	by m0355090.ppops.net (8.17.1.24/8.17.1.24) with ESMTP id 43GJGh1x031887;
+	Tue, 16 Apr 2024 19:19:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
+	message-id:to:cc:from:subject:date; s=DKIM202306; bh=nPCNGDgUTjF
+	Uct67CoPadwCT/CFTexpW/OoeIwZTdjg=; b=4+Btd8dy1CjItEc9rwZIbiDJX0O
+	IryHFnpJrw5oe4DQPENGAs7ttmfQJzDZwnXLDSnXwY7wftIvMkeFgbRc5OAVnmZ2
+	ix5LoQH/x4NIA2VyWXGzNdxZmgF9SSKEhtfsc2FcxkawKWoSNHnP+5OrnxNUzCBb
+	Y5TUGLzunEELVHJ0QqX4ck5OnO+Ac2BZvGjgXY5cNRqbEndmoKVo4lV1x4xpnlDc
+	+H3k6Z8rVz3mO2lU2p9oKAVrPTbHlMFK7GNnKNGrUemibsB2vO94HCm2IYpA5bVj
+	maFQTyviLAD7CoUYzPzWJNJysHcnZv14m/bxl7CsUucHEQ6PZMZNbvA0aaA==
+Received: from ilclpfpp01.lenovo.com ([144.188.128.67])
+	by m0355090.ppops.net (PPS) with ESMTPS id 3xhrya9mbx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 19:19:22 +0000 (GMT)
+Received: from va32lmmrp02.lenovo.com (va32lmmrp02.mot.com [10.62.176.191])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ilclpfpp01.lenovo.com (Postfix) with ESMTPS id 4VJv3t16vZzfBZq;
+	Tue, 16 Apr 2024 19:19:22 +0000 (UTC)
+Received: from ilclbld243.mot.com (ilclbld243.mot.com [100.64.22.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJp3X6Vlbz3cPm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Apr 2024 01:33:44 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 24E59CE1085;
-	Tue, 16 Apr 2024 15:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E27C113CE;
-	Tue, 16 Apr 2024 15:33:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713281619;
-	bh=KMJrLPwQ9g082JII6rT2LfmDOh7BKYUjdsOItQoJrbA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=rz1SzidjBfUZzeyqxX7pwf2W9793w97eV5Ag4zUuf/4q0uW+dUi0b4LJUuwWkaTkJ
-	 1zH2VKTR3L4P2cPrlQ0SNENy4AdjcrlmMcSoXl+x5KMpgWiyj92Y0YyNzT8CDXHJ2m
-	 pdPUv6ra+ko40LbtrVW8jNgJvXzZc5ChEsnRYIe8Y+QnDWCXGOrn1bo+bBze6RoHFg
-	 htoLEPNxFd9M1fY4OGjFfJWwMwn2w4lURkW85s5MuyGnBbh+HdNav3yFFxmVp7XgEd
-	 dLxMkKhOn7lycivhlOPRTqm6zxj8+7WMCB29r9uHPOVFMUV/uO2bo2HA9JOsH/tQNF
-	 L1RYfVNjfw7lA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: drop port I/O helpers for CONFIG_HAS_IOPORT=n
-Date: Tue, 16 Apr 2024 17:33:01 +0200
-Message-Id: <20240416153331.1617772-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	(Authenticated sender: mbland)
+	by va32lmmrp02.lenovo.com (Postfix) with ESMTPSA id 4VJv3s72K5z2Sl9H;
+	Tue, 16 Apr 2024 19:19:21 +0000 (UTC)
+Message-Id: <20240416122254.868007168-1-mbland@motorola.com>
+To: linux-mm@kvack.org
+From: Maxwell Bland <mbland@motorola.com>
+Subject: [PATCH 0/5 RESEND] mm: code and data partitioning improvements
+Date: Tue, 16 Apr 2024 14:18:14 -0500
+X-Proofpoint-ORIG-GUID: -WDqzSxHhbjwHU89TvM11yY6SxcxElaL
+X-Proofpoint-GUID: -WDqzSxHhbjwHU89TvM11yY6SxcxElaL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-16_17,2024-04-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 phishscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404160122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,248 +74,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Naresh Kamboju <naresh.kamboju@linaro.org>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Jeff Xu <jeffxu@chromium.org>, Baoquan He <bhe@redhat.com>, "Mike Rapoport \(IBM\)" <rppt@kernel.org>, Justin Stitt <justinstitt@google.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Carpenter <dan.carpenter@linaro.org>, Bill Wendling <morbo@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Maxwell Bland <mbland@motorola.com>, linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, Conor Dooley <conor.dooley@microchip.com>, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+Managing allocations to ensure code and data pages are not interleaved
+is not possible prior to this patch, as ASLR requires programming a
+dynamic _text offset while the vmalloc infrastructure maintains static
+VMALLOC_START and VMALLOC_END constants.
 
-Calling inb()/outb() on powerpc when CONFIG_PCI is disabled causes
-a NULL pointer dereference, which is bad for a number of reasons.
+In systems where code and data are interleaved at a PTE granularity,
+kernel improvements targeting the prevention of exploit stages which
+modify page tables are inefficient and less effective as individual PTE
+updates occur at high frequency and cannot be coarsely grouped at the
+PMD level or greater.
 
-After my patch to turn on -Werror in linux-next, this caused a
-compiler-time warning with clang:
+This patch adds minimal arch-specific callbacks to the initialization of
+vmalloc and when deciding whether to use a specific virtual memory area
+to satisfy a vmalloc request to provide the capability to prevent the
+allocation of specific virtual addresses under specific system states.
+By default these hooks are unimplemented.
 
-In file included from arch/powerpc/include/asm/io.h:672:
-arch/powerpc/include/asm/io-defs.h:43:1: error: performing pointer
-arithmetic on a null pointer has undefined behavior
-[-Werror,-Wnull-pointer-arithmetic]
-   43 | DEF_PCI_AC_NORET(insb, (unsigned long p, void *b, unsigned long c),
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   44 |                  (p, b, c), pio, p)
-      |                  ~~~~~~~~~~~~~~~~~~
+To further support the practical use of these callbacks, this patch also
+adds a virtual address parameter to pmd_populate_kernel, so that this
+interface matches the equivalent pte-level interface and architectures
+are not required to perform a reverse page table lookup to determine the
+vaddr being allocated during pmd creation.
 
-In this configuration, CONFIG_HAS_IOPORT is already disabled, and all
-drivers that use inb()/outb() should now depend on that (some patches are
-still in the process of getting marged).
+To demonstrate the impact and value of these changes, this patch
+implements support for dynamic PXNTable under aarch64 in 71 lines of
+code (a single "if" check during memory allocation), by checking the
+virtual address of a given vmalloc call to determine whether it is code
+or data. From experience in trying to implement kernel page table
+immutability and protections in KVM to prevent recent CVEs, e.g.
+CVE-2024-1086, this is a necessary first step.
 
-Hide all references to inb()/outb() in the powerpc code and the definitions
-when HAS_IOPORT is disabled to remove the possible NULL pointer access.
-The same should happin in asm-generic in the near future, but for now
-the empty inb() macros are still defined to ensure the generic version
-does not get pulled in.
+To better help maintainers and future developers, this patch expands
+ptdump.c so that non-leaf page table descriptors can be more easily
+noted in debug output by setting a note_non_leaf bool in the ptdump
+state.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
---
+Signed-off-by: Maxwell Bland <mbland@motorola.com>
 
-Cc: linux-kernel@vger.kernel.org>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Anders Roxell <anders.roxell@linaro.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: clang-built-linux <llvm@lists.linux.dev>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Jeff Xu <jeffxu@chromium.org>
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- arch/powerpc/include/asm/dma.h     | 12 ++++++++----
- arch/powerpc/include/asm/io-defs.h |  4 ++++
- arch/powerpc/include/asm/io.h      | 19 +++++++++++++++----
- arch/powerpc/kernel/iomap.c        |  4 ++++
- arch/powerpc/kernel/traps.c        |  2 +-
- 5 files changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/dma.h b/arch/powerpc/include/asm/dma.h
-index d97c66d9ae34..004a868f82c9 100644
---- a/arch/powerpc/include/asm/dma.h
-+++ b/arch/powerpc/include/asm/dma.h
-@@ -3,6 +3,12 @@
- #define _ASM_POWERPC_DMA_H
- #ifdef __KERNEL__
- 
-+/* The maximum address that we can perform a DMA transfer to on this platform */
-+/* Doesn't really apply... */
-+#define MAX_DMA_ADDRESS		(~0UL)
-+
-+#ifdef CONFIG_HAS_IOPORT
-+
- /*
-  * Defines for using and allocating dma channels.
-  * Written by Hennus Bergman, 1992.
-@@ -26,10 +32,6 @@
- #define MAX_DMA_CHANNELS	8
- #endif
- 
--/* The maximum address that we can perform a DMA transfer to on this platform */
--/* Doesn't really apply... */
--#define MAX_DMA_ADDRESS		(~0UL)
--
- #ifdef HAVE_REALLY_SLOW_DMA_CONTROLLER
- #define dma_outb	outb_p
- #else
-@@ -340,5 +342,7 @@ extern int request_dma(unsigned int dmanr, const char *device_id);
- /* release it again */
- extern void free_dma(unsigned int dmanr);
- 
-+#endif
-+
- #endif /* __KERNEL__ */
- #endif	/* _ASM_POWERPC_DMA_H */
-diff --git a/arch/powerpc/include/asm/io-defs.h b/arch/powerpc/include/asm/io-defs.h
-index faf8617cc574..8d2209af7759 100644
---- a/arch/powerpc/include/asm/io-defs.h
-+++ b/arch/powerpc/include/asm/io-defs.h
-@@ -20,12 +20,14 @@ DEF_PCI_AC_NORET(writeq, (u64 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
- DEF_PCI_AC_NORET(writeq_be, (u64 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
- #endif /* __powerpc64__ */
- 
-+#ifdef CONFIG_HAS_IOPORT
- DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
- DEF_PCI_AC_RET(inw, u16, (unsigned long port), (port), pio, port)
- DEF_PCI_AC_RET(inl, u32, (unsigned long port), (port), pio, port)
- DEF_PCI_AC_NORET(outb, (u8 val, unsigned long port), (val, port), pio, port)
- DEF_PCI_AC_NORET(outw, (u16 val, unsigned long port), (val, port), pio, port)
- DEF_PCI_AC_NORET(outl, (u32 val, unsigned long port), (val, port), pio, port)
-+#endif
- 
- DEF_PCI_AC_NORET(readsb, (const PCI_IO_ADDR a, void *b, unsigned long c),
- 		 (a, b, c), mem, a)
-@@ -40,6 +42,7 @@ DEF_PCI_AC_NORET(writesw, (PCI_IO_ADDR a, const void *b, unsigned long c),
- DEF_PCI_AC_NORET(writesl, (PCI_IO_ADDR a, const void *b, unsigned long c),
- 		 (a, b, c), mem, a)
- 
-+#ifdef CONFIG_HAS_IOPORT
- DEF_PCI_AC_NORET(insb, (unsigned long p, void *b, unsigned long c),
- 		 (p, b, c), pio, p)
- DEF_PCI_AC_NORET(insw, (unsigned long p, void *b, unsigned long c),
-@@ -52,6 +55,7 @@ DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned long c),
- 		 (p, b, c), pio, p)
- DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned long c),
- 		 (p, b, c), pio, p)
-+#endif
- 
- DEF_PCI_AC_NORET(memset_io, (PCI_IO_ADDR a, int c, unsigned long n),
- 		 (a, c, n), mem, a)
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 08c550ed49be..86c212fcbc0c 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -37,7 +37,6 @@ extern struct pci_dev *isa_bridge_pcidev;
-  * define properly based on the platform
-  */
- #ifndef CONFIG_PCI
--#define _IO_BASE	0
- #define _ISA_MEM_BASE	0
- #define PCI_DRAM_OFFSET 0
- #elif defined(CONFIG_PPC32)
-@@ -486,8 +485,7 @@ static inline u64 __raw_rm_readq(volatile void __iomem *paddr)
-  * to port it over
-  */
- 
--#ifdef CONFIG_PPC32
--
-+#if defined(CONFIG_PPC32) && defined(CONFIG_HAS_IOPORT)
- #define __do_in_asm(name, op)				\
- static inline unsigned int name(unsigned int port)	\
- {							\
-@@ -534,7 +532,7 @@ __do_out_asm(_rec_outb, "stbx")
- __do_out_asm(_rec_outw, "sthbrx")
- __do_out_asm(_rec_outl, "stwbrx")
- 
--#endif /* CONFIG_PPC32 */
-+#endif /* CONFIG_PPC32 && CONFIG_HAS_IOPORT */
- 
- /* The "__do_*" operations below provide the actual "base" implementation
-  * for each of the defined accessors. Some of them use the out_* functions
-@@ -577,6 +575,7 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_readq_be(addr)	in_be64(PCI_FIX_ADDR(addr))
- #endif /* !defined(CONFIG_EEH) */
- 
-+#ifdef CONFIG_HAS_IOPORT
- #ifdef CONFIG_PPC32
- #define __do_outb(val, port)	_rec_outb(val, port)
- #define __do_outw(val, port)	_rec_outw(val, port)
-@@ -592,6 +591,7 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_inw(port)		readw((PCI_IO_ADDR)_IO_BASE + port);
- #define __do_inl(port)		readl((PCI_IO_ADDR)_IO_BASE + port);
- #endif /* !CONFIG_PPC32 */
-+#endif
- 
- #ifdef CONFIG_EEH
- #define __do_readsb(a, b, n)	eeh_readsb(PCI_FIX_ADDR(a), (b), (n))
-@@ -606,12 +606,14 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_writesw(a, b, n)	_outsw(PCI_FIX_ADDR(a),(b),(n))
- #define __do_writesl(a, b, n)	_outsl(PCI_FIX_ADDR(a),(b),(n))
- 
-+#ifdef CONFIG_HAS_IOPORT
- #define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
- #define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
- #define __do_insl(p, b, n)	readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
- #define __do_outsb(p, b, n)	writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
- #define __do_outsw(p, b, n)	writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
- #define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-+#endif
- 
- #define __do_memset_io(addr, c, n)	\
- 				_memset_io(PCI_FIX_ADDR(addr), c, n)
-@@ -689,6 +691,7 @@ static inline void name at					\
- #define writesb writesb
- #define writesw writesw
- #define writesl writesl
-+
- #define inb inb
- #define inw inw
- #define inl inl
-@@ -848,8 +851,16 @@ static inline void iosync(void)
- #define inl_p(port)             inl(port)
- #define outl_p(val, port)       (udelay(1), outl((val), (port)))
- 
-+#define insb_p			insb
-+#define insw_p			insw
-+#define insl_p			insl
-+#define outsb_p			outsb
-+#define outsw_p			outsw
-+#define outsl_p			outsl
- 
-+#ifdef CONFIG_HAS_IOPORT
- #define IO_SPACE_LIMIT ~(0UL)
-+#endif
- 
- /**
-  * ioremap     -   map bus memory into CPU space
-diff --git a/arch/powerpc/kernel/iomap.c b/arch/powerpc/kernel/iomap.c
-index 72862a4d3a5d..33e36fda1ea8 100644
---- a/arch/powerpc/kernel/iomap.c
-+++ b/arch/powerpc/kernel/iomap.c
-@@ -13,7 +13,11 @@
- 
- void __iomem *ioport_map(unsigned long port, unsigned int len)
- {
-+#ifdef CONFIG_HAS_IOPORT
- 	return (void __iomem *) (port + _IO_BASE);
-+#else
-+	return NULL;
-+#endif
- }
- EXPORT_SYMBOL(ioport_map);
- 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index f23430adb68a..b1c34242d394 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -531,7 +531,7 @@ DEFINE_INTERRUPT_HANDLER_NMI(system_reset_exception)
-  */
- static inline int check_io_access(struct pt_regs *regs)
- {
--#ifdef CONFIG_PPC32
-+#if defined(CONFIG_PPC32) && defined(CONFIG_HAS_IOPORT)
- 	unsigned long msr = regs->msr;
- 	const struct exception_table_entry *entry;
- 	unsigned int *nip = (unsigned int *)regs->nip;
+Zero-eth, apologies for the triple mail of these patches. I am in the process
+of setting up a new SMTP/mail server for Motorola, but until then I've needed
+to script the raw SMTP in order to send appropriately formatted patch emails.
+
+First, thank you to a number of maintainers (Mark Rutland, Greg KH,
+Christoph Hellwig, Christophe Leroy, David Hildenbrand, Conor Dooley)
+for their feedback on
+
+<20240220203256.31153-1-mbland@motorola.com>
+and
+<CAP5Mv+ydhk=Ob4b40ZahGMgT-5+-VEHxtmA=-LkJiEOOU+K6hw@mail.gmail.com>
+
+This patch is a further refinement and overhaul of these prior two
+attempts. Also, apologies for the roughly two months delay between patch
+submissions! I had Motorola work to do.
+
+In support of testing this patch (but not included in this patch), I set
+note_non_leaf to true under arch/arm64/mm/ptdump.c and added
+PMD_TABLE_PXN to pte_bits to print out whether the PXNTable bit was set.
+The txt files under the following directory can be diff'ed to see the
+result:
+
+github.com/maxwell-bland/linux-patch-data/tree/main/code_data_parting/ptdump
+
+I also created a script to fetch and cross-compile the kernel for each
+of the 21 subarchitectures which required fixes to provide a virtual
+address to pmd_populate_kernel. I have no idea if it is useful and maybe
+one already exists, but it worked well for me over some alternatives
+(xcross, buildroot):
+
+github.com/maxwell-bland/x-linux
+
+As with the last patchset, I also measured performance using Torvald's 
+test-tlb program on an aarch64 QEMU instance, with results here:
+
+github.com/maxwell-bland/linux-patch-data/tree/main/code_data_parting/tlbperf
+
+As all changes to other arches are effectively no-ops, performance
+impacts in those domains are negligible. 
+
+Maxwell Bland (5):
+  mm: allow arch refinement/skip for vmap alloc
+  arm64: mm: code and data partitioning for aslr
+  mm: add vaddr param to pmd_populate_kernel
+  arm64: dynamic enforcement of PXNTable
+  ptdump: add state parameter for non-leaf callback
+
+ arch/alpha/include/asm/pgalloc.h             |  5 +-
+ arch/arc/include/asm/pgalloc.h               |  3 +-
+ arch/arc/mm/highmem.c                        |  2 +-
+ arch/arm/include/asm/kfence.h                |  2 +-
+ arch/arm/include/asm/pgalloc.h               |  3 +-
+ arch/arm/mm/kasan_init.c                     |  2 +-
+ arch/arm/mm/mmu.c                            |  2 +-
+ arch/arm64/include/asm/module.h              | 12 ++++
+ arch/arm64/include/asm/pgalloc.h             | 15 ++++-
+ arch/arm64/include/asm/vmalloc.h             | 17 ++++-
+ arch/arm64/kernel/Makefile                   |  2 +-
+ arch/arm64/kernel/module.c                   |  7 +-
+ arch/arm64/kernel/probes/kprobes.c           |  7 +-
+ arch/arm64/kernel/setup.c                    |  4 ++
+ arch/arm64/kernel/vmalloc.c                  | 71 ++++++++++++++++++++
+ arch/arm64/mm/ptdump.c                       | 10 +--
+ arch/arm64/mm/trans_pgd.c                    |  2 +-
+ arch/arm64/net/bpf_jit_comp.c                |  8 ++-
+ arch/csky/include/asm/pgalloc.h              |  2 +-
+ arch/hexagon/include/asm/pgalloc.h           |  2 +-
+ arch/loongarch/include/asm/pgalloc.h         |  3 +-
+ arch/loongarch/mm/init.c                     |  2 +-
+ arch/loongarch/mm/kasan_init.c               |  2 +-
+ arch/m68k/include/asm/mcf_pgalloc.h          |  2 +-
+ arch/m68k/include/asm/motorola_pgalloc.h     |  3 +-
+ arch/m68k/include/asm/sun3_pgalloc.h         |  3 +-
+ arch/microblaze/include/asm/pgalloc.h        |  2 +-
+ arch/mips/include/asm/pgalloc.h              |  2 +-
+ arch/mips/kvm/mmu.c                          |  2 +-
+ arch/nios2/include/asm/pgalloc.h             |  2 +-
+ arch/openrisc/include/asm/pgalloc.h          |  2 +-
+ arch/parisc/include/asm/pgalloc.h            |  5 +-
+ arch/parisc/mm/init.c                        |  6 +-
+ arch/powerpc/include/asm/book3s/32/pgalloc.h |  2 +-
+ arch/powerpc/include/asm/book3s/64/pgalloc.h |  2 +-
+ arch/powerpc/include/asm/nohash/32/pgalloc.h |  2 +-
+ arch/powerpc/include/asm/nohash/64/pgalloc.h |  2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c     |  2 +-
+ arch/powerpc/mm/kasan/init_32.c              |  4 +-
+ arch/powerpc/mm/kasan/init_book3e_64.c       |  9 ++-
+ arch/powerpc/mm/kasan/init_book3s_64.c       |  7 +-
+ arch/powerpc/mm/nohash/book3e_pgtable.c      |  2 +-
+ arch/powerpc/mm/pgtable_32.c                 |  4 +-
+ arch/powerpc/mm/ptdump/ptdump.c              |  2 +
+ arch/riscv/include/asm/pgalloc.h             |  2 +-
+ arch/riscv/kernel/hibernate.c                |  2 +-
+ arch/riscv/mm/ptdump.c                       |  6 +-
+ arch/s390/include/asm/pgalloc.h              |  2 +-
+ arch/s390/mm/dump_pagetables.c               |  6 +-
+ arch/sh/include/asm/pgalloc.h                |  2 +-
+ arch/sh/mm/init.c                            |  2 +-
+ arch/sparc/include/asm/pgalloc_32.h          |  3 +-
+ arch/sparc/include/asm/pgalloc_64.h          |  4 +-
+ arch/sparc/mm/init_64.c                      |  8 +--
+ arch/um/include/asm/pgalloc.h                |  4 +-
+ arch/x86/include/asm/pgalloc.h               |  3 +-
+ arch/x86/mm/dump_pagetables.c                |  3 +-
+ arch/x86/mm/init_64.c                        | 14 +++-
+ arch/x86/mm/ioremap.c                        |  2 +-
+ arch/x86/mm/kasan_init_64.c                  |  2 +-
+ arch/xtensa/include/asm/pgalloc.h            |  2 +-
+ include/linux/mm.h                           |  4 +-
+ include/linux/ptdump.h                       |  1 +
+ include/linux/vmalloc.h                      | 24 +++++++
+ mm/hugetlb_vmemmap.c                         |  4 +-
+ mm/kasan/init.c                              | 14 ++--
+ mm/memory.c                                  |  4 +-
+ mm/percpu.c                                  |  2 +-
+ mm/pgalloc-track.h                           |  3 +-
+ mm/ptdump.c                                  | 13 ++++
+ mm/sparse-vmemmap.c                          |  2 +-
+ mm/vmalloc.c                                 | 16 +++--
+ 72 files changed, 299 insertions(+), 107 deletions(-)
+ create mode 100644 arch/arm64/kernel/vmalloc.c
+
+
+base-commit: 0bbac3facb5d6cc0171c45c9873a2dc96bea9680
 -- 
 2.39.2
 
