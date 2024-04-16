@@ -1,92 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1D88A649D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 09:14:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356918A64DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 09:19:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaZUWurk;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaZUWurk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YXr143cE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YXr143cE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJZzv6n3cz3f0P
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 17:14:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJb5F0FcSz3vYR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 17:19:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaZUWurk;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RaZUWurk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YXr143cE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YXr143cE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJZz83ngwz3cRd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 17:14:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJb4X3bq0z2ykC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 17:18:52 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713251648;
+	s=mimecast20190719; t=1713251929;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8bMa2NdMCt/jjygLXBA/F/vbbeeUkOfz7KmWUdw8p0k=;
-	b=RaZUWurk8pessVuNqQ28W5LlbMWH8UI+XPE1dYQ/Z6f7tjYHM9dW7FUsbjYwjDzNKFvaoI
-	y5cQB8Nqc69caUiHVqUXrjPr40BDkOrfFSDmmT/+8qy+7c1lcObByI8MTp44j8L0s9Xkcf
-	hREF5n+rlldFtxUs83X5WNtBycmlaqM=
+	bh=e5e+KDoend6ys1L9LmDT595ey+XRcm1nHptmRwP1piM=;
+	b=YXr143cETpKSgloF9DlJhmutws8PYwZ5qfOad/NzPY4rOm6AvJm5K5KplHx7LaROM+PHc3
+	i7Ru7Pqeaz2kRZ/2cY1ueOT0nx9yYNglumWm3HTIlWV3W74d35s0oAE9+JGN/QpyqfIyDa
+	/OnL+u9B2MBEodJd5AgTknomnShwoEs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713251648;
+	s=mimecast20190719; t=1713251929;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8bMa2NdMCt/jjygLXBA/F/vbbeeUkOfz7KmWUdw8p0k=;
-	b=RaZUWurk8pessVuNqQ28W5LlbMWH8UI+XPE1dYQ/Z6f7tjYHM9dW7FUsbjYwjDzNKFvaoI
-	y5cQB8Nqc69caUiHVqUXrjPr40BDkOrfFSDmmT/+8qy+7c1lcObByI8MTp44j8L0s9Xkcf
-	hREF5n+rlldFtxUs83X5WNtBycmlaqM=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=e5e+KDoend6ys1L9LmDT595ey+XRcm1nHptmRwP1piM=;
+	b=YXr143cETpKSgloF9DlJhmutws8PYwZ5qfOad/NzPY4rOm6AvJm5K5KplHx7LaROM+PHc3
+	i7Ru7Pqeaz2kRZ/2cY1ueOT0nx9yYNglumWm3HTIlWV3W74d35s0oAE9+JGN/QpyqfIyDa
+	/OnL+u9B2MBEodJd5AgTknomnShwoEs=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-VNSgj_VeMJqokmsq8hMr6Q-1; Tue, 16 Apr 2024 03:14:03 -0400
-X-MC-Unique: VNSgj_VeMJqokmsq8hMr6Q-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a54c11dccfaso86026166b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 00:14:03 -0700 (PDT)
+ us-mta-633-Z0QRIv7_PNCg4DtliYzy3g-1; Tue, 16 Apr 2024 03:18:47 -0400
+X-MC-Unique: Z0QRIv7_PNCg4DtliYzy3g-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2da2f30cb50so27138971fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 00:18:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713251643; x=1713856443;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8bMa2NdMCt/jjygLXBA/F/vbbeeUkOfz7KmWUdw8p0k=;
-        b=O8tR9q7v7XRWpzfbnc7Pt165CuOxPb+3DrNHLLm7ytHvAJCuW3N1myoCobV13AleBH
-         PQMZcTsXzqAPWuFKVyjaScKtKiO2D5bzbOKROCghHdYoZgq7J6LgfMS/yTWzQtapqtJh
-         /FAjCZowaMyLEAzVI1gUd6LrKLpW/lJJEpLDiw2IZ/sXWCOYTqubMv7sqTGpY+YpQp+b
-         ZbRzBXIveioPOn2LVP/kEfZNzFaTAURssRtd7r4nxTcwfW3G/zqpgA3bFWClhfceNDro
-         MMNRboHkA+0UrvJVLWHaGFLseY47/Bu7+pBr8pKNWlFOuP0QXn1TrmHNiSZsBBIZL/A6
-         B0JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKJTwNU+txdBnjPjj9EKaNJNyPRIC2FYs56bcdvUb9kGNV0VRBvw5ZcX3vfUd+obWT48tE3XDWeH8vncoEN2TslrrHyhgOORNNl6C2NQ==
-X-Gm-Message-State: AOJu0YxhpGIJ7OUDXnLeOIo1vqFaPSTpHrXsj3wkKuKGqeid7zltU9FB
-	4Bd0UCYCLfDnFvKuTumg8mw3ygemYFEca4zzmZb4HP/kz0hGvKEdqPCn3A2noRMu+1V3gNmL7UC
-	LwYQEUp397mHHwL+/No+eS4dIc+4tehZxHaKbRAQMypf0/yccy4mNDJzPRhbusd0=
-X-Received: by 2002:a17:907:36ca:b0:a52:551e:7502 with SMTP id bj10-20020a17090736ca00b00a52551e7502mr7064211ejc.9.1713251642909;
-        Tue, 16 Apr 2024 00:14:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjGVg/wKHQOfBuW1kLaLPCindSvX/WpMQR9ygezy0OgodDCIT2qFBWEa706lvyo3JP6F8U8g==
-X-Received: by 2002:a17:907:36ca:b0:a52:551e:7502 with SMTP id bj10-20020a17090736ca00b00a52551e7502mr7064184ejc.9.1713251642519;
-        Tue, 16 Apr 2024 00:14:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713251926; x=1713856726;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e5e+KDoend6ys1L9LmDT595ey+XRcm1nHptmRwP1piM=;
+        b=ZGuVNiUZqnU7bLmtXUblbtnHfVpDEuMlvrP70bEepDAda3jUqiMv7orPmkMdwSnMiK
+         de6rhgEXAAA/e5Fz8AFRd7z29w1TeEVJsuSxlues3cUS85as9ryhlEo9gcEKSSF8CoND
+         vlE9i4yeIE1sINs7FEI9acf4BXA7ftVvc57WH6WJGI8cPeil3tT/SQHNF3EBAfwvuxT7
+         MtxjIFAGsdZBdPRHf3Iwq7DxLd50ca8lIMHoqYFuU7t8kinpXSllrvWNMC3Ude7LLTLK
+         2k0AbmuLFCiTybyupIn4Geja3JYVd0dTnojDAAT8TA5sfnyYUFGufoyzureNCnMVID2T
+         O3jA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRKNtLODJsudwfDonfWK+yhzwBK1qLj+A9RtzZgemE+kfjFXuRrz05Qkr2xX8mu1wRysY3aH7UTzuxWKMTzfwIEwgOhUjCT0zCXfVnYA==
+X-Gm-Message-State: AOJu0YzjnwCtCV5sC2iEwPJFEciLgLIJ8Awh49kdvGepU6eFD5urUm+f
+	6FR692tOwmeSkX/IzwZSttzIpaG9YW16atkAd5f1jZqaVWPB7KO6/+yzyfk9sb9vEGCEjdAJtrO
+	HF0CEV+zQxKTw7UI72frLydjxi4CI6mHnKSPf5lGGh7RLxJpBO/d2vWxAsHLVpME=
+X-Received: by 2002:a19:f013:0:b0:513:dd23:7a02 with SMTP id p19-20020a19f013000000b00513dd237a02mr7870991lfc.26.1713251926384;
+        Tue, 16 Apr 2024 00:18:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjafICuo5LMwPp30unfFJwJWF4tCZLumMUMpRA+B5uETtyWY+iRGeCE31PSoDRCrKXhxjOaQ==
+X-Received: by 2002:a19:f013:0:b0:513:dd23:7a02 with SMTP id p19-20020a19f013000000b00513dd237a02mr7870975lfc.26.1713251925956;
+        Tue, 16 Apr 2024 00:18:45 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-179-50.web.vodafone.de. [109.43.179.50])
-        by smtp.gmail.com with ESMTPSA id bv21-20020a170906b1d500b00a520b294d9dsm6450771ejb.150.2024.04.16.00.14.01
+        by smtp.gmail.com with ESMTPSA id k21-20020a17090666d500b00a518bcb41c1sm6421258ejp.126.2024.04.16.00.18.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Apr 2024 00:14:02 -0700 (PDT)
-Message-ID: <eb6044c5-27f6-4d71-a34c-03339a14f867@redhat.com>
-Date: Tue, 16 Apr 2024 09:14:00 +0200
+        Tue, 16 Apr 2024 00:18:45 -0700 (PDT)
+Message-ID: <bc91c2e1-6099-46c5-bbca-18bb7adb82d2@redhat.com>
+Date: Tue, 16 Apr 2024 09:18:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v8 09/35] powerpc: Fix stack backtrace
- termination
-To: Nicholas Piggin <npiggin@gmail.com>
-References: <20240405083539.374995-1-npiggin@gmail.com>
- <20240405083539.374995-10-npiggin@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v8 06/35] gitlab-ci: Run migration selftest
+ on s390x and powerpc
 From: Thomas Huth <thuth@redhat.com>
+To: Nico Boehr <nrb@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+References: <20240405083539.374995-1-npiggin@gmail.com>
+ <20240405083539.374995-7-npiggin@gmail.com>
+ <171259239221.48513.3205716585028068515@t14-nrb>
+ <e6c452bd-9101-40b7-ae3b-02400fed9e42@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -129,12 +131,12 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240405083539.374995-10-npiggin@gmail.com>
+In-Reply-To: <e6c452bd-9101-40b7-ae3b-02400fed9e42@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -150,23 +152,47 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/04/2024 10.35, Nicholas Piggin wrote:
-> The backtrace handler terminates when it sees a NULL caller address,
-> but the powerpc stack setup does not keep such a NULL caller frame
-> at the start of the stack.
+On 11/04/2024 21.22, Thomas Huth wrote:
+> On 08/04/2024 18.06, Nico Boehr wrote:
+>> Quoting Nicholas Piggin (2024-04-05 10:35:07)
+>>> The migration harness is complicated and easy to break so CI will
+>>> be helpful.
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   .gitlab-ci.yml      | 32 +++++++++++++++++++++++---------
+>>>   s390x/unittests.cfg |  8 ++++++++
+>>>   2 files changed, 31 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+>>> index ff34b1f50..60b3cdfd2 100644
+>>> --- a/.gitlab-ci.yml
+>>> +++ b/.gitlab-ci.yml
+>> [...]
+>>> @@ -135,7 +147,7 @@ build-riscv64:
+>>>   build-s390x:
+>>>    extends: .outoftree_template
+>>>    script:
+>>> - - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu
+>>> + - dnf install -y qemu-system-s390x gcc-s390x-linux-gnu nmap-ncat
+>>>    - mkdir build
+>>>    - cd build
+>>>    - ../configure --arch=s390x --cross-prefix=s390x-linux-gnu-
+>>> @@ -161,6 +173,8 @@ build-s390x:
+>>>         sclp-1g
+>>>         sclp-3g
+>>>         selftest-setup
+>>> +      selftest-migration-kvm
+>>
+>> We're running under TCG in the Gitlab CI. I'm a little bit confused why
+>> we're running a KVM-only test here.
 > 
-> This happens to work on pseries because the memory at 0 is mapped and
-> it contains 0 at the location of the return address pointer if it
-> were a stack frame. But this is fragile, and does not work with powernv
-> where address 0 contains firmware instructions.
-> 
-> Use the existing dummy frame on stack as the NULL caller, and create a
-> new frame on stack for the entry code.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   powerpc/cstart64.S | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
+> The build-s390x job is TCG, indeed, but we have the "s390x-kvm" job that 
+> runs on a KVM-capable s390x host, so it could be added there?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I now gave it a try and it seems to work, so I updated this patch and pushed 
+it to the repository now.
+
+  Thomas
+
 
