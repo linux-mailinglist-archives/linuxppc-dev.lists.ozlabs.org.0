@@ -2,75 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFA78A5E47
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 01:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4CD8A6041
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 03:28:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TY/nhKHK;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gao74YaN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJNgB1yV2z3dLl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 09:29:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJRJB2vJDz3vXy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 11:28:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TY/nhKHK;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gao74YaN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=jain.abhinav177@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJBx64wWsz3dV3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 02:11:06 +1000 (AEST)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6ed9fc77bbfso2639984b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Apr 2024 09:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713197463; x=1713802263; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=idKY/AXCx9ADdtSZX2SyJbtyHMfNUkXAqrrB1Te8B8I=;
-        b=TY/nhKHKN/ZTQk8dzR3aUdypI9CnE3t507kEIcEFa1F68SbLgWsnhmf3Ym+04CFwI7
-         sx6qsXxWj4H2GtHY3YMtLiidVDPb6q4R6GRCN8cRArY8Fw7zjQfLW0l/XfiaZKhypah7
-         V1a2P79Z871aWCzBqcTaciefF4B80yHKnuwk94g3tQRHgl3eSM3MYbM/nTna165tGTmQ
-         bTd6kdGIK6BSKYMKPsyg8jcURl6v1sIojkYcu4620ruysqmDjb+gChGFxQTAPctZAqzf
-         sIHLWf+1HEDujmMVL5Z2JDHUJm1nq9jx7YX7Of8p3qUeenogwbpoY+jwXCdRwnq7Gyy9
-         1YgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713197463; x=1713802263;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=idKY/AXCx9ADdtSZX2SyJbtyHMfNUkXAqrrB1Te8B8I=;
-        b=AwJg2k3X3Hmb16zyMUwa2YpU8QywgvWPDjYEW25lW/INvK7CRZLqPYJaJ1nHm72VHv
-         xgAnQdzeGPHKYjdB+VUGz0nCMZeR4ufBmMi6BrRv3QoqD4NeIHYekc0pnbrk3BDWwC4i
-         iUbrds7MIuoRMy/oskFDu6mStqEZUePgtInJOdv0buZbGHD/mmTgLSAXSrQ+p7AiOvsY
-         OyKHgtw/TR+kV8zw6YpLJRTUGxZiksSSJ6kzAk+jDo9WbMqrOp4Bm/8AzH59uY0lUP07
-         lyXa9MHzQPE6EXgE6BONkRpUj/NL+1K+7Cba8KmW6xdLUIAOm0fvputTBhRv55kUeBVm
-         BV8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVb1yjRd8TVkkwxNXCo3upYxDYoXg68oKJ+TNSlOs7mVUif/SnYBAnjfv4CFJoyRN+UHUNhCViqxN+iW8xzO11m9mRrSkTSpGlDMUfrEA==
-X-Gm-Message-State: AOJu0YyPq+05xpoxhvR1AInzwcQsgRgiTyxuqRyHG51ZmEeUIeh/v9Cx
-	4gh1FZ+5K/gcvanFhaUYG8HuzVlmBnGyT2t98oTcYXzYIvxDbasS
-X-Google-Smtp-Source: AGHT+IHCW5enMeqSxfKAKz6Q3Kx5ErcaMW7349ZcFBrKfz5bX7YYXC6EAqUVqihnGGZwN6vufHHUqw==
-X-Received: by 2002:a05:6a20:560d:b0:1a7:3095:b3b9 with SMTP id ir13-20020a056a20560d00b001a73095b3b9mr8753963pzc.22.1713197463496;
-        Mon, 15 Apr 2024 09:11:03 -0700 (PDT)
-Received: from dev0.. ([49.43.161.106])
-        by smtp.gmail.com with ESMTPSA id 6-20020a056a00070600b006eab6f3d8a9sm7414200pfl.207.2024.04.15.09.10.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 09:11:03 -0700 (PDT)
-From: Abhinav Jain <jain.abhinav177@gmail.com>
-To: mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	bhelgaas@google.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] PCI/AER: Print error message as per the TODO
-Date: Mon, 15 Apr 2024 16:10:55 +0000
-Message-Id: <20240415161055.8316-1-jain.abhinav177@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Tue, 16 Apr 2024 09:29:06 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJRHS5tKFz2xWJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 11:27:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713230869; x=1744766869;
+  h=date:from:to:cc:subject:message-id;
+  bh=WlqGZHVKa1kugtaITayFcvItM+ZWu4z1u4dLhnBvxro=;
+  b=Gao74YaNjO2oC9CDzN8XfSQYNXTgVU7t8S6FC44dzank4VFmlOOtVurN
+   275kOQzS7nPYrOsDVbMSIjtH8yJZEjc7P31d7D31ymhNS5v0wjtbXgSNI
+   J1cEieRf6y+M6QdWrX9Iz5rBfP9J2+brQfxtcIfjjS451W1GjUEqsZbDv
+   HudxU91qiuedijEZCrJKm13zRBPcla+POkBrnFgkoiffMvmeT3wICUA27
+   ChNcilhtUJhJvbvdJPnZIAwZ5xXhbCt4PV9kwW+Pmw3f/BuDOKsemmjvb
+   iblzHEPKBo/q/m4zAuhQ4S11tNd1H8elBHE81AF7dUkkBK43rvLn2Q01M
+   g==;
+X-CSE-ConnectionGUID: I+bEIK94RDKSpiQ43euy5g==
+X-CSE-MsgGUID: YQ9XFZR1QEOOrG17oWf5/Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="20069417"
+X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; 
+   d="scan'208";a="20069417"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 18:27:40 -0700
+X-CSE-ConnectionGUID: Oyl74D8WRiuLnJsB7X1s8A==
+X-CSE-MsgGUID: QHpEX2y4TD6SKKSONv2tkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; 
+   d="scan'208";a="53282078"
+Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Apr 2024 18:27:39 -0700
+Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rwXbk-0004ns-0P;
+	Tue, 16 Apr 2024 01:27:36 +0000
+Date: Tue, 16 Apr 2024 09:27:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 77dff0c0552b56a696445badc84d6284395fb465
+Message-ID: <202404160922.lrlGYLNN-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,31 +69,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: javier.carrasco.cruz@gmail.com, Abhinav Jain <jain.abhinav177@gmail.com>, skhan@linuxfoundation.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a pr_err() to print the add device error in find_device_iter()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 77dff0c0552b56a696445badc84d6284395fb465  Merge tag 'v6.9-rc3' into merge
 
-Signed-off-by: Abhinav Jain <jain.abhinav177@gmail.com>
----
- drivers/pci/pcie/aer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+elapsed time: 725m
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index ac6293c24976..0e1ad2998116 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -885,7 +885,8 @@ static int find_device_iter(struct pci_dev *dev, void *data)
- 		/* List this device */
- 		if (add_error_device(e_info, dev)) {
- 			/* We cannot handle more... Stop iteration */
--			/* TODO: Should print error message here? */
-+			pr_err("find_device_iter: Cannot handle more devices.
-+					Stopping iteration");
- 			return 1;
- 		}
- 
+configs tested: 179
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     nsimosci_hs_defconfig   gcc  
+arc                   randconfig-001-20240416   gcc  
+arc                   randconfig-002-20240416   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                        clps711x_defconfig   clang
+arm                                 defconfig   clang
+arm                         lpc32xx_defconfig   clang
+arm                            mmp2_defconfig   gcc  
+arm                   randconfig-001-20240416   clang
+arm                   randconfig-002-20240416   clang
+arm                   randconfig-003-20240416   gcc  
+arm                   randconfig-004-20240416   clang
+arm                        spear6xx_defconfig   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240416   gcc  
+arm64                 randconfig-002-20240416   clang
+arm64                 randconfig-003-20240416   gcc  
+arm64                 randconfig-004-20240416   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240416   gcc  
+csky                  randconfig-002-20240416   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240416   clang
+hexagon               randconfig-002-20240416   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240416   gcc  
+i386         buildonly-randconfig-002-20240416   gcc  
+i386         buildonly-randconfig-003-20240416   clang
+i386         buildonly-randconfig-004-20240416   clang
+i386         buildonly-randconfig-005-20240416   clang
+i386         buildonly-randconfig-006-20240416   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240416   clang
+i386                  randconfig-002-20240416   clang
+i386                  randconfig-003-20240416   gcc  
+i386                  randconfig-004-20240416   clang
+i386                  randconfig-005-20240416   gcc  
+i386                  randconfig-006-20240416   gcc  
+i386                  randconfig-011-20240416   clang
+i386                  randconfig-012-20240416   gcc  
+i386                  randconfig-013-20240416   clang
+i386                  randconfig-014-20240416   gcc  
+i386                  randconfig-015-20240416   clang
+i386                  randconfig-016-20240416   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240416   gcc  
+loongarch             randconfig-002-20240416   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                          hp300_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                        bcm47xx_defconfig   clang
+mips                     loongson1c_defconfig   gcc  
+mips                           rs90_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240416   gcc  
+nios2                 randconfig-002-20240416   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240416   gcc  
+parisc                randconfig-002-20240416   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                   currituck_defconfig   clang
+powerpc                   lite5200b_defconfig   clang
+powerpc                 mpc8313_rdb_defconfig   gcc  
+powerpc                 mpc832x_rdb_defconfig   gcc  
+powerpc               randconfig-001-20240416   clang
+powerpc               randconfig-002-20240416   gcc  
+powerpc               randconfig-003-20240416   clang
+powerpc64             randconfig-001-20240416   gcc  
+powerpc64             randconfig-002-20240416   gcc  
+powerpc64             randconfig-003-20240416   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240416   gcc  
+riscv                 randconfig-002-20240416   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240416   clang
+s390                  randconfig-002-20240416   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                    randconfig-001-20240416   gcc  
+sh                    randconfig-002-20240416   gcc  
+sh                      rts7751r2d1_defconfig   gcc  
+sh                             sh03_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240416   gcc  
+sparc64               randconfig-002-20240416   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240416   gcc  
+um                    randconfig-002-20240416   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240416   gcc  
+x86_64       buildonly-randconfig-002-20240416   gcc  
+x86_64       buildonly-randconfig-003-20240416   gcc  
+x86_64       buildonly-randconfig-004-20240416   clang
+x86_64       buildonly-randconfig-005-20240416   gcc  
+x86_64       buildonly-randconfig-006-20240416   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240416   clang
+x86_64                randconfig-002-20240416   clang
+x86_64                randconfig-003-20240416   gcc  
+x86_64                randconfig-004-20240416   clang
+x86_64                randconfig-005-20240416   clang
+x86_64                randconfig-006-20240416   gcc  
+x86_64                randconfig-011-20240416   gcc  
+x86_64                randconfig-012-20240416   clang
+x86_64                randconfig-013-20240416   clang
+x86_64                randconfig-014-20240416   clang
+x86_64                randconfig-015-20240416   clang
+x86_64                randconfig-016-20240416   gcc  
+x86_64                randconfig-071-20240416   clang
+x86_64                randconfig-072-20240416   clang
+x86_64                randconfig-073-20240416   clang
+x86_64                randconfig-074-20240416   clang
+x86_64                randconfig-075-20240416   gcc  
+x86_64                randconfig-076-20240416   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240416   gcc  
+xtensa                randconfig-002-20240416   gcc  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
