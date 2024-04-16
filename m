@@ -1,91 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7968A69FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 13:57:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27EE8A6A63
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 14:11:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=TZBJaeaO;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=YWD6x8Ms;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=HyR9y+hP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VJjFT0Pxjz3vfd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 21:57:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VJjZF374Rz3vcs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Apr 2024 22:11:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=TZBJaeaO;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=YWD6x8Ms;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=HyR9y+hP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.144; helo=fout1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 330 seconds by postgrey-1.37 at boromir; Tue, 16 Apr 2024 22:10:51 AEST
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJjDj3rvbz3cp1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 21:56:21 +1000 (AEST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id C71911380923;
-	Tue, 16 Apr 2024 07:56:17 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 16 Apr 2024 07:56:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1713268577; x=1713354977; bh=h7Ln9pZ+NP
-	UuES0mE7CzS9ETsJon3TNjqsNEMWr/MVg=; b=TZBJaeaOb0soz5m3pqRKVJFAZ6
-	6izkxtQ1BDmlqo+a9lvABlWI6XZmJM8qlnZKzuMq8rea5riO39xA3OBN4tiahpGW
-	efy9MR+77P2HzmVYrevSldIlU9fc5UEECnXiCA6U7pFSY12n2/ebCjTlIAHLy9DP
-	EEPbqNrUOkIeFJxdPC4KEZRDMRcHw5ggujpkUUwlm/y4yZal8urYAuMTYcrewhm4
-	8pDsV2/teineypM1QjXrEmEV9etIThOBOBxYp77YVf/8DD/pzewhdiWREj7z8+MX
-	8jtSqPRqyYZDdE8wqobU8M1wwApTNcd7Pclztq2XxPE2C+eA4C/iGbND+icQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1713268577; x=1713354977; bh=h7Ln9pZ+NPUuES0mE7CzS9ETsJon
-	3TNjqsNEMWr/MVg=; b=YWD6x8MsxAjQlo1yywyXxb3v/kbjviAjfzyzz5IMQX7Y
-	VJaaE3UTITJwIXJ6e52Eq+zWeAinVDNBWRenMLn64W1dv1iQRd1FWWW/xdy/s6nI
-	c1gofNB7RhaIcHjYiqH69J9FJq8wtAKma0mcRbV/dJBAIGGouMFQWC1XemA4Dlyn
-	BO2AwB4DkQEJ5tCLA3yoy4+vPOTBgEGWL6zlx5dOYkRuH1Pbjp/22Zy23hlo9n3L
-	l5hZUk581ge5R5027gTa7CoEy53TD+Ew9pUYfslcEgC2kCO3NAziKb/agzg5XzCM
-	wRNCSDhsIOjafW04RN2r7ImLnCApwjUCyIh21gqBUQ==
-X-ME-Sender: <xms:YWceZtbf-_WHpoVzfU21gFsABKry4JZb8IitZfqUBfOJBKNMnPMpFw>
-    <xme:YWceZkauljyiD1MeCrigtaDtBFFowPqi2BXKFolY-Z9QhxAKjZlJ4qTYbHAjYT8Tw
-    bGneYsrH6C01xbIFLw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejhedgvdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:YWceZv9vo4AHySWT_OZdZsnc4uBjJ-ictSJYEKgQwE-xwrvbmxaXqw>
-    <xmx:YWceZro1LUIDNMKlrR6h-juc8AN9RAkY2cSftGwM78qGav_AI7CuXA>
-    <xmx:YWceZorAQNt07Imz0vMyVoPhjdGGM53gL2IAbe4FDFglVKL9J0mejQ>
-    <xmx:YWceZhSTrDOAKvkeiAbNO8_dDUy--R25lICa1a3kYAz4-ptVKWQBzg>
-    <xmx:YWceZjBqMyo36wIOh3Ce_9N3NZFvSm46pPP3yKZ8KbhUmbY8xCDe6ibk>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 4441BB6008D; Tue, 16 Apr 2024 07:56:17 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VJjYR4WXmz3dVq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Apr 2024 22:10:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1713269442; x=1713874242; i=markus.elfring@web.de;
+	bh=sw6GZmEfJHOtxMwjc0tAhb+KXK5KwEfpIepkP/GZl2g=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=HyR9y+hP5G9p0+arBUWoIC0xOqvu05XJTCxevOffkIhaVTUiaMJuNM+s1gg81t9f
+	 cfS23Jox0CjCKaSUgQOVp3zFamld+zt0rInLrZOUUBkKYb4T71jSgO3Wruo7ok9gl
+	 soEOYgLttUZMu+ZxYVtjJBx+DaPh77X7wZinJeK0DoMWs8RPqWpLUPBf6tELwg/57
+	 uWvaaRl+ajgNjY/+G6J2aiGOoocEz13gAoMbWSmGfbfOxZjdzclZ2L+1/A1vElhqG
+	 pzkDpb1cyFr1YFf5bPJsHzgXYD6ZTcdDi1uB3+LsmnVypA+kFhBCCjXSrQ1u5Z1ss
+	 fE7DgQn9ocdMLjKq7A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MFaui-1rxESE3P82-00H38p; Tue, 16
+ Apr 2024 14:04:40 +0200
+Message-ID: <d3818747-cb02-409f-99a0-7e8c1338b859@web.de>
+Date: Tue, 16 Apr 2024 14:04:39 +0200
 MIME-Version: 1.0
-Message-Id: <f7d8cd55-5a14-4391-884f-0b072790fa41@app.fastmail.com>
-In-Reply-To: <3d139886-9549-4384-918a-2d18480eb758@app.fastmail.com>
-References:  <CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com>
- <3d139886-9549-4384-918a-2d18480eb758@app.fastmail.com>
-Date: Tue, 16 Apr 2024 13:55:57 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Naresh Kamboju" <naresh.kamboju@linaro.org>,
- "open list" <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
- "Linux Regressions" <regressions@lists.linux.dev>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: powerpc: io-defs.h:43:1: error: performing pointer arithmetic on a null
- pointer has undefined behavior [-Werror,-Wnull-pointer-arithmetic]
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [0/2] powerpc/powernv/vas: Adjustments for two function
+ implementations
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ kernel-janitors@vger.kernel.org, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <7be66990-de9e-488b-ad6d-fafd1c7bb34c@web.de>
+ <ee6022b8-3aeb-4e6e-99f5-2668dd344e0a@web.de> <87plupbm0c.fsf@mail.lhotse>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <87plupbm0c.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zKTayE+y3pYrRCZmB87Ixt/657oQ3H2YB0/2sGYhXb1MTtV8tUe
+ /Ie+mZa7KKHvaoOkIUKwfc6FAzADz0rFlB5qsj3hUrVYvoigUOWDTZoWRRVyYoMTf8Z8Xed
+ dOdN4nUMvdSGDJpS1cuy9DRYnuL237JWBZD1/wbwZoPnfILPLxJQ1hDa9dB3tLMeuG7A4Aq
+ bOyXnIhDAh4k3xNmJdezw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ssEZ4LbHNOY=;txq0RqchH5kPdfjgpxuse9c5Md6
+ 5EXB2L+PLNfB8RRYRzvVobI+JOn/BnJNUKV9VTiXgMh2q8c3EHv+9KUUWzjTwSTbC6Ik9eda9
+ WqN3WqSgt/uRKUd5TN+RWpXkOI1evgMExGJvRYEEkjnpX7+E62KPTQJ6cgqr58/nt5OwtnQKy
+ h352PxrOnbrzUorsF+zab1L2xjsfTPwmDo3CklRZVfnzpGFxFGPqHqXoBjq4T3c7apbjVLmZ0
+ 5rVIrBAOnGzaX3Ccnz9q0CaaNZnCOsz0comTi1Pk9YsXQ4XewnCYu+q9fQNLZ1Q0MQfgdYGrT
+ SXxpvixCw+6lVTbeRh3yvODJS41HuKZ6g3sicfjtTte+nimx9B2LsmoJS5xcoDZFx1DF45grm
+ HuJvNKZ6qkyxe+qIE2Vr552ghmwkTWNvjwY2Z7u1gP/bf2/Z+/0xzzotL55L/e0+gVSo7fDUF
+ NskrrXJz5scFc3WVTrXi0FilvKMpgYMSAY247+HC/v0mwzkSE6dw14Njd36kSkjJ1pUQFiuWc
+ KeRhrF3QE/rwlQQo0dIEdYBsng91mMFv4ciftorZOJBJ37WPFTxdWNsYQ90gBte6PI5jwYW51
+ TqMAeVTvhKWOveiJowoZzm/JB2F/wttn6vVTnQPB0rG+zRlTq0z37BL93Cox4Bbcs+Y2fNQY+
+ SdCiZPG0qgUJ1vVcpyY1DBOtFb0uXpA4CrSgHnxDhYerhyEUpHIMAeG/bBBsBdmU94vWgo8hE
+ YbG2MYEl3sE1jKapXWeGucMLYR1SHD4oLpNDJRbBoCr4yBFO+3QAbHm6iqpjU4zVktk/s1mPx
+ ZXOOqVIwvFkGOzqMfdtblGdqQvJTjnBcB9if5FtSN/06Q=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,30 +88,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Kees Cook <keescook@chromium.org>, Niklas Schnelle <schnelle@linux.ibm.com>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Jeff Xu <jeffxu@chromium.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dan Carpenter <dan.carpenter@linaro.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, cocci@inria.fr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 16, 2024, at 13:01, Arnd Bergmann wrote:
-> On Tue, Apr 16, 2024, at 11:32, Naresh Kamboju wrote:
->> The Powerpc clang builds failed due to following warnings / errors on the
->> Linux next-20240416 tag.
+>>>   One function call less in vas_window_alloc() after error detection
 >>
->> Powerpc:
->>  - tqm8xx_defconfig + clang-17 - Failed
->>  - allnoconfig + clang-17 - Failed
->>  - tinyconfig + clang-17 - Failed
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/1f1c21cf-c34c-4=
+18c-b00c-8e6474f12612@web.de/
+>
+> It introduced a new goto and label to avoid a kfree(NULL) call, but
+> kfree() explicitly accepts NULL and handles it. So it complicates the
+> source code for no gain.
+
+I proposed to avoid such a redundant function call for the affected
+exception handling.
+
+
+>>>   Return directly after a failed kasprintf() in map_paste_region()
 >>
->> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/f46f04bc-613c-4=
+e98-b602-4c5120556b09@web.de/
 >
-> I'm not sure why this showed up now, but there is a series from
-> in progress that will avoid this in the future, as the same
-> issue is present on a couple of other architectures.
->
+> Basically the same reasoning. And it also changes the function from
+> having two return paths (success and error), to three.
 
-I see now, it was introduced by my patch to turn on -Wextra
-by default. I had tested that patch on all architectures
-with allmodconfig and defconfig, but I did not test any
-powerpc configs with PCI disabled.
+See also a corresponding advice once more from the section =E2=80=9C7) Cen=
+tralized exiting of functions=E2=80=9D:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?h=3Dv6.9-rc4#n532
 
-     Arnd
+Regards,
+Markus
