@@ -2,52 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8B48A9AAF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 15:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C418A9CB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 16:20:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=q9TFzCh7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B2pNwg/h;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VKybm2Vhqz3cT2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 23:02:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VL0Kz32vmz3dDP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 00:20:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=q9TFzCh7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B2pNwg/h;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKyZy2lQzz3cFw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 23:01:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1713445289;
-	bh=vNeZ/qdX3LOH0LHZJhAOcqMpEwfgHMqhf2DU3H1Xszg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=q9TFzCh7EhJg+m9fj6qudX6Ks+Uct3uWBknTCV37uU8cbakd81QmCpmVRG0NOIxQ5
-	 uNQKi+KMBjdkP9ELAPneTQiXG4RWeLhPSORHg+e8+iojKQsMo6Vww7EZd4Vo8nYxXj
-	 i9C+ou7rNcmrbkiJh9KKLdHzBGmSWTBXLplv230qwENBOzJZa0EmJhDvcx7MlY6f+x
-	 Kxij9OwVQI817aMiTT0xC/Q13B2je9ictqe0EMnSezFUNR9C4h+0VWvJD9vykrSyNe
-	 Xx2VRrYHX09AAOcTymVN0OEteduzRVIKXU3HOEjff+X4D+7mpxgl26SJk8w/e/NwSp
-	 b5yKqkqbp1D7w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VKyZw5zyrz4wyx;
-	Thu, 18 Apr 2024 23:01:28 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH] powerpc: drop port I/O helpers for CONFIG_HAS_IOPORT=n
-In-Reply-To: <59473eb6-1707-4bbf-85a3-ba4835f3ee7f@app.fastmail.com>
-References: <20240416153331.1617772-1-arnd@kernel.org>
- <878r1bb2zj.fsf@mail.lhotse>
- <59473eb6-1707-4bbf-85a3-ba4835f3ee7f@app.fastmail.com>
-Date: Thu, 18 Apr 2024 23:01:25 +1000
-Message-ID: <8734ribza2.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VL0KB6wpcz3cQx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 00:19:42 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6F60961831;
+	Thu, 18 Apr 2024 14:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DADC32781;
+	Thu, 18 Apr 2024 14:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713449980;
+	bh=AUt0AvjyUjML6ZxpdeebsS26lKqvFMfvN3N/sVPtRcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B2pNwg/hwD4GFU+j3nK1XWEUYARxusswHne4K6Z5OpMVZCZ5ULburdPwHrZg5I4iu
+	 U/y9G2YsiGlibZSfkHi7l9Xc1A1byzgoT5FVOk+X4RFIoKyf/9F5r8tzdINa6Ps8CK
+	 NPuSjycgX6VTiF+iVSS1slG1ZPMnyNtYdJWJVNkY44ow8evHMgw76zaMNBUTb1gBOc
+	 nj3GHa4KAPMpDuvEycIrwcKhHJVzFpCFK7p7pG+gbOJbi5QsNN4n2gti59vuYtfqHK
+	 aaq8X28NwfZ8l26T0x1HIRhf7nZrUbo6m75mqZ305iGTMgwp0/oNpia09G3VtqBot9
+	 UR6a8YKfras6w==
+Date: Thu, 18 Apr 2024 15:19:32 +0100
+From: Will Deacon <will@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
+Message-ID: <20240418141932.GA1855@willie-the-truck>
+References: <20240405115815.3226315-1-pbonzini@redhat.com>
+ <20240405115815.3226315-2-pbonzini@redhat.com>
+ <20240412104408.GA27645@willie-the-truck>
+ <86jzl2sovz.wl-maz@kernel.org>
+ <ZhlLHtfeSHk9gRRO@google.com>
+ <86h6g5si0m.wl-maz@kernel.org>
+ <Zh1d94Pl6gneVoDd@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zh1d94Pl6gneVoDd@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,43 +65,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Kees Cook <keescook@chromium.org>, Baoquan He <bhe@redhat.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Naresh Kamboju <naresh.kamboju@linaro.org>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Jeff Xu <jeffxu@chromium.org>, Mike Rapoport <rppt@kernel.org>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Carpenter <dan.carpenter@linaro.org>, Bill Wendling <morbo@google.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Marc Zyngier <maz@kernel.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Arnd Bergmann" <arnd@arndb.de> writes:
-> On Thu, Apr 18, 2024, at 08:26, Michael Ellerman wrote:
->> Arnd Bergmann <arnd@kernel.org> writes:
->
->> @@ -692,6 +692,7 @@ static inline void name at                          
->>         \
->>  #define writesw writesw
->>  #define writesl writesl
->>
->> +#ifdef CONFIG_HAS_IOPORT
->>  #define inb inb
->>  #define inw inw
->>  #define inl inl
->> @@ -704,6 +705,8 @@ static inline void name at                          
->>         \
->>  #define outsb outsb
->>  #define outsw outsw
->>  #define outsl outsl
->> +#endif // CONFIG_HAS_IOPORT
->> +
->>  #ifdef __powerpc64__
->>  #define readq  readq
->>  #define writeq writeq
->
-> I had included this at first, but then I still ran into
-> the same warnings because it ends up pulling in the
-> generic outsb() etc from include/asm-generic/io.h
-> that relies on setting a non-NULL PCI_IOBASE.
+On Mon, Apr 15, 2024 at 10:03:51AM -0700, Sean Christopherson wrote:
+> On Sat, Apr 13, 2024, Marc Zyngier wrote:
+> > On Fri, 12 Apr 2024 15:54:22 +0100, Sean Christopherson <seanjc@google.com> wrote:
+> > > 
+> > > On Fri, Apr 12, 2024, Marc Zyngier wrote:
+> > > > On Fri, 12 Apr 2024 11:44:09 +0100, Will Deacon <will@kernel.org> wrote:
+> > > > > On Fri, Apr 05, 2024 at 07:58:12AM -0400, Paolo Bonzini wrote:
+> > > > > Also, if you're in the business of hacking the MMU notifier code, it
+> > > > > would be really great to change the .clear_flush_young() callback so
+> > > > > that the architecture could handle the TLB invalidation. At the moment,
+> > > > > the core KVM code invalidates the whole VMID courtesy of 'flush_on_ret'
+> > > > > being set by kvm_handle_hva_range(), whereas we could do a much
+> > > > > lighter-weight and targetted TLBI in the architecture page-table code
+> > > > > when we actually update the ptes for small ranges.
+> > > > 
+> > > > Indeed, and I was looking at this earlier this week as it has a pretty
+> > > > devastating effect with NV (it blows the shadow S2 for that VMID, with
+> > > > costly consequences).
+> > > > 
+> > > > In general, it feels like the TLB invalidation should stay with the
+> > > > code that deals with the page tables, as it has a pretty good idea of
+> > > > what needs to be invalidated and how -- specially on architectures
+> > > > that have a HW-broadcast facility like arm64.
+> > > 
+> > > Would this be roughly on par with an in-line flush on arm64?  The simpler, more
+> > > straightforward solution would be to let architectures override flush_on_ret,
+> > > but I would prefer something like the below as x86 can also utilize a range-based
+> > > flush when running as a nested hypervisor.
+> 
+> ...
+> 
+> > I think this works for us on HW that has range invalidation, which
+> > would already be a positive move.
+> > 
+> > For the lesser HW that isn't range capable, it also gives the
+> > opportunity to perform the iteration ourselves or go for the nuclear
+> > option if the range is larger than some arbitrary constant (though
+> > this is additional work).
+> > 
+> > But this still considers the whole range as being affected by
+> > range->handler(). It'd be interesting to try and see whether more
+> > precise tracking is (or isn't) generally beneficial.
+> 
+> I assume the idea would be to let arch code do single-page invalidations of
+> stage-2 entries for each gfn?
 
-Yes you're right. The above fixes the gcc build, but not clang.
+Right, as it's the only code which knows which ptes actually ended up
+being aged.
 
-So I think I'll just cherry pick f0a816fb12da ("/dev/port: don't compile
-file operations without CONFIG_DEVPORT") into my next and then apply
-this. But will see if there's any other build failures over night.
+> Unless I'm having a brain fart, x86 can't make use of that functionality.  Intel
+> doesn't provide any way to do targeted invalidation of stage-2 mappings.  AMD
+> provides an instruction to do broadcast invalidations, but it takes a virtual
+> address, i.e. a stage-1 address.  I can't tell if it's a host virtual address or
+> a guest virtual address, but it's a moot point because KVM doen't have the guest
+> virtual address, and if it's a host virtual address, there would need to be valid
+> mappings in the host page tables for it to work, which KVM can't guarantee.
 
-cheers
+Ah, so it sounds like it would need to be an arch opt-in then.
+
+Will
