@@ -1,54 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8428A9042
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 03:01:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025828A9087
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 03:17:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SDAV5RYY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aECA6VmQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VKfc81W63z3cY2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 11:01:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VKfyq5Dzhz3dDT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 11:17:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SDAV5RYY;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aECA6VmQ;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Thu, 18 Apr 2024 11:17:00 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKfbP06Z9z3cBx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 11:00:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1713402045;
-	bh=vTanqau4t/U+Uyls6+AXjIbwm8dSM1/9KWNhqrmGuGY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SDAV5RYYCtv9/IfXyhzcOOOTEmUMqPzfiEGS4GgSjQnGQUV7yADPMa14Nd0rmUE/K
-	 aquXYXEUaYGpBv5GCsf8zH15kInnF/2Xi9xZigUB1VFYkbS3IWcata7UA7dTgHg+rs
-	 7Fd+yV9yJBuUoLZkiMLrspqMbOl6FKqPUQ87rykTej4IKlGrkD83YiCNOwliRNm4yR
-	 osPxlSCN9oSgSQNXy9fbIMcKfAXI08A3mrZCyZ3alA/xpYUJRjClRlIDtlLJqY56IV
-	 SHmyD7lVNtHX7SS+8Q95mEw1DDSmFAz18MUgX1C0dHSN0cUPgvKKr58M4Yvj5nc+fc
-	 4UEOJKGC3p1iA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VKfbJ1h6Hz4wc8;
-	Thu, 18 Apr 2024 11:00:44 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Frederic Weisbecker <frederic@kernel.org>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>
-Subject: Re: [PATCH v2 RESEND 0/5] sched/vtime: vtime.h headers cleanup
-In-Reply-To: <Zh-kEvJbNR2krwmx@localhost.localdomain>
-References: <cover.1712760275.git.agordeev@linux.ibm.com>
- <Zh-kEvJbNR2krwmx@localhost.localdomain>
-Date: Thu, 18 Apr 2024 11:00:43 +1000
-Message-ID: <87h6fzbi2s.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKfy43qXyz3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 11:16:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713403021; x=1744939021;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uFbfo87nO14001kmIG2rJyAQXlEfsQr2jrkvTkeyE/M=;
+  b=aECA6VmQHzHArJ36yRGNgymXXCpR9okOQMdRk4nEzVSsmyHoe8VQIe9T
+   aID6BhKpEBuTbSIEhs7+2IZp3yr56y55Rf7+DAINiIwt72jKU1zi1qDB/
+   Sgt1kZKWq4eQjASWlOGO2wZqDcsNQIPbXi4uEQiNnF0Ov2BcbMFMXI5pw
+   gfkknc6Qls+29AULANx2+JSXa5HWOmmwTK2v19aXCQV6zi/TH9r60MVoP
+   +HrSrMF2k0jlIoWvE5VmZMIaIxaQ1ISQhGj3EuH/iW7K2nXFQE8dIf0u8
+   nf0wz4QbNFG3tZtPP4UoeXfH0A9AP7r7oTd/ZUUMz4mzLzfQ5xpCRFqSU
+   Q==;
+X-CSE-ConnectionGUID: eZ7/p1cUSmSvvFm3j/1hwA==
+X-CSE-MsgGUID: rK6xDW7TRpaZzj0I7OAb3g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8799541"
+X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
+   d="scan'208";a="8799541"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 18:15:53 -0700
+X-CSE-ConnectionGUID: Qg3sfDisSnqFwL5IYU/Blw==
+X-CSE-MsgGUID: ay2i8yP0QI2Tkuy5KlkNFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
+   d="scan'208";a="27470822"
+Received: from kglossop-mobl.amr.corp.intel.com (HELO [10.209.94.180]) ([10.209.94.180])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 18:15:52 -0700
+Message-ID: <2aff18aa-32b7-4092-8235-aead9b708ea0@linux.intel.com>
+Date: Wed, 17 Apr 2024 18:15:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/3] PCI: Add helper to check if any of ancestor device
+ support D3cold
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>, bhelgaas@google.com
+References: <20240416043225.1462548-1-kai.heng.feng@canonical.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240416043225.1462548-1-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,36 +73,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, linux-s390@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Vasily Gorbik <gor@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Ingo Molnar <mingo@redhat.com>, linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: kch@nvidia.com, regressions@lists.linux.dev, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, oohall@gmail.com, hare@suse.de, bagasdotme@gmail.com, kbusch@kernel.org, gloriouseggroll@gmail.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, sagi@grimberg.me
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Frederic Weisbecker <frederic@kernel.org> writes:
-> Le Wed, Apr 10, 2024 at 05:09:43PM +0200, Alexander Gordeev a =C3=A9crit :
->> Hi All,
->>=20
->> There are no changes since the last post, just a re-send.
->>=20
->> v2:
->> - patch 4: commit message reworded (Heiko)
->> - patch 5: vtime.h is removed from Kbuild scripts (PowerPC only) (Heiko)
->>=20
->> v1:
->> Please find a small cleanup to vtime_task_switch() wiring.
->> I split it into smaller patches to allow separate PowerPC
->> vs s390 reviews. Otherwise patches 2+3 and 4+5 could have
->> been merged.
->>=20
->> I tested it on s390 and compile-tested it on 32- and 64-bit
->> PowerPC and few other major architectures only, but it is
->> only of concern for CONFIG_VIRT_CPU_ACCOUNTING_NATIVE-capable
->> ones (AFAICT).
->>=20
->> Thanks!
+
+On 4/15/24 9:32 PM, Kai-Heng Feng wrote:
+> In addition to nearest upstream bridge, driver may want to know if the
+> entire hierarchy can be powered off to perform different action.
 >
-> It probably makes sense to apply the whole series to the scheduler tree.
-> Does any powerpc or s390 maintainer oppose to that?
+> So walk higher up the hierarchy to find out if any device has valid
+> _PR3.
+>
+> The user will be introduced in next patch.
+>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> ---
 
-No objection. It has acks and reviews from powerpc.
+Since it has been a while, I was not sure what this series is about.
 
-cheers
+IMO, it is better to include a cover letter with the summary of your
+changes.
+
+
+> v8:
+>  - No change.
+>
+>  drivers/pci/pci.c   | 16 ++++++++++++++++
+>  include/linux/pci.h |  2 ++
+>  2 files changed, 18 insertions(+)
+>
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index e5f243dd4288..7a5662f116b8 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -6225,6 +6225,22 @@ bool pci_pr3_present(struct pci_dev *pdev)
+>  		acpi_has_method(adev->handle, "_PR3");
+>  }
+>  EXPORT_SYMBOL_GPL(pci_pr3_present);
+> +
+> +bool pci_ancestor_pr3_present(struct pci_dev *pdev)
+> +{
+> +	struct pci_dev *parent = pdev;
+> +
+> +	if (acpi_disabled)
+> +		return false;
+> +
+> +	while ((parent = pci_upstream_bridge(parent))) {
+> +		if (pci_pr3_present(pdev))
+
+I think it should be "parent" here?
+
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ancestor_pr3_present);
+>  #endif
+>  
+>  /**
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 16493426a04f..cd71ebfd0f89 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -2620,10 +2620,12 @@ struct irq_domain *pci_host_bridge_acpi_msi_domain(struct pci_bus *bus);
+>  void
+>  pci_msi_register_fwnode_provider(struct fwnode_handle *(*fn)(struct device *));
+>  bool pci_pr3_present(struct pci_dev *pdev);
+> +bool pci_ancestor_pr3_present(struct pci_dev *pdev);
+>  #else
+>  static inline struct irq_domain *
+>  pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
+>  static inline bool pci_pr3_present(struct pci_dev *pdev) { return false; }
+> +static inline bool pci_ancestor_pr3_present(struct pci_dev *pdev) { return false; }
+>  #endif
+>  
+>  #ifdef CONFIG_EEH
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
