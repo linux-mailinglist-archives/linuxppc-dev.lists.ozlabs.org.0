@@ -1,51 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7B48A9320
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 08:33:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B8A8A93A6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 09:01:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UpYxncQ7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=kHMXESl3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=iXh/6N4b;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VKnzS4yFxz3d4L
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 16:33:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VKpb936V2z3cnR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 17:01:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UpYxncQ7;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=kHMXESl3;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=iXh/6N4b;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.148; helo=wfout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wfout5-smtp.messagingengine.com (wfout5-smtp.messagingengine.com [64.147.123.148])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKnym6tV3z3btX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 16:33:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1713421984;
-	bh=Os3n75joztuZwb7Uo98ZK8zUHbtnDL2bSCbwHpOcZE4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UpYxncQ7XHP+jss1hZdkT5vMaxWi3UsZZtID/xtfljbj+dZWc2jBahOY2aXHfD8y/
-	 RVsJRnN7oRlQ51KLRItu4vVMzvHZuDSBlkXS2vaa0kLCo0FNzJDORHCGtohKi/qiq2
-	 O6Y3sB4pjJIKSL+WOdB+MPmuObWgwilq8rQFQIwrB1sqNBG7wj0xvmApVHx7J6xxz2
-	 MfSgJr2XjXJrJ9ZSMOm6Ti10tkZS3ejgm15X9sf+rIjEWWXpUVJ0XmA/4yCUKnhR9/
-	 6oxerVLHbTcaMiW2Qnfget/zDJ5DS+tRK6pFBaW6lVpH9PuNyfFHDPRPhH6lHPR6ra
-	 6I3EG15SaNS2g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VKnym2YSCz4wcR;
-	Thu, 18 Apr 2024 16:33:04 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH] powerpc: drop port I/O helpers for CONFIG_HAS_IOPORT=n
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKpZF1qTHz3cQT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 17:00:20 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.west.internal (Postfix) with ESMTP id A8A881C00191;
+	Thu, 18 Apr 2024 03:00:14 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 18 Apr 2024 03:00:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1713423614; x=1713510014; bh=KbwfIs/6Rd
+	Z169pWLYEvYHb3ipb41NqCczuUbSCEOtU=; b=kHMXESl38JFREZFyRJU/hhID99
+	e5wf7SLLXpyo9VQI/ZfBb8n8s2Io+riBvulUuy7sycVkoy/p142vHqKuuUEAwroU
+	3/P7QIMsgmHPxDQNIm0FWJQf224unfL7BKe/Vf6H08e2oQZQ89OnxIDhES5tX2I1
+	KARD2IrClQHpPDpW7iu2Fklbbp+yoexldewV0MsdSl9FlTGi/WenvIVGVZN+0hmh
+	BlEFF29+wsml8l5RYhDbdNYFxuQ2It6SF4d75ZVLMD8tVDR/XEjw+BLNnj3DOjM5
+	NqjcXK5uEIWElTEyIy+oIJcitcxZzxxHcWDOHtUGi63L3IdN6GpgU/TQGulA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1713423614; x=1713510014; bh=KbwfIs/6RdZ169pWLYEvYHb3ipb4
+	1NqCczuUbSCEOtU=; b=iXh/6N4bWlks9FcbDfFX3qRLp7064tMTwKDCO3ZNY+J4
+	h9b8HTUpragYfJmZOR6RKhkxnroEx5sf+EqpyiKOzuMprP5AY/uiRysmwEt20c+z
+	k1EJ9fInFWstN5A200FDv/5RMXTg0XTK8uyIysqkqnvsBLWNKCx7OI1ZUTHkoeGm
+	ha3rvRvXYptu6IwWi5qvUp2XdvFvQa1z8b7IiwclKASuHdyz8Dzz3qHytC5orvdo
+	sNqgYGlaM31f/NMd7lveKdFSGwQ8hpZLrlAqkjqTDaH2Z3PXJg+wopIyQV3Z2jRM
+	LBzS0B4xZkuTl/TSy8ZCrQ0gWWpONKGtTAcNlt+ROQ==
+X-ME-Sender: <xms:_cQgZtExQWF1vEtmI-j1NgrNOOK6QYI4hbm8iz3ZZDL9Z-KpUWjX0A>
+    <xme:_cQgZiUYJm5yGmRI7W1bIqb4eG9Jm_Sjli87tqqmYkqYHnCxel-5uDm9kmAeHBBAD
+    jKvnfc1QbK4CfkeYTs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejledgudduhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:_cQgZvLdZW-AwjeAIS_AGEYOBjLQVGOJ7Nt3QE2kBw1gNc2b2-5FMw>
+    <xmx:_cQgZjFYwq9Rk9HXz6uYzviwGUjGLIAL1uRoLpRc2Dopi5Rj_4Qp4Q>
+    <xmx:_cQgZjVXa3huu584Ghls8Qm-9KeqHgKrFKF9pAfJjmbcdpUEA7808A>
+    <xmx:_cQgZuNb0JHfCZpnJfAeqD1EonV81n3gs2Hx9whI0l7rebP5Jm2UGw>
+    <xmx:_sQgZg2KJAffrwszZxlTZgPiracHu0cXhTyNKvm7rj0Fj7JIu9eirDus>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 96D7EB6008F; Thu, 18 Apr 2024 03:00:13 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
+MIME-Version: 1.0
+Message-Id: <59473eb6-1707-4bbf-85a3-ba4835f3ee7f@app.fastmail.com>
 In-Reply-To: <878r1bb2zj.fsf@mail.lhotse>
 References: <20240416153331.1617772-1-arnd@kernel.org>
  <878r1bb2zj.fsf@mail.lhotse>
-Date: Thu, 18 Apr 2024 16:33:04 +1000
-Message-ID: <875xwfb2ov.fsf@mail.lhotse>
-MIME-Version: 1.0
+Date: Thu, 18 Apr 2024 08:59:52 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, "Arnd Bergmann" <arnd@kernel.org>
+Subject: Re: [PATCH] powerpc: drop port I/O helpers for CONFIG_HAS_IOPORT=n
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,45 +93,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Naresh Kamboju <naresh.kamboju@linaro.org>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Jeff Xu <jeffxu@chromium.org>, Baoquan He <bhe@redhat.com>, "Mike Rapoport \(IBM\)" <rppt@kernel.org>, Justin Stitt <justinstitt@google.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Carpenter <dan.carpenter@linaro.org>, Bill Wendling <morbo@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, Kees Cook <keescook@chromium.org>, Baoquan He <bhe@redhat.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Naresh Kamboju <naresh.kamboju@linaro.org>, clang-built-linux <llvm@lists.linux.dev>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Jeff Xu <jeffxu@chromium.org>, Mike Rapoport <rppt@kernel.org>, Justin Stitt <justinstitt@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Carpenter <dan.carpenter@linaro.org>, Bill Wendling <morbo@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+On Thu, Apr 18, 2024, at 08:26, Michael Ellerman wrote:
 > Arnd Bergmann <arnd@kernel.org> writes:
->> From: Arnd Bergmann <arnd@arndb.de>
->>
->> Calling inb()/outb() on powerpc when CONFIG_PCI is disabled causes
->> a NULL pointer dereference, which is bad for a number of reasons.
->>
->> After my patch to turn on -Werror in linux-next, this caused a
->> compiler-time warning with clang:
->>
->> In file included from arch/powerpc/include/asm/io.h:672:
->> arch/powerpc/include/asm/io-defs.h:43:1: error: performing pointer
->> arithmetic on a null pointer has undefined behavior
->> [-Werror,-Wnull-pointer-arithmetic]
->>    43 | DEF_PCI_AC_NORET(insb, (unsigned long p, void *b, unsigned long c),
->>       | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>    44 |                  (p, b, c), pio, p)
->>       |                  ~~~~~~~~~~~~~~~~~~
->>
->> In this configuration, CONFIG_HAS_IOPORT is already disabled, and all
->> drivers that use inb()/outb() should now depend on that (some patches are
->> still in the process of getting marged).
->>
->> Hide all references to inb()/outb() in the powerpc code and the definitions
->> when HAS_IOPORT is disabled to remove the possible NULL pointer access.
->> The same should happin in asm-generic in the near future, but for now
->> the empty inb() macros are still defined to ensure the generic version
->> does not get pulled in.
->>
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
->> --
+
+> @@ -692,6 +692,7 @@ static inline void name at                          
+>         \
+>  #define writesw writesw
+>  #define writesl writesl
 >
-> This needs a small fixup:
+> +#ifdef CONFIG_HAS_IOPORT
+>  #define inb inb
+>  #define inw inw
+>  #define inl inl
+> @@ -704,6 +705,8 @@ static inline void name at                          
+>         \
+>  #define outsb outsb
+>  #define outsw outsw
+>  #define outsl outsl
+> +#endif // CONFIG_HAS_IOPORT
+> +
+>  #ifdef __powerpc64__
+>  #define readq  readq
+>  #define writeq writeq
 
-Well, only because my tree doesn't have f0a816fb12da ("/dev/port: don't compile file operations without CONFIG_DEVPORT").
+I had included this at first, but then I still ran into
+the same warnings because it ends up pulling in the
+generic outsb() etc from include/asm-generic/io.h
+that relies on setting a non-NULL PCI_IOBASE.
 
-cheers
+      Arnd
