@@ -1,67 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6128A90BD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 03:35:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAC58A9179
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 05:13:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TC5oOHJF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FIbxscmP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VKgLq4scFz3cRs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 11:34:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VKjXV0fJzz3cRr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Apr 2024 13:13:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TC5oOHJF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FIbxscmP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Thu, 18 Apr 2024 11:34:20 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKgL42Gbsz3cNV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 11:34:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713404060; x=1744940060;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Q4F2ZtxiPYMoJOfp7gavUjn2ZLtzD+aJZKEOROEWMGI=;
-  b=TC5oOHJFaxnwCzQp5UyiizoBwGCR9zoqCAgP0SDQao/5jlVIvsNiSUjq
-   Eut0k501AnSdde9RUWawCOQLlXbYJMwqDYc8GMP7yXi3yc41J+8g/xV1r
-   TA0RkR4E7mSiu4Z3y+mNrS1zSXOJRJz4l14xIyf0HF1RdD0CXtFrC6VYZ
-   GOTCfFqUy++DWjQVHpiVCms65F/mEN8yEU2NBallEojI7f1gGIYHP+X3s
-   5mdvGfNOGasWyLU8cUCr9ES9cH7K8fr6RjfkfPKYgrdi+7tJNWXjffsD3
-   Bo3+1v1EjiGu4u++ZwLSqoMj1jeuB70iISKSl/f+K1tJpIm58hecHsOxW
-   w==;
-X-CSE-ConnectionGUID: 3CWsyIMyTA2Zdv2kvmWwvA==
-X-CSE-MsgGUID: smAzT3asR1GhP935HcAe8A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8788888"
-X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
-   d="scan'208";a="8788888"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 18:33:11 -0700
-X-CSE-ConnectionGUID: JgAsBTwcTbqB10eTts8YwA==
-X-CSE-MsgGUID: m8jdm8yZQyevTr1lSoFbdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
-   d="scan'208";a="22870961"
-Received: from kglossop-mobl.amr.corp.intel.com (HELO [10.209.94.180]) ([10.209.94.180])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 18:33:11 -0700
-Message-ID: <3b5b78e0-dc7e-4e9b-833d-bbb918ff1b2a@linux.intel.com>
-Date: Wed, 17 Apr 2024 18:33:10 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VKjWh024yz3brZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Apr 2024 13:12:47 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43I2t8Ae027178;
+	Thu, 18 Apr 2024 03:12:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=zHHAVreIF78vL18/Zw4ZqyCZKOpJi+bpCDlh2/uX4Ow=;
+ b=FIbxscmPP1grGa/Ki4e6SVzdKkUv4gHH/plBpXVsqxW/xf0X6YHdl+tvnPFN9wLDmv+d
+ OktxQ+YYulU+6pXLnv+2zBkYULVklss+mz4t6LwGS2wRp55wGr/9BTzRnzMWAguueNMe
+ sRbg/TW4TMDfzbsfNg4n/HIgKfhB74IgMysJT6eX8MqvghmEapZell+u1KU1sBilee60
+ mIQAV5fVCGnQdL+JMb/YTcBULgTm8PvJh9x9ujwakGh9ruxMyvi4zxIfEm72XiJm1PVt
+ EJ5q0kKKEBszsmyxIs9/2MN4pxbAxB3lhc3mlFInnTw2UNENKMdKpJZJUITZE8vPuLWB 2g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xju5cr0yf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Apr 2024 03:12:41 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43I3CeCB026627;
+	Thu, 18 Apr 2024 03:12:40 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xju5cr0yc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Apr 2024 03:12:40 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43I15rRi016016;
+	Thu, 18 Apr 2024 03:12:39 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xg5vmg743-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Apr 2024 03:12:39 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43I3CYFb36831604
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Apr 2024 03:12:36 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3604320040;
+	Thu, 18 Apr 2024 03:12:34 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7551B20049;
+	Thu, 18 Apr 2024 03:12:32 +0000 (GMT)
+Received: from sunshine.ibmuc.com (unknown [9.61.83.211])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 18 Apr 2024 03:12:32 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4] powerpc/pseries: make max polling consistent for longer H_CALLs
+Date: Wed, 17 Apr 2024 23:12:30 -0400
+Message-ID: <20240418031230.170954-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/3] PCI/AER: Disable AER service on suspend
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>, bhelgaas@google.com
-References: <20240416043225.1462548-1-kai.heng.feng@canonical.com>
- <20240416043225.1462548-2-kai.heng.feng@canonical.com>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20240416043225.1462548-2-kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3hldoZ9GmQ5AFyatyant2j5emwqfmlUi
+X-Proofpoint-GUID: YoaMAAtZ4VLGWZdH_g9k7Qo5laIUVSHW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-18_02,2024-04-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ mlxscore=0 suspectscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
+ mlxlogscore=999 spamscore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404180021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,113 +93,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kch@nvidia.com, regressions@lists.linux.dev, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, oohall@gmail.com, hare@suse.de, bagasdotme@gmail.com, kbusch@kernel.org, gloriouseggroll@gmail.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, sagi@grimberg.me
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Greg Joyce <gjoyce@linux.vnet.ibm.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Nayna Jain <nayna@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently, plpks_confirm_object_flushed() function polls for 5msec in
+total instead of 5sec.
 
-On 4/15/24 9:32 PM, Kai-Heng Feng wrote:
-> When the power rail gets cut off, the hardware can create some electric
-> noise on the link that triggers AER. If IRQ is shared between AER with
-> PME, such AER noise will cause a spurious wakeup on system suspend.
->
-> When the power rail gets back, the firmware of the device resets itself
-> and can create unexpected behavior like sending PTM messages. For this
-> case, the driver will always be too late to toggle off features should
-> be disabled.
->
-> As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power
-> Management", TLP and DLLP transmission are disabled for a Link in L2/L3
-> Ready (D3hot), L2 (D3cold with aux power) and L3 (D3cold) states. So if
-> the power will be turned off during suspend process, disable AER service
-> and re-enable it during the resume process. This should not affect the
-> basic functionality.
->
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
+Keep max polling time consistent for all the H_CALLs, which take longer
+than expected, to be 5sec. Also, make use of fsleep() everywhere to
+insert delay.
 
-Looks good to me.
+Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+---
+v4:
+ * As per Andrew's feedback, squashed Patch 2 with Patch 1.
+Now it is single patch.
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+v3:
+ * Addition to Patch 1 timeout patch based on Andrew's feedback.
 
-> v8:
->  - Add more bug reports.
->
-> v7:
->  - Wording
->  - Disable AER completely (again) if power will be turned off
->
-> v6:
-> v5:
->  - Wording.
->
-> v4:
-> v3:
->  - No change.
->
-> v2:
->  - Only disable AER IRQ.
->  - No more check on PME IRQ#.
->  - Use helper.
->
->  drivers/pci/pcie/aer.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
->
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index ac6293c24976..bea7818c2d1b 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -28,6 +28,7 @@
->  #include <linux/delay.h>
->  #include <linux/kfifo.h>
->  #include <linux/slab.h>
-> +#include <linux/suspend.h>
->  #include <acpi/apei.h>
->  #include <acpi/ghes.h>
->  #include <ras/ras_event.h>
-> @@ -1497,6 +1498,28 @@ static int aer_probe(struct pcie_device *dev)
->  	return 0;
->  }
->  
-> +static int aer_suspend(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +	struct pci_dev *pdev = rpc->rpd;
-> +
-> +	if (pci_ancestor_pr3_present(pdev) || pm_suspend_via_firmware())
-> +		aer_disable_rootport(rpc);
-> +
-> +	return 0;
-> +}
-> +
-> +static int aer_resume(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +	struct pci_dev *pdev = rpc->rpd;
-> +
-> +	if (pci_ancestor_pr3_present(pdev) || pm_resume_via_firmware())
-> +		aer_enable_rootport(rpc);
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
->   * @dev: pointer to Root Port, RCEC, or RCiEP
-> @@ -1561,6 +1584,8 @@ static struct pcie_port_service_driver aerdriver = {
->  	.service	= PCIE_PORT_SERVICE_AER,
->  
->  	.probe		= aer_probe,
-> +	.suspend	= aer_suspend,
-> +	.resume		= aer_resume,
->  	.remove		= aer_remove,
->  };
->  
+v2:
+* Updated based on feedback from Michael Ellerman
+        Replaced usleep_range with fsleep.
+        Since there is no more need to specify range, sleep time is
+reverted back to 10 msec.
 
+ arch/powerpc/include/asm/plpks.h       |  5 ++---
+ arch/powerpc/platforms/pseries/plpks.c | 10 +++++-----
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
+index 23b77027c916..7a84069759b0 100644
+--- a/arch/powerpc/include/asm/plpks.h
++++ b/arch/powerpc/include/asm/plpks.h
+@@ -44,9 +44,8 @@
+ #define PLPKS_MAX_DATA_SIZE		4000
+ 
+ // Timeouts for PLPKS operations
+-#define PLPKS_MAX_TIMEOUT		5000 // msec
+-#define PLPKS_FLUSH_SLEEP		10 // msec
+-#define PLPKS_FLUSH_SLEEP_RANGE		400
++#define PLPKS_MAX_TIMEOUT		(5 * USEC_PER_SEC)
++#define PLPKS_FLUSH_SLEEP		10000 // usec
+ 
+ struct plpks_var {
+ 	char *component;
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index febe18f251d0..4a595493d28a 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -415,8 +415,7 @@ static int plpks_confirm_object_flushed(struct label *label,
+ 			break;
+ 		}
+ 
+-		usleep_range(PLPKS_FLUSH_SLEEP,
+-			     PLPKS_FLUSH_SLEEP + PLPKS_FLUSH_SLEEP_RANGE);
++		fsleep(PLPKS_FLUSH_SLEEP);
+ 		timeout = timeout + PLPKS_FLUSH_SLEEP;
+ 	} while (timeout < PLPKS_MAX_TIMEOUT);
+ 
+@@ -464,9 +463,10 @@ int plpks_signed_update_var(struct plpks_var *var, u64 flags)
+ 
+ 		continuetoken = retbuf[0];
+ 		if (pseries_status_to_err(rc) == -EBUSY) {
+-			int delay_ms = get_longbusy_msecs(rc);
+-			mdelay(delay_ms);
+-			timeout += delay_ms;
++			int delay_us = get_longbusy_msecs(rc) * 1000;
++
++			fsleep(delay_us);
++			timeout += delay_us;
+ 		}
+ 		rc = pseries_status_to_err(rc);
+ 	} while (rc == -EBUSY && timeout < PLPKS_MAX_TIMEOUT);
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.31.1
 
