@@ -2,72 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D754B8AAFE3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 15:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C1B8AB015
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 16:04:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=DuHVRzYi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WJrriT5J;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VLbpj52FTz3dD2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 23:58:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VLbwp6l4Jz3dK7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Apr 2024 00:04:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=DuHVRzYi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WJrriT5J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3chgizgykdcmrd9mibfnnfkd.bnlkhmtwoob-cdukhrsr.nyk9ar.nqf@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VLbny6q9Bz3cPh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 23:58:13 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-de468af2b73so3536036276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 06:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713535088; x=1714139888; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KgrnEQ6mmP0jFk5Zb1SZY9boKJybsIIVble8n571sqI=;
-        b=DuHVRzYiOW23zTL7IpDcG/NB5pqJsYSOVMtoCGnp+UMf8FCGd2xzI4/kxO6OJtgu9N
-         yEJbHywi1oohdVm0WTf/AUm3F3+Vw22bhVxlrrc33lnohl6RoW9OrbdKA05TYdjkeOmY
-         QelhmP8zxmxsMAByxLC6y31UzO/5blS+xynLzc4oXGfpLuMPpb3MA7xGeFx4jzvtN7co
-         b9wvJVuTpU5of17gFtiyB2b/eWzi3ZvtiYQAWjnKFjn7T1CEHqPIBTsMYxUTaO+yngRi
-         5HlQvc3C/CMt88DVVzy2UkXUJTx5Xs7FGjCasH+foTWsaGGP8QbxsXdPtyIeoyGToXzq
-         chew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713535088; x=1714139888;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KgrnEQ6mmP0jFk5Zb1SZY9boKJybsIIVble8n571sqI=;
-        b=VhCpQ/8zD79QNYUyKMOWa/8ZjzE+JTrtLSCIZR/v7ixPIq5xVt+IdLLBQOhjRaQrGZ
-         ax2UACs7CcsKW6IzDtNfoGpZMp69sIgpgw05T9w2bowTdNEKRfvmv2q1U3qbna0V7epc
-         Y40lgtnZ1gNMYZ0USOdat/VnNVZqg3RYqCj5fkxV1MsSgq6AcazXpTbVau1Iv9N7ubUA
-         szc6/5LHM7Y8QuC1Ti5pe8o+7r7ejQzh1tD0K/nvtCStM8zuCKsZtaBuKuirgZzq8Dva
-         vJYwrwYoitgWqgGc8n8BAT8MvKe2FCpywxZSCPOFyQQhcN7nT9bFQ1rvDrhX28jSs7xK
-         97fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+JArCindkxoR0xSZ57/DfIddWxvOoVkJFDseWvNRWf0l3CpDJbznjMOX0F4WPzvFBQZVyeo8cApjUhyo9LwRc0WUZgsslMTicsVJzmA==
-X-Gm-Message-State: AOJu0YziDUVv06dwbEcPBAe+W+u95Xa0/UPsANlOzjfEvifZ/CkS4yQN
-	RIm8cz+Wea8dBVpwsFGRfFdQjOZTS3g4hkEl/t2F6nqNL4DkU5ndbwOqUMLh2XWRNI8r1TJ/hKE
-	wOA==
-X-Google-Smtp-Source: AGHT+IGomtDJcb51lvQMFTT5YaGoxW/vZTzkUSuhiTLoa8vZxcxiKEVXH4dmB1G1pZ9i7NSp+ryn6A1areA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:ad8d:0:b0:dc6:e5d3:5f03 with SMTP id
- z13-20020a25ad8d000000b00dc6e5d35f03mr543024ybi.4.1713535088599; Fri, 19 Apr
- 2024 06:58:08 -0700 (PDT)
-Date: Fri, 19 Apr 2024 06:58:06 -0700
-In-Reply-To: <20240419112432.GB2972@willie-the-truck>
-Mime-Version: 1.0
-References: <20240405115815.3226315-1-pbonzini@redhat.com> <20240405115815.3226315-2-pbonzini@redhat.com>
- <20240412104408.GA27645@willie-the-truck> <86jzl2sovz.wl-maz@kernel.org>
- <ZhlLHtfeSHk9gRRO@google.com> <86h6g5si0m.wl-maz@kernel.org>
- <Zh1d94Pl6gneVoDd@google.com> <20240418141932.GA1855@willie-the-truck>
- <ZiF6NgGYLSsPNEOg@google.com> <20240419112432.GB2972@willie-the-truck>
-Message-ID: <ZiJ4bqrBUPM0E8iq@google.com>
-Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
-From: Sean Christopherson <seanjc@google.com>
-To: Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VLbw33N1Rz2xmC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Apr 2024 00:03:31 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9DCB0619D7;
+	Fri, 19 Apr 2024 14:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72650C072AA;
+	Fri, 19 Apr 2024 14:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713535409;
+	bh=DU2Oh8nrRgXZi/yPndOQwhsltv4XMpBfwRnb1FWmP0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WJrriT5J2X7hf4oYYUmstmlkPeq3DgvatCicCKVfFY05MHAXsGjIvsIH6c2UeFUCK
+	 b1tQA9eFfPT9My24Bx5MwU3csOfL2xbVgwabrXecyWtYmZRKLwmjFTjcB9j5GYWGoy
+	 bTMMwme5TOdiXtbdlz/weS3ViPl7AR23/VsdRSztQE4oWHicuv1Q1F6jzoDfRx6oFs
+	 e91S/8iEAE+36zTfeMrMhg/6jsGIwDPTUf6JEt6bvmNpYbnQaXgYkrjgO5C+kCE1Jv
+	 URoPOjT0e9X5jEpWoycpzzCiinEHMpKHGeCeKhjSjfGUKHI96+oFtwuokS//ELD+RL
+	 Qpa7Bkn0p5REw==
+Date: Fri, 19 Apr 2024 15:03:22 +0100
+From: Will Deacon <will@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 1/3] x86/cpu: Actually turn off mitigations by default
+ for SPECULATION_MITIGATIONS=n
+Message-ID: <20240419140321.GF3148@willie-the-truck>
+References: <20240409175108.1512861-1-seanjc@google.com>
+ <20240409175108.1512861-2-seanjc@google.com>
+ <20240413115324.53303a68@canb.auug.org.au>
+ <87edb9d33r.fsf@mail.lhotse>
+ <87bk6dd2l4.fsf@mail.lhotse>
+ <CAMuHMdWD+UKZAkiUQUJOeRkOoyT4cH1o8=Gu465=K-Ub7O4y9A@mail.gmail.com>
+ <Zh06O35yKIF2vNdE@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zh06O35yKIF2vNdE@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,31 +67,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Marc Zyngier <maz@kernel.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>, x86@kernel.org, Jonathan Corbet <corbet@lwn.net>, Peter Zijlstra <peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Linux-Renesas <linux-renesas-soc@vger.kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Josh Poimboeuf <jpoimboe@kernel.org>, Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 19, 2024, Will Deacon wrote:
-> > @@ -663,10 +669,22 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
-> >  					break;
-> >  			}
-> >  			r.ret |= range->handler(kvm, &gfn_range);
-> > +
-> > +		       /*
-> > +			* Use a precise gfn-based TLB flush when possible, as
-> > +			* most mmu_notifier events affect a small-ish range.
-> > +			* Fall back to a full TLB flush if the gfn-based flush
-> > +			* fails, and don't bother trying the gfn-based flush
-> > +			* if a full flush is already pending.
-> > +			*/
-> > +		       if (range->flush_on_ret && !need_flush && r.ret &&
-> > +			   kvm_arch_flush_remote_tlbs_range(kvm, gfn_range.start,
-> > +							    gfn_range.end - gfn_range.start + 1))
+On Mon, Apr 15, 2024 at 07:31:23AM -0700, Sean Christopherson wrote:
+> On Mon, Apr 15, 2024, Geert Uytterhoeven wrote:
+> > On Sat, Apr 13, 2024 at 11:38 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> > > Michael Ellerman <mpe@ellerman.id.au> writes:
+> > > > Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> > > ...
+> > > >> On Tue,  9 Apr 2024 10:51:05 -0700 Sean Christopherson <seanjc@google.com> wrote:
+> > > ...
+> > > >>> diff --git a/kernel/cpu.c b/kernel/cpu.c
+> > > >>> index 8f6affd051f7..07ad53b7f119 100644
+> > > >>> --- a/kernel/cpu.c
+> > > >>> +++ b/kernel/cpu.c
+> > > >>> @@ -3207,7 +3207,8 @@ enum cpu_mitigations {
+> > > >>>  };
+> > > >>>
+> > > >>>  static enum cpu_mitigations cpu_mitigations __ro_after_init =
+> > > >>> -   CPU_MITIGATIONS_AUTO;
+> > > >>> +   IS_ENABLED(CONFIG_SPECULATION_MITIGATIONS) ? CPU_MITIGATIONS_AUTO :
+> > > >>> +                                                CPU_MITIGATIONS_OFF;
+> > > >>>
+> > > >>>  static int __init mitigations_parse_cmdline(char *arg)
+> > > >>>  {
+> > >
+> > > I think a minimal workaround/fix would be:
+> > >
+> > > diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+> > > index 2b8fd6bb7da0..290be2f9e909 100644
+> > > --- a/drivers/base/Kconfig
+> > > +++ b/drivers/base/Kconfig
+> > > @@ -191,6 +191,10 @@ config GENERIC_CPU_AUTOPROBE
+> > >  config GENERIC_CPU_VULNERABILITIES
+> > >         bool
+> > >
+> > > +config SPECULATION_MITIGATIONS
+> > > +       def_bool y
+> > > +       depends on !X86
+> > > +
+> > >  config SOC_BUS
+> > >         bool
+> > >         select GLOB
+> > 
+> > Thanks, that works for me (on arm64), so
+> > Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > 
-> What's that '+ 1' needed for here?
+> Oof.  I completely missed that "cpu_mitigations" wasn't x86-only.  I can't think
+> of better solution than an on-by-default generic Kconfig, though can't that it
+> more simply be:
+> 
+> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+> index 2b8fd6bb7da0..5930cb56ee29 100644
+> --- a/drivers/base/Kconfig
+> +++ b/drivers/base/Kconfig
+> @@ -191,6 +191,9 @@ config GENERIC_CPU_AUTOPROBE
+>  config GENERIC_CPU_VULNERABILITIES
+>         bool
+>  
+> +config SPECULATION_MITIGATIONS
+> +       def_bool !X86
+> +
+>  config SOC_BUS
+>         bool
+>         select GLOB
 
- (a) To see if you're paying attention.
- (b) Because more is always better.
- (c) Because math is hard.
- (d) Because I haven't tested this.
- (e) Both (c) and (d).
+I can't see this in -next yet. Do you plan to post it as a proper patch
+to collect acks etc?
+
+Cheers,
+
+Will
