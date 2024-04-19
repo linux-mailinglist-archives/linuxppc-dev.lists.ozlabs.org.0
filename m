@@ -2,104 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377428AAD78
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 13:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DFD8AADAD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 13:25:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=DncG6Q2k;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RqqzoGeP;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FoUS6qoj;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ulcpXqNQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fUooDE5x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VLX6R06SJz3cfx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 21:12:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VLXPZ6tNkz3dFL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 21:25:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=DncG6Q2k;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RqqzoGeP;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FoUS6qoj;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ulcpXqNQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fUooDE5x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VLX5j6SDTz3cB2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 21:11:37 +1000 (AEST)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1665D347F9;
-	Fri, 19 Apr 2024 11:11:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1713525090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YEXNpzdafepoBGQ38HGCmuB1jsLf+WECPl2eT5WCL3M=;
-	b=DncG6Q2kbdVUkbNkmqZQCcuVY6FgM6wzAEnr5tLTPo9WSvTU5Orh8w2P18YWlxXgFUxOtw
-	VZVe8BaowCr+IwGi6UC+cc7F2n2QVJlaMhkWFoLA5VxYkCxImvCCbgFLQr0Vab2QFqGqfz
-	y0EHpRvf7K20wuhxdAV4CvB22e1zsKg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1713525090;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YEXNpzdafepoBGQ38HGCmuB1jsLf+WECPl2eT5WCL3M=;
-	b=RqqzoGeP9gYb3KfwPOfNlkMKKIU4geFna9GLUerSmnQfkpoFcjfu4lpr7/TEuAhhqGwNaM
-	n9795YAsWG8bgIAw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1713525089; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YEXNpzdafepoBGQ38HGCmuB1jsLf+WECPl2eT5WCL3M=;
-	b=FoUS6qojxySapd8h0wOOQ2Js07zu+Km7gMgARC5xQv1jwuPqPXdjylgSG7D2rabDTZMmUv
-	eiDprOL07ezk6pTPlW3ED0tDieP7Tirkfl/hy05TwyLpCe9loiauGe216RMNUwBs59cgus
-	8xML4O/Vn1UHutHybrbQYZ03qV4Exfo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1713525089;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YEXNpzdafepoBGQ38HGCmuB1jsLf+WECPl2eT5WCL3M=;
-	b=ulcpXqNQb9CkG6eUhmA5tvuIhtBI057+8M+PQBHjKzOskE2nHeIu/dx2S4bcSS9yfzRZv7
-	HzEgPr/UrDbbThBQ==
-Date: Fri, 19 Apr 2024 13:11:28 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pseries/iommu: LPAR panics when rebooted with a
- frozen PE
-Message-ID: <20240419111127.GZ20665@kitsune.suse.cz>
-References: <20240416205810.28754-1-gbatra@linux.ibm.com>
- <87ttjxanj5.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VLXNq5QBdz3cLj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 21:24:43 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id D862BCE1AA6;
+	Fri, 19 Apr 2024 11:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7323C072AA;
+	Fri, 19 Apr 2024 11:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713525880;
+	bh=seRCd4clFxTtL6vDMULl2f9q6ycCa2mn5kfveiu4RD4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fUooDE5xzZcwoxp6cnIxa6nSjyz1WVMPciR6eMgeZnScdWtd6RHnirzVrYzahjF7o
+	 0Rhf5JDQK6Bbi//FiWWYsQhmxdD2E7SdEerccUuWi7NIJjAe8/oEc+JTPgi97aEKCx
+	 1qr1ylbc2JY3/PXoVlXnIjiywl20S1TiLXHN1Go61pGazmBK5iADoaJAlP4Oea0qxL
+	 4yJjj/ACTYEPqM9xhtpaqk87AOhVlC9pbpwjwCQyrrBWvF45vcjP2LjfAQa/iqIMmX
+	 0M2vJIj9IINojXoqhh6KBgTnklOD9tdz9Fd6A0k9WyLbzTHYn8x5INZivUwtKZ68Bq
+	 aiK1U7erJiBgQ==
+Date: Fri, 19 Apr 2024 12:24:32 +0100
+From: Will Deacon <will@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
+Message-ID: <20240419112432.GB2972@willie-the-truck>
+References: <20240405115815.3226315-1-pbonzini@redhat.com>
+ <20240405115815.3226315-2-pbonzini@redhat.com>
+ <20240412104408.GA27645@willie-the-truck>
+ <86jzl2sovz.wl-maz@kernel.org>
+ <ZhlLHtfeSHk9gRRO@google.com>
+ <86h6g5si0m.wl-maz@kernel.org>
+ <Zh1d94Pl6gneVoDd@google.com>
+ <20240418141932.GA1855@willie-the-truck>
+ <ZiF6NgGYLSsPNEOg@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87ttjxanj5.fsf@mail.lhotse>
+In-Reply-To: <ZiF6NgGYLSsPNEOg@google.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kitsune.suse.cz:helo]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,98 +67,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Marc Zyngier <maz@kernel.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Fri, Apr 19, 2024 at 04:12:46PM +1000, Michael Ellerman wrote:
-> Gaurav Batra <gbatra@linux.ibm.com> writes:
-> > At the time of LPAR reboot, partition firmware provides Open Firmware
-> > property ibm,dma-window for the PE. This property is provided on the PCI
-> > bus the PE is attached to.
+On Thu, Apr 18, 2024 at 12:53:26PM -0700, Sean Christopherson wrote:
+> On Thu, Apr 18, 2024, Will Deacon wrote:
+> > On Mon, Apr 15, 2024 at 10:03:51AM -0700, Sean Christopherson wrote:
+> > > On Sat, Apr 13, 2024, Marc Zyngier wrote:
+> > > > On Fri, 12 Apr 2024 15:54:22 +0100, Sean Christopherson <seanjc@google.com> wrote:
+> > > > > 
+> > > > > On Fri, Apr 12, 2024, Marc Zyngier wrote:
+> > > > > > On Fri, 12 Apr 2024 11:44:09 +0100, Will Deacon <will@kernel.org> wrote:
+> > > > > > > On Fri, Apr 05, 2024 at 07:58:12AM -0400, Paolo Bonzini wrote:
+> > > > > > > Also, if you're in the business of hacking the MMU notifier code, it
+> > > > > > > would be really great to change the .clear_flush_young() callback so
+> > > > > > > that the architecture could handle the TLB invalidation. At the moment,
+> > > > > > > the core KVM code invalidates the whole VMID courtesy of 'flush_on_ret'
+> > > > > > > being set by kvm_handle_hva_range(), whereas we could do a much
+> > > > > > > lighter-weight and targetted TLBI in the architecture page-table code
+> > > > > > > when we actually update the ptes for small ranges.
+> > > > > > 
+> > > > > > Indeed, and I was looking at this earlier this week as it has a pretty
+> > > > > > devastating effect with NV (it blows the shadow S2 for that VMID, with
+> > > > > > costly consequences).
+> > > > > > 
+> > > > > > In general, it feels like the TLB invalidation should stay with the
+> > > > > > code that deals with the page tables, as it has a pretty good idea of
+> > > > > > what needs to be invalidated and how -- specially on architectures
+> > > > > > that have a HW-broadcast facility like arm64.
+> > > > > 
+> > > > > Would this be roughly on par with an in-line flush on arm64?  The simpler, more
+> > > > > straightforward solution would be to let architectures override flush_on_ret,
+> > > > > but I would prefer something like the below as x86 can also utilize a range-based
+> > > > > flush when running as a nested hypervisor.
+> > > 
+> > > ...
+> > > 
+> > > > I think this works for us on HW that has range invalidation, which
+> > > > would already be a positive move.
+> > > > 
+> > > > For the lesser HW that isn't range capable, it also gives the
+> > > > opportunity to perform the iteration ourselves or go for the nuclear
+> > > > option if the range is larger than some arbitrary constant (though
+> > > > this is additional work).
+> > > > 
+> > > > But this still considers the whole range as being affected by
+> > > > range->handler(). It'd be interesting to try and see whether more
+> > > > precise tracking is (or isn't) generally beneficial.
+> > > 
+> > > I assume the idea would be to let arch code do single-page invalidations of
+> > > stage-2 entries for each gfn?
+> > 
+> > Right, as it's the only code which knows which ptes actually ended up
+> > being aged.
+> > 
+> > > Unless I'm having a brain fart, x86 can't make use of that functionality.  Intel
+> > > doesn't provide any way to do targeted invalidation of stage-2 mappings.  AMD
+> > > provides an instruction to do broadcast invalidations, but it takes a virtual
+> > > address, i.e. a stage-1 address.  I can't tell if it's a host virtual address or
+> > > a guest virtual address, but it's a moot point because KVM doen't have the guest
+> > > virtual address, and if it's a host virtual address, there would need to be valid
+> > > mappings in the host page tables for it to work, which KVM can't guarantee.
+> > 
+> > Ah, so it sounds like it would need to be an arch opt-in then.
 > 
-> AFAICS you're actually describing a bug that happens during boot *up*?
-> 
-> Describing it as "reboot" makes me think you're talking about the
-> shutdown path. I think that will confuse people, me at least :)
+> Even if x86 (or some other arch code) could use the precise tracking, I think it
+> would make sense to have the behavior be arch specific.  Adding infrastructure
+> to get information from arch code, only to turn around and give it back to arch
+> code would be odd.
 
-there is probably an assumption that it must have been running
-previously for the errors to happen in the first place but given the
-error state persists for a day it may be a very long 'reboot'.
+Sorry, yes, that's what I had in mind. Basically, a way for the arch code
+to say "I've handled the TLBI, don't worry about it."
 
-Thanks
+> Unless arm64 can't do the invalidation immediately after aging the stage-2 PTE,
+> the best/easiest solution would be to let arm64 opt out of the common TLB flush
+> when a SPTE is made young.
+> 
+> With the range-based flushing bundled in, this?
+> 
+> ---
+>  include/linux/kvm_host.h |  2 ++
+>  virt/kvm/kvm_main.c      | 40 +++++++++++++++++++++++++---------------
+>  2 files changed, 27 insertions(+), 15 deletions(-)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index afbc99264ffa..8fe5f5e16919 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2010,6 +2010,8 @@ extern const struct kvm_stats_header kvm_vcpu_stats_header;
+>  extern const struct _kvm_stats_desc kvm_vcpu_stats_desc[];
+>  
+>  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
+> +int kvm_arch_flush_tlb_if_young(void);
+> +
+>  static inline int mmu_invalidate_retry(struct kvm *kvm, unsigned long mmu_seq)
+>  {
+>  	if (unlikely(kvm->mmu_invalidate_in_progress))
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 38b498669ef9..5ebef8ef239c 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -595,6 +595,11 @@ static void kvm_null_fn(void)
+>  }
+>  #define IS_KVM_NULL_FN(fn) ((fn) == (void *)kvm_null_fn)
+>  
+> +int __weak kvm_arch_flush_tlb_if_young(void)
+> +{
+> +	return true;
+> +}
 
-Michal
-> 
-> cheers
-> 
-> > There are execptions where the partition firmware might not provide this
-> > property for the PE at the time of LPAR reboot. One of the scenario is
-> > where the firmware has frozen the PE due to some error conditions. This
-> > PE is frozen for 24 hours or unless the whole system is reinitialized.
-> >
-> > Within this time frame, if the LPAR is rebooted, the frozen PE will be
-> > presented to the LPAR but ibm,dma-window property could be missing.
-> >
-> > Today, under these circumstances, the LPAR oopses with NULL pointer
-> > dereference, when configuring the PCI bus the PE is attached to.
-> >
-> > BUG: Kernel NULL pointer dereference on read at 0x000000c8
-> > Faulting instruction address: 0xc0000000001024c0
-> > Oops: Kernel access of bad area, sig: 7 [#1]
-> > LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-> > Modules linked in:
-> > Supported: Yes
-> > CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.4.0-150600.9-default #1
-> > Hardware name: IBM,9043-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_023) hv:phyp pSeries
-> > NIP:  c0000000001024c0 LR: c0000000001024b0 CTR: c000000000102450
-> > REGS: c0000000037db5c0 TRAP: 0300   Not tainted  (6.4.0-150600.9-default)
-> > MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 28000822  XER: 00000000
-> > CFAR: c00000000010254c DAR: 00000000000000c8 DSISR: 00080000 IRQMASK: 0
-> > ...
-> > NIP [c0000000001024c0] pci_dma_bus_setup_pSeriesLP+0x70/0x2a0
-> > LR [c0000000001024b0] pci_dma_bus_setup_pSeriesLP+0x60/0x2a0
-> > Call Trace:
-> > 	pci_dma_bus_setup_pSeriesLP+0x60/0x2a0 (unreliable)
-> > 	pcibios_setup_bus_self+0x1c0/0x370
-> > 	__of_scan_bus+0x2f8/0x330
-> > 	pcibios_scan_phb+0x280/0x3d0
-> > 	pcibios_init+0x88/0x12c
-> > 	do_one_initcall+0x60/0x320
-> > 	kernel_init_freeable+0x344/0x3e4
-> > 	kernel_init+0x34/0x1d0
-> > 	ret_from_kernel_user_thread+0x14/0x1c
-> >
-> > Fixes: b1fc44eaa9ba ("pseries/iommu/ddw: Fix kdump to work in absence of ibm,dma-window")
-> > Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-> > ---
-> >  arch/powerpc/platforms/pseries/iommu.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> > index e8c4129697b1..e808d5b1fa49 100644
-> > --- a/arch/powerpc/platforms/pseries/iommu.c
-> > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> > @@ -786,8 +786,16 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
-> >  	 * parent bus. During reboot, there will be ibm,dma-window property to
-> >  	 * define DMA window. For kdump, there will at least be default window or DDW
-> >  	 * or both.
-> > +	 * There is an exception to the above. In case the PE goes into frozen
-> > +	 * state, firmware may not provide ibm,dma-window property at the time
-> > +	 * of LPAR reboot.
-> >  	 */
-> >  
-> > +	if (!pdn) {
-> > +		pr_debug("  no ibm,dma-window property !\n");
-> > +		return;
-> > +	}
-> > +
-> >  	ppci = PCI_DN(pdn);
-> >  
-> >  	pr_debug("  parent is %pOF, iommu_table: 0x%p\n",
-> >
-> > base-commit: 2c71fdf02a95b3dd425b42f28fd47fb2b1d22702
-> > -- 
-> > 2.39.3 (Apple Git-146)
+I tend to find __weak functions a little ugly, but I think the gist of the
+diff looks good to me. Thanks for putting it together!
+
+> +
+>  /* Iterate over each memslot intersecting [start, last] (inclusive) range */
+>  #define kvm_for_each_memslot_in_hva_range(node, slots, start, last)	     \
+>  	for (node = interval_tree_iter_first(&slots->hva_tree, start, last); \
+> @@ -611,6 +616,7 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+>  	struct kvm_gfn_range gfn_range;
+>  	struct kvm_memory_slot *slot;
+>  	struct kvm_memslots *slots;
+> +	bool need_flush = false;
+>  	int i, idx;
+>  
+>  	if (WARN_ON_ONCE(range->end <= range->start))
+> @@ -663,10 +669,22 @@ static __always_inline kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
+>  					break;
+>  			}
+>  			r.ret |= range->handler(kvm, &gfn_range);
+> +
+> +		       /*
+> +			* Use a precise gfn-based TLB flush when possible, as
+> +			* most mmu_notifier events affect a small-ish range.
+> +			* Fall back to a full TLB flush if the gfn-based flush
+> +			* fails, and don't bother trying the gfn-based flush
+> +			* if a full flush is already pending.
+> +			*/
+> +		       if (range->flush_on_ret && !need_flush && r.ret &&
+> +			   kvm_arch_flush_remote_tlbs_range(kvm, gfn_range.start,
+> +							    gfn_range.end - gfn_range.start + 1))
+
+What's that '+ 1' needed for here?
+
+Will
