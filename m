@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661308AA64A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 02:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F27E48AA682
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 03:19:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YAp6FL07;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=erc9X51S;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VLG7Q1Npqz3dCH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 10:42:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VLGyl545Yz3cX1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Apr 2024 11:19:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YAp6FL07;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=erc9X51S;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VLG6g30zwz3cNc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 10:41:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1713487290;
-	bh=NHQNrd99LJ9MCuk0KL/kZIA73cOzGBuWiBRcno6RL5o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YAp6FL07CTI4y3Sq9B2GU6XiWXcFkW9Dnb3nbVlsty3SZpOJYDW+PZQ1YdkkslClb
-	 uHU+cHmAxw2ocGndLAqhSjEWmo1CbnohJjrXCbg5Zg8wUAoQr8b1Pu2TApfsiYFngh
-	 L+jikFj2KqK6YLefc8J4RY1cfNQefRXouhndrq4HXUYNqiO48nrCcyZlcd4fSmNyhA
-	 8jFDBWIlNwm3J6QzHT4e1C+Tx7DkMdi8wqKNd0DAY9bUFhVuSlsE0hAspeH0ISsyn8
-	 akcTI07axeLP9ZToKe3hMQ4i1WFYFHI0j2rvVQOus+cEIBbRC8qhZMG3+Qz+Si2Eem
-	 X12cZe8M1rpIw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VLG6d1yqHz4wcn;
-	Fri, 19 Apr 2024 10:41:29 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: David Christensen <drc@linux.ibm.com>, dougmill@linux.ibm.com,
- davem@davemloft.net
-Subject: Re: [PATCH net] MAINTAINERS: eth: mark IBM eHEA as an Orphan
-In-Reply-To: <20240418195517.528577-1-drc@linux.ibm.com>
-References: <20240418195517.528577-1-drc@linux.ibm.com>
-Date: Fri, 19 Apr 2024 10:41:24 +1000
-Message-ID: <87zftq9oaz.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VLGxw3MSSz2y70
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Apr 2024 11:18:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713489542; x=1745025542;
+  h=date:from:to:cc:subject:message-id;
+  bh=n09DP1uMwCAee6NMZnv8bQUv9FoyCFvQFKQS5nmjJIM=;
+  b=erc9X51SO2TTTNZZBUWRYXyCdynPlh8j6HzEuL/wz5WLNG1vU8BBFNR7
+   ePWPB9a2pPSaTb1VzdMID4WxtDVlEFL3UrHB1UCwetoV9xAyFAANJmd0F
+   cvqJdEy+yjFWHpGimKbn8azBqy+mNzX3RZ9cAvlp5BMh4Uo2imSDwWrZa
+   ji3pLe00i+7V1fLpdfRMsFo8SfuDZZ6PEDXfvvE5OmQwz+VHUftOgdllV
+   ceXBo4mXHqeXuuHcepFrhK+ylq4bZ5bUnLWo2TeWNhdax0RZsmOZfUZxJ
+   u09nU5eFqgvQ1e8LzepsocdfwuQ+pr0nIfA2IopwvYmfk+sgRHqqLi7jA
+   g==;
+X-CSE-ConnectionGUID: RvjbSPmgS+GNWWbe8/7dlg==
+X-CSE-MsgGUID: cBnFMNwHT6+fSZWZh4fuog==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8936956"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
+   d="scan'208";a="8936956"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 18:18:52 -0700
+X-CSE-ConnectionGUID: XlTY94CXQzCSFzrKkyJi5A==
+X-CSE-MsgGUID: 65rKr5whTwWEaMZlqYgHGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; 
+   d="scan'208";a="27832357"
+Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 18 Apr 2024 18:18:53 -0700
+Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rxctt-0009S0-2L;
+	Fri, 19 Apr 2024 01:18:49 +0000
+Date: Fri, 19 Apr 2024 09:18:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ f318c8be797f8572629d5386a88cde7d753457a8
+Message-ID: <202404190912.oI4Xs4JA-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,40 +69,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pradeeps@linux.ibm.com, Linux PPC <linuxppc-dev@lists.ozlabs.org>, LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-David Christensen <drc@linux.ibm.com> writes:
-> Current maintainer Douglas Miller has left IBM and no replacement has
-> been assigned for the driver. The eHEA hardware was last used on
-> IBM POWER7 systems, the last of which reached end-of-support at the
-> end of 2020.
->
-> Signed-off-by: David Christensen <drc@linux.ibm.com>
-> Reviewed-by: Pradeep Satyanarayana <pradeeps@linux.ibm.com>
-> ---
->  MAINTAINERS | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: f318c8be797f8572629d5386a88cde7d753457a8  powerpc/ptdump: Fix walk_vmemmap() to also print first vmemmap entry
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+elapsed time: 726m
 
-cheers
+configs tested: 18
+configs skipped: 157
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b5b89687680b..bcbbc240e51d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7831,9 +7831,8 @@ W:	http://aeschi.ch.eu.org/efs/
->  F:	fs/efs/
->  
->  EHEA (IBM pSeries eHEA 10Gb ethernet adapter) DRIVER
-> -M:	Douglas Miller <dougmill@linux.ibm.com>
->  L:	netdev@vger.kernel.org
-> -S:	Maintained
-> +S:	Orphan
->  F:	drivers/net/ethernet/ibm/ehea/
->  
->  ELM327 CAN NETWORK DRIVER
-> -- 
-> 2.39.3
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240419   gcc  
+powerpc               randconfig-002-20240419   gcc  
+powerpc               randconfig-003-20240419   gcc  
+powerpc64             randconfig-001-20240419   gcc  
+powerpc64             randconfig-002-20240419   gcc  
+powerpc64             randconfig-003-20240419   clang
+riscv                            allmodconfig   clang
+riscv                            allyesconfig   clang
+um                               allyesconfig   gcc  
+x86_64                              defconfig   gcc  
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
