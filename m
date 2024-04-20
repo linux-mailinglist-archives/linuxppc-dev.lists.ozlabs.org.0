@@ -1,59 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C4B8ABCC6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Apr 2024 20:33:42 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vGI+6IyC;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BC98ABCFB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Apr 2024 22:02:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VMKs71wMXz3dGr
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Apr 2024 04:33:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VMMqN1n23z3dVr
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Apr 2024 06:02:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vGI+6IyC;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VMKrR3fr9z3btl
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Apr 2024 04:32:55 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A11B360B8C;
-	Sat, 20 Apr 2024 18:32:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 501B1C113CE;
-	Sat, 20 Apr 2024 18:32:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713637970;
-	bh=FL1XUzzfr7XOft6TDAyAyqAcmbRITFTq5WPp9HlS73E=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=vGI+6IyCx2Mh+2yDZmbrBvMgsH9Wi6x1FhCt7Ydq++c+qYlUpnFU8lhCKqOL/xZC7
-	 TrZARRPfJrNqQdlcNA1+zo/NevWEc9+8WMsbzdvRIu5T3cjspzqpAHiOLC/vhNcO/G
-	 9oTrX6E6N3ZtXNZz7tU4ZxqiIWqcGcDkImHR/mkD2hb2r1dlZj8jaratBwgh5+/ifB
-	 Iyulr2M+iqjQg3nwfhfZuAvUY1Icfk6hn+7GHOtpJi34y9jEih3vPTm1jmH+KVSfeo
-	 gynCqEZxzSqegUa3g9KOuoMtvdZ6rSYSzmREMWBcs0j6xaXINaCDX6mmtaXAgxo9DO
-	 gRAuQUQhwCWJA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 485F7C433E9;
-	Sat, 20 Apr 2024 18:32:50 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.9-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87jzksaf7x.fsf@mail.lhotse>
-References: <87jzksaf7x.fsf@mail.lhotse>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87jzksaf7x.fsf@mail.lhotse>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.9-3
-X-PR-Tracked-Commit-Id: 210cfef579260ed6c3b700e7baeae51a5e183f43
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: e43afae4a335ac0bf54c7a8f23ed65dd55449649
-Message-Id: <171363797029.22086.8963090920006760925.pr-tracker-bot@kernel.org>
-Date: Sat, 20 Apr 2024 18:32:50 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VMMpv0n3bz3cJl
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Apr 2024 06:01:42 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id C6E382800C99F;
+	Sat, 20 Apr 2024 22:01:24 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id BF393CC625; Sat, 20 Apr 2024 22:01:24 +0200 (CEST)
+Message-ID: <cover.1713608122.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Sat, 20 Apr 2024 22:00:00 +0200
+Subject: [PATCH 0/6] Deduplicate string exposure in sysfs
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,19 +41,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, herbert@gondor.apana.org.au, sbhat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, msuchanek@suse.de, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>, storagedev@microchip.com, Yicong Yang <yangyicong@hisilicon.com>, ibm-acpi-devel@lists.sourceforge.net, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, Will Deacon <will@kernel.org>, Jijie Shao <shaojijie@huawei.com>, Khuong Dinh <khuong@os.amperecomputing.com>, Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, linux-rdma@vger.kernel.org, "Luke D. Jones" <luke@ljones.dev>, Nilesh Javali <njavali@marvell.com>, Ilpo Jaervinen <ilpo.jarvinen@linux.intel.com>, Guenter Roeck <linux@roeck-us.net>, platform-driver-x86@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, Azael Avalos <coproscefalo@gmail.com>, linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org, linux-scsi@vger.kernel.org, "Martin K. Petersen" <mart
+ in.petersen@oracle.com>, Don Brace <don.brace@microchip.com>, Bjorn Andersson <andersson@kernel.org>, Anil Gurumur thy <anil.gurumurthy@qlogic.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, GR-QLogic-Storage-Upstream@marvell.com, Shuai Xue <xueshuai@linux.alibaba.com>, Corentin Chary <corentin.chary@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 20 Apr 2024 13:24:34 +1000:
+Introduce a generic ->show() callback to expose a string as a device
+attribute in sysfs.  Deduplicate various identical callbacks across
+the tree.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.9-3
+Result:  Minus 216 LoC, minus 1576 bytes vmlinux size (x86_64 allyesconfig).
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/e43afae4a335ac0bf54c7a8f23ed65dd55449649
+This is a byproduct of my upcoming PCI device authentication v2 patches.
 
-Thank you!
+
+Lukas Wunner (6):
+  driver core: Add device_show_string() helper for sysfs attributes
+  hwmon: Use device_show_string() helper for sysfs attributes
+  IB/qib: Use device_show_string() helper for sysfs attributes
+  perf: Use device_show_string() helper for sysfs attributes
+  platform/x86: Use device_show_string() helper for sysfs attributes
+  scsi: Use device_show_string() helper for sysfs attributes
+
+ arch/powerpc/perf/hv-24x7.c              | 10 ----
+ arch/x86/events/intel/core.c             | 13 ++---
+ drivers/base/core.c                      |  9 ++++
+ drivers/hwmon/i5k_amb.c                  | 15 ++----
+ drivers/hwmon/ibmpex.c                   | 14 ++----
+ drivers/infiniband/hw/qib/qib.h          |  1 -
+ drivers/infiniband/hw/qib/qib_driver.c   |  6 ---
+ drivers/infiniband/hw/qib/qib_sysfs.c    | 10 +---
+ drivers/perf/alibaba_uncore_drw_pmu.c    | 12 +----
+ drivers/perf/arm-cci.c                   | 12 +----
+ drivers/perf/arm-ccn.c                   | 11 +----
+ drivers/perf/arm_cspmu/arm_cspmu.c       | 10 ----
+ drivers/perf/arm_cspmu/arm_cspmu.h       |  7 +--
+ drivers/perf/arm_dsu_pmu.c               | 11 +----
+ drivers/perf/cxl_pmu.c                   | 13 +----
+ drivers/perf/hisilicon/hisi_pcie_pmu.c   | 13 +----
+ drivers/perf/hisilicon/hisi_uncore_pmu.c | 14 ------
+ drivers/perf/hisilicon/hisi_uncore_pmu.h |  4 +-
+ drivers/perf/hisilicon/hns3_pmu.c        | 12 +----
+ drivers/perf/qcom_l3_pmu.c               | 11 +----
+ drivers/perf/xgene_pmu.c                 | 11 +----
+ drivers/platform/x86/asus-wmi.c          | 62 ++++++------------------
+ drivers/platform/x86/thinkpad_acpi.c     | 10 +---
+ drivers/platform/x86/toshiba_acpi.c      |  9 +---
+ drivers/scsi/bfa/bfad_attr.c             | 28 +++--------
+ drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c | 11 +----
+ drivers/scsi/mvsas/mv_init.c             | 10 +---
+ drivers/scsi/qla2xxx/qla_attr.c          | 11 +----
+ drivers/scsi/smartpqi/smartpqi_init.c    | 11 ++---
+ include/linux/device.h                   | 15 ++++++
+ 30 files changed, 85 insertions(+), 301 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.43.0
+
