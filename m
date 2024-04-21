@@ -1,39 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4C68ABD0B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Apr 2024 22:13:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA9B8AC1FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 01:01:07 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dW4898ZS;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VMN4S5bC2z3dKL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Apr 2024 06:13:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VN3lL3g96z3dJV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 09:01:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 609 seconds by postgrey-1.37 at boromir; Sun, 21 Apr 2024 06:13:03 AEST
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dW4898ZS;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::a2a; helo=mail-vk1-xa2a.google.com; envelope-from=kayvonkamyar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VMN3z2jpLz3cgf
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Apr 2024 06:13:03 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id A1B9C30008F1A;
-	Sat, 20 Apr 2024 22:02:46 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 9AB0ACC66D; Sat, 20 Apr 2024 22:02:46 +0200 (CEST)
-Message-ID: <2e3eaaf2600bb55c0415c23ba301e809403a7aa2.1713608122.git.lukas@wunner.de>
-In-Reply-To: <cover.1713608122.git.lukas@wunner.de>
-References: <cover.1713608122.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Sat, 20 Apr 2024 22:00:01 +0200
-Subject: [PATCH 1/6] driver core: Add device_show_string() helper for sysfs
- attributes
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VN03S6d30z2yk7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 06:14:43 +1000 (AEST)
+Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-4dae8b2d29bso977279e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Apr 2024 13:14:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713730480; x=1714335280; darn=lists.ozlabs.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IlWyjbjDphZPrh+A+ghjkmZe3wOOJmbYFrB2tNk+ITU=;
+        b=dW4898ZSnweuQ4xcj/xvNDrDxJ9HjQkuTE+CT0fPcVdJF/VlMluzPs5Pr6PPssQx+9
+         +nf1ErpClqDUbFzHu26g44Jnhtq4+UkdfnvhWYckW90IDz1IQ4F+CGHuYQq5IsrzE0sZ
+         YN1BDZwtKhyb+4EfyRPAwt4Rtf35LqrVx35GOgvZh7QS7L6+LVU2JjE/DqcMks4qyz/W
+         YiyHGg/JwgAmoL/qxghtwghxLKmeXcnsCIFo5uudWjBUP8PP0K1wTNSu3gG259a9Ixrz
+         4vpNF/X7crrWe5ffbVaUdRVynIX77KQDt7iH7usgMMLALnhsU4+TMm8imAR3Ez8nmKab
+         XUgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713730480; x=1714335280;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IlWyjbjDphZPrh+A+ghjkmZe3wOOJmbYFrB2tNk+ITU=;
+        b=JV3vplJiF920PIAUaRWGHZGRty2/iVEAofCHtIZMeVALpjo6NN1abkWDXKoXO/KBn7
+         gjmtui9BUm9wvSr9RvMweLexvM23k0tJZl+GazWPlQN+1qCsI8V2YXzhzjg/66aLqwGR
+         T7ogofsFiHVIyhDfI8h4URH5Kv2mNy//STivPwoos/08CVwmAA+WhHDf1irZfdoj7TCy
+         Xl86bF8OFbZO9MOitcTjnrnzf8LRdzLIw0XltgWxCI+37vQhFYGZs1TD4lqHgzck4vHM
+         Mz1479+V0OQ28lh1uOYUhqvphMZhxlaQ28WBRO2d60suh+JhxOHl+PQgYAGkYofslfv7
+         3RvA==
+X-Gm-Message-State: AOJu0YyOamxUtRmZ3IC0XJbLQXznb0JaQw0/La2Ohmcq8aDGd7UwUD39
+	kSIJJW7ary1aybFW01Ud30LqSdbS6TUkPC+lFEk4fT+/tmEC9Bw5SagCtnKEcvS99AVIdsoxXJ6
+	4DuWHCMM6ONIOQBdaWMLp8tr2gw/pOLKxBx4=
+X-Google-Smtp-Source: AGHT+IFE5HEtoKlffCJ1v1ok4XcPOHGs8+HoGGPprvAtQwvgQ4aLBGxzkczwCZSrdf1bPEdMfeCNcK6i+FMFsORonms=
+X-Received: by 2002:a05:6122:2518:b0:4d3:cff6:79f0 with SMTP id
+ cl24-20020a056122251800b004d3cff679f0mr9192144vkb.4.1713730479723; Sun, 21
+ Apr 2024 13:14:39 -0700 (PDT)
+MIME-Version: 1.0
+From: The Mariocrafter <kayvonkamyar@gmail.com>
+Date: Sun, 21 Apr 2024 13:14:28 -0700
+Message-ID: <CAEgzAWxiWd8jhPoq5DrW0+2B31vuJvLnWzdS4-15VHZHftaETw@mail.gmail.com>
+Subject: DOS Compatibility Card/Apple Houdini card support?
+To: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Mon, 22 Apr 2024 09:00:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,106 +72,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For drivers wishing to expose an unsigned long, int or bool at a static
-memory location in sysfs, the driver core provides ready-made helpers
-such as device_show_ulong() to be used as ->show() callback.
+Apple has released a few cards (The Houdini I, Houdini II, and DOS
+Compatibility Card) that had entire computers on them minus the hard
+drive, and were originally intended to only run DOS applications,
+including Windows 3.x and 95, that had an x86 CPU, a sound card on the
+Houdini II and higher, no FPU, none of the cards had any storage, and
+a VGA port, and I think some models have some other serial port I'm
+not too sure of. Certain Mac models came preinstalled with the DOS
+Compatibility Card. When it comes to using this in Linux, the cards
+come with lots of RAM (for it's time), with the most powerful card
+supporting up to 80 megabytes of RAM. About the CPU, I'm not too
+familiar with how the kernel supports CPUs internally, if the kernel
+can support different architectures on different cores, or have
+another CPU with a different architecture, but it could be supported
+if the kernel can handle this without making the computer slow, like
+reserving the x86 CPU for KVM exclusively. The VGA port on the unit
+can act as another port for a display, which can display the Linux GUI
+or terminal.
 
-Some drivers need to expose a string and so far they all provide their
-own ->show() implementation.  arch/powerpc/perf/hv-24x7.c went so far
-as to create a device_show_string() helper but kept it private.
-
-Make it public for reuse by other drivers.  The pattern seems to be
-sufficiently frequent to merit a public helper.
-
-Add a DEVICE_STRING_ATTR_RO() macro in line with the existing
-DEVICE_ULONG_ATTR() and similar macros to ease declaration of string
-attributes.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- arch/powerpc/perf/hv-24x7.c | 10 ----------
- drivers/base/core.c         |  9 +++++++++
- include/linux/device.h      | 15 +++++++++++++++
- 3 files changed, 24 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 057ec2e3451d..d400fa391c27 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -425,16 +425,6 @@ static char *memdup_to_str(char *maybe_str, int max_len, gfp_t gfp)
- 	return kasprintf(gfp, "%.*s", max_len, maybe_str);
- }
- 
--static ssize_t device_show_string(struct device *dev,
--		struct device_attribute *attr, char *buf)
--{
--	struct dev_ext_attribute *d;
--
--	d = container_of(attr, struct dev_ext_attribute, attr);
--
--	return sprintf(buf, "%s\n", (char *)d->var);
--}
--
- static ssize_t cpumask_show(struct device *dev,
- 			    struct device_attribute *attr, char *buf)
- {
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 78dfa74ee18b..190d4a39c6a8 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2523,6 +2523,15 @@ ssize_t device_show_bool(struct device *dev, struct device_attribute *attr,
- }
- EXPORT_SYMBOL_GPL(device_show_bool);
- 
-+ssize_t device_show_string(struct device *dev,
-+			   struct device_attribute *attr, char *buf)
-+{
-+	struct dev_ext_attribute *ea = to_ext_attr(attr);
-+
-+	return sysfs_emit(buf, "%s\n", (char *)ea->var);
-+}
-+EXPORT_SYMBOL_GPL(device_show_string);
-+
- /**
-  * device_release - free device structure.
-  * @kobj: device's kobject.
-diff --git a/include/linux/device.h b/include/linux/device.h
-index c515ba5756e4..63ac65db3ecb 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -132,6 +132,8 @@ ssize_t device_show_bool(struct device *dev, struct device_attribute *attr,
- 			char *buf);
- ssize_t device_store_bool(struct device *dev, struct device_attribute *attr,
- 			 const char *buf, size_t count);
-+ssize_t device_show_string(struct device *dev, struct device_attribute *attr,
-+			   char *buf);
- 
- /**
-  * DEVICE_ATTR - Define a device attribute.
-@@ -251,6 +253,19 @@ ssize_t device_store_bool(struct device *dev, struct device_attribute *attr,
- 	struct dev_ext_attribute dev_attr_##_name = \
- 		{ __ATTR(_name, _mode, device_show_bool, device_store_bool), &(_var) }
- 
-+/**
-+ * DEVICE_STRING_ATTR_RO - Define a device attribute backed by a r/o string.
-+ * @_name: Attribute name.
-+ * @_mode: File mode.
-+ * @_var: Identifier of string.
-+ *
-+ * Like DEVICE_ULONG_ATTR(), but @_var is a string. Because the length of the
-+ * string allocation is unknown, the attribute must be read-only.
-+ */
-+#define DEVICE_STRING_ATTR_RO(_name, _mode, _var) \
-+	struct dev_ext_attribute dev_attr_##_name = \
-+		{ __ATTR(_name, (_mode) & ~0222, device_show_string, NULL), (_var) }
-+
- #define DEVICE_ATTR_IGNORE_LOCKDEP(_name, _mode, _show, _store) \
- 	struct device_attribute dev_attr_##_name =		\
- 		__ATTR_IGNORE_LOCKDEP(_name, _mode, _show, _store)
--- 
-2.43.0
-
+Information about this card can be found online quite easily, although
+some links require the Wayback Machine as they are decades old. WIP
+emulation for the Houdini II with a GPL v3 licence can be found:
+https://github.com/dingusdev/dingusppc/commit/90f22d806677048813e0c89216a6430076b5b00f
+with contact information for the reverse engineers that completed it.
+If you own this card or a Mac preinstalled with the card, you can try
+implementing this, and get extra RAM in return.
