@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620148AC6C2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 10:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EA28AC6D2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 10:22:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VNJ9X0SRSz3vv0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 18:21:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VNJBw2yfFz3dS0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 18:22:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNJ6w4CrVz3cYq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 18:18:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNJ6y1V7Kz3ck9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 18:18:50 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VNJ6w2xtQz4x23;
-	Mon, 22 Apr 2024 18:18:48 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VNJ6x6pF1z4x2d;
+	Mon, 22 Apr 2024 18:18:49 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Nathan Chancellor <nathan@kernel.org>
-In-Reply-To: <20240405-ppc-fix-wa-fatal-warnings-clang-v1-1-bdcd969f2ef0@kernel.org>
-References: <20240405-ppc-fix-wa-fatal-warnings-clang-v1-1-bdcd969f2ef0@kernel.org>
-Subject: Re: [PATCH] powerpc: Fix fatal warnings flag for LLVM's integrated assembler
-Message-Id: <171377378380.1025456.16747240278509808133.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thorsten Blum <thorsten.blum@toblux.com>
+In-Reply-To: <20240331222249.107467-2-thorsten.blum@toblux.com>
+References: <20240331222249.107467-2-thorsten.blum@toblux.com>
+Subject: Re: [PATCH] powerpc: Use str_plural() to fix Coccinelle warning
+Message-Id: <171377378352.1025456.8238193274214108693.b4-ty@ellerman.id.au>
 Date: Mon, 22 Apr 2024 18:16:23 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,24 +42,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: justinstitt@google.com, ajd@linux.ibm.com, llvm@lists.linux.dev, patches@lists.linux.dev, morbo@google.com, bgray@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, linuxppc-dev@lists.ozlabs.org, Baoquan He <bhe@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 05 Apr 2024 12:31:22 -0700, Nathan Chancellor wrote:
-> When building with LLVM_IAS=1, there is an error because
-> '-fatal-warnings' is not recognized as a valid flag:
+On Mon, 01 Apr 2024 00:22:50 +0200, Thorsten Blum wrote:
+> Fixes the following Coccinelle/coccicheck warning reported by
+> string_choices.cocci:
 > 
->   clang: error: unsupported argument '-fatal-warnings' to option '-Wa,'
+> 	opportunity for str_plural(tpc)
 > 
-> Use the double hyphen version of the flag, '--fatal-warnings', which
-> works with both the GNU assembler and LLVM's integrated assembler.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Fix fatal warnings flag for LLVM's integrated assembler
-      https://git.kernel.org/powerpc/c/8884fc918f6aee220f9b41806974508bd0213aca
+[1/1] powerpc: Use str_plural() to fix Coccinelle warning
+      https://git.kernel.org/powerpc/c/3e42e72796d8991fecad78d61a180e24a4853427
 
 cheers
