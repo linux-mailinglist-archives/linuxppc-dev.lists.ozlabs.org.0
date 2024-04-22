@@ -2,49 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217108ACC5A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 13:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B8A8ACC89
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 14:11:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=M2XmR7Xb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q1BsL9i4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VNNtS5dWWz3dL8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 21:53:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VNPHF6qMkz3d24
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 22:11:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=M2XmR7Xb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q1BsL9i4;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNNsj0GN0z30Pn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 21:52:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1713786757;
-	bh=QJYC+OzoCGnkrtwmIJuy9V9t6l5NVkhqDdDz68X2FeM=;
-	h=From:To:Subject:Date:From;
-	b=M2XmR7XbEM2KDI5RZyvX62C36DIOFfQW4WnlR7bs34DsA+iIAVp6GxUUMsNtPJZvy
-	 IPDUckSi95LhnZKzzUzgbwPtU9HXyc9sxG61sdxYPwrLjUoT93sIWCGk6TCuMHmgN3
-	 BY9BB0W1tSIKjtZqlDpRjodXDv+hrXuGb6Cbv2pZ2uVnwn/Lo8U6wVXgu/SfqNuzfx
-	 Q+s+bwRECQ7NcafsJpcdY/Ozpd33m8WgF1Me7Dn/qmf37O3J8vYudZrNSQRsv8AiA1
-	 9Gme0dzFwhswh7NalAeaTsMvgseQZfZ7Z+20ZjcQW1RLclVnBYKuqYMngP3P638VSm
-	 F9ZlSCt8Pnvig==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VNNsd0VC4z4wyh;
-	Mon, 22 Apr 2024 21:52:37 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Mark memory_limit as initdata
-Date: Mon, 22 Apr 2024 21:52:31 +1000
-Message-ID: <20240422115231.1769984-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNPGV2fK7z3cTv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 22:10:42 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 52C9CCE0B65
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 12:10:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218B6C4AF0A
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 12:10:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713787836;
+	bh=a/jkvHDgvp+aCgDbduR+rR6Jv2ent2+kn/DG9bps3JA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Q1BsL9i4sLhSthk7FETePYybI8nJ8qcbcLdVs5boz4b9rThuxt5r/RpZrPZNIF0Z7
+	 DBwZFAX3OuhHc64ZdDaPyerKaO+/+0iyeJKt902BPRglrCUwBDobb/Ph9NvaBf8uFd
+	 EoJjvR5yc1ECv2nIzJGez86vy+c8YdMKLUb9QwCecu9Axy+w+GwY5FreO/hJeIiSUO
+	 BNSmCAACQcl9bV11rVORk4WwYXdloG4mLfIwvvvtiiycBgADiEytWqk0MFD97F1rYx
+	 mxxAKsW+L9BX5IJ8oc1DBC3qSthSadefDWtP62Fyfo6GdMZWXR0n/PyHFd9gHPeLZE
+	 3Fuo8P8FV4zyA==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d895138ce6so61010051fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 05:10:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWQTmC7UQDfMF24gvGgkMToH02OOwDx++2Jhj74Sr3WqLy4gWADuTWt+AfN7ND0rJXLBFo2XsVkcex7gs0+QoMzLeFf2tqWgLtVZEz1lg==
+X-Gm-Message-State: AOJu0Yz+n9u/OwLnOT2nmaHchhUylwTEzNuGM0V0EDdKRcSpyA3BhVss
+	wG2xnkBN70tmpMQ44gVHQOvRLgej1eZU1JWF8lfB2qq7rLVUf6Kr6146wsipfO4ArugGojA4ivi
+	+XfZxJI6MfPbk3BdCIvcNFfr7sbg=
+X-Google-Smtp-Source: AGHT+IFnT9oIlydPM9slHFIGQ4nlDyC4pxuRciGfVPGp92isj1tegycIlBBjmx5VvPj+2j4jccvDvssOYt9K0St2uGM=
+X-Received: by 2002:a2e:a554:0:b0:2da:50f8:dfab with SMTP id
+ e20-20020a2ea554000000b002da50f8dfabmr6690473ljn.7.1713787834707; Mon, 22 Apr
+ 2024 05:10:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240422092206.147078-1-sv@linux.ibm.com>
+In-Reply-To: <20240422092206.147078-1-sv@linux.ibm.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 22 Apr 2024 21:09:58 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR3R2MfP69pbXNYx3TCeQiaC-Pjb=zfnMifHRUvhCQA6w@mail.gmail.com>
+Message-ID: <CAK7LNAR3R2MfP69pbXNYx3TCeQiaC-Pjb=zfnMifHRUvhCQA6w@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] objtool: Run objtool only if either of the config
+ options are selected
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,30 +70,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, peterz@infradead.org, mahesh@linux.ibm.com, mingo@kernel.org, nathan@kernel.org, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The `memory_limit` variable should only be used during boot, enforce
-that by marking it initdata.
+On Mon, Apr 22, 2024 at 6:25=E2=80=AFPM Sathvika Vasireddy <sv@linux.ibm.co=
+m> wrote:
+>
+> Currently, when objtool is enabled and none of the supported options
+> are triggered, kernel build errors out with the below error:
+> error: objtool: At least one command required.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/mm/mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 3a440004b97d..12316ac66e7e 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -30,7 +30,7 @@
- 
- #include <mm/mmu_decl.h>
- 
--unsigned long long memory_limit;
-+unsigned long long memory_limit __initdata;
- 
- unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)] __page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
--- 
-2.44.0
+Then, I think CONFIG_OBJTOOL should be disabled.
 
+
+>
+> To address this, ensure that objtool is run only when either of the
+> config options are selected.
+>
+> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+> ---
+>  scripts/Makefile.lib | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 3179747cbd2c..c65bb0fbd136 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -286,7 +286,10 @@ objtool-args =3D $(objtool-args-y)                  =
+                 \
+>
+>  delay-objtool :=3D $(or $(CONFIG_LTO_CLANG),$(CONFIG_X86_KERNEL_IBT))
+>
+> +ifneq ($(objtool-args-y),)
+>  cmd_objtool =3D $(if $(objtool-enabled), ; $(objtool) $(objtool-args) $@=
+)
+> +endif
+> +
+>  cmd_gen_objtooldep =3D $(if $(objtool-enabled), { echo ; echo '$@: $$(wi=
+ldcard $(objtool))' ; } >> $(dot-target).cmd)
+>
+>  endif # CONFIG_OBJTOOL
+> --
+> 2.34.1
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
