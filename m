@@ -2,47 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617008AD1F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 18:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7EB8AD36A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 19:41:50 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Lwl60Ajt;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VNW670ZZqz3dVp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 02:33:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VNXcR66VJz3dDp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 03:41:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1007 seconds by postgrey-1.37 at boromir; Tue, 23 Apr 2024 02:33:27 AEST
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Lwl60Ajt;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNW5g6rm9z3cds
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Apr 2024 02:33:25 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VNVgX4VLDz6J9gG;
-	Tue, 23 Apr 2024 00:14:16 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id CD52A140736;
-	Tue, 23 Apr 2024 00:16:30 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Apr
- 2024 17:16:30 +0100
-Date: Mon, 22 Apr 2024 17:16:29 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: Re: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
- ANFE in aer_err_info
-Message-ID: <20240422171629.00005675@Huawei.com>
-In-Reply-To: <20240417061407.1491361-2-zhenzhong.duan@intel.com>
-References: <20240417061407.1491361-1-zhenzhong.duan@intel.com>
-	<20240417061407.1491361-2-zhenzhong.duan@intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNXbh3B1pz3cjm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Apr 2024 03:41:02 +1000 (AEST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-61ac45807cbso48435117b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 10:41:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1713807657; x=1714412457; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8oSz86JzOY9DQvGvueAGk0oxmVKc1JpB72xgEu0TDts=;
+        b=Lwl60AjtXZTWkb8KTcUNB+GYlaWRULgl2zHVyp6aU23rIES7EDnWtjBpPVo2PdfP8e
+         jDSnrehULnKlJsoPofNzW+ExoDiDhcIwJz7pmIHdfYPyCIUgssNC/W9QW2zNzFsiXo4H
+         gae5TmIGKh/hIFyETt3UXVLptecdv3q3kXceDUucYxi4EzULMyTYziLQWikqRcTFOuYZ
+         zLXP4GuxCd1ni0SzomWl+F7iFRjNTvrsxtF3fedOI41WfTMkPIwMGGkRmir8oZm4dSIZ
+         Ts4igUpCbQdgbQNoxpfdnYwCwNWOOeXreyc4TKnH0vIwvCxCUaZlvlaW1Qd+EdyyDCr4
+         3ajQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713807657; x=1714412457;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8oSz86JzOY9DQvGvueAGk0oxmVKc1JpB72xgEu0TDts=;
+        b=fOrIo1xx5qEbyyDh/a2nsKquzjE8qbZwQCp57JtOCSFVwjY6HyzxrdWyxNtlgF+yFB
+         SUnUSYL0OkFRAWMRopYt0x81nqjHqQV0KJnI06tvEdiDc7l99zG1iwkGjHED874x03TN
+         L6PoLqolq87cuaLNOWPdk4OPATq2KBbXKVrV6C9O0WImuB9IQFbl78E7LXvTbfSK3r4G
+         r2rzjDiWMBCMn/HamcKaVz/loggUyEj3NePcV3NNUDkfh5DtJlEPOjXPp3qn/uWIjjy2
+         Q/95LwFcaIPj+nK8EyD5Edc6O9nXDCxLWgvbn9P4Md+4n7BifkUxt0QZy+xrrES5wV2E
+         hcOg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZcD3vrySxtD2MEqVG5rwh2PE7jXAXwa1chEPNEj/QakUWbpc8o8Fz8/etNs+/ZESlL0ZnAQnLvl40R21hemWoBePXwwJYmOzBguXBvA==
+X-Gm-Message-State: AOJu0YwAt89VD3QACcWasw4Vm5kveXNS62xHZAR6DwD+l3zNrI0iGkEb
+	QLV4U1aGaBwJK6BMHTOdOUMcbUDup/Et1C6xbNAGYG+10+/R4j9ar1j5pEnC/Kc=
+X-Google-Smtp-Source: AGHT+IF6LQ8zdofhxJ/PNSOv5IQXexYxxfrsaWAs34RmUulyK1yyuZ4SFyNwWs4DcElioVxSqpYRPw==
+X-Received: by 2002:a05:690c:3685:b0:617:c9b0:e12c with SMTP id fu5-20020a05690c368500b00617c9b0e12cmr10651242ywb.38.1713807655898;
+        Mon, 22 Apr 2024 10:40:55 -0700 (PDT)
+Received: from ghost ([50.146.0.2])
+        by smtp.gmail.com with ESMTPSA id r29-20020a81441d000000b00608876ed731sm2060370ywa.126.2024.04.22.10.40.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 10:40:55 -0700 (PDT)
+Date: Mon, 22 Apr 2024 13:40:53 -0400
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v3 14/15] riscv: Add support for suppressing warning
+ backtraces
+Message-ID: <ZiahJT8MTFqAlD5A@ghost>
+References: <20240403131936.787234-1-linux@roeck-us.net>
+ <20240403131936.787234-15-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240403131936.787234-15-linux@roeck-us.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,147 +80,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, alison.schofield@intel.com, rafael@kernel.org, sathyanarayanan.kuppuswamy@intel.com, linux-pci@vger.kernel.org, erwin.tsaur@intel.com, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, oohall@gmail.com, ira.weiny@intel.com, dave@stgolabs.net, dave.jiang@intel.com, vishal.l.verma@intel.com, Smita.KoralahalliChannabasappa@amd.com, linux-acpi@vger.kernel.org, helgaas@kernel.org, lenb@kernel.org, chao.p.peng@intel.com, rrichter@amd.com, yudong.wang@intel.com, bp@alien8.de, qingshun.wang@linux.intel.com, bhelgaas@google.com, dan.j.williams@intel.com, linux-edac@vger.kernel.org, tony.luck@intel.com, feiting.wanyan@intel.com, adam.c.preble@intel.com, mahesh@linux.ibm.com, leoyang.li@nxp.com, lukas@wunner.de, james.morse@arm.com, linuxppc-dev@lists.ozlabs.org, shiju.jose@huawei.com
+Cc: x86@kernel.org, loongarch@lists.linux.dev, linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org, Brendan Higgins <brendan.higgins@linux.dev>, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Arthur Grillo <arthurgrillo@riseup.net>, Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Daniel Diaz <daniel.diaz@linaro.org>, linux-sh@vger.kernel.org, Naresh Kamboju <naresh.kamboju@linaro.org>, =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Linux Kernel Functional Testing <lkft@linaro.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, Daniel Vetter <daniel@ffwll.ch>, linux-arm-kernel@lists.infra
+ dead.org, kunit-dev@googlegroups.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Thomas Zimmermann <tzimmermann@suse.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 17 Apr 2024 14:14:05 +0800
-Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
-
-> In some cases the detector of a Non-Fatal Error(NFE) is not the most
-> appropriate agent to determine the type of the error. For example,
-> when software performs a configuration read from a non-existent
-> device or Function, completer will send an ERR_NONFATAL Message.
-> On some platforms, ERR_NONFATAL results in a System Error, which
-> breaks normal software probing.
+On Wed, Apr 03, 2024 at 06:19:35AM -0700, Guenter Roeck wrote:
+> Add name of functions triggering warning backtraces to the __bug_table
+> object section to enable support for suppressing WARNING backtraces.
 > 
-> Advisory Non-Fatal Error(ANFE) is a special case that can be used
-> in above scenario. It is predominantly determined by the role of the
-> detecting agent (Requester, Completer, or Receiver) and the specific
-> error. In such cases, an agent with AER signals the NFE (if enabled)
-> by sending an ERR_COR Message as an advisory to software, instead of
-> sending ERR_NONFATAL.
+> To limit image size impact, the pointer to the function name is only added
+> to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
+> CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
+> parameter is replaced with a (dummy) NULL parameter to avoid an image size
+> increase due to unused __func__ entries (this is necessary because __func__
+> is not a define but a virtual variable).
 > 
-> When processing an ANFE, ideally both correctable error(CE) status and
-> uncorrectable error(UE) status should be cleared. However, there is no
-> way to fully identify the UE associated with ANFE. Even worse, a Fatal
-> Error(FE) or Non-Fatal Error(NFE) may set the same UE status bit as
-> ANFE. Treating an ANFE as NFE will reproduce above mentioned issue,
-> i.e., breaking softwore probing; treating NFE as ANFE will make us
-> ignoring some UEs which need active recover operation. To avoid clearing
-> UEs that are not ANFE by accident, the most conservative route is taken
-> here: If any of the FE/NFE Detected bits is set in Device Status, do not
-> touch UE status, they should be cleared later by the UE handler. Otherwise,
-> a specific set of UEs that may be raised as ANFE according to the PCIe
-> specification will be cleared if their corresponding severity is Non-Fatal.
+> To simplify the implementation, unify the __BUG_ENTRY_ADDR and
+> __BUG_ENTRY_FILE macros into a single macro named __BUG_REL() which takes
+> the address, file, or function reference as parameter.
 > 
-> To achieve above purpose, store UNCOR_STATUS bits that might be ANFE
-> in aer_err_info.anfe_status. So that those bits could be printed and
-> processed later.
-> 
-> Tested-by: Yudong Wang <yudong.wang@intel.com>
-> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 > ---
->  drivers/pci/pci.h      |  1 +
->  drivers/pci/pcie/aer.c | 45 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 46 insertions(+)
+> v2:
+> - Rebased to v6.9-rc1
+> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
+> - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option
+> v3:
+> - Rebased to v6.9-rc2
 > 
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 17fed1846847..3f9eb807f9fd 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -412,6 +412,7 @@ struct aer_err_info {
+>  arch/riscv/include/asm/bug.h | 38 ++++++++++++++++++++++++------------
+>  1 file changed, 26 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/riscv/include/asm/bug.h b/arch/riscv/include/asm/bug.h
+> index 1aaea81fb141..79f360af4ad8 100644
+> --- a/arch/riscv/include/asm/bug.h
+> +++ b/arch/riscv/include/asm/bug.h
+> @@ -30,26 +30,39 @@
+>  typedef u32 bug_insn_t;
 >  
->  	unsigned int status;		/* COR/UNCOR Error Status */
->  	unsigned int mask;		/* COR/UNCOR Error Mask */
-> +	unsigned int anfe_status;	/* UNCOR Error Status for ANFE */
->  	struct pcie_tlp_log tlp;	/* TLP Header */
->  };
->  
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index ac6293c24976..27364ab4b148 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -107,6 +107,12 @@ struct aer_stats {
->  					PCI_ERR_ROOT_MULTI_COR_RCV |	\
->  					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
->  
-> +#define AER_ERR_ANFE_UNC_MASK		(PCI_ERR_UNC_POISON_TLP |	\
-> +					PCI_ERR_UNC_COMP_TIME |		\
-> +					PCI_ERR_UNC_COMP_ABORT |	\
-> +					PCI_ERR_UNC_UNX_COMP |		\
-> +					PCI_ERR_UNC_UNSUP)
-> +
->  static int pcie_aer_disable;
->  static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
->  
-> @@ -1196,6 +1202,41 @@ void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
->  EXPORT_SYMBOL_GPL(aer_recover_queue);
+>  #ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
+> -#define __BUG_ENTRY_ADDR	RISCV_INT " 1b - ."
+> -#define __BUG_ENTRY_FILE	RISCV_INT " %0 - ."
+> +#define __BUG_REL(val)	RISCV_INT " " __stringify(val) " - ."
+>  #else
+> -#define __BUG_ENTRY_ADDR	RISCV_PTR " 1b"
+> -#define __BUG_ENTRY_FILE	RISCV_PTR " %0"
+> +#define __BUG_REL(val)	RISCV_PTR " " __stringify(val)
 >  #endif
 >  
-> +static void anfe_get_uc_status(struct pci_dev *dev, struct aer_err_info *info)
-> +{
-> +	u32 uncor_mask, uncor_status;
-> +	u16 device_status;
-> +	int aer = dev->aer_cap;
+>  #ifdef CONFIG_DEBUG_BUGVERBOSE
 > +
-> +	if (pcie_capability_read_word(dev, PCI_EXP_DEVSTA, &device_status))
-> +		return;
-> +	/*
-> +	 * Take the most conservative route here. If there are
-> +	 * Non-Fatal/Fatal errors detected, do not assume any
-> +	 * bit in uncor_status is set by ANFE.
-> +	 */
-> +	if (device_status & (PCI_EXP_DEVSTA_NFED | PCI_EXP_DEVSTA_FED))
-> +		return;
+> +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
+> +# define HAVE_BUG_FUNCTION
+> +# define __BUG_FUNC_PTR	__BUG_REL(%1)
+> +#else
+> +# define __BUG_FUNC_PTR
+> +#endif /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
 > +
-
-Is there not a race here?  If we happen to get either an NFED or FED 
-between the read of device_status above and here we might pick up a status
-that corresponds to that (and hence clear something we should not).
-
-Or am I missing that race being close somewhere?
-
-> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &uncor_status);
-> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, &uncor_mask);
-> +	/*
-> +	 * According to PCIe Base Specification Revision 6.1,
-> +	 * Section 6.2.3.2.4, if an UNCOR error is raised as
-> +	 * Advisory Non-Fatal error, it will match the following
-> +	 * conditions:
-> +	 *	a. The severity of the error is Non-Fatal.
-> +	 *	b. The error is one of the following:
-> +	 *		1. Poisoned TLP           (Section 6.2.3.2.4.3)
-> +	 *		2. Completion Timeout     (Section 6.2.3.2.4.4)
-> +	 *		3. Completer Abort        (Section 6.2.3.2.4.1)
-> +	 *		4. Unexpected Completion  (Section 6.2.3.2.4.5)
-> +	 *		5. Unsupported Request    (Section 6.2.3.2.4.1)
-> +	 */
-> +	info->anfe_status = uncor_status & ~uncor_mask & ~info->severity &
-> +			    AER_ERR_ANFE_UNC_MASK;
-> +}
-> +
->  /**
->   * aer_get_device_error_info - read error status from dev and store it to info
->   * @dev: pointer to the device expected to have a error record
-> @@ -1213,6 +1254,7 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+>  #define __BUG_ENTRY			\
+> -	__BUG_ENTRY_ADDR "\n\t"		\
+> -	__BUG_ENTRY_FILE "\n\t"		\
+> -	RISCV_SHORT " %1\n\t"		\
+> -	RISCV_SHORT " %2"
+> +	__BUG_REL(1b) "\n\t"		\
+> +	__BUG_REL(%0) "\n\t"		\
+> +	__BUG_FUNC_PTR "\n\t"		\
+> +	RISCV_SHORT " %2\n\t"		\
+> +	RISCV_SHORT " %3"
+>  #else
+>  #define __BUG_ENTRY			\
+> -	__BUG_ENTRY_ADDR "\n\t"		\
+> -	RISCV_SHORT " %2"
+> +	__BUG_REL(1b) "\n\t"		\
+> +	RISCV_SHORT " %3"
+>  #endif
 >  
->  	/* Must reset in this function */
->  	info->status = 0;
-> +	info->anfe_status = 0;
->  	info->tlp_header_valid = 0;
->  
->  	/* The device might not support AER */
-> @@ -1226,6 +1268,9 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
->  			&info->mask);
->  		if (!(info->status & ~info->mask))
->  			return 0;
+>  #ifdef CONFIG_GENERIC_BUG
+> +#ifdef HAVE_BUG_FUNCTION
+> +# define __BUG_FUNC	__func__
+> +#else
+> +# define __BUG_FUNC	NULL
+> +#endif
 > +
-> +		if (info->status & PCI_ERR_COR_ADV_NFAT)
-> +			anfe_get_uc_status(dev, info);
->  	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
->  		   type == PCI_EXP_TYPE_RC_EC ||
->  		   type == PCI_EXP_TYPE_DOWNSTREAM ||
+>  #define __BUG_FLAGS(flags)					\
+>  do {								\
+>  	__asm__ __volatile__ (					\
+> @@ -58,10 +71,11 @@ do {								\
+>  			".pushsection __bug_table,\"aw\"\n\t"	\
+>  		"2:\n\t"					\
+>  			__BUG_ENTRY "\n\t"			\
+> -			".org 2b + %3\n\t"                      \
+> +			".org 2b + %4\n\t"                      \
+>  			".popsection"				\
+>  		:						\
+> -		: "i" (__FILE__), "i" (__LINE__),		\
+> +		: "i" (__FILE__), "i" (__BUG_FUNC),		\
+> +		  "i" (__LINE__),				\
+>  		  "i" (flags),					\
+>  		  "i" (sizeof(struct bug_entry)));              \
+>  } while (0)
+> -- 
+> 2.39.2
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+
+- Charlie
 
