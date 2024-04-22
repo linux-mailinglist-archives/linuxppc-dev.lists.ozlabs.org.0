@@ -2,50 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8B98AC3FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 08:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F638AC625
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 09:58:38 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OGYG3gey;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VNFC02fsHz3dRk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 16:07:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VNHgb66M6z3dHj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Apr 2024 17:58:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OGYG3gey;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNFBX4tfdz3cJN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 16:06:43 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 074281A10E0;
-	Mon, 22 Apr 2024 08:06:40 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C11D31A0423;
-	Mon, 22 Apr 2024 08:06:38 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 00EB9180222C;
-	Mon, 22 Apr 2024 14:06:31 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shengjiu.wang@gmail.com,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] ASoC: dt-bindings: fsl,ssi: Convert to YAML
-Date: Mon, 22 Apr 2024 13:48:14 +0800
-Message-Id: <1713764894-11870-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNHft1xb0z30Pn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Apr 2024 17:57:57 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43M6XLqs005732;
+	Mon, 22 Apr 2024 07:57:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=L3/hBGWbzcEwmXsjGJXsXr/mII9T16or5j0daMXRyvU=;
+ b=OGYG3geylvX6urNy9NObyTeIR9LQwS9CfxSRgy06KrWCe0PqorxJQzi1X7k/mrlO8VBz
+ X1hfb3Q54YabYjdO1t8JpFfJ+5p0PM+fxNaHf/2zfoJJIONucfy1yhyxSXee/xqP4t0n
+ GUFTsgI3Z/Q+LIYg3tFLfuJrT6SGSQoYdwe+3pMFMSzhZUXLmGmeowxOKrDxaJZZF2vF
+ lfHqnlKgbyFae3FkIjsc0+u0Jrot4nDcJdwE4cWaQ/VBz/q3Dv5DmRcx3J6FQR7mMrSg
+ frpUC6BtHPHqZmwCndpdObYvhXkzhbLE0WCWzQlLiTreN+fxPMYqgYdrLNpn+5V6Xdm2 SA== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xnjq805m7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 07:57:52 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43M7rKKO005328;
+	Mon, 22 Apr 2024 07:57:51 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmx3c57wf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 07:57:51 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43M7vj0N45351222
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Apr 2024 07:57:47 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8615220049;
+	Mon, 22 Apr 2024 07:57:45 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F20BE2004D;
+	Mon, 22 Apr 2024 07:57:43 +0000 (GMT)
+Received: from tp-ibm-com.ibmuc.com (unknown [9.179.22.205])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 Apr 2024 07:57:43 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/eeh: Permanently disable the removed device
+Date: Mon, 22 Apr 2024 13:27:37 +0530
+Message-ID: <20240422075737.1405551-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kHgFrx9V-da_1T6tbCjqEU4kTwZ0Yi8R
+X-Proofpoint-ORIG-GUID: kHgFrx9V-da_1T6tbCjqEU4kTwZ0Yi8R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-22_04,2024-04-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
+ clxscore=1015 priorityscore=1501 suspectscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2404010000 definitions=main-2404220035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,341 +86,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Sahitya.Damerla@ibm.com, Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert the fsl,ssi binding to YAML.
+When a device is hot removed on powernv, the hotplug driver clears
+the device's state. However, on pseries, if a device is removed by
+phyp after reaching the error threshold, the kernel remains unaware,
+leading to the device not being torn down. This prevents necessary
+remediation actions like failover.
 
-Add below compatible strings which were not listed
-in document:
+Permanently disable the device if the presence check fails.
 
-fsl,imx50-ssi
-fsl,imx53-ssi
-fsl,imx25-ssi
-fsl,imx27-ssi
-fsl,imx6q-ssi
-fsl,imx6sl-ssi
-fsl,imx6sx-ssi
+Also, in eeh_dev_check_failure in we may consider the error as false
+positive if the device is hotpluged out as the get_state call returns
+EEH_STATE_NOT_SUPPORT and we may end up not clearing the device state,
+so log the event if the state is not moved to permanent failure state.
 
-Add below fsl,mode strings which were not listed.
-
-i2s-slave
-i2s-master
-lj-slave
-lj-master
-rj-slave
-rj-master
-
-Add 'ac97-gpios' property which were not listed.
-Then dtbs_check can pass.
-
-And remove the 'codec' description which should be
-in the 'codec' binding doc.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
 ---
-changes in v2:
-- change fallback string to const.
-- add dai-common.yaml
-- add ac97-gpios property
+V2:
+* Elobrate the commit message.
+* Fix formatting issues in commit message and comments.
+---
+ arch/powerpc/kernel/eeh.c        | 11 ++++++++++-
+ arch/powerpc/kernel/eeh_driver.c | 13 +++++++++++--
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
- .../devicetree/bindings/sound/fsl,ssi.txt     |  87 --------
- .../devicetree/bindings/sound/fsl,ssi.yaml    | 192 ++++++++++++++++++
- 2 files changed, 192 insertions(+), 87 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/sound/fsl,ssi.txt
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,ssi.yaml
-
-diff --git a/Documentation/devicetree/bindings/sound/fsl,ssi.txt b/Documentation/devicetree/bindings/sound/fsl,ssi.txt
-deleted file mode 100644
-index 7e15a85cecd2..000000000000
---- a/Documentation/devicetree/bindings/sound/fsl,ssi.txt
-+++ /dev/null
-@@ -1,87 +0,0 @@
--Freescale Synchronous Serial Interface
--
--The SSI is a serial device that communicates with audio codecs.  It can
--be programmed in AC97, I2S, left-justified, or right-justified modes.
--
--Required properties:
--- compatible:       Compatible list, should contain one of the following
--                    compatibles:
--                      fsl,mpc8610-ssi
--                      fsl,imx51-ssi
--                      fsl,imx35-ssi
--                      fsl,imx21-ssi
--- cell-index:       The SSI, <0> = SSI1, <1> = SSI2, and so on.
--- reg:              Offset and length of the register set for the device.
--- interrupts:       <a b> where a is the interrupt number and b is a
--                    field that represents an encoding of the sense and
--                    level information for the interrupt.  This should be
--                    encoded based on the information in section 2)
--                    depending on the type of interrupt controller you
--                    have.
--- fsl,fifo-depth:   The number of elements in the transmit and receive FIFOs.
--                    This number is the maximum allowed value for SFCSR[TFWM0].
-- - clocks:          "ipg" - Required clock for the SSI unit
--                    "baud" - Required clock for SSI master mode. Otherwise this
--		      clock is not used
--
--Required are also ac97 link bindings if ac97 is used. See
--Documentation/devicetree/bindings/sound/soc-ac97link.txt for the necessary
--bindings.
--
--Optional properties:
--- codec-handle:     Phandle to a 'codec' node that defines an audio
--                    codec connected to this SSI.  This node is typically
--                    a child of an I2C or other control node.
--- fsl,fiq-stream-filter: Bool property. Disabled DMA and use FIQ instead to
--		    filter the codec stream. This is necessary for some boards
--		    where an incompatible codec is connected to this SSI, e.g.
--		    on pca100 and pcm043.
--- dmas:		    Generic dma devicetree binding as described in
--		    Documentation/devicetree/bindings/dma/dma.txt.
--- dma-names:	    Two dmas have to be defined, "tx" and "rx", if fsl,imx-fiq
--		    is not defined.
--- fsl,mode:         The operating mode for the AC97 interface only.
--                    "ac97-slave" - AC97 mode, SSI is clock slave
--                    "ac97-master" - AC97 mode, SSI is clock master
--- fsl,ssi-asynchronous:
--                    If specified, the SSI is to be programmed in asynchronous
--                    mode.  In this mode, pins SRCK, STCK, SRFS, and STFS must
--                    all be connected to valid signals.  In synchronous mode,
--                    SRCK and SRFS are ignored.  Asynchronous mode allows
--                    playback and capture to use different sample sizes and
--                    sample rates.  Some drivers may require that SRCK and STCK
--                    be connected together, and SRFS and STFS be connected
--                    together.  This would still allow different sample sizes,
--                    but not different sample rates.
--- fsl,playback-dma: Phandle to a node for the DMA channel to use for
--                    playback of audio.  This is typically dictated by SOC
--                    design.  See the notes below.
--                    Only used on Power Architecture.
--- fsl,capture-dma:  Phandle to a node for the DMA channel to use for
--                    capture (recording) of audio.  This is typically dictated
--                    by SOC design.  See the notes below.
--                    Only used on Power Architecture.
--
--Child 'codec' node required properties:
--- compatible:       Compatible list, contains the name of the codec
--
--Child 'codec' node optional properties:
--- clock-frequency:  The frequency of the input clock, which typically comes
--                    from an on-board dedicated oscillator.
--
--Notes on fsl,playback-dma and fsl,capture-dma:
--
--On SOCs that have an SSI, specific DMA channels are hard-wired for playback
--and capture.  On the MPC8610, for example, SSI1 must use DMA channel 0 for
--playback and DMA channel 1 for capture.  SSI2 must use DMA channel 2 for
--playback and DMA channel 3 for capture.  The developer can choose which
--DMA controller to use, but the channels themselves are hard-wired.  The
--purpose of these two properties is to represent this hardware design.
--
--The device tree nodes for the DMA channels that are referenced by
--"fsl,playback-dma" and "fsl,capture-dma" must be marked as compatible with
--"fsl,ssi-dma-channel".  The SOC-specific compatible string (e.g.
--"fsl,mpc8610-dma-channel") can remain.  If these nodes are left as
--"fsl,elo-dma-channel" or "fsl,eloplus-dma-channel", then the generic Elo DMA
--drivers (fsldma) will attempt to use them, and it will conflict with the
--sound drivers.
-diff --git a/Documentation/devicetree/bindings/sound/fsl,ssi.yaml b/Documentation/devicetree/bindings/sound/fsl,ssi.yaml
-new file mode 100644
-index 000000000000..d22911b0e9ef
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,ssi.yaml
-@@ -0,0 +1,192 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,ssi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale Synchronous Serial Interface
-+
-+maintainers:
-+  - Shengjiu Wang <shengjiu.wang@nxp.com>
-+
-+description:
-+  Notes on fsl,playback-dma and fsl,capture-dma
-+  On SOCs that have an SSI, specific DMA channels are hard-wired for playback
-+  and capture.  On the MPC8610, for example, SSI1 must use DMA channel 0 for
-+  playback and DMA channel 1 for capture.  SSI2 must use DMA channel 2 for
-+  playback and DMA channel 3 for capture.  The developer can choose which
-+  DMA controller to use, but the channels themselves are hard-wired.  The
-+  purpose of these two properties is to represent this hardware design.
-+
-+  The device tree nodes for the DMA channels that are referenced by
-+  "fsl,playback-dma" and "fsl,capture-dma" must be marked as compatible with
-+  "fsl,ssi-dma-channel".  The SOC-specific compatible string (e.g.
-+  "fsl,mpc8610-dma-channel") can remain.  If these nodes are left as
-+  "fsl,elo-dma-channel" or "fsl,eloplus-dma-channel", then the generic Elo DMA
-+  drivers (fsldma) will attempt to use them, and it will conflict with the
-+  sound drivers.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - fsl,imx50-ssi
-+              - fsl,imx53-ssi
-+          - enum:
-+              - fsl,imx51-ssi
-+          - const: fsl,imx21-ssi
-+      - items:
-+          - enum:
-+              - fsl,imx25-ssi
-+              - fsl,imx27-ssi
-+              - fsl,imx35-ssi
-+              - fsl,imx51-ssi
-+              - fsl,imx6q-ssi
-+              - fsl,imx6sl-ssi
-+              - fsl,imx6sx-ssi
-+          - enum:
-+              - fsl,imx21-ssi
-+              - fsl,imx51-ssi
-+      - items:
-+          - const: fsl,mpc8610-ssi
-+
-+  cell-index:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2]
-+    description: The SSI index
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  fsl,fifo-depth:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      The number of elements in the transmit and receive FIFOs.
-+      This number is the maximum allowed value for SFCSR[TFWM0].
-+
-+  clocks:
-+    items:
-+      - description: The ipg clock for register access
-+      - description: clock for SSI master mode
-+    minItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: ipg
-+      - const: baud
-+    minItems: 1
-+
-+  dmas:
-+    oneOf:
-+      - items:
-+          - description: DMA controller phandle and request line for RX
-+          - description: DMA controller phandle and request line for TX
-+      - items:
-+          - description: DMA controller phandle and request line for RX0
-+          - description: DMA controller phandle and request line for TX0
-+          - description: DMA controller phandle and request line for RX1
-+          - description: DMA controller phandle and request line for TX1
-+
-+  dma-names:
-+    oneOf:
-+      - items:
-+          - const: rx
-+          - const: tx
-+      - items:
-+          - const: rx0
-+          - const: tx0
-+          - const: rx1
-+          - const: tx1
-+
-+  codec-handle:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      Phandle to a 'codec' node that defines an audio
-+      codec connected to this SSI.  This node is typically
-+      a child of an I2C or other control node.
-+
-+  fsl,fiq-stream-filter:
-+    type: boolean
-+    description:
-+      Disabled DMA and use FIQ instead to filter the codec stream.
-+      This is necessary for some boards where an incompatible codec
-+      is connected to this SSI, e.g. on pca100 and pcm043.
-+
-+  fsl,mode:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum: [ ac97-slave, ac97-master, i2s-slave, i2s-master,
-+            lj-slave, lj-master, rj-slave, rj-master ]
-+    description: |
-+      "ac97-slave" - AC97 mode, SSI is clock slave
-+      "ac97-master" - AC97 mode, SSI is clock master
-+      "i2s-slave" - I2S mode, SSI is clock slave
-+      "i2s-master" - I2S mode, SSI is clock master
-+      "lj-slave" - Left justified mode, SSI is clock slave
-+      "lj-master" - Left justified mode, SSI is clock master
-+      "rj-slave" - Right justified mode, SSI is clock slave
-+      "rj-master" - Right justified mode, SSI is clock master
-+
-+  fsl,ssi-asynchronous:
-+    type: boolean
-+    description: If specified, the SSI is to be programmed in asynchronous
-+      mode.  In this mode, pins SRCK, STCK, SRFS, and STFS must
-+      all be connected to valid signals.  In synchronous mode,
-+      SRCK and SRFS are ignored.  Asynchronous mode allows
-+      playback and capture to use different sample sizes and
-+      sample rates.  Some drivers may require that SRCK and STCK
-+      be connected together, and SRFS and STFS be connected
-+      together.  This would still allow different sample sizes,
-+      but not different sample rates.
-+
-+  fsl,playback-dma:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: Phandle to a node for the DMA channel to use for
-+      playback of audio.  This is typically dictated by SOC
-+      design. Only used on Power Architecture.
-+
-+  fsl,capture-dma:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: Phandle to a node for the DMA channel to use for
-+      capture (recording) of audio.  This is typically dictated
-+      by SOC design. Only used on Power Architecture.
-+
-+  ac97-gpios:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: Please refer to soc-ac97link.txt
-+
-+  "#sound-dai-cells":
-+    const: 0
-+    description: optional, some dts node didn't add it.
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - fsl,fifo-depth
-+
-+allOf:
-+  - $ref: dai-common.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/imx6qdl-clock.h>
-+    ssi1: ssi@2028000 {
-+        compatible = "fsl,imx6q-ssi",
-+                     "fsl,imx51-ssi";
-+        reg = <0x02028000 0x4000>;
-+        interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&clks IMX6QDL_CLK_SSI1_IPG>,
-+                 <&clks IMX6QDL_CLK_SSI1>;
-+        clock-names = "ipg", "baud";
-+        dmas = <&sdma 37 1 0>, <&sdma 38 1 0>;
-+        dma-names = "rx", "tx";
-+        #sound-dai-cells = <0>;
-+        fsl,fifo-depth = <15>;
-+    };
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index ab316e155ea9..6670063a7a6c 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -506,9 +506,18 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
+ 	 * We will punt with the following conditions: Failure to get
+ 	 * PE's state, EEH not support and Permanently unavailable
+ 	 * state, PE is in good state.
++	 *
++	 * On the pSeries, after reaching the threshold, get_state might
++	 * return EEH_STATE_NOT_SUPPORT. However, it's possible that the
++	 * device state remains uncleared if the device is not marked
++	 * pci_channel_io_perm_failure. Therefore, consider logging the
++	 * event to let device removal happen.
++	 *
+ 	 */
+ 	if ((ret < 0) ||
+-	    (ret == EEH_STATE_NOT_SUPPORT) || eeh_state_active(ret)) {
++	    (ret == EEH_STATE_NOT_SUPPORT &&
++	     dev->error_state == pci_channel_io_perm_failure) ||
++	    eeh_state_active(ret)) {
+ 		eeh_stats.false_positives++;
+ 		pe->false_positives++;
+ 		rc = 0;
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 48773d2d9be3..7efe04c68f0f 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -865,9 +865,18 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 				devices++;
+ 
+ 	if (!devices) {
+-		pr_debug("EEH: Frozen PHB#%x-PE#%x is empty!\n",
++		pr_warn("EEH: Frozen PHB#%x-PE#%x is empty!\n",
+ 			pe->phb->global_number, pe->addr);
+-		goto out; /* nothing to recover */
++		/*
++		 * The device is removed, tear down its state, on powernv
++		 * hotplug driver would take care of it but not on pseries,
++		 * permanently disable the card as it is hot removed.
++		 *
++		 * In the case of powernv, note that the removal of device
++		 * is covered by pci rescan lock, so no problem even if hotplug
++		 * driver attempts to remove the device.
++		 */
++		goto recover_failed;
+ 	}
+ 
+ 	/* Log the event */
 -- 
-2.34.1
+2.44.0
 
