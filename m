@@ -2,53 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545AD8AE137
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 11:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 990B78AE13C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 11:44:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e1qpEy+J;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pGwfZ3y5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VNxyQ74lqz3dRP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 19:43:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VNxzC431hz3dSk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 19:44:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e1qpEy+J;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pGwfZ3y5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNxxk4Vrnz3dHw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Apr 2024 19:43:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNxxp6QSwz3dKd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Apr 2024 19:43:10 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 7C1ADCE0F20;
-	Tue, 23 Apr 2024 09:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286DCC2BD11;
-	Tue, 23 Apr 2024 09:43:01 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9AD8D6124C;
+	Tue, 23 Apr 2024 09:43:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B909CC3277B;
+	Tue, 23 Apr 2024 09:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713865382;
-	bh=JomD2aOIsnSBb4Qp/oACFdxLfptkS+JPqCT2po23mPA=;
+	s=k20201202; t=1713865387;
+	bh=RoILEQzEl8J7YfT7Q05UMPjmcTROQqxMycKJcXQ0/g4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e1qpEy+JtP8lFPhzAoloalHtZtujpjse4kTiFU9lANljMbb9+Y8dBDMw8TgaXC1kS
-	 qLl+vruEiLpGBmm+Pfrag4XHE6op23Qarn9YUtlACv7kWwnwNHQBUrA5+XkARbUke7
-	 Ne/pFOfmae3zUp+C6FbTpUn9AB4JvukCSBi5igGeFoWK0ZKoKTTLzxfWm1i6BVZXdZ
-	 nvonCMUm4XaxNQ30Cq9VI9YxTJijJlIk1JYtBYb/3HOJqiIZM4psjgSc/QpV66k0fs
-	 jhGe1ZsDhiY6Eg7PoQUcZKtsJzYx7Ny3ylTsmn/vdho2qmjapRYxeTFnJV4rMoW3PW
-	 AWdrDd11lZ+jQ==
-Date: Tue, 23 Apr 2024 15:09:41 +0530
+	b=pGwfZ3y5vwbl2yHrNxNipzIeIYQ/QsWFnaWnxdI7DT+DF62YgRdnhbQKbANwFifqO
+	 r9wlNn96L2/4AJxD3dVXjqRYF9fi9sTSUai3+ckKdHdcjS90VSlPreTGdU7e+O/KTC
+	 tNC3+zzYE6NCkER/9utAWkpV3eyREMVOBQgT0a+bzpSEYZxjO0FiOAnw8J6gNS4d6i
+	 rQLiyDHOgzWhF6a2FwLGSxzzZn3EsEWw4q9w5aGCI+bxEDl0cJiHKEeIzoguS2nAd4
+	 CRMQPQr426oKcV+jcwm14kjRRc8lk2GLqYRL6PZwCAJOjI23ry+3WRktCISbLyb2gK
+	 nxSfw7ZgHzp5Q==
+Date: Tue, 23 Apr 2024 15:10:44 +0530
 From: Naveen N Rao <naveen@kernel.org>
 To: Benjamin Gray <bgray@linux.ibm.com>
-Subject: Re: [PATCH v3 3/5] powerpc/64: Convert patch_instruction() to
- patch_u32()
-Message-ID: <xjnc3usfjrn3pqitpvvs4fkackuzcrnguqmqm2otocnhtrxmux@cd4d7bsyoweq>
+Subject: Re: [PATCH v3 0/5] Add generic data patching functions
+Message-ID: <qz74lr3gafb6p3jjf2yvcahgqge6vi74crhvfyt3qbl7i7iunn@btzad44psxsj>
 References: <20240325055302.876434-1-bgray@linux.ibm.com>
- <20240325055302.876434-4-bgray@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325055302.876434-4-bgray@linux.ibm.com>
+In-Reply-To: <20240325055302.876434-1-bgray@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,51 +62,57 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 25, 2024 at 04:53:00PM +1100, Benjamin Gray wrote:
-> This use of patch_instruction() is working on 32 bit data, and can fail
-> if the data looks like a prefixed instruction and the extra write
-> crosses a page boundary. Use patch_u32() to fix the write size.
+On Mon, Mar 25, 2024 at 04:52:57PM +1100, Benjamin Gray wrote:
+> Currently patch_instruction() bases the write length on the value being
+> written. If the value looks like a prefixed instruction it writes 8 bytes,
+> otherwise it writes 4 bytes. This makes it potentially buggy to use for
+> writing arbitrary data, as if you want to write 4 bytes but it decides to
+> write 8 bytes it may clobber the following memory or be unaligned and
+> trigger an oops if it tries to cross a page boundary.
 > 
-> Fixes: 8734b41b3efe ("powerpc/module_64: Fix livepatching for RO modules")
-> Link: https://lore.kernel.org/all/20230203004649.1f59dbd4@yea/
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> To solve this, this series pulls out the size parameter to the 'top' of
+> the memory patching logic, and propagates it through the various functions.
 > 
-> ---
+> The two sizes supported are int and long; this allows for patching
+> instructions and pointers on both ppc32 and ppc64. On ppc32 these are the
+> same size, so care is taken to only use the size parameter on static
+> functions, so the compiler can optimise it out entirely. Unfortunately
+> GCC trips over its own feet here and won't optimise in a way that is
+> optimal for strict RWX (mpc85xx_smp_defconfig) and no RWX
+> (pmac32_defconfig). More details in the v2 cover letter.
 > 
-> v2: * Added the fixes tag, it seems appropriate even if the subject does
->       mention a more robust solution being required.
+> Changes from v2:
+>   * Various changes noted on each patch
+>   * Data patching now enforced to be aligned
+>   * Restore page aligned flushing optimisation
 > 
-> patch_u64() should be more efficient, but judging from the bug report
-> it doesn't seem like the data is doubleword aligned.
+> Changes from v1:
+>   * Addressed the v1 review actions
+>   * Removed noinline (for now)
+> 
+> v2: https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20231016050147.115686-1-bgray@linux.ibm.com/
+> v1: https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20230207015643.590684-1-bgray@linux.ibm.com/
+> 
+> Benjamin Gray (5):
+>   powerpc/code-patching: Add generic memory patching
+>   powerpc/code-patching: Add data patch alignment check
+>   powerpc/64: Convert patch_instruction() to patch_u32()
+>   powerpc/32: Convert patch_instruction() to patch_uint()
+>   powerpc/code-patching: Add boot selftest for data patching
+> 
+>  arch/powerpc/include/asm/code-patching.h | 37 +++++++++++++
+>  arch/powerpc/kernel/module_64.c          |  5 +-
+>  arch/powerpc/kernel/static_call.c        |  2 +-
+>  arch/powerpc/lib/code-patching.c         | 70 +++++++++++++++++++-----
+>  arch/powerpc/lib/test-code-patching.c    | 36 ++++++++++++
+>  arch/powerpc/platforms/powermac/smp.c    |  2 +-
+>  6 files changed, 132 insertions(+), 20 deletions(-)
 
-Asking again, is that still the case? It looks like at least the first 
-fix below can be converted to patch_u64().
+Apart from the minor comments, for this series:
+Acked-by: Naveen N Rao <naveen@kernel.org>
+
+Thanks for working on this.
+
 
 - Naveen
 
-> ---
->  arch/powerpc/kernel/module_64.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> index 7112adc597a8..e9bab599d0c2 100644
-> --- a/arch/powerpc/kernel/module_64.c
-> +++ b/arch/powerpc/kernel/module_64.c
-> @@ -651,12 +651,11 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
->  	// func_desc_t is 8 bytes if ABIv2, else 16 bytes
->  	desc = func_desc(addr);
->  	for (i = 0; i < sizeof(func_desc_t) / sizeof(u32); i++) {
-> -		if (patch_instruction(((u32 *)&entry->funcdata) + i,
-> -				      ppc_inst(((u32 *)(&desc))[i])))
-> +		if (patch_u32(((u32 *)&entry->funcdata) + i, ((u32 *)&desc)[i]))
->  			return 0;
->  	}
->  
-> -	if (patch_instruction(&entry->magic, ppc_inst(STUB_MAGIC)))
-> +	if (patch_u32(&entry->magic, STUB_MAGIC))
->  		return 0;
->  
->  	return 1;
-> -- 
-> 2.44.0
-> 
