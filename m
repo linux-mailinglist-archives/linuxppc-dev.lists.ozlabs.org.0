@@ -2,53 +2,176 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BACF8ADB22
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 02:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2668ADBE3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 04:27:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kGP8WfJJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=acldNQb3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VNjfg1XQ7z3dLW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 10:29:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VNmGX0XHhz3cXm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Apr 2024 12:27:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kGP8WfJJ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=acldNQb3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=zhenzhong.duan@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 23 Apr 2024 12:26:19 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNjdy4SZ3z30PD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Apr 2024 10:28:38 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1EF87611E3;
-	Tue, 23 Apr 2024 00:28:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B3BC113CC;
-	Tue, 23 Apr 2024 00:28:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713832115;
-	bh=bYg7Bua8mbv/lRd7aBsldip0FxWjdUU2v59h3z6dUOk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kGP8WfJJ0xFkVhI+VyW4A8vesExJmUlX6ezuZfTn/p4alm0AfMRW0GJGJcLPzeQtu
-	 OFtvVI0Ef0LtCQKWInJI/2iJ90JvWkp71YUgZqBJqiol1BqgP5qQzLNzzNHfY78QFM
-	 RirMZHIVf5n5aWT/gELpWnEAu9Cj2zMgIcd5cgnIX/zSj3A4XQ76cUo2h8y/9lfA8+
-	 3JJJm/Udzp/wbTHFP5ydAYqPPKNQIJmjfwSJ3n4CHOI9trQbL/8UQBpqOaInjnD/ZN
-	 9CMI6L0MKIZnMlmu7IJn3qUmRxPywutLPc8OIG6J2qovv+3cg5PinGmR3bDEOOk5v4
-	 hLdddKrMDXsWg==
-Date: Mon, 22 Apr 2024 17:28:33 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [RFC PATCH 2/2] objtool/powerpc: Enhance objtool to fixup
- alternate feature relative addresses
-Message-ID: <20240423002833.GA1436185@dev-arch.thelio-3990X>
-References: <20240422092206.147078-1-sv@linux.ibm.com>
- <20240422092206.147078-2-sv@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VNmFl0SYqz3bsj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Apr 2024 12:26:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713839179; x=1745375179;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=zrKRwii+jidVjclWejsfPfX/6lmkL1wSu/EKEEAfxTc=;
+  b=acldNQb3o7OFoQYt7gfoq+DnrzFuMadrv/FPQ3eS4XkM59DYOSBsTm6u
+   4AdwmhzRwRdsVrgB1uWZ4vULM9PZTW6toRpkM0lbNjLbSWjICMs3Oc+0M
+   MShqzV+z8fPIB/egUqlpGlWp/51KyLicWhYQuIATk4if43pV0f5kAQLkV
+   Br9k6d4wLoc3gNvH0ZxLgjV3HMvY6gw+XL0Xrqw41t5WHuhiG4PO5ijkF
+   owVKfLM+mJlcV08Ru9vZTgim2Uw0H4EVwb93zavOQPdzMkNUbcU/bGJad
+   PJHnVM2jcZjkIi23A0PlG7y75eb3uX6Xm7q/6fW5zn4NeYdAHYPNpGwK6
+   Q==;
+X-CSE-ConnectionGUID: X6JKesD2SXe9hZpexXDrLw==
+X-CSE-MsgGUID: ALlg1fgwQ52oXYkflb4ksQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9514648"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="9514648"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 19:25:09 -0700
+X-CSE-ConnectionGUID: OX/mpGU5Sq261NWzIBN8Bw==
+X-CSE-MsgGUID: 9brH2GyoSKqGoPuX5q4FAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="24196799"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Apr 2024 19:25:10 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 22 Apr 2024 19:25:08 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 22 Apr 2024 19:25:08 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 22 Apr 2024 19:25:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fh5B6NgHBN4SiNX0dZv/5fyugCxLS+mmndzM4Y7SjlxjtXULCp/8eLWtASGd0n0cB3HVOP2PcFWxX3E/Vk2NpuDSPonwGazxpNRrspwtvNfbM5vs+++HxojLjkQ2zkZkVI1eAA2YfVAmeCjgh1jrgKtHUgc1LVfg/u7+UhbjW5rYkhrbXK41z0oc2FThH9YyjTkOkgWa72mF/z15hyfT3KVh5DHki2RzLN+qPeLjHJPRAVrigEXK+JLitbli1nfbX+Kl2MaRdPhaz1h2OS+NlRva60EmiiS12ZQgHF+qmI843smTUy3lV7NBCopOfoVKAgbZapp+PAjOt88WFJl16A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xiI1mzvJrq6FG1NTtwnnU09E2ERNeLE1Wm5namS2EFw=;
+ b=MNpXdsRLeH0UkDpiAInZFi0kC6HftNIIi0JdrNQgVOLu3RW648o3sTs1WqKuJQhIVfdUyVmDpOatWQVCfE/FjmirFPteMMoRz9BBU2mTtGo1rchqEpy4J67nGYOva+70e24pC89cTMiq9mqh0IA8ExGfKTy0rLbhtdn0qFQrll/4oD5G84ezQ9BBubAAyMYGlTX1vOZXar6mh6mui6sZCaQIiPYrakE8HLuKlJf1JFCxgH8FxS/7AK4BtU2hnvYX4ylvaefBk748GfGvDX/7xW9rTthClhyOuCMkiXaloaQVCgude3vcXEc9orQ3H+L1T9Ohqc3a1i6p3Lw2u6aoGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by PH7PR11MB6652.namprd11.prod.outlook.com (2603:10b6:510:1aa::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.20; Tue, 23 Apr
+ 2024 02:25:06 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::e4a3:76ce:879:9129]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::e4a3:76ce:879:9129%7]) with mapi id 15.20.7519.020; Tue, 23 Apr 2024
+ 02:25:05 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Subject: RE: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
+ ANFE in aer_err_info
+Thread-Topic: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
+ ANFE in aer_err_info
+Thread-Index: AQHakI7e85jyDjVvVkqdnwboxKPALbF0f7+AgACn2IA=
+Date: Tue, 23 Apr 2024 02:25:05 +0000
+Message-ID: <SJ0PR11MB6744EC971D1BE6F3119EEA9992112@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20240417061407.1491361-1-zhenzhong.duan@intel.com>
+	<20240417061407.1491361-2-zhenzhong.duan@intel.com>
+ <20240422171629.00005675@Huawei.com>
+In-Reply-To: <20240422171629.00005675@Huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH7PR11MB6652:EE_
+x-ms-office365-filtering-correlation-id: 824d91f0-916f-4bd8-42a7-08dc633c96ab
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|366007|376005|7416005|1800799015|38070700009;
+x-microsoft-antispam-message-info: =?us-ascii?Q?lbBYq+D0+BlTsQK6rqoQiagHpn2cPsrNHu85D5065x41YQsjr4lq+nzqTW+9?=
+ =?us-ascii?Q?Y88rz891OSX4xVQ6k66mfq8jZxxbs4B8Yme2w2VPrSc0+JTzWWbS0AkvktcD?=
+ =?us-ascii?Q?7y+MYyc8tlGHV8A29lY6xqCEj3umliXgplIQydGMAHzcNd9DMKlVs6fyVwYg?=
+ =?us-ascii?Q?brKsgiaR0GFhOC2pcA0zqirLg2vu6fHIaxEuQdxElSQNM0x3W/rsqAZYaYi7?=
+ =?us-ascii?Q?pgPGxWyHsROhnL+gC0iWHLr1sTBmMdTHN5GPO42t5YCbuU5MdDvjSLG96VZQ?=
+ =?us-ascii?Q?bFXXdnsQJWUjekEk7f+uqvuLlq6oMlr6fzWWTKSNzAoQhlBHdcOOKV4C0/Cx?=
+ =?us-ascii?Q?0qILBR0oBrWilwOHqT7aeppOaSKiT2YVvtRNIFoZpApY4bUs/422Z5en+5is?=
+ =?us-ascii?Q?ldpQQuCgM1+z9dc4c00N3WVRJ1MjIc2i0RGwVS63NwqMHaU7GXy+nkIuUv+l?=
+ =?us-ascii?Q?B709+Q1TOJ3DKuF3mGu4SfmvuRQbWAK1AYG50sN0pKej7ffSnoTl8g3kcTxf?=
+ =?us-ascii?Q?ZFFdw4InXL0CMRwaNd7BLqN8+F/aUDsjhEctb8EZOhMJLhXphc+EVsMRamae?=
+ =?us-ascii?Q?9PpvUzOiogTjBAE0GvJun6etf0MgWKpImZjyw9bcfMLSZ0xCoCpBcz2ygiBB?=
+ =?us-ascii?Q?VrSSLy0EZGpluntAjGfgruF+s926g1KdsyI+bFaJro9ZuM0ZONZGOpMWsz84?=
+ =?us-ascii?Q?X3Wx0Ai//wKaRv8NaUedh1cuapsfNzAmkl8Q0V3QKF0FzxPM0eT3qWJ8BPw5?=
+ =?us-ascii?Q?w4+5lvQZwawveDn8N3j8NHVsDa3k9nF5ls6bWstbslng89n+1lvlqNYNdQc2?=
+ =?us-ascii?Q?5kCa3wTAXnacqdl31qTxCTA9ZDZNvkDngzQfJhixLSAnLb6aXMJJIyTwjsFS?=
+ =?us-ascii?Q?1KEL8wKpfv60eogjeTvIHvsBYICjiXIT03EmCMii2li4/hHgDYOEQlbzQClb?=
+ =?us-ascii?Q?sGwEsA3eL7G5S0xWncou30tKO6KJpjEq4tYvR/iG4ZR6mV76KtB38K9QA4qj?=
+ =?us-ascii?Q?7yyV7GTXWUuoolMJis+DZ6nWSNM9AswNnKk9HMb+0MzQv59EKYFWMl3n/M/M?=
+ =?us-ascii?Q?jFNML7GK7ajfdWLv+Waktq7pyUC8kmSKrfSpEMXn7kTZ+sRONgV+Kyxd0OHd?=
+ =?us-ascii?Q?IoZFvWQFCSOIpltNI3TOhv/1P2l8WrOTMBJjeXoPI4OKOOGiV+vzJ9n4tr3T?=
+ =?us-ascii?Q?5mA2jHfZV5fmF5E8M7FtQP+ZBVdq7SBaxijczQrN02PUos/VczI+qcMMinuo?=
+ =?us-ascii?Q?RQt1S5NbrK22VMBP1p9NDbWAzWaKZTQkz/IQ3LJULmseWh8GdmT8P97Ky9fS?=
+ =?us-ascii?Q?I6+9/4bJzITLOu+kwpL0zSnhJpBiZBXMAqdpQDBZuqANLw=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6744.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GvAMAx+S/78bnnBnhdxybiDvBBDCZSX4wwaKQqKhNqpiB+pX753BCXok9FQb?=
+ =?us-ascii?Q?OwzCrCpAE1AILvBCXG6gSZp31BtedUx5Im/LRQL3LOJXGuuNEkZLp3Sv8u1u?=
+ =?us-ascii?Q?6tBJ2q/hL6gUzyRLldQg/0nWFbkcAJBzbEPCbkOzKOiXTpD85nNmwLxLNfpu?=
+ =?us-ascii?Q?Bs4SVDKhuZ7WcboSyba8UrsQlLMtxqzsps+IKh4lzAC5bYIXIlheCf/DKC/7?=
+ =?us-ascii?Q?h6m6BdHzSCnOjFYxPtDMo+TvdGw6/sQEXRH4gk7xMYgpjdsOiL1w6NHcrnRb?=
+ =?us-ascii?Q?/I5UCQ8Tzv0AjPOm7z8Ok7+7Co8nIpoMn3Ht+PGSgRrFBttPl8GMg5+kjaG+?=
+ =?us-ascii?Q?MdYmsaeHMZ+06sohihzvp4tCBi5O7gdvCJHVGVApcdmgRvAK0Mva3Mc8jXrs?=
+ =?us-ascii?Q?NI86PhQSmilIhV7h7ts3hkW03t8hsc83cwrl+ulnaqx52RK5VejipRdQbyYk?=
+ =?us-ascii?Q?zStJIKmgF2OIRM4HQv7FINidiAFaIes2cUGT3Z0XW8kJQrgPbyvSG2ITeL0F?=
+ =?us-ascii?Q?KQ7L2syVkkeAOF/nluzQZ7CAl42lWV+RvumhQUR+cvC5L7gs61t+i+H6WsBA?=
+ =?us-ascii?Q?aPbCXwLVB8Ar8mjcfVPH/JJgIFr/sczS+DSTnLnabRIi++jjhodKQjqgwzTU?=
+ =?us-ascii?Q?akA6BdTXwuh//is7LzEwP3AJ77QPCZZFH/IPQWH8ZwdYu4d+RsuBuyxtG6aH?=
+ =?us-ascii?Q?OHkZ8xw7MQ+9ghapR6TkPl45FT97+nFOFKkgdMXw9bakg9ddIzIr9pA890qw?=
+ =?us-ascii?Q?RxLZ6tEvX+oLBzRB5GTBrhq0Z2OQrek9CbxQyXSKmZg4nBCOSnPLW173/jtX?=
+ =?us-ascii?Q?m+mBoiWE0e+AM2qLF6l2CFBIcUF4p0IkLg/44OlA6xSBDnsgLNA0PhQpn7o5?=
+ =?us-ascii?Q?q8WcxXn02+an//nVVpDCkcfaYHKoLdrQ8VhIoi9/svrscioEPAH2YoKsgcuJ?=
+ =?us-ascii?Q?vhJnuLB9MZZutPl4SqHt2TGlhFVV5JV0+kGNPb6SmT3tIzswmO6LegPffOeB?=
+ =?us-ascii?Q?Z8xu++DofQENp0Y5BH6ic8iNWaJdxP08w8zebiG/3oAENhMrU2brlC3F1pG1?=
+ =?us-ascii?Q?Edbh6HRQOkNAzBw51unExaU7USLXzcPvspxhoSMOgYQ4RO/DIq3Mo9aKwKA9?=
+ =?us-ascii?Q?LFl6wpsUvnysaug8iUnamPp8YQqG9U3tb5tJBxyxrcLYt0yoodcD+TlszmlI?=
+ =?us-ascii?Q?uC6QqDdIlUsZeVKjwQE/yDzzKEG2BYVKjZEey8UZoSeoyhQfulTIXd5QHA+y?=
+ =?us-ascii?Q?qiOWLv0iCOUS7/Ay7AoK4Arn1n3SVT3i4PefBmXor/yGMsL5tNUoCKfegAK2?=
+ =?us-ascii?Q?lJF1tBi/GReNR6r7KRbnf/vF6LVtsNn2n6YjLnMORpNl70YIDmgn7cNZalFu?=
+ =?us-ascii?Q?HPT+yS8x4aFCDW77C6MMF15+daE7c7WMVv6e5oFzxUQdLaEi6qfiFVWV5RCB?=
+ =?us-ascii?Q?urVlBQW5uEiyLo3rgqDCdcw6ja0c/Cj9tO39w4R3kIF5Y9wFHiDaUXLgbASO?=
+ =?us-ascii?Q?7v9/yzBaDz4QXwBXlMAqgPefhPZPQoHUn9gMOpPwSWPaGtetNVFDmhgJ3kJ3?=
+ =?us-ascii?Q?wCxsjSL1XLPqHGwIf7b/mW3D/7Dob6YFWLF4QMDR?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240422092206.147078-2-sv@linux.ibm.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 824d91f0-916f-4bd8-42a7-08dc633c96ab
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2024 02:25:05.6442
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iw2Cmq04ug+In3yiGpB0NKojrIIuk66jxpG9WF6J/vzohiy0xaTrs/nVc1X/Omioo+X0t2PDJA4Lqit5TWeemG5MTNvO74NDe36gqRlfooQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6652
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,955 +183,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, peterz@infradead.org, masahiroy@kernel.org, mahesh@linux.ibm.com, mingo@kernel.org, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
+Cc: "linmiaohe@huawei.com" <linmiaohe@huawei.com>, "Schofield,
+ Alison" <alison.schofield@intel.com>, "rafael@kernel.org" <rafael@kernel.org>, "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Tsaur, Erwin" <erwin.tsaur@intel.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "oohall@gmail.com" <oohall@gmail.com>, "Weiny, Ira" <ira.weiny@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>, "Jiang, Dave" <dave.jiang@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>, "Smita.KoralahalliChannabasappa@amd.com" <Smita.KoralahalliChannabasappa@amd.com>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "helgaas@kernel.org" <helgaas@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, "Peng, Chao P" <chao.p.peng@intel.com>, "rrichter@amd.com" <rrichter@amd.com>, "Wang, Yudong" <yudong.wang@intel.com>, "bp@alien8.de" <bp@alien8.de>, "qingshun.wang@linux.intel.com" <qingshun.wang@linux.intel.
+ com>, "bhelgaas@google.com" <bhelgaas@google.com>, "Williams, Dan J" <dan.j.williams@intel.com>, "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, "Luck, Tony" <tony.luck@intel.com>, "Wanyan, Feiting" <feiting.wanyan@intel.com>, "Preble, Adam C" <adam.c.preble@intel.com>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "leoyang.li@nxp.com" <leoyang.li@nxp.com>, "lukas@wunner.de" <lukas@wunner.de>, "james.morse@arm.com" <james.morse@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "shiju.jose@huawei.com" <shiju.jose@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sathvika,
 
-On Mon, Apr 22, 2024 at 02:52:06PM +0530, Sathvika Vasireddy wrote:
-> Implement build-time fixup of alternate feature relative addresses for
-> the out-of-line (else) patch code. Initial posting to achieve the same
-> using another tool can be found at [1]. Idea is to implement this using
-> objtool instead of introducing another tool since it already has elf
-> parsing and processing covered.
-> 
-> Introduce --ftr-fixup as an option to objtool to do feature fixup at
-> build-time.
-> 
-> Couple of issues and warnings encountered while implementing feature
-> fixup using objtool are as follows:
-> 
-> 1. libelf is creating corrupted vmlinux file after writing necessary
-> changes to the file. Due to this, kexec is not able to load new
-> kernel.
-> 
-> It gives the following error:
->         ELF Note corrupted !
->         Cannot determine the file type of vmlinux
-> 
-> To fix this issue, after opening vmlinux file, make a call to
-> elf_flagelf (e, ELF_C_SET, ELF_F_LAYOUT). This instructs libelf not
-> to touch the segment and section layout. It informs the library
-> that the application will take responsibility for the layout of the
-> file and that the library should not insert any padding between
-> sections.
-> 
-> 2. Fix can't find starting instruction warnings when run on vmlinux
-> 
-> Objtool throws a lot of can't find starting instruction warnings
-> when run on vmlinux with --ftr-fixup option.
-> 
-> These warnings are seen because find_insn() function looks for
-> instructions at offsets that are relative to the start of the section.
-> In case of individual object files (.o), there are no can't find
-> starting instruction warnings seen because the actual offset
-> associated with an instruction is itself a relative offset since the
-> sections start at offset 0x0.
-> 
-> However, in case of vmlinux, find_insn() function fails to find
-> instructions at the actual offset associated with an instruction
-> since the sections in vmlinux do not start at offset 0x0. Due to
-> this, find_insn() will look for absolute offset and not the relative
-> offset. This is resulting in a lot of can't find starting instruction
-> warnings when objtool is run on vmlinux.
-> 
-> To fix this, pass offset that is relative to the start of the section
-> to find_insn().
-> 
-> find_insn() is also looking for symbols of size 0. But, objtool does
-> not store empty STT_NOTYPE symbols in the rbtree. Due to this,
-> for empty symbols, objtool is throwing can't find starting
-> instruction warnings. Fix this by ignoring symbols that are of
-> size 0 since objtool does not add them to the rbtree.
-> 
-> 3. Objtool is throwing unannotated intra-function call warnings
-> when run on vmlinux with --ftr-fixup option.
-> 
-> One such example:
-> 
-> vmlinux: warning: objtool: .text+0x3d94:
->                         unannotated intra-function call
-> 
-> .text + 0x3d94 = c000000000008000 + 3d94 = c0000000000081d4
-> 
-> c0000000000081d4: 45 24 02 48  bl c00000000002a618
-> <system_reset_exception+0x8>
-> 
-> c00000000002a610 <system_reset_exception>:
-> c00000000002a610:       0e 01 4c 3c     addis   r2,r12,270
->                         c00000000002a610: R_PPC64_REL16_HA    .TOC.
-> c00000000002a614:       f0 6c 42 38     addi    r2,r2,27888
->                         c00000000002a614: R_PPC64_REL16_LO    .TOC.+0x4
-> c00000000002a618:       a6 02 08 7c     mflr    r0
-> 
-> This is happening because we should be looking for destination
-> symbols that are at absolute offsets instead of relative offsets.
-> After fixing dest_off to point to absolute offset, there are still
-> a lot of these warnings shown.
-> 
-> In the above example, objtool is computing the destination
-> offset to be c00000000002a618, which points to a completely
-> different instruction. find_call_destination() is looking for this
-> offset and failing. Instead, we should be looking for destination
-> offset c00000000002a610 which points to system_reset_exception
-> function.
-> 
-> Even after fixing the way destination offset is computed, and
-> after looking for dest_off - 0x8 in cases where the original offset
-> is not found, there are still a lot of unannotated intra-function
-> call warnings generated. This is due to symbols that are not
-> properly annotated.
-> 
-> So, for now, as a hack to curb these warnings, do not emit
-> unannotated intra-function call warnings when objtool is run
-> with --ftr-fixup option.
-> 
-> TODO:
-> This patch enables build time feature fixup only for powerpc little
-> endian configs. There are boot failures with big endian configs.
-> Posting this as an initial RFC to get some review comments while I work
-> on big endian issues.
-> 
-> [1]
-> https://lore.kernel.org/linuxppc-dev/20170521010130.13552-1-npiggin@gmail.com/
-> 
-> Co-developed-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 
-When I build this series with LLVM 14 [1] (due to an issue I report
-below), I am getting a crash when CONFIG_FTR_FIXUP_SELFTEST is disabled.
+>-----Original Message-----
+>From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+>Subject: Re: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might
+>be ANFE in aer_err_info
+>
+>On Wed, 17 Apr 2024 14:14:05 +0800
+>Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
+>
+>> In some cases the detector of a Non-Fatal Error(NFE) is not the most
+>> appropriate agent to determine the type of the error. For example,
+>> when software performs a configuration read from a non-existent
+>> device or Function, completer will send an ERR_NONFATAL Message.
+>> On some platforms, ERR_NONFATAL results in a System Error, which
+>> breaks normal software probing.
+>>
+>> Advisory Non-Fatal Error(ANFE) is a special case that can be used
+>> in above scenario. It is predominantly determined by the role of the
+>> detecting agent (Requester, Completer, or Receiver) and the specific
+>> error. In such cases, an agent with AER signals the NFE (if enabled)
+>> by sending an ERR_COR Message as an advisory to software, instead of
+>> sending ERR_NONFATAL.
+>>
+>> When processing an ANFE, ideally both correctable error(CE) status and
+>> uncorrectable error(UE) status should be cleared. However, there is no
+>> way to fully identify the UE associated with ANFE. Even worse, a Fatal
+>> Error(FE) or Non-Fatal Error(NFE) may set the same UE status bit as
+>> ANFE. Treating an ANFE as NFE will reproduce above mentioned issue,
+>> i.e., breaking softwore probing; treating NFE as ANFE will make us
+>> ignoring some UEs which need active recover operation. To avoid clearing
+>> UEs that are not ANFE by accident, the most conservative route is taken
+>> here: If any of the FE/NFE Detected bits is set in Device Status, do not
+>> touch UE status, they should be cleared later by the UE handler. Otherwi=
+se,
+>> a specific set of UEs that may be raised as ANFE according to the PCIe
+>> specification will be cleared if their corresponding severity is Non-Fat=
+al.
+>>
+>> To achieve above purpose, store UNCOR_STATUS bits that might be ANFE
+>> in aer_err_info.anfe_status. So that those bits could be printed and
+>> processed later.
+>>
+>> Tested-by: Yudong Wang <yudong.wang@intel.com>
+>> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+>> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>> ---
+>>  drivers/pci/pci.h      |  1 +
+>>  drivers/pci/pcie/aer.c | 45
+>++++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 46 insertions(+)
+>>
+>> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+>> index 17fed1846847..3f9eb807f9fd 100644
+>> --- a/drivers/pci/pci.h
+>> +++ b/drivers/pci/pci.h
+>> @@ -412,6 +412,7 @@ struct aer_err_info {
+>>
+>>  	unsigned int status;		/* COR/UNCOR Error Status */
+>>  	unsigned int mask;		/* COR/UNCOR Error Mask */
+>> +	unsigned int anfe_status;	/* UNCOR Error Status for ANFE */
+>>  	struct pcie_tlp_log tlp;	/* TLP Header */
+>>  };
+>>
+>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>> index ac6293c24976..27364ab4b148 100644
+>> --- a/drivers/pci/pcie/aer.c
+>> +++ b/drivers/pci/pcie/aer.c
+>> @@ -107,6 +107,12 @@ struct aer_stats {
+>>  					PCI_ERR_ROOT_MULTI_COR_RCV |
+>	\
+>>  					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
+>>
+>> +#define AER_ERR_ANFE_UNC_MASK
+>	(PCI_ERR_UNC_POISON_TLP |	\
+>> +					PCI_ERR_UNC_COMP_TIME |
+>	\
+>> +					PCI_ERR_UNC_COMP_ABORT |
+>	\
+>> +					PCI_ERR_UNC_UNX_COMP |
+>	\
+>> +					PCI_ERR_UNC_UNSUP)
+>> +
+>>  static int pcie_aer_disable;
+>>  static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
+>>
+>> @@ -1196,6 +1202,41 @@ void aer_recover_queue(int domain, unsigned
+>int bus, unsigned int devfn,
+>>  EXPORT_SYMBOL_GPL(aer_recover_queue);
+>>  #endif
+>>
+>> +static void anfe_get_uc_status(struct pci_dev *dev, struct aer_err_info
+>*info)
+>> +{
+>> +	u32 uncor_mask, uncor_status;
+>> +	u16 device_status;
+>> +	int aer =3D dev->aer_cap;
+>> +
+>> +	if (pcie_capability_read_word(dev, PCI_EXP_DEVSTA,
+>&device_status))
+>> +		return;
+>> +	/*
+>> +	 * Take the most conservative route here. If there are
+>> +	 * Non-Fatal/Fatal errors detected, do not assume any
+>> +	 * bit in uncor_status is set by ANFE.
+>> +	 */
+>> +	if (device_status & (PCI_EXP_DEVSTA_NFED | PCI_EXP_DEVSTA_FED))
+>> +		return;
+>> +
+>
+>Is there not a race here?  If we happen to get either an NFED or FED
+>between the read of device_status above and here we might pick up a status
+>that corresponds to that (and hence clear something we should not).
 
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index 544a65fda77b..95d2906ec814 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -427,7 +427,6 @@ CONFIG_BLK_DEV_IO_TRACE=y
- CONFIG_IO_STRICT_DEVMEM=y
- CONFIG_PPC_EMULATED_STATS=y
- CONFIG_CODE_PATCHING_SELFTEST=y
--CONFIG_FTR_FIXUP_SELFTEST=y
- CONFIG_MSI_BITMAP_SELFTEST=y
- CONFIG_XMON=y
- CONFIG_BOOTX_TEXT=y
+In this scenario, info->anfe_status is 0.
 
-  $ make -kj"$(nproc)" ARCH=powerpc LLVM=$PWD/llvm-14.0.6-x86_64/bin/ ppc64le_defconfig vmlinux
-  ...
-    LD      vmlinux
-    NM      System.map
-    SORTTAB vmlinux
-    CHKHEAD vmlinux
-    CHKREL  vmlinux
-  make[4]: *** [scripts/Makefile.vmlinux:38: vmlinux] Error 139
-  make[4]: *** Deleting file 'vmlinux
-  ...
+>
+>Or am I missing that race being close somewhere?
 
-I do not see the objtool command in V=1 output but I do see the end of
-scripts/link-vmlinux.sh, so it does seem like it is crashing in objtool.
+The bits leading to NFED or FED is masked out when assigning info->anfe_sta=
+tus.
+Bits for FED is masked out by ~info->severity,
+bit for NFED is masked out by AER_ERR_ANFE_UNC_MASK.
 
-[1]: from https://mirrors.edge.kernel.org/pub/tools/llvm/
+So we never clear status bits for NFED or FED in ANFE handler.
 
-> ---
->  arch/Kconfig                              |   3 +
->  arch/powerpc/Kconfig                      |   5 +
->  arch/powerpc/Makefile                     |   5 +
->  arch/powerpc/include/asm/feature-fixups.h |  11 +-
->  arch/powerpc/kernel/vmlinux.lds.S         |  14 +-
->  arch/powerpc/lib/feature-fixups.c         |  13 +
->  scripts/Makefile.lib                      |   7 +
->  scripts/Makefile.vmlinux                  |  15 +-
->  tools/objtool/arch/powerpc/special.c      | 329 ++++++++++++++++++++++
->  tools/objtool/arch/x86/special.c          |  49 ++++
->  tools/objtool/builtin-check.c             |   2 +
->  tools/objtool/check.c                     |  38 ++-
->  tools/objtool/elf.c                       |   4 +
->  tools/objtool/include/objtool/builtin.h   |   1 +
->  tools/objtool/include/objtool/special.h   |  43 +++
->  15 files changed, 530 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 9f066785bb71..8defdf86a69e 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -1206,6 +1206,9 @@ config HAVE_UACCESS_VALIDATION
->  	bool
->  	select OBJTOOL
->  
-> +config HAVE_OBJTOOL_FTR_FIXUP
-> +        bool
-> +
->  config HAVE_STACK_VALIDATION
->  	bool
->  	help
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 1c4be3373686..806285a28231 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -23,6 +23,11 @@ config 64BIT
->  	bool
->  	default y if PPC64
->  
-> +config HAVE_OBJTOOL_FTR_FIXUP
-> +        bool
-> +        default y if CPU_LITTLE_ENDIAN && PPC64
-> +        select OBJTOOL
-> +
->  config LIVEPATCH_64
->  	def_bool PPC64
->  	depends on LIVEPATCH
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index 65261cbe5bfd..bc81847d5c3d 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -112,6 +112,11 @@ LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie
->  LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) += -z notext
->  LDFLAGS_vmlinux	:= $(LDFLAGS_vmlinux-y)
->  
-> +# --emit-relocs required for post-link fixup of alternate feature
-> +# text section relocations.
-> +LDFLAGS_vmlinux        += --emit-relocs
-> +KBUILD_LDFLAGS_MODULE += --emit-relocs
-> +
->  ifdef CONFIG_PPC64
->  ifndef CONFIG_PPC_KERNEL_PCREL
->  ifeq ($(call cc-option-yn,-mcmodel=medium),y)
-> diff --git a/arch/powerpc/include/asm/feature-fixups.h b/arch/powerpc/include/asm/feature-fixups.h
-> index 77824bd289a3..006e2493c7c3 100644
-> --- a/arch/powerpc/include/asm/feature-fixups.h
-> +++ b/arch/powerpc/include/asm/feature-fixups.h
-> @@ -30,12 +30,19 @@
->  
->  #define START_FTR_SECTION(label)	label##1:
->  
-> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
->  #define FTR_SECTION_ELSE_NESTED(label)			\
->  label##2:						\
-> -	.pushsection __ftr_alt_##label,"a";		\
-> +	.pushsection __ftr_alt_##label, "ax";		\
->  	.align 2;					\
->  label##3:
-> -
-> +#else
-> +#define FTR_SECTION_ELSE_NESTED(label)			\
-> +label##2 : \
-> +	.pushsection __ftr_alt_##label, "a";		\
-> +	.align 2;					\
-> +label##3 :
-> +#endif
->  
->  #ifndef CONFIG_CC_IS_CLANG
->  #define CHECK_ALT_SIZE(else_size, body_size)			\
-> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> index f420df7888a7..6b1c61e8af47 100644
-> --- a/arch/powerpc/kernel/vmlinux.lds.S
-> +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> @@ -105,8 +105,13 @@ SECTIONS
->  	.text : AT(ADDR(.text) - LOAD_OFFSET) {
->  		ALIGN_FUNCTION();
->  #endif
-> -		/* careful! __ftr_alt_* sections need to be close to .text */
-> -		*(.text.hot .text.hot.* TEXT_MAIN .text.fixup .text.unlikely .text.unlikely.* .fixup __ftr_alt_* .ref.text);
-> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> +		*(.text.hot .text.hot.* TEXT_MAIN .text.fixup .text.unlikely
-> +			.text.unlikely.* .fixup .ref.text);
-> +#else
-> +		*(.text.hot .text.hot.* TEXT_MAIN .text.fixup .text.unlikely
-> +			.text.unlikely.* .fixup __ftr_alt_* .ref.text);
-> +#endif
->  		*(.tramp.ftrace.text);
->  		NOINSTR_TEXT
->  		SCHED_TEXT
-> @@ -276,6 +281,11 @@ SECTIONS
->  		_einittext = .;
->  		*(.tramp.ftrace.init);
->  	} :text
-> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> +	.__ftr_alternates.text : AT(ADDR(.__ftr_alternates.text) - LOAD_OFFSET) {
-> +		*(__ftr_alt*);
-> +	}
-> +#endif
->  
->  	/* .exit.text is discarded at runtime, not link time,
->  	 * to deal with references from __bug_table
-> diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-> index 4f82581ca203..8c5eb7c8612f 100644
-> --- a/arch/powerpc/lib/feature-fixups.c
-> +++ b/arch/powerpc/lib/feature-fixups.c
-> @@ -44,6 +44,18 @@ static u32 *calc_addr(struct fixup_entry *fcur, long offset)
->  	return (u32 *)((unsigned long)fcur + offset);
->  }
->  
-> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
-> +static int patch_alt_instruction(u32 *src, u32 *dest, u32 *alt_start, u32 *alt_end)
-> +{
-> +	ppc_inst_t instr;
-> +
-> +	instr = ppc_inst_read(src);
-> +
-> +	raw_patch_instruction(dest, instr);
-> +
-> +	return 0;
-> +}
-> +#else
->  static int patch_alt_instruction(u32 *src, u32 *dest, u32 *alt_start, u32 *alt_end)
->  {
->  	int err;
-> @@ -66,6 +78,7 @@ static int patch_alt_instruction(u32 *src, u32 *dest, u32 *alt_start, u32 *alt_e
->  
->  	return 0;
->  }
-> +#endif
->  
->  static int patch_feature_section_mask(unsigned long value, unsigned long mask,
->  				      struct fixup_entry *fcur)
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index c65bb0fbd136..8fff27b9bdcb 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -290,6 +290,13 @@ ifneq ($(objtool-args-y),)
->  cmd_objtool = $(if $(objtool-enabled), ; $(objtool) $(objtool-args) $@)
->  endif
->  
-> +cmd_objtool_vmlinux :=
-> +ifeq ($(CONFIG_HAVE_OBJTOOL_FTR_FIXUP),y)
-> +cmd_objtool_vmlinux = $(if $(objtool-enabled), ; $(objtool) $(objtool-args) $@)
-> +vmlinux:
-> +    $(cmd_objtool_vmlinux)
-> +endif
-> +
->  cmd_gen_objtooldep = $(if $(objtool-enabled), { echo ; echo '$@: $$(wildcard $(objtool))' ; } >> $(dot-target).cmd)
->  
->  endif # CONFIG_OBJTOOL
-> diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-> index c9f3e03124d7..2f4a7154e676 100644
-> --- a/scripts/Makefile.vmlinux
-> +++ b/scripts/Makefile.vmlinux
-> @@ -30,7 +30,8 @@ ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
->  # Final link of vmlinux with optional arch pass after final link
->  cmd_link_vmlinux =							\
->  	$< "$(LD)" "$(KBUILD_LDFLAGS)" "$(LDFLAGS_vmlinux)";		\
-> -	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
-> +	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)	\
-> +	$(cmd_objtool_vmlinux)
->  
->  targets += vmlinux
->  vmlinux: scripts/link-vmlinux.sh vmlinux.o $(KBUILD_LDS) FORCE
-> @@ -52,3 +53,15 @@ existing-targets := $(wildcard $(sort $(targets)))
->  -include $(foreach f,$(existing-targets),$(dir $(f)).$(notdir $(f)).cmd)
->  
->  .PHONY: $(PHONY)
-> +
-> +# objtool for vmlinux
-> +# ----------------------------------
-> +#
-> +#  For feature fixup, objtool does not run on individual
-> +#  translation units. Run this on vmlinux instead.
-> +
-> +objtool-enabled := $(CONFIG_HAVE_OBJTOOL_FTR_FIXUP)
-> +
-> +vmlinux-objtool-args-$(CONFIG_HAVE_OBJTOOL_FTR_FIXUP)  += --ftr-fixup
-> +
-> +objtool-args = $(vmlinux-objtool-args-y) --link
-> diff --git a/tools/objtool/arch/powerpc/special.c b/tools/objtool/arch/powerpc/special.c
-> index d33868147196..5ec3eed34eb0 100644
-> --- a/tools/objtool/arch/powerpc/special.c
-> +++ b/tools/objtool/arch/powerpc/special.c
-> @@ -3,7 +3,17 @@
->  #include <stdlib.h>
->  #include <objtool/special.h>
->  #include <objtool/builtin.h>
-> +#include <objtool/warn.h>
-> +#include <asm/byteorder.h>
-> +#include <errno.h>
->  
-> +struct section *ftr_alt;
-> +
-> +struct fixup_entry *fes;
-> +unsigned int nr_fes;
-> +
-> +uint64_t fe_alt_start = -1;
-> +uint64_t fe_alt_end;
->  
->  bool arch_support_alt_relocation(struct special_alt *special_alt,
->  				 struct instruction *insn,
-> @@ -17,3 +27,322 @@ struct reloc *arch_find_switch_table(struct objtool_file *file,
->  {
->  	exit(-1);
->  }
-> +
-> +int process_alt_data(struct objtool_file *file)
-> +{
-> +	struct section *section;
-> +
-> +	section = find_section_by_name(file->elf, ".__ftr_alternates.text");
-> +	ftr_alt = section;
-> +
-> +	if (!ftr_alt) {
-> +		WARN(".__ftr_alternates.text section not found\n");
-> +		return -1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int process_fixup_entries(struct objtool_file *file)
-> +{
-> +	struct section *sec;
-> +	unsigned int nr = 0;
-> +	int i;
-> +
-> +	for_each_sec(file, sec) {
-> +		if (strstr(sec->name, "_ftr_fixup") != NULL) {
-> +			Elf_Data *data = sec->data;
-> +
-> +			if (data && data->d_size > 0)
-> +				nr = data->d_size / sizeof(struct fixup_entry);
-> +
-> +			for (i = 0; i < nr; i++) {
-> +				struct fixup_entry *dst;
-> +				unsigned long idx;
-> +				unsigned long long off;
-> +				struct fixup_entry *src;
-> +
-> +				idx = i * sizeof(struct fixup_entry);
-> +				off = sec->sh.sh_addr + data->d_off + idx;
-> +				src = data->d_buf + idx;
-> +
-> +				if (src->alt_start_off == src->alt_end_off)
-> +					continue;
-> +
-> +				fes = realloc(fes, (nr_fes + 1) * sizeof(struct fixup_entry));
-> +				dst = &fes[nr_fes];
-> +				nr_fes++;
-> +
-> +				dst->mask = __le64_to_cpu(src->mask);
-> +				dst->value = __le64_to_cpu(src->value);
-> +				dst->start_off = __le64_to_cpu(src->start_off) + off;
-> +				dst->end_off = __le64_to_cpu(src->end_off) + off;
-> +				dst->alt_start_off = __le64_to_cpu(src->alt_start_off) + off;
-> +				dst->alt_end_off = __le64_to_cpu(src->alt_end_off) + off;
-> +
-> +				if (dst->alt_start_off < fe_alt_start)
-> +					fe_alt_start = dst->alt_start_off;
-> +
-> +				if (dst->alt_end_off > fe_alt_end)
-> +					fe_alt_end = dst->alt_end_off;
-> +			}
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +struct fixup_entry *find_fe_altaddr(uint64_t addr)
-> +{
-> +	unsigned int i;
-> +
-> +	if (addr < fe_alt_start)
-> +		return NULL;
-> +	if (addr >= fe_alt_end)
-> +		return NULL;
-> +
-> +	for (i = 0; i < nr_fes; i++) {
-> +		if (addr >= fes[i].alt_start_off && addr < fes[i].alt_end_off)
-> +			return &fes[i];
-> +	}
-> +	return NULL;
-> +}
-> +
-> +int set_uncond_branch_target(uint32_t *insn,
-> +	       const uint64_t addr, uint64_t target)
-> +{
-> +	uint32_t i = *insn;
-> +	int64_t offset;
-> +
-> +	offset = target;
-> +	if (!(i & BRANCH_ABSOLUTE))
-> +		offset = offset - addr;
-> +
-> +	/* Check we can represent the target in the instruction format */
-> +	if (offset < -0x2000000 || offset > 0x1fffffc || offset & 0x3)
-> +		return -EOVERFLOW;
-> +
-> +	/* Mask out the flags and target, so they don't step on each other. */
-> +	*insn = 0x48000000 | (i & 0x3) | (offset & 0x03FFFFFC);
-> +
-> +	return 0;
-> +}
-> +
-> +int set_cond_branch_target(uint32_t *insn,
-> +	       const uint64_t addr, uint64_t target)
-> +{
-> +	uint32_t i = *insn;
-> +	int64_t offset;
-> +
-> +	offset = target;
-> +
-> +	if (!(i & BRANCH_ABSOLUTE))
-> +		offset = offset - addr;
-> +
-> +	/* Check we can represent the target in the instruction format */
-> +	if (offset < -0x8000 || offset > 0x7FFF || offset & 0x3) {
-> +		printf("cannot represent\n");
-> +		return -EOVERFLOW;
-> +	}
-> +
-> +	/* Mask out the flags and target, so they don't step on each other. */
-> +	*insn = 0x40000000 | (i & 0x3FF0003) | (offset & 0xFFFC);
-> +
-> +	return 0;
-> +}
-> +
-> +void check_and_flatten_fixup_entries(void)
-> +{
-> +	static struct fixup_entry *fe;
-> +	unsigned int i;
-> +
-> +	i = nr_fes;
-> +	while (i) {
-> +		static struct fixup_entry *parent;
-> +		uint64_t nested_off; /* offset from start of parent */
-> +		uint64_t size;
-> +
-> +		i--;
-> +		fe = &fes[i];
-> +
-> +		parent = find_fe_altaddr(fe->start_off);
-> +		if (!parent) {
-> +			parent = find_fe_altaddr(fe->end_off);
-> +			continue;
-> +		}
-> +
-> +		size = fe->end_off - fe->start_off;
-> +		nested_off = fe->start_off - parent->alt_start_off;
-> +
-> +		fe->start_off = parent->start_off + nested_off;
-> +		fe->end_off = fe->start_off + size;
-> +	}
-> +}
-> +
-> +int process_bug_entries(struct objtool_file *file)
-> +{
-> +	struct section *section;
-> +
-> +	Elf_Data *data;
-> +	unsigned int nr, i;
-> +
-> +	section = find_section_by_name(file->elf, "__bug_table");
-> +
-> +	data = section->data;
-> +
-> +	nr = data->d_size / sizeof(struct bug_entry_64);
-> +
-> +	for (i = 0; i < nr; i++) {
-> +		unsigned long idx;
-> +		uint64_t bugaddr;
-> +		struct bug_entry_64 *bug;
-> +
-> +		idx = i * sizeof(struct bug_entry_64);
-> +		bug = data->d_buf + idx;
-> +		bugaddr = __le64_to_cpu(bug->bug_addr);
-> +
-> +		if (bugaddr < fe_alt_start)
-> +			continue;
-> +
-> +		if (bugaddr >= fe_alt_end)
-> +			continue;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static struct symbol *find_symbol_at_address_within_section(struct section *sec,
-> +								unsigned long address)
-> +{
-> +	struct symbol *sym;
-> +
-> +	sec_for_each_sym(sec, sym) {
-> +		if (sym->sym.st_value <= address && address < sym->sym.st_value + sym->len)
-> +			return sym;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static int is_local_symbol(uint8_t st_other)
-> +{
-> +	return (st_other & 0x3) != 0;
-> +}
-> +
-> +static struct symbol *find_symbol_at_address(struct objtool_file *file,
-> +						unsigned long address)
-> +{
-> +	struct section *sec;
-> +	struct symbol *sym;
-> +
-> +	list_for_each_entry(sec, &file->elf->sections, list) {
-> +		sym = find_symbol_at_address_within_section(sec, address);
-> +		if (sym)
-> +			return sym;
-> +	}
-> +	return NULL;
-> +}
-> +
-> +int process_alt_relocations(struct objtool_file *file)
-> +{
-> +	struct section *section;
-> +	size_t n = 0;
-> +	uint32_t insn;
-> +	uint32_t *i;
-> +	unsigned int opcode;
-> +
-> +	section = find_section_by_name(file->elf, ".rela.__ftr_alternates.text");
-> +	if (!section) {
-> +		printf(".rela.__ftr_alternates.text section not found.\n");
-> +		return -1;
-> +	}
-> +
-> +	for (int j = 0; j < sec_num_entries(section); j++) {
-> +		struct reloc *relocation = &section->relocs[j];
-> +		struct symbol *sym = relocation->sym;
-> +		struct fixup_entry *fe;
-> +		uint64_t addr = reloc_offset(relocation);
-> +		uint64_t scn_delta;
-> +		uint64_t dst_addr;
-> +		const char *insn_ptr;
-> +		unsigned long target = sym->sym.st_value + reloc_addend(relocation);
-> +
-> +		struct symbol *symbol = find_symbol_at_address(file, target);
-> +
-> +		if (symbol) {
-> +			int is_local = is_local_symbol(symbol->sym.st_other);
-> +
-> +			if (!is_local)
-> +				target = target + 0x8;
-> +		}
-> +
-> +		n++;
+See below assignment of info->anfe_status.
 
-When HOSTCC is Clang 15 or newer, there is a warning (or error due to
-objtool using -Werror) that n is only incremented but never actually
-used:
+Thanks
+Zhenzhong
 
-  arch/powerpc/special.c:249:9: error: variable 'n' set but not used [-Werror,-Wunused-but-set-variable]
-    249 |         size_t n = 0;
-        |                ^
-  1 error generated.
-  make[7]: *** [tools/build/Makefile.build:106: tools/objtool/arch/powerpc/special.o] Error 1
+>
+>> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+>&uncor_status);
+>> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
+>&uncor_mask);
+>> +	/*
+>> +	 * According to PCIe Base Specification Revision 6.1,
+>> +	 * Section 6.2.3.2.4, if an UNCOR error is raised as
+>> +	 * Advisory Non-Fatal error, it will match the following
+>> +	 * conditions:
+>> +	 *	a. The severity of the error is Non-Fatal.
+>> +	 *	b. The error is one of the following:
+>> +	 *		1. Poisoned TLP           (Section 6.2.3.2.4.3)
+>> +	 *		2. Completion Timeout     (Section 6.2.3.2.4.4)
+>> +	 *		3. Completer Abort        (Section 6.2.3.2.4.1)
+>> +	 *		4. Unexpected Completion  (Section 6.2.3.2.4.5)
+>> +	 *		5. Unsupported Request    (Section 6.2.3.2.4.1)
+>> +	 */
+>> +	info->anfe_status =3D uncor_status & ~uncor_mask & ~info->severity
+>&
+>> +			    AER_ERR_ANFE_UNC_MASK;
+>> +}
+>> +
+>>  /**
+>>   * aer_get_device_error_info - read error status from dev and store it =
+to
+>info
+>>   * @dev: pointer to the device expected to have a error record
+>> @@ -1213,6 +1254,7 @@ int aer_get_device_error_info(struct pci_dev
+>*dev, struct aer_err_info *info)
+>>
+>>  	/* Must reset in this function */
+>>  	info->status =3D 0;
+>> +	info->anfe_status =3D 0;
+>>  	info->tlp_header_valid =3D 0;
+>>
+>>  	/* The device might not support AER */
+>> @@ -1226,6 +1268,9 @@ int aer_get_device_error_info(struct pci_dev
+>*dev, struct aer_err_info *info)
+>>  			&info->mask);
+>>  		if (!(info->status & ~info->mask))
+>>  			return 0;
+>> +
+>> +		if (info->status & PCI_ERR_COR_ADV_NFAT)
+>> +			anfe_get_uc_status(dev, info);
+>>  	} else if (type =3D=3D PCI_EXP_TYPE_ROOT_PORT ||
+>>  		   type =3D=3D PCI_EXP_TYPE_RC_EC ||
+>>  		   type =3D=3D PCI_EXP_TYPE_DOWNSTREAM ||
 
-> +		fe = find_fe_altaddr(addr);
-> +		if (fe) {
-> +
-> +			if (target >= fe->alt_start_off &&
-> +					target < fe->alt_end_off)
-> +				continue;
-> +
-> +			if (target >= ftr_alt->sh.sh_addr &&
-> +					target < ftr_alt->sh.sh_addr +
-> +					ftr_alt->sh.sh_size) {
-> +				printf("ftr_alt branch target is another ftr_alt region.\n");
-> +				exit(EXIT_FAILURE);
-> +			}
-> +
-> +			scn_delta = addr - ftr_alt->sh.sh_addr;
-> +			dst_addr = addr - fe->alt_start_off + fe->start_off;
-> +
-> +			i = ftr_alt->data->d_buf + scn_delta;
-> +			insn = __le32_to_cpu(*i);
-> +
-> +			opcode = insn >> 26;
-> +
-> +			if (opcode == 16)
-> +				set_cond_branch_target(&insn, dst_addr, target);
-> +
-> +			if (opcode == 18)
-> +				set_uncond_branch_target(&insn, dst_addr, target);
-> +
-> +			insn_ptr = (const char *)&insn;
-> +			elf_write_insn(file->elf, ftr_alt, scn_delta, sizeof(insn), insn_ptr);
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int process_exception_entries(struct objtool_file *file)
-> +{
-> +	struct section *section;
-> +	Elf_Data *data;
-> +	unsigned int nr, i;
-> +
-> +	section = find_section_by_name(file->elf, "__ex_table");
-> +
-> +	data = section->data;
-> +	nr = data->d_size / sizeof(struct exception_entry_64);
-> +
-> +	for (i = 0; i < nr; i++) {
-> +		unsigned long idx;
-> +		uint64_t exaddr;
-> +		unsigned long long off;
-> +		struct exception_entry_64 *ex;
-> +
-> +		idx = i * sizeof(struct exception_entry_64);
-> +		off = section->sh.sh_addr + data->d_off + idx;
-> +		ex = data->d_buf + idx;
-> +		exaddr = __le32_to_cpu(ex->insn) + off;
-> +
-> +		if (exaddr < fe_alt_start)
-> +			continue;
-> +		if (exaddr >= fe_alt_end)
-> +			continue;
-> +
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	return 0;
-> +}
-> diff --git a/tools/objtool/arch/x86/special.c b/tools/objtool/arch/x86/special.c
-> index 4134d27c696b..85527cf73e2d 100644
-> --- a/tools/objtool/arch/x86/special.c
-> +++ b/tools/objtool/arch/x86/special.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-or-later
->  #include <string.h>
-> +#include <stdlib.h>
->  
->  #include <objtool/special.h>
->  #include <objtool/builtin.h>
-> @@ -137,3 +138,51 @@ struct reloc *arch_find_switch_table(struct objtool_file *file,
->  
->  	return rodata_reloc;
->  }
-> +
-> +
-> +int process_alt_data(struct objtool_file *file)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +int process_fixup_entries(struct objtool_file *file)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +struct fixup_entry *find_fe_altaddr(uint64_t addr)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +int set_uncond_branch_target(uint32_t *insn,
-> +		const uint64_t addr, uint64_t target)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +int set_cond_branch_target(uint32_t *insn,
-> +		const uint64_t addr, uint64_t target)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +void check_and_flatten_fixup_entries(void)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +int process_bug_entries(struct objtool_file *file)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +int process_alt_relocations(struct objtool_file *file)
-> +{
-> +	exit(-1);
-> +}
-> +
-> +int process_exception_entries(struct objtool_file *file)
-> +{
-> +	exit(-1);
-> +}
-> diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-> index 5e21cfb7661d..dae04ea2a9a4 100644
-> --- a/tools/objtool/builtin-check.c
-> +++ b/tools/objtool/builtin-check.c
-> @@ -68,6 +68,7 @@ static int parse_hacks(const struct option *opt, const char *str, int unset)
->  static const struct option check_options[] = {
->  	OPT_GROUP("Actions:"),
->  	OPT_CALLBACK_OPTARG('h', "hacks", NULL, NULL, "jump_label,noinstr,skylake", "patch toolchain bugs/limitations", parse_hacks),
-> +	OPT_BOOLEAN('f', "ftr-fixup", &opts.ftr_fixup, "feature fixup"),
->  	OPT_BOOLEAN('i', "ibt", &opts.ibt, "validate and annotate IBT"),
->  	OPT_BOOLEAN('m', "mcount", &opts.mcount, "annotate mcount/fentry calls for ftrace"),
->  	OPT_BOOLEAN('n', "noinstr", &opts.noinstr, "validate noinstr rules"),
-> @@ -132,6 +133,7 @@ int cmd_parse_options(int argc, const char **argv, const char * const usage[])
->  static bool opts_valid(void)
->  {
->  	if (opts.hack_jump_label	||
-> +	    opts.ftr_fixup		||
->  	    opts.hack_noinstr		||
->  	    opts.ibt			||
->  	    opts.mcount			||
-> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> index 0a33d9195b7a..d6a75fabefb6 100644
-> --- a/tools/objtool/check.c
-> +++ b/tools/objtool/check.c
-> @@ -22,6 +22,9 @@
->  #include <linux/static_call_types.h>
->  #include <linux/string.h>
->  
-> +#include <asm/byteorder.h>
-> +#include <errno.h>
-> +
->  struct alternative {
->  	struct alternative *next;
->  	struct instruction *insn;
-> @@ -456,12 +459,15 @@ static int decode_instructions(struct objtool_file *file)
->  				return -1;
->  			}
->  
-> +			if (func->len == 0)
-> +				continue;
-> +
->  			if (func->embedded_insn || func->alias != func)
->  				continue;
->  
-> -			if (!find_insn(file, sec, func->offset)) {
-> -				WARN("%s(): can't find starting instruction",
-> -				     func->name);
-> +			if (!find_insn(file, sec, opts.ftr_fixup ?
-> +						func->offset - sec->sym->offset : func->offset)) {
-> +				WARN("%s(): can't find starting instruction", func->name);
->  				return -1;
->  			}
->  
-> @@ -1707,7 +1713,7 @@ static int add_call_destinations(struct objtool_file *file)
->  			if (insn->ignore)
->  				continue;
->  
-> -			if (!insn_call_dest(insn)) {
-> +			if (!insn_call_dest(insn) && !opts.ftr_fixup) {
->  				WARN_INSN(insn, "unannotated intra-function call");
->  				return -1;
->  			}
-> @@ -4720,6 +4726,30 @@ int check(struct objtool_file *file)
->  	if (!nr_insns)
->  		goto out;
->  
-> +	if (opts.ftr_fixup) {
-> +		ret = process_alt_data(file);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = process_fixup_entries(file);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		check_and_flatten_fixup_entries();
-> +
-> +		ret = process_exception_entries(file);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = process_bug_entries(file);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = process_alt_relocations(file);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
->  	if (opts.retpoline) {
->  		ret = validate_retpoline(file);
->  		if (ret < 0)
-> diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-> index 3d27983dc908..e5f8327f1d30 100644
-> --- a/tools/objtool/elf.c
-> +++ b/tools/objtool/elf.c
-> @@ -1022,6 +1022,10 @@ struct elf *elf_open_read(const char *name, int flags)
->  		cmd = ELF_C_WRITE;
->  
->  	elf->elf = elf_begin(elf->fd, cmd, NULL);
-> +
-> +	if (opts.ftr_fixup)
-> +		elf_flagelf(elf->elf, ELF_C_SET, ELF_F_LAYOUT);
-> +
->  	if (!elf->elf) {
->  		WARN_ELF("elf_begin");
->  		goto err;
-> diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
-> index fcca6662c8b4..2a80f206072c 100644
-> --- a/tools/objtool/include/objtool/builtin.h
-> +++ b/tools/objtool/include/objtool/builtin.h
-> @@ -10,6 +10,7 @@
->  struct opts {
->  	/* actions: */
->  	bool dump_orc;
-> +	bool ftr_fixup;
->  	bool hack_jump_label;
->  	bool hack_noinstr;
->  	bool hack_skylake;
-> diff --git a/tools/objtool/include/objtool/special.h b/tools/objtool/include/objtool/special.h
-> index 86d4af9c5aa9..390a0e7816b7 100644
-> --- a/tools/objtool/include/objtool/special.h
-> +++ b/tools/objtool/include/objtool/special.h
-> @@ -12,6 +12,28 @@
->  
->  #define C_JUMP_TABLE_SECTION ".rodata..c_jump_table"
->  
-> +#define BRANCH_SET_LINK 0x1
-> +#define BRANCH_ABSOLUTE 0x2
-> +
-> +struct bug_entry_64 {
-> +	uint64_t bug_addr;
-> +	uint16_t flags;
-> +};
-> +
-> +struct exception_entry_64 {
-> +	int32_t insn;
-> +	int32_t fixup;
-> +};
-> +
-> +struct fixup_entry {
-> +	uint64_t mask;
-> +	uint64_t value;
-> +	uint64_t start_off;
-> +	uint64_t end_off;
-> +	uint64_t alt_start_off;
-> +	uint64_t alt_end_off;
-> +};
-> +
->  struct special_alt {
->  	struct list_head list;
->  
-> @@ -37,6 +59,27 @@ void arch_handle_alternative(unsigned short feature, struct special_alt *alt);
->  bool arch_support_alt_relocation(struct special_alt *special_alt,
->  				 struct instruction *insn,
->  				 struct reloc *reloc);
-> +
->  struct reloc *arch_find_switch_table(struct objtool_file *file,
->  				    struct instruction *insn);
-> +
-> +int process_alt_data(struct objtool_file *file);
-> +
-> +int process_fixup_entries(struct objtool_file *file);
-> +
-> +void check_and_flatten_fixup_entries(void);
-> +
-> +int process_exception_entries(struct objtool_file *file);
-> +
-> +int process_bug_entries(struct objtool_file *file);
-> +
-> +int process_alt_relocations(struct objtool_file *file);
-> +
-> +struct fixup_entry *find_fe_altaddr(uint64_t addr);
-> +
-> +int set_uncond_branch_target(uint32_t *insn,
-> +		const uint64_t addr, uint64_t target);
-> +
-> +int set_cond_branch_target(uint32_t *insn,
-> +		const uint64_t addr, uint64_t target);
->  #endif /* _SPECIAL_H */
-> -- 
-> 2.34.1
-> 
