@@ -2,90 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE52E8B0125
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 07:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031B88B046E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 10:35:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LhIO3Qsr;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=cYK4eWIl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VPSVQ2bHKz3dHR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 15:39:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VPXPb4zQtz3cWR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 18:35:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LhIO3Qsr;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=cYK4eWIl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPSTf5qQhz3bWH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 15:39:02 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43O5C4HZ004258;
-	Wed, 24 Apr 2024 05:38:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=OQ8VcKyqDQzL8Pv4aSijrwhZ0hp3rwmuIEGuu7Q6/FU=;
- b=LhIO3QsrMebgYbxyDbx/Nq5fSFas5QyFNzQ/B35wN069qQGJil4nhfIfhfezHMzJOvjr
- wSelh7p4NhD9FNESjXG5cdp7vf72Edj7/twlDbrK7Wd8ToTP8plNpM5HQdgsDYH4P1dq
- TIH7npjaQdI8NKXJTxZN35G7VKjD7O4yKLg/DvcjDe+AsuiDYIVjetW9NQRCzIqqF28g
- TmKw1PhmYqHq0c5xiB18qcX14d6FTpRxIdANwEPjMAUj5/UhZSq6VfJG8xsBMhZATUm0
- iGrAnZPoDmyCpCJ+p1GVmYp3EdwnZFemIsH3AcJ5RBwt/F/THcOpomUeeRO2nko5xyIP yQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpuqkr1mb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 05:38:48 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43O5cmoW014610;
-	Wed, 24 Apr 2024 05:38:48 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpuqkr1m9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 05:38:48 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43O57oq7015289;
-	Wed, 24 Apr 2024 05:38:46 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xmshm9sat-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 05:38:46 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43O5cg3831130236
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Apr 2024 05:38:44 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C977320049;
-	Wed, 24 Apr 2024 05:38:42 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B4C1B2004D;
-	Wed, 24 Apr 2024 05:38:40 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.43.36.209])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 24 Apr 2024 05:38:40 +0000 (GMT)
-Date: Wed, 24 Apr 2024 11:08:38 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH v5 RESEND] arch/powerpc/kvm: Add support for reading VPA
- counters for pseries guests
-Message-ID: <ualscagnpj54rvn33ncaznp7ibvvqulhrmq46qsg73wokgswxy@naopf7leuk66>
-References: <20240402070656.28441-1-gautam@linux.ibm.com>
- <aauzmvtbpgxbr4aa3s4k33cdi7fljs5q4ifn5x2swncz7dtvam@gclohylavkpl>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPXNq6t87z2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 18:35:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1713947706;
+	bh=8StTTalxlnMb1zc1cqHQoff1rypJp3VvX0Tzv0JqIXw=;
+	h=Date:From:To:Cc:Subject:From;
+	b=cYK4eWIlLLM9KQwaKQkBu45/9UIlJvqtfBuFfJg8qRgdVlCDm5r5O6OXisC7TsnKt
+	 ah3kBN0tOxdmnHtpbi37HRv+J2H7K9KxgpvOaKM1WtXH0PIuZ9j/lK4zCKPnvVyuHM
+	 VmPAVWnNhtncbGltM/MynwQ1/8mG3EvTJZhVJs17gRR0EaK7J1NI0CrBVIBi3NDZnv
+	 MaXT5/U9xgGqqxy6y4X4SaR30lTrxUUaQmpyVBsaLbqnN/chNDWtcZ42uvaBxHUDNW
+	 abyNht02KppioZKlWQJ/EJHpq2lPhLAiwl727bh0Ajd49t2J906ImmFW8pNxXmXCJJ
+	 kgfyyJ33oJVsg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VPXNp2hMwz4wcC;
+	Wed, 24 Apr 2024 18:35:06 +1000 (AEST)
+Date: Wed, 24 Apr 2024 18:35:03 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: linux-next: boot failure after merge of the modules tree
+Message-ID: <20240424183503.2a6ce847@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aauzmvtbpgxbr4aa3s4k33cdi7fljs5q4ifn5x2swncz7dtvam@gclohylavkpl>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: C7zi8zjiqxMi8-SH39XPWTItqN_jKMMM
-X-Proofpoint-GUID: SxTmKj8RKq4IEvFNJv9m-MOtNAsaP0SY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-24_03,2024-04-23_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 clxscore=1011 adultscore=0 suspectscore=0
- mlxlogscore=999 impostorscore=0 malwarescore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404240023
+Content-Type: multipart/signed; boundary="Sig_/.efID6=zWrPD=ivTQPrCikc";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,203 +56,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Mike Rapoport \(IBM\)" <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 22, 2024 at 09:15:02PM +0530, Naveen N Rao wrote:
-> On Tue, Apr 02, 2024 at 12:36:54PM +0530, Gautam Menghani wrote:
-> > PAPR hypervisor has introduced three new counters in the VPA area of
-> > LPAR CPUs for KVM L2 guest (see [1] for terminology) observability - 2
-> > for context switches from host to guest and vice versa, and 1 counter
-> > for getting the total time spent inside the KVM guest. Add a tracepoint
-> > that enables reading the counters for use by ftrace/perf. Note that this
-> > tracepoint is only available for nestedv2 API (i.e, KVM on PowerVM).
-> > 
-> > Also maintain an aggregation of the context switch times in vcpu->arch.
-> > This will be useful in getting the aggregate times with a pmu driver
-> > which will be upstreamed in the near future.
-> 
-> It would be better to add code to maintain aggregate times as part of 
-> that pmu driver.
-> 
-> > 
-> > [1] Terminology:
-> > a. L1 refers to the VM (LPAR) booted on top of PAPR hypervisor
-> > b. L2 refers to the KVM guest booted on top of L1.
-> > 
-> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> > ---
-> > v5 RESEND: 
-> > 1. Add the changelog
-> > 
-> > v4 -> v5:
-> > 1. Define helper functions for getting/setting the accumulation counter
-> > in L2's VPA
-> > 
-> > v3 -> v4:
-> > 1. After vcpu_run, check the VPA flag instead of checking for tracepoint
-> > being enabled for disabling the cs time accumulation.
-> > 
-> > v2 -> v3:
-> > 1. Move the counter disabling and zeroing code to a different function.
-> > 2. Move the get_lppaca() inside the tracepoint_enabled() branch.
-> > 3. Add the aggregation logic to maintain total context switch time.
-> > 
-> > v1 -> v2:
-> > 1. Fix the build error due to invalid struct member reference.
-> > 
-> >  arch/powerpc/include/asm/kvm_host.h |  5 ++++
-> >  arch/powerpc/include/asm/lppaca.h   | 11 +++++---
-> >  arch/powerpc/kvm/book3s_hv.c        | 40 +++++++++++++++++++++++++++++
-> >  arch/powerpc/kvm/trace_hv.h         | 25 ++++++++++++++++++
-> >  4 files changed, 78 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-> > index 8abac532146e..d953b32dd68a 100644
-> > --- a/arch/powerpc/include/asm/kvm_host.h
-> > +++ b/arch/powerpc/include/asm/kvm_host.h
-> > @@ -847,6 +847,11 @@ struct kvm_vcpu_arch {
-> >  	gpa_t nested_io_gpr;
-> >  	/* For nested APIv2 guests*/
-> >  	struct kvmhv_nestedv2_io nestedv2_io;
-> > +
-> > +	/* Aggregate context switch and guest run time info (in ns) */
-> > +	u64 l1_to_l2_cs_agg;
-> > +	u64 l2_to_l1_cs_agg;
-> > +	u64 l2_runtime_agg;
-> 
-> Can be dropped from this patch.
-> 
-> >  #endif
-> >  
-> >  #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
-> > diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
-> > index 61ec2447dabf..bda6b86b9f13 100644
-> > --- a/arch/powerpc/include/asm/lppaca.h
-> > +++ b/arch/powerpc/include/asm/lppaca.h
-> > @@ -62,7 +62,8 @@ struct lppaca {
-> >  	u8	donate_dedicated_cpu;	/* Donate dedicated CPU cycles */
-> >  	u8	fpregs_in_use;
-> >  	u8	pmcregs_in_use;
-> > -	u8	reserved8[28];
-> > +	u8	l2_accumul_cntrs_enable;  /* Enable usage of counters for KVM guest */
-> 
-> A simpler name - l2_counters_enable or such?
-> 
-> > +	u8	reserved8[27];
-> >  	__be64	wait_state_cycles;	/* Wait cycles for this proc */
-> >  	u8	reserved9[28];
-> >  	__be16	slb_count;		/* # of SLBs to maintain */
-> > @@ -92,9 +93,13 @@ struct lppaca {
-> >  	/* cacheline 4-5 */
-> >  
-> >  	__be32	page_ins;		/* CMO Hint - # page ins by OS */
-> > -	u8	reserved12[148];
-> > +	u8	reserved12[28];
-> > +	volatile __be64 l1_to_l2_cs_tb;
-> > +	volatile __be64 l2_to_l1_cs_tb;
-> > +	volatile __be64 l2_runtime_tb;
-> > +	u8 reserved13[96];
-> >  	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
-> > -	u8	reserved13[96];
-> > +	u8	reserved14[96];
-> >  } ____cacheline_aligned;
-> >  
-> >  #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index 8e86eb577eb8..fea1c1429975 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -4108,6 +4108,37 @@ static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
-> >  	}
-> >  }
-> >  
-> > +static inline int kvmhv_get_l2_accumul(void)
-> > +{
-> > +	return get_lppaca()->l2_accumul_cntrs_enable;
-> > +}
-> > +
-> > +static inline void kvmhv_set_l2_accumul(int val)
-> 					   ^^^
-> 					   bool?
-> 
-> > +{
-> > +	get_lppaca()->l2_accumul_cntrs_enable = val;
-> > +}
-> > +
-> > +static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct lppaca *lp = get_lppaca();
-> > +	u64 l1_to_l2_ns, l2_to_l1_ns, l2_runtime_ns;
-> > +
-> > +	l1_to_l2_ns = tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
-> > +	l2_to_l1_ns = tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
-> > +	l2_runtime_ns = tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
-> > +	trace_kvmppc_vcpu_exit_cs_time(vcpu, l1_to_l2_ns, l2_to_l1_ns,
-> > +					l2_runtime_ns);
-> > +	lp->l1_to_l2_cs_tb = 0;
-> > +	lp->l2_to_l1_cs_tb = 0;
-> > +	lp->l2_runtime_tb = 0;
-> > +	kvmhv_set_l2_accumul(0);
-> > +
-> > +	// Maintain an aggregate of context switch times
-> > +	vcpu->arch.l1_to_l2_cs_agg += l1_to_l2_ns;
-> > +	vcpu->arch.l2_to_l1_cs_agg += l2_to_l1_ns;
-> > +	vcpu->arch.l2_runtime_agg += l2_runtime_ns;
-> > +}
-> > +
-> >  static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  				     unsigned long lpcr, u64 *tb)
-> >  {
-> > @@ -4130,6 +4161,11 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  	kvmppc_gse_put_u64(io->vcpu_run_input, KVMPPC_GSID_LPCR, lpcr);
-> >  
-> >  	accumulate_time(vcpu, &vcpu->arch.in_guest);
-> > +
-> > +	/* Enable the guest host context switch time tracking */
-> > +	if (unlikely(trace_kvmppc_vcpu_exit_cs_time_enabled()))
-> > +		kvmhv_set_l2_accumul(1);
-> > +
-> >  	rc = plpar_guest_run_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id,
-> >  				  &trap, &i);
-> >  
-> > @@ -4156,6 +4192,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  
-> >  	timer_rearm_host_dec(*tb);
-> >  
-> > +	/* Record context switch and guest_run_time data */
-> > +	if (kvmhv_get_l2_accumul())
-> > +		do_trace_nested_cs_time(vcpu);
-> > +
-> >  	return trap;
-> >  }
-> 
-> I'm assuming the counters in VPA are cumulative, since you are zero'ing 
-> them out on exit. If so, I think a better way to implement this is to 
-> use TRACE_EVENT_FN() and provide tracepoint registration and 
-> unregistration functions. You can then enable the counters once during 
-> registration and avoid repeated writes to the VPA area. With that, you 
-> also won't need to do anything before vcpu entry. If you maintain 
-> previous values, you can calculate the delta and emit the trace on vcpu 
-> exit. The values in VPA area can then serve as the cumulative values.
-> 
+--Sig_/.efID6=zWrPD=ivTQPrCikc
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This approach will have a problem. The context switch times are reported
-in the L1 LPAR's CPU's VPA area. Consider the following scenario:
+Hi all,
 
-1. L1 has 2 cpus, and L2 has 1 cpu
-2. L2 runs on L1's cpu0 for a few seconds, and the counter values go to
-1 million
-3. We are maintaining a copy of values of VPA in separate variables, so
-those variables also have 1 million.
-4. Now if L2's vcpu is migrated to another L1 cpu, that L1 cpu's VPA
-counters will start from 0, so if we try to get delta value, we will end
-up doing 0 - 1 million, which would be wrong.
+After merging the modules tree, today's linux-next boot (powerpc
+pseries_le_defconfig) failed like this:
 
-The aggregation logic in this patch works as we zero out the VPA after
-every switch, and maintain aggregation in a vcpu->arch
+BUG: Kernel NULL pointer dereference at 0x00000030
+Faulting instruction address: 0xc00000000057a4ec
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSeries
+Modules linked in:
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc5-08179-ga5ea707d10dc #1
+Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 0x4d0200 0xf0000=
+04 of:SLOF,HEAD pSeries
+NIP:  c00000000057a4ec LR: c0000000002cd32c CTR: c0000000002cd304
+REGS: c000000004997700 TRAP: 0380   Not tainted  (6.9.0-rc5-08179-ga5ea707d=
+10dc)
+MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84002484  XER: 20000=
+000
+CFAR: c0000000002cd328 IRQMASK: 0=20
+GPR00: c0000000002cd32c c0000000049979a0 c00000000163a500 0000000000010000=
+=20
+GPR04: 0000000000010000 0000000000004000 0000000000000000 0000000000002cc0=
+=20
+GPR08: 0000000000000030 0000000000000100 ffffffffffffffff 0000000000002000=
+=20
+GPR12: c0000000002cd304 c000000002b70000 c00000000001111c 0000000000000000=
+=20
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR24: 0000000000000000 0000000000000000 c000000002aa0940 c0000000026c0a40=
+=20
+GPR28: 0000000000010000 c0000000002cd32c 0000000000000030 c0000000027d0f78=
+=20
+NIP [c00000000057a4ec] execmem_alloc+0x5c/0x12c
+LR [c0000000002cd32c] alloc_insn_page+0x28/0x70
+Call Trace:
+[c000000004997a40] [c0000000002cd32c] alloc_insn_page+0x28/0x70
+[c000000004997a60] [c0000000002d07a4] __get_insn_slot+0x1cc/0x29c
+[c000000004997aa0] [c00000000005c434] arch_prepare_kprobe+0xbc/0x31c
+[c000000004997b20] [c0000000002d1b40] register_kprobe+0x54c/0x878
+[c000000004997b90] [c000000002018828] arch_init_kprobes+0x28/0x40
+[c000000004997bb0] [c00000000204b33c] init_kprobes+0x138/0x218
+[c000000004997c30] [c000000000010da8] do_one_initcall+0x80/0x2f8
+[c000000004997d00] [c000000002005aa8] kernel_init_freeable+0x1f8/0x520
+[c000000004997de0] [c000000000011148] kernel_init+0x34/0x26c
+[c000000004997e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
+--- interrupt: 0 at 0x0
+Code: fbe1fff8 3940ffff 38e02cc0 7c9c2378 7fa802a6 e8c91e48 f8010010 fb41ff=
+d0 39200100 fb61ffd8 f821ff61 7fc64214 <7ca6402a> eb5e0020 837e0028 e8de000=
+8=20
+---[ end trace 0000000000000000 ]---
 
-Thanks, 
-Gautam
+note: swapper/0[1] exited with irqs disabled
+Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x0000000b
+
+Bisected to commit
+
+  18da532eefc8 ("mm/execmem, arch: convert remaining overrides of module_al=
+loc to execmem")
+
+I have used the modules tree from next-20240423 for today.
+
+This is a qemu boot test using:
+
+qemu-system-ppc64 -M pseries -cpu POWER8 -m 2G -vga none -nographic -kernel=
+ ~/next/powerpc_pseries_le_defconfig/vmlinux -initrd ./ppc64le-rootfs.cpio.=
+gz
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/.efID6=zWrPD=ivTQPrCikc
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmYoxDcACgkQAVBC80lX
+0GzQcwf/U40DU/cscWGcfGCeC2vL0Xp+EnBRAoPvjcF86HoyYNI5yNGHDkOXWwTz
+0E76CpgC7w+XmHqLxZx+jz+eiZnB1u0AP8GtYJb2wOB4ZdkTdH7BZUDYfJ6AgtiJ
+rapL1zQmyNr+T8vU1M2pPlz9t645s72o11jJgD04dPh+em8sb7kbNLy49kGcUTMI
+sNI6+yOhjT9SX6Zg37+wt8QnV0NHY6ihGO2og2nofmxE/tW/W8s2qiT16/rIAQco
+/813SuBm1ekdSQT1/fD3+mqJwk7C58tRkaOzbEe36z9uJaPNJJs4xD4UAeEuROqn
+EQgitQ3uM2+A8MWfypdyKqIsm3sG/w==
+=UlUt
+-----END PGP SIGNATURE-----
+
+--Sig_/.efID6=zWrPD=ivTQPrCikc--
