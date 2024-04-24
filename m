@@ -1,52 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71EB38B05D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 11:16:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D61A8B080D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 13:11:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZN5S1jlO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WplcODHK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VPYJv1FrJz3cWR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 19:16:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VPbrm5Hkrz3vYH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 21:11:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZN5S1jlO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WplcODHK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPYJ90GtMz30N8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 19:16:09 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 75565CE13C6;
-	Wed, 24 Apr 2024 09:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F646C113CE;
-	Wed, 24 Apr 2024 09:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713950166;
-	bh=IrR6AXdLOvki8vwe1yOiucSte8ILSh4EklzoMTtkN+c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZN5S1jlOj4vMMvYMtWX55yDS3aKRbL0Aqsujba+w0kEr3yXZJwtbgf7P47oddxeNi
-	 ykVcjkGpA7WvRCVc/lz1B88UGIaq6MTyFsm+ymYx9a3eREV6CDyxX5xtcCVajZ5RM+
-	 phNptJDQjxdm0qmaDt80Z2WJVjBmDd7kiFKAa0aCi5SrIngYd4ULJLPhHuNPaaiRet
-	 vlPl0C48wtvMbGNtK9H4QeZFZFB9FQtekm8kNZVHX2RoQhFH/F6OWpAW4loRsQNUEO
-	 edt7f3Eaxjx3RxVmC1H91V8bX1zzy523SF0Q8q7ivA/9t7HV0xt8OBRJE+NWiHdr3B
-	 EwtGbHYLKgKMQ==
-Date: Wed, 24 Apr 2024 12:14:49 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: linux-next: boot failure after merge of the modules tree
-Message-ID: <ZijNiXzNpfoyokrh@kernel.org>
-References: <20240424183503.2a6ce847@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPbqD3rmRz3cJl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 21:09:43 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43OAw7oF024942;
+	Wed, 24 Apr 2024 11:09:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=pZwrcCGPr2IFK7BeGC4ojUZLtSftfzcRsbiZ791Q1vk=;
+ b=WplcODHK4Zf4iYr2LwSrzaKWTrvZ15wr8tYl8pR65FL9JGa51Urk3WtMKbBctNp6TYIM
+ 0Lb970dOeU5zBZ+hM8k6dyJQPqmM+c6S6ULk3cneHAGuhQLqzlb73sLzBtAnhsxddCmB
+ DKf7tLqljVhjHN8Em/KKuvTA+UF/QFMAEw1Wgmq5Mu8U4hye+7kBF9vLIVXYmZwxJTYG
+ xk5U1tu7arekE6wHNiAFomtVcfqumD7ePxsIstciZ7RlJgeeHC/WD4eu8e4b795gDuoM
+ VAS3sl4bthAHJYPKXdW2/c58lS3Uwy7+e2V6aSshZQogVkoYUtnxOcjDao3YDyrmus1u gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xq0sar0qx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Apr 2024 11:09:36 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43OB9aNR012359;
+	Wed, 24 Apr 2024 11:09:36 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xq0sar0qt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Apr 2024 11:09:36 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43O9jsba005736;
+	Wed, 24 Apr 2024 11:09:35 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmx3cj0hp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Apr 2024 11:09:35 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43OB9Tov34996772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Apr 2024 11:09:32 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2A0420040;
+	Wed, 24 Apr 2024 11:09:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C3D4820043;
+	Wed, 24 Apr 2024 11:09:27 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.195])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Apr 2024 11:09:27 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 1/2] radix/kfence: map __kfence_pool at page granularity
+Date: Wed, 24 Apr 2024 16:39:25 +0530
+Message-ID: <20240424110926.184077-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: P_sYw4f4LeE6qeLOqrjv5qGsNWvOfXGU
+X-Proofpoint-GUID: xBDnxHZi2FSHS4f3HMj3915KJXVg0Mwd
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240424183503.2a6ce847@canb.auug.org.au>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-24_08,2024-04-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=0
+ lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
+ definitions=main-2404240045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,85 +95,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Marco Elver <elver@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Alexander Potapenko <glider@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 24, 2024 at 06:35:03PM +1000, Stephen Rothwell wrote:
-> Hi all,
-> 
-> After merging the modules tree, today's linux-next boot (powerpc
-> pseries_le_defconfig) failed like this:
-> 
-> BUG: Kernel NULL pointer dereference at 0x00000030
-> Faulting instruction address: 0xc00000000057a4ec
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> Modules linked in:
-> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc5-08179-ga5ea707d10dc #1
-> Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 0x4d0200 0xf000004 of:SLOF,HEAD pSeries
-> NIP:  c00000000057a4ec LR: c0000000002cd32c CTR: c0000000002cd304
-> REGS: c000000004997700 TRAP: 0380   Not tainted  (6.9.0-rc5-08179-ga5ea707d10dc)
-> MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84002484  XER: 20000000
-> CFAR: c0000000002cd328 IRQMASK: 0 
-> GPR00: c0000000002cd32c c0000000049979a0 c00000000163a500 0000000000010000 
-> GPR04: 0000000000010000 0000000000004000 0000000000000000 0000000000002cc0 
-> GPR08: 0000000000000030 0000000000000100 ffffffffffffffff 0000000000002000 
-> GPR12: c0000000002cd304 c000000002b70000 c00000000001111c 0000000000000000 
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> GPR24: 0000000000000000 0000000000000000 c000000002aa0940 c0000000026c0a40 
-> GPR28: 0000000000010000 c0000000002cd32c 0000000000000030 c0000000027d0f78 
-> NIP [c00000000057a4ec] execmem_alloc+0x5c/0x12c
-> LR [c0000000002cd32c] alloc_insn_page+0x28/0x70
-> Call Trace:
-> [c000000004997a40] [c0000000002cd32c] alloc_insn_page+0x28/0x70
-> [c000000004997a60] [c0000000002d07a4] __get_insn_slot+0x1cc/0x29c
-> [c000000004997aa0] [c00000000005c434] arch_prepare_kprobe+0xbc/0x31c
-> [c000000004997b20] [c0000000002d1b40] register_kprobe+0x54c/0x878
-> [c000000004997b90] [c000000002018828] arch_init_kprobes+0x28/0x40
-> [c000000004997bb0] [c00000000204b33c] init_kprobes+0x138/0x218
-> [c000000004997c30] [c000000000010da8] do_one_initcall+0x80/0x2f8
-> [c000000004997d00] [c000000002005aa8] kernel_init_freeable+0x1f8/0x520
-> [c000000004997de0] [c000000000011148] kernel_init+0x34/0x26c
-> [c000000004997e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-> --- interrupt: 0 at 0x0
-> Code: fbe1fff8 3940ffff 38e02cc0 7c9c2378 7fa802a6 e8c91e48 f8010010 fb41ffd0 39200100 fb61ffd8 f821ff61 7fc64214 <7ca6402a> eb5e0020 837e0028 e8de0008 
-> ---[ end trace 0000000000000000 ]---
-> 
-> note: swapper/0[1] exited with irqs disabled
-> Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-> 
-> Bisected to commit
-> 
->   18da532eefc8 ("mm/execmem, arch: convert remaining overrides of module_alloc to execmem")
-> 
-> I have used the modules tree from next-20240423 for today.
-> 
-> This is a qemu boot test using:
-> 
-> qemu-system-ppc64 -M pseries -cpu POWER8 -m 2G -vga none -nographic -kernel ~/next/powerpc_pseries_le_defconfig/vmlinux -initrd ./ppc64le-rootfs.cpio.gz
+When KFENCE is enabled, total system memory is mapped at page level
+granularity. But in radix MMU mode, ~3GB additional memory is needed
+to map 100GB of system memory at page level granularity when compared
+to using 2MB direct mapping. This is not desired considering KFENCE is
+designed to be enabled in production kernels [1]. Also, mapping memory
+allocated for KFENCE pool at page granularity seems sufficient enough
+to enable KFENCE support. So, allocate __kfence_pool during bootup and
+map it at page granularity instead of mapping all system memory at
+page granularity.
 
-This should fix it for now, I'll rework initialization a bit in v6
+Without patch:
+    # cat /proc/meminfo
+    MemTotal:       101201920 kB
+
+With patch:
+    # cat /proc/meminfo
+    MemTotal:       104483904 kB
+
+All kfence_test.c testcases passed with this patch.
+
+[1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
+
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
+ arch/powerpc/include/asm/kfence.h        |  5 ++++
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 34 ++++++++++++++++++------
+ arch/powerpc/mm/init_64.c                | 14 ++++++++++
+ 3 files changed, 45 insertions(+), 8 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
+index 424ceef82ae6..18ec2b06ba1e 100644
+--- a/arch/powerpc/include/asm/kfence.h
++++ b/arch/powerpc/include/asm/kfence.h
+@@ -8,6 +8,7 @@
+ #ifndef __ASM_POWERPC_KFENCE_H
+ #define __ASM_POWERPC_KFENCE_H
  
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1c4be3373686..bea33bf538e9 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -176,6 +176,7 @@ config PPC
- 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
- 	select ARCH_WANT_LD_ORPHAN_WARN
- 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if PPC_RADIX_MMU
-+	select ARCH_WANTS_EXECMEM_EARLY         if EXECMEM
- 	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
- 	select ARCH_WEAK_RELEASE_ACQUIRE
- 	select BINFMT_ELF
-
-
-> -- 
-> Cheers,
-> Stephen Rothwell
-
++#include <linux/kfence.h>
+ #include <linux/mm.h>
+ #include <asm/pgtable.h>
+ 
+@@ -15,6 +16,10 @@
+ #define ARCH_FUNC_PREFIX "."
+ #endif
+ 
++#ifdef CONFIG_KFENCE
++extern bool kfence_early_init;
++#endif
++
+ static inline bool arch_kfence_init_pool(void)
+ {
+ 	return true;
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 15e88f1439ec..fccbf92f279b 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -31,6 +31,7 @@
+ #include <asm/uaccess.h>
+ #include <asm/ultravisor.h>
+ #include <asm/set_memory.h>
++#include <asm/kfence.h>
+ 
+ #include <trace/events/thp.h>
+ 
+@@ -291,9 +292,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
+ 	return end;
+ }
+ 
+-static int __meminit create_physical_mapping(unsigned long start,
+-					     unsigned long end,
+-					     int nid, pgprot_t _prot)
++static int __meminit create_physical_mapping(unsigned long start, unsigned long end, int nid,
++					     pgprot_t _prot, unsigned long mapping_sz_limit)
+ {
+ 	unsigned long vaddr, addr, mapping_size = 0;
+ 	bool prev_exec, exec = false;
+@@ -301,7 +301,10 @@ static int __meminit create_physical_mapping(unsigned long start,
+ 	int psize;
+ 	unsigned long max_mapping_size = memory_block_size;
+ 
+-	if (debug_pagealloc_enabled_or_kfence())
++	if (mapping_sz_limit < max_mapping_size)
++		max_mapping_size = mapping_sz_limit;
++
++	if (debug_pagealloc_enabled())
+ 		max_mapping_size = PAGE_SIZE;
+ 
+ 	start = ALIGN(start, PAGE_SIZE);
+@@ -358,6 +361,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+ 
+ static void __init radix_init_pgtable(void)
+ {
++	phys_addr_t kfence_pool __maybe_unused;
+ 	unsigned long rts_field;
+ 	phys_addr_t start, end;
+ 	u64 i;
+@@ -365,6 +369,13 @@ static void __init radix_init_pgtable(void)
+ 	/* We don't support slb for radix */
+ 	slb_set_size(0);
+ 
++#ifdef CONFIG_KFENCE
++	if (kfence_early_init) {
++		kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
++		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
++	}
++#endif
++
+ 	/*
+ 	 * Create the linear mapping
+ 	 */
+@@ -380,10 +391,18 @@ static void __init radix_init_pgtable(void)
+ 			continue;
+ 		}
+ 
+-		WARN_ON(create_physical_mapping(start, end,
+-						-1, PAGE_KERNEL));
++		WARN_ON(create_physical_mapping(start, end, -1, PAGE_KERNEL, ~0UL));
+ 	}
+ 
++#ifdef CONFIG_KFENCE
++	if (kfence_early_init) {
++		create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE, -1,
++					PAGE_KERNEL, PAGE_SIZE);
++		memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
++		__kfence_pool = __va(kfence_pool);
++	}
++#endif
++
+ 	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
+ 			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
+ 		/*
+@@ -874,8 +893,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
+ 		return -1;
+ 	}
+ 
+-	return create_physical_mapping(__pa(start), __pa(end),
+-				       nid, prot);
++	return create_physical_mapping(__pa(start), __pa(end), nid, prot, ~0UL);
+ }
+ 
+ int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
+diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+index d96bbc001e73..8155bfd6c16b 100644
+--- a/arch/powerpc/mm/init_64.c
++++ b/arch/powerpc/mm/init_64.c
+@@ -64,6 +64,20 @@
+ 
+ #include <mm/mmu_decl.h>
+ 
++#ifdef CONFIG_KFENCE
++bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
++
++static int __init parse_kfence_early_init(char *arg)
++{
++	int val;
++
++	if (get_option(&arg, &val))
++		kfence_early_init = !!val;
++	return 0;
++}
++early_param("kfence.sample_interval", parse_kfence_early_init);
++#endif
++
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP
+ /*
+  * Given an address within the vmemmap, determine the page that
 -- 
-Sincerely yours,
-Mike.
+2.44.0
+
