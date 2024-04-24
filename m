@@ -2,53 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0728B0DB1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 17:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E64C28B1762
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 01:46:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pVGfFKG4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L9aABPOn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VPjCX5l7tz3dLY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 01:12:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VPwcN4H0Gz3dK3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 09:46:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pVGfFKG4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L9aABPOn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=prosunofficial@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPjBl5NN5z3cG6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 01:11:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=EkBE66CT6crj6GkqyX5V53CXIn7FtqQLU888aU+APFw=; b=pVGfFKG43UpmS74CNpKosVr5aW
-	DiWq78bfE/4XpvD6h++sMM7pvdJKjA8UOxzoT7aLqgK7wZaHJ+nbEA3Nc9XKmElw8EL6cEbeyoIIm
-	ccRUoz7uUY0OrHfgDHqvVw1lXK7iT7mUgNT1EQzTmRxqscWpsG207rz33DabNMrsUc9mar0BuL5Ku
-	0PG8jBvtTxrk8wl80BfvKMLzUlsffHyjR/9ZpZveIqAVomDlFkK8mQzDaUM8LzboXOzb/rdONx1SY
-	YFFTBziyw63gs/sXKceSMYFTE1TRYwUIdqMtNrY/bXgCF31DJfi6cJPV3sC8K5+u/BVX9o77r5qE1
-	O78+0gHA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzeHV-000000018cB-3diq;
-	Wed, 24 Apr 2024 15:11:33 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8368C30043E; Wed, 24 Apr 2024 17:11:33 +0200 (CEST)
-Date: Wed, 24 Apr 2024 17:11:33 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Adrian Hunter <adrian.hunter@intel.com>
-Subject: Re: [PATCH V2 04/19] math64: Tidy mul_u64_u32_shr()
-Message-ID: <20240424151133.GR30852@noisy.programming.kicks-ass.net>
-References: <20240325064023.2997-1-adrian.hunter@intel.com>
- <20240325064023.2997-5-adrian.hunter@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPj5k3W9yz3cQ7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 01:07:36 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1e3ca4fe4cfso49921045ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 08:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713971254; x=1714576054; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lFCwS+dd80ug/yeLMuHLZKf5f5L8AtiYXNjRk6IaZvk=;
+        b=L9aABPOns8w2pwYBH/HGeLtCrOokA+mJX/kqf/Us9HahKoa+K7943BkRv23tYXsoGf
+         BRsW2kMjBCuqCrp4irzYX0HL5Cu72JvCWm0jE1qRdsEWzWds2ssMMkHjeHh9ft7YupU5
+         svOHsH8+7cO7rb5AigH5UB/npWIbeZimB/LRFdrrbcx3DUywDJzrzWk4oV/dduYaxnbM
+         /PHYBlvh65/5lnuXt8tGl+zd02Vltkk5gCeBgUAmvElwBbVxdHsuCN8eU38KdD7q23KB
+         DWm+9kiUuOPNn/I+5zFTmNsojZYvEKknDawsHmYXvGUpuKoO5o2ci884ZkJ9DeZUjhEX
+         gdJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713971254; x=1714576054;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lFCwS+dd80ug/yeLMuHLZKf5f5L8AtiYXNjRk6IaZvk=;
+        b=MxqpdDhQt6gyizM64UOYT6V/IuMfkBxcE9vjuhnVxQOwKCKTs+TYtteSvg891km5zO
+         pw40htjcZzheoR3QrnJmi/Ww+cUX893tgWtk7/Xa6vUssCK/X94zNIsRD4qArx4vqx5C
+         Vp/Jso5ObNWUkRlYcILHrh1WqYm2N+xoLkO+YvBGun4bDs/ms3D5E6OmtJfT8cZaE9IY
+         c8+jO6WgsinBiapjIJsK0gINV7DCHuLboFDQzYuo+KY4qQGrJTXV+D8GVokfeV47tJvp
+         CXJ4uUgAGU41hd2DqCLW/3I8cX8F5do+aa/r68IDGnbiqWwMLm5ES7qeQfZM+hg8KH2X
+         ldFw==
+X-Gm-Message-State: AOJu0YymUC2jMiHlnSj65B1XkPpVa1Jb/jRnoAbTClgW3nquXHjCNYg3
+	C1TLAstZ67ySHlPhBoBTLgNWN3iFO6Z50ExjmboUamddP78QQVXc
+X-Google-Smtp-Source: AGHT+IFtkfYdH0o+GqgdSpQhcrFj+BTfT78r4+LvjmauJpWP2Ck4K9u6q/dIUlv+L6bGO6qzP8NQNQ==
+X-Received: by 2002:a17:902:b611:b0:1e3:c5d1:2324 with SMTP id b17-20020a170902b61100b001e3c5d12324mr2770606pls.32.1713971254266;
+        Wed, 24 Apr 2024 08:07:34 -0700 (PDT)
+Received: from dev.. ([2402:e280:214c:86:820f:5b56:3996:5bb5])
+        by smtp.gmail.com with ESMTPSA id w11-20020a1709027b8b00b001e4458831f7sm12003335pll.77.2024.04.24.08.07.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Apr 2024 08:07:33 -0700 (PDT)
+From: sundar <prosunofficial@gmail.com>
+To: yangyingliang@huawei.com,
+	mpe@ellerman.id.au
+Subject: [PATCH linux-next] macintosh/macio-adb: replace of_node_put() with __free
+Date: Wed, 24 Apr 2024 20:37:18 +0530
+Message-Id: <20240424150718.5006-1-prosunofficial@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240325064023.2997-5-adrian.hunter@intel.com>
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 25 Apr 2024 09:45:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,46 +77,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, John Stultz <jstultz@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Stephen Boyd <sboyd@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: sundar <prosunofficial@gmail.com>, javier.carrasco.cruz@gmail.com, linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@inria.fr>, skhan@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 25, 2024 at 08:40:08AM +0200, Adrian Hunter wrote:
-> Put together declaration and initialization of local variables.
-> 
-> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> ---
+use the new cleanup magic to replace of_node_put() with
+__free(device_node) marking to auto release when they get out of scope.
 
-Nothing wrong with this patch, but it is highly unlikely this code is
-actually tested much. Most (sane) architectures will use the __int128
-version.
+Suggested-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: sundar <prosunofficial@gmail.com>
+---
+ drivers/macintosh/macio-adb.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
->  include/linux/math64.h | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/math64.h b/include/linux/math64.h
-> index bf74478926d4..fd13622b2056 100644
-> --- a/include/linux/math64.h
-> +++ b/include/linux/math64.h
-> @@ -179,16 +179,12 @@ static __always_inline u64 mul_u64_u64_shr(u64 a, u64 mul, unsigned int shift)
->  #ifndef mul_u64_u32_shr
->  static __always_inline u64 mul_u64_u32_shr(u64 a, u32 mul, unsigned int shift)
->  {
-> -	u32 ah, al;
-> +	u32 ah = a >> 32, al = a;
->  	u64 ret;
->  
-> -	al = a;
-> -	ah = a >> 32;
-> -
->  	ret = mul_u32_u32(al, mul) >> shift;
->  	if (ah)
->  		ret += mul_u32_u32(ah, mul) << (32 - shift);
-> -
->  	return ret;
->  }
->  #endif /* mul_u64_u32_shr */
-> -- 
-> 2.34.1
-> 
+diff --git a/drivers/macintosh/macio-adb.c b/drivers/macintosh/macio-adb.c
+index 779f1268286e..85d404031cf5 100644
+--- a/drivers/macintosh/macio-adb.c
++++ b/drivers/macintosh/macio-adb.c
+@@ -83,35 +83,32 @@ struct adb_driver macio_adb_driver = {
+ 
+ int macio_probe(void)
+ {
+-	struct device_node *np;
++	struct device_node *np __free(device_node) =
++		of_find_compatible_node(NULL, "adb", "chrp,adb0");
+ 
+-	np = of_find_compatible_node(NULL, "adb", "chrp,adb0");
+-	if (np) {
+-		of_node_put(np);
++	if (np)
+ 		return 0;
+-	}
++
+ 	return -ENODEV;
+ }
+ 
+ int macio_init(void)
+ {
+-	struct device_node *adbs;
++	struct device_node *adbs __free(device_node) =
++		of_find_compatible_node(NULL, "adb", "chrp,adb0");
+ 	struct resource r;
+ 	unsigned int irq;
+ 
+-	adbs = of_find_compatible_node(NULL, "adb", "chrp,adb0");
+ 	if (!adbs)
+ 		return -ENXIO;
+ 
+-	if (of_address_to_resource(adbs, 0, &r)) {
+-		of_node_put(adbs);
++	if (of_address_to_resource(adbs, 0, &r))
+ 		return -ENXIO;
+-	}
++
+ 	adb = ioremap(r.start, sizeof(struct adb_regs));
+-	if (!adb) {
+-		of_node_put(adbs);
++	if (!adb)
+ 		return -ENOMEM;
+-	}
++
+ 
+ 	out_8(&adb->ctrl.r, 0);
+ 	out_8(&adb->intr.r, 0);
+@@ -121,7 +118,6 @@ int macio_init(void)
+ 	out_8(&adb->autopoll.r, APE);
+ 
+ 	irq = irq_of_parse_and_map(adbs, 0);
+-	of_node_put(adbs);
+ 	if (request_irq(irq, macio_adb_interrupt, 0, "ADB", (void *)0)) {
+ 		iounmap(adb);
+ 		printk(KERN_ERR "ADB: can't get irq %d\n", irq);
+-- 
+2.34.1
+
