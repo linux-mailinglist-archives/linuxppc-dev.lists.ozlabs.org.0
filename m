@@ -2,62 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC048B058B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 11:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71EB38B05D8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 11:16:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cvQwtB48;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZN5S1jlO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VPYCC4y2Dz3dKV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 19:11:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VPYJv1FrJz3cWR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Apr 2024 19:16:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cvQwtB48;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZN5S1jlO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPYBT0n5fz3byl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 19:11:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713949874; x=1745485874;
-  h=date:from:to:cc:subject:message-id;
-  bh=S1lv/d9e2bfQvgNIq1UGTERku2id0PvwvBBpj/pc1h8=;
-  b=cvQwtB48FPq++SiRD1WpJwNrjaQ/O4z79PaBmDwCTOtv/T3uD7ZV7MVi
-   rbCh27vXdFsGct8r9JPShSwoGy9QpLEs/a5ZpOD0Iv+zTq41MeQLcNnFm
-   olo6pxjp537MH+a7f0hmzoRYPaxweDKyo1TkTqWJNG6HiipwZlushUK70
-   vItUYtHef2jS8RktBJc+GixJ97NtcWhTejSaetcw8RL8sEb2CVqvxiwOh
-   nDYtouhhE8iLiIyTGDhr7f9hvPl3x3ND2U0E2sJ6Q/e6/myopevtab5W8
-   AUFnMQLWZI/K45WAdyAyqZbsoVPpmM+7bnTzKWqPTCjyfIZCKD4QGYGHe
-   A==;
-X-CSE-ConnectionGUID: SC8WEWxITSWHNH99PGujKw==
-X-CSE-MsgGUID: id7cfd5OTkOA6cd+swKIiA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="9500546"
-X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
-   d="scan'208";a="9500546"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 02:11:09 -0700
-X-CSE-ConnectionGUID: H/51zLQRQIOXhSXbU5FleA==
-X-CSE-MsgGUID: d+z2AZAxTu+AnnzXkcx0kQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
-   d="scan'208";a="24541220"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 24 Apr 2024 02:11:06 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rzYee-00013o-13;
-	Wed, 24 Apr 2024 09:11:04 +0000
-Date: Wed, 24 Apr 2024 17:11:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/kdump-hotplug] BUILD SUCCESS
- 849599b702ef8977fcd5b2f27c61ef773c42bb88
-Message-ID: <202404241758.BhgXvXFs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VPYJ90GtMz30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Apr 2024 19:16:09 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 75565CE13C6;
+	Wed, 24 Apr 2024 09:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F646C113CE;
+	Wed, 24 Apr 2024 09:16:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713950166;
+	bh=IrR6AXdLOvki8vwe1yOiucSte8ILSh4EklzoMTtkN+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZN5S1jlOj4vMMvYMtWX55yDS3aKRbL0Aqsujba+w0kEr3yXZJwtbgf7P47oddxeNi
+	 ykVcjkGpA7WvRCVc/lz1B88UGIaq6MTyFsm+ymYx9a3eREV6CDyxX5xtcCVajZ5RM+
+	 phNptJDQjxdm0qmaDt80Z2WJVjBmDd7kiFKAa0aCi5SrIngYd4ULJLPhHuNPaaiRet
+	 vlPl0C48wtvMbGNtK9H4QeZFZFB9FQtekm8kNZVHX2RoQhFH/F6OWpAW4loRsQNUEO
+	 edt7f3Eaxjx3RxVmC1H91V8bX1zzy523SF0Q8q7ivA/9t7HV0xt8OBRJE+NWiHdr3B
+	 EwtGbHYLKgKMQ==
+Date: Wed, 24 Apr 2024 12:14:49 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: linux-next: boot failure after merge of the modules tree
+Message-ID: <ZijNiXzNpfoyokrh@kernel.org>
+References: <20240424183503.2a6ce847@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240424183503.2a6ce847@canb.auug.org.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,198 +58,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/kdump-hotplug
-branch HEAD: 849599b702ef8977fcd5b2f27c61ef773c42bb88  powerpc/crash: add crash memory hotplug support
+On Wed, Apr 24, 2024 at 06:35:03PM +1000, Stephen Rothwell wrote:
+> Hi all,
+> 
+> After merging the modules tree, today's linux-next boot (powerpc
+> pseries_le_defconfig) failed like this:
+> 
+> BUG: Kernel NULL pointer dereference at 0x00000030
+> Faulting instruction address: 0xc00000000057a4ec
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> Modules linked in:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.9.0-rc5-08179-ga5ea707d10dc #1
+> Hardware name: IBM pSeries (emulated by qemu) POWER8 (raw) 0x4d0200 0xf000004 of:SLOF,HEAD pSeries
+> NIP:  c00000000057a4ec LR: c0000000002cd32c CTR: c0000000002cd304
+> REGS: c000000004997700 TRAP: 0380   Not tainted  (6.9.0-rc5-08179-ga5ea707d10dc)
+> MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84002484  XER: 20000000
+> CFAR: c0000000002cd328 IRQMASK: 0 
+> GPR00: c0000000002cd32c c0000000049979a0 c00000000163a500 0000000000010000 
+> GPR04: 0000000000010000 0000000000004000 0000000000000000 0000000000002cc0 
+> GPR08: 0000000000000030 0000000000000100 ffffffffffffffff 0000000000002000 
+> GPR12: c0000000002cd304 c000000002b70000 c00000000001111c 0000000000000000 
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> GPR24: 0000000000000000 0000000000000000 c000000002aa0940 c0000000026c0a40 
+> GPR28: 0000000000010000 c0000000002cd32c 0000000000000030 c0000000027d0f78 
+> NIP [c00000000057a4ec] execmem_alloc+0x5c/0x12c
+> LR [c0000000002cd32c] alloc_insn_page+0x28/0x70
+> Call Trace:
+> [c000000004997a40] [c0000000002cd32c] alloc_insn_page+0x28/0x70
+> [c000000004997a60] [c0000000002d07a4] __get_insn_slot+0x1cc/0x29c
+> [c000000004997aa0] [c00000000005c434] arch_prepare_kprobe+0xbc/0x31c
+> [c000000004997b20] [c0000000002d1b40] register_kprobe+0x54c/0x878
+> [c000000004997b90] [c000000002018828] arch_init_kprobes+0x28/0x40
+> [c000000004997bb0] [c00000000204b33c] init_kprobes+0x138/0x218
+> [c000000004997c30] [c000000000010da8] do_one_initcall+0x80/0x2f8
+> [c000000004997d00] [c000000002005aa8] kernel_init_freeable+0x1f8/0x520
+> [c000000004997de0] [c000000000011148] kernel_init+0x34/0x26c
+> [c000000004997e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
+> --- interrupt: 0 at 0x0
+> Code: fbe1fff8 3940ffff 38e02cc0 7c9c2378 7fa802a6 e8c91e48 f8010010 fb41ffd0 39200100 fb61ffd8 f821ff61 7fc64214 <7ca6402a> eb5e0020 837e0028 e8de0008 
+> ---[ end trace 0000000000000000 ]---
+> 
+> note: swapper/0[1] exited with irqs disabled
+> Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+> 
+> Bisected to commit
+> 
+>   18da532eefc8 ("mm/execmem, arch: convert remaining overrides of module_alloc to execmem")
+> 
+> I have used the modules tree from next-20240423 for today.
+> 
+> This is a qemu boot test using:
+> 
+> qemu-system-ppc64 -M pseries -cpu POWER8 -m 2G -vga none -nographic -kernel ~/next/powerpc_pseries_le_defconfig/vmlinux -initrd ./ppc64le-rootfs.cpio.gz
 
-elapsed time: 1144m
+This should fix it for now, I'll rework initialization a bit in v6
+ 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 1c4be3373686..bea33bf538e9 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -176,6 +176,7 @@ config PPC
+ 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if PPC_RADIX_MMU
++	select ARCH_WANTS_EXECMEM_EARLY         if EXECMEM
+ 	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
+ 	select ARCH_WEAK_RELEASE_ACQUIRE
+ 	select BINFMT_ELF
 
-configs tested: 175
-configs skipped: 3
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                            alldefconfig   gcc  
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240424   gcc  
-arc                   randconfig-002-20240424   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          gemini_defconfig   clang
-arm                       imx_v6_v7_defconfig   clang
-arm                   milbeaut_m10v_defconfig   clang
-arm                   randconfig-001-20240424   gcc  
-arm                   randconfig-002-20240424   gcc  
-arm                   randconfig-003-20240424   gcc  
-arm                           tegra_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   clang
-arm64                               defconfig   gcc  
-arm64                 randconfig-002-20240424   gcc  
-arm64                 randconfig-003-20240424   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240424   gcc  
-csky                  randconfig-002-20240424   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240424   gcc  
-i386         buildonly-randconfig-002-20240424   gcc  
-i386         buildonly-randconfig-003-20240424   gcc  
-i386         buildonly-randconfig-004-20240424   gcc  
-i386         buildonly-randconfig-005-20240424   gcc  
-i386         buildonly-randconfig-006-20240424   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240424   gcc  
-i386                  randconfig-002-20240424   gcc  
-i386                  randconfig-003-20240424   gcc  
-i386                  randconfig-004-20240424   clang
-i386                  randconfig-005-20240424   gcc  
-i386                  randconfig-006-20240424   gcc  
-i386                  randconfig-011-20240424   clang
-i386                  randconfig-012-20240424   gcc  
-i386                  randconfig-013-20240424   clang
-i386                  randconfig-014-20240424   clang
-i386                  randconfig-015-20240424   clang
-i386                  randconfig-016-20240424   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240424   gcc  
-loongarch             randconfig-002-20240424   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                           sun3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                         cobalt_defconfig   gcc  
-mips                       lemote2f_defconfig   gcc  
-mips                          malta_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240424   gcc  
-nios2                 randconfig-002-20240424   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240424   gcc  
-parisc                randconfig-002-20240424   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                 canyonlands_defconfig   clang
-powerpc                    ge_imp3a_defconfig   gcc  
-powerpc                       holly_defconfig   clang
-powerpc                     powernv_defconfig   gcc  
-powerpc               randconfig-002-20240424   gcc  
-powerpc               randconfig-003-20240424   gcc  
-powerpc                        warp_defconfig   gcc  
-powerpc                         wii_defconfig   gcc  
-powerpc64             randconfig-001-20240424   gcc  
-powerpc64             randconfig-002-20240424   gcc  
-powerpc64             randconfig-003-20240424   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240424   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240424   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240424   gcc  
-sh                    randconfig-002-20240424   gcc  
-sh                           se7705_defconfig   gcc  
-sh                  sh7785lcr_32bit_defconfig   gcc  
-sh                             shx3_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240424   gcc  
-sparc64               randconfig-002-20240424   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240424   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240424   clang
-x86_64       buildonly-randconfig-002-20240424   clang
-x86_64       buildonly-randconfig-003-20240424   gcc  
-x86_64       buildonly-randconfig-004-20240424   gcc  
-x86_64       buildonly-randconfig-005-20240424   gcc  
-x86_64       buildonly-randconfig-006-20240424   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   clang
-x86_64                randconfig-001-20240424   clang
-x86_64                randconfig-002-20240424   clang
-x86_64                randconfig-003-20240424   gcc  
-x86_64                randconfig-004-20240424   gcc  
-x86_64                randconfig-005-20240424   clang
-x86_64                randconfig-006-20240424   clang
-x86_64                randconfig-011-20240424   clang
-x86_64                randconfig-012-20240424   gcc  
-x86_64                randconfig-013-20240424   gcc  
-x86_64                randconfig-014-20240424   gcc  
-x86_64                randconfig-015-20240424   clang
-x86_64                randconfig-016-20240424   gcc  
-x86_64                randconfig-071-20240424   clang
-x86_64                randconfig-072-20240424   clang
-x86_64                randconfig-073-20240424   gcc  
-x86_64                randconfig-074-20240424   clang
-x86_64                randconfig-075-20240424   gcc  
-x86_64                randconfig-076-20240424   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240424   gcc  
-xtensa                randconfig-002-20240424   gcc  
+> -- 
+> Cheers,
+> Stephen Rothwell
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sincerely yours,
+Mike.
