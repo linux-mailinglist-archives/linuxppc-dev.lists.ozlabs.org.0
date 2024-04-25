@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143258B18E8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 04:32:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C15D8B1942
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 05:13:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l95Ul+/T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PspTijnP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VQ0JJ5NSNz3dRf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 12:32:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VQ1C25HlMz3dW1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 13:13:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l95Ul+/T;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PspTijnP;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQ0HY06t7z3cRB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 12:32:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQ1BG46mBz3cjv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 13:12:38 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8EE5F61B23;
-	Thu, 25 Apr 2024 02:32:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94257C113CD;
-	Thu, 25 Apr 2024 02:32:05 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id ABCB261D28;
+	Thu, 25 Apr 2024 03:12:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C57C113CD;
+	Thu, 25 Apr 2024 03:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714012326;
-	bh=nAygzTdKA7gXwOCRlEv0GHS1Jlllbh/PJCpLHTfVyZ8=;
+	s=k20201202; t=1714014756;
+	bh=Cc9/KJ14ILnwNdU8czLRH7creacZ14o3hne1jmTaNs0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=l95Ul+/TszTvgQgaS+2oB2XjSuinyC5Ndzqb8ogevjQn2wRGZIKRCs3XOTCYoeH99
-	 SmC5TnalrDMs5NWkixVFud4Zj9Hl0cno7TJVBwGTvWMMDYgBZpVOB/O0ZbESZpwE5k
-	 zjKAnLa9KL+dFGz4gUHPnbyAuBnaoiso6WA5Tv76uV/DYEXOFUYJFD/V/2P0GRgu0I
-	 sLD/lH4h3kkUr7lWECblfnJ4pZJcshHtbIijQ3jv7ucKEvkv11qBcLxuN7JpR8JRq2
-	 NmVpwTRM8w7lk/iZpzvBWAZefSzlhPeyk+srjmVplAdO+LE6tyFO0QrVNAHAA4bBms
-	 PXvHHg13o0hWA==
-Date: Wed, 24 Apr 2024 19:32:04 -0700
+	b=PspTijnPTb4cLwKaUXaBK6lgKqrykqW7TnXryDjg7qy1V4DjZ9qYPfEzdMwJcLXmE
+	 2q4vN4nwJllD1z/pH7aACsx2p2ofCITa183q4xZiAclRBaq/82Q7A/KwffAzVOELei
+	 BATUW6SiIq4LeUt/sDYn/hnGKl2shhXeP1rwhzi0rZHTU/OxLjZRFcQA8QACF8kBTq
+	 Md3p5a2MNJIshoUuU+UOn1xH4LNXomCzxGby8JGUI0mSu2HkcgWhSAkP5pU+L9gZk0
+	 nFvpPG5wZraQmtC6JOcQTZn622/SbjwBkjxqFODHiN0ijyqtZ768dGuDQszSMnLkI8
+	 ayXyd+53H5Hzw==
+Date: Wed, 24 Apr 2024 20:12:34 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH] ibmvnic: Use -EBUSY in __ibmvnic_reset()
-Message-ID: <20240424193204.39cde604@kernel.org>
-In-Reply-To: <ba5e5ccf-59fa-4c7f-b649-97c19b2008a0@moroto.mountain>
-References: <4cff158d-b5ac-4dca-9fbb-626237c1eafe@web.de>
-	<f493e39063ee52a3d263de27bfd240149d910a88.camel@redhat.com>
-	<da19d324-3c66-4bb1-8fa2-dc26dbea622b@moroto.mountain>
-	<7e3f43a3-98e0-40ed-8820-2f1eef8742ba@linux.ibm.com>
-	<ba5e5ccf-59fa-4c7f-b649-97c19b2008a0@moroto.mountain>
+To: Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?= <linux@weissschuh.net>
+Subject: Re: [PATCH v3 00/11] sysctl: treewide: constify ctl_table argument
+ of sysctl handlers
+Message-ID: <20240424201234.3cc2b509@kernel.org>
+In-Reply-To: <20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
+References: <20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,17 +59,13 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Child <nnac123@linux.ibm.com>, netdev@vger.kernel.org, Rick Lindsley <ricklind@linux.ibm.com>, kernel-janitors@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Eric Dumazet <edumazet@google.com>, Markus Elfring <Markus.Elfring@web.de>, Haren Myneni <haren@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Joel Granados <j.granados@samsung.com>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-sctp@vger.kernel.org, lvs-devel@vger.kernel.org, coreteam@netfilter.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 Apr 2024 18:41:48 +0300 Dan Carpenter wrote:
-> > So, the point of the patch not doing any behavioral differences is still
-> > true.  
-> 
-> Ah yes.  You're right.
+On Tue, 23 Apr 2024 09:54:35 +0200 Thomas Wei=C3=9Fschuh wrote:
+> The series was split from my larger series sysctl-const series [0].
+> It only focusses on the proc_handlers but is an important step to be
+> able to move all static definitions of ctl_table into .rodata.
 
-Hard call but overall I think this wasted more reviewer time than it's
-worth. So in the spirit of not encouraging noise I'm not applying this.
--- 
-pw-bot: reject
+Split this per subsystem, please.
