@@ -1,79 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6148B1BF6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 09:34:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE10E8B1FFC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 13:12:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=K/N2DRIa;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=K7Z+HkQv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VQ6zw3Zpnz3vZ4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 17:34:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VQCqx2Rlhz3vZk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Apr 2024 21:12:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=K/N2DRIa;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=K7Z+HkQv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.123; helo=smtp-relay-internal-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=lists.ozlabs.org)
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 437 seconds by postgrey-1.37 at boromir; Thu, 25 Apr 2024 21:11:50 AEST
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQ6z755V8z3dFx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 17:33:21 +1000 (AEST)
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 64A313FE51
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 07:33:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1714030395;
-	bh=N49t3AK4kKaDmcRRhdLxt0k+B5LqZexfU9NZVLcAJRM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=K/N2DRIaAjRmNok+zH6+pAoU60HS5IhDtlWrvgoAC+5zlde01ji/jFB9aetPrMeeN
-	 9pgn7qyz659domxob/FkcKPJfW0/vk6864KnoOLXosCrt26NqEll/LCHjuYSDs/KAK
-	 /GwwGVFrS2ib1JkZmgqqi70fNvWJrYPjia0XLMXh/kwHDiN9adj4Szvs+t1ZlomlI4
-	 bdGPm7KpPZG1k8Djjtmdbj6XX3BSHM5D9NKVQH2DoGwj29Y3neOyH2rSiX1S1e7N0R
-	 WTe0I3dRI8Wklfu4T9wdQXSsC7s5A3dcbFa1Rxfqdq3KulbSK3SGmzfuYMtzFqCF6A
-	 fDlP1dnM0ifTg==
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2a4f59746f7so878323a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 00:33:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714030394; x=1714635194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N49t3AK4kKaDmcRRhdLxt0k+B5LqZexfU9NZVLcAJRM=;
-        b=u+iXFETbh/Tfh0Q6TZ9wJfNNNFxdpLH87Kmc4e+qJTAkV01B5Si+69rfXCQDjxUDGo
-         PwAUdLwVRKxZxScWHL4Mm+bP63ICgzW2Xl1o6m23XMz14vlZnSnI2kbB9j5QQTmtlz0T
-         CkSIcVhmzhM6GdJIOCDFJFEFRq37zWMZai2oCVbaUR/IQgLKXBva0JFEXtnpjE2yw14K
-         Nq03flrM0Fa8D9Cz+yj5/X5wAN53UvfWYZROulyO9MgtKqhFKwwlg4axapvbKjutiKvk
-         XPkenmaZgDftyBG8rJxyy5ix3gpjPT9xNiZoUu6CgU8LQmbOQ3FjnOnnoL+pFNyM1Hbp
-         ZvSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWW4FTK6pOLvM1y2h/1f+0RhSGLswc60bNxIoXkZuhckTq+jR8WFufU+ZvAc1NBg1qYTxU1u3jlTChGdYhJfiaH7ynt+Zr3rVGMuGHLYQ==
-X-Gm-Message-State: AOJu0YwcYvVk+JjKRIJEyP6xQ9gpMzgoV96elS5p4sQ+GYR891PjYrHa
-	3Yvpodc/CsQaqSRq9VDgVQhabENGP9yIs1EuePszf+wTmye7rgsMRwbgvDcC6v7cSSd/vvgr9lE
-	SNl0oz7pUcMBQAHm4WJyhrU0roSaoqmtCOCOOjs2Vjy+fko9FkTzSf3jZAosP7f7iu2GA7f82LO
-	5SS3EmkGx7IkisziUgPsA6pJ7FuJ8elI5pFYtu7e45KdApmbTxbElzAw==
-X-Received: by 2002:a17:90a:f18c:b0:2a2:775:9830 with SMTP id bv12-20020a17090af18c00b002a207759830mr3635604pjb.11.1714030393815;
-        Thu, 25 Apr 2024 00:33:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxdkPh6jUQbDypZw6ih5aBEWZ8OaLuVmwkpiSeYBIaD8D8JrEbgl1UlPs5pmFlAQ5PAStLbkRGh+jSeMu9NOg=
-X-Received: by 2002:a17:90a:f18c:b0:2a2:775:9830 with SMTP id
- bv12-20020a17090af18c00b002a207759830mr3635577pjb.11.1714030393404; Thu, 25
- Apr 2024 00:33:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQCqB5ysLz3dDM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Apr 2024 21:11:48 +1000 (AEST)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240425110419euoutp025ea9a2841083d4c23a7df7e27a21bb82~JgRTDaocl0424104241euoutp029;
+	Thu, 25 Apr 2024 11:04:19 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240425110419euoutp025ea9a2841083d4c23a7df7e27a21bb82~JgRTDaocl0424104241euoutp029
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1714043059;
+	bh=rJ3fxdBvszImOr8fc5O60xKwxenFrsdLX83dTzHbe8Q=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=K7Z+HkQvdxwe9WFNQxmAMJDclz/KZS4YxtJGasrhxAeQ70lSettVglHGn0yJGPz3K
+	 p1fq/JR2M/xPa5rbmMGJBMP63C58KwhDkVG5b5ocDC1SbJNeF2gSqVgeu65dAKtHzB
+	 OZfWdxyyfwSYhVTdlAp7p+La5gY9TN8PKRN42bME=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20240425110419eucas1p10f68e079a0837554528c5f55ffd1f236~JgRS0lHPt1477414774eucas1p1p;
+	Thu, 25 Apr 2024 11:04:19 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id 60.70.09624.2B83A266; Thu, 25
+	Apr 2024 12:04:18 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240425110418eucas1p1ef427715fe08d9cc9eedd6e2a8798a7c~JgRSPTcDR1975319753eucas1p1n;
+	Thu, 25 Apr 2024 11:04:18 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240425110418eusmtrp2ee95972f1c88644dd0c5b54b1b42412d~JgRSM0DUY2814728147eusmtrp2m;
+	Thu, 25 Apr 2024 11:04:18 +0000 (GMT)
+X-AuditID: cbfec7f2-c11ff70000002598-66-662a38b20906
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 23.5E.08810.2B83A266; Thu, 25
+	Apr 2024 12:04:18 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240425110418eusmtip11b7f7e68f5cef9ee392ee4064342b8af~JgRR8FNcJ0822208222eusmtip1J;
+	Thu, 25 Apr 2024 11:04:18 +0000 (GMT)
+Received: from localhost (106.210.248.68) by CAMSVWEXC02.scsc.local
+	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+	Thu, 25 Apr 2024 12:04:17 +0100
+Date: Thu, 25 Apr 2024 13:04:12 +0200
+From: Joel Granados <j.granados@samsung.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v3 00/11] sysctl: treewide: constify ctl_table argument
+ of sysctl handlers
+Message-ID: <20240425110412.2n5d27smecfncsfa@joelS2.panther.com>
 MIME-Version: 1.0
-References: <20240416043225.1462548-2-kai.heng.feng@canonical.com> <20240418203531.GA251408@bhelgaas>
-In-Reply-To: <20240418203531.GA251408@bhelgaas>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Thu, 25 Apr 2024 15:33:01 +0800
-Message-ID: <CAAd53p7O51mG7LMrEobEgGrD8tsDFO3ZFSPAu02Dk-R0W3mkvg@mail.gmail.com>
-Subject: Re: [PATCH v8 2/3] PCI/AER: Disable AER service on suspend
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="q23ui2gu4xgkiues"
+Content-Disposition: inline
+In-Reply-To: <20240424201234.3cc2b509@kernel.org>
+X-Originating-IP: [106.210.248.68]
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
+	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WSbUyTVxTHvc9bC0nNQ0G4gkiGwKabMJJ9uA4EZ1zy8GGMJWwu+gErPLxs
+	0JpWJtvChIAoLawdzEGrSBFExktrSqkIU0hHioBraUBXGWOOgZG3Dak4oYCjPLiZ7Nvv/M//
+	3HP+yeXjwgnKn58hPslKxaLMYMqTMFmWrHsNaE/qm0XKKJRv0ZLI2dNLIVOtAkOrN87iyGgZ
+	A2jSMs5DdxRZqHNgEUODpq9JZPjjHol+uNlHoEv6JYCGOi5SaKz5OYkGuwdINNymI9BDcymB
+	TM5CCqlqCnA0qZ0h0XzJOIV69D8RqGOlnYdczx5iyPX3GokKqhdw5FBNAmTR+iKVrp9A1lYn
+	eWAncyHPTjD9lyGjNWQzhsZiijEslPGY1rrTzKNWNWBslTWAuef4jWDmXLcxZrB+lmKchp2M
+	UmHhJQiOeEansJkZn7HSiJhjnukXHDPYiQ7/HFXbIyIPXPOVAw8+pN+C57sLgRx48oV0A4Bn
+	jXaCK54AOPXrA5wrnAA2WW3Ei5F85xDGNa4CePcbI/WvS72Sh7ldQtoI4LwduZmgQ2FDi5Jy
+	M0W/AW2zo7ibfegQWNiq3tiH03YefLJqJ90Nb/oYNF4pB24W0AfgnfYfCY69YJ96YoNxOgdW
+	LPWv+/nrHACvrvHdsgcdCTvaR0nu0mBYWlmFcZwL+40jmzzvCVsu7eD4EGyou8jj2BtO9xo3
+	eQd8fqN6IyWkywHsWpvncUUTgPX5i5svRcHC4YnNiXegTW/bOAjSW6Fjzou7cyssM1XgnCyA
+	54qEnDsMNo3NEiqwS/NSMs1LyTT/JePkcOg4/y31P/l1WF8zg3O8H+p0fxFawGsEfmy2LCuN
+	lUWK2VPhMlGWLFucFp4syTKA9c8/sNa70A6qph+HmwHGB2YQsj48fq1pEPgTYomYDfYR3H/8
+	WqpQkCL6/AtWKkmSZmeyMjMI4BPBfoLQlCBWSKeJTrKfsuwJVvqii/E9/POw6OXup7x8mzSw
+	sLOmWe4hTzhNLu73KFbsdoWxu4K6vOKPZoj1S9tnW7AtatWhnM645k/yj+cmz2VGx277ZVFz
+	vILeEpfceBdP3Jdb02WmYxqWyo72qLrjRyISg4bOte2+fep3v5jpTL/S93M+fDf2/ojxgbUp
+	paItSlPpFy9VDseO67dFWAtmq1vWPgh5zzsjkHrFd/vN69TTg8rwZ2m3imoRvyfBuLd+uHFK
+	Xnc9sTwy3lCkPrxSOpqUlP7n97Yzip6I6KpJ7eRHhsC4rDnJ8lfmWz9/7BKeefXt76pKYiSu
+	oGVDSJ/2ssi0Klb5VOmmavcd5B2RA2mqoqQ4NCzgS2UwIUsXRe7BpTLRPzckkEB3BAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WSf1DTdRjH++z7Y4Pa3beN6afFed6Cs2ROhgw/65Dzus6+7TrjzuyushtL
+	v4LGNtrAUzsNbiDEJGb6ByzSEWgTY9Y2aQzLWjaEKcwTCAOxo0Ye6AlsCLuN1cbq8q7/Xvd+
+	nvf7ee65h4PxqkghZ5+mnNFpVKUiMhX3xXrvbLCj9Xuzh4Z5qMprIVDwai+JutqMLLTcXYsh
+	p3cCoIB3ko2uG9Wox7fAQv6uTwhk/32EQJe/68PR6YthgG65W0g08dVfBPL/4CPQ0CUbjqY8
+	DTjqClaTyNRqwFDAMkOg2eOTJLp68QaO3FEXG0WWplgoshgjkOHMPIZGTQGAvJZVyGTrx9GA
+	I0hsXUN/VnkTp/u/gLTFXkHbOz4mafv8p2za0f4Rfc/RDOjBplZAj4zexekHkWss2n/uPkkH
+	7WvoRqOXXch9W5Kv01aUM2tLtPryLaJ3pChHIpUjSU6uXCLdtPndF3Nkoo0F+XuY0n0HGN3G
+	giJJyYJtgF3mEh6cDg2ASmBbVQ9SOJDKhVXBW6x6kMrhUWcBtD60sJOFdPhNaJhIMh9GR+rJ
+	BPOoOQDdM1lJgxPAwfMTK004lQmtnY0rTSQlhoP3x7EEp1EZsNrRjCcMGHWTDaM1npUJfKoI
+	Os+eBAnmUlvhdddPeDK1F8D6tpNEsvA07Gv+A08wRh2AodGeOHPi/Cz8MsZJyCmUFLpd4/9s
+	KoINTZ+zknwEBpengAnwzY8lmR9LMv+XlJTFsPvSOPk/OQuea53BkrwF2mwPcQtgd4A0pkKv
+	LlbrpRK9Sq2v0BRLdmvVdhD/vy5v2OECp6fnJB7A4gAPyIg7J7++4AdCXKPVMKI07u255/fy
+	uHtUhw4zOq1SV1HK6D1AFj/jCUwo2K2NP7OmXCnNy5ZJc/Pk2TJ53ibRau6rZXUqHlWsKmfe
+	Z5gyRvevj8VJEVayWqqf9A07ozWvHY99H/ArcAFbIrsb1owpDQv4dIbbn/ZewNlYE67acKPB
+	+mOH+QNNZMjzRHR2zPHhUlT9VlHglGRiyBXZWXfUeyd2RVbJEfTlGRU/7z/2yG9QjqtbjIfN
+	XF4qVvjnmOCaboLvlm+ff5l3sFb8ZnTttvP9hpewLOv8zsyhQFtqRzro2SxQiS4UrAs9xxIr
+	fqtd111YufqInTxlFR/dtcP8iwkpiF9PfLvIezDrLTb6d9UZOqvbD11Rhk3Zz2xz8DpvLw4+
+	ivIdxL3LO5a4bwhCTem+5WNt20PAkUllk/vVyvb8KqPiBXQmT/7UqC2n7ZXRMHxdhOtLVNL1
+	mE6v+hu4sk0VFAQAAA==
+X-CMS-MailID: 20240425110418eucas1p1ef427715fe08d9cc9eedd6e2a8798a7c
+X-Msg-Generator: CA
+X-RootMTR: 20240425031241eucas1p1fb0790e0d03ccbe4fca2b5f6da83d6db
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240425031241eucas1p1fb0790e0d03ccbe4fca2b5f6da83d6db
+References: <20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
+	<CGME20240425031241eucas1p1fb0790e0d03ccbe4fca2b5f6da83d6db@eucas1p1.samsung.com>
+	<20240424201234.3cc2b509@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,143 +131,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kch@nvidia.com, regressions@lists.linux.dev, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, kbusch@kernel.org, oohall@gmail.com, hare@suse.de, bagasdotme@gmail.com, bhelgaas@google.com, gloriouseggroll@gmail.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, sagi@grimberg.me
+Cc: Dave Chinner <david@fromorbit.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-sctp@vger.kernel.org, lvs-devel@vger.kernel.org, coreteam@netfilter.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 19, 2024 at 4:35=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org> =
-wrote:
->
-> On Tue, Apr 16, 2024 at 12:32:24PM +0800, Kai-Heng Feng wrote:
-> > When the power rail gets cut off, the hardware can create some electric
-> > noise on the link that triggers AER. If IRQ is shared between AER with
-> > PME, such AER noise will cause a spurious wakeup on system suspend.
-> >
-> > When the power rail gets back, the firmware of the device resets itself
-> > and can create unexpected behavior like sending PTM messages. For this
-> > case, the driver will always be too late to toggle off features should
-> > be disabled.
-> >
-> > As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power
-> > Management", TLP and DLLP transmission are disabled for a Link in L2/L3
-> > Ready (D3hot), L2 (D3cold with aux power) and L3 (D3cold) states. So if
-> > the power will be turned off during suspend process, disable AER servic=
-e
-> > and re-enable it during the resume process. This should not affect the
-> > basic functionality.
-> >
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D209149
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216295
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218090
-> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
->
-> Thanks for reviving this series.  I tried follow the history about
-> this, but there are at least two series that were very similar and I
-> can't put it all together.
->
-> > ---
-> > v8:
-> >  - Add more bug reports.
-> >
-> > v7:
-> >  - Wording
-> >  - Disable AER completely (again) if power will be turned off
-> >
-> > v6:
-> > v5:
-> >  - Wording.
-> >
-> > v4:
-> > v3:
-> >  - No change.
-> >
-> > v2:
-> >  - Only disable AER IRQ.
-> >  - No more check on PME IRQ#.
-> >  - Use helper.
-> >
-> >  drivers/pci/pcie/aer.c | 25 +++++++++++++++++++++++++
-> >  1 file changed, 25 insertions(+)
-> >
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index ac6293c24976..bea7818c2d1b 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -28,6 +28,7 @@
-> >  #include <linux/delay.h>
-> >  #include <linux/kfifo.h>
-> >  #include <linux/slab.h>
-> > +#include <linux/suspend.h>
-> >  #include <acpi/apei.h>
-> >  #include <acpi/ghes.h>
-> >  #include <ras/ras_event.h>
-> > @@ -1497,6 +1498,28 @@ static int aer_probe(struct pcie_device *dev)
-> >       return 0;
-> >  }
-> >
-> > +static int aer_suspend(struct pcie_device *dev)
-> > +{
-> > +     struct aer_rpc *rpc =3D get_service_data(dev);
-> > +     struct pci_dev *pdev =3D rpc->rpd;
-> > +
-> > +     if (pci_ancestor_pr3_present(pdev) || pm_suspend_via_firmware())
-> > +             aer_disable_rootport(rpc);
->
-> Why do we check pci_ancestor_pr3_present(pdev) and
-> pm_suspend_via_firmware()?  I'm getting pretty convinced that we need
-> to disable AER interrupts on suspend in general.  I think it will be
-> better if we do that consistently on all platforms, not special cases
-> based on details of how we suspend.
+--q23ui2gu4xgkiues
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sure. Will change in next revision.
+On Wed, Apr 24, 2024 at 08:12:34PM -0700, Jakub Kicinski wrote:
+> On Tue, 23 Apr 2024 09:54:35 +0200 Thomas Wei=DFschuh wrote:
+> > The series was split from my larger series sysctl-const series [0].
+> > It only focusses on the proc_handlers but is an important step to be
+> > able to move all static definitions of ctl_table into .rodata.
+>=20
+> Split this per subsystem, please.
+It is tricky to do that because it changes the first argument (ctl*) to
+const in the proc_handler function type defined in sysclt.h:
+"
+-typedef int proc_handler(struct ctl_table *ctl, int write, void *buffer,
++typedef int proc_handler(const struct ctl_table *ctl, int write, void *buf=
+fer,
+                size_t *lenp, loff_t *ppos);
+"
+This means that all the proc_handlers need to change at the same time.
 
->
-> Also, why do we use aer_disable_rootport() instead of just
-> aer_disable_irq()?  I think it's the interrupt that causes issues on
-> suspend.  I see that there *were* some versions that used
-> aer_disable_irq(), but I can't find the reason it changed.
+However, there is an alternative way to do this that allows chunking. We
+first define the proc_handler as a void pointer (casting it where it is
+being used) [1]. Then we could do the constification by subsystem (like
+Jakub proposes). Finally we can "revert the void pointer change so we
+don't have one size fit all pointer as our proc_handler [2].
 
-Interrupt can cause system wakeup, if it's shared with PME.
+Here are some comments about the alternative:
+1. We would need to make the first argument const in all the derived
+   proc_handlers [3]=20
+2. There would be no undefined behavior for two reasons:
+   2.1. There is no case where we change the first argument. We know
+        this because there are no compile errors after we make it const.
+   2.2. We would always go from non-const to const. This is the case
+        because all the stuff that is unchanged in non-const.
+3. If the idea sticks, it should go into mainline as one patchset. I
+   would not like to have a void* proc_handler in a kernel release.
+4. I think this is a "win/win" solution were the constification goes
+   through and it is divided in such a way that it is reviewable.
 
-The reason why aer_disable_rootport() is used over aer_disable_irq()
-is that when the latter is used the error still gets logged during
-sleep cycle. Once the pcieport driver resumes, it invokes
-aer_root_reset() to reset the hierarchy, while the hierarchy hasn't
-resumed yet.
+I would really like to hear what ppl think about this "heretic"
+alternative. @Thomas, @Luis, @Kees @Jakub?
 
-So use aer_disable_rootport() to prevent such issue from happening.
+Best
 
-Kai-Heng
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git=
+/commit/?h=3Djag/constfy_treewide_alternative&id=3D4a383503b1ea650d4e12c1f5=
+838974e879f5aa6f
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git=
+/commit/?h=3Djag/constfy_treewide_alternative&id=3Da3be65973d27ec2933b9e81e=
+1bec60be3a9b460d
+[3] proc_dostring, proc_dobool, proc_dointvec....
 
->
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int aer_resume(struct pcie_device *dev)
-> > +{
-> > +     struct aer_rpc *rpc =3D get_service_data(dev);
-> > +     struct pci_dev *pdev =3D rpc->rpd;
-> > +
-> > +     if (pci_ancestor_pr3_present(pdev) || pm_resume_via_firmware())
-> > +             aer_enable_rootport(rpc);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  /**
-> >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-> >   * @dev: pointer to Root Port, RCEC, or RCiEP
-> > @@ -1561,6 +1584,8 @@ static struct pcie_port_service_driver aerdriver =
-=3D {
-> >       .service        =3D PCIE_PORT_SERVICE_AER,
-> >
-> >       .probe          =3D aer_probe,
-> > +     .suspend        =3D aer_suspend,
-> > +     .resume         =3D aer_resume,
-> >       .remove         =3D aer_remove,
-> >  };
-> >
-> > --
-> > 2.34.1
-> >
+--
+
+Joel Granados
+
+--q23ui2gu4xgkiues
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmYqOKsACgkQupfNUreW
+QU/lvAv/UMzbQzEuf2B53UY+EsWY1fAFwgTvC3thgwkdPKHKmQPe29eut0B+tDCl
+ap0WjtDKSGfPOt/B1vZsxRAwLbtqQSX37nUsrtDtalsL3pFou2puYoIjP4gz2EHw
+gIOwPG9y1kNEVips8pa+3xCLw7PkyFGjLWe1JDKZK68IRfE71kbNPOBY5UW52VMm
+BEpao/WdI70J5QU0HgrmPJiT60I/kd64RWlbdnsT9LM/F1jGYQoyPelwD5LExTJJ
+jvIK1/D3CxVCymEpga7rOczo7KyCpllfAEPDI79B5rQpdC2Z4Rk4QG1I9C21mEEt
+cCQQEPqYdbCMjhg3/bnobMujv5m+HWZRan9lJJdu32JDVlNqLXMfdDc7IEdU0SrI
+zMHYaLGQ2CxS8WP6jOWib26TuJSWVJp+FbjeMnBisKScXti/6UuH5NH8GBNYHlP+
+YGS6/xkrsDyU7LJRmF26m8xqNX0KaYdKZYh5oxmZMPDraKi/W7xEgmu3h0/EMF7q
+1i0OThmt
+=dvhR
+-----END PGP SIGNATURE-----
+
+--q23ui2gu4xgkiues--
