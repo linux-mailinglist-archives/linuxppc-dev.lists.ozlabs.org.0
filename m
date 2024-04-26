@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DFA8B3284
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 10:32:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E111C8B3291
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 10:32:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NPrdkx38;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FxtLE7FD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VQmDP0YjKz3vv3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 18:32:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VQmF94CvSz3vnF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 18:32:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NPrdkx38;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FxtLE7FD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQm9p46Ssz3vhL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:29:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQmB10VkJz3vm5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:30:01 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 9D0B8CE1BDF;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3D14762002;
+	Fri, 26 Apr 2024 08:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542DDC4AF07;
 	Fri, 26 Apr 2024 08:29:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD2DC32782;
-	Fri, 26 Apr 2024 08:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714120187;
-	bh=Q5aCDGAMhe9LWjmBOe0KfqvsLthVcLCeaQ3ItO7ykso=;
+	s=k20201202; t=1714120198;
+	bh=3M2ZG/VEWUi/tLsKuWV23dNNSZ6f7DkD53R0UR9I374=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPrdkx38WFrLGifzoA5K0QA3eIW1eoED+MgwpJcnRO4aMuvJHTNJozBx1ouUGQqXB
-	 QKvWVzKbowOfw+ctzP8PL3hhetlcUkPSieNI36n1bfkk2lbmKbEV9MYfG8JIcDuPnn
-	 TWYAoPdM4iZrJPVhOdhDM+lXTJS3T0ugeMkrbKCNz7h+NtHwV7Kh+zUE2iNpjbhggg
-	 35NSzKOCyRnoVxeLV85ojoWTJUpr+ggXbNk7gyIkr2wcPQtTKAn9CirBNIwHHW+Bgf
-	 GhpUHCmP7WnGQfeuvGP091Q8GXQYHZ+nkAZ8Mvws8O83TgAv5lx2QCZBZWN12E7gGD
-	 853B08FIaHrXQ==
+	b=FxtLE7FDecUHDXtLc4lOQtpBLWDxwjYFEEqYIkPR0QwLBDoD0zZ8t9vMwtiNZytp+
+	 ABQ7RDoHM2Wc8RbUl8TpphzmEPE3zGDm9H3NJtnVJldRKMdfi/pFNBIoxoDEyAWloM
+	 qKk5ZdZFe/QBUMzCeM17G3JEc1Q4ge5Z39+eSmY1YmeSj+KnOWOdkwt7Vg0syHyV2v
+	 MWiu4EM+A60684+xjiReNXSAogLjTsxd0SEDmFZ/ASqSKiS3Ag5ts/MGVnz++OOj4B
+	 XyuNjsYN43GEx4Pus1MPQkKPSwr0XVDkAZGhn7sXt+cl6vvS3YrJ7KQi2FaOLbqO+3
+	 OD3ZnzghTMFZg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v6 03/16] nios2: define virtual address space for modules
-Date: Fri, 26 Apr 2024 11:28:41 +0300
-Message-ID: <20240426082854.7355-4-rppt@kernel.org>
+Subject: [PATCH v6 04/16] sparc: simplify module_alloc()
+Date: Fri, 26 Apr 2024 11:28:42 +0300
+Message-ID: <20240426082854.7355-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240426082854.7355-1-rppt@kernel.org>
 References: <20240426082854.7355-1-rppt@kernel.org>
@@ -65,69 +65,77 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-nios2 uses kmalloc() to implement module_alloc() because CALL26/PCREL26
-cannot reach all of vmalloc address space.
+Define MODULES_VADDR and MODULES_END as VMALLOC_START and VMALLOC_END
+for 32-bit and reduce module_alloc() to
 
-Define module space as 32MiB below the kernel base and switch nios2 to
-use vmalloc for module allocations.
+	__vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END, ...)
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
+as with the new defines the allocations becomes identical for both 32
+and 64 bits.
+
+While on it, drop unused include of <linux/jump_label.h>
+
+Suggested-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/nios2/include/asm/pgtable.h |  5 ++++-
- arch/nios2/kernel/module.c       | 19 ++++---------------
- 2 files changed, 8 insertions(+), 16 deletions(-)
+ arch/sparc/include/asm/pgtable_32.h |  2 ++
+ arch/sparc/kernel/module.c          | 25 +------------------------
+ 2 files changed, 3 insertions(+), 24 deletions(-)
 
-diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-index d052dfcbe8d3..eab87c6beacb 100644
---- a/arch/nios2/include/asm/pgtable.h
-+++ b/arch/nios2/include/asm/pgtable.h
-@@ -25,7 +25,10 @@
- #include <asm-generic/pgtable-nopmd.h>
+diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
+index 9e85d57ac3f2..62bcafe38b1f 100644
+--- a/arch/sparc/include/asm/pgtable_32.h
++++ b/arch/sparc/include/asm/pgtable_32.h
+@@ -432,6 +432,8 @@ static inline int io_remap_pfn_range(struct vm_area_struct *vma,
  
- #define VMALLOC_START		CONFIG_NIOS2_KERNEL_MMU_REGION_BASE
--#define VMALLOC_END		(CONFIG_NIOS2_KERNEL_REGION_BASE - 1)
-+#define VMALLOC_END		(CONFIG_NIOS2_KERNEL_REGION_BASE - SZ_32M - 1)
-+
-+#define MODULES_VADDR		(CONFIG_NIOS2_KERNEL_REGION_BASE - SZ_32M)
-+#define MODULES_END		(CONFIG_NIOS2_KERNEL_REGION_BASE - 1)
+ #define VMALLOC_START           _AC(0xfe600000,UL)
+ #define VMALLOC_END             _AC(0xffc00000,UL)
++#define MODULES_VADDR           VMALLOC_START
++#define MODULES_END             VMALLOC_END
  
- struct mm_struct;
+ /* We provide our own get_unmapped_area to cope with VA holes for userland */
+ #define HAVE_ARCH_UNMAPPED_AREA
+diff --git a/arch/sparc/kernel/module.c b/arch/sparc/kernel/module.c
+index 66c45a2764bc..d37adb2a0b54 100644
+--- a/arch/sparc/kernel/module.c
++++ b/arch/sparc/kernel/module.c
+@@ -21,35 +21,12 @@
  
-diff --git a/arch/nios2/kernel/module.c b/arch/nios2/kernel/module.c
-index 76e0a42d6e36..9c97b7513853 100644
---- a/arch/nios2/kernel/module.c
-+++ b/arch/nios2/kernel/module.c
-@@ -21,23 +21,12 @@
+ #include "entry.h"
  
- #include <asm/cacheflush.h>
- 
--/*
-- * Modules should NOT be allocated with kmalloc for (obvious) reasons.
-- * But we do it for now to avoid relocation issues. CALL26/PCREL26 cannot reach
-- * from 0x80000000 (vmalloc area) to 0xc00000000 (kernel) (kmalloc returns
-- * addresses in 0xc0000000)
-- */
- void *module_alloc(unsigned long size)
- {
--	if (size == 0)
--		return NULL;
--	return kmalloc(size, GFP_KERNEL);
--}
+-#ifdef CONFIG_SPARC64
 -
--/* Free memory returned from module_alloc */
--void module_memfree(void *module_region)
--{
--	kfree(module_region);
-+	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
-+				    GFP_KERNEL, PAGE_KERNEL_EXEC,
-+				    VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
-+				    __builtin_return_address(0));
+-#include <linux/jump_label.h>
+-
+-static void *module_map(unsigned long size)
++void *module_alloc(unsigned long size)
+ {
+-	if (PAGE_ALIGN(size) > MODULES_LEN)
+-		return NULL;
+ 	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
+ 				GFP_KERNEL, PAGE_KERNEL, 0, NUMA_NO_NODE,
+ 				__builtin_return_address(0));
  }
+-#else
+-static void *module_map(unsigned long size)
+-{
+-	return vmalloc(size);
+-}
+-#endif /* CONFIG_SPARC64 */
+-
+-void *module_alloc(unsigned long size)
+-{
+-	void *ret;
+-
+-	ret = module_map(size);
+-	if (ret)
+-		memset(ret, 0, size);
+-
+-	return ret;
+-}
  
- int apply_relocate_add(Elf32_Shdr *sechdrs, const char *strtab,
+ /* Make generic code ignore STT_REGISTER dummy undefined symbols.  */
+ int module_frob_arch_sections(Elf_Ehdr *hdr,
 -- 
 2.43.0
 
