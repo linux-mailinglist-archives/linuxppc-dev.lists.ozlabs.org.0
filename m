@@ -2,59 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1F38B3FB3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 20:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F09E8B3FC4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 20:55:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G31cPiC6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QeY0Q5CW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VR1zG35rMz3cbL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2024 04:51:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VR23S5xryz3ccN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2024 04:55:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G31cPiC6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QeY0Q5CW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VR1yW6f6jz3cXy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2024 04:50:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VR22n1Mfjz3cXy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2024 04:54:41 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 01D15620EE
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E95CC2BD10
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:50:57 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 707D4620F1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203BDC2BD10
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714157457;
-	bh=qzSv2gnEZ82yuyykHlGJGrukq6yL7NdagG67pBjWhfw=;
+	s=k20201202; t=1714157679;
+	bh=Erw8uuVUeGio0PshYx2zkVsumWpV4GynBPxpYdsctHY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=G31cPiC6TK9kOZfS+7vIsvfHb7uuZNOwj55DutBKEwvj1ZktMpti079oDLoQepzqx
-	 wVszL7O0AJVxtjaOjY0n9kY4/Bve7m6gE0ic4Iybrzklpad4O8Ro4Zf5m6HkkhiJ2+
-	 w3461SEnX9aUsT6TIAtdY2xAhX4Y1lrXomoRm91/r6VXYAPdqg/BAUR9Ku0+ffN2fF
-	 +m/rEaMDw+oIuNEa2S2MKLtCa+l5O0n2aCdo6H2uhPypnxbndLUx0bGMePJQhqLBqn
-	 5LBIsT64XdigQdLAx2qvxJDfAfqchkz63z7zPloWzIi6w7OHWw93PJ1yRE7jC7BXYK
-	 k1xLvs7Vr7U6Q==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-57232e47a81so4230829a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 11:50:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXT9rKEdt/QNSats+lyYBNY5EAGRxC0XlolssAGBXPKJS/KH6Nvh4X8HB8IRTNUCaPsU6Y+H2AUEKJWiWRSN2gksprqtJ2IwWnitN7Z6Q==
-X-Gm-Message-State: AOJu0YzRdnhEYVOSAKFD1p4Li20wPs9RWhWmoiUfaeCQEjzejFb8LE0t
-	8RZks52NbsBbAPHrwsCIeJydpsFB5Z5gWofxhaaWLZYgHO+YEYZvch4lX8alv4tBZ8toN6gJxQp
-	pH3DgEaVML1CxTRbd1g+6Hs8guy8=
-X-Google-Smtp-Source: AGHT+IEtbFUWWfDryHUamYvitrmf8tAKbyELfuzd/vDmOPU4uvcIS74lAE+iFPq4wKESZs2zgaxMHYvoVHUDPQWBV9c=
-X-Received: by 2002:a05:6512:3116:b0:516:ce34:e4fc with SMTP id
- n22-20020a056512311600b00516ce34e4fcmr167995lfb.31.1714157435505; Fri, 26 Apr
- 2024 11:50:35 -0700 (PDT)
+	b=QeY0Q5CWKGUNkZV4cnTSE1WS5+eVGN0gFY1x99TWFJOz/NVZq+OjKksNbrH0CcX/L
+	 aFsWENgqvWMDoRx0SH9KLjE4OC22Bf5Qa/YglImk9bxrHhpE1cvJ4rGWoP1CmD3tyx
+	 5GVQHrCTqQ4hMaUzd/bPyc6futZG+WNd5KuMCzBntmiQO9LBrcntwqDWmLag8UFFnd
+	 KJjIeprHGBh5VFeH8ex6x8CUqFgQgt00rSl+aepgBxkP4M7ne4NCshtRBFGFAtb0T3
+	 ag90uwhMbViW+NGATzyAcLeYJJ3m5AxjLrtmYQZ6+zQePK+mZWBptrLFWzXfkeMx7C
+	 kFKBeHGA1rHAw==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-572511ae0c2so1623927a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 11:54:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXhsBO+EnnDx1hb7S/AN44qIsWj7piuKl7FxMm2sd4Z7RRY1eWP2AjfI0CwTNzM6hxd8GlQfdW8nKTAV/zEBjFaE0dI/XZ9oIuK6LI/xQ==
+X-Gm-Message-State: AOJu0Yztggc1yhSE+ARap8Y9Bgq59DKEyuFxwZ4A2W0p0A/FhgmpZhbJ
+	Tm3ynfvM7wkrnSFbPjTqmtm0Clu+nxXcJuGsZizzAGL2QuNj8O5REvo3bI0lxlSElpc3a/qC3ol
+	+NEqZeVotAdO4DbKPDCkxxzdyrK8=
+X-Google-Smtp-Source: AGHT+IHR8dCzuYaMcfUu9DJ1W7DJuyt98T5r37UenPfdlzP0RlXEYGrXPEenPo3iSsrLDDgw6B5I00dbfOalDiVdMh8=
+X-Received: by 2002:ac2:5202:0:b0:51c:1fb4:2327 with SMTP id
+ a2-20020ac25202000000b0051c1fb42327mr2189866lfl.24.1714157657105; Fri, 26 Apr
+ 2024 11:54:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240426082854.7355-1-rppt@kernel.org> <20240426082854.7355-7-rppt@kernel.org>
-In-Reply-To: <20240426082854.7355-7-rppt@kernel.org>
+References: <20240426082854.7355-1-rppt@kernel.org> <20240426082854.7355-8-rppt@kernel.org>
+In-Reply-To: <20240426082854.7355-8-rppt@kernel.org>
 From: Song Liu <song@kernel.org>
-Date: Fri, 26 Apr 2024 11:50:24 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW6FZqYXvk4anxby8MccwejPPK5DNU-NGmg7_6T1XDU=Hg@mail.gmail.com>
-Message-ID: <CAPhsuW6FZqYXvk4anxby8MccwejPPK5DNU-NGmg7_6T1XDU=Hg@mail.gmail.com>
-Subject: Re: [PATCH v6 06/16] mm: introduce execmem_alloc() and execmem_free()
+Date: Fri, 26 Apr 2024 11:54:06 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW7+wmDA_aaZKhNLfEZ-F1aLpUKssXqu5tUs6s=P9yvB-Q@mail.gmail.com>
+Message-ID: <CAPhsuW7+wmDA_aaZKhNLfEZ-F1aLpUKssXqu5tUs6s=P9yvB-Q@mail.gmail.com>
+Subject: Re: [PATCH v6 07/16] mm/execmem, arch: convert simple overrides of
+ module_alloc to execmem
 To: Mike Rapoport <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -79,38 +80,27 @@ te:
 >
 > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 >
-> module_alloc() is used everywhere as a mean to allocate memory for code.
+> Several architectures override module_alloc() only to define address
+> range for code allocations different than VMALLOC address space.
 >
-> Beside being semantically wrong, this unnecessarily ties all subsystems
-> that need to allocate code, such as ftrace, kprobes and BPF to modules an=
-d
-> puts the burden of code allocation to the modules code.
+> Provide a generic implementation in execmem that uses the parameters for
+> address space ranges, required alignment and page protections provided
+> by architectures.
 >
-> Several architectures override module_alloc() because of various
-> constraints where the executable memory can be located and this causes
-> additional obstacles for improvements of code allocation.
+> The architectures must fill execmem_info structure and implement
+> execmem_arch_setup() that returns a pointer to that structure. This way t=
+he
+> execmem initialization won't be called from every architecture, but rathe=
+r
+> from a central place, namely a core_initcall() in execmem.
 >
-> Start splitting code allocation from modules by introducing execmem_alloc=
-()
-> and execmem_free() APIs.
->
-> Initially, execmem_alloc() is a wrapper for module_alloc() and
-> execmem_free() is a replacement of module_memfree() to allow updating all
-> call sites to use the new APIs.
->
-> Since architectures define different restrictions on placement,
-> permissions, alignment and other parameters for memory that can be used b=
-y
-> different subsystems that allocate executable memory, execmem_alloc() tak=
-es
-> a type argument, that will be used to identify the calling subsystem and =
-to
-> allow architectures define parameters for ranges suitable for that
-> subsystem.
->
-> No functional changes.
+> The execmem provides execmem_alloc() API that wraps __vmalloc_node_range(=
+)
+> with the parameters defined by the architectures.  If an architecture doe=
+s
+> not implement execmem_arch_setup(), execmem_alloc() will fall back to
+> module_alloc().
 >
 > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
 Acked-by: Song Liu <song@kernel.org>
