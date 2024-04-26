@@ -2,48 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84248B3C7B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 18:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B86CC8B3C87
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 18:13:32 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iaVBsi9+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iaVBsi9+;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VQyRk4RpJz3cXQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2024 02:12:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VQySp2j0cz3cZ7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Apr 2024 02:13:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iaVBsi9+;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iaVBsi9+;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQyRG0lVSz3cXQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2024 02:12:07 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQyNC1Mh5z6K6PC;
-	Sat, 27 Apr 2024 00:09:31 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36C67140B55;
-	Sat, 27 Apr 2024 00:12:00 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
- 2024 17:11:59 +0100
-Date: Fri, 26 Apr 2024 17:11:58 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Subject: Re: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
- ANFE in aer_err_info
-Message-ID: <20240426171158.000024d4@Huawei.com>
-In-Reply-To: <SJ0PR11MB6744EC971D1BE6F3119EEA9992112@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240417061407.1491361-1-zhenzhong.duan@intel.com>
-	<20240417061407.1491361-2-zhenzhong.duan@intel.com>
-	<20240422171629.00005675@Huawei.com>
-	<SJ0PR11MB6744EC971D1BE6F3119EEA9992112@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQyS06DBSz3cXL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Apr 2024 02:12:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714147964;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eYUqEa4yY2qzSFoFdIvLcLWvg/98iZ7Cq/Vjg2cb5Pg=;
+	b=iaVBsi9+KvAPRxFNS7Tpx2ZfTKHOwWJXU8AR5ITqSqRR1neFprAUhkGAWqITtivyad7jyz
+	wUdKxC1jXCM+keMcB0kWSmQV9WwfgfXFxEvbBOHRH4WD9VYWqzMRDkfiDq77AqN3QHPy+B
+	aVsdPHVQgN3Of9mzpMc6Vj7bR9Yvhk0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714147964;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eYUqEa4yY2qzSFoFdIvLcLWvg/98iZ7Cq/Vjg2cb5Pg=;
+	b=iaVBsi9+KvAPRxFNS7Tpx2ZfTKHOwWJXU8AR5ITqSqRR1neFprAUhkGAWqITtivyad7jyz
+	wUdKxC1jXCM+keMcB0kWSmQV9WwfgfXFxEvbBOHRH4WD9VYWqzMRDkfiDq77AqN3QHPy+B
+	aVsdPHVQgN3Of9mzpMc6Vj7bR9Yvhk0=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-Pz7GR7mCMVq92MO6YbS34g-1; Fri, 26 Apr 2024 12:12:42 -0400
+X-MC-Unique: Pz7GR7mCMVq92MO6YbS34g-1
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-5aa35f3393bso594195eaf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 09:12:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714147962; x=1714752762;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eYUqEa4yY2qzSFoFdIvLcLWvg/98iZ7Cq/Vjg2cb5Pg=;
+        b=fCJ1aa6PHr7Kkg9rpTbbZSBI56YpTnlndIPJPszFGq2fnyfZmvFSEbvORT+omzT5Ij
+         dnDEhkzquJSQPERGUbp8bCE8nRRLnPhRY8U+PkxvMFiRJI3KeZo1FIppbZITfeEYo9xE
+         Nls665dO7jeP94z6qta2X+6S8Y3OAMJ9I5inFREtrdpPCz/bKGqyalZN2tgBLMMDOj4w
+         87nw5DLG9Wni9YCcGllrspS1XS9IOWzcirh8d0d8vkOCg1UnICpKiIhFLUNYWxXmwkl/
+         bdCuBD6hj9/fVODSZFA4gUeFdrscUEnDOzqG7K0Fe+bVYOCI3SjkdhGpoaDfY90ijYga
+         efOg==
+X-Forwarded-Encrypted: i=1; AJvYcCXN4n9OS7pKQsKUZwVp8oIAZW67JdK82qbYDGpidHm/f9IrYCbnYAnN/raUy01tNi8qkdX8ycP1cIPZVfMUCGH612M3c1q8E5tB+tGh1A==
+X-Gm-Message-State: AOJu0YyxHcIVgCB9wlqc5Cvv3cH7vA9OgGp6skKSKFm3nqGdf6mM3yRe
+	HhOgSox/Ux/8bocLIl4+kxCvyHVNWQaweLVvq5z5WJNNLbfRBtzKYebWDSpJ6D2u+766GuXrKTg
+	auLsUDDqzTo4wQepo+VXFPDl5VDqk3dle/XwT8xVBJc7Plpw86w5OOnrHT5m4wVo=
+X-Received: by 2002:a05:6870:a40f:b0:235:3e97:ed24 with SMTP id m15-20020a056870a40f00b002353e97ed24mr3125232oal.1.1714147961419;
+        Fri, 26 Apr 2024 09:12:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKK09FSsz1w18C9O+QSKywaneNtUpj/aPvoeb+SOH3u9egTJYXPSkxUgqSN3BOrRHAMYNm3w==
+X-Received: by 2002:a05:6870:a40f:b0:235:3e97:ed24 with SMTP id m15-20020a056870a40f00b002353e97ed24mr3125169oal.1.1714147960484;
+        Fri, 26 Apr 2024 09:12:40 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id m6-20020ac807c6000000b00434fd7d6d00sm8007149qth.2.2024.04.26.09.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 09:12:40 -0700 (PDT)
+Date: Fri, 26 Apr 2024 12:12:32 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 1/3] mm/gup: consistently name GUP-fast functions
+Message-ID: <ZivScN8-Uoi9eye8@x1n>
+References: <20240402125516.223131-1-david@redhat.com>
+ <20240402125516.223131-2-david@redhat.com>
+ <e685c532-8330-4a57-bc08-c67845e0c352@redhat.com>
+ <Ziuv2jLY1wgBITiP@x1n>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+In-Reply-To: <Ziuv2jLY1wgBITiP@x1n>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,194 +100,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linmiaohe@huawei.com" <linmiaohe@huawei.com>, "Schofield,
- Alison" <alison.schofield@intel.com>, "rafael@kernel.org" <rafael@kernel.org>, "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Tsaur, Erwin" <erwin.tsaur@intel.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "oohall@gmail.com" <oohall@gmail.com>, "Weiny, Ira" <ira.weiny@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>, "Jiang, Dave" <dave.jiang@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>, "Smita.KoralahalliChannabasappa@amd.com" <Smita.KoralahalliChannabasappa@amd.com>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "helgaas@kernel.org" <helgaas@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, "Peng, Chao P" <chao.p.peng@intel.com>, "rrichter@amd.com" <rrichter@amd.com>, "Wang, Yudong" <yudong.wang@intel.com>, "bp@alien8.de" <bp@alien8.de>, "qingshun.wang@linux.intel.com" <qingshun.wang@linux.intel.
- com>, "bhelgaas@google.com" <bhelgaas@google.com>, "Williams, Dan J" <dan.j.williams@intel.com>, "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, "Luck, Tony" <tony.luck@intel.com>, "Wanyan, Feiting" <feiting.wanyan@intel.com>, "Preble, Adam C" <adam.c.preble@intel.com>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "leoyang.li@nxp.com" <leoyang.li@nxp.com>, "lukas@wunner.de" <lukas@wunner.de>, "james.morse@arm.com" <james.morse@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "shiju.jose@huawei.com" <shiju.jose@huawei.com>
+Cc: linux-s390@vger.kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 Apr 2024 02:25:05 +0000
-"Duan, Zhenzhong" <zhenzhong.duan@intel.com> wrote:
+On Fri, Apr 26, 2024 at 09:44:58AM -0400, Peter Xu wrote:
+> On Fri, Apr 26, 2024 at 09:17:47AM +0200, David Hildenbrand wrote:
+> > On 02.04.24 14:55, David Hildenbrand wrote:
+> > > Let's consistently call the "fast-only" part of GUP "GUP-fast" and rename
+> > > all relevant internal functions to start with "gup_fast", to make it
+> > > clearer that this is not ordinary GUP. The current mixture of
+> > > "lockless", "gup" and "gup_fast" is confusing.
+> > > 
+> > > Further, avoid the term "huge" when talking about a "leaf" -- for
+> > > example, we nowadays check pmd_leaf() because pmd_huge() is gone. For the
+> > > "hugepd"/"hugepte" stuff, it's part of the name ("is_hugepd"), so that
+> > > stays.
+> > > 
+> > > What remains is the "external" interface:
+> > > * get_user_pages_fast_only()
+> > > * get_user_pages_fast()
+> > > * pin_user_pages_fast()
+> > > 
+> > > The high-level internal functions for GUP-fast (+slow fallback) are now:
+> > > * internal_get_user_pages_fast() -> gup_fast_fallback()
+> > > * lockless_pages_from_mm() -> gup_fast()
+> > > 
+> > > The basic GUP-fast walker functions:
+> > > * gup_pgd_range() -> gup_fast_pgd_range()
+> > > * gup_p4d_range() -> gup_fast_p4d_range()
+> > > * gup_pud_range() -> gup_fast_pud_range()
+> > > * gup_pmd_range() -> gup_fast_pmd_range()
+> > > * gup_pte_range() -> gup_fast_pte_range()
+> > > * gup_huge_pgd()  -> gup_fast_pgd_leaf()
+> > > * gup_huge_pud()  -> gup_fast_pud_leaf()
+> > > * gup_huge_pmd()  -> gup_fast_pmd_leaf()
+> > > 
+> > > The weird hugepd stuff:
+> > > * gup_huge_pd() -> gup_fast_hugepd()
+> > > * gup_hugepte() -> gup_fast_hugepte()
+> > 
+> > I just realized that we end up calling these from follow_hugepd() as well.
+> > And something seems to be off, because gup_fast_hugepd() won't have the VMA
+> > even in the slow-GUP case to pass it to gup_must_unshare().
+> > 
+> > So these are GUP-fast functions and the terminology seem correct. But the
+> > usage from follow_hugepd() is questionable,
+> > 
+> > commit a12083d721d703f985f4403d6b333cc449f838f6
+> > Author: Peter Xu <peterx@redhat.com>
+> > Date:   Wed Mar 27 11:23:31 2024 -0400
+> > 
+> >     mm/gup: handle hugepd for follow_page()
+> > 
+> > 
+> > states "With previous refactors on fast-gup gup_huge_pd(), most of the code
+> > can be leveraged", which doesn't look quite true just staring the the
+> > gup_must_unshare() call where we don't pass the VMA. Also,
+> > "unlikely(pte_val(pte) != pte_val(ptep_get(ptep)" doesn't make any sense for
+> > slow GUP ...
+> 
+> Yes it's not needed, just doesn't look worthwhile to put another helper on
+> top just for this.  I mentioned this in the commit message here:
+> 
+>   There's something not needed for follow page, for example, gup_hugepte()
+>   tries to detect pgtable entry change which will never happen with slow
+>   gup (which has the pgtable lock held), but that's not a problem to check.
+> 
+> > 
+> > @Peter, any insights?
+> 
+> However I think we should pass vma in for sure, I guess I overlooked that,
+> and it didn't expose in my tests too as I probably missed ./cow.
+> 
+> I'll prepare a separate patch on top of this series and the gup-fast rename
+> patches (I saw this one just reached mm-stable), and I'll see whether I can
+> test it too if I can find a Power system fast enough.  I'll probably drop
+> the "fast" in the hugepd function names too.
 
-> >-----Original Message-----
-> >From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> >Subject: Re: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might
-> >be ANFE in aer_err_info
-> >
-> >On Wed, 17 Apr 2024 14:14:05 +0800
-> >Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
-> >  
-> >> In some cases the detector of a Non-Fatal Error(NFE) is not the most
-> >> appropriate agent to determine the type of the error. For example,
-> >> when software performs a configuration read from a non-existent
-> >> device or Function, completer will send an ERR_NONFATAL Message.
-> >> On some platforms, ERR_NONFATAL results in a System Error, which
-> >> breaks normal software probing.
-> >>
-> >> Advisory Non-Fatal Error(ANFE) is a special case that can be used
-> >> in above scenario. It is predominantly determined by the role of the
-> >> detecting agent (Requester, Completer, or Receiver) and the specific
-> >> error. In such cases, an agent with AER signals the NFE (if enabled)
-> >> by sending an ERR_COR Message as an advisory to software, instead of
-> >> sending ERR_NONFATAL.
-> >>
-> >> When processing an ANFE, ideally both correctable error(CE) status and
-> >> uncorrectable error(UE) status should be cleared. However, there is no
-> >> way to fully identify the UE associated with ANFE. Even worse, a Fatal
-> >> Error(FE) or Non-Fatal Error(NFE) may set the same UE status bit as
-> >> ANFE. Treating an ANFE as NFE will reproduce above mentioned issue,
-> >> i.e., breaking softwore probing; treating NFE as ANFE will make us
-> >> ignoring some UEs which need active recover operation. To avoid clearing
-> >> UEs that are not ANFE by accident, the most conservative route is taken
-> >> here: If any of the FE/NFE Detected bits is set in Device Status, do not
-> >> touch UE status, they should be cleared later by the UE handler. Otherwise,
-> >> a specific set of UEs that may be raised as ANFE according to the PCIe
-> >> specification will be cleared if their corresponding severity is Non-Fatal.
-> >>
-> >> To achieve above purpose, store UNCOR_STATUS bits that might be ANFE
-> >> in aer_err_info.anfe_status. So that those bits could be printed and
-> >> processed later.
-> >>
-> >> Tested-by: Yudong Wang <yudong.wang@intel.com>
-> >> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> >> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> >> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> >> ---
-> >>  drivers/pci/pci.h      |  1 +
-> >>  drivers/pci/pcie/aer.c | 45  
-> >++++++++++++++++++++++++++++++++++++++++++  
-> >>  2 files changed, 46 insertions(+)
-> >>
-> >> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> >> index 17fed1846847..3f9eb807f9fd 100644
-> >> --- a/drivers/pci/pci.h
-> >> +++ b/drivers/pci/pci.h
-> >> @@ -412,6 +412,7 @@ struct aer_err_info {
-> >>
-> >>  	unsigned int status;		/* COR/UNCOR Error Status */
-> >>  	unsigned int mask;		/* COR/UNCOR Error Mask */
-> >> +	unsigned int anfe_status;	/* UNCOR Error Status for ANFE */
-> >>  	struct pcie_tlp_log tlp;	/* TLP Header */
-> >>  };
-> >>
-> >> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> >> index ac6293c24976..27364ab4b148 100644
-> >> --- a/drivers/pci/pcie/aer.c
-> >> +++ b/drivers/pci/pcie/aer.c
-> >> @@ -107,6 +107,12 @@ struct aer_stats {
-> >>  					PCI_ERR_ROOT_MULTI_COR_RCV |  
-> >	\  
-> >>  					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
-> >>
-> >> +#define AER_ERR_ANFE_UNC_MASK  
-> >	(PCI_ERR_UNC_POISON_TLP |	\  
-> >> +					PCI_ERR_UNC_COMP_TIME |  
-> >	\  
-> >> +					PCI_ERR_UNC_COMP_ABORT |  
-> >	\  
-> >> +					PCI_ERR_UNC_UNX_COMP |  
-> >	\  
-> >> +					PCI_ERR_UNC_UNSUP)
-> >> +
-> >>  static int pcie_aer_disable;
-> >>  static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
-> >>
-> >> @@ -1196,6 +1202,41 @@ void aer_recover_queue(int domain, unsigned  
-> >int bus, unsigned int devfn,  
-> >>  EXPORT_SYMBOL_GPL(aer_recover_queue);
-> >>  #endif
-> >>
-> >> +static void anfe_get_uc_status(struct pci_dev *dev, struct aer_err_info  
-> >*info)  
-> >> +{
-> >> +	u32 uncor_mask, uncor_status;
-> >> +	u16 device_status;
-> >> +	int aer = dev->aer_cap;
-> >> +
-> >> +	if (pcie_capability_read_word(dev, PCI_EXP_DEVSTA,  
-> >&device_status))  
-> >> +		return;
-> >> +	/*
-> >> +	 * Take the most conservative route here. If there are
-> >> +	 * Non-Fatal/Fatal errors detected, do not assume any
-> >> +	 * bit in uncor_status is set by ANFE.
-> >> +	 */
-> >> +	if (device_status & (PCI_EXP_DEVSTA_NFED | PCI_EXP_DEVSTA_FED))
-> >> +		return;
-> >> +  
-> >
-> >Is there not a race here?  If we happen to get either an NFED or FED
-> >between the read of device_status above and here we might pick up a status
-> >that corresponds to that (and hence clear something we should not).  
-> 
-> In this scenario, info->anfe_status is 0.
+Hmm, so when I enable 2M hugetlb I found ./cow is even failing on x86.
 
-OK. In that case what is the point of the check above?
-If the code is safe to races, it's safe to go ahead without that check
-on what might race.
+  # ./cow  | grep -B1 "not ok"
+  # [RUN] vmsplice() + unmap in child ... with hugetlb (2048 kB)
+  not ok 161 No leak from parent into child
+  --
+  # [RUN] vmsplice() + unmap in child with mprotect() optimization ... with hugetlb (2048 kB)
+  not ok 215 No leak from parent into child
+  --
+  # [RUN] vmsplice() before fork(), unmap in parent after fork() ... with hugetlb (2048 kB)
+  not ok 269 No leak from child into parent
+  --
+  # [RUN] vmsplice() + unmap in parent after fork() ... with hugetlb (2048 kB)
+  not ok 323 No leak from child into parent
 
-> 
-> >
-> >Or am I missing that race being close somewhere?  
-> 
-> The bits leading to NFED or FED is masked out when assigning info->anfe_status.
-> Bits for FED is masked out by ~info->severity,
-> bit for NFED is masked out by AER_ERR_ANFE_UNC_MASK.
-> 
-> So we never clear status bits for NFED or FED in ANFE handler.
-> 
-> See below assignment of info->anfe_status.
-> 
-> Thanks
-> Zhenzhong
-> 
-> >  
-> >> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,  
-> >&uncor_status);  
-> >> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,  
-> >&uncor_mask);  
-> >> +	/*
-> >> +	 * According to PCIe Base Specification Revision 6.1,
-> >> +	 * Section 6.2.3.2.4, if an UNCOR error is raised as
-> >> +	 * Advisory Non-Fatal error, it will match the following
-> >> +	 * conditions:
-> >> +	 *	a. The severity of the error is Non-Fatal.
-> >> +	 *	b. The error is one of the following:
-> >> +	 *		1. Poisoned TLP           (Section 6.2.3.2.4.3)
-> >> +	 *		2. Completion Timeout     (Section 6.2.3.2.4.4)
-> >> +	 *		3. Completer Abort        (Section 6.2.3.2.4.1)
-> >> +	 *		4. Unexpected Completion  (Section 6.2.3.2.4.5)
-> >> +	 *		5. Unsupported Request    (Section 6.2.3.2.4.1)
-> >> +	 */
-> >> +	info->anfe_status = uncor_status & ~uncor_mask & ~info->severity  
-> >&  
-> >> +			    AER_ERR_ANFE_UNC_MASK;
-> >> +}
-> >> +
-> >>  /**
-> >>   * aer_get_device_error_info - read error status from dev and store it to  
-> >info  
-> >>   * @dev: pointer to the device expected to have a error record
-> >> @@ -1213,6 +1254,7 @@ int aer_get_device_error_info(struct pci_dev  
-> >*dev, struct aer_err_info *info)  
-> >>
-> >>  	/* Must reset in this function */
-> >>  	info->status = 0;
-> >> +	info->anfe_status = 0;
-> >>  	info->tlp_header_valid = 0;
-> >>
-> >>  	/* The device might not support AER */
-> >> @@ -1226,6 +1268,9 @@ int aer_get_device_error_info(struct pci_dev  
-> >*dev, struct aer_err_info *info)  
-> >>  			&info->mask);
-> >>  		if (!(info->status & ~info->mask))
-> >>  			return 0;
-> >> +
-> >> +		if (info->status & PCI_ERR_COR_ADV_NFAT)
-> >> +			anfe_get_uc_status(dev, info);
-> >>  	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
-> >>  		   type == PCI_EXP_TYPE_RC_EC ||
-> >>  		   type == PCI_EXP_TYPE_DOWNSTREAM ||  
-> 
-> 
+And it looks like it was always failing.. perhaps since the start?  We
+didn't do the same on hugetlb v.s. normal anon from that regard on the
+vmsplice() fix.
+
+I drafted a patch to allow refcount>1 detection as the same, then all tests
+pass for me, as below.
+
+David, I'd like to double check with you before I post anything: is that
+your intention to do so when working on the R/O pinning or not?
+
+Thanks,
+
+=========
+From 7300c249738dadda1457c755b597c1551dfe8dc6 Mon Sep 17 00:00:00 2001
+From: Peter Xu <peterx@redhat.com>
+Date: Fri, 26 Apr 2024 11:41:12 -0400
+Subject: [PATCH] mm/hugetlb: Fix vmsplice case on memory leak once more
+
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ mm/hugetlb.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 417fc5cdb6ee..1ca102013561 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5961,10 +5961,13 @@ static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+ 
+ retry_avoidcopy:
+ 	/*
+-	 * If no-one else is actually using this page, we're the exclusive
+-	 * owner and can reuse this page.
++	 * If the page is marked exlusively owned (e.g. longterm pinned),
++	 * we can reuse it.  Otherwise if no-one else is using this page,
++	 * we can savely set the exclusive bit and reuse it.
+ 	 */
+-	if (folio_mapcount(old_folio) == 1 && folio_test_anon(old_folio)) {
++	if (folio_test_anon(old_folio) &&
++	    (PageAnonExclusive(&old_folio->page) ||
++	     folio_ref_count(old_folio) == 1)) {
+ 		if (!PageAnonExclusive(&old_folio->page)) {
+ 			folio_move_anon_rmap(old_folio, vma);
+ 			SetPageAnonExclusive(&old_folio->page);
+-- 
+2.44.0
+
+
+-- 
+Peter Xu
 
