@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119A08B3267
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 10:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 927EC8B3273
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 10:31:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c24bKCQ5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mJ85BCEt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VQmBh52kWz3vj9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 18:30:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VQmCT1x7tz3vkj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Apr 2024 18:31:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c24bKCQ5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mJ85BCEt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQm9M5PTNz3vh0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:29:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VQm9b6Cffz3vjk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Apr 2024 18:29:39 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id EA10F61DC2;
+	by sin.source.kernel.org (Postfix) with ESMTP id 84B0ECE1800;
+	Fri, 26 Apr 2024 08:29:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2679DC113CD;
 	Fri, 26 Apr 2024 08:29:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10782C2BD10;
-	Fri, 26 Apr 2024 08:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714120165;
-	bh=M6QQiy27Yx7cZTOC0617KB9Ln6pKKwikPWIcgenY/bM=;
+	s=k20201202; t=1714120176;
+	bh=DCxnhfiOCuZ1vbHkz6N1kzg5vD2Mqvj8bCN8VHj/6O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c24bKCQ5nLfUTxCLWqOfgQrHZ66rXyNyy3K6/+7sZXY22/FWn10Lrl4zlYIe0pOUL
-	 lMnQgr2DBeTE7Bdkj6zwaYAFThxItyYHuSMxTkR0gqtLqINDT0PqizlT6gcZfC4sUN
-	 cieclkW2Qd72tX8Cj3W9rhCEbYpq2tQ2fcTxNT68cuSCVGGQF9jBPxBPfgkA9Q/udF
-	 LO2K80uaKqbrLmZ/ItY6/g8LKcrRxJOXkN4u2sbfQDiJFWKzUulbs75isiDuLjTGaY
-	 uzUNXOQZI0lkj3aD0OIRott2pxFL3MoWNBgluhl33vYY3U3o4rppM5pe3CB1zIuwEx
-	 1m5Xuoq/+vTHA==
+	b=mJ85BCEtXn9eC/rmnQOAFLqtOnqZnrIZhj7bfmRPi7oxShQXrtP4Uo5HR8nSbD8vo
+	 gPsy+y4atIh2HMiSUwxm9ruLsRzgF8GKd0SQITa9LSTNZ3s1l6VFdUmjWVa18XNtDm
+	 wmndfdYM2HWsi1NxgEkL3Yi/2Wd3TbOQELwu5rL+6f7WiXzzXzTM2B5ch4q1YZRsjH
+	 iSzijG4ahNzTFxxFNb1voatba0/dKnlSX0rJtmZQwKsejOJeAysUtuMBrUvR1kI8G2
+	 77cQ1XEqmgjSmkLajSNAy9YWclmvvuVxCBhH0De74z5sFFxkmJLPXuTC6q2ljZFp/S
+	 FiiZiNa8VahbQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v6 01/16] arm64: module: remove unneeded call to kasan_alloc_module_shadow()
-Date: Fri, 26 Apr 2024 11:28:39 +0300
-Message-ID: <20240426082854.7355-2-rppt@kernel.org>
+Subject: [PATCH v6 02/16] mips: module: rename MODULE_START to MODULES_VADDR
+Date: Fri, 26 Apr 2024 11:28:40 +0300
+Message-ID: <20240426082854.7355-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240426082854.7355-1-rppt@kernel.org>
 References: <20240426082854.7355-1-rppt@kernel.org>
@@ -65,36 +65,63 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-Since commit f6f37d9320a1 ("arm64: select KASAN_VMALLOC for SW/HW_TAGS
-modes") KASAN_VMALLOC is always enabled when KASAN is on. This means
-that allocations in module_alloc() will be tracked by KASAN protection
-for vmalloc() and that kasan_alloc_module_shadow() will be always an
-empty inline and there is no point in calling it.
-
-Drop meaningless call to kasan_alloc_module_shadow() from
-module_alloc().
+and MODULE_END to MODULES_END to match other architectures that define
+custom address space for modules.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/arm64/kernel/module.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/mips/include/asm/pgtable-64.h | 4 ++--
+ arch/mips/kernel/module.c          | 4 ++--
+ arch/mips/mm/fault.c               | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-index 47e0be610bb6..e92da4da1b2a 100644
---- a/arch/arm64/kernel/module.c
-+++ b/arch/arm64/kernel/module.c
-@@ -141,11 +141,6 @@ void *module_alloc(unsigned long size)
- 				    __func__);
- 	}
+diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+index 20ca48c1b606..c0109aff223b 100644
+--- a/arch/mips/include/asm/pgtable-64.h
++++ b/arch/mips/include/asm/pgtable-64.h
+@@ -147,8 +147,8 @@
+ #if defined(CONFIG_MODULES) && defined(KBUILD_64BIT_SYM32) && \
+ 	VMALLOC_START != CKSSEG
+ /* Load modules into 32bit-compatible segment. */
+-#define MODULE_START	CKSSEG
+-#define MODULE_END	(FIXADDR_START-2*PAGE_SIZE)
++#define MODULES_VADDR	CKSSEG
++#define MODULES_END	(FIXADDR_START-2*PAGE_SIZE)
+ #endif
  
--	if (p && (kasan_alloc_module_shadow(p, size, GFP_KERNEL) < 0)) {
--		vfree(p);
--		return NULL;
--	}
--
- 	/* Memory is intended to be executable, reset the pointer tag. */
- 	return kasan_reset_tag(p);
+ #define pte_ERROR(e) \
+diff --git a/arch/mips/kernel/module.c b/arch/mips/kernel/module.c
+index 7b2fbaa9cac5..9a6c96014904 100644
+--- a/arch/mips/kernel/module.c
++++ b/arch/mips/kernel/module.c
+@@ -31,10 +31,10 @@ struct mips_hi16 {
+ static LIST_HEAD(dbe_list);
+ static DEFINE_SPINLOCK(dbe_lock);
+ 
+-#ifdef MODULE_START
++#ifdef MODULES_VADDR
+ void *module_alloc(unsigned long size)
+ {
+-	return __vmalloc_node_range(size, 1, MODULE_START, MODULE_END,
++	return __vmalloc_node_range(size, 1, MODULES_VADDR, MODULES_END,
+ 				GFP_KERNEL, PAGE_KERNEL, 0, NUMA_NO_NODE,
+ 				__builtin_return_address(0));
  }
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index aaa9a242ebba..37fedeaca2e9 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -83,8 +83,8 @@ static void __do_page_fault(struct pt_regs *regs, unsigned long write,
+ 
+ 	if (unlikely(address >= VMALLOC_START && address <= VMALLOC_END))
+ 		goto VMALLOC_FAULT_TARGET;
+-#ifdef MODULE_START
+-	if (unlikely(address >= MODULE_START && address < MODULE_END))
++#ifdef MODULES_VADDR
++	if (unlikely(address >= MODULES_VADDR && address < MODULES_END))
+ 		goto VMALLOC_FAULT_TARGET;
+ #endif
+ 
 -- 
 2.43.0
 
