@@ -1,79 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFB88B56D5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 13:36:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DEC8B5717
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 13:49:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=n+aw8rX/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IZujhDOG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VSh9J4Yqpz3dJB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 21:36:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VShT20886z3d8M
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 21:49:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=n+aw8rX/;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=IZujhDOG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSh8Y2dLTz3cV4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 21:35:23 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2dac77cdf43so55135651fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 04:35:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VShSH0XgRz3d2W
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 21:49:01 +1000 (AEST)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-57230faeb81so2592747a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 04:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1714390517; x=1714995317; darn=lists.ozlabs.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FfGzQB1xZB8xBXRUtcLsXtsSVhNRLi0+5fwIT5ItXxQ=;
-        b=n+aw8rX/WCDvooaU2qSd8WM5BR70u0nDzfwg2sj+QbSykFBh60n2AJnlnjyM5ObdRa
-         62XwY0ehG3sc/iaGuFevzeu/Hz+joGBH6tCsbMWeHTR6nJTLArRayzr+n5AgE+BcSXxX
-         v0dOy8dOU2djoEFO1J0WYb79OA4gFlyKttNYURwhOviGRjQght93xywJkCZFRnB4rwEc
-         x0Nfb2mWbFjAJ2M4J92eEwzxD/MAEMRXD+MrmKj4/zbDzDAB1HU4AfHp1Z401AvsI2Ad
-         QMvgpG5mMNEUvmhZZjE7/Cfh4cOLVIHzfjrj2C5wsEeAak0pyvjhsagwO2ORg53rOnFG
-         6Lng==
+        d=linaro.org; s=google; t=1714391337; x=1714996137; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zgF7uDK3ODdULvp2AprCnsXD0Ii385XkEkpICxLIUP8=;
+        b=IZujhDOGCgPnuFZnAnQpbL+l8wY/i9xXPeEaPqydTmjAGBn1R8hiR+pC7a2UZQ92eU
+         GDA5MRs7R/3h74hq7fXMh6YryJEUzyvrm1Le5K4ii2kIKpJpJiGHZs8Qy3tJ9H6D8pgB
+         QGOtTVaYeezVv3kvkJOhxM9IY7Irj/jcbkBg5Xmdyq7pGzTzobQNlGNELW+28Ccg7226
+         6E+UjfotlV6m/2ZYTQBJ/i4CpSyyP98nv1D7EGXEafBxmXD5x6po/22aOnisMmfchOoS
+         6WQclGa9SPAARrSd3u3SVEONBBN8fIiHk9gFDahR8ZNmdsLRQ/45GIL+kiIUP8nji0XI
+         qkQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714390517; x=1714995317;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FfGzQB1xZB8xBXRUtcLsXtsSVhNRLi0+5fwIT5ItXxQ=;
-        b=SG3PGmGG1m+xtkh1zl1RHYFjC0GIXNRAYCxGR83GzwYlBU+sjWpCs3YnZEtafswQK5
-         823ZNju/2N9uEjmj3yWIUWLPgZ4IhwPcbtv4y2YZ/C7AXbnVHYmpRJGKYpM1ROc648BL
-         AQCwmMa8X24PuVWxN172FJkIkwpANSTHOKgGQX/ovf8hau3Dl/0Q0i7eKgpp/JsVaHHv
-         ycfw8qFcwedVi8NvDkc1wdAhSnF+KJgc1WBafzJGPG4jM9OfLFQ91VS6Xn6m9JmZcUNk
-         +nSH3IR0qTEFgeibqZFMtoGwEhFCU5eZ2Dq73qVn9wPIEfWJxu2ChqsWE3JQLwjsumhB
-         EOTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBPPkuJ5mXk2b8RYeICSQd//eDQxy+W2PXb2W7Qxu27lqvwkS7Z+e90NWSDhviOz6FXA2+ZPH6hbRwjgu+tWacPadL5uu4wE/xXgmeSw==
-X-Gm-Message-State: AOJu0YyZXSTN1lk6ImckdMjtYNcF0VTDq1hANPf8alLtbyUoUElKhVQx
-	fEsBzQYo8Z+Ijn6CakubaUC73RtR4GsVC4PeLsV9OTjYQiubOR8s21WahSwQlmk=
-X-Google-Smtp-Source: AGHT+IGw2Ek0i5lSqjv/2CHs1TiQwOEm213t8IkDWkoV+quS2g6sI4vXDerOpOiRvHBEgiO62ZzKtw==
-X-Received: by 2002:a2e:968b:0:b0:2d8:63a2:50d2 with SMTP id q11-20020a2e968b000000b002d863a250d2mr6603309lji.6.1714390516956;
-        Mon, 29 Apr 2024 04:35:16 -0700 (PDT)
-Received: from smtpclient.apple ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id b8-20020adfe308000000b003436a3cae6dsm29249925wrj.98.2024.04.29.04.35.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Apr 2024 04:35:16 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [EXT] [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new
- trust source
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
-Date: Mon, 29 Apr 2024 13:35:04 +0200
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7783BAE9-87DA-4DD5-ADFA-15A9B55EEF39@sigma-star.at>
-References: <20240403072131.54935-1-david@sigma-star.at>
- <20240403072131.54935-7-david@sigma-star.at>
- <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
- <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
-To: Kshitiz Varshney <kshitiz.varshney@nxp.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+        d=1e100.net; s=20230601; t=1714391337; x=1714996137;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zgF7uDK3ODdULvp2AprCnsXD0Ii385XkEkpICxLIUP8=;
+        b=EKcW/DWAaAy1nIYOUNh99gJMCbwZZ/+wJpOW3J1iqDMQaNEByznGSAYgTpr6mFXagV
+         Nm/3WjJl+bEB42l8uYilpJQAE6MuQyQK4y6SfzTiiosGGeIYEZbdAnLS1WktScXBkRtS
+         rDgKpUVmRogYcdmcnGa6KubO3O2vChEmdr23ZptdRAiwLJBT1m71QpDS5Lcnf8jBbMM8
+         Qubn2OgKoafj2z5CI9PE+iZToPy9Dj4dl63Lea43458AtqRmbh9MwT9mxDzHrhzKJpqP
+         +AksdTt8/pMzkUMxLp1TF3TcBr/xRA96Q0SPoooy/8bxlfHQuBDekEKiG1KuRlKlTen7
+         exxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvBnJMnczH/RIxTICMjBJ2VAmXT7Ohx/q3dfxGs3GO4MWe8OngIhZCg8ntoxJOo0gSa4Pt+n98mCpcXJDiqK/NWbaHlGR/W+28F9kLjQ==
+X-Gm-Message-State: AOJu0YyqIOU8oQCx/DQglypFJncEPf+N2NsvSMGSF6sCXqITb0ETv4rx
+	u8+0JVmTfQhbAdSKu0cPPyT+p409N/46AJNj18v6qPOZZpD0KH2Mem+hBB7lZG0=
+X-Google-Smtp-Source: AGHT+IFMulAQp2dFZ0Q7CZL4pR5DvDvO/9NEVxfbIybQWLY3FZZ5OUXvmdGImHkWL/GlP/fLlPTrQA==
+X-Received: by 2002:a50:99c7:0:b0:572:3f41:25aa with SMTP id n7-20020a5099c7000000b005723f4125aamr8735212edb.11.1714391336676;
+        Mon, 29 Apr 2024 04:48:56 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id y43-20020a50bb2e000000b0057000a2cb5bsm13549651ede.18.2024.04.29.04.48.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 04:48:56 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 0/4] ASoC: Constify static snd_pcm_hardware
+Date: Mon, 29 Apr 2024 13:48:45 +0200
+Message-Id: <20240429-n-asoc-const-snd-pcm-hardware-v1-0-c6ce60989834@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB2JL2YC/x3MQQqDQAwAwK9Izg1sFwXrV8RDyMaaQ7OSFFsQ/
+ 96lx7nMCSGuEjB1J7gcGlqt4X7rgDeyp6CWZsgp96nPDzSkqIxcLd4YVnDnF27k5UMuuCYaqMg
+ 4DkzQjt1l1e//n5fr+gFMAIkPbwAAAA==
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Jerome Brunet <jbrunet@baylibre.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1038;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=8hlbxDVsli5Uho2Dc9zk1d5MLlzWuHE+5PgzBXH717k=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmL4kgxXlqNnnMKJpg2EaIkw0QWwus3XmTLMuWB
+ hWfdwwddXWJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZi+JIAAKCRDBN2bmhouD
+ 14MsD/4wk/fFPGuo07Tc6t4ZBVVny/yf56kqMyV3UPs7GTN7fgENz4Vs5Gin8llVwv9nvvbIrfh
+ cBrBJ53HMb7tMNtKDhoCjXLKV6y/XFF3OcjnUu8dFKF9+HWsntLk2pUa7XZf/m3xuCoFz+I2+2X
+ FtEvt7tK7J1L1CbOP082IC4ZkhfTVvhN7VjqiC1AcntknqAwCKb5II6RAtl044X2cAgHBFXI7B1
+ Qo/+a8PGKa0K0uBnIoHoNp75nHACjabA/jn601auP/o6zvNEBbjmG/1jviOgBIo6/+12fvjPqxx
+ E9EcND0vFAI4b2W8IiR2Xg4uWuTtkzGOQ8gVmSQMUY/Xqhgulo8rrUYpnIV5JlSObZpNZstIdHZ
+ 3di//AnjPfGRIgVC0kO6jiOPGtCi/WnZe8zyg1tkArBgsmXLIXbuACRbR90yWnYeWGk0Ny8w76f
+ T0pJ7kVVgxhVy84se9GzdxXC3V4bBs8KB0UmtCrmfQTKLG/ZcYUIptvLIejPfxSNAnOYcSN4XMu
+ DF8BifoTInlQ+Xw9QYLBMmT5zOa2kXfIiS04T/C0Z55+ur3NPpX35/hwD93URXyFfrBLnClmjbo
+ PHSEi6tWOFhgJAg8kZWEuqJOx4/8mOJxKL+LiIkCVek5bgHt7OxbuIiY10JdZB1Gy6BujtRGdnc
+ RzHz8OsHOxt8zBQ==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,273 +110,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, Gaurav Jain <gaurav.jain@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, dl-linux-imx <linux-imx@nxp.com>, James Bottomley <jejb@linux.ibm.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pankaj Gupta <pankaj.gupta@nxp.com>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-s
- tar.at>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Paul Moore <paul@paul-moore.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, Jarkko Sakkinen <jarkko@kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Varun Sethi <V.Sethi@nxp.com>
+Cc: imx@lists.linux.dev, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kshitiz,
+No dependencies.
 
-> On 09.04.2024, at 11:48, Kshitiz Varshney <kshitiz.varshney@nxp.com> =
-wrote:
->=20
-> Hi Jarkko,
->=20
->=20
->> -----Original Message-----
->> From: Jarkko Sakkinen <jarkko@kernel.org>
->> Sent: Wednesday, April 3, 2024 9:18 PM
->> To: David Gstir <david@sigma-star.at>; Mimi Zohar =
-<zohar@linux.ibm.com>;
->> James Bottomley <jejb@linux.ibm.com>; Herbert Xu
->> <herbert@gondor.apana.org.au>; David S. Miller <davem@davemloft.net>
->> Cc: Shawn Guo <shawnguo@kernel.org>; Jonathan Corbet
->> <corbet@lwn.net>; Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix
->> Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; Ahmad Fatoum
->> <a.fatoum@pengutronix.de>; sigma star Kernel Team
->> <upstream+dcp@sigma-star.at>; David Howells <dhowells@redhat.com>; Li
->> Yang <leoyang.li@nxp.com>; Paul Moore <paul@paul-moore.com>; James
->> Morris <jmorris@namei.org>; Serge E. Hallyn <serge@hallyn.com>; Paul =
-E.
->> McKenney <paulmck@kernel.org>; Randy Dunlap <rdunlap@infradead.org>;
->> Catalin Marinas <catalin.marinas@arm.com>; Rafael J. Wysocki
->> <rafael.j.wysocki@intel.com>; Tejun Heo <tj@kernel.org>; Steven =
-Rostedt
->> (Google) <rostedt@goodmis.org>; linux-doc@vger.kernel.org; linux-
->> kernel@vger.kernel.org; linux-integrity@vger.kernel.org;
->> keyrings@vger.kernel.org; linux-crypto@vger.kernel.org; linux-arm-
->> kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org; =
-linux-security-
->> module@vger.kernel.org; Richard Weinberger <richard@nod.at>; David
->> Oberhollenzer <david.oberhollenzer@sigma-star.at>
->> Subject: [EXT] Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as =
-new
->> trust source
->>=20
->> Caution: This is an external email. Please take care when clicking =
-links or
->> opening attachments. When in doubt, report the message using the =
-'Report
->> this email' button
->>=20
->>=20
->> On Wed Apr 3, 2024 at 10:21 AM EEST, David Gstir wrote:
->>> Update the documentation for trusted and encrypted KEYS with DCP as
->>> new trust source:
->>>=20
->>> - Describe security properties of DCP trust source
->>> - Describe key usage
->>> - Document blob format
->>>=20
->>> Co-developed-by: Richard Weinberger <richard@nod.at>
->>> Signed-off-by: Richard Weinberger <richard@nod.at>
->>> Co-developed-by: David Oberhollenzer
->>> <david.oberhollenzer@sigma-star.at>
->>> Signed-off-by: David Oberhollenzer =
-<david.oberhollenzer@sigma-star.at>
->>> Signed-off-by: David Gstir <david@sigma-star.at>
->>> ---
->>> .../security/keys/trusted-encrypted.rst       | 53 =
-+++++++++++++++++++
->>> security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
->>> 2 files changed, 72 insertions(+)
->>>=20
->>> diff --git a/Documentation/security/keys/trusted-encrypted.rst
->>> b/Documentation/security/keys/trusted-encrypted.rst
->>> index e989b9802f92..f4d7e162d5e4 100644
->>> --- a/Documentation/security/keys/trusted-encrypted.rst
->>> +++ b/Documentation/security/keys/trusted-encrypted.rst
->>> @@ -42,6 +42,14 @@ safe.
->>>          randomly generated and fused into each SoC at manufacturing =
-time.
->>>          Otherwise, a common fixed test key is used instead.
->>>=20
->>> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX
->>> + SoCs)
->>> +
->>> +         Rooted to a one-time programmable key (OTP) that is =
-generally
->> burnt
->>> +         in the on-chip fuses and is accessible to the DCP =
-encryption engine
->> only.
->>> +         DCP provides two keys that can be used as root of trust: =
-the OTP
->> key
->>> +         and the UNIQUE key. Default is to use the UNIQUE key, but =
-selecting
->>> +         the OTP key can be done via a module parameter
->> (dcp_use_otp_key).
->>> +
->>>   *  Execution isolation
->>>=20
->>>      (1) TPM
->>> @@ -57,6 +65,12 @@ safe.
->>>=20
->>>          Fixed set of operations running in isolated execution =
-environment.
->>>=20
->>> +     (4) DCP
->>> +
->>> +         Fixed set of cryptographic operations running in isolated =
-execution
->>> +         environment. Only basic blob key encryption is executed =
-there.
->>> +         The actual key sealing/unsealing is done on main =
-processor/kernel
->> space.
->>> +
->>>   * Optional binding to platform integrity state
->>>=20
->>>      (1) TPM
->>> @@ -79,6 +93,11 @@ safe.
->>>          Relies on the High Assurance Boot (HAB) mechanism of NXP =
-SoCs
->>>          for platform integrity.
->>>=20
->>> +     (4) DCP
->>> +
->>> +         Relies on Secure/Trusted boot process (called HAB by =
-vendor) for
->>> +         platform integrity.
->>> +
->>>   *  Interfaces and APIs
->>>=20
->>>      (1) TPM
->>> @@ -94,6 +113,11 @@ safe.
->>>=20
->>>          Interface is specific to silicon vendor.
->>>=20
->>> +     (4) DCP
->>> +
->>> +         Vendor-specific API that is implemented as part of the DCP =
-crypto
->> driver in
->>> +         ``drivers/crypto/mxs-dcp.c``.
->>> +
->>>   *  Threat model
->>>=20
->>>      The strength and appropriateness of a particular trust source
->>> for a given @@ -129,6 +153,13 @@ selected trust source:
->>>      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure
->> the device
->>>      is probed.
->>>=20
->>> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX =
-SoCs)
->>> +
->>> +     The DCP hardware device itself does not provide a dedicated =
-RNG
->> interface,
->>> +     so the kernel default RNG is used. SoCs with DCP like the =
-i.MX6ULL do
->> have
->>> +     a dedicated hardware RNG that is independent from DCP which =
-can be
->> enabled
->>> +     to back the kernel RNG.
->>> +
->>> Users may override this by specifying ``trusted.rng=3Dkernel`` on =
-the
->>> kernel  command-line to override the used RNG with the kernel's =
-random
->> number pool.
->>>=20
->>> @@ -231,6 +262,19 @@ Usage::
->>> CAAM-specific format.  The key length for new keys is always in =
-bytes.
->>> Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
->>>=20
->>> +Trusted Keys usage: DCP
->>> +-----------------------
->>> +
->>> +Usage::
->>> +
->>> +    keyctl add trusted name "new keylen" ring
->>> +    keyctl add trusted name "load hex_blob" ring
->>> +    keyctl print keyid
->>> +
->>> +"keyctl print" returns an ASCII hex copy of the sealed key, which =
-is
->>> +in format specific to this DCP key-blob implementation.  The key
->>> +length for new keys is always in bytes. Trusted Keys can be 32 - =
-128 bytes
->> (256 - 1024 bits).
->>> +
->>> Encrypted Keys usage
->>> --------------------
->>>=20
->>> @@ -426,3 +470,12 @@ string length.
->>> privkey is the binary representation of TPM2B_PUBLIC excluding the
->>> initial TPM2B header which can be reconstructed from the ASN.1 octed
->>> string length.
->>> +
->>> +DCP Blob Format
->>> +---------------
->>> +
->>> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
->>> +   :doc: dcp blob format
->>> +
->>> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
->>> +   :identifiers: struct dcp_blob_fmt
->>> diff --git a/security/keys/trusted-keys/trusted_dcp.c
->>> b/security/keys/trusted-keys/trusted_dcp.c
->>> index 16c44aafeab3..b5f81a05be36 100644
->>> --- a/security/keys/trusted-keys/trusted_dcp.c
->>> +++ b/security/keys/trusted-keys/trusted_dcp.c
->>> @@ -19,6 +19,25 @@
->>> #define DCP_BLOB_VERSION 1
->>> #define DCP_BLOB_AUTHLEN 16
->>>=20
->>> +/**
->>> + * DOC: dcp blob format
->>> + *
->>> + * The Data Co-Processor (DCP) provides hardware-bound AES keys =
-using
->>> +its
->>> + * AES encryption engine only. It does not provide direct key
->> sealing/unsealing.
->>> + * To make DCP hardware encryption keys usable as trust source, we
->>> +define
->>> + * our own custom format that uses a hardware-bound key to secure =
-the
->>> +sealing
->>> + * key stored in the key blob.
->>> + *
->>> + * Whenever a new trusted key using DCP is generated, we generate a
->>> +random 128-bit
->>> + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce =
-are
->>> +used to
->>> + * encrypt the trusted key payload using AES-128-GCM.
->>> + *
->>> + * The BEK itself is encrypted using the hardware-bound key using =
-the
->>> +DCP's AES
->>> + * encryption engine with AES-128-ECB. The encrypted BEK, generated
->>> +nonce,
->>> + * BEK-encrypted payload and authentication tag make up the blob
->>> +format together
->>> + * with a version number, payload length and authentication tag.
->>> + */
->>> +
->>> /**
->>>  * struct dcp_blob_fmt - DCP BLOB format.
->>>  *
->>=20
->> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->>=20
->> I can only test that this does not break a machine without the =
-hardware
->> feature.
->>=20
->> Is there anyone who could possibly peer test these patches?
-> I am already working on testing this patchset on i.MX6 platform.
+Static 'struct snd_pcm_hardware' is not modified by few drivers and its
+copy is passed to the core, so it can be made const for increased code
+safety.
 
-Did you get around to testing this?
-I=E2=80=99d greatly appreciate a Tested-by for this. :-)
+Best regards,
+Krzysztof
 
-Thanks!
-BR, David
+---
+Krzysztof Kozlowski (4):
+      ASoC: qcom: Constify static snd_pcm_hardware
+      ASoC: fsl: Constify static snd_pcm_hardware
+      ASoC: meson: Constify static snd_pcm_hardware
+      ASoC: uniphier: Constify static snd_pcm_hardware
+
+ sound/soc/fsl/imx-pcm-rpmsg.c    | 2 +-
+ sound/soc/meson/aiu-fifo-i2s.c   | 2 +-
+ sound/soc/meson/aiu-fifo-spdif.c | 2 +-
+ sound/soc/meson/aiu-fifo.h       | 2 +-
+ sound/soc/meson/axg-fifo.c       | 2 +-
+ sound/soc/qcom/qdsp6/q6apm-dai.c | 4 ++--
+ sound/soc/qcom/qdsp6/q6asm-dai.c | 2 +-
+ sound/soc/uniphier/aio-dma.c     | 2 +-
+ 8 files changed, 9 insertions(+), 9 deletions(-)
+---
+base-commit: ebbaba914053d8bcadd7d64eb8d2555299509a27
+change-id: 20240429-n-asoc-const-snd-pcm-hardware-f0a5ade885ca
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
