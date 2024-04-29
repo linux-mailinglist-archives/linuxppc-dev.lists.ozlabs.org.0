@@ -1,95 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004F88B4D91
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Apr 2024 21:02:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9D28B4FBA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 05:21:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Axk6keNv;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L9SqdAw5;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SGASX9zK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VSG7B4rgmz3cWV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 05:02:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VSTBb2gYjz3cSq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 13:21:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Axk6keNv;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L9SqdAw5;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SGASX9zK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSG6N4PD9z30gK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 05:02:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714330918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TChkYNJLokf0R7TU3fj1Jd4fvD6sn29Wrs03bf1LQhQ=;
-	b=Axk6keNvXKEbIba4UfZYVs0EImo7LuSWyQJok2oAAnhJA5JZTgj4Cm5/YDlwOAXvhp72uJ
-	VjYgsQ5cthy7flGvlgpj8GF9T9JGrtNRYRnjA23w+kbdnwX3tvVP4OmiPwAGozauF4tcHW
-	nMyKjz0MkkS330rRfiAs3oIJ4JpkIYQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714330919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TChkYNJLokf0R7TU3fj1Jd4fvD6sn29Wrs03bf1LQhQ=;
-	b=L9SqdAw5Jp6lX2qgXB3sIjYo7KK/AviG2+8F9ZhhT7gWOdnLqZ9l52rNlZs8198QocXf1n
-	EZ5sTe7dOhjQxlB7AclvAHmy3mw9jhqJM0dtPNYWvXUVub+gjgEjpYC1wxQYgIoAV5AfM5
-	CAgOwlca02EWQbPUcNkBjjVbsB6GDLo=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-95DZ5fYmOQu6o6Q8bIkMug-1; Sun, 28 Apr 2024 15:01:57 -0400
-X-MC-Unique: 95DZ5fYmOQu6o6Q8bIkMug-1
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-5af985fcdadso684596eaf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Apr 2024 12:01:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714330916; x=1714935716;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TChkYNJLokf0R7TU3fj1Jd4fvD6sn29Wrs03bf1LQhQ=;
-        b=BQd7rm+TIl37prJ//JY2V1azGNxleo8d+NdrMOv2ttz6xxFUIeob6FxbKVMeVWAd5Y
-         WC0yYbv2Px8R1e8nto7gqiqi8Q+FgWWyejqLtUhYakx+Vp1bHgu9sVOy9Umenf+efNzj
-         uaReiutUOQbfBzwCZS6aGO/JUMNeluoqbeG8DTtiX4o6VrluHYOLokyPNHkwaLHRsRM7
-         w/JVT516VCtnGwn5I3gNxDeyai/DRj8aDqaJfqcBam6G3E3u1DDaFhovVAPFIvf/FIpd
-         S8werF4AIwTXb32Jm/c/2j1SC1KslsHHg7Lv4val1TLDxha3qzSn/WmBNgpaMWMrKCyh
-         uTKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUQ/5+LS2RJ/DIRYN7mEdMRGrGJ7TXQkQaJpB1BfjuytIz/bk/rR+HGPX+E12Pv5lI1XJh+OwA+RDgzEwwXnSkIdv8PC9Z1VvJDsOnLA==
-X-Gm-Message-State: AOJu0Yw25jt95eDEX4jJKpNDfFa4eQs92CJRVtW8yJgQUcX5UtnfojwJ
-	eBPlx/pXxRPwmM6H8kCDczhJZZ6Tz0Uqb7zKOnWbYnYTSKNkApioaXjL+J4ZJtlICthPLAkzBY3
-	i57s8GB9mxUmLCMy6dloExNnLcSncBZEVuJwbcbom+TLoqB7Y97DTGAon/GmdQVw=
-X-Received: by 2002:a05:6830:7193:b0:6ed:ffd4:f871 with SMTP id el19-20020a056830719300b006edffd4f871mr5375195otb.0.1714330916162;
-        Sun, 28 Apr 2024 12:01:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGbfCPhcOZyAaf7bBZJaTYiO0a8lHR2gVf15VHmfKPjl2t1+bRyODyi0XieC0TmXGWNmTdCnA==
-X-Received: by 2002:a05:6830:7193:b0:6ed:ffd4:f871 with SMTP id el19-20020a056830719300b006edffd4f871mr5375155otb.0.1714330915677;
-        Sun, 28 Apr 2024 12:01:55 -0700 (PDT)
-Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id oo8-20020a05620a530800b0078d693c0b4bsm9818152qkn.135.2024.04.28.12.01.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Apr 2024 12:01:55 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 2/2] mm/selftests: Don't prefault in gup_longterm tests
-Date: Sun, 28 Apr 2024 15:01:51 -0400
-Message-ID: <20240428190151.201002-3-peterx@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240428190151.201002-1-peterx@redhat.com>
-References: <20240428190151.201002-1-peterx@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VST9r4f8jz3c2t
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 13:20:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1714360848;
+	bh=2hKXH2j/7nDl/GpmYLi00ajlbcLDtOnf5W96l8eEnh4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SGASX9zKPtuI9Qg3Ob2u4stBrZBj89zNpDVaqXIgl07um7nu83JIht6uGFjpANZWX
+	 y+lKcOvAFS+9QLre1wXXUAz+fG9jBrbHc64KBXHyUCMA4mKToikMo0HjaT8JW79HwR
+	 JfneX1ajbXsPIoQr+Mwujuvq0oJsGkinpTFYgia6EQZ7/705rZQhk/HXanTKWV52+v
+	 c0/ufW28veAsDmvuMN6L5Dxz3s59k6aEw3RCjdJ3z/cZicfWGwgM7fa0XJEDMWGmMI
+	 EKKb57JXz6Td1OwFJ+lyyBo9gegHRTmuYkvcDX9HxoPKp2KTys8wfT9zxMGnt3uaOw
+	 7N7DaiYTcNHkQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VST9n4tXVz4wcF;
+	Mon, 29 Apr 2024 13:20:45 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, Nathan Lynch via B4 Relay
+ <devnull+nathanl.linux.ibm.com@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: Enforce hcall result buffer validity
+ and size
+In-Reply-To: <87h6fnu7ar.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+References: <20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com>
+ <874jcac3xb.fsf@mail.lhotse>
+ <87cyqy7il1.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <87h6fnu7ar.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Date: Mon, 29 Apr 2024 13:20:42 +1000
+Message-ID: <878r0wkg6t.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,51 +65,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, peterx@redhat.com, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Prefault, especially with RW, makes the GUP test too easy, and may not yet
-reach the core of the test.
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>> Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+>>> writes:
+>>>>
+>>>> plpar_hcall(), plpar_hcall9(), and related functions expect callers to
+>>>> provide valid result buffers of certain minimum size. Currently this
+>>>> is communicated only through comments in the code and the compiler has
+>>>> no idea.
+>>>>
+>>>> For example, if I write a bug like this:
+>>>>
+>>>>   long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
+>>>>   plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
+>>>>
+>>>> This compiles with no diagnostics emitted, but likely results in stack
+>>>> corruption at runtime when plpar_hcall9() stores results past the end
+>>>> of the array. (To be clear this is a contrived example and I have not
+>>>> found a real instance yet.)
+>>>
+>>> We did have some real stack corruption bugs in the past.
+>>>
+>>> I referred to them in my previous (much uglier) attempt at a fix:
+>>>
+>>>   https://patchwork.ozlabs.org/project/linuxppc-dev/patch/1476780032-21643-2-git-send-email-mpe@ellerman.id.au/
+>>>
+>>> Annoyingly I didn't describe them in any detail, but at least one of them was:
+>>>
+>>>   24c65bc7037e ("hwrng: pseries - port to new read API and fix stack
+>>>   corruption")
+>>
+>> Thanks for this background.
+>>
+>>
+>>> Will this catch a case like that? Where the too-small buffer is not
+>>> declared locally but rather comes into the function as a pointer?
+>>
+>> No, unfortunately. But here's a sketch that forces retbuf to be an
+>> array [...]
+>
+> I've made some attempts to improve on this, but I think the original
+> patch as written may be the best we can do without altering existing
+> call sites or introducing new APIs and types.
+...
+>
+> OK with taking the patch as-is?
 
-For example, R/O longterm pins will just hit, pte_write()==true for
-whatever cases, the unsharing logic won't be ever tested.
+Yeah. It's an improvement, even if it's not the full solution.
 
-This patch remove the prefault.  This tortures more code paths at least to
-cover the unshare care for R/O longterm pins, in which case the first R/O
-GUP attempt will fault in the page R/O first, then the 2nd will go through
-the unshare path, checking whether an unshare is needed.
-
-Cc: David Hildenbrand <david@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- tools/testing/selftests/mm/gup_longterm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
-index ad168d35b23b..488e32186246 100644
---- a/tools/testing/selftests/mm/gup_longterm.c
-+++ b/tools/testing/selftests/mm/gup_longterm.c
-@@ -119,10 +119,16 @@ static void do_test(int fd, size_t size, enum test_type type, bool shared)
- 	}
- 
- 	/*
--	 * Fault in the page writable such that GUP-fast can eventually pin
--	 * it immediately.
-+	 * Explicitly avoid pre-faulting in the page, this can help testing
-+	 * more code paths.
-+	 *
-+	 * Take example of an upcoming R/O pin test, if we RW prefault the
-+	 * page, such pin will directly skip R/O unsharing and the longterm
-+	 * pin will success mostly always.  When not prefaulted, R/O
-+	 * longterm pin will first fault in a RO page, then the 2nd round
-+	 * it'll go via the unshare check.  Otherwise those paths aren't
-+	 * covered.
- 	 */
--	memset(mem, 0, size);
- 
- 	switch (type) {
- 	case TEST_TYPE_RO:
--- 
-2.44.0
-
+cheers
