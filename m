@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3E78B5865
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 14:23:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5D28B586D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 14:24:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sWk/NDmz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jmX0JiUm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VSjDL2wkJz3w1y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 22:23:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VSjF63jFJz3vw1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 22:24:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sWk/NDmz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jmX0JiUm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSj6800wRz3dW6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 22:18:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSj6L4tBpz3dX4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 22:18:34 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 5768CCE0B5B;
-	Mon, 29 Apr 2024 12:18:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9733C4AF4D;
-	Mon, 29 Apr 2024 12:18:10 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 86E33CE0B5C;
+	Mon, 29 Apr 2024 12:18:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C696C116B1;
+	Mon, 29 Apr 2024 12:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714393101;
-	bh=Rvc7E+HMMA3ADjVUaU2tKv0yhJenjSe9igrLALIYU0s=;
+	s=k20201202; t=1714393112;
+	bh=baelIo5gqQ6dNoONu464d37hHX6/MoaALRFlqjsyJfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWk/NDmz3i5vr9Jv0qDjcUmsYiwDRQThiqhFVVZLqNw47kUEmH6HJt90/yg8TSIAn
-	 X8EJF0tdrP3OFzXUlKytIboRy/v+tKau6KDzl9uPY44J6Jea2kq6OssgeiedfE3heY
-	 M0LTdSW+l/cScv8edC3m/JOinkVMDAMeESbGhZLm9zyf4sgYNPf9y4P1iaMFoxCnND
-	 vmpP6mwHVkZTAqMzRQP8/xQtUuPRQkyg610OXx+F4hllN2VqM9JAkoH61yZltFlFPJ
-	 XqHK9UAaIQCm8F+CNnlQHgTMrBZV4LIp55MEtO6e0ArM3BMcNebQO1S7NqiSh5fsw2
-	 ZYASF40QaHGlQ==
+	b=jmX0JiUmaBDUp0oWoV7cqdMMmCUIf7j2Hg4K5AdCS0nTCzFuIEYi/B9WpZ/CoFzB4
+	 eBqJp/nULn8xBvVhXpBysR5txHkYVQUdpEmmv7RGWVFWcpLbsP39WW8OohcRlxH2rB
+	 whODPWry/PCsvxMoP+HVvLOzwacZwc4x1jNz1DMsaJ0ZfVkqLhKOAXzQEZpurdg7+u
+	 EmwUHDs15VEBISsNMHlMRmicXj1UGKL8K9BujbVqC3deNf798PQtF33lPqtyyNybUN
+	 Kbd8EFMFNuE1fWRAWKLgqSiV90kEGfWZRz/Q2iTw5nCnoXS6RowtW70V04qzZioBrJ
+	 ScvmZlU6Y9ADA==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v7 09/16] riscv: extend execmem_params for generated code allocations
-Date: Mon, 29 Apr 2024 15:16:13 +0300
-Message-ID: <20240429121620.1186447-10-rppt@kernel.org>
+Subject: [PATCH v7 10/16] arm64: extend execmem_info for generated code allocations
+Date: Mon, 29 Apr 2024 15:16:14 +0300
+Message-ID: <20240429121620.1186447-11-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240429121620.1186447-1-rppt@kernel.org>
 References: <20240429121620.1186447-1-rppt@kernel.org>
@@ -65,106 +65,74 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-The memory allocations for kprobes and BPF on RISC-V are not placed in
-the modules area and these custom allocations are implemented with
-overrides of alloc_insn_page() and  bpf_jit_alloc_exec().
+The memory allocations for kprobes and BPF on arm64 can be placed
+anywhere in vmalloc address space and currently this is implemented with
+overrides of alloc_insn_page() and bpf_jit_alloc_exec() in arm64.
 
-Define MODULES_VADDR and MODULES_END as VMALLOC_START and VMALLOC_END for
-32 bit and slightly reorder execmem_params initialization to support both
-32 and 64 bit variants, define EXECMEM_KPROBES and EXECMEM_BPF ranges in
-riscv::execmem_params and drop overrides of alloc_insn_page() and
-bpf_jit_alloc_exec().
+Define EXECMEM_KPROBES and EXECMEM_BPF ranges in arm64::execmem_info and
+drop overrides of alloc_insn_page() and bpf_jit_alloc_exec().
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: Will Deacon <will@kernel.org>
 ---
- arch/riscv/include/asm/pgtable.h   |  3 +++
- arch/riscv/kernel/module.c         | 14 +++++++++++++-
- arch/riscv/kernel/probes/kprobes.c | 10 ----------
- arch/riscv/net/bpf_jit_core.c      | 13 -------------
- 4 files changed, 16 insertions(+), 24 deletions(-)
+ arch/arm64/kernel/module.c         | 12 ++++++++++++
+ arch/arm64/kernel/probes/kprobes.c |  7 -------
+ arch/arm64/net/bpf_jit_comp.c      | 11 -----------
+ 3 files changed, 12 insertions(+), 18 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 9f8ea0e33eb1..5f21814e438e 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -55,6 +55,9 @@
- #define MODULES_LOWEST_VADDR	(KERNEL_LINK_ADDR - SZ_2G)
- #define MODULES_VADDR		(PFN_ALIGN((unsigned long)&_end) - SZ_2G)
- #define MODULES_END		(PFN_ALIGN((unsigned long)&_start))
-+#else
-+#define MODULES_VADDR		VMALLOC_START
-+#define MODULES_END		VMALLOC_END
- #endif
- 
- /*
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index 182904127ba0..0e6415f00fca 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -906,7 +906,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
- 	return 0;
- }
- 
--#if defined(CONFIG_MMU) && defined(CONFIG_64BIT)
-+#ifdef CONFIG_MMU
- static struct execmem_info execmem_info __ro_after_init;
- 
- struct execmem_info __init *execmem_arch_setup(void)
-@@ -919,6 +919,18 @@ struct execmem_info __init *execmem_arch_setup(void)
- 				.pgprot	= PAGE_KERNEL,
- 				.alignment = 1,
+diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+index b7a7a23f9f8f..a52240ea084b 100644
+--- a/arch/arm64/kernel/module.c
++++ b/arch/arm64/kernel/module.c
+@@ -146,6 +146,18 @@ struct execmem_info __init *execmem_arch_setup(void)
+ 				.fallback_start	= fallback_start,
+ 				.fallback_end	= fallback_end,
  			},
 +			[EXECMEM_KPROBES] = {
 +				.start	= VMALLOC_START,
 +				.end	= VMALLOC_END,
-+				.pgprot	= PAGE_KERNEL_READ_EXEC,
++				.pgprot	= PAGE_KERNEL_ROX,
 +				.alignment = 1,
 +			},
 +			[EXECMEM_BPF] = {
-+				.start	= BPF_JIT_REGION_START,
-+				.end	= BPF_JIT_REGION_END,
++				.start	= VMALLOC_START,
++				.end	= VMALLOC_END,
 +				.pgprot	= PAGE_KERNEL,
-+				.alignment = PAGE_SIZE,
++				.alignment = 1,
 +			},
  		},
  	};
  
-diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/kprobes.c
-index 2f08c14a933d..e64f2f3064eb 100644
---- a/arch/riscv/kernel/probes/kprobes.c
-+++ b/arch/riscv/kernel/probes/kprobes.c
-@@ -104,16 +104,6 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
+index 327855a11df2..4268678d0e86 100644
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -129,13 +129,6 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
  	return 0;
  }
  
--#ifdef CONFIG_MMU
 -void *alloc_insn_page(void)
 -{
--	return  __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC_END,
--				     GFP_KERNEL, PAGE_KERNEL_READ_EXEC,
--				     VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
--				     __builtin_return_address(0));
+-	return __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC_END,
+-			GFP_KERNEL, PAGE_KERNEL_ROX, VM_FLUSH_RESET_PERMS,
+-			NUMA_NO_NODE, __builtin_return_address(0));
 -}
--#endif
 -
- /* install breakpoint in text */
+ /* arm kprobe: install breakpoint in text */
  void __kprobes arch_arm_kprobe(struct kprobe *p)
  {
-diff --git a/arch/riscv/net/bpf_jit_core.c b/arch/riscv/net/bpf_jit_core.c
-index 6b3acac30c06..e238fdbd5dbc 100644
---- a/arch/riscv/net/bpf_jit_core.c
-+++ b/arch/riscv/net/bpf_jit_core.c
-@@ -219,19 +219,6 @@ u64 bpf_jit_alloc_exec_limit(void)
- 	return BPF_JIT_REGION_SIZE;
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 122021f9bdfc..456f5af239fc 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -1793,17 +1793,6 @@ u64 bpf_jit_alloc_exec_limit(void)
+ 	return VMALLOC_END - VMALLOC_START;
  }
  
 -void *bpf_jit_alloc_exec(unsigned long size)
 -{
--	return __vmalloc_node_range(size, PAGE_SIZE, BPF_JIT_REGION_START,
--				    BPF_JIT_REGION_END, GFP_KERNEL,
--				    PAGE_KERNEL, 0, NUMA_NO_NODE,
--				    __builtin_return_address(0));
+-	/* Memory is intended to be executable, reset the pointer tag. */
+-	return kasan_reset_tag(vmalloc(size));
 -}
 -
 -void bpf_jit_free_exec(void *addr)
@@ -172,9 +140,9 @@ index 6b3acac30c06..e238fdbd5dbc 100644
 -	return vfree(addr);
 -}
 -
- void *bpf_arch_text_copy(void *dst, void *src, size_t len)
+ /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
+ bool bpf_jit_supports_subprog_tailcalls(void)
  {
- 	int ret;
 -- 
 2.43.0
 
