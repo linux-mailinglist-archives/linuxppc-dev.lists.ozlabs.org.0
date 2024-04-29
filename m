@@ -1,96 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714828B5A8D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 15:52:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 419CB8B5AFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 16:10:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1GjTcmX;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1GjTcmX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=anw3SI+V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VSlB80bbHz3cbF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 23:52:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VSlbM65Jdz3cfg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 00:10:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1GjTcmX;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T1GjTcmX;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=anw3SI+V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSl9N0Qcyz3cLL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 23:51:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714398677;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8tbMD2h7PJ3lWi6PtX11/1+14job09F9/bpkbzHIXK8=;
-	b=T1GjTcmXBqkFmfEFLhls6bEKwVwFv6gvsbJsAhcH74JOXfQ3BJCrPaqltyTbUF0snPKKoO
-	BwWBF11Rj8Myg0imCJtQLSENaCfkYlX6dTiWt3nfKQjJtryx3TETE940HSegDwuSykiZ8H
-	gdYAn/EOWKhFLUHmBWP3lilUqhZxZvE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714398677;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8tbMD2h7PJ3lWi6PtX11/1+14job09F9/bpkbzHIXK8=;
-	b=T1GjTcmXBqkFmfEFLhls6bEKwVwFv6gvsbJsAhcH74JOXfQ3BJCrPaqltyTbUF0snPKKoO
-	BwWBF11Rj8Myg0imCJtQLSENaCfkYlX6dTiWt3nfKQjJtryx3TETE940HSegDwuSykiZ8H
-	gdYAn/EOWKhFLUHmBWP3lilUqhZxZvE=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-cwDC6jPRPFOZTT5K4bpJrw-1; Mon, 29 Apr 2024 09:51:15 -0400
-X-MC-Unique: cwDC6jPRPFOZTT5K4bpJrw-1
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-61bb2b4204eso5536607b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 06:51:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714398674; x=1715003474;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8tbMD2h7PJ3lWi6PtX11/1+14job09F9/bpkbzHIXK8=;
-        b=Nafniqx5tH1c5NumIHypierA93Cem/pyYO8Z5D2zDDKUM2GYsT1Y/hdGE14YNzEWV5
-         dBjrMFRmn7he+1+FoIFL7b/KvlY1SuxWUNba9sAtCX11MIEBKsQ4kk9wmfKFeCRQV6Nv
-         Jf/Hob8N8Mlj2Rm4tcNONRIudNxk2YHKz6P18wdw8pc4BE5E4cZzdnUmNeRLxdTMn3xx
-         PGLshNFZTOlKac8kJu04vfZh87aluN3E4aAsPlP0IuQBbgOfbwkysjei6Zs6QvivvRjL
-         jmvuc8MeOmSMQkVWxWbsJ26EW9ObIWrfIP/Tkqwfc/Ivze9je9amQn3vvd0nSUQJHUWA
-         z7TQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfIKnCURlPbBJTTgFbSpkge6SQLQnPVrmfqhMkAupqKcuJopKIsnL0iyldX3VU8nKcsSxcElWFrfKumcBIKPOoNI6XgB9fsiHx7oZKmw==
-X-Gm-Message-State: AOJu0YyCHsiSlX3+evrNSaGdyp3W4PNpSUG8lCMU+HGxGMCVu6GX47Vd
-	w5Ho9fEDJfBy1UQKwTJzz+L0PsCOIT6mxE6LYU16npuDGZpeH5OtTxp7k1afRF0VjprSov8OaCK
-	qyppbfhIDsCGFTq/pFbusG/x0uy2ieDYxDzJgC0weU2rrBLFSlTrvcjSNOmjBC18=
-X-Received: by 2002:a25:b29f:0:b0:de4:5c38:40b8 with SMTP id k31-20020a25b29f000000b00de45c3840b8mr9172209ybj.6.1714398673775;
-        Mon, 29 Apr 2024 06:51:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzbclBqcimK4lAEWdX1Uas2H83fsLI+db0WSQp/ICCVyIzSWiD5cYwnQ01wud/FLiGmgLing==
-X-Received: by 2002:a25:b29f:0:b0:de4:5c38:40b8 with SMTP id k31-20020a25b29f000000b00de45c3840b8mr9172187ybj.6.1714398673284;
-        Mon, 29 Apr 2024 06:51:13 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id fu48-20020a05622a5db000b0043781985244sm10433284qtb.59.2024.04.29.06.51.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 06:51:13 -0700 (PDT)
-Date: Mon, 29 Apr 2024 09:51:10 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/2] mm/selftests: Don't prefault in gup_longterm tests
-Message-ID: <Zi-lzjgoEiBGlsrX@x1n>
-References: <20240428190151.201002-1-peterx@redhat.com>
- <20240428190151.201002-3-peterx@redhat.com>
- <4171dbb6-81c0-4553-a405-a55f75be4cb7@redhat.com>
- <Zi-cONgqV4_kUIE4@x1n>
- <2338119d-060b-4127-9199-5ff39fd62fc4@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSlZd1bCZz3cXl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 00:09:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1714399785;
+	bh=OSV4xQE36WJK5s4wJOfO2BbSCoo6uuLgwgYmh3Q3rks=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=anw3SI+VLR2Hx2VXa+Klq6C0hfY7AHmNOgWE1DdUeM5M9JDFlyHVVmSeNnk3bXzwn
+	 QHZJ0khvJBZh7GOYRjtCytgHd5d78U0ru7HWVrff9LjHe6uEe1ymL/3Drv3KP9aaVe
+	 lCN6YCDYKXz1fH0l/dFZ5xfIwTU0GNj1K+v2ipRbaSV9FUyZ80bMYKv6WBSQElrGLO
+	 dJP3csukXWhrz/+zriUv29T6F47cx7ORSQeujGSsIf6JCrf+4VJe7ESAl04cv6z1qQ
+	 4uBLFgT4setEpap0WjcCP7a8eDT3nUeTr2NoH9+qhqPK/Utx6JZK4cypTMa/BOmEXH
+	 ItzFx3DMLn+bQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VSlZd07lqz4wcd;
+	Tue, 30 Apr 2024 00:09:44 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com, shuah@kernel.org
+Subject: Re: [PATCH 2/3] selftest/powerpc: Add flags.mk to support pmu
+ buildable
+In-Reply-To: <20240229093711.581230-2-maddy@linux.ibm.com>
+References: <20240229093711.581230-1-maddy@linux.ibm.com>
+ <20240229093711.581230-2-maddy@linux.ibm.com>
+Date: Tue, 30 Apr 2024 00:09:43 +1000
+Message-ID: <874jbkjm54.fsf@mail.lhotse>
 MIME-Version: 1.0
-In-Reply-To: <2338119d-060b-4127-9199-5ff39fd62fc4@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,25 +61,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>, John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, linux-mm@kvack.org, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Sachin Sant <sachinp@linux.ibm.com>, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 29, 2024 at 03:26:22PM +0200, David Hildenbrand wrote:
-> > The test patch here doesn't need to rush. David, how about you prepare a
-> > better and verified patch and post it separately, making sure to cover all
-> > the things we used to cover plus the unshare?  IIUC it used to be not
-> > touched because of pte_write() always returns true with a write prefault.
-> > 
-> > Then we let patch 1 go through first, and drop this one?
-> 
-> Whatever you prefer!
+Madhavan Srinivasan <maddy@linux.ibm.com> writes:
+> When running `make -C powerpc/pmu run_tests` from top level selftests
+> directory, currently this error is being reported
+>
+> make: Entering directory '/home/maddy/linux/tools/testing/selftests/powerpc/pmu'
+> Makefile:40: warning: overriding recipe for target 'emit_tests'
+> ../../lib.mk:111: warning: ignoring old recipe for target 'emit_tests'
+> gcc -m64    count_instructions.c ../harness.c event.c lib.c ../utils.c loop.S  -o /home/maddy/selftest_output//count_instructions
+> In file included from count_instructions.c:13:
+> event.h:12:10: fatal error: utils.h: No such file or directory
+> 12 | #include "utils.h"
+>   |          ^~~~~~~~~
+> compilation terminated.
+>
+> This is due to missing of include path in CFLAGS. That is, CFLAGS and
+> GIT_VERSION macros are defined in the powerpc/ folder Makefile which
+> in this case not involved.
+>
+> To address the failure incase of executing specific sub-folder test directly,
+> a new rule file has been addded by the patch called "flags.mk" under
+> selftest/powerpc/ folder and is linked to all the Makefile of powerpc/pmu
+> sub-folders.
 
-Thanks!
+This patch made my selftest build go from ~10s to ~50s !
 
-Andrew, would you consider taking patch 1 but ignore this patch 2? Or do
-you prefer me to resend?
+I tracked it down to "git describe" being run hundreds of times.
 
--- 
-Peter Xu
+> diff --git a/tools/testing/selftests/powerpc/flags.mk b/tools/testing/selftests/powerpc/flags.mk
+> new file mode 100644
+> index 000000000000..28374f470126
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/flags.mk
+> @@ -0,0 +1,12 @@
+> +#This checks for any ENV variables and add those.
+> +
+> +#ifeq ($(GIT_VERSION),)
+ 
+This isn't right, # is a comment in make syntax, so this line is just a
+comment. It needs to be "ifeq".
 
+> +GIT_VERSION = $(shell git describe --always --long --dirty || echo "unknown")
+ 
+Using '=' here means Make re-runs the command every time the variable is
+used. Previously that was OK because the variable was set once and then
+exported. But now that it's a Make variable in each file it leads to
+"git describe" being run a few hundred times.
+
+I've squashed in those fixes, no need to send a v2.
+
+cheers
