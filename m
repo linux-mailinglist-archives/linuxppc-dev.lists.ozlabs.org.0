@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A178B5880
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 14:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F56E8B5886
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 14:27:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MmvWvxbC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bFFsInVF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VSjJL4rMmz3wRB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 22:27:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VSjK66WCnz3w14
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Apr 2024 22:27:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MmvWvxbC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bFFsInVF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSj7D1ZYxz3vwC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 22:19:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VSj7R31M4z3vwx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Apr 2024 22:19:31 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4115760CF4;
+	by sin.source.kernel.org (Postfix) with ESMTP id 0D5F5CE0A4E;
+	Mon, 29 Apr 2024 12:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72204C4AF17;
 	Mon, 29 Apr 2024 12:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1518AC4AF1C;
-	Mon, 29 Apr 2024 12:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714393157;
-	bh=dj8Jeem56mTOW4r4fQ6hbW3YTYti2N5hSv58QgNFPjs=;
+	s=k20201202; t=1714393169;
+	bh=n6mgI0H/39mvE4gYkoCj3q2CT30/D9BQcnyPUkYmzdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmvWvxbC0HGTjKznBDq5WvNVUvymJ1XQrKqyn/OVi8liMXpHcQT38BD78iN0jrzIc
-	 QCK25AaJ5h6mcydeXdfzBUTc4xUaXrWbrAaWdBuFmTl/RCkXHdnN/iPijhgL45JYe0
-	 eXQ18cphcIbLcZNXfloTS6rlbQ9MTc9Txu4k8o3MY4KP0mAfQqILil2NMPrXMcwnak
-	 6sIqAhTOM4p1HykmXgzfa3hLG21FfFWgMeB2KKtIo95gGUtfWNF9j5Vdt45GD30uqh
-	 4QcH3ZbXMjkBY6nfwBBwL8WMVQkEl8iann/2QSk4rfiIqEk4IqoC7S5W/YvtwYo2Zh
-	 zAkBFTnQiwjWg==
+	b=bFFsInVFBMWcUy2hMTUt+adbc6np/tPcr9VGkWm8tuP6NytnXv1QlQsi/5luT78pd
+	 Gwkji8MgXhvAgn2blsfXUmT7xgHCZqJeFjNqaPNe0IjaM1QgosAmZkHxe4k2lFiWKL
+	 D2u8d3TVvOd0XmRy1ID5ZmOOgXPFLBbkHIY8uowOvfpmryc5HK4vjLM6dZ5/gp4jQW
+	 e2UivEzHHY3tOquEc+6zwZUIJdtVLpkuY0CYRFyyK/60HSJiGPdesQxLZLuDUS0Jps
+	 wHm1nIGgjwqXKqgu2gD18X1d3gf5+T3g4JnHEY7R+bSyi8BvcfNzCcvUPaCGFrLtdr
+	 5p2A448+R1sCQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v7 14/16] powerpc: use CONFIG_EXECMEM instead of CONFIG_MODULES where appropriate
-Date: Mon, 29 Apr 2024 15:16:18 +0300
-Message-ID: <20240429121620.1186447-15-rppt@kernel.org>
+Subject: [PATCH v7 15/16] kprobes: remove dependency on CONFIG_MODULES
+Date: Mon, 29 Apr 2024 15:16:19 +0300
+Message-ID: <20240429121620.1186447-16-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240429121620.1186447-1-rppt@kernel.org>
 References: <20240429121620.1186447-1-rppt@kernel.org>
@@ -65,122 +65,232 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-There are places where CONFIG_MODULES guards the code that depends on
-memory allocation being done with module_alloc().
+kprobes depended on CONFIG_MODULES because it has to allocate memory for
+code.
 
-Replace CONFIG_MODULES with CONFIG_EXECMEM in such places.
+Since code allocations are now implemented with execmem, kprobes can be
+enabled in non-modular kernels.
+
+Add #ifdef CONFIG_MODULE guards for the code dealing with kprobes inside
+modules, make CONFIG_KPROBES select CONFIG_EXECMEM and drop the
+dependency of CONFIG_KPROBES on CONFIG_MODULES.
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 ---
- arch/powerpc/Kconfig                 | 2 +-
- arch/powerpc/include/asm/kasan.h     | 2 +-
- arch/powerpc/kernel/head_8xx.S       | 4 ++--
- arch/powerpc/kernel/head_book3s_32.S | 6 +++---
- arch/powerpc/lib/code-patching.c     | 2 +-
- arch/powerpc/mm/book3s32/mmu.c       | 2 +-
- 6 files changed, 9 insertions(+), 9 deletions(-)
+ arch/Kconfig                |  2 +-
+ include/linux/module.h      |  9 ++++++
+ kernel/kprobes.c            | 55 +++++++++++++++++++++++--------------
+ kernel/trace/trace_kprobe.c | 20 +++++++++++++-
+ 4 files changed, 63 insertions(+), 23 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1c4be3373686..2e586733a464 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -285,7 +285,7 @@ config PPC
- 	select IOMMU_HELPER			if PPC64
- 	select IRQ_DOMAIN
- 	select IRQ_FORCED_THREADING
--	select KASAN_VMALLOC			if KASAN && MODULES
-+	select KASAN_VMALLOC			if KASAN && EXECMEM
- 	select LOCK_MM_AND_FIND_VMA
- 	select MMU_GATHER_PAGE_SIZE
- 	select MMU_GATHER_RCU_TABLE_FREE
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index 365d2720097c..b5bbb94c51f6 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -19,7 +19,7 @@
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 4fd0daa54e6c..caa459964f09 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -52,9 +52,9 @@ config GENERIC_ENTRY
  
- #define KASAN_SHADOW_SCALE_SHIFT	3
+ config KPROBES
+ 	bool "Kprobes"
+-	depends on MODULES
+ 	depends on HAVE_KPROBES
+ 	select KALLSYMS
++	select EXECMEM
+ 	select TASKS_RCU if PREEMPTION
+ 	help
+ 	  Kprobes allows you to trap at almost any kernel address and
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 1153b0d99a80..ffa1c603163c 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -605,6 +605,11 @@ static inline bool module_is_live(struct module *mod)
+ 	return mod->state != MODULE_STATE_GOING;
+ }
  
--#if defined(CONFIG_MODULES) && defined(CONFIG_PPC32)
-+#if defined(CONFIG_EXECMEM) && defined(CONFIG_PPC32)
- #define KASAN_KERN_START	ALIGN_DOWN(PAGE_OFFSET - SZ_256M, SZ_256M)
- #else
- #define KASAN_KERN_START	PAGE_OFFSET
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 647b0b445e89..edc479a7c2bc 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -199,12 +199,12 @@ instruction_counter:
- 	mfspr	r10, SPRN_SRR0	/* Get effective address of fault */
- 	INVALIDATE_ADJACENT_PAGES_CPU15(r10, r11)
- 	mtspr	SPRN_MD_EPN, r10
--#ifdef CONFIG_MODULES
-+#ifdef CONFIG_EXECMEM
- 	mfcr	r11
- 	compare_to_kernel_boundary r10, r10
- #endif
- 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
--#ifdef CONFIG_MODULES
-+#ifdef CONFIG_EXECMEM
- 	blt+	3f
- 	rlwinm	r10, r10, 0, 20, 31
- 	oris	r10, r10, (swapper_pg_dir - PAGE_OFFSET)@ha
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index c1d89764dd22..57196883a00e 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -419,14 +419,14 @@ InstructionTLBMiss:
-  */
- 	/* Get PTE (linux-style) and check access */
- 	mfspr	r3,SPRN_IMISS
--#ifdef CONFIG_MODULES
-+#ifdef CONFIG_EXECMEM
- 	lis	r1, TASK_SIZE@h		/* check if kernel address */
- 	cmplw	0,r1,r3
- #endif
- 	mfspr	r2, SPRN_SDR1
- 	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
- 	rlwinm	r2, r2, 28, 0xfffff000
--#ifdef CONFIG_MODULES
-+#ifdef CONFIG_EXECMEM
- 	li	r0, 3
- 	bgt-	112f
- 	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
-@@ -442,7 +442,7 @@ InstructionTLBMiss:
- 	andc.	r1,r1,r2		/* check access & ~permission */
- 	bne-	InstructionAddressInvalid /* return if access not permitted */
- 	/* Convert linux-style PTE to low word of PPC-style PTE */
--#ifdef CONFIG_MODULES
-+#ifdef CONFIG_EXECMEM
- 	rlwimi	r2, r0, 0, 31, 31	/* userspace ? -> PP lsb */
- #endif
- 	ori	r1, r1, 0xe06		/* clear out reserved bits */
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index c6ab46156cda..7af791446ddf 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -225,7 +225,7 @@ void __init poking_init(void)
++static inline bool module_is_coming(struct module *mod)
++{
++        return mod->state == MODULE_STATE_COMING;
++}
++
+ struct module *__module_text_address(unsigned long addr);
+ struct module *__module_address(unsigned long addr);
+ bool is_module_address(unsigned long addr);
+@@ -857,6 +862,10 @@ void *dereference_module_function_descriptor(struct module *mod, void *ptr)
+ 	return ptr;
+ }
  
- static unsigned long get_patch_pfn(void *addr)
++static inline bool module_is_coming(struct module *mod)
++{
++	return false;
++}
+ #endif /* CONFIG_MODULES */
+ 
+ #ifdef CONFIG_SYSFS
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index ddd7cdc16edf..ca2c6cbd42d2 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1588,7 +1588,7 @@ static int check_kprobe_address_safe(struct kprobe *p,
+ 	}
+ 
+ 	/* Get module refcount and reject __init functions for loaded modules. */
+-	if (*probed_mod) {
++	if (IS_ENABLED(CONFIG_MODULES) && *probed_mod) {
+ 		/*
+ 		 * We must hold a refcount of the probed module while updating
+ 		 * its code to prohibit unexpected unloading.
+@@ -1603,12 +1603,13 @@ static int check_kprobe_address_safe(struct kprobe *p,
+ 		 * kprobes in there.
+ 		 */
+ 		if (within_module_init((unsigned long)p->addr, *probed_mod) &&
+-		    (*probed_mod)->state != MODULE_STATE_COMING) {
++		    !module_is_coming(*probed_mod)) {
+ 			module_put(*probed_mod);
+ 			*probed_mod = NULL;
+ 			ret = -ENOENT;
+ 		}
+ 	}
++
+ out:
+ 	preempt_enable();
+ 	jump_label_unlock();
+@@ -2488,24 +2489,6 @@ int kprobe_add_area_blacklist(unsigned long start, unsigned long end)
+ 	return 0;
+ }
+ 
+-/* Remove all symbols in given area from kprobe blacklist */
+-static void kprobe_remove_area_blacklist(unsigned long start, unsigned long end)
+-{
+-	struct kprobe_blacklist_entry *ent, *n;
+-
+-	list_for_each_entry_safe(ent, n, &kprobe_blacklist, list) {
+-		if (ent->start_addr < start || ent->start_addr >= end)
+-			continue;
+-		list_del(&ent->list);
+-		kfree(ent);
+-	}
+-}
+-
+-static void kprobe_remove_ksym_blacklist(unsigned long entry)
+-{
+-	kprobe_remove_area_blacklist(entry, entry + 1);
+-}
+-
+ int __weak arch_kprobe_get_kallsym(unsigned int *symnum, unsigned long *value,
+ 				   char *type, char *sym)
  {
--	if (IS_ENABLED(CONFIG_MODULES) && is_vmalloc_or_module_addr(addr))
-+	if (IS_ENABLED(CONFIG_EXECMEM) && is_vmalloc_or_module_addr(addr))
- 		return vmalloc_to_pfn(addr);
- 	else
- 		return __pa_symbol(addr) >> PAGE_SHIFT;
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 100f999871bc..625fe7d08e06 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -184,7 +184,7 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+@@ -2570,6 +2553,25 @@ static int __init populate_kprobe_blacklist(unsigned long *start,
+ 	return ret ? : arch_populate_kprobe_blacklist();
+ }
  
- static bool is_module_segment(unsigned long addr)
++#ifdef CONFIG_MODULES
++/* Remove all symbols in given area from kprobe blacklist */
++static void kprobe_remove_area_blacklist(unsigned long start, unsigned long end)
++{
++	struct kprobe_blacklist_entry *ent, *n;
++
++	list_for_each_entry_safe(ent, n, &kprobe_blacklist, list) {
++		if (ent->start_addr < start || ent->start_addr >= end)
++			continue;
++		list_del(&ent->list);
++		kfree(ent);
++	}
++}
++
++static void kprobe_remove_ksym_blacklist(unsigned long entry)
++{
++	kprobe_remove_area_blacklist(entry, entry + 1);
++}
++
+ static void add_module_kprobe_blacklist(struct module *mod)
  {
--	if (!IS_ENABLED(CONFIG_MODULES))
-+	if (!IS_ENABLED(CONFIG_EXECMEM))
- 		return false;
- 	if (addr < ALIGN_DOWN(MODULES_VADDR, SZ_256M))
- 		return false;
+ 	unsigned long start, end;
+@@ -2672,6 +2674,17 @@ static struct notifier_block kprobe_module_nb = {
+ 	.priority = 0
+ };
+ 
++static int kprobe_register_module_notifier(void)
++{
++	return register_module_notifier(&kprobe_module_nb);
++}
++#else
++static int kprobe_register_module_notifier(void)
++{
++	return 0;
++}
++#endif /* CONFIG_MODULES */
++
+ void kprobe_free_init_mem(void)
+ {
+ 	void *start = (void *)(&__init_begin);
+@@ -2731,7 +2744,7 @@ static int __init init_kprobes(void)
+ 	if (!err)
+ 		err = register_die_notifier(&kprobe_exceptions_nb);
+ 	if (!err)
+-		err = register_module_notifier(&kprobe_module_nb);
++		err = kprobe_register_module_notifier();
+ 
+ 	kprobes_initialized = (err == 0);
+ 	kprobe_sysctls_init();
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 14099cc17fc9..2cb2a3951b4f 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -111,6 +111,7 @@ static nokprobe_inline bool trace_kprobe_within_module(struct trace_kprobe *tk,
+ 	return strncmp(module_name(mod), name, len) == 0 && name[len] == ':';
+ }
+ 
++#ifdef CONFIG_MODULES
+ static nokprobe_inline bool trace_kprobe_module_exist(struct trace_kprobe *tk)
+ {
+ 	char *p;
+@@ -129,6 +130,12 @@ static nokprobe_inline bool trace_kprobe_module_exist(struct trace_kprobe *tk)
+ 
+ 	return ret;
+ }
++#else
++static inline bool trace_kprobe_module_exist(struct trace_kprobe *tk)
++{
++	return false;
++}
++#endif
+ 
+ static bool trace_kprobe_is_busy(struct dyn_event *ev)
+ {
+@@ -670,6 +677,7 @@ static int register_trace_kprobe(struct trace_kprobe *tk)
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_MODULES
+ /* Module notifier call back, checking event on the module */
+ static int trace_kprobe_module_callback(struct notifier_block *nb,
+ 				       unsigned long val, void *data)
+@@ -704,6 +712,16 @@ static struct notifier_block trace_kprobe_module_nb = {
+ 	.notifier_call = trace_kprobe_module_callback,
+ 	.priority = 1	/* Invoked after kprobe module callback */
+ };
++static int trace_kprobe_register_module_notifier(void)
++{
++	return register_module_notifier(&trace_kprobe_module_nb);
++}
++#else
++static int trace_kprobe_register_module_notifier(void)
++{
++	return 0;
++}
++#endif /* CONFIG_MODULES */
+ 
+ static int count_symbols(void *data, unsigned long unused)
+ {
+@@ -1933,7 +1951,7 @@ static __init int init_kprobe_trace_early(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (register_module_notifier(&trace_kprobe_module_nb))
++	if (trace_kprobe_register_module_notifier())
+ 		return -EINVAL;
+ 
+ 	return 0;
 -- 
 2.43.0
 
