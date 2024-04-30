@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE658B78A1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 16:12:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D803D8B78AB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 16:13:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=GtbswIeW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=y2BUGfDz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTMbp71wlz3wDW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 00:12:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTMcb3pvjz3wH2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 00:13:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=GtbswIeW;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=y2BUGfDz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTMNq6dQwz3cYc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 00:03:23 +1000 (AEST)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-516d1ecaf25so7961529e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 07:03:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTMNt1xCvz3cSM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 00:03:26 +1000 (AEST)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5726716a006so4642144a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 07:03:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714485800; x=1715090600; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1714485802; x=1715090602; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iPEO0RWAvqMjT0IhuA0J9gOKQsCIQYXZsdev+OBW9Pk=;
-        b=GtbswIeWjcq9ccBFl7BvseEuDVdDEGVeDBurlpjtKTHnDMWosJfSgZttbCjlAfir0C
-         069NU33WD+sZPN5p3+ZtRaIFmLeoQ69Iv/XaNJ7eRK18LABjCDgSIasmDYH6ZOBexAjL
-         SpiUj/tvXxCuQSvJEnkjh6ufLPXSB5uDffhiz1FAZmW5J9pwk250FCdoi3VypG9Wof/7
-         jEwxDAsvYA7qaZSvwh/Vi0LRI0xuZ5/k5OCSJYqNUy+KiiWbJcDauBJ7IPSiR1adMUD6
-         GH9ZVk3Npuc4DzzJkSIWEYUeoNRU4FbTOpnEJYl4NKaR6PM5tAKtJM8iHVJIWD6NpDzR
-         akpg==
+        bh=yC31R3m8W6wP+grnNVF/H3dyhG6qnKQukTpoDRo2U3E=;
+        b=y2BUGfDzXe7ZR1UjjOI47MsZghyYUTTwQrNi+gN3JCHTrrSu0yJlli6lAWLnEPA8DG
+         o8giL3lFEri4obam/kdepsM40etShQW1N2kcd/nFnTvSDJBNbRr40839SyDyOggdfZ9+
+         lh3KlyJYdvU8AkhZD0lDQIdkjZeaaIH10Lsu+PetsZtYG81yb2kr32b65mZUSDkd1gXr
+         v5+p0391eSbh79e8LJQ5jOcvFShmyrc5o9tPuUkE8yHgx62dTAD3rtu3X/5m9UWNLOP0
+         AWokyt6t6Bv9whic2hwPqHfkIhQI8ETGCGsWArvU9H6IVPdwTI7htLG6xsiY+98fWdY/
+         vJKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714485800; x=1715090600;
+        d=1e100.net; s=20230601; t=1714485802; x=1715090602;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iPEO0RWAvqMjT0IhuA0J9gOKQsCIQYXZsdev+OBW9Pk=;
-        b=a37OPxrX3VcHsSh8GeSQq1Xh0FpJ1wB4rW4nWpxbYpFERFfOEUGywQ0PtPjwMLzAIA
-         NfXrRIECf8uLLqF455v+W9o9CwyPUC+Mqaxd8p4Mk4BHcRt9WA8oXBgk9srM2IbWQiwP
-         fLX/CPASZPIqbpo8ZzyQvetxirueiatn32A2xQkOw8ywdqQcs6Zvh42sZ5fwQpB67fRR
-         h/dul5iDt6XlbKi0Vc/RA/bvLyg62vZYnvNnY0JWLmO5kp6Jw9SMP1FEHJp5mMl4KP8+
-         I3bixIZN1PKP7w1wDu3+LetQE8kAkLl1GeHe+V/HKpnsx6DVGpMUWjbKsFg9Jlflp4OD
-         +gdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNKPbj6oBHMlA3Jm6bCjNpRU5qcchyVve2EAn+s1XZAIPC31aEVNv5B2waVnsTB4OwNoOHfPFseRdZQgc2FqDZ419/L637A03Rt/Ef7g==
-X-Gm-Message-State: AOJu0Yxy+mYW7d+mUWrOhnybCKbL0ai229nNEmkVU2jjysEhpFwPXh0r
-	DXimjA3xnMRMT99qZSY9BJ4ocV4GetCEYGMRLXW2ikUEnubaiu5bouxRmepAiYw=
-X-Google-Smtp-Source: AGHT+IGh5m+2saezt4d4/Xj30jwjHn2HaB5/1wzlPXeDMAywvUMwy38mdPMQn/OqpOvF0tN4moRDWA==
-X-Received: by 2002:ac2:4342:0:b0:516:d0c2:755 with SMTP id o2-20020ac24342000000b00516d0c20755mr1936131lfl.63.1714485799614;
-        Tue, 30 Apr 2024 07:03:19 -0700 (PDT)
+        bh=yC31R3m8W6wP+grnNVF/H3dyhG6qnKQukTpoDRo2U3E=;
+        b=g6C5qHORLg60rG3HSpVKO11I8FXQOpL5QdgRjCYnvFHHnJTcAGcWKwq0X10CqIyOzH
+         yANqBaeh1A1xjy0/APKbs5MxCZLCEEkXxyiaNdfNMcDJVFq2/ujXAO6rm8aqkPuHUtKQ
+         jUxkiKd0R9paAqDHOWQAd7eoSGbNtb+Nw1/YuWH9EyyBnYzOhGzQan5VFrN5aMybWxIQ
+         fONREaf1eOkxRm0nBdyG3BkfOX8GX5j+pd1J90ZWpBcY4PVkPkQGjve+7/re5b9SwA6K
+         nprITrS07zdaUH81yEcXLRyt2nFP83laFPx6XcnB3HKab4q0njitXdf2prjnPDlCTm9E
+         TXJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVfkwVXbLlanCVqUcvIYF8qqxf9pI904r0LYykVwxtsW+Vez5TOlhAfZXXDwMlypXVAgFXtgl2iLW3Y0pJuOBsvwFPWZG19YPpzicmbiA==
+X-Gm-Message-State: AOJu0YwUQ2pjZNFI+LQ0Jntw18RZvjKrgIW/S6ibpHtXpwPjeXobdvE+
+	oTLN3wlb2phJ+zkrEfwQoCuG0Hn3/fX+18LjX0wwXR3DBS9uIN1lbpEC2AGrLIs=
+X-Google-Smtp-Source: AGHT+IHSymzbs0C8MGLs3EVai6AvWaGt9IGpYcAnz/QtQsZ0owRN86WOYk4l43txKHjNaleFCNL96Q==
+X-Received: by 2002:a17:906:b78c:b0:a58:ff19:1bd7 with SMTP id dt12-20020a170906b78c00b00a58ff191bd7mr4814671ejb.24.1714485802359;
+        Tue, 30 Apr 2024 07:03:22 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id pv27-20020a170907209b00b00a5940af3f67sm31434ejb.16.2024.04.30.07.03.17
+        by smtp.gmail.com with ESMTPSA id pv27-20020a170907209b00b00a5940af3f67sm31434ejb.16.2024.04.30.07.03.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 07:03:19 -0700 (PDT)
+        Tue, 30 Apr 2024 07:03:21 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 30 Apr 2024 16:02:21 +0200
-Subject: [PATCH 12/13] ASoC: samsung: Use snd_soc_substream_to_rtd() for
+Date: Tue, 30 Apr 2024 16:02:22 +0200
+Subject: [PATCH 13/13] ASoC: sunxi: Use snd_soc_substream_to_rtd() for
  accessing private_data
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240430-asoc-snd-substream-clean-v1-12-6f8a8902b479@linaro.org>
+Message-Id: <20240430-asoc-snd-substream-clean-v1-13-6f8a8902b479@linaro.org>
 References: <20240430-asoc-snd-substream-clean-v1-0-6f8a8902b479@linaro.org>
 In-Reply-To: <20240430-asoc-snd-substream-clean-v1-0-6f8a8902b479@linaro.org>
 To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
@@ -92,21 +92,21 @@ To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
  Jernej Skrabec <jernej.skrabec@gmail.com>, 
  Samuel Holland <samuel@sholland.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=859;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=855;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=s6T6qKBmGyM2bmAZfxmnWfBAOCON5ixd+eIprC5zOI4=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmMPn3jE3Jqd/FGkciqXRI8lqVudz+blh1rLunh
- DAPo4JfRZmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZjD59wAKCRDBN2bmhouD
- 167MD/9WOiPSu4HFniDht9/iDlJgx4fouuoHImJ/CM8XXopNUpo7cqRR15JqKSLsDj6vLCZnDjI
- XJH4l92Ge2WRJcz0/XCKWm3Oj9AtC7ODuCsB3t2mfhBJxD0iuojyzEbOdRvzU55KzY/Jm2DElBe
- AVz2VKMPgF1zFr4pkhx3dxiMHbLe6UGPzibytjl5whdT2xAoImo+S2NZTWCKOe4+N7Zrs5X4MKN
- nksx0kWoenkduh9GxKCpr++Kokx/YYpvDE8obQfhLY80Z4tPSY6cX4vv9sfrzB9vGeLAU9yTvAc
- Wxh0WUV5cT2zuYc4pUkyqV+EX/Y3tPEE5xSP136C9a7FWO+Rd52ezaWXED2BY3hXspNrTrKXXTD
- nFQfKJ3M0bszW7Tctw01tKYZUa9Qf0bz/0oVbI6rpDgM3+PPLaVWT1D47FaKzfKQ9jnjaZWzOoF
- 1F53c9Pv5Cdt+RLqjXfD1JfrGJRJ7hUbPzMQ/arruJidb9QiloV9Dp70EuGD0VudxXWXtwRzztI
- eIzKDw49c8QYUITfwxYEr1QsvBeQMeOGj/PlXQl1p6vj/Y4oFGW1SjDTITGrfjGFfmKEABGvYP6
- yK41SS5+akvGSPouciQ7r2EIqpAZMYxIFkaCVPRLm6VL/jKT9HDivO012DCh8z7Q3NuvimCGlwg
- o5bO2V6wsqvDkUQ==
+ bh=skJQwkduJ0UqVILLbpIVR8oru+2QUc2pKBYrAAVKHLI=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmMPn42nKdNBa2rMr1pgKaAGhX7w0XUyPtyKW9V
+ bUEsOjG4LCJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZjD5+AAKCRDBN2bmhouD
+ 147DD/4ieg9gyFCb0g9PJBqL29gkEXs/qxtb2TaodG03VYLhq+fFzv2vOzJZhszAb1VOkS8eI0F
+ KlbKY9lyGbdzA1h6zSNA0p/UgvlOtsdv4xC+0KT0yy7TXAza83A9DSl1qDnkNTdOFgc42e1+9FU
+ eaGGfDloUavMXd6rNB7SRZMQRcm41b47P/mRzEa2cA1bjkAlrlBm6NwPeVLP5A/Kcr3Tb3EZ2pI
+ HgLvCY5h27fuJYugwmxUMfqOjXMdWLx9SSAQ5yfhuYZZBgKU100MiFOvcW2nlDlhncmjU0WcU5t
+ H7ySW9GYOdqAqEkELNGxb97j0Ov7StcHdE1uz4YmdansE+m8dNQTp3CaZ4LdH2+2TFF/sP4aynu
+ H2GUeJKaC1N/Ng+cEI1h0gMDXKbR8qyTg+SjoM6i7+5UP1I2coCVMYrneh2dpEyJOp9MNFOvj5d
+ UzzEQMRQeFilQTHwB3xynjKLIUqJbjhqfafH5A0FECh/lb7OoM+PTU7VciDC4L/s1Xl/NOiJCnq
+ 69WLOXnti2pJsaGzvUMsSHAlokIA+7NRIpUewkiHs/lN9zgB7QfsX/zvrQTookURZBTMehAN/cd
+ yW7Vl73L2bSpn6CppvaD8hpkm5+NhqYeNWbMxnKsVdyQiMo84C2YNgI+3cBxRRpVQUYuh98RXgk
+ h6j6UQIf5KNOdKQ==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -128,22 +128,22 @@ Do not open-code snd_soc_substream_to_rtd().
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- sound/soc/samsung/midas_wm1811.c | 2 +-
+ sound/soc/sunxi/sun50i-dmic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/samsung/midas_wm1811.c b/sound/soc/samsung/midas_wm1811.c
-index f31244156ff6..0841e2e6f8ce 100644
---- a/sound/soc/samsung/midas_wm1811.c
-+++ b/sound/soc/samsung/midas_wm1811.c
-@@ -127,7 +127,7 @@ static int midas_stop_fll1(struct snd_soc_pcm_runtime *rtd)
- static int midas_aif1_hw_params(struct snd_pcm_substream *substream,
- 				struct snd_pcm_hw_params *params)
+diff --git a/sound/soc/sunxi/sun50i-dmic.c b/sound/soc/sunxi/sun50i-dmic.c
+index c76628bc86c6..fedfa4fc95fb 100644
+--- a/sound/soc/sunxi/sun50i-dmic.c
++++ b/sound/soc/sunxi/sun50i-dmic.c
+@@ -74,7 +74,7 @@ static const struct dmic_rate dmic_rate_s[] = {
+ static int sun50i_dmic_startup(struct snd_pcm_substream *substream,
+ 			       struct snd_soc_dai *cpu_dai)
  {
--	struct snd_soc_pcm_runtime *rtd	= substream->private_data;
+-	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 +	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	unsigned int pll_out;
+ 	struct sun50i_dmic_dev *host = snd_soc_dai_get_drvdata(snd_soc_rtd_to_cpu(rtd, 0));
  
- 	/* AIF1CLK should be at least 3MHz for "optimal performance" */
+ 	/* only support capture */
 
 -- 
 2.43.0
