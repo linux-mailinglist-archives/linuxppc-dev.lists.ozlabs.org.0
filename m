@@ -2,82 +2,140 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A450A8B6D44
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 10:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B0B8B7500
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 13:57:03 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vqeIBGjX;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Y4Kk2Nxd;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vqeIBGjX;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Y4Kk2Nxd;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTDNg5HBPz3cXx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 18:47:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTJb056qdz3cSK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 21:57:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=srs0=py4m=md=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vqeIBGjX;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Y4Kk2Nxd;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vqeIBGjX;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Y4Kk2Nxd;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 373 seconds by postgrey-1.37 at boromir; Tue, 30 Apr 2024 20:15:25 AEST
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTDNF4ZcWz2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 18:47:25 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 950A5CE0F88;
-	Tue, 30 Apr 2024 08:47:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C809C2BBFC;
-	Tue, 30 Apr 2024 08:47:14 +0000 (UTC)
-Message-ID: <32d0c83c-4d0c-4d22-b2f1-d03d075f4898@xs4all.nl>
-Date: Tue, 30 Apr 2024 10:47:13 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTGKn0rmJz3btX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 20:15:24 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 90B981F7C9;
+	Tue, 30 Apr 2024 10:09:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1714471742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTUPyaWcpZDKUukiVIneGRzBea/lmcCk8kXRR619DJk=;
+	b=vqeIBGjXPKb0XycMvacAW428uolNoqtaN+EBo2mJHjf74TxTIQVlt1MpATsa4IuUZcKLzy
+	UJEys7GFBXXE5vubiBV2DPs1hUa/STmWvTjbv7yEWIAwLpxqDSUen9/F+c160SQUX7J9ZM
+	gWZoQjDIPJgvZSToK75KO55SPRn2Kws=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1714471742;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTUPyaWcpZDKUukiVIneGRzBea/lmcCk8kXRR619DJk=;
+	b=Y4Kk2NxdcsJrpGpYXQLpbXlde7mZBRQhy/lhK6wfFaRvxYGJW/MWwnAVpk3q6wgGY68wCh
+	8DrbHfPc84XlzxAg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vqeIBGjX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Y4Kk2Nxd
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1714471742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTUPyaWcpZDKUukiVIneGRzBea/lmcCk8kXRR619DJk=;
+	b=vqeIBGjXPKb0XycMvacAW428uolNoqtaN+EBo2mJHjf74TxTIQVlt1MpATsa4IuUZcKLzy
+	UJEys7GFBXXE5vubiBV2DPs1hUa/STmWvTjbv7yEWIAwLpxqDSUen9/F+c160SQUX7J9ZM
+	gWZoQjDIPJgvZSToK75KO55SPRn2Kws=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1714471742;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTUPyaWcpZDKUukiVIneGRzBea/lmcCk8kXRR619DJk=;
+	b=Y4Kk2NxdcsJrpGpYXQLpbXlde7mZBRQhy/lhK6wfFaRvxYGJW/MWwnAVpk3q6wgGY68wCh
+	8DrbHfPc84XlzxAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 80DCA136A8;
+	Tue, 30 Apr 2024 10:09:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 51BwHz7DMGa5bAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 30 Apr 2024 10:09:02 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 32814A06D4; Tue, 30 Apr 2024 12:09:02 +0200 (CEST)
+Date: Tue, 30 Apr 2024 12:09:02 +0200
+From: Jan Kara <jack@suse.cz>
+To: cgzones@googlemail.com
+Subject: Re: [PATCH v3 2/2] fs/xattr: add *at family syscalls
+Message-ID: <20240430100902.iwmeszr2jzv4wyo7@quack3>
+References: <20240426162042.191916-1-cgoettsche@seltendoof.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
-Content-Language: en-US, nl
-To: Sebastian Fricke <sebastian.fricke@collabora.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>
-References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
- <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240426162042.191916-1-cgoettsche@seltendoof.de>
+X-Spam-Flag: NO
+X-Spam-Score: -2.51
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 90B981F7C9
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[googlemail.com];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org,linaro.org,jurassic.park.msu.ru,gmail.com,armlinux.org.uk,arm.com,linux-m68k.org,monstr.eu,alpha.franken.de,HansenPartnership.com,gmx.de,ellerman.id.au,csgroup.eu,linux.ibm.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de,davemloft.net,gaisler.com,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,zankel.net,zeniv.linux.org.uk,suse.cz,paul-moore.com,arndb.de,kernel.dk,infradead.org,intel.com,sifive.com,schaufler-ca.com,broadcom.com,chromium.org];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_GT_50(0.00)[72];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	TAGGED_RCPT(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLdxgs459xdbsauns6rcjztsec)];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:dkim,suse.com:email]
+X-Mailman-Approved-At: Tue, 30 Apr 2024 21:56:24 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,102 +147,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, linux-media@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
+Cc: Andreas Larsson <andreas@gaisler.com>, Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Jan Kara <jack@suse.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Paul Moore <paul@paul-moore.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>, Miklos Szeredi <mszeredi@redhat.com>, Palmer Dabbelt <palmer@sifive.com>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, selinux@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Christian Brauner <brauner@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Casey Schaufler <casey@schaufler-ca.com>, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>, io-uring@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Nhat Pham <nphamcs@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.
+ com>, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Paris <eparis@redhat.com>, Pavel Begunkov <asml.silence@gmail.com>, audit@vger.kernel.org, linux-security-module@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 30/04/2024 10:21, Sebastian Fricke wrote:
-> Hey Shengjiu,
+On Fri 26-04-24 18:20:14, Christian Göttsche wrote:
+> From: Christian Göttsche <cgzones@googlemail.com>
 > 
-> first of all thanks for all of this work and I am very sorry for only
-> emerging this late into the series, I sadly didn't notice it earlier.
+> Add the four syscalls setxattrat(), getxattrat(), listxattrat() and
+> removexattrat().  Those can be used to operate on extended attributes,
+> especially security related ones, either relative to a pinned directory
+> or on a file descriptor without read access, avoiding a
+> /proc/<pid>/fd/<fd> detour, requiring a mounted procfs.
 > 
-> I would like to voice a few concerns about the general idea of adding
-> Audio support to the Media subsystem.
+> One use case will be setfiles(8) setting SELinux file contexts
+> ("security.selinux") without race conditions and without a file
+> descriptor opened with read access requiring SELinux read permission.
 > 
-> 1. The biggest objection is, that the Linux Kernel has a subsystem
-> specifically targeted for audio devices, adding support for these
-> devices in another subsystem are counterproductive as they work around
-> the shortcomings of the audio subsystem while forcing support for a
-> device into a subsystem that was never designed for such devices.
-> Instead, the audio subsystem has to be adjusted to be able to support
-> all of the required workflows, otherwise, the next audio driver with
-> similar requirements will have to move to the media subsystem as well,
-> the audio subsystem would then never experience the required change and
-> soon we would have two audio subsystems.
+> Use the do_{name}at() pattern from fs/open.c.
 > 
-> 2. Closely connected to the previous objection, the media subsystem with
-> its current staff of maintainers is overworked and barely capable of
-> handling the workload, which includes an abundance of different devices
-> from DVB, codecs, cameras, PCI devices, radio tuners, HDMI CEC, IR
-> receivers, etc. Adding more device types to this matrix will make the
-> situation worse and should only be done with a plan for how first to
-> improve the current maintainer situation.
+> Pass the value of the extended attribute, its length, and for
+> setxattrat(2) the command (XATTR_CREATE or XATTR_REPLACE) via an added
+> struct xattr_args to not exceed six syscall arguments and not
+> merging the AT_* and XATTR_* flags.
 > 
-> 3. By using the same framework and APIs as the video codecs, the audio
-> codecs are going to cause extra work for the video codec developers and
-> maintainers simply by occupying the same space that was orginally
-> designed for the purpose of video only. Even if you try to not cause any
-> extra stress the simple presence of the audio code in the codebase is
-> going to cause restrictions.
-> 
-> The main issue here is that the audio subsystem doesn't provide a
-> mem2mem framework and I would say you are in luck because the media
-> subsystem has gathered a lot of shortcomings with its current
-> implementation of the mem2mem framework over time, which is why a new
-> implementation will be necessary anyway.
-> 
-> So instead of hammering a driver into the wrong destination, I would
-> suggest bundling our forces and implementing a general memory-to-memory
-> framework that both the media and the audio subsystem can use, that
-> addresses the current shortcomings of the implementation and allows you
-> to upload the driver where it is supposed to be.
-> This is going to cause restrictions as well, like mentioned in the
-> concern number 3, but with the difference that we can make a general
-> plan for such a framework that accomodates lots of use cases and each
-> subsystem can add their routines on top of the general framework.
-> 
-> Another possible alternative is to try and make the DRM scheduler more
-> generally available, this scheduler is the most mature and in fact is
-> very similar to what you and what the media devices need.
-> Which again just shows how common your usecase actually is and how a
-> general solution is the best long term solution.
-> 
-> Please notice that Daniel Almeida is currently working on something
-> related to this:
-> https://lore.kernel.org/linux-media/3F80AC0D-DCAA-4EDE-BF58-BB1369C7EDCA@collabora.com/T/#u
-> 
-> If the toplevel maintainers decide to add the patchset so be it, but I
-> wanted to voice my concerns and also highlight that this is likely going
-> to cause extra stress for the video codecs maintainers and the
-> maintainers in general. We cannot spend a lot of time on audio codecs,
-> as video codecs already fill up our available time sufficiently,
-> so the use of the framework needs to be conservative and cause as little
-> extra work as possible for the original use case of the framework.
+> Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 
-I would really like to get the input of the audio maintainers on this.
-Sebastian has a good point, especially with us being overworked :-)
+The patch looks good to me. Just a few nits below:
 
-Having a shared mem2mem framework would certainly be nice, on the other
-hand, developing that will most likely take a substantial amount of time.
+> -static int path_setxattr(const char __user *pathname,
+> +static int do_setxattrat(int dfd, const char __user *pathname, unsigned int at_flags,
 
-Perhaps it is possible to copy the current media v4l2-mem2mem.c and turn
-it into an alsa-mem2mem.c? I really do not know enough about the alsa
-subsystem to tell if that is possible.
+Can we please stay within 80 columns (happens in multiple places in the
+patch)? I don't insist but it makes things easier to read in some setups so
+I prefer it.
 
-While this driver is a rate converter, not an audio codec, the same
-principles would apply to off-line audio codecs as well. And it is true
-that we definitely do not want to support audio codecs in the media
-subsystem.
+> @@ -852,13 +908,21 @@ listxattr(struct dentry *d, char __user *list, size_t size)
+>  	return error;
+>  }
+>  
+> -static ssize_t path_listxattr(const char __user *pathname, char __user *list,
+> -			      size_t size, unsigned int lookup_flags)
+> +static ssize_t do_listxattrat(int dfd, const char __user *pathname, char __user *list,
+> +			      size_t size, int flags)
 
-Accepting this driver creates a precedent and would open the door for
-audio codecs.
+So I like how in previous syscalls you have 'at_flags', 'lookup_flags', and
+'xattr_flags'. That makes things much easier to digest. Can you please stay
+with that convention here as well and call this argument 'at_flags'? Also I
+think the argument ordering like "dfd, pathname, at_flags, list, size" is
+more consistent with other syscalls you define.
 
-I may have been too hasty in saying yes to this, I did not consider
-the wider implications for our workload and what it can lead to. I
-sincerely apologize to Shengjiu Wang as it is no fun to end up in a
-situation like this.
+> @@ -870,16 +934,22 @@ static ssize_t path_listxattr(const char __user *pathname, char __user *list,
+>  	return error;
+>  }
+>  
+> +SYSCALL_DEFINE5(listxattrat, int, dfd, const char __user *, pathname, char __user *, list,
+> +		size_t, size, int, flags)
+> +{
+> +	return do_listxattrat(dfd, pathname, list, size, flags);
+> +}
+> +
 
-Regards,
+Same comment as above - "flags" -> "at_flags" and reorder args please.
 
-	Hans
+> @@ -917,13 +987,21 @@ removexattr(struct mnt_idmap *idmap, struct dentry *d,
+>  	return vfs_removexattr(idmap, d, kname);
+>  }
+>  
+> -static int path_removexattr(const char __user *pathname,
+> -			    const char __user *name, unsigned int lookup_flags)
+> +static int do_removexattrat(int dfd, const char __user *pathname,
+> +			    const char __user *name, int flags)
+>  {
+
+Same comment as above - "flags" -> "at_flags" and reorder args please.
+
+> @@ -939,16 +1017,22 @@ static int path_removexattr(const char __user *pathname,
+>  	return error;
+>  }
+>  
+> +SYSCALL_DEFINE4(removexattrat, int, dfd, const char __user *, pathname,
+> +		const char __user *, name, int, flags)
+> +{
+
+Same comment as above - "flags" -> "at_flags" and reorder args please.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
