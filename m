@@ -1,50 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601878B78BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 16:14:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A57A8B7A75
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 16:46:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=U1AcNwgt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HRoXQHpF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTMdN0bBVz3wKY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 00:14:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTNLz1p8lz3cXH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 00:46:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=U1AcNwgt;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HRoXQHpF;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTMSd4cKzz3vgl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 00:06:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1714485998;
-	bh=CJMgqqvI95rdnpWkged7Mwx046s4t+cpaXoy/jdWn+I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=U1AcNwgteHOupDcqWmJxu9sPjE02u/8vzW9hvAFE77gCBXZHWRaLFFoyJsG5eE5Vk
-	 NfqohhT1FtCZSJgl64/t++SagywMssZYV3i1kG9Q93faLjmxEfx4UZ3pq28v0SQtjQ
-	 j3gdM+yyXyi98x4L053qcN5qMp1kJGZrmuXGTn74PIplr8fo1919u1y2RsDrPm+GU9
-	 K15DWs3B5NAa6WVTzE+GteORJNI4OJg0gt6I3U4agGBvA3S417kkkPaR/VgGSS+rJm
-	 mdcMMPmFq5rL9SxcxRbtCysIj1cPsFADq3kDCB6x/3nE2ad2mGxeCG2f1sIAN0ezSZ
-	 2CovHSM5U1/vg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VTMSY4CmQz4wcn;
-	Wed,  1 May 2024 00:06:37 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
-Date: Wed,  1 May 2024 00:04:40 +1000
-Message-ID: <20240430140440.200871-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTNL95P1dz2ygZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 00:46:09 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 97997CE1046;
+	Tue, 30 Apr 2024 14:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AA7C2BBFC;
+	Tue, 30 Apr 2024 14:46:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714488365;
+	bh=sBXF+gjdjkRUhUS5Q4VYAIn7ZZ0+/7CQzrsCxXjL5dU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HRoXQHpFRApacG9ybBX6B95wKslmuE4UrGaFexMEbtIm4t0uAJWO5tcrZym/VeE6c
+	 /S830uVslcO9IbwPhqveybIosTrozBqM7h3wLkepcAlo/OU8tSPtYbhSNFrRkBmJoY
+	 coUyqlE3pvWN7L+ZADP0BArwUBwm0ZuPyscvkM+nbLTP2FFxQjOkqSGzrLP0nmF59c
+	 HpkI+8ke0LG7xCL9EukPGz03r7pzDIngxJliSGTTyZzTiGidd9jyzpgZOskOd14X1g
+	 RsWX+jRkJXkQXTcPdZpK1YXzqklzIBXOuEYb0AbCkvsNf+KksxsobnCLpsLMJhDf6m
+	 zrcNcrPKbwG0Q==
+Date: Tue, 30 Apr 2024 23:46:03 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Sebastian Fricke <sebastian.fricke@collabora.com>
+Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
+Message-ID: <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+ <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8QM/NXLseGhLxhjD"
+Content-Disposition: inline
+In-Reply-To: <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
+X-Cookie: lisp, v.:
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,58 +61,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naresh.kamboju@linaro.org, arnd@arndb.de
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, hverkuil@xs4all.nl, linuxppc-dev@lists.ozlabs.org, sakari.ailus@iki.fi, festevam@gmail.com, perex@perex.cz, mchehab@kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With -Wextra clang warns about pointer arithmetic using a null pointer.
-When building with CONFIG_PCI=n, that triggers a warning in the IO
-accessors, eg:
 
-  In file included from linux/arch/powerpc/include/asm/io.h:672:
-  linux/arch/powerpc/include/asm/io-defs.h:23:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     23 | DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
-        | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ...
-  linux/arch/powerpc/include/asm/io.h:591:53: note: expanded from macro '__do_inb'
-    591 | #define __do_inb(port)          readb((PCI_IO_ADDR)_IO_BASE + port);
-        |                                       ~~~~~~~~~~~~~~~~~~~~~ ^
+--8QM/NXLseGhLxhjD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-That is because when CONFIG_PCI=n, _IO_BASE is defined as 0.
+On Tue, Apr 30, 2024 at 10:21:12AM +0200, Sebastian Fricke wrote:
 
-There is code that builds with calls to IO accessors even when
-CONFIG_PCI=n, but the actual calls are guarded by runtime checks.
-If not those calls would be faulting, because the page at virtual
-address zero is (usually) not mapped into the kernel. As Arnd pointed
-out, it is possible a large port value could cause the address to be
-above mmap_min_addr which would then access userspace, which would be
-a bug.
+> first of all thanks for all of this work and I am very sorry for only
+> emerging this late into the series, I sadly didn't notice it earlier.
 
-To avoid any such issues, and also fix the compiler warning, set the
-_IO_BASE to POISON_POINTER_DELTA. That is a value chosen to point into
-unmapped space between the kernel and userspace, so any access will
-always fault.
+It might be worth checking out the discussion on earlier versions...
 
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/all/CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/io.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 1. The biggest objection is, that the Linux Kernel has a subsystem
+> specifically targeted for audio devices, adding support for these
+> devices in another subsystem are counterproductive as they work around
+> the shortcomings of the audio subsystem while forcing support for a
+> device into a subsystem that was never designed for such devices.
+> Instead, the audio subsystem has to be adjusted to be able to support
+> all of the required workflows, otherwise, the next audio driver with
+> similar requirements will have to move to the media subsystem as well,
+> the audio subsystem would then never experience the required change and
+> soon we would have two audio subsystems.
 
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 08c550ed49be..1cd6eb6c8101 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -37,7 +37,7 @@ extern struct pci_dev *isa_bridge_pcidev;
-  * define properly based on the platform
-  */
- #ifndef CONFIG_PCI
--#define _IO_BASE	0
-+#define _IO_BASE	POISON_POINTER_DELTA
- #define _ISA_MEM_BASE	0
- #define PCI_DRAM_OFFSET 0
- #elif defined(CONFIG_PPC32)
--- 
-2.44.0
+The discussion around this originally was that all the audio APIs are
+very much centered around real time operations rather than completely
+async memory to memory operations and that it's not clear that it's
+worth reinventing the wheel simply for the sake of having things in
+ALSA when that's already pretty idiomatic for the media subsystem.  It
+wasn't the memory to memory bit per se, it was the disconnection from
+any timing.
 
+> So instead of hammering a driver into the wrong destination, I would
+> suggest bundling our forces and implementing a general memory-to-memory
+> framework that both the media and the audio subsystem can use, that
+> addresses the current shortcomings of the implementation and allows you
+> to upload the driver where it is supposed to be.
+
+That doesn't sound like an immediate solution to maintainer overload
+issues...  if something like this is going to happen the DRM solution
+does seem more general but I'm not sure the amount of stop energy is
+proportionate.
+
+--8QM/NXLseGhLxhjD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYxBCsACgkQJNaLcl1U
+h9Cv4gf/cXnSe2CcRqekxdvf3QpCLrReELvBj5Ryx0es6jh5p0iXtGjTAa+m1l2U
+Qn6JhhdVxr6YDApk3yXTkGvTElhB2RPjdxhHGklWqfXFTwKhZtFYKmx2GqfKxLXZ
+6N4OhJv/OYSeLGuGQDh3WLEJW44PKKQUfDg6zdCCu2xeTqt42IeZOPA4NLU9lBvm
+6vzvRoB9ddXzdqIJ5tPx89c3PXrCKBHhFIz9FQ1QLpE9p/26fkpsjYkB9cTQhAGq
+kMvWcqfITh7e8JEEPsVzlYMNOcsCCegJqJwniSw2OV3fQDBUDoHaO/I1hYidAzVS
+IndFbuEtQpfHjpRlfXAsGrrxDysAfw==
+=/WXD
+-----END PGP SIGNATURE-----
+
+--8QM/NXLseGhLxhjD--
