@@ -2,92 +2,169 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75348B813F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 22:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 020F48B8376
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 01:58:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BQwZZ0dw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=dRmAXMM0;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=y8TkkBM8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTWbf3FqHz3dfy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 06:13:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTcbB4gsrz3cYJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 09:58:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BQwZZ0dw;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=dRmAXMM0;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=y8TkkBM8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=stephen.s.brennan@oracle.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 3243 seconds by postgrey-1.37 at boromir; Wed, 01 May 2024 09:57:32 AEST
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTWZJ3tZ7z3cc5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 06:12:08 +1000 (AEST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43UK2QiH024441;
-	Tue, 30 Apr 2024 20:11:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=6FXreo8CnAYhBZlC6M9UfWfMe6XfuGesZXSaEiEZzD0=;
- b=BQwZZ0dwfU5toaSN21WcbtaSZThPbtfa6Gs6BaAIvhQRYOVtc6eEJRxbk1Qt16FOgZhF
- i+0RGymErp7lh6F7+SUwJNMHXD636BvopT75YYavXxgvOtqphW0V2jR4mNvgYzGysc39
- ks+MR+wQMef3+FbuayWxwqNrEsoONLbEJpXnBBlZcBfGjYlzpgX7f9CwJ0OQSX2qAeaT
- WlWbnQmar3Im9W3+fY0jg3cd/XXRKFXWPgxattn+sIZCh5+D/RfbHAG2vgncKLCDJ8VH
- ANgKJfI3QY3FJSploC1RYWLIUo9sDPGZ54laURGUM5D27uJW2kRrgV7bNzJKT6bxQMCa yg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xu7aw00tk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 20:11:57 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43UKBuA7006168;
-	Tue, 30 Apr 2024 20:11:56 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xu7aw00tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 20:11:56 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43UK2VBG002989;
-	Tue, 30 Apr 2024 20:07:07 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xscppey8s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 20:07:06 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43UK71FQ52953472
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Apr 2024 20:07:03 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 539522004E;
-	Tue, 30 Apr 2024 20:07:01 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F5FF20043;
-	Tue, 30 Apr 2024 20:06:57 +0000 (GMT)
-Received: from ltcd48-lp2.aus.stglabs.ibm.com (unknown [9.3.101.175])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Apr 2024 20:06:57 +0000 (GMT)
-Subject: [RFC PATCH v2 6/6] powerpc/iommu: Implement the iommu_table_group_ops
- for pSeries
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-To: mpe@ellerman.id.au, tpearson@raptorengineering.com,
-        alex.williamson@redhat.com, linuxppc-dev@lists.ozlabs.org, aik@amd.com
-Date: Tue, 30 Apr 2024 15:06:56 -0500
-Message-ID: <171450761160.10851.2154049402123640038.stgit@linux.ibm.com>
-In-Reply-To: <171450753489.10851.3056035705169121613.stgit@linux.ibm.com>
-References: <171450753489.10851.3056035705169121613.stgit@linux.ibm.com>
-User-Agent: StGit/1.5
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTcZN2fs3z3cXL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 09:57:30 +1000 (AEST)
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43UKTgld017528;
+	Tue, 30 Apr 2024 23:02:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=EL/hN2kBBnpDCBhosmnxg3lDM1xxbhAS0BsL10gyA8k=;
+ b=dRmAXMM066dO7yPWz1iWMf4DG015ndRPVcX6yIZB1yi3NeYkfoT/6Y91ctD0VlApGTkr
+ 4kF9eOKAIImXsE9drKdlCyCzFIiL+/2bEP53L79YzRdW7LXJvSYvQtD+rZAjTVHLE9tm
+ fa8Pz6Kp/oHwnBPkd4lha9D0CPLTzI4kNzHOknFjzvpNl920fPzQhAeA19XxjSYlaVaf
+ amyoeP+azzjRv4nvj2xnfVoF5MMotlOStyXqNxdKyavws68FcnEVlWT675icSzh/CvM5
+ kR/wYjG65VKlQYkFT6abeWJ81wT9k2I77we+gU5DTgOr6urhw1O9cuBm9DgFqCFdTvyc 8A== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrswvpax9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Apr 2024 23:02:09 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 43UMAgc7005069;
+	Tue, 30 Apr 2024 23:02:08 GMT
+Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2169.outbound.protection.outlook.com [104.47.73.169])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xrqt85fwq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Apr 2024 23:02:08 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZQwI9LnHQWce26XDNmjF/RFD1GyjbI2eAWUDMQzR2HJOg0/hqOZ9sufucnuNexB9cnGc+Y3ctUzks72A5+OmHvb3z01aEEo+SKH3xEn6MvdVQT3nIkPFMhj5Xvam/Z8T8gJQoqw9zVPCaEHO3J2tGwM8GRVCQCVSSfV5SbrY0KP3kfiSbENzAavdE4YDd2kkWK4ALZpsfrA/BWS2i4n+qaSUu1N+2xtb1zn5ouUc3X7awBwNKZ7yW1hxwmg8HOAoOts3CJIPb7lV3K64OKr+oylUEd0YkaWnGwSkYl3nh2lk7zCaW52bU7r0ccYy+NYhpszbCfNS7S05OFMTQPOx3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EL/hN2kBBnpDCBhosmnxg3lDM1xxbhAS0BsL10gyA8k=;
+ b=V5MBwoD6/kzan4WL/rS7iXv1bM65Ewq0Z8o8UxY2sl7CD3NVhILSCDl6CUM3GYZjWkuKwiZidxUT4B1MrYx0e5CcC+tMvIk8IQ59zftosedHdVmo5pbXTodNjRJb8qX7HWR2h7zwa2+VIHzp97EbTugRgaklV6GL6M8Ki4//Dmhj+O6HIKCC+3MI3gKQiOLploB0o2rW40XirkgHMByhGV2CxWGA9M4BhUZRqKyR0PB+5tS/MnlBLLnwqiB9n6bvXNqhtr3LNUnEd9NhfLLBS9jMFhnvQuDiiTMXFGLvjiQv9jOmznFtZ0kmVw7SeDwPSJEea3/ZrqUvaZPJKY80zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EL/hN2kBBnpDCBhosmnxg3lDM1xxbhAS0BsL10gyA8k=;
+ b=y8TkkBM85Xy9ONQ4/uLb7E48uPaF9Ht/Kh0X3ZoC4uuD9qJiF7hs4A6GZfbLEba7lUyD1KY0jAeQsjdZLcNpBshtibF2VebTMtMZ32xWVDCj/7tZUO1AUZlfAAWcvHXETQsyiSV/soy+fyiSL6ADZJvk9u5lqsisRLR91+GT/Lc=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by SA1PR10MB7853.namprd10.prod.outlook.com (2603:10b6:806:3ac::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Tue, 30 Apr
+ 2024 23:01:44 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca%3]) with mapi id 15.20.7519.031; Tue, 30 Apr 2024
+ 23:01:44 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v2] kprobe/ftrace: bail out if ftrace was killed
+In-Reply-To: <20240429212933.327aae6e@gandalf.local.home>
+References: <20240426225834.993353-1-stephen.s.brennan@oracle.com>
+ <20240429174718.1347900-1-stephen.s.brennan@oracle.com>
+ <20240429212933.327aae6e@gandalf.local.home>
+Date: Tue, 30 Apr 2024 16:01:43 -0700
+Message-ID: <87r0emsbe0.fsf@oracle.com>
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR05CA0105.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::46) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: N34KQzt1tk6rbCvz3Cb5UyVpA6tMDC5r
-X-Proofpoint-ORIG-GUID: WOV5tNjtybhozIApd_Q2R9B-VhCQiZdh
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|SA1PR10MB7853:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f1c8aa0-cd97-450c-1fc7-08dc69698171
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|7416005|366007;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?r1K6VA0L6MsJHB0fa1/SMvct/u7qbLAcWiOWVCfhDecvfBiq/Tnk4ZZFWB8Q?=
+ =?us-ascii?Q?cj+znQX6zkeSQZ1qwjRjh0t3I3EP/KVvfmjaibsEP+dlHL9simsUs3EyzSXT?=
+ =?us-ascii?Q?ILz32+EEEQ3jL8AULOSdHjIToJYxfMHBmoQbnMEFCbd6LFvTEbnvcnbg8Hf3?=
+ =?us-ascii?Q?JyvNBcUHsHAzTybnLpprucuO2kUPBnC75OopwGh3DIOrhU7iSmSFSOhyJ4Iy?=
+ =?us-ascii?Q?RalaJb98DiMQgmZgQb93EDqmsalWhgqedrqg/+et6UNAST5hBwWQBjKhpF2I?=
+ =?us-ascii?Q?tvUcCKqe9KcLeCa6Rh9sJvRGm7qTtfcq2dEttNwvw7hAr5jWffDzk3rSTSJu?=
+ =?us-ascii?Q?14HWP95lN9uY6jwsE5aADA2dWpwFwV0w4mV1UErXHoQ5+e6C2Ezri7htBqbA?=
+ =?us-ascii?Q?HvFk++v3+ujA7trsvQyxl3mr5yunklqIF86IOGa1hz1TRInpQCvqhKIvkdyh?=
+ =?us-ascii?Q?W58MaWHcvcto+jd1CCSWCCSTrImz7PypfOHtO4xMa+YsooRlXyEXQXm2B5/b?=
+ =?us-ascii?Q?Xs0cyuaxMbmcmVnU2D6x+2FioztQz1cXkfVwcBlluN0m62Z/m/kvz4yWOmFf?=
+ =?us-ascii?Q?hG/2DZ07djjTD6hGNkbYa2HpYNRSDhULhiSWTRt7PE9RK3MDStOrf0b8GcRI?=
+ =?us-ascii?Q?go6tFyOLOMbRX+FoJnP+Pap9psO4OPsJnK+mM68bLT4ETD6RVMTJymedeMMt?=
+ =?us-ascii?Q?m8vttQiQGEY4ysR8dKCoMfrlyDVDhwigggkFHXYoCYeFVJHzgQ6YgIzDtRTF?=
+ =?us-ascii?Q?G1WGMxoMtw9x9r0wuNicOUZYrNnCvQit2weEK/lFz2UIxvpEi0hzg0fbgiTC?=
+ =?us-ascii?Q?m4oy5Tm2Pfdu242bOi8C2uM3lOazrDxr52mPKYH47oDb7WMuDduhvYOeQHwM?=
+ =?us-ascii?Q?vl+NCVAoIjp0jhwUWMBZ3C9Z1bZ5O5S3SyDouWOe+lohorwHPO1CWf3xwO7O?=
+ =?us-ascii?Q?RFla824/c6X3r5b+CgcBBTQg91delIOUN4vn6yoLyj06PU6Vlyh3HHxbJaSC?=
+ =?us-ascii?Q?KEe4BXjOSdbJAjhpRUdAQBTOXWnkVIEk9jXfQswwB9FGFMgGhhuiyZbxyLfv?=
+ =?us-ascii?Q?2YPBrLlsv38l3eOvfkFwuq3kkeEP91Q0hJHP63MpkR9e4trj8nLceCdMWvmI?=
+ =?us-ascii?Q?Mt2Jz+r/YJI8YrGikw6ObeIl94WnwGzX61aG5xZ0pE1zg/e4sEgtm5Ug+Xj+?=
+ =?us-ascii?Q?mSHXaH5XVwLhBzZVXFDFm40/NjN6tytGS0jf6f2W//kmCxyTtwJ+H7y9UwKb?=
+ =?us-ascii?Q?ceTGxh6xo+lNgvyHFezpxeVX/3vUWLkhEAyBy69ZsQ=3D=3D?=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?pXo/huBOXaQoihrnZoR8TwBcl9H9LRDz4xSrRGZrSnOreJm4f/j4GlfZrxx/?=
+ =?us-ascii?Q?Tb+GsIHeko/GIEidkYmfUCYbl3zmppV8jYsSeQEGmYym6vJQm35vRBKdqgHU?=
+ =?us-ascii?Q?R6/PyolgvDIVZwaqAHMn0bkliwY6VZk7jX/muUVZupj4AoG8/94XU/+9r9wX?=
+ =?us-ascii?Q?IpZA5WSarcQ4xjqB947JGyy89KW5hudxDYRzm2TtEgubIqLSUa1ZLUi69NaH?=
+ =?us-ascii?Q?EO8ccoF+TetrN+gFpU1lr37AhsjgNXufs1FwIyuAY3X8Xj/EwGCllsm89LFc?=
+ =?us-ascii?Q?VFJc9k9Hai8eC0odF8LzC1Y+vdJNm3BozJ4gF1W4huZnzl03MKrUVdcNIa/A?=
+ =?us-ascii?Q?G3n/uK9UM5Sm3uNg5Wpoc5A1tDq2IptFAs7JWYK4rYSSrjXExJ9e12DUUh/M?=
+ =?us-ascii?Q?dR+mvsBlgEqV2tfY+NcJEhGrGX1DHvBDppcqrnHXFCborrysY/XjwFXUM0a0?=
+ =?us-ascii?Q?cbgJfTf4vaZ0U3T1pQNh1eHg7IJN1jH54n9siZAJ28Dp9v6ejYhXAmXOZbeW?=
+ =?us-ascii?Q?t3Iw4uDwoH4U53bOcCE+Y/QiHV9iRMU6JWHmdESsHm3Q7WeZUEcaIGSnX4ZU?=
+ =?us-ascii?Q?zxISLlltfZOCsaNzRxQqBXHamiF45iX9XZ+xv0fSj4xqusovABOH0cm5IP/q?=
+ =?us-ascii?Q?MB7KrANI0hpHY9Y4Qa9onyVS1vhhAHe7n5PM/2vWZrlIip7fZrO/hqkNeNWu?=
+ =?us-ascii?Q?cYUezi86d/nDBWgsAVBb1DeFJwQT3szwhpvl11DF8hnbG869SCCqsTe6n80k?=
+ =?us-ascii?Q?AgyuPoue9qIchQ9qFfHzgZkH6E8UKMl7uoZmIH+zZ8m6BRgscyzfRvWDhyaR?=
+ =?us-ascii?Q?Ok2V2pK+ZOl0wC2nWDfanmG3nVd0Zh3N7wMI3fWM+5Q7WE7DV7Fb8S2qzUgK?=
+ =?us-ascii?Q?2J2bWTNA38UA7TsGEuotYc7FB+++lTa0BucBy4KmnY4f25JDDkakXzB46oNX?=
+ =?us-ascii?Q?G0BLj/F4Pda/Ns7DBKtohU6gJ8ivjI+UO7y9eZRR1TwRSHMrDO+h7fHx5jgL?=
+ =?us-ascii?Q?LQggmob/sDt21n88JjLdblngQYY8GipiLPre4bqwwC8dV5xZ9wHpFgd+wVht?=
+ =?us-ascii?Q?Ok/kWlpV8OAjiXfNnRYyEaDZiSeVNbqqHZvlTQ6dddBzu2VYp0z2UMM2aLd3?=
+ =?us-ascii?Q?ZA3YHL67c64Ey9c7qLHw9x6mPQYCgwjOcjSa/hykSslNeGt0AHt2scaUKrnc?=
+ =?us-ascii?Q?mCC0pfCjhtfNcS7mPU2GcKO4NKBjh7LRWZammVsWX5kamGAnC54n6EMFQTNr?=
+ =?us-ascii?Q?VZgym9z/rLswPcwbbDbJH9UUXIBIp53Jc7l8+A2iJXV07eB1FtY88RvZw/pL?=
+ =?us-ascii?Q?8IqaPPwmmQNVVR458J+YPGPncOq46shPt8InLh+NkVFqMF9KHsK0bTA7h8rT?=
+ =?us-ascii?Q?IoZEkdN0+3OhO6uZXRb+mvDonJhPKoG5LWWMIYDyLsmmPjwbZ8FGJPH1X6b+?=
+ =?us-ascii?Q?J/ytXKuxxTlGoI7UBDOVqTPTUTUnjbXK2NFY+T0XW+8zOtNS+cmvVC8BJYhz?=
+ =?us-ascii?Q?NGcHVM9MoZaE0FsnMFYF4oHVVi7l9XDQ1I2V4fYLRfLeROoLYSg44lp/nfVz?=
+ =?us-ascii?Q?e7B4NJwTdBmJZQ/m8DzNtqEOXPDEZtJKAKqGI4BEbeRudqaTrJpLsUJzAuPG?=
+ =?us-ascii?Q?/d4oF7Q1BQHoR/06KtihGhM=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 	ifUFJ7L2wQRApi6G/SvYgmyWfkEQWEqJ2mqmZvoRswNygqj0OXFXPVkG9TZPnBRDyUnAZoqd2WiD64SFFKfGX3iKZTh5jRBmGaxSy39CpdfZcvjgWPn9g1JG6k4rhZw+Iz7S1FoS2YlHuEYKeZO79Lc4naGaO+1fBnWm5WdB/UmS5SU0pH/hLnj+aw+Ct9EQ44Yf3jaD4rI6EajAHiW+8W4sNG7g7/JPZtKJ0dQejASQptqVa+6l64H3Vr/iqBBcjKENYRhERugVGLKqEI0KLfaTLPE17exHPIthtkxOK1tB3rADie+3hgCWi7gtyJyD648h0aiES62r+I7VhayPqG+vwlpkbq3Bb1qSdQfYmVlwMsaHSY11kTZC2QhM3jN1TodXqgS2hh12DP/G/kVaug0ABivTkgM5C/Qe5uoK0QVlz+Ud8bL8u6gb+z60vbCOxo/TmqQ5Jj/kUFnOFQ04PoSUmlQfvKvcK2rOYq7hTS6W6iOfRHBU+VS0UPT1YDMPSmmNUDRLkFh0u7GeJD3Uj0XMuMiOU0DaYfaQkXXXkhDCtlNQs/ze4fJ0jYiw4wvSQYyLNYfM54zlMzE+8sMRuu/TvKst/q/CbNTNXXLOJN0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f1c8aa0-cd97-450c-1fc7-08dc69698171
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 23:01:44.6215
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MLWVJBuEBoY59icYc8TKxnePyI6NH9U5G/V8rNGFk7lTyXNpoeWSTQ825n75wT5STla3Gwg79dgkypgyXg5tOJb61XZk+DN5rGsSz6XI5c4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB7853
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-30_12,2024-04-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 adultscore=0
- clxscore=1015 phishscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404300145
+ definitions=2024-04-30_14,2024-04-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 adultscore=0
+ phishscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
+ definitions=main-2404300163
+X-Proofpoint-GUID: -xZPmWW_3fkgZx_8ZuMwhJyzgCUF0MJH
+X-Proofpoint-ORIG-GUID: -xZPmWW_3fkgZx_8ZuMwhJyzgCUF0MJH
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,918 +176,213 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: svaidy@linux.ibm.com, robh@kernel.org, jroedel@suse.de, sbhat@linux.ibm.com, gbatra@linux.vnet.ibm.com, jgg@ziepe.ca, aik@ozlabs.ru, linux-kernel@vger.kernel.org, mahesh@linux.ibm.com, aneesh.kumar@kernel.org, brking@linux.vnet.ibm.com, oohall@gmail.com, npiggin@gmail.com, kvm@vger.kernel.org, ruscur@russell.cc, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, msuchanek@suse.de, joel@jms.id.au
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-trace-kernel
+ @vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PPC64 IOMMU API defines iommu_table_group_ops which handles DMA
-windows for PEs, their ownership transfer, create/set/unset the TCE
-tables for the Dynamic DMA wundows(DDW). VFIOS uses these APIs for
-support on POWER.
+Steven Rostedt <rostedt@goodmis.org> writes:
+> On Mon, 29 Apr 2024 10:47:18 -0700
+> Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
+>
+>> If an error happens in ftrace, ftrace_kill() will prevent disarming
+>> kprobes. Eventually, the ftrace_ops associated with the kprobes will be
+>> freed, yet the kprobes will still be active, and when triggered, they
+>> will use the freed memory, likely resulting in a page fault and panic.
+>> 
+>> This behavior can be reproduced quite easily, by creating a kprobe and
+>> then triggering a ftrace_kill(). For simplicity, we can simulate an
+>> ftrace error with a kernel module like [1]:
+>> 
+>> [1]: https://github.com/brenns10/kernel_stuff/tree/master/ftrace_killer
+>> 
+>>   sudo perf probe --add commit_creds
+>>   sudo perf trace -e probe:commit_creds
+>>   # In another terminal
+>>   make
+>>   sudo insmod ftrace_killer.ko  # calls ftrace_kill(), simulating bug
+>>   # Back to perf terminal
+>>   # ctrl-c
+>>   sudo perf probe --del commit_creds
+>> 
+>> After a short period, a page fault and panic would occur as the kprobe
+>> continues to execute and uses the freed ftrace_ops. While ftrace_kill()
+>> is supposed to be used only in extreme circumstances, it is invoked in
+>> FTRACE_WARN_ON() and so there are many places where an unexpected bug
+>> could be triggered, yet the system may continue operating, possibly
+>> without the administrator noticing. If ftrace_kill() does not panic the
+>> system, then we should do everything we can to continue operating,
+>> rather than leave a ticking time bomb.
+>> 
+>> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+>> ---
+>> Difference from v1: removed both existing declarations of ftrace_is_dead()
+>> from kernel/trace/trace.h.
+>> 
+>>  arch/csky/kernel/probes/ftrace.c     | 3 +++
+>>  arch/loongarch/kernel/ftrace_dyn.c   | 3 +++
+>>  arch/parisc/kernel/ftrace.c          | 3 +++
+>>  arch/powerpc/kernel/kprobes-ftrace.c | 3 +++
+>>  arch/riscv/kernel/probes/ftrace.c    | 3 +++
+>>  arch/s390/kernel/ftrace.c            | 3 +++
+>>  arch/x86/kernel/kprobes/ftrace.c     | 3 +++
+>>  include/linux/ftrace.h               | 2 ++
+>>  kernel/trace/trace.h                 | 2 --
+>>  9 files changed, 23 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
+>> index 834cffcfbce3..3931bf9f707b 100644
+>> --- a/arch/csky/kernel/probes/ftrace.c
+>> +++ b/arch/csky/kernel/probes/ftrace.c
+>> @@ -12,6 +12,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>>  	struct kprobe_ctlblk *kcb;
+>>  	struct pt_regs *regs;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/arch/loongarch/kernel/ftrace_dyn.c b/arch/loongarch/kernel/ftrace_dyn.c
+>> index 73858c9029cc..82c952cb5be0 100644
+>> --- a/arch/loongarch/kernel/ftrace_dyn.c
+>> +++ b/arch/loongarch/kernel/ftrace_dyn.c
+>> @@ -287,6 +287,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>>  	struct kprobe *p;
+>>  	struct kprobe_ctlblk *kcb;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+>> index 621a4b386ae4..3660834f54c3 100644
+>> --- a/arch/parisc/kernel/ftrace.c
+>> +++ b/arch/parisc/kernel/ftrace.c
+>> @@ -206,6 +206,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>>  	struct kprobe *p;
+>>  	int bit;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
+>> index 072ebe7f290b..85eb55aa1457 100644
+>> --- a/arch/powerpc/kernel/kprobes-ftrace.c
+>> +++ b/arch/powerpc/kernel/kprobes-ftrace.c
+>> @@ -21,6 +21,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
+>>  	struct pt_regs *regs;
+>>  	int bit;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(nip, parent_nip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/arch/riscv/kernel/probes/ftrace.c b/arch/riscv/kernel/probes/ftrace.c
+>> index 7142ec42e889..8814fbe4c888 100644
+>> --- a/arch/riscv/kernel/probes/ftrace.c
+>> +++ b/arch/riscv/kernel/probes/ftrace.c
+>> @@ -11,6 +11,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>>  	struct kprobe_ctlblk *kcb;
+>>  	int bit;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+>> index c46381ea04ec..ccbe8ccf945b 100644
+>> --- a/arch/s390/kernel/ftrace.c
+>> +++ b/arch/s390/kernel/ftrace.c
+>> @@ -296,6 +296,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>>  	struct kprobe *p;
+>>  	int bit;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
+>> index dd2ec14adb77..c73f9ab7ff50 100644
+>> --- a/arch/x86/kernel/kprobes/ftrace.c
+>> +++ b/arch/x86/kernel/kprobes/ftrace.c
+>> @@ -21,6 +21,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
+>>  	struct kprobe_ctlblk *kcb;
+>>  	int bit;
+>>  
+>> +	if (unlikely(ftrace_is_dead()))
+>> +		return;
+>> +
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>>  		return;
+>> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+>> index 54d53f345d14..ba83e99c1fbe 100644
+>> --- a/include/linux/ftrace.h
+>> +++ b/include/linux/ftrace.h
+>> @@ -399,6 +399,7 @@ int ftrace_lookup_symbols(const char **sorted_syms, size_t cnt, unsigned long *a
+>>  #define register_ftrace_function(ops) ({ 0; })
+>>  #define unregister_ftrace_function(ops) ({ 0; })
+>>  static inline void ftrace_kill(void) { }
+>> +static inline int ftrace_is_dead(void) { return 0; }
+>>  static inline void ftrace_free_init_mem(void) { }
+>>  static inline void ftrace_free_mem(struct module *mod, void *start, void *end) { }
+>>  static inline int ftrace_lookup_symbols(const char **sorted_syms, size_t cnt, unsigned long *addrs)
+>> @@ -914,6 +915,7 @@ static inline bool is_ftrace_trampoline(unsigned long addr)
+>>  
+>>  /* totally disable ftrace - can not re-enable after this */
+>>  void ftrace_kill(void);
+>> +int ftrace_is_dead(void);
+>>  
+>>  static inline void tracer_disable(void)
+>>  {
+>> diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+>> index 64450615ca0c..70a37ee41813 100644
+>> --- a/kernel/trace/trace.h
+>> +++ b/kernel/trace/trace.h
+>> @@ -1026,7 +1026,6 @@ static inline int ftrace_trace_task(struct trace_array *tr)
+>>  	return this_cpu_read(tr->array_buffer.data->ftrace_ignore_pid) !=
+>>  		FTRACE_PID_IGNORE;
+>>  }
+>> -extern int ftrace_is_dead(void);
+>
+> Honestly I rather not expose this function outside of the tracing
+> infrastructure. Instead, we should have a kprobe_ftrace_kill() function,
+> and have ftrace_kill() call that.
+>
+> Then kprobe_ftrace_kill() can set its own variable that is exposed to all
+> these functions and they can test that instead of adding the extra overhead
+> in the fast path of a function call to ftrace_is_dead()
+>
+> extern bool kprobes_ftrace_disabled __read_mostly;
+>
+> void kprobe_ftrace_kill(void)
+> {
+> 	kprobes_ftrace_disabled = true;
+> }
+>
+> And you can then replace all these with:
+>
+> 	if (kprobes_ftrace_disabled)
+> 		return;
+>
+> Which is faster.
 
-The commit 9d67c9433509 "(powerpc/iommu: Add "borrowing"
-iommu_table_group_ops)" implemented partial support for this API with
-"borrow" mechanism wherein the DMA windows if created already by the
-host driver, they would be available for VFIO to use. Also, it didn't
-have the support to control/modify the window size or the IO page
-size.
+Thanks, that does make a lot more sense. It's faster, and doesn't
+involve exporting that function. I'll go ahead and use this approach.
 
-The current patch implements all the necessary iommu_table_group_ops
-APIs there by avoiding the "borrrowing". So, just the way it is on the
-PowerNV platform, with this patch the iommu table group ownership is
-transferred to the VFIO PPC subdriver, the iommu table, DMA windows
-creation/deletion all driven through the APIs.
-
-The pSeries uses the query-pe-dma-window, create-pe-dma-window and
-reset-pe-dma-window RTAS calls for DMA window creation, deletion and
-reset to defaul. The RTAs calls do show some minor differences to the
-way things are to be handled on the pSeries which are listed below.
-
-* On pSeries, the default DMA window size is "fixed" cannot be custom
-sized as requested by the user. For non-SRIOV VFs, It is fixed at 2GB
-and for SRIOV VFs, its variable sized based on the capacity assigned
-to it during the VF assignment to the LPAR. So, for the  default DMA
-window alone the size if requested less than tce32_size, the smaller
-size is enforced using the iommu table->it_size.
-
-* The DMA start address for 32-bit window is 0, and for the 64-bit window
-in case of PowerNV is hardcoded to TVE select (bit 59) at 512PiB offset.
-And this address is returned at the time of create_table() API call(even
-before the window is created), the subsequent set_window() call actually
-opens the DMA window. On pSeries, the DMA start address for 32-bit
-window is known from the 'ibm,dma-window' DT property. However, the
-64-bit window start address is not known until the create-pe-dma RTAS
-call is made. So, the create_table() which returns the DMA window start
-address actually opens the DMA window and returns the DMA start address
-as returned by the Hypervisor for the create-pe-dma RTAS call.
-
-* The reset-pe-dma RTAS call resets the DMA windows and restores the
-default DMA window, however it does not clear the TCE table entries
-if there are any. In case of ownership transfer from platform domain
-which used direct mapping, the patch chooses remove-pe-dma instead of
-reset-pe for the 64-bit window intentionally so that the
-clear_dma_window() is called.
-
-Other than the DMA window management changes mentioned above, the
-patch also brings back the userspace view for the single level TCE
-as it existed before commit 090bad39b237a ("powerpc/powernv: Add
-indirect levels to it_userspace") along with the relavent
-refactoring.
-
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
----
- arch/powerpc/include/asm/iommu.h          |    4 
- arch/powerpc/kernel/iommu.c               |    4 
- arch/powerpc/platforms/powernv/pci-ioda.c |    6 
- arch/powerpc/platforms/pseries/iommu.c    |  643 +++++++++++++++++++++++++----
- 4 files changed, 559 insertions(+), 98 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 784809e34abe..1e0c2b2882c2 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -181,9 +181,9 @@ struct iommu_table_group_ops {
- 	long (*unset_window)(struct iommu_table_group *table_group,
- 			int num);
- 	/* Switch ownership from platform code to external user (e.g. VFIO) */
--	long (*take_ownership)(struct iommu_table_group *table_group);
-+	long (*take_ownership)(struct iommu_table_group *table_group, struct device *dev);
- 	/* Switch ownership from external user (e.g. VFIO) back to core */
--	void (*release_ownership)(struct iommu_table_group *table_group);
-+	void (*release_ownership)(struct iommu_table_group *table_group, struct device *dev);
- };
- 
- struct iommu_table_group_link {
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index 31dc663be0cc..2ad1e320f69f 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -1170,7 +1170,7 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
- 	 * The domain being set to PLATFORM from earlier
- 	 * BLOCKED. The table_group ownership has to be released.
- 	 */
--	table_group->ops->release_ownership(table_group);
-+	table_group->ops->release_ownership(table_group, dev);
- 	iommu_group_put(grp);
- 
- 	return 0;
-@@ -1198,7 +1198,7 @@ spapr_tce_blocked_iommu_attach_dev(struct iommu_domain *platform_domain,
- 	 * also sets the dma_api ops
- 	 */
- 	table_group = iommu_group_get_iommudata(grp);
--	ret = table_group->ops->take_ownership(table_group);
-+	ret = table_group->ops->take_ownership(table_group, dev);
- 	iommu_group_put(grp);
- 
- 	return ret;
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 23f5b5093ec1..b0a14e48175c 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1537,7 +1537,8 @@ static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
- 	}
- }
- 
--static long pnv_ioda2_take_ownership(struct iommu_table_group *table_group)
-+static long pnv_ioda2_take_ownership(struct iommu_table_group *table_group,
-+				     struct device *dev __maybe_unused)
- {
- 	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
- 						table_group);
-@@ -1562,7 +1563,8 @@ static long pnv_ioda2_take_ownership(struct iommu_table_group *table_group)
- 	return 0;
- }
- 
--static void pnv_ioda2_release_ownership(struct iommu_table_group *table_group)
-+static void pnv_ioda2_release_ownership(struct iommu_table_group *table_group,
-+					struct device *dev __maybe_unused)
- {
- 	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
- 						table_group);
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e701255560a6..470a86117b03 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -23,6 +23,8 @@
- #include <linux/memory.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-+#include <linux/of_fdt.h>
-+#include <linux/libfdt.h>
- #include <linux/iommu.h>
- #include <linux/rculist.h>
- #include <asm/io.h>
-@@ -54,57 +56,6 @@ enum {
- 	DDW_EXT_QUERY_OUT_SIZE = 2
- };
- 
--static int iommu_take_ownership(struct iommu_table *tbl)
--{
--	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
--	int ret = 0;
--
--	/*
--	 * VFIO does not control TCE entries allocation and the guest
--	 * can write new TCEs on top of existing ones so iommu_tce_build()
--	 * must be able to release old pages. This functionality
--	 * requires exchange() callback defined so if it is not
--	 * implemented, we disallow taking ownership over the table.
--	 */
--	if (!tbl->it_ops->xchg_no_kill)
--		return -EINVAL;
--
--	spin_lock_irqsave(&tbl->large_pool.lock, flags);
--	for (i = 0; i < tbl->nr_pools; i++)
--		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
--
--	if (iommu_table_in_use(tbl)) {
--		pr_err("iommu_tce: it_map is not empty");
--		ret = -EBUSY;
--	} else {
--		memset(tbl->it_map, 0xff, sz);
--	}
--
--	for (i = 0; i < tbl->nr_pools; i++)
--		spin_unlock(&tbl->pools[i].lock);
--	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
--
--	return ret;
--}
--
--static void iommu_release_ownership(struct iommu_table *tbl)
--{
--	unsigned long flags, i, sz = (tbl->it_size + 7) >> 3;
--
--	spin_lock_irqsave(&tbl->large_pool.lock, flags);
--	for (i = 0; i < tbl->nr_pools; i++)
--		spin_lock_nest_lock(&tbl->pools[i].lock, &tbl->large_pool.lock);
--
--	memset(tbl->it_map, 0, sz);
--
--	iommu_table_reserve_pages(tbl, tbl->it_reserved_start,
--			tbl->it_reserved_end);
--
--	for (i = 0; i < tbl->nr_pools; i++)
--		spin_unlock(&tbl->pools[i].lock);
--	spin_unlock_irqrestore(&tbl->large_pool.lock, flags);
--}
--
- static struct iommu_table *iommu_pseries_alloc_table(int node)
- {
- 	struct iommu_table *tbl;
-@@ -196,7 +147,7 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
- }
- 
- 
--static void tce_free_pSeries(struct iommu_table *tbl, long index, long npages)
-+static void tce_clear_pSeries(struct iommu_table *tbl, long index, long npages)
- {
- 	__be64 *tcep;
- 
-@@ -215,6 +166,37 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
- 	return be64_to_cpu(*tcep);
- }
- 
-+static long pseries_tce_iommu_userspace_view_alloc(struct iommu_table *tbl)
-+{
-+	unsigned long cb = ALIGN(sizeof(tbl->it_userspace[0]) * tbl->it_size, PAGE_SIZE);
-+	unsigned long *uas;
-+
-+	if (tbl->it_indirect_levels) /* Impossible */
-+		return -EPERM;
-+
-+	WARN_ON(tbl->it_userspace);
-+
-+	uas = vzalloc(cb);
-+	if (!uas)
-+		return -ENOMEM;
-+
-+	tbl->it_userspace = (__be64 *) uas;
-+
-+	return 0;
-+}
-+
-+static void tce_iommu_userspace_view_free(struct iommu_table *tbl)
-+{
-+	vfree(tbl->it_userspace);
-+	tbl->it_userspace = NULL;
-+}
-+
-+static void tce_free_pSeries(struct iommu_table *tbl)
-+{
-+	if (!tbl->it_userspace)
-+		tce_iommu_userspace_view_free(tbl);
-+}
-+
- static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
- static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
- 
-@@ -629,7 +611,7 @@ struct iommu_table_ops iommu_table_lpar_multi_ops;
- 
- struct iommu_table_ops iommu_table_pseries_ops = {
- 	.set = tce_build_pSeries,
--	.clear = tce_free_pSeries,
-+	.clear = tce_clear_pSeries,
- 	.get = tce_get_pseries
- };
- 
-@@ -738,17 +720,45 @@ static int tce_exchange_pseries(struct iommu_table *tbl, long index, unsigned
- 
- 	return rc;
- }
-+
-+static __be64 *tce_useraddr_pSeriesLP(struct iommu_table *tbl, long index,
-+				      bool __always_unused alloc)
-+{
-+	return tbl->it_userspace ? &tbl->it_userspace[index - tbl->it_offset] : NULL;
-+}
- #endif
- 
- struct iommu_table_ops iommu_table_lpar_multi_ops = {
- 	.set = tce_buildmulti_pSeriesLP,
- #ifdef CONFIG_IOMMU_API
- 	.xchg_no_kill = tce_exchange_pseries,
-+	.useraddrptr = tce_useraddr_pSeriesLP,
- #endif
- 	.clear = tce_freemulti_pSeriesLP,
--	.get = tce_get_pSeriesLP
-+	.get = tce_get_pSeriesLP,
-+	.free = tce_free_pSeries
- };
- 
-+/*
-+ * When the DMA window properties might have been removed,
-+ * the parent node has the table_group setup on it.
-+ */
-+static struct device_node *pci_dma_find_parent_node(struct pci_dev *dev,
-+					       struct iommu_table_group *table_group)
-+{
-+	struct device_node *dn = pci_device_to_OF_node(dev);
-+	struct pci_dn *rpdn;
-+
-+	for (; dn && PCI_DN(dn); dn = dn->parent) {
-+		rpdn = PCI_DN(dn);
-+
-+		if (table_group == rpdn->table_group)
-+			return dn;
-+	}
-+
-+	return NULL;
-+}
-+
- /*
-  * Find nearest ibm,dma-window (default DMA window) or direct DMA window or
-  * dynamic 64bit DMA window, walking up the device tree.
-@@ -955,7 +965,7 @@ static void __remove_dma_window(struct device_node *np, u32 *ddw_avail, u64 liob
- }
- 
- static void remove_dma_window(struct device_node *np, u32 *ddw_avail,
--			      struct property *win)
-+			      struct property *win, bool cleanup)
- {
- 	struct dynamic_dma_window_prop *dwp;
- 	u64 liobn;
-@@ -963,11 +973,13 @@ static void remove_dma_window(struct device_node *np, u32 *ddw_avail,
- 	dwp = win->value;
- 	liobn = (u64)be32_to_cpu(dwp->liobn);
- 
--	clean_dma_window(np, dwp);
-+	if (cleanup)
-+		clean_dma_window(np, dwp);
- 	__remove_dma_window(np, ddw_avail, liobn);
- }
- 
--static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_name)
-+static int remove_dma_window_named(struct device_node *np, bool remove_prop, const char *win_name,
-+				   bool cleanup)
- {
- 	struct property *win;
- 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
-@@ -982,9 +994,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
- 	if (ret)
- 		return 0;
- 
--
- 	if (win->length >= sizeof(struct dynamic_dma_window_prop))
--		remove_dma_window(np, ddw_avail, win);
-+		remove_dma_window(np, ddw_avail, win, cleanup);
- 
- 	if (!remove_prop)
- 		return 0;
-@@ -1046,7 +1057,7 @@ static void find_existing_ddw_windows_named(const char *name)
- 	for_each_node_with_property(pdn, name) {
- 		dma64 = of_get_property(pdn, name, &len);
- 		if (!dma64 || len < sizeof(*dma64)) {
--			remove_ddw(pdn, true, name);
-+			remove_dma_window_named(pdn, true, name, true);
- 			continue;
- 		}
- 
-@@ -1423,7 +1434,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		if (reset_win_ext)
- 			goto out_failed;
- 
--		remove_dma_window(pdn, ddw_avail, default_win);
-+		remove_dma_window(pdn, ddw_avail, default_win, true);
- 		default_win_removed = true;
- 
- 		/* Query again, to check if the window is available */
-@@ -1768,24 +1779,380 @@ static unsigned long spapr_tce_get_table_size(__u32 page_shift,
- 	return size;
- }
- 
-+/*
-+ * The default window property always exists on the FDT, only during the kexec/kdump
-+ * load its removed to match the DT actuals. So, its safe to fetch from FDT.
-+ */
-+static struct property *default_window_property_create(struct device_node *pdn)
-+{
-+	const void *fdt = initial_boot_params;
-+	int fdt_root_offset, node_offset;
-+	struct property *win;
-+	const void *fdtprop;
-+	int length;
-+
-+	fdt_root_offset = fdt_path_offset(fdt, "/");
-+	node_offset = fdt_subnode_offset(fdt, fdt_root_offset, of_node_full_name(pdn));
-+	if (node_offset < 0) {
-+		pr_err("Failed to get the node %pOF from fdt\n", pdn);
-+		return NULL;
-+	}
-+
-+	fdtprop = fdt_getprop(fdt, node_offset, "ibm,dma-window", &length);
-+	if (!length) {
-+		pr_err("%pOF: Failed to get the ibm,dma-window property\n", pdn);
-+		return NULL;
-+	}
-+
-+	win = kzalloc(sizeof(struct property), GFP_KERNEL);
-+	if (!win)
-+		return NULL;
-+
-+	win->name = kstrdup("ibm,dma-window", GFP_KERNEL);
-+	win->length = length;
-+	win->value = kmemdup(fdtprop, length, GFP_KERNEL);
-+	if (!win->value) {
-+		kfree(win);
-+		return NULL;
-+	}
-+
-+	return win;
-+}
-+
-+static struct pci_dev *iommu_group_get_first_pci_dev(struct iommu_group *group)
-+{
-+	struct pci_dev *pdev = NULL;
-+	int ret;
-+
-+	/* No IOMMU group ? */
-+	if (!group)
-+		return NULL;
-+
-+	ret = iommu_group_for_each_dev(group, &pdev, dev_has_iommu_table);
-+	if (!ret || !pdev)
-+		return NULL;
-+	return pdev;
-+}
-+
-+static void restore_default_dma_window(struct pci_dev *pdev, struct device_node *pdn)
-+{
-+	struct property *def_win;
-+	int ret;
-+
-+	reset_dma_window(pdev, pdn);
-+
-+	/* Restore the DT property from the FDT */
-+	def_win = default_window_property_create(pdn);
-+	if (!def_win)
-+		return;
-+	ret = of_add_property(pdn, def_win);
-+	if (ret)
-+		dev_err(&pdev->dev, "unable to add DMA window property for %pOF: %d",
-+			pdn, ret);
-+}
-+
-+static long remove_dynamic_dma_windows(struct pci_dev *pdev, struct device_node *pdn)
-+{
-+	struct pci_dn *pci = PCI_DN(pdn);
-+	struct dma_win *window;
-+	bool direct_mapping;
-+	int len;
-+
-+	if (find_existing_ddw(pdn, &pdev->dev.archdata.dma_offset, &len, &direct_mapping)) {
-+		remove_dma_window_named(pdn, true, direct_mapping ?
-+						   DIRECT64_PROPNAME : DMA64_PROPNAME, true);
-+		if (!direct_mapping) {
-+			WARN_ON(!pci->table_group->tables[0] && !pci->table_group->tables[1]);
-+
-+			if (pci->table_group->tables[1]) {
-+				iommu_tce_table_put(pci->table_group->tables[1]);
-+				pci->table_group->tables[1] = NULL;
-+			} else if (pci->table_group->tables[0]) {
-+				/* Default window was removed and only the DDW exists */
-+				iommu_tce_table_put(pci->table_group->tables[0]);
-+				pci->table_group->tables[0] = NULL;
-+			}
-+		}
-+		spin_lock(&dma_win_list_lock);
-+		list_for_each_entry(window, &dma_win_list, list) {
-+			if (window->device == pdn) {
-+				list_del(&window->list);
-+				kfree(window);
-+				break;
-+			}
-+		}
-+		spin_unlock(&dma_win_list_lock);
-+	}
-+
-+	return 0;
-+}
-+
-+static long pseries_setup_default_iommu_config(struct iommu_table_group *table_group,
-+					       struct device *dev)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	const __be32 *default_prop;
-+	long liobn, offset, size;
-+	struct device_node *pdn;
-+	struct iommu_table *tbl;
-+	struct pci_dn *pci;
-+
-+	pdn = pci_dma_find_parent_node(pdev, table_group);
-+	if (!pdn || !PCI_DN(pdn)) {
-+		dev_warn(&pdev->dev, "No table_group configured for the node %pOF\n", pdn);
-+		return -1;
-+	}
-+	pci = PCI_DN(pdn);
-+
-+	/* The default window is restored if not present already on removal of DDW.
-+	 * However, if used by VFIO SPAPR sub driver, the user's order of removal of
-+	 * windows might have been different to not leading to auto restoration,
-+	 * suppose the DDW was removed first followed by the default one.
-+	 * So, restore the default window with reset-pe-dma call explicitly.
-+	 */
-+	restore_default_dma_window(pdev, pdn);
-+
-+	default_prop = of_get_property(pdn, "ibm,dma-window", NULL);
-+	of_parse_dma_window(pdn, default_prop, &liobn, &offset, &size);
-+	tbl = iommu_pseries_alloc_table(pci->phb->node);
-+	if (!tbl) {
-+		dev_err(&pdev->dev, "couldn't create new IOMMU table\n");
-+		return -1;
-+	}
-+
-+	iommu_table_setparms_common(tbl, pci->phb->bus->number, liobn, offset,
-+				    size, IOMMU_PAGE_SHIFT_4K, NULL,
-+				    &iommu_table_lpar_multi_ops);
-+	iommu_init_table(tbl, pci->phb->node, 0, 0);
-+
-+	pci->table_group->tables[0] = tbl;
-+	set_iommu_table_base(&pdev->dev, tbl);
-+
-+	return 0;
-+}
-+
-+static bool is_default_window_request(struct iommu_table_group *table_group, __u32 page_shift,
-+				      __u64 window_size)
-+{
-+	if ((window_size <= table_group->tce32_size) &&
-+	    (page_shift == IOMMU_PAGE_SHIFT_4K))
-+		return true;
-+
-+	return false;
-+}
-+
- static long spapr_tce_create_table(struct iommu_table_group *table_group, int num,
- 				   __u32 page_shift, __u64 window_size, __u32 levels,
- 				   struct iommu_table **ptbl)
- {
--	struct iommu_table *tbl = table_group->tables[0];
--
--	if (num > 0)
--		return -EPERM;
-+	struct pci_dev *pdev = iommu_group_get_first_pci_dev(table_group->group);
-+	u32 ddw_avail[DDW_APPLICABLE_SIZE];
-+	struct ddw_create_response create;
-+	unsigned long liobn, offset, size;
-+	unsigned long start = 0, end = 0;
-+	struct ddw_query_response query;
-+	const __be32 *default_prop;
-+	struct failed_ddw_pdn *fpdn;
-+	unsigned int entries_shift;
-+	unsigned int window_shift;
-+	struct device_node *pdn;
-+	struct iommu_table *tbl;
-+	struct dma_win *window;
-+	struct property *win64;
-+	struct pci_dn *pci;
-+	u64 win_addr;
-+	int len, i;
-+	long ret;
- 
--	if (tbl->it_page_shift != page_shift ||
--	    tbl->it_size != (window_size >> page_shift) ||
--	    tbl->it_indirect_levels != levels - 1)
-+	if (!is_power_of_2(window_size) || levels > 1)
- 		return -EINVAL;
- 
-+	window_shift = order_base_2(window_size);
-+	entries_shift = window_shift - page_shift;
-+
-+	mutex_lock(&dma_win_init_mutex);
-+
-+	ret = -ENODEV;
-+
-+	pdn = pci_dma_find_parent_node(pdev, table_group);
-+	if (!pdn || !PCI_DN(pdn)) { /* Niether of 32s|64-bit exist! */
-+		dev_warn(&pdev->dev, "No dma-windows exist for the node %pOF\n", pdn);
-+		goto out_failed;
-+	}
-+	pci = PCI_DN(pdn);
-+
-+	/* If the enable DDW failed for the pdn, dont retry! */
-+	list_for_each_entry(fpdn, &failed_ddw_pdn_list, list) {
-+		if (fpdn->pdn == pdn) {
-+			dev_info(&pdev->dev, "%pOF in failed DDW device list\n", pdn);
-+			goto out_unlock;
-+		}
-+	}
-+
-+	tbl = iommu_pseries_alloc_table(pci->phb->node);
-+	if (!tbl) {
-+		dev_dbg(&pdev->dev, "couldn't create new IOMMU table\n");
-+		goto out_unlock;
-+	}
-+
-+	if (num == 0) {
-+		bool direct_mapping;
-+		/* The request is not for default window? Ensure there is no DDW window already */
-+		if (!is_default_window_request(table_group, page_shift, window_size)) {
-+			if (find_existing_ddw(pdn, &pdev->dev.archdata.dma_offset, &len,
-+					      &direct_mapping)) {
-+				dev_warn(&pdev->dev, "%pOF: 64-bit window already present.", pdn);
-+				ret = -EPERM;
-+				goto out_unlock;
-+			}
-+		} else {
-+			/* Request is for Default window, ensure there is no DDW if there is a
-+			 * need to reset. reset-pe otherwise removes the DDW also
-+			 */
-+			default_prop = of_get_property(pdn, "ibm,dma-window", NULL);
-+			if (!default_prop) {
-+				if (find_existing_ddw(pdn, &pdev->dev.archdata.dma_offset, &len,
-+						      &direct_mapping)) {
-+					dev_warn(&pdev->dev, "%pOF: Attempt to create window#0 when 64-bit window is present. Preventing the attempt as that would destroy the 64-bit window",
-+						 pdn);
-+					ret = -EPERM;
-+					goto out_unlock;
-+				}
-+
-+				restore_default_dma_window(pdev, pdn);
-+
-+				default_prop = of_get_property(pdn, "ibm,dma-window", NULL);
-+				of_parse_dma_window(pdn, default_prop, &liobn, &offset, &size);
-+				/* Limit the default window size to window_size */
-+				iommu_table_setparms_common(tbl, pci->phb->bus->number, liobn,
-+							    offset, 1UL << window_shift,
-+							    IOMMU_PAGE_SHIFT_4K, NULL,
-+							    &iommu_table_lpar_multi_ops);
-+				iommu_init_table(tbl, pci->phb->node, start, end);
-+
-+				table_group->tables[0] = tbl;
-+
-+				mutex_unlock(&dma_win_init_mutex);
-+
-+				goto exit;
-+			}
-+		}
-+	}
-+
-+	ret = of_property_read_u32_array(pdn, "ibm,ddw-applicable",
-+				&ddw_avail[0], DDW_APPLICABLE_SIZE);
-+	if (ret) {
-+		dev_info(&pdev->dev, "ibm,ddw-applicable not found\n");
-+		goto out_failed;
-+	}
-+	ret = -ENODEV;
-+
-+	pr_err("%s: Calling query %pOF\n", __func__, pdn);
-+	ret = query_ddw(pdev, ddw_avail, &query, pdn);
-+	if (ret)
-+		goto out_failed;
-+	ret = -ENODEV;
-+
-+	len = window_shift;
-+	if (query.largest_available_block < (1ULL << (len - page_shift))) {
-+		dev_dbg(&pdev->dev, "can't map window 0x%llx with %llu %llu-sized pages\n",
-+				1ULL << len, query.largest_available_block,
-+				1ULL << page_shift);
-+		ret = -EINVAL; /* Retry with smaller window size */
-+		goto out_unlock;
-+	}
-+
-+	if (create_ddw(pdev, ddw_avail, &create, page_shift, len)) {
-+		pr_err("%s: Create ddw failed %pOF\n", __func__, pdn);
-+		goto out_failed;
-+	}
-+
-+	win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
-+	win64 = ddw_property_create(DMA64_PROPNAME, create.liobn, win_addr, page_shift, len);
-+	if (!win64)
-+		goto remove_window;
-+
-+	ret = of_add_property(pdn, win64);
-+	if (ret) {
-+		dev_err(&pdev->dev, "unable to add DMA window property for %pOF: %ld", pdn, ret);
-+		dump_stack();
-+		goto free_property;
-+	}
-+	ret = -ENODEV;
-+
-+	window = ddw_list_new_entry(pdn, win64->value);
-+	if (!window)
-+		goto remove_property;
-+
-+	window->direct = false;
-+
-+	for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
-+		const unsigned long mask = IORESOURCE_MEM_64 | IORESOURCE_MEM;
-+
-+		/* Look for MMIO32 */
-+		if ((pci->phb->mem_resources[i].flags & mask) == IORESOURCE_MEM) {
-+			start = pci->phb->mem_resources[i].start;
-+			end = pci->phb->mem_resources[i].end;
-+				break;
-+		}
-+	}
-+
-+	/* New table for using DDW instead of the default DMA window */
-+	iommu_table_setparms_common(tbl, pci->phb->bus->number, create.liobn, win_addr,
-+				    1UL << len, page_shift, NULL, &iommu_table_lpar_multi_ops);
-+	iommu_init_table(tbl, pci->phb->node, start, end);
-+
-+	pci->table_group->tables[num] = tbl;
-+	set_iommu_table_base(&pdev->dev, tbl);
-+	pdev->dev.archdata.dma_offset = win_addr;
-+
-+	spin_lock(&dma_win_list_lock);
-+	list_add(&window->list, &dma_win_list);
-+	spin_unlock(&dma_win_list_lock);
-+
-+	mutex_unlock(&dma_win_init_mutex);
-+
-+	goto exit;
-+
-+remove_property:
-+	of_remove_property(pdn, win64);
-+free_property:
-+	kfree(win64->name);
-+	kfree(win64->value);
-+	kfree(win64);
-+remove_window:
-+	__remove_dma_window(pdn, ddw_avail, create.liobn);
-+
-+out_failed:
-+	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
-+	if (!fpdn)
-+		goto out_unlock;
-+	fpdn->pdn = pdn;
-+	list_add(&fpdn->list, &failed_ddw_pdn_list);
-+
-+out_unlock:
-+	mutex_unlock(&dma_win_init_mutex);
-+
-+	return ret;
-+exit:
-+	/* Allocate the userspace view */
-+	pseries_tce_iommu_userspace_view_alloc(tbl);
-+	tbl->it_allocated_size = spapr_tce_get_table_size(page_shift, window_size, levels);
-+
- 	*ptbl = iommu_tce_table_get(tbl);
-+
- 	return 0;
- }
- 
-+static bool is_default_window_table(struct iommu_table_group *table_group, struct iommu_table *tbl)
-+{
-+	if (((tbl->it_size << tbl->it_page_shift)  <= table_group->tce32_size) &&
-+	    (tbl->it_page_shift == IOMMU_PAGE_SHIFT_4K))
-+		return true;
-+
-+	return false;
-+}
-+
- static long spapr_tce_set_window(struct iommu_table_group *table_group,
- 				 int num, struct iommu_table *tbl)
- {
-@@ -1794,43 +2161,135 @@ static long spapr_tce_set_window(struct iommu_table_group *table_group,
- 
- static long spapr_tce_unset_window(struct iommu_table_group *table_group, int num)
- {
--	return 0;
-+	struct pci_dev *pdev = iommu_group_get_first_pci_dev(table_group->group);
-+	struct device_node *dn = pci_device_to_OF_node(pdev), *pdn;
-+	struct iommu_table *tbl = table_group->tables[num];
-+	struct failed_ddw_pdn *fpdn;
-+	struct dma_win *window;
-+	const char *win_name;
-+	struct pci_dn *pci;
-+	int ret = -ENODEV;
-+
-+	mutex_lock(&dma_win_init_mutex);
-+
-+	if ((num == 0) && is_default_window_table(table_group, tbl))
-+		win_name = "ibm,dma-window";
-+	else
-+		win_name = DMA64_PROPNAME;
-+
-+	pdn = pci_dma_find(dn, NULL);
-+	if (!pdn || !PCI_DN(pdn)) { /* Niether of 32s|64-bit exist! */
-+		dev_warn(&pdev->dev, "No dma-windows exist for the node %pOF\n", pdn);
-+		goto out_failed;
-+	}
-+	pci = PCI_DN(pdn);
-+
-+	/* Dont clear the TCEs, User should have done it */
-+	if (remove_dma_window_named(pdn, true, win_name, false)) {
-+		pr_err("%s: The existing DDW removal failed for node %pOF\n", __func__, pdn);
-+		goto out_failed; /* Could not remove it either! */
-+	}
-+
-+	if (strcmp(win_name, DMA64_PROPNAME) == 0) {
-+		spin_lock(&dma_win_list_lock);
-+		list_for_each_entry(window, &dma_win_list, list) {
-+			if (window->device == pdn) {
-+				list_del(&window->list);
-+				kfree(window);
-+				break;
-+			}
-+		}
-+		spin_unlock(&dma_win_list_lock);
-+	}
-+
-+	iommu_tce_table_put(table_group->tables[num]);
-+	table_group->tables[num] = NULL;
-+
-+	ret = 0;
-+
-+	goto out_unlock;
-+
-+out_failed:
-+	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
-+	if (!fpdn)
-+		goto out_unlock;
-+	fpdn->pdn = pdn;
-+	list_add(&fpdn->list, &failed_ddw_pdn_list);
-+
-+out_unlock:
-+	mutex_unlock(&dma_win_init_mutex);
-+
-+	return ret;
- }
- 
--static long spapr_tce_take_ownership(struct iommu_table_group *table_group)
-+static long spapr_tce_take_ownership(struct iommu_table_group *table_group, struct device *dev)
- {
--	int i, j, rc = 0;
-+	struct iommu_table *tbl = table_group->tables[0];
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct device_node *dn = pci_device_to_OF_node(pdev);
-+	struct device_node *pdn;
- 
--	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
--		struct iommu_table *tbl = table_group->tables[i];
-+	/* SRIOV VFs using direct map by the host driver OR multifunction devices
-+	 * where the ownership was taken on the attempt by the first function
-+	 */
-+	if (!tbl && (table_group->max_dynamic_windows_supported != 1))
-+		return 0;
- 
--		if (!tbl || !tbl->it_map)
--			continue;
-+	mutex_lock(&dma_win_init_mutex);
- 
--		rc = iommu_take_ownership(tbl);
--		if (!rc)
--			continue;
-+	pdn = pci_dma_find(dn, NULL);
-+	if (!pdn || !PCI_DN(pdn)) { /* Niether of 32s|64-bit exist! */
-+		dev_warn(&pdev->dev, "No dma-windows exist for the node %pOF\n", pdn);
-+		mutex_unlock(&dma_win_init_mutex);
-+		return -1;
-+	}
-+
-+	/*
-+	 * Though rtas call reset-pe removes the DDW, it doesn't clear the entries on the table
-+	 * if there are any. In case of direct map, the entries will be left over, which
-+	 * is fine for PEs with 2 DMA windows where the second window is created with create-pe
-+	 * at which point the table is cleared. However, on VFs having only one DMA window, the
-+	 * default window would end up seeing the entries left over from the direct map done
-+	 * on the second window. So, remove the ddw explicitly so that clean_dma_window()
-+	 * cleans up the entries if any.
-+	 */
-+	if (remove_dynamic_dma_windows(pdev, pdn)) {
-+		dev_warn(&pdev->dev, "The existing DDW removal failed for node %pOF\n", pdn);
-+		mutex_unlock(&dma_win_init_mutex);
-+		return -1;
-+	}
- 
--		for (j = 0; j < i; ++j)
--			iommu_release_ownership(table_group->tables[j]);
--		return rc;
-+	/* The table_group->tables[0] is not null now, it must be the default window
-+	 * Remove it, let the userspace create it as it needs.
-+	 */
-+	if (table_group->tables[0]) {
-+		remove_dma_window_named(pdn, true, "ibm,dma-window", true);
-+		iommu_tce_table_put(tbl);
-+		table_group->tables[0] = NULL;
- 	}
-+	set_iommu_table_base(dev, NULL);
-+
-+	mutex_unlock(&dma_win_init_mutex);
-+
- 	return 0;
- }
- 
--static void spapr_tce_release_ownership(struct iommu_table_group *table_group)
-+static void spapr_tce_release_ownership(struct iommu_table_group *table_group, struct device *dev)
- {
--	int i;
-+	struct iommu_table *tbl = table_group->tables[0];
- 
--	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
--		struct iommu_table *tbl = table_group->tables[i];
-+	if (tbl) { /* Default window already restored */
-+		return;
-+	}
- 
--		if (!tbl)
--			continue;
-+	mutex_lock(&dma_win_init_mutex);
- 
--		if (tbl->it_map)
--			iommu_release_ownership(tbl);
--	}
-+	/* Restore the default window */
-+	pseries_setup_default_iommu_config(table_group, dev);
-+
-+	mutex_unlock(&dma_win_init_mutex);
-+
-+	return;
- }
- 
- struct iommu_table_group_ops spapr_tce_table_group_ops = {
-@@ -1903,8 +2362,8 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
- 		 * we have to remove the property when releasing
- 		 * the device node.
- 		 */
--		if (remove_ddw(np, false, DIRECT64_PROPNAME))
--			remove_ddw(np, false, DMA64_PROPNAME);
-+		if (remove_dma_window_named(np, false, DIRECT64_PROPNAME, true))
-+			remove_dma_window_named(np, false, DMA64_PROPNAME, true);
- 
- 		if (pci && pci->table_group)
- 			iommu_pseries_free_group(pci->table_group,
-
-
+Thanks,
+Stephen
