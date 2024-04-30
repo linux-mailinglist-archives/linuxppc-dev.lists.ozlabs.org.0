@@ -2,90 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879938B76AB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 15:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6708B779B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 15:53:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qt/OpG9o;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qt/OpG9o;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tlcO3h30;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTLHl1jdJz3cYH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 23:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTM9M5Sjqz3cXF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Apr 2024 23:53:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qt/OpG9o;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qt/OpG9o;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tlcO3h30;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=mchehab@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTLGz0fWfz3bpN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 23:13:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714482789;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oWuqOsXifT7Zmvx2sEqXndtkJ5mO0uhVIU3UoDEgjcQ=;
-	b=Qt/OpG9ofaUoe13sct1LKnPY6QVF0uPVlY9W6sPyoxJfQAaLeL+asxbFuyO6i1fLC5sVJN
-	aNWTAS4svk67gpiM/hGEds9x76JtnoH1YvtlTHJvzFW6iIDiavmPLa1B8SbekWcrVFMI6j
-	4Tq3MEVjhWfZawNuIprquFLDqcrQnVg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714482789;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oWuqOsXifT7Zmvx2sEqXndtkJ5mO0uhVIU3UoDEgjcQ=;
-	b=Qt/OpG9ofaUoe13sct1LKnPY6QVF0uPVlY9W6sPyoxJfQAaLeL+asxbFuyO6i1fLC5sVJN
-	aNWTAS4svk67gpiM/hGEds9x76JtnoH1YvtlTHJvzFW6iIDiavmPLa1B8SbekWcrVFMI6j
-	4Tq3MEVjhWfZawNuIprquFLDqcrQnVg=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-ORyAFXGoMZiuRXCMH8heig-1; Tue, 30 Apr 2024 09:13:07 -0400
-X-MC-Unique: ORyAFXGoMZiuRXCMH8heig-1
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-6ee53b652f6so312571a34.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 06:13:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714482786; x=1715087586;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oWuqOsXifT7Zmvx2sEqXndtkJ5mO0uhVIU3UoDEgjcQ=;
-        b=PgqSWJuNCxJyFXOHmWaJ+M9vLPBnw/GJZ97jMqktk+NLiAbClvmDrRLoBjWCYyDXnI
-         pAQc6isJKsOZZOZJhiac6HGKduoF51SmKR7aVahSw32PFD+iUITfhXAavqpHIQzeVnDE
-         Jiz0U2QEvXit+l+uIyx7UxhaPB2AYycmonaBDXEed30iWR0IqVJ5CmysRGULj2FwnknQ
-         OAmTpsCVVBVdnTZwMn0ZteMAYX2DQ5/rJy4dX7lIZGebiurmiu0ycUj4fi9u5M8Mv1ik
-         kzka3KDMLrTjksJbcRfPLQRBmK86vbsEAmwt1E4fCm83Xotqio+GjwxKBh0R7LBrGL/K
-         g4Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/tRssE28nC4f6mvtU+0NnHOgmrruyPWkhXiD5H1G42LMJD4Nfb41g9y6RXjXAgAZrwlMc6twuKoSUx1P1yJaqnJv035zkEvS2IlBkcw==
-X-Gm-Message-State: AOJu0YyNudulC1NXZ/Rgyzg+85LTw3p+3ovRe076dDso1BD3pyLKkT/S
-	Osis5KEgNb34fTeqUBTJLYi5ZhvpbNe/aU3qzzB+7mjcgtL1TVoPpE0TgPSuthkM/3nHcPPbsEC
-	EsxEjgzQqjpNH9v6DUE/Jz4Qtl4S/adi0SwVH8Ri1aUbmlg7wdK/VIqz0MZypGNgjG1KUIzs=
-X-Received: by 2002:a05:6830:100f:b0:6ee:29b2:c2c5 with SMTP id a15-20020a056830100f00b006ee29b2c2c5mr6823531otp.1.1714482785883;
-        Tue, 30 Apr 2024 06:13:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6fWhVkCw/NAkBxI5mhCww2FCWhCtQ7223L4ixmBRvipLfoa6GDPyCxArc1sm1kF/OD00lJQ==
-X-Received: by 2002:a05:6830:100f:b0:6ee:29b2:c2c5 with SMTP id a15-20020a056830100f00b006ee29b2c2c5mr6823485otp.1.1714482785270;
-        Tue, 30 Apr 2024 06:13:05 -0700 (PDT)
-Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id mk11-20020a056214580b00b006a0cd28f98dsm2008123qvb.25.2024.04.30.06.13.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 06:13:04 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2] mm/gup: Fix hugepd handling in hugetlb rework
-Date: Tue, 30 Apr 2024 09:13:03 -0400
-Message-ID: <20240430131303.264331-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTM8d6GfHz3cLl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 23:52:49 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 55C71615DE;
+	Tue, 30 Apr 2024 13:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93A8C2BBFC;
+	Tue, 30 Apr 2024 13:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714485165;
+	bh=Uko8HS1g2ylxAZcYhzNrJijEd2kEOyt+s0j1KcTMN7k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tlcO3h30P7SZ7oSLctRoaEeNW1W7XBgT+wj+zgU83zv/UWcg/7/p2i8L0SUN4QGMA
+	 h06L7zGqa0MtBw4/BxmQiM433Pb/Sg/OY8/hNd4H+Gkjvvk5ZGi2xZtHpiuqf+BuG3
+	 7h3k0+YgBpAiCm+vI7kvSvfUjxLl7o38tWkhbCGoerRwxpSotDKbsGdzhrQ3HFOOTx
+	 nyX5qR2eM3/crVpKtjO74t24Rsd2A4TbYY8fcDObkUOMZ6106Yk7mG5PV9ySvLEjOs
+	 EbHpa2N9KkyXhXAGZGa1GJ5+PPO4GX29Qo3XFEzfkV5dBfjUN/2ArJTtJiav5UrM66
+	 tznsKICFix6nA==
+Date: Tue, 30 Apr 2024 14:52:36 +0100
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+To: Hans Verkuil <hverkuil@xs4all.nl>
+Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
+Message-ID: <20240430145236.36febb03@sal.lan>
+In-Reply-To: <32d0c83c-4d0c-4d22-b2f1-d03d075f4898@xs4all.nl>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+	<20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
+	<32d0c83c-4d0c-4d22-b2f1-d03d075f4898@xs4all.nl>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,190 +61,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>, David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>, Muchun Song <muchun.song@linux.dev>, peterx@redhat.com, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, linux-media@vger.kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit a12083d721d7 added hugepd handling for gup-slow, reusing gup-fast
-functions.  follow_hugepd() correctly took the vma pointer in, however
-didn't pass it over into the lower functions, which was overlooked.
+Em Tue, 30 Apr 2024 10:47:13 +0200
+Hans Verkuil <hverkuil@xs4all.nl> escreveu:
 
-The issue is gup_fast_hugepte() uses the vma pointer to make the correct
-decision on whether an unshare is needed for a FOLL_PIN|FOLL_LONGTERM.  Now
-without vma ponter it will constantly return "true" (needs an unshare) for
-a page cache, even though in the SHARED case it will be wrong to unshare.
+> On 30/04/2024 10:21, Sebastian Fricke wrote:
+> > Hey Shengjiu,
+> > 
+> > first of all thanks for all of this work and I am very sorry for only
+> > emerging this late into the series, I sadly didn't notice it earlier.
+> > 
+> > I would like to voice a few concerns about the general idea of adding
+> > Audio support to the Media subsystem.
+> > 
+> > 1. The biggest objection is, that the Linux Kernel has a subsystem
+> > specifically targeted for audio devices, adding support for these
+> > devices in another subsystem are counterproductive as they work around
+> > the shortcomings of the audio subsystem while forcing support for a
+> > device into a subsystem that was never designed for such devices.
+> > Instead, the audio subsystem has to be adjusted to be able to support
+> > all of the required workflows, otherwise, the next audio driver with
+> > similar requirements will have to move to the media subsystem as well,
+> > the audio subsystem would then never experience the required change and
+> > soon we would have two audio subsystems.
+> > 
+> > 2. Closely connected to the previous objection, the media subsystem with
+> > its current staff of maintainers is overworked and barely capable of
+> > handling the workload, which includes an abundance of different devices
+> > from DVB, codecs, cameras, PCI devices, radio tuners, HDMI CEC, IR
+> > receivers, etc. Adding more device types to this matrix will make the
+> > situation worse and should only be done with a plan for how first to
+> > improve the current maintainer situation.
+> > 
+> > 3. By using the same framework and APIs as the video codecs, the audio
+> > codecs are going to cause extra work for the video codec developers and
+> > maintainers simply by occupying the same space that was orginally
+> > designed for the purpose of video only. Even if you try to not cause any
+> > extra stress the simple presence of the audio code in the codebase is
+> > going to cause restrictions.
+> > 
+> > The main issue here is that the audio subsystem doesn't provide a
+> > mem2mem framework and I would say you are in luck because the media
+> > subsystem has gathered a lot of shortcomings with its current
+> > implementation of the mem2mem framework over time, which is why a new
+> > implementation will be necessary anyway.
+> > 
+> > So instead of hammering a driver into the wrong destination, I would
+> > suggest bundling our forces and implementing a general memory-to-memory
+> > framework that both the media and the audio subsystem can use, that
+> > addresses the current shortcomings of the implementation and allows you
+> > to upload the driver where it is supposed to be.
+> > This is going to cause restrictions as well, like mentioned in the
+> > concern number 3, but with the difference that we can make a general
+> > plan for such a framework that accomodates lots of use cases and each
+> > subsystem can add their routines on top of the general framework.
+> > 
+> > Another possible alternative is to try and make the DRM scheduler more
+> > generally available, this scheduler is the most mature and in fact is
+> > very similar to what you and what the media devices need.
+> > Which again just shows how common your usecase actually is and how a
+> > general solution is the best long term solution.
+> > 
+> > Please notice that Daniel Almeida is currently working on something
+> > related to this:
+> > https://lore.kernel.org/linux-media/3F80AC0D-DCAA-4EDE-BF58-BB1369C7EDCA@collabora.com/T/#u
+> > 
+> > If the toplevel maintainers decide to add the patchset so be it, but I
+> > wanted to voice my concerns and also highlight that this is likely going
+> > to cause extra stress for the video codecs maintainers and the
+> > maintainers in general. We cannot spend a lot of time on audio codecs,
+> > as video codecs already fill up our available time sufficiently,
+> > so the use of the framework needs to be conservative and cause as little
+> > extra work as possible for the original use case of the framework.  
+> 
+> I would really like to get the input of the audio maintainers on this.
+> Sebastian has a good point, especially with us being overworked :-)
+> 
+> Having a shared mem2mem framework would certainly be nice, on the other
+> hand, developing that will most likely take a substantial amount of time.
+> 
+> Perhaps it is possible to copy the current media v4l2-mem2mem.c and turn
+> it into an alsa-mem2mem.c? I really do not know enough about the alsa
+> subsystem to tell if that is possible.
+> 
+> While this driver is a rate converter, not an audio codec, the same
+> principles would apply to off-line audio codecs as well. And it is true
+> that we definitely do not want to support audio codecs in the media
+> subsystem.
+> 
+> Accepting this driver creates a precedent and would open the door for
+> audio codecs.
+> 
+> I may have been too hasty in saying yes to this, I did not consider
+> the wider implications for our workload and what it can lead to. I
+> sincerely apologize to Shengjiu Wang as it is no fun to end up in a
+> situation like this.
 
-The other problem is, even if an unshare is needed, it now returns 0 rather
-than -EMLINK, which will not trigger a follow up FAULT_FLAG_UNSHARE fault.
-That will need to be fixed too when the unshare is wanted.
+I agree with both Sebastian and Hans here: media devices always had
+audio streams, even on old PCI analog TV devices like bttv. There
+are even some devices like the ones based on usb em28xx that contains
+an AC97 chip on it. The decision was always to have audio supported by
+ALSA APIs/subsystem, as otherwise we'll end duplicating code and 
+reinventing the wheel with new incompatible APIs for audio in and outside
+media, creating unneeded complexity, which will end being reflected on
+userspace as well.
 
-gup_longterm test didn't expose this issue in the past because it didn't
-yet test R/O unshare in this case, another separate patch will enable that
-in future tests.
+So, IMO it makes a lot more sense to place audio codecs and processor
+blocks inside ALSA, probably as part of ALSA SOF, if possible.
 
-Fix it by passing vma correctly to the bottom, rename gup_fast_hugepte()
-back to gup_hugepte() as it is shared between the fast/slow paths, and also
-allow -EMLINK to be returned properly by gup_hugepte() even though gup-fast
-will take it the same as zero.
+Hans suggestion of forking v4l2-mem2mem.c on ALSA seems a good
+starting point. Also, moving the DRM mem2mem functionality to a 
+core library that could be re-used by the three subsystems sounds
+a good idea, but I suspect that a change like that could be more
+time-consuming.
 
-Reported-by: David Hildenbrand <david@redhat.com>
-Fixes: a12083d721d7 ("mm/gup: handle hugepd for follow_page()")
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
-
-v1: https://lore.kernel.org/r/20240428190151.201002-1-peterx@redhat.com
-
-This is v2 and dropped the 2nd test patch as a better one can come later,
-this patch alone is kept untouched, added David's R-b.  Should apply to
-both mm-stable and mm-unstable.  The target commit to be fixed should just
-been moved into mm-stable, so no need to cc stable.
----
- mm/gup.c | 64 ++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 39 insertions(+), 25 deletions(-)
-
-diff --git a/mm/gup.c b/mm/gup.c
-index 2f7baf96f655..ca0f5cedce9b 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -525,9 +525,17 @@ static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
- 	return (__boundary - 1 < end - 1) ? __boundary : end;
- }
- 
--static int gup_fast_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
--		unsigned long end, unsigned int flags, struct page **pages,
--		int *nr)
-+/*
-+ * Returns 1 if succeeded, 0 if failed, -EMLINK if unshare needed.
-+ *
-+ * NOTE: for the same entry, gup-fast and gup-slow can return different
-+ * results (0 v.s. -EMLINK) depending on whether vma is available.  This is
-+ * the expected behavior, where we simply want gup-fast to fallback to
-+ * gup-slow to take the vma reference first.
-+ */
-+static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz,
-+		       unsigned long addr, unsigned long end, unsigned int flags,
-+		       struct page **pages, int *nr)
- {
- 	unsigned long pte_end;
- 	struct page *page;
-@@ -559,9 +567,9 @@ static int gup_fast_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
- 		return 0;
- 	}
- 
--	if (!pte_write(pte) && gup_must_unshare(NULL, flags, &folio->page)) {
-+	if (!pte_write(pte) && gup_must_unshare(vma, flags, &folio->page)) {
- 		gup_put_folio(folio, refs, flags);
--		return 0;
-+		return -EMLINK;
- 	}
- 
- 	*nr += refs;
-@@ -577,19 +585,22 @@ static int gup_fast_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
-  * of the other folios. See writable_file_mapping_allowed() and
-  * gup_fast_folio_allowed() for more information.
-  */
--static int gup_fast_hugepd(hugepd_t hugepd, unsigned long addr,
--		unsigned int pdshift, unsigned long end, unsigned int flags,
--		struct page **pages, int *nr)
-+static int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
-+		      unsigned long addr, unsigned int pdshift,
-+		      unsigned long end, unsigned int flags,
-+		      struct page **pages, int *nr)
- {
- 	pte_t *ptep;
- 	unsigned long sz = 1UL << hugepd_shift(hugepd);
- 	unsigned long next;
-+	int ret;
- 
- 	ptep = hugepte_offset(hugepd, addr, pdshift);
- 	do {
- 		next = hugepte_addr_end(addr, end, sz);
--		if (!gup_fast_hugepte(ptep, sz, addr, end, flags, pages, nr))
--			return 0;
-+		ret = gup_hugepte(vma, ptep, sz, addr, end, flags, pages, nr);
-+		if (ret != 1)
-+			return ret;
- 	} while (ptep++, addr = next, addr != end);
- 
- 	return 1;
-@@ -613,22 +624,25 @@ static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
- 	h = hstate_vma(vma);
- 	ptep = hugepte_offset(hugepd, addr, pdshift);
- 	ptl = huge_pte_lock(h, vma->vm_mm, ptep);
--	ret = gup_fast_hugepd(hugepd, addr, pdshift, addr + PAGE_SIZE,
--			      flags, &page, &nr);
-+	ret = gup_hugepd(vma, hugepd, addr, pdshift, addr + PAGE_SIZE,
-+			 flags, &page, &nr);
- 	spin_unlock(ptl);
- 
--	if (ret) {
-+	if (ret == 1) {
-+		/* GUP succeeded */
- 		WARN_ON_ONCE(nr != 1);
- 		ctx->page_mask = (1U << huge_page_order(h)) - 1;
- 		return page;
- 	}
- 
--	return NULL;
-+	/* ret can be either 0 (translates to NULL) or negative */
-+	return ERR_PTR(ret);
- }
- #else /* CONFIG_ARCH_HAS_HUGEPD */
--static inline int gup_fast_hugepd(hugepd_t hugepd, unsigned long addr,
--		unsigned int pdshift, unsigned long end, unsigned int flags,
--		struct page **pages, int *nr)
-+static inline int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
-+			     unsigned long addr, unsigned int pdshift,
-+			     unsigned long end, unsigned int flags,
-+			     struct page **pages, int *nr)
- {
- 	return 0;
- }
-@@ -3261,8 +3275,8 @@ static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
- 			 * architecture have different format for hugetlbfs
- 			 * pmd format and THP pmd format
- 			 */
--			if (!gup_fast_hugepd(__hugepd(pmd_val(pmd)), addr,
--					     PMD_SHIFT, next, flags, pages, nr))
-+			if (gup_hugepd(NULL, __hugepd(pmd_val(pmd)), addr,
-+				       PMD_SHIFT, next, flags, pages, nr) != 1)
- 				return 0;
- 		} else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
- 					       pages, nr))
-@@ -3291,8 +3305,8 @@ static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
- 					       pages, nr))
- 				return 0;
- 		} else if (unlikely(is_hugepd(__hugepd(pud_val(pud))))) {
--			if (!gup_fast_hugepd(__hugepd(pud_val(pud)), addr,
--					     PUD_SHIFT, next, flags, pages, nr))
-+			if (gup_hugepd(NULL, __hugepd(pud_val(pud)), addr,
-+				       PUD_SHIFT, next, flags, pages, nr) != 1)
- 				return 0;
- 		} else if (!gup_fast_pmd_range(pudp, pud, addr, next, flags,
- 					       pages, nr))
-@@ -3318,8 +3332,8 @@ static int gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
- 			return 0;
- 		BUILD_BUG_ON(p4d_leaf(p4d));
- 		if (unlikely(is_hugepd(__hugepd(p4d_val(p4d))))) {
--			if (!gup_fast_hugepd(__hugepd(p4d_val(p4d)), addr,
--					     P4D_SHIFT, next, flags, pages, nr))
-+			if (gup_hugepd(NULL, __hugepd(p4d_val(p4d)), addr,
-+				       P4D_SHIFT, next, flags, pages, nr) != 1)
- 				return 0;
- 		} else if (!gup_fast_pud_range(p4dp, p4d, addr, next, flags,
- 					       pages, nr))
-@@ -3347,8 +3361,8 @@ static void gup_fast_pgd_range(unsigned long addr, unsigned long end,
- 					       pages, nr))
- 				return;
- 		} else if (unlikely(is_hugepd(__hugepd(pgd_val(pgd))))) {
--			if (!gup_fast_hugepd(__hugepd(pgd_val(pgd)), addr,
--					      PGDIR_SHIFT, next, flags, pages, nr))
-+			if (gup_hugepd(NULL, __hugepd(pgd_val(pgd)), addr,
-+				       PGDIR_SHIFT, next, flags, pages, nr) != 1)
- 				return;
- 		} else if (!gup_fast_p4d_range(pgdp, pgd, addr, next, flags,
- 					       pages, nr))
--- 
-2.44.0
-
+Regards,
+Mauro
