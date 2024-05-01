@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9386D8B856A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 07:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8D78B85D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 09:04:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NnsivhnX;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dx+m61Cb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTmKH1Z7Mz3cRh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 15:46:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTp2j1Nk1z3cRr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 17:04:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NnsivhnX;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dx+m61Cb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::335; helo=mail-ot1-x335.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTmJX11fnz3c3x
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 15:46:03 +1000 (AEST)
-Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6ee1b203f30so2126588a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 22:46:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTp1v5DVVz3bsj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 17:03:29 +1000 (AEST)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5d8b887bb0cso5414827a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2024 00:03:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714542359; x=1715147159; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1714547007; x=1715151807; darn=lists.ozlabs.org;
         h=in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=GSmQ+rMoqUhYYCpL2R8O/o7ZIHYa0c47lts/YCI3Ris=;
-        b=NnsivhnXvUJnj9LyWEVis83B6SjQpA6KjjFJHzpyaHZjSr0PV7uLb9SKmooVIbsQ0J
-         cYAgbB1kXsAR2TZN5ALpAyRKPRqiaNfby09iFpZWNUMwrSiftMn5LrO5+glDdBVriUh2
-         eDs4/wmXGtq7YztbjKCdOG92HpSGTZwU4oMKeoeMbcCOuyyScwgzWUn4xtopPM6KAxPe
-         VoeKSNHWoWdsmCWGmdLG6kcNLN2am0wuhOAR5yDC7rfCX+fOZ5YfEfJq0R1yhNHzpjJY
-         sCoPRV5U8WkiPpvFoK/BE/5NPvevu6LS3rSAHjzVbR+NxA+r4nddZg0cD93A7Oog/gC9
-         hMEQ==
+        bh=MgCUWlvN3cDUOvSQIntO6X4LFaPF+2+gzIBsSOK7abM=;
+        b=dx+m61CbnCrqxOK2K8eG0QBnPwOxh0fwUSlvhuumzMLx05Qi8wwcpreMFxvMoRYxl3
+         7CqzNbBng1EROAqYJjHfzVXncB1mgCJ9Yzg3b2eSEyTXizuNajxlZrGAj81mgg6enr3u
+         xDfloZj7fuPAiXOFB4VqDrQe4MvKaOl8SjPVq9ETMuQz28Qlmz2lsFzMXHn+3DX408SM
+         vEaCzRlxqRBPPVI6LQ1OUzq9pLMSzPIbY/Q/NQvEOlTiRMXWXrPLZqaUBMKAQ2no3n4M
+         R1kvrO3aeI9G5uy9FQNUb7wi86WJGy51DgiOrJIDYtXEgF/6P2N0aJjPBpGnF5vEMIZZ
+         9PPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714542359; x=1715147159;
+        d=1e100.net; s=20230601; t=1714547007; x=1715151807;
         h=in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=GSmQ+rMoqUhYYCpL2R8O/o7ZIHYa0c47lts/YCI3Ris=;
-        b=R/ku2ch/Mgv8QfVi6JWVnI5i+tR/yrRF8Bkdk2ecU3ImJrJGfxbS4CGz9dkqikjuCf
-         fOG6ZOw2b/miBs0wAlXP3LT/H4hV4yVGpZ1Ba6XllFGr2pE4GGepbI5hMcP6CChfDLam
-         Jvo5Wz6UQjFYkUkhu8sQGefXFvquokyQibYKHC4R668eyR+VuaYx/zzFfMkZUtG3dgaa
-         wzhHvR4hqiryRVlqVw5Hm+UZTNyKvaSKowscWsDROOPf5WlRdrPwxOYKrXENQCSDX/v5
-         jFziLx50isakjlPtNsG6XBVAAymwyJlzv51TbxNaOgFtPlsmhrHcvDCGOgoGdWX/LvZN
-         V7Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCX5O4wYMF8/hgjrUxm1R3IiZK4GN3s0BloYCtO2xEyyHEH/qRM0kxeW4xHlNJhSMPBzjGy2/lzb4so1AFR/QF55s8PPpn6u4vvbXuKF9A==
-X-Gm-Message-State: AOJu0YwjSU3hqz0TDNfJcF1laST3DZMoBkuMPTvZ6yAWisIvt5XosVN1
-	iz7QBez06GVLlGCHxzweQpvtTwrUsDk8ubxuy+oz7ZZ1elhncjuk
-X-Google-Smtp-Source: AGHT+IH4p/X3V0HuUhhvtCebzFlZs6pwKyBVkXP+xon5EWCQvTIf0MNcCGsKl11dluF5znV2izGn7g==
-X-Received: by 2002:a9d:7549:0:b0:6eb:7ce8:3e72 with SMTP id b9-20020a9d7549000000b006eb7ce83e72mr1655649otl.7.1714542359011;
-        Tue, 30 Apr 2024 22:45:59 -0700 (PDT)
+        bh=MgCUWlvN3cDUOvSQIntO6X4LFaPF+2+gzIBsSOK7abM=;
+        b=LPTz4VVq9WAMqJi8C0OYCJprImwy0uN0izId5Ka+sGxczYCXAZtje0PLw3SHX8r9RO
+         2yxRaerRaj9eyrvBkEl1ttCQQ9WMrEeWRThZW8CKpfHJTD6/xtXZ2JYrp1aCeZev3+RC
+         qeuFUDLDJCYsB/lASeLt+U8RUEDzchJcZSjptHbuZX4AyKeP5tH44es/kik05S8OFVNn
+         2F2sExMd+QdrO6yvTOqeitIUA+MTeRqPkcBiHTN6yTCJML3uGrZECddK8GDXmwvUYzDq
+         uzRwl+/tvyJ8xqwAJzSLVgK4o8wY31c/5+KXKydOrdVAtzfsvMG1Krfz1goCYFGIktmg
+         ivrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdk1xr8Qux9MtDci+b7GI6UfVmQN2i8mtrRfhlsaupjfzJz/GXDJcieeHyZ94qWz6w85sN3jQXaGBgb1wt55SZH4ZigUDaGYQUN8ApYw==
+X-Gm-Message-State: AOJu0YxnGFNz/8BiG0uGWvQ6svsGbuDbAxorr2zJ1qAS2kjWIap5vKiD
+	wjR779+nokUQUl8ut49KUtkTPvxefIoKnqcwny17Mt5z+ionpAw/B4yv1A==
+X-Google-Smtp-Source: AGHT+IEnN54vUn5SqgdXVkVBLYxlgyhlOykF8ulsTaolcT3/KMeT1IO8+wtuwlT8EKPiNkk4JfT59A==
+X-Received: by 2002:a05:6a20:394c:b0:1aa:755f:1746 with SMTP id r12-20020a056a20394c00b001aa755f1746mr2804424pzg.22.1714547006439;
+        Wed, 01 May 2024 00:03:26 -0700 (PDT)
 Received: from dw-tp ([171.76.84.250])
-        by smtp.gmail.com with ESMTPSA id bq15-20020a056a02044f00b005f806498270sm17029090pgb.9.2024.04.30.22.45.55
+        by smtp.gmail.com with ESMTPSA id gu27-20020a056a004e5b00b006ee25097c2csm19568506pfb.103.2024.05.01.00.03.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 22:45:58 -0700 (PDT)
-Date: Wed, 01 May 2024 11:15:48 +0530
-Message-Id: <87r0em3x0z.fsf@gmail.com>
+        Wed, 01 May 2024 00:03:25 -0700 (PDT)
+Date: Wed, 01 May 2024 12:33:21 +0530
+Message-Id: <87o79q3tfq.fsf@gmail.com>
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] radix/kfence: map __kfence_pool at page granularity
-In-Reply-To: <20240424110926.184077-1-hbathini@linux.ibm.com>
+Subject: Re: [PATCH 2/2] radix/kfence: support late __kfence_pool allocation
+In-Reply-To: <20240424110926.184077-2-hbathini@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,198 +79,156 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hari Bathini <hbathini@linux.ibm.com> writes:
 
-> When KFENCE is enabled, total system memory is mapped at page level
-> granularity. But in radix MMU mode, ~3GB additional memory is needed
-> to map 100GB of system memory at page level granularity when compared
-> to using 2MB direct mapping. This is not desired considering KFENCE is
-> designed to be enabled in production kernels [1]. Also, mapping memory
-> allocated for KFENCE pool at page granularity seems sufficient enough
-> to enable KFENCE support. So, allocate __kfence_pool during bootup and
-> map it at page granularity instead of mapping all system memory at
-> page granularity.
->
-> Without patch:
->     # cat /proc/meminfo
->     MemTotal:       101201920 kB
->
-> With patch:
->     # cat /proc/meminfo
->     MemTotal:       104483904 kB
->
-> All kfence_test.c testcases passed with this patch.
->
-> [1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
+> With commit b33f778bba5ef ("kfence: alloc kfence_pool after system
+> startup"), KFENCE pool can be allocated after system startup via the
+> page allocator. This can lead to problems as all memory is not mapped
+> at page granularity anymore with CONFIG_KFENCE. Address this by direct
+> mapping all memory at PMD level and split the mapping for PMD pages
+> that overlap with __kfence_pool to page level granularity if and when
+> __kfence_pool is allocated after system startup.
 >
 > Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/kfence.h        |  5 ++++
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 34 ++++++++++++++++++------
->  arch/powerpc/mm/init_64.c                | 14 ++++++++++
-
-New at this. But the patch looked interesting, hence my review comments.
-
->  3 files changed, 45 insertions(+), 8 deletions(-)
+>  arch/powerpc/include/asm/book3s/64/radix.h |  2 +
+>  arch/powerpc/include/asm/kfence.h          | 14 +++++-
+>  arch/powerpc/mm/book3s64/radix_pgtable.c   | 50 +++++++++++++++++++++-
+>  3 files changed, 64 insertions(+), 2 deletions(-)
 >
+> diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
+> index 8f55ff74bb68..0423ddbcf73c 100644
+> --- a/arch/powerpc/include/asm/book3s/64/radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/radix.h
+> @@ -340,6 +340,8 @@ extern void radix__vmemmap_remove_mapping(unsigned long start,
+>  extern int radix__map_kernel_page(unsigned long ea, unsigned long pa,
+>  				 pgprot_t flags, unsigned int psz);
+>  
+> +extern bool radix_kfence_init_pool(void);
+> +
+>  static inline unsigned long radix__get_tree_size(void)
+>  {
+>  	unsigned long rts_field;
 > diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
-> index 424ceef82ae6..18ec2b06ba1e 100644
+> index 18ec2b06ba1e..c5d2fb2f9ecb 100644
 > --- a/arch/powerpc/include/asm/kfence.h
 > +++ b/arch/powerpc/include/asm/kfence.h
-> @@ -8,6 +8,7 @@
->  #ifndef __ASM_POWERPC_KFENCE_H
->  #define __ASM_POWERPC_KFENCE_H
+> @@ -18,12 +18,24 @@
 >  
-> +#include <linux/kfence.h>
->  #include <linux/mm.h>
->  #include <asm/pgtable.h>
->  
-> @@ -15,6 +16,10 @@
->  #define ARCH_FUNC_PREFIX "."
->  #endif
->  
-> +#ifdef CONFIG_KFENCE
-> +extern bool kfence_early_init;
-> +#endif
+>  #ifdef CONFIG_KFENCE
+>  extern bool kfence_early_init;
+> -#endif
 > +
+> +static inline bool kfence_alloc_pool_late(void)
+> +{
+> +	return !kfence_early_init;
+> +}
+
+Minor nit, but do we need kfence_alloc_pool_late()?
+The function name looks confusing. Can we not just use
+!kfence_early_init? If not then maybe bool kfence_late_init?
+
+>  
 >  static inline bool arch_kfence_init_pool(void)
 >  {
->  	return true;
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +	if (radix_enabled())
+> +		return radix_kfence_init_pool();
 
-Shouldn't we return false for !kfence_early_init?
-Because otherwise, this patch may break the late init case which your
-next patch is fixing, and maybe git bisect will break?
+Can we directly check...
+        if (radix_enabled() && !kfence_early_init)
+... instead of embedding the check inside radix_kfence_late_init_pool()
 
-
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index 15e88f1439ec..fccbf92f279b 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -31,6 +31,7 @@
->  #include <asm/uaccess.h>
->  #include <asm/ultravisor.h>
->  #include <asm/set_memory.h>
-> +#include <asm/kfence.h>
->  
->  #include <trace/events/thp.h>
->  
-> @@ -291,9 +292,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
->  	return end;
->  }
->  
-> -static int __meminit create_physical_mapping(unsigned long start,
-> -					     unsigned long end,
-> -					     int nid, pgprot_t _prot)
-> +static int __meminit create_physical_mapping(unsigned long start, unsigned long end, int nid,
-> +					     pgprot_t _prot, unsigned long mapping_sz_limit)
-
-lines over 80 chars.
-
->  {
->  	unsigned long vaddr, addr, mapping_size = 0;
->  	bool prev_exec, exec = false;
-> @@ -301,7 +301,10 @@ static int __meminit create_physical_mapping(unsigned long start,
->  	int psize;
->  	unsigned long max_mapping_size = memory_block_size;
->  
-> -	if (debug_pagealloc_enabled_or_kfence())
-> +	if (mapping_sz_limit < max_mapping_size)
-> +		max_mapping_size = mapping_sz_limit;
-> +
-> +	if (debug_pagealloc_enabled())
->  		max_mapping_size = PAGE_SIZE;
->  
->  	start = ALIGN(start, PAGE_SIZE);
-> @@ -358,6 +361,7 @@ static int __meminit create_physical_mapping(unsigned long start,
->  
->  static void __init radix_init_pgtable(void)
->  {
-> +	phys_addr_t kfence_pool __maybe_unused;
->  	unsigned long rts_field;
->  	phys_addr_t start, end;
->  	u64 i;
-> @@ -365,6 +369,13 @@ static void __init radix_init_pgtable(void)
->  	/* We don't support slb for radix */
->  	slb_set_size(0);
->  
-> +#ifdef CONFIG_KFENCE
-> +	if (kfence_early_init) {
-> +		kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-
-What if memblock_phys_alloc() failed? error handling?
-> +		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-> +	}
 > +#endif
 > +
+>  	return true;
+>  }
+> +#else
+> +static inline bool kfence_alloc_pool_late(void) { return false; }
+> +#endif
+>  
+>  #ifdef CONFIG_PPC64
+>  static inline bool kfence_protect_page(unsigned long addr, bool protect)
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index fccbf92f279b..f4374e3e31e1 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -253,6 +253,53 @@ void radix__mark_initmem_nx(void)
+>  }
+>  #endif /* CONFIG_STRICT_KERNEL_RWX */
+>  
+> +#ifdef CONFIG_KFENCE
+> +static inline int radix_split_pmd_page(pmd_t *pmd, unsigned long addr)
+> +{
+> +	pte_t *pte = pte_alloc_one_kernel(&init_mm);
+> +	unsigned long pfn = PFN_DOWN(__pa(addr));
 
-Instead of #ifdef CONFIG_KFENCE in the function,
-maybe we can define radix_kfence_alloc_pool()? Then we won't need
-__maybe_unused too.
+Minor nit. Since addr will always be page aligned, so maybe PHYS_PFN() is better
+suited. Although it does not matter.
 
->  	/*
->  	 * Create the linear mapping
->  	 */
-> @@ -380,10 +391,18 @@ static void __init radix_init_pgtable(void)
+> +	int i;
+> +
+> +	if (!pte)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < PTRS_PER_PTE; i++) {
+> +		__set_pte_at(&init_mm, addr, pte + i, pfn_pte(pfn + i, PAGE_KERNEL), 0);
+> +		asm volatile("ptesync": : :"memory");
+> +	}
+
+Maybe a comment above the loop on why __set_pte_at() is ok for late
+kfence init? and why not pte_update()? [1]
+
+[1]: https://lore.kernel.org/linuxppc-dev/87y318wp9r.fsf@linux.ibm.com/
+
+
+> +	pmd_populate_kernel(&init_mm, pmd, pte);
+> +
+> +	flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+> +	return 0;
+> +}
+> +
+> +bool radix_kfence_init_pool(void)
+> +{
+> +	unsigned int page_psize, pmd_psize;
+> +	unsigned long addr;
+> +	pmd_t *pmd;
+> +
+> +	if (!kfence_alloc_pool_late())
+> +		return true;
+> +
+> +	page_psize = shift_to_mmu_psize(PAGE_SHIFT);
+> +	pmd_psize = shift_to_mmu_psize(PMD_SHIFT);
+> +	for (addr = (unsigned long)__kfence_pool; is_kfence_address((void *)addr);
+> +	     addr += PAGE_SIZE) {
+> +		pmd = pmd_off_k(addr);
+> +
+> +		if (pmd_leaf(*pmd)) {
+> +			if (radix_split_pmd_page(pmd, addr & PMD_MASK))
+> +				return false;
+> +			update_page_count(pmd_psize, -1);
+> +			update_page_count(page_psize, PTRS_PER_PTE);
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +#endif
+> +
+>  static inline void __meminit
+>  print_mapping(unsigned long start, unsigned long end, unsigned long size, bool exec)
+>  {
+> @@ -391,7 +438,8 @@ static void __init radix_init_pgtable(void)
 >  			continue;
 >  		}
 >  
-> -		WARN_ON(create_physical_mapping(start, end,
-> -						-1, PAGE_KERNEL));
-> +		WARN_ON(create_physical_mapping(start, end, -1, PAGE_KERNEL, ~0UL));
+> -		WARN_ON(create_physical_mapping(start, end, -1, PAGE_KERNEL, ~0UL));
+> +		WARN_ON(create_physical_mapping(start, end, -1, PAGE_KERNEL,
+> +						kfence_alloc_pool_late() ? PMD_SIZE : ~0UL));
+
+So everytime we have !kfence_early_init to true, we always use PMD_SIZE. 
+So do we never map 1G mapping for direct map? 
+
 >  	}
 >  
-> +#ifdef CONFIG_KFENCE
-> +	if (kfence_early_init) {
-> +		create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE, -1,
-> +					PAGE_KERNEL, PAGE_SIZE);
-
-Even this can return an error. Maybe WARN_ON_ONCE()? or disabling kfence
-for an error?
-
-> +		memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-> +		__kfence_pool = __va(kfence_pool);
-> +	}
-> +#endif
-> +
-
-This #ifdef can be called as radix_kfence_map_pool() then?
-
-
->  	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
->  			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
->  		/*
-> @@ -874,8 +893,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
->  		return -1;
->  	}
->  
-> -	return create_physical_mapping(__pa(start), __pa(end),
-> -				       nid, prot);
-> +	return create_physical_mapping(__pa(start), __pa(end), nid, prot, ~0UL);
->  }
->  
->  int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index d96bbc001e73..8155bfd6c16b 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -64,6 +64,20 @@
->  
->  #include <mm/mmu_decl.h>
->  
-> +#ifdef CONFIG_KFENCE
-> +bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-> +
-> +static int __init parse_kfence_early_init(char *arg)
-> +{
-> +	int val;
-> +
-> +	if (get_option(&arg, &val))
-> +		kfence_early_init = !!val;
-> +	return 0;
-> +}
-> +early_param("kfence.sample_interval", parse_kfence_early_init);
-> +#endif
-> +
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
->  /*
->   * Given an address within the vmemmap, determine the page that
+>  #ifdef CONFIG_KFENCE
 > -- 
 > 2.44.0
