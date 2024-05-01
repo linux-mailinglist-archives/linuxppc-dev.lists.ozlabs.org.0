@@ -1,57 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947568B8418
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 03:57:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9386D8B856A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 07:46:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eSStSS/N;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NnsivhnX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTgDN1Yqqz3d9g
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 11:57:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTmKH1Z7Mz3cRh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 15:46:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eSStSS/N;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NnsivhnX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::335; helo=mail-ot1-x335.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTgCb441Mz2xcw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 11:56:27 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1256361774;
-	Wed,  1 May 2024 01:56:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD2CC2BBFC;
-	Wed,  1 May 2024 01:56:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714528582;
-	bh=YHqNQfR2KzM3NdArIJMkOcJO9cdsTJsp3u0H/eNeyPI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eSStSS/NICuFDdVh5b39LHmEYgRreHSqX8JHJYP/UBw7rK3B6MK/2TPkLre3fEHfu
-	 tLQSNFeTvzu8j1h0d6CBrA6ZFZMH3z2AqRFdPJEalH2PHrSs64AmD3NPhOS1Zu/gcU
-	 HBi44k60jAkcvP6MHmgniiYlLG1si5ZshpPh2azKd+8WEGrcyGtwLePwl5zYB49WIb
-	 HeXw89okgcX3KnOeSqGEm1czuK2mdFp6t7IAES7cHMxRHuod9ZJHIPg+5YSCtAk+z1
-	 bA9hZY9fouyoWtbyyiNt3kCY2+xGK03foFE7ETcr+bHYdSRxqXWF7BkBDziHtta/hE
-	 Vmr6/qX+g7Fkg==
-Date: Wed, 1 May 2024 10:56:15 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
-Message-ID: <ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk>
-References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
- <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
- <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk>
- <20240430172752.20ffcd56@sal.lan>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1s5XZL2PHP3gK0J2"
-Content-Disposition: inline
-In-Reply-To: <20240430172752.20ffcd56@sal.lan>
-X-Cookie: lisp, v.:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTmJX11fnz3c3x
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 15:46:03 +1000 (AEST)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6ee1b203f30so2126588a34.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Apr 2024 22:46:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714542359; x=1715147159; darn=lists.ozlabs.org;
+        h=in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GSmQ+rMoqUhYYCpL2R8O/o7ZIHYa0c47lts/YCI3Ris=;
+        b=NnsivhnXvUJnj9LyWEVis83B6SjQpA6KjjFJHzpyaHZjSr0PV7uLb9SKmooVIbsQ0J
+         cYAgbB1kXsAR2TZN5ALpAyRKPRqiaNfby09iFpZWNUMwrSiftMn5LrO5+glDdBVriUh2
+         eDs4/wmXGtq7YztbjKCdOG92HpSGTZwU4oMKeoeMbcCOuyyScwgzWUn4xtopPM6KAxPe
+         VoeKSNHWoWdsmCWGmdLG6kcNLN2am0wuhOAR5yDC7rfCX+fOZ5YfEfJq0R1yhNHzpjJY
+         sCoPRV5U8WkiPpvFoK/BE/5NPvevu6LS3rSAHjzVbR+NxA+r4nddZg0cD93A7Oog/gC9
+         hMEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714542359; x=1715147159;
+        h=in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GSmQ+rMoqUhYYCpL2R8O/o7ZIHYa0c47lts/YCI3Ris=;
+        b=R/ku2ch/Mgv8QfVi6JWVnI5i+tR/yrRF8Bkdk2ecU3ImJrJGfxbS4CGz9dkqikjuCf
+         fOG6ZOw2b/miBs0wAlXP3LT/H4hV4yVGpZ1Ba6XllFGr2pE4GGepbI5hMcP6CChfDLam
+         Jvo5Wz6UQjFYkUkhu8sQGefXFvquokyQibYKHC4R668eyR+VuaYx/zzFfMkZUtG3dgaa
+         wzhHvR4hqiryRVlqVw5Hm+UZTNyKvaSKowscWsDROOPf5WlRdrPwxOYKrXENQCSDX/v5
+         jFziLx50isakjlPtNsG6XBVAAymwyJlzv51TbxNaOgFtPlsmhrHcvDCGOgoGdWX/LvZN
+         V7Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5O4wYMF8/hgjrUxm1R3IiZK4GN3s0BloYCtO2xEyyHEH/qRM0kxeW4xHlNJhSMPBzjGy2/lzb4so1AFR/QF55s8PPpn6u4vvbXuKF9A==
+X-Gm-Message-State: AOJu0YwjSU3hqz0TDNfJcF1laST3DZMoBkuMPTvZ6yAWisIvt5XosVN1
+	iz7QBez06GVLlGCHxzweQpvtTwrUsDk8ubxuy+oz7ZZ1elhncjuk
+X-Google-Smtp-Source: AGHT+IH4p/X3V0HuUhhvtCebzFlZs6pwKyBVkXP+xon5EWCQvTIf0MNcCGsKl11dluF5znV2izGn7g==
+X-Received: by 2002:a9d:7549:0:b0:6eb:7ce8:3e72 with SMTP id b9-20020a9d7549000000b006eb7ce83e72mr1655649otl.7.1714542359011;
+        Tue, 30 Apr 2024 22:45:59 -0700 (PDT)
+Received: from dw-tp ([171.76.84.250])
+        by smtp.gmail.com with ESMTPSA id bq15-20020a056a02044f00b005f806498270sm17029090pgb.9.2024.04.30.22.45.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Apr 2024 22:45:58 -0700 (PDT)
+Date: Wed, 01 May 2024 11:15:48 +0530
+Message-Id: <87r0em3x0z.fsf@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] radix/kfence: map __kfence_pool at page granularity
+In-Reply-To: <20240424110926.184077-1-hbathini@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,62 +73,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, hverkuil@xs4all.nl, linuxppc-dev@lists.ozlabs.org, sakari.ailus@iki.fi, perex@perex.cz, linux-media@vger.kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
+Cc: Marco Elver <elver@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Alexander Potapenko <glider@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hari Bathini <hbathini@linux.ibm.com> writes:
 
---1s5XZL2PHP3gK0J2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> When KFENCE is enabled, total system memory is mapped at page level
+> granularity. But in radix MMU mode, ~3GB additional memory is needed
+> to map 100GB of system memory at page level granularity when compared
+> to using 2MB direct mapping. This is not desired considering KFENCE is
+> designed to be enabled in production kernels [1]. Also, mapping memory
+> allocated for KFENCE pool at page granularity seems sufficient enough
+> to enable KFENCE support. So, allocate __kfence_pool during bootup and
+> map it at page granularity instead of mapping all system memory at
+> page granularity.
+>
+> Without patch:
+>     # cat /proc/meminfo
+>     MemTotal:       101201920 kB
+>
+> With patch:
+>     # cat /proc/meminfo
+>     MemTotal:       104483904 kB
+>
+> All kfence_test.c testcases passed with this patch.
+>
+> [1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
+>
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/kfence.h        |  5 ++++
+>  arch/powerpc/mm/book3s64/radix_pgtable.c | 34 ++++++++++++++++++------
+>  arch/powerpc/mm/init_64.c                | 14 ++++++++++
 
-On Tue, Apr 30, 2024 at 05:27:52PM +0100, Mauro Carvalho Chehab wrote:
-> Mark Brown <broonie@kernel.org> escreveu:
-> > On Tue, Apr 30, 2024 at 10:21:12AM +0200, Sebastian Fricke wrote:
+New at this. But the patch looked interesting, hence my review comments.
 
-> > The discussion around this originally was that all the audio APIs are
-> > very much centered around real time operations rather than completely
+>  3 files changed, 45 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
+> index 424ceef82ae6..18ec2b06ba1e 100644
+> --- a/arch/powerpc/include/asm/kfence.h
+> +++ b/arch/powerpc/include/asm/kfence.h
+> @@ -8,6 +8,7 @@
+>  #ifndef __ASM_POWERPC_KFENCE_H
+>  #define __ASM_POWERPC_KFENCE_H
+>  
+> +#include <linux/kfence.h>
+>  #include <linux/mm.h>
+>  #include <asm/pgtable.h>
+>  
+> @@ -15,6 +16,10 @@
+>  #define ARCH_FUNC_PREFIX "."
+>  #endif
+>  
+> +#ifdef CONFIG_KFENCE
+> +extern bool kfence_early_init;
+> +#endif
+> +
+>  static inline bool arch_kfence_init_pool(void)
+>  {
+>  	return true;
 
-> The media subsystem is also centered around real time. Without real
-> time, you can't have a decent video conference system. Having
-> mem2mem transfers actually help reducing real time delays, as it=20
-> avoids extra latency due to CPU congestion and/or data transfers
-> from/to userspace.
+Shouldn't we return false for !kfence_early_init?
+Because otherwise, this patch may break the late init case which your
+next patch is fixing, and maybe git bisect will break?
 
-Real time means strongly tied to wall clock times rather than fast - the
-issue was that all the ALSA APIs are based around pushing data through
-the system based on a clock.
 
-> > That doesn't sound like an immediate solution to maintainer overload
-> > issues...  if something like this is going to happen the DRM solution
-> > does seem more general but I'm not sure the amount of stop energy is
-> > proportionate.
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index 15e88f1439ec..fccbf92f279b 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -31,6 +31,7 @@
+>  #include <asm/uaccess.h>
+>  #include <asm/ultravisor.h>
+>  #include <asm/set_memory.h>
+> +#include <asm/kfence.h>
+>  
+>  #include <trace/events/thp.h>
+>  
+> @@ -291,9 +292,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
+>  	return end;
+>  }
+>  
+> -static int __meminit create_physical_mapping(unsigned long start,
+> -					     unsigned long end,
+> -					     int nid, pgprot_t _prot)
+> +static int __meminit create_physical_mapping(unsigned long start, unsigned long end, int nid,
+> +					     pgprot_t _prot, unsigned long mapping_sz_limit)
 
-> I don't think maintainer overload is the issue here. The main
-> point is to avoid a fork at the audio uAPI, plus the burden
-> of re-inventing the wheel with new codes for audio formats,
-> new documentation for them, etc.
+lines over 80 chars.
 
-I thought that discussion had been had already at one of the earlier
-versions?  TBH I've not really been paying attention to this since the
-very early versions where I raised some similar "why is this in media"
-points and I thought everyone had decided that this did actually make
-sense.
+>  {
+>  	unsigned long vaddr, addr, mapping_size = 0;
+>  	bool prev_exec, exec = false;
+> @@ -301,7 +301,10 @@ static int __meminit create_physical_mapping(unsigned long start,
+>  	int psize;
+>  	unsigned long max_mapping_size = memory_block_size;
+>  
+> -	if (debug_pagealloc_enabled_or_kfence())
+> +	if (mapping_sz_limit < max_mapping_size)
+> +		max_mapping_size = mapping_sz_limit;
+> +
+> +	if (debug_pagealloc_enabled())
+>  		max_mapping_size = PAGE_SIZE;
+>  
+>  	start = ALIGN(start, PAGE_SIZE);
+> @@ -358,6 +361,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+>  
+>  static void __init radix_init_pgtable(void)
+>  {
+> +	phys_addr_t kfence_pool __maybe_unused;
+>  	unsigned long rts_field;
+>  	phys_addr_t start, end;
+>  	u64 i;
+> @@ -365,6 +369,13 @@ static void __init radix_init_pgtable(void)
+>  	/* We don't support slb for radix */
+>  	slb_set_size(0);
+>  
+> +#ifdef CONFIG_KFENCE
+> +	if (kfence_early_init) {
+> +		kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
 
---1s5XZL2PHP3gK0J2
-Content-Type: application/pgp-signature; name="signature.asc"
+What if memblock_phys_alloc() failed? error handling?
+> +		memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
+> +	}
+> +#endif
+> +
 
------BEGIN PGP SIGNATURE-----
+Instead of #ifdef CONFIG_KFENCE in the function,
+maybe we can define radix_kfence_alloc_pool()? Then we won't need
+__maybe_unused too.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYxoT4ACgkQJNaLcl1U
-h9Cdygf/bf6TAsptAknaEPQAw2Z5iLipMaPxhatnFylMl5K5iu0XYqQKgMjz9hzh
-pGWiv30tMEb1WWSd01RSGVLhVOz6Q/BoFOLmnu8iqikc/Y9AXuMpznA5kR9n+frq
-Vlmf+jK0/Yx/co+47MPq9h7wsuCHeavsUyinC7Iw+M5MkxLXy4ga/C/0tl2tDANc
-Ev6nkmUcjKAhI2O6zqwyxvO+0fagaQevxsYwhxJGbcqNcXzaa+OYshVVq8y00ugk
-paLFfitKTRz1J3qN5WfkELm40cyRulKxZIdJAQIO0VFwzCIWOdty1FYDs5GXlL0f
-Ys8S/0aZLJEVbPqQA1tZML2Y+D99YQ==
-=NaHt
------END PGP SIGNATURE-----
+>  	/*
+>  	 * Create the linear mapping
+>  	 */
+> @@ -380,10 +391,18 @@ static void __init radix_init_pgtable(void)
+>  			continue;
+>  		}
+>  
+> -		WARN_ON(create_physical_mapping(start, end,
+> -						-1, PAGE_KERNEL));
+> +		WARN_ON(create_physical_mapping(start, end, -1, PAGE_KERNEL, ~0UL));
+>  	}
+>  
+> +#ifdef CONFIG_KFENCE
+> +	if (kfence_early_init) {
+> +		create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE, -1,
+> +					PAGE_KERNEL, PAGE_SIZE);
 
---1s5XZL2PHP3gK0J2--
+Even this can return an error. Maybe WARN_ON_ONCE()? or disabling kfence
+for an error?
+
+> +		memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
+> +		__kfence_pool = __va(kfence_pool);
+> +	}
+> +#endif
+> +
+
+This #ifdef can be called as radix_kfence_map_pool() then?
+
+
+>  	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
+>  			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
+>  		/*
+> @@ -874,8 +893,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
+>  		return -1;
+>  	}
+>  
+> -	return create_physical_mapping(__pa(start), __pa(end),
+> -				       nid, prot);
+> +	return create_physical_mapping(__pa(start), __pa(end), nid, prot, ~0UL);
+>  }
+>  
+>  int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index d96bbc001e73..8155bfd6c16b 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -64,6 +64,20 @@
+>  
+>  #include <mm/mmu_decl.h>
+>  
+> +#ifdef CONFIG_KFENCE
+> +bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
+> +
+> +static int __init parse_kfence_early_init(char *arg)
+> +{
+> +	int val;
+> +
+> +	if (get_option(&arg, &val))
+> +		kfence_early_init = !!val;
+> +	return 0;
+> +}
+> +early_param("kfence.sample_interval", parse_kfence_early_init);
+> +#endif
+> +
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>  /*
+>   * Given an address within the vmemmap, determine the page that
+> -- 
+> 2.44.0
