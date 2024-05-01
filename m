@@ -1,69 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155FC8B8BE4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 16:29:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427E28B8E06
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 18:21:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fH+LlSsK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WKHpb2ew;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTzw04x11z3cWG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2024 00:29:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VV2Pv6LDHz3cZ9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2024 02:21:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fH+LlSsK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WKHpb2ew;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3h1eyzgykdcwamivrkowwotm.kwutqvcfxxk-lmdtqaba.whtija.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTzvH20Pxz3cRJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2024 00:28:26 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-dcdc3db67f0so1160932276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2024 07:28:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1714573703; x=1715178503; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XN3PxGtZEQXNqntUnTfIz5xk/K9LwEoscNdYQ+/jCbc=;
-        b=fH+LlSsKumwTREj6zMa7srIGQqvcBSFGV/PFk+BvnCYJh+DbHfO3r1DF5k/VhNI6ml
-         ZdoVjJPEK9wcEAfEq2SRa0NyXXaENQiYBGzFmlgpHycmZPZOwUp5HQV/5ab53lZLozYl
-         2XKuHlHRGB5eVBqqkOVpU1zWEvQvzGW06T5A1ZpBoyAFQj/GmFrK2AyFEWFzi/GwzDpb
-         bEZjT4aT3Hp1nXS++z3PkvZxmP+ksBlt040QKEk0loXEHSi/ZWM/f8P6E1vm5jSQ4oUB
-         XM1oAbMmqIQlT1zYPmgsRun3d8/uRhT287HvEK9UEUFI9zRWJ6ndhkdkKt/hJe5dWUhM
-         cpjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714573703; x=1715178503;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XN3PxGtZEQXNqntUnTfIz5xk/K9LwEoscNdYQ+/jCbc=;
-        b=vmi8AXzMSh1Uwkxe29a4E59AL9pJQi/7nqF+9Y53Kmnvax7FQymcueJLhX+hYGZxHy
-         lZMKN3HonCE61t9ox0RADMXbs2Te4Kyn58r0FwP/Jh4w+KR5Tb+Vn8e41odAYe7HjYjj
-         yCvdt7iQAPb7nmy75pftN2Hakr5hbDHoopSWK5kYvP666pPe3r3Sp/RQzRnknCB71jT/
-         RK/1Ji374gsukjYRnUB/mFkX7LWAbWw+a8W+08KefUnsvQtjfHYn7JgBQ2ruBCADOxaV
-         wg+W3j+hwYXViry17WdGsgwRtc/gXtHZRzd0MFFBvl0UunXpmpvY+0XrbWs4hwHCbvDq
-         Vwfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBiu/woppGdeB/U8z7EtkA5TOZo4DPxlZRNbaEu9tHatjDDvwObKy7fyfjBWf7aOnJJA3UGtQie3S/b8D8ReEubMwjOA+HTmny7uBu9w==
-X-Gm-Message-State: AOJu0Yz6W86IQ6fLYHqyIb0BbfJkT6/Qt6466mpX9Qj7vdXLP1CeV3Qn
-	AOcoROlgZrtmZuCdhckE2mLtV66f5DZzpfjGM9SFjtmVcaBbCWEs1MfawZldEl5DD1rm81DSI2w
-	9Xw==
-X-Google-Smtp-Source: AGHT+IHUezc4IZyZaMpXPcKS4Nl6spB8OORkXUO8w6Eu/n8Z2MEF5bQ0emcAkaZbOCNg6hB5INRjxf830ZQ=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:a283:0:b0:de5:a44c:25af with SMTP id
- c3-20020a25a283000000b00de5a44c25afmr1319848ybi.5.1714573703105; Wed, 01 May
- 2024 07:28:23 -0700 (PDT)
-Date: Wed, 1 May 2024 07:28:21 -0700
-In-Reply-To: <ZjGMn5tlq8edKZYv@linux.dev>
-Mime-Version: 1.0
-References: <20240430193157.419425-1-seanjc@google.com> <ZjGMn5tlq8edKZYv@linux.dev>
-Message-ID: <ZjJRhQhX_12eBvY-@google.com>
-Subject: Re: [PATCH 0/4] KVM: Fold kvm_arch_sched_in() into kvm_arch_vcpu_load()
-From: Sean Christopherson <seanjc@google.com>
-To: Oliver Upton <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VV2PB5jw4z3cBG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2024 02:21:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5E582619A6;
+	Wed,  1 May 2024 16:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D4FC072AA;
+	Wed,  1 May 2024 16:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714580458;
+	bh=+KLk4uQ2wW8PXcdwtau/h24DL899RgJEYXvoHjcirzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WKHpb2ewJPA0fGgOsiNQkMYOMlevveSSWWt5Wu2v2ioIKC0kYX3z26GfYeF3Zz1wm
+	 75Lwt1NXBicoH0yK9/eOdetC9KJlw+g3mzFr2szZaFS36AnSuw38f9dJSWc+JAhU54
+	 JV9UD3BTCIB/4k9GnCWh5Z8+ceH9HsV4ev2Kh5nL05g2K2AXw5V/JfPuDTeSWPiNXZ
+	 ql+lp8iF2GXQ5dXOnIgf8bSyTDfnt0Fl7WslI6OzhGw9py1HDm+KhcNQ4RfSiskbJ9
+	 YWSd3y0avaDOlDmOTLGxGgR/Tb/O9vr4R9H1JHLGPL/4I1Wvyw6VtCH2gQT9Uovy/n
+	 OwmvNaGLYrMpQ==
+Date: Wed, 1 May 2024 09:20:56 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Set _IO_BASE to POISON_POINTER_DELTA not 0 for
+ CONFIG_PCI=n
+Message-ID: <20240501162056.GA2458112@dev-arch.thelio-3990X>
+References: <20240430140440.200871-1-mpe@ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240430140440.200871-1-mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,93 +59,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: naresh.kamboju@linaro.org, linuxppc-dev@lists.ozlabs.org, arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 01, 2024, Oliver Upton wrote:
-> On Tue, Apr 30, 2024 at 12:31:53PM -0700, Sean Christopherson wrote:
-> > Drop kvm_arch_sched_in() and instead pass a @sched_in boolean to
-> > kvm_arch_vcpu_load().
-> > 
-> > While fiddling with an idea for optimizing state management on AMD CPUs,
-> > I wanted to skip re-saving certain host state when a vCPU is scheduled back
-> > in, as the state (theoretically) shouldn't change for the task while it's
-> > scheduled out.  Actually doing that was annoying and unnecessarily brittle
-> > due to having a separate API for the kvm_sched_in() case (the state save
-> > needed to be in kvm_arch_vcpu_load() for the common path).
-> > 
-> > E.g. I could have set a "temporary"-ish flag somewhere in kvm_vcpu, but (a)
-> > that's gross and (b) it would rely on the arbitrary ordering between
-> > sched_in() and vcpu_load() staying the same.
+Hi Michael,
+
+On Wed, May 01, 2024 at 12:04:40AM +1000, Michael Ellerman wrote:
+> With -Wextra clang warns about pointer arithmetic using a null pointer.
+> When building with CONFIG_PCI=n, that triggers a warning in the IO
+> accessors, eg:
 > 
-> Another option would be to change the rules around kvm_arch_sched_in()
-> where the callee is expected to load the vCPU context.
+>   In file included from linux/arch/powerpc/include/asm/io.h:672:
+>   linux/arch/powerpc/include/asm/io-defs.h:23:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      23 | DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
+>         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   ...
+>   linux/arch/powerpc/include/asm/io.h:591:53: note: expanded from macro '__do_inb'
+>     591 | #define __do_inb(port)          readb((PCI_IO_ADDR)_IO_BASE + port);
+>         |                                       ~~~~~~~~~~~~~~~~~~~~~ ^
 > 
-> The default implementation could just call kvm_arch_vcpu_load() directly
-> and the x86 implementation can order things the way it wants before
-> kvm_arch_vcpu_load().
+> That is because when CONFIG_PCI=n, _IO_BASE is defined as 0.
 > 
-> I say this because ...
+> There is code that builds with calls to IO accessors even when
+> CONFIG_PCI=n, but the actual calls are guarded by runtime checks.
+> If not those calls would be faulting, because the page at virtual
+> address zero is (usually) not mapped into the kernel. As Arnd pointed
+> out, it is possible a large port value could cause the address to be
+> above mmap_min_addr which would then access userspace, which would be
+> a bug.
 > 
-> > The only real downside I see is that arm64 and riscv end up having to pass
-> > "false" for their direct usage of kvm_arch_vcpu_load(), and passing boolean
-> > literals isn't ideal.  But that can be solved by adding an inner helper that
-> > omits the @sched_in param (I almost added a patch to do that, but I couldn't
-> > convince myself it was necessary).
+> To avoid any such issues, and also fix the compiler warning, set the
+> _IO_BASE to POISON_POINTER_DELTA. That is a value chosen to point into
+> unmapped space between the kernel and userspace, so any access will
+> always fault.
 > 
-> Needing to pass @sched_in for other usage of kvm_arch_vcpu_load() hurts
-> readability, especially when no other architecture besides x86 cares
-> about it.
+> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Closes: https://lore.kernel.org/all/CA+G9fYtEh8zmq8k8wE-8RZwW-Qr927RLTn+KqGnq1F=ptaaNsA@mail.gmail.com
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/include/asm/io.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+> index 08c550ed49be..1cd6eb6c8101 100644
+> --- a/arch/powerpc/include/asm/io.h
+> +++ b/arch/powerpc/include/asm/io.h
+> @@ -37,7 +37,7 @@ extern struct pci_dev *isa_bridge_pcidev;
+>   * define properly based on the platform
+>   */
+>  #ifndef CONFIG_PCI
+> -#define _IO_BASE	0
+> +#define _IO_BASE	POISON_POINTER_DELTA
 
-Yeah, that bothers me too.
+This works for CONFIG_PPC64 but not CONFIG_PPC32 (so tinyconfig and
+allnoconfig like Naresh reported) because CONFIG_ILLEGAL_POINTER_VALUE
+is defined as 0 in that case.
 
-I tried your suggestion of having x86's kvm_arch_sched_in() do kvm_arch_vcpu_load(),
-and even with an added kvm_arch_sched_out() to provide symmetry, the x86 code is
-kludgy, and even the common code is a bit confusing as it's not super obvious
-that kvm_sched_{in,out}() is really just kvm_arch_vcpu_{load,put}().
+  $ grep -P 'CONFIG_(ILLEGAL_POINTER_VALUE|PCI|PPC32)' .config
+  CONFIG_PPC32=y
+  CONFIG_ILLEGAL_POINTER_VALUE=0
 
-Staring a bit more at the vCPU flags we have, adding a "bool scheduled_out" isn't
-terribly gross if it's done in common code and persists across load() and put(),
-i.e. isn't so blatantly a temporary field.  And because it's easy, it could be
-set with WRITE_ONCE() so that if it can be read cross-task if there's ever a
-reason to do so.
-
-The x86 code ends up being less ugly, and adding future arch/vendor code for
-sched_in() *or* sched_out() requires minimal churn, e.g. arch code doesn't need
-to override kvm_arch_sched_in().
-
-The only weird part is that vcpu->preempted and vcpu->ready have slightly
-different behavior, as they are cleared before kvm_arch_vcpu_load().  But the
-weirdness is really with those flags no having symmetry, not with scheduled_out
-itself.
-
-Thoughts?
-
-static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
-{
-	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
-
-	WRITE_ONCE(vcpu->preempted, false);
-	WRITE_ONCE(vcpu->ready, false);
-
-	__this_cpu_write(kvm_running_vcpu, vcpu);
-	kvm_arch_vcpu_load(vcpu, cpu);
-
-	WRITE_ONCE(vcpu->scheduled_out, false);
-}
-
-static void kvm_sched_out(struct preempt_notifier *pn,
-			  struct task_struct *next)
-{
-	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
-
-	WRITE_ONCE(vcpu->scheduled_out, true);
-
-	if (current->on_rq) {
-		WRITE_ONCE(vcpu->preempted, true);
-		WRITE_ONCE(vcpu->ready, true);
-	}
-	kvm_arch_vcpu_put(vcpu);
-	__this_cpu_write(kvm_running_vcpu, NULL);
-}
+>  #define _ISA_MEM_BASE	0
+>  #define PCI_DRAM_OFFSET 0
+>  #elif defined(CONFIG_PPC32)
+> -- 
+> 2.44.0
+> 
