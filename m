@@ -1,77 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51ED8B8BB6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 16:10:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155FC8B8BE4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 16:29:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=ETGLEzT8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fH+LlSsK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTzVY2T79z3ccX
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2024 00:10:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTzw04x11z3cWG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 May 2024 00:29:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=ETGLEzT8;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fH+LlSsK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::72a; helo=mail-qk1-x72a.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3h1eyzgykdcwamivrkowwotm.kwutqvcfxxk-lmdtqaba.whtija.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTzTn65Mdz2ygY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2024 00:09:48 +1000 (AEST)
-Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-790ff1fa7b3so247581185a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2024 07:09:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTzvH20Pxz3cRJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 May 2024 00:28:26 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-dcdc3db67f0so1160932276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 May 2024 07:28:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1714572584; x=1715177384; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O1qoEIkOLck4Sa8ZT+0G2TYNAGl2HaO45P/SMXLf4vc=;
-        b=ETGLEzT82BqH30kO0N8HHyAYLhF4xLbSNzFWB9+/wkMWB4CPVXZ9dAwJFdO5/QDUWV
-         3mC0VpN29BPKdKBJ5sAEZBAz5KVUdIFFZ+AT4v68F9AbQfG5itETorCM3LUqjNptQlLJ
-         igc7lcdC29lrUdUYqsx5oD04AmNerJJskIuvInBiioYrBLVrWM53WE699FgV1QK93Yb6
-         ebD7x/MZLiB1NZAdCtkLsFqax5WIWPe9yAuaDOKbcmnysHfkjKZJMKlULcNxFYrNiFSu
-         CyAI7sHiWq1kunYwZf0rRGNOfuv49O5Q6W7Gm8hRqhK2OczsBbX5GiS/GPqVxmHLZY18
-         x8pw==
+        d=google.com; s=20230601; t=1714573703; x=1715178503; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XN3PxGtZEQXNqntUnTfIz5xk/K9LwEoscNdYQ+/jCbc=;
+        b=fH+LlSsKumwTREj6zMa7srIGQqvcBSFGV/PFk+BvnCYJh+DbHfO3r1DF5k/VhNI6ml
+         ZdoVjJPEK9wcEAfEq2SRa0NyXXaENQiYBGzFmlgpHycmZPZOwUp5HQV/5ab53lZLozYl
+         2XKuHlHRGB5eVBqqkOVpU1zWEvQvzGW06T5A1ZpBoyAFQj/GmFrK2AyFEWFzi/GwzDpb
+         bEZjT4aT3Hp1nXS++z3PkvZxmP+ksBlt040QKEk0loXEHSi/ZWM/f8P6E1vm5jSQ4oUB
+         XM1oAbMmqIQlT1zYPmgsRun3d8/uRhT287HvEK9UEUFI9zRWJ6ndhkdkKt/hJe5dWUhM
+         cpjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714572584; x=1715177384;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O1qoEIkOLck4Sa8ZT+0G2TYNAGl2HaO45P/SMXLf4vc=;
-        b=TM9lGENIdOw733w9vrckwG+W7+1TR+l3s7nv4Y45T1fJNjc/Kh7iJpdKD6UHenZN/d
-         hJuuNMNk+qIgEF55WvUZvwgnsOP00BGqcepsi4tOxrlBO+Ygdjkzh8a2GeeDJaoHJxXC
-         KvskOGocpWmNBsjbgzlfAJpEUGVBD2fOOCwCZGMYQPtnJ6heDD3tLhaILjCcIsc/ry9W
-         /Qb7c6/IJH/Q7rRXzSJwxOxXcntQxgkWHjyupBGQ5KVupabu9SWhFqfwX9viVqR4Guxc
-         ytq086tC8aTxX3Uh/nxUyw+a+yb5o6K+VSJZ04yYL/BdjHcy2LXdACuWxja2LnEjwY00
-         pgww==
-X-Forwarded-Encrypted: i=1; AJvYcCU/UTuqq4EGOGT66rPactd4yAJspy0Lr1ntR7yqhg3dRV/B+TXR3rl5Wxt99DIuRJIsyvyi3hkmN2/7lHwk00etX5x/O49X/fSj3xG/Hg==
-X-Gm-Message-State: AOJu0Yx5na5UW8uCnQdQNPaLAkxliqTEw8M9UDt7anY0owzPSPqeQHfM
-	BgRzcB211Avt5hHd96r7FYR1Zx5CkW2wK3KGfpRftLgN0kyghFnLSYoRsHxgyTU=
-X-Google-Smtp-Source: AGHT+IF213Sn1gI+C+Ltfyt/EaM6iz2FDR/B69onEC5U2qmZQ4cFog5+UAuTjWWtF9BXGrAGR+fPkQ==
-X-Received: by 2002:a05:620a:4304:b0:790:944d:65b3 with SMTP id u4-20020a05620a430400b00790944d65b3mr2980242qko.62.1714572583947;
-        Wed, 01 May 2024 07:09:43 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id pe16-20020a05620a851000b007883184574esm12405228qkn.98.2024.05.01.07.09.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 07:09:43 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1s2AeU-00DPni-Mh;
-	Wed, 01 May 2024 11:09:42 -0300
-Date: Wed, 1 May 2024 11:09:42 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 0/6] powerpc: pSeries: vfio: iommu: Re-enable
- support for SPAPR TCE VFIO
-Message-ID: <20240501140942.GA1723318@ziepe.ca>
-References: <171450753489.10851.3056035705169121613.stgit@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <171450753489.10851.3056035705169121613.stgit@linux.ibm.com>
+        d=1e100.net; s=20230601; t=1714573703; x=1715178503;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XN3PxGtZEQXNqntUnTfIz5xk/K9LwEoscNdYQ+/jCbc=;
+        b=vmi8AXzMSh1Uwkxe29a4E59AL9pJQi/7nqF+9Y53Kmnvax7FQymcueJLhX+hYGZxHy
+         lZMKN3HonCE61t9ox0RADMXbs2Te4Kyn58r0FwP/Jh4w+KR5Tb+Vn8e41odAYe7HjYjj
+         yCvdt7iQAPb7nmy75pftN2Hakr5hbDHoopSWK5kYvP666pPe3r3Sp/RQzRnknCB71jT/
+         RK/1Ji374gsukjYRnUB/mFkX7LWAbWw+a8W+08KefUnsvQtjfHYn7JgBQ2ruBCADOxaV
+         wg+W3j+hwYXViry17WdGsgwRtc/gXtHZRzd0MFFBvl0UunXpmpvY+0XrbWs4hwHCbvDq
+         Vwfg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBiu/woppGdeB/U8z7EtkA5TOZo4DPxlZRNbaEu9tHatjDDvwObKy7fyfjBWf7aOnJJA3UGtQie3S/b8D8ReEubMwjOA+HTmny7uBu9w==
+X-Gm-Message-State: AOJu0Yz6W86IQ6fLYHqyIb0BbfJkT6/Qt6466mpX9Qj7vdXLP1CeV3Qn
+	AOcoROlgZrtmZuCdhckE2mLtV66f5DZzpfjGM9SFjtmVcaBbCWEs1MfawZldEl5DD1rm81DSI2w
+	9Xw==
+X-Google-Smtp-Source: AGHT+IHUezc4IZyZaMpXPcKS4Nl6spB8OORkXUO8w6Eu/n8Z2MEF5bQ0emcAkaZbOCNg6hB5INRjxf830ZQ=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:a283:0:b0:de5:a44c:25af with SMTP id
+ c3-20020a25a283000000b00de5a44c25afmr1319848ybi.5.1714573703105; Wed, 01 May
+ 2024 07:28:23 -0700 (PDT)
+Date: Wed, 1 May 2024 07:28:21 -0700
+In-Reply-To: <ZjGMn5tlq8edKZYv@linux.dev>
+Mime-Version: 1.0
+References: <20240430193157.419425-1-seanjc@google.com> <ZjGMn5tlq8edKZYv@linux.dev>
+Message-ID: <ZjJRhQhX_12eBvY-@google.com>
+Subject: Re: [PATCH 0/4] KVM: Fold kvm_arch_sched_in() into kvm_arch_vcpu_load()
+From: Sean Christopherson <seanjc@google.com>
+To: Oliver Upton <oliver.upton@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,24 +75,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, aik@ozlabs.ru, linux-kernel@vger.kernel.org, oohall@gmail.com, ruscur@russell.cc, brking@linux.vnet.ibm.com, robh@kernel.org, svaidy@linux.ibm.com, aneesh.kumar@kernel.org, joel@jms.id.au, naveen.n.rao@linux.ibm.com, msuchanek@suse.de, jroedel@suse.de, gbatra@linux.vnet.ibm.com, npiggin@gmail.com, alex.williamson@redhat.com, mahesh@linux.ibm.com, tpearson@raptorengineering.com, aik@amd.com, vaibhav@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 30, 2024 at 03:05:34PM -0500, Shivaprasad G Bhat wrote:
-> RFC v1 was posted here [1]. As I was testing more and fixing the
-> issues, I realized its clean to have the table_group_ops implemented
-> the way it is done on PowerNV and stop 'borrowing' the DMA windows
-> for pSeries.
+On Wed, May 01, 2024, Oliver Upton wrote:
+> On Tue, Apr 30, 2024 at 12:31:53PM -0700, Sean Christopherson wrote:
+> > Drop kvm_arch_sched_in() and instead pass a @sched_in boolean to
+> > kvm_arch_vcpu_load().
+> > 
+> > While fiddling with an idea for optimizing state management on AMD CPUs,
+> > I wanted to skip re-saving certain host state when a vCPU is scheduled back
+> > in, as the state (theoretically) shouldn't change for the task while it's
+> > scheduled out.  Actually doing that was annoying and unnecessarily brittle
+> > due to having a separate API for the kvm_sched_in() case (the state save
+> > needed to be in kvm_arch_vcpu_load() for the common path).
+> > 
+> > E.g. I could have set a "temporary"-ish flag somewhere in kvm_vcpu, but (a)
+> > that's gross and (b) it would rely on the arbitrary ordering between
+> > sched_in() and vcpu_load() staying the same.
 > 
-> This patch-set implements the iommu table_group_ops for pSeries for
-> VFIO SPAPR TCE sub-driver thereby enabling the VFIO support on POWER
-> pSeries machines.
+> Another option would be to change the rules around kvm_arch_sched_in()
+> where the callee is expected to load the vCPU context.
+> 
+> The default implementation could just call kvm_arch_vcpu_load() directly
+> and the x86 implementation can order things the way it wants before
+> kvm_arch_vcpu_load().
+> 
+> I say this because ...
+> 
+> > The only real downside I see is that arm64 and riscv end up having to pass
+> > "false" for their direct usage of kvm_arch_vcpu_load(), and passing boolean
+> > literals isn't ideal.  But that can be solved by adding an inner helper that
+> > omits the @sched_in param (I almost added a patch to do that, but I couldn't
+> > convince myself it was necessary).
+> 
+> Needing to pass @sched_in for other usage of kvm_arch_vcpu_load() hurts
+> readability, especially when no other architecture besides x86 cares
+> about it.
 
-Wait, did they previously not have any support?
+Yeah, that bothers me too.
 
-Again, this TCE stuff needs to go away, not grow. I can grudgingly
-accept fixing it where it used to work, but not enabling more HW that
-never worked before! :(
+I tried your suggestion of having x86's kvm_arch_sched_in() do kvm_arch_vcpu_load(),
+and even with an added kvm_arch_sched_out() to provide symmetry, the x86 code is
+kludgy, and even the common code is a bit confusing as it's not super obvious
+that kvm_sched_{in,out}() is really just kvm_arch_vcpu_{load,put}().
 
-Jason
+Staring a bit more at the vCPU flags we have, adding a "bool scheduled_out" isn't
+terribly gross if it's done in common code and persists across load() and put(),
+i.e. isn't so blatantly a temporary field.  And because it's easy, it could be
+set with WRITE_ONCE() so that if it can be read cross-task if there's ever a
+reason to do so.
+
+The x86 code ends up being less ugly, and adding future arch/vendor code for
+sched_in() *or* sched_out() requires minimal churn, e.g. arch code doesn't need
+to override kvm_arch_sched_in().
+
+The only weird part is that vcpu->preempted and vcpu->ready have slightly
+different behavior, as they are cleared before kvm_arch_vcpu_load().  But the
+weirdness is really with those flags no having symmetry, not with scheduled_out
+itself.
+
+Thoughts?
+
+static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
+{
+	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
+
+	WRITE_ONCE(vcpu->preempted, false);
+	WRITE_ONCE(vcpu->ready, false);
+
+	__this_cpu_write(kvm_running_vcpu, vcpu);
+	kvm_arch_vcpu_load(vcpu, cpu);
+
+	WRITE_ONCE(vcpu->scheduled_out, false);
+}
+
+static void kvm_sched_out(struct preempt_notifier *pn,
+			  struct task_struct *next)
+{
+	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);
+
+	WRITE_ONCE(vcpu->scheduled_out, true);
+
+	if (current->on_rq) {
+		WRITE_ONCE(vcpu->preempted, true);
+		WRITE_ONCE(vcpu->ready, true);
+	}
+	kvm_arch_vcpu_put(vcpu);
+	__this_cpu_write(kvm_running_vcpu, NULL);
+}
