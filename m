@@ -1,50 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08578B83C5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 02:38:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947568B8418
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 03:57:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jt/Q3cVC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eSStSS/N;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VTdTx2Gkzz3d9G
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 10:38:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VTgDN1Yqqz3d9g
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 May 2024 11:57:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jt/Q3cVC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eSStSS/N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.187; helo=out-187.mta1.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 557 seconds by postgrey-1.37 at boromir; Wed, 01 May 2024 10:38:05 AEST
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTdT92S12z3cTg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 10:38:05 +1000 (AEST)
-Date: Wed, 1 May 2024 00:28:15 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1714523303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ioXgnZIoOxV6Gom6pZgkz9FqddFwrAkScDhYF7eexw0=;
-	b=jt/Q3cVCB5txoE/zQITpY+KTWb0keYgIpc0qkzhVQFsJAZZR5RjRVVdyLf1AD37xVVVKy5
-	AjuiDAvL2nLBEHIqEzLFqT7OazbzMr6NRwDmnhYgDnVnteqZKpKfa3eZfPYr7Wncyk+0Tk
-	iJCFdMrcVNqaWoqklmPV1Wqci3CPJlw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 0/4] KVM: Fold kvm_arch_sched_in() into
- kvm_arch_vcpu_load()
-Message-ID: <ZjGMn5tlq8edKZYv@linux.dev>
-References: <20240430193157.419425-1-seanjc@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VTgCb441Mz2xcw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 May 2024 11:56:27 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1256361774;
+	Wed,  1 May 2024 01:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD2CC2BBFC;
+	Wed,  1 May 2024 01:56:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714528582;
+	bh=YHqNQfR2KzM3NdArIJMkOcJO9cdsTJsp3u0H/eNeyPI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eSStSS/NICuFDdVh5b39LHmEYgRreHSqX8JHJYP/UBw7rK3B6MK/2TPkLre3fEHfu
+	 tLQSNFeTvzu8j1h0d6CBrA6ZFZMH3z2AqRFdPJEalH2PHrSs64AmD3NPhOS1Zu/gcU
+	 HBi44k60jAkcvP6MHmgniiYlLG1si5ZshpPh2azKd+8WEGrcyGtwLePwl5zYB49WIb
+	 HeXw89okgcX3KnOeSqGEm1czuK2mdFp6t7IAES7cHMxRHuod9ZJHIPg+5YSCtAk+z1
+	 bA9hZY9fouyoWtbyyiNt3kCY2+xGK03foFE7ETcr+bHYdSRxqXWF7BkBDziHtta/hE
+	 Vmr6/qX+g7Fkg==
+Date: Wed, 1 May 2024 10:56:15 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
+Message-ID: <ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+ <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
+ <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk>
+ <20240430172752.20ffcd56@sal.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="1s5XZL2PHP3gK0J2"
 Content-Disposition: inline
-In-Reply-To: <20240430193157.419425-1-seanjc@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20240430172752.20ffcd56@sal.lan>
+X-Cookie: lisp, v.:
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,44 +63,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, hverkuil@xs4all.nl, linuxppc-dev@lists.ozlabs.org, sakari.ailus@iki.fi, perex@perex.cz, linux-media@vger.kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 30, 2024 at 12:31:53PM -0700, Sean Christopherson wrote:
-> Drop kvm_arch_sched_in() and instead pass a @sched_in boolean to
-> kvm_arch_vcpu_load().
-> 
-> While fiddling with an idea for optimizing state management on AMD CPUs,
-> I wanted to skip re-saving certain host state when a vCPU is scheduled back
-> in, as the state (theoretically) shouldn't change for the task while it's
-> scheduled out.  Actually doing that was annoying and unnecessarily brittle
-> due to having a separate API for the kvm_sched_in() case (the state save
-> needed to be in kvm_arch_vcpu_load() for the common path).
-> 
-> E.g. I could have set a "temporary"-ish flag somewhere in kvm_vcpu, but (a)
-> that's gross and (b) it would rely on the arbitrary ordering between
-> sched_in() and vcpu_load() staying the same.
 
-Another option would be to change the rules around kvm_arch_sched_in()
-where the callee is expected to load the vCPU context.
+--1s5XZL2PHP3gK0J2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The default implementation could just call kvm_arch_vcpu_load() directly
-and the x86 implementation can order things the way it wants before
-kvm_arch_vcpu_load().
+On Tue, Apr 30, 2024 at 05:27:52PM +0100, Mauro Carvalho Chehab wrote:
+> Mark Brown <broonie@kernel.org> escreveu:
+> > On Tue, Apr 30, 2024 at 10:21:12AM +0200, Sebastian Fricke wrote:
 
-I say this because ...
+> > The discussion around this originally was that all the audio APIs are
+> > very much centered around real time operations rather than completely
 
-> The only real downside I see is that arm64 and riscv end up having to pass
-> "false" for their direct usage of kvm_arch_vcpu_load(), and passing boolean
-> literals isn't ideal.  But that can be solved by adding an inner helper that
-> omits the @sched_in param (I almost added a patch to do that, but I couldn't
-> convince myself it was necessary).
+> The media subsystem is also centered around real time. Without real
+> time, you can't have a decent video conference system. Having
+> mem2mem transfers actually help reducing real time delays, as it=20
+> avoids extra latency due to CPU congestion and/or data transfers
+> from/to userspace.
 
-Needing to pass @sched_in for other usage of kvm_arch_vcpu_load() hurts
-readability, especially when no other architecture besides x86 cares
-about it.
+Real time means strongly tied to wall clock times rather than fast - the
+issue was that all the ALSA APIs are based around pushing data through
+the system based on a clock.
 
--- 
-Thanks,
-Oliver
+> > That doesn't sound like an immediate solution to maintainer overload
+> > issues...  if something like this is going to happen the DRM solution
+> > does seem more general but I'm not sure the amount of stop energy is
+> > proportionate.
+
+> I don't think maintainer overload is the issue here. The main
+> point is to avoid a fork at the audio uAPI, plus the burden
+> of re-inventing the wheel with new codes for audio formats,
+> new documentation for them, etc.
+
+I thought that discussion had been had already at one of the earlier
+versions?  TBH I've not really been paying attention to this since the
+very early versions where I raised some similar "why is this in media"
+points and I thought everyone had decided that this did actually make
+sense.
+
+--1s5XZL2PHP3gK0J2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmYxoT4ACgkQJNaLcl1U
+h9Cdygf/bf6TAsptAknaEPQAw2Z5iLipMaPxhatnFylMl5K5iu0XYqQKgMjz9hzh
+pGWiv30tMEb1WWSd01RSGVLhVOz6Q/BoFOLmnu8iqikc/Y9AXuMpznA5kR9n+frq
+Vlmf+jK0/Yx/co+47MPq9h7wsuCHeavsUyinC7Iw+M5MkxLXy4ga/C/0tl2tDANc
+Ev6nkmUcjKAhI2O6zqwyxvO+0fagaQevxsYwhxJGbcqNcXzaa+OYshVVq8y00ugk
+paLFfitKTRz1J3qN5WfkELm40cyRulKxZIdJAQIO0VFwzCIWOdty1FYDs5GXlL0f
+Ys8S/0aZLJEVbPqQA1tZML2Y+D99YQ==
+=NaHt
+-----END PGP SIGNATURE-----
+
+--1s5XZL2PHP3gK0J2--
