@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4A98BA527
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 04:04:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BC18BA536
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 04:10:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H5k68sDS;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ckB/vBx1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VVvHT37lMz3cbW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 12:04:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VVvRL3pt3z3cgQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 12:10:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H5k68sDS;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ckB/vBx1;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VVvGk4d0pz2yPq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 12:03:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1714701803;
-	bh=O2rIImNa5eTX5JMS2gK4B5+p9DQZTIlWwqfyVhLPEjs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=H5k68sDSmC2DbJz+33czp8ldQxidcRYZnKOy5boIYRoBRouyDG78TxydSwEUPk+U+
-	 r94Agvp8BLRxLOGOxj0MJqqQpKPbOMfZvdphYSpPBx9pRTF+IMCS7niDPzXn7kS2oL
-	 dgc4JJf3xI+wurpAbKMqW8pO2nHH8MLpdFB7zfdG5YzGF8c9bkNZf2Gpz6V3477v1W
-	 VN5Zb1r8ULqYPNlMJxgWijx4y+2uOSwomPntynB4Wvd1EtESkKyKAnCUWCfbRZSYuE
-	 vxFEbobYnEYwZmCzp70+QVJfXaf3SBBXJ4utTr0l5UTHcUr3ceJKDCmXJmLV4BcZkN
-	 knTSkRFwnTSDw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VVvQc1pQ7z3bl6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 12:10:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1714702216;
+	bh=n68WkGVbpGy+aHNVtuIjgeXFbeAyPm747S0XI3zZ+5k=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ckB/vBx1ryKsNzJIo1psFKy8vhJn1HhbcYertQU9MuT+CahMaqOO/UtWwsLamPkNg
+	 5NxJhDrFIkEBSYbCivs5hQ3LTPoFVtF3oXvcSmds9T1NSz112bJ1Wqjpds3g6labpE
+	 P2nHefvnM2RJ6ddn3B2tASXz9K/yFfOEMTjjwxtPGKrfkJimvhY24gSTkvURFzya95
+	 mI569ngs0IhaiQIeeNEoRLmzeprBca8YYzdwSExfjgzAWVitU9Vtisl9LtZs4PukxP
+	 JfcrJWXDnwyGDhSBpc05gFtLN7VqEHLDtNzK3jr3CdqmiDmdR+mtPfAf3IqnVKfkfp
+	 N7/QkhezOp9WQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VVvGc44T2z4wcg;
-	Fri,  3 May 2024 12:03:20 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Allen Pais <apais@linux.microsoft.com>, linux-scsi@vger.kernel.org
-Subject: Re: [PATCH] [RFC] scsi: Convert from tasklet to BH workqueue
-In-Reply-To: <20240502203433.15811-2-apais@linux.microsoft.com>
-References: <20240502203433.15811-1-apais@linux.microsoft.com>
- <20240502203433.15811-2-apais@linux.microsoft.com>
-Date: Fri, 03 May 2024 12:03:20 +1000
-Message-ID: <87ikzv3b4n.fsf@mail.lhotse>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VVvQc0kV0z4wd3;
+	Fri,  3 May 2024 12:10:16 +1000 (AEST)
+Date: Fri, 3 May 2024 12:10:12 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] Fix the address of the linuxppc-dev mailing list
+Message-ID: <20240503121012.3ba5000b@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/lzX__LisPjheF3F.3a+quwQ";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,73 +56,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, hare@suse.com, linuxdrivers@attotech.com, martin.petersen@oracle.com, shivasharan.srikanteshwara@broadcom.com, jejb@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, kashyap.desai@broadcom.com, aneesh.kumar@kernel.org, sumit.saxena@broadcom.com, chandrakanth.patil@broadcom.com, target-devel@vger.kernel.org, artur.paszkiewicz@intel.co, naveen.n.rao@linux.ibm.com, jinpu.wang@cloud.ionos.com, linuxppc-dev@lists.ozlabs.org, megaraidlinux.pdl@broadcom.com
+Cc: Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>, Linux kernel mailing list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Allen Pais <apais@linux.microsoft.com> writes:
-> The only generic interface to execute asynchronously in the BH context is
-> tasklet; however, it's marked deprecated and has some design flaws. To
-> replace tasklets, BH workqueue support was recently added. A BH workqueue
-> behaves similarly to regular workqueues except that the queued work items
-> are executed in the BH context.
->
-> This patch converts drivers/scsi/* from tasklet to BH workqueue.
->
-> Based on the work done by Tejun Heo <tj@kernel.org>
-> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git for-6.10
->
-> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
-> ---
->  drivers/scsi/aic7xxx/aic7xxx_osm.c          |  2 +-
->  drivers/scsi/aic94xx/aic94xx_hwi.c          | 14 ++--
->  drivers/scsi/aic94xx/aic94xx_hwi.h          |  5 +-
->  drivers/scsi/aic94xx/aic94xx_scb.c          | 36 +++++-----
->  drivers/scsi/aic94xx/aic94xx_task.c         | 14 ++--
->  drivers/scsi/aic94xx/aic94xx_tmf.c          | 34 ++++-----
->  drivers/scsi/esas2r/esas2r.h                | 12 ++--
->  drivers/scsi/esas2r/esas2r_init.c           | 14 ++--
->  drivers/scsi/esas2r/esas2r_int.c            | 18 ++---
->  drivers/scsi/esas2r/esas2r_io.c             |  2 +-
->  drivers/scsi/esas2r/esas2r_main.c           | 16 ++---
->  drivers/scsi/ibmvscsi/ibmvfc.c              | 16 ++---
->  drivers/scsi/ibmvscsi/ibmvfc.h              |  3 +-
->  drivers/scsi/ibmvscsi/ibmvscsi.c            | 16 ++---
->  drivers/scsi/ibmvscsi/ibmvscsi.h            |  3 +-
->  drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c    | 15 ++--
->  drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h    |  3 +-
+--Sig_/lzX__LisPjheF3F.3a+quwQ
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Something there is giving me a build failure (ppc64le_guest_defconfig):
+This list was moved many years ago.
 
-  + make -s 'CC=ccache powerpc64le-linux-gnu-gcc' -j 4
-  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: In function 'ibmvscsi_init_crq_queue':
-  Error: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:370:331: error: 'ibmvscsi_work' undeclared (first use in this function)
-  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:370:331: note: each undeclared identifier is reported only once for each function it appears in
-  /linux/scripts/Makefile.build:244: recipe for target 'drivers/scsi/ibmvscsi/ibmvscsi.o' failed
-  /linux/scripts/Makefile.build:485: recipe for target 'drivers/scsi/ibmvscsi' failed
-  /linux/scripts/Makefile.build:485: recipe for target 'drivers/scsi' failed
-  /linux/scripts/Makefile.build:485: recipe for target 'drivers' failed
-  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: In function 'ibmvscsi_probe':
-  Error: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:2255:78: error: passing argument 1 of 'kthread_create_on_node' from incompatible pointer type [-Werror=incompatible-pointer-types]
-  In file included from /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:56:0:
-  /linux/include/linux/kthread.h:11:21: note: expected 'int (*)(void *)' but argument is of type 'int (*)(struct work_struct *)'
-   struct task_struct *kthread_create_on_node(int (*threadfn)(void *data),
-                       ^
-  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: At top level:
-  Warning: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:212:13: warning: 'ibmvscsi_task' defined but not used [-Wunused-function]
-   static void ibmvscsi_task(void *data)
-               ^
-  Warning: cc1: warning: unrecognized command line option '-Wno-shift-negative-value'
-  Warning: cc1: warning: unrecognized command line option '-Wno-stringop-overflow'
-  cc1: some warnings being treated as errors
-  make[6]: *** [drivers/scsi/ibmvscsi/ibmvscsi.o] Error 1
-  make[5]: *** [drivers/scsi/ibmvscsi] Error 2
-  make[4]: *** [drivers/scsi] Error 2
-  make[3]: *** [drivers] Error 2
-  make[3]: *** Waiting for unfinished jobs....
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ Documentation/ABI/testing/sysfs-devices-system-cpu | 14 +++++++-------
+ .../ABI/testing/sysfs-firmware-opal-powercap       |  4 ++--
+ Documentation/ABI/testing/sysfs-firmware-opal-psr  |  4 ++--
+ .../ABI/testing/sysfs-firmware-opal-sensor-groups  |  4 ++--
+ .../testing/sysfs-firmware-papr-energy-scale-info  | 10 +++++-----
+ 5 files changed, 18 insertions(+), 18 deletions(-)
 
-Full log here: https://github.com/linuxppc/linux-snowpatch/actions/runs/8930174372/job/24529645923
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documenta=
+tion/ABI/testing/sysfs-devices-system-cpu
+index 710d47be11e0..e7e160954e79 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -423,7 +423,7 @@ What:		/sys/devices/system/cpu/cpuX/cpufreq/throttle_st=
+ats
+ 		/sys/devices/system/cpu/cpuX/cpufreq/throttle_stats/occ_reset
+ Date:		March 2016
+ Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+-		Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++		Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	POWERNV CPUFreq driver's frequency throttle stats directory a=
+nd
+ 		attributes
+=20
+@@ -473,7 +473,7 @@ What:		/sys/devices/system/cpu/cpufreq/policyX/throttle=
+_stats
+ 		/sys/devices/system/cpu/cpufreq/policyX/throttle_stats/occ_reset
+ Date:		March 2016
+ Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+-		Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++		Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	POWERNV CPUFreq driver's frequency throttle stats directory a=
+nd
+ 		attributes
+=20
+@@ -608,7 +608,7 @@ Description:	Umwait control
+ What:		/sys/devices/system/cpu/svm
+ Date:		August 2019
+ Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+-		Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++		Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Secure Virtual Machine
+=20
+ 		If 1, it means the system is using the Protected Execution
+@@ -617,7 +617,7 @@ Description:	Secure Virtual Machine
+=20
+ What:		/sys/devices/system/cpu/cpuX/purr
+ Date:		Apr 2005
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	PURR ticks for this CPU since the system boot.
+=20
+ 		The Processor Utilization Resources Register (PURR) is
+@@ -628,7 +628,7 @@ Description:	PURR ticks for this CPU since the system b=
+oot.
+=20
+ What: 		/sys/devices/system/cpu/cpuX/spurr
+ Date:		Dec 2006
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	SPURR ticks for this CPU since the system boot.
+=20
+ 		The Scaled Processor Utilization Resources Register
+@@ -640,7 +640,7 @@ Description:	SPURR ticks for this CPU since the system =
+boot.
+=20
+ What: 		/sys/devices/system/cpu/cpuX/idle_purr
+ Date:		Apr 2020
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	PURR ticks for cpuX when it was idle.
+=20
+ 		This sysfs interface exposes the number of PURR ticks
+@@ -648,7 +648,7 @@ Description:	PURR ticks for cpuX when it was idle.
+=20
+ What: 		/sys/devices/system/cpu/cpuX/idle_spurr
+ Date:		Apr 2020
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	SPURR ticks for cpuX when it was idle.
+=20
+ 		This sysfs interface exposes the number of SPURR ticks
+diff --git a/Documentation/ABI/testing/sysfs-firmware-opal-powercap b/Docum=
+entation/ABI/testing/sysfs-firmware-opal-powercap
+index c9b66ec4f165..d2d12ee89288 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-opal-powercap
++++ b/Documentation/ABI/testing/sysfs-firmware-opal-powercap
+@@ -1,6 +1,6 @@
+ What:		/sys/firmware/opal/powercap
+ Date:		August 2017
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Powercap directory for Powernv (P8, P9) servers
+=20
+ 		Each folder in this directory contains a
+@@ -11,7 +11,7 @@ What:		/sys/firmware/opal/powercap/system-powercap
+ 		/sys/firmware/opal/powercap/system-powercap/powercap-max
+ 		/sys/firmware/opal/powercap/system-powercap/powercap-current
+ Date:		August 2017
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	System powercap directory and attributes applicable for
+ 		Powernv (P8, P9) servers
+=20
+diff --git a/Documentation/ABI/testing/sysfs-firmware-opal-psr b/Documentat=
+ion/ABI/testing/sysfs-firmware-opal-psr
+index cc2ece70e365..1e55b56a0f89 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-opal-psr
++++ b/Documentation/ABI/testing/sysfs-firmware-opal-psr
+@@ -1,6 +1,6 @@
+ What:		/sys/firmware/opal/psr
+ Date:		August 2017
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Power-Shift-Ratio directory for Powernv P9 servers
+=20
+ 		Power-Shift-Ratio allows to provide hints the firmware
+@@ -10,7 +10,7 @@ Description:	Power-Shift-Ratio directory for Powernv P9 s=
+ervers
+=20
+ What:		/sys/firmware/opal/psr/cpu_to_gpu_X
+ Date:		August 2017
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	PSR sysfs attributes for Powernv P9 servers
+=20
+ 		Power-Shift-Ratio between CPU and GPU for a given chip
+diff --git a/Documentation/ABI/testing/sysfs-firmware-opal-sensor-groups b/=
+Documentation/ABI/testing/sysfs-firmware-opal-sensor-groups
+index 3a2dfe542e8c..fcb1fb4795b6 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-opal-sensor-groups
++++ b/Documentation/ABI/testing/sysfs-firmware-opal-sensor-groups
+@@ -1,6 +1,6 @@
+ What:		/sys/firmware/opal/sensor_groups
+ Date:		August 2017
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Sensor groups directory for POWER9 powernv servers
+=20
+ 		Each folder in this directory contains a sensor group
+@@ -11,7 +11,7 @@ Description:	Sensor groups directory for POWER9 powernv s=
+ervers
+=20
+ What:		/sys/firmware/opal/sensor_groups/<sensor_group_name>/clear
+ Date:		August 2017
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Sysfs file to clear the min-max of all the sensors
+ 		belonging to the group.
+=20
+diff --git a/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-inf=
+o b/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+index 141a6b371469..f5cefb81ac9d 100644
+--- a/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
++++ b/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+@@ -1,6 +1,6 @@
+ What:		/sys/firmware/papr/energy_scale_info
+ Date:		February 2022
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Directory hosting a set of platform attributes like
+ 		energy/frequency on Linux running as a PAPR guest.
+=20
+@@ -10,20 +10,20 @@ Description:	Directory hosting a set of platform attrib=
+utes like
+=20
+ What:		/sys/firmware/papr/energy_scale_info/<id>
+ Date:		February 2022
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Energy, frequency attributes directory for POWERVM servers
+=20
+ What:		/sys/firmware/papr/energy_scale_info/<id>/desc
+ Date:		February 2022
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	String description of the energy attribute of <id>
+=20
+ What:		/sys/firmware/papr/energy_scale_info/<id>/value
+ Date:		February 2022
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	Numeric value of the energy attribute of <id>
+=20
+ What:		/sys/firmware/papr/energy_scale_info/<id>/value_desc
+ Date:		February 2022
+-Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>
+ Description:	String value of the energy attribute of <id>
+--=20
+2.43.0
 
-Cross compile instructions if you're keen: https://github.com/linuxppc/wiki/wiki/Building-powerpc-kernels
+--=20
+Cheers,
+Stephen Rothwell
 
-cheers
+--Sig_/lzX__LisPjheF3F.3a+quwQ
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmY0R4QACgkQAVBC80lX
+0Gy+gAgAhsTT7c+xBCswmFvn0UzyW93DLamr9jsckEWtL+GmqWyopiLEHe8QtjHL
+rSv5jHYE1/x9u72Z0VVEaT07PiN+1N4tqX1r6unGL44ZTyxnzjwVN1FUY2WEdVYE
+WSHLZCfNdXC7BklCzg4zKrfz8NYQCJ7GLIUAR0LzE6xhEnhqN39U1dMjMF+wd/fS
+DtewZ/kHcTx5Va7wbkAXCGZPnFClJOyZKteRko5c8C38wL2ZOc1WinvN2Vw4cXPy
+5dqgNXmS4W+nw/5vMwFCNdJCglDRShePGBWVZZm9kQ0FHL4yQQEqmbn8D2FOHDI6
+7h6XzKYZoyPK7NpfsmmOAjMxsj12yA==
+=myDB
+-----END PGP SIGNATURE-----
+
+--Sig_/lzX__LisPjheF3F.3a+quwQ--
