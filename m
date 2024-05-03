@@ -1,29 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52848BB805
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:13:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24218BB806
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:14:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRSF1tdZz3wKj
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:13:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRSk2QqKz87gJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:13:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9vz4qSvz3ckN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:03:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9w01mMnz3ckN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:03:12 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAB99169C;
-	Fri,  3 May 2024 06:03:03 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23D4916A3;
+	Fri,  3 May 2024 06:03:07 -0700 (PDT)
 Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 797533F73F;
-	Fri,  3 May 2024 06:02:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C71E83F73F;
+	Fri,  3 May 2024 06:02:38 -0700 (PDT)
 From: Joey Gouly <joey.gouly@arm.com>
 To: linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 13/29] arm64: convert protection key into vm_flags and pgprot values
-Date: Fri,  3 May 2024 14:01:31 +0100
-Message-Id: <20240503130147.1154804-14-joey.gouly@arm.com>
+Subject: [PATCH v4 14/29] arm64: mask out POIndex when modifying a PTE
+Date: Fri,  3 May 2024 14:01:32 +0100
+Message-Id: <20240503130147.1154804-15-joey.gouly@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240503130147.1154804-1-joey.gouly@arm.com>
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
@@ -45,63 +45,30 @@ Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Modify arch_calc_vm_prot_bits() and vm_get_page_prot() such that the pkey
-value is set in the vm_flags and then into the pgprot value.
+When a PTE is modified, the POIndex must be masked off so that it can be modified.
 
 Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm64/include/asm/mman.h | 8 +++++++-
- arch/arm64/mm/mmap.c          | 9 +++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
-index 5966ee4a6154..ecb2d18dc4d7 100644
---- a/arch/arm64/include/asm/mman.h
-+++ b/arch/arm64/include/asm/mman.h
-@@ -7,7 +7,7 @@
- #include <uapi/asm/mman.h>
- 
- static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
--	unsigned long pkey __always_unused)
-+	unsigned long pkey)
- {
- 	unsigned long ret = 0;
- 
-@@ -17,6 +17,12 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
- 	if (system_supports_mte() && (prot & PROT_MTE))
- 		ret |= VM_MTE;
- 
-+#if defined(CONFIG_ARCH_HAS_PKEYS)
-+	ret |= pkey & 0x1 ? VM_PKEY_BIT0 : 0;
-+	ret |= pkey & 0x2 ? VM_PKEY_BIT1 : 0;
-+	ret |= pkey & 0x4 ? VM_PKEY_BIT2 : 0;
-+#endif
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index afdd56d26ad7..5c970a9cca67 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1028,7 +1028,8 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
+ 	 */
+ 	const pteval_t mask = PTE_USER | PTE_PXN | PTE_UXN | PTE_RDONLY |
+ 			      PTE_PROT_NONE | PTE_VALID | PTE_WRITE | PTE_GP |
+-			      PTE_ATTRINDX_MASK;
++			      PTE_ATTRINDX_MASK | PTE_PO_IDX_MASK;
 +
- 	return ret;
- }
- #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
-diff --git a/arch/arm64/mm/mmap.c b/arch/arm64/mm/mmap.c
-index 642bdf908b22..86eda6bc7893 100644
---- a/arch/arm64/mm/mmap.c
-+++ b/arch/arm64/mm/mmap.c
-@@ -102,6 +102,15 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
- 	if (vm_flags & VM_MTE)
- 		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
- 
-+#ifdef CONFIG_ARCH_HAS_PKEYS
-+	if (vm_flags & VM_PKEY_BIT0)
-+		prot |= PTE_PO_IDX_0;
-+	if (vm_flags & VM_PKEY_BIT1)
-+		prot |= PTE_PO_IDX_1;
-+	if (vm_flags & VM_PKEY_BIT2)
-+		prot |= PTE_PO_IDX_2;
-+#endif
-+
- 	return __pgprot(prot);
- }
- EXPORT_SYMBOL(vm_get_page_prot);
+ 	/* preserve the hardware dirty information */
+ 	if (pte_hw_dirty(pte))
+ 		pte = set_pte_bit(pte, __pgprot(PTE_DIRTY));
 -- 
 2.25.1
 
