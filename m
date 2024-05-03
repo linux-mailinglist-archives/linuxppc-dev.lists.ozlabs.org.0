@@ -2,43 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8BB8BB7DE
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3728BB7E0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:06:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRGf1lnhz3vjZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:05:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRHd0x6Bz3vhB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:06:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=exordes.com (client-ip=92.204.81.249; helo=sxb1plsmtpa01-16.prod.sxb1.secureserver.net; envelope-from=dai.lu@exordes.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 987 seconds by postgrey-1.37 at boromir; Fri, 03 May 2024 22:01:49 AEST
-Received: from sxb1plsmtpa01-16.prod.sxb1.secureserver.net (sxb1plsmtpa01-16.prod.sxb1.secureserver.net [92.204.81.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VW8Y96Fb9z2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 22:01:49 +1000 (AEST)
-Received: from exordes.com ([87.92.66.153])
-	by :SMTPAUTH: with ESMTPSA
-	id 2rJYsBkACnpx02rJbsRacx; Fri, 03 May 2024 04:43:00 -0700
-X-CMAE-Analysis: v=2.4 cv=P7HxhTAu c=1 sm=1 tr=0 ts=6634cdc5
- a=13ZijDARommhillvnyM9pA==:117 a=13ZijDARommhillvnyM9pA==:17 a=eCYXQZmkAAAA:8
- a=yasIzMgEaC0_WTIPdd8A:9 a=77AlN4CNbnqoG63BkLSu:22
-X-SECURESERVER-ACCT: dai.lu@exordes.com
-From: Lu Dai <dai.lu@exordes.com>
-To: npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	naveen.n.rao@linux.ibm.com
-Subject: [PATCH] tty: hvc: hvc_opal: eliminate uses of of_node_put()
-Date: Fri,  3 May 2024 14:43:30 +0300
-Message-Id: <20240503114330.221764-1-dai.lu@exordes.com>
-X-Mailer: git-send-email 2.39.2
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9vC2CSqz3cYw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:02:28 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC3E013D5;
+	Fri,  3 May 2024 06:02:20 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7777C3F73F;
+	Fri,  3 May 2024 06:01:52 -0700 (PDT)
+From: Joey Gouly <joey.gouly@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 00/29] arm64: Permission Overlay Extension
+Date: Fri,  3 May 2024 14:01:18 +0100
+Message-Id: <20240503130147.1154804-1-joey.gouly@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfGFLoAN7m+wK5DQwW5rMwK7zWeDspUOif9J3EvUOXg5V/16O/NGMl1iQkVENAVe5aTQiL7KS/A/fbUS994+hSiJW+OmWqAV/m9+WeYpNkcYrLJHA5qLC
- sHd66kpLKgdCO8eVVQIYsSFmvgWklhZ+TChh+61taxAUleY5YSRIaoKkPW7nqKKbytBsXQJXnVheHEPmBKyhNN/RglwE9qFL7DASNxF5fFOmoPEDpnXylQOs
- 0WinVufDb9e2mx96aowrVT+IBwu4oaRozz4FGIW2BrR2yzxYiVs/DUpprBSJ9fBOcfidcqlVnEvAmCSyOChbKdkIRxoEsDrt7Fhr+wzHU4BKgPQxAO/YfA3I
- pmEKEdz++gJHDroru0UckXBWoGQ+HQRnjRSNsrNwsAJhR/zp+vG4+TEil+5q5EyepdfBUNurXcwQ9xrOAsHEnJpXiOY1xsmfSYZdd6/T+evrWZ4+dZ7j2RqB
- DTyp47hI6L2TwN696onBajOhZpzQZ9qJ60aeAUmTqGyZHqfXWK0lsyv+/I0LRJ2KLIVmhCDNWS2WXrdBkMRx0dEWbXeyaxmywQRcKRFidjPwdRMNHl9r7SQ8
- +V4=
 X-Mailman-Approved-At: Sat, 04 May 2024 09:04:52 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -51,64 +39,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shuah@kernel.org, javier.carrasco.cruz@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Lu Dai <dai.lu@exordes.com>, linux-serial@vger.kernel.org, gregkh@linuxfoundation.org, jirislaby@kernel.org
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, joey.gouly@arm.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, oliver.upton@linux.dev, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make use of the __free() cleanup handler to automatically free nodes
-when they get out of scope.
+Hi all,
 
-Removes the need for a 'goto' as an effect.
+This series implements the Permission Overlay Extension introduced in 2022
+VMSA enhancements [1]. It is based on v6.9-rc5.
 
-Signed-off-by: Lu Dai <dai.lu@exordes.com>
----
- drivers/tty/hvc/hvc_opal.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+One possible issue with this version, I took the last bit of HWCAP2.
 
-diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
-index 095c33ad10f8..67e90fa993a3 100644
---- a/drivers/tty/hvc/hvc_opal.c
-+++ b/drivers/tty/hvc/hvc_opal.c
-@@ -327,14 +327,14 @@ static void udbg_init_opal_common(void)
- 
- void __init hvc_opal_init_early(void)
- {
--	struct device_node *stdout_node = of_node_get(of_stdout);
-+	struct device_node *stdout_node __free(device_node) = of_node_get(of_stdout);
- 	const __be32 *termno;
- 	const struct hv_ops *ops;
- 	u32 index;
- 
- 	/* If the console wasn't in /chosen, try /ibm,opal */
- 	if (!stdout_node) {
--		struct device_node *opal, *np;
-+		struct device_node *opal __free(device_node), *np;
- 
- 		/* Current OPAL takeover doesn't provide the stdout
- 		 * path, so we hard wire it
-@@ -356,7 +356,6 @@ void __init hvc_opal_init_early(void)
- 				break;
- 			}
- 		}
--		of_node_put(opal);
- 	}
- 	if (!stdout_node)
- 		return;
-@@ -382,13 +381,11 @@ void __init hvc_opal_init_early(void)
- 		hvsilib_establish(&hvc_opal_boot_priv.hvsi);
- 		pr_devel("hvc_opal: Found HVSI console\n");
- 	} else
--		goto out;
-+		return;
- 	hvc_opal_boot_termno = index;
- 	udbg_init_opal_common();
- 	add_preferred_console("hvc", index, NULL);
- 	hvc_instantiate(index, index, ops);
--out:
--	of_node_put(stdout_node);
- }
- 
- #ifdef CONFIG_PPC_EARLY_DEBUG_OPAL_RAW
+Changes since v3[2]:
+	- Moved Kconfig to nearer the end of the series
+	- Reworked MMU Fault path, to check for POE faults earlier, under the mm lock
+	- Rework VM_FLAGS to use Kconfig option
+	- Don't check POR_EL0 in MTE sync tags function
+	- Reworked KVM to fit into VNCR/VM configuration changes
+	- Use new AT instruction in KVM
+	- Rebase onto v6.9-rc5
+
+The Permission Overlay Extension allows to constrain permissions on memory
+regions. This can be used from userspace (EL0) without a system call or TLB
+invalidation.
+
+POE is used to implement the Memory Protection Keys [3] Linux syscall.
+
+The first few patches add the basic framework, then the PKEYS interface is
+implemented, and then the selftests are made to work on arm64.
+
+I have tested the modified protection_keys test on x86_64, but not PPC.
+I haven't build tested the x86/ppc arch changes.
+
+Thanks,
+Joey
+
+Joey Gouly (29):
+  powerpc/mm: add ARCH_PKEY_BITS to Kconfig
+  x86/mm: add ARCH_PKEY_BITS to Kconfig
+  mm: use ARCH_PKEY_BITS to define VM_PKEY_BITN
+  arm64: disable trapping of POR_EL0 to EL2
+  arm64: cpufeature: add Permission Overlay Extension cpucap
+  arm64: context switch POR_EL0 register
+  KVM: arm64: Save/restore POE registers
+  KVM: arm64: make kvm_at() take an OP_AT_*
+  KVM: arm64: use `at s1e1a` for POE
+  arm64: enable the Permission Overlay Extension for EL0
+  arm64: re-order MTE VM_ flags
+  arm64: add POIndex defines
+  arm64: convert protection key into vm_flags and pgprot values
+  arm64: mask out POIndex when modifying a PTE
+  arm64: handle PKEY/POE faults
+  arm64: add pte_access_permitted_no_overlay()
+  arm64: implement PKEYS support
+  arm64: add POE signal support
+  arm64: enable PKEY support for CPUs with S1POE
+  arm64: enable POE and PIE to coexist
+  arm64/ptrace: add support for FEAT_POE
+  arm64: add Permission Overlay Extension Kconfig
+  kselftest/arm64: move get_header()
+  selftests: mm: move fpregs printing
+  selftests: mm: make protection_keys test work on arm64
+  kselftest/arm64: add HWCAP test for FEAT_S1POE
+  kselftest/arm64: parse POE_MAGIC in a signal frame
+  kselftest/arm64: Add test case for POR_EL0 signal frame records
+  KVM: selftests: get-reg-list: add Permission Overlay registers
+
+ Documentation/arch/arm64/elf_hwcaps.rst       |   2 +
+ arch/arm64/Kconfig                            |  22 +++
+ arch/arm64/include/asm/cpufeature.h           |   6 +
+ arch/arm64/include/asm/el2_setup.h            |  10 +-
+ arch/arm64/include/asm/hwcap.h                |   1 +
+ arch/arm64/include/asm/kvm_asm.h              |   3 +-
+ arch/arm64/include/asm/kvm_host.h             |   4 +
+ arch/arm64/include/asm/mman.h                 |   8 +-
+ arch/arm64/include/asm/mmu.h                  |   1 +
+ arch/arm64/include/asm/mmu_context.h          |  51 ++++++-
+ arch/arm64/include/asm/pgtable-hwdef.h        |  10 ++
+ arch/arm64/include/asm/pgtable-prot.h         |   8 +-
+ arch/arm64/include/asm/pgtable.h              |  34 ++++-
+ arch/arm64/include/asm/pkeys.h                | 110 ++++++++++++++
+ arch/arm64/include/asm/por.h                  |  33 +++++
+ arch/arm64/include/asm/processor.h            |   1 +
+ arch/arm64/include/asm/sysreg.h               |   3 +
+ arch/arm64/include/asm/traps.h                |   1 +
+ arch/arm64/include/asm/vncr_mapping.h         |   1 +
+ arch/arm64/include/uapi/asm/hwcap.h           |   1 +
+ arch/arm64/include/uapi/asm/sigcontext.h      |   7 +
+ arch/arm64/kernel/cpufeature.c                |  23 +++
+ arch/arm64/kernel/cpuinfo.c                   |   1 +
+ arch/arm64/kernel/process.c                   |  28 ++++
+ arch/arm64/kernel/ptrace.c                    |  46 ++++++
+ arch/arm64/kernel/signal.c                    |  52 +++++++
+ arch/arm64/kernel/traps.c                     |  12 +-
+ arch/arm64/kvm/hyp/include/hyp/fault.h        |   5 +-
+ arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h    |  29 ++++
+ arch/arm64/kvm/sys_regs.c                     |   8 +-
+ arch/arm64/mm/fault.c                         |  56 ++++++-
+ arch/arm64/mm/mmap.c                          |   9 ++
+ arch/arm64/mm/mmu.c                           |  40 +++++
+ arch/arm64/tools/cpucaps                      |   1 +
+ arch/powerpc/Kconfig                          |   4 +
+ arch/x86/Kconfig                              |   4 +
+ fs/proc/task_mmu.c                            |   2 +
+ include/linux/mm.h                            |  20 ++-
+ include/uapi/linux/elf.h                      |   1 +
+ tools/testing/selftests/arm64/abi/hwcap.c     |  14 ++
+ .../testing/selftests/arm64/signal/.gitignore |   1 +
+ .../arm64/signal/testcases/poe_siginfo.c      |  86 +++++++++++
+ .../arm64/signal/testcases/testcases.c        |  27 +---
+ .../arm64/signal/testcases/testcases.h        |  28 +++-
+ .../selftests/kvm/aarch64/get-reg-list.c      |  14 ++
+ tools/testing/selftests/mm/Makefile           |   2 +-
+ tools/testing/selftests/mm/pkey-arm64.h       | 139 ++++++++++++++++++
+ tools/testing/selftests/mm/pkey-helpers.h     |   8 +
+ tools/testing/selftests/mm/pkey-powerpc.h     |   3 +
+ tools/testing/selftests/mm/pkey-x86.h         |   4 +
+ tools/testing/selftests/mm/protection_keys.c  | 109 ++++++++++++--
+ 51 files changed, 1027 insertions(+), 66 deletions(-)
+ create mode 100644 arch/arm64/include/asm/pkeys.h
+ create mode 100644 arch/arm64/include/asm/por.h
+ create mode 100644 tools/testing/selftests/arm64/signal/testcases/poe_siginfo.c
+ create mode 100644 tools/testing/selftests/mm/pkey-arm64.h
+
 -- 
-2.39.2
+2.25.1
 
