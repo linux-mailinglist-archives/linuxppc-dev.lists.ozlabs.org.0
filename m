@@ -2,28 +2,28 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875D78BB7ED
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B27E98BB7F3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:10:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRMx1TzDz3cVG
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:09:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRNv2hHYz3w9D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:10:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9vq5YSTz3cbd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:03:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9vr10D7z3cb1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:03:04 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DEFA1756;
-	Fri,  3 May 2024 06:03:20 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCFCE1713;
+	Fri,  3 May 2024 06:03:23 -0700 (PDT)
 Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2BCEA3F73F;
-	Fri,  3 May 2024 06:02:52 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78C943F73F;
+	Fri,  3 May 2024 06:02:55 -0700 (PDT)
 From: Joey Gouly <joey.gouly@arm.com>
 To: linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 18/29] arm64: add POE signal support
-Date: Fri,  3 May 2024 14:01:36 +0100
-Message-Id: <20240503130147.1154804-19-joey.gouly@arm.com>
+Subject: [PATCH v4 19/29] arm64: enable PKEY support for CPUs with S1POE
+Date: Fri,  3 May 2024 14:01:37 +0100
+Message-Id: <20240503130147.1154804-20-joey.gouly@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240503130147.1154804-1-joey.gouly@arm.com>
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
@@ -45,155 +45,30 @@ Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add PKEY support to signals, by saving and restoring POR_EL0 from the stackframe.
+Now that PKEYs support has been implemented, enable it for CPUs that
+support S1POE.
 
 Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Acked-by: Szabolcs Nagy <szabolcs.nagy@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm64/include/uapi/asm/sigcontext.h |  7 ++++
- arch/arm64/kernel/signal.c               | 52 ++++++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+ arch/arm64/include/asm/pkeys.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/uapi/asm/sigcontext.h b/arch/arm64/include/uapi/asm/sigcontext.h
-index 8a45b7a411e0..e4cba8a6c9a2 100644
---- a/arch/arm64/include/uapi/asm/sigcontext.h
-+++ b/arch/arm64/include/uapi/asm/sigcontext.h
-@@ -98,6 +98,13 @@ struct esr_context {
- 	__u64 esr;
- };
+diff --git a/arch/arm64/include/asm/pkeys.h b/arch/arm64/include/asm/pkeys.h
+index a284508a4d02..3ea928ec94c0 100644
+--- a/arch/arm64/include/asm/pkeys.h
++++ b/arch/arm64/include/asm/pkeys.h
+@@ -17,7 +17,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
  
-+#define POE_MAGIC	0x504f4530
-+
-+struct poe_context {
-+	struct _aarch64_ctx head;
-+	__u64 por_el0;
-+};
-+
- /*
-  * extra_context: describes extra space in the signal frame for
-  * additional structures that don't fit in sigcontext.__reserved[].
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 4a77f4976e11..077436a8bc10 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -63,6 +63,7 @@ struct rt_sigframe_user_layout {
- 	unsigned long fpmr_offset;
- 	unsigned long extra_offset;
- 	unsigned long end_offset;
-+	unsigned long poe_offset;
- };
- 
- #define BASE_SIGFRAME_SIZE round_up(sizeof(struct rt_sigframe), 16)
-@@ -185,6 +186,8 @@ struct user_ctxs {
- 	u32 zt_size;
- 	struct fpmr_context __user *fpmr;
- 	u32 fpmr_size;
-+	struct poe_context __user *poe;
-+	u32 poe_size;
- };
- 
- static int preserve_fpsimd_context(struct fpsimd_context __user *ctx)
-@@ -258,6 +261,21 @@ static int restore_fpmr_context(struct user_ctxs *user)
- 	return err;
+ static inline bool arch_pkeys_enabled(void)
+ {
+-	return false;
++	return system_supports_poe();
  }
  
-+static int restore_poe_context(struct user_ctxs *user)
-+{
-+	u64 por_el0;
-+	int err = 0;
-+
-+	if (user->poe_size != sizeof(*user->poe))
-+		return -EINVAL;
-+
-+	__get_user_error(por_el0, &(user->poe->por_el0), err);
-+	if (!err)
-+		write_sysreg_s(por_el0, SYS_POR_EL0);
-+
-+	return err;
-+}
-+
- #ifdef CONFIG_ARM64_SVE
- 
- static int preserve_sve_context(struct sve_context __user *ctx)
-@@ -621,6 +639,7 @@ static int parse_user_sigframe(struct user_ctxs *user,
- 	user->za = NULL;
- 	user->zt = NULL;
- 	user->fpmr = NULL;
-+	user->poe = NULL;
- 
- 	if (!IS_ALIGNED((unsigned long)base, 16))
- 		goto invalid;
-@@ -671,6 +690,17 @@ static int parse_user_sigframe(struct user_ctxs *user,
- 			/* ignore */
- 			break;
- 
-+		case POE_MAGIC:
-+			if (!system_supports_poe())
-+				goto invalid;
-+
-+			if (user->poe)
-+				goto invalid;
-+
-+			user->poe = (struct poe_context __user *)head;
-+			user->poe_size = size;
-+			break;
-+
- 		case SVE_MAGIC:
- 			if (!system_supports_sve() && !system_supports_sme())
- 				goto invalid;
-@@ -857,6 +887,9 @@ static int restore_sigframe(struct pt_regs *regs,
- 	if (err == 0 && system_supports_sme2() && user.zt)
- 		err = restore_zt_context(&user);
- 
-+	if (err == 0 && system_supports_poe() && user.poe)
-+		err = restore_poe_context(&user);
-+
- 	return err;
- }
- 
-@@ -980,6 +1013,13 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
- 			return err;
- 	}
- 
-+	if (system_supports_poe()) {
-+		err = sigframe_alloc(user, &user->poe_offset,
-+				     sizeof(struct poe_context));
-+		if (err)
-+			return err;
-+	}
-+
- 	return sigframe_alloc_end(user);
- }
- 
-@@ -1020,6 +1060,15 @@ static int setup_sigframe(struct rt_sigframe_user_layout *user,
- 		__put_user_error(current->thread.fault_code, &esr_ctx->esr, err);
- 	}
- 
-+	if (system_supports_poe() && err == 0 && user->poe_offset) {
-+		struct poe_context __user *poe_ctx =
-+			apply_user_offset(user, user->poe_offset);
-+
-+		__put_user_error(POE_MAGIC, &poe_ctx->head.magic, err);
-+		__put_user_error(sizeof(*poe_ctx), &poe_ctx->head.size, err);
-+		__put_user_error(read_sysreg_s(SYS_POR_EL0), &poe_ctx->por_el0, err);
-+	}
-+
- 	/* Scalable Vector Extension state (including streaming), if present */
- 	if ((system_supports_sve() || system_supports_sme()) &&
- 	    err == 0 && user->sve_offset) {
-@@ -1178,6 +1227,9 @@ static void setup_return(struct pt_regs *regs, struct k_sigaction *ka,
- 		sme_smstop();
- 	}
- 
-+	if (system_supports_poe())
-+		write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
-+
- 	if (ka->sa.sa_flags & SA_RESTORER)
- 		sigtramp = ka->sa.sa_restorer;
- 	else
+ static inline int vma_pkey(struct vm_area_struct *vma)
 -- 
 2.25.1
 
