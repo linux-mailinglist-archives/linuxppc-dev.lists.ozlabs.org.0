@@ -1,49 +1,109 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC948BAFF0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 17:34:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A078BB102
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 18:41:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=j7GX9NRd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YaL7JdMX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWFGH5fpWz3dKC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:34:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWGld0mfmz3dS5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 02:41:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=j7GX9NRd;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YaL7JdMX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=apais@linux.microsoft.com; receiver=lists.ozlabs.org)
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWFFY0FY6z3cnT
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 01:33:37 +1000 (AEST)
-Received: from smtpclient.apple (d66-183-91-182.bchsia.telus.net [66.183.91.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 6B6D420B2C80;
-	Fri,  3 May 2024 08:33:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6B6D420B2C80
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1714750385;
-	bh=u83roOV6ApUdhHCZFPvPha+Yc7iFIOLJNXHoxhkiXF4=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=j7GX9NRdjJ0f1JXprYqP4mU6AOIdq5ljmyVYLDipoLA2YOir4KFl5vXntDGJZySEO
-	 +i6qqAmEEQ6LcXBnrtvruAXjmxQTA5e8JAMjqBOUmB46Z27e18e+wlNX8l+AN1Plu1
-	 xMs1Pj7h/O/y+V8LcuGoEpVLUmg98XLoU24jOVMg=
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH] [RFC] scsi: Convert from tasklet to BH workqueue
-From: Allen Pais <apais@linux.microsoft.com>
-In-Reply-To: <87ikzv3b4n.fsf@mail.lhotse>
-Date: Fri, 3 May 2024 08:32:54 -0700
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BA5F645E-7DC6-4737-BCB2-6CD8E2C4471A@linux.microsoft.com>
-References: <20240502203433.15811-1-apais@linux.microsoft.com>
- <20240502203433.15811-2-apais@linux.microsoft.com>
- <87ikzv3b4n.fsf@mail.lhotse>
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWGkq6b8vz3cl3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 02:40:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714754436; x=1746290436;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=afuhIcn+KnbmlnxcksoTFD/Eau0u6FHBSn65PM/SyrM=;
+  b=YaL7JdMXcEvIuzEEFbP//52oh/lspyw0/k9LFDrNtyvL4EJB3Ub8vmrQ
+   PH+h1bsI1wJc5FhSPGiCPYkRPY7X5QEXzobCEDZ4G16reOToY0d/QGlws
+   xyVwMirSkK3s/plNsx+wB7G0aOBdSeA1CyAPg/9cCzKivZI2hf6sKH4cZ
+   63PsxSxoYOuO0iJFVo6napae2nqx2jeStYYv11l/Xx5P23I4sllwNQqNZ
+   +gqjztukFTlTKvresmrIS7+Ipe2ez5Yc2h944yeHHDNm49q2kOXypHEYz
+   WTfSMXsKGgGzcOZTHB3SHv6SqO9LV07D6tYovfIMSALe+k/3rf2RTbQrg
+   w==;
+X-CSE-ConnectionGUID: DU6gdLQORGyMmrVIWDGDbA==
+X-CSE-MsgGUID: +upc032LTumxRKp+Sku1rQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10415251"
+X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; 
+   d="scan'208";a="10415251"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 09:40:30 -0700
+X-CSE-ConnectionGUID: jYQW6nhdQcedFYGCt+rcKw==
+X-CSE-MsgGUID: w/v+uGqARHWwlAUYgs4d1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; 
+   d="scan'208";a="32305593"
+Received: from zhangche-mobl.amr.corp.intel.com (HELO [10.209.82.31]) ([10.209.82.31])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 09:40:29 -0700
+Message-ID: <059eeeef-95ad-460b-9908-441834e3327b@intel.com>
+Date: Fri, 3 May 2024 09:40:29 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/29] x86/mm: add ARCH_PKEY_BITS to Kconfig
+To: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-3-joey.gouly@arm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240503130147.1154804-3-joey.gouly@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,110 +115,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, hare@suse.com, martin.petersen@oracle.com, linux-scsi@vger.kernel.org, shivasharan.srikanteshwara@broadcom.com, jejb@linux.ibm.com, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, npiggin@gmail.com, kashyap.desai@broadcom.com, aneesh.kumar@kernel.org, sumit.saxena@broadcom.com, chandrakanth.patil@broadcom.com, target-devel@vger.kernel.org, artur.paszkiewicz@intel.co, naveen.n.rao@linux.ibm.com, jinpu.wang@cloud.ionos.com, linuxppc-dev@lists.ozlabs.org, megaraidlinux.pdl@broadcom.com, linuxdrivers@attotech.com
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 5/3/24 06:01, Joey Gouly wrote:
+> The new config option specifies how many bits are in each PKEY.
 
-
-> On May 2, 2024, at 7:03=E2=80=AFPM, Michael Ellerman =
-<mpe@ellerman.id.au> wrote:
->=20
-> Allen Pais <apais@linux.microsoft.com> writes:
->> The only generic interface to execute asynchronously in the BH =
-context is
->> tasklet; however, it's marked deprecated and has some design flaws. =
-To
->> replace tasklets, BH workqueue support was recently added. A BH =
-workqueue
->> behaves similarly to regular workqueues except that the queued work =
-items
->> are executed in the BH context.
->>=20
->> This patch converts drivers/scsi/* from tasklet to BH workqueue.
->>=20
->> Based on the work done by Tejun Heo <tj@kernel.org>
->> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git =
-for-6.10
->>=20
->> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
->> ---
->> drivers/scsi/aic7xxx/aic7xxx_osm.c          |  2 +-
->> drivers/scsi/aic94xx/aic94xx_hwi.c          | 14 ++--
->> drivers/scsi/aic94xx/aic94xx_hwi.h          |  5 +-
->> drivers/scsi/aic94xx/aic94xx_scb.c          | 36 +++++-----
->> drivers/scsi/aic94xx/aic94xx_task.c         | 14 ++--
->> drivers/scsi/aic94xx/aic94xx_tmf.c          | 34 ++++-----
->> drivers/scsi/esas2r/esas2r.h                | 12 ++--
->> drivers/scsi/esas2r/esas2r_init.c           | 14 ++--
->> drivers/scsi/esas2r/esas2r_int.c            | 18 ++---
->> drivers/scsi/esas2r/esas2r_io.c             |  2 +-
->> drivers/scsi/esas2r/esas2r_main.c           | 16 ++---
->> drivers/scsi/ibmvscsi/ibmvfc.c              | 16 ++---
->> drivers/scsi/ibmvscsi/ibmvfc.h              |  3 +-
->> drivers/scsi/ibmvscsi/ibmvscsi.c            | 16 ++---
->> drivers/scsi/ibmvscsi/ibmvscsi.h            |  3 +-
->> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c    | 15 ++--
->> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h    |  3 +-
->=20
-> Something there is giving me a build failure =
-(ppc64le_guest_defconfig):
->=20
->  + make -s 'CC=3Dccache powerpc64le-linux-gnu-gcc' -j 4
->  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: In function =
-'ibmvscsi_init_crq_queue':
->  Error: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:370:331: error: =
-'ibmvscsi_work' undeclared (first use in this function)
->  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:370:331: note: each =
-undeclared identifier is reported only once for each function it appears =
-in
->  /linux/scripts/Makefile.build:244: recipe for target =
-'drivers/scsi/ibmvscsi/ibmvscsi.o' failed
->  /linux/scripts/Makefile.build:485: recipe for target =
-'drivers/scsi/ibmvscsi' failed
->  /linux/scripts/Makefile.build:485: recipe for target 'drivers/scsi' =
-failed
->  /linux/scripts/Makefile.build:485: recipe for target 'drivers' failed
->  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: In function =
-'ibmvscsi_probe':
->  Error: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:2255:78: error: =
-passing argument 1 of 'kthread_create_on_node' from incompatible pointer =
-type [-Werror=3Dincompatible-pointer-types]
->  In file included from /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:56:0:
->  /linux/include/linux/kthread.h:11:21: note: expected 'int (*)(void =
-*)' but argument is of type 'int (*)(struct work_struct *)'
->   struct task_struct *kthread_create_on_node(int (*threadfn)(void =
-*data),
->                       ^
->  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: At top level:
->  Warning: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:212:13: warning: =
-'ibmvscsi_task' defined but not used [-Wunused-function]
->   static void ibmvscsi_task(void *data)
->               ^
->  Warning: cc1: warning: unrecognized command line option =
-'-Wno-shift-negative-value'
->  Warning: cc1: warning: unrecognized command line option =
-'-Wno-stringop-overflow'
->  cc1: some warnings being treated as errors
->  make[6]: *** [drivers/scsi/ibmvscsi/ibmvscsi.o] Error 1
->  make[5]: *** [drivers/scsi/ibmvscsi] Error 2
->  make[4]: *** [drivers/scsi] Error 2
->  make[3]: *** [drivers] Error 2
->  make[3]: *** Waiting for unfinished jobs....
->=20
-> Full log here: =
-https://github.com/linuxppc/linux-snowpatch/actions/runs/8930174372/job/24=
-529645923
-
- Thank you for testing it out. Unfortunately, I did not cross-compile =
-it.
-Will fix this in v2.
-
-- Allen
-
->=20
-> Cross compile instructions if you're keen: =
-https://github.com/linuxppc/wiki/wiki/Building-powerpc-kernels
->=20
-> cheers
-
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
