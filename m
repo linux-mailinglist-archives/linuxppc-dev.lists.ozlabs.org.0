@@ -2,92 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE418BAFE5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 17:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC948BAFF0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 17:34:18 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=j7GX9NRd;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWFF018jdz3dVj
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:33:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWFGH5fpWz3dKC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:34:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWFDX1g4gz3cp1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 01:32:43 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AB5E833B95;
-	Fri,  3 May 2024 15:32:37 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2BFDA139CB;
-	Fri,  3 May 2024 15:32:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G/TgBZQDNWZ9LgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 03 May 2024 15:32:36 +0000
-Message-ID: <ec59624e-c872-4205-a45c-97163ae33301@suse.de>
-Date: Fri, 3 May 2024 17:32:35 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] arch: Remove fbdev dependency from video helpers
-To: Arnd Bergmann <arnd@arndb.de>, Sam Ravnborg <sam@ravnborg.org>,
- Javier Martinez Canillas <javierm@redhat.com>, Helge Deller <deller@gmx.de>,
- sui.jingfeng@linux.dev
-References: <20240329203450.7824-1-tzimmermann@suse.de>
- <c281bb8e-0719-4b28-a637-56615ad16913@suse.de>
- <2f8cfd1d-a478-4666-a181-040c8d92e8fd@app.fastmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <2f8cfd1d-a478-4666-a181-040c8d92e8fd@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: AB5E833B95
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=j7GX9NRd;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=apais@linux.microsoft.com; receiver=lists.ozlabs.org)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWFFY0FY6z3cnT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 01:33:37 +1000 (AEST)
+Received: from smtpclient.apple (d66-183-91-182.bchsia.telus.net [66.183.91.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 6B6D420B2C80;
+	Fri,  3 May 2024 08:33:05 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6B6D420B2C80
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1714750385;
+	bh=u83roOV6ApUdhHCZFPvPha+Yc7iFIOLJNXHoxhkiXF4=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=j7GX9NRdjJ0f1JXprYqP4mU6AOIdq5ljmyVYLDipoLA2YOir4KFl5vXntDGJZySEO
+	 +i6qqAmEEQ6LcXBnrtvruAXjmxQTA5e8JAMjqBOUmB46Z27e18e+wlNX8l+AN1Plu1
+	 xMs1Pj7h/O/y+V8LcuGoEpVLUmg98XLoU24jOVMg=
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH] [RFC] scsi: Convert from tasklet to BH workqueue
+From: Allen Pais <apais@linux.microsoft.com>
+In-Reply-To: <87ikzv3b4n.fsf@mail.lhotse>
+Date: Fri, 3 May 2024 08:32:54 -0700
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BA5F645E-7DC6-4737-BCB2-6CD8E2C4471A@linux.microsoft.com>
+References: <20240502203433.15811-1-apais@linux.microsoft.com>
+ <20240502203433.15811-2-apais@linux.microsoft.com>
+ <87ikzv3b4n.fsf@mail.lhotse>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,32 +55,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: tyreld@linux.ibm.com, hare@suse.com, martin.petersen@oracle.com, linux-scsi@vger.kernel.org, shivasharan.srikanteshwara@broadcom.com, jejb@linux.ibm.com, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, npiggin@gmail.com, kashyap.desai@broadcom.com, aneesh.kumar@kernel.org, sumit.saxena@broadcom.com, chandrakanth.patil@broadcom.com, target-devel@vger.kernel.org, artur.paszkiewicz@intel.co, naveen.n.rao@linux.ibm.com, jinpu.wang@cloud.ionos.com, linuxppc-dev@lists.ozlabs.org, megaraidlinux.pdl@broadcom.com, linuxdrivers@attotech.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Am 03.05.24 um 17:29 schrieb Arnd Bergmann:
-> On Fri, Apr 5, 2024, at 11:04, Thomas Zimmermann wrote:
->> Hi,
->>
->> if there are no further comments, can this series be merged through
->> asm-generic?
-> Sorry for the delay, I've merged these for asm-generic now.
+> On May 2, 2024, at 7:03=E2=80=AFPM, Michael Ellerman =
+<mpe@ellerman.id.au> wrote:
+>=20
+> Allen Pais <apais@linux.microsoft.com> writes:
+>> The only generic interface to execute asynchronously in the BH =
+context is
+>> tasklet; however, it's marked deprecated and has some design flaws. =
+To
+>> replace tasklets, BH workqueue support was recently added. A BH =
+workqueue
+>> behaves similarly to regular workqueues except that the queued work =
+items
+>> are executed in the BH context.
+>>=20
+>> This patch converts drivers/scsi/* from tasklet to BH workqueue.
+>>=20
+>> Based on the work done by Tejun Heo <tj@kernel.org>
+>> Branch: https://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git =
+for-6.10
+>>=20
+>> Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+>> ---
+>> drivers/scsi/aic7xxx/aic7xxx_osm.c          |  2 +-
+>> drivers/scsi/aic94xx/aic94xx_hwi.c          | 14 ++--
+>> drivers/scsi/aic94xx/aic94xx_hwi.h          |  5 +-
+>> drivers/scsi/aic94xx/aic94xx_scb.c          | 36 +++++-----
+>> drivers/scsi/aic94xx/aic94xx_task.c         | 14 ++--
+>> drivers/scsi/aic94xx/aic94xx_tmf.c          | 34 ++++-----
+>> drivers/scsi/esas2r/esas2r.h                | 12 ++--
+>> drivers/scsi/esas2r/esas2r_init.c           | 14 ++--
+>> drivers/scsi/esas2r/esas2r_int.c            | 18 ++---
+>> drivers/scsi/esas2r/esas2r_io.c             |  2 +-
+>> drivers/scsi/esas2r/esas2r_main.c           | 16 ++---
+>> drivers/scsi/ibmvscsi/ibmvfc.c              | 16 ++---
+>> drivers/scsi/ibmvscsi/ibmvfc.h              |  3 +-
+>> drivers/scsi/ibmvscsi/ibmvscsi.c            | 16 ++---
+>> drivers/scsi/ibmvscsi/ibmvscsi.h            |  3 +-
+>> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c    | 15 ++--
+>> drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h    |  3 +-
+>=20
+> Something there is giving me a build failure =
+(ppc64le_guest_defconfig):
+>=20
+>  + make -s 'CC=3Dccache powerpc64le-linux-gnu-gcc' -j 4
+>  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: In function =
+'ibmvscsi_init_crq_queue':
+>  Error: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:370:331: error: =
+'ibmvscsi_work' undeclared (first use in this function)
+>  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:370:331: note: each =
+undeclared identifier is reported only once for each function it appears =
+in
+>  /linux/scripts/Makefile.build:244: recipe for target =
+'drivers/scsi/ibmvscsi/ibmvscsi.o' failed
+>  /linux/scripts/Makefile.build:485: recipe for target =
+'drivers/scsi/ibmvscsi' failed
+>  /linux/scripts/Makefile.build:485: recipe for target 'drivers/scsi' =
+failed
+>  /linux/scripts/Makefile.build:485: recipe for target 'drivers' failed
+>  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: In function =
+'ibmvscsi_probe':
+>  Error: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:2255:78: error: =
+passing argument 1 of 'kthread_create_on_node' from incompatible pointer =
+type [-Werror=3Dincompatible-pointer-types]
+>  In file included from /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:56:0:
+>  /linux/include/linux/kthread.h:11:21: note: expected 'int (*)(void =
+*)' but argument is of type 'int (*)(struct work_struct *)'
+>   struct task_struct *kthread_create_on_node(int (*threadfn)(void =
+*data),
+>                       ^
+>  /linux/drivers/scsi/ibmvscsi/ibmvscsi.c: At top level:
+>  Warning: /linux/drivers/scsi/ibmvscsi/ibmvscsi.c:212:13: warning: =
+'ibmvscsi_task' defined but not used [-Wunused-function]
+>   static void ibmvscsi_task(void *data)
+>               ^
+>  Warning: cc1: warning: unrecognized command line option =
+'-Wno-shift-negative-value'
+>  Warning: cc1: warning: unrecognized command line option =
+'-Wno-stringop-overflow'
+>  cc1: some warnings being treated as errors
+>  make[6]: *** [drivers/scsi/ibmvscsi/ibmvscsi.o] Error 1
+>  make[5]: *** [drivers/scsi/ibmvscsi] Error 2
+>  make[4]: *** [drivers/scsi] Error 2
+>  make[3]: *** [drivers] Error 2
+>  make[3]: *** Waiting for unfinished jobs....
+>=20
+> Full log here: =
+https://github.com/linuxppc/linux-snowpatch/actions/runs/8930174372/job/24=
+529645923
 
-Thank you so much!
+ Thank you for testing it out. Unfortunately, I did not cross-compile =
+it.
+Will fix this in v2.
 
->
->        Arnd
->
+- Allen
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+>=20
+> Cross compile instructions if you're keen: =
+https://github.com/linuxppc/wiki/wiki/Building-powerpc-kernels
+>=20
+> cheers
 
