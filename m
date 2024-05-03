@@ -2,60 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A078BB102
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 18:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B104C8BB116
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 18:42:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YaL7JdMX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hEYoS/sq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWGld0mfmz3dS5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 02:41:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWGnD1yfzz3dWG
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 02:42:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YaL7JdMX;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hEYoS/sq;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWGkq6b8vz3cl3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 02:40:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWGmV41CXz3cTF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 02:42:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714754436; x=1746290436;
+  t=1714754523; x=1746290523;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=afuhIcn+KnbmlnxcksoTFD/Eau0u6FHBSn65PM/SyrM=;
-  b=YaL7JdMXcEvIuzEEFbP//52oh/lspyw0/k9LFDrNtyvL4EJB3Ub8vmrQ
-   PH+h1bsI1wJc5FhSPGiCPYkRPY7X5QEXzobCEDZ4G16reOToY0d/QGlws
-   xyVwMirSkK3s/plNsx+wB7G0aOBdSeA1CyAPg/9cCzKivZI2hf6sKH4cZ
-   63PsxSxoYOuO0iJFVo6napae2nqx2jeStYYv11l/Xx5P23I4sllwNQqNZ
-   +gqjztukFTlTKvresmrIS7+Ipe2ez5Yc2h944yeHHDNm49q2kOXypHEYz
-   WTfSMXsKGgGzcOZTHB3SHv6SqO9LV07D6tYovfIMSALe+k/3rf2RTbQrg
-   w==;
-X-CSE-ConnectionGUID: DU6gdLQORGyMmrVIWDGDbA==
-X-CSE-MsgGUID: +upc032LTumxRKp+Sku1rQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10415251"
+  bh=6yaN6Tg5Pi5uYX9aCa0y3OfnrA67rHUXaDA4i8gsLlY=;
+  b=hEYoS/sq3Ks6whHnFTzo/9nk8Cadg/8VjQurpYvc8buTXho5CiiiiI7F
+   Ws565+4FGvvunUPVwKDAzxgwvlN2EBvol/wlkn+LRZCAc0tD/HyI3AdCN
+   W4DrakgBrPjsk7m0b2TFnDC2kSeijrI7tZw96v1J3+n8v1LR4OqurEt3A
+   befGbcIG5ATWLO96KA3jvpXD5B7HBKlEOBloAlluiWY/bjynIhVUrxSCW
+   bInFnISRzLpf27PvVsiO3/7M9q6afl+Cr6BU0nzBoKhhYGHrgYRHZsY4q
+   zVdRM/moDQLFe7Yq8E2EF/+2Ue2IQkj21ilEMQxZryJhVztbd7B2BKZbD
+   A==;
+X-CSE-ConnectionGUID: 3bjoDzwjSE6xNt3gKqgpiA==
+X-CSE-MsgGUID: gmE5qFIzT227ZmgYHDhmnA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10415367"
 X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; 
-   d="scan'208";a="10415251"
+   d="scan'208";a="10415367"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 09:40:30 -0700
-X-CSE-ConnectionGUID: jYQW6nhdQcedFYGCt+rcKw==
-X-CSE-MsgGUID: w/v+uGqARHWwlAUYgs4d1w==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 09:42:00 -0700
+X-CSE-ConnectionGUID: K6Vn7gjMR26u5PtnJMH4hA==
+X-CSE-MsgGUID: 6T7K0AKiRK+99ocJX5AK6w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,251,1708416000"; 
-   d="scan'208";a="32305593"
+   d="scan'208";a="32305945"
 Received: from zhangche-mobl.amr.corp.intel.com (HELO [10.209.82.31]) ([10.209.82.31])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 09:40:29 -0700
-Message-ID: <059eeeef-95ad-460b-9908-441834e3327b@intel.com>
-Date: Fri, 3 May 2024 09:40:29 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2024 09:41:58 -0700
+Message-ID: <37447227-b478-4751-953f-b7199a6a55d0@intel.com>
+Date: Fri, 3 May 2024 09:41:57 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/29] x86/mm: add ARCH_PKEY_BITS to Kconfig
+Subject: Re: [PATCH v4 03/29] mm: use ARCH_PKEY_BITS to define VM_PKEY_BITN
 To: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-3-joey.gouly@arm.com>
+ <20240503130147.1154804-4-joey.gouly@arm.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -101,7 +101,7 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20240503130147.1154804-3-joey.gouly@arm.com>
+In-Reply-To: <20240503130147.1154804-4-joey.gouly@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -120,6 +120,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 5/3/24 06:01, Joey Gouly wrote:
-> The new config option specifies how many bits are in each PKEY.
+>  #ifdef CONFIG_ARCH_HAS_PKEYS
+> -# define VM_PKEY_SHIFT	VM_HIGH_ARCH_BIT_0
+> -# define VM_PKEY_BIT0	VM_HIGH_ARCH_0	/* A protection key is a 4-bit value */
+> -# define VM_PKEY_BIT1	VM_HIGH_ARCH_1	/* on x86 and 5-bit value on ppc64   */
+> -# define VM_PKEY_BIT2	VM_HIGH_ARCH_2
+> -# define VM_PKEY_BIT3	VM_HIGH_ARCH_3
+> -#ifdef CONFIG_PPC
+> +# define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
+> +# define VM_PKEY_BIT0  VM_HIGH_ARCH_0
+> +# define VM_PKEY_BIT1  VM_HIGH_ARCH_1
+> +# define VM_PKEY_BIT2  VM_HIGH_ARCH_2
+> +#if CONFIG_ARCH_PKEY_BITS > 3
+> +# define VM_PKEY_BIT3  VM_HIGH_ARCH_3
+> +#else
+> +# define VM_PKEY_BIT3  0
+> +#endif
+> +#if CONFIG_ARCH_PKEY_BITS > 4
+
+It's certainly not pretty, but it does get the arch #ifdef out of
+generic code.  We might need to rethink this if we get another
+architecture or two, but this seems manageable for now.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
