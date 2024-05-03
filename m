@@ -2,28 +2,28 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27E98BB7F3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC47F8BB7EE
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 01:10:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRNv2hHYz3w9D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:10:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWRNP2NjQz3cdV
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 09:10:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9vr10D7z3cb1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:03:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VW9vq6sjWz3ccW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 23:03:03 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCFCE1713;
-	Fri,  3 May 2024 06:03:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2499E1758;
+	Fri,  3 May 2024 06:03:27 -0700 (PDT)
 Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78C943F73F;
-	Fri,  3 May 2024 06:02:55 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7F013F73F;
+	Fri,  3 May 2024 06:02:58 -0700 (PDT)
 From: Joey Gouly <joey.gouly@arm.com>
 To: linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 19/29] arm64: enable PKEY support for CPUs with S1POE
-Date: Fri,  3 May 2024 14:01:37 +0100
-Message-Id: <20240503130147.1154804-20-joey.gouly@arm.com>
+Subject: [PATCH v4 20/29] arm64: enable POE and PIE to coexist
+Date: Fri,  3 May 2024 14:01:38 +0100
+Message-Id: <20240503130147.1154804-21-joey.gouly@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240503130147.1154804-1-joey.gouly@arm.com>
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
@@ -45,30 +45,35 @@ Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that PKEYs support has been implemented, enable it for CPUs that
-support S1POE.
+Set the EL0/userspace indirection encodings to be the overlay enabled
+variants of the permissions.
 
 Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm64/include/asm/pkeys.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable-prot.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pkeys.h b/arch/arm64/include/asm/pkeys.h
-index a284508a4d02..3ea928ec94c0 100644
---- a/arch/arm64/include/asm/pkeys.h
-+++ b/arch/arm64/include/asm/pkeys.h
-@@ -17,7 +17,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
+index dd9ee67d1d87..4f9f85437d3d 100644
+--- a/arch/arm64/include/asm/pgtable-prot.h
++++ b/arch/arm64/include/asm/pgtable-prot.h
+@@ -147,10 +147,10 @@ static inline bool __pure lpa2_is_enabled(void)
  
- static inline bool arch_pkeys_enabled(void)
- {
--	return false;
-+	return system_supports_poe();
- }
+ #define PIE_E0	( \
+ 	PIRx_ELx_PERM(pte_pi_index(_PAGE_EXECONLY),      PIE_X_O) | \
+-	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY_EXEC), PIE_RX)  | \
+-	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RWX) | \
+-	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY),      PIE_R)   | \
+-	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED),        PIE_RW))
++	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY_EXEC), PIE_RX_O)  | \
++	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RWX_O) | \
++	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY),      PIE_R_O)   | \
++	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED),        PIE_RW_O))
  
- static inline int vma_pkey(struct vm_area_struct *vma)
+ #define PIE_E1	( \
+ 	PIRx_ELx_PERM(pte_pi_index(_PAGE_EXECONLY),      PIE_NONE_O) | \
 -- 
 2.25.1
 
