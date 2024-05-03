@@ -2,37 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6ED8BA488
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 02:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1544C8BA515
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 03:48:10 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=huJ8dvqB;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VVs3z5ZqLz3cmk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 10:23:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VVtx335fWz3cGJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 11:48:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dudau.co.uk (client-ip=80.229.23.120; helo=smtp.dudau.co.uk; envelope-from=liviu@dudau.co.uk; receiver=lists.ozlabs.org)
-Received: from smtp.dudau.co.uk (dliviu.plus.com [80.229.23.120])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=huJ8dvqB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VVs3Y0FG9z301T
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 10:23:35 +1000 (AEST)
-Received: from mail.dudau.co.uk (bart.dudau.co.uk [192.168.14.2])
-	by smtp.dudau.co.uk (Postfix) with SMTP id 2D79141D12F0;
-	Fri, 03 May 2024 01:23:31 +0100 (BST)
-Received: by mail.dudau.co.uk (sSMTP sendmail emulation); Fri, 03 May 2024 01:23:31 +0100
-Date: Fri, 3 May 2024 01:23:30 +0100
-From: Liviu Dudau <liviu@dudau.co.uk>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: [PATCH v7 00/16] mm: jit/text allocator
-Message-ID: <ZjQuggSFcO8FXSd2@bart.dudau.co.uk>
-References: <20240429121620.1186447-1-rppt@kernel.org>
- <Zi_K4K-j-VB_WI4i@bombadil.infradead.org>
- <ZjQYvOYgURx9/+d0@bart.dudau.co.uk>
- <ZjQcmcA0sNH7jfD7@bombadil.infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VVtwH1MWfz3bl6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 11:47:27 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 195B961BF3;
+	Fri,  3 May 2024 01:47:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB22C113CC;
+	Fri,  3 May 2024 01:47:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714700842;
+	bh=jnztmxuaRUJ/EUjiAcJ6LSXXmWw6auqF5LGM5XsjF8A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=huJ8dvqB+TN/5IgJ6rtnCXfVgXOlZfAdZYA/7vs7YuLO962TFb+avL/V+5+Rni204
+	 u9/f/fRre6WsTm1XAt3biIJ7MtrAkKMlIcdBiezfCUBrbLhc4GQOvDOFdoMrywy15G
+	 HVDUuTPVvWfCo/LWmMR/YAYd76bJuAAZMqubdIdTqLpUHdoyUTiJr/OhqWHi1DQwX/
+	 TTfuZAYA+OBxUo5XMadmDCz6i1lMZq0CwsUh/khAN9yCvtk9LCjCamRsZktG50n/EX
+	 TDY9n+egIwFoWC/EpRvSADEFoGvRx918hONbY9legxC9/dh+ROPGl1a4VHgQWky9Ab
+	 R0tQiZIJgiz0A==
+Date: Fri, 3 May 2024 10:47:19 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
+Message-ID: <ZjRCJ2ZcmKOIo7_p@finisterre.sirena.org.uk>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+ <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
+ <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk>
+ <20240430172752.20ffcd56@sal.lan>
+ <ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk>
+ <87sez0k661.wl-tiwai@suse.de>
+ <20240502095956.0a8c5b26@sal.lan>
+ <20240502102643.4ee7f6c2@sal.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YhSjxC/xCHptpvaf"
 Content-Disposition: inline
-In-Reply-To: <ZjQcmcA0sNH7jfD7@bombadil.infradead.org>
+In-Reply-To: <20240502102643.4ee7f6c2@sal.lan>
+X-Cookie: lisp, v.:
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,93 +67,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Sam Ravnborg <sam@ravnborg.org>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, Donald Dutile <ddutile@redhat.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-trace-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, linux-mm@kvack.org, netdev@vge
- r.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Eric Chanudet <echanude@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, festevam@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, hverkuil@xs4all.nl, linuxppc-dev@lists.ozlabs.org, sakari.ailus@iki.fi, perex@perex.cz, linux-media@vger.kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 02, 2024 at 04:07:05PM -0700, Luis Chamberlain wrote:
-> On Thu, May 02, 2024 at 11:50:36PM +0100, Liviu Dudau wrote:
-> > On Mon, Apr 29, 2024 at 09:29:20AM -0700, Luis Chamberlain wrote:
-> > > On Mon, Apr 29, 2024 at 03:16:04PM +0300, Mike Rapoport wrote:
-> > > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > > > 
-> > > > Hi,
-> > > > 
-> > > > The patches are also available in git:
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=execmem/v7
-> > > > 
-> > > > v7 changes:
-> > > > * define MODULE_{VADDR,END} for riscv32 to fix the build and avoid
-> > > >   #ifdefs in a function body
-> > > > * add Acks, thanks everybody
-> > > 
-> > > Thanks, I've pushed this to modules-next for further exposure / testing.
-> > > Given the status of testing so far with prior revisions, in that only a
-> > > few issues were found and that those were fixed, and the status of
-> > > reviews, this just might be ripe for v6.10.
-> > 
-> > Looks like there is still some work needed. I've picked up next-20240501
-> > and on arch/mips with CONFIG_MODULE_COMPRESS_XZ=y and CONFIG_MODULE_DECOMPRESS=y
-> > I fail to load any module:
-> > 
-> > # modprobe rfkill
-> > [11746.539090] Invalid ELF header magic: != ELF
-> > [11746.587149] execmem: unable to allocate memory
-> > modprobe: can't load module rfkill (kernel/net/rfkill/rfkill.ko.xz): Out of memory
-> > 
-> > The (hopefully) relevant parts of my .config:
-> 
-> Thanks for the report! Any chance we can get you to try a bisection? I
-> think it should take 2-3 test boots. To help reduce scope you try modules-next:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/log/?h=modules-next
-> 
-> Then can you check by resetting your tree to commmit 3fbe6c2f820a76 (mm:
-> introduce execmem_alloc() and execmem_free()"). I suspect that should
-> boot, so your bad commit would be the tip 3c2c250cb3a5fbb ("bpf: remove
-> CONFIG_BPF_JIT dependency on CONFIG_MODULES of").
-> 
-> That gives us only a few commits to bisect:
-> 
-> git log --oneline 3fbe6c2f820a76bc36d5546bda85832f57c8fce2..
-> 3c2c250cb3a5 (HEAD -> modules-next, korg/modules-next) bpf: remove CONFIG_BPF_JIT dependency on CONFIG_MODULES of
-> 11e8e65cce5c kprobes: remove dependency on CONFIG_MODULES
-> e10cbc38697b powerpc: use CONFIG_EXECMEM instead of CONFIG_MODULES where appropriate
-> 4da3d38f24c5 x86/ftrace: enable dynamic ftrace without CONFIG_MODULES
-> 13ae3d74ee70 arch: make execmem setup available regardless of CONFIG_MODULES
-> 460bbbc70a47 powerpc: extend execmem_params for kprobes allocations
-> e1a14069b5b4 arm64: extend execmem_info for generated code allocations
-> 971e181c6585 riscv: extend execmem_params for generated code allocations
-> 0fa276f26721 mm/execmem, arch: convert remaining overrides of module_alloc to execmem
-> 022cef244287 mm/execmem, arch: convert simple overrides of module_alloc to execmem
-> 
-> With 2-3 boots we should be to tell which is the bad commit.
 
-Looks like 0fa276f26721 is the first bad commit.
+--YhSjxC/xCHptpvaf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-$ git bisect log
-# bad: [3c2c250cb3a5fbbccc4a4ff4c9354c54af91f02c] bpf: remove CONFIG_BPF_JIT dependency on CONFIG_MODULES of
-# good: [3fbe6c2f820a76bc36d5546bda85832f57c8fce2] mm: introduce execmem_alloc() and execmem_free()
-git bisect start '3c2c250cb3a5' '3fbe6c2f820a76'
-# bad: [460bbbc70a47e929b1936ca68979f3b79f168fc6] powerpc: extend execmem_params for kprobes allocations
-git bisect bad 460bbbc70a47e929b1936ca68979f3b79f168fc6
-# bad: [0fa276f26721e0ffc2ae9c7cf67dcc005b43c67e] mm/execmem, arch: convert remaining overrides of module_alloc to execmem
-git bisect bad 0fa276f26721e0ffc2ae9c7cf67dcc005b43c67e
-# good: [022cef2442870db738a366d3b7a636040c081859] mm/execmem, arch: convert simple overrides of module_alloc to execmem
-git bisect good 022cef2442870db738a366d3b7a636040c081859
-# first bad commit: [0fa276f26721e0ffc2ae9c7cf67dcc005b43c67e] mm/execmem, arch: convert remaining overrides of module_alloc to execmem
+On Thu, May 02, 2024 at 10:26:43AM +0100, Mauro Carvalho Chehab wrote:
+> Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
 
-Maybe MIPS also needs a ARCH_WANTS_EXECMEM_LATE?
+> > There are still time control associated with it, as audio and video
+> > needs to be in sync. This is done by controlling the buffers size=20
+> > and could be fine-tuned by checking when the buffer transfer is done.
 
-Best regards,
-Liviu
+=2E..
 
-> 
->   Luis
-> 
+> Just complementing: on media, we do this per video buffer (or
+> per half video buffer). A typical use case on cameras is to have
+> buffers transferred 30 times per second, if the video was streamed=20
+> at 30 frames per second.=20
 
--- 
-Everyone who uses computers frequently has had, from time to time,
-a mad desire to attack the precocious abacus with an axe.
-       	   	      	     	  -- John D. Clark, Ignition!
+IIRC some big use case for this hardware was transcoding so there was a
+desire to just go at whatever rate the hardware could support as there
+is no interactive user consuming the output as it is generated.
+
+> I would assume that, on an audio/video stream, the audio data
+> transfer will be programmed to also happen on a regular interval.
+
+With audio the API is very much "wake userspace every Xms".
+
+--YhSjxC/xCHptpvaf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmY0QicACgkQJNaLcl1U
+h9DEDgf+OxkntU8LcfqnvW2Z51UqNQJ0p62Te/DmJ+wZWQotYcbwAQdb4fMKfeyw
+TU+Kka5bvWBtYfhoCnXFlDqQUh4Ldk7wZEWfHS2KCCM+o3mr/WHvxCRqSvy2geXZ
++76U6qA5/RPQnAFUlNe9Kp4LK4LpvGg9KONljKpsIdFBEDvJG84wr+zLwDuboy4O
+rVP1hJQmucWST9qsBWFT+7VmJt9tbK2I3iwIB2Z3utiJvBFvyyj8bVMx5I1ssxfj
+Rh5yL+iQ+aEQkTwEBTzuAS055XYNxzl/eBa25iRWCgoYOrMiphGpWBDWp5qUoPiB
+SWVL9dU2q9I5o4Y+GNohSdEw9Rctfw==
+=OLs5
+-----END PGP SIGNATURE-----
+
+--YhSjxC/xCHptpvaf--
