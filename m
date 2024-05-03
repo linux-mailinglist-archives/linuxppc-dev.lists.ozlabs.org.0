@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A748BAAF6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 12:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442F18BAAE8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 12:42:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VW6rz0Y1Sz3wCB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 20:45:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VW6p16bzzz3dB7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 May 2024 20:42:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VW6nf4bhDz3bNs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 20:42:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VW6nb1D5xz2ytN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 May 2024 20:42:27 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VW6nf3Qk6z4xM7;
-	Fri,  3 May 2024 20:42:30 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VW6nZ72RFz4x1P;
+	Fri,  3 May 2024 20:42:26 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20240422115231.1769984-1-mpe@ellerman.id.au>
-References: <20240422115231.1769984-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Mark memory_limit as initdata
-Message-Id: <171473286295.451432.11313196503156323366.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>
+In-Reply-To: <20240403083611.172833-1-aneesh.kumar@kernel.org>
+References: <20240403083611.172833-1-aneesh.kumar@kernel.org>
+Subject: Re: [PATCH 1/3] powerpc/mm: Align memory_limit value specified using mem= kernel parameter
+Message-Id: <171473286289.451432.3306607552242417496.b4-ty@ellerman.id.au>
 Date: Fri, 03 May 2024 20:41:02 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,18 +42,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Naveen N Rao <naveen@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 22 Apr 2024 21:52:31 +1000, Michael Ellerman wrote:
-> The `memory_limit` variable should only be used during boot, enforce
-> that by marking it initdata.
+On Wed, 03 Apr 2024 14:06:09 +0530, Aneesh Kumar K.V (IBM) wrote:
+> The value specified for the memory limit is used to set a restriction on
+> memory usage. It is important to ensure that this restriction is within
+> the linear map kernel address space range. The hash page table
+> translation uses a 16MB page size to map the kernel linear map address
+> space. htab_bolt_mapping() function aligns down the size of the range
+> while mapping kernel linear address space. Since the memblock limit is
+> enforced very early during boot, before we can detect the type of memory
+> translation (radix vs hash), we align the memory limit value specified
+> as a kernel parameter to 16MB. This alignment value will work for both
+> hash and radix translations.
 > 
-> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Mark memory_limit as initdata
-      https://git.kernel.org/powerpc/c/236a4c63491784ae4814100cca47bc3645c776df
+[1/3] powerpc/mm: Align memory_limit value specified using mem= kernel parameter
+      https://git.kernel.org/powerpc/c/5ca096161cdccfa328acf6704a4615528471d309
+[2/3] powerpc/fadump: Don't update the user-specified memory limit
+      https://git.kernel.org/powerpc/c/f94f5ac07983cb53de0c964f5428366c19e81993
+[3/3] powerpc/mm: Update the memory limit based on direct mapping restrictions
+      https://git.kernel.org/powerpc/c/5a799af9522641517f6d871d9f56e2658ee7db58
 
 cheers
