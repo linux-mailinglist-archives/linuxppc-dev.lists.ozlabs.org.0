@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD0B8BBB7B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE178BBB7D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:44:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bK8ErWJa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X3xzGhLI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWnRR4xnjz3vj2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:44:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWnSG4QFdz3vyV
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:44:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bK8ErWJa;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X3xzGhLI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn7P3LF8z3cWq
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:30:09 +1000 (AEST)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6f4302187c0so2229767b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:30:09 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn7V20mTz3c5J
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:30:14 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6edb76d83d0so511303b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:30:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714825808; x=1715430608; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1714825812; x=1715430612; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mvlqWTm5R6hH1aJHvySsaUaw6d4VUJ6a487Wd4qHA3w=;
-        b=bK8ErWJajUZwROjyc0u/MEHPI9AKpYFsoD+toixJvR8RU+g5+yPEUx7ooBKJ942Ixm
-         HN3emNMxP9e3WQjInyVsoAJG2/wY/cPIq2x39cdHZ8xrN1jisyZqp3CeNEZ64qGAv+ke
-         puxr1neOZJdhGt1IU5Q95ikUQBwaDY9SvCNENH+l1OwvsYaZU5QqW1vm0s3sdTdF6XCE
-         o+SpKGnQEsVuprizIDR4kCd7OaXXTlZPgoeJIranU/jAez9I5fBkYQvZEsgTweohGq8b
-         k2kWp7NuMWL+kVWmDFiYP8mJqI0yTVJhD3V4ZYsDXWYboh0/QrY3sGUvbECBfuCvmy86
-         2nQw==
+        bh=Ex+SxNXbtxHc+7eehoPisO4bpsSQtf/mN9p+UJCwI0U=;
+        b=X3xzGhLIHVmVRI6dZMjBP9g6QnZjQxypW+lcxiC68ELx6FkU8nptZjaiHdNpTxCWS4
+         6cnupDzNr6HXa7AIFbqXAz6rFiias6rU0dDCWiqJGnIdT+jocR7hBknpYqQsJYgLy3YI
+         PWWqpBNJ9xDYSXucauRB/BvMtKF73rUcDgJSEwwJElAi046mBknZUqD+BI95A0ZJGr9G
+         hsTstVwOhVbpBBWqD2f13PaHUbsNdFOoSYf9jIEc6ZU5QFbt5Mthujs2DHt3ob89pw7i
+         L+f3/V1GYpXpxiDS81XjC4vpANX/PPfuSdRZ9r/zck8YFd0xbQgsWXCik4jTzN4vYgWn
+         hLVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714825808; x=1715430608;
+        d=1e100.net; s=20230601; t=1714825812; x=1715430612;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mvlqWTm5R6hH1aJHvySsaUaw6d4VUJ6a487Wd4qHA3w=;
-        b=k9JQLIwkl1CrUSPGvVZuSiu+I/0vQb/PLoZJEeivBN9W0x6iJUUimtkQxIhb/rVeiy
-         KtearM7qYSisusDINJRLPejJB4TUhKdS5xj9jgJA+F2m0iguxRCONrGzOeU1KioNS0FO
-         glJ6ICqX0ShKpRyjvyNVPUyBTHvyQTerW0ZbPOZHuwyqV4oXKz0IezLwQ3Uck/lulz29
-         BHTDYiHd3CTJN9CRX94YI+6gd4yD0Gw2qaY34WuRAobUcKyr5D7K8YA8QNYdLrfQMVrS
-         Bgu1TiLvzr3Azzrl7AihTbjNYO9My7LegLPQ0LD+RbvumiXiLVIkGsoJ5k2C9MUsvHYo
-         HJcA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5HRhiV2dS6sK9/QO/7vwsOo4dQ7NZ6+NppLYtSus7mUM6Fncn0jdnE/Il61nXpLvDILbpjuTd9KDPpRSnmsjn48swWs4Ic2Vb10h2ow==
-X-Gm-Message-State: AOJu0YyM2QMSCbnvSGhRx5r+SF4+6VNWaLVYw/j6uaTWhugQwPmsDmpC
-	eL9dmraycv5L5TdRa/ZLpSXpNX1u0EL0he+NrQq0Web/T6wjmMef
-X-Google-Smtp-Source: AGHT+IGtGsf5x/pEdQUlJKVmIg6cVX+m/JLMV6X990354Hcrk/iR00AB92q+lWqDkq9PpcE6KITNrA==
-X-Received: by 2002:a05:6a20:da83:b0:1af:81fd:63be with SMTP id iy3-20020a056a20da8300b001af81fd63bemr7138409pzb.13.1714825807773;
-        Sat, 04 May 2024 05:30:07 -0700 (PDT)
+        bh=Ex+SxNXbtxHc+7eehoPisO4bpsSQtf/mN9p+UJCwI0U=;
+        b=jdz7vA6xMH5FzKhBfteKtGT3Q++oR2k3/PDwsa5HJQzroC3TImkaaayQBwxAg+Rna4
+         BRkurkwp7BowtEaZU2fucYZx/EA3QABaihYYfkLX+mPgQz7qqXVEGaxKmvHLs0cDAj0g
+         6tP8q6bhUCKdxYi/q2ideL5ABzniAHqmnTsCX8mXXVEm2NAJFmF7m8zFX2VSzYN/hsVs
+         9Yc9n/F2EW6Qp4g3LMFQNzbKAeuKikJTsLiEOTh+790sryu2qMKmv6R8XGgWcdGIMja7
+         dCo49Lkp6F9h6+uipfTje/+jmHqw6P8QW0bEw91w52uI4xpYclTG2pepbR6KjCMdi1eU
+         Av7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ6tQfUOrqiUid/cfEw+QwWyukz8izeObx+cHFweV2K5UsvocG/m8/g1QUCOtoXTNlJtY+O9Dtb7nUyXYJkRu+kgSQhPngKk2L2WC/zg==
+X-Gm-Message-State: AOJu0YxcIyrvsDBOuppLFbrfTQOoz+8fHMw2zoW00HiJDLzVvOWhYeeh
+	kixWZbTe0B+RnDI2rJNb4uhizSUYYf1xeTJ7hWYBs8SIAwChtEjd
+X-Google-Smtp-Source: AGHT+IG0fFbbW3YKxQSYIB6Odvi+DEnlXT1BnkYx0IAJxuiZdpGcSJo4tew9A3NZcIpQMVmwkeKy0w==
+X-Received: by 2002:a05:6a00:1704:b0:6f3:854c:dee0 with SMTP id h4-20020a056a00170400b006f3854cdee0mr6747466pfc.21.1714825811715;
+        Sat, 04 May 2024 05:30:11 -0700 (PDT)
 Received: from wheely.local0.net (220-245-239-57.tpgi.com.au. [220.245.239.57])
-        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.30.04
+        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.30.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 May 2024 05:30:07 -0700 (PDT)
+        Sat, 04 May 2024 05:30:11 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v9 20/31] powerpc: Add atomics tests
-Date: Sat,  4 May 2024 22:28:26 +1000
-Message-ID: <20240504122841.1177683-21-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v9 21/31] powerpc: Add timebase tests
+Date: Sat,  4 May 2024 22:28:27 +1000
+Message-ID: <20240504122841.1177683-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240504122841.1177683-1-npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
@@ -84,394 +84,362 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This has a known failure on QEMU TCG machines where the decrementer
+interrupt is not lowered when the DEC wraps from -ve to +ve.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
+ lib/powerpc/asm/reg.h   |   1 +
  powerpc/Makefile.common |   1 +
- powerpc/atomics.c       | 375 ++++++++++++++++++++++++++++++++++++++++
- powerpc/unittests.cfg   |   9 +
- 3 files changed, 385 insertions(+)
- create mode 100644 powerpc/atomics.c
+ powerpc/timebase.c      | 331 ++++++++++++++++++++++++++++++++++++++++
+ powerpc/unittests.cfg   |   8 +
+ 4 files changed, 341 insertions(+)
+ create mode 100644 powerpc/timebase.c
 
+diff --git a/lib/powerpc/asm/reg.h b/lib/powerpc/asm/reg.h
+index d2ca964c4..12f9e8ac6 100644
+--- a/lib/powerpc/asm/reg.h
++++ b/lib/powerpc/asm/reg.h
+@@ -35,6 +35,7 @@
+ #define SPR_HSRR1	0x13b
+ #define SPR_LPCR	0x13e
+ #define   LPCR_HDICE		UL(0x1)
++#define   LPCR_LD		UL(0x20000)
+ #define SPR_HEIR	0x153
+ #define SPR_MMCR0	0x31b
+ #define   MMCR0_FC		UL(0x80000000)
 diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
-index 1ee9c25d6..420103c87 100644
+index 420103c87..b273033d1 100644
 --- a/powerpc/Makefile.common
 +++ b/powerpc/Makefile.common
-@@ -11,6 +11,7 @@ tests-common = \
- 	$(TEST_DIR)/spapr_hcall.elf \
- 	$(TEST_DIR)/rtas.elf \
- 	$(TEST_DIR)/emulator.elf \
-+	$(TEST_DIR)/atomics.elf \
+@@ -15,6 +15,7 @@ tests-common = \
  	$(TEST_DIR)/tm.elf \
  	$(TEST_DIR)/smp.elf \
  	$(TEST_DIR)/sprs.elf \
-diff --git a/powerpc/atomics.c b/powerpc/atomics.c
++	$(TEST_DIR)/timebase.elf \
+ 	$(TEST_DIR)/interrupts.elf
+ 
+ tests-all = $(tests-common) $(tests)
+diff --git a/powerpc/timebase.c b/powerpc/timebase.c
 new file mode 100644
-index 000000000..975711fc8
+index 000000000..02a4e33c0
 --- /dev/null
-+++ b/powerpc/atomics.c
-@@ -0,0 +1,375 @@
++++ b/powerpc/timebase.c
+@@ -0,0 +1,331 @@
 +/* SPDX-License-Identifier: LGPL-2.0-only */
 +/*
-+ * Test some powerpc instructions
++ * Test Timebase
 + *
 + * Copyright 2024 Nicholas Piggin, IBM Corp.
++ *
++ * This contains tests of timebase facility, TB, DEC, etc.
 + */
-+#include <stdint.h>
 +#include <libcflat.h>
++#include <util.h>
 +#include <migrate.h>
++#include <alloc.h>
++#include <asm/handlers.h>
++#include <devicetree.h>
++#include <asm/hcall.h>
 +#include <asm/processor.h>
 +#include <asm/time.h>
-+#include <asm/atomic.h>
-+#include <asm/setup.h>
 +#include <asm/barrier.h>
-+#include <asm/smp.h>
 +
-+static bool do_migrate;
-+static bool do_record;
++static int dec_bits = 0;
 +
-+#define RSV_SIZE 128
-+
-+static uint8_t granule[RSV_SIZE] __attribute((__aligned__(RSV_SIZE)));
-+
-+static void spin_lock(unsigned int *lock)
++static void cpu_dec_bits(int fdtnode, u64 regval __unused, void *arg __unused)
 +{
-+	unsigned int old;
++	const struct fdt_property *prop;
++	int plen;
 +
-+	asm volatile ("1:"
-+		      "lwarx	%0,0,%2;"
-+		      "cmpwi	%0,0;"
-+		      "bne	1b;"
-+		      "stwcx.	%1,0,%2;"
-+		      "bne-	1b;"
-+		      "lwsync;"
-+		      : "=&r"(old) : "r"(1), "r"(lock) : "cr0", "memory");
++	prop = fdt_get_property(dt_fdt(), fdtnode, "ibm,dec-bits", &plen);
++	if (!prop) {
++		dec_bits = 32;
++		return;
++	}
++
++	/* Sanity check for the property layout (first two bytes are header) */
++	assert(plen == 4);
++
++	dec_bits = fdt32_to_cpu(*(uint32_t *)prop->data);
 +}
 +
-+static void spin_unlock(unsigned int *lock)
++/* Check amount of CPUs nodes that have the TM flag */
++static int find_dec_bits(void)
 +{
-+	asm volatile("lwsync;"
-+		     "stw	%1,%0;"
-+		     : "+m"(*lock) : "r"(0) : "memory");
++	int ret;
++
++	ret = dt_for_each_cpu_node(cpu_dec_bits, NULL);
++	if (ret < 0)
++		return ret;
++
++	return dec_bits;
 +}
 +
++
++static bool do_migrate = false;
 +static volatile bool got_interrupt;
 +static volatile struct pt_regs recorded_regs;
 +
-+static void interrupt_handler(struct pt_regs *regs, void *opaque)
++static uint64_t dec_max;
++static uint64_t dec_min;
++
++static void test_tb(int argc, char **argv)
 +{
-+	assert(!got_interrupt);
++	uint64_t tb;
++
++	tb = get_tb();
++	if (do_migrate)
++		migrate();
++	report(get_tb() >= tb, "timebase is incrementing");
++}
++
++static void dec_stop_handler(struct pt_regs *regs, void *data)
++{
++	mtspr(SPR_DEC, dec_max);
++}
++
++static void dec_handler(struct pt_regs *regs, void *data)
++{
 +	got_interrupt = true;
 +	memcpy((void *)&recorded_regs, regs, sizeof(struct pt_regs));
-+	regs_advance_insn(regs);
++	regs->msr &= ~MSR_EE;
 +}
 +
-+static void test_lwarx_stwcx(int argc, char *argv[])
++static void test_dec(int argc, char **argv)
 +{
-+	unsigned int *var = (unsigned int *)granule;
-+	unsigned int old;
-+	unsigned int result;
-+
-+	*var = 0;
-+	asm volatile ("1:"
-+		      "lwarx	%0,0,%2;"
-+		      "stwcx.	%1,0,%2;"
-+		      "bne-	1b;"
-+		      : "=&r"(old) : "r"(1), "r"(var) : "cr0", "memory");
-+	report(old == 0 && *var == 1, "simple update");
-+
-+	*var = 0;
-+	asm volatile ("li	%0,0;"
-+		      "stwcx.	%1,0,%2;"
-+		      "stwcx.	%1,0,%2;"
-+		      "bne-	1f;"
-+		      "li	%0,1;"
-+		      "1:"
-+		      : "=&r"(result)
-+		      : "r"(1), "r"(var) : "cr0", "memory");
-+	report(result == 0 && *var == 0, "failed stwcx. (no reservation)");
-+
-+	*var = 0;
-+	asm volatile ("li	%0,0;"
-+		      "lwarx	%1,0,%4;"
-+		      "stw	%3,0(%4);"
-+		      "stwcx.	%2,0,%4;"
-+		      "bne-	1f;"
-+		      "li	%0,1;"
-+		      "1:"
-+		      : "=&r"(result), "=&r"(old)
-+		      : "r"(1), "r"(2), "r"(var) : "cr0", "memory");
-+	/* This is implementation specific, so don't fail */
-+	if (result == 0 && *var == 2)
-+		report(true, "failed stwcx. (intervening store)");
-+	else
-+		report(true, "succeeded stwcx. (intervening store)");
-+
-+	handle_exception(0x600, interrupt_handler, NULL);
-+	handle_exception(0x700, interrupt_handler, NULL);
-+
-+	/* Implementations may not necessarily invoke the alignment interrupt */
-+	old = 10;
-+	*var = 0;
-+	asm volatile (
-+		      "lwarx	%0,0,%1;"
-+		      : "+&r"(old) : "r"((char *)var + 1));
-+	report(old == 10 && got_interrupt && recorded_regs.trap == 0x600, "unaligned lwarx causes fault");
-+	got_interrupt = false;
-+
-+	/*
-+	 * Unaligned stwcx. is more difficult to test, at least under QEMU,
-+	 * the store does not proceed if there is no matching reservation, so
-+	 * the alignment handler does not get invoked. This is okay according
-+	 * to the Power ISA (unalignment does not necessarily invoke the
-+	 * alignment interrupt). But POWER CPUs do cause alignment interrupt.
-+	 */
-+	*var = 0;
-+	asm volatile (
-+		      "lwarx	%0,0,%2;"
-+		      "stwcx.	%1,0,%3;"
-+		      : "=&r"(old) : "r"(1), "r"(var), "r"((char *)var+1) : "cr0", "memory");
-+	/* unaligned larx/stcx. is not required by the ISA to cause an exception, in TCG the stcx does not. */
-+	report_kfail(true, old == 0 && *var == 0 && got_interrupt && recorded_regs.trap == 0x600, "unaligned stwcx. causes fault");
-+	got_interrupt = false;
-+
-+	handle_exception(0x600, NULL, NULL);
-+
-+}
-+
-+static void test_lqarx_stqcx(int argc, char *argv[])
-+{
-+	union {
-+		__int128_t var;
-+		struct {
-+#if  __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-+			unsigned long var1;
-+			unsigned long var2;
-+#else
-+			unsigned long var2;
-+			unsigned long var1;
-+#endif
-+		};
-+	} var __attribute__((aligned(16)));
-+	register unsigned long new1 asm("r8");
-+	register unsigned long new2 asm("r9");
-+	register unsigned long old1 asm("r10");
-+	register unsigned long old2 asm("r11");
-+	unsigned int result;
-+
-+	var.var1 = 1;
-+	var.var2 = 2;
-+
-+	(void)new2;
-+	(void)old2;
-+
-+	old1 = 0;
-+	old2 = 0;
-+	new1 = 3;
-+	new2 = 4;
-+	asm volatile ("1:"
-+		      "lqarx	%0,0,%4;"
-+		      "stqcx.	%2,0,%4;"
-+		      "bne-	1b;"
-+		      : "=&r"(old1), "=&r"(old2)
-+		      : "r"(new1), "r"(new2), "r"(&var)
-+		      : "cr0", "memory");
-+
-+	report(old1 == 2 && old2 == 1 && var.var1 == 4 && var.var2 == 3,
-+			"simple update");
-+
-+	var.var1 = 1;
-+	var.var2 = 2;
-+	new1 = 3;
-+	new2 = 4;
-+	asm volatile ("li	%0,0;"
-+		      "stqcx.	%1,0,%3;"
-+		      "stqcx.	%1,0,%3;"
-+		      "bne-	1f;"
-+		      "li	%0,1;"
-+		      "1:"
-+		      : "=&r"(result)
-+		      : "r"(new1), "r"(new2), "r"(&var)
-+		      : "cr0", "memory");
-+	report(result == 0 && var.var1 == 1 && var.var2 == 2,
-+			"failed stqcx. (no reservation)");
-+
-+	var.var1 = 1;
-+	var.var2 = 2;
-+	new1 = 3;
-+	new2 = 4;
-+	asm volatile ("li	%0,0;"
-+		      "lqarx	%1,0,%6;"
-+		      "std	%5,0(%6);"
-+		      "stqcx.	%3,0,%6;"
-+		      "bne-	1f;"
-+		      "li	%0,1;"
-+		      "1:"
-+		      : "=&r"(result), "=&r"(old1), "=&r"(old2)
-+		      : "r"(new1), "r"(new2), "r"(0), "r"(&var)
-+		      : "cr0", "memory");
-+	/* This is implementation specific, so don't fail */
-+	if (result == 0 && (var.var1 == 0 || var.var2 == 0))
-+		report(true, "failed stqcx. (intervening store)");
-+	else
-+		report(true, "succeeded stqcx. (intervening store)");
-+}
-+
-+static void test_migrate_reserve(int argc, char *argv[])
-+{
-+	unsigned int *var = (unsigned int *)granule;
-+	unsigned int old;
++	uint64_t tb1, tb2, dec;
 +	int i;
-+	int succeed = 0;
 +
-+	if (!do_migrate)
-+		return;
++	handle_exception(0x900, &dec_handler, NULL);
 +
-+	for (i = 0; i < 10; i++) {
-+		*var = 0x12345;
-+		asm volatile ("lwarx	%0,0,%1" : "=&r"(old) : "r"(var) : "memory");
-+		migrate_quiet();
-+		asm volatile ("stwcx.	%0,0,%1" : : "r"(0xf00d), "r"(var) : "cr0", "memory");
-+		if (*var == 0xf00d)
-+			succeed++;
++	for (i = 0; i < 100; i++) {
++		tb1 = get_tb();
++		mtspr(SPR_DEC, dec_max);
++		dec = mfspr(SPR_DEC);
++		tb2 = get_tb();
++		if (tb2 - tb1 < dec_max - dec)
++			break;
 +	}
-+
-+	if (do_record) {
-+		/*
-+		 * Running under TCG record-replay, reservations must not
-+		 * be lost by migration
-+		 */
-+		report(succeed > 0, "migrated reservation is not lost");
-+	} else {
-+		report(succeed == 0, "migrated reservation is lost");
-+	}
-+
-+	report_prefix_pop();
-+}
-+
-+#define ITERS 10000000
-+static int test_counter = 0;
-+static void test_inc_perf(int argc, char *argv[])
-+{
-+	int i;
-+	uint64_t tb1, tb2;
++	/* POWER CPUs can have a slight (few ticks) variation here */
++	report_kfail(true, tb2 - tb1 >= dec_max - dec, "decrementer remains within TB after mtDEC");
 +
 +	tb1 = get_tb();
-+	for (i = 0; i < ITERS; i++)
-+		__atomic_fetch_add(&test_counter, 1, __ATOMIC_RELAXED);
++	mtspr(SPR_DEC, dec_max);
++	mdelay(1000);
++	dec = mfspr(SPR_DEC);
 +	tb2 = get_tb();
-+	report(true, "atomic add takes %ldns", (tb2 - tb1) * 1000000000 / ITERS / tb_hz);
++	report(tb2 - tb1 >= dec_max - dec, "decrementer remains within TB after 1s");
++
++	mtspr(SPR_DEC, dec_max);
++	local_irq_enable();
++	local_irq_disable();
++	if (mfspr(SPR_DEC) <= dec_max) {
++		report(!got_interrupt, "no interrupt on decrementer positive");
++	}
++	got_interrupt = false;
++
++	mtspr(SPR_DEC, 1);
++	mdelay(100); /* Give the timer a chance to run */
++	if (do_migrate)
++		migrate();
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "interrupt on decrementer underflow");
++	got_interrupt = false;
++
++	if (do_migrate)
++		migrate();
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "interrupt on decrementer still underflown");
++	got_interrupt = false;
++
++	mtspr(SPR_DEC, 0);
++	mdelay(100); /* Give the timer a chance to run */
++	if (do_migrate)
++		migrate();
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "DEC deal with set to 0");
++	got_interrupt = false;
++
++	/* Test for level-triggered decrementer */
++	mtspr(SPR_DEC, -1ULL);
++	if (do_migrate)
++		migrate();
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "interrupt on decrementer write MSB");
++	got_interrupt = false;
++
++	mtspr(SPR_DEC, dec_max);
++	local_irq_enable();
++	if (do_migrate)
++		migrate();
++	mtspr(SPR_DEC, -1);
++	local_irq_disable();
++	report(got_interrupt, "interrupt on decrementer write MSB with irqs on");
++	got_interrupt = false;
++
++	mtspr(SPR_DEC, dec_min + 1);
++	mdelay(100);
++	local_irq_enable();
++	local_irq_disable();
++	/* TCG does not model this correctly */
++	report_kfail(true, !got_interrupt, "no interrupt after wrap to positive");
++	got_interrupt = false;
++
++	handle_exception(0x900, NULL, NULL);
++}
++
++static void test_hdec(int argc, char **argv)
++{
++	uint64_t tb1, tb2, hdec;
++
++	if (!machine_is_powernv()) {
++		report_skip("skipping on !powernv machine");
++		return;
++	}
++
++	handle_exception(0x900, &dec_stop_handler, NULL);
++	handle_exception(0x980, &dec_handler, NULL);
++
++	mtspr(SPR_HDEC, dec_max);
++	mtspr(SPR_LPCR, mfspr(SPR_LPCR) | LPCR_HDICE);
 +
 +	tb1 = get_tb();
-+	for (i = 0; i < ITERS; i++)
-+		__atomic_fetch_add(&test_counter, 1, __ATOMIC_SEQ_CST);
++	mtspr(SPR_HDEC, dec_max);
++	hdec = mfspr(SPR_HDEC);
 +	tb2 = get_tb();
-+	report(true, "sequentially conssistent atomic add takes %ldns", (tb2 - tb1) * 1000000000 / ITERS / tb_hz);
-+}
++	report(tb2 - tb1 >= dec_max - hdec, "hdecrementer remains within TB");
 +
-+static long smp_inc_counter = 0;
-+static int smp_inc_started;
++	tb1 = get_tb();
++	mtspr(SPR_HDEC, dec_max);
++	mdelay(1000);
++	hdec = mfspr(SPR_HDEC);
++	tb2 = get_tb();
++	report(tb2 - tb1 >= dec_max - hdec, "hdecrementer remains within TB after 1s");
 +
-+static void smp_inc_fn(int cpu_id)
-+{
-+	long i;
-+
-+	atomic_fetch_inc(&smp_inc_started);
-+	while (smp_inc_started < nr_cpus_present)
-+		cpu_relax();
-+
-+	for (i = 0; i < ITERS; i++)
-+		atomic_fetch_inc(&smp_inc_counter);
-+	atomic_fetch_dec(&smp_inc_started);
-+}
-+
-+static void test_smp_inc(int argc, char **argv)
-+{
-+	if (nr_cpus_present < 2)
-+		return;
-+
-+	if (!start_all_cpus(smp_inc_fn))
-+		report_abort("Failed to start secondary cpus");
-+
-+	while (smp_inc_started < nr_cpus_present - 1)
-+		cpu_relax();
-+	smp_inc_fn(smp_processor_id());
-+	while (smp_inc_started > 0)
-+		cpu_relax();
-+
-+	stop_all_cpus();
-+
-+	report(smp_inc_counter == nr_cpus_present * ITERS, "counter lost no increments");
-+}
-+
-+static long smp_lock_counter __attribute__((aligned(128))) = 0;
-+static unsigned int smp_lock __attribute__((aligned(128)));
-+static int smp_lock_started;
-+
-+static void smp_lock_fn(int cpu_id)
-+{
-+	long i;
-+
-+	atomic_fetch_inc(&smp_lock_started);
-+	while (smp_lock_started < nr_cpus_present)
-+		cpu_relax();
-+
-+	for (i = 0; i < ITERS; i++) {
-+		spin_lock(&smp_lock);
-+		smp_lock_counter++;
-+		spin_unlock(&smp_lock);
++	mtspr(SPR_HDEC, dec_max);
++	local_irq_enable();
++	local_irq_disable();
++	if (mfspr(SPR_HDEC) <= dec_max) {
++		report(!got_interrupt, "no interrupt on decrementer positive");
 +	}
-+	atomic_fetch_dec(&smp_lock_started);
-+}
++	got_interrupt = false;
 +
-+static void test_smp_lock(int argc, char **argv)
-+{
-+	if (nr_cpus_present < 2)
-+		return;
++	mtspr(SPR_HDEC, 1);
++	mdelay(100); /* Give the timer a chance to run */
++	if (do_migrate)
++		migrate();
++	/* HDEC is edge triggered so ensure it still fires */
++	mtspr(SPR_HDEC, dec_max);
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "interrupt on hdecrementer underflow");
++	got_interrupt = false;
 +
-+	if (!start_all_cpus(smp_lock_fn))
-+		report_abort("Failed to start secondary cpus");
++	if (do_migrate)
++		migrate();
++	local_irq_enable();
++	local_irq_disable();
++	report(!got_interrupt, "no interrupt on hdecrementer still underflown");
++	got_interrupt = false;
 +
-+	while (smp_lock_started < nr_cpus_present - 1)
-+		cpu_relax();
-+	smp_lock_fn(smp_processor_id());
-+	while (smp_lock_started > 0)
-+		cpu_relax();
++	mtspr(SPR_HDEC, -1ULL);
++	if (do_migrate)
++		migrate();
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "no interrupt on hdecrementer underflown write MSB");
++	got_interrupt = false;
 +
-+	stop_all_cpus();
++	mtspr(SPR_HDEC, 0);
++	mdelay(100); /* Give the timer a chance to run */
++	if (do_migrate)
++		migrate();
++	/* HDEC is edge triggered so ensure it still fires */
++	mtspr(SPR_HDEC, dec_max);
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "HDEC deal with set to 0");
++	got_interrupt = false;
 +
-+	report(smp_lock_counter == nr_cpus_present * ITERS, "counter lost no increments");
++	mtspr(SPR_HDEC, dec_max);
++	local_irq_enable();
++	if (do_migrate)
++		migrate();
++	mtspr(SPR_HDEC, -1ULL);
++	local_irq_disable();
++	report(got_interrupt, "interrupt on hdecrementer write MSB with irqs on");
++	got_interrupt = false;
++
++	mtspr(SPR_HDEC, dec_max);
++	got_interrupt = false;
++	mtspr(SPR_HDEC, dec_min + 1);
++	if (do_migrate)
++		migrate();
++	mdelay(100);
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "got interrupt after wrap to positive");
++	got_interrupt = false;
++
++	mtspr(SPR_HDEC, -1ULL);
++	local_irq_enable();
++	local_irq_disable();
++	got_interrupt = false;
++	mtspr(SPR_HDEC, dec_min + 1000000);
++	if (do_migrate)
++		migrate();
++	mdelay(100);
++	mtspr(SPR_HDEC, -1ULL);
++	local_irq_enable();
++	local_irq_disable();
++	report(got_interrupt, "edge re-armed after wrap to positive");
++	got_interrupt = false;
++
++	mtspr(SPR_LPCR, mfspr(SPR_LPCR) & ~LPCR_HDICE);
++
++	handle_exception(0x900, NULL, NULL);
++	handle_exception(0x980, NULL, NULL);
 +}
 +
 +struct {
 +	const char *name;
 +	void (*func)(int argc, char **argv);
 +} hctests[] = {
-+	{ "lwarx/stwcx", test_lwarx_stwcx },
-+	{ "lqarx/stqcx", test_lqarx_stqcx },
-+	{ "migration", test_migrate_reserve },
-+	{ "performance", test_inc_perf },
-+	{ "SMP-atomic", test_smp_inc },
-+	{ "SMP-lock", test_smp_lock },
++	{ "tb", test_tb },
++	{ "dec", test_dec },
++	{ "hdec", test_hdec },
 +	{ NULL, NULL }
 +};
 +
 +int main(int argc, char **argv)
 +{
++	bool all;
 +	int i;
-+	int all;
 +
 +	all = argc == 1 || !strcmp(argv[1], "all");
 +
 +	for (i = 1; i < argc; i++) {
-+		if (strcmp(argv[i], "-r") == 0) {
-+			do_record = true;
-+		}
-+		if (strcmp(argv[i], "-m") == 0) {
++		if (!strcmp(argv[i], "-w")) {
 +			do_migrate = true;
++			if (!all && argc == 2)
++				all = true;
 +		}
 +	}
 +
-+	report_prefix_push("atomics");
++	find_dec_bits();
++	dec_max = (1ULL << (dec_bits - 1)) - 1;
++	dec_min = (1ULL << (dec_bits - 1));
++
++	if (machine_is_powernv() && dec_bits > 32) {
++		mtspr(SPR_LPCR, mfspr(SPR_LPCR) | LPCR_LD);
++	}
++
++	report_prefix_push("timebase");
 +
 +	for (i = 0; hctests[i].name != NULL; i++) {
 +		if (all || strcmp(argv[1], hctests[i].name) == 0) {
@@ -483,24 +451,27 @@ index 000000000..975711fc8
 +
 +	report_prefix_pop();
 +
++	if (machine_is_powernv() && dec_bits > 32) {
++		mtspr(SPR_LPCR, mfspr(SPR_LPCR) & ~LPCR_LD);
++	}
++
 +	return report_summary();
 +}
 diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index 5c458996b..a4210ab2a 100644
+index a4210ab2a..39e6dea3c 100644
 --- a/powerpc/unittests.cfg
 +++ b/powerpc/unittests.cfg
-@@ -83,6 +83,15 @@ file = smp.elf
- smp = 8,threads=4
- accel = tcg,thread=single
+@@ -92,6 +92,14 @@ machine = pseries
+ extra_params = -append "migration -m"
+ groups = migration
  
-+[atomics]
-+file = atomics.elf
++[timebase]
++file = timebase.elf
 +
-+[atomics-migration]
-+file = atomics.elf
-+machine = pseries
-+extra_params = -append "migration -m"
-+groups = migration
++[timebase-icount]
++file = timebase.elf
++accel = tcg
++extra_params = -icount shift=5
 +
  [h_cede_tm]
  file = tm.elf
