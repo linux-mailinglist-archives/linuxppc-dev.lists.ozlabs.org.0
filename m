@@ -1,71 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD958BBB44
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:30:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4658BBB3C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:29:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IG3B/fMP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jZQHEAZg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWn7Z2947z3cDT
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:30:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWn6n1yXFz3cBK
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:29:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IG3B/fMP;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jZQHEAZg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn620Dxzz30Kd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:28:56 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6f28bb6d747so425098b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:28:56 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn621LRfz30Ss
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:28:57 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6f3e3d789cdso485649b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714825732; x=1715430532; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xn4ezSDHOhf2aKKwmztM6YSNcy7Szv8mxSVuwHNvyBM=;
-        b=IG3B/fMPB7iDJIaotaLm22E/ZYyEKlfV/6Ur09BZMmJatcEhHxoOmvHfhkgpUJKZHC
-         iYycZgJUKaVyU6jEiOGOTCkSXsE87N4UCOpIvVKc6HUEzaK8ZlgzWPHBNYV3tLwe/N0T
-         VfqWEPDlkZ9i98xZkNUFnASgqD2dPlu/ZQP/re6k9ggxj5tahwf9DJ7SdNby6iZMlvbU
-         78xP09TuKGf916KBsOtTWEXfW3Uo/Tg5i0LNYDU28BBVdLN0jQyzgnLCV4gaSwtN44Mv
-         LX1j9XesQ1/sNqFrsmm43CcCJU67m0HXa0fES69AaiaahgfaF/ibCyjx4K8SpzTx7TEu
-         Bytw==
+        d=gmail.com; s=20230601; t=1714825735; x=1715430535; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I25dR1hp7l0QjjFDNAfUmrV/isLz0uJLZYj3XaBOpYk=;
+        b=jZQHEAZgKDIADYpuoInYGlM8y0n5WK+cNWKaykBL4+ScxvUXd8vDcemCrf45hZ7qz+
+         sHCyNELzCUsrdBT1N6eO0ScCPVZ36bgoMbIoetQ669OOPN4O+vfmSTHx9hKz3EQ4hyWJ
+         L29TW3JQXqsJQUfy5JVWh2jq41HC2ncxTzRUVkV+dWOM2QeKztAJK2FN7dPZPz5SKsGK
+         7pdwE8+RqtBRrCpoUSxs6C05yeNB1WHdkQ73UELX9IebiX/jsw2VOyffi03oGDv2mLyy
+         Gjt97GVKX90GFQqt6CvFYgD7QlpQoIEc43fM1j36gdlytVfTEAdOBCfRo5u50oKuxON6
+         owBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714825732; x=1715430532;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xn4ezSDHOhf2aKKwmztM6YSNcy7Szv8mxSVuwHNvyBM=;
-        b=CWwovcfI2i9mIjhX9gURZSob2tqsS4eUhrrMe3CL9bc46JzcdXLZrPh9WcgkOlj2aH
-         nPGF42UhqQDD7bUTfxzMmCs+DR6zTq5hVgWyfnnQFM3/uiUgyG0dA0vgfM6qKe+pqWuw
-         3R+o2cfGc0D/xLEAZ8nEcgqjR21SoHGxG7Hz6fFTFrxCkXIHNa9X4Ob6FSiO1t0lkrvs
-         ykT0cvLBvr9QONKBvWxPa1D2RIG+ZEVXEVXnYu/ieMXOYiSVpdRDiHJxB0J+FV0zI4Ql
-         27vhumoEHs21gjB3rb0lc59XV6wtgO4M3qBCL3CGMMTsU8crD+ewpArOFXVG/aU8qo2K
-         FOzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWpYjqsjMoTAdY29D9Jt4Uq4hWGtx/7zu48qA+B97H/mh614MELsxB84bbLA8stW0YYh4LiLaaGK5oD+eQVsg0/jpEtrP2Iet7WljJnJw==
-X-Gm-Message-State: AOJu0YxDsJ9b3LvVMOHpx0K/sbGTLJbtdRwo5FqZrPAIfGwbjPyGSBOg
-	RYaAvW8r84Lt7IudEpYwB8i7Ww6j64STZ0P90aJWVFSpbP2TzyAX
-X-Google-Smtp-Source: AGHT+IHOGS20krAYeoChwowN/g0FbyyWv1HZoAqitITYc/rRqsePtmaLqQPRQrtNOSXgpxA1QWAijw==
-X-Received: by 2002:a05:6a20:7f96:b0:1a9:b2ee:5f72 with SMTP id d22-20020a056a207f9600b001a9b2ee5f72mr6224148pzj.36.1714825731750;
-        Sat, 04 May 2024 05:28:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714825735; x=1715430535;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I25dR1hp7l0QjjFDNAfUmrV/isLz0uJLZYj3XaBOpYk=;
+        b=lwoGyGPJ6MRPuZo3cD2wnzBVLKxSQ98NrQt8VXZCjYflwSvyeuPwlqRJG/qiRyFPpe
+         lWCjSujAQ0phDxf1dw8GoMCVoh0613TkTm79x/Cn35UZIeApiC84U16zZXxvmH1NNITh
+         /QYhwMrQ0I8bWqCgNfvnakk45vGF8Mpqr4Mq9q7V8zwAXHzfoJIe8nf5xv1y8H96rnI/
+         LXvavm3LPWIpOChh7ifOuswMUNx6o8c56clwKJ7RSYORfgwRz7+RrEbzyA8qlLJIBWDc
+         9aWDrBg0UXQGlnJTdig7R1dUAKfhSMwjZJvdrtyPM6NiMyz2z2rIlEAZCNzNW2O4rM2D
+         tp1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXo/pAyH2BDSeuntlKkV3Wyszxh9gfIMtkSJco19bFqeDx6lo4BeJPlGTK9dA0HKb7mhBsoueslwsglsmM2KwWQZ1+jCpjKlkMsIGUOyQ==
+X-Gm-Message-State: AOJu0Yy3f1FURg45CXSE+VGxxHwMcO6PbXYAj41A0dnD4T0AOtL0ET7C
+	bWrfR1BKXQGYuiVWr+RNzI6kbbFYhTcpUBV3/uVj0AEQSwx1wPor
+X-Google-Smtp-Source: AGHT+IGaFaM98B+g3awhLTc0POSb1Mkk5D3cQDh3d7Qwnrc2vPOZNBOGQtUtLg4E7fAYXpIWmzWJXA==
+X-Received: by 2002:a05:6a00:18a0:b0:6f4:1799:c714 with SMTP id x32-20020a056a0018a000b006f41799c714mr7186679pfh.12.1714825735365;
+        Sat, 04 May 2024 05:28:55 -0700 (PDT)
 Received: from wheely.local0.net (220-245-239-57.tpgi.com.au. [220.245.239.57])
-        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.28.48
+        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.28.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 May 2024 05:28:51 -0700 (PDT)
+        Sat, 04 May 2024 05:28:54 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v9 00/31] powerpc improvements
-Date: Sat,  4 May 2024 22:28:06 +1000
-Message-ID: <20240504122841.1177683-1-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v9 01/31] doc: update unittests doc
+Date: Sat,  4 May 2024 22:28:07 +1000
+Message-ID: <20240504122841.1177683-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240504122841.1177683-1-npiggin@gmail.com>
+References: <20240504122841.1177683-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,187 +84,51 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tree here
-https://gitlab.com/npiggin/kvm-unit-tests/-/tree/powerpc
+This adds a few minor fixes.
 
-Since v8:
-- Migration improvements merged and out of series.
-- Rebased on upstream.
-- Did some more splitting of patches to make review easier.
-- Added a new kfail option for known failures because I add a bunch
-  and I don't want to remove them but also don't want them to report
-  as failing the test (at least until implementations can be improved).
-- Added MMU tlb invalidation tests that trigger upstream QEMU bug.
-- Added tcg/kvm host detection to help known-failure reporting.
-- Fixed a few fails and marked a lot of known fails.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ docs/unittests.txt | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Thanks,
-Nick
-
-Nicholas Piggin (31):
-  doc: update unittests doc
-  report: Add known failure reporting option
-  powerpc: Mark known failing tests as kfail
-  powerpc: Update unittests for latest QEMU version
-  powerpc/sprs: Specify SPRs with data rather than code
-  powerpc/sprs: Avoid taking PMU interrupts caused by register fuzzing
-  scripts: allow machine option to be specified in unittests.cfg
-  scripts: Accommodate powerpc powernv machine differences
-  powerpc: Support powernv machine with QEMU TCG
-  powerpc: Fix emulator illegal instruction test for powernv
-  powerpc/sprs: Test hypervisor registers on powernv machine
-  powerpc: general interrupt tests
-  powerpc: Add rtas stop-self support
-  powerpc: Remove broken SMP exception stack setup
-  powerpc: Enable page alloc operations
-  powerpc: add SMP and IPI support
-  powerpc: Add cpu_relax
-  powerpc: Permit ACCEL=tcg,thread=single
-  powerpc: Avoid using larx/stcx. in spinlocks when only one CPU is
-    running
-  powerpc: Add atomics tests
-  powerpc: Add timebase tests
-  powerpc: Add MMU support
-  common/sieve: Use vmalloc.h for setup_mmu definition
-  common/sieve: Support machines without MMU
-  powerpc: Add sieve.c common test
-  powerpc: add usermode support
-  powerpc: add pmu tests
-  configure: Make arch_libdir a first-class entity
-  powerpc: Remove remnants of ppc64 directory and build structure
-  powerpc: Add facility to query TCG or KVM host
-  powerpc: gitlab CI update
-
- .gitlab-ci.yml                           |  30 +-
- MAINTAINERS                              |   1 -
- Makefile                                 |   2 +-
- common/sieve.c                           |  15 +-
- configure                                |  58 +-
- docs/unittests.txt                       |  19 +-
- lib/libcflat.h                           |   4 +-
- lib/{ppc64 => powerpc}/asm-offsets.c     |   9 +
- lib/{ppc64 => powerpc}/asm/asm-offsets.h |   0
- lib/powerpc/asm/atomic.h                 |   6 +
- lib/powerpc/asm/barrier.h                |  12 +
- lib/{ppc64 => powerpc}/asm/bitops.h      |   4 +-
- lib/powerpc/asm/hcall.h                  |   6 +
- lib/{ppc64 => powerpc}/asm/io.h          |   4 +-
- lib/powerpc/asm/mmu.h                    |  10 +
- lib/powerpc/asm/opal.h                   |  22 +
- lib/powerpc/asm/page.h                   |  65 +++
- lib/powerpc/asm/pgtable-hwdef.h          |  66 +++
- lib/powerpc/asm/pgtable.h                | 125 +++++
- lib/powerpc/asm/processor.h              |  66 +++
- lib/{ppc64 => powerpc}/asm/ptrace.h      |  22 +-
- lib/powerpc/asm/reg.h                    |  42 ++
- lib/powerpc/asm/rtas.h                   |   2 +
- lib/powerpc/asm/setup.h                  |   3 +-
- lib/powerpc/asm/smp.h                    |  48 +-
- lib/powerpc/asm/spinlock.h               |  11 +
- lib/powerpc/asm/stack.h                  |   3 +
- lib/{ppc64 => powerpc}/asm/vpa.h         |   0
- lib/powerpc/hcall.c                      |   4 +-
- lib/powerpc/io.c                         |  41 +-
- lib/powerpc/io.h                         |   6 +
- lib/powerpc/mmu.c                        | 283 ++++++++++
- lib/powerpc/opal-calls.S                 |  50 ++
- lib/powerpc/opal.c                       |  76 +++
- lib/powerpc/processor.c                  |  91 +++-
- lib/powerpc/rtas.c                       |  81 ++-
- lib/powerpc/setup.c                      | 192 ++++++-
- lib/powerpc/smp.c                        | 342 ++++++++++--
- lib/powerpc/spinlock.c                   |  33 ++
- lib/{ppc64 => powerpc}/stack.c           |   0
- lib/ppc64/.gitignore                     |   1 -
- lib/ppc64/asm/barrier.h                  |   9 -
- lib/ppc64/asm/handlers.h                 |   1 -
- lib/ppc64/asm/hcall.h                    |   1 -
- lib/ppc64/asm/memory_areas.h             |   6 -
- lib/ppc64/asm/page.h                     |   1 -
- lib/ppc64/asm/ppc_asm.h                  |   1 -
- lib/ppc64/asm/processor.h                |   1 -
- lib/ppc64/asm/reg.h                      |   1 -
- lib/ppc64/asm/rtas.h                     |   1 -
- lib/ppc64/asm/setup.h                    |   1 -
- lib/ppc64/asm/smp.h                      |   1 -
- lib/ppc64/asm/spinlock.h                 |   6 -
- lib/ppc64/asm/stack.h                    |  11 -
- lib/report.c                             |  33 +-
- lib/s390x/io.c                           |   1 +
- lib/s390x/uv.h                           |   1 +
- lib/vmalloc.c                            |   7 +
- lib/vmalloc.h                            |   2 +
- lib/x86/vm.h                             |   1 +
- powerpc/Makefile                         | 112 +++-
- powerpc/Makefile.common                  |  86 ---
- powerpc/Makefile.ppc64                   |  28 -
- powerpc/atomics.c                        | 375 +++++++++++++
- powerpc/cstart64.S                       |  57 +-
- powerpc/emulator.c                       |  16 +
- powerpc/interrupts.c                     | 518 ++++++++++++++++++
- powerpc/mmu.c                            | 283 ++++++++++
- powerpc/pmu.c                            | 403 ++++++++++++++
- powerpc/run                              |  44 +-
- powerpc/selftest.c                       |   4 +-
- powerpc/sieve.c                          |   1 +
- powerpc/smp.c                            | 348 ++++++++++++
- powerpc/spapr_vpa.c                      |   3 +-
- powerpc/sprs.c                           | 662 ++++++++++++++++-------
- powerpc/timebase.c                       | 331 ++++++++++++
- powerpc/tm.c                             |   6 +-
- powerpc/unittests.cfg                    |  88 ++-
- s390x/mvpg.c                             |   1 +
- s390x/selftest.c                         |   1 +
- scripts/common.bash                      |   8 +-
- scripts/runtime.bash                     |  22 +-
- x86/pmu.c                                |   1 +
- x86/pmu_lbr.c                            |   1 +
- x86/vmexit.c                             |   1 +
- x86/vmware_backdoors.c                   |   1 +
- 86 files changed, 4798 insertions(+), 544 deletions(-)
- rename lib/{ppc64 => powerpc}/asm-offsets.c (91%)
- rename lib/{ppc64 => powerpc}/asm/asm-offsets.h (100%)
- create mode 100644 lib/powerpc/asm/atomic.h
- create mode 100644 lib/powerpc/asm/barrier.h
- rename lib/{ppc64 => powerpc}/asm/bitops.h (69%)
- rename lib/{ppc64 => powerpc}/asm/io.h (50%)
- create mode 100644 lib/powerpc/asm/mmu.h
- create mode 100644 lib/powerpc/asm/opal.h
- create mode 100644 lib/powerpc/asm/page.h
- create mode 100644 lib/powerpc/asm/pgtable-hwdef.h
- create mode 100644 lib/powerpc/asm/pgtable.h
- rename lib/{ppc64 => powerpc}/asm/ptrace.h (59%)
- create mode 100644 lib/powerpc/asm/spinlock.h
- rename lib/{ppc64 => powerpc}/asm/vpa.h (100%)
- create mode 100644 lib/powerpc/mmu.c
- create mode 100644 lib/powerpc/opal-calls.S
- create mode 100644 lib/powerpc/opal.c
- create mode 100644 lib/powerpc/spinlock.c
- rename lib/{ppc64 => powerpc}/stack.c (100%)
- delete mode 100644 lib/ppc64/.gitignore
- delete mode 100644 lib/ppc64/asm/barrier.h
- delete mode 100644 lib/ppc64/asm/handlers.h
- delete mode 100644 lib/ppc64/asm/hcall.h
- delete mode 100644 lib/ppc64/asm/memory_areas.h
- delete mode 100644 lib/ppc64/asm/page.h
- delete mode 100644 lib/ppc64/asm/ppc_asm.h
- delete mode 100644 lib/ppc64/asm/processor.h
- delete mode 100644 lib/ppc64/asm/reg.h
- delete mode 100644 lib/ppc64/asm/rtas.h
- delete mode 100644 lib/ppc64/asm/setup.h
- delete mode 100644 lib/ppc64/asm/smp.h
- delete mode 100644 lib/ppc64/asm/spinlock.h
- delete mode 100644 lib/ppc64/asm/stack.h
- delete mode 100644 powerpc/Makefile.common
- delete mode 100644 powerpc/Makefile.ppc64
- create mode 100644 powerpc/atomics.c
- create mode 100644 powerpc/interrupts.c
- create mode 100644 powerpc/mmu.c
- create mode 100644 powerpc/pmu.c
- create mode 120000 powerpc/sieve.c
- create mode 100644 powerpc/smp.c
- create mode 100644 powerpc/timebase.c
-
+diff --git a/docs/unittests.txt b/docs/unittests.txt
+index 3192a60ec..7cf2c55ad 100644
+--- a/docs/unittests.txt
++++ b/docs/unittests.txt
+@@ -15,8 +15,8 @@ unittests.cfg format
+ 
+ # is the comment symbol, all following contents of the line is ignored.
+ 
+-Each unit test is defined with a [unit-test-name] line, followed by
+-a set of parameters that control how the test case is run. The name is
++Each unit test is defined with a [unit-test-name] line, followed by a
++set of parameters that control how the test case is run. The name is
+ arbitrary and appears in the status reporting output.
+ 
+ Parameters appear on their own lines under the test name, and have a
+@@ -62,8 +62,8 @@ groups
+ groups = <group_name1> <group_name2> ...
+ 
+ Used to group the test cases for the `run_tests.sh -g ...` run group
+-option. Adding a test to the nodefault group will cause it to not be
+-run by default.
++option. The group name is arbitrary, aside from the nodefault group
++which makes the test to not be run by default.
+ 
+ accel
+ -----
+@@ -82,8 +82,10 @@ Optional timeout in seconds, after which the test will be killed and fail.
+ 
+ check
+ -----
+-check = <path>=<<value>
++check = <path>=<value>
+ 
+ Check a file for a particular value before running a test. The check line
+ can contain multiple files to check separated by a space, but each check
+ parameter needs to be of the form <path>=<value>
++
++The path and value can not contain space, =, or shell wildcard characters.
 -- 
 2.43.0
 
