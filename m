@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349028BBB58
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 911328BBB5D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:32:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cyId0vM1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NHFjD0FP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWn9N5qRnz30Wb
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:31:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWnBL1ZQHz3dJk
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:32:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cyId0vM1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NHFjD0FP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn683n8Fz30V2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:29:04 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6f453d2c5a1so532101b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:29:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn6D2kfJz30VD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:29:08 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6f44881ad9eso418451b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:29:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714825743; x=1715430543; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1714825747; x=1715430547; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nFe1uWytdimmtEZbjI3zC2F1410iNZlNbtoiOiPVBV0=;
-        b=cyId0vM1jLFGPXwxM457mPJRe9bQVb8su8CikPzaciiVWDgca0F8c3QFg8oOyG7sCv
-         dX7HhRZ/4leJFO/q989iFXLZwTCMtN2rSa58OZF3zH8Q4hVh8PXWSyknTpObUUn+Ucn2
-         MpzCoaHMpDTMKR9uwwOn8AIxsm/pfGWCyN5E8JIdMc+X0tD3BrHcfMbIEcDmCJ3FONoc
-         auuAPOduFN3+LCrzv4kIcTFKmlEf3BrjHTnWS/fc+WDGvoWiK09awe4J4vqDNuhlSZvU
-         y7jKV1OF7Rc06NrZWNJ3yDcFgHj9pl/T7Lle+CsP2EkBnVgFnye0BYyG/1bFvb/cRHMn
-         Dj5Q==
+        bh=Nbmc3N7ayQQTSkTEYRPQXziyE3JeoYhuY3oQWrhsIyA=;
+        b=NHFjD0FPv0/FKXfnxpkP2+6MB8kJgsAYFzUdQwDxsS/Ll2kbMtxvcDPGwQ8gb/zIcz
+         9iK3+QSKcPUO91Y7ayxMuXlaRlHam0Qc5lH1TrR9yMniBNgGi+ZFUXlsIRU1B0xXYABS
+         l3CEewpW3y/Rofsn1MoWyn+eQV/en04m7eUDC7jtC6awPjd4OrMLx3atC9BDu8rCDPtG
+         gt+QrAwn+bReDVO5SNkACMVfEeuY2tTWiMeiRrR/TsK/FSW7OiC9oiALdgj2CPAfLO7I
+         n+583/u905+1mrE7p/rFRp94xPrhQNRuTGOr2j8TNDAzi61rZ7qYQteYl7EEVF9jYRer
+         uX9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714825743; x=1715430543;
+        d=1e100.net; s=20230601; t=1714825747; x=1715430547;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nFe1uWytdimmtEZbjI3zC2F1410iNZlNbtoiOiPVBV0=;
-        b=CD7xbqkV9w/5wgnbJuC6Fw+Y4/cHgo6KOTO5Bwy5+L9T0VrVN6vg4TVhWHeq/CmCps
-         xOlh3HJUU4sprOVqvXAG3Ajf8uhaqIKjWIgsKBd6dyEgAQrutwe1BzpA+LQNsT12V/Hu
-         B3o+teemn3SGSHkLxd7mufGK44XajQTV81YCrKfcp4vKdg2L0QhZfZrL4XjxnW8WueH7
-         0t9Fu7hzwiuMA/AI6BrecuTMQCHmKl1TaRuh7k8WuVhTKQhQ1B/+kfecvPQnNOt6+yoA
-         7p4lscx5/gQhW6AXDe6WeQl37s1TsqCg4kIwsiddf8T/BQ/dPjSxaB+80CPldI4ew9Pv
-         G1wA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0jYA6bp3BXdwbgLIDVJM6zZ9JymXUCw+MZ+5hpJavOY/Dntu2gipNO1C1FAZwnfXho5gFDlG6F12VXBYAd2ILMOcdq5o/XPXy2M2jtQ==
-X-Gm-Message-State: AOJu0YwOM6EnY8evwKRI5G1IxacjJMOhpgVZqfJLt9b6jYt8vaDe3+5k
-	I92m7FMv/IID2DasdFbsjY+uADHrVBJzDgrtR+vVgR2AKtcUiE0P
-X-Google-Smtp-Source: AGHT+IFU5PoRxx+mTNW7TKy4wefEqAB9Vnc58pFz6n9Y7PrQ01UGoWnU/ypMDlEI1b/QoE5Vxl0sIw==
-X-Received: by 2002:a05:6a20:9187:b0:1a7:5e8f:8707 with SMTP id v7-20020a056a20918700b001a75e8f8707mr7337295pzd.26.1714825742844;
-        Sat, 04 May 2024 05:29:02 -0700 (PDT)
+        bh=Nbmc3N7ayQQTSkTEYRPQXziyE3JeoYhuY3oQWrhsIyA=;
+        b=BUI0aev45AxSS7VkkM4FRsYoTB1Pt2jaRjkkKu1UBIzdhJNSdPhVdyQK7BO3h7rgZ3
+         FMMkzJH6rbdG8Ef2FEkZsZotOXaglOeyIpBvQxEXoPvjmRPsWfId+rs3vDxhXYfS1GyY
+         998Oqt7pxetKpo7ozSaQlIET6hoAqsRPLi1QfNdO7mgNvF84zTNc6EAmAcGx9YpfqP0W
+         Zow1LYBAmYyWFOMNjAr412f4UArweJtc5TIA8vHfvhTZOpePwB6IrdPK/PGBt9/EYlqG
+         Q2vQEoQ/kObnrPHR9GlCDF+J/zbWyskzL0IofKUVCGk5uHTrDcksbiug9OL86srgPUMR
+         Joww==
+X-Forwarded-Encrypted: i=1; AJvYcCWjfemsrS23txqFvDziw9SxtAVyPdo5HaZjSppmg+ynDG8mnOJqBJd+FPd9/k/pIFzqA6EsUiiYxVxS1CqaCe0cNxCmDzAdXzvmSM5g2A==
+X-Gm-Message-State: AOJu0YynMO3zMRxtC5q1kkHVYTF2ubCoLVunkvJK1f7bVML3ha2WzOH9
+	wUqIzByrTXPA8+21Q2VS19p066QqRfr4ekPUgHvHzYKWMaVKhcBA
+X-Google-Smtp-Source: AGHT+IEZFDAiDCpXRWqjZJD9ozdG8fcKWo3qQoDgM90MYAfLLB66dy82b1Qj+GOfJf6+77IQHdV5SA==
+X-Received: by 2002:a05:6a00:4f83:b0:6ee:1c9d:b471 with SMTP id ld3-20020a056a004f8300b006ee1c9db471mr5947858pfb.25.1714825746767;
+        Sat, 04 May 2024 05:29:06 -0700 (PDT)
 Received: from wheely.local0.net (220-245-239-57.tpgi.com.au. [220.245.239.57])
-        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.28.59
+        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 May 2024 05:29:02 -0700 (PDT)
+        Sat, 04 May 2024 05:29:06 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v9 03/31] powerpc: Mark known failing tests as kfail
-Date: Sat,  4 May 2024 22:28:09 +1000
-Message-ID: <20240504122841.1177683-4-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v9 04/31] powerpc: Update unittests for latest QEMU version
+Date: Sat,  4 May 2024 22:28:10 +1000
+Message-ID: <20240504122841.1177683-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240504122841.1177683-1-npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
@@ -84,42 +84,39 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mark the failing h_cede_tm and spapr_vpa tests as kfail.
+The latest QEMU fixes some known bugs in migration which allow
+some migration tests to be re-enabled on tcg.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- powerpc/spapr_vpa.c | 3 ++-
- powerpc/tm.c        | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ powerpc/unittests.cfg | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/powerpc/spapr_vpa.c b/powerpc/spapr_vpa.c
-index c2075e157..46fa0485c 100644
---- a/powerpc/spapr_vpa.c
-+++ b/powerpc/spapr_vpa.c
-@@ -150,7 +150,8 @@ static void test_vpa(void)
- 		report_fail("Could not deregister after registration");
+diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
+index 432c81d58..699736926 100644
+--- a/powerpc/unittests.cfg
++++ b/powerpc/unittests.cfg
+@@ -20,9 +20,6 @@ groups = selftest
+ [selftest-migration]
+ file = selftest-migration.elf
+ groups = selftest migration
+-# TODO: Remove accel=kvm once the following TCG migration fix has been merged:
+-# https://lore.kernel.org/qemu-devel/20240219061731.232570-1-npiggin@gmail.com/
+-accel = kvm
  
- 	disp_count1 = be32_to_cpu(vpa->vp_dispatch_count);
--	report(disp_count1 % 2 == 1, "Dispatch count is odd after deregister");
-+	/* TCG known fail, could be wrong test, must verify against PowerVM */
-+	report_kfail(true, disp_count1 % 2 == 1, "Dispatch count is odd after deregister");
+ [selftest-migration-skip]
+ file = selftest-migration.elf
+@@ -30,10 +27,8 @@ machine = pseries
+ groups = selftest migration
+ extra_params = -append "skip"
  
- 	report_prefix_pop();
- }
-diff --git a/powerpc/tm.c b/powerpc/tm.c
-index 6b1ceeb6e..d9e7f455d 100644
---- a/powerpc/tm.c
-+++ b/powerpc/tm.c
-@@ -133,7 +133,8 @@ int main(int argc, char **argv)
- 		report_skip("TM is not available");
- 		goto done;
- 	}
--	report(cpus_with_tm == nr_cpus,
-+	/* KVM does not report TM in secondary threads in POWER9 */
-+	report_kfail(true, cpus_with_tm == nr_cpus,
- 	       "TM available in all 'ibm,pa-features' properties");
+-# This fails due to a QEMU TCG bug so KVM-only until QEMU is fixed upstream
+ [migration-memory]
+ file = memory-verify.elf
+-accel = kvm
+ machine = pseries
+ groups = migration
  
- 	all = argc == 1 || !strcmp(argv[1], "all");
 -- 
 2.43.0
 
