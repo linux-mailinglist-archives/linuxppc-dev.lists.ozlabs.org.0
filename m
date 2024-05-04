@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4658BBB3C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BC88BBB4F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:31:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jZQHEAZg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DgZ0+Ooy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWn6n1yXFz3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:29:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWn8X71mJz3ck4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:31:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jZQHEAZg;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DgZ0+Ooy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn621LRfz30Ss
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:28:57 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6f3e3d789cdso485649b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:28:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn6568xNz30Kd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:29:01 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6f45f1179c3so179796b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:29:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714825735; x=1715430535; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1714825739; x=1715430539; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I25dR1hp7l0QjjFDNAfUmrV/isLz0uJLZYj3XaBOpYk=;
-        b=jZQHEAZgKDIADYpuoInYGlM8y0n5WK+cNWKaykBL4+ScxvUXd8vDcemCrf45hZ7qz+
-         sHCyNELzCUsrdBT1N6eO0ScCPVZ36bgoMbIoetQ669OOPN4O+vfmSTHx9hKz3EQ4hyWJ
-         L29TW3JQXqsJQUfy5JVWh2jq41HC2ncxTzRUVkV+dWOM2QeKztAJK2FN7dPZPz5SKsGK
-         7pdwE8+RqtBRrCpoUSxs6C05yeNB1WHdkQ73UELX9IebiX/jsw2VOyffi03oGDv2mLyy
-         Gjt97GVKX90GFQqt6CvFYgD7QlpQoIEc43fM1j36gdlytVfTEAdOBCfRo5u50oKuxON6
-         owBQ==
+        bh=XRZJRuRRFLhuP09XIFiRVicmhI/6wcE/f1lbmYTsJ8g=;
+        b=DgZ0+OoyTccoanFFr1ye6PAbuiQzrBXapu/SuwnwtZ+j1XJfNRSjX3xXCDSJoBkdvL
+         ci6pCUy6aF4hFiw0OOOlkM7LK0y97TCIZa/74c9HpXrPTTcTvehuN/Ot0GNNfsNIA1Ji
+         Jn0VLHwxK9itogLRkZpQEgNkA/AwSOmp1b9PZQzrR+pJG+eZFcLv+gsR/K11u6OU5f4V
+         oHwgEDPGxmLJFSoUx0npD3tOcLReMUO4sfqvAmxj+I+vbxAkh+/1EleLxD/smjBbY/bZ
+         VwiVSpCLsFG0kgGreRGbZcHqxHEXzEYuumVGE49ruw+ZLOKX+er0tK1jEPhjcKdXa3il
+         Ry3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714825735; x=1715430535;
+        d=1e100.net; s=20230601; t=1714825739; x=1715430539;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=I25dR1hp7l0QjjFDNAfUmrV/isLz0uJLZYj3XaBOpYk=;
-        b=lwoGyGPJ6MRPuZo3cD2wnzBVLKxSQ98NrQt8VXZCjYflwSvyeuPwlqRJG/qiRyFPpe
-         lWCjSujAQ0phDxf1dw8GoMCVoh0613TkTm79x/Cn35UZIeApiC84U16zZXxvmH1NNITh
-         /QYhwMrQ0I8bWqCgNfvnakk45vGF8Mpqr4Mq9q7V8zwAXHzfoJIe8nf5xv1y8H96rnI/
-         LXvavm3LPWIpOChh7ifOuswMUNx6o8c56clwKJ7RSYORfgwRz7+RrEbzyA8qlLJIBWDc
-         9aWDrBg0UXQGlnJTdig7R1dUAKfhSMwjZJvdrtyPM6NiMyz2z2rIlEAZCNzNW2O4rM2D
-         tp1A==
-X-Forwarded-Encrypted: i=1; AJvYcCXo/pAyH2BDSeuntlKkV3Wyszxh9gfIMtkSJco19bFqeDx6lo4BeJPlGTK9dA0HKb7mhBsoueslwsglsmM2KwWQZ1+jCpjKlkMsIGUOyQ==
-X-Gm-Message-State: AOJu0Yy3f1FURg45CXSE+VGxxHwMcO6PbXYAj41A0dnD4T0AOtL0ET7C
-	bWrfR1BKXQGYuiVWr+RNzI6kbbFYhTcpUBV3/uVj0AEQSwx1wPor
-X-Google-Smtp-Source: AGHT+IGaFaM98B+g3awhLTc0POSb1Mkk5D3cQDh3d7Qwnrc2vPOZNBOGQtUtLg4E7fAYXpIWmzWJXA==
-X-Received: by 2002:a05:6a00:18a0:b0:6f4:1799:c714 with SMTP id x32-20020a056a0018a000b006f41799c714mr7186679pfh.12.1714825735365;
-        Sat, 04 May 2024 05:28:55 -0700 (PDT)
+        bh=XRZJRuRRFLhuP09XIFiRVicmhI/6wcE/f1lbmYTsJ8g=;
+        b=lo92ryBzzjlu83VFiELu9WrPZvQUAw4wE3MOqc3EYd9kz23iujtpRktulkAPs9pjlP
+         7vO5+rQysdBwnkjRjpxWeOjITd2Qj6dcHWJpCVBX+ALwAw7xvFaNjX169PasP4APGLF1
+         +uZG3eTt1+mIjK4OdIE+JJczhJ+c8w4aQJkn23xUobqQEkn5P0swfUR8V5MFG4h5BdeA
+         +Yw0Vaj5G0qyzu/V7mtAuGW6zzAj1ZkR2wspwFLfzchJ3dsknCRf2/OZt/DRHCDEE+7s
+         WCTpWsbWh2/EwMTndtKRdFE3T4l7QbixyqL97+vu+oLUW1+oLhLUvqCTZY95qBQNgfVq
+         66cA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2TExqOZe8kRApiJQeLUz8tzgvSEA5SYxEOYtCz4h1cebDIPmT57Z/OpXn42L9QNBwRxcTkf8mKuOzcLz/iVk4gu1OM+iQCThLHToIGA==
+X-Gm-Message-State: AOJu0YxIwjQ7+pIp606uGp7xq6AiKppNY59BJLWkg+TK0cvIIZGu7iY5
+	iHTfEkNUNSNRyN5ltB82xZyqda0tpepd2Ejd3sp1ucd6W2td5Es1
+X-Google-Smtp-Source: AGHT+IFTNbNHpMpZNjRXGh0JKa5s+AXqP40FKU9v2kc69wA5Y0uIM7vdJmn5XaSEQllotSM8lvtZ3g==
+X-Received: by 2002:a05:6a00:2da6:b0:6ed:e1c:1034 with SMTP id fb38-20020a056a002da600b006ed0e1c1034mr5646333pfb.34.1714825739079;
+        Sat, 04 May 2024 05:28:59 -0700 (PDT)
 Received: from wheely.local0.net (220-245-239-57.tpgi.com.au. [220.245.239.57])
-        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.28.52
+        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.28.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 May 2024 05:28:54 -0700 (PDT)
+        Sat, 04 May 2024 05:28:58 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Thomas Huth <thuth@redhat.com>
-Subject: [kvm-unit-tests PATCH v9 01/31] doc: update unittests doc
-Date: Sat,  4 May 2024 22:28:07 +1000
-Message-ID: <20240504122841.1177683-2-npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v9 02/31] report: Add known failure reporting option
+Date: Sat,  4 May 2024 22:28:08 +1000
+Message-ID: <20240504122841.1177683-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240504122841.1177683-1-npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
@@ -84,51 +84,138 @@ Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds a few minor fixes.
+There are times we would like to test a function that is known to fail
+in some conditions due to a bug in implementation (QEMU, KVM, or even
+hardware). It would be nice to count these as known failures and not
+report a summary failure.
+
+xfail is not the same thing, xfail means failure is required and a pass
+causes the test to fail. So add kfail for known failures.
+
+Mark the failing ppc64 h_cede_tm and spapr_vpa tests as kfail.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- docs/unittests.txt | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ lib/libcflat.h |  2 ++
+ lib/report.c   | 33 +++++++++++++++++++++++++--------
+ 2 files changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/docs/unittests.txt b/docs/unittests.txt
-index 3192a60ec..7cf2c55ad 100644
---- a/docs/unittests.txt
-+++ b/docs/unittests.txt
-@@ -15,8 +15,8 @@ unittests.cfg format
+diff --git a/lib/libcflat.h b/lib/libcflat.h
+index 700f43527..ae3c2c6d0 100644
+--- a/lib/libcflat.h
++++ b/lib/libcflat.h
+@@ -100,6 +100,8 @@ extern void report(bool pass, const char *msg_fmt, ...)
+ 		__attribute__((format(printf, 2, 3), nonnull(2)));
+ extern void report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
+ 		__attribute__((format(printf, 3, 4), nonnull(3)));
++extern void report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
++		__attribute__((format(printf, 3, 4), nonnull(3)));
+ extern void report_abort(const char *msg_fmt, ...)
+ 					__attribute__((format(printf, 1, 2)))
+ 					__attribute__((noreturn));
+diff --git a/lib/report.c b/lib/report.c
+index 8e9bff5b8..7f3c4f059 100644
+--- a/lib/report.c
++++ b/lib/report.c
+@@ -13,7 +13,7 @@
+ #include "libcflat.h"
+ #include "asm/spinlock.h"
  
- # is the comment symbol, all following contents of the line is ignored.
+-static unsigned int tests, failures, xfailures, skipped;
++static unsigned int tests, failures, xfailures, kfailures, skipped;
+ static char prefixes[256];
+ static struct spinlock lock;
  
--Each unit test is defined with a [unit-test-name] line, followed by
--a set of parameters that control how the test case is run. The name is
-+Each unit test is defined with a [unit-test-name] line, followed by a
-+set of parameters that control how the test case is run. The name is
- arbitrary and appears in the status reporting output.
+@@ -81,11 +81,12 @@ void report_prefix_pop(void)
+ }
  
- Parameters appear on their own lines under the test name, and have a
-@@ -62,8 +62,8 @@ groups
- groups = <group_name1> <group_name2> ...
+ static void va_report(const char *msg_fmt,
+-		bool pass, bool xfail, bool skip, va_list va)
++		bool pass, bool xfail, bool kfail, bool skip, va_list va)
+ {
+ 	const char *prefix = skip ? "SKIP"
+ 				  : xfail ? (pass ? "XPASS" : "XFAIL")
+-					  : (pass ? "PASS"  : "FAIL");
++				          : kfail ? (pass ? "PASS" : "KFAIL")
++					          : (pass ? "PASS"  : "FAIL");
  
- Used to group the test cases for the `run_tests.sh -g ...` run group
--option. Adding a test to the nodefault group will cause it to not be
--run by default.
-+option. The group name is arbitrary, aside from the nodefault group
-+which makes the test to not be run by default.
+ 	spin_lock(&lock);
  
- accel
- -----
-@@ -82,8 +82,10 @@ Optional timeout in seconds, after which the test will be killed and fail.
+@@ -98,6 +99,8 @@ static void va_report(const char *msg_fmt,
+ 		skipped++;
+ 	else if (xfail && !pass)
+ 		xfailures++;
++	else if (kfail && !pass)
++		kfailures++;
+ 	else if (xfail || !pass)
+ 		failures++;
  
- check
- -----
--check = <path>=<<value>
-+check = <path>=<value>
+@@ -108,7 +111,7 @@ void report(bool pass, const char *msg_fmt, ...)
+ {
+ 	va_list va;
+ 	va_start(va, msg_fmt);
+-	va_report(msg_fmt, pass, false, false, va);
++	va_report(msg_fmt, pass, false, false, false, va);
+ 	va_end(va);
+ }
  
- Check a file for a particular value before running a test. The check line
- can contain multiple files to check separated by a space, but each check
- parameter needs to be of the form <path>=<value>
+@@ -117,7 +120,7 @@ void report_pass(const char *msg_fmt, ...)
+ 	va_list va;
+ 
+ 	va_start(va, msg_fmt);
+-	va_report(msg_fmt, true, false, false, va);
++	va_report(msg_fmt, true, false, false, false, va);
+ 	va_end(va);
+ }
+ 
+@@ -126,7 +129,7 @@ void report_fail(const char *msg_fmt, ...)
+ 	va_list va;
+ 
+ 	va_start(va, msg_fmt);
+-	va_report(msg_fmt, false, false, false, va);
++	va_report(msg_fmt, false, false, false, false, va);
+ 	va_end(va);
+ }
+ 
+@@ -134,7 +137,19 @@ void report_xfail(bool xfail, bool pass, const char *msg_fmt, ...)
+ {
+ 	va_list va;
+ 	va_start(va, msg_fmt);
+-	va_report(msg_fmt, pass, xfail, false, va);
++	va_report(msg_fmt, pass, xfail, false, false, va);
++	va_end(va);
++}
 +
-+The path and value can not contain space, =, or shell wildcard characters.
++/*
++ * kfail is known failure. If kfail is true then test will succeed
++ * regardless of pass.
++ */
++void report_kfail(bool kfail, bool pass, const char *msg_fmt, ...)
++{
++	va_list va;
++	va_start(va, msg_fmt);
++	va_report(msg_fmt, pass, false, kfail, false, va);
+ 	va_end(va);
+ }
+ 
+@@ -142,7 +157,7 @@ void report_skip(const char *msg_fmt, ...)
+ {
+ 	va_list va;
+ 	va_start(va, msg_fmt);
+-	va_report(msg_fmt, false, false, true, va);
++	va_report(msg_fmt, false, false, false, true, va);
+ 	va_end(va);
+ }
+ 
+@@ -168,6 +183,8 @@ int report_summary(void)
+ 	printf("SUMMARY: %d tests", tests);
+ 	if (failures)
+ 		printf(", %d unexpected failures", failures);
++	if (kfailures)
++		printf(", %d known failures", kfailures);
+ 	if (xfailures)
+ 		printf(", %d expected failures", xfailures);
+ 	if (skipped)
 -- 
 2.43.0
 
