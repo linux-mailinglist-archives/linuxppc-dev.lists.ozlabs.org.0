@@ -2,63 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF258BBADA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 13:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD958BBB44
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 14:30:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Df3+fAEL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IG3B/fMP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VWm2y3GpYz30VV
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 21:41:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VWn7Z2947z3cDT
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 May 2024 22:30:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Df3+fAEL;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IG3B/fMP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWm2C0MCQz2yk7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 21:40:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714822835; x=1746358835;
-  h=date:from:to:cc:subject:message-id;
-  bh=wJwgGKCFiO0fWehF9FGtVTVf0nJY1QdabfQjUFFknEo=;
-  b=Df3+fAELa7b0+24jomCCTVthvI5jUVeY15iiYAPaz0hwV0S0JJdCYCQh
-   KYV/zUujfeuzo4++1TSB+i1x01NaUhpCxAX+Aiycq1jEl8JbZMpzqVAVD
-   iTJsDyFiBOPI2YOsKFpWoZFEtxWUNiRZQ0Twl9neif4NFdFakxurKCrY2
-   ri3LT4gKPUxp/UMNUON9Jyrs8t4uDFkUsH/kXQyzAYE4jvBgXQALXgqYq
-   OBVqW4lSE3xpfG4dyAP6MqZoxeqEddZHujlQ+a/IOmZegfeodzQOuAPC1
-   QWv2Ev0LLBmTrf0CLAefQ9yHXfxam92T5SHNrBSDOG2Ol2VnUq72XHr9i
-   A==;
-X-CSE-ConnectionGUID: vkpYMmx/QGO+zfuVssJGnA==
-X-CSE-MsgGUID: 9sgTCGUfSRik6pAao13few==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="10779843"
-X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; 
-   d="scan'208";a="10779843"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2024 04:40:28 -0700
-X-CSE-ConnectionGUID: pjoZGXD5Trqsqu/Fj2avLw==
-X-CSE-MsgGUID: DaaQjXCdQIy5j3eT5phStA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,253,1708416000"; 
-   d="scan'208";a="32170876"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 04 May 2024 04:40:27 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s3Dkf-000Cj2-0j;
-	Sat, 04 May 2024 11:40:25 +0000
-Date: Sat, 04 May 2024 19:39:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 72a67796ed7cc697e55e53d68eba4c87c5ae04ee
-Message-ID: <202405041933.dWRElwpH-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VWn620Dxzz30Kd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 May 2024 22:28:56 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6f28bb6d747so425098b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 May 2024 05:28:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714825732; x=1715430532; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xn4ezSDHOhf2aKKwmztM6YSNcy7Szv8mxSVuwHNvyBM=;
+        b=IG3B/fMPB7iDJIaotaLm22E/ZYyEKlfV/6Ur09BZMmJatcEhHxoOmvHfhkgpUJKZHC
+         iYycZgJUKaVyU6jEiOGOTCkSXsE87N4UCOpIvVKc6HUEzaK8ZlgzWPHBNYV3tLwe/N0T
+         VfqWEPDlkZ9i98xZkNUFnASgqD2dPlu/ZQP/re6k9ggxj5tahwf9DJ7SdNby6iZMlvbU
+         78xP09TuKGf916KBsOtTWEXfW3Uo/Tg5i0LNYDU28BBVdLN0jQyzgnLCV4gaSwtN44Mv
+         LX1j9XesQ1/sNqFrsmm43CcCJU67m0HXa0fES69AaiaahgfaF/ibCyjx4K8SpzTx7TEu
+         Bytw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714825732; x=1715430532;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xn4ezSDHOhf2aKKwmztM6YSNcy7Szv8mxSVuwHNvyBM=;
+        b=CWwovcfI2i9mIjhX9gURZSob2tqsS4eUhrrMe3CL9bc46JzcdXLZrPh9WcgkOlj2aH
+         nPGF42UhqQDD7bUTfxzMmCs+DR6zTq5hVgWyfnnQFM3/uiUgyG0dA0vgfM6qKe+pqWuw
+         3R+o2cfGc0D/xLEAZ8nEcgqjR21SoHGxG7Hz6fFTFrxCkXIHNa9X4Ob6FSiO1t0lkrvs
+         ykT0cvLBvr9QONKBvWxPa1D2RIG+ZEVXEVXnYu/ieMXOYiSVpdRDiHJxB0J+FV0zI4Ql
+         27vhumoEHs21gjB3rb0lc59XV6wtgO4M3qBCL3CGMMTsU8crD+ewpArOFXVG/aU8qo2K
+         FOzg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpYjqsjMoTAdY29D9Jt4Uq4hWGtx/7zu48qA+B97H/mh614MELsxB84bbLA8stW0YYh4LiLaaGK5oD+eQVsg0/jpEtrP2Iet7WljJnJw==
+X-Gm-Message-State: AOJu0YxDsJ9b3LvVMOHpx0K/sbGTLJbtdRwo5FqZrPAIfGwbjPyGSBOg
+	RYaAvW8r84Lt7IudEpYwB8i7Ww6j64STZ0P90aJWVFSpbP2TzyAX
+X-Google-Smtp-Source: AGHT+IHOGS20krAYeoChwowN/g0FbyyWv1HZoAqitITYc/rRqsePtmaLqQPRQrtNOSXgpxA1QWAijw==
+X-Received: by 2002:a05:6a20:7f96:b0:1a9:b2ee:5f72 with SMTP id d22-20020a056a207f9600b001a9b2ee5f72mr6224148pzj.36.1714825731750;
+        Sat, 04 May 2024 05:28:51 -0700 (PDT)
+Received: from wheely.local0.net (220-245-239-57.tpgi.com.au. [220.245.239.57])
+        by smtp.gmail.com with ESMTPSA id b16-20020a056a000a9000b006f4473daa38sm3480068pfl.128.2024.05.04.05.28.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 May 2024 05:28:51 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Thomas Huth <thuth@redhat.com>
+Subject: [kvm-unit-tests PATCH v9 00/31] powerpc improvements
+Date: Sat,  4 May 2024 22:28:06 +1000
+Message-ID: <20240504122841.1177683-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,156 +78,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 72a67796ed7cc697e55e53d68eba4c87c5ae04ee  powerpc/bpf: enable kfunc call
+Tree here
+https://gitlab.com/npiggin/kvm-unit-tests/-/tree/powerpc
 
-elapsed time: 1461m
+Since v8:
+- Migration improvements merged and out of series.
+- Rebased on upstream.
+- Did some more splitting of patches to make review easier.
+- Added a new kfail option for known failures because I add a bunch
+  and I don't want to remove them but also don't want them to report
+  as failing the test (at least until implementations can be improved).
+- Added MMU tlb invalidation tests that trigger upstream QEMU bug.
+- Added tcg/kvm host detection to help known-failure reporting.
+- Fixed a few fails and marked a lot of known fails.
 
-configs tested: 133
-configs skipped: 3
+Thanks,
+Nick
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Nicholas Piggin (31):
+  doc: update unittests doc
+  report: Add known failure reporting option
+  powerpc: Mark known failing tests as kfail
+  powerpc: Update unittests for latest QEMU version
+  powerpc/sprs: Specify SPRs with data rather than code
+  powerpc/sprs: Avoid taking PMU interrupts caused by register fuzzing
+  scripts: allow machine option to be specified in unittests.cfg
+  scripts: Accommodate powerpc powernv machine differences
+  powerpc: Support powernv machine with QEMU TCG
+  powerpc: Fix emulator illegal instruction test for powernv
+  powerpc/sprs: Test hypervisor registers on powernv machine
+  powerpc: general interrupt tests
+  powerpc: Add rtas stop-self support
+  powerpc: Remove broken SMP exception stack setup
+  powerpc: Enable page alloc operations
+  powerpc: add SMP and IPI support
+  powerpc: Add cpu_relax
+  powerpc: Permit ACCEL=tcg,thread=single
+  powerpc: Avoid using larx/stcx. in spinlocks when only one CPU is
+    running
+  powerpc: Add atomics tests
+  powerpc: Add timebase tests
+  powerpc: Add MMU support
+  common/sieve: Use vmalloc.h for setup_mmu definition
+  common/sieve: Support machines without MMU
+  powerpc: Add sieve.c common test
+  powerpc: add usermode support
+  powerpc: add pmu tests
+  configure: Make arch_libdir a first-class entity
+  powerpc: Remove remnants of ppc64 directory and build structure
+  powerpc: Add facility to query TCG or KVM host
+  powerpc: gitlab CI update
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240504   gcc  
-arc                   randconfig-002-20240504   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240504   clang
-arm                   randconfig-002-20240504   clang
-arm                   randconfig-003-20240504   clang
-arm                   randconfig-004-20240504   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240504   gcc  
-arm64                 randconfig-002-20240504   gcc  
-arm64                 randconfig-003-20240504   gcc  
-arm64                 randconfig-004-20240504   clang
-csky                              allnoconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240504   gcc  
-csky                  randconfig-002-20240504   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240504   clang
-hexagon               randconfig-002-20240504   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240504   clang
-i386         buildonly-randconfig-002-20240504   gcc  
-i386         buildonly-randconfig-003-20240504   gcc  
-i386         buildonly-randconfig-004-20240504   clang
-i386         buildonly-randconfig-005-20240504   clang
-i386         buildonly-randconfig-006-20240504   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240504   gcc  
-i386                  randconfig-002-20240504   clang
-i386                  randconfig-003-20240504   gcc  
-i386                  randconfig-004-20240504   clang
-i386                  randconfig-005-20240504   clang
-i386                  randconfig-006-20240504   gcc  
-i386                  randconfig-011-20240504   gcc  
-i386                  randconfig-012-20240504   clang
-i386                  randconfig-013-20240504   clang
-i386                  randconfig-014-20240504   gcc  
-i386                  randconfig-015-20240504   gcc  
-i386                  randconfig-016-20240504   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240504   gcc  
-loongarch             randconfig-002-20240504   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240504   gcc  
-nios2                 randconfig-002-20240504   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240504   gcc  
-parisc                randconfig-002-20240504   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc               randconfig-001-20240504   gcc  
-powerpc               randconfig-002-20240504   gcc  
-powerpc               randconfig-003-20240504   gcc  
-powerpc64             randconfig-001-20240504   clang
-powerpc64             randconfig-002-20240504   clang
-powerpc64             randconfig-003-20240504   clang
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240504   gcc  
-riscv                 randconfig-002-20240504   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240504   clang
-s390                  randconfig-002-20240504   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240504   gcc  
-sh                    randconfig-002-20240504   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240504   gcc  
-sparc64               randconfig-002-20240504   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240504   gcc  
-um                    randconfig-002-20240504   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240504   gcc  
-xtensa                randconfig-002-20240504   gcc  
+ .gitlab-ci.yml                           |  30 +-
+ MAINTAINERS                              |   1 -
+ Makefile                                 |   2 +-
+ common/sieve.c                           |  15 +-
+ configure                                |  58 +-
+ docs/unittests.txt                       |  19 +-
+ lib/libcflat.h                           |   4 +-
+ lib/{ppc64 => powerpc}/asm-offsets.c     |   9 +
+ lib/{ppc64 => powerpc}/asm/asm-offsets.h |   0
+ lib/powerpc/asm/atomic.h                 |   6 +
+ lib/powerpc/asm/barrier.h                |  12 +
+ lib/{ppc64 => powerpc}/asm/bitops.h      |   4 +-
+ lib/powerpc/asm/hcall.h                  |   6 +
+ lib/{ppc64 => powerpc}/asm/io.h          |   4 +-
+ lib/powerpc/asm/mmu.h                    |  10 +
+ lib/powerpc/asm/opal.h                   |  22 +
+ lib/powerpc/asm/page.h                   |  65 +++
+ lib/powerpc/asm/pgtable-hwdef.h          |  66 +++
+ lib/powerpc/asm/pgtable.h                | 125 +++++
+ lib/powerpc/asm/processor.h              |  66 +++
+ lib/{ppc64 => powerpc}/asm/ptrace.h      |  22 +-
+ lib/powerpc/asm/reg.h                    |  42 ++
+ lib/powerpc/asm/rtas.h                   |   2 +
+ lib/powerpc/asm/setup.h                  |   3 +-
+ lib/powerpc/asm/smp.h                    |  48 +-
+ lib/powerpc/asm/spinlock.h               |  11 +
+ lib/powerpc/asm/stack.h                  |   3 +
+ lib/{ppc64 => powerpc}/asm/vpa.h         |   0
+ lib/powerpc/hcall.c                      |   4 +-
+ lib/powerpc/io.c                         |  41 +-
+ lib/powerpc/io.h                         |   6 +
+ lib/powerpc/mmu.c                        | 283 ++++++++++
+ lib/powerpc/opal-calls.S                 |  50 ++
+ lib/powerpc/opal.c                       |  76 +++
+ lib/powerpc/processor.c                  |  91 +++-
+ lib/powerpc/rtas.c                       |  81 ++-
+ lib/powerpc/setup.c                      | 192 ++++++-
+ lib/powerpc/smp.c                        | 342 ++++++++++--
+ lib/powerpc/spinlock.c                   |  33 ++
+ lib/{ppc64 => powerpc}/stack.c           |   0
+ lib/ppc64/.gitignore                     |   1 -
+ lib/ppc64/asm/barrier.h                  |   9 -
+ lib/ppc64/asm/handlers.h                 |   1 -
+ lib/ppc64/asm/hcall.h                    |   1 -
+ lib/ppc64/asm/memory_areas.h             |   6 -
+ lib/ppc64/asm/page.h                     |   1 -
+ lib/ppc64/asm/ppc_asm.h                  |   1 -
+ lib/ppc64/asm/processor.h                |   1 -
+ lib/ppc64/asm/reg.h                      |   1 -
+ lib/ppc64/asm/rtas.h                     |   1 -
+ lib/ppc64/asm/setup.h                    |   1 -
+ lib/ppc64/asm/smp.h                      |   1 -
+ lib/ppc64/asm/spinlock.h                 |   6 -
+ lib/ppc64/asm/stack.h                    |  11 -
+ lib/report.c                             |  33 +-
+ lib/s390x/io.c                           |   1 +
+ lib/s390x/uv.h                           |   1 +
+ lib/vmalloc.c                            |   7 +
+ lib/vmalloc.h                            |   2 +
+ lib/x86/vm.h                             |   1 +
+ powerpc/Makefile                         | 112 +++-
+ powerpc/Makefile.common                  |  86 ---
+ powerpc/Makefile.ppc64                   |  28 -
+ powerpc/atomics.c                        | 375 +++++++++++++
+ powerpc/cstart64.S                       |  57 +-
+ powerpc/emulator.c                       |  16 +
+ powerpc/interrupts.c                     | 518 ++++++++++++++++++
+ powerpc/mmu.c                            | 283 ++++++++++
+ powerpc/pmu.c                            | 403 ++++++++++++++
+ powerpc/run                              |  44 +-
+ powerpc/selftest.c                       |   4 +-
+ powerpc/sieve.c                          |   1 +
+ powerpc/smp.c                            | 348 ++++++++++++
+ powerpc/spapr_vpa.c                      |   3 +-
+ powerpc/sprs.c                           | 662 ++++++++++++++++-------
+ powerpc/timebase.c                       | 331 ++++++++++++
+ powerpc/tm.c                             |   6 +-
+ powerpc/unittests.cfg                    |  88 ++-
+ s390x/mvpg.c                             |   1 +
+ s390x/selftest.c                         |   1 +
+ scripts/common.bash                      |   8 +-
+ scripts/runtime.bash                     |  22 +-
+ x86/pmu.c                                |   1 +
+ x86/pmu_lbr.c                            |   1 +
+ x86/vmexit.c                             |   1 +
+ x86/vmware_backdoors.c                   |   1 +
+ 86 files changed, 4798 insertions(+), 544 deletions(-)
+ rename lib/{ppc64 => powerpc}/asm-offsets.c (91%)
+ rename lib/{ppc64 => powerpc}/asm/asm-offsets.h (100%)
+ create mode 100644 lib/powerpc/asm/atomic.h
+ create mode 100644 lib/powerpc/asm/barrier.h
+ rename lib/{ppc64 => powerpc}/asm/bitops.h (69%)
+ rename lib/{ppc64 => powerpc}/asm/io.h (50%)
+ create mode 100644 lib/powerpc/asm/mmu.h
+ create mode 100644 lib/powerpc/asm/opal.h
+ create mode 100644 lib/powerpc/asm/page.h
+ create mode 100644 lib/powerpc/asm/pgtable-hwdef.h
+ create mode 100644 lib/powerpc/asm/pgtable.h
+ rename lib/{ppc64 => powerpc}/asm/ptrace.h (59%)
+ create mode 100644 lib/powerpc/asm/spinlock.h
+ rename lib/{ppc64 => powerpc}/asm/vpa.h (100%)
+ create mode 100644 lib/powerpc/mmu.c
+ create mode 100644 lib/powerpc/opal-calls.S
+ create mode 100644 lib/powerpc/opal.c
+ create mode 100644 lib/powerpc/spinlock.c
+ rename lib/{ppc64 => powerpc}/stack.c (100%)
+ delete mode 100644 lib/ppc64/.gitignore
+ delete mode 100644 lib/ppc64/asm/barrier.h
+ delete mode 100644 lib/ppc64/asm/handlers.h
+ delete mode 100644 lib/ppc64/asm/hcall.h
+ delete mode 100644 lib/ppc64/asm/memory_areas.h
+ delete mode 100644 lib/ppc64/asm/page.h
+ delete mode 100644 lib/ppc64/asm/ppc_asm.h
+ delete mode 100644 lib/ppc64/asm/processor.h
+ delete mode 100644 lib/ppc64/asm/reg.h
+ delete mode 100644 lib/ppc64/asm/rtas.h
+ delete mode 100644 lib/ppc64/asm/setup.h
+ delete mode 100644 lib/ppc64/asm/smp.h
+ delete mode 100644 lib/ppc64/asm/spinlock.h
+ delete mode 100644 lib/ppc64/asm/stack.h
+ delete mode 100644 powerpc/Makefile.common
+ delete mode 100644 powerpc/Makefile.ppc64
+ create mode 100644 powerpc/atomics.c
+ create mode 100644 powerpc/interrupts.c
+ create mode 100644 powerpc/mmu.c
+ create mode 100644 powerpc/pmu.c
+ create mode 120000 powerpc/sieve.c
+ create mode 100644 powerpc/smp.c
+ create mode 100644 powerpc/timebase.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
