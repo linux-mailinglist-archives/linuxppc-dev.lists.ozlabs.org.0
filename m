@@ -2,88 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136C38BD0F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 17:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 526AE8BD269
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 18:18:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f3eRr83a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bPliABgh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VY4N34FdRz3cF6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 01:00:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VY66B6nwTz3cTL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:18:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f3eRr83a;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bPliABgh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY4MF0S4pz30T1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 00:59:52 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 446Ejogd016183;
-	Mon, 6 May 2024 14:59:44 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY65Q6tn8z30VY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 02:18:02 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 446G2NJ9004438;
+	Mon, 6 May 2024 16:17:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=ufcz7t0A1piBkd98O1lYvjfNAwGIZPGvOFFEF4WTtt4=;
- b=f3eRr83aHzgGXnJNPYPYA1s88cDKGilTckPbheVeiZoL2vQkWu/+mc952fDSeJ9ebVED
- KpXwZYF8NKOQxPkTNuP66PNI2apIv+GA/aneK68UK/WbVVI3grSI0vm51XKZ13AiPpvD
- KhgKVeO36iXSwUa4Z21fNiZaxce5PheTkVBW+lT1fZ9RHvSrY7XEJppD934qHYBTxbtI
- HWm3dSyimkmcIWBDAMWri4MzNB2+Yrll9NrWhqsXh7x9nGtjdFslip7UywMMPsRNZkxl
- uAkSPEpEpr1QytRptzHo4lndpFAyCaIGq+SvMsdncI7CNPSOCHH4ccP262fD2q3OrOEv dA== 
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=8H3Vm5cW7qrNl6PSAd3JqDJWcoWJ1ohvcjV/sKl+uNM=;
+ b=bPliABgh0o5erJmzUBvQBtBIWL64TTedoEyaPdL9PiW9Ioq84CsD8tysQI81ZAKTD+aY
+ Rj1OCaEIZipGXdB0fhnkYYPcghoKJyEixiSt8I0VeiDezuzbNqeIdM9yueOQOaBePm8g
+ IiDKRm9XwwK1CB+ZL1Ni2rChdVjs0WGcIJ0VgRWFYVCZD1zkKJokcqK8bs3X4X0Pk5lc
+ Evv+ksgVyGojCIINc9S4q4/Yfw+AQHlJZBocYZPMx/tr2YwCYGvitxzvdWKLao2g6E/m
+ 0u2dzD/jeZ12jXDlDisVhMB6xXHj9b7xc1cR6uphINc5j0S3uNNf4j0xOSoriYeAa0RC 1g== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy18hg13d-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy2c9g2ag-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 14:59:44 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 446EtefX000382;
-	Mon, 6 May 2024 14:59:43 GMT
+	Mon, 06 May 2024 16:17:54 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 446GHrta001342;
+	Mon, 6 May 2024 16:17:54 GMT
 Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy18hg119-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy2c9g2ab-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 14:59:43 +0000
+	Mon, 06 May 2024 16:17:53 +0000
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 446EYwI2030885;
-	Mon, 6 May 2024 14:56:19 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xwybtrqts-1
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 446F9IgO030881;
+	Mon, 6 May 2024 16:17:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xwybts4cj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 14:56:19 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 446EuEft54460696
+	Mon, 06 May 2024 16:17:52 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 446GHlP145547968
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 May 2024 14:56:16 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4286720043;
-	Mon,  6 May 2024 14:56:14 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD23D20040;
-	Mon,  6 May 2024 14:56:10 +0000 (GMT)
+	Mon, 6 May 2024 16:17:49 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 66D1D20043;
+	Mon,  6 May 2024 16:17:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B73A20040;
+	Mon,  6 May 2024 16:17:41 +0000 (GMT)
 Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com.com (unknown [9.43.105.31])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 May 2024 14:56:10 +0000 (GMT)
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 May 2024 16:17:41 +0000 (GMT)
 From: Gautam Menghani <gautam@linux.ibm.com>
 To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         naveen.n.rao@linux.ibm.com
-Subject: [PATCH v6] arch/powerpc/kvm: Add support for reading VPA counters for pseries guests
-Date: Mon,  6 May 2024 20:26:03 +0530
-Message-ID: <20240506145605.73794-1-gautam@linux.ibm.com>
+Subject: [PATCH 0/3] XICS emulation optimizations in KVM for PPC
+Date: Mon,  6 May 2024 21:47:28 +0530
+Message-ID: <20240506161735.83358-1-gautam@linux.ibm.com>
 X-Mailer: git-send-email 2.44.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: I6-OMug5WjhJXyE88WJrPOqnlzUhHrLG
-X-Proofpoint-GUID: JQASrrDOMa-FNKqtEyYUyNjW6SXSAS3q
+X-Proofpoint-GUID: YYIbvZvGhflj8dm_A6Ru2VeCSHrTZ_sJ
+X-Proofpoint-ORIG-GUID: d2amX_Zf-SdVTwTS1St8_FvBH87EB2_L
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-06_09,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 spamscore=0 phishscore=0 lowpriorityscore=0
- mlxlogscore=999 mlxscore=0 impostorscore=0 clxscore=1015 bulkscore=0
- malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2404010000 definitions=main-2405060102
+ definitions=2024-05-06_11,2024-05-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ malwarescore=0 suspectscore=0 clxscore=1015 phishscore=0 mlxlogscore=777
+ impostorscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2405060114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,214 +96,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PAPR hypervisor has introduced three new counters in the VPA area of
-LPAR CPUs for KVM L2 guest (see [1] for terminology) observability - 2
-for context switches from host to guest and vice versa, and 1 counter
-for getting the total time spent inside the KVM guest. Add a tracepoint
-that enables reading the counters for use by ftrace/perf. Note that this
-tracepoint is only available for nestedv2 API (i.e, KVM on PowerVM).
+Optimize the XICS emulation code in KVM as per the 'performance todos'
+in the comments of book3s_xics.c. 
 
-[1] Terminology:
-a. L1 refers to the VM (LPAR) booted on top of PAPR hypervisor
-b. L2 refers to the KVM guest booted on top of L1.
+Performance numbers:
+1. Test case: Pgbench run in a KVM on PowerVM guest for 120 secs
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
-v5 -> v6:
-1. Use TRACE_EVENT_FN to enable/disable counters only once.
-2. Remove the agg. counters from vcpu->arch.
-3. Use PACA to maintain old counter values instead of zeroing on every
-entry.
-4. Simplify variable names
 
-v4 -> v5:
-1. Define helper functions for getting/setting the accumulation counter
-in L2's VPA
+2. Time taken by arch_send_call_function_single_ipi() currently measured 
+with funclatency [1].
 
-v3 -> v4:
-1. After vcpu_run, check the VPA flag instead of checking for tracepoint
-being enabled for disabling the cs time accumulation.
+$ ./funclatency.py -u arch_send_call_function_single_ipi
 
-v2 -> v3:
-1. Move the counter disabling and zeroing code to a different function.
-2. Move the get_lppaca() inside the tracepoint_enabled() branch.
-3. Add the aggregation logic to maintain total context switch time.
+usecs               : count     distribution
+0 -> 1          : 7        |                                        |
+2 -> 3          : 16       |                                        |
+4 -> 7          : 141      |                                        |
+8 -> 15         : 4455631  |****************************************|
+16 -> 31         : 437981   |***                                     |
+32 -> 63         : 5036     |                                        |
+64 -> 127        : 92       |                                        |
 
-v1 -> v2:
-1. Fix the build error due to invalid struct member reference.
+avg = 12 usecs, total: 60,532,481 usecs, count: 4,898,904
 
- arch/powerpc/include/asm/lppaca.h | 11 +++++--
- arch/powerpc/include/asm/paca.h   |  5 +++
- arch/powerpc/kvm/book3s_hv.c      | 52 +++++++++++++++++++++++++++++++
- arch/powerpc/kvm/trace_hv.h       | 27 ++++++++++++++++
- 4 files changed, 92 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
-index 61ec2447dabf..f40a646bee3c 100644
---- a/arch/powerpc/include/asm/lppaca.h
-+++ b/arch/powerpc/include/asm/lppaca.h
-@@ -62,7 +62,8 @@ struct lppaca {
- 	u8	donate_dedicated_cpu;	/* Donate dedicated CPU cycles */
- 	u8	fpregs_in_use;
- 	u8	pmcregs_in_use;
--	u8	reserved8[28];
-+	u8	l2_counters_enable;  /* Enable usage of counters for KVM guest */
-+	u8	reserved8[27];
- 	__be64	wait_state_cycles;	/* Wait cycles for this proc */
- 	u8	reserved9[28];
- 	__be16	slb_count;		/* # of SLBs to maintain */
-@@ -92,9 +93,13 @@ struct lppaca {
- 	/* cacheline 4-5 */
- 
- 	__be32	page_ins;		/* CMO Hint - # page ins by OS */
--	u8	reserved12[148];
-+	u8	reserved12[28];
-+	volatile __be64 l1_to_l2_cs_tb;
-+	volatile __be64 l2_to_l1_cs_tb;
-+	volatile __be64 l2_runtime_tb;
-+	u8 reserved13[96];
- 	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
--	u8	reserved13[96];
-+	u8	reserved14[96];
- } ____cacheline_aligned;
- 
- #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index 1d58da946739..f20ac7a6efa4 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -278,6 +278,11 @@ struct paca_struct {
- 	struct mce_info *mce_info;
- 	u8 mce_pending_irq_work;
- #endif /* CONFIG_PPC_BOOK3S_64 */
-+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-+	u64 l1_to_l2_cs;
-+	u64 l2_to_l1_cs;
-+	u64 l2_runtime_agg;
-+#endif
- } ____cacheline_aligned;
- 
- extern void copy_mm_to_paca(struct mm_struct *mm);
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 8e86eb577eb8..ed69ad58bd02 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4108,6 +4108,54 @@ static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
- 	}
- }
- 
-+static inline int kvmhv_get_l2_counters_status(void)
-+{
-+	return get_lppaca()->l2_counters_enable;
-+}
-+
-+static inline void kvmhv_set_l2_counters_status(int cpu, bool status)
-+{
-+	if (status)
-+		lppaca_of(cpu).l2_counters_enable = 1;
-+	else
-+		lppaca_of(cpu).l2_counters_enable = 0;
-+}
-+
-+int kmvhv_counters_tracepoint_regfunc(void)
-+{
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		kvmhv_set_l2_counters_status(cpu, true);
-+	}
-+	return 0;
-+}
-+
-+void kmvhv_counters_tracepoint_unregfunc(void)
-+{
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		kvmhv_set_l2_counters_status(cpu, false);
-+	}
-+}
-+
-+static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
-+{
-+	struct lppaca *lp = get_lppaca();
-+	u64 l1_to_l2_ns, l2_to_l1_ns, l2_runtime_ns;
-+
-+	l1_to_l2_ns = tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
-+	l2_to_l1_ns = tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
-+	l2_runtime_ns = tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
-+	trace_kvmppc_vcpu_stats(vcpu, l1_to_l2_ns - local_paca->l1_to_l2_cs,
-+					l2_to_l1_ns - local_paca->l2_to_l1_cs,
-+					l2_runtime_ns - local_paca->l2_runtime_agg);
-+	local_paca->l1_to_l2_cs = l1_to_l2_ns;
-+	local_paca->l2_to_l1_cs = l2_to_l1_ns;
-+	local_paca->l2_runtime_agg = l2_runtime_ns;
-+}
-+
- static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
- 				     unsigned long lpcr, u64 *tb)
- {
-@@ -4156,6 +4204,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	timer_rearm_host_dec(*tb);
- 
-+	/* Record context switch and guest_run_time data */
-+	if (kvmhv_get_l2_counters_status())
-+		do_trace_nested_cs_time(vcpu);
-+
- 	return trap;
- }
- 
-diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
-index 8d57c8428531..dc118ab88f23 100644
---- a/arch/powerpc/kvm/trace_hv.h
-+++ b/arch/powerpc/kvm/trace_hv.h
-@@ -238,6 +238,9 @@
- 	{H_MULTI_THREADS_ACTIVE,	"H_MULTI_THREADS_ACTIVE"}, \
- 	{H_OUTSTANDING_COP_OPS,		"H_OUTSTANDING_COP_OPS"}
- 
-+int kmvhv_counters_tracepoint_regfunc(void);
-+void kmvhv_counters_tracepoint_unregfunc(void);
-+
- TRACE_EVENT(kvm_guest_enter,
- 	TP_PROTO(struct kvm_vcpu *vcpu),
- 	TP_ARGS(vcpu),
-@@ -512,6 +515,30 @@ TRACE_EVENT(kvmppc_run_vcpu_exit,
- 			__entry->vcpu_id, __entry->exit, __entry->ret)
- );
- 
-+TRACE_EVENT_FN(kvmppc_vcpu_stats,
-+	TP_PROTO(struct kvm_vcpu *vcpu, u64 l1_to_l2_cs, u64 l2_to_l1_cs, u64 l2_runtime),
-+
-+	TP_ARGS(vcpu, l1_to_l2_cs, l2_to_l1_cs, l2_runtime),
-+
-+	TP_STRUCT__entry(
-+		__field(int,		vcpu_id)
-+		__field(u64,		l1_to_l2_cs)
-+		__field(u64,		l2_to_l1_cs)
-+		__field(u64,		l2_runtime)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->vcpu_id  = vcpu->vcpu_id;
-+		__entry->l1_to_l2_cs = l1_to_l2_cs;
-+		__entry->l2_to_l1_cs = l2_to_l1_cs;
-+		__entry->l2_runtime = l2_runtime;
-+	),
-+
-+	TP_printk("VCPU %d: l1_to_l2_cs_time=%llu ns l2_to_l1_cs_time=%llu ns l2_runtime=%llu ns",
-+		__entry->vcpu_id,  __entry->l1_to_l2_cs,
-+		__entry->l2_to_l1_cs, __entry->l2_runtime),
-+	kmvhv_counters_tracepoint_regfunc, kmvhv_counters_tracepoint_unregfunc
-+);
- #endif /* _TRACE_KVM_HV_H */
- 
- /* This part must be outside protection */
+3. Time taken by arch_send_call_function_single_ipi() with changes in
+this series.
+
+$ ./funclatency.py -u arch_send_call_function_single_ipi
+
+usecs               : count     distribution
+0 -> 1          : 15       |                                        |
+2 -> 3          : 7        |                                        |
+4 -> 7          : 3798     |                                        |
+8 -> 15         : 4569610  |****************************************|
+16 -> 31         : 339284   |**                                      |
+32 -> 63         : 4542     |                                        |
+64 -> 127        : 68       |                                        |
+128 -> 255        : 0        |                                        |
+256 -> 511        : 1        |                                        |
+
+avg = 11 usecs, total: 57,720,612 usecs, count: 4,917,325
+
+4. This patch series has been also tested on KVM on Power8 CPU.
+
+[1]: https://github.com/iovisor/bcc/blob/master/tools/funclatency.py
+
+Gautam Menghani (3):
+  arch/powerpc/kvm: Use bitmap to speed up resend of irqs in ICS
+  arch/powerpc/kvm: Optimize the server number -> ICP lookup
+  arch/powerpc/kvm: Reduce lock contention by moving spinlock from ics
+    to irq_state
+
+ arch/powerpc/kvm/book3s_hv_rm_xics.c |  8 ++--
+ arch/powerpc/kvm/book3s_xics.c       | 70 ++++++++++++----------------
+ arch/powerpc/kvm/book3s_xics.h       | 13 ++----
+ 3 files changed, 39 insertions(+), 52 deletions(-)
+
 -- 
 2.44.0
 
