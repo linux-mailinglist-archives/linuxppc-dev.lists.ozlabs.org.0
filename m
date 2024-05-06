@@ -1,92 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D9E8BC84F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 09:26:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06738BC877
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 09:38:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1BOp5fj;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMuxDS6H;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VXtJ55hP1z3cDT
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 17:26:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VXtYp3MZYz30WP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 17:38:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1BOp5fj;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMuxDS6H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VXtHL29V0z30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2024 17:25:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VXtY536hRz30TJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2024 17:37:44 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714980346;
+	s=mimecast20190719; t=1714981060;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SZ0Aala6XBf0FrBD9ExE2XGN+wlQ/S9jAS2cHopSo0Q=;
-	b=OkC5bcJ22TYqYwYbrGB72Bu91Gj2HaX9SFeP0Y5Y/K1vqQb8aO4OM/Uw4R2r/XTknwAoGB
-	/ivwO2fHzCwD2GUV3/vI0rQ9ty8jc5SQzK1ATKLcHUHgojkJjy0O6wCLkKPDoYfNg0kybS
-	6ogyBe49EmxvNRXzWQ5RUSzQlS8FEaI=
+	bh=z2/StfFCKiPHiaGerg/V2iv95okh7df8NQGDSBy2T8Y=;
+	b=d1BOp5fj2YColrMbFQXmIf1F8kc7Sx9RSqIjKjRAT4FEydlgtAHmF1XEGoiw8Hbwv2elCM
+	pTtHY5cV5oDdEWvkP2N630Rg9z65L5VwnSGKqwW89evq6bIF69Otefc7fe6JaRYbBfB8CD
+	wLWWx6ic5epAoOyUzD0nSL5nEOIioIY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714980346;
+	s=mimecast20190719; t=1714981061;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SZ0Aala6XBf0FrBD9ExE2XGN+wlQ/S9jAS2cHopSo0Q=;
-	b=OkC5bcJ22TYqYwYbrGB72Bu91Gj2HaX9SFeP0Y5Y/K1vqQb8aO4OM/Uw4R2r/XTknwAoGB
-	/ivwO2fHzCwD2GUV3/vI0rQ9ty8jc5SQzK1ATKLcHUHgojkJjy0O6wCLkKPDoYfNg0kybS
-	6ogyBe49EmxvNRXzWQ5RUSzQlS8FEaI=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=z2/StfFCKiPHiaGerg/V2iv95okh7df8NQGDSBy2T8Y=;
+	b=aMuxDS6HpkvTyzZyf5aRml0CBAiFB85zCYsqqRJ1Y/AM2Umngq7+/J7LDI9zX9a14nr/DO
+	ABaAVmEFQ4VyL7N8NSiJXsPNj9ZJ9li5yxlDwQZ7HSDAjl6Mbz4/gToo3jm++kky29OlTW
+	kAW8YZUK1xVvop7v6nTLQWMo64MUMiQ=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-4Cb9uLdJO3K0bXGRj6M1qg-1; Mon, 06 May 2024 03:25:42 -0400
-X-MC-Unique: 4Cb9uLdJO3K0bXGRj6M1qg-1
-Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-7f46ba3d89bso1605719241.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2024 00:25:42 -0700 (PDT)
+ us-mta-298-UHoKsNXNPTa5wwfcbibDYg-1; Mon, 06 May 2024 03:37:39 -0400
+X-MC-Unique: UHoKsNXNPTa5wwfcbibDYg-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7928f276862so268889685a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2024 00:37:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714980342; x=1715585142;
+        d=1e100.net; s=20230601; t=1714981059; x=1715585859;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SZ0Aala6XBf0FrBD9ExE2XGN+wlQ/S9jAS2cHopSo0Q=;
-        b=VrG3Z51JHxgPrIJ9rHSveARHL24uMWnhAvka4C2DiL1Uni7kPTURrOr8mF6qM8w4aV
-         NwkR6r5D7f0Hxj0Mc6TJcT4LJMa2UMFKRacR1ebSLJNbQnZT3eNPSpU2h3BFGGbvtvEp
-         6KLMZzkAywsesnghQrFC+RJeH2JgeODMQUzev8LnOOUy32ugT+1URH43VaCfiKR7Llio
-         fQfDE0X1mAGvn7XdiCQhDKlBznMLGHxzsUeLzHlgAgJV73ohcm/nvLGAziYQOnHNfwe2
-         hV/dCtuO5kA5iKFtA3hJyeLfXms4rKhguPf043HbnQSFkvecSWnGmxo9ilBayLfcd37Y
-         T/zA==
-X-Forwarded-Encrypted: i=1; AJvYcCXeyHRfeFR9gdXilZGR/C1M4mUmQ9GBBmksaPqGN25HMrWbrkT7dQrW7RDY7VrBmiQjH0oPyEKYfb13h6jU5ylzta3JdYet0NDOdCJ/EA==
-X-Gm-Message-State: AOJu0Yyu3nocrQGREIdyG5aS7SsMgfZi+/X7n4dTeNKQK1UQLEd7fyGt
-	iC61cqvWsiV1wFGa9FnahR1IHaOHBOny+lepow4JikpJvSImuVqEwgjnJ2xFdSZhxppkIfj12bJ
-	J81bHDZh8Uhj+oqUGhSn4/Us7bn+yvJg8pNz9EJZA6M3hx9+p4lt3ccgBD3GDEXI=
-X-Received: by 2002:a67:cd18:0:b0:47b:9ca3:e03d with SMTP id u24-20020a67cd18000000b0047b9ca3e03dmr11321214vsl.11.1714980342001;
-        Mon, 06 May 2024 00:25:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGbis0k2mVzbZ3JQqHmVCBLlJpUtAr0VgRaIB561EqwI92qR6A55x98Pi75o2ge8HOHAPFEmg==
-X-Received: by 2002:a67:cd18:0:b0:47b:9ca3:e03d with SMTP id u24-20020a67cd18000000b0047b9ca3e03dmr11321203vsl.11.1714980341669;
-        Mon, 06 May 2024 00:25:41 -0700 (PDT)
+        bh=z2/StfFCKiPHiaGerg/V2iv95okh7df8NQGDSBy2T8Y=;
+        b=u7OEPnSmwxtzb+CRHlrrTSWZXOAePHm1VZ7x2sIobcmqrEIpPcKJihNcjhW6CYGAEj
+         smnQTdYer//qVZu1Ix9C0HLeNgOFGn5g1Krjy+ZlBhJQF8midnMyGPC3N4vhcdiTNe3V
+         WNfTgTUgylX1Jzzu3XMSuo3yQdoFz6KkcyhMrs2jYGPbWrTsK3/7lMq6OLDixsEbDaSD
+         4TwHnMFW9zXOWvXBR1y4FcI91kmSBgjB75rFbub36Ft6ql9UDTbBYQ2xdhhx6wJ2aZZz
+         Xk4KEfMr++38g/nrqNjILVNQh71xxdcmPHKzkAgCGanPxDrqCViUIADp0QM3zCZ/4ReK
+         rEXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHLKcdracValMwwkvoFmT/LKyepX7IUPa8nKxQ760k8rsjpKC/K8ky9tIQp/tS1L2ycTb2uBEQg/j5cOe3cv8FOT6OcldSY6Vcno7O4Q==
+X-Gm-Message-State: AOJu0YwMxJh6ZHbmI2XcLuQYMPPpwgmV0fbvdG8thi0LzhIfYJJnTEKe
+	F3Zj2oY6htN8d0G4eZL2BIQMTj1djBvy3ryxJ9SAfy3V4J5f+l3vEKpCvK4+GNw4UkfjJSnDA8l
+	/H9pvzpfCtbdS8smdRy2xAW1y8zA2mjtuR0eiCaB+O1YPzU5dxMEGfuoCZ9Az248=
+X-Received: by 2002:a05:620a:4493:b0:792:8448:8cbd with SMTP id x19-20020a05620a449300b0079284488cbdmr9070658qkp.26.1714981058911;
+        Mon, 06 May 2024 00:37:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEvAeNYYY70BsD6iznpZJo2g5JJLURbvdXrZThg+8wMCRbE3UjcLT4AxnTUEfh6Vf4HaXVfw==
+X-Received: by 2002:a05:620a:4493:b0:792:8448:8cbd with SMTP id x19-20020a05620a449300b0079284488cbdmr9070640qkp.26.1714981058354;
+        Mon, 06 May 2024 00:37:38 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-179-34.web.vodafone.de. [109.43.179.34])
-        by smtp.gmail.com with ESMTPSA id p17-20020a0cf691000000b006a0cc19f870sm3528402qvn.9.2024.05.06.00.25.39
+        by smtp.gmail.com with ESMTPSA id p18-20020a05620a22f200b0078edc0a447dsm3642549qki.68.2024.05.06.00.37.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 May 2024 00:25:41 -0700 (PDT)
-Message-ID: <aed85321-7e8e-4202-9f91-791229ef9455@redhat.com>
-Date: Mon, 6 May 2024 09:25:37 +0200
+        Mon, 06 May 2024 00:37:38 -0700 (PDT)
+Message-ID: <f2411fc8-5f90-4577-9599-f43bb8694cd0@redhat.com>
+Date: Mon, 6 May 2024 09:37:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v9 02/31] report: Add known failure
- reporting option
-To: Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>
+Subject: Re: [kvm-unit-tests PATCH v9 03/31] powerpc: Mark known failing tests
+ as kfail
+To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
- <20240504122841.1177683-3-npiggin@gmail.com>
+ <20240504122841.1177683-4-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -130,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240504122841.1177683-3-npiggin@gmail.com>
+In-Reply-To: <20240504122841.1177683-4-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -147,42 +147,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 04/05/2024 14.28, Nicholas Piggin wrote:
-> There are times we would like to test a function that is known to fail
-> in some conditions due to a bug in implementation (QEMU, KVM, or even
-> hardware). It would be nice to count these as known failures and not
-> report a summary failure.
+> Mark the failing h_cede_tm and spapr_vpa tests as kfail.
 > 
-> xfail is not the same thing, xfail means failure is required and a pass
-> causes the test to fail. So add kfail for known failures.
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   powerpc/spapr_vpa.c | 3 ++-
+>   powerpc/tm.c        | 3 ++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/powerpc/spapr_vpa.c b/powerpc/spapr_vpa.c
+> index c2075e157..46fa0485c 100644
+> --- a/powerpc/spapr_vpa.c
+> +++ b/powerpc/spapr_vpa.c
+> @@ -150,7 +150,8 @@ static void test_vpa(void)
+>   		report_fail("Could not deregister after registration");
+>   
+>   	disp_count1 = be32_to_cpu(vpa->vp_dispatch_count);
+> -	report(disp_count1 % 2 == 1, "Dispatch count is odd after deregister");
+> +	/* TCG known fail, could be wrong test, must verify against PowerVM */
+> +	report_kfail(true, disp_count1 % 2 == 1, "Dispatch count is odd after deregister");
 
-Actually, I wonder whether that's not rather a bug in report_xfail() 
-instead. Currently, when you call report_xfail(true, ...), the result is 
-*always* counted as a failure, either as an expected failure (if the test 
-really failed), or as a normal failure (if the test succeeded). What's the 
-point of counting a successful test as a failure??
+Using "true" as first argument looks rather pointless - then you could also 
+simply delete the test completely if it can never be tested reliably.
 
-Andrew, you've originally introduced report_xfail in commit a5af7b8a67e, 
-could you please comment on this?
+Thus could you please introduce a helper function is_tcg() that could be 
+used to check whether we run under TCG (and not KVM)? I think you could 
+check for "linux,kvm" in the "compatible" property in /hypervisor in the 
+device tree to see whether we're running in KVM mode or in TCG mode.
 
-IMHO we should rather do something like this instead:
+>   	report_prefix_pop();
+>   }
+> diff --git a/powerpc/tm.c b/powerpc/tm.c
+> index 6b1ceeb6e..d9e7f455d 100644
+> --- a/powerpc/tm.c
+> +++ b/powerpc/tm.c
+> @@ -133,7 +133,8 @@ int main(int argc, char **argv)
+>   		report_skip("TM is not available");
+>   		goto done;
+>   	}
+> -	report(cpus_with_tm == nr_cpus,
+> +	/* KVM does not report TM in secondary threads in POWER9 */
+> +	report_kfail(true, cpus_with_tm == nr_cpus,
+>   	       "TM available in all 'ibm,pa-features' properties");
 
-diff --git a/lib/report.c b/lib/report.c
---- a/lib/report.c
-+++ b/lib/report.c
-@@ -98,7 +98,7 @@ static void va_report(const char *msg_fmt,
-                 skipped++;
-         else if (xfail && !pass)
-                 xfailures++;
--       else if (xfail || !pass)
-+       else if (!xfail && !pass)
-                 failures++;
-
-         spin_unlock(&lock);
+Could you check the PVR for POWER9 here instead of using "true" as first 
+parameter?
 
   Thomas
 
