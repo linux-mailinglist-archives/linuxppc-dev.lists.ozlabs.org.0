@@ -1,92 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F908BD274
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 18:20:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64218BD27E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 18:20:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Zl5mrDT5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DrIDc9wr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VY67l6QmVz3cyc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:20:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VY68X1xD2z3cb4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:20:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Zl5mrDT5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DrIDc9wr;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY65m6V15z30Vr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 02:18:20 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 446FEDnQ006374;
-	Mon, 6 May 2024 16:18:14 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY65v5nFMz3cM7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 02:18:27 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 446GIH6C023385;
+	Mon, 6 May 2024 16:18:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=kMBRKF0m+ZIYkax/WD20be0LrYx6C1oQnvg851lGN1U=;
- b=Zl5mrDT5E/gnrFcd57mYQEDskqCsM/DYWyxnlk24i+4JEDVhyia1Q97BdBvlS0xzHcto
- eJ/MnMWhpgyXjNs4RybzO79C5YblFikQfLIyJtWBYPoLXe0oiFiVXXDqbIdcJs9Frjvo
- nYSTaUffMQCneTNcN9luweU8m012XUePy2Pl0/ohLoBshkBJ9PwUF5N6h0uQnWe49590
- ovVyNuUfGzhex/XQWrwkld81agaDOUyGoPtLHPuZknLVVvlanRsgSsi7m5cl2qa4JTDd
- iy7yxHg37hcQdLrGmt7AWjTGAPEvnU9YFO0M0iZH8NJPoCeS6R0DkC4Dj5MYGtQR6zC+ SA== 
+ bh=YI+s/9jNr6WRySWWHUvNpGEk6ucoohYRHUK1CkL4ZOQ=;
+ b=DrIDc9wrs64KSTS+uTmGrgrgoiJrK3Er+nI/XHpyaMmoksdxb4gTTn2YCkyQj3FD5hrh
+ 7SPIxUpOPC/7IEY1FV5TpCTroobr6L7L0e+UuYReWiJTuUYJvDlrnkZ+48MDUc4e+581
+ /QVXR7JFBQVlSfbHEdHOR/bx1cZi5Y6Dd1RelfPLUcIdo/PxZJ40CxDSWu20KlPqHFrB
+ xmvn9nCM+CRKIe4rkI0ZMfFLiOm7aKWiMfhx3hQMLbJ1zv4TfCDpCwH+08jX+JLkFa69
+ 8EXSmZAoLDuQ65L9phdTYTzn0bEUJ/ppN8PYbvHDIMsK2lg4DP09lOGAZ/vtYvwYxs2d ig== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy11k89ny-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy2kt800h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 16:18:13 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 446GIDHe011646;
-	Mon, 6 May 2024 16:18:13 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy11k89nw-1
+	Mon, 06 May 2024 16:18:21 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 446GIKBd023408;
+	Mon, 6 May 2024 16:18:20 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy2kt800f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 16:18:13 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 446G9qJ8010635;
-	Mon, 6 May 2024 16:18:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xx0bp0vec-1
+	Mon, 06 May 2024 16:18:20 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 446F0Gcx030859;
+	Mon, 6 May 2024 16:18:20 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xwybts4ds-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 16:18:12 +0000
+	Mon, 06 May 2024 16:18:20 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 446GI6Dj48103934
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 446GIEPQ18547032
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 May 2024 16:18:08 GMT
+	Mon, 6 May 2024 16:18:16 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3D0C20043;
-	Mon,  6 May 2024 16:18:06 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B2B1E20040;
+	Mon,  6 May 2024 16:18:14 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 12A1D20040;
-	Mon,  6 May 2024 16:18:00 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3639220043;
+	Mon,  6 May 2024 16:18:10 +0000 (GMT)
 Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com.com (unknown [9.43.105.31])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 May 2024 16:17:58 +0000 (GMT)
+	Mon,  6 May 2024 16:18:09 +0000 (GMT)
 From: Gautam Menghani <gautam@linux.ibm.com>
 To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         naveen.n.rao@linux.ibm.com
-Subject: [PATCH 2/3] arch/powerpc/kvm: Optimize the server number -> ICP lookup
-Date: Mon,  6 May 2024 21:47:30 +0530
-Message-ID: <20240506161735.83358-3-gautam@linux.ibm.com>
+Subject: [PATCH 3/3] arch/powerpc/kvm: Reduce lock contention by moving spinlock from ics to irq_state
+Date: Mon,  6 May 2024 21:47:31 +0530
+Message-ID: <20240506161735.83358-4-gautam@linux.ibm.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240506161735.83358-1-gautam@linux.ibm.com>
 References: <20240506161735.83358-1-gautam@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UU-kyuhKFyzoEfxvb1KalCQhcwB5PbDh
-X-Proofpoint-ORIG-GUID: Br6O1nZSQbn2vhMdQCbldY1bQydJLiY6
+X-Proofpoint-ORIG-GUID: 4gipCWtZDXNoC-sVQctrGEDKavqn7ILJ
+X-Proofpoint-GUID: yRPT_3qffr7ZSW7TOzde6sRtrfcS9e1U
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-06_11,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 lowpriorityscore=0
- mlxlogscore=220 impostorscore=0 mlxscore=1 adultscore=0 clxscore=1015
- priorityscore=1501 spamscore=1 malwarescore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2405060114
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=559 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
+ definitions=main-2405060114
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,71 +102,229 @@ Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Given a server number, kvmppc_xics_find_server() does a linear search
-over the vcpus of a VM. Optimize this logic by using an array to
-maintain the mapping between server number -> icp.
+Take a spinlock on state of an IRQ instead of an entire ICS. This
+improves scalability by reducing contention.
 
 Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 ---
- arch/powerpc/kvm/book3s_xics.c |  4 ++--
- arch/powerpc/kvm/book3s_xics.h | 10 ++--------
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ arch/powerpc/kvm/book3s_hv_rm_xics.c |  8 ++---
+ arch/powerpc/kvm/book3s_xics.c       | 44 ++++++++++++----------------
+ arch/powerpc/kvm/book3s_xics.h       |  2 +-
+ 3 files changed, 23 insertions(+), 31 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_xics.c b/arch/powerpc/kvm/book3s_xics.c
-index 12de526f04c4..1dc2f77571e7 100644
---- a/arch/powerpc/kvm/book3s_xics.c
-+++ b/arch/powerpc/kvm/book3s_xics.c
-@@ -47,8 +47,6 @@
-  * TODO
-  * ====
-  *
-- * - Speed up server# -> ICP lookup (array ? hash table ?)
-- *
-  * - Make ICS lockless as well, or at least a per-interrupt lock or hashed
-  *   locks array to improve scalability
-  */
-@@ -1062,6 +1060,7 @@ static struct kvmppc_ics *kvmppc_xics_create_ics(struct kvm *kvm,
- static int kvmppc_xics_create_icp(struct kvm_vcpu *vcpu, unsigned long server_num)
- {
- 	struct kvmppc_icp *icp;
-+	struct kvm *kvm = vcpu->kvm;
+diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+index e42984878503..178bc869b519 100644
+--- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
++++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+@@ -308,7 +308,7 @@ static void icp_rm_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 	state = &ics->irq_state[src];
  
- 	if (!vcpu->kvm->arch.xics)
- 		return -ENODEV;
-@@ -1078,6 +1077,7 @@ static int kvmppc_xics_create_icp(struct kvm_vcpu *vcpu, unsigned long server_nu
- 	icp->state.mfrr = MASKED;
- 	icp->state.pending_pri = MASKED;
- 	vcpu->arch.icp = icp;
-+	kvm->arch.xics->icps[server_num] = icp;
+ 	/* Get a lock on the ICS */
+-	arch_spin_lock(&ics->lock);
++	arch_spin_lock(&state->lock);
  
- 	XICS_DBG("created server for vcpu %d\n", vcpu->vcpu_id);
- 
-diff --git a/arch/powerpc/kvm/book3s_xics.h b/arch/powerpc/kvm/book3s_xics.h
-index 8fcb34ea47a4..feeb0897d555 100644
---- a/arch/powerpc/kvm/book3s_xics.h
-+++ b/arch/powerpc/kvm/book3s_xics.h
-@@ -111,19 +111,13 @@ struct kvmppc_xics {
- 	u32 err_noics;
- 	u32 err_noicp;
- 	struct kvmppc_ics *ics[KVMPPC_XICS_MAX_ICS_ID + 1];
-+	DECLARE_FLEX_ARRAY(struct kvmppc_icp *, icps);
- };
- 
- static inline struct kvmppc_icp *kvmppc_xics_find_server(struct kvm *kvm,
- 							 u32 nr)
- {
--	struct kvm_vcpu *vcpu = NULL;
--	unsigned long i;
--
--	kvm_for_each_vcpu(i, vcpu, kvm) {
--		if (vcpu->arch.icp && nr == vcpu->arch.icp->server_num)
--			return vcpu->arch.icp;
--	}
--	return NULL;
-+	return kvm->arch.xics->icps[nr];
+ 	/* Get our server */
+ 	if (!icp || state->server != icp->server_num) {
+@@ -368,7 +368,7 @@ static void icp_rm_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 		 * Delivery was successful, did we reject somebody else ?
+ 		 */
+ 		if (reject && reject != XICS_IPI) {
+-			arch_spin_unlock(&ics->lock);
++			arch_spin_unlock(&state->lock);
+ 			icp->n_reject++;
+ 			new_irq = reject;
+ 			check_resend = 0;
+@@ -397,13 +397,13 @@ static void icp_rm_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 		smp_mb();
+ 		if (!icp->state.need_resend) {
+ 			state->resend = 0;
+-			arch_spin_unlock(&ics->lock);
++			arch_spin_unlock(&state->lock);
+ 			check_resend = 0;
+ 			goto again;
+ 		}
+ 	}
+  out:
+-	arch_spin_unlock(&ics->lock);
++	arch_spin_unlock(&state->lock);
  }
  
- static inline struct kvmppc_ics *kvmppc_xics_find_ics(struct kvmppc_xics *xics,
+ static void icp_rm_down_cppr(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+diff --git a/arch/powerpc/kvm/book3s_xics.c b/arch/powerpc/kvm/book3s_xics.c
+index 1dc2f77571e7..466c92cf49fb 100644
+--- a/arch/powerpc/kvm/book3s_xics.c
++++ b/arch/powerpc/kvm/book3s_xics.c
+@@ -36,21 +36,13 @@
+  * LOCKING
+  * =======
+  *
+- * Each ICS has a spin lock protecting the information about the IRQ
+- * sources and avoiding simultaneous deliveries of the same interrupt.
++ * Each IRQ has a spin lock protecting its state sources and avoiding
++ * simultaneous deliveries of the same interrupt.
+  *
+  * ICP operations are done via a single compare & swap transaction
+  * (most ICP state fits in the union kvmppc_icp_state)
+  */
+ 
+-/*
+- * TODO
+- * ====
+- *
+- * - Make ICS lockless as well, or at least a per-interrupt lock or hashed
+- *   locks array to improve scalability
+- */
+-
+ /* -- ICS routines -- */
+ 
+ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+@@ -142,7 +134,7 @@ static bool write_xive(struct kvmppc_xics *xics, struct kvmppc_ics *ics,
+ 	unsigned long flags;
+ 
+ 	local_irq_save(flags);
+-	arch_spin_lock(&ics->lock);
++	arch_spin_lock(&state->lock);
+ 
+ 	state->server = server;
+ 	state->priority = priority;
+@@ -154,7 +146,7 @@ static bool write_xive(struct kvmppc_xics *xics, struct kvmppc_ics *ics,
+ 		deliver = true;
+ 	}
+ 
+-	arch_spin_unlock(&ics->lock);
++	arch_spin_unlock(&state->lock);
+ 	local_irq_restore(flags);
+ 
+ 	return deliver;
+@@ -207,10 +199,10 @@ int kvmppc_xics_get_xive(struct kvm *kvm, u32 irq, u32 *server, u32 *priority)
+ 	state = &ics->irq_state[src];
+ 
+ 	local_irq_save(flags);
+-	arch_spin_lock(&ics->lock);
++	arch_spin_lock(&state->lock);
+ 	*server = state->server;
+ 	*priority = state->priority;
+-	arch_spin_unlock(&ics->lock);
++	arch_spin_unlock(&state->lock);
+ 	local_irq_restore(flags);
+ 
+ 	return 0;
+@@ -406,7 +398,7 @@ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 
+ 	/* Get a lock on the ICS */
+ 	local_irq_save(flags);
+-	arch_spin_lock(&ics->lock);
++	arch_spin_lock(&state->lock);
+ 
+ 	/* Get our server */
+ 	if (!icp || state->server != icp->server_num) {
+@@ -467,7 +459,7 @@ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 		 * Delivery was successful, did we reject somebody else ?
+ 		 */
+ 		if (reject && reject != XICS_IPI) {
+-			arch_spin_unlock(&ics->lock);
++			arch_spin_unlock(&state->lock);
+ 			local_irq_restore(flags);
+ 			new_irq = reject;
+ 			check_resend = false;
+@@ -497,14 +489,14 @@ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 		smp_mb();
+ 		if (!icp->state.need_resend) {
+ 			state->resend = 0;
+-			arch_spin_unlock(&ics->lock);
++			arch_spin_unlock(&state->lock);
+ 			local_irq_restore(flags);
+ 			check_resend = false;
+ 			goto again;
+ 		}
+ 	}
+  out:
+-	arch_spin_unlock(&ics->lock);
++	arch_spin_unlock(&state->lock);
+ 	local_irq_restore(flags);
+ }
+ 
+@@ -992,20 +984,20 @@ static int xics_debug_show(struct seq_file *m, void *private)
+ 		seq_printf(m, "=========\nICS state for ICS 0x%x\n=========\n",
+ 			   icsid);
+ 
+-		local_irq_save(flags);
+-		arch_spin_lock(&ics->lock);
+ 
+ 		for (i = 0; i < KVMPPC_XICS_IRQ_PER_ICS; i++) {
+ 			struct ics_irq_state *irq = &ics->irq_state[i];
++			local_irq_save(flags);
++			arch_spin_lock(&irq->lock);
+ 
+ 			seq_printf(m, "irq 0x%06x: server %#x prio %#x save prio %#x pq_state %d resend %d masked pending %d\n",
+ 				   irq->number, irq->server, irq->priority,
+ 				   irq->saved_priority, irq->pq_state,
+ 				   irq->resend, irq->masked_pending);
+ 
++			arch_spin_unlock(&irq->lock);
++			local_irq_restore(flags);
+ 		}
+-		arch_spin_unlock(&ics->lock);
+-		local_irq_restore(flags);
+ 	}
+ 	return 0;
+ }
+@@ -1189,7 +1181,7 @@ static int xics_get_source(struct kvmppc_xics *xics, long irq, u64 addr)
+ 
+ 	irqp = &ics->irq_state[idx];
+ 	local_irq_save(flags);
+-	arch_spin_lock(&ics->lock);
++	arch_spin_lock(&irqp->lock);
+ 	ret = -ENOENT;
+ 	if (irqp->exists) {
+ 		val = irqp->server;
+@@ -1214,7 +1206,7 @@ static int xics_get_source(struct kvmppc_xics *xics, long irq, u64 addr)
+ 
+ 		ret = 0;
+ 	}
+-	arch_spin_unlock(&ics->lock);
++	arch_spin_unlock(&irqp->lock);
+ 	local_irq_restore(flags);
+ 
+ 	if (!ret && put_user(val, ubufp))
+@@ -1254,7 +1246,7 @@ static int xics_set_source(struct kvmppc_xics *xics, long irq, u64 addr)
+ 		return -EINVAL;
+ 
+ 	local_irq_save(flags);
+-	arch_spin_lock(&ics->lock);
++	arch_spin_lock(&irqp->lock);
+ 	irqp->server = server;
+ 	irqp->saved_priority = prio;
+ 	if (val & KVM_XICS_MASKED)
+@@ -1272,7 +1264,7 @@ static int xics_set_source(struct kvmppc_xics *xics, long irq, u64 addr)
+ 	if (val & KVM_XICS_QUEUED)
+ 		irqp->pq_state |= PQ_QUEUED;
+ 	irqp->exists = 1;
+-	arch_spin_unlock(&ics->lock);
++	arch_spin_unlock(&irqp->lock);
+ 	local_irq_restore(flags);
+ 
+ 	if (val & KVM_XICS_PENDING)
+diff --git a/arch/powerpc/kvm/book3s_xics.h b/arch/powerpc/kvm/book3s_xics.h
+index feeb0897d555..1ee62b7a8fdf 100644
+--- a/arch/powerpc/kvm/book3s_xics.h
++++ b/arch/powerpc/kvm/book3s_xics.h
+@@ -45,6 +45,7 @@ struct ics_irq_state {
+ 	u8  exists;
+ 	int intr_cpu;
+ 	u32 host_irq;
++	arch_spinlock_t lock;
+ };
+ 
+ /* Atomic ICP state, updated with a single compare & swap */
+@@ -95,7 +96,6 @@ struct kvmppc_icp {
+ };
+ 
+ struct kvmppc_ics {
+-	arch_spinlock_t lock;
+ 	u16 icsid;
+ 	struct ics_irq_state irq_state[KVMPPC_XICS_IRQ_PER_ICS];
+ 	DECLARE_BITMAP(resend_map, KVMPPC_XICS_IRQ_PER_ICS);
 -- 
 2.44.0
 
