@@ -1,92 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64218BD27E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 18:20:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9F48BD32B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 18:52:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DrIDc9wr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hsP3sHxJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VY68X1xD2z3cb4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:20:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VY6rf16R8z3cSX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:52:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DrIDc9wr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hsP3sHxJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY65v5nFMz3cM7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 02:18:27 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 446GIH6C023385;
-	Mon, 6 May 2024 16:18:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=YI+s/9jNr6WRySWWHUvNpGEk6ucoohYRHUK1CkL4ZOQ=;
- b=DrIDc9wrs64KSTS+uTmGrgrgoiJrK3Er+nI/XHpyaMmoksdxb4gTTn2YCkyQj3FD5hrh
- 7SPIxUpOPC/7IEY1FV5TpCTroobr6L7L0e+UuYReWiJTuUYJvDlrnkZ+48MDUc4e+581
- /QVXR7JFBQVlSfbHEdHOR/bx1cZi5Y6Dd1RelfPLUcIdo/PxZJ40CxDSWu20KlPqHFrB
- xmvn9nCM+CRKIe4rkI0ZMfFLiOm7aKWiMfhx3hQMLbJ1zv4TfCDpCwH+08jX+JLkFa69
- 8EXSmZAoLDuQ65L9phdTYTzn0bEUJ/ppN8PYbvHDIMsK2lg4DP09lOGAZ/vtYvwYxs2d ig== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy2kt800h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 16:18:21 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 446GIKBd023408;
-	Mon, 6 May 2024 16:18:20 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xy2kt800f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 16:18:20 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 446F0Gcx030859;
-	Mon, 6 May 2024 16:18:20 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xwybts4ds-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 16:18:20 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 446GIEPQ18547032
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 May 2024 16:18:16 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B2B1E20040;
-	Mon,  6 May 2024 16:18:14 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3639220043;
-	Mon,  6 May 2024 16:18:10 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com.com (unknown [9.43.105.31])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 May 2024 16:18:09 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen.n.rao@linux.ibm.com
-Subject: [PATCH 3/3] arch/powerpc/kvm: Reduce lock contention by moving spinlock from ics to irq_state
-Date: Mon,  6 May 2024 21:47:31 +0530
-Message-ID: <20240506161735.83358-4-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240506161735.83358-1-gautam@linux.ibm.com>
-References: <20240506161735.83358-1-gautam@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY6qs5n94z30PH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 02:51:21 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id E9ED361367
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2024 16:51:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF61C4AF67
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2024 16:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715014277;
+	bh=AMrympawOjdeqW9f3Vyqh5sM6zoI+AfndTaZX7ITQoQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hsP3sHxJWLiUmTsobNxs7HQPtyzSRtvWv/XoNr/mJvVe/espwvzAVNK3AUTkFvJ89
+	 1p1tlz8D7IgDpOBNEcLaJbUNikEtX+jUUtNDIFyWPYxIhJ57I8aXtmOA8/zP7um1kr
+	 g7zsgOYwpa9RNPJR1uViovmm0r4hVW7JxMyODrKQh0brYHV9plr7ruacrSw2Dgvsj0
+	 d6VLS69UekN6J2VYW9DbFPYpGy6VwQsJiZ9+WI+yfRnn3DVeMTv4pDxlYQ0aKKqvPu
+	 JgyPwm0YfhUayBzYROBZYAxSDH15A2gpwFktsIjxXi89+3Kz0CqlyQNQbtK0/E/TjJ
+	 H8SsYu3bBYhJg==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-518931f8d23so2124064e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2024 09:51:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUU4e5yKp/DLZEp2I4DYe8DJMx6dN9MePRVBnJSllCWlZO9v/X+Lqn6V8C69ruIQfzsMx5Cm24AuGYYX4tvvs4p0DWfPwvnlnXHRuY1yg==
+X-Gm-Message-State: AOJu0YyoQdnRI5qwxwbhKUo+Sy/92Ll85qpqppcmpw3QQtLkAm33l0EJ
+	8+HawBtPEDeq6poNHGTgTe4ehRueu0+wz5S3e1uX/L23z/wgQ16XYj4vUzub5UbN0MepZhagMX/
+	Fcw0htDX5rYfGu9Rxu6Ag3PGGBgo=
+X-Google-Smtp-Source: AGHT+IE8hVovKnq/Ao7KxUYrqkQ4fC2FP7pNSUs9xbUvQ7dbatg5c3eWqHbdWP0PSsmH0IOQoad07uIVI9rGwmkCLIM=
+X-Received: by 2002:ac2:599a:0:b0:51c:cd6d:ad21 with SMTP id
+ w26-20020ac2599a000000b0051ccd6dad21mr6675070lfn.47.1715014276154; Mon, 06
+ May 2024 09:51:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4gipCWtZDXNoC-sVQctrGEDKavqn7ILJ
-X-Proofpoint-GUID: yRPT_3qffr7ZSW7TOzde6sRtrfcS9e1U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-06_11,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=559 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
- definitions=main-2405060114
+References: <20240422092206.147078-1-sv@linux.ibm.com> <20240422092206.147078-2-sv@linux.ibm.com>
+In-Reply-To: <20240422092206.147078-2-sv@linux.ibm.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 7 May 2024 01:50:40 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASi9Pw2XLj0pegyKCOew1FCNx9=5pDpgCMH6C_VFzPe0A@mail.gmail.com>
+Message-ID: <CAK7LNASi9Pw2XLj0pegyKCOew1FCNx9=5pDpgCMH6C_VFzPe0A@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] objtool/powerpc: Enhance objtool to fixup
+ alternate feature relative addresses
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,233 +71,331 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, peterz@infradead.org, mahesh@linux.ibm.com, mingo@kernel.org, nathan@kernel.org, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Take a spinlock on state of an IRQ instead of an entire ICS. This
-improves scalability by reducing contention.
+On Mon, Apr 22, 2024 at 6:25=E2=80=AFPM Sathvika Vasireddy <sv@linux.ibm.co=
+m> wrote:
+>
+> Implement build-time fixup of alternate feature relative addresses for
+> the out-of-line (else) patch code. Initial posting to achieve the same
+> using another tool can be found at [1]. Idea is to implement this using
+> objtool instead of introducing another tool since it already has elf
+> parsing and processing covered.
+>
+> Introduce --ftr-fixup as an option to objtool to do feature fixup at
+> build-time.
+>
+> Couple of issues and warnings encountered while implementing feature
+> fixup using objtool are as follows:
+>
+> 1. libelf is creating corrupted vmlinux file after writing necessary
+> changes to the file. Due to this, kexec is not able to load new
+> kernel.
+>
+> It gives the following error:
+>         ELF Note corrupted !
+>         Cannot determine the file type of vmlinux
+>
+> To fix this issue, after opening vmlinux file, make a call to
+> elf_flagelf (e, ELF_C_SET, ELF_F_LAYOUT). This instructs libelf not
+> to touch the segment and section layout. It informs the library
+> that the application will take responsibility for the layout of the
+> file and that the library should not insert any padding between
+> sections.
+>
+> 2. Fix can't find starting instruction warnings when run on vmlinux
+>
+> Objtool throws a lot of can't find starting instruction warnings
+> when run on vmlinux with --ftr-fixup option.
+>
+> These warnings are seen because find_insn() function looks for
+> instructions at offsets that are relative to the start of the section.
+> In case of individual object files (.o), there are no can't find
+> starting instruction warnings seen because the actual offset
+> associated with an instruction is itself a relative offset since the
+> sections start at offset 0x0.
+>
+> However, in case of vmlinux, find_insn() function fails to find
+> instructions at the actual offset associated with an instruction
+> since the sections in vmlinux do not start at offset 0x0. Due to
+> this, find_insn() will look for absolute offset and not the relative
+> offset. This is resulting in a lot of can't find starting instruction
+> warnings when objtool is run on vmlinux.
+>
+> To fix this, pass offset that is relative to the start of the section
+> to find_insn().
+>
+> find_insn() is also looking for symbols of size 0. But, objtool does
+> not store empty STT_NOTYPE symbols in the rbtree. Due to this,
+> for empty symbols, objtool is throwing can't find starting
+> instruction warnings. Fix this by ignoring symbols that are of
+> size 0 since objtool does not add them to the rbtree.
+>
+> 3. Objtool is throwing unannotated intra-function call warnings
+> when run on vmlinux with --ftr-fixup option.
+>
+> One such example:
+>
+> vmlinux: warning: objtool: .text+0x3d94:
+>                         unannotated intra-function call
+>
+> .text + 0x3d94 =3D c000000000008000 + 3d94 =3D c0000000000081d4
+>
+> c0000000000081d4: 45 24 02 48  bl c00000000002a618
+> <system_reset_exception+0x8>
+>
+> c00000000002a610 <system_reset_exception>:
+> c00000000002a610:       0e 01 4c 3c     addis   r2,r12,270
+>                         c00000000002a610: R_PPC64_REL16_HA    .TOC.
+> c00000000002a614:       f0 6c 42 38     addi    r2,r2,27888
+>                         c00000000002a614: R_PPC64_REL16_LO    .TOC.+0x4
+> c00000000002a618:       a6 02 08 7c     mflr    r0
+>
+> This is happening because we should be looking for destination
+> symbols that are at absolute offsets instead of relative offsets.
+> After fixing dest_off to point to absolute offset, there are still
+> a lot of these warnings shown.
+>
+> In the above example, objtool is computing the destination
+> offset to be c00000000002a618, which points to a completely
+> different instruction. find_call_destination() is looking for this
+> offset and failing. Instead, we should be looking for destination
+> offset c00000000002a610 which points to system_reset_exception
+> function.
+>
+> Even after fixing the way destination offset is computed, and
+> after looking for dest_off - 0x8 in cases where the original offset
+> is not found, there are still a lot of unannotated intra-function
+> call warnings generated. This is due to symbols that are not
+> properly annotated.
+>
+> So, for now, as a hack to curb these warnings, do not emit
+> unannotated intra-function call warnings when objtool is run
+> with --ftr-fixup option.
+>
+> TODO:
+> This patch enables build time feature fixup only for powerpc little
+> endian configs. There are boot failures with big endian configs.
+> Posting this as an initial RFC to get some review comments while I work
+> on big endian issues.
+>
+> [1]
+> https://lore.kernel.org/linuxppc-dev/20170521010130.13552-1-npiggin@gmail=
+.com/
+>
+> Co-developed-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+> ---
+>  arch/Kconfig                              |   3 +
+>  arch/powerpc/Kconfig                      |   5 +
+>  arch/powerpc/Makefile                     |   5 +
+>  arch/powerpc/include/asm/feature-fixups.h |  11 +-
+>  arch/powerpc/kernel/vmlinux.lds.S         |  14 +-
+>  arch/powerpc/lib/feature-fixups.c         |  13 +
+>  scripts/Makefile.lib                      |   7 +
+>  scripts/Makefile.vmlinux                  |  15 +-
+>  tools/objtool/arch/powerpc/special.c      | 329 ++++++++++++++++++++++
+>  tools/objtool/arch/x86/special.c          |  49 ++++
+>  tools/objtool/builtin-check.c             |   2 +
+>  tools/objtool/check.c                     |  38 ++-
+>  tools/objtool/elf.c                       |   4 +
+>  tools/objtool/include/objtool/builtin.h   |   1 +
+>  tools/objtool/include/objtool/special.h   |  43 +++
+>  15 files changed, 530 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 9f066785bb71..8defdf86a69e 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -1206,6 +1206,9 @@ config HAVE_UACCESS_VALIDATION
+>         bool
+>         select OBJTOOL
+>
+> +config HAVE_OBJTOOL_FTR_FIXUP
+> +        bool
+> +
+>  config HAVE_STACK_VALIDATION
+>         bool
+>         help
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 1c4be3373686..806285a28231 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -23,6 +23,11 @@ config 64BIT
+>         bool
+>         default y if PPC64
+>
+> +config HAVE_OBJTOOL_FTR_FIXUP
+> +        bool
+> +        default y if CPU_LITTLE_ENDIAN && PPC64
+> +        select OBJTOOL
+> +
+>  config LIVEPATCH_64
+>         def_bool PPC64
+>         depends on LIVEPATCH
+> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> index 65261cbe5bfd..bc81847d5c3d 100644
+> --- a/arch/powerpc/Makefile
+> +++ b/arch/powerpc/Makefile
+> @@ -112,6 +112,11 @@ LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) :=3D -pie
+>  LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) +=3D -z notext
+>  LDFLAGS_vmlinux        :=3D $(LDFLAGS_vmlinux-y)
+>
+> +# --emit-relocs required for post-link fixup of alternate feature
+> +# text section relocations.
+> +LDFLAGS_vmlinux        +=3D --emit-relocs
+> +KBUILD_LDFLAGS_MODULE +=3D --emit-relocs
+> +
+>  ifdef CONFIG_PPC64
+>  ifndef CONFIG_PPC_KERNEL_PCREL
+>  ifeq ($(call cc-option-yn,-mcmodel=3Dmedium),y)
+> diff --git a/arch/powerpc/include/asm/feature-fixups.h b/arch/powerpc/inc=
+lude/asm/feature-fixups.h
+> index 77824bd289a3..006e2493c7c3 100644
+> --- a/arch/powerpc/include/asm/feature-fixups.h
+> +++ b/arch/powerpc/include/asm/feature-fixups.h
+> @@ -30,12 +30,19 @@
+>
+>  #define START_FTR_SECTION(label)       label##1:
+>
+> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+>  #define FTR_SECTION_ELSE_NESTED(label)                 \
+>  label##2:                                              \
+> -       .pushsection __ftr_alt_##label,"a";             \
+> +       .pushsection __ftr_alt_##label, "ax";           \
+>         .align 2;                                       \
+>  label##3:
+> -
+> +#else
+> +#define FTR_SECTION_ELSE_NESTED(label)                 \
+> +label##2 : \
+> +       .pushsection __ftr_alt_##label, "a";            \
+> +       .align 2;                                       \
+> +label##3 :
+> +#endif
+>
+>  #ifndef CONFIG_CC_IS_CLANG
+>  #define CHECK_ALT_SIZE(else_size, body_size)                   \
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmli=
+nux.lds.S
+> index f420df7888a7..6b1c61e8af47 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -105,8 +105,13 @@ SECTIONS
+>         .text : AT(ADDR(.text) - LOAD_OFFSET) {
+>                 ALIGN_FUNCTION();
+>  #endif
+> -               /* careful! __ftr_alt_* sections need to be close to .tex=
+t */
+> -               *(.text.hot .text.hot.* TEXT_MAIN .text.fixup .text.unlik=
+ely .text.unlikely.* .fixup __ftr_alt_* .ref.text);
+> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+> +               *(.text.hot .text.hot.* TEXT_MAIN .text.fixup .text.unlik=
+ely
+> +                       .text.unlikely.* .fixup .ref.text);
+> +#else
+> +               *(.text.hot .text.hot.* TEXT_MAIN .text.fixup .text.unlik=
+ely
+> +                       .text.unlikely.* .fixup __ftr_alt_* .ref.text);
+> +#endif
+>                 *(.tramp.ftrace.text);
+>                 NOINSTR_TEXT
+>                 SCHED_TEXT
+> @@ -276,6 +281,11 @@ SECTIONS
+>                 _einittext =3D .;
+>                 *(.tramp.ftrace.init);
+>         } :text
+> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+> +       .__ftr_alternates.text : AT(ADDR(.__ftr_alternates.text) - LOAD_O=
+FFSET) {
+> +               *(__ftr_alt*);
+> +       }
+> +#endif
+>
+>         /* .exit.text is discarded at runtime, not link time,
+>          * to deal with references from __bug_table
+> diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature=
+-fixups.c
+> index 4f82581ca203..8c5eb7c8612f 100644
+> --- a/arch/powerpc/lib/feature-fixups.c
+> +++ b/arch/powerpc/lib/feature-fixups.c
+> @@ -44,6 +44,18 @@ static u32 *calc_addr(struct fixup_entry *fcur, long o=
+ffset)
+>         return (u32 *)((unsigned long)fcur + offset);
+>  }
+>
+> +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+> +static int patch_alt_instruction(u32 *src, u32 *dest, u32 *alt_start, u3=
+2 *alt_end)
+> +{
+> +       ppc_inst_t instr;
+> +
+> +       instr =3D ppc_inst_read(src);
+> +
+> +       raw_patch_instruction(dest, instr);
+> +
+> +       return 0;
+> +}
+> +#else
+>  static int patch_alt_instruction(u32 *src, u32 *dest, u32 *alt_start, u3=
+2 *alt_end)
+>  {
+>         int err;
+> @@ -66,6 +78,7 @@ static int patch_alt_instruction(u32 *src, u32 *dest, u=
+32 *alt_start, u32 *alt_e
+>
+>         return 0;
+>  }
+> +#endif
+>
+>  static int patch_feature_section_mask(unsigned long value, unsigned long=
+ mask,
+>                                       struct fixup_entry *fcur)
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index c65bb0fbd136..8fff27b9bdcb 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -290,6 +290,13 @@ ifneq ($(objtool-args-y),)
+>  cmd_objtool =3D $(if $(objtool-enabled), ; $(objtool) $(objtool-args) $@=
+)
+>  endif
+>
+> +cmd_objtool_vmlinux :=3D
+> +ifeq ($(CONFIG_HAVE_OBJTOOL_FTR_FIXUP),y)
+> +cmd_objtool_vmlinux =3D $(if $(objtool-enabled), ; $(objtool) $(objtool-=
+args) $@)
+> +vmlinux:
+> +    $(cmd_objtool_vmlinux)
 
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv_rm_xics.c |  8 ++---
- arch/powerpc/kvm/book3s_xics.c       | 44 ++++++++++++----------------
- arch/powerpc/kvm/book3s_xics.h       |  2 +-
- 3 files changed, 23 insertions(+), 31 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
-index e42984878503..178bc869b519 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
-@@ -308,7 +308,7 @@ static void icp_rm_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 	state = &ics->irq_state[src];
- 
- 	/* Get a lock on the ICS */
--	arch_spin_lock(&ics->lock);
-+	arch_spin_lock(&state->lock);
- 
- 	/* Get our server */
- 	if (!icp || state->server != icp->server_num) {
-@@ -368,7 +368,7 @@ static void icp_rm_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 		 * Delivery was successful, did we reject somebody else ?
- 		 */
- 		if (reject && reject != XICS_IPI) {
--			arch_spin_unlock(&ics->lock);
-+			arch_spin_unlock(&state->lock);
- 			icp->n_reject++;
- 			new_irq = reject;
- 			check_resend = 0;
-@@ -397,13 +397,13 @@ static void icp_rm_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 		smp_mb();
- 		if (!icp->state.need_resend) {
- 			state->resend = 0;
--			arch_spin_unlock(&ics->lock);
-+			arch_spin_unlock(&state->lock);
- 			check_resend = 0;
- 			goto again;
- 		}
- 	}
-  out:
--	arch_spin_unlock(&ics->lock);
-+	arch_spin_unlock(&state->lock);
- }
- 
- static void icp_rm_down_cppr(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
-diff --git a/arch/powerpc/kvm/book3s_xics.c b/arch/powerpc/kvm/book3s_xics.c
-index 1dc2f77571e7..466c92cf49fb 100644
---- a/arch/powerpc/kvm/book3s_xics.c
-+++ b/arch/powerpc/kvm/book3s_xics.c
-@@ -36,21 +36,13 @@
-  * LOCKING
-  * =======
-  *
-- * Each ICS has a spin lock protecting the information about the IRQ
-- * sources and avoiding simultaneous deliveries of the same interrupt.
-+ * Each IRQ has a spin lock protecting its state sources and avoiding
-+ * simultaneous deliveries of the same interrupt.
-  *
-  * ICP operations are done via a single compare & swap transaction
-  * (most ICP state fits in the union kvmppc_icp_state)
-  */
- 
--/*
-- * TODO
-- * ====
-- *
-- * - Make ICS lockless as well, or at least a per-interrupt lock or hashed
-- *   locks array to improve scalability
-- */
--
- /* -- ICS routines -- */
- 
- static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
-@@ -142,7 +134,7 @@ static bool write_xive(struct kvmppc_xics *xics, struct kvmppc_ics *ics,
- 	unsigned long flags;
- 
- 	local_irq_save(flags);
--	arch_spin_lock(&ics->lock);
-+	arch_spin_lock(&state->lock);
- 
- 	state->server = server;
- 	state->priority = priority;
-@@ -154,7 +146,7 @@ static bool write_xive(struct kvmppc_xics *xics, struct kvmppc_ics *ics,
- 		deliver = true;
- 	}
- 
--	arch_spin_unlock(&ics->lock);
-+	arch_spin_unlock(&state->lock);
- 	local_irq_restore(flags);
- 
- 	return deliver;
-@@ -207,10 +199,10 @@ int kvmppc_xics_get_xive(struct kvm *kvm, u32 irq, u32 *server, u32 *priority)
- 	state = &ics->irq_state[src];
- 
- 	local_irq_save(flags);
--	arch_spin_lock(&ics->lock);
-+	arch_spin_lock(&state->lock);
- 	*server = state->server;
- 	*priority = state->priority;
--	arch_spin_unlock(&ics->lock);
-+	arch_spin_unlock(&state->lock);
- 	local_irq_restore(flags);
- 
- 	return 0;
-@@ -406,7 +398,7 @@ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 
- 	/* Get a lock on the ICS */
- 	local_irq_save(flags);
--	arch_spin_lock(&ics->lock);
-+	arch_spin_lock(&state->lock);
- 
- 	/* Get our server */
- 	if (!icp || state->server != icp->server_num) {
-@@ -467,7 +459,7 @@ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 		 * Delivery was successful, did we reject somebody else ?
- 		 */
- 		if (reject && reject != XICS_IPI) {
--			arch_spin_unlock(&ics->lock);
-+			arch_spin_unlock(&state->lock);
- 			local_irq_restore(flags);
- 			new_irq = reject;
- 			check_resend = false;
-@@ -497,14 +489,14 @@ static void icp_deliver_irq(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 		smp_mb();
- 		if (!icp->state.need_resend) {
- 			state->resend = 0;
--			arch_spin_unlock(&ics->lock);
-+			arch_spin_unlock(&state->lock);
- 			local_irq_restore(flags);
- 			check_resend = false;
- 			goto again;
- 		}
- 	}
-  out:
--	arch_spin_unlock(&ics->lock);
-+	arch_spin_unlock(&state->lock);
- 	local_irq_restore(flags);
- }
- 
-@@ -992,20 +984,20 @@ static int xics_debug_show(struct seq_file *m, void *private)
- 		seq_printf(m, "=========\nICS state for ICS 0x%x\n=========\n",
- 			   icsid);
- 
--		local_irq_save(flags);
--		arch_spin_lock(&ics->lock);
- 
- 		for (i = 0; i < KVMPPC_XICS_IRQ_PER_ICS; i++) {
- 			struct ics_irq_state *irq = &ics->irq_state[i];
-+			local_irq_save(flags);
-+			arch_spin_lock(&irq->lock);
- 
- 			seq_printf(m, "irq 0x%06x: server %#x prio %#x save prio %#x pq_state %d resend %d masked pending %d\n",
- 				   irq->number, irq->server, irq->priority,
- 				   irq->saved_priority, irq->pq_state,
- 				   irq->resend, irq->masked_pending);
- 
-+			arch_spin_unlock(&irq->lock);
-+			local_irq_restore(flags);
- 		}
--		arch_spin_unlock(&ics->lock);
--		local_irq_restore(flags);
- 	}
- 	return 0;
- }
-@@ -1189,7 +1181,7 @@ static int xics_get_source(struct kvmppc_xics *xics, long irq, u64 addr)
- 
- 	irqp = &ics->irq_state[idx];
- 	local_irq_save(flags);
--	arch_spin_lock(&ics->lock);
-+	arch_spin_lock(&irqp->lock);
- 	ret = -ENOENT;
- 	if (irqp->exists) {
- 		val = irqp->server;
-@@ -1214,7 +1206,7 @@ static int xics_get_source(struct kvmppc_xics *xics, long irq, u64 addr)
- 
- 		ret = 0;
- 	}
--	arch_spin_unlock(&ics->lock);
-+	arch_spin_unlock(&irqp->lock);
- 	local_irq_restore(flags);
- 
- 	if (!ret && put_user(val, ubufp))
-@@ -1254,7 +1246,7 @@ static int xics_set_source(struct kvmppc_xics *xics, long irq, u64 addr)
- 		return -EINVAL;
- 
- 	local_irq_save(flags);
--	arch_spin_lock(&ics->lock);
-+	arch_spin_lock(&irqp->lock);
- 	irqp->server = server;
- 	irqp->saved_priority = prio;
- 	if (val & KVM_XICS_MASKED)
-@@ -1272,7 +1264,7 @@ static int xics_set_source(struct kvmppc_xics *xics, long irq, u64 addr)
- 	if (val & KVM_XICS_QUEUED)
- 		irqp->pq_state |= PQ_QUEUED;
- 	irqp->exists = 1;
--	arch_spin_unlock(&ics->lock);
-+	arch_spin_unlock(&irqp->lock);
- 	local_irq_restore(flags);
- 
- 	if (val & KVM_XICS_PENDING)
-diff --git a/arch/powerpc/kvm/book3s_xics.h b/arch/powerpc/kvm/book3s_xics.h
-index feeb0897d555..1ee62b7a8fdf 100644
---- a/arch/powerpc/kvm/book3s_xics.h
-+++ b/arch/powerpc/kvm/book3s_xics.h
-@@ -45,6 +45,7 @@ struct ics_irq_state {
- 	u8  exists;
- 	int intr_cpu;
- 	u32 host_irq;
-+	arch_spinlock_t lock;
- };
- 
- /* Atomic ICP state, updated with a single compare & swap */
-@@ -95,7 +96,6 @@ struct kvmppc_icp {
- };
- 
- struct kvmppc_ics {
--	arch_spinlock_t lock;
- 	u16 icsid;
- 	struct ics_irq_state irq_state[KVMPPC_XICS_IRQ_PER_ICS];
- 	DECLARE_BITMAP(resend_map, KVMPPC_XICS_IRQ_PER_ICS);
--- 
-2.44.0
 
+This is complete garbage.
+
+At first, I thought it was a build rule for vmlinux,
+but it is not because $(cmd_objtool_vmlinux) is indented
+by 4 spaces, not a tab.
+
+Of course, you cannot add a vmlinux build rule here.
+If it had been a tab instead of 4 spaces,
+Make would have shown a warning.
+
+
+
+
+
+
+> +endif
+> +
+>  cmd_gen_objtooldep =3D $(if $(objtool-enabled), { echo ; echo '$@: $$(wi=
+ldcard $(objtool))' ; } >> $(dot-target).cmd)
+>
+>  endif # CONFIG_OBJTOOL
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
