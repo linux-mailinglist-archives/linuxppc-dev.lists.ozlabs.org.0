@@ -2,35 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473478BD473
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 20:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6F08BD488
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 20:23:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VY8jF5yZ6z3cXF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 04:15:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VY8sg5TFMz3cVy
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 04:23:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=srs0=huxk=mj=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=huxk=mj=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY8hn6XjPz30VR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 04:15:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VY8sG3RmWz30Vb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 04:22:42 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 617ADCE0B16;
-	Mon,  6 May 2024 18:15:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4789AC116B1;
-	Mon,  6 May 2024 18:15:10 +0000 (UTC)
-Date: Mon, 6 May 2024 14:15:15 -0400
+	by dfw.source.kernel.org (Postfix) with ESMTP id 239F46140D;
+	Mon,  6 May 2024 18:22:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B99BC116B1;
+	Mon,  6 May 2024 18:22:35 +0000 (UTC)
+Date: Mon, 6 May 2024 14:22:40 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v8 06/17] mm: introduce execmem_alloc() and
- execmem_free()
-Message-ID: <20240506141515.10fb2a69@gandalf.local.home>
-In-Reply-To: <20240505142600.2322517-7-rppt@kernel.org>
+Subject: Re: [PATCH v8 13/17] x86/ftrace: enable dynamic ftrace without
+ CONFIG_MODULES
+Message-ID: <20240506142240.36c38d7f@gandalf.local.home>
+In-Reply-To: <20240505142600.2322517-14-rppt@kernel.org>
 References: <20240505142600.2322517-1-rppt@kernel.org>
-	<20240505142600.2322517-7-rppt@kernel.org>
+	<20240505142600.2322517-14-rppt@kernel.org>
 X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,41 +51,26 @@ Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Sam Ravnborg <sam@ravnb
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun,  5 May 2024 17:25:49 +0300
+On Sun,  5 May 2024 17:25:56 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
-> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-> index 70139d9d2e01..c8ddb7abda7c 100644
-> --- a/arch/x86/kernel/ftrace.c
-> +++ b/arch/x86/kernel/ftrace.c
-> @@ -25,6 +25,7 @@
->  #include <linux/memory.h>
->  #include <linux/vmalloc.h>
->  #include <linux/set_memory.h>
-> +#include <linux/execmem.h>
->  
->  #include <trace/syscall.h>
->  
-> @@ -261,15 +262,14 @@ void arch_ftrace_update_code(int command)
->  #ifdef CONFIG_X86_64
->  
->  #ifdef CONFIG_MODULES
-> -#include <linux/moduleloader.h>
->  /* Module allocation simplifies allocating memory for code */
->  static inline void *alloc_tramp(unsigned long size)
->  {
-> -	return module_alloc(size);
-> +	return execmem_alloc(EXECMEM_FTRACE, size);
->  }
->  static inline void tramp_free(void *tramp)
->  {
-> -	module_memfree(tramp);
-> +	execmem_free(tramp);
->  }
->  #else
->  /* Trampolines can only be created if modules are supported */
-> diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> 
+> Dynamic ftrace must allocate memory for code and this was impossible
+> without CONFIG_MODULES.
+> 
+> With execmem separated from the modules code, execmem_text_alloc() is
+> available regardless of CONFIG_MODULES.
+> 
+> Remove dependency of dynamic ftrace on CONFIG_MODULES and make
+> CONFIG_DYNAMIC_FTRACE select CONFIG_EXECMEM in Kconfig.
+> 
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> ---
+>  arch/x86/Kconfig         |  1 +
+>  arch/x86/kernel/ftrace.c | 10 ----------
+>  2 files changed, 1 insertion(+), 10 deletions(-)
 
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
 -- Steve
