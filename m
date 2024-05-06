@@ -2,90 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE7C8BC7F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 09:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D9E8BC84F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 09:26:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2UinNCx;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eElLFyrh;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VXspF4pKwz3by2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 17:04:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VXtJ55hP1z3cDT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 May 2024 17:26:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D2UinNCx;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eElLFyrh;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OkC5bcJ2;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VXsnT3F0Rz2yvp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2024 17:03:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VXtHL29V0z30Sv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 May 2024 17:25:49 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714978999;
+	s=mimecast20190719; t=1714980346;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QnO7jBPKKqZ6Z81KpQ6b8hLP1pvwmRM1V0g0UAtBOn0=;
-	b=D2UinNCxZ+AjhWY0DDTKeFC4R6v1eW8m9kQvqKMV5pewViiC9eDozPlMujxwuXKruywfBi
-	I8ztEhwLIyW/II/cpKe7EXSMWPBLU9epCuL+ZJTvZS5SPI5BMgqc35NNJXRG/6XLNrSdyE
-	baPiwxuFtbGHNaBJ8rw2XzZ40yIvA1s=
+	bh=SZ0Aala6XBf0FrBD9ExE2XGN+wlQ/S9jAS2cHopSo0Q=;
+	b=OkC5bcJ22TYqYwYbrGB72Bu91Gj2HaX9SFeP0Y5Y/K1vqQb8aO4OM/Uw4R2r/XTknwAoGB
+	/ivwO2fHzCwD2GUV3/vI0rQ9ty8jc5SQzK1ATKLcHUHgojkJjy0O6wCLkKPDoYfNg0kybS
+	6ogyBe49EmxvNRXzWQ5RUSzQlS8FEaI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714979000;
+	s=mimecast20190719; t=1714980346;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QnO7jBPKKqZ6Z81KpQ6b8hLP1pvwmRM1V0g0UAtBOn0=;
-	b=eElLFyrhQiQfsjHMr+wZZvvIle1kpP14d17NkCUgomlLyU97mLZedBATGg9UAd3RzHNtCl
-	Zqzo4WNrjvC8EjPtifZSe0C5EXfB9WPz4viPEEBSdITyuPN0qP1WTwjJ5roP3TM9GC13y8
-	zAvWo4sKRKioGtVN5XZYAkCvf3Y2qow=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=SZ0Aala6XBf0FrBD9ExE2XGN+wlQ/S9jAS2cHopSo0Q=;
+	b=OkC5bcJ22TYqYwYbrGB72Bu91Gj2HaX9SFeP0Y5Y/K1vqQb8aO4OM/Uw4R2r/XTknwAoGB
+	/ivwO2fHzCwD2GUV3/vI0rQ9ty8jc5SQzK1ATKLcHUHgojkJjy0O6wCLkKPDoYfNg0kybS
+	6ogyBe49EmxvNRXzWQ5RUSzQlS8FEaI=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-sC62n-uCNACSTMu4fEkJ9Q-1; Mon, 06 May 2024 03:03:17 -0400
-X-MC-Unique: sC62n-uCNACSTMu4fEkJ9Q-1
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-6f04345122eso555630a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2024 00:03:17 -0700 (PDT)
+ us-mta-377-4Cb9uLdJO3K0bXGRj6M1qg-1; Mon, 06 May 2024 03:25:42 -0400
+X-MC-Unique: 4Cb9uLdJO3K0bXGRj6M1qg-1
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-7f46ba3d89bso1605719241.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 May 2024 00:25:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714978997; x=1715583797;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QnO7jBPKKqZ6Z81KpQ6b8hLP1pvwmRM1V0g0UAtBOn0=;
-        b=AJvGyCXUXu7BIsxHoJqnsM2iF9/bt3m6s+q+A72qzd+S+QuHn32q6OvnqP7Sex5/1p
-         NmDKOcgO9sQdJZGeRvYj8GpF8WRPei9lkHqSiztCrch7wjQpbK5apY4xQ9AQCKnRiWGx
-         4dsAKEbeS/XtSBGVek5ke+IUYYzW65DcO1Z4+4d8rJBPzERnNhZe9yY4vGV+FYnOVOnl
-         E+2/QFyLe4KgpKLPbiqrQEewJ9BytD3QgQlxTQX37vyZgvv8ue1tcKbiKkmEtJu4YGBz
-         y5uWFLVdeZDIstTODfdKkWLWAx/PyX4Us79DUE0JDM/9i5/SJzkk1N3HYnRWYaZzGGj5
-         kFSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVaS6LLwFCrqyECDB5Qg0lFjbQkvRSYeSQ9wRWXB2lmbXFj+9yjwOne44uZXPvNE5C4sFZD6xa1Y5SQVnFMliD7H3wd+v4IkOj9VHWCUw==
-X-Gm-Message-State: AOJu0YxiFMRGyveDvBhhM4S7tSzsYWvMhi/f8Ca9vzzNOhZ7hG53EY3T
-	ss08iR3h1qDN4SUeEJSZkfndjqOpFuncbbZtwFbcQKJlbtXMIeJPGD7CguE/K+G2BEbCKIxWZqS
-	s+Lr6iO866LrXurPIgXYJKbRGPaOXR0y1SmQT7cHXf1kX/BtYHWoFmaKLgEmOp0F2+wIMFSs=
-X-Received: by 2002:a05:6830:2683:b0:6f0:718c:f6fa with SMTP id l3-20020a056830268300b006f0718cf6famr524944otu.33.1714978996795;
-        Mon, 06 May 2024 00:03:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnIMeW46pwEBSzJeXMBA/+Nsm8YphXdw2r5+GmnzvWpZ+zuQSah5TAiHaKmMzbSqoylTMJvQ==
-X-Received: by 2002:a05:6830:2683:b0:6f0:718c:f6fa with SMTP id l3-20020a056830268300b006f0718cf6famr524930otu.33.1714978996423;
-        Mon, 06 May 2024 00:03:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714980342; x=1715585142;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SZ0Aala6XBf0FrBD9ExE2XGN+wlQ/S9jAS2cHopSo0Q=;
+        b=VrG3Z51JHxgPrIJ9rHSveARHL24uMWnhAvka4C2DiL1Uni7kPTURrOr8mF6qM8w4aV
+         NwkR6r5D7f0Hxj0Mc6TJcT4LJMa2UMFKRacR1ebSLJNbQnZT3eNPSpU2h3BFGGbvtvEp
+         6KLMZzkAywsesnghQrFC+RJeH2JgeODMQUzev8LnOOUy32ugT+1URH43VaCfiKR7Llio
+         fQfDE0X1mAGvn7XdiCQhDKlBznMLGHxzsUeLzHlgAgJV73ohcm/nvLGAziYQOnHNfwe2
+         hV/dCtuO5kA5iKFtA3hJyeLfXms4rKhguPf043HbnQSFkvecSWnGmxo9ilBayLfcd37Y
+         T/zA==
+X-Forwarded-Encrypted: i=1; AJvYcCXeyHRfeFR9gdXilZGR/C1M4mUmQ9GBBmksaPqGN25HMrWbrkT7dQrW7RDY7VrBmiQjH0oPyEKYfb13h6jU5ylzta3JdYet0NDOdCJ/EA==
+X-Gm-Message-State: AOJu0Yyu3nocrQGREIdyG5aS7SsMgfZi+/X7n4dTeNKQK1UQLEd7fyGt
+	iC61cqvWsiV1wFGa9FnahR1IHaOHBOny+lepow4JikpJvSImuVqEwgjnJ2xFdSZhxppkIfj12bJ
+	J81bHDZh8Uhj+oqUGhSn4/Us7bn+yvJg8pNz9EJZA6M3hx9+p4lt3ccgBD3GDEXI=
+X-Received: by 2002:a67:cd18:0:b0:47b:9ca3:e03d with SMTP id u24-20020a67cd18000000b0047b9ca3e03dmr11321214vsl.11.1714980342001;
+        Mon, 06 May 2024 00:25:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbis0k2mVzbZ3JQqHmVCBLlJpUtAr0VgRaIB561EqwI92qR6A55x98Pi75o2ge8HOHAPFEmg==
+X-Received: by 2002:a67:cd18:0:b0:47b:9ca3:e03d with SMTP id u24-20020a67cd18000000b0047b9ca3e03dmr11321203vsl.11.1714980341669;
+        Mon, 06 May 2024 00:25:41 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-179-34.web.vodafone.de. [109.43.179.34])
-        by smtp.gmail.com with ESMTPSA id de27-20020a05620a371b00b0078ed5316f96sm3603704qkb.6.2024.05.06.00.03.14
+        by smtp.gmail.com with ESMTPSA id p17-20020a0cf691000000b006a0cc19f870sm3528402qvn.9.2024.05.06.00.25.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 May 2024 00:03:16 -0700 (PDT)
-Message-ID: <5cde6ee7-eabc-414b-a409-24a6ed141b39@redhat.com>
-Date: Mon, 6 May 2024 09:03:13 +0200
+        Mon, 06 May 2024 00:25:41 -0700 (PDT)
+Message-ID: <aed85321-7e8e-4202-9f91-791229ef9455@redhat.com>
+Date: Mon, 6 May 2024 09:25:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v9 01/31] doc: update unittests doc
-To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v9 02/31] report: Add known failure
+ reporting option
+To: Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
- <20240504122841.1177683-2-npiggin@gmail.com>
+ <20240504122841.1177683-3-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -129,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240504122841.1177683-2-npiggin@gmail.com>
+In-Reply-To: <20240504122841.1177683-3-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -146,61 +147,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 04/05/2024 14.28, Nicholas Piggin wrote:
-> This adds a few minor fixes.
+> There are times we would like to test a function that is known to fail
+> in some conditions due to a bug in implementation (QEMU, KVM, or even
+> hardware). It would be nice to count these as known failures and not
+> report a summary failure.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   docs/unittests.txt | 12 +++++++-----
->   1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/docs/unittests.txt b/docs/unittests.txt
-> index 3192a60ec..7cf2c55ad 100644
-> --- a/docs/unittests.txt
-> +++ b/docs/unittests.txt
-> @@ -15,8 +15,8 @@ unittests.cfg format
->   
->   # is the comment symbol, all following contents of the line is ignored.
->   
-> -Each unit test is defined with a [unit-test-name] line, followed by
-> -a set of parameters that control how the test case is run. The name is
-> +Each unit test is defined with a [unit-test-name] line, followed by a
-> +set of parameters that control how the test case is run. The name is
->   arbitrary and appears in the status reporting output.
->   
->   Parameters appear on their own lines under the test name, and have a
-> @@ -62,8 +62,8 @@ groups
->   groups = <group_name1> <group_name2> ...
->   
->   Used to group the test cases for the `run_tests.sh -g ...` run group
-> -option. Adding a test to the nodefault group will cause it to not be
-> -run by default.
-> +option. The group name is arbitrary, aside from the nodefault group
-> +which makes the test to not be run by default.
->   
->   accel
->   -----
-> @@ -82,8 +82,10 @@ Optional timeout in seconds, after which the test will be killed and fail.
->   
->   check
->   -----
-> -check = <path>=<<value>
-> +check = <path>=<value>
->   
->   Check a file for a particular value before running a test. The check line
->   can contain multiple files to check separated by a space, but each check
->   parameter needs to be of the form <path>=<value>
-> +
-> +The path and value can not contain space, =, or shell wildcard characters.
+> xfail is not the same thing, xfail means failure is required and a pass
+> causes the test to fail. So add kfail for known failures.
 
-Could you comment on my feedback here, please:
+Actually, I wonder whether that's not rather a bug in report_xfail() 
+instead. Currently, when you call report_xfail(true, ...), the result is 
+*always* counted as a failure, either as an expected failure (if the test 
+really failed), or as a normal failure (if the test succeeded). What's the 
+point of counting a successful test as a failure??
 
-  https://lore.kernel.org/kvm/951ccd88-0e39-4379-8d86-718e72594dd9@redhat.com/
+Andrew, you've originally introduced report_xfail in commit a5af7b8a67e, 
+could you please comment on this?
 
-  Thanks,
-   Thomas
+IMHO we should rather do something like this instead:
+
+diff --git a/lib/report.c b/lib/report.c
+--- a/lib/report.c
++++ b/lib/report.c
+@@ -98,7 +98,7 @@ static void va_report(const char *msg_fmt,
+                 skipped++;
+         else if (xfail && !pass)
+                 xfailures++;
+-       else if (xfail || !pass)
++       else if (!xfail && !pass)
+                 failures++;
+
+         spin_unlock(&lock);
+
+  Thomas
 
