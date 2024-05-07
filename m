@@ -2,39 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465F58BE641
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 16:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC1F8BE69E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 16:53:40 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JvNPgBvv;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYgwL6NF8z3cYS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 00:42:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VYh9Z3YJbz3cWP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 00:53:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JvNPgBvv;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYgvx1S9Yz3cCM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 00:41:49 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4VYgvs5jNNz4x1Q; Wed,  8 May 2024 00:41:45 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VYgvs2zlrz4x1C;
-	Wed,  8 May 2024 00:41:45 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org, Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20240502182040.774759-1-sourabhjain@linux.ibm.com>
-References: <20240502182040.774759-1-sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/crash: remove unnecessary NULL check before kvfree()
-Message-Id: <171509287315.62008.11001695873453777968.b4-ty@ellerman.id.au>
-Date: Wed, 08 May 2024 00:41:13 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYh8t4PdKz3cF6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 00:53:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id ECB1FCE126E;
+	Tue,  7 May 2024 14:53:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B756BC4AF63;
+	Tue,  7 May 2024 14:52:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715093580;
+	bh=G2fd/G6gHoEl3QR40FzwdMkgc9pQE2sWSv49OHbI4d4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JvNPgBvvlZTMle2tmEciAGw4tri1AC80m9Gm4LuqqYzLzoD5yn/+U4w1lq0hVsEPN
+	 NuNmtC1elTWZev4XncK6IHzUFAxmbg4LwnEV2c9vAfCl5HJiireagp/Ej8oPJKGuul
+	 /6wHXPs9HT5lEn/+xwvxUOqeUwCCUpDzN95f5CsNZGT/7Chke0GafGBJQAcZez/uUq
+	 7poyjgcEqoT6wr6EBEJHitW+ROmlFfZzQBtREzVs2C9YM3212ZkdWRARw8oLHMVc5H
+	 OynWw14pkd5xCPEp01lHucmRHRS0CLawCT4nnn2ZQ71hfKMrdUUgBFHkFabTYqEwrO
+	 EdReYeVrSrymw==
+Date: Tue, 7 May 2024 11:52:57 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Namhyung Kim <namhyung@kernel.org>
+Subject: Re: [PATCH V2 3/9] tools/perf: Fix a comment about multi_regs in
+ extract_reg_offset function
+Message-ID: <ZjpASVk1GezAzDAG@x1>
+References: <20240506121906.76639-1-atrajeev@linux.vnet.ibm.com>
+ <20240506121906.76639-4-atrajeev@linux.vnet.ibm.com>
+ <CAM9d7ciKUQErzu1Y7FnWCryW15xUkyJLSt-Jez9h8TYgp-tLjw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM9d7ciKUQErzu1Y7FnWCryW15xUkyJLSt-Jez9h8TYgp-tLjw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,21 +63,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, kernel test robot <lkp@intel.com>
+Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, kjain@linux.ibm.com, adrian.hunter@intel.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, jolsa@kernel.org, akanksha@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 02 May 2024 23:50:40 +0530, Sourabh Jain wrote:
-> Fix the following coccicheck build warning:
+On Mon, May 06, 2024 at 09:40:15PM -0700, Namhyung Kim wrote:
+> On Mon, May 6, 2024 at 5:19 AM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+> >
+> > Fix a comment in function which explains how multi_regs field gets set
+> > for an instruction. In the example, "mov  %rsi, 8(%rbx,%rcx,4)", the
+> > comment mistakenly referred to "dst_multi_regs = 0". Correct it to use
+> > "src_multi_regs = 0"
+> >
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > 
-> arch/powerpc/kexec/crash.c:488:2-8: WARNING: NULL check before some
-> freeing functions is not needed.
-> 
-> 
+> Acked-by: Namhyung Kim <namhyung@kernel.org>
 
-Applied to powerpc/topic/kdump-hotplug.
+Cherry picked this one into perf-tools-next.
 
-[1/1] powerpc/crash: remove unnecessary NULL check before kvfree()
-      https://git.kernel.org/powerpc/c/9803af291162dbca4b9773586a3f5c392f0dd974
+Thanks,
 
-cheers
+- Arnaldo
