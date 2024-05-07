@@ -2,58 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F3C8BD8CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 03:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DD68BD9EC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 05:56:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sSc2ij4U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=evVuxTsO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYKwS3dmBz30TQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 11:11:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VYPbD4jC8z3cPR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 13:56:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sSc2ij4U;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=evVuxTsO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYKvl1Tkfz30TM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 11:10:27 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 6ABF3CE1002;
-	Tue,  7 May 2024 01:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19C2C116B1;
-	Tue,  7 May 2024 01:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715044222;
-	bh=6jpWZYJhOwDYSVa62rHeydfZ5WH5ACGOAf5+pfKDKQw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sSc2ij4UUZgD9OWbLGvsrNaXu/Cbm+dphilCpEgFnbHTE4ZKifDQg+yJivCnvx2X5
-	 OwRfzu8BOfMt86CzbYdvhxS1mFyWzQjjJNf4dUOdek1DKNf8S/SNjqYTyLfmEgfNrS
-	 t/dyJKyZMEaKnErjk3bUN4JqWUkDdxAeUXy/Wq20Va5Vo0+y1I8xBH7IpuJ+WJgSFe
-	 mxzgr3F1u+KLg/gkgj2+86/pO3qkH4mOT/OZ/gQJIbYdWEweBM205SQw7ecolj7HBK
-	 ukEfrDttRqOM6xeyfXHGRFTpsGY/nbRUMXV/PhnDWk+VcLAqzenIALVpQ6b+0PopVG
-	 CVt4FXKS7lMZA==
-Date: Mon, 6 May 2024 18:10:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Erhard Furtner <erhard_f@mailbox.org>
-Subject: Re: WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370
- netpoll_send_skb+0x1fc/0x20c at boot when netconsole is enabled (kernel
- v6.9-rc5, v6.8.7, sungem, PowerMac G4 DP)
-Message-ID: <20240506181020.292b25f0@kernel.org>
-In-Reply-To: <20240507024258.07980f55@yea>
-References: <20240428125306.2c3080ef@legion>
-	<20240429183630.399859e2@kernel.org>
-	<20240505232713.46c03b30@yea>
-	<20240506072645.448bc49f@kernel.org>
-	<20240507024258.07980f55@yea>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYPZT07hLz30VK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 13:55:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1715054144;
+	bh=wOtPNxB5OzuiLNH0fMUK5c9wuXAdWP2Bh0gK00toAS8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=evVuxTsO7Gm7tMSnmmBSjDM4TuiWoSBD7DYmjC3UEU2GnTX2MwcFzVxP/6+l7NmnM
+	 7JtZJMkxHIamnBKP5WjbBYTKOGZHOOHZ8Wn/jvbGpwX9iW4VTgbPFDmsTZfV60cc4P
+	 4ToGoBe47wula7JmgLIVWWGxI1KkG4Gk4QH9XJDApifStJ3WaJu5as0VkowtpflfjZ
+	 1aeCvk40Pq6CCPMyw02b63LnpN+yIX3FENWe6rsT3KJlIOoA/v4O1++b6DQfIMOSTr
+	 HEs4BtC7AacZWM4FlJ6euZ32mcsiRC5qxqvZpI8Cerd0tS8TGW8UctxxJ/9eQq2HjC
+	 ei1qEaUaXLW9Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VYPZS0ThQz4x0K;
+	Tue,  7 May 2024 13:55:44 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paul Walmsley <paul@pwsan.com>
+Subject: Re: linux-next: manual merge of the risc-v tree with the powerpc tree
+In-Reply-To: <20240507100441.0ffefbd9@canb.auug.org.au>
+References: <20240507100441.0ffefbd9@canb.auug.org.au>
+Date: Tue, 07 May 2024 13:55:41 +1000
+Message-ID: <87bk5ip96q.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,35 +59,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Charlie Jenkins <charlie@rivosinc.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Benjamin Gray <bgray@linux.ibm.com>, PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 7 May 2024 02:42:58 +0200 Erhard Furtner wrote:
-> And indeed without gem_poll_controller() I don't hit the "WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370 netpoll_send_skb+0x1fc/0x20c" and "WARNING: CPU: 1 PID: 1 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x30/0x44" or the according lockdep bug at boot!
-> 
-> Re-booted the machine about 20 times without anything suspicious showing up in the dmesg. With the unpatched kernel I got the WARNING at the 2nd reboot.
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi all,
+>
+> Today's linux-next merge of the risc-v tree got conflicts in:
+>
+>   include/uapi/linux/prctl.h
+>   kernel/sys.c
+>
+> between commit:
+>
+>   628d701f2de5 ("powerpc/dexcr: Add DEXCR prctl interface")
+>
+> from the powerpc tree and commit:
+>
+>   6b9391b581fd ("riscv: Include riscv_set_icache_flush_ctx prctl")
+>
+> from the risc-v tree.
+>
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
 
-Excellent! Do you want to submit that as an official patch?
-The explanation is that we can't call disable_irq() from atomic
-context (which which netpoll runs). But the callback is no longer
-necessary as we can depend on NAPI to do the polling these days.
+Thanks.
 
-> What I still get with 'modprobe -v dev_addr_lists_test', even with gem_poll_controller() removed is:
-> 
-> [...]
-> KTAP version 1
-> 1..1
->     KTAP version 1
->     # Subtest: dev-addr-list-test
->     # module: dev_addr_lists_test
->     1..6
-> 
-> ====================================
-> WARNING: kunit_try_catch/1770 still has locks held!
-> 6.9.0-rc6-PMacG4-dirty #5 Tainted: G        W        N
-> ------------------------------------
-> 1 lock held by kunit_try_catch/1770:
->  #0: c0dbfce4 (rtnl_mutex){....}-{3:3}, at: dev_addr_test_init+0xbc/0xc8 [dev_addr_lists_test]
+As you would have seen, I accounted for 71 being taken by
+PR_RISCV_SET_ICACHE_FLUSH_CTX in my tree, so this is just a textual
+conflict.
 
-I think that's fixed in net-next.
+So should be nothing to do other than mention it to Linus.
+
+cheers
+
+> diff --cc include/uapi/linux/prctl.h
+> index 713d28788df7,524d546d697b..000000000000
+> --- a/include/uapi/linux/prctl.h
+> +++ b/include/uapi/linux/prctl.h
+> @@@ -306,20 -306,10 +306,26 @@@ struct prctl_mm_map 
+>   # define PR_RISCV_V_VSTATE_CTRL_NEXT_MASK	0xc
+>   # define PR_RISCV_V_VSTATE_CTRL_MASK		0x1f
+>   
+> + #define PR_RISCV_SET_ICACHE_FLUSH_CTX	71
+> + # define PR_RISCV_CTX_SW_FENCEI_ON	0
+> + # define PR_RISCV_CTX_SW_FENCEI_OFF	1
+> + # define PR_RISCV_SCOPE_PER_PROCESS	0
+> + # define PR_RISCV_SCOPE_PER_THREAD	1
+> + 
+>  +/* PowerPC Dynamic Execution Control Register (DEXCR) controls */
+>  +#define PR_PPC_GET_DEXCR		72
+>  +#define PR_PPC_SET_DEXCR		73
+>  +/* DEXCR aspect to act on */
+>  +# define PR_PPC_DEXCR_SBHE		0 /* Speculative branch hint enable */
+>  +# define PR_PPC_DEXCR_IBRTPD		1 /* Indirect branch recurrent target prediction disable */
+>  +# define PR_PPC_DEXCR_SRAPD		2 /* Subroutine return address prediction disable */
+>  +# define PR_PPC_DEXCR_NPHIE		3 /* Non-privileged hash instruction enable */
+>  +/* Action to apply / return */
+>  +# define PR_PPC_DEXCR_CTRL_EDITABLE	 0x1 /* Aspect can be modified with PR_PPC_SET_DEXCR */
+>  +# define PR_PPC_DEXCR_CTRL_SET		 0x2 /* Set the aspect for this process */
+>  +# define PR_PPC_DEXCR_CTRL_CLEAR	 0x4 /* Clear the aspect for this process */
+>  +# define PR_PPC_DEXCR_CTRL_SET_ONEXEC	 0x8 /* Set the aspect on exec */
+>  +# define PR_PPC_DEXCR_CTRL_CLEAR_ONEXEC	0x10 /* Clear the aspect on exec */
+>  +# define PR_PPC_DEXCR_CTRL_MASK		0x1f
+>  +
+>   #endif /* _LINUX_PRCTL_H */
+> diff --cc kernel/sys.c
+> index f9c95410278c,1b7bda0722ca..000000000000
+> --- a/kernel/sys.c
+> +++ b/kernel/sys.c
+> @@@ -146,12 -146,9 +146,15 @@@
+>   #ifndef RISCV_V_GET_CONTROL
+>   # define RISCV_V_GET_CONTROL()		(-EINVAL)
+>   #endif
+> + #ifndef RISCV_SET_ICACHE_FLUSH_CTX
+> + # define RISCV_SET_ICACHE_FLUSH_CTX(a, b)	(-EINVAL)
+> + #endif
+>  +#ifndef PPC_GET_DEXCR_ASPECT
+>  +# define PPC_GET_DEXCR_ASPECT(a, b)	(-EINVAL)
+>  +#endif
+>  +#ifndef PPC_SET_DEXCR_ASPECT
+>  +# define PPC_SET_DEXCR_ASPECT(a, b, c)	(-EINVAL)
+>  +#endif
+>   
+>   /*
+>    * this is where the system-wide overflow UID and GID are defined, for
