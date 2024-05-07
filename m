@@ -1,64 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C838BDAA9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 07:26:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3EF8BDBBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 08:41:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TWb1Ce7z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kHRNj7nI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYRZw6rF3z3cSX
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 15:26:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VYTFM1NsLz3cV9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 16:41:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TWb1Ce7z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kHRNj7nI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYRZB30L0z3bxZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 15:25:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715059539; x=1746595539;
-  h=date:from:to:cc:subject:message-id;
-  bh=pV7hb6seFddWQO0FQ2O4wtHEpSgcDGwR2rBvuZKpE3Y=;
-  b=TWb1Ce7zkk5MOKmePMawm2pEI1fnCuRlSWha/nImrDkHFR94kND51b52
-   K6oP5sC8hqSRKaCW6g5041Cp2Uo/zGUTPt1/98YMUcft3/+W8XDGLhg6O
-   kugdXi0sFtZjI72Vgh98GXUJOsqnLmKlR9I6RiIvSvR7vUB/sxX9WRg8P
-   uzg/8+xunAtu/aYFfZP+Gco8nmb169m5BKt2g59KxMh6LnnS/qfk1zTqH
-   jx9ytZMuHLv9qzoxfScTjBFmpVZccKHt3Sr/QNDQ8BNlIzYbMVSFp2wS3
-   yAxpZ/E0BjKsj8Ks7UWGDwFYKYEBDuhcUOXi/I92P4wkeqLq3DgEEprfg
-   w==;
-X-CSE-ConnectionGUID: ET0UXAfJS3iADxHDvyLm0w==
-X-CSE-MsgGUID: rAZEJO6MSrqbcHQP/8YPyw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="14613680"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="14613680"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 22:25:34 -0700
-X-CSE-ConnectionGUID: l3D7c3+0TZOO453sYAHr7A==
-X-CSE-MsgGUID: dNAa6YivS2+70AiYg9LtrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="59245188"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 06 May 2024 22:25:32 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4DKT-0001MR-38;
-	Tue, 07 May 2024 05:25:29 +0000
-Date: Tue, 07 May 2024 13:24:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- be140f1732b523947425aaafbe2e37b41b622d96
-Message-ID: <202405071327.sK4cGjkW-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYTDb3dtTz30gp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 16:40:31 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6C67660BAD;
+	Tue,  7 May 2024 06:40:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90084C4AF18;
+	Tue,  7 May 2024 06:40:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715064029;
+	bh=lRji6tTDCLCRRf3ujzewsDMDsH2PzV2Eu2B51lXry4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kHRNj7nIPewkXNrvTtYtB1Ut+pfqG96EG0ihcYqcQf04GXFLQ02EKvyMdYtY7caRK
+	 K+w7/DFMyguWiRaPYDYvcX0zi940X9fskGL9nV7sCYBLbrgB28RtTBouKMvwy+BS8C
+	 yt7qjuekm0En1EiIJTELzxUNQS8SW/IrfNBYiKD0nrFVO4oHz9HmptCtqPdFSMSClH
+	 Bqc+2bwsExrESWIRsFJTN3q1uM5AoV4ZZAmG5TmJCuvg05BoeMEDKr1Mx0+2UMIvuV
+	 n4cdOmrcv/FP7JnqfTg7dKWiIGX4DOq3OgAjGGAuEyTEaLqUopOTrHfz4FBQDZR7C4
+	 ZJgz8ouXbEx8A==
+Date: Tue, 7 May 2024 12:05:51 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Gautam Menghani <gautam@linux.ibm.com>
+Subject: Re: [PATCH v6] arch/powerpc/kvm: Add support for reading VPA
+ counters for pseries guests
+Message-ID: <bk4zdqrzthsxzd5p5ppai4pociac2ww2lsuto5zk7w6snlotuc@2ut5owudosz6>
+References: <20240506145605.73794-1-gautam@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240506145605.73794-1-gautam@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,204 +60,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: be140f1732b523947425aaafbe2e37b41b622d96  powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=n
+On Mon, May 06, 2024 at 08:26:03PM GMT, Gautam Menghani wrote:
+> PAPR hypervisor has introduced three new counters in the VPA area of
+> LPAR CPUs for KVM L2 guest (see [1] for terminology) observability - 2
+> for context switches from host to guest and vice versa, and 1 counter
+> for getting the total time spent inside the KVM guest. Add a tracepoint
+> that enables reading the counters for use by ftrace/perf. Note that this
+> tracepoint is only available for nestedv2 API (i.e, KVM on PowerVM).
+> 
+> [1] Terminology:
+> a. L1 refers to the VM (LPAR) booted on top of PAPR hypervisor
+> b. L2 refers to the KVM guest booted on top of L1.
+> 
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+> v5 -> v6:
+> 1. Use TRACE_EVENT_FN to enable/disable counters only once.
+> 2. Remove the agg. counters from vcpu->arch.
+> 3. Use PACA to maintain old counter values instead of zeroing on every
+> entry.
+> 4. Simplify variable names
+> 
+> v4 -> v5:
+> 1. Define helper functions for getting/setting the accumulation counter
+> in L2's VPA
+> 
+> v3 -> v4:
+> 1. After vcpu_run, check the VPA flag instead of checking for tracepoint
+> being enabled for disabling the cs time accumulation.
+> 
+> v2 -> v3:
+> 1. Move the counter disabling and zeroing code to a different function.
+> 2. Move the get_lppaca() inside the tracepoint_enabled() branch.
+> 3. Add the aggregation logic to maintain total context switch time.
+> 
+> v1 -> v2:
+> 1. Fix the build error due to invalid struct member reference.
+> 
+>  arch/powerpc/include/asm/lppaca.h | 11 +++++--
+>  arch/powerpc/include/asm/paca.h   |  5 +++
+>  arch/powerpc/kvm/book3s_hv.c      | 52 +++++++++++++++++++++++++++++++
+>  arch/powerpc/kvm/trace_hv.h       | 27 ++++++++++++++++
+>  4 files changed, 92 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
+> index 61ec2447dabf..f40a646bee3c 100644
+> --- a/arch/powerpc/include/asm/lppaca.h
+> +++ b/arch/powerpc/include/asm/lppaca.h
+> @@ -62,7 +62,8 @@ struct lppaca {
+>  	u8	donate_dedicated_cpu;	/* Donate dedicated CPU cycles */
+>  	u8	fpregs_in_use;
+>  	u8	pmcregs_in_use;
+> -	u8	reserved8[28];
+> +	u8	l2_counters_enable;  /* Enable usage of counters for KVM guest */
+> +	u8	reserved8[27];
+>  	__be64	wait_state_cycles;	/* Wait cycles for this proc */
+>  	u8	reserved9[28];
+>  	__be16	slb_count;		/* # of SLBs to maintain */
+> @@ -92,9 +93,13 @@ struct lppaca {
+>  	/* cacheline 4-5 */
+>  
+>  	__be32	page_ins;		/* CMO Hint - # page ins by OS */
+> -	u8	reserved12[148];
+> +	u8	reserved12[28];
+> +	volatile __be64 l1_to_l2_cs_tb;
+> +	volatile __be64 l2_to_l1_cs_tb;
+> +	volatile __be64 l2_runtime_tb;
+> +	u8 reserved13[96];
+>  	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
+> -	u8	reserved13[96];
+> +	u8	reserved14[96];
+>  } ____cacheline_aligned;
+>  
+>  #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
+> diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+> index 1d58da946739..f20ac7a6efa4 100644
+> --- a/arch/powerpc/include/asm/paca.h
+> +++ b/arch/powerpc/include/asm/paca.h
+> @@ -278,6 +278,11 @@ struct paca_struct {
+>  	struct mce_info *mce_info;
+>  	u8 mce_pending_irq_work;
+>  #endif /* CONFIG_PPC_BOOK3S_64 */
+> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+> +	u64 l1_to_l2_cs;
+> +	u64 l2_to_l1_cs;
+> +	u64 l2_runtime_agg;
+> +#endif
+>  } ____cacheline_aligned;
+>  
+>  extern void copy_mm_to_paca(struct mm_struct *mm);
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 8e86eb577eb8..ed69ad58bd02 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4108,6 +4108,54 @@ static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
+>  	}
+>  }
+>  
+> +static inline int kvmhv_get_l2_counters_status(void)
+> +{
+> +	return get_lppaca()->l2_counters_enable;
+> +}
+> +
+> +static inline void kvmhv_set_l2_counters_status(int cpu, bool status)
+> +{
+> +	if (status)
+> +		lppaca_of(cpu).l2_counters_enable = 1;
+> +	else
+> +		lppaca_of(cpu).l2_counters_enable = 0;
+> +}
+> +
+> +int kmvhv_counters_tracepoint_regfunc(void)
+> +{
+> +	int cpu;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		kvmhv_set_l2_counters_status(cpu, true);
+> +	}
+> +	return 0;
+> +}
+> +
+> +void kmvhv_counters_tracepoint_unregfunc(void)
+> +{
+> +	int cpu;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		kvmhv_set_l2_counters_status(cpu, false);
+> +	}
+> +}
+> +
+> +static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
+> +{
+> +	struct lppaca *lp = get_lppaca();
+> +	u64 l1_to_l2_ns, l2_to_l1_ns, l2_runtime_ns;
+> +
+> +	l1_to_l2_ns = tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
+> +	l2_to_l1_ns = tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
+> +	l2_runtime_ns = tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
+> +	trace_kvmppc_vcpu_stats(vcpu, l1_to_l2_ns - local_paca->l1_to_l2_cs,
+> +					l2_to_l1_ns - local_paca->l2_to_l1_cs,
+> +					l2_runtime_ns - local_paca->l2_runtime_agg);
 
-elapsed time: 923m
+Depending on how the hypervisor works, if the vcpu was in l2 when the 
+tracepoint is enabled, the counters may not be updated on exit and we 
+may emit a trace with all values zero. If that is possible, it might be 
+a good idea to only emit the trace if any of the counters are non-zero.
 
-configs tested: 181
-configs skipped: 4
+Otherwise, this looks good to me.
+Acked-by: Naveen N Rao <naveen@kernel.org>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240507   gcc  
-arc                   randconfig-002-20240507   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240507   gcc  
-arm                   randconfig-002-20240507   clang
-arm                   randconfig-003-20240507   gcc  
-arm                   randconfig-004-20240507   clang
-arm                           spitz_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240507   clang
-arm64                 randconfig-002-20240507   clang
-arm64                 randconfig-003-20240507   clang
-arm64                 randconfig-004-20240507   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240507   gcc  
-csky                  randconfig-002-20240507   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240507   clang
-hexagon               randconfig-002-20240507   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240507   clang
-i386         buildonly-randconfig-002-20240507   clang
-i386         buildonly-randconfig-003-20240507   clang
-i386         buildonly-randconfig-004-20240507   gcc  
-i386         buildonly-randconfig-005-20240507   gcc  
-i386         buildonly-randconfig-006-20240507   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240507   clang
-i386                  randconfig-002-20240507   gcc  
-i386                  randconfig-003-20240507   clang
-i386                  randconfig-004-20240507   clang
-i386                  randconfig-005-20240507   clang
-i386                  randconfig-006-20240507   clang
-i386                  randconfig-011-20240507   gcc  
-i386                  randconfig-012-20240507   clang
-i386                  randconfig-013-20240507   clang
-i386                  randconfig-014-20240507   gcc  
-i386                  randconfig-015-20240507   gcc  
-i386                  randconfig-016-20240507   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240507   gcc  
-loongarch             randconfig-002-20240507   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                           virt_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      malta_kvm_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240507   gcc  
-nios2                 randconfig-002-20240507   gcc  
-openrisc                         alldefconfig   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240507   gcc  
-parisc                randconfig-002-20240507   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                    amigaone_defconfig   gcc  
-powerpc                 mpc8313_rdb_defconfig   gcc  
-powerpc                    mvme5100_defconfig   gcc  
-powerpc               randconfig-001-20240507   gcc  
-powerpc               randconfig-002-20240507   clang
-powerpc               randconfig-003-20240507   clang
-powerpc                     tqm8560_defconfig   gcc  
-powerpc64             randconfig-001-20240507   gcc  
-powerpc64             randconfig-002-20240507   gcc  
-powerpc64             randconfig-003-20240507   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240507   clang
-riscv                 randconfig-002-20240507   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240507   gcc  
-s390                  randconfig-002-20240507   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240507   gcc  
-sh                    randconfig-002-20240507   gcc  
-sh                           se7705_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc64_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240507   gcc  
-sparc64               randconfig-002-20240507   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240507   gcc  
-um                    randconfig-002-20240507   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240507   clang
-x86_64       buildonly-randconfig-002-20240507   clang
-x86_64       buildonly-randconfig-003-20240507   clang
-x86_64       buildonly-randconfig-004-20240507   clang
-x86_64       buildonly-randconfig-005-20240507   clang
-x86_64       buildonly-randconfig-006-20240507   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240507   gcc  
-x86_64                randconfig-002-20240507   clang
-x86_64                randconfig-003-20240507   clang
-x86_64                randconfig-004-20240507   gcc  
-x86_64                randconfig-005-20240507   gcc  
-x86_64                randconfig-006-20240507   gcc  
-x86_64                randconfig-011-20240507   gcc  
-x86_64                randconfig-012-20240507   clang
-x86_64                randconfig-013-20240507   clang
-x86_64                randconfig-014-20240507   clang
-x86_64                randconfig-015-20240507   clang
-x86_64                randconfig-016-20240507   clang
-x86_64                randconfig-071-20240507   gcc  
-x86_64                randconfig-072-20240507   gcc  
-x86_64                randconfig-073-20240507   clang
-x86_64                randconfig-074-20240507   clang
-x86_64                randconfig-075-20240507   clang
-x86_64                randconfig-076-20240507   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                  audio_kc705_defconfig   gcc  
-xtensa                  nommu_kc705_defconfig   gcc  
-xtensa                randconfig-001-20240507   gcc  
-xtensa                randconfig-002-20240507   gcc  
+- Naveen
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +	local_paca->l1_to_l2_cs = l1_to_l2_ns;
+> +	local_paca->l2_to_l1_cs = l2_to_l1_ns;
+> +	local_paca->l2_runtime_agg = l2_runtime_ns;
+> +}
+> +
+>  static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+>  				     unsigned long lpcr, u64 *tb)
+>  {
+> @@ -4156,6 +4204,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+>  
+>  	timer_rearm_host_dec(*tb);
+>  
+> +	/* Record context switch and guest_run_time data */
+> +	if (kvmhv_get_l2_counters_status())
+> +		do_trace_nested_cs_time(vcpu);
+> +
+>  	return trap;
+>  }
+>  
+> diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
+> index 8d57c8428531..dc118ab88f23 100644
+> --- a/arch/powerpc/kvm/trace_hv.h
+> +++ b/arch/powerpc/kvm/trace_hv.h
+> @@ -238,6 +238,9 @@
+>  	{H_MULTI_THREADS_ACTIVE,	"H_MULTI_THREADS_ACTIVE"}, \
+>  	{H_OUTSTANDING_COP_OPS,		"H_OUTSTANDING_COP_OPS"}
+>  
+> +int kmvhv_counters_tracepoint_regfunc(void);
+> +void kmvhv_counters_tracepoint_unregfunc(void);
+> +
+>  TRACE_EVENT(kvm_guest_enter,
+>  	TP_PROTO(struct kvm_vcpu *vcpu),
+>  	TP_ARGS(vcpu),
+> @@ -512,6 +515,30 @@ TRACE_EVENT(kvmppc_run_vcpu_exit,
+>  			__entry->vcpu_id, __entry->exit, __entry->ret)
+>  );
+>  
+> +TRACE_EVENT_FN(kvmppc_vcpu_stats,
+> +	TP_PROTO(struct kvm_vcpu *vcpu, u64 l1_to_l2_cs, u64 l2_to_l1_cs, u64 l2_runtime),
+> +
+> +	TP_ARGS(vcpu, l1_to_l2_cs, l2_to_l1_cs, l2_runtime),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(int,		vcpu_id)
+> +		__field(u64,		l1_to_l2_cs)
+> +		__field(u64,		l2_to_l1_cs)
+> +		__field(u64,		l2_runtime)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->vcpu_id  = vcpu->vcpu_id;
+> +		__entry->l1_to_l2_cs = l1_to_l2_cs;
+> +		__entry->l2_to_l1_cs = l2_to_l1_cs;
+> +		__entry->l2_runtime = l2_runtime;
+> +	),
+> +
+> +	TP_printk("VCPU %d: l1_to_l2_cs_time=%llu ns l2_to_l1_cs_time=%llu ns l2_runtime=%llu ns",
+> +		__entry->vcpu_id,  __entry->l1_to_l2_cs,
+> +		__entry->l2_to_l1_cs, __entry->l2_runtime),
+> +	kmvhv_counters_tracepoint_regfunc, kmvhv_counters_tracepoint_unregfunc
+> +);
+>  #endif /* _TRACE_KVM_HV_H */
+>  
+>  /* This part must be outside protection */
+> -- 
+> 2.44.0
+> 
