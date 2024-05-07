@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F938BD863
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A39148BD8B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 02:43:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=lCjvESUs;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=TsCKbXRh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYJSl6yqHz3bmy
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 10:05:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VYKK31f6Kz3cSK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 10:43:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=lCjvESUs;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=TsCKbXRh;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYJS00wxdz30VT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 10:04:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1715040286;
-	bh=hB9NaGtn0Ed1umyavuftHblA0GfvfFPA+kBeEH5epLU=;
-	h=Date:From:To:Cc:Subject:From;
-	b=lCjvESUslbl9iBCnNsSNcaLyjlsbvxsWCdrgnh75Pncsy+UD/sToVEVgPqWdGmrNV
-	 KuoIIMpDe0hWidof8pElUq999Vvwoc6wq3EVfNgGLSFkeRfj6ETuDUS3XCGWU9a6oS
-	 ZA1d/zjikqDehZkqCjv1/5oF9bq8oJu+v4XpMop5Kkd8NWimKCPE1PK1C1OWqbBIdE
-	 sK4Wut3vGjs31724JN+ModQf2lZ2TghlO5hCDyBRgwIlxZPVXD3oGQUE/0mmNsfOwP
-	 dqcF+bUPA2Qx2YWCvp0gWGSHe4fznP3C2PXGgL6VoByEepoV52hrq7aa91zKnLHPZL
-	 qkwqTmL+kfFAA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYKJJ0z55z30TC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 10:43:08 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VYJRx716pz4x11;
-	Tue,  7 May 2024 10:04:45 +1000 (AEST)
-Date: Tue, 7 May 2024 10:04:41 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul@pwsan.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-Subject: linux-next: manual merge of the risc-v tree with the powerpc tree
-Message-ID: <20240507100441.0ffefbd9@canb.auug.org.au>
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4VYKJ504dyz9t2N;
+	Tue,  7 May 2024 02:43:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1715042581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qugc3EWbGYtRKUN09xjJUP5f1pQJWr0Xe7FT/WIQwVc=;
+	b=TsCKbXRhTkqZ6jVcObkvZgn5FOIA36H6pgH+Dz2pSbpDQyi9EmrEW/V4GhbuvyKrvMEzqs
+	sc5hX2Rgfc/yNu3nZ4jnlUOK1kSF/Rsw8/u7aLtfez0YvWMrk8ubMIzlYwMXyOyesqR67V
+	ckw2qClIyUQxPk6iHVYYobTCHmQnsOzKBwmFPj8hvT3Wy5Id79rJXJnqeDvov07kb/7Esp
+	l06Lj0xtOqcKqqpdvx9ZTOUB33pMRZnXnQ6CxuKdFFPVTmTNJ+FLqkwNWTMCrJcLGttfDt
+	iX8zqECoWkaX3n52nSfcQllAziQwKabwbCktiFG0Ov7HpLIKGDWbEc9ORB0MJg==
+Date: Tue, 7 May 2024 02:42:58 +0200
+From: Erhard Furtner <erhard_f@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370
+ netpoll_send_skb+0x1fc/0x20c at boot when netconsole is enabled (kernel
+ v6.9-rc5, v6.8.7, sungem, PowerMac G4 DP)
+Message-ID: <20240507024258.07980f55@yea>
+In-Reply-To: <20240506072645.448bc49f@kernel.org>
+References: <20240428125306.2c3080ef@legion>
+	<20240429183630.399859e2@kernel.org>
+	<20240505232713.46c03b30@yea>
+	<20240506072645.448bc49f@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/3T=VzYrZQdMsHplSnkWYqcq";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 266ab782df82e24cac3
+X-MBO-RS-META: 69mbq1omn43emzc4fsk6puq9qwqq7rqe
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,114 +69,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Charlie Jenkins <charlie@rivosinc.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Benjamin Gray <bgray@linux.ibm.com>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/3T=VzYrZQdMsHplSnkWYqcq
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, 6 May 2024 07:26:45 -0700
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-Hi all,
+> On Sun, 5 May 2024 23:27:13 +0200 Erhard Furtner wrote:
+> > > On Sun, 28 Apr 2024 12:53:06 +0200 Erhard Furtner wrote:    
+> > > > With netconsole enabled I get this "WARNING: CPU: 1 PID: 1 at
+> > > > net/core/netpoll.c:370 netpoll_send_skb+0x1fc/0x20c" and "WARNING:
+> > > > CPU: 1 PID: 1 at kernel/locking/irqflag-debug.c:10
+> > > > warn_bogus_irq_restore+0x30/0x44" at boot on my PowerMac G4 DP.
+> > > > Happens more often than not (6-7 out of 10 times booting):      
+> > > 
+> > > Could you try with LOCKDEP enabled?
+> > > I wonder if irqs_disabled() behaves differently than we expect.    
+> > 
+> > Ok, after a few tries I got a "BUG: spinlock wrong CPU on CPU#0, swapper/0/1" LOCKDEP hit. But this does not happen every time when I get the netpoll_send WARNING:  
+> 
+> Oh, can you try deleting the gem_poll_controller() function?
+> Unhook it from ndo_poll_controller and remove it completely.
 
-Today's linux-next merge of the risc-v tree got conflicts in:
+Ok, this is the resulting diff:
 
-  include/uapi/linux/prctl.h
-  kernel/sys.c
+diff --git a/drivers/net/ethernet/sun/sungem.c b/drivers/net/ethernet/sun/sungem.c
+index 9bd1df8308d2..d3a2fbb14140 100644
+--- a/drivers/net/ethernet/sun/sungem.c
++++ b/drivers/net/ethernet/sun/sungem.c
+@@ -949,17 +949,6 @@ static irqreturn_t gem_interrupt(int irq, void *dev_id)
+        return IRQ_HANDLED;
+ }
+ 
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-static void gem_poll_controller(struct net_device *dev)
+-{
+-       struct gem *gp = netdev_priv(dev);
+-
+-       disable_irq(gp->pdev->irq);
+-       gem_interrupt(gp->pdev->irq, dev);
+-       enable_irq(gp->pdev->irq);
+-}
+-#endif
+-
+ static void gem_tx_timeout(struct net_device *dev, unsigned int txqueue)
+ {
+        struct gem *gp = netdev_priv(dev);
+@@ -2839,9 +2828,6 @@ static const struct net_device_ops gem_netdev_ops = {
+        .ndo_change_mtu         = gem_change_mtu,
+        .ndo_validate_addr      = eth_validate_addr,
+        .ndo_set_mac_address    = gem_set_mac_address,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-       .ndo_poll_controller    = gem_poll_controller,
+-#endif
+ };
+ 
+ static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 
-between commit:
 
-  628d701f2de5 ("powerpc/dexcr: Add DEXCR prctl interface")
+And indeed without gem_poll_controller() I don't hit the "WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370 netpoll_send_skb+0x1fc/0x20c" and "WARNING: CPU: 1 PID: 1 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x30/0x44" or the according lockdep bug at boot!
 
-from the powerpc tree and commit:
+Re-booted the machine about 20 times without anything suspicious showing up in the dmesg. With the unpatched kernel I got the WARNING at the 2nd reboot.
 
-  6b9391b581fd ("riscv: Include riscv_set_icache_flush_ctx prctl")
+What I still get with 'modprobe -v dev_addr_lists_test', even with gem_poll_controller() removed is:
 
-from the risc-v tree.
+[...]
+KTAP version 1
+1..1
+    KTAP version 1
+    # Subtest: dev-addr-list-test
+    # module: dev_addr_lists_test
+    1..6
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+====================================
+WARNING: kunit_try_catch/1770 still has locks held!
+6.9.0-rc6-PMacG4-dirty #5 Tainted: G        W        N
+------------------------------------
+1 lock held by kunit_try_catch/1770:
+ #0: c0dbfce4 (rtnl_mutex){....}-{3:3}, at: dev_addr_test_init+0xbc/0xc8 [dev_addr_lists_test]
 
---=20
-Cheers,
-Stephen Rothwell
+stack backtrace:
+CPU: 0 PID: 1770 Comm: kunit_try_catch Tainted: G        W        N 6.9.0-rc6-PMacG4-dirty #5
+Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
+Call Trace:
+[f3749ef0] [c07c2bec] dump_stack_lvl+0x80/0xac (unreliable)
+[f3749f10] [c004fe64] do_exit+0x5b4/0x834
+[f3749f60] [c006d848] kthread_complete_and_exit+0x0/0x28
+[f3749f80] [c006d870] kthread+0x0/0xe8
+[f3749fa0] [bebf0cf4] kunit_try_catch_run+0x0/0x15c [kunit]
+[f3749fc0] [c006d954] kthread+0xe4/0xe8
+[f3749ff0] [c0015304] start_kernel_thread+0x10/0x14
+    ok 1 dev_addr_test_basic
+    ok 2 dev_addr_test_sync_one
+    ok 3 dev_addr_test_add_del
+    ok 4 dev_addr_test_del_main
+    ok 5 dev_addr_test_add_set
+    ok 6 dev_addr_test_add_excl
+# dev-addr-list-test: pass:6 fail:0 skip:0 total:6
+# Totals: pass:6 fail:0 skip:0 total:6
+ok 1 dev-addr-list-test
+[...]
 
-diff --cc include/uapi/linux/prctl.h
-index 713d28788df7,524d546d697b..000000000000
---- a/include/uapi/linux/prctl.h
-+++ b/include/uapi/linux/prctl.h
-@@@ -306,20 -306,10 +306,26 @@@ struct prctl_mm_map=20
-  # define PR_RISCV_V_VSTATE_CTRL_NEXT_MASK	0xc
-  # define PR_RISCV_V_VSTATE_CTRL_MASK		0x1f
- =20
-+ #define PR_RISCV_SET_ICACHE_FLUSH_CTX	71
-+ # define PR_RISCV_CTX_SW_FENCEI_ON	0
-+ # define PR_RISCV_CTX_SW_FENCEI_OFF	1
-+ # define PR_RISCV_SCOPE_PER_PROCESS	0
-+ # define PR_RISCV_SCOPE_PER_THREAD	1
-+=20
- +/* PowerPC Dynamic Execution Control Register (DEXCR) controls */
- +#define PR_PPC_GET_DEXCR		72
- +#define PR_PPC_SET_DEXCR		73
- +/* DEXCR aspect to act on */
- +# define PR_PPC_DEXCR_SBHE		0 /* Speculative branch hint enable */
- +# define PR_PPC_DEXCR_IBRTPD		1 /* Indirect branch recurrent target predi=
-ction disable */
- +# define PR_PPC_DEXCR_SRAPD		2 /* Subroutine return address prediction di=
-sable */
- +# define PR_PPC_DEXCR_NPHIE		3 /* Non-privileged hash instruction enable =
-*/
- +/* Action to apply / return */
- +# define PR_PPC_DEXCR_CTRL_EDITABLE	 0x1 /* Aspect can be modified with P=
-R_PPC_SET_DEXCR */
- +# define PR_PPC_DEXCR_CTRL_SET		 0x2 /* Set the aspect for this process */
- +# define PR_PPC_DEXCR_CTRL_CLEAR	 0x4 /* Clear the aspect for this proces=
-s */
- +# define PR_PPC_DEXCR_CTRL_SET_ONEXEC	 0x8 /* Set the aspect on exec */
- +# define PR_PPC_DEXCR_CTRL_CLEAR_ONEXEC	0x10 /* Clear the aspect on exec =
-*/
- +# define PR_PPC_DEXCR_CTRL_MASK		0x1f
- +
-  #endif /* _LINUX_PRCTL_H */
-diff --cc kernel/sys.c
-index f9c95410278c,1b7bda0722ca..000000000000
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@@ -146,12 -146,9 +146,15 @@@
-  #ifndef RISCV_V_GET_CONTROL
-  # define RISCV_V_GET_CONTROL()		(-EINVAL)
-  #endif
-+ #ifndef RISCV_SET_ICACHE_FLUSH_CTX
-+ # define RISCV_SET_ICACHE_FLUSH_CTX(a, b)	(-EINVAL)
-+ #endif
- +#ifndef PPC_GET_DEXCR_ASPECT
- +# define PPC_GET_DEXCR_ASPECT(a, b)	(-EINVAL)
- +#endif
- +#ifndef PPC_SET_DEXCR_ASPECT
- +# define PPC_SET_DEXCR_ASPECT(a, b, c)	(-EINVAL)
- +#endif
- =20
-  /*
-   * this is where the system-wide overflow UID and GID are defined, for
-
---Sig_/3T=VzYrZQdMsHplSnkWYqcq
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmY5cBkACgkQAVBC80lX
-0Gz+pwgAhkAnVZU+luoCbsYirXDx3Xxlo6uOJV6u+H4LLUJPErrmeLvOl0cbkiQg
-BV4Z5+g8N28etB+MhVXLQ5RzzMz3QvP5cH2kK3VVHgvLo/VmaO/Z/Z7ky/O0rvrU
-+Kss/3sekJ4rHWTrysg7/9HkJu3X2KM4rPEx+kNcQAMZ2+PxLI26ek7VUhj56NKh
-3koT56fiNT0SG/hJfufIx/EKdKdFRHdZYHCWnT0mO0b+90E9/kr4b7mTqVz6Hp4H
-DEj15/19dydr5G7ZcmCsBhAmwbzsuKtxSE+tUD/yKAYr3NFvOiJyFsDAr5GrBwk5
-WfV9mi1r0hd25KdgyJz2MI29TLc1oA==
-=ACh2
------END PGP SIGNATURE-----
-
---Sig_/3T=VzYrZQdMsHplSnkWYqcq--
+Regards,
+Erhard
