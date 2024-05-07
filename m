@@ -2,121 +2,165 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3908BDF0F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 11:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94CF8BDF3A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 12:00:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=iT4AWdNy;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=VJWjbKan;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYYZ86z7pz3dPs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 19:56:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VYYfj5k3Dz3fSk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 May 2024 19:59:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=iT4AWdNy;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=VJWjbKan;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:200a::601; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=vignesh.balasubrmanian@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::601])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::4; helo=pr0p264cu014.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PR0P264CU014.outbound.protection.outlook.com (mail-francecentralazlp170120004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYYYQ5wR0z3cds
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 19:55:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYYdz1t8Sz2xjM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 May 2024 19:59:18 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=crUm/L3kkFN69lZQuo4zYpFMRbrHwKhb87f9cwA3De2dLuNLgM5rkwaTvoKO2WfuFISDojMIB/A+gm4SO6t0dBMcg29L3sXpYFgZ2BaajQqSTPqKBBQ3X1Ho2I/FgXmyRNbWcUffJNMCGbWSBmeLH60MaN6VgadzGLLUlBsSll+73tMA+0hDuwN79jyCALCwoSLeUxjaiUow8/nJGTt3pFH92X+gOVKGsKgJc4NTmULpoEjzGNO+5tJsw9G1+YWnddW/vleGyBKJX7sseU7didLq6NtQNTucP89m69f5Fnmb6Id2SExiwYX52v5C8t7ZACQm9QJhG6pyNu9dUZtsGQ==
+ b=NoQppdzFxwWAE9s50cP1iMq3WHFCo1TIkWwZQFd8ltqH/5SblyqBvwdX9Z0S9WdG7kc+FKheFyTzFnj+mjdGHbl6u5KL3sr9nRX1Phc2ANf8c8p9x2mTB6MWDMkJv/k84b1Zgj5XtNPpVhJWbzFrJqoqbO0e1oMo3nWwmodKeFv/34HtNBRY92wdpPC3MdBxtlfq3oN7jDXWSh2ANadHQVHxjuCUUupcTxS89bTbWb4B4Ndzdlv2Lrjg36IFMb4YhdvIh84vj3zs6D3ye27cp8fH4wIM0owU0z/4q8tdZWfPAjkVdPv6SoSh+hRgTd4xiUn9yp1jSTnEYGfYsJdhwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YvWvcNyrfOh/mJWkZUAq7R+6sOUKk//y5OhCTj4Hi6g=;
- b=JNvGP5O3AKoEQxgXTkblVxwGCrCr6qyOnWpQYlO8ga19/Xlql05JCSCDFnaw9PvVmNph+/9musJ2pNA51PMJdqitZWHeydSLJZZb9zVLlpQySqw6EPaqaD4RixfBQ4UfiN6j4c0Xs6lDoIKHFuujVT2R4qkCCGt9xuH6w1EQMBVlRom3AZ64gEIszEcugn8E+4PMaB2E3id21H8D/Uy1VlNdh9Ow1gNJtcjSrMCXAzdKJGm4K2u0gEkPHlSJwREm9BDDq5SBg8DzAYjywxGNokqVEMBbyZjlqzsbKNe+jPakmI6TKVg/lvr51MDcoJQqC9MbXcNnyObtfAkuF8deZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=jDwUP4stYWEnsetVFMxtblnyMtR5UBZkR7Iox/Xy1AE=;
+ b=jrzyoGKUVSNgb4Yymds0a4xdrCYq1GGBcdMWkUoEgyh0JdSb5eRQ3yc91G+GKlJuiqX3FnbRqmg8bSAFAUf5019GwRiz8TMmCRoLgHL9g4YCQBNH+yi3JpPeJGcYYYKQYAzJ0idnka9U7MQTn77I2gKNFhHY8O4VDXK+lPGK6bFvqfWX6ANwHnGBOBvBc2OsCzlX+f3wdFS33SDnOJfYKpNZcnYaDLFQCzO9tL+UxdOUXEeGQxkVNDsE+RhpPL9o6OEtd8UgMyo0rUDjKltZ1A0k1SPn+R1mGwhMjYUnxdMarGDrGfsZ3r+c63jBi/n20wMNBg80cbg92RIRsC0Tcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YvWvcNyrfOh/mJWkZUAq7R+6sOUKk//y5OhCTj4Hi6g=;
- b=iT4AWdNyrZRXKpbYE9gLSmLz93EUPtO84jbyTsaw3bUwHMiNCx/vku6EyKwpqzvwFQjE8DyLtK/LF6S1/srW8NmtQJ0uNYkmOTf1FJ5mll6Fa4jA7NmT4rMiJTeiRobbQrZbn3ZikfOoCzEmdio4f5ow+mGI6mEVsyBP2CqkK5s=
-Received: from PH0PR07CA0018.namprd07.prod.outlook.com (2603:10b6:510:5::23)
- by PH7PR12MB5878.namprd12.prod.outlook.com (2603:10b6:510:1d6::10) with
+ bh=jDwUP4stYWEnsetVFMxtblnyMtR5UBZkR7Iox/Xy1AE=;
+ b=VJWjbKanW22cNWiVJ/6Etnn89DuKgptdzzuMPuXZhS2jUtWeCjHWljy7BBeWDkIkAOPvKabkWHRRoVhJGZnLsqLsJ8feRRaj2ZgO66CPYK6IidZHxQWpI99nNBeAKnbP9VjRuvs6wCyrx7fn9NUQ++e/TPMxeVv7zzWJig6JBpJte1wG6zdHy2podqQ+jSb74Ouax0b1J+/qxDYvMtw6moSofgDLsF87Ghbly1sJ/dOP41E5hd0Z1F3cLhlPG0nH5aiM2sNOog4oAuNer+pLnAtKz6yomsrEF1TEDcmf1op6kjQdp3HJo3GwyIod0geIOejgSH5ITqWEj3KJakc0+Q==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB3659.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:161::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.42; Tue, 7 May
- 2024 09:55:02 +0000
-Received: from MWH0EPF000A6735.namprd04.prod.outlook.com
- (2603:10b6:510:5:cafe::b7) by PH0PR07CA0018.outlook.office365.com
- (2603:10b6:510:5::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.41 via Frontend
- Transport; Tue, 7 May 2024 09:55:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000A6735.mail.protection.outlook.com (10.167.249.27) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7544.18 via Frontend Transport; Tue, 7 May 2024 09:55:00 +0000
-Received: from amd-System-Product-Name.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 7 May 2024 04:54:54 -0500
-From: Vignesh Balasubramanian <vigbalas@amd.com>
-To: <linux-kernel@vger.kernel.org>, <linux-toolchains@vger.kernel.org>
-Subject: [PATCH v2 1/1] x86/elf: Add a new .note section containing Xfeatures information to x86 core files
-Date: Tue, 7 May 2024 15:23:31 +0530
-Message-ID: <20240507095330.2674-2-vigbalas@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240507095330.2674-1-vigbalas@amd.com>
-References: <20240507095330.2674-1-vigbalas@amd.com>
+ 2024 09:58:48 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb%7]) with mapi id 15.20.7544.041; Tue, 7 May 2024
+ 09:58:48 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, "acme@kernel.org"
+	<acme@kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>,
+	"adrian.hunter@intel.com" <adrian.hunter@intel.com>, "irogers@google.com"
+	<irogers@google.com>, "namhyung@kernel.org" <namhyung@kernel.org>,
+	"segher@kernel.crashing.org" <segher@kernel.crashing.org>
+Subject: Re: [PATCH V2 7/9] tools/perf: Update instruction tracking with add
+ instruction
+Thread-Topic: [PATCH V2 7/9] tools/perf: Update instruction tracking with add
+ instruction
+Thread-Index: AQHan6+yLK7ttiJyIUGM8WsgGfkQsbGLivAA
+Date: Tue, 7 May 2024 09:58:48 +0000
+Message-ID: <7c8af115-56fb-4b1f-818c-f2a7d532166b@csgroup.eu>
+References: <20240506121906.76639-1-atrajeev@linux.vnet.ibm.com>
+ <20240506121906.76639-8-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20240506121906.76639-8-atrajeev@linux.vnet.ibm.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB3659:EE_
+x-ms-office365-filtering-correlation-id: 6365b0f7-e6cb-4947-5d1e-08dc6e7c4aaf
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:  BCL:0;ARA:13230031|7416005|366007|376005|1800799015|38070700009;
+x-microsoft-antispam-message-info:  =?utf-8?B?djJ3RWM5ZG1BN1l2UUFWbHNSWnRwaWowSHYxMU9IcWVoK1BGV3RrSTFwVEhk?=
+ =?utf-8?B?LzJYZi9OVXllbDJxaThMSDI3ZEU1eHhmTUxJSW5OYnF6WUpZQkpjMFBRRTF0?=
+ =?utf-8?B?dU5jcy9LZFZNdWFBckduM2p5dCs4elpjODBQN1lHRUJNMHJyOGFzc1V3Uk9B?=
+ =?utf-8?B?ME5FZXlTUkNIRzZBMzFQOEx0dUh4Si9VNnVucmlKUExzTFQ4UkN1alczRENB?=
+ =?utf-8?B?d1pQUVpBdHArSS96b3RONkozK2NlaysyVHQ5YkhtcytHbG5Jdll3cDFtSmtG?=
+ =?utf-8?B?ejg3dHAwTlYyays0Z3FGM1YyMzJnT0xSSW9McUNJeUV2T0dzTEV3QmFSZ3l4?=
+ =?utf-8?B?dVdReUJYZkJ4QlErbzdKZ0JtYmlCOTBYRkdTalN2c3hRNTQ1bFhhUHEvUFhv?=
+ =?utf-8?B?bis2d0tYeDdOUndGNEg2bVh0UmdZRDByZDhPeitlT3BoZ1hhdGdzQ1BvUzFE?=
+ =?utf-8?B?OEpnSUY3WnRIUmQvNmQyTkUzMkR0Z2tUSkZORmk0Z1dORHpWeUNDOE9GNEtL?=
+ =?utf-8?B?WkxMNWZuUWZoMWlhTzJjdHl2MXZxQTdOOWd0NWhKNmwvZGt6cmVWYWp4Vm9k?=
+ =?utf-8?B?dXgyUHJmV2FVbWY0V043blZ1ZVhHOUZKSytJM0VHdnhKMk4rSXRaQ2JpaTdG?=
+ =?utf-8?B?MWZwWE5Kd3h4dFcvV2NDd1lkZ09Gc1AzcWVTeGQzRUE1ZlIzWGgrYVZ1cGI2?=
+ =?utf-8?B?V0p3SkwvblJmWStnMlg4MUlPZDh0dzU0UEtSWDdxdUV3RzFmSVpsOEl4bklu?=
+ =?utf-8?B?Y3hxcVBpakhlYlBRRmZYS09WV3lzQ0s4ZFNKa0M5eGVTbmcraVgyMGgyWUl0?=
+ =?utf-8?B?VVN6S2tnNk40T2t3VTQwcklsTkdoTGNhQUFOcWp2NGM3ZzNpekswOHRHVHhs?=
+ =?utf-8?B?d015ajVjUy9HNHNnQUhQS2RET3drZlR5SzdTZVNnS0NhSExQQmQ4WXNjK1g1?=
+ =?utf-8?B?ZFRJQVhZYUx4WStNUk9FekhZbXJzeWZ1R1AzSnEraGtyS2FJMkdmNzcza3dD?=
+ =?utf-8?B?MzNmUHZlMTBoZmlnamdoSnpOeXJ2QkVGVTZ0U1FvUlZrMGNmNHRLaXFkSVpI?=
+ =?utf-8?B?L29VUm9ZSC9YejAySEtUYXNWSVdOam0vQXdtbS96NGVub21TNjZYMzdMZndW?=
+ =?utf-8?B?NTlLOElUamN1VzlnVG1IV1ZTTjBmbVN6cE0vdEEybXJPdDMrbDVRdTBsZjFw?=
+ =?utf-8?B?REtEVWQwc2lGMm1NdVVnMHVaWWtFNUJTNytwdnAzZUFOWERqUlBSR0ZNcDl4?=
+ =?utf-8?B?b1VYRjNzdUdCaE9BQmY3SmpySllROHR4cGJBN3BKZHBnMEtlaU5NeStDTFRu?=
+ =?utf-8?B?WlBtU3BJRlVac3J6em1tOUVNc3ZZMFFzN1FZcGRlK1kvUmpSRXZMWHQvRmpr?=
+ =?utf-8?B?bmdMQnJnYmNXeGNFWUZGZkxCS1pydjVSTFFOYkV3Y01FY3hRUDA0TFN5cTdQ?=
+ =?utf-8?B?elFGSnBvclFMN2hFeGlkbFY3czcxZVhNdVV5c3RoUTlZcDBJL0gzMjFMTzZP?=
+ =?utf-8?B?Qml3c2c3ZGs0QlZZeEhENitraHdvWnZPNEphaDAyaWtXR2JVaWRKNDh4eklF?=
+ =?utf-8?B?NlJSQXdxalFEazBYUTE1U1dIVWhyL1lmZ0JMTlBydWE1ZmY0am5HSVZKL1Fx?=
+ =?utf-8?B?UWZWcHdsVG1SaGdwclVRbTVibjRJM0xmUDFGZ0V5QUhtR2JiYUVPeHE3QU9t?=
+ =?utf-8?B?QW00Q3hBcUlJZm9KYnkzT0xqRm1QZmpoTlB4aTVBTmlMT3djM2gyTHVSN0E2?=
+ =?utf-8?B?L0tubnpJS0ZKOXIzRXVUM3p4cGc3cXEyU2hvOFlUeStZckJrOEJYQyt6YUhJ?=
+ =?utf-8?B?azVUZms1VFRDVEhCTjNXQT09?=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7416005)(366007)(376005)(1800799015)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?RlJISXh1YmhZWkMxYW1hRXVmZ211czBtVWNzaWRlTFZXeVk2OHdIUjVRcVZT?=
+ =?utf-8?B?ZW5HV3VxT0gvUHVPY3gyZXlNUGRPM1dWbEJnQWJjeHU4aG40dHZobXM2Qm82?=
+ =?utf-8?B?YW5sVEgzdEw3VkQ3c21sbWpWYzhaajQ0RVZ5cWtvd2xtcEt0REcvSVM2R3JN?=
+ =?utf-8?B?TnlIY0l2Qk9mREUvdUwzVnhPVUdlc29BSW1kRWYwdDRkRTFIVlFyZ3Raa3ph?=
+ =?utf-8?B?K0R3M1lTekpLUUxpR2hiRlRqS3VidU9aTkdRUmVCdlpTTmRQSnhlb1llRFRj?=
+ =?utf-8?B?Y2VSejllaktNZW9uWXZKYUM5ZmNRUGdSMnQrNGlSK0xPTCtIUWJMbVUvZFJ0?=
+ =?utf-8?B?aFhYZ2o1K0JzQ0ZYZUg5ZzlSR3YwV3pEVWFhNzdQS3loY3cva0VEdk9Fd2No?=
+ =?utf-8?B?TjFNSHppR0w4R0p0SHlWV2d1MnJFZjV4OWdTSlliUW03bkZHRU40VURZcEYw?=
+ =?utf-8?B?cndsVGlLYURLMmh4RitIZmNxNXdxQk43cmJ4NFkzcjByRWxGWXlwWDEyMEQz?=
+ =?utf-8?B?TG1XQkFSVGRKaVcyT0V6ZXNvOVM2N1ZZZlB2NVNpL2FIV0FkUWM3dW1FODJG?=
+ =?utf-8?B?T1R2ZE85ODc4TGZBMWRpTy81azNJY2Y5SEVzVFlMeFRVSjNkbEVsSndnb0lR?=
+ =?utf-8?B?bHRWb2hNM1VVWjN6UlhNZ28vS2lSOU43NUdSNWtRaWlYT1ppL1NaaDgrZkZD?=
+ =?utf-8?B?WFp4ZUNQU2t6bWxhekowL1kxU3pMZXRMVWh5M1ovOGxXcUNtV1JyOU54K1Jy?=
+ =?utf-8?B?WktNeUhSQlRURmtNSUxXWWVFZ1BKcTBXOGFTTjlKeUJ0L0ZTQ3d0TUp4VGth?=
+ =?utf-8?B?VjJpQWQvc000eDl4TUtLR25GblI3aWhSVFJHOW1nNlFhQldjdTQwZTRqanNP?=
+ =?utf-8?B?L2kra1NuV0oyNlNiOWtUK2tZN01TWjlLYlNEZ3FzRWFFS3A3clNaRDFjbWlp?=
+ =?utf-8?B?MnRnMGdaUmg4eEhReDNGdmEvYmVHMEJNdG8xS1hHK0ZIUjEvenpJMks0ZCts?=
+ =?utf-8?B?VS9kMnY5K2NmZzJTMHZUYnVZU01INjRFTjhpZllUYmFTVldjdDJxdUsra09C?=
+ =?utf-8?B?UWpwTUhBK1VlZEtvdjBETjBiSCttNkl3WTU2aUwzb0hGdU9jQ0Rka0FYZGlH?=
+ =?utf-8?B?Mi9ZeFhqLzVGRTVtOCtSQS80QzVHMzk1RTQvUzZPYWkwUUV2c3ZXWTJVcFhW?=
+ =?utf-8?B?eFpvK2FrS2V5ZDhuZ1lPVWl5YXljVVpEUTI4Z2o5bFBWdGVBbEMyeHYyRHB5?=
+ =?utf-8?B?U3lxUUYwV3FpcFN3MTdZZjVkT0JZZUplSHlTMkxLQWFhK25qVHF3Vk12WHN3?=
+ =?utf-8?B?b1BVaFhIYUo0Y2pyckhyZSsxems2VnhjcWNGbTFQemhJK1lGOEV0NytYaTFI?=
+ =?utf-8?B?WG9vdklHeDFGQSs5VEhGd21VKzFUUkJlSXA1UHJhRFkyR0ZDMnN0VzhkcWhI?=
+ =?utf-8?B?dUEzWkNlQ3VadTFPQ3g2NnpXTFVLTzFtSXpnOS9kM3grQWloTXIvS1cxY0kv?=
+ =?utf-8?B?Q1FoS2tLdUNSRDNpT0Vya0drS2l1UXR6c2hkQVd2UHlnQytVK1FET1JPdmxt?=
+ =?utf-8?B?U05aUGdlamxyS293QlhUdnoxVm1tOXlDbGhEN2NQQ0QxQXVyeHA1SGp4SEdk?=
+ =?utf-8?B?aDVHK2xTRWlxd2pMdytUdENsWDBPTTJ2RzR3UENoY2hjZlpwYTNIbEFuTHVm?=
+ =?utf-8?B?eFcxVURmaHk0Q3pwRDV2c0YxSW5PV29wd0NCTUZUeDE5ckgzb1JDa0pKTXVU?=
+ =?utf-8?B?aHdTVEhWak5SS2ZHRmh1UC85VE16Rmpua1ZRZjkwL2RlL293VjIyWUl5ZWZG?=
+ =?utf-8?B?NGVzWmQyZEVHVzJnSXhJd25VTDdMNVg3SkdGVVF1QjE2RkRwaHVZU29VQkh0?=
+ =?utf-8?B?c1ZhaUhRSXBVV3J0TnJjQWNRck9lY01iWlh0dHVMREZXTHpkNjJhZzN6K1d2?=
+ =?utf-8?B?ckVJdDFDTWtnK01MMENCT0ZFblowbGM5QjY5YldkMXM5SThvemFKa1REQ0J4?=
+ =?utf-8?B?TE10TkZRWHAzeEdVaUZWMDdYeVBOWms0ajl4aW82NktlSVdPaHZiTm9XaThY?=
+ =?utf-8?B?SWkvZTZRK1JCd2FZeWdUUVVoYXhxendkOGp5ZlI3aEthbUd6by81SDkxMUs5?=
+ =?utf-8?B?cU9lTTk1WUZxQlEvQUVzNkhZOXpGVENBaGpvUWJtNW0ra2h0YXR3SXZZd0k4?=
+ =?utf-8?B?QkwyamEvcEhtN0VzTkpNQVVzV0E4SUM4V2I3eTRiZFdqdWJXKzUzMlQrNkhJ?=
+ =?utf-8?B?eTFycjhsT0dXbXczMkhSQkhoaHhnPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <191002C32D9EF84EA57AC37B8F858454@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6735:EE_|PH7PR12MB5878:EE_
-X-MS-Office365-Filtering-Correlation-Id: b805896c-55c2-4cbc-b2a2-08dc6e7bc287
-X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 	BCL:0;ARA:13230031|36860700004|82310400017|1800799015|376005|7416005;
-X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?jDrNtz4tlWcfY/dAu2iP2U2KV4YEj/VRCGDaSBIHteBYi0Yw/reYgPELo40+?=
- =?us-ascii?Q?nOAoY/kYJUGSbulU1U2NtCSOUCKj0HpIpBbV1d5LQc9F9aBXL+7Igq9K5m+l?=
- =?us-ascii?Q?epY9rfEr/Gge3d5jFd7I4EL9qtWp2Di5deSCOv06zEvrC/+qxd0kRoTiezfJ?=
- =?us-ascii?Q?53czmSHLRXORiF4JIJPzfey8VxwA/NZQcwU4lDovN3bHMPw8LID2qkGGlZ2Y?=
- =?us-ascii?Q?YXCflsT8wkk2HOX4/Zi00O7nbuVQzfsgMB6hiMk5FD/UMH5epcksehVtzQ6+?=
- =?us-ascii?Q?YbT2/3lEowko0neNNHbKlj6GwRDjujqUbaDO4WBmCY4ofK7djLPimPl1EcnN?=
- =?us-ascii?Q?nhBDgZ+Hmx0XAW9b2+TMPxqcMdckWuko9o7gkt8rr4wFsMraE2CIebZewmTs?=
- =?us-ascii?Q?bnsZqlxcVCP/sdwIziYJYkixSAI+d64mF1BlNovl0FRw0Fq+HLy8uVSI7XrZ?=
- =?us-ascii?Q?Tn3QdrbaaK1QwxnwjwstEceGbjeSKDk0jReTP70J9EZMGYQbxtdz18WY4iew?=
- =?us-ascii?Q?ottDAhcxoMrMu8XbYRlGqY2kHdCjCIucPmbZsPSUcYx2ydDCKBYh5dQHHHAr?=
- =?us-ascii?Q?Jg6mtj9mO7Hv/vPNSefokKCkY7H5kJngzrrxiVMKWX+XIrpbFHA2C4H1jPGs?=
- =?us-ascii?Q?EvMUEHzMlj0fIwK3p18fS0S0JB3nTJGXssyQ7oGJI/UO7C6D/cdFOjIybJNg?=
- =?us-ascii?Q?+eAAeGsZ359YVKP+K/DvFa4eqGRrPii7AKiILjGkJaI0TS24G7Z6Mxs7lkeB?=
- =?us-ascii?Q?gA+AB6nMWqAF/ew3VyK+h5IN250goKiq6YP3QeDfYeC/1vmy/hY+o3RoWolK?=
- =?us-ascii?Q?15jWiV2vzS+65RsFcZ1uUBZ80KA+AG1BwqqPh68maaw6JzLlwiuBndw0tx0h?=
- =?us-ascii?Q?El8DVOL1tWnsGiYMAYMkKQ8TqGEeweAL0IHAf71WJoi1NBG2BM6TaNOsioQb?=
- =?us-ascii?Q?sPVJVFnf+ikx6jHVaz5rwKf0bsLy3fD4Aa4OQQ2OvRt7Mp7YVl6+47bS+DKA?=
- =?us-ascii?Q?Xoq2I3Vd9sN6ItKzl1b51Opao4ogDwY6KzRFhbVzindV8Fthv4jqLP1859+r?=
- =?us-ascii?Q?49Mgxc+XIU0lKGjOR9bnpoeVDgBTOZg2OhUqT4wnsWOvOK5nygKixUyLqnKq?=
- =?us-ascii?Q?GtjtFozXSQ1PhmRDtvkOTJBRDo1bRjUg96o53qbtSgUHwJGJPB58vPvrW/6Z?=
- =?us-ascii?Q?UUUAmiXVOqqEZ2l/kb8xePOjiwQiIIzbGhZ6z19f/tkto01DH1YGnOnhpWBl?=
- =?us-ascii?Q?itK3kJ0hVaZh3gVxttLMLKM1wPeuYIDxTqoVDZegEIftlfuo6AWpKcl8QeEi?=
- =?us-ascii?Q?zTJ7YS46tqbyL+ueqmV0tt2+?=
-X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400017)(1800799015)(376005)(7416005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2024 09:55:00.1754
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6365b0f7-e6cb-4947-5d1e-08dc6e7c4aaf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2024 09:58:48.7270
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b805896c-55c2-4cbc-b2a2-08dc6e7bc287
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	MWH0EPF000A6735.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5878
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0pd8uetDjO4/WJhgo+8Sh7n9KeVrtP+b3hB+Q1UeEvs1jRZSST2M8crsXttzUUTtg8xpScNP7NIuHJ1OiLL3oqll/y8u9kARkOMb8aqEwWY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB3659
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,319 +172,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: felix.willgerodt@intel.com, matz@suse.de, keescook@chromium.org, jhb@FreeBSD.org, bpetkov@amd.com, x86@kernel.org, npiggin@gmail.com, aneesh.kumar@kernel.org, linux-mm@kvack.org, Vignesh Balasubramanian <vigbalas@amd.com>, ebiederm@xmission.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, binutils@sourceware.org
+Cc: "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "akanksha@linux.ibm.com" <akanksha@linux.ibm.com>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "disgoel@linux.vnet.ibm.com" <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new .note section containing type, size, offset and flags of
-every xfeature that is present.
-
-This information will be used by the debuggers to understand the XSAVE
-layout of the machine where the core file is dumped, and to read XSAVE
-registers, especially during cross-platform debugging.
-
-Some background:
-
-The XSAVE layouts of modern AMD and Intel CPUs differ, especially since
-Memory Protection Keys and the AVX-512 features have been inculcated into
-the AMD CPUs.
-This is since AMD never adopted (and hence never left room in the XSAVE
-layout for) the Intel MPX feature. Tools like GDB had assumed a fixed XSAVE
-layout matching that of Intel (based on the XCR0 mask).
-Hence, the core dumps from AMD CPUs didn't match the known size for the
-XCR0 mask. This resulted in GDB and other tools not being able to access
-the values of the AVX-512 and PKRU registers on AMD CPUs.
-To solve this, an interim solution has been accepted into GDB, and is
-already a part of GDB 14, thanks to these series of patches
-[ https://sourceware.org/pipermail/gdb-patches/2023-March/198081.html ].
-But this patch series depends on heuristics based on the total XSAVE
-register set size and the XCR0 mask to infer the layouts of the various
-register blocks for core dumps, and hence, is not a foolproof mechanism to
-determine the layout of the XSAVE area.
-
-Hence this new core dump note has been proposed as a more sturdy mechanism
-to allow GDB/LLDB and other relevant tools to determine the layout of the
-XSAVE area of the machine where the corefile was dumped.
-The new core dump note (which is being proposed as a per-process .note
-section), NT_X86_XSAVE_LAYOUT (0x205) contains an array of structures.
-Each structure describes an individual extended feature containing offset,
-size and flags (that is obtained through CPUID instruction) in a format
-roughly matching the follow C structure:
-
-struct xfeat_component {
-       u32 xfeat_type;
-       u32 xfeat_sz;
-       u32 xfeat_off;
-       u32 xfeat_flags;
-};
-
-Co-developed-by: Jini Susan George <jinisusan.george@amd.com>
-Signed-off-by: Jini Susan George <jinisusan.george@amd.com>
-Signed-off-by: Vignesh Balasubramanian <vigbalas@amd.com>
----
-v1->v2: Removed kernel internal defn dependency, code improvements
-
- arch/x86/Kconfig             |   1 +
- arch/x86/include/asm/elf.h   |  34 +++++++++
- arch/x86/kernel/fpu/xstate.c | 141 +++++++++++++++++++++++++++++++++++
- fs/binfmt_elf.c              |   4 +-
- include/uapi/linux/elf.h     |   1 +
- 5 files changed, 179 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 928820e61cb5..cc67daab3396 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -105,6 +105,7 @@ config X86
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-+	select ARCH_HAVE_EXTRA_ELF_NOTES
- 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
- 	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
-index 1fb83d47711f..5952574db64b 100644
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
-@@ -13,6 +13,40 @@
- #include <asm/auxvec.h>
- #include <asm/fsgsbase.h>
- 
-+struct xfeat_component {
-+	u32 xfeat_type;
-+	u32 xfeat_sz;
-+	u32 xfeat_off;
-+	u32 xfeat_flags;
-+} __packed;
-+
-+_Static_assert(sizeof(struct xfeat_component)%4 == 0, "xfeat_component is not aligned");
-+
-+enum custom_feature {
-+	FEATURE_XSAVE_FP = 0,
-+	FEATURE_XSAVE_SSE = 1,
-+	FEATURE_XSAVE_YMM = 2,
-+	FEATURE_XSAVE_BNDREGS = 3,
-+	FEATURE_XSAVE_BNDCSR = 4,
-+	FEATURE_XSAVE_OPMASK = 5,
-+	FEATURE_XSAVE_ZMM_Hi256 = 6,
-+	FEATURE_XSAVE_Hi16_ZMM = 7,
-+	FEATURE_XSAVE_PT = 8,
-+	FEATURE_XSAVE_PKRU = 9,
-+	FEATURE_XSAVE_PASID = 10,
-+	FEATURE_XSAVE_CET_USER = 11,
-+	FEATURE_XSAVE_CET_SHADOW_STACK = 12,
-+	FEATURE_XSAVE_HDC = 13,
-+	FEATURE_XSAVE_UINTR = 14,
-+	FEATURE_XSAVE_LBR = 15,
-+	FEATURE_XSAVE_HWP = 16,
-+	FEATURE_XSAVE_XTILE_CFG = 17,
-+	FEATURE_XSAVE_XTILE_DATA = 18,
-+	FEATURE_MAX,
-+	FEATURE_XSAVE_EXTENDED_START = FEATURE_XSAVE_YMM,
-+	FEATURE_XSAVE_EXTENDED_END = FEATURE_XSAVE_XTILE_DATA,
-+};
-+
- typedef unsigned long elf_greg_t;
- 
- #define ELF_NGREG (sizeof(struct user_regs_struct) / sizeof(elf_greg_t))
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 33a214b1a4ce..3d1c3c96e34d 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -13,6 +13,7 @@
- #include <linux/seq_file.h>
- #include <linux/proc_fs.h>
- #include <linux/vmalloc.h>
-+#include <linux/coredump.h>
- 
- #include <asm/fpu/api.h>
- #include <asm/fpu/regset.h>
-@@ -87,6 +88,8 @@ static unsigned int xstate_flags[XFEATURE_MAX] __ro_after_init;
- #define XSTATE_FLAG_SUPERVISOR	BIT(0)
- #define XSTATE_FLAG_ALIGNED64	BIT(1)
- 
-+static const char owner_name[] = "LINUX";
-+
- /*
-  * Return whether the system supports a given xfeature.
-  *
-@@ -1837,3 +1840,141 @@ int proc_pid_arch_status(struct seq_file *m, struct pid_namespace *ns,
- 	return 0;
- }
- #endif /* CONFIG_PROC_PID_ARCH_STATUS */
-+
-+#ifdef CONFIG_COREDUMP
-+static int get_sub_leaf(int custom_xfeat)
-+{
-+	switch (custom_xfeat) {
-+	case FEATURE_XSAVE_YMM:			return XFEATURE_YMM;
-+	case FEATURE_XSAVE_BNDREGS:		return XFEATURE_BNDREGS;
-+	case FEATURE_XSAVE_BNDCSR:		return XFEATURE_BNDCSR;
-+	case FEATURE_XSAVE_OPMASK:		return XFEATURE_OPMASK;
-+	case FEATURE_XSAVE_ZMM_Hi256:		return XFEATURE_ZMM_Hi256;
-+	case FEATURE_XSAVE_Hi16_ZMM:		return XFEATURE_Hi16_ZMM;
-+	case FEATURE_XSAVE_PT:			return XFEATURE_PT_UNIMPLEMENTED_SO_FAR;
-+	case FEATURE_XSAVE_PKRU:		return XFEATURE_PKRU;
-+	case FEATURE_XSAVE_PASID:		return XFEATURE_PASID;
-+	case FEATURE_XSAVE_CET_USER:		return XFEATURE_CET_USER;
-+	case FEATURE_XSAVE_CET_SHADOW_STACK:	return XFEATURE_CET_KERNEL_UNUSED;
-+	case FEATURE_XSAVE_HDC:			return XFEATURE_RSRVD_COMP_13;
-+	case FEATURE_XSAVE_UINTR:		return XFEATURE_RSRVD_COMP_14;
-+	case FEATURE_XSAVE_LBR:			return XFEATURE_LBR;
-+	case FEATURE_XSAVE_HWP:			return XFEATURE_RSRVD_COMP_16;
-+	case FEATURE_XSAVE_XTILE_CFG:		return XFEATURE_XTILE_CFG;
-+	case FEATURE_XSAVE_XTILE_DATA:		return XFEATURE_XTILE_DATA;
-+	default:
-+		pr_warn_ratelimited("Not a valid XSAVE Feature.");
-+		return 0;
-+	}
-+}
-+
-+/*
-+ * Dump type, size, offset and flag values for every xfeature that is present.
-+ */
-+static int dump_xsave_layout_desc(struct coredump_params *cprm)
-+{
-+	u32 supported_features = 0;
-+	struct xfeat_component xc;
-+	u32 eax, ebx, ecx, edx;
-+	int num_records = 0;
-+	int sub_leaf = 0;
-+	int i;
-+
-+	/* Find supported extended features */
-+	cpuid_count(XSTATE_CPUID, 0, &eax, &ebx, &ecx, &edx);
-+	supported_features = eax;
-+
-+	for (i = FEATURE_XSAVE_EXTENDED_START;
-+			i <= FEATURE_XSAVE_EXTENDED_END; i++) {
-+		sub_leaf = get_sub_leaf(i);
-+		if (!sub_leaf)
-+			continue;
-+		if (supported_features & (1U << sub_leaf)) {
-+			cpuid_count(XSTATE_CPUID, sub_leaf, &eax, &ebx, &ecx, &edx);
-+			xc.xfeat_type = i;
-+			xc.xfeat_sz = eax;
-+			xc.xfeat_off = ebx;
-+			/* Reserved for future use */
-+			xc.xfeat_flags = 0;
-+
-+			if (!dump_emit(cprm, &xc,
-+				       sizeof(struct xfeat_component)))
-+				return 0;
-+			num_records++;
-+		}
-+	}
-+
-+	return num_records;
-+}
-+
-+static int get_xsave_desc_size(void)
-+{
-+	int supported_features = 0;
-+	int xfeatures_count = 0;
-+	u32 eax, ebx, ecx, edx;
-+	int sub_leaf = 0;
-+	int i;
-+
-+	/* Find supported extended features */
-+	cpuid_count(XSTATE_CPUID, 0, &eax, &ebx, &ecx, &edx);
-+	supported_features = eax;
-+
-+	for (i = FEATURE_XSAVE_EXTENDED_START;
-+			i <= FEATURE_XSAVE_EXTENDED_END; i++) {
-+		sub_leaf = get_sub_leaf(i);
-+		if (!sub_leaf)
-+			continue;
-+		if (supported_features & (1U << sub_leaf))
-+			xfeatures_count++;
-+	}
-+
-+	return xfeatures_count * (sizeof(struct xfeat_component));
-+}
-+
-+int elf_coredump_extra_notes_write(struct coredump_params *cprm)
-+{
-+	int num_records = 0;
-+	struct elf_note en;
-+
-+	en.n_namesz = sizeof(owner_name);
-+	en.n_descsz = get_xsave_desc_size();
-+	en.n_type = NT_X86_XSAVE_LAYOUT;
-+
-+	if (!dump_emit(cprm, &en, sizeof(en)))
-+		return 1;
-+	if (!dump_emit(cprm, owner_name, en.n_namesz))
-+		return 1;
-+	if (!dump_align(cprm, 4))
-+		return 1;
-+
-+	num_records = dump_xsave_layout_desc(cprm);
-+	if (!num_records) {
-+		pr_warn_ratelimited("Error adding XSTATE layout ELF note. XSTATE buffer in the core file will be unparseable.");
-+		return 1;
-+	}
-+
-+	/* Total size should be equal to the number of records */
-+	if ((sizeof(struct xfeat_component) * num_records) != en.n_descsz) {
-+		pr_warn_ratelimited("Error adding XSTATE layout ELF note. The size of the .note section does not match with the total size of the records.");
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Return the size of new note.
-+ */
-+int elf_coredump_extra_notes_size(void)
-+{
-+	int size = 0;
-+
-+	/* NOTE Header */
-+	size += sizeof(struct elf_note);
-+	/* name + align */
-+	size += roundup(sizeof(owner_name), 4);
-+	size += get_xsave_desc_size();
-+
-+	return size;
-+}
-+#endif
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 5397b552fbeb..833bcb7e957b 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -2000,7 +2000,7 @@ static int elf_core_dump(struct coredump_params *cprm)
- 	{
- 		size_t sz = info.size;
- 
--		/* For cell spufs */
-+		/* For cell spufs and x86 xstate */
- 		sz += elf_coredump_extra_notes_size();
- 
- 		phdr4note = kmalloc(sizeof(*phdr4note), GFP_KERNEL);
-@@ -2064,7 +2064,7 @@ static int elf_core_dump(struct coredump_params *cprm)
- 	if (!write_note_info(&info, cprm))
- 		goto end_coredump;
- 
--	/* For cell spufs */
-+	/* For cell spufs and x86 xstate */
- 	if (elf_coredump_extra_notes_write(cprm))
- 		goto end_coredump;
- 
-diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-index b54b313bcf07..e30a9b47dc87 100644
---- a/include/uapi/linux/elf.h
-+++ b/include/uapi/linux/elf.h
-@@ -411,6 +411,7 @@ typedef struct elf64_shdr {
- #define NT_X86_XSTATE	0x202		/* x86 extended state using xsave */
- /* Old binutils treats 0x203 as a CET state */
- #define NT_X86_SHSTK	0x204		/* x86 SHSTK state */
-+#define NT_X86_XSAVE_LAYOUT	0x205	/* XSAVE layout description */
- #define NT_S390_HIGH_GPRS	0x300	/* s390 upper register halves */
- #define NT_S390_TIMER	0x301		/* s390 timer register */
- #define NT_S390_TODCMP	0x302		/* s390 TOD clock comparator register */
--- 
-2.34.1
-
+DQoNCkxlIDA2LzA1LzIwMjQgw6AgMTQ6MTksIEF0aGlyYSBSYWplZXYgYSDDqWNyaXTCoDoNCj4g
+VXBkYXRlIGluc3RydWN0aW9uIHRyYWNraW5nIHdpdGggYWRkIGluc3RydWN0aW9uLiBBcGFydCBm
+cm9tICJtciINCj4gaW5zdHJ1Y3Rpb24sIHRoZSByZWdpc3RlciBzdGF0ZSBpcyBjYXJyaWVkIG9u
+IGJ5IG90aGVyIGluc25zLCBpZSwNCj4gImFkZCwgYWRkaSwgYWRkaXMiLiBTaW5jZSB0aGVzZSBh
+cmUgbm90IG1lbW9yeSBpbnN0cnVjdGlvbnMgYW5kIGRvZXNuJ3QNCj4gZmFsbCBpbiB0aGUgcmFu
+Z2Ugb2YgKDMyIHRvIDYzKSwgYWRkIHRoZXNlIGFzIHBhcnQgb2Ygbm1lbW9uaWMgdGFibGUuDQo+
+IEZvciBub3csIGFkZCogaW5zdHJ1Y3Rpb25zIGFyZSBhZGRlZC4gVGhlcmUgaXMgcG9zc2liaWxp
+dHkgb2YgZ2V0dGluZw0KPiBtb3JlIGFkZGVkIGhlcmUuIEJ1dCB0byBleHRyYWN0IHJlZ3MsIHN0
+aWxsIHRoZSBiaW5hcnkgY29kZSB3aWxsIGJlDQo+IHVzZWQuIFNvIGFzc29jaWF0ZSB0aGlzIHdp
+dGggImxvYWRfc3RvcmVfb3BzIiBpdHNlbGYgYW5kIG5vIG90aGVyDQo+IGNoYW5nZXMgcmVxdWly
+ZWQuDQoNCkxvb2tzIGZyYWdpbGUuDQoNCkhvdyBkbyB5b3UgaGFuZGxlIGFkZGMsIGFkZGUsIGFk
+ZGljID8NCkFuZCBhbHNvIGFkZG1lLCBhZGR6ZSwgd2hpY2ggb25seSBoYXZlIHR3byBvcGVyYW5k
+cyBpbnN0ZWFkIG9mIDMgPw0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBBdGhpcmEgUmFqZWV2IDxh
+dHJhamVldkBsaW51eC52bmV0LmlibS5jb20+DQo+IC0tLQ0KPiAgIC4uLi9wZXJmL2FyY2gvcG93
+ZXJwYy9hbm5vdGF0ZS9pbnN0cnVjdGlvbnMuYyB8IDIxICsrKysrKysrKysrKysrKysrKysNCj4g
+ICB0b29scy9wZXJmL3V0aWwvZGlzYXNtLmMgICAgICAgICAgICAgICAgICAgICAgfCAgMSArDQo+
+ICAgMiBmaWxlcyBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+dG9vbHMvcGVyZi9hcmNoL3Bvd2VycGMvYW5ub3RhdGUvaW5zdHJ1Y3Rpb25zLmMgYi90b29scy9w
+ZXJmL2FyY2gvcG93ZXJwYy9hbm5vdGF0ZS9pbnN0cnVjdGlvbnMuYw0KPiBpbmRleCBjY2U3MDIz
+OTUxZmUuLjFmMzVkOGE2NWJiNCAxMDA2NDQNCj4gLS0tIGEvdG9vbHMvcGVyZi9hcmNoL3Bvd2Vy
+cGMvYW5ub3RhdGUvaW5zdHJ1Y3Rpb25zLmMNCj4gKysrIGIvdG9vbHMvcGVyZi9hcmNoL3Bvd2Vy
+cGMvYW5ub3RhdGUvaW5zdHJ1Y3Rpb25zLmMNCj4gQEAgLTEsNiArMSwxNyBAQA0KPiAgIC8vIFNQ
+RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wDQo+ICAgI2luY2x1ZGUgPGxpbnV4L2NvbXBp
+bGVyLmg+DQo+ICAgDQo+ICsvKg0KPiArICogcG93ZXJwYyBpbnN0cnVjdGlvbiBubWVtb25pYyB0
+YWJsZSB0byBhc3NvY2lhdGUgbG9hZC9zdG9yZSBpbnN0cnVjdGlvbnMgd2l0aA0KPiArICogbW92
+ZV9vcHMuIG1vdl9vcHMgaXMgdXNlZCB0byBpZGVudGlmeSBhZGQvbXIgdG8gZG8gaW5zdHJ1Y3Rp
+b24gdHJhY2tpbmcuDQo+ICsgKi8NCj4gK3N0YXRpYyBzdHJ1Y3QgaW5zIHBvd2VycGNfX2luc3Ry
+dWN0aW9uc1tdID0gew0KPiArCXsgLm5hbWUgPSAibXIiLCAgICAgICAgIC5vcHMgPSAmbG9hZF9z
+dG9yZV9vcHMsICB9LA0KPiArCXsgLm5hbWUgPSAiYWRkaSIsICAgICAgIC5vcHMgPSAmbG9hZF9z
+dG9yZV9vcHMsICAgfSwNCj4gKwl7IC5uYW1lID0gImFkZGlzIiwgICAgICAub3BzID0gJmxvYWRf
+c3RvcmVfb3BzLCAgfSwNCj4gKwl7IC5uYW1lID0gImFkZCIsICAgICAgICAub3BzID0gJmxvYWRf
+c3RvcmVfb3BzLCAgfSwNCj4gK307DQo+ICsNCj4gICBzdGF0aWMgc3RydWN0IGluc19vcHMgKnBv
+d2VycGNfX2Fzc29jaWF0ZV9pbnN0cnVjdGlvbl9vcHMoc3RydWN0IGFyY2ggKmFyY2gsIGNvbnN0
+IGNoYXIgKm5hbWUpDQo+ICAgew0KPiAgIAlpbnQgaTsNCj4gQEAgLTc1LDYgKzg2LDkgQEAgc3Rh
+dGljIHZvaWQgdXBkYXRlX2luc25fc3RhdGVfcG93ZXJwYyhzdHJ1Y3QgdHlwZV9zdGF0ZSAqc3Rh
+dGUsDQo+ICAgCWlmIChhbm5vdGF0ZV9nZXRfaW5zbl9sb2NhdGlvbihkbG9jLT5hcmNoLCBkbCwg
+JmxvYykgPCAwKQ0KPiAgIAkJcmV0dXJuOw0KPiAgIA0KPiArCWlmICghc3RybmNtcChkbC0+aW5z
+Lm5hbWUsICJhZGQiLCAzKSkNCj4gKwkJZ290byByZWdzX2NoZWNrOw0KPiArDQo+ICAgCWlmIChz
+dHJuY21wKGRsLT5pbnMubmFtZSwgIm1yIiwgMikpDQo+ICAgCQlyZXR1cm47DQo+ICAgDQo+IEBA
+IC04NSw2ICs5OSw3IEBAIHN0YXRpYyB2b2lkIHVwZGF0ZV9pbnNuX3N0YXRlX3Bvd2VycGMoc3Ry
+dWN0IHR5cGVfc3RhdGUgKnN0YXRlLA0KPiAgIAkJZHN0LT5yZWcxID0gc3JjX3JlZzsNCj4gICAJ
+fQ0KPiAgIA0KPiArcmVnc19jaGVjazoNCj4gICAJaWYgKCFoYXNfcmVnX3R5cGUoc3RhdGUsIGRz
+dC0+cmVnMSkpDQo+ICAgCQlyZXR1cm47DQo+ICAgDQo+IEBAIC0xMTUsNiArMTMwLDEyIEBAIHN0
+YXRpYyB2b2lkIHVwZGF0ZV9pbnNuX3N0YXRlX3Bvd2VycGMoc3RydWN0IHR5cGVfc3RhdGUgKnN0
+YXRlIF9fbWF5YmVfdW51c2VkLCBzDQo+ICAgc3RhdGljIGludCBwb3dlcnBjX19hbm5vdGF0ZV9p
+bml0KHN0cnVjdCBhcmNoICphcmNoLCBjaGFyICpjcHVpZCBfX21heWJlX3VudXNlZCkNCj4gICB7
+DQo+ICAgCWlmICghYXJjaC0+aW5pdGlhbGl6ZWQpIHsNCj4gKwkJYXJjaC0+bnJfaW5zdHJ1Y3Rp
+b25zID0gQVJSQVlfU0laRShwb3dlcnBjX19pbnN0cnVjdGlvbnMpOw0KPiArCQlhcmNoLT5pbnN0
+cnVjdGlvbnMgPSBjYWxsb2MoYXJjaC0+bnJfaW5zdHJ1Y3Rpb25zLCBzaXplb2Yoc3RydWN0IGlu
+cykpOw0KPiArCQlpZiAoIWFyY2gtPmluc3RydWN0aW9ucykNCj4gKwkJCXJldHVybiAtRU5PTUVN
+Ow0KPiArCQltZW1jcHkoYXJjaC0+aW5zdHJ1Y3Rpb25zLCBwb3dlcnBjX19pbnN0cnVjdGlvbnMs
+IHNpemVvZihzdHJ1Y3QgaW5zKSAqIGFyY2gtPm5yX2luc3RydWN0aW9ucyk7DQo+ICsJCWFyY2gt
+Pm5yX2luc3RydWN0aW9uc19hbGxvY2F0ZWQgPSBhcmNoLT5ucl9pbnN0cnVjdGlvbnM7DQo+ICAg
+CQlhcmNoLT5pbml0aWFsaXplZCA9IHRydWU7DQo+ICAgCQlhcmNoLT5hc3NvY2lhdGVfaW5zdHJ1
+Y3Rpb25fb3BzID0gcG93ZXJwY19fYXNzb2NpYXRlX2luc3RydWN0aW9uX29wczsNCj4gICAJCWFy
+Y2gtPm9iamR1bXAuY29tbWVudF9jaGFyICAgICAgPSAnIyc7DQo+IGRpZmYgLS1naXQgYS90b29s
+cy9wZXJmL3V0aWwvZGlzYXNtLmMgYi90b29scy9wZXJmL3V0aWwvZGlzYXNtLmMNCj4gaW5kZXgg
+YWM2YjhiOGRhMzhhLi4zMmNmNTA2YTkwMTAgMTAwNjQ0DQo+IC0tLSBhL3Rvb2xzL3BlcmYvdXRp
+bC9kaXNhc20uYw0KPiArKysgYi90b29scy9wZXJmL3V0aWwvZGlzYXNtLmMNCj4gQEAgLTM2LDYg
+KzM2LDcgQEAgc3RhdGljIHN0cnVjdCBpbnNfb3BzIG1vdl9vcHM7DQo+ICAgc3RhdGljIHN0cnVj
+dCBpbnNfb3BzIG5vcF9vcHM7DQo+ICAgc3RhdGljIHN0cnVjdCBpbnNfb3BzIGxvY2tfb3BzOw0K
+PiAgIHN0YXRpYyBzdHJ1Y3QgaW5zX29wcyByZXRfb3BzOw0KPiArc3RhdGljIHN0cnVjdCBpbnNf
+b3BzIGxvYWRfc3RvcmVfb3BzOw0KPiAgIA0KPiAgIHN0YXRpYyBpbnQganVtcF9fc2NucHJpbnRm
+KHN0cnVjdCBpbnMgKmlucywgY2hhciAqYmYsIHNpemVfdCBzaXplLA0KPiAgIAkJCSAgIHN0cnVj
+dCBpbnNfb3BlcmFuZHMgKm9wcywgaW50IG1heF9pbnNfbmFtZSk7DQo=
