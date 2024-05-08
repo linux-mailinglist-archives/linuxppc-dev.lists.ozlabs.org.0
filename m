@@ -1,76 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C437E8BFD0D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 14:22:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AEF8BFD1B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 14:27:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Jpm56lzA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KQXHS22U;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZDmB2fHRz3cWX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 22:22:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZDv10R2fz3cVX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 22:27:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Jpm56lzA;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KQXHS22U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZDlP2h2Lz2xQ7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 22:21:20 +1000 (AEST)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1edc696df2bso33281915ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2024 05:21:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZDtJ2Vnwz2yvf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 22:27:18 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-5e152c757a5so2628191a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2024 05:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715170878; x=1715775678; darn=lists.ozlabs.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=gmail.com; s=20230601; t=1715171232; x=1715776032; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8Wq2cbWqEeEEeVBqHczsjobIDxQ5lhzHyo4DV/Jjbdk=;
-        b=Jpm56lzAMP590bt2VY845WfyvYAHLfWnpRWQCjUGgW6k2yqItw5lEwDsK3KNrW1rai
-         nPrPdb6YYyNxI9RrjflKa12y5mSlU7MXxMUP605i1wlO2aVOh36HUgnXvdOq3EA9fcER
-         1rkKccFuleAyWRGMQ/k1XzAA8ef4g754yQYKD6gE7FUSXgyybMMczYeoNelAeA9ST4qK
-         nulybd23H2bxDHbwFStymaGIRH+Do153z17/bIze1a1x4zpT9TyB44n2UPCpBmq+m+Q+
-         Fe8y79Ih/3cHpD1nIyr5xHjZgJmWCIur7ohf2Ss7ytkd7/Fk4bXK83LdKDwxiEuhj881
-         fCHQ==
+        bh=Tzhl7ZAW8jGRz42aowIWp6lQAQOy/vCwiQrcQ4oOFJk=;
+        b=KQXHS22UK/fFqeXSjA48QuqzWg1h2q/BPQFqtofBe04oD1SYVzQYJ2OhCduffMDLR+
+         Z7711gaOrImzITD+6wDOAVQT/l4hB2LVckqW2xAFabx4AY2UctR0TR8i2dVgyKnPyaPy
+         MvsS5bCnmTxVKMilf4Gb/LCV2PdbmECqpIoHa6ZAFReDYoH7jKbWQ2vGbwYvRyQN4XoT
+         yLJpvJ5pdpM72RZWLV441gFaulMLm7XHdc/QDrBeCp9RKSJ8VzyX1Lq7t6Ih+WA45S4b
+         GcD8Bzt9X27mroCTr0kSU3w7h1TWPJuXyZyqcsUnW2866W2ilUXdJ26amPzImHzn/FhJ
+         Wc8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715170878; x=1715775678;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20230601; t=1715171232; x=1715776032;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=8Wq2cbWqEeEEeVBqHczsjobIDxQ5lhzHyo4DV/Jjbdk=;
-        b=NyEHjNzFWG3meMXTsoK3pwU++gJvwhI5G+MQukXfWhWiA/MKqYOu3JjFEXWwB5mTVV
-         WDQjpqGf8tua3/VJUpR3EfWQCWOoH59BrlnTkg1LSY7bBJW3ESZgNn53RkhE+maklLPU
-         CSTlnXUO/7AdvyvN9f5IEFaMmXMYSuKhSSKj7gFeGE6jW5MQGpdCGabp4n+BKt5I5R/i
-         AiQfC0txoqcvzCWZjtek8qElHzb5bG1m0JR5l47OJ0N66puifzdwdNG1zyyrKTesj645
-         QftDLZzVQD4kmmxyEhTWhZAq9QaPhssiG1ZwD8vA43IFliS7Ss3OBJAQTixNzmVI1m9H
-         rgkQ==
-X-Gm-Message-State: AOJu0YzAnozDr/UdqJrjDCNQUApFOCcTNKft9nONWLA+9moA8eSbCsBR
-	8Kn4H8scUT8zZ131s6EsRL/iNXemWwgK00qwgSJ+dXux9lJt7kQqWHXKuQ==
-X-Google-Smtp-Source: AGHT+IGeTD7aFAYoEaI35ZIuWXFJrDZoSQ6AWKyZfB4Eviw4O375tGDyvXRsVtARY4tpMm2+BXL1cg==
-X-Received: by 2002:a17:902:d588:b0:1e4:24cc:e020 with SMTP id d9443c01a7336-1eeb089c231mr34982305ad.67.1715170878308;
-        Wed, 08 May 2024 05:21:18 -0700 (PDT)
+        bh=Tzhl7ZAW8jGRz42aowIWp6lQAQOy/vCwiQrcQ4oOFJk=;
+        b=FJwxroe0zPZmQXlCYF2qzdnU1wFQHH+5dDe5GOL5E250QqNC72ZvR+RxBZ2ITiQpKx
+         hCVeG7f7Is1Ds2l1cvvJfmNR3te9R+4/pTRvJdY/uIi0eJPy2mZ+TTb1JGRQrwe8H1q1
+         Xd6qIqVUpxTgOSnvmzQOjbLPfP3SkQZ7HWUy3/O/tlXKM7AmLOxaNnUUMb4KeFgd39IF
+         vBFohcJTRIDRL3QPQ7j6Gw3O7N/6I8FRODe55MCP4IHiDnWPJT0b31x7MnDHzkm9lejx
+         WS6ZsesX/eihdTQzqo7p2o9Cfz5W0W+4EqEuNaoAxT5DVgeoEt5Fp39Bv5oJRH65z2u4
+         VXjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWb/S7LsB39UOVBtQysqn49t02ynNRJSgCG3ryjODLmbkS6FmspH1Bm5/sSIVpJ/qvgCK1GuSvg3E2ZQlGUb4ogTt0LBufr3RlSisc9Zw==
+X-Gm-Message-State: AOJu0YySMBza8HLNyIq0rHWHPjKTBWkhwLkRuiWOAcgxIEqOcGV7q3WJ
+	3sT8kSdlQG45V34VyOCQukhLuhr3KeYMNZLlSxOdyGUGNP7GthrMvEn7Yg==
+X-Google-Smtp-Source: AGHT+IExSIPuMSRPDbfvHtma7L54x5+aVxWuQHg9He/3VD/CbX/zKKN8vvUnUhZKdtm0xXYCF+asZg==
+X-Received: by 2002:a17:90a:b38a:b0:2b4:fe80:1b1b with SMTP id 98e67ed59e1d1-2b616ae2a2fmr2221006a91.43.1715171232484;
+        Wed, 08 May 2024 05:27:12 -0700 (PDT)
 Received: from localhost ([1.146.8.34])
-        by smtp.gmail.com with ESMTPSA id n2-20020a170902d2c200b001eb2e6b14e0sm11694253plc.126.2024.05.08.05.21.14
+        by smtp.gmail.com with ESMTPSA id y8-20020a17090a390800b002b622cdbc40sm1409386pjb.39.2024.05.08.05.27.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 May 2024 05:21:17 -0700 (PDT)
+        Wed, 08 May 2024 05:27:12 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 May 2024 22:21:10 +1000
-Message-Id: <D149BWFCJHTP.J7WBZZZHJEGT@gmail.com>
-Subject: Re: [PATCH v6] arch/powerpc/kvm: Add support for reading VPA
- counters for pseries guests
+Date: Wed, 08 May 2024 22:27:06 +1000
+Message-Id: <D149GFR9LAZH.1X2F7YKPEJ42C@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v9 07/31] scripts: allow machine option
+ to be specified in unittests.cfg
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Gautam Menghani" <gautam@linux.ibm.com>, <mpe@ellerman.id.au>,
- <christophe.leroy@csgroup.eu>, <naveen.n.rao@linux.ibm.com>
+To: "Thomas Huth" <thuth@redhat.com>
 X-Mailer: aerc 0.17.0
-References: <20240506145605.73794-1-gautam@linux.ibm.com>
-In-Reply-To: <20240506145605.73794-1-gautam@linux.ibm.com>
+References: <20240504122841.1177683-1-npiggin@gmail.com>
+ <20240504122841.1177683-8-npiggin@gmail.com>
+ <e0df1892-c17f-4fc3-b95a-4efc0af917d3@redhat.com>
+In-Reply-To: <e0df1892-c17f-4fc3-b95a-4efc0af917d3@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,247 +84,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue May 7, 2024 at 12:56 AM AEST, Gautam Menghani wrote:
-> PAPR hypervisor has introduced three new counters in the VPA area of
-> LPAR CPUs for KVM L2 guest (see [1] for terminology) observability - 2
-> for context switches from host to guest and vice versa, and 1 counter
-> for getting the total time spent inside the KVM guest. Add a tracepoint
-> that enables reading the counters for use by ftrace/perf. Note that this
-> tracepoint is only available for nestedv2 API (i.e, KVM on PowerVM).
+On Wed May 8, 2024 at 1:08 AM AEST, Thomas Huth wrote:
+> On 04/05/2024 14.28, Nicholas Piggin wrote:
+> > This allows different machines with different requirements to be
+> > supported by run_tests.sh, similarly to how different accelerators
+> > are handled.
+> >=20
+> > Acked-by: Thomas Huth <thuth@redhat.com>
+> > Acked-by: Andrew Jones <andrew.jones@linux.dev>
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   docs/unittests.txt   |  7 +++++++
+> >   scripts/common.bash  |  8 ++++++--
+> >   scripts/runtime.bash | 16 ++++++++++++----
+> >   3 files changed, 25 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/docs/unittests.txt b/docs/unittests.txt
+> > index 7cf2c55ad..6449efd78 100644
+> > --- a/docs/unittests.txt
+> > +++ b/docs/unittests.txt
+> > @@ -42,6 +42,13 @@ For <arch>/ directories that support multiple archit=
+ectures, this restricts
+> >   the test to the specified arch. By default, the test will run on any
+> >   architecture.
+> >  =20
+> > +machine
+> > +-------
+> > +For those architectures that support multiple machine types, this rest=
+ricts
+> > +the test to the specified machine. By default, the test will run on
+> > +any machine type. (Note, the machine can be specified with the MACHINE=
+=3D
+> > +environment variable, and defaults to the architecture's default.)
+> > +
+> >   smp
+> >   ---
+> >   smp =3D <number>
+> > diff --git a/scripts/common.bash b/scripts/common.bash
+> > index 5e9ad53e2..3aa557c8c 100644
+> > --- a/scripts/common.bash
+> > +++ b/scripts/common.bash
+> > @@ -10,6 +10,7 @@ function for_each_unittest()
+> >   	local opts
+> >   	local groups
+> >   	local arch
+> > +	local machine
+> >   	local check
+> >   	local accel
+> >   	local timeout
+> > @@ -21,7 +22,7 @@ function for_each_unittest()
+> >   		if [[ "$line" =3D~ ^\[(.*)\]$ ]]; then
+> >   			rematch=3D${BASH_REMATCH[1]}
+> >   			if [ -n "${testname}" ]; then
+> > -				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" =
+"$arch" "$check" "$accel" "$timeout"
+> > +				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" =
+"$arch" "$machine" "$check" "$accel" "$timeout"
+> >   			fi
+> >   			testname=3D$rematch
+> >   			smp=3D1
+> > @@ -29,6 +30,7 @@ function for_each_unittest()
+> >   			opts=3D""
+> >   			groups=3D""
+> >   			arch=3D""
+> > +			machine=3D""
+> >   			check=3D""
+> >   			accel=3D""
+> >   			timeout=3D""
+> > @@ -58,6 +60,8 @@ function for_each_unittest()
+> >   			groups=3D${BASH_REMATCH[1]}
+> >   		elif [[ $line =3D~ ^arch\ *=3D\ *(.*)$ ]]; then
+> >   			arch=3D${BASH_REMATCH[1]}
+> > +		elif [[ $line =3D~ ^machine\ *=3D\ *(.*)$ ]]; then
+> > +			machine=3D${BASH_REMATCH[1]}
+> >   		elif [[ $line =3D~ ^check\ *=3D\ *(.*)$ ]]; then
+> >   			check=3D${BASH_REMATCH[1]}
+> >   		elif [[ $line =3D~ ^accel\ *=3D\ *(.*)$ ]]; then
+> > @@ -67,7 +71,7 @@ function for_each_unittest()
+> >   		fi
+> >   	done
+> >   	if [ -n "${testname}" ]; then
+> > -		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" "$=
+arch" "$check" "$accel" "$timeout"
+> > +		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" "$=
+arch" "$machine" "$check" "$accel" "$timeout"
+> >   	fi
+> >   	exec {fd}<&-
+> >   }
+> > diff --git a/scripts/runtime.bash b/scripts/runtime.bash
+> > index 177b62166..0c96d6ea2 100644
+> > --- a/scripts/runtime.bash
+> > +++ b/scripts/runtime.bash
+> > @@ -32,7 +32,7 @@ premature_failure()
+> >   get_cmdline()
+> >   {
+> >       local kernel=3D$1
+> > -    echo "TESTNAME=3D$testname TIMEOUT=3D$timeout ACCEL=3D$accel $RUNT=
+IME_arch_run $kernel -smp $smp $opts"
+> > +    echo "TESTNAME=3D$testname TIMEOUT=3D$timeout MACHINE=3D$machine A=
+CCEL=3D$accel $RUNTIME_arch_run $kernel -smp $smp $opts"
+> >   }
+> >  =20
+> >   skip_nodefault()
+> > @@ -80,9 +80,10 @@ function run()
+> >       local kernel=3D"$4"
+> >       local opts=3D"$5"
+> >       local arch=3D"$6"
+> > -    local check=3D"${CHECK:-$7}"
+> > -    local accel=3D"$8"
+> > -    local timeout=3D"${9:-$TIMEOUT}" # unittests.cfg overrides the def=
+ault
+> > +    local machine=3D"$7"
+> > +    local check=3D"${CHECK:-$8}"
+> > +    local accel=3D"$9"
+> > +    local timeout=3D"${10:-$TIMEOUT}" # unittests.cfg overrides the de=
+fault
+> >  =20
+> >       if [ "${CONFIG_EFI}" =3D=3D "y" ]; then
+> >           kernel=3D${kernel/%.flat/.efi}
+> > @@ -116,6 +117,13 @@ function run()
+> >           return 2
+> >       fi
+> >  =20
+> > +    if [ -n "$machine" ] && [ -n "$MACHINE" ] && [ "$machine" !=3D "$M=
+ACHINE" ]; then
+> > +        print_result "SKIP" $testname "" "$machine only"
+> > +        return 2
+> > +    elif [ -n "$MACHINE" ]; then
+> > +        machine=3D"$MACHINE"
+> > +    fi
+> > +
+> >       if [ -n "$accel" ] && [ -n "$ACCEL" ] && [ "$accel" !=3D "$ACCEL"=
+ ]; then
+> >           print_result "SKIP" $testname "" "$accel only, but ACCEL=3D$A=
+CCEL"
+> >           return 2
 >
-> [1] Terminology:
-> a. L1 refers to the VM (LPAR) booted on top of PAPR hypervisor
-> b. L2 refers to the KVM guest booted on top of L1.
+> For some reasons that I don't quite understand yet, this patch causes the=
+=20
+> "sieve" test to always timeout on the s390x runner, see e.g.:
 >
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
-> v5 -> v6:
-> 1. Use TRACE_EVENT_FN to enable/disable counters only once.
-> 2. Remove the agg. counters from vcpu->arch.
-> 3. Use PACA to maintain old counter values instead of zeroing on every
-> entry.
-> 4. Simplify variable names
+>   https://gitlab.com/thuth/kvm-unit-tests/-/jobs/6798954987
+
+How do you use the s390x runner?
+
 >
-> v4 -> v5:
-> 1. Define helper functions for getting/setting the accumulation counter
-> in L2's VPA
+> Everything is fine in the previous patches (I pushed now the previous 5=
+=20
+> patches to the repo):
 >
-> v3 -> v4:
-> 1. After vcpu_run, check the VPA flag instead of checking for tracepoint
-> being enabled for disabling the cs time accumulation.
+>   https://gitlab.com/kvm-unit-tests/kvm-unit-tests/-/pipelines/1281919104
 >
-> v2 -> v3:
-> 1. Move the counter disabling and zeroing code to a different function.
-> 2. Move the get_lppaca() inside the tracepoint_enabled() branch.
-> 3. Add the aggregation logic to maintain total context switch time.
->
-> v1 -> v2:
-> 1. Fix the build error due to invalid struct member reference.
->
->  arch/powerpc/include/asm/lppaca.h | 11 +++++--
->  arch/powerpc/include/asm/paca.h   |  5 +++
->  arch/powerpc/kvm/book3s_hv.c      | 52 +++++++++++++++++++++++++++++++
->  arch/powerpc/kvm/trace_hv.h       | 27 ++++++++++++++++
->  4 files changed, 92 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm=
-/lppaca.h
-> index 61ec2447dabf..f40a646bee3c 100644
-> --- a/arch/powerpc/include/asm/lppaca.h
-> +++ b/arch/powerpc/include/asm/lppaca.h
-> @@ -62,7 +62,8 @@ struct lppaca {
->  	u8	donate_dedicated_cpu;	/* Donate dedicated CPU cycles */
->  	u8	fpregs_in_use;
->  	u8	pmcregs_in_use;
-> -	u8	reserved8[28];
-> +	u8	l2_counters_enable;  /* Enable usage of counters for KVM guest */
-> +	u8	reserved8[27];
->  	__be64	wait_state_cycles;	/* Wait cycles for this proc */
->  	u8	reserved9[28];
->  	__be16	slb_count;		/* # of SLBs to maintain */
-> @@ -92,9 +93,13 @@ struct lppaca {
->  	/* cacheline 4-5 */
-> =20
->  	__be32	page_ins;		/* CMO Hint - # page ins by OS */
-> -	u8	reserved12[148];
-> +	u8	reserved12[28];
-> +	volatile __be64 l1_to_l2_cs_tb;
-> +	volatile __be64 l2_to_l1_cs_tb;
-> +	volatile __be64 l2_runtime_tb;
+> Could it be that he TIMEOUT gets messed up in certain cases?
 
-I wonder if we shouldn't be moving over to use READ_ONCE for these
-instead of volatile.
+Hmm not sure yet. At least it got timeout right for the duration=3D90s
+message.
 
-Probably doesn't really matter here. Maybe general audit of volatiles
-in arch/powerpc could be something to put in linuxppc issues.
-
-> +	u8 reserved13[96];
->  	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
-> -	u8	reserved13[96];
-> +	u8	reserved14[96];
->  } ____cacheline_aligned;
-> =20
->  #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
-> diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/p=
-aca.h
-> index 1d58da946739..f20ac7a6efa4 100644
-> --- a/arch/powerpc/include/asm/paca.h
-> +++ b/arch/powerpc/include/asm/paca.h
-> @@ -278,6 +278,11 @@ struct paca_struct {
->  	struct mce_info *mce_info;
->  	u8 mce_pending_irq_work;
->  #endif /* CONFIG_PPC_BOOK3S_64 */
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +	u64 l1_to_l2_cs;
-> +	u64 l2_to_l1_cs;
-> +	u64 l2_runtime_agg;
-> +#endif
->  } ____cacheline_aligned;
-
-I don't think these really need to be in the paca.
-
-paca is for per-cpu stuff that is accessed in real mode, early interrupt
-entry, etc.
-
-> =20
->  extern void copy_mm_to_paca(struct mm_struct *mm);
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 8e86eb577eb8..ed69ad58bd02 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4108,6 +4108,54 @@ static void vcpu_vpa_increment_dispatch(struct kvm=
-_vcpu *vcpu)
->  	}
->  }
-> =20
-> +static inline int kvmhv_get_l2_counters_status(void)
-> +{
-> +	return get_lppaca()->l2_counters_enable;
-> +}
-> +
-> +static inline void kvmhv_set_l2_counters_status(int cpu, bool status)
-> +{
-> +	if (status)
-> +		lppaca_of(cpu).l2_counters_enable =3D 1;
-> +	else
-> +		lppaca_of(cpu).l2_counters_enable =3D 0;
-> +}
-> +
-> +int kmvhv_counters_tracepoint_regfunc(void)
-> +{
-> +	int cpu;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		kvmhv_set_l2_counters_status(cpu, true);
-> +	}
-> +	return 0;
-> +}
-> +
-> +void kmvhv_counters_tracepoint_unregfunc(void)
-> +{
-> +	int cpu;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		kvmhv_set_l2_counters_status(cpu, false);
-> +	}
-> +}
-> +
-> +static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
-> +{
-> +	struct lppaca *lp =3D get_lppaca();
-> +	u64 l1_to_l2_ns, l2_to_l1_ns, l2_runtime_ns;
-> +
-> +	l1_to_l2_ns =3D tb_to_ns(be64_to_cpu(lp->l1_to_l2_cs_tb));
-> +	l2_to_l1_ns =3D tb_to_ns(be64_to_cpu(lp->l2_to_l1_cs_tb));
-> +	l2_runtime_ns =3D tb_to_ns(be64_to_cpu(lp->l2_runtime_tb));
-> +	trace_kvmppc_vcpu_stats(vcpu, l1_to_l2_ns - local_paca->l1_to_l2_cs,
-> +					l2_to_l1_ns - local_paca->l2_to_l1_cs,
-> +					l2_runtime_ns - local_paca->l2_runtime_agg);
-> +	local_paca->l1_to_l2_cs =3D l1_to_l2_ns;
-> +	local_paca->l2_to_l1_cs =3D l2_to_l1_ns;
-> +	local_paca->l2_runtime_agg =3D l2_runtime_ns;
-> +}
-
-So you're just using the per-cpu values to cache the last value
-read so next time you can take a delta.
-
-Could you zero the counters before entry? Or just use local
-variables to read the before values.
-
-If you want to keep the same scheme, I think per-cpu variables
-should work.
-
-Otherwise,
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-> +
->  static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_lim=
-it,
->  				     unsigned long lpcr, u64 *tb)
->  {
-> @@ -4156,6 +4204,10 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vc=
-pu *vcpu, u64 time_limit,
-> =20
->  	timer_rearm_host_dec(*tb);
-> =20
-> +	/* Record context switch and guest_run_time data */
-> +	if (kvmhv_get_l2_counters_status())
-> +		do_trace_nested_cs_time(vcpu);
-> +
->  	return trap;
->  }
-> =20
-> diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
-> index 8d57c8428531..dc118ab88f23 100644
-> --- a/arch/powerpc/kvm/trace_hv.h
-> +++ b/arch/powerpc/kvm/trace_hv.h
-> @@ -238,6 +238,9 @@
->  	{H_MULTI_THREADS_ACTIVE,	"H_MULTI_THREADS_ACTIVE"}, \
->  	{H_OUTSTANDING_COP_OPS,		"H_OUTSTANDING_COP_OPS"}
-> =20
-> +int kmvhv_counters_tracepoint_regfunc(void);
-> +void kmvhv_counters_tracepoint_unregfunc(void);
-> +
->  TRACE_EVENT(kvm_guest_enter,
->  	TP_PROTO(struct kvm_vcpu *vcpu),
->  	TP_ARGS(vcpu),
-> @@ -512,6 +515,30 @@ TRACE_EVENT(kvmppc_run_vcpu_exit,
->  			__entry->vcpu_id, __entry->exit, __entry->ret)
->  );
-> =20
-> +TRACE_EVENT_FN(kvmppc_vcpu_stats,
-> +	TP_PROTO(struct kvm_vcpu *vcpu, u64 l1_to_l2_cs, u64 l2_to_l1_cs, u64 l=
-2_runtime),
-> +
-> +	TP_ARGS(vcpu, l1_to_l2_cs, l2_to_l1_cs, l2_runtime),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(int,		vcpu_id)
-> +		__field(u64,		l1_to_l2_cs)
-> +		__field(u64,		l2_to_l1_cs)
-> +		__field(u64,		l2_runtime)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->vcpu_id  =3D vcpu->vcpu_id;
-> +		__entry->l1_to_l2_cs =3D l1_to_l2_cs;
-> +		__entry->l2_to_l1_cs =3D l2_to_l1_cs;
-> +		__entry->l2_runtime =3D l2_runtime;
-> +	),
-> +
-> +	TP_printk("VCPU %d: l1_to_l2_cs_time=3D%llu ns l2_to_l1_cs_time=3D%llu =
-ns l2_runtime=3D%llu ns",
-> +		__entry->vcpu_id,  __entry->l1_to_l2_cs,
-> +		__entry->l2_to_l1_cs, __entry->l2_runtime),
-> +	kmvhv_counters_tracepoint_regfunc, kmvhv_counters_tracepoint_unregfunc
-> +);
->  #endif /* _TRACE_KVM_HV_H */
-> =20
->  /* This part must be outside protection */
-
+Thanks,
+Nick
