@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5ED8BFF58
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:48:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D38D38BFF68
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:49:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZGhK64GYz78Ng
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 23:48:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZGjZ3CyVz78fC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 23:49:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZGXV4Qk9z3cS0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:42:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZGXX6KfFz3cbB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:42:04 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXV1jqyz4xMw;
-	Wed,  8 May 2024 23:42:02 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXT5124z4xM0;
+	Wed,  8 May 2024 23:42:01 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: rdunlap@infradead.org, arnd@arndb.de, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, Yang Li <yang.lee@linux.alibaba.com>
-In-Reply-To: <20240408083916.123369-1-yang.lee@linux.alibaba.com>
-References: <20240408083916.123369-1-yang.lee@linux.alibaba.com>
-Subject: Re: [PATCH -next 1/3 v2] powerpc: boot: Fix kernel-doc param for partial_decompress
-Message-Id: <171517558552.165093.6279419797489476438.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Stephen Rothwell <sfr@canb.auug.org.au>
+In-Reply-To: <20240503121012.3ba5000b@canb.auug.org.au>
+References: <20240503121012.3ba5000b@canb.auug.org.au>
+Subject: Re: [PATCH] Fix the address of the linuxppc-dev mailing list
+Message-Id: <171517558547.165093.12053711566803170487.b4-ty@ellerman.id.au>
 Date: Wed, 08 May 2024 23:39:45 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,19 +43,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Linux for PowerPC mailing list <linuxppc-dev@lists.ozlabs.org>, Linux kernel mailing list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 08 Apr 2024 16:39:16 +0800, Yang Li wrote:
-> Fix the kernel-doc annotation for the 'skip' parameter in the
-> partial_decompress() function by adding a missing underscore and colon.
+On Fri, 03 May 2024 12:10:12 +1000, Stephen Rothwell wrote:
+> This list was moved many years ago.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/3] powerpc: boot: Fix kernel-doc param for partial_decompress
-      https://git.kernel.org/powerpc/c/6efc2f1a64ef62f1e3893da90d6ac618988992c2
+[1/1] Fix the address of the linuxppc-dev mailing list
+      https://git.kernel.org/powerpc/c/fae573060c8da4d84a2551c6753d272abfda8ddc
 
 cheers
