@@ -2,93 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445168BFDF7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F413E8BFDFD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:07:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bh0ejsCi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i27q4ATN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZFmN6HKrz3cY2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 23:07:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZFn942Rxz3cV4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 23:07:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bh0ejsCi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i27q4ATN;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZFlh39Nrz2ykn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:06:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZFln1RZSz3cHH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:06:45 +1000 (AEST)
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VZFlh34S6z4x1C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:06:40 +1000 (AEST)
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VZFln1N6nz4x2v
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:06:45 +1000 (AEST)
 Received: by gandalf.ozlabs.org (Postfix)
-	id 4VZFlh2kmpz4x0K; Wed,  8 May 2024 23:06:40 +1000 (AEST)
+	id 4VZFln1JP7z4x1C; Wed,  8 May 2024 23:06:45 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bh0ejsCi;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i27q4ATN;
 	dkim-atps=neutral
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4VZFlg4jrRz4wd3;
-	Wed,  8 May 2024 23:06:39 +1000 (AEST)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4VZFlm5RvLz4wd3;
+	Wed,  8 May 2024 23:06:44 +1000 (AEST)
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 448Cwiml014019;
-	Wed, 8 May 2024 13:06:37 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 448CvCfD011622;
+	Wed, 8 May 2024 13:06:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=ytIISK4Bc/IuBOt3GOScBf74osEyv/yCW/QfZagz6+A=;
- b=Bh0ejsCiwS1f+BI9lq9oSNTDfPXd09CORQPT6/UerbVBbFtqg+2Jfb5n38jIyO0LIVIW
- USoMg5xgYqHEaFnmpTU3eWTlbPsSX8fbe+JfDfZdovHPy800F489IelcTw6/bme7ZqKt
- jx+9u1KV0pbyVr0oj4yxUHh84vBiPfgvdS3Gggic5X6yzrp3LgfZT276dO6h6xVBHbCM
- Q0NV9VLyy0Xzy8G7T572zdEm16IoiFf9HR0zdZmm2V0v8MpfYW5KN3Pfq0fgQjeYY4rB
- rGiteJBCpwI7VUho9NaizufOf97AxDy0Jmfxja9ysAeGBAQZz5G68iXH5g84JL8zlJw0 VQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y09tv013y-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=8YHfFzoT2TISRO+l7T5I2zVUawuTdqvydUwf+jpxDq0=;
+ b=i27q4ATNEkJSA7g6xmtd4G5BjkDjb58J0yxcXgsTNygu0fnMNnN2X1dW5gmwnm89r6YH
+ d2o1DKaQLkR3aNd2TAlfL3fw1FdLWoLprucqj3IIxm57hIy3qvyCvZauG4b5MMDOvUsL
+ SlrJTK/9YHW8ac3Ajr8zN6OjZjt/RpeMq6gHltFTDVRzezc314qAuy8163h0cmKG5yBM
+ YxFhnXQn4m/6SvhMhXFDL59+g8UKsUk5ZFSseVZG4qDUlqWXsuTh1zWu8usK7HuKSbzd
+ fwyCb6LeVncI6Mm1B9svmc4Gg0rm5XqhE2CuOxk9Hacz94AafsKKkezKy0Vp8TG0Bx7T 9w== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y09tv0145-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 May 2024 13:06:37 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 448BcgBW003958;
-	Wed, 8 May 2024 13:06:36 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xysgscsc7-1
+	Wed, 08 May 2024 13:06:42 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 448BTLSN009449;
+	Wed, 8 May 2024 13:06:42 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xysfxct6c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 May 2024 13:06:36 +0000
+	Wed, 08 May 2024 13:06:41 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 448D6Uph49611158
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 448D6a4f32572024
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 May 2024 13:06:32 GMT
+	Wed, 8 May 2024 13:06:38 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F53D2004B;
-	Wed,  8 May 2024 13:06:30 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 34C0420040;
+	Wed,  8 May 2024 13:06:36 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C80552004E;
-	Wed,  8 May 2024 13:06:27 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 64E6E20043;
+	Wed,  8 May 2024 13:06:33 +0000 (GMT)
 Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.56.231])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 May 2024 13:06:27 +0000 (GMT)
+	Wed,  8 May 2024 13:06:33 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 0/2] powerpc: kexec fixes
-Date: Wed,  8 May 2024 18:35:56 +0530
-Message-ID: <20240508130558.1939304-1-sourabhjain@linux.ibm.com>
+Subject: [PATCH 1/2] powerpc/kexec_file: fix extra size calculation for kexec FDT
+Date: Wed,  8 May 2024 18:35:57 +0530
+Message-ID: <20240508130558.1939304-2-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.44.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PMIFc0PpLcu6iqdiZqny5Dwq9jzGe9rc
-X-Proofpoint-GUID: PMIFc0PpLcu6iqdiZqny5Dwq9jzGe9rc
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240508130558.1939304-1-sourabhjain@linux.ibm.com>
+References: <20240508130558.1939304-1-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ybJ6cCxLdeWI2pg2W5h-AqbR7OhX74wD
+X-Proofpoint-GUID: ybJ6cCxLdeWI2pg2W5h-AqbR7OhX74wD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-08_09,2024-05-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=629 phishscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
  mlxscore=0 malwarescore=0 spamscore=0 adultscore=0 suspectscore=0
  bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2405010000 definitions=main-2405080092
@@ -107,35 +109,216 @@ Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ib
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Patch series fixes two kexec issues.
+While setting up the FDT for kexec, CPU nodes that are added after the
+system boots and reserved memory ranges are incorporated into the
+initial_boot_params (base FDT).
 
-01/02: Update extra size calculation for kexec FDT to avoid kexec load
-failure due to FDT_ERR_NOSPACE while including CPU nodes added post
-boot and reserved memory ranges.
+However, they are not taken into account when determining the additional
+size needed for the kexec FDT. As a result, kexec fails to load,
+generating the following error:
 
-02/02: Fix update_cpus_node/core_64.c function to include missing device
-nodes under /cpus node with device_type != "cpu".
+[1116.774451] Error updating memory reserve map: FDT_ERR_NOSPACE
+kexec_file_load failed: No such process
 
-Note: this patch series is rebased on top of the linux-next/master
-to avoid the conflict with the below patch series:
-https://lore.kernel.org/all/171509287314.62008.11812494124513471250.b4-ty@ellerman.id.au/
+Therefore, consider the extra size for CPU nodes added post-system boot
+and reserved memory ranges while preparing the kexec FDT.
+
+While adding a new parameter to the setup_new_fdt_ppc64 function, it was
+noticed that there were a couple of unused parameters, so they were
+removed.
 
 Cc: Aditya Gupta <adityag@linux.ibm.com>
 Cc: Hari Bathini <hbathini@linux.ibm.com>
 Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-
-Sourabh Jain (2):
-  powerpc/kexec_file: fix extra size calculation for kexec FDT
-  powerpc/kexec_file: fix cpus node update to FDT
-
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+---
  arch/powerpc/include/asm/kexec.h  |  6 ++--
- arch/powerpc/kexec/core_64.c      | 53 +++++++++++++++++++++----------
  arch/powerpc/kexec/elf_64.c       | 12 +++++--
  arch/powerpc/kexec/file_load_64.c | 53 +++++++++++++------------------
- 4 files changed, 70 insertions(+), 54 deletions(-)
+ 3 files changed, 33 insertions(+), 38 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index 95a98b390d62..270ee93a0f7d 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -103,10 +103,8 @@ int load_crashdump_segments_ppc64(struct kimage *image,
+ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 			  const void *fdt, unsigned long kernel_load_addr,
+ 			  unsigned long fdt_load_addr);
+-unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image);
+-int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+-			unsigned long initrd_load_addr,
+-			unsigned long initrd_len, const char *cmdline);
++unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image, struct crash_mem *rmem);
++int setup_new_fdt_ppc64(const struct kimage *image, void *fdt, struct crash_mem *rmem);
+ #endif /* CONFIG_PPC64 */
+ 
+ #endif /* CONFIG_KEXEC_FILE */
+diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+index 214c071c58ed..5d6d616404cf 100644
+--- a/arch/powerpc/kexec/elf_64.c
++++ b/arch/powerpc/kexec/elf_64.c
+@@ -23,6 +23,7 @@
+ #include <linux/of_fdt.h>
+ #include <linux/slab.h>
+ #include <linux/types.h>
++#include <asm/kexec_ranges.h>
+ 
+ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 			unsigned long kernel_len, char *initrd,
+@@ -36,6 +37,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 	const void *slave_code;
+ 	struct elfhdr ehdr;
+ 	char *modified_cmdline = NULL;
++	struct crash_mem *rmem = NULL;
+ 	struct kexec_elf_info elf_info;
+ 	struct kexec_buf kbuf = { .image = image, .buf_min = 0,
+ 				  .buf_max = ppc64_rma_size };
+@@ -102,17 +104,20 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ 		kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_load_addr);
+ 	}
+ 
++	ret = get_reserved_memory_ranges(&rmem);
++	if (ret)
++		goto out;
++
+ 	fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+ 					   initrd_len, cmdline,
+-					   kexec_extra_fdt_size_ppc64(image));
++					   kexec_extra_fdt_size_ppc64(image, rmem));
+ 	if (!fdt) {
+ 		pr_err("Error setting up the new device tree.\n");
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+ 
+-	ret = setup_new_fdt_ppc64(image, fdt, initrd_load_addr,
+-				  initrd_len, cmdline);
++	ret = setup_new_fdt_ppc64(image, fdt, rmem);
+ 	if (ret)
+ 		goto out_free_fdt;
+ 
+@@ -146,6 +151,7 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ out_free_fdt:
+ 	kvfree(fdt);
+ out:
++	kfree(rmem);
+ 	kfree(modified_cmdline);
+ 	kexec_free_elf_info(&elf_info);
+ 
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 925a69ad2468..41be4546a34e 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -803,10 +803,9 @@ static unsigned int cpu_node_size(void)
+ 	return size;
+ }
+ 
+-static unsigned int kdump_extra_fdt_size_ppc64(struct kimage *image)
++static unsigned int kdump_extra_fdt_size_ppc64(struct kimage *image, unsigned int cpu_nodes)
+ {
+-	unsigned int cpu_nodes, extra_size = 0;
+-	struct device_node *dn;
++	unsigned int extra_size = 0;
+ 	u64 usm_entries;
+ #ifdef CONFIG_CRASH_HOTPLUG
+ 	unsigned int possible_cpu_nodes;
+@@ -826,18 +825,6 @@ static unsigned int kdump_extra_fdt_size_ppc64(struct kimage *image)
+ 		extra_size += (unsigned int)(usm_entries * sizeof(u64));
+ 	}
+ 
+-	/*
+-	 * Get the number of CPU nodes in the current DT. This allows to
+-	 * reserve places for CPU nodes added since the boot time.
+-	 */
+-	cpu_nodes = 0;
+-	for_each_node_by_type(dn, "cpu") {
+-		cpu_nodes++;
+-	}
+-
+-	if (cpu_nodes > boot_cpu_node_count)
+-		extra_size += (cpu_nodes - boot_cpu_node_count) * cpu_node_size();
+-
+ #ifdef CONFIG_CRASH_HOTPLUG
+ 	/*
+ 	 * Make sure enough space is reserved to accommodate possible CPU nodes
+@@ -861,16 +848,30 @@ static unsigned int kdump_extra_fdt_size_ppc64(struct kimage *image)
+  *
+  * Returns the estimated extra size needed for kexec/kdump kernel FDT.
+  */
+-unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image)
++unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image, struct crash_mem *rmem)
+ {
+-	unsigned int extra_size = 0;
++	struct device_node *dn;
++	unsigned int cpu_nodes, extra_size = 0;
+ 
+ 	// Budget some space for the password blob. There's already extra space
+ 	// for the key name
+ 	if (plpks_is_available())
+ 		extra_size += (unsigned int)plpks_get_passwordlen();
+ 
+-	return extra_size + kdump_extra_fdt_size_ppc64(image);
++	/* Get the number of CPU nodes in the current device tree */
++	for_each_node_by_type(dn, "cpu") {
++		cpu_nodes++;
++	}
++
++	/* Consider extra space for CPU nodes added since the boot time */
++	if (cpu_nodes > boot_cpu_node_count)
++		extra_size += (cpu_nodes - boot_cpu_node_count) * cpu_node_size();
++
++	/* Consider extra space for reserved memory ranges if any */
++	if (rmem->nr_ranges > 0)
++		extra_size += sizeof(struct fdt_reserve_entry) * rmem->nr_ranges;
++
++	return extra_size + kdump_extra_fdt_size_ppc64(image, cpu_nodes);
+ }
+ 
+ static int copy_property(void *fdt, int node_offset, const struct device_node *dn,
+@@ -924,18 +925,13 @@ static int update_pci_dma_nodes(void *fdt, const char *dmapropname)
+  *                       being loaded.
+  * @image:               kexec image being loaded.
+  * @fdt:                 Flattened device tree for the next kernel.
+- * @initrd_load_addr:    Address where the next initrd will be loaded.
+- * @initrd_len:          Size of the next initrd, or 0 if there will be none.
+- * @cmdline:             Command line for the next kernel, or NULL if there will
+- *                       be none.
++ * @rmem:                Reserved memory ranges.
+  *
+  * Returns 0 on success, negative errno on error.
+  */
+-int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+-			unsigned long initrd_load_addr,
+-			unsigned long initrd_len, const char *cmdline)
++int setup_new_fdt_ppc64(const struct kimage *image, void *fdt, struct crash_mem *rmem)
+ {
+-	struct crash_mem *umem = NULL, *rmem = NULL;
++	struct crash_mem *umem = NULL;
+ 	int i, nr_ranges, ret;
+ 
+ #ifdef CONFIG_CRASH_DUMP
+@@ -991,10 +987,6 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+ 		goto out;
+ 
+ 	/* Update memory reserve map */
+-	ret = get_reserved_memory_ranges(&rmem);
+-	if (ret)
+-		goto out;
+-
+ 	nr_ranges = rmem ? rmem->nr_ranges : 0;
+ 	for (i = 0; i < nr_ranges; i++) {
+ 		u64 base, size;
+@@ -1014,7 +1006,6 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt,
+ 		ret = plpks_populate_fdt(fdt);
+ 
+ out:
+-	kfree(rmem);
+ 	kfree(umem);
+ 	return ret;
+ }
 -- 
 2.44.0
 
