@@ -2,53 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7898C02A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 19:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8278C02BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 19:12:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M/97oIyG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RMFR4Xy+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZM7T0jcXz3cQT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 03:09:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZMCC67vRz3cXS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 03:12:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M/97oIyG;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=RMFR4Xy+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZM6j1gBYz2xdp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 03:08:29 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8933261CBF;
-	Wed,  8 May 2024 17:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EB2C113CC;
-	Wed,  8 May 2024 17:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715188106;
-	bh=YQRZPYaCXuEct0KhtKlB1VbKYC/PdpRAyC+rY6nTboo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M/97oIyGXnyHRIpjOSRt/dlWmEADUv0KWyfCU1OQsq/uY5BfiGa97FVH1KF2zm267
-	 q/aQH9lwzmEmP7yR1ItHdSUx9riCFbyv+mD7XZr9Yi29G2Pnsn8q7B8FnQXAWvstbT
-	 VWWhui77WaQXzE+ONkfuIoj+c7geqwH3nTM0u6rzKPSAh7KWrIoeiKihdfhhRtjOGZ
-	 vDVgRYpj+GnzMm8+P4XQn1Uaks6aOe6O9nqMosogzVG0YklpSxUrFtu4qNEStCxXCn
-	 xVY25FP006Nfh2kTJf0IxvUxYea0KK44u2cRljjBciWrxg+lfEs2YusVY64Y/ivp6i
-	 jvfsRvjq0jU/w==
-Date: Wed, 8 May 2024 22:32:26 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Puranjay Mohan <puranjay@kernel.org>
-Subject: Re: [PATCH bpf v2] powerpc/bpf: enforce full ordering for ATOMIC
- operations with BPF_FETCH
-Message-ID: <koaryr5vyb2in2tdnrm4pds5yahfa63chcsgxgoqbudlv45alu@pi6cfiznzvjl>
-References: <20240508115404.74823-1-puranjay@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZMBS41pYz2y70
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 03:11:44 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6f45f1179c3so8628b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 May 2024 10:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1715188297; x=1715793097; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tSmrj41Qt+Se2fdGi7WeozvVj6AfH//AS3pb2zkquGg=;
+        b=RMFR4Xy+QSMwTa7z5J8MNqqFUn26K8/AwJNx5voGQj7msRRhVbwC3LFGpz58qsV07K
+         9pt93sI2EIt+9aggLffLWNorEyIm68H8BjioTQ+PsNphG1ON8ZmVPy2gUqbIDN+1XtRa
+         z5xYuwC3veQ/2pszXuDPfR2/v8wewkTs8dRcc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715188297; x=1715793097;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tSmrj41Qt+Se2fdGi7WeozvVj6AfH//AS3pb2zkquGg=;
+        b=INIht8tuF1X/9IBEdfi9x0DE23Uc5hbd53i4jrd2IKPoJlxYX87qUD7T5MXAh/25p1
+         MdDeKCRoE9wWGJzKE+Bs5S4AHSrtXhdeBI5fyP9e2yCB1yM874iSjbsUSKiix9cNeb2R
+         YKP9iDpTLYmb1IY48RQClETn64lFv3oWUt3K7wGtdQ3ltU4Ig9gfe8CyZmV6ZAlZeiOc
+         BC3UCZ5eHGayabhuA5xErzZzlnhview/gc3s33gurbwxIDdX9Hh05qFS0z8DikrUEmDj
+         8+y7s6qjduPO9I1+wTEiuuKlOsfK72Qz+0vHiZcWj3p93AWfCr+mxDf/cc/VPufZUcUc
+         kzvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUne5qT3JxwGG3Meh3qTvGB5YP5wf7/pF2qRV8JsrYPjILIcxvkRJd0X9Pht++XQ2QoGgvbmXexPs3KF10giZbTUz0lv9jBK+toOr4Crw==
+X-Gm-Message-State: AOJu0YymZ4Yi+5TSVPJBZQdhM4gALJFYocDk6CgL2Qgebuwz3nqV00hm
+	suL4IIiagGgCQSbm/CJUXoIS1byFl+kMX7slsacI74dd7C3+0F1U1glNDMvzFg==
+X-Google-Smtp-Source: AGHT+IHN8eeXE9OsgItxEKHR70nrrazwBAjav29jEzJB0wGGmdP+iVlP1VjtMYRBUjqpRzzzPBgYhQ==
+X-Received: by 2002:a05:6a20:c88b:b0:1a5:6a85:8ce9 with SMTP id adf61e73a8af0-1afc8d1b02amr3543639637.12.1715188296881;
+        Wed, 08 May 2024 10:11:36 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id lp9-20020a056a003d4900b006f44ed124dfsm9245352pfb.160.2024.05.08.10.11.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 May 2024 10:11:36 -0700 (PDT)
+Date: Wed, 8 May 2024 10:11:35 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v3 00/11] sysctl: treewide: constify ctl_table argument
+ of sysctl handlers
+Message-ID: <202405080959.104A73A914@keescook>
+References: <20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
+ <20240424201234.3cc2b509@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240508115404.74823-1-puranjay@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240424201234.3cc2b509@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,147 +80,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexei Starovoitov <ast@kernel.org>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Yonghong Song <yonghong.song@linux.dev>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, paulmck@kernel.org, Nicholas Piggin <npiggin@gmail.com>, KP Singh <kpsingh@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, Hao Luo <haoluo@google.com>, puranjay12@gmail.com, Martin KaFai Lau <martin.lau@linux.dev>, linux-kernel@vger.kernel.org, Eduard Zingerman <eddyz87@gmail.com>, Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Joel Granados <j.granados@samsung.com>, Dave Chinner <david@fromorbit.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-sctp@vger.kernel.org, lvs-devel@vger.kernel.org, coreteam@netfilter.org, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 08, 2024 at 11:54:04AM GMT, Puranjay Mohan wrote:
-> The Linux Kernel Memory Model [1][2] requires RMW operations that have a
-> return value to be fully ordered.
+On Wed, Apr 24, 2024 at 08:12:34PM -0700, Jakub Kicinski wrote:
+> On Tue, 23 Apr 2024 09:54:35 +0200 Thomas Weißschuh wrote:
+> > The series was split from my larger series sysctl-const series [0].
+> > It only focusses on the proc_handlers but is an important step to be
+> > able to move all static definitions of ctl_table into .rodata.
 > 
-> BPF atomic operations with BPF_FETCH (including BPF_XCHG and
-> BPF_CMPXCHG) return a value back so they need to be JITed to fully
-> ordered operations. POWERPC currently emits relaxed operations for
-> these.
-> 
-> We can show this by running the following litmus-test:
-> 
-> PPC SB+atomic_add+fetch
-> 
-> {
-> 0:r0=x;  (* dst reg assuming offset is 0 *)
-> 0:r1=2;  (* src reg *)
-> 0:r2=1;
-> 0:r4=y;  (* P0 writes to this, P1 reads this *)
-> 0:r5=z;  (* P1 writes to this, P0 reads this *)
-> 0:r6=0;
-> 
-> 1:r2=1;
-> 1:r4=y;
-> 1:r5=z;
-> }
-> 
-> P0                      | P1            ;
-> stw         r2, 0(r4)   | stw  r2,0(r5) ;
->                         |               ;
-> loop:lwarx  r3, r6, r0  |               ;
-> mr          r8, r3      |               ;
-> add         r3, r3, r1  | sync          ;
-> stwcx.      r3, r6, r0  |               ;
-> bne         loop        |               ;
-> mr          r1, r8      |               ;
->                         |               ;
-> lwa         r7, 0(r5)   | lwa  r7,0(r4) ;
-> 
-> ~exists(0:r7=0 /\ 1:r7=0)
-> 
-> Witnesses
-> Positive: 9 Negative: 3
-> Condition ~exists (0:r7=0 /\ 1:r7=0)
-> Observation SB+atomic_add+fetch Sometimes 3 9
-> 
-> This test shows that the older store in P0 is reordered with a newer
-> load to a different address. Although there is a RMW operation with
-> fetch between them. Adding a sync before and after RMW fixes the issue:
-> 
-> Witnesses
-> Positive: 9 Negative: 0
-> Condition ~exists (0:r7=0 /\ 1:r7=0)
-> Observation SB+atomic_add+fetch Never 0 9
-> 
-> [1] https://www.kernel.org/doc/Documentation/memory-barriers.txt
-> [2] https://www.kernel.org/doc/Documentation/atomic_t.txt
-> 
-> Fixes: 65112709115f ("powerpc/bpf/64: add support for BPF_ATOMIC bitwise operations")
-> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+> Split this per subsystem, please.
 
-Thanks for reporting and fixing this.
+I've done a few painful API transitions before, and I don't think the
+complexity of these changes needs a per-subsystem constification pass. I
+think this series is the right approach, but that patch 11 will need
+coordination with Linus. We regularly do system-wide prototype changes
+like this right at the end of the merge window before -rc1 comes out.
 
-There are actually four commits that this fixes across ppc32/ppc64:
-Fixes: aea7ef8a82c0 ("powerpc/bpf/32: add support for BPF_ATOMIC bitwise operations")
-Fixes: 2d9206b22743 ("powerpc/bpf/32: Add instructions for atomic_[cmp]xchg")
-Fixes: dbe6e2456fb0 ("powerpc/bpf/64: add support for atomic fetch operations")
-Fixes: 1e82dfaa7819 ("powerpc/bpf/64: Add instructions for atomic_[cmp]xchg")
+The requirements are pretty simple: it needs to be a obvious changes
+(this certainly is) and as close to 100% mechanical as possible. I think
+patch 11 easily qualifies. Linus should be able to run the same Coccinelle
+script and get nearly the same results, etc. And all the other changes
+need to have landed. This change also has no "silent failure" conditions:
+anything mismatched will immediately stand out.
 
-> ---
-> Changes in v1 -> v2:
-> v1: https://lore.kernel.org/all/20240507175439.119467-1-puranjay@kernel.org/
-> - Don't emit `sync` for non-SMP kernels as that adds unessential overhead.
-> ---
->  arch/powerpc/net/bpf_jit_comp32.c | 12 ++++++++++++
->  arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++++++++
->  2 files changed, 24 insertions(+)
-> 
-> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-> index 2f39c50ca729..0318b83f2e6a 100644
-> --- a/arch/powerpc/net/bpf_jit_comp32.c
-> +++ b/arch/powerpc/net/bpf_jit_comp32.c
-> @@ -853,6 +853,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->  			/* Get offset into TMP_REG */
->  			EMIT(PPC_RAW_LI(tmp_reg, off));
->  			tmp_idx = ctx->idx * 4;
-> +			/*
-> +			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
-> +			 * before and after the operation.
-> +			 *
-> +			 * This is a requirement in the Linux Kernel Memory Model.
-> +			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
-					 ^^^
-Nit...					 u32
+So, have patches 1-10 go via their respective subsystems, and once all
+of those are in Linus's tree, send patch 11 as a stand-alone PR.
 
-> +			 */
-> +			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
-> +				EMIT(PPC_RAW_SYNC());
+(From patch 11, it looks like the seccomp read/write function changes
+could be split out? I'll do that now...)
 
-I think this block should go before the previous two instructions. We 
-use tmp_idx as a label to retry the ll/sc sequence, so we will end up 
-executing the 'sync' operation on a retry here.
+-Kees
 
->  			/* load value from memory into r0 */
->  			EMIT(PPC_RAW_LWARX(_R0, tmp_reg, dst_reg, 0));
->  
-> @@ -905,6 +914,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->  
->  			/* For the BPF_FETCH variant, get old data into src_reg */
->  			if (imm & BPF_FETCH) {
-> +				/* Emit 'sync' to enforce full ordering */
-> +				if (IS_ENABLED(CONFIG_SMP))
-> +					EMIT(PPC_RAW_SYNC());
->  				EMIT(PPC_RAW_MR(ret_reg, ax_reg));
->  				if (!fp->aux->verifier_zext)
->  					EMIT(PPC_RAW_LI(ret_reg - 1, 0)); /* higher 32-bit */
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index 79f23974a320..9a077f8acf7b 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -804,6 +804,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->  			/* Get offset into TMP_REG_1 */
->  			EMIT(PPC_RAW_LI(tmp1_reg, off));
->  			tmp_idx = ctx->idx * 4;
-> +			/*
-> +			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
-> +			 * before and after the operation.
-> +			 *
-> +			 * This is a requirement in the Linux Kernel Memory Model.
-> +			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
-> +			 */
-> +			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
-> +				EMIT(PPC_RAW_SYNC());
-
-Same here.
-
-I'll try and give this a test tomorrow.
-
-
-- Naveen
-
+-- 
+Kees Cook
