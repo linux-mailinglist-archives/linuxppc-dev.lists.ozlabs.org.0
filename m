@@ -2,71 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A198BFCB9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 13:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 742F18BFD06
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 14:20:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OxYC+23D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C9xtJ5Q3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZD9J5jqWz3cWZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 21:55:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZDk80Xb4z3cWv
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 22:20:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OxYC+23D;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C9xtJ5Q3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=puranjay@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=amadeuszx.slawinski@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZD8Y5XXYz2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 21:54:37 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1F72861B63;
-	Wed,  8 May 2024 11:54:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C50C113CC;
-	Wed,  8 May 2024 11:54:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715169270;
-	bh=6SikNqtY91pwhlwXY/mT/hxrDvEXZ56J2/ACEwNQ8kc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OxYC+23D+pxvJkWt5e534tyf3OwgABM2L1Z81vkR2K22YD5z8VvCDC6XTjCRAlPb8
-	 vY2fOlQP6Btto9oO/8EU5urb6bbWAeOREvbicuyZAOMW+vLanIZleSgZpG7vdQFbgR
-	 6+OX3Kyi62rxfpBaqVp3CMBbXoq4YFYH9Y37UN7MVTf6w/JcUgEz1CEmUmv97G1O3k
-	 U85neZ1fjcDQhBq2oeCZlkfDW43XthanWMOo+aZ4lY4ygGU9BzqQxUqMtOSu2ssE9+
-	 bAtv2SD4AuD/X/bLurjSyu2Zk8v3layv3iGz0Ok0jLIDcPMR/WI0zhqb3QB3xmB5cR
-	 yf3xR4fCouZAg==
-From: Puranjay Mohan <puranjay@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	bpf@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	paulmck@kernel.org
-Subject: [PATCH bpf v2] powerpc/bpf: enforce full ordering for ATOMIC operations with BPF_FETCH
-Date: Wed,  8 May 2024 11:54:04 +0000
-Message-Id: <20240508115404.74823-1-puranjay@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZ7G76s13z30W9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 18:14:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715156049; x=1746692049;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=o6dYzqcug6bjp99QH0Xc2b/Mh3Ae4lgbbIbqMs9s1So=;
+  b=C9xtJ5Q3ZsSN2XLdUA/4WfL/mlECdl56mZG3+Q7gct+CewRodmM3uErx
+   M12KuFfjenJ6kdXBErPkQ5sVKrTG0WUmwdwvtM8BFgvryK/uqPHo1VtNl
+   yAC9xdvqLAr1Z5T3lAEd/Fc8+IzQBD2aGDiZb25zq3J131BvpIKK78C5j
+   kBxHgkXA2uqsusIgym1ClpVZwiS0tjoP7SqgOkdS1q74YfmS5oqC6QH6g
+   use+OBk3xQ+Dg9+yVt+6gQAA70p4Z9u6V8XDrVfVhTmRcGliSOl4MEdNN
+   jjPmeEyWzftI6qLzCtH2TJJv8yzwcBGtVXfDfs1o+Dw5HH+B0ZODM6DDd
+   w==;
+X-CSE-ConnectionGUID: 9wWTSEyfSq22AE2ToU8V7Q==
+X-CSE-MsgGUID: 9qldMMtEQC2GryiqPsnEcQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="28474509"
+X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
+   d="scan'208";a="28474509"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 01:14:04 -0700
+X-CSE-ConnectionGUID: aABURBGITHyA0xz96lfbdA==
+X-CSE-MsgGUID: 8uRx8TfuRU256ZN4Nutk6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
+   d="scan'208";a="59662273"
+Received: from aslawinx-mobl.ger.corp.intel.com (HELO [10.94.8.107]) ([10.94.8.107])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 01:13:57 -0700
+Message-ID: <51408e79-646d-4d23-bc5b-cd173d363327@linux.intel.com>
+Date: Wed, 8 May 2024 10:13:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
+Content-Language: en-US
+To: Hans Verkuil <hverkuil@xs4all.nl>, Shengjiu Wang
+ <shengjiu.wang@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+ <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
+ <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk> <20240430172752.20ffcd56@sal.lan>
+ <ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk> <87sez0k661.wl-tiwai@suse.de>
+ <20240502095956.0a8c5b26@sal.lan> <20240502102643.4ee7f6c2@sal.lan>
+ <ZjRCJ2ZcmKOIo7_p@finisterre.sirena.org.uk> <20240503094225.47fe4836@sal.lan>
+ <CAA+D8APfM3ayXHAPadHLty52PYE9soQM6o780=mZs+R4px-AOQ@mail.gmail.com>
+ <22d94c69-7e9f-4aba-ae71-50cc2e5dd8ab@xs4all.nl>
+From: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <22d94c69-7e9f-4aba-ae71-50cc2e5dd8ab@xs4all.nl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 08 May 2024 22:19:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,137 +82,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: puranjay12@gmail.com
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, lgirdwood@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, linux-media@vger.kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Linux Kernel Memory Model [1][2] requires RMW operations that have a
-return value to be fully ordered.
+On 5/8/2024 10:00 AM, Hans Verkuil wrote:
+> On 06/05/2024 10:49, Shengjiu Wang wrote:
+>> On Fri, May 3, 2024 at 4:42 PM Mauro Carvalho Chehab <mchehab@kernel.org> wrote:
+>>>
+>>> Em Fri, 3 May 2024 10:47:19 +0900
+>>> Mark Brown <broonie@kernel.org> escreveu:
+>>>
+>>>> On Thu, May 02, 2024 at 10:26:43AM +0100, Mauro Carvalho Chehab wrote:
+>>>>> Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
+>>>>
+>>>>>> There are still time control associated with it, as audio and video
+>>>>>> needs to be in sync. This is done by controlling the buffers size
+>>>>>> and could be fine-tuned by checking when the buffer transfer is done.
+>>>>
+>>>> ...
+>>>>
+>>>>> Just complementing: on media, we do this per video buffer (or
+>>>>> per half video buffer). A typical use case on cameras is to have
+>>>>> buffers transferred 30 times per second, if the video was streamed
+>>>>> at 30 frames per second.
+>>>>
+>>>> IIRC some big use case for this hardware was transcoding so there was a
+>>>> desire to just go at whatever rate the hardware could support as there
+>>>> is no interactive user consuming the output as it is generated.
+>>>
+>>> Indeed, codecs could be used to just do transcoding, but I would
+>>> expect it to be a border use case. See, as the chipsets implementing
+>>> codecs are typically the ones used on mobiles, I would expect that
+>>> the major use cases to be to watch audio and video and to participate
+>>> on audio/video conferences.
+>>>
+>>> Going further, the codec API may end supporting not only transcoding
+>>> (which is something that CPU can usually handle without too much
+>>> processing) but also audio processing that may require more
+>>> complex algorithms - even deep learning ones - like background noise
+>>> removal, echo detection/removal, volume auto-gain, audio enhancement
+>>> and such.
+>>>
+>>> On other words, the typical use cases will either have input
+>>> or output being a physical hardware (microphone or speaker).
+>>>
+>>
+>> All, thanks for spending time to discuss, it seems we go back to
+>> the start point of this topic again.
+>>
+>> Our main request is that there is a hardware sample rate converter
+>> on the chip, so users can use it in user space as a component like
+>> software sample rate converter. It mostly may run as a gstreamer plugin.
+>> so it is a memory to memory component.
+>>
+>> I didn't find such API in ALSA for such purpose, the best option for this
+>> in the kernel is the V4L2 memory to memory framework I found.
+>> As Hans said it is well designed for memory to memory.
+>>
+>> And I think audio is one of 'media'.  As I can see that part of Radio
+>> function is in ALSA, part of Radio function is in V4L2. part of HDMI
+>> function is in DRM, part of HDMI function is in ALSA...
+>> So using V4L2 for audio is not new from this point of view.
+>>
+>> Even now I still think V4L2 is the best option, but it looks like there
+>> are a lot of rejects.  If develop a new ALSA-mem2mem, it is also
+>> a duplication of code (bigger duplication that just add audio support
+>> in V4L2 I think).
+> 
+> After reading this thread I still believe that the mem2mem framework is
+> a reasonable option, unless someone can come up with a method that is
+> easy to implement in the alsa subsystem. From what I can tell from this
+> discussion no such method exists.
+> 
 
-BPF atomic operations with BPF_FETCH (including BPF_XCHG and
-BPF_CMPXCHG) return a value back so they need to be JITed to fully
-ordered operations. POWERPC currently emits relaxed operations for
-these.
+Hi,
 
-We can show this by running the following litmus-test:
+my main question would be how is mem2mem use case different from 
+loopback exposing playback and capture frontends in user space with DSP 
+(or other piece of HW) in the middle?
 
-PPC SB+atomic_add+fetch
-
-{
-0:r0=x;  (* dst reg assuming offset is 0 *)
-0:r1=2;  (* src reg *)
-0:r2=1;
-0:r4=y;  (* P0 writes to this, P1 reads this *)
-0:r5=z;  (* P1 writes to this, P0 reads this *)
-0:r6=0;
-
-1:r2=1;
-1:r4=y;
-1:r5=z;
-}
-
-P0                      | P1            ;
-stw         r2, 0(r4)   | stw  r2,0(r5) ;
-                        |               ;
-loop:lwarx  r3, r6, r0  |               ;
-mr          r8, r3      |               ;
-add         r3, r3, r1  | sync          ;
-stwcx.      r3, r6, r0  |               ;
-bne         loop        |               ;
-mr          r1, r8      |               ;
-                        |               ;
-lwa         r7, 0(r5)   | lwa  r7,0(r4) ;
-
-~exists(0:r7=0 /\ 1:r7=0)
-
-Witnesses
-Positive: 9 Negative: 3
-Condition ~exists (0:r7=0 /\ 1:r7=0)
-Observation SB+atomic_add+fetch Sometimes 3 9
-
-This test shows that the older store in P0 is reordered with a newer
-load to a different address. Although there is a RMW operation with
-fetch between them. Adding a sync before and after RMW fixes the issue:
-
-Witnesses
-Positive: 9 Negative: 0
-Condition ~exists (0:r7=0 /\ 1:r7=0)
-Observation SB+atomic_add+fetch Never 0 9
-
-[1] https://www.kernel.org/doc/Documentation/memory-barriers.txt
-[2] https://www.kernel.org/doc/Documentation/atomic_t.txt
-
-Fixes: 65112709115f ("powerpc/bpf/64: add support for BPF_ATOMIC bitwise operations")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
----
-Changes in v1 -> v2:
-v1: https://lore.kernel.org/all/20240507175439.119467-1-puranjay@kernel.org/
-- Don't emit `sync` for non-SMP kernels as that adds unessential overhead.
----
- arch/powerpc/net/bpf_jit_comp32.c | 12 ++++++++++++
- arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++++++++
- 2 files changed, 24 insertions(+)
-
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 2f39c50ca729..0318b83f2e6a 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -853,6 +853,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			/* Get offset into TMP_REG */
- 			EMIT(PPC_RAW_LI(tmp_reg, off));
- 			tmp_idx = ctx->idx * 4;
-+			/*
-+			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
-+			 * before and after the operation.
-+			 *
-+			 * This is a requirement in the Linux Kernel Memory Model.
-+			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
-+			 */
-+			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
-+				EMIT(PPC_RAW_SYNC());
- 			/* load value from memory into r0 */
- 			EMIT(PPC_RAW_LWARX(_R0, tmp_reg, dst_reg, 0));
- 
-@@ -905,6 +914,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 
- 			/* For the BPF_FETCH variant, get old data into src_reg */
- 			if (imm & BPF_FETCH) {
-+				/* Emit 'sync' to enforce full ordering */
-+				if (IS_ENABLED(CONFIG_SMP))
-+					EMIT(PPC_RAW_SYNC());
- 				EMIT(PPC_RAW_MR(ret_reg, ax_reg));
- 				if (!fp->aux->verifier_zext)
- 					EMIT(PPC_RAW_LI(ret_reg - 1, 0)); /* higher 32-bit */
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 79f23974a320..9a077f8acf7b 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -804,6 +804,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			/* Get offset into TMP_REG_1 */
- 			EMIT(PPC_RAW_LI(tmp1_reg, off));
- 			tmp_idx = ctx->idx * 4;
-+			/*
-+			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
-+			 * before and after the operation.
-+			 *
-+			 * This is a requirement in the Linux Kernel Memory Model.
-+			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
-+			 */
-+			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
-+				EMIT(PPC_RAW_SYNC());
- 			/* load value from memory into TMP_REG_2 */
- 			if (size == BPF_DW)
- 				EMIT(PPC_RAW_LDARX(tmp2_reg, tmp1_reg, dst_reg, 0));
-@@ -865,6 +874,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			PPC_BCC_SHORT(COND_NE, tmp_idx);
- 
- 			if (imm & BPF_FETCH) {
-+				/* Emit 'sync' to enforce full ordering */
-+				if (IS_ENABLED(CONFIG_SMP))
-+					EMIT(PPC_RAW_SYNC());
- 				EMIT(PPC_RAW_MR(ret_reg, _R0));
- 				/*
- 				 * Skip unnecessary zero-extension for 32-bit cmpxchg.
--- 
-2.42.0
+Amadeusz
 
