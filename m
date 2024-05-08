@@ -2,125 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B158BFC64
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 13:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A198BFCB9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 13:55:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=ARf9yryb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OxYC+23D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZCsX419Lz3cWg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 21:41:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZD9J5jqWz3cWZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 21:55:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=ARf9yryb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OxYC+23D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=puranjay@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZCrn3srfz2xPd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 21:40:56 +1000 (AEST)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20240508114046euoutp01c37f593f2a27b20f7d0fd2731027a54b~NgJ1CqoWY2038520385euoutp01U;
-	Wed,  8 May 2024 11:40:46 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20240508114046euoutp01c37f593f2a27b20f7d0fd2731027a54b~NgJ1CqoWY2038520385euoutp01U
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1715168446;
-	bh=gtbGdnHi+Sywm4GJEWUqxx3nEyjlhODfQVe10fNojck=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=ARf9yrybjupqwXRiQSE0Q+Tc1VlSDD++6M71TuY+w8UkpabWpt+Bd8asmIwK5/S1b
-	 p9DuAfcc4CfOwakhdbcNO5XJRUC3eEs2nIyv98AaKJUjgJCQxVPiTUPHlm8FXtoUrm
-	 DraRLqHwAMzxsVBDEVDoUEvhrhA8MTbEvMJRkiJc=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240508114045eucas1p2008b107d5bc84df1055d3c8f6f665522~NgJ00-QmY1758717587eucas1p26;
-	Wed,  8 May 2024 11:40:45 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id DE.2B.09875.DB46B366; Wed,  8
-	May 2024 12:40:45 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240508114044eucas1p1bafa4ded49711d101a6ec02ee4cb497d~NgJ0CfQx03085530855eucas1p1l;
-	Wed,  8 May 2024 11:40:44 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240508114044eusmtrp12f636116d09000caf814157fd2f0936e~NgJ0BWWL81100011000eusmtrp10;
-	Wed,  8 May 2024 11:40:44 +0000 (GMT)
-X-AuditID: cbfec7f4-11bff70000002693-36-663b64bda894
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id 77.0C.09010.CB46B366; Wed,  8
-	May 2024 12:40:44 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240508114044eusmtip2fa7284d181f2b50d0064e9cbaa2aaf8d~NgJz0FG2t1990419904eusmtip2H;
-	Wed,  8 May 2024 11:40:44 +0000 (GMT)
-Received: from localhost (106.110.32.44) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Wed, 8 May 2024 12:40:43 +0100
-Date: Wed, 8 May 2024 13:40:38 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH v3 00/11] sysctl: treewide: constify ctl_table argument
- of sysctl handlers
-Message-ID: <20240508114038.vnx2hchpxeimuqz2@joelS2.panther.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZD8Y5XXYz2xPd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 21:54:37 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1F72861B63;
+	Wed,  8 May 2024 11:54:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C50C113CC;
+	Wed,  8 May 2024 11:54:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715169270;
+	bh=6SikNqtY91pwhlwXY/mT/hxrDvEXZ56J2/ACEwNQ8kc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OxYC+23D+pxvJkWt5e534tyf3OwgABM2L1Z81vkR2K22YD5z8VvCDC6XTjCRAlPb8
+	 vY2fOlQP6Btto9oO/8EU5urb6bbWAeOREvbicuyZAOMW+vLanIZleSgZpG7vdQFbgR
+	 6+OX3Kyi62rxfpBaqVp3CMBbXoq4YFYH9Y37UN7MVTf6w/JcUgEz1CEmUmv97G1O3k
+	 U85neZ1fjcDQhBq2oeCZlkfDW43XthanWMOo+aZ4lY4ygGU9BzqQxUqMtOSu2ssE9+
+	 bAtv2SD4AuD/X/bLurjSyu2Zk8v3layv3iGz0Ok0jLIDcPMR/WI0zhqb3QB3xmB5cR
+	 yf3xR4fCouZAg==
+From: Puranjay Mohan <puranjay@kernel.org>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	bpf@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	paulmck@kernel.org
+Subject: [PATCH bpf v2] powerpc/bpf: enforce full ordering for ATOMIC operations with BPF_FETCH
+Date: Wed,  8 May 2024 11:54:04 +0000
+Message-Id: <20240508115404.74823-1-puranjay@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="t6g7ogcm2uwc3jep"
-Content-Disposition: inline
-In-Reply-To: <4cda5d2d-dd92-44ef-9e7b-7b780ec795ab@t-8ch.de>
-X-Originating-IP: [106.110.32.44]
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA2WSfUxTVxjGc+5XS7fipYiegGAoaNzcyocyTsSBRJ03/rEsBjMDy2wdF3RC
-	q21RtuisgeH4UgQNFgwrVMBJC1hqBTajI1CkTMCprNsQAhTcBCNSOkZAWJuLm8n++z3PeZ43
-	75scPi56TPnzD8nVrFIuSxNTAsJinet591ZyTEp4lVaMTlt1JHK2d1LIos/H0MuWMzgyWwcB
-	GrOO8NBP+eno+24Xhkyj/ST64VYXgSoa5gB60HqZQoOGJRL13ekm0cMb9QQabyskkMWZTaGi
-	yiwcjekmSDRVMEKh9oZ7BGpdaOah+b/HMTQ/u0iirG+ncWQvGgPIqluFiuptBOppcpLbAply
-	zX2CsVVBRmfKYEzXcinGNF3MY5qunGL+aNICpvdSJWD67UME82z+Lsb01UxSjNMUxJzLt/I+
-	EiYKtiazaYeOscqwWKng4PSFAexIuV9mdn+sBtz3yQNefEhvhjnTLjIPCPgi+iqAo84XOCdm
-	3EI3BTjhBNBZXUq9qvSU3Vt+qAXQUN5H/psa6phY7psAtLWNuWN8PkGHwmHjek+bot+BvZMD
-	uIdX0lvhd385eR7G6Ys8WH5T6mFfWgrN1SXAw0J6G5wrHCE59oFdWgfB5TNh652bpGc8TgfA
-	2kW+x/Zyj/z5bDvBLRoMXfrBZT4JbebfMM9qkJ4SwJahYcrThfQOWDCygcv4wqedZh7Ha2B3
-	SQHB5UsAvL04xeNEHYA1p10Yl4qB2Q8dy414ONj7K+CGekP7Mx9uT29YbCnFOVsIv8kRcen1
-	sG5wkigCIWWvXVb22mVl/13G2RJov3iB+p+9EdZUTuAcvw/r658TOsC7BlazGar0VFYVKWeP
-	S1SydFWGPFXymSLdBNy/vnuxc6YZ1D59IWkDGB+0gVB3eaSxrg/4E3KFnBWvFHaciU4RCZNl
-	X3zJKhX7lRlprKoNBPAJ8WrhuuS1rIhOlanZwyx7hFW+esX4Xv4abBcTU0HtS9keFxRtb9V4
-	gzy/4vCrzXvWGQP2tigchsadvwc/YCQr3tR/kNGcULLFJbNej0saVhSr/tSYy6IS5pJc1rip
-	2X0Vvn7SVd7BupCciPEfN+dvtEc2RvvqE4+GSXbcNQaIwn5xfE7R8dnHonJHd+//uPxE4IzX
-	E7XPrKZ6bdBugzr2uu3ABrKr9FH8Jn1y5NfanQWZ2BNacbSmpoqQrnje8WiXhH2r/Y0c4+1A
-	Z3dIw8ntVnWkUVCq3LKwlGTXai491hjAV2vGXi5VHd4UTg6cyPrkrLa/028hlIhi+i6fMxbe
-	YGsT3pvtsFkSA04NHDhuTsj9MMJRev7TKw4xoTooi3gbV6pk/wAtwQFpcAQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNKsWRmVeSWpSXmKPExsVy+t/xe7p7UqzTDM5cMLJoPLaA1eLzkeNs
-	FtsWdzNZ/N3Zzmyx5dg9Rounxx6xW5zpzrXYffork8Wmx9dYLfbsPcliMW/9T0aLy7vmsFnc
-	W/Of1eLCgdOsFle2rmOxeHaol8Vi2+cWNosJC5uZLZ4ueM1q8aHnEZvFkfVnWSx2/dnBbvH7
-	xzMmi9/f/7FaNM//xGxxY8JTRotjC8QsJqw7xWJxbvNnVgdZj9kNF1k8Ti2S8FiwqdRj06pO
-	No9Nnyaxe2xeUu/xYvNMRo/zMxYyely7cZ/F4+3vE0weF5a9YfP4vEnOo7/7GHsAb5SeTVF+
-	aUmqQkZ+cYmtUrShhZGeoaWFnpGJpZ6hsXmslZGpkr6dTUpqTmZZapG+XYJexuEXE9gKZopW
-	PD7WztzAeF6wi5GTQ0LAROLcrLOMXYxcHEICSxkllk6bzwSRkJHY+OUqK4QtLPHnWhcbRNFH
-	RokXG9cxQzibGCX2TdwE5HBwsAioSDxcqwbSwCagI3H+zR1mEFtEwEZi5bfP7CA2s8BUdonZ
-	2xNAbGGBBIktSyczgti8Ag4SP3sfsULM7GSS2H73FFRCUOLkzCcsEM1lEpuXzmcF2cUsIC2x
-	/B8HSJgTaP6lviMsEIcqSnxdfA/KrpX4/PcZ4wRG4VlIJs1CMmkWwiSIsI7Ezq132DCEtSWW
-	LXzNDGHbSqxb955lASP7KkaR1NLi3PTcYiO94sTc4tK8dL3k/NxNjMCUt+3Yzy07GFe++qh3
-	iJGJg/EQowpQ56MNqy8wSrHk5eelKonwHm03TxPiTUmsrEotyo8vKs1JLT7EaAoMxInMUqLJ
-	+cBknFcSb2hmYGpoYmZpYGppZqwkzutZ0JEoJJCeWJKanZpakFoE08fEwSnVwLRXjfWeXbv/
-	21OMW8McPK51fmtbYLsovVerk2O1TEjn2fWSxz8eWOETlWmeVlS8tYVf+Nit5JO3/DZ8eZ1p
-	wL9ll9gp72/TxZadjf8Q6X4wj72pTP3U0QuKj22vGZdy5t2+u39/zELOi0c+71pYJ3fzgkSf
-	xoYtlaF1vi+uN2xeUSC5xfKMf59VVu+jrc63e8KbbRZwc0q+Ttgvs9qupyNmTjO/Wfzu6m3T
-	59doib3buXTm0yfX9k4Km7HwS+HHA1ukpEyileXTGEwnnZxq+/zqsvUGHNb/kzcxGW85cDaI
-	592LvTUOP1ymHSq8V8strvt6W9vL2k0iMsX7vk491H1GY0ZMh4vPk9il685ccExSYinOSDTU
-	Yi4qTgQA//bFNQ4EAAA=
-X-CMS-MailID: 20240508114044eucas1p1bafa4ded49711d101a6ec02ee4cb497d
-X-Msg-Generator: CA
-X-RootMTR: 20240423075608eucas1p265e7c90f3efd6995cb240b3d2688b803
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240423075608eucas1p265e7c90f3efd6995cb240b3d2688b803
-References: <CGME20240423075608eucas1p265e7c90f3efd6995cb240b3d2688b803@eucas1p2.samsung.com>
-	<20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
-	<20240503090332.irkiwn73dgznjflz@joelS2.panther.com>
-	<4cda5d2d-dd92-44ef-9e7b-7b780ec795ab@t-8ch.de>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,86 +78,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-sctp@vger.kernel.org, lvs-devel@vger.kernel.org, coreteam@netfilter.org, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: puranjay12@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---t6g7ogcm2uwc3jep
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The Linux Kernel Memory Model [1][2] requires RMW operations that have a
+return value to be fully ordered.
 
-On Fri, May 03, 2024 at 04:09:40PM +0200, Thomas Wei=DFschuh wrote:
-> Hey Joel,
->=20
-=2E..
-> > # Motivation
-> > As I read it, the motivation for these constification efforts are:
-> > 1. It provides increased safety: Having things in .rodata section reduc=
-es the
-> >    attack surface. This is especially relevant for structures that have=
- function
-> >    pointers (like ctl_table); having these in .rodata means that these =
-pointers
-> >    always point to the "intended" function and cannot be changed.
-> > 2. Compiler optimizations: This was just a comment in the patchsets tha=
-t I have
-> >    mentioned ([3,4,5]). Do you know what optimizations specifically? Do=
-es it
-> >    have to do with enhancing locality for the data in .rodata? Do you h=
-ave other
-> >    specific optimizations in mind?
->=20
-> I don't know about anything that would make it faster.
-> It's more about safety and transmission of intent to API users,
-> especially callback implementers.
-Noted.
+BPF atomic operations with BPF_FETCH (including BPF_XCHG and
+BPF_CMPXCHG) return a value back so they need to be JITed to fully
+ordered operations. POWERPC currently emits relaxed operations for
+these.
 
-=2E..
-> > # Show the move
-> > I created [8] because there is no easy way to validate which objects ma=
-de it
-> > into .rodata. I ran [8] for your Dec 2nd patcheset [7] and there are le=
-ss in
-> > .rodata than I expected (the results are in [9]) Why is that? Is it som=
-ething
-> > that has not been posted to the lists yet?=20
->=20
-> Constifying the APIs only *allows* the actual table to be constified
-> themselves.
-> Then each table definition will have to be touched and "const" added.
-That is what I thought. thx for clarifying.
+We can show this by running the following litmus-test:
 
->=20
-> See patches 17 and 18 in [7] for two examples.
->=20
-> Some tables in net/ are already "const" as the static definitions are
-> never registered themselves but only their copies are.
->=20
-=2E..
+PPC SB+atomic_add+fetch
 
-best
+{
+0:r0=x;  (* dst reg assuming offset is 0 *)
+0:r1=2;  (* src reg *)
+0:r2=1;
+0:r4=y;  (* P0 writes to this, P1 reads this *)
+0:r5=z;  (* P1 writes to this, P0 reads this *)
+0:r6=0;
 
---=20
+1:r2=1;
+1:r4=y;
+1:r5=z;
+}
 
-Joel Granados
+P0                      | P1            ;
+stw         r2, 0(r4)   | stw  r2,0(r5) ;
+                        |               ;
+loop:lwarx  r3, r6, r0  |               ;
+mr          r8, r3      |               ;
+add         r3, r3, r1  | sync          ;
+stwcx.      r3, r6, r0  |               ;
+bne         loop        |               ;
+mr          r1, r8      |               ;
+                        |               ;
+lwa         r7, 0(r5)   | lwa  r7,0(r4) ;
 
---t6g7ogcm2uwc3jep
-Content-Type: application/pgp-signature; name="signature.asc"
+~exists(0:r7=0 /\ 1:r7=0)
 
------BEGIN PGP SIGNATURE-----
+Witnesses
+Positive: 9 Negative: 3
+Condition ~exists (0:r7=0 /\ 1:r7=0)
+Observation SB+atomic_add+fetch Sometimes 3 9
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmY7ZLUACgkQupfNUreW
-QU8gUgv+JUZin5OAF3NMj7s3DmErLOcek/iw2Q4tXtrCSrstF9AEp1KJR4h7cMPe
-Nh/NrY7roszof3ADLw9QcvijqtC2/YxQqtu+PqVfRYn15Tv7/eFIYRElCTK3Xdxj
-xMkZb9Afo5tMvUqCXLuy7hsa5GxNrpk5wLv3OEQnaOQPriuI0fAdMxQEFZXtRFst
-ZNvVqOVbGzH5fZhv6YS21SHWAIbki2fKfu9etPSftEhi5TQ60KT0GfnNLhonPMES
-3q2s+Ox+m8zkKdpI8YZK/KYO7u7qM2aEGCcKQejM4cdJs8Ii0VVQT5lwyEipveYM
-5d+sAYm/dF/FfZ6ocaC7REDrCC2P3+IxskN73CNRhwkkiUBSzXu52QdTzaAUF09Z
-azXiYxq/FpInFPHbBRWHRoeLkknyIlNmKUvVW+H6EHoMxgio7Pn2ERgGo4on6m8Z
-DX/ExB4ksH+M9m8Mw5niW9tzCilWV1c6EvwQ+9FlNY0szADvScD0Ocv3M0FVfvcx
-BVIXt1UD
-=UpYq
------END PGP SIGNATURE-----
+This test shows that the older store in P0 is reordered with a newer
+load to a different address. Although there is a RMW operation with
+fetch between them. Adding a sync before and after RMW fixes the issue:
 
---t6g7ogcm2uwc3jep--
+Witnesses
+Positive: 9 Negative: 0
+Condition ~exists (0:r7=0 /\ 1:r7=0)
+Observation SB+atomic_add+fetch Never 0 9
+
+[1] https://www.kernel.org/doc/Documentation/memory-barriers.txt
+[2] https://www.kernel.org/doc/Documentation/atomic_t.txt
+
+Fixes: 65112709115f ("powerpc/bpf/64: add support for BPF_ATOMIC bitwise operations")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+---
+Changes in v1 -> v2:
+v1: https://lore.kernel.org/all/20240507175439.119467-1-puranjay@kernel.org/
+- Don't emit `sync` for non-SMP kernels as that adds unessential overhead.
+---
+ arch/powerpc/net/bpf_jit_comp32.c | 12 ++++++++++++
+ arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++++++++
+ 2 files changed, 24 insertions(+)
+
+diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+index 2f39c50ca729..0318b83f2e6a 100644
+--- a/arch/powerpc/net/bpf_jit_comp32.c
++++ b/arch/powerpc/net/bpf_jit_comp32.c
+@@ -853,6 +853,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 			/* Get offset into TMP_REG */
+ 			EMIT(PPC_RAW_LI(tmp_reg, off));
+ 			tmp_idx = ctx->idx * 4;
++			/*
++			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
++			 * before and after the operation.
++			 *
++			 * This is a requirement in the Linux Kernel Memory Model.
++			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
++			 */
++			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
++				EMIT(PPC_RAW_SYNC());
+ 			/* load value from memory into r0 */
+ 			EMIT(PPC_RAW_LWARX(_R0, tmp_reg, dst_reg, 0));
+ 
+@@ -905,6 +914,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 
+ 			/* For the BPF_FETCH variant, get old data into src_reg */
+ 			if (imm & BPF_FETCH) {
++				/* Emit 'sync' to enforce full ordering */
++				if (IS_ENABLED(CONFIG_SMP))
++					EMIT(PPC_RAW_SYNC());
+ 				EMIT(PPC_RAW_MR(ret_reg, ax_reg));
+ 				if (!fp->aux->verifier_zext)
+ 					EMIT(PPC_RAW_LI(ret_reg - 1, 0)); /* higher 32-bit */
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index 79f23974a320..9a077f8acf7b 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -804,6 +804,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 			/* Get offset into TMP_REG_1 */
+ 			EMIT(PPC_RAW_LI(tmp1_reg, off));
+ 			tmp_idx = ctx->idx * 4;
++			/*
++			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
++			 * before and after the operation.
++			 *
++			 * This is a requirement in the Linux Kernel Memory Model.
++			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
++			 */
++			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
++				EMIT(PPC_RAW_SYNC());
+ 			/* load value from memory into TMP_REG_2 */
+ 			if (size == BPF_DW)
+ 				EMIT(PPC_RAW_LDARX(tmp2_reg, tmp1_reg, dst_reg, 0));
+@@ -865,6 +874,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 			PPC_BCC_SHORT(COND_NE, tmp_idx);
+ 
+ 			if (imm & BPF_FETCH) {
++				/* Emit 'sync' to enforce full ordering */
++				if (IS_ENABLED(CONFIG_SMP))
++					EMIT(PPC_RAW_SYNC());
+ 				EMIT(PPC_RAW_MR(ret_reg, _R0));
+ 				/*
+ 				 * Skip unnecessary zero-extension for 32-bit cmpxchg.
+-- 
+2.42.0
+
