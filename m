@@ -1,65 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43F88BF91D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 10:56:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B308BFC3E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 13:38:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=DURQmnno;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=MGedoFgJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZ8Bf1rvsz3cVF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 18:56:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZCnr2dzRz3cVV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 21:38:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=DURQmnno;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=MGedoFgJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.161; helo=mout-p-103.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZ89s6phLz30Ts
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 18:55:29 +1000 (AEST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4VZ89X13K6z9sRx;
-	Wed,  8 May 2024 10:55:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1715158512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LgTa174CN4twtJVuodBezk0b2vWnBKWssMs5UWGeMhE=;
-	b=DURQmnnoX8sm4mSH2+Wiww+tChze7TvUiyZS+n2y2rVSOBoJXb5ppk/y7HqkmmEuUINXx7
-	EyqnuylnRlAwf77RwpnGTSJILDfxnX1FUVI8ZrehNhEtcaTHHZTy6M+wNwOVOUPO2RbMaM
-	UeHRH9PSgD31eUfIWwtRjUC/3qvwxu3Wd5ImjKpbczOWgcSw868cjExUJn6axBs7pLtUSf
-	nI2PknUfuA92H5l8KI5gdBfriQCCrsWW+pFz+l1KMguYCBTTE+ZgV/G68jGwXcFJCrtmdz
-	PGmwcn2syJUh1ivzuEfbD8bo8CB4EguP0f8b+x1MoMyYrt0ovmllRs6JmNQdLA==
-Date: Wed, 8 May 2024 10:55:05 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Subject: Re: WARNING: CPU: 1 PID: 1 at net/core/netpoll.c:370
- netpoll_send_skb+0x1fc/0x20c at boot when netconsole is enabled (kernel
- v6.9-rc5, v6.8.7, sungem, PowerMac G4 DP)
-Message-ID: <20240508105505.098efd6c@yea>
-In-Reply-To: <20240506181020.292b25f0@kernel.org>
-References: <20240428125306.2c3080ef@legion>
-	<20240429183630.399859e2@kernel.org>
-	<20240505232713.46c03b30@yea>
-	<20240506072645.448bc49f@kernel.org>
-	<20240507024258.07980f55@yea>
-	<20240506181020.292b25f0@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZCn21CcQz30Vk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 21:37:39 +1000 (AEST)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240508113726euoutp023b917c183029915f96a388a085ef9f3c~NgG6-85E21770217702euoutp02_;
+	Wed,  8 May 2024 11:37:26 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240508113726euoutp023b917c183029915f96a388a085ef9f3c~NgG6-85E21770217702euoutp02_
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1715168246;
+	bh=cF90zorX3Vhkec3/TFj+N593dqTmsatotOCQjHSZEbM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=MGedoFgJUxqsWS+zDcnWEQjCsAolmv6XQq26O3hTwtnVUXsPIbO123xNVdDsR1wi8
+	 4ruaFwHk37WfH/K8Vb94HbGRPKKEv2Im4rxPFviwViSVpO0j+oN5tsVWmyq70AhMUk
+	 fkBQHu/4DdTej80roiXkz13NiIEQJKgdnVvkytNE=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20240508113725eucas1p16225069534576a85124b13399ba8b854~NgG6vou7Z2221222212eucas1p1K;
+	Wed,  8 May 2024 11:37:25 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id C2.CE.09624.5F36B366; Wed,  8
+	May 2024 12:37:25 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240508113725eucas1p1c73dc1b7bc2780f99b281e4cc534d1a0~NgG6RWhmU1576115761eucas1p1a;
+	Wed,  8 May 2024 11:37:25 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240508113725eusmtrp125fc799878405e7480db3ef8c0ccefef~NgG6P556t0870508705eusmtrp1k;
+	Wed,  8 May 2024 11:37:25 +0000 (GMT)
+X-AuditID: cbfec7f2-c11ff70000002598-a3-663b63f58af9
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id 28.7B.09010.5F36B366; Wed,  8
+	May 2024 12:37:25 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240508113725eusmtip245b7460632450ec5f8efcdd3ed3a83f1~NgG6AtV8G1709017090eusmtip2g;
+	Wed,  8 May 2024 11:37:25 +0000 (GMT)
+Received: from localhost (106.110.32.44) by CAMSVWEXC02.scsc.local
+	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+	Wed, 8 May 2024 12:37:24 +0100
+Date: Wed, 8 May 2024 13:37:19 +0200
+From: Joel Granados <j.granados@samsung.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v3 00/11] sysctl: treewide: constify ctl_table argument
+ of sysctl handlers
+Message-ID: <20240508113719.pccjkyd5nk5soqrg@joelS2.panther.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: oi1ksroanrx3buqynk4yf9m64a7ii418
-X-MBO-RS-ID: 34bc1399a180a3c52e3
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="v7sa5w52x2sbyktg"
+Content-Disposition: inline
+In-Reply-To: <d11f875e-4fb5-46dd-a412-84818208c575@t-8ch.de>
+X-Originating-IP: [106.110.32.44]
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
+	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WSf0wTZxzG917vrkez4lGdvIDOwQCz6RhuKO8C21RMdsuiwy1b4pJldnAU
+	Ai2kBabgsiKObvwQtJnQKrMgItCFstI1/DISwDIps0WJkskgqeAmUGB0hSBa13KQmey/z/N8
+	v0/u+7w5iie6RwZTabJsVi4TZ4SRAtxsWb75mjspLiV61L0bFVh0BHL19ZPIfKkEQ0/aVTxk
+	sowBNGlx8NFgiRR1Wt0YsptPE8h4/w6Buq7ewNGPhmWAbndcINHYT08JZO+2Emj4l2YcPegp
+	w5HZdYpEFTWFPDSpmybQfKmDRH2G33DU8biNj1aWPAQqvLjAQyMVkwBZdJtRRfMAjm62uoi9
+	W5nzyiGcGaiFjM6YwxibvicZ48JZPtNa9w3zV6sGMLaqGsDcGRnHGefKrxhjr58hGZfxxcTn
+	PxPEJ7MZabms/PV3jgpSda4JkPVzyLG66iq+EjzZXAz8KEjHwMFyKygGAkpENwBYvzTI58Q/
+	AFaZ7DgnXACqp5r465H2yi6MG1wBcLh4XXi3ZvvH1vJGABufthG+CE6Hw85zHatM0juhbWaU
+	5+NNdARculW4yjy6nQ9trgAfb6SPQtNlNfCxkN4LtY4hnOMAeEMzgXP7x2Dhmcfej1FeDoFX
+	PJTP9qPjYdt5O4+7NBS6L43hHH8NB0y/rx4K6QkB1HTZMG5wALYM95Mcb4RT/aa1mlugVV2K
+	cwE1gNc883xO6L3PVOBeS8fBU8MTa4l90GawEb6LIO0PR5wB3KH+8Ky5ksfZQvhdkYjbjoT6
+	sRm8Arysfaaa9plq2v+qcfZOqOtcIP9n74D1NdM8jt+Gzc1zuA7wm0Agm6OQSljFLhn7VZRC
+	LFXkyCRRSZlSI/D+81ZP/0IbqJ76O6oHYBToAeHesKNFbwfBuCxTxoZtEl5XxaaIhMni43ms
+	PPMLeU4Gq+gBIRQeFiiMSN7GimiJOJtNZ9ksVr4+xSi/YCW2R1rSi4Qx4elB5/Z35R9871Za
+	+ZbjQfXKdOsrOUox3EDMsoJq43MJ6pZDi+P63LRti5GzjTXXFoNky/5FR8J6Ba4909mfJm73
+	XF94kFCg/OHkwzJxxMcn4lRJwsqBw2/2FVyIVmtFcTumh2rclm/z/+guS7g6cyLrYt49Z+Mg
+	9uHIbodGETtep6ib3G9yOJY/Kv38S6vmtqM19uH4n7mS8kfd0p59KU3qOfP9w+ly+uDoXfTG
+	J1Wt+TAy3vnBkeTodztDscsr5g3WkwcOba/tdeclKopWnI3stIQ1vBWTF/8CnZrUwDc1hJd6
+	5k8Hzhnuvk/lT6q2htbqx19iMUr1KAxXpIp3vcqTK8T/AgNMPNVuBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WSfUxTZxTG896vtmrntaC+gDpX2WaYVlpofWHAIDHLXXTL9seyZROxK1dg
+	0pb1w+AWNwxmzDIWQCICMotCJ4UUdmGErw1XWSlUpLjJ0Gx11kEmH9mgA0OKZYVmmcn+++V5
+	8jzn5OTwcdEiGcnP0RhYnUaZK6bWEa7AgGfvgurFY7HW4nB02mEmka9/gEIdV4ox9LirCEft
+	Dg9AEw4vD90oVqMe1wKG3B1fkIh7MEai3m8HCfRlyxJAP3ZfpJCneYVE7msuEv30jY1Ak/YS
+	AnX4zlCotK4QRxPmaRL99bmXQv0twwTqXu7kIf+jAIkKL83jaLx0AiCHeQsqtQ0R6Gabj0zd
+	ztQUjBLM0GXImDkjw1nPUgw3X85j2uo/Yf5oqwLMyIU6wIyN3yOYWb8TY9yWGYrxcTte3/CO
+	JEmnNRrYndlavSFZ/K4UySTSBCSRxSdIpHH70xNlcvG+lKRMNjfnBKvbl3JUkl356U2Q1xKV
+	f8ZnIguAf4sJCPiQjoddlb2YCazji+gGAE3dFVTI2Aa//vs2GeIwuDxmWtNF9ByAjdbnQgEO
+	QEuZiVg1CDoa9pzvXgtQ9B44MvMLvsrh9LPw0a3CNcbpLh50LdKrHEYfhe0N58AqC+lUWO0d
+	JUKlrRicthfgIWMTHKz6nQiFT0Bn61xwAD/IUfCrAH9VFtBJsLPGjYcWfQYuXPEQIT4FfY8n
+	QSkIq36iqfqJpur/mkJyDBwPPMT+J78ALXXTeIiToc32J2EGPCsIZ416dZZaL5PolWq9UZMl
+	UWnVHAg+XYdjqb0TNE7NSewA4wM7iA4mva1NbhBJaLQaVhwu/KFo/zGRMFN58kNWp83QGXNZ
+	vR3Ig1cswyM3q7TBD9YYMqSKWLk0XpEQK09QxIm3Cl/J+0wporOUBvY4y+axun9zGF8QWYBZ
+	xWWJk1SvYtDoUnNPN78hM3Utbnq+XvLqaLIqrNZ2teTNuqKLUa7E9T1X9wzE7Bqv2VbW4Tni
+	TO07HXjZ7uZ+Tn1YNb6oqLxeUrzT3HZj5Xr+3ZOXn7LMpsRNC5oiJu+0FH+wvn+0YkzRJapP
+	Gz4gqFj43nJhKOOU//D93VjfsNOmOh/RMLx1Y9TB3dQSeXfzHe39CKtAmNW84S3pvHTO7n+t
+	Nquitqnc8etvM40jMUcyPVPXyvEIWWv0jrRdG8/mr/i42733Bt7P+ah50n8rZuptc7r4Y2c6
+	zTsIdZVNndF732ugqeTD574T9jNpPO/x7QuH+l56oNTL5YYD0uUAb1ZM6LOV0hhcp1f+Aw47
+	jhcJBAAA
+X-CMS-MailID: 20240508113725eucas1p1c73dc1b7bc2780f99b281e4cc534d1a0
+X-Msg-Generator: CA
+X-RootMTR: 20240425031241eucas1p1fb0790e0d03ccbe4fca2b5f6da83d6db
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240425031241eucas1p1fb0790e0d03ccbe4fca2b5f6da83d6db
+References: <20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
+	<CGME20240425031241eucas1p1fb0790e0d03ccbe4fca2b5f6da83d6db@eucas1p1.samsung.com>
+	<20240424201234.3cc2b509@kernel.org>
+	<20240425110412.2n5d27smecfncsfa@joelS2.panther.com>
+	<d11f875e-4fb5-46dd-a412-84818208c575@t-8ch.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,70 +133,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-sctp@vger.kernel.org, lvs-devel@vger.kernel.org, coreteam@netfilter.org, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 6 May 2024 18:10:20 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+--v7sa5w52x2sbyktg
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Excellent! Do you want to submit that as an official patch?
-> The explanation is that we can't call disable_irq() from atomic
-> context (which which netpoll runs). But the callback is no longer
-> necessary as we can depend on NAPI to do the polling these days.
+Kees
 
-I could do that with the explanation you stated. But should any further questions arise in this process I would also lack the technical background to deal with them. ;)
+Could you comment on the feasibility of this alternative from the
+Control Flow Integrity perspective. My proposal is to change the
+proc_handler to void* and back in the same release. So there would not
+be a kernel released with a void* proc_handler.
 
-I also noticed a similar #ifdef CONFIG_NET_POLL_CONTROLLER logic shows up in
-many network drivers, e.g. net/ethernet/realtek/8139too.c:
+> > However, there is an alternative way to do this that allows chunking. We
+> > first define the proc_handler as a void pointer (casting it where it is
+> > being used) [1]. Then we could do the constification by subsystem (like
+> > Jakub proposes). Finally we can "revert the void pointer change so we
+> > don't have one size fit all pointer as our proc_handler [2].
+> >=20
+> > Here are some comments about the alternative:
+> > 1. We would need to make the first argument const in all the derived
+> >    proc_handlers [3]=20
+> > 2. There would be no undefined behavior for two reasons:
+> >    2.1. There is no case where we change the first argument. We know
+> >         this because there are no compile errors after we make it const.
+> >    2.2. We would always go from non-const to const. This is the case
+> >         because all the stuff that is unchanged in non-const.
+> > 3. If the idea sticks, it should go into mainline as one patchset. I
+> >    would not like to have a void* proc_handler in a kernel release.
+> > 4. I think this is a "win/win" solution were the constification goes
+> >    through and it is divided in such a way that it is reviewable.
+> >=20
+> > I would really like to hear what ppl think about this "heretic"
+> > alternative. @Thomas, @Luis, @Kees @Jakub?
+>=20
+> Thanks for that alternative, I'm not a big fan though.
+>=20
+> Besides the wonky syntax, Control Flow Integrity should trap on
+> this construct. Functions are called through different pointers than
+> their actual types which is exactly what CFI is meant to prevent.
+>=20
+> Maybe people find it easier to review when using
+> "--word-diff" and/or "-U0" with git diff/show.
+> There is really nothing going an besides adding a few "const"s.
+>=20
+> But if the consensus prefers this solution, I'll be happy to adopt it.
+>=20
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux=
+=2Egit/commit/?h=3Djag/constfy_treewide_alternative&id=3D4a383503b1ea650d4e=
+12c1f5838974e879f5aa6f
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux=
+=2Egit/commit/?h=3Djag/constfy_treewide_alternative&id=3Da3be65973d27ec2933=
+b9e81e1bec60be3a9b460d
+> > [3] proc_dostring, proc_dobool, proc_dointvec....
+>=20
+>=20
+> Thomas
 
-#ifdef CONFIG_NET_POLL_CONTROLLER
-static void rtl8139_poll_controller(struct net_device *dev);
-#endif
-[...]
-#ifdef CONFIG_NET_POLL_CONTROLLER
-/*
- * Polling receive - used by netconsole and other diagnostic tools
- * to allow network i/o with interrupts disabled.
- */
-static void rtl8139_poll_controller(struct net_device *dev)
-{
-        struct rtl8139_private *tp = netdev_priv(dev);
-       	const int irq = tp->pci_dev->irq;
+Best
+--=20
 
-       	disable_irq_nosync(irq);
-       	rtl8139_interrupt(irq, dev);
-       	enable_irq(irq);
-}
-#endif
-[...]
-#ifdef CONFIG_NET_POLL_CONTROLLER
-       	.ndo_poll_controller    = rtl8139_poll_controller,
-#endif
+Joel Granados
 
+--v7sa5w52x2sbyktg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Should it be removed here too? This would be more cards I can test. So far I only see this on my G4 and I think something similar on an old Pentium4 box I no longer have. 
- 
-> > What I still get with 'modprobe -v dev_addr_lists_test', even with gem_poll_controller() removed is:
-> > 
-> > [...]
-> > KTAP version 1
-> > 1..1
-> >     KTAP version 1
-> >     # Subtest: dev-addr-list-test
-> >     # module: dev_addr_lists_test
-> >     1..6
-> > 
-> > ====================================
-> > WARNING: kunit_try_catch/1770 still has locks held!
-> > 6.9.0-rc6-PMacG4-dirty #5 Tainted: G        W        N
-> > ------------------------------------
-> > 1 lock held by kunit_try_catch/1770:
-> >  #0: c0dbfce4 (rtnl_mutex){....}-{3:3}, at: dev_addr_test_init+0xbc/0xc8 [dev_addr_lists_test]  
-> 
-> I think that's fixed in net-next.
+-----BEGIN PGP SIGNATURE-----
 
-Ah, good to hear!
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmY7Y+4ACgkQupfNUreW
+QU9YEgwAhDVP7Y6eoR6THZeBhX5jlhu2G9nJstttqNF2XutpFKVjE8Z3C89eHNng
+DCMo7QPRNspNV7452TWHzjB9TyWvZ3WtKaNd1O0ECwCMpZ32/0aZ5SAsMd+cY2D5
+yDhAjIzVJups6lQWx1bTMDtuWft9Ebi7Wvd9I3Q+Qjq5khbrSHMCzCr1Bl2ZfscY
+ApmHqb3v0KxOM+QrrybFvFCD/tt7uYyJfmH96GgBLdl2+7ceoUigiSK5ebySplCo
+UnNLZi6LEwS1kjyNpbWQbKq9czcSKCCYVM3kzqzcPBdRU/km7XH0oi7SybNt7PSz
+ZvFQgc34OiFAFcb9twbtzTKfXVBXpBwmOwwgqLw4yNS2C8QH+nbO6qUmHoDp44ZW
+6jYrjdWbdDrP+Mwh56FkIcs84+0tgdLgsT6ni9LyK50S8Ik7ivQRCnojjpNJS19p
+wRnfmB6C3lNH2MWxq9gw8k+RMhDB3eRxcXrTbEjYImsO4zb3xo+CjjPG5TGkvezg
+ehHTRa51
+=YpMU
+-----END PGP SIGNATURE-----
 
-Regards,
-Erhard F.
+--v7sa5w52x2sbyktg--
