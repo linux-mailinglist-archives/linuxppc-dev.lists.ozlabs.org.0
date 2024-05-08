@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2598BFF16
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:43:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754238BFF26
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:45:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZGZM1qcyz3fr3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 23:43:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZGc205wlz3g95
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 23:45:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
@@ -14,20 +14,20 @@ Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZGXJ6CDfz3cVx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:41:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZGXN0KTzz3cWy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 23:41:56 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXJ2ZlGz4x3j;
-	Wed,  8 May 2024 23:41:52 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZGXM34nTz4x80;
+	Wed,  8 May 2024 23:41:55 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: jk@ozlabs.org, arnd@arndb.de, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, Kunwu Chan <chentao@kylinos.cn>
-In-Reply-To: <20240126021258.574916-1-chentao@kylinos.cn>
-References: <20240126021258.574916-1-chentao@kylinos.cn>
-Subject: Re: [PATCH v2] powerpc/cell: Code cleanup for spufs_mfc_flush
-Message-Id: <171517558556.165093.4418850718054989946.b4-ty@ellerman.id.au>
+To: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Ran Wang <ran.wang_1@nxp.com>, Zhao Chenhui <chenhui.zhao@freescale.com>, Li Yang <leoyang.li@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20240119203911.3143928-1-Frank.Li@nxp.com>
+References: <20240119203911.3143928-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/4] powerpc: dts: add power management nodes to FSL chips
+Message-Id: <171517558555.165093.3578824568292116308.b4-ty@ellerman.id.au>
 Date: Wed, 08 May 2024 23:39:45 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,23 +43,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 26 Jan 2024 10:12:58 +0800, Kunwu Chan wrote:
-> This part was commented from commit a33a7d7309d7
-> ("[PATCH] spufs: implement mfc access for PPE-side DMA")
-> in about 18 years before.
+On Fri, 19 Jan 2024 15:38:54 -0500, Frank Li wrote:
+> Enable Power Management feature on device tree, including MPC8536,
+> MPC8544, MPC8548, MPC8572, P1010, P1020, P1021, P1022, P2020, P2041,
+> P3041, T104X, T1024.
 > 
-> If there are no plans to enable this part code in the future,
-> we can remove this dead code.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/cell: Code cleanup for spufs_mfc_flush
-      https://git.kernel.org/powerpc/c/66d8e646e8e78ea6088d9f6b9465e211566b5133
+[1/4] powerpc: dts: add power management nodes to FSL chips
+      https://git.kernel.org/powerpc/c/b12ba096b89084d1e2d6ebdb71b852eeebef95d3
+[2/4] powerpc: dts: p1010rdb: fix INTx interrupt issue on P1010RDB-PB
+      https://git.kernel.org/powerpc/c/9c8dc6f34351cd0c6a2ef83be2266f7dd67c152c
+[3/4] powerpc: dts: mpc85xx: remove "simple-bus" compatible from ifc node
+      https://git.kernel.org/powerpc/c/0bf51cc9e9e57a751b4c5dacbfa499ba5cd8bd72
+[4/4] powerpc: dts: fsl: rename ifc node name to be memory-controller
+      https://git.kernel.org/powerpc/c/acb354fe97e5aa6d9534b601ce18ef7866f25c4d
 
 cheers
