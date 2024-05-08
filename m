@@ -2,63 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C818C01E3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 18:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7898C02A4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 19:09:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B2ndscnd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M/97oIyG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZL6l193nz3cXj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 02:23:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZM7T0jcXz3cQT
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 03:09:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B2ndscnd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M/97oIyG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZL5z0g0Bz3c5Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 02:22:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715185368; x=1746721368;
-  h=date:from:to:cc:subject:message-id;
-  bh=9MxiBON+Nd07gbAHtqOl/q1RhP9MBQJRRPMD1L3VOas=;
-  b=B2ndscndpxrghbkRU5NxqdexTboE9YkrWRwApa8YuN7mta6IdSWOk4BR
-   NwSjUNsmjN2rFzf9zD8FX1O1sNYBckQevDyXqlNRA4FhU0RJVGd/7335O
-   0ZkqfMA/XGI+6vy6I9i5/qgj0VGdvySGesa0NNp+7ZMSQfuz+P2EHUpqn
-   JucrxfYMJCRwuFbTRZaYl07JO2E3FoFpzE/DlArIDTWNHorhcmLYXcBwr
-   aKx+wsaQpJFvhCrtzxjWsXpTOsVZLcxGyYthHJxKK3lAp4omOeLCIC+T0
-   QbC9AA+ksxnGdqHo5Xn0kqoUBqsIVaZ0MT5MP8or67x+6SnPgvKwRxSKN
-   A==;
-X-CSE-ConnectionGUID: Tm2FM/stSLiMt4CpgGF7ZA==
-X-CSE-MsgGUID: Ghz4kZ1ZRw6RPN/XHvJsLA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="21631608"
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; 
-   d="scan'208";a="21631608"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 09:22:42 -0700
-X-CSE-ConnectionGUID: 2W/kpBJcTzGBejU9Pli0Lw==
-X-CSE-MsgGUID: 2rXDot+kRgCe6oHHs6wj8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,145,1712646000"; 
-   d="scan'208";a="28899691"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 08 May 2024 09:22:41 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4k3y-0003jJ-2j;
-	Wed, 08 May 2024 16:22:38 +0000
-Date: Thu, 09 May 2024 00:22:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
- b52e8cd3f835869370f8540f1bc804a47a47f02b
-Message-ID: <202405090023.3PNV2WGT-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZM6j1gBYz2xdp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 03:08:29 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8933261CBF;
+	Wed,  8 May 2024 17:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EB2C113CC;
+	Wed,  8 May 2024 17:08:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715188106;
+	bh=YQRZPYaCXuEct0KhtKlB1VbKYC/PdpRAyC+rY6nTboo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M/97oIyGXnyHRIpjOSRt/dlWmEADUv0KWyfCU1OQsq/uY5BfiGa97FVH1KF2zm267
+	 q/aQH9lwzmEmP7yR1ItHdSUx9riCFbyv+mD7XZr9Yi29G2Pnsn8q7B8FnQXAWvstbT
+	 VWWhui77WaQXzE+ONkfuIoj+c7geqwH3nTM0u6rzKPSAh7KWrIoeiKihdfhhRtjOGZ
+	 vDVgRYpj+GnzMm8+P4XQn1Uaks6aOe6O9nqMosogzVG0YklpSxUrFtu4qNEStCxXCn
+	 xVY25FP006Nfh2kTJf0IxvUxYea0KK44u2cRljjBciWrxg+lfEs2YusVY64Y/ivp6i
+	 jvfsRvjq0jU/w==
+Date: Wed, 8 May 2024 22:32:26 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Puranjay Mohan <puranjay@kernel.org>
+Subject: Re: [PATCH bpf v2] powerpc/bpf: enforce full ordering for ATOMIC
+ operations with BPF_FETCH
+Message-ID: <koaryr5vyb2in2tdnrm4pds5yahfa63chcsgxgoqbudlv45alu@pi6cfiznzvjl>
+References: <20240508115404.74823-1-puranjay@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240508115404.74823-1-puranjay@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,180 +60,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Alexei Starovoitov <ast@kernel.org>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Yonghong Song <yonghong.song@linux.dev>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, paulmck@kernel.org, Nicholas Piggin <npiggin@gmail.com>, KP Singh <kpsingh@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, Hao Luo <haoluo@google.com>, puranjay12@gmail.com, Martin KaFai Lau <martin.lau@linux.dev>, linux-kernel@vger.kernel.org, Eduard Zingerman <eddyz87@gmail.com>, Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-branch HEAD: b52e8cd3f835869370f8540f1bc804a47a47f02b  KVM: PPC: Book3S HV nestedv2: Fix an error handling path in gs_msg_ops_kvmhv_nestedv2_config_fill_info()
+On Wed, May 08, 2024 at 11:54:04AM GMT, Puranjay Mohan wrote:
+> The Linux Kernel Memory Model [1][2] requires RMW operations that have a
+> return value to be fully ordered.
+> 
+> BPF atomic operations with BPF_FETCH (including BPF_XCHG and
+> BPF_CMPXCHG) return a value back so they need to be JITed to fully
+> ordered operations. POWERPC currently emits relaxed operations for
+> these.
+> 
+> We can show this by running the following litmus-test:
+> 
+> PPC SB+atomic_add+fetch
+> 
+> {
+> 0:r0=x;  (* dst reg assuming offset is 0 *)
+> 0:r1=2;  (* src reg *)
+> 0:r2=1;
+> 0:r4=y;  (* P0 writes to this, P1 reads this *)
+> 0:r5=z;  (* P1 writes to this, P0 reads this *)
+> 0:r6=0;
+> 
+> 1:r2=1;
+> 1:r4=y;
+> 1:r5=z;
+> }
+> 
+> P0                      | P1            ;
+> stw         r2, 0(r4)   | stw  r2,0(r5) ;
+>                         |               ;
+> loop:lwarx  r3, r6, r0  |               ;
+> mr          r8, r3      |               ;
+> add         r3, r3, r1  | sync          ;
+> stwcx.      r3, r6, r0  |               ;
+> bne         loop        |               ;
+> mr          r1, r8      |               ;
+>                         |               ;
+> lwa         r7, 0(r5)   | lwa  r7,0(r4) ;
+> 
+> ~exists(0:r7=0 /\ 1:r7=0)
+> 
+> Witnesses
+> Positive: 9 Negative: 3
+> Condition ~exists (0:r7=0 /\ 1:r7=0)
+> Observation SB+atomic_add+fetch Sometimes 3 9
+> 
+> This test shows that the older store in P0 is reordered with a newer
+> load to a different address. Although there is a RMW operation with
+> fetch between them. Adding a sync before and after RMW fixes the issue:
+> 
+> Witnesses
+> Positive: 9 Negative: 0
+> Condition ~exists (0:r7=0 /\ 1:r7=0)
+> Observation SB+atomic_add+fetch Never 0 9
+> 
+> [1] https://www.kernel.org/doc/Documentation/memory-barriers.txt
+> [2] https://www.kernel.org/doc/Documentation/atomic_t.txt
+> 
+> Fixes: 65112709115f ("powerpc/bpf/64: add support for BPF_ATOMIC bitwise operations")
+> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
 
-elapsed time: 1474m
+Thanks for reporting and fixing this.
 
-configs tested: 157
-configs skipped: 9
+There are actually four commits that this fixes across ppc32/ppc64:
+Fixes: aea7ef8a82c0 ("powerpc/bpf/32: add support for BPF_ATOMIC bitwise operations")
+Fixes: 2d9206b22743 ("powerpc/bpf/32: Add instructions for atomic_[cmp]xchg")
+Fixes: dbe6e2456fb0 ("powerpc/bpf/64: add support for atomic fetch operations")
+Fixes: 1e82dfaa7819 ("powerpc/bpf/64: Add instructions for atomic_[cmp]xchg")
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> ---
+> Changes in v1 -> v2:
+> v1: https://lore.kernel.org/all/20240507175439.119467-1-puranjay@kernel.org/
+> - Don't emit `sync` for non-SMP kernels as that adds unessential overhead.
+> ---
+>  arch/powerpc/net/bpf_jit_comp32.c | 12 ++++++++++++
+>  arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++++++++
+>  2 files changed, 24 insertions(+)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+> index 2f39c50ca729..0318b83f2e6a 100644
+> --- a/arch/powerpc/net/bpf_jit_comp32.c
+> +++ b/arch/powerpc/net/bpf_jit_comp32.c
+> @@ -853,6 +853,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>  			/* Get offset into TMP_REG */
+>  			EMIT(PPC_RAW_LI(tmp_reg, off));
+>  			tmp_idx = ctx->idx * 4;
+> +			/*
+> +			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
+> +			 * before and after the operation.
+> +			 *
+> +			 * This is a requirement in the Linux Kernel Memory Model.
+> +			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
+					 ^^^
+Nit...					 u32
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240508   gcc  
-arc                   randconfig-002-20240508   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                         at91_dt_defconfig   clang
-arm                                 defconfig   clang
-arm                   milbeaut_m10v_defconfig   clang
-arm                          pxa168_defconfig   clang
-arm                   randconfig-001-20240508   gcc  
-arm                         s3c6400_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240508   gcc  
-arm64                 randconfig-003-20240508   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240508   gcc  
-csky                  randconfig-002-20240508   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240508   clang
-i386         buildonly-randconfig-002-20240508   clang
-i386         buildonly-randconfig-005-20240508   clang
-i386                                defconfig   clang
-i386                  randconfig-002-20240508   clang
-i386                  randconfig-003-20240508   clang
-i386                  randconfig-005-20240508   clang
-i386                  randconfig-013-20240508   clang
-i386                  randconfig-014-20240508   clang
-i386                  randconfig-015-20240508   clang
-i386                  randconfig-016-20240508   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240508   gcc  
-loongarch             randconfig-002-20240508   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                     decstation_defconfig   gcc  
-mips                           ip27_defconfig   gcc  
-mips                      loongson3_defconfig   gcc  
-mips                           mtx1_defconfig   clang
-mips                   sb1250_swarm_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240508   gcc  
-nios2                 randconfig-002-20240508   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240508   gcc  
-parisc                randconfig-002-20240508   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                        cell_defconfig   gcc  
-powerpc                   lite5200b_defconfig   clang
-powerpc                       ppc64_defconfig   clang
-powerpc               randconfig-002-20240508   gcc  
-powerpc64             randconfig-001-20240508   gcc  
-powerpc64             randconfig-002-20240508   gcc  
-powerpc64             randconfig-003-20240508   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240508   gcc  
-riscv                 randconfig-002-20240508   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-002-20240508   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                        edosk7760_defconfig   gcc  
-sh                    randconfig-001-20240508   gcc  
-sh                    randconfig-002-20240508   gcc  
-sh                           se7619_defconfig   gcc  
-sparc                            alldefconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc32_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240508   gcc  
-sparc64               randconfig-002-20240508   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240508   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240508   clang
-x86_64       buildonly-randconfig-002-20240508   clang
-x86_64       buildonly-randconfig-003-20240508   clang
-x86_64       buildonly-randconfig-004-20240508   clang
-x86_64       buildonly-randconfig-006-20240508   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-002-20240508   clang
-x86_64                randconfig-003-20240508   clang
-x86_64                randconfig-011-20240508   clang
-x86_64                randconfig-012-20240508   clang
-x86_64                randconfig-015-20240508   clang
-x86_64                randconfig-073-20240508   clang
-x86_64                randconfig-076-20240508   clang
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                generic_kc705_defconfig   gcc  
-xtensa                randconfig-001-20240508   gcc  
-xtensa                randconfig-002-20240508   gcc  
+> +			 */
+> +			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
+> +				EMIT(PPC_RAW_SYNC());
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I think this block should go before the previous two instructions. We 
+use tmp_idx as a label to retry the ll/sc sequence, so we will end up 
+executing the 'sync' operation on a retry here.
+
+>  			/* load value from memory into r0 */
+>  			EMIT(PPC_RAW_LWARX(_R0, tmp_reg, dst_reg, 0));
+>  
+> @@ -905,6 +914,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>  
+>  			/* For the BPF_FETCH variant, get old data into src_reg */
+>  			if (imm & BPF_FETCH) {
+> +				/* Emit 'sync' to enforce full ordering */
+> +				if (IS_ENABLED(CONFIG_SMP))
+> +					EMIT(PPC_RAW_SYNC());
+>  				EMIT(PPC_RAW_MR(ret_reg, ax_reg));
+>  				if (!fp->aux->verifier_zext)
+>  					EMIT(PPC_RAW_LI(ret_reg - 1, 0)); /* higher 32-bit */
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 79f23974a320..9a077f8acf7b 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -804,6 +804,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>  			/* Get offset into TMP_REG_1 */
+>  			EMIT(PPC_RAW_LI(tmp1_reg, off));
+>  			tmp_idx = ctx->idx * 4;
+> +			/*
+> +			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
+> +			 * before and after the operation.
+> +			 *
+> +			 * This is a requirement in the Linux Kernel Memory Model.
+> +			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
+> +			 */
+> +			if (imm & BPF_FETCH && IS_ENABLED(CONFIG_SMP))
+> +				EMIT(PPC_RAW_SYNC());
+
+Same here.
+
+I'll try and give this a test tomorrow.
+
+
+- Naveen
+
