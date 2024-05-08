@@ -1,70 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D37F8BF363
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 02:14:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4AB8BF4AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 04:39:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QEqihIfT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uC9nO7qw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYwd20r11z3cFN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 10:14:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VYzrK06JLz3cVg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 12:39:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QEqihIfT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uC9nO7qw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYwcF6Kxhz30TN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 10:14:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715127246; x=1746663246;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KlZGcKHOCwyvQnVPkYIgOSg/daK0tJkCNOhIwL1thy8=;
-  b=QEqihIfTN6+OkKA8YoGgMHFrEFCyUj3aHF85uJOTi0uuAxoo1Uky4XqJ
-   CQG6a5yxNKj0g0gGEw08i6vCeKLusMbvR+wMCIzGHqTr1nAko3XEyvPS4
-   m54k4nJDQ3xWtD38bGupo9ysn9vJAX26JBmLmSgmIXmnBcJz1tVmk1laj
-   6JGiGpmw0PjACcv99hboI0YW7BAecFHaA5+FGbEmBmWx66QDjxJ4PN2He
-   94L5EGRhlMSn/BRjTzhyYFLEUXnZ3JSoYmLJoA/7cbjuXkwo3dg7Lr8uN
-   6uyFMbeuSEnJK1SqWe82eyc/OrhdQkqnq03QpGj4z0UmM0TFoSegwKrPt
-   g==;
-X-CSE-ConnectionGUID: 2ZPlA2uYQV+8vj3Pma8o2w==
-X-CSE-MsgGUID: 2aMNnievReyuFhF+tee0qA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="10899175"
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
-   d="scan'208";a="10899175"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 17:14:01 -0700
-X-CSE-ConnectionGUID: ozBPJ5lsRMK0owkEt7/w6Q==
-X-CSE-MsgGUID: LSXQiHGFTA6Byr7pN/S39w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
-   d="scan'208";a="33392994"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 07 May 2024 17:13:57 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4UwT-0002lw-30;
-	Wed, 08 May 2024 00:13:53 +0000
-Date: Wed, 8 May 2024 08:13:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vignesh Balasubramanian <vigbalas@amd.com>,
-	linux-kernel@vger.kernel.org, linux-toolchains@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] x86/elf: Add a new .note section containing
- Xfeatures information to x86 core files
-Message-ID: <202405080809.LGYhRYu3-lkp@intel.com>
-References: <20240507095330.2674-2-vigbalas@amd.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYzqb0kz1z30WM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 12:39:07 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id D36C861A7F;
+	Wed,  8 May 2024 02:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02724C2BBFC;
+	Wed,  8 May 2024 02:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715135939;
+	bh=/3khDWZQ/GtML+FhSHCXGuNu/t+fIBx0N0zULUWpjWI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=uC9nO7qwz/RZe+qVeAYA5qg8DRX2OHooEZGkUg+YOiFYZbymhIt5OYrroDkvwZHx+
+	 rloiSSzfzkpfR3JH7MYR+nwgB19ILcw3crrUVKTntXNt13ThipsAWyeevB2r2yv6e4
+	 5UcJx3pXdyw//cVj268GeKVZeeXlC8CscMEFYHrvrAsHMAGXLZQj4qiDjiJa6/msly
+	 chVJr5LgPieHOEt1Z6CDmFMIZNYKLXUkYS08rHdms6UNqleqnU+9MAV5ZdML0t7FUe
+	 4rh/5pt8ZbvdIsh9pgfWDTw1ynQIxfxgYcl1bu+Kl0Fem7Stn0h55Di594V579dsht
+	 8SgBQFV9z+Mbg==
+From: Mark Brown <broonie@kernel.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Jerome Brunet <jbrunet@baylibre.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20240429-n-asoc-const-snd-pcm-hardware-v1-0-c6ce60989834@linaro.org>
+References: <20240429-n-asoc-const-snd-pcm-hardware-v1-0-c6ce60989834@linaro.org>
+Subject: Re: [PATCH 0/4] ASoC: Constify static snd_pcm_hardware
+Message-Id: <171513593429.1997870.7721601606737894887.b4-ty@kernel.org>
+Date: Wed, 08 May 2024 11:38:54 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240507095330.2674-2-vigbalas@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,53 +73,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: felix.willgerodt@intel.com, x86@kernel.org, keescook@chromium.org, jhb@freebsd.org, bpetkov@amd.com, binutils@sourceware.org, llvm@lists.linux.dev, aneesh.kumar@kernel.org, linux-mm@kvack.org, Vignesh Balasubramanian <vigbalas@amd.com>, npiggin@gmail.com, oe-kbuild-all@lists.linux.dev, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, matz@suse.de, ebiederm@xmission.com
+Cc: imx@lists.linux.dev, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vignesh,
+On Mon, 29 Apr 2024 13:48:45 +0200, Krzysztof Kozlowski wrote:
+> No dependencies.
+> 
+> Static 'struct snd_pcm_hardware' is not modified by few drivers and its
+> copy is passed to the core, so it can be made const for increased code
+> safety.
+> 
+> Best regards,
+> Krzysztof
+> 
+> [...]
 
-kernel test robot noticed the following build warnings:
+Applied to
 
-[auto build test WARNING on kees/for-next/execve]
-[also build test WARNING on tip/x86/core kees/for-next/pstore kees/for-next/kspp linus/master v6.9-rc7 next-20240507]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vignesh-Balasubramanian/x86-elf-Add-a-new-note-section-containing-Xfeatures-information-to-x86-core-files/20240507-175615
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git for-next/execve
-patch link:    https://lore.kernel.org/r/20240507095330.2674-2-vigbalas%40amd.com
-patch subject: [PATCH v2 1/1] x86/elf: Add a new .note section containing Xfeatures information to x86 core files
-config: i386-randconfig-013-20240508 (https://download.01.org/0day-ci/archive/20240508/202405080809.LGYhRYu3-lkp@intel.com/config)
-compiler: clang version 18.1.4 (https://github.com/llvm/llvm-project e6c3289804a67ea0bb6a86fadbe454dd93b8d855)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240508/202405080809.LGYhRYu3-lkp@intel.com/reproduce)
+Thanks!
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405080809.LGYhRYu3-lkp@intel.com/
+[1/4] ASoC: qcom: Constify static snd_pcm_hardware
+      commit: e6fa3509cb32df373b15212a99f69a6595efd1c3
+[2/4] ASoC: fsl: Constify static snd_pcm_hardware
+      commit: ed90156037659473ee95eafe3f72d8498e5384ff
+[3/4] ASoC: meson: Constify static snd_pcm_hardware
+      commit: 7b5ce9f0c52a5885d34d46bba62e9eaedc3dd459
+[4/4] ASoC: uniphier: Constify static snd_pcm_hardware
+      commit: 74a15fabd271d0fd82ceecbbfa1b98ea0a4709dd
 
-All warnings (new ones prefixed by >>):
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->> arch/x86/kernel/fpu/xstate.c:91:19: warning: unused variable 'owner_name' [-Wunused-const-variable]
-      91 | static const char owner_name[] = "LINUX";
-         |                   ^~~~~~~~~~
-   1 warning generated.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for DRM_I915_DEBUG_GEM
-   Depends on [n]: HAS_IOMEM [=y] && DRM_I915 [=m] && EXPERT [=y] && DRM_I915_WERROR [=n]
-   Selected by [m]:
-   - DRM_I915_DEBUG [=y] && HAS_IOMEM [=y] && DRM_I915 [=m] && EXPERT [=y] && !COMPILE_TEST [=n]
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-vim +/owner_name +91 arch/x86/kernel/fpu/xstate.c
+Thanks,
+Mark
 
-    90	
-  > 91	static const char owner_name[] = "LINUX";
-    92	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
