@@ -2,66 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4AB8BF4AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 04:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA308BF56E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 07:06:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uC9nO7qw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=afORrE3T;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VYzrK06JLz3cVg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 12:39:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZ35V6glRz3cSn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 May 2024 15:06:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uC9nO7qw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=afORrE3T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VYzqb0kz1z30WM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 12:39:07 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D36C861A7F;
-	Wed,  8 May 2024 02:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02724C2BBFC;
-	Wed,  8 May 2024 02:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715135939;
-	bh=/3khDWZQ/GtML+FhSHCXGuNu/t+fIBx0N0zULUWpjWI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=uC9nO7qwz/RZe+qVeAYA5qg8DRX2OHooEZGkUg+YOiFYZbymhIt5OYrroDkvwZHx+
-	 rloiSSzfzkpfR3JH7MYR+nwgB19ILcw3crrUVKTntXNt13ThipsAWyeevB2r2yv6e4
-	 5UcJx3pXdyw//cVj268GeKVZeeXlC8CscMEFYHrvrAsHMAGXLZQj4qiDjiJa6/msly
-	 chVJr5LgPieHOEt1Z6CDmFMIZNYKLXUkYS08rHdms6UNqleqnU+9MAV5ZdML0t7FUe
-	 4rh/5pt8ZbvdIsh9pgfWDTw1ynQIxfxgYcl1bu+Kl0Fem7Stn0h55Di594V579dsht
-	 8SgBQFV9z+Mbg==
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
- Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Jerome Brunet <jbrunet@baylibre.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20240429-n-asoc-const-snd-pcm-hardware-v1-0-c6ce60989834@linaro.org>
-References: <20240429-n-asoc-const-snd-pcm-hardware-v1-0-c6ce60989834@linaro.org>
-Subject: Re: [PATCH 0/4] ASoC: Constify static snd_pcm_hardware
-Message-Id: <171513593429.1997870.7721601606737894887.b4-ty@kernel.org>
-Date: Wed, 08 May 2024 11:38:54 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZ34l3TxFz30W9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 May 2024 15:05:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1715144741;
+	bh=qDxi+XXbzr8mIuwlB1aliy4UlEscitEJu0tfYntXSqk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=afORrE3T6fm9owzOay6Q4EjIov5tp69f4yV6zWLQdPsWDile3ZCCvtHhzO2PqLNhY
+	 m+q7v/FoA8SLQDfn596Zo1eZM+hR6/YdWkcLKevLwwEApws3ePuCppayzHHPscXyJF
+	 TvBQUdEABHJNrqArtC95+goi1c4tXk3VHRtSchfW2Fvwvkx7nbQaM69bjdX40GStHi
+	 sswR2je3OJ6aclZFJUTBI6AB57hHjLBZkIb72MLcLpFHfZFymMKkfdhI1OB7cMBOgs
+	 X2mfW+XeE/gaofip2NTMzaeOv5sbyT2gLUkqkWyl5VgYm4tFgR3AvFayfeeXD22ujL
+	 DGyduQoKPLUuQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VZ34h4KM9z4wc1;
+	Wed,  8 May 2024 15:05:40 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Puranjay Mohan <puranjay@kernel.org>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard
+ Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
+ <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, KP
+ Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo
+ <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf] powerpc/bpf: enforce full ordering for ATOMIC
+ operations with BPF_FETCH
+In-Reply-To: <20240507175439.119467-1-puranjay@kernel.org>
+References: <20240507175439.119467-1-puranjay@kernel.org>
+Date: Wed, 08 May 2024 15:05:40 +1000
+Message-ID: <87o79gopuj.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,53 +70,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, linux-amlogic@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: puranjay12@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 29 Apr 2024 13:48:45 +0200, Krzysztof Kozlowski wrote:
-> No dependencies.
-> 
-> Static 'struct snd_pcm_hardware' is not modified by few drivers and its
-> copy is passed to the core, so it can be made const for increased code
-> safety.
-> 
-> Best regards,
-> Krzysztof
-> 
-> [...]
+Puranjay Mohan <puranjay@kernel.org> writes:
+> The Linux Kernel Memory Model [1][2] requires RMW operations that have a
+> return value to be fully ordered.
+>
+> BPF atomic operations with BPF_FETCH (including BPF_XCHG and
+> BPF_CMPXCHG) return a value back so they need to be JITed to fully
+> ordered operations. POWERPC currently emits relaxed operations for
+> these.
 
-Applied to
+Thanks for catching this.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+> index 2f39c50ca729..b635e5344e8a 100644
+> --- a/arch/powerpc/net/bpf_jit_comp32.c
+> +++ b/arch/powerpc/net/bpf_jit_comp32.c
+> @@ -853,6 +853,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>  			/* Get offset into TMP_REG */
+>  			EMIT(PPC_RAW_LI(tmp_reg, off));
+>  			tmp_idx = ctx->idx * 4;
+> +			/*
+> +			 * Enforce full ordering for operations with BPF_FETCH by emitting a 'sync'
+> +			 * before and after the operation.
+> +			 *
+> +			 * This is a requirement in the Linux Kernel Memory Model.
+> +			 * See __cmpxchg_u64() in asm/cmpxchg.h as an example.
+> +			 */
+> +			if (imm & BPF_FETCH)
+> +				EMIT(PPC_RAW_SYNC());
+>  			/* load value from memory into r0 */
+>  			EMIT(PPC_RAW_LWARX(_R0, tmp_reg, dst_reg, 0));
+>  
+> @@ -905,6 +914,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>  
+>  			/* For the BPF_FETCH variant, get old data into src_reg */
+>  			if (imm & BPF_FETCH) {
+> +				/* Emit 'sync' to enforce full ordering */
+> +				EMIT(PPC_RAW_SYNC());
+>  				EMIT(PPC_RAW_MR(ret_reg, ax_reg));
+>  				if (!fp->aux->verifier_zext)
+>  					EMIT(PPC_RAW_LI(ret_reg - 1, 0)); /* higher 32-bit */
 
-Thanks!
+On 32-bit there are non-SMP systems where those syncs will probably be expensive.
 
-[1/4] ASoC: qcom: Constify static snd_pcm_hardware
-      commit: e6fa3509cb32df373b15212a99f69a6595efd1c3
-[2/4] ASoC: fsl: Constify static snd_pcm_hardware
-      commit: ed90156037659473ee95eafe3f72d8498e5384ff
-[3/4] ASoC: meson: Constify static snd_pcm_hardware
-      commit: 7b5ce9f0c52a5885d34d46bba62e9eaedc3dd459
-[4/4] ASoC: uniphier: Constify static snd_pcm_hardware
-      commit: 74a15fabd271d0fd82ceecbbfa1b98ea0a4709dd
+I think just adding an IS_ENABLED(CONFIG_SMP) around the syncs is
+probably sufficient. Christophe?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+cheers
