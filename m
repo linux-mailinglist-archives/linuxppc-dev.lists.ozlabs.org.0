@@ -1,81 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11788C0E55
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 12:45:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75828C0EBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 13:14:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PwJ8ir2u;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=perex.cz header.i=@perex.cz header.a=rsa-sha256 header.s=default header.b=v9Ofmdlm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZpYl3NcXz3cYw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 20:44:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZqD62m9Nz3cYH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 21:14:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=perex.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PwJ8ir2u;
+	dkim=pass (1024-bit key; secure) header.d=perex.cz header.i=@perex.cz header.a=rsa-sha256 header.s=default header.b=v9Ofmdlm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12f; helo=mail-il1-x12f.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perex.cz (client-ip=77.48.224.245; helo=mail1.perex.cz; envelope-from=perex@perex.cz; receiver=lists.ozlabs.org)
+Received: from mail1.perex.cz (mail1.perex.cz [77.48.224.245])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZpY02SXjz3cPh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 20:44:18 +1000 (AEST)
-Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-36c82ca80adso3016505ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 03:44:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715251455; x=1715856255; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aCRj3t+xdNp1rsUvPmVB9uy83J7LGPcYV6vSNcPVNyA=;
-        b=PwJ8ir2uaH5F7dlm3PTu5SH1gpUoTnFvM/Pvk2FvSeG+TY9JDCr04WZ31OZfeJvM0I
-         gh9+9fpni8MHwn56Y4xbsCbgnhNwNinFmKOnGA5llYjqWk2SJf0hbHXsrgsjnrq03BzH
-         PiCKMnq+gOIrrLFs2EzIjHwKtObfEdu7Vjg0bqjHUNHGdp6HnE5Q8AY6QPfd5e2urNBL
-         s/0lnmGjb7WwC8r1mb4YAlBTO31h/E+cAFd0T6xS7xtIAH0hCn/munqwaoZGVfGkChk4
-         IyVuoRNlJJCqiruOlKYtc1Zn/HRi0KeONwq6Y4F5aQjk9Iq1ZFkK0g/JDsEelhPoTrhq
-         f2Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715251455; x=1715856255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aCRj3t+xdNp1rsUvPmVB9uy83J7LGPcYV6vSNcPVNyA=;
-        b=leU+h15zkNL7PmEuTlsxJZEx2PBubfBBAp9IxLo5fhIkfAAKEujeUG8/sdngse7u/4
-         mI0zI8tNboxdPP5gPQIDHNT9NYUkCudtWKXmo8pl9KygEpfmNg7Tm9YgqewEzWFTu6vg
-         vqD3ibeU1299LUn38nAtlHcfPDGBptH/7NHxxPbyu495Aq3zNfgoNSq0auj1B5c+Udzw
-         0YHvNu60Hb5l0OqlmXJCnYiDIAjAiq2kDnvVowqOZzPUMFTvaryHM7DETqAmTHuljYun
-         CgD0gc97joCedmBsVfCs1O+Dx/DpeaJ+ypBr23o3gpSgYdnaKmjA94SJF9mxf9Pia9FX
-         XJQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHj8KiFJNvFTZ62GPG5nxvfBovNkZubXXhn+yRaR3Xw5ujzBZ7Z3khn93GglqXUc1hQPtSb5NUAxqt2ieAcwfBRcXPlF1Bm/LOIoXCFg==
-X-Gm-Message-State: AOJu0Yw+7RN60lkoSkLmcAoDuTketD81vdsmPn4RLudl2C6yRbY56NAc
-	R1kE7wIT2lX/YNCS4r2Q9EcZDCchXxcqS5QoOwvCUOhInaOHkYjhkXVMDMYzTippdkJpXpAxr5B
-	xnp7F+K6utknafLhP+rTNjZIgY+E=
-X-Google-Smtp-Source: AGHT+IEi/mVwQ3GL+NyJ0D7UrdEjzf34Nyjn6VriSq2HIBSrDOCD/y/fvG9wSq1Mnww5djhfR6VpTbDKb6eS+PLmC44=
-X-Received: by 2002:a05:6e02:1a08:b0:36c:a46:e018 with SMTP id
- e9e14a558f8ab-36caed5abd2mr53372115ab.24.1715251455116; Thu, 09 May 2024
- 03:44:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZqCL4bnlz3c4h
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 21:14:05 +1000 (AEST)
+Received: from mail1.perex.cz (localhost [127.0.0.1])
+	by smtp1.perex.cz (Perex's E-mail Delivery System) with ESMTP id 5F2AC3CE9;
+	Thu,  9 May 2024 13:13:57 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.perex.cz 5F2AC3CE9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perex.cz; s=default;
+	t=1715253237; bh=bRUFy+r/cxbqPhuoLOrnEcwvvLhG2K9hdF85gn+Fljk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=v9OfmdlmOTwxPHKNhAF+5d1mWXXdp9+i2GEPMEvaCVO/inhXtSFt4MZGkEsQROmsK
+	 PhAbaJHPu8YhoMAQeSLc+jfurxrP1hIv1x80L94TBXGYDKXzYn84ObiqDCuhFIjNNE
+	 nPw6FHuQmLWWq/DZadWZ5ndEJ3IEhLO8uDjVv5sU=
+Received: from [192.168.100.98] (unknown [192.168.100.98])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: perex)
+	by mail1.perex.cz (Perex's E-mail Delivery System) with ESMTPSA;
+	Thu,  9 May 2024 13:13:36 +0200 (CEST)
+Message-ID: <28d423b1-49d8-4180-8394-622b1afd9cd9@perex.cz>
+Date: Thu, 9 May 2024 13:13:34 +0200
 MIME-Version: 1.0
-References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
- <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310> <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk>
- <20240430172752.20ffcd56@sal.lan> <ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk>
- <87sez0k661.wl-tiwai@suse.de> <20240502095956.0a8c5b26@sal.lan>
- <20240502102643.4ee7f6c2@sal.lan> <ZjRCJ2ZcmKOIo7_p@finisterre.sirena.org.uk>
- <20240503094225.47fe4836@sal.lan> <CAA+D8APfM3ayXHAPadHLty52PYE9soQM6o780=mZs+R4px-AOQ@mail.gmail.com>
- <22d94c69-7e9f-4aba-ae71-50cc2e5dd8ab@xs4all.nl> <51408e79-646d-4d23-bc5b-cd173d363327@linux.intel.com>
- <CAA+D8AM7+SvXBi=LKRqvJkLsrYW=nkHTfFe957z2Qzm89bc48g@mail.gmail.com>
- <cd71e8e8-b4dc-40ed-935e-a84c222997e6@linux.intel.com> <CAA+D8AMpLB0N++_iLWLN_qettNz-gKGQz2c2yLsY8qSycibkYg@mail.gmail.com>
- <2f771fe9-7c09-4e74-9b04-de52581133fd@linux.intel.com>
-In-Reply-To: <2f771fe9-7c09-4e74-9b04-de52581133fd@linux.intel.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 9 May 2024 18:44:03 +0800
-Message-ID: <CAA+D8AMJKPVR99jzYCR5EsbMa8P95jQrDL=4ayYMuz+Cu1d2mQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
-To: =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+ =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
+ <amadeuszx.slawinski@linux.intel.com>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+ <20240430082112.jrovosb6lgblgpfg@basti-XPS-13-9310>
+ <ZjEEKyvb02CWz3l4@finisterre.sirena.org.uk> <20240430172752.20ffcd56@sal.lan>
+ <ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk> <87sez0k661.wl-tiwai@suse.de>
+ <20240502095956.0a8c5b26@sal.lan> <20240502102643.4ee7f6c2@sal.lan>
+ <ZjRCJ2ZcmKOIo7_p@finisterre.sirena.org.uk> <20240503094225.47fe4836@sal.lan>
+ <CAA+D8APfM3ayXHAPadHLty52PYE9soQM6o780=mZs+R4px-AOQ@mail.gmail.com>
+ <22d94c69-7e9f-4aba-ae71-50cc2e5dd8ab@xs4all.nl>
+ <51408e79-646d-4d23-bc5b-cd173d363327@linux.intel.com>
+ <CAA+D8AM7+SvXBi=LKRqvJkLsrYW=nkHTfFe957z2Qzm89bc48g@mail.gmail.com>
+ <cd71e8e8-b4dc-40ed-935e-a84c222997e6@linux.intel.com>
+ <CAA+D8AMpLB0N++_iLWLN_qettNz-gKGQz2c2yLsY8qSycibkYg@mail.gmail.com>
+ <2f771fe9-7c09-4e74-9b04-de52581133fd@linux.intel.com>
+ <CAA+D8AMJKPVR99jzYCR5EsbMa8P95jQrDL=4ayYMuz+Cu1d2mQ@mail.gmail.com>
+From: Jaroslav Kysela <perex@perex.cz>
+Autocrypt: addr=perex@perex.cz; keydata=
+ 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
+In-Reply-To: <CAA+D8AMJKPVR99jzYCR5EsbMa8P95jQrDL=4ayYMuz+Cu1d2mQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,177 +121,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, Mauro Carvalho Chehab <mchehab@kernel.org>, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, Mauro Carvalho Chehab <mchehab@kernel.org>, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 9, 2024 at 6:28=E2=80=AFPM Amadeusz S=C5=82awi=C5=84ski
-<amadeuszx.slawinski@linux.intel.com> wrote:
->
-> On 5/9/2024 12:12 PM, Shengjiu Wang wrote:
-> > On Thu, May 9, 2024 at 5:50=E2=80=AFPM Amadeusz S=C5=82awi=C5=84ski
-> > <amadeuszx.slawinski@linux.intel.com> wrote:
-> >>
-> >> On 5/9/2024 11:36 AM, Shengjiu Wang wrote:
-> >>> On Wed, May 8, 2024 at 4:14=E2=80=AFPM Amadeusz S=C5=82awi=C5=84ski
-> >>> <amadeuszx.slawinski@linux.intel.com> wrote:
-> >>>>
-> >>>> On 5/8/2024 10:00 AM, Hans Verkuil wrote:
-> >>>>> On 06/05/2024 10:49, Shengjiu Wang wrote:
-> >>>>>> On Fri, May 3, 2024 at 4:42=E2=80=AFPM Mauro Carvalho Chehab <mche=
-hab@kernel.org> wrote:
-> >>>>>>>
-> >>>>>>> Em Fri, 3 May 2024 10:47:19 +0900
-> >>>>>>> Mark Brown <broonie@kernel.org> escreveu:
-> >>>>>>>
-> >>>>>>>> On Thu, May 02, 2024 at 10:26:43AM +0100, Mauro Carvalho Chehab =
-wrote:
-> >>>>>>>>> Mauro Carvalho Chehab <mchehab@kernel.org> escreveu:
-> >>>>>>>>
-> >>>>>>>>>> There are still time control associated with it, as audio and =
-video
-> >>>>>>>>>> needs to be in sync. This is done by controlling the buffers s=
-ize
-> >>>>>>>>>> and could be fine-tuned by checking when the buffer transfer i=
-s done.
-> >>>>>>>>
-> >>>>>>>> ...
-> >>>>>>>>
-> >>>>>>>>> Just complementing: on media, we do this per video buffer (or
-> >>>>>>>>> per half video buffer). A typical use case on cameras is to hav=
-e
-> >>>>>>>>> buffers transferred 30 times per second, if the video was strea=
-med
-> >>>>>>>>> at 30 frames per second.
-> >>>>>>>>
-> >>>>>>>> IIRC some big use case for this hardware was transcoding so ther=
-e was a
-> >>>>>>>> desire to just go at whatever rate the hardware could support as=
- there
-> >>>>>>>> is no interactive user consuming the output as it is generated.
-> >>>>>>>
-> >>>>>>> Indeed, codecs could be used to just do transcoding, but I would
-> >>>>>>> expect it to be a border use case. See, as the chipsets implement=
-ing
-> >>>>>>> codecs are typically the ones used on mobiles, I would expect tha=
-t
-> >>>>>>> the major use cases to be to watch audio and video and to partici=
-pate
-> >>>>>>> on audio/video conferences.
-> >>>>>>>
-> >>>>>>> Going further, the codec API may end supporting not only transcod=
-ing
-> >>>>>>> (which is something that CPU can usually handle without too much
-> >>>>>>> processing) but also audio processing that may require more
-> >>>>>>> complex algorithms - even deep learning ones - like background no=
-ise
-> >>>>>>> removal, echo detection/removal, volume auto-gain, audio enhancem=
-ent
-> >>>>>>> and such.
-> >>>>>>>
-> >>>>>>> On other words, the typical use cases will either have input
-> >>>>>>> or output being a physical hardware (microphone or speaker).
-> >>>>>>>
-> >>>>>>
-> >>>>>> All, thanks for spending time to discuss, it seems we go back to
-> >>>>>> the start point of this topic again.
-> >>>>>>
-> >>>>>> Our main request is that there is a hardware sample rate converter
-> >>>>>> on the chip, so users can use it in user space as a component like
-> >>>>>> software sample rate converter. It mostly may run as a gstreamer p=
-lugin.
-> >>>>>> so it is a memory to memory component.
-> >>>>>>
-> >>>>>> I didn't find such API in ALSA for such purpose, the best option f=
-or this
-> >>>>>> in the kernel is the V4L2 memory to memory framework I found.
-> >>>>>> As Hans said it is well designed for memory to memory.
-> >>>>>>
-> >>>>>> And I think audio is one of 'media'.  As I can see that part of Ra=
-dio
-> >>>>>> function is in ALSA, part of Radio function is in V4L2. part of HD=
-MI
-> >>>>>> function is in DRM, part of HDMI function is in ALSA...
-> >>>>>> So using V4L2 for audio is not new from this point of view.
-> >>>>>>
-> >>>>>> Even now I still think V4L2 is the best option, but it looks like =
-there
-> >>>>>> are a lot of rejects.  If develop a new ALSA-mem2mem, it is also
-> >>>>>> a duplication of code (bigger duplication that just add audio supp=
-ort
-> >>>>>> in V4L2 I think).
-> >>>>>
-> >>>>> After reading this thread I still believe that the mem2mem framewor=
-k is
-> >>>>> a reasonable option, unless someone can come up with a method that =
-is
-> >>>>> easy to implement in the alsa subsystem. From what I can tell from =
-this
-> >>>>> discussion no such method exists.
-> >>>>>
-> >>>>
-> >>>> Hi,
-> >>>>
-> >>>> my main question would be how is mem2mem use case different from
-> >>>> loopback exposing playback and capture frontends in user space with =
-DSP
-> >>>> (or other piece of HW) in the middle?
-> >>>>
-> >>> I think loopback has a timing control,  user need to feed data to pla=
-yback at a
-> >>> fixed time and get data from capture at a fixed time.  Otherwise ther=
-e
-> >>> is xrun in
-> >>> playback and capture.
-> >>>
-> >>> mem2mem case: there is no such timing control,  user feeds data to it
-> >>> then it generates output,  if user doesn't feed data, there is no xru=
-n.
-> >>> but mem2mem is just one of the components in the playback or capture
-> >>> pipeline, overall there is time control for whole pipeline,
-> >>>
-> >>
-> >> Have you looked at compress streams? If I remember correctly they are
-> >> not tied to time due to the fact that they can pass data in arbitrary
-> >> formats?
-> >>
-> >> From:
-> >> https://docs.kernel.org/sound/designs/compress-offload.html
-> >>
-> >> "No notion of underrun/overrun. Since the bytes written are compressed
-> >> in nature and data written/read doesn=E2=80=99t translate directly to =
-rendered
-> >> output in time, this does not deal with underrun/overrun and maybe dea=
-lt
-> >> in user-library"
-> >
-> > I checked the compress stream. mem2mem case is different with
-> > compress-offload case
-> >
-> > compress-offload case is a full pipeline,  the user sends a compress
-> > stream to it, then DSP decodes it and renders it to the speaker in real
-> > time.
-> >
-> > mem2mem is just like the decoder in the compress pipeline. which is
-> > one of the components in the pipeline.
->
-> I was thinking of loopback with endpoints using compress streams,
-> without physical endpoint, something like:
->
-> compress playback (to feed data from userspace) -> DSP (processing) ->
-> compress capture (send data back to userspace)
->
-> Unless I'm missing something, you should be able to process data as fast
-> as you can feed it and consume it in such case.
->
+On 09. 05. 24 12:44, Shengjiu Wang wrote:
+>>> mem2mem is just like the decoder in the compress pipeline. which is
+>>> one of the components in the pipeline.
+>>
+>> I was thinking of loopback with endpoints using compress streams,
+>> without physical endpoint, something like:
+>>
+>> compress playback (to feed data from userspace) -> DSP (processing) ->
+>> compress capture (send data back to userspace)
+>>
+>> Unless I'm missing something, you should be able to process data as fast
+>> as you can feed it and consume it in such case.
+>>
+> 
+> Actually in the beginning I tried this,  but it did not work well.
+> ALSA needs time control for playback and capture, playback and capture
+> needs to synchronize.  Usually the playback and capture pipeline is
+> independent in ALSA design,  but in this case, the playback and capture
+> should synchronize, they are not independent.
 
-Actually in the beginning I tried this,  but it did not work well.
-ALSA needs time control for playback and capture, playback and capture
-needs to synchronize.  Usually the playback and capture pipeline is
-independent in ALSA design,  but in this case, the playback and capture
-should synchronize, they are not independent.
+The core compress API core no strict timing constraints. You can eventually0 
+have two half-duplex compress devices, if you like to have really independent 
+mechanism. If something is missing in API, you can extend this API (like to 
+inform the user space that it's a producer/consumer processing without any 
+relation to the real time). I like this idea.
 
-Best regards
-Shengjiu Wang
+					Jaroslav
 
-> Amadeusz
+-- 
+Jaroslav Kysela <perex@perex.cz>
+Linux Sound Maintainer; ALSA Project; Red Hat, Inc.
+
