@@ -1,98 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716688C1408
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 19:27:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F3C8C17B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 22:39:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SkeswZQR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=n1/ZEkf3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZzVT0dt1z3cYn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 03:27:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vb3mB0Mjtz3cYx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 06:39:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SkeswZQR;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=n1/ZEkf3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--axelrasmussen.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3bzq9zg0kdayg3krxgys0yyktmuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--axelrasmussen.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZzTh73Gdz2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 03:27:04 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 449H9XwG012277;
-	Thu, 9 May 2024 17:26:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=yyJzE/Q3LJuO/4bjbUhk+9UHoyffAi+6A9klRNNhLRs=;
- b=SkeswZQRIIhnTp3GI3LuNxwD8C19bRMfXIjNAjwa6lVvgJKRkVVA/1xXQLEZ5WKt/u6Q
- vdl+VM67DP5IFERDnZfq6GiRd1rTv/eCio916PfOGOACGVj1xJEd3WdkBEZlOu75pDj4
- 46OsusweuIESMKTd85B+/G0GU4EOfgVJ+B9TFB0ullTFCMOMmipDIJCMa3nQtCJ9V6QQ
- OUhBY83ZOZHa6NjJQTwRCmU4rj4RDBRsUUejh+KJi0bXK7Bc3jJQKJ4ejwFN27rxx9v2
- oDbuiEemAUADAGUOlGLHpYiSlEr0u9MgCVqBpgD5JqZcm0lf0/SF2r4MjMFGUGWahD0f RQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y12mpr1em-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 17:26:45 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 449HMJtg001782;
-	Thu, 9 May 2024 17:26:45 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y12mpr1eg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 17:26:45 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 449F3aV2003958;
-	Thu, 9 May 2024 17:26:44 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xysgsm535-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 17:26:44 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 449HQc7U55378230
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 May 2024 17:26:40 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7051120040;
-	Thu,  9 May 2024 17:26:38 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BAF220043;
-	Thu,  9 May 2024 17:26:35 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.68.71])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  9 May 2024 17:26:35 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH V2 4/9] tools/perf: Add support to capture and parse raw
- instruction in objdump
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <f2efdb9d-e636-4678-b492-83d3a28d8134@csgroup.eu>
-Date: Thu, 9 May 2024 22:56:23 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E21FF3FD-1080-4A6C-99B0-7239AD831532@linux.vnet.ibm.com>
-References: <20240506121906.76639-1-atrajeev@linux.vnet.ibm.com>
- <20240506121906.76639-5-atrajeev@linux.vnet.ibm.com>
- <f2efdb9d-e636-4678-b492-83d3a28d8134@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HG8XNE2xV33rwiOuOQexiRxqJmXi4bON
-X-Proofpoint-ORIG-GUID: LPnKlB7fLfjzmjaFsMWTfxcmHXugoV7K
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-09_09,2024-05-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 adultscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 phishscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405090120
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vb3lT1xPYz3cCb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 06:39:15 +1000 (AEST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-61be452c62bso18760797b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 13:39:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715287152; x=1715891952; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8H0foUzLc+DNKUibRdC2bbcsFy9WZnKfOBJjcXN9vjM=;
+        b=n1/ZEkf3RHii+FGrmzo7cA44tjpkGsVf68JbSmeYcIWbuqhT5OYkoNat8CqbMdcegI
+         P0Oa5h4JHBk9/lrpi5ZMvCrB40B0q9K3jSXm160SKVBH+9JqX5en8mdzmJziOZLkok2p
+         n12/YpHslG1A8fn/wfAW+WqPgiasSxSHPrYL0MFK5DnY6tdlRrNuEa/eNtqfhJkE2msL
+         An3EOtYr7Z4eUixkhsZh250LDlFeut7c4mb/TmITTK+7NOaVoMhuiggyilQqrKYp/Nl8
+         oCAhkIQYNlHqX1tkuZMR2sD0wS8POT3R3hGb9lAl9gxJL6BFV39/RGxL9Wmtr3Xfloto
+         XbKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715287152; x=1715891952;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8H0foUzLc+DNKUibRdC2bbcsFy9WZnKfOBJjcXN9vjM=;
+        b=sMJFhCX2StpK/GX75Q9ofFZtdMX2aYE4GnaMrmDmcMSqgIS2luQpbij0DSFMD6QUVF
+         5lyGjlZEwqLDA5T9CaLSxSWYx/k1SlgDiJJRLLNkU7NaA19CtLKdVl+aqzwW+uBaVEp6
+         Kyg6QJ0VD21pIIAbxgkknPhISk4Rf2DyFzBcdN/I3GDvkAdlfNAzH+7zz1Y8QZWBczcx
+         2HiWmLc4BmwQKq/EGaJzSlobhfhGb+AOJbtO0dWYOKpyhaBQNsfsUZyd6Je1qsabCfiA
+         jeI3KHCQXkC1LdTIdVhCRUU2/uDbMymdzfmb5KJL7rQBBkR18XpyxHC3yLe1Tjfwrk7F
+         3oEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWoxyfj+ZZzDgkCRzmghVzuNPsCHIccBFAQbFfbMIGyldk8Vm/XsaBlPzP0mpSlY7K0hZLgCLZ1oCjjRZxRFMod6ek0jwQ7MlsItpAJ6Q==
+X-Gm-Message-State: AOJu0YzYV4wUOD/fwfTy3/sRGMVUqQrXFKsiP/sbmGZv7Nn3Nlik1/Op
+	zfGjy/1IaWaKQz4+DaQcrxUICJUpwYATTGoesb+obxZqzu3jGEAeHLzG8DUV4NfJXfzCiE0cJ7/
+	XKV3zF9clR5VqwdtmJSeQJwMBGuwnJA==
+X-Google-Smtp-Source: AGHT+IHw+Ly/UkJisBJVqZ94ZjHYJRR327iKkqlhJCNLn3MTfbX2oJhIScyImN5vnpoTsLVJRylwSVasWSMq7OxW06/3
+X-Received: from axel.svl.corp.google.com ([2620:15c:2a3:200:22b1:9c9e:3544:83b8])
+ (user=axelrasmussen job=sendgmr) by 2002:a25:1982:0:b0:dcd:2f3e:4d18 with
+ SMTP id 3f1490d57ef6-dee4f364f84mr62533276.12.1715287151918; Thu, 09 May 2024
+ 13:39:11 -0700 (PDT)
+Date: Thu,  9 May 2024 13:39:06 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.0.118.g7fe29c98d7-goog
+Message-ID: <20240509203907.504891-1-axelrasmussen@google.com>
+Subject: [PATCH 0/1] arch/fault: don't print logs for simulated poison errors
+From: Axel Rasmussen <axelrasmussen@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, 
+	Ingo Molnar <mingo@redhat.com>, 
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Liu Shixin <liushixin2@huawei.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,128 +86,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "adrian.hunter@intel.com" <adrian.hunter@intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "akanksha@linux.ibm.com" <akanksha@linux.ibm.com>, "disgoel@linux.vnet.ibm.com" <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-parisc@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Axel Rasmussen <axelrasmussen@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This patch expects to be applied on top of both of the following related
+fixes:
 
+- x86/fault: speed up uffd-unit-test by 10x: rate-limit "MCE: Killing" logs
+  https://lore.kernel.org/r/20240507022939.236896-1-jhubbard@nvidia.com
+- [0/2] Minor fixups for hugetlb fault path
+  https://lore.kernel.org/r/20240509100148.22384-1-osalvador@suse.de
 
-> On 7 May 2024, at 3:05=E2=80=AFPM, Christophe Leroy =
-<christophe.leroy@csgroup.eu> wrote:
->=20
->=20
->=20
-> Le 06/05/2024 =C3=A0 14:19, Athira Rajeev a =C3=A9crit :
->> Add support to capture and parse raw instruction in objdump.
->=20
-> What's the purpose of using 'objdump' for reading raw instructions ?=20=
+The latter is in mm-unstable currently, but the former is not (yet?). It
+would need to be taken before this patch for it to apply cleanly.
 
-> Can't they be read directly without invoking 'objdump' ? It looks odd =
-to=20
-> me to use objdump to provide readable text and then parse it back.
+Axel Rasmussen (1):
+  arch/fault: don't print logs for simulated poison errors
 
-Hi Christophe,
+ arch/parisc/mm/fault.c   | 7 +++++--
+ arch/powerpc/mm/fault.c  | 6 ++++--
+ arch/x86/mm/fault.c      | 6 ++++--
+ include/linux/mm_types.h | 5 +++++
+ mm/hugetlb.c             | 3 ++-
+ mm/memory.c              | 2 +-
+ 6 files changed, 21 insertions(+), 8 deletions(-)
 
-Thanks for your review comments.
-
-Current implementation for data type profiling on X86 uses "objdump" =
-tool to get the disassembled code.
-And then the objdump result lines are parsed to get the instruction name =
-and register fields. The initial patchset I posted to enable the data =
-type profiling feature in powerpc was using the same way by getting =
-disassembled code from objdump and parsing the disassembled lines. But =
-in V2, we are introducing change for powerpc to use "raw instruction" =
-and fetch opcode, reg fields from the raw instruction.
-
-I tried to explain below that current objdump uses option =
-"--no-show-raw-insn" which doesn't capture raw instruction.  So to =
-capture raw instruction, V2 patchset has changes to use default option =
-"--show-raw-insn" and get the raw instruction [ for powerpc ] along with =
-human readable annotation [ which is used by other archs ]. Since perf =
-tool already has objdump implementation in place, I went in the =
-direction to enhance it to use "--show-raw-insn" for powerpc purpose.
-
-But as you mentioned, we can directly read raw instruction without using =
-"objdump" tool.
-perf has support to read object code. The dso open/read utilities and =
-helper functions are already present in "util/dso.c" And =
-"dso__data_read_offset" function reads data from dso file offset. We can =
-use these functions and I can make changes to directly read binary =
-instruction without using objdump.
-
-Namhyung, Arnaldo, Christophe
-Looking for your valuable feedback on this approach. Please suggest if =
-this approach looks fine
-
-
-Thanks
-Athira
->=20
->> Currently, the perf tool infrastructure uses "--no-show-raw-insn" =
-option
->> with "objdump" while disassemble. Example from powerpc with this =
-option
->> for an instruction address is:
->=20
-> Yes and that makes sense because the purpose of objdump is to provide=20=
-
-> human readable annotations, not to perform automated analysis. Am I=20
-> missing something ?
->=20
->>=20
->> Snippet from:
->> objdump  --start-address=3D<address> --stop-address=3D<address>  -d =
---no-show-raw-insn -C <vmlinux>
->>=20
->> c0000000010224b4: lwz     r10,0(r9)
->>=20
->> This line "lwz r10,0(r9)" is parsed to extract instruction name,
->> registers names and offset. Also to find whether there is a memory
->> reference in the operands, "memory_ref_char" field of objdump is =
-used.
->> For x86, "(" is used as memory_ref_char to tackle instructions of the
->> form "mov  (%rax), %rcx".
->>=20
->> In case of powerpc, not all instructions using "(" are the only =
-memory
->> instructions. Example, above instruction can also be of extended form =
-(X
->> form) "lwzx r10,0,r19". Inorder to easy identify the instruction =
-category
->> and extract the source/target registers, patch adds support to use =
-raw
->> instruction. With raw instruction, macros are added to extract opcode
->> and register fields.
->>=20
->> "struct ins_operands" and "struct ins" is updated to carry opcode and
->> raw instruction binary code (raw_insn). Function "disasm_line__parse"
->> is updated to fill the raw instruction hex value and opcode in newly
->> added fields. There is no changes in existing code paths, which =
-parses
->> the disassembled code. The architecture using the instruction name =
-and
->> present approach is not altered. Since this approach targets powerpc,
->> the macro implementation is added for powerpc as of now.
->>=20
->> Example:
->> representation using --show-raw-insn in objdump gives result:
->>=20
->> 38 01 81 e8     ld      r4,312(r1)
->>=20
->> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
->> this translates to instruction form: "ld RT,DS(RA)" and binary code
->> as:
->> _____________________________________
->> | 58 |  RT  |  RA |      DS       | |
->> -------------------------------------
->> 0    6     11    16              30 31
->>=20
->> Function "disasm_line__parse" is updated to capture:
->>=20
->> line:    38 01 81 e8     ld      r4,312(r1)
->> opcode and raw instruction "38 01 81 e8"
->> Raw instruction is used later to extract the reg/offset fields.
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
+--
+2.45.0.118.g7fe29c98d7-goog
 
