@@ -1,86 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAFE8C0BEA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 09:16:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836F78C0C34
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 10:00:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ScH8Q3Ea;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ug9yakA9;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N/HzUbKH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZjwj52Sqz3cXr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 17:16:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZkvd0fjrz3cQq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 18:00:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ScH8Q3Ea;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ug9yakA9;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N/HzUbKH;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZjvy0bX4z3c5Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 17:15:26 +1000 (AEST)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VZjvn5qq4z4x2g
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 17:15:17 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4VZjvn5mTNz4wx6; Thu,  9 May 2024 17:15:17 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ScH8Q3Ea;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at gandalf; Thu, 09 May 2024 17:15:16 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4VZjvm3TCwz4x2g
-	for <linuxppc-dev@ozlabs.org>; Thu,  9 May 2024 17:15:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715238917; x=1746774917;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fIDvl+sN2aD/k5lPlxU58CPXl0CE8yLdhypmWSqkLQI=;
-  b=ScH8Q3Ea+6Aep1NXdHZv4pGiG4af9HS6+bOk4tp6JNbTsaRpUqTy0fIS
-   lcnjgzUhZgqysgpOe14tRq0Mg4u92dVe6uv1mJScSIBppnBwm1yOv5cbO
-   aYbZDR78FQsND4B/Sl7GhmbNesIdK9Mp+gQoGAA0F2bazPqpE8/2IfHxI
-   gGaOuPqlBA2cDoLO5H2mdG514hJPBjQiHb+lcYkpp4IHpDdd81lZwRu8k
-   nhTHo5igSyFAfUXaNWukI2KYkh3jWrAYmbZjeMsTDPwujPNorPd8+gnC0
-   hvsMdeP6dWpmekZxQgv3pxEibh9F+H4ly5iXxyknWsYmIqDg/nOOhEJkb
-   A==;
-X-CSE-ConnectionGUID: a+YZu1E9SD2Wf1TAABuhLw==
-X-CSE-MsgGUID: 0tOecs1JR/icyBgLHzlrTQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="11265844"
-X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; 
-   d="scan'208";a="11265844"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2024 00:14:07 -0700
-X-CSE-ConnectionGUID: /L6/aDr2SAKXZ0DLufGoCA==
-X-CSE-MsgGUID: ex4eExK+TGmS5tVM/uDMQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,147,1712646000"; 
-   d="scan'208";a="33712600"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 09 May 2024 00:14:04 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4xyc-0004Y4-06;
-	Thu, 09 May 2024 07:14:02 +0000
-Date: Thu, 9 May 2024 15:13:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 1/2] powerpc/kexec_file: fix extra size calculation for
- kexec FDT
-Message-ID: <202405091511.8Sd2zYrn-lkp@intel.com>
-References: <20240508130558.1939304-2-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZktw1ZhLz30VY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 17:59:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1715241569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yjn42W/o/LOj/jSJgIWj/Vg3N4yLF7R5ejTMZiQDXvM=;
+	b=Ug9yakA99tM6TscDHY6KklxHdNYcGoS/n134dxw1o4+/R31QIFjp3nIBAjhBEVAKXjctWR
+	mdKP/0G/r6rDhUrMDsN7Md/fJcHuHVFo5oBFxs3u4a6zKMiCoS1htVmhq9f4IZ1emhfh3v
+	VewaCPuqhpKt+Mpswq632taG6c+wjNc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1715241570;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yjn42W/o/LOj/jSJgIWj/Vg3N4yLF7R5ejTMZiQDXvM=;
+	b=N/HzUbKHa8P+14B3OF/3l96PG/HWioo2PJYtE1OEJaQBMp+znIkQ5wiVJSxgcoVmEmBAum
+	vM0/5NqAXmf+3fOnBfuww6tGSan4gCLsVtFeypfOF2jvzipQd/RE9rGjeA19XU6P/z9/ZD
+	AEbg/yWLSAwhdtOEkXLEZwhZJubonyQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-57n_jKjSNbSm7X55zsSGBA-1; Thu, 09 May 2024 03:59:27 -0400
+X-MC-Unique: 57n_jKjSNbSm7X55zsSGBA-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-34da4d75ceeso67034f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 00:59:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715241566; x=1715846366;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yjn42W/o/LOj/jSJgIWj/Vg3N4yLF7R5ejTMZiQDXvM=;
+        b=h21/V9aJ4MfNWhFDTlNbLCCagLEXnfVcEBHabxp9cGKmg7gUNs0YmquEh8g3hsdKBc
+         KN1rGDWqftpvdLt1smF0Z+k9cy5INghtd/HpFhBiY89J66nyr0kIh0qDlP28Doc46ht/
+         y6YBygp0l7M+WJHPYPOXyV5b9v7tdhYZhgbGGoLCS3/6g3y9CfoSCqDDdWIXwJH8LtFm
+         5VWZWUPzowX0x/oxykhNx0mYfUCIUlP446kY0Wa7BKYahZ+slmoYA0Q69VfzKxW67gGQ
+         TZSnOS/ydtQNpqaie9RgVt2oKWG4lD3fRPV15QQO9hpFzNb6iwV6HIwBrRw+JRU+N8DV
+         S0/w==
+X-Forwarded-Encrypted: i=1; AJvYcCV8pACOsRp4U/DNy6XWLT2fyrgXrvPOavjShu+8jq2tTqEiLdjUZPKrcbzuJHoQe/PNtp1v254qSwiPu8WEnMCVLso49jKKDN3WfXDtmw==
+X-Gm-Message-State: AOJu0Yzb6afL6VHE9iKxRSL9b8gRw1Y6onLwEo0Q4nzJcFLsZy+WYFKL
+	rK5ySx0oQP3VZA+qNmUSqSggUsY7X0yphMLTxr7l510bo9sM+Hjuwcs+W7dUOzMbuklFXfTit4A
+	bPNyt6N7HoSHotbpTrx88MbxmWNiuowb9iSMLWnK859c/R1V+e76jdvjEozOTnBI=
+X-Received: by 2002:a05:600c:b44:b0:41f:cfe6:3648 with SMTP id 5b1f17b1804b1-41fcfe63810mr6921455e9.1.1715241566715;
+        Thu, 09 May 2024 00:59:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwrk8LgSZgMX3L0wE/e/4bo7w9alQYn6RfI6mS+/NPJ8rwhS/tbGTF5kFnddiBXFQPikowKA==
+X-Received: by 2002:a05:600c:b44:b0:41f:cfe6:3648 with SMTP id 5b1f17b1804b1-41fcfe63810mr6921195e9.1.1715241566345;
+        Thu, 09 May 2024 00:59:26 -0700 (PDT)
+Received: from gerbillo.redhat.com ([2a0d:3344:1b68:1b10:ff61:41fd:2ae4:da3a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41fccbe8fb5sm15844475e9.9.2024.05.09.00.59.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 May 2024 00:59:25 -0700 (PDT)
+Message-ID: <e9633d41d0d004db3ec6e2b6d9dcb95d029dbb94.camel@redhat.com>
+Subject: Re: [PATCH 1/1] [RFC] ethernet: Convert from tasklet to BH workqueue
+From: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>, Allen <allen.lkml@gmail.com>
+Date: Thu, 09 May 2024 09:59:22 +0200
+In-Reply-To: <20240508201654.GA2248333@kernel.org>
+References: <20240507190111.16710-1-apais@linux.microsoft.com>
+	 <20240507190111.16710-2-apais@linux.microsoft.com>
+	 <Zjp/kgBE2ddjV044@shell.armlinux.org.uk>
+	 <CAOMdWSKfkT4K9MAOn-rL44pycHPhVDj4CtiYkru5y_s0S-sPeQ@mail.gmail.com>
+	 <20240508201654.GA2248333@kernel.org>
+Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240508130558.1939304-2-sourabhjain@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,112 +109,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, oe-kbuild-all@lists.linux.dev, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Aditya Gupta <adityag@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: marcin.s.wojtas@gmail.com, kda@linux-powerpc.org, edumazet@google.com, linux-acenic@sunsite.dk, louis.peens@corigine.com, borisp@nvidia.com, cooldavid@cooldavid.org, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, aneesh.kumar@kernel.org, tlfalcon@linux.ibm.com, naveen.n.rao@linux.ibm.com, kuba@kernel.org, angelogioacchino.delregno@collabora.com, lorenzo@kernel.org, Mark-MC.Lee@mediatek.com, jes@trained-monkey.org, nnac123@linux.ibm.com, richardcochran@gmail.com, sean.wang@mediatek.com, npiggin@gmail.com, linux-net-drivers@amd.com, cai.huoqing@linux.dev, matthias.bgg@gmail.com, Allen Pais <apais@linux.microsoft.com>, linux-arm-kernel@lists.infradead.org, mlindner@marvell.com, netdev@vger.kernel.org, oss-drivers@corigine.com, dougmill@linux.ibm.com, linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com, stephen@networkplumber.org, linux-rdma@vger.kernel.org, bryan.whitehead@microchip.com, linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.ne
+ t, nbd@nbd.name
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sourabh,
+On Wed, 2024-05-08 at 21:16 +0100, Simon Horman wrote:
+> * As this patch seems to involve many non-trivial changes
+>   it seems to me that it would be best to break it up somehow.
+>   To allow proper review.
 
-kernel test robot noticed the following build warnings:
+I would like to stress this latest point: it looks like the changes to
+all the drivers are completely independent. If so, you have to break
+the series on a per driver basis. Since the total number of patch will
+be higher then 15 (maximum size allowed on netdev) you will have to
+split this in several smaller series.
 
-[auto build test WARNING on next-20240508]
-[cannot apply to powerpc/next powerpc/fixes linus/master v6.9-rc7 v6.9-rc6 v6.9-rc5 v6.9-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Beyond making the change reviewable, it will allow eventually reverting
+the changes individually, should that cause any regressions.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sourabh-Jain/powerpc-kexec_file-fix-extra-size-calculation-for-kexec-FDT/20240508-211003
-base:   next-20240508
-patch link:    https://lore.kernel.org/r/20240508130558.1939304-2-sourabhjain%40linux.ibm.com
-patch subject: [PATCH 1/2] powerpc/kexec_file: fix extra size calculation for kexec FDT
-config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20240509/202405091511.8Sd2zYrn-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 0ab4458df0688955620b72cc2c72a32dffad3615)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240509/202405091511.8Sd2zYrn-lkp@intel.com/reproduce)
+Thanks,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405091511.8Sd2zYrn-lkp@intel.com/
+Paolo
 
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/powerpc/kexec/file_load_64.c:17:
-   In file included from include/linux/kexec.h:18:
-   In file included from include/linux/vmcore_info.h:6:
-   In file included from include/linux/elfcore.h:11:
-   In file included from include/linux/ptrace.h:10:
-   In file included from include/linux/pid_namespace.h:7:
-   In file included from include/linux/mm.h:2253:
-   include/linux/vmstat.h:500:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     500 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     501 |                            item];
-         |                            ~~~~
-   include/linux/vmstat.h:507:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     507 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     508 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:519:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     519 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     520 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:528:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     528 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     529 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
->> arch/powerpc/kexec/file_load_64.c:863:3: warning: variable 'cpu_nodes' is uninitialized when used here [-Wuninitialized]
-     863 |                 cpu_nodes++;
-         |                 ^~~~~~~~~
-   arch/powerpc/kexec/file_load_64.c:854:24: note: initialize the variable 'cpu_nodes' to silence this warning
-     854 |         unsigned int cpu_nodes, extra_size = 0;
-         |                               ^
-         |                                = 0
-   6 warnings generated.
-
-
-vim +/cpu_nodes +863 arch/powerpc/kexec/file_load_64.c
-
-   843	
-   844	/**
-   845	 * kexec_extra_fdt_size_ppc64 - Return the estimated additional size needed to
-   846	 *                              setup FDT for kexec/kdump kernel.
-   847	 * @image:                      kexec image being loaded.
-   848	 *
-   849	 * Returns the estimated extra size needed for kexec/kdump kernel FDT.
-   850	 */
-   851	unsigned int kexec_extra_fdt_size_ppc64(struct kimage *image, struct crash_mem *rmem)
-   852	{
-   853		struct device_node *dn;
-   854		unsigned int cpu_nodes, extra_size = 0;
-   855	
-   856		// Budget some space for the password blob. There's already extra space
-   857		// for the key name
-   858		if (plpks_is_available())
-   859			extra_size += (unsigned int)plpks_get_passwordlen();
-   860	
-   861		/* Get the number of CPU nodes in the current device tree */
-   862		for_each_node_by_type(dn, "cpu") {
- > 863			cpu_nodes++;
-   864		}
-   865	
-   866		/* Consider extra space for CPU nodes added since the boot time */
-   867		if (cpu_nodes > boot_cpu_node_count)
-   868			extra_size += (cpu_nodes - boot_cpu_node_count) * cpu_node_size();
-   869	
-   870		/* Consider extra space for reserved memory ranges if any */
-   871		if (rmem->nr_ranges > 0)
-   872			extra_size += sizeof(struct fdt_reserve_entry) * rmem->nr_ranges;
-   873	
-   874		return extra_size + kdump_extra_fdt_size_ppc64(image, cpu_nodes);
-   875	}
-   876	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
