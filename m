@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A587D8C0A1A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 05:19:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698828C0A11
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 05:19:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VZch32C7Xz3dW3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 13:19:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VZcgD0RdJz3cbX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 13:19:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
@@ -14,17 +14,17 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZcfq6nmQz3c5Y
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VZcfq3FQTz3c4P
 	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 May 2024 13:18:42 +1000 (AEST)
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 505D9200AAA;
-	Thu,  9 May 2024 05:18:38 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B70072008F0;
+	Thu,  9 May 2024 05:18:39 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 03CDD2007D5;
-	Thu,  9 May 2024 05:18:38 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6CE432007D5;
+	Thu,  9 May 2024 05:18:39 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id CEF81180222F;
-	Thu,  9 May 2024 11:18:35 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 4AFF5181D0FC;
+	Thu,  9 May 2024 11:18:37 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org,
@@ -42,10 +42,12 @@ To: lgirdwood@gmail.com,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/4] ASoC: fsl_xcvr: Support i.MX95 platform
-Date: Thu,  9 May 2024 10:57:36 +0800
-Message-Id: <1715223460-32662-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH 1/4] ASoC: dt-bindings: fsl,xcvr: Add compatible string for i.MX95
+Date: Thu,  9 May 2024 10:57:37 +0800
+Message-Id: <1715223460-32662-2-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1715223460-32662-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1715223460-32662-1-git-send-email-shengjiu.wang@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,21 +63,25 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On i.MX95 wakeup domain, there is one instance of Audio XCVR
-supporting SPDIF mode with a connection to the Audio XCVR physical
-interface.
+Add compatible string "fsl,imx95-xcvr" for i.MX95 platform.
 
-Shengjiu Wang (4):
-  ASoC: dt-bindings: fsl,xcvr: Add compatible string for i.MX95
-  ASoC: dt-bindings: fsl,xcvr: Add two PLL clock sources
-  ASoC: fsl_xcvr: Support reparent pll clocks for phy_clk
-  ASoC: fsl_xcvr: Add support for i.MX95 platform
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ Documentation/devicetree/bindings/sound/fsl,xcvr.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- .../devicetree/bindings/sound/fsl,xcvr.yaml   |   7 +
- sound/soc/fsl/fsl_xcvr.c                      | 128 ++++++++++++------
- sound/soc/fsl/fsl_xcvr.h                      |  91 +++++++++++++
- 3 files changed, 183 insertions(+), 43 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+index 0eb0c1ba8710..1c74a32def09 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+@@ -22,6 +22,7 @@ properties:
+     enum:
+       - fsl,imx8mp-xcvr
+       - fsl,imx93-xcvr
++      - fsl,imx95-xcvr
+ 
+   reg:
+     items:
 -- 
 2.34.1
 
