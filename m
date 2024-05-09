@@ -2,81 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EA08C17B6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 22:40:37 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=mHUVYhRy;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id CD74A8C17FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 May 2024 22:55:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vb3my5B5vz3ckl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 06:40:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vb46W31GSz3cXx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 06:55:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=mHUVYhRy;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--axelrasmussen.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3ctq9zg0kdagi5mtzi0u200mvowwotm.kwutqv25xxk-lm3tq010.w7tij0.wzo@flex--axelrasmussen.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.215.175; helo=mail-pg1-f175.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vb3lT294Rz3cLk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 06:39:16 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-ddaf2f115f2so1954779276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 13:39:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715287154; x=1715891954; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=72EB+jPmMFAxQhDugLcn3MtcnlhS5/KVvKJQ1v/oDoM=;
-        b=mHUVYhRyR3BrOaQ6wEpo//INKQ53NsYg71kHh+1bK1bcc9R9cUK8butSVJIg5WCfZ1
-         RHmnL2AwdbBmw5n+YeTPN8gcJMpgFBAh0otpIpD5yxNNJIi3Yy/iyQGE9be5OKTIfMtz
-         gpwf73xNiKY//enjTrvkRITPZemtWa7GdWT5fauUL4gV0MOyLO/RQ9Yac+FdJPz8ACA7
-         O5l8IoZJVREb6kxQ02T4oPdu6Df9KdFUW+faL/NWPqST0vjdeFrjjFA90RvMRgcSEeyk
-         Ao7zerHnHzml1MZj5HYp60FMPP4i/a7qKUf1xiNou8xPHWB/s3fKYk4Sge1HI8rDbDRJ
-         Tjjw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vb4653fYGz3c5Y
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 06:55:23 +1000 (AEST)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5d3907ff128so1067380a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 13:55:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715287154; x=1715891954;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=72EB+jPmMFAxQhDugLcn3MtcnlhS5/KVvKJQ1v/oDoM=;
-        b=JS62ObEpsnxlkSEJFxvbdTNThq6ixaINUiusbH1vigN85AtIYquCBaofo+HtkSgWzU
-         ZAGKuRMJTKpreAI27MjRbcAziXZM2gug+ZU1XFQBt9VeuNqitY5bNI5XPpjcdaOWN3oo
-         I7LiTZYvmeJqhXH+ikWfUrLLZPjic+yfVQ+3moX45r3EdTAYAv6CeYaKgrvqD0yr70Dp
-         ZSFBrlNyIEuHX6OOHiF4KBBHqi9vKrh0yJTJf/Mz15jmoOsbGaRPQ6R0kAIgOHdBmlk4
-         Qo802zJR7BwJNwgOPxie1Rd5Uqd4wXJZyZ/Kp1tdNxAhGX2dze+AehYdx9mMRZ9zSeob
-         C8kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJzFqq/ScLdXMW3IyPg87QCWhsQI9tI7/V+M/FTgJKhA9eSwEjgwFmryu+MFKyBAbYOx62jfK6yG+DKVVrlZcmok53oEMohojuZek2JQ==
-X-Gm-Message-State: AOJu0YwzSXnlWiFhpj1+0RlqRvSvYucKH9Qsz/zqUH/snH0dsRyQ7fVO
-	EG/+Cl0ok8B9Wqc/X8ihuBSJbWekCnHrMvkB358arAtMmErkoIj1syO+BkiTf5/eDEp0RSaZQF1
-	PoCrIjl03yo1WMsjQ+uqaS/W4hVZ8OQ==
-X-Google-Smtp-Source: AGHT+IEc4cDi9d04mUFz7pcyCUYCCTXc24pB4av/QXdROM2NygUWuAhnkvV0KMdhUE3//ZdLw4UfzyQBI3tbL3GiAWOd
-X-Received: from axel.svl.corp.google.com ([2620:15c:2a3:200:22b1:9c9e:3544:83b8])
- (user=axelrasmussen job=sendgmr) by 2002:a05:6902:c09:b0:de5:5304:3206 with
- SMTP id 3f1490d57ef6-dee4f52d715mr74188276.11.1715287153666; Thu, 09 May 2024
- 13:39:13 -0700 (PDT)
-Date: Thu,  9 May 2024 13:39:07 -0700
-In-Reply-To: <20240509203907.504891-1-axelrasmussen@google.com>
-Mime-Version: 1.0
-References: <20240509203907.504891-1-axelrasmussen@google.com>
-X-Mailer: git-send-email 2.45.0.118.g7fe29c98d7-goog
-Message-ID: <20240509203907.504891-2-axelrasmussen@google.com>
-Subject: [PATCH 1/1] arch/fault: don't print logs for simulated poison errors
-From: Axel Rasmussen <axelrasmussen@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, 
-	Ingo Molnar <mingo@redhat.com>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Liu Shixin <liushixin2@huawei.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
+        d=1e100.net; s=20230601; t=1715288121; x=1715892921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6SeDxTMUgi4LQzDaIf3nLrPy70uwzF3gPdETUheci2c=;
+        b=BT6SaeMscYO9A9HfJ2sNRPX2kRx9/138VpX2rsph/CGc/HfHt5EJPtlcYAwZcdhW0B
+         mteRMG+AK/BIUOvbkNWzvgtWEWABBKlX090ldd6bgua74cSGnmlw2IA3S9y8o9PdyENE
+         sO5wCk7DsnY49T7actu32QB7DdH1N2xNtuvIDONxpZBlt4zmONZuDDT/AT41SWHlDBSW
+         l/i9NVK14TUWp6jj1gkHGa7ivI3ZfjGrl8zFGu1KsHQunXFfU0I3IfG0hrCCXMBgUnnQ
+         xTqfIEiygPFot3AqMRjzZYgtW4Qw4gqiMurfIN+RWe632G0GSfI/M9TjCjjVISpKsJtI
+         XKfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJkYczc0vaXmy6TsINVq6ReHdj8+SXR8bz3ygX0ysTmbriNq4nTQ4xZ4s89SbyyO9C/PZyD98up1/HBh7fQZ5HHHpV1YrI9RuPMPjosw==
+X-Gm-Message-State: AOJu0YyJZns+IKhZ7b+T8C7+VFkZMSGQDyLvRA7aDzW6KljwAr/SYw4M
+	EO4kcIwY3qYDxTDVr4nBTC2QMkVmIt6rs7rK9DrW4xvlHYCieLp8oarg6BP1S3Pzc6TFTQ9IpHs
+	y8vdBLlIGRRNR9V1QRlDIqhXpRXg=
+X-Google-Smtp-Source: AGHT+IGt7dUBfj7vMg0wI6ai8p0bGzNoXrhnZsLwOgnLclMfrb2jDrhK/Kigc+vuxjYxxWNl1dT8N/6AVYpASWN8wPY=
+X-Received: by 2002:a17:90a:db97:b0:2b2:7e94:4073 with SMTP id
+ 98e67ed59e1d1-2b6cc76d73cmr727950a91.14.1715288121009; Thu, 09 May 2024
+ 13:55:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20240506121906.76639-1-atrajeev@linux.vnet.ibm.com>
+ <20240506121906.76639-5-atrajeev@linux.vnet.ibm.com> <f2efdb9d-e636-4678-b492-83d3a28d8134@csgroup.eu>
+ <E21FF3FD-1080-4A6C-99B0-7239AD831532@linux.vnet.ibm.com>
+In-Reply-To: <E21FF3FD-1080-4A6C-99B0-7239AD831532@linux.vnet.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Thu, 9 May 2024 13:55:09 -0700
+Message-ID: <CAM9d7cjz-_6m7mPATeRETFudz8+u=JYw20Kn6WutEKZ2f6VUyg@mail.gmail.com>
+Subject: Re: [PATCH V2 4/9] tools/perf: Add support to capture and parse raw
+ instruction in objdump
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,149 +63,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-parisc@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Axel Rasmussen <axelrasmussen@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "adrian.hunter@intel.com" <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "akanksha@linux.ibm.com" <akanksha@linux.ibm.com>, "disgoel@linux.vnet.ibm.com" <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For real MCEs, various architectures print log messages when poisoned
-memory is accessed (which results in a SIGBUS). These messages can be
-important for users to understand the issue.
+On Thu, May 9, 2024 at 10:27=E2=80=AFAM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+>
+>
+> > On 7 May 2024, at 3:05=E2=80=AFPM, Christophe Leroy <christophe.leroy@c=
+sgroup.eu> wrote:
+> >
+> >
+> >
+> > Le 06/05/2024 =C3=A0 14:19, Athira Rajeev a =C3=A9crit :
+> >> Add support to capture and parse raw instruction in objdump.
+> >
+> > What's the purpose of using 'objdump' for reading raw instructions ?
+> > Can't they be read directly without invoking 'objdump' ? It looks odd t=
+o
+> > me to use objdump to provide readable text and then parse it back.
+>
+> Hi Christophe,
+>
+> Thanks for your review comments.
+>
+> Current implementation for data type profiling on X86 uses "objdump" tool=
+ to get the disassembled code.
+> And then the objdump result lines are parsed to get the instruction name =
+and register fields. The initial patchset I posted to enable the data type =
+profiling feature in powerpc was using the same way by getting disassembled=
+ code from objdump and parsing the disassembled lines. But in V2, we are in=
+troducing change for powerpc to use "raw instruction" and fetch opcode, reg=
+ fields from the raw instruction.
+>
+> I tried to explain below that current objdump uses option "--no-show-raw-=
+insn" which doesn't capture raw instruction.  So to capture raw instruction=
+, V2 patchset has changes to use default option "--show-raw-insn" and get t=
+he raw instruction [ for powerpc ] along with human readable annotation [ w=
+hich is used by other archs ]. Since perf tool already has objdump implemen=
+tation in place, I went in the direction to enhance it to use "--show-raw-i=
+nsn" for powerpc purpose.
+>
+> But as you mentioned, we can directly read raw instruction without using =
+"objdump" tool.
+> perf has support to read object code. The dso open/read utilities and hel=
+per functions are already present in "util/dso.c" And "dso__data_read_offse=
+t" function reads data from dso file offset. We can use these functions and=
+ I can make changes to directly read binary instruction without using objdu=
+mp.
+>
+> Namhyung, Arnaldo, Christophe
+> Looking for your valuable feedback on this approach. Please suggest if th=
+is approach looks fine
 
-On the other hand, we have the userfaultfd UFFDIO_POISON operation,
-which can "simulate" memory poisoning. That particular process will get
-SIGBUS on access to the memory, but this effect is tied to an MM, rather
-than being global like a real poison event. So, we don't want to log
-about this case to the global kernel log; instead, let the process
-itself log or whatever else it wants to do. This avoids spamming the
-kernel log, and avoids e.g. drowning out real events with simulated
-ones.
+Looks like you want to implement instruction decoding
+like in arch/x86/lib/{insn,inat}.c.  I think it's ok to do that
+but you need to decide which way is more convenient.
 
-To identify this situation, add a new VM_FAULT_HWPOISON_SIM flag. This
-is expected to be set *in addition to* one of the existing
-VM_FAULT_HWPOISON or VM_FAULT_HWPOISON_LARGE flags (which are mutually
-exclusive).
+Also it works on the struct disasm_line so you need to
+fill in the necessary info when not using objdump.  As
+long as it produces the same output I don't care much
+if you use objdump or not.  Actually it uses libcapstone
+to disassemble x86 instructions if possible.  Maybe you
+can use that on powerpc too.
 
-Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
----
- arch/parisc/mm/fault.c   | 7 +++++--
- arch/powerpc/mm/fault.c  | 6 ++++--
- arch/x86/mm/fault.c      | 6 ++++--
- include/linux/mm_types.h | 5 +++++
- mm/hugetlb.c             | 3 ++-
- mm/memory.c              | 2 +-
- 6 files changed, 21 insertions(+), 8 deletions(-)
+Thanks,
+Namhyung
 
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index c39de84e98b0..e5370bcadf27 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -400,9 +400,12 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
- #ifdef CONFIG_MEMORY_FAILURE
- 		if (fault & (VM_FAULT_HWPOISON|VM_FAULT_HWPOISON_LARGE)) {
- 			unsigned int lsb = 0;
--			printk(KERN_ERR
-+
-+			if (!(fault & VM_FAULT_HWPOISON_SIM)) {
-+				pr_err(
- 	"MCE: Killing %s:%d due to hardware memory corruption fault at %08lx\n",
--			tsk->comm, tsk->pid, address);
-+				tsk->comm, tsk->pid, address);
-+			}
- 			/*
- 			 * Either small page or large page may be poisoned.
- 			 * In other words, VM_FAULT_HWPOISON_LARGE and
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 53335ae21a40..ac5e8a3c7fba 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -140,8 +140,10 @@ static int do_sigbus(struct pt_regs *regs, unsigned long address,
- 	if (fault & (VM_FAULT_HWPOISON|VM_FAULT_HWPOISON_LARGE)) {
- 		unsigned int lsb = 0; /* shutup gcc */
- 
--		pr_err("MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
--			current->comm, current->pid, address);
-+		if (!(fault & VM_FAULT_HWPOISON_SIM)) {
-+			pr_err("MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
-+				current->comm, current->pid, address);
-+		}
- 
- 		if (fault & VM_FAULT_HWPOISON_LARGE)
- 			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index e4f3c7721f45..16d077a3ad14 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -928,9 +928,11 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
- 		struct task_struct *tsk = current;
- 		unsigned lsb = 0;
- 
--		pr_err_ratelimited(
-+		if (!(fault & VM_FAULT_HWPOISON_SIM)) {
-+			pr_err_ratelimited(
- 	"MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
--			tsk->comm, tsk->pid, address);
-+				tsk->comm, tsk->pid, address);
-+		}
- 		if (fault & VM_FAULT_HWPOISON_LARGE)
- 			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
- 		if (fault & VM_FAULT_HWPOISON)
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 5240bd7bca33..7f8fc3efc5b2 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1226,6 +1226,9 @@ typedef __bitwise unsigned int vm_fault_t;
-  * @VM_FAULT_HWPOISON_LARGE:	Hit poisoned large page. Index encoded
-  *				in upper bits
-  * @VM_FAULT_SIGSEGV:		segmentation fault
-+ * @VM_FAULT_HWPOISON_SIM	Hit poisoned, PTE marker; this indicates a
-+ *				simulated poison (e.g. via usefaultfd's
-+ *                              UFFDIO_POISON), not a "real" hwerror.
-  * @VM_FAULT_NOPAGE:		->fault installed the pte, not return page
-  * @VM_FAULT_LOCKED:		->fault locked the returned page
-  * @VM_FAULT_RETRY:		->fault blocked, must retry
-@@ -1245,6 +1248,7 @@ enum vm_fault_reason {
- 	VM_FAULT_HWPOISON       = (__force vm_fault_t)0x000010,
- 	VM_FAULT_HWPOISON_LARGE = (__force vm_fault_t)0x000020,
- 	VM_FAULT_SIGSEGV        = (__force vm_fault_t)0x000040,
-+	VM_FAULT_HWPOISON_SIM   = (__force vm_fault_t)0x000080,
- 	VM_FAULT_NOPAGE         = (__force vm_fault_t)0x000100,
- 	VM_FAULT_LOCKED         = (__force vm_fault_t)0x000200,
- 	VM_FAULT_RETRY          = (__force vm_fault_t)0x000400,
-@@ -1270,6 +1274,7 @@ enum vm_fault_reason {
- 	{ VM_FAULT_HWPOISON,            "HWPOISON" },	\
- 	{ VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" },	\
- 	{ VM_FAULT_SIGSEGV,             "SIGSEGV" },	\
-+	{ VM_FAULT_HWPOISON_SIM,	"HWPOISON_SIM" },	\
- 	{ VM_FAULT_NOPAGE,              "NOPAGE" },	\
- 	{ VM_FAULT_LOCKED,              "LOCKED" },	\
- 	{ VM_FAULT_RETRY,               "RETRY" },	\
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 65456230cc71..2b4e0173e806 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6485,7 +6485,8 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 				pte_marker_get(pte_to_swp_entry(entry));
- 
- 			if (marker & PTE_MARKER_POISONED) {
--				ret = VM_FAULT_HWPOISON_LARGE |
-+				ret = VM_FAULT_HWPOISON_SIM |
-+				      VM_FAULT_HWPOISON_LARGE |
- 				      VM_FAULT_SET_HINDEX(hstate_index(h));
- 				goto out_mutex;
- 			}
-diff --git a/mm/memory.c b/mm/memory.c
-index d2155ced45f8..29a833b996ae 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3910,7 +3910,7 @@ static vm_fault_t handle_pte_marker(struct vm_fault *vmf)
- 
- 	/* Higher priority than uffd-wp when data corrupted */
- 	if (marker & PTE_MARKER_POISONED)
--		return VM_FAULT_HWPOISON;
-+		return VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_SIM;
- 
- 	if (pte_marker_entry_uffd_wp(entry))
- 		return pte_marker_handle_uffd_wp(vmf);
--- 
-2.45.0.118.g7fe29c98d7-goog
-
+>
+>
+> Thanks
+> Athira
+> >
+> >> Currently, the perf tool infrastructure uses "--no-show-raw-insn" opti=
+on
+> >> with "objdump" while disassemble. Example from powerpc with this optio=
+n
+> >> for an instruction address is:
+> >
+> > Yes and that makes sense because the purpose of objdump is to provide
+> > human readable annotations, not to perform automated analysis. Am I
+> > missing something ?
+> >
+> >>
+> >> Snippet from:
+> >> objdump  --start-address=3D<address> --stop-address=3D<address>  -d --=
+no-show-raw-insn -C <vmlinux>
+> >>
+> >> c0000000010224b4: lwz     r10,0(r9)
+> >>
+> >> This line "lwz r10,0(r9)" is parsed to extract instruction name,
+> >> registers names and offset. Also to find whether there is a memory
+> >> reference in the operands, "memory_ref_char" field of objdump is used.
+> >> For x86, "(" is used as memory_ref_char to tackle instructions of the
+> >> form "mov  (%rax), %rcx".
+> >>
+> >> In case of powerpc, not all instructions using "(" are the only memory
+> >> instructions. Example, above instruction can also be of extended form =
+(X
+> >> form) "lwzx r10,0,r19". Inorder to easy identify the instruction categ=
+ory
+> >> and extract the source/target registers, patch adds support to use raw
+> >> instruction. With raw instruction, macros are added to extract opcode
+> >> and register fields.
+> >>
+> >> "struct ins_operands" and "struct ins" is updated to carry opcode and
+> >> raw instruction binary code (raw_insn). Function "disasm_line__parse"
+> >> is updated to fill the raw instruction hex value and opcode in newly
+> >> added fields. There is no changes in existing code paths, which parses
+> >> the disassembled code. The architecture using the instruction name and
+> >> present approach is not altered. Since this approach targets powerpc,
+> >> the macro implementation is added for powerpc as of now.
+> >>
+> >> Example:
+> >> representation using --show-raw-insn in objdump gives result:
+> >>
+> >> 38 01 81 e8     ld      r4,312(r1)
+> >>
+> >> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
+> >> this translates to instruction form: "ld RT,DS(RA)" and binary code
+> >> as:
+> >> _____________________________________
+> >> | 58 |  RT  |  RA |      DS       | |
+> >> -------------------------------------
+> >> 0    6     11    16              30 31
+> >>
+> >> Function "disasm_line__parse" is updated to capture:
+> >>
+> >> line:    38 01 81 e8     ld      r4,312(r1)
+> >> opcode and raw instruction "38 01 81 e8"
+> >> Raw instruction is used later to extract the reg/offset fields.
+> >>
+> >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> >> ---
+>
