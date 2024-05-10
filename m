@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63E78C21B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:09:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5448C21CA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:13:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V9OxM05E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SsB9BcVW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VbPkP1qP7z3cXV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 20:09:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VbPqK5ltQz3g5C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 20:13:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V9OxM05E;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SsB9BcVW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbPht48W5z30Tx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 20:08:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbPkL1DP8z3cYx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 20:09:29 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715335695; x=1746871695;
+  t=1715335770; x=1746871770;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vrR9lSZtbojiA2EubTfEXC7NUqhoH2bBkEIK7kkkTFA=;
-  b=V9OxM05E6jDOm8w9MwOh7r582KUZzILVuz87YUkwNFdrh6vgR465h9qo
-   K290PHqE7kxoZXev1pHrKZIhcGxnJe0WhYEe3gaUaXNyX3LJQ6at2W0fR
-   bhB/l8PUUK1Vk2zLHJQ03y3aYDu3rQ56lwcI/sqXLtXAv8/FqXCAQG5S3
-   IDxfVrCBqV1FxW0FSgGHiOStKnA4FWuQU2VLw7tZKe1wnSR15wKiJavZm
-   npc1zIGJT/u4/S6+qZcHtoPsQp7k1SmMu+CAOXJE9KImfBsup+fpJDXwX
-   X9nvGO5plJ5Kc3HA28j/fRDOuk6/N0nYhFuVbjBtlan4dKHYaISbeyGOw
-   g==;
-X-CSE-ConnectionGUID: nYQKqxS8RVCviWC8bT7AjA==
-X-CSE-MsgGUID: XW1lThixQ8mU6K+9ttHoUg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="36687483"
+  bh=ycAlJAFDIexTuV0gkyQkoIj4+wwZGM3l2xmJQx719nA=;
+  b=SsB9BcVWOWk0G3nH67dDo2j/MynEYQetmF0K8tgZCZzUksyfA1bmJ1om
+   9INGF4XYf2LV2obhkHuJoqmG+dZZQ4mm4Lm/zEnK+J8QcZcF2eQsFkrnN
+   AZQjR8S2BO8ERDI8jcCXuOBD+DIQhLc7cq6+DjlKTPzGRgAAkwVyv9HCA
+   jD7RiYAiExhZMxyr7VX7KB27Es3pF9iu+eODXqt8BAVwh60Le/kRdqJva
+   keJm7UUSfzCiNcA40pWXl5l/KE8mMWlFvwkc46P091IH2Hi0qFp/bHS7m
+   OGUeZQV7LkcoftT62siCTQnZu1DaQcsX2eEkvCT68/CGDoSJ1RNOQvSB8
+   w==;
+X-CSE-ConnectionGUID: U32rElShQVeCMp0JMM4y+w==
+X-CSE-MsgGUID: 7bGO29/AQs6Yn8uV8PCEEA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="21884186"
 X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; 
-   d="scan'208";a="36687483"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 03:08:14 -0700
-X-CSE-ConnectionGUID: LCOPFPlFQIG/MpZZyDUn+A==
-X-CSE-MsgGUID: gs9lu6idT8WLMHgAx9nHtA==
+   d="scan'208";a="21884186"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 03:08:23 -0700
+X-CSE-ConnectionGUID: rFfR3aNcREWrwsQpH8kLlA==
+X-CSE-MsgGUID: ikeVDMsfRKOQLAyZAug4qg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; 
-   d="scan'208";a="29571419"
+   d="scan'208";a="30125306"
 Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.85])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 03:08:12 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 03:08:21 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: linux-pci@vger.kernel.org,
 	Bjorn Helgaas <bhelgaas@google.com>,
@@ -56,9 +56,9 @@ To: linux-pci@vger.kernel.org,
 	Oliver O'Halloran <oohall@gmail.com>,
 	Lukas Wunner <lukas@wunner.de>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 4/7] PCI: Use unsigned int i in pcie_read_tlp_log()
-Date: Fri, 10 May 2024 13:07:27 +0300
-Message-Id: <20240510100730.18805-5-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v4 5/7] PCI: Store # of supported End-End TLP Prefixes
+Date: Fri, 10 May 2024 13:07:28 +0300
+Message-Id: <20240510100730.18805-6-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240510100730.18805-1-ilpo.jarvinen@linux.intel.com>
 References: <20240510100730.18805-1-ilpo.jarvinen@linux.intel.com>
@@ -80,28 +80,106 @@ Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, linuxppc-d
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Loop variable i counting from 0 upwards does not need to be signed so
-make it unsigned int.
+eetlp_prefix_path in the struct pci_dev tells if End-End TLP Prefixes
+are supported by the path or not, the value is only calculated if
+CONFIG_PCI_PASID is set.
+
+The Max End-End TLP Prefixes field in the Device Capabilities Register
+2 also tells how many (1-4) End-End TLP Prefixes are supported (PCIe r6
+sec 7.5.3.15). The number of supported End-End Prefixes is useful for
+reading correct number of DWORDs from TLP Prefix Log register in AER
+capability (PCIe r6 sec 7.8.4.12).
+
+Replace eetlp_prefix_path with eetlp_prefix_max and determine the
+number of supported End-End Prefixes regardless of CONFIG_PCI_PASID so
+that an upcoming commit generalizing TLP Prefix Log register reading
+does not have to read extra DWORDs for End-End Prefixes that never will
+be there.
 
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/pci/pcie/tlp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/ats.c             |  2 +-
+ drivers/pci/probe.c           | 14 +++++++++-----
+ include/linux/pci.h           |  2 +-
+ include/uapi/linux/pci_regs.h |  1 +
+ 4 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-index 2bf15749cd31..65ac7b5d8a87 100644
---- a/drivers/pci/pcie/tlp.c
-+++ b/drivers/pci/pcie/tlp.c
-@@ -24,7 +24,8 @@
- int pcie_read_tlp_log(struct pci_dev *dev, int where,
- 		      struct pcie_tlp_log *log)
+diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
+index c570892b2090..e13433dcfc82 100644
+--- a/drivers/pci/ats.c
++++ b/drivers/pci/ats.c
+@@ -377,7 +377,7 @@ int pci_enable_pasid(struct pci_dev *pdev, int features)
+ 	if (WARN_ON(pdev->pasid_enabled))
+ 		return -EBUSY;
+ 
+-	if (!pdev->eetlp_prefix_path && !pdev->pasid_no_tlp)
++	if (!pdev->eetlp_prefix_max && !pdev->pasid_no_tlp)
+ 		return -EINVAL;
+ 
+ 	if (!pasid)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 1325fbae2f28..02035b005a53 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2211,8 +2211,8 @@ static void pci_configure_relaxed_ordering(struct pci_dev *dev)
+ 
+ static void pci_configure_eetlp_prefix(struct pci_dev *dev)
  {
--	int i, ret;
-+	unsigned int i;
-+	int ret;
+-#ifdef CONFIG_PCI_PASID
+ 	struct pci_dev *bridge;
++	unsigned int eetlp_max;
+ 	int pcie_type;
+ 	u32 cap;
  
- 	memset(log, 0, sizeof(*log));
+@@ -2224,15 +2224,19 @@ static void pci_configure_eetlp_prefix(struct pci_dev *dev)
+ 		return;
  
+ 	pcie_type = pci_pcie_type(dev);
++
++	eetlp_max = FIELD_GET(PCI_EXP_DEVCAP2_EE_PREFIX_MAX, cap);
++	/* 00b means 4 */
++	eetlp_max = eetlp_max ?: 4;
++
+ 	if (pcie_type == PCI_EXP_TYPE_ROOT_PORT ||
+ 	    pcie_type == PCI_EXP_TYPE_RC_END)
+-		dev->eetlp_prefix_path = 1;
++		dev->eetlp_prefix_max = eetlp_max;
+ 	else {
+ 		bridge = pci_upstream_bridge(dev);
+-		if (bridge && bridge->eetlp_prefix_path)
+-			dev->eetlp_prefix_path = 1;
++		if (bridge && bridge->eetlp_prefix_max)
++			dev->eetlp_prefix_max = eetlp_max;
+ 	}
+-#endif
+ }
+ 
+ static void pci_configure_serr(struct pci_dev *dev)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 16493426a04f..29c51325b1d9 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -397,7 +397,7 @@ struct pci_dev {
+ 					   supported from root to here */
+ #endif
+ 	unsigned int	pasid_no_tlp:1;		/* PASID works without TLP Prefix */
+-	unsigned int	eetlp_prefix_path:1;	/* End-to-End TLP Prefix */
++	unsigned int	eetlp_prefix_max:3;	/* Max # of End-End TLP Prefixes, 0=not supported */
+ 
+ 	pci_channel_state_t error_state;	/* Current connectivity state */
+ 	struct device	dev;			/* Generic device interface */
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index a39193213ff2..09e0c300c952 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -661,6 +661,7 @@
+ #define  PCI_EXP_DEVCAP2_OBFF_MSG	0x00040000 /* New message signaling */
+ #define  PCI_EXP_DEVCAP2_OBFF_WAKE	0x00080000 /* Re-use WAKE# for OBFF */
+ #define  PCI_EXP_DEVCAP2_EE_PREFIX	0x00200000 /* End-End TLP Prefix */
++#define  PCI_EXP_DEVCAP2_EE_PREFIX_MAX	0x00c00000 /* Max End-End TLP Prefixes */
+ #define PCI_EXP_DEVCTL2		0x28	/* Device Control 2 */
+ #define  PCI_EXP_DEVCTL2_COMP_TIMEOUT	0x000f	/* Completion Timeout Value */
+ #define  PCI_EXP_DEVCTL2_COMP_TMOUT_DIS	0x0010	/* Completion Timeout Disable */
 -- 
 2.39.2
 
