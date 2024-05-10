@@ -2,57 +2,157 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945978C26CD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 16:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2708C28B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 18:25:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BP03ZOR6;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=gdeJ0E+V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VbWRg0fpQz3d9H
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 May 2024 00:27:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VbZ3v0W81z3cXL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 May 2024 02:25:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BP03ZOR6;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=gdeJ0E+V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::1; helo=pa5p264cu001.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PA5P264CU001.outbound.protection.outlook.com (mail-francecentralazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbWQw2cQlz3cRR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 May 2024 00:26:32 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C1F0661E5A;
-	Fri, 10 May 2024 14:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC11DC113CC;
-	Fri, 10 May 2024 14:26:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715351184;
-	bh=+DKU1DJyZN/2cve2AGF0NsYjCUCGhPhoIoQ+JdEnSqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BP03ZOR6tAb3/dpjyiyJ1juh8WAZwYg4kfdZf5R9+4fsQ9KcZmpg6PdOQwlyN4INl
-	 NUhVVE3Cfq1yMxi7PcqQ1Rp26HoBv2uGHNi7lbYK6+SXNWfkuoMbu6Nm1ukTJdq4sy
-	 95jGL3dWHf0QrB54wXny5eL2nSnOSdGkhNmTPux7VZs2MaJb/yTjho9QlLxEnkHx/C
-	 vkAE3Wa1QAbkkEHrrK0ZHBQ4d2W5SjAQbyzgmJwphBs1GFta7IwfHrKgxV01DD3oso
-	 WbGnsLj/HWWGZwKnCcWcqjMxc23YdMOHTX/ovibAJD6PLgMu5AyOzDer01L6qH0WsH
-	 BGnzvxWtZRuOQ==
-Date: Fri, 10 May 2024 11:26:21 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2 4/9] tools/perf: Add support to capture and parse raw
- instruction in objdump
-Message-ID: <Zj4ujanupo0eKyby@x1>
-References: <20240506121906.76639-1-atrajeev@linux.vnet.ibm.com>
- <20240506121906.76639-5-atrajeev@linux.vnet.ibm.com>
- <f2efdb9d-e636-4678-b492-83d3a28d8134@csgroup.eu>
- <E21FF3FD-1080-4A6C-99B0-7239AD831532@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbZ3369q8z2xjN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 May 2024 02:24:25 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nl/A/LoudWwMw75EQKs3bNZutGvCvxpr+5sb+DeJjbHY8iV5hapFOIhXbpZ8ZgW2L4PcWxBxHTbL2yaAFIZnudTKYKNgzR5VL9O0+KO5zTpJx9MGO+bXre6aaTZirjZibxWJR8wei9BavMrQVmFDQvTyWnJQ/KHusL0FbX09F0RoIeCq/vK6hk8+FcAe5nh62VDVu0HbzI6vkpi+b0nU69ld5MLjli2m2Z3tKAie8nQ1cAhGclQCtJbon2cRPhBfRkpUn4vdqOEyPGLMQ9WtYMcJhdHApqWIasfLjo4dkhiaHzQJWzknnSlmYWJLLw10TRoGuLzDQ6tu7Obwy4Qm8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DcGClGlyuwGMWWvseQlAjfFIGatNC/zXiFt2oZpQJ4s=;
+ b=EpkjaWzftsKjBcO9WOpu5/qIbLBj821IFnH40FgWFlXpYzQnsGnHs1sYu8Y32Txb8wL5Jndfax1434H8zXEsR7t99y1sBa4yY73ScA29C4PA9kPdS+U/SXvUybG4MvmMiRsyi5xNvKVC36K4MDHEKAKOV7IDVmEinj7oW7GtNQYDvd/9MpPl/HcFdykkMdthN+3zDAIW4dWrlyV28ohFwKWhMvaXihZCS2M4rCnbaCSqEgJx+4/EdAPeyiAxNxV/e5y3yRV1Ba1lP4uaDVwVST8KvkngVmfRlb3BHmlnp99/1Tbgu9VyGBZphvzej33ZwV/J2fscX8xG8FyE3uaS4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DcGClGlyuwGMWWvseQlAjfFIGatNC/zXiFt2oZpQJ4s=;
+ b=gdeJ0E+Vs1wCYtXvvaNvmL7eG6Gy8+lhCqOdTKZUqFtjNCT0KVWFpqzFtrLu4BhSrnP9Gd//qaVF8NMShpM01pu9OuGwj2dVPSAle3r3xpwPWSv3W9NquOWL0BoTnzmMnFP3n6rd6x3WNEYoM9n0yumHlX6Vax2wmYJ4ufAZpSa0+b7Wbk93IPAJo2sLJjwnyVTMCK6uXHrZLD2caXYJ3GIQ90Ek7M5Ujm+utxGwaZWuYfAcEYaD80XYH4FEPJKCN2OviBulC5cY1wpTFdR17RwxPuNRjinNMmSJlT31Gh1FCmIzdS1fd6qIbugU4jEaH+z7++a3AhUlsNRswYUjVw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2778.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:1f::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.49; Fri, 10 May
+ 2024 16:23:52 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::1f75:cb9f:416:4dbb%7]) with mapi id 15.20.7544.048; Fri, 10 May 2024
+ 16:23:52 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: =?utf-8?B?6LW15aSP?= <zhaoxiahust@gmail.com>, Nick Piggin
+	<npiggin@gmail.com>
+Subject: Re: About the code updte of the arc/linux/arch/beta/kernel/irq_64.c
+Thread-Topic: About the code updte of the arc/linux/arch/beta/kernel/irq_64.c
+Thread-Index: AQHam5ACGYYHUXCmF0mLLbW2q/Pos7GQtcKA
+Date: Fri, 10 May 2024 16:23:52 +0000
+Message-ID: <af47c98a-b88f-4852-be24-defacbfc69c6@csgroup.eu>
+References:  <CAO0ZshJsdmcGvdAOiMkFd9JdEyvKAgHU9oW8DOpPTAykjKDbsw@mail.gmail.com>
+In-Reply-To:  <CAO0ZshJsdmcGvdAOiMkFd9JdEyvKAgHU9oW8DOpPTAykjKDbsw@mail.gmail.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB2778:EE_
+x-ms-office365-filtering-correlation-id: 8b6c05db-f456-4628-1963-08dc710d94d2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|376005|1800799015|366007|38070700009;
+x-microsoft-antispam-message-info:  =?utf-8?B?bWd3akVUVkVZU3gvM1JIL2pGcVVhc1BZY3lBcXd3YzI3OXkzZlhsZUpiZTVi?=
+ =?utf-8?B?Q3JSNlRMdnVDUis5ZDN3ODl4NUN2SllLcnZBOGg2ME9YMjZWc2hEclA1cE85?=
+ =?utf-8?B?RUttb3RETnNlUmRNK0hXNVUwc1U3ckw2d0JiMXpzSGUzdnppczNZQ1A1RzV6?=
+ =?utf-8?B?dGU1SVF5dkJyajZsMHk1QXpMdmJ6dHRwNVRML2NmTFAzdThZYzF2b0ZQZDg2?=
+ =?utf-8?B?anp0YWN1eEJnYytqdElhS1JxdjdtU0dhZGdhNk0rNWVMM0ZTQ2phQjZvNUZ6?=
+ =?utf-8?B?ZWZHZEZYM1FvZHp3dHpzWnJBM1ZRY1ZkdWNyS3FCT2RHNXdhajNiaHFSRHZX?=
+ =?utf-8?B?TjN1aDlxejRiOVVncnoycnRLbHFmL1Q4T3lUK1BpVVRKazVzUVV2MjBhN1My?=
+ =?utf-8?B?d0l1aFQ4VnFZd01TM3dBREsrNzROVmoza3JGSlhMbFY2N1ZBck8vcytoKzFC?=
+ =?utf-8?B?aXF2KzZ5L0JyUTVNVjZuVExyUzhFZy8vZjZwU1krWndBcTJZY1BDN3hLUFNq?=
+ =?utf-8?B?TDRaVXRzQXZ4dTZNZEdLUnV2R2t1RnhHcVEwYmJpR1gwR3NnaVpUNDFiMDdi?=
+ =?utf-8?B?UFdYRGZBTnNZWExqMi9DOUhLQ3JQNDEvbmttTDg2aG1FVHAzcHU0TEorK2FU?=
+ =?utf-8?B?UWVPenZCYjBkYVl4YW9sdEU0TUNBNCtFUXIza082RDNqL0ZoRHJ5OURCcHF3?=
+ =?utf-8?B?U0RvN3krS0xYUEZzQW9Zdm1PVENyZHJpVGw3dnNQZ3hKZGZ4NmRtNHorRHY1?=
+ =?utf-8?B?d0FTVTl2KzFZWjM4NDdZc1lXSm5YL3Y1MEgweWxsM1pzdnZaYlZ0YkNvczNN?=
+ =?utf-8?B?NG00OWdYVDVkRGFacktoN1paL1pmbVdVQ2VJQ3d3b3JHOTRFak5zR3F1Mncv?=
+ =?utf-8?B?d2h0VTZLZkR3OWo2bzdGeXhxaVV0K0VpZzI5S1Q5Z1BiNGI5c2ZuMTZZYnpZ?=
+ =?utf-8?B?K0VrOVV5Um05U0NqTEdRYmREVmYyazFmaTh4OS94V21keStPRUNCWE1ZQlov?=
+ =?utf-8?B?U1Q3ekZkUlFzSjF4TVNmNC85alZINFl1c0Y4OWRyR09pTzJaL1UxNVJHV0tN?=
+ =?utf-8?B?ekYxOTdDNjNRQi9PSDVIU2ZWa0duZ0dGRjhEb0xuQzVRNGM0K3ptNE5lMXJ2?=
+ =?utf-8?B?Nk9qR1VpSm1PZE1iRDRSdUQvckc1MEZWdUdxM1lhMDNJemp0UW5kYnFZZ1A0?=
+ =?utf-8?B?WGxIUjlXNUFpNlpwY2ZIaG5mYUxsK0ZaVC9ZVE9GKytjeFRYeUN1TlQrNHZT?=
+ =?utf-8?B?dTRiVHFrMHo0VmNtSnYxY0ZqWkJlV1VWdnpqZGN5N2xMS0dJcCtPNUtYbVJS?=
+ =?utf-8?B?eDNMbWE4bGllbHJCeS9NeFRYUUZhNlpIelQwZ0hnUXBEaXBSUGlMT2JUdnlS?=
+ =?utf-8?B?MWJYWkltbUxCRmg5UE13Ri8raHVwakFQSjNZWGZ6dFpodG8rSGhOZHJnb2Js?=
+ =?utf-8?B?Z1UxMnhvTFVIS3k4c0tpZ3dwbzhRaDExWmFVSUx3MHBoY3UvVFFKb2lJMHJq?=
+ =?utf-8?B?WHpQWkJKL3doekY1dUhQd0ZUQXN1WVRYOEJNVnZLenZFdHR3TEovR1hGZEZC?=
+ =?utf-8?B?eTN4bHhtRHNpbjFsODFzMjhwajU3aTFtYjlLTTZmcFBzck0zOGI4ZzZCUFYz?=
+ =?utf-8?B?T2I0aGZHcnI3ZGkremFRdEw4Yk1tMzBmdzdPRFVaMGwrVGtpc1lvejgzWE1h?=
+ =?utf-8?B?RXo0TFVUSzZEWnY1SW9XbE1BRzYrOXpzZThDb1dyekZ2Q0Q0bnVlRXRyWUtv?=
+ =?utf-8?B?RytrdHQ0b2lFSVdRQUhRV0xtRk83ZGYvVCtOKzFwUUhQckRiVHorZFNOdGZj?=
+ =?utf-8?B?Zi9pMjZxUkROWWtrdFRKQT09?=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?SmxlSVRsUVJOc2F1b2VNWXB1NXJRNnZQN2N2b21jNTdsbHJzTXp2UmtuNHdr?=
+ =?utf-8?B?MmRBb1dOaXJNcUVObkMveWhnVklSRWhiVzI0N2NEamIrNmNIazhmb0hTeXd2?=
+ =?utf-8?B?NjltS0ZMdmVPWEtqdVozYTVKUjI3TTk0Tm5nR1dXUm1uZlhaSUxNYXZNRTRj?=
+ =?utf-8?B?bGJ3SXZ2RXRoK1FDYUxVYS9jZFRmelRwTnVLZzZCQVovVkg3Zjg3VUF6WjRT?=
+ =?utf-8?B?NXRSNCtTbEdWNDh1cXVsNmQ2enNmc3RaeWhzeGFQOG55WDdqRGRVeXNjTVVm?=
+ =?utf-8?B?TFdKN1RjT0o3T3hpOHNCU1dZNVBDZVZRNUhVcGR4MGtXSWdaNkJLTk05Rmc1?=
+ =?utf-8?B?aS9aVE9ZQ3dGRGdvSFVGaWZqcVZSZEpYYllyQ1FhVVh4TW1DVVMxT0FiM0t5?=
+ =?utf-8?B?ZUl0S2dQRWFHcmt3QldreER6c01UcmZiWVlWOEFlZytYU1lRQWthU3ovWDhE?=
+ =?utf-8?B?ZmR6MEhnSWczZlJzcDlWWTFwUHVlTWY5WlorbiswYXNjZmFiOWRuUG5zakpD?=
+ =?utf-8?B?bTdVUi9tdHF1UHhVWUVxU2NFaVByZjBHQjg5c2VURFJycmY4c1JIZUd6alIx?=
+ =?utf-8?B?dGJwS001MWNWMzF5RjlIRE5qMEJSeHpoNjhzbjZTSHA3Q015YU1DZDJMUEkr?=
+ =?utf-8?B?SlFwaDM0b25DMGZmYnZWeUE4aDkyS1pkY0JPcHhjVzk4VkRHVmFodG5rNXVM?=
+ =?utf-8?B?MnZCMEpnbHpORW9ob25xK255M054MnFJcWVDZUtvaGFnQ1o1NkdqRDhtc0dF?=
+ =?utf-8?B?VHdGQTZjaTNGNlRLMTdkQjVqbzlYbW5kdWNMTVlWOERzc2FHRmY1V1dNYVVY?=
+ =?utf-8?B?cFMzSlphMU1aeE56THUvWVFmT1kwaXB0VkZLSFlyK0NoNi8vZVVEZjdma2ZT?=
+ =?utf-8?B?NGRIeUdkaXFtaUZUSXlTMmhaMVVqSWZRaXlBTTVpaHhjRlVHcm56RTZoVGox?=
+ =?utf-8?B?NE9CRkwyYnJUMzQ0MFVTZ2VsMFhtWldyL1hnZWNxbS84U1MzdFBGZjNvN0g3?=
+ =?utf-8?B?MVppOWxWQlQyTlpzcDh4QUYwN2tXY2tKakJJdEx6cDZrdzdFT1BBQzBUUS94?=
+ =?utf-8?B?NDkwaDYraHMvR2VST1ZIcDZYWDR3M2toVktVaXkwczNvaG5NQkdoc0s1OUxv?=
+ =?utf-8?B?cEdCMUtOaGh1TU5WVXEyUHFHMHVkem05cVp1TWR2TkRRVGQzeE90U25qczVy?=
+ =?utf-8?B?alh4K2xGMzV6RnBmVUp3U0ZyUElnT2JZcTZRaG1yRythNVB4anBRMFhGM2Rv?=
+ =?utf-8?B?bSt2ZHo0SDdWSE55VmltUE1ZMGhqVEdUczVubGpkcTVVVTRPeE82aGVsK1ky?=
+ =?utf-8?B?d2t2MlFoN1hBOUtCc21WajZKWFNIUUlsMXc0QmxwMmRSeUtzY2hqaXRPS3pQ?=
+ =?utf-8?B?VFFzcmtSNUhGbi84MDJqREhlMHg2ME44MkN1WVdtWXVydTY0VG5yS01uem5M?=
+ =?utf-8?B?YU4wV01QV2hXVGpOamwxSjN2R1c0VDc4d1dxMXB5S0dBeWRkZkRYRnp3OGd6?=
+ =?utf-8?B?QkYwdDh3VThsWE9QbGtBelJMWWxxZTFEZFl2RGZKUXRWWHVSVTNwTzIvS3ZX?=
+ =?utf-8?B?U1ZBZTZLY2VoMHlsSjQrWEt5ZzJmTjYrNVFEMzdIUWp4S3Y5OHRITGY3RUx2?=
+ =?utf-8?B?T0RHcDcrNmtka3pTQVd4aVNIbVYrSEYzQVp2YkFsTWNHaDNtWUdLREFJSUkz?=
+ =?utf-8?B?V3FRMVhRd01iais1S3o4VFE1WU8yNTV6aXVDdW5vVGdXcTRrMVpzVTMrdzE3?=
+ =?utf-8?B?QUIrZlArSUhBVDkyT2tQeG1uME5ZVlJxaDdjVHVGSkRrNnJnU3dHM0ZiMzVD?=
+ =?utf-8?B?cFBKSy9IMFlZeVJ0N1lJZUd0VzFiYS9QbXpkTzZ3dTI3UGszcmgzeERzbTYr?=
+ =?utf-8?B?alZQTkVCL1ZvRWIwRm9VdS92a0QvQjlFRXpzUEV0bW1pZDFsc2s3ZUEwWVps?=
+ =?utf-8?B?ZGlaVG1KNENVVGFxaUJMT01xNG9DUFg3N1NBZXJ1TGRwQld3UnZPYlJwYkpX?=
+ =?utf-8?B?SzJVSVdxdWl6T0pWemZMS0xHdUM1aW8ydG85RE9SMG9jNFlGVFNsaE0rdzJu?=
+ =?utf-8?B?My9jQ2ZLUTZ5OWV5R056T2JZdnZZQjV6NmpQT2thOHQwTHlKd1N5d3BnZ2cw?=
+ =?utf-8?Q?F+9oNobMtZIrPoBXg6PJR0xtI?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A9B85F8FD72CA444870BD63C0478631D@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <E21FF3FD-1080-4A6C-99B0-7239AD831532@linux.vnet.ibm.com>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b6c05db-f456-4628-1963-08dc710d94d2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 May 2024 16:23:52.4490
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qmyiFP+gIcJ948eu8FVmPFvDsAvblEv0zjtNLTgWv2NkHU20OSYbTLSKPXyVkNMS6FFzSQlViMin6aL+ovQrMVLAWDApKIAq4tlIIVCdKJI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2778
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,162 +164,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "adrian.hunter@intel.com" <adrian.hunter@intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "akanksha@linux.ibm.com" <akanksha@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>, "disgoel@linux.vnet.ibm.com" <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 09, 2024 at 10:56:23PM +0530, Athira Rajeev wrote:
-> 
-> 
-> > On 7 May 2024, at 3:05 PM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
-> > 
-> > 
-> > 
-> > Le 06/05/2024 à 14:19, Athira Rajeev a écrit :
-> >> Add support to capture and parse raw instruction in objdump.
-> > 
-> > What's the purpose of using 'objdump' for reading raw instructions ? 
-> > Can't they be read directly without invoking 'objdump' ? It looks odd to 
-> > me to use objdump to provide readable text and then parse it back.
-> 
-> Hi Christophe,
-> 
-> Thanks for your review comments.
-> 
-> Current implementation for data type profiling on X86 uses "objdump" tool to get the disassembled code.
-
-commit 6d17edc113de1e21fc66afa76be475a4f7c91826
-Author: Namhyung Kim <namhyung@kernel.org>
-Date:   Fri Mar 29 14:58:11 2024 -0700
-
-    perf annotate: Use libcapstone to disassemble
-    
-    Now it can use the capstone library to disassemble the instructions.
-    Let's use that (if available) for perf annotate to speed up.  Currently
-    it only supports x86 architecture.  With this change I can see ~3x speed
-    up in data type profiling.
-    
-    But note that capstone cannot give the source file and line number info.
-    For now, users should use the external objdump for that by specifying
-    the --objdump option explicitly.
-    
-    Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-    Tested-by: Ian Rogers <irogers@google.com>
-    Cc: Adrian Hunter <adrian.hunter@intel.com>
-    Cc: Changbin Du <changbin.du@huawei.com>
-    Cc: Ingo Molnar <mingo@kernel.org>
-    Cc: Jiri Olsa <jolsa@kernel.org>
-    Cc: Kan Liang <kan.liang@linux.intel.com>
-    Cc: Peter Zijlstra <peterz@infradead.org>
-    Link: https://lore.kernel.org/r/20240329215812.537846-5-namhyung@kernel.org
-    Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-
-From a quick look at http://www.capstone-engine.org/compile.html it
-seems PowerPC is supported.
-
-But since we did it first with objdump output parsing, its good to have
-it as an alternative and sometimes a fallback:
-
-commit f35847de2a65137e011e559f38a3de5902a5463f
-Author: Namhyung Kim <namhyung@kernel.org>
-Date:   Wed Apr 24 17:51:56 2024 -0700
-
-    perf annotate: Fallback disassemble to objdump when capstone fails
-    
-    I found some cases that capstone failed to disassemble.  Probably my
-    capstone is an old version but anyway there's a chance it can fail.  And
-    then it silently stopped in the middle.  In my case, it didn't
-    understand "RDPKRU" instruction.
-    
-    Let's check if the capstone disassemble reached the end of the function
-    and fallback to objdump if not
-
----------------
-
-- Arnaldo
-
-> And then the objdump result lines are parsed to get the instruction
-> name and register fields. The initial patchset I posted to enable the
-> data type profiling feature in powerpc was using the same way by
-> getting disassembled code from objdump and parsing the disassembled
-> lines. But in V2, we are introducing change for powerpc to use "raw
-> instruction" and fetch opcode, reg fields from the raw instruction.
- 
-> I tried to explain below that current objdump uses option
-> "--no-show-raw-insn" which doesn't capture raw instruction.  So to
-> capture raw instruction, V2 patchset has changes to use default option
-> "--show-raw-insn" and get the raw instruction [ for powerpc ] along
-> with human readable annotation [ which is used by other archs ]. Since
-> perf tool already has objdump implementation in place, I went in the
-> direction to enhance it to use "--show-raw-insn" for powerpc purpose.
- 
-> But as you mentioned, we can directly read raw instruction without
-> using "objdump" tool.  perf has support to read object code. The dso
-> open/read utilities and helper functions are already present in
-> "util/dso.c" And "dso__data_read_offset" function reads data from dso
-> file offset. We can use these functions and I can make changes to
-> directly read binary instruction without using objdump.
- 
-> Namhyung, Arnaldo, Christophe
-> Looking for your valuable feedback on this approach. Please suggest if this approach looks fine
-> 
-> 
-> Thanks
-> Athira
-> > 
-> >> Currently, the perf tool infrastructure uses "--no-show-raw-insn" option
-> >> with "objdump" while disassemble. Example from powerpc with this option
-> >> for an instruction address is:
-> > 
-> > Yes and that makes sense because the purpose of objdump is to provide 
-> > human readable annotations, not to perform automated analysis. Am I 
-> > missing something ?
-> > 
-> >> 
-> >> Snippet from:
-> >> objdump  --start-address=<address> --stop-address=<address>  -d --no-show-raw-insn -C <vmlinux>
-> >> 
-> >> c0000000010224b4: lwz     r10,0(r9)
-> >> 
-> >> This line "lwz r10,0(r9)" is parsed to extract instruction name,
-> >> registers names and offset. Also to find whether there is a memory
-> >> reference in the operands, "memory_ref_char" field of objdump is used.
-> >> For x86, "(" is used as memory_ref_char to tackle instructions of the
-> >> form "mov  (%rax), %rcx".
-> >> 
-> >> In case of powerpc, not all instructions using "(" are the only memory
-> >> instructions. Example, above instruction can also be of extended form (X
-> >> form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
-> >> and extract the source/target registers, patch adds support to use raw
-> >> instruction. With raw instruction, macros are added to extract opcode
-> >> and register fields.
-> >> 
-> >> "struct ins_operands" and "struct ins" is updated to carry opcode and
-> >> raw instruction binary code (raw_insn). Function "disasm_line__parse"
-> >> is updated to fill the raw instruction hex value and opcode in newly
-> >> added fields. There is no changes in existing code paths, which parses
-> >> the disassembled code. The architecture using the instruction name and
-> >> present approach is not altered. Since this approach targets powerpc,
-> >> the macro implementation is added for powerpc as of now.
-> >> 
-> >> Example:
-> >> representation using --show-raw-insn in objdump gives result:
-> >> 
-> >> 38 01 81 e8     ld      r4,312(r1)
-> >> 
-> >> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
-> >> this translates to instruction form: "ld RT,DS(RA)" and binary code
-> >> as:
-> >> _____________________________________
-> >> | 58 |  RT  |  RA |      DS       | |
-> >> -------------------------------------
-> >> 0    6     11    16              30 31
-> >> 
-> >> Function "disasm_line__parse" is updated to capture:
-> >> 
-> >> line:    38 01 81 e8     ld      r4,312(r1)
-> >> opcode and raw instruction "38 01 81 e8"
-> >> Raw instruction is used later to extract the reg/offset fields.
-> >> 
-> >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> >> ---
+SGkgWGlhLA0KDQpMZSAwMS8wNS8yMDI0IMOgIDA4OjIyLCDotbXlpI8gYSDDqWNyaXTCoDoNCj4g
+SGnCoENocmlzdG9waGUsDQo+IA0KPiAgwqAgSSBpZGVudGlmaWVkIHRoYXQgdGhlIGZ1bmN0aW9u
+IG5hbWVkICJhcmNoX2xvY2FsX2lycV9yZXN0b3JlIiBvZiB0aGUgDQo+IGZpbGUgaXJxXzY0LmMg
+d2FzIHVwZGF0ZWQgYnkgeW91IGZyZXF1ZW50bHkgaW4gdGhlIGxhc3QgdHdvIHllYXJzLg0KDQpZ
+b3UgbWVhbiBhcmNoL3Bvd2VycGMva2VybmVsL2lycV82NC5jIEkgZ3Vlc3MgPw0KDQpJIGRvbid0
+IHRoaW5rIEkgImZyZXF1ZW50bHkiIGNoYW5nZWQgaXQuIFdoYXQgSSBkaWQgd2FzIG1haW5seSAN
+Cm1haW50ZW5hbmNlLCBJIGZpcnN0IGV4dHJhY3RlZCBhbGwgNjQgYml0cyBjb2RlIGZyb20gaXJx
+LmMgaW50byBpcnFfNjQuYyANCnRvIGVhc2UgbWFpbnRlbmFuY2UsIHRoZW4gSSBkaWQgYSBmZXcg
+Y29zbWV0aWMgY2hhbmdlcyB3aXRoIG5vIA0KZnVuY3Rpb25uYWwgaW1wYWN0cy4NCg0KQXMgZmFy
+IGFzIEkgY2FuIHNlZSBzb21lIG1vcmUgaW1wb3J0YW50IGNoYW5nZXMgd2VyZSBkb25lIGJ5IE5p
+Y2ssIG1heWJlIA0KSSdsbCBiZSBhYmxlIHRvIGFuc3dlciB5b3UgYmV0dGVyLiBJIGFtIG15c2Vs
+ZiBub3QgYSBQUEM2NCBleHBlcnQsIG15IA0KZG9tYWluIGluIG1haW5seSBQUEMzMi4NCg0KPiAg
+wqAgSW4gdGhlIHByZXZpb3VzIGNvZGUgdmVyc2lvbiAoc3VjaCBhcyBMaW51eCBLZXJuZWwgNS4x
+MC43KSwgSSB0aG91Z2h0IA0KPiB0aGF0IGFuIGludGVycnVwdGlvbiBzdWNoIGFzIGRvb3JiZWxs
+IG1pZ2h0IGhhcHBlbiBiZWZvcmUgDQo+ICJsb2NhbF9wYWNhLT5pcnFfaGFwcGVuZWQgPSAwOyLC
+oCB3aGljaCBjYW4gY2F1c2UgYSBwcm9ibGVtLiBJcyB0aGlzIHRoZSANCj4gY29ycmVjdCB1bmRl
+cnN0YW5kaW5nPyBJIGhhdmUgdHdvIHF1ZXN0aW9ucy4NCj4gDQo+ICDCoCAxLiBJZiB0aGUgcHJl
+dmlvdXMgdmVyc2lvbiBjYW4gY2F1c2UgdGhlIHByb2JsZW0sIGNhbiB0aGUgY3VycmVudCBmaXgg
+DQo+IHNvbHZlIHRoZSBwcm9ibGVtPw0KPiAgwqAgMi4gSWYgd2UgZG8gbm90IGNhcmUgYWJvdXQg
+dGhlIG9zIHBlcmZvcm1hbmNlLCBjYW4gd2UgY2xvc2UgdGhlIA0KPiBuZXN0ZWQgaW50ZXJydXB0
+IG1lY2hhbmlzbSB0byBhdm9pZCB0aGUgcHJvYmxlbT8gSWYgd2UgY2FuLCBob3cgdG8gY2xvc2Ug
+DQo+IHRoZSBuZXN0ZWQgaW50ZXJydXB0Pw0KPiANCj4gS2luZCByZWdhcmRzDQo+IFhpYQ0KDQoN
+ClRoYW5rcw0KQ2hyaXN0b3BoZQ0K
