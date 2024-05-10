@@ -2,73 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3A98C1C4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 04:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D668C1C66
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 04:28:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i7kFHFDX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cYskUsT2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VbBzm66Vrz3cXM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:05:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VbCV02NZGz3cVD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:28:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i7kFHFDX;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cYskUsT2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=richard.weiyang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2b; helo=mail-io1-xd2b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbBz03W4Nz3c4v
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 12:04:42 +1000 (AEST)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-a599a298990so363778666b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 19:04:42 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbCTH54VGz3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 12:27:30 +1000 (AEST)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-7d9c2096c29so72461439f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 19:27:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715306676; x=1715911476; darn=lists.ozlabs.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1715308046; x=1715912846; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BI5tyqymmN9gGbJ6fagCaRykBg1tbmyzeV+T0zeBy6M=;
-        b=i7kFHFDXyHXmYE+QMn5QNaW2g5DEkO3Ehay23n7vkY9Qyqk/iojVOM4xErMtIDdY7W
-         pSSnO8dgsCHupwK/AKuRI7VOtcZJAM1KG97tsNKn0YEO10ymNMPaAhK98tM+4jmTX2vQ
-         AP4IUaiPYS+hs5zZDci+B/TjAiR/em624LmonYoFAB1mFChaigaAAy2eVbkFFfzmABXk
-         lkQP2hQCXEiYFmBxOJ3xKzjIfdyAdf9MjjaFxaHIqv6vcVNLxA5uOWf5nCAKmHOt+bd/
-         k2wXPehDwn4aOkA/vqT4FfCzEH7XW0bnrv2EaZFmEaU9t6d3UjoPfrz0rEEqYr3D246A
-         PfHw==
+        bh=tJIg9+M0Tl5oWYiRO4lX+sJC4I6tROA3nCXlHyRlexU=;
+        b=cYskUsT2gxClVxrYI75uwViRr6qaFbIl00juuWhYGDmzWAblObiN69TKlu0RUaAIsE
+         SWwwZRi7CcTQFmCgEirjOpMa3Fvfai1oyuSi2e/ESkJD9sR+g5DXC8o2dvgHIj6X3JUi
+         CtxMW/RUSaNXuJg2JVTZzB1Fpaji88QksRDjpncYolmIMdoG41mQziYM84dStc1lyrrf
+         UDtogQiu64st7RbcCeCPExI3f+Lu9i7VQSTadwixNbwuVwFMAug+fYmOA6vXjpcbNsSg
+         I+8BKduTXSQlOe2ZAvO5woEyfxYGUoL+qUU7G53WCoGfe1MTVFiND69lMD9m+nuOcFuq
+         heGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715306676; x=1715911476;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1715308046; x=1715912846;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BI5tyqymmN9gGbJ6fagCaRykBg1tbmyzeV+T0zeBy6M=;
-        b=cz986tocfi6l9xKkHKUHXHWbP8CgSOa0PF2toaP+3dz+kjcU6HUwNQs7gJsDzCWo7d
-         +v3uQt6UmS/boJlqvXtkLlEw0CRI1VxajWEwUdpUk/ZebRde2pu7wzhBT4xkE6xyXqpy
-         Mp62JdJe/8bozBINI6jVUY7Q8AdyVw7pIL6j9ZMwBv7QjmuUqCf2ziOEXXpSn3Q1s6p5
-         s45sUVN9Kki7bfooKnpDwuH+XMDU9QutUe9cMuBwtL0IK3OaYAKIPb9UVwjyamgI5KdA
-         N8/aAIodYUNZWCX+a0NmeBkZKL4muMrf+QAkTClDXPzKMDrvFflbsvCMbCGoI3Mzvw9z
-         VG4g==
-X-Gm-Message-State: AOJu0YzNWe3bDosJ/opZvULoqIHsvUZaHA2ShuvcALAgnYCKjraqJmi2
-	MuRu+zLU4POEJiI2BQA65CiNCZOMrn3Ccnw6698ctoF0ViK6usEQ
-X-Google-Smtp-Source: AGHT+IF2QDguCK8rTieenO0F4aGJLfLKKE/VD2hKk7gSUjMQEBdHmWN/fJPbugbyh1hN9Y/Vir1/Ug==
-X-Received: by 2002:a17:906:3c57:b0:a59:2e45:f528 with SMTP id a640c23a62f3a-a5a2d5c96b5mr71148666b.38.1715306675648;
-        Thu, 09 May 2024 19:04:35 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a1781d553sm133706966b.43.2024.05.09.19.04.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 09 May 2024 19:04:34 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	aneesh.kumar@kernel.org,
-	naveen.n.rao@linux.ibm.com,
-	arnd@arndb.de,
-	rppt@kernel.org,
-	anshuman.khandual@arm.com
-Subject: [Patch v2] mm/memblock: discard .text/.data if CONFIG_ARCH_KEEP_MEMBLOCK not set
-Date: Fri, 10 May 2024 02:04:22 +0000
-Message-Id: <20240510020422.8038-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+        bh=tJIg9+M0Tl5oWYiRO4lX+sJC4I6tROA3nCXlHyRlexU=;
+        b=cZqvRomvbQ66HdfwVQnCgmSZyLYF+C2xvGwNTa0jp7EDsSw7CKEafk4nkL4M1nRqtF
+         1LtaRroQVnVYTBx4evY4swoOv8O6kKXg9tQV1R0jZvmG0xkJyCJySdt/7zqFffT7VdcY
+         GHrSGmTurTJcP0Ni9Ghj4pfS2gwP+DsCjnlDlg1dRZwtLkGx826SMbuQmbwWtGFHperB
+         OiTInq+9+pK+tpt423ap1xUa5kOjmH900UZ2ZvxdbwqGXfCNKm/dAc2rDUe1Raqvilbd
+         bdniB9ydKcc5LWUCh+mL5ZQr4ls3wA46m9UtAINaV+A2KVApyzpS90NV2vteATKtQzT+
+         UzPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCRMw5ZGWyEXq1PkqSn7i3qJMnmVd4OmS2GBDx0le7CinYmeULJ/eeEz6MTBqZIxYfer+AMXATuI57R886cxQQvUehwpBUodWoLl2T7Q==
+X-Gm-Message-State: AOJu0Yyr4kCEFIa6C9uSCIDEN1dUoxf3vnsMCB4LxFtUtqYE/FufEKNz
+	iw6BZDa0+29BPXbZ43kv1Kszx/us49cKRvF1oy0vzXN8Mx3sl8VguhM+NyLHZMWPcXDpG51QTgy
+	OEM5F0lxygsrVeREGDrueQIbPZGY=
+X-Google-Smtp-Source: AGHT+IHBDYC2n71XP7WOuLCEc5J/fR/L9KPq4RQs/MbDRpyTSl0Iy+I8EcqM5V65ejYgeqpob2OgmskIn0fzTVIGW24=
+X-Received: by 2002:a05:6e02:1387:b0:36a:3f20:8cb with SMTP id
+ e9e14a558f8ab-36cc14ae0dbmr18245525ab.18.1715308046371; Thu, 09 May 2024
+ 19:27:26 -0700 (PDT)
+MIME-Version: 1.0
+References: <1715223460-32662-1-git-send-email-shengjiu.wang@nxp.com>
+ <1715223460-32662-3-git-send-email-shengjiu.wang@nxp.com> <20240509-repurpose-dumping-156b57c25960@spud>
+In-Reply-To: <20240509-repurpose-dumping-156b57c25960@spud>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 10 May 2024 10:27:15 +0800
+Message-ID: <CAA+D8AOkDbj_QsF9VescuAfFjKcB8FnOXqwjXVrrBM1Ck4ut4Q@mail.gmail.com>
+Subject: Re: [PATCH 2/4] ASoC: dt-bindings: fsl,xcvr: Add two PLL clock sources
+To: Conor Dooley <conor@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,118 +79,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, lgirdwood@gmail.com, robh+dt@kernel.org, linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com, broonie@kernel.org, linux-sound@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When CONFIG_ARCH_KEEP_MEMBLOCK not set, we expect to discard related
-code and data. But it doesn't until CONFIG_MEMORY_HOTPLUG not set
-neither.
+On Fri, May 10, 2024 at 1:14=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> On Thu, May 09, 2024 at 10:57:38AM +0800, Shengjiu Wang wrote:
+> > Add two PLL clock sources, they are the parent clocks of the root clock
+> > one is for 8kHz series rates, named as 'pll8k', another one is for
+> > 11kHz series rates, named as 'pll11k'. They are optional clocks,
+> > if there are such clocks, then the driver can switch between them to
+> > support more accurate sample rates.
+> >
+> > As 'pll8k' and 'pll11k' are optional, then add 'minItems: 4' for
+> > clocks and clock-names properties.
+>
+> Despite the detail given here in the commit message, the series this is
+> appearing in and one of the driver patches makes me a bit "suspicious"
+> of this patch. Are these newly added clocks available on all devices, or
+> just on the imx95, or?
 
-This patch puts memblock's .text/.data into its own section, so that it
-only depends on CONFIG_ARCH_KEEP_MEMBLOCK to discard related code and
-data.
+These newly added clocks are only available for the imx95 XCVR.
 
-After this, from the log message in mem_init_print_info(), init size
-increase from 2420K to 2432K on arch x86.
-
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-
----
-v2: fix orphan section for powerpc
----
- arch/powerpc/kernel/vmlinux.lds.S |  1 +
- include/asm-generic/vmlinux.lds.h | 14 +++++++++++++-
- include/linux/memblock.h          |  8 ++++----
- 3 files changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index f420df7888a7..d6d33bec597a 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -125,6 +125,7 @@ SECTIONS
- 		*(.text.asan.* .text.tsan.*)
- 		MEM_KEEP(init.text)
- 		MEM_KEEP(exit.text)
-+		MEMBLOCK_KEEP(init.text)
- 	} :text
- 
- 	. = ALIGN(PAGE_SIZE);
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index f7749d0f2562..775c5eedb9e6 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -147,6 +147,14 @@
- #define MEM_DISCARD(sec) *(.mem##sec)
- #endif
- 
-+#if defined(CONFIG_ARCH_KEEP_MEMBLOCK)
-+#define MEMBLOCK_KEEP(sec)    *(.mb##sec)
-+#define MEMBLOCK_DISCARD(sec)
-+#else
-+#define MEMBLOCK_KEEP(sec)
-+#define MEMBLOCK_DISCARD(sec) *(.mb##sec)
-+#endif
-+
- #ifndef CONFIG_HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
- #define KEEP_PATCHABLE		KEEP(*(__patchable_function_entries))
- #define PATCHABLE_DISCARDS
-@@ -356,6 +364,7 @@
- 	*(.ref.data)							\
- 	*(.data..shared_aligned) /* percpu related */			\
- 	MEM_KEEP(init.data*)						\
-+	MEMBLOCK_KEEP(init.data*)					\
- 	*(.data.unlikely)						\
- 	__start_once = .;						\
- 	*(.data.once)							\
-@@ -573,6 +582,7 @@
- 		*(.ref.text)						\
- 		*(.text.asan.* .text.tsan.*)				\
- 	MEM_KEEP(init.text*)						\
-+	MEMBLOCK_KEEP(init.text*)					\
- 
- 
- /* sched.text is aling to function alignment to secure we have same
-@@ -680,6 +690,7 @@
- 	KEEP(*(SORT(___kentry+*)))					\
- 	*(.init.data .init.data.*)					\
- 	MEM_DISCARD(init.data*)						\
-+	MEMBLOCK_DISCARD(init.data*)					\
- 	KERNEL_CTORS()							\
- 	MCOUNT_REC()							\
- 	*(.init.rodata .init.rodata.*)					\
-@@ -706,7 +717,8 @@
- #define INIT_TEXT							\
- 	*(.init.text .init.text.*)					\
- 	*(.text.startup)						\
--	MEM_DISCARD(init.text*)
-+	MEM_DISCARD(init.text*)						\
-+	MEMBLOCK_DISCARD(init.text*)
- 
- #define EXIT_DATA							\
- 	*(.exit.data .exit.data.*)					\
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index e2082240586d..3e1f1d42dde7 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -100,13 +100,13 @@ struct memblock {
- 
- extern struct memblock memblock;
- 
-+#define __init_memblock        __section(".mbinit.text") __cold notrace \
-+						  __latent_entropy
-+#define __initdata_memblock    __section(".mbinit.data")
-+
- #ifndef CONFIG_ARCH_KEEP_MEMBLOCK
--#define __init_memblock __meminit
--#define __initdata_memblock __meminitdata
- void memblock_discard(void);
- #else
--#define __init_memblock
--#define __initdata_memblock
- static inline void memblock_discard(void) {}
- #endif
- 
--- 
-2.34.1
-
+Best regards
+Shengjiu Wang
+>
+> Thanks,
+> Conor.
+>
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  Documentation/devicetree/bindings/sound/fsl,xcvr.yaml | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Do=
+cumentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> > index 1c74a32def09..c4660faed404 100644
+> > --- a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> > @@ -50,6 +50,9 @@ properties:
+> >        - description: PHY clock
+> >        - description: SPBA clock
+> >        - description: PLL clock
+> > +      - description: PLL clock source for 8kHz series
+> > +      - description: PLL clock source for 11kHz series
+> > +    minItems: 4
+> >
+> >    clock-names:
+> >      items:
+> > @@ -57,6 +60,9 @@ properties:
+> >        - const: phy
+> >        - const: spba
+> >        - const: pll_ipg
+> > +      - const: pll8k
+> > +      - const: pll11k
+> > +    minItems: 4
+> >
+> >    dmas:
+> >      items:
+> > --
+> > 2.34.1
+> >
