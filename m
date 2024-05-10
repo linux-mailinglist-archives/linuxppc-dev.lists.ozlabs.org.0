@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D668C1C66
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 04:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E4E8C1C6A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 04:31:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cYskUsT2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Vr1T7hQ9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VbCV02NZGz3cVD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:28:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VbCYL0ZHJz3cY8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:31:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cYskUsT2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Vr1T7hQ9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2b; helo=mail-io1-xd2b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12e; helo=mail-il1-x12e.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbCTH54VGz3cBK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 12:27:30 +1000 (AEST)
-Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-7d9c2096c29so72461439f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 19:27:30 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbCXd05S4z3c3s
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 12:30:24 +1000 (AEST)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-36c96441a41so6523095ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 May 2024 19:30:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715308046; x=1715912846; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1715308222; x=1715913022; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tJIg9+M0Tl5oWYiRO4lX+sJC4I6tROA3nCXlHyRlexU=;
-        b=cYskUsT2gxClVxrYI75uwViRr6qaFbIl00juuWhYGDmzWAblObiN69TKlu0RUaAIsE
-         SWwwZRi7CcTQFmCgEirjOpMa3Fvfai1oyuSi2e/ESkJD9sR+g5DXC8o2dvgHIj6X3JUi
-         CtxMW/RUSaNXuJg2JVTZzB1Fpaji88QksRDjpncYolmIMdoG41mQziYM84dStc1lyrrf
-         UDtogQiu64st7RbcCeCPExI3f+Lu9i7VQSTadwixNbwuVwFMAug+fYmOA6vXjpcbNsSg
-         I+8BKduTXSQlOe2ZAvO5woEyfxYGUoL+qUU7G53WCoGfe1MTVFiND69lMD9m+nuOcFuq
-         heGA==
+        bh=21VKHMMaZA0kpkZw9wZiu6Ve2UlBKMEGNlaolOO9V6A=;
+        b=Vr1T7hQ9VSKYCOrx8V5/s7rcbRkARln0fcJSuvpxOSlnRIXAXWSxnSgIsun0mX4nvm
+         ziunhTjpC8Mn/tq5TohgoQXb7ouCd5+BDdv1Dh2h7SXiOPihQSgtTLRdYD9XoYbAqRaE
+         BoT0f/3vn4y0r2IK/BjlpLLc/FmVD4eIN/R92k1K4hjWlhFm13sff9tsFO1Edv13WLQS
+         v89KC0yPUDQTdxtEz8++urkhME51aGLSXoaCtkOyYX8wVmunsynI2hW8n81Ib3hSDnh0
+         rZpgkjGeTW+Kxltct5ML9btjcA22rqzZmyjNJzrBxRhCXuVgUcT/yNRS2lNfAUJyNnp6
+         iAaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715308046; x=1715912846;
+        d=1e100.net; s=20230601; t=1715308222; x=1715913022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tJIg9+M0Tl5oWYiRO4lX+sJC4I6tROA3nCXlHyRlexU=;
-        b=cZqvRomvbQ66HdfwVQnCgmSZyLYF+C2xvGwNTa0jp7EDsSw7CKEafk4nkL4M1nRqtF
-         1LtaRroQVnVYTBx4evY4swoOv8O6kKXg9tQV1R0jZvmG0xkJyCJySdt/7zqFffT7VdcY
-         GHrSGmTurTJcP0Ni9Ghj4pfS2gwP+DsCjnlDlg1dRZwtLkGx826SMbuQmbwWtGFHperB
-         OiTInq+9+pK+tpt423ap1xUa5kOjmH900UZ2ZvxdbwqGXfCNKm/dAc2rDUe1Raqvilbd
-         bdniB9ydKcc5LWUCh+mL5ZQr4ls3wA46m9UtAINaV+A2KVApyzpS90NV2vteATKtQzT+
-         UzPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCRMw5ZGWyEXq1PkqSn7i3qJMnmVd4OmS2GBDx0le7CinYmeULJ/eeEz6MTBqZIxYfer+AMXATuI57R886cxQQvUehwpBUodWoLl2T7Q==
-X-Gm-Message-State: AOJu0Yyr4kCEFIa6C9uSCIDEN1dUoxf3vnsMCB4LxFtUtqYE/FufEKNz
-	iw6BZDa0+29BPXbZ43kv1Kszx/us49cKRvF1oy0vzXN8Mx3sl8VguhM+NyLHZMWPcXDpG51QTgy
-	OEM5F0lxygsrVeREGDrueQIbPZGY=
-X-Google-Smtp-Source: AGHT+IHBDYC2n71XP7WOuLCEc5J/fR/L9KPq4RQs/MbDRpyTSl0Iy+I8EcqM5V65ejYgeqpob2OgmskIn0fzTVIGW24=
-X-Received: by 2002:a05:6e02:1387:b0:36a:3f20:8cb with SMTP id
- e9e14a558f8ab-36cc14ae0dbmr18245525ab.18.1715308046371; Thu, 09 May 2024
- 19:27:26 -0700 (PDT)
+        bh=21VKHMMaZA0kpkZw9wZiu6Ve2UlBKMEGNlaolOO9V6A=;
+        b=FfKQ8iSbQKjC+1EJt7HOFpjkL5TlLw9c/PJ+cO7g861SPoDgKYWznL5SKEjdozbxoA
+         TVXBJ7QUPSpQ620cZcIreDifyO1nUEGC+wPHkpbxV+Dew65SpPdjuhgDCI1405c8MVV6
+         39h3+zlZjwlCtaSrOkWMiSuN6RfynDODe7Zmv4Sa1kJ1E1ri/21BOpAmuDwQfTEgwwiJ
+         MqVOxsYSthWbaBm1xNFN3zw39cZG6g58OaNbFTghxRMITkwBjT709WztgfbbdJHcQCSX
+         uNSnirUSTrcvoFP/0chZ4aAAYfUDKCOyYLnjcGrSBl89CkQU4XBTGQrzq1T7PEihAqhE
+         EUDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9SkoPp2r/rQSPu90xIL9cpw6VOoW+QjSbKB1TdMIvrMO/1JZDtyEAa0k1xWrSuHp2nVvKPW5gDiIt5gzDqE/bY2x5znyzW1hdC8b8fg==
+X-Gm-Message-State: AOJu0Yx6OSmRcQYDqxggsw35qgOi2yyGSemUIuaiO87387dbHLvQKOKR
+	tJB7Qzr8/6+E1+MiYwsfsfUhzPaXn3Kr5b4C36ftx9OkEiFCPKXQdwWbuo3pY047FZNrKLzE91H
+	hlKk5/7a+nE2dUjT10sEZ/lE2iwU=
+X-Google-Smtp-Source: AGHT+IGrr4iwZg6NUnOgkVHX9/Croov3vFT4FOj9bA67E1Jv8+1P0qtMgoPO/Vex1YuXlIlPwX+ZWDLIR3wv6gRTbps=
+X-Received: by 2002:a05:6e02:1d83:b0:36c:47df:5922 with SMTP id
+ e9e14a558f8ab-36cc14e12bemr19098315ab.29.1715308222256; Thu, 09 May 2024
+ 19:30:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <1715223460-32662-1-git-send-email-shengjiu.wang@nxp.com>
- <1715223460-32662-3-git-send-email-shengjiu.wang@nxp.com> <20240509-repurpose-dumping-156b57c25960@spud>
-In-Reply-To: <20240509-repurpose-dumping-156b57c25960@spud>
+ <1715223460-32662-2-git-send-email-shengjiu.wang@nxp.com> <20240509-phonics-wound-58d3435165f0@spud>
+In-Reply-To: <20240509-phonics-wound-58d3435165f0@spud>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 10 May 2024 10:27:15 +0800
-Message-ID: <CAA+D8AOkDbj_QsF9VescuAfFjKcB8FnOXqwjXVrrBM1Ck4ut4Q@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ASoC: dt-bindings: fsl,xcvr: Add two PLL clock sources
+Date: Fri, 10 May 2024 10:30:11 +0800
+Message-ID: <CAA+D8AOn=fPmUHthSRZeAYSpA3mCCdQQAT2SmqjAALo8nRPHsQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] ASoC: dt-bindings: fsl,xcvr: Add compatible string
+ for i.MX95
 To: Conor Dooley <conor@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -83,62 +84,45 @@ Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, alsa-devel@alsa-project.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 10, 2024 at 1:14=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
+On Fri, May 10, 2024 at 1:11=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
 te:
 >
-> On Thu, May 09, 2024 at 10:57:38AM +0800, Shengjiu Wang wrote:
-> > Add two PLL clock sources, they are the parent clocks of the root clock
-> > one is for 8kHz series rates, named as 'pll8k', another one is for
-> > 11kHz series rates, named as 'pll11k'. They are optional clocks,
-> > if there are such clocks, then the driver can switch between them to
-> > support more accurate sample rates.
-> >
-> > As 'pll8k' and 'pll11k' are optional, then add 'minItems: 4' for
-> > clocks and clock-names properties.
+> On Thu, May 09, 2024 at 10:57:37AM +0800, Shengjiu Wang wrote:
+> > Add compatible string "fsl,imx95-xcvr" for i.MX95 platform.
 >
-> Despite the detail given here in the commit message, the series this is
-> appearing in and one of the driver patches makes me a bit "suspicious"
-> of this patch. Are these newly added clocks available on all devices, or
-> just on the imx95, or?
+> That's apparent from the diff. Why is it not compatible with existing
+> devices?
 
-These newly added clocks are only available for the imx95 XCVR.
+i.MX8MP:  There is PHY and support eARC, ARC, SPDIF
+i.MX93: There is no PHY and support SPDIF only
+i.MX95: There is PHY (PHY is different with i.MX8MP),  only support SPDIF.
+
+Will add such info in the commit message.
 
 Best regards
-Shengjiu Wang
+Shengjiu
 >
-> Thanks,
+> Cheers,
 > Conor.
 >
 > >
 > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > > ---
-> >  Documentation/devicetree/bindings/sound/fsl,xcvr.yaml | 6 ++++++
-> >  1 file changed, 6 insertions(+)
+> >  Documentation/devicetree/bindings/sound/fsl,xcvr.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
 > > diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Do=
 cumentation/devicetree/bindings/sound/fsl,xcvr.yaml
-> > index 1c74a32def09..c4660faed404 100644
+> > index 0eb0c1ba8710..1c74a32def09 100644
 > > --- a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
 > > +++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
-> > @@ -50,6 +50,9 @@ properties:
-> >        - description: PHY clock
-> >        - description: SPBA clock
-> >        - description: PLL clock
-> > +      - description: PLL clock source for 8kHz series
-> > +      - description: PLL clock source for 11kHz series
-> > +    minItems: 4
+> > @@ -22,6 +22,7 @@ properties:
+> >      enum:
+> >        - fsl,imx8mp-xcvr
+> >        - fsl,imx93-xcvr
+> > +      - fsl,imx95-xcvr
 > >
-> >    clock-names:
-> >      items:
-> > @@ -57,6 +60,9 @@ properties:
-> >        - const: phy
-> >        - const: spba
-> >        - const: pll_ipg
-> > +      - const: pll8k
-> > +      - const: pll11k
-> > +    minItems: 4
-> >
-> >    dmas:
+> >    reg:
 > >      items:
 > > --
 > > 2.34.1
