@@ -1,71 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB988C21BC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:11:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2547D8C21FF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 12:23:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b8fMB31u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sN7FaBVL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VbPm55Mbsz3dWG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 20:11:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VbQ2Y4thcz3fmP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 May 2024 20:23:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b8fMB31u;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sN7FaBVL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbQ1n2RQVz3fQj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 20:22:53 +1000 (AEST)
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4VbQ1n1VX3z4x2g
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 20:22:53 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4VbQ1n1DP2z4x2d; Fri, 10 May 2024 20:22:53 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sN7FaBVL;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VbPjR40Rjz3cYp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 May 2024 20:08:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715335724; x=1746871724;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pYTxNr/L4Gjfg/Z/BGNiuJOEbWyvLqpfs+1c7rEX78Q=;
-  b=b8fMB31uhMawYPMxnGcz8lOvKOF4eHvOUVxyEGHOmiI/gWQvVyjnwm12
-   niuOLLI+DhiAeTrp8b06QfpVmCae8iPbaVHG9gPMuul1DljMfXbGtJMLr
-   AVAtCEiU3AnC5d1olvWm17wCaqoZXSXzR1ZlvB44DfP1isaHDzFEYd0pW
-   xPsQfhipfiK3cTqAKYEBjOrPMsCJCuydDxqwFyJJ/hFl040NT2bnGOuDg
-   EslTRvq+OMMVZXJs6tUIhwoRVJ43siCrrl/ZzuZXQj5wxQPsumhTy18ya
-   hYc6ChQlBzKSX1v4xDfolCjRIvhJ7/ZkEZ4OvormX2V0BCzNaExg2QIqC
-   w==;
-X-CSE-ConnectionGUID: M5fPV9mZRCi28kqjuOLWww==
-X-CSE-MsgGUID: YNLtu7mfQPSEwzaSrDfDUg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="33819874"
-X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; 
-   d="scan'208";a="33819874"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 03:08:41 -0700
-X-CSE-ConnectionGUID: ZYrlwfHdSGe7z9FmAwQgvQ==
-X-CSE-MsgGUID: F/V7B8E1RuWHq3yMYoA0dw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; 
-   d="scan'208";a="29511653"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.85])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 03:08:37 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: linux-pci@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 7/7] PCI: Create helper to print TLP Header and Prefix Log
-Date: Fri, 10 May 2024 13:07:30 +0300
-Message-Id: <20240510100730.18805-8-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240510100730.18805-1-ilpo.jarvinen@linux.intel.com>
-References: <20240510100730.18805-1-ilpo.jarvinen@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4VbQ1m4pXGz4wc7;
+	Fri, 10 May 2024 20:22:52 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44AAHQiC025196;
+	Fri, 10 May 2024 10:22:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=RQY9xdSDULm7ThP7RW+sY3PMWk7KpJpK2GmRpQtVWpw=;
+ b=sN7FaBVLKLf8550QGoc9952ljFHzY4ylE3Iu0jjyYg75euSg6osKOJPDZEXxp37nzJ27
+ LU29AGfZ17o6QJR1KsBcuyxSvknoACY47OcHWqOfWeqDPVISlsW/ZRkyu55kDUnuBEsM
+ hYVJkxgqm1dcft9VWmIzpAZ59tDr44FkEcZTthAAeyGTQ/7JPQZlCuIsVisfHKJGs5sm
+ 91hRZWoURn9+kfM7O85SxX4VLjljK9fMoV+RBNbmwFdXkhdpuv+2CKymWz1H24l2MFbr
+ EQY9EqJU59HNAwV4zdHRADLY5ym373bJMug52Xgb18bOx0PMvU/7Hx4DEt/ECx03Dhg1 XQ== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y1hpmr0bj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 May 2024 10:22:49 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44A79L6x017557;
+	Fri, 10 May 2024 10:22:49 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xysht8kvs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 May 2024 10:22:48 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44AAMhKE49086858
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 May 2024 10:22:45 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2091B20043;
+	Fri, 10 May 2024 10:22:43 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 272DD20040;
+	Fri, 10 May 2024 10:22:40 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.57.122])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 May 2024 10:22:39 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2 0/2] powerpc: kexec fixes
+Date: Fri, 10 May 2024 15:52:33 +0530
+Message-ID: <20240510102235.2269496-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kmgkAfgjdi0qQj7WLhtoJDwRW4EOQqwz
+X-Proofpoint-ORIG-GUID: kmgkAfgjdi0qQj7WLhtoJDwRW4EOQqwz
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-10_07,2024-05-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 mlxlogscore=630 spamscore=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405100074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,140 +104,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Aditya Gupta <adityag@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add pcie_print_tlp_log() helper to print TLP Header and Prefix Log.
-Print End-End Prefixes only if they are non-zero.
+Patch series fixes two kexec issues.
 
-Consolidate the few places which currently print TLP using custom
-formatting.
+01/02: Update extra size calculation for kexec FDT to avoid kexec load
+failure due to FDT_ERR_NOSPACE while including CPU nodes added post
+boot and reserved memory ranges.
 
-The first attempt used pr_cont() instead of building a string first but
-it turns out pr_cont() is not compatible with pci_err() and prints on a
-separate line. When I asked about this, Andy Shevchenko suggested
-pr_cont() should not be used in the first place (to eventually get rid
-of it) so pr_cont() is now replaced with building the string first.
+02/02: Fix update_cpus_node/core_64.c function to include missing device
+nodes under /cpus node with device_type != "cpu".
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- drivers/pci/pci.h      |  2 ++
- drivers/pci/pcie/aer.c | 10 ++--------
- drivers/pci/pcie/dpc.c |  5 +----
- drivers/pci/pcie/tlp.c | 31 +++++++++++++++++++++++++++++++
- 4 files changed, 36 insertions(+), 12 deletions(-)
+Note: this patch series is rebased on top of the linux-next/master,
+tag: next-20240509 to avoid the conflict with the below patch series:
+https://lore.kernel.org/all/171509287314.62008.11812494124513471250.b4-ty@ellerman.id.au/
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 3d9034d89be8..bf13d2fc4bb7 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -424,6 +424,8 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
- 		      unsigned int tlp_len, struct pcie_tlp_log *log);
- unsigned int aer_tlp_log_len(struct pci_dev *dev);
- unsigned int dpc_tlp_log_len(struct pci_dev *dev);
-+void pcie_print_tlp_log(const struct pci_dev *dev,
-+			const struct pcie_tlp_log *log, const char *pfx);
- #endif	/* CONFIG_PCIEAER */
- 
- #ifdef CONFIG_PCIEPORTBUS
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index ecc1dea5a208..efb9e728fe94 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -664,12 +664,6 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 	}
- }
- 
--static void __print_tlp_header(struct pci_dev *dev, struct pcie_tlp_log *t)
--{
--	pci_err(dev, "  TLP Header: %08x %08x %08x %08x\n",
--		t->dw[0], t->dw[1], t->dw[2], t->dw[3]);
--}
--
- static void __aer_print_error(struct pci_dev *dev,
- 			      struct aer_err_info *info)
- {
-@@ -724,7 +718,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	__aer_print_error(dev, info);
- 
- 	if (info->tlp_header_valid)
--		__print_tlp_header(dev, &info->tlp);
-+		pcie_print_tlp_log(dev, &info->tlp, "  ");
- 
- out:
- 	if (info->id && info->error_dev_num > 1 && info->id == id)
-@@ -796,7 +790,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 			aer->uncor_severity);
- 
- 	if (tlp_header_valid)
--		__print_tlp_header(dev, &aer->header_log);
-+		pcie_print_tlp_log(dev, &aer->header_log, "  ");
- 
- 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
- 			aer_severity, tlp_header_valid, &aer->header_log);
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 5056cc6961ec..598f74384471 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -220,10 +220,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
- 	pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG,
- 			  cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG,
- 			  dpc_tlp_log_len(pdev), &tlp_log);
--	pci_err(pdev, "TLP Header: %#010x %#010x %#010x %#010x\n",
--		tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
--	for (i = 0; i < pdev->dpc_rp_log_size - 5; i++)
--		pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, tlp_log.prefix[i]);
-+	pcie_print_tlp_log(pdev, &tlp_log, "");
- 
- 	if (pdev->dpc_rp_log_size < 5)
- 		goto clear_status;
-diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-index 3615ca520c9a..59a28485696f 100644
---- a/drivers/pci/pcie/tlp.c
-+++ b/drivers/pci/pcie/tlp.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/aer.h>
-+#include <linux/array_size.h>
- #include <linux/pci.h>
- #include <linux/string.h>
- 
-@@ -74,3 +75,33 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
- 
- 	return 0;
- }
-+
-+/**
-+ * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
-+ * @dev: PCIe device
-+ * @log: TLP Log structure
-+ * @pfx: String prefix (for print out indentation)
-+ *
-+ * Prints TLP Header and Prefix Log information held by @log.
-+ */
-+void pcie_print_tlp_log(const struct pci_dev *dev,
-+			const struct pcie_tlp_log *log, const char *pfx)
-+{
-+	char buf[(10 + 1) * (4 + ARRAY_SIZE(log->prefix)) + 14 + 1];
-+	unsigned int i;
-+	int len;
-+
-+	len = scnprintf(buf, sizeof(buf), "%#010x %#010x %#010x %#010x",
-+			log->dw[0], log->dw[1], log->dw[2], log->dw[3]);
-+
-+	if (log->prefix[0])
-+		len += scnprintf(buf + len, sizeof(buf) - len, " E-E Prefixes:");
-+	for (i = 0; i < ARRAY_SIZE(log->prefix); i++) {
-+		if (!log->prefix[i])
-+			break;
-+		len += scnprintf(buf + len, sizeof(buf) - len,
-+				 " %#010x", log->prefix[i]);
-+	}
-+
-+	pci_err(dev, "%sTLP Header: %s\n", pfx, buf);
-+}
+Changelog:
+==========
+
+v2:
+  - Initialize local variable `cpu_nodes` before using it. 01/02
+  - Rebased on top of linux-next/mater tag: next-20240509.
+
+v1:
+  - https://lore.kernel.org/all/20240508130558.1939304-1-sourabhjain@linux.ibm.com/
+
+
+Cc: Aditya Gupta <adityag@linux.ibm.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+
+Sourabh Jain (2):
+  powerpc/kexec_file: fix extra size calculation for kexec FDT
+  powerpc/kexec_file: fix cpus node update to FDT
+
+ arch/powerpc/include/asm/kexec.h  |  6 ++--
+ arch/powerpc/kexec/core_64.c      | 53 +++++++++++++++++++++----------
+ arch/powerpc/kexec/elf_64.c       | 12 +++++--
+ arch/powerpc/kexec/file_load_64.c | 53 +++++++++++++------------------
+ 4 files changed, 70 insertions(+), 54 deletions(-)
+
 -- 
-2.39.2
+2.44.0
 
