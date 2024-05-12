@@ -2,69 +2,125 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EC58C34DF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 May 2024 04:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C49A18C3826
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 May 2024 21:26:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VXWLBZrH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=OuZ7VBPm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VcRHZ4J14z3cXN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 May 2024 12:23:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VcszT4V8Bz3bmQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 May 2024 05:25:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VXWLBZrH;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=OuZ7VBPm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VcRGn4Mv0z30Wb
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 May 2024 12:22:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715480562; x=1747016562;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hbioi7V1f1cZXo2yMQSfPzaaf4jKs+4bV23oY9X2zb4=;
-  b=VXWLBZrHg+nxIiikOKjDVehW3+emtDLqzmzcVtV2byVGxQmH2B60CNUc
-   g/OmHE8rmYap/nJEYVllEEZ+q01r/EivLvgQ9QH6y2YCR7Jma+nOOlz34
-   Xk9dcxgD4m2W+O5Yw/oQ5Lb+Q+dKe89uhI7TUywQdS/5LIviZdAs3rXRx
-   2xvKFwxdlXtWjibNN4PTrCuN75DaAxPckREgpPYmFcylSW81kxWcOypVU
-   VA2XXxzE3+hrqQZTOGDaVXNJCW9aMcQ41SEH++XnPNeT5AXPjVmFF41FA
-   MAfSCqTjG6xB5+GZO5QStDQ51/slGPZ019Kr5gcdhwgf0FfMIawNLhG0p
-   w==;
-X-CSE-ConnectionGUID: kIrtM0vWQFuxNtdRZNvPEg==
-X-CSE-MsgGUID: Kl7PnV8nTCq6XnjNNEd5cg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11070"; a="11485872"
-X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
-   d="scan'208";a="11485872"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 19:22:35 -0700
-X-CSE-ConnectionGUID: dUm2vO+XTl2OKDpjlv/KbA==
-X-CSE-MsgGUID: h833Yx6DRkCYmhL9HkX1Gw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
-   d="scan'208";a="34541891"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 11 May 2024 19:22:33 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s5yr9-00084F-0a;
-	Sun, 12 May 2024 02:22:31 +0000
-Date: Sun, 12 May 2024 10:22:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anjali K <anjalik@linux.ibm.com>, mpe@ellerman.id.au,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/perf: set cpumode flags using sample address in
- the PPMU_ARCH_31 case
-Message-ID: <202405121056.KfeNJMXV-lkp@intel.com>
-References: <20240511075344.1393631-1-anjalik@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vcsyg2XQmz30VH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 May 2024 05:25:11 +1000 (AEST)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240512192459euoutp02821aac07226f8a2db5194d73dcf99b4e~O1ESVsCJR2437724377euoutp02b;
+	Sun, 12 May 2024 19:24:59 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240512192459euoutp02821aac07226f8a2db5194d73dcf99b4e~O1ESVsCJR2437724377euoutp02b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1715541899;
+	bh=AhqJjtjzxCOMPbPhOlZJHNiQIPD1qhMc2zICfWrrYgw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=OuZ7VBPmkb7GFFVnzlX4Xu3m7hSAa0rrviG0vbIWnIKgU+TJgw9zH8nxqiur/bL6o
+	 M7OMI4tz1/mWTWbqXXvIrwiyjKVk4zjtChcHQasIaqAhOS2cQTQAMVbVOIHdza6akW
+	 58y0JTV9EOsvNU8hQT438Y8v6wllbKKjS29Q7FR8=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240512192458eucas1p2eab8e039a414a72a34a339fbe5ca9e81~O1ER0VNb73073930739eucas1p2D;
+	Sun, 12 May 2024 19:24:58 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges2new.samsung.com (EUCPMTA) with SMTP id EF.31.09875.A8711466; Sun, 12
+	May 2024 20:24:58 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240512192457eucas1p1c2e524298e130efc58f1e66cc0f38039~O1ERRMgkM1116711167eucas1p1G;
+	Sun, 12 May 2024 19:24:57 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240512192457eusmtrp17aafdb49baa334c3f4286e36fb7018cf~O1ERQYpCs2380323803eusmtrp1O;
+	Sun, 12 May 2024 19:24:57 +0000 (GMT)
+X-AuditID: cbfec7f4-11bff70000002693-6e-6641178a9d21
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id BF.A2.08810.98711466; Sun, 12
+	May 2024 20:24:57 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240512192457eusmtip1388a0eba49a1f62b378d13466cb997f2~O1EQ_bBsU2825928259eusmtip1W;
+	Sun, 12 May 2024 19:24:57 +0000 (GMT)
+Received: from localhost (106.210.248.15) by CAMSVWEXC02.scsc.local
+	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+	Sun, 12 May 2024 20:24:56 +0100
+Date: Sun, 12 May 2024 21:24:51 +0200
+From: Joel Granados <j.granados@samsung.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v3 00/11] sysctl: treewide: constify ctl_table argument
+ of sysctl handlers
+Message-ID: <20240512192451.wpswazhpualwvt63@joelS2.panther.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="3bxd2gyoppot6odw"
 Content-Disposition: inline
-In-Reply-To: <20240511075344.1393631-1-anjalik@linux.ibm.com>
+In-Reply-To: <202405080959.104A73A914@keescook>
+X-Originating-IP: [106.210.248.15]
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
+	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WSe0xTVxzHPbe395YmdZeKcAYbC+Ux2BTmHvHsIY/FmJtlf2CMMdsSZ5XL
+	SyistcBcjIUyQV5jQIQiw4IMCCDOUjsGKA6hDKjCEBjbSHXlIeE1nvIo1LXcupnsv8/ve77f
+	c76/5PA4wjHClRclOcNIJeIYEcHHdfr13r0ZLiHhb6xM7EbJejUXLbV3Ekh3NRNDWz+lcZBW
+	bwRoXG8ikSEzFjX3rGCoT5fDRZrRIS5qudWFo9Lr6wA9aCohkLHuKRf13enhooGb9TiaaMvG
+	kW4plUC5ZUoOGldPc9F8lolA7dfv4ahps5FE5rUJDJlXLVykvLLIQcO54wDp1c4ot74bR/cb
+	lrjB7vRlxa843V0OabVGTmtqLhK0ZjGPpBsqztOTDSpA9xaVAXpo+CFOz5p/wei+yhmCXtK4
+	099k6slQwaf8D8KYmKgERhoQeIIfqTIo8PgsmNRVs4orwGWnDODAg9Tb8PbjOSID8HlCqhrA
+	ztRmkh2WAayusAB2WAIw+eoc91nEMJoGbCykqgCsMYj/NRkKjPaEFsC1oRuYzYVT3rBFWbud
+	IKg9sHdmhGNjJ6u+2q/cZg7VR8KR7Agb76JOQO33+dt+ARUMU8bZlwWUI+xSjeGsPwnez6u2
+	3s+zshussvBssgMVAMfGp+xFRVCpzwIsn4Pd2j8wWzdIzfOh6cldkj04CEtqpu2BXXCqU2vX
+	X4I9+Vk4G8gHsNUyT7JDLYCVySsY63ofpg6M2RMhMN3Yz7E1gtROODzryBbdCfN0hXZZANMv
+	CFm3D6w1zuC5wLP4udWKn1ut+L/VWNkPfv2jmfyf/DqsLJvmsHwA1tf/jasBWQNcGLksNoKR
+	vSlhEv1l4liZXBLhfyouVgOsn7/H0rncCKqmFvzbAMYDbcDLGjb9UNsHXHFJnIQROQmCvwgK
+	FwrCxF+eZaRxn0vlMYysDbjxcJGLwDvsFUZIRYjPMKcZJp6RPjvFeA6uCmzHvqiU8FvYd96H
+	g8JPYh+fDD06VXDqiDzYmO3lEV2beExsuSJ8ITrvEwTvlW0dLowMyvnsnO+Fjeabfx6YLOrw
+	6Z289kCj9j7/qET5UbFh3dFXdWe01OP0UEvb/Ldp6BLY/2GIc3nZJc+6rT0p8e+ZWvyOuyx4
+	FokHkjbe2TscTYcOXiTdf08sFGrbl1s7DpW/vPXWJuocTvfFGnHzXGu4n/Pi/oQCv8SHhXfX
+	NmYrWr3cyh0bicEOadSGT96Nx90pHuan8oRWRWipOeNaw4uBC/Rt8ufN9jpw6N011Ygq4eyj
+	/h1bAYM5Ft7u40fmfvvKoTDIL9D4l3azaa4+RzGoffKqCJdFive9xpHKxP8Aj3WNUHcEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrLKsWRmVeSWpSXmKPExsVy+t/xu7qd4o5pBj2L9S0ajy1gtfh85Dib
+	xbbF3UwWf3e2M1tsOXaP0eLpsUfsFme6cy12n/7KZHFhWx+rxabH11gt9uw9yWIxb/1PRovL
+	u+awWdxb85/V4sKB06wWV7auY7F4dqiXxWLb5xY2iwkLm5ktni54zWrxoecRm8WR9WdZLHb9
+	2cFu8fvHMyaL39//sVo0z//EbHFjwlNGi2MLxCwmrDvFYnFu82dWBzmP2Q0XWTxOLZLwWLCp
+	1GPTqk42j02fJrF7bF5S7/Fi80xGj/MzFjJ6XLtxn8Xj7e8TTB4Xlr1h8/i8Sc6jv/sYewBv
+	lJ5NUX5pSapCRn5xia1StKGFkZ6hpYWekYmlnqGxeayVkamSvp1NSmpOZllqkb5dgl7G+SuT
+	WAq6JCq+TbRsYJwp0sXIySEhYCJx5nE7I4gtJLCUUWLtCVOIuIzExi9XWSFsYYk/17rYuhi5
+	gGo+Mko8v3qDCcLZwijR3dzNDFLFIqAqsad5NdgkNgEdifNv7oDFRYDi3y81g9nMAhfYJe70
+	poPYwgIJEluWTgar5xVwkGh6+o4V4oo3jBJrpgRDxAUlTs58wgLRWyYx+9UX9i5GDiBbWmL5
+	Pw6QMKeAvsSTp6+gDlWSaD7Wwwhh10p8/vuMcQKj8Cwkk2YhmTQLYRKEqS6xfp4QiihIsbbE
+	soWvmSFsW4l1696zLGBkX8UoklpanJueW2yoV5yYW1yal66XnJ+7iRGY9rYd+7l5B+O8Vx/1
+	DjEycTAeYlQB6ny0YfUFRimWvPy8VCURXodC+zQh3pTEyqrUovz4otKc1OJDjKbAMJzILCWa
+	nA9MyHkl8YZmBqaGJmaWBqaWZsZK4ryeBR2JQgLpiSWp2ampBalFMH1MHJxSDUwn/0RUVR94
+	fP3czyXKa72Wtdg8WyUpw/jPdFXWjGqVA7+ni7V/3uQ5+96n7aLvdy47sltYLmPi/eVpYmtS
+	En2cZS4VW+8Wvv7b+vcNYRtFrl5tsZ+bJgS9/nY8MchyVwgnc9SMAxfyVz/rerUxunpq2bm0
+	KeINqm/b7ZzUbmTdaZvOJFS4Q810uv492alZjTvNQiW1JT6lXtyQYLcsY8N2BfFgs6q35wTc
+	ZDMncN/se/+wZtcGidvcZo1uiqm29/f+V5d6c3mq39SqXeKtX1/ZRbmcfWd1913vt7Zttfdv
+	LfKcZfPt/lI+91vX9nEzzq250ODdrsWzOy5BKDlYcc5j7p/MNXGrrp7UWiQQEjxfiaU4I9FQ
+	i7moOBEAd9JerBAEAAA=
+X-CMS-MailID: 20240512192457eucas1p1c2e524298e130efc58f1e66cc0f38039
+X-Msg-Generator: CA
+X-RootMTR: 20240508171141eucas1p24462cdbd31dc10d74c5c62478cd6a9e0
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240508171141eucas1p24462cdbd31dc10d74c5c62478cd6a9e0
+References: <20240423-sysctl-const-handler-v3-0-e0beccb836e2@weissschuh.net>
+	<20240424201234.3cc2b509@kernel.org>
+	<CGME20240508171141eucas1p24462cdbd31dc10d74c5c62478cd6a9e0@eucas1p2.samsung.com>
+	<202405080959.104A73A914@keescook>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,85 +132,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: anjalik@linux.ibm.com, kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, oe-kbuild-all@lists.linux.dev
+Cc: Dave Chinner <david@fromorbit.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Eric Dumazet <edumazet@google.com>, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-sctp@vger.kernel.org, lvs-devel@vger.kernel.org, coreteam@netfilter.org, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Anjali,
+--3bxd2gyoppot6odw
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-kernel test robot noticed the following build warnings:
+On Wed, May 08, 2024 at 10:11:35AM -0700, Kees Cook wrote:
+> On Wed, Apr 24, 2024 at 08:12:34PM -0700, Jakub Kicinski wrote:
+> > On Tue, 23 Apr 2024 09:54:35 +0200 Thomas Wei=DFschuh wrote:
+> > > The series was split from my larger series sysctl-const series [0].
+> > > It only focusses on the proc_handlers but is an important step to be
+> > > able to move all static definitions of ctl_table into .rodata.
+> >=20
+> > Split this per subsystem, please.
+>=20
+Thx for stepping in to move this forward.
 
-[auto build test WARNING on dd5a440a31fae6e459c0d6271dddd62825505361]
+> I've done a few painful API transitions before, and I don't think the
+> complexity of these changes needs a per-subsystem constification pass. I
+> think this series is the right approach, but that patch 11 will need
+> coordination with Linus. We regularly do system-wide prototype changes
+> like this right at the end of the merge window before -rc1 comes out.
+This would be more for 6.11, as I expect the other subsystems to freeze
+for the merge window.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Anjali-K/powerpc-perf-set-cpumode-flags-using-sample-address-in-the-PPMU_ARCH_31-case/20240511-202416
-base:   dd5a440a31fae6e459c0d6271dddd62825505361
-patch link:    https://lore.kernel.org/r/20240511075344.1393631-1-anjalik%40linux.ibm.com
-patch subject: [PATCH] powerpc/perf: set cpumode flags using sample address in the PPMU_ARCH_31 case
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240512/202405121056.KfeNJMXV-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240512/202405121056.KfeNJMXV-lkp@intel.com/reproduce)
+>=20
+> The requirements are pretty simple: it needs to be a obvious changes
+> (this certainly is) and as close to 100% mechanical as possible. I think
+> patch 11 easily qualifies. Linus should be able to run the same Coccinelle
+> script and get nearly the same results, etc. And all the other changes
+The coccinelle script is not enough. But that patch 11 should still be
+trivial enough to go in before -rc1. right?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405121056.KfeNJMXV-lkp@intel.com/
+> need to have landed. This change also has no "silent failure" conditions:
+> anything mismatched will immediately stand out.
+>=20
+> So, have patches 1-10 go via their respective subsystems, and once all
+> of those are in Linus's tree, send patch 11 as a stand-alone PR.
+Thomas: I can take the sysctl subsystem related patches ("[PATCH v3
+10/11] sysctl: constify ctl_table arguments of utility function"), while
+you push the others to their respective subsystems (If you have not
+already)
 
-All warnings (new ones prefixed by >>):
+>=20
+> (From patch 11, it looks like the seccomp read/write function changes
+> could be split out? I'll do that now...)
+I saw that that patch has the necessary reviews. Get back to me if you
+need me to take a quick look at it.
 
-   arch/powerpc/perf/core-book3s.c: In function 'perf_get_misc_flags':
->> arch/powerpc/perf/core-book3s.c:270:13: warning: unused variable 'marked' [-Wunused-variable]
-     270 |         int marked = mmcra & MMCRA_SAMPLE_ENABLE;
-         |             ^~~~~~
+--=20
 
+Joel Granados
 
-vim +/marked +270 arch/powerpc/perf/core-book3s.c
+--3bxd2gyoppot6odw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  265  
-98fb1807b97e3e arch/powerpc/kernel/perf_counter.c Paul Mackerras         2009-06-17  266  static inline u32 perf_get_misc_flags(struct pt_regs *regs)
-98fb1807b97e3e arch/powerpc/kernel/perf_counter.c Paul Mackerras         2009-06-17  267  {
-33904054b40832 arch/powerpc/perf/core-book3s.c    Michael Ellerman       2013-04-25  268  	bool use_siar = regs_use_siar(regs);
-d9f7088dd6d885 arch/powerpc/perf/core-book3s.c    Athira Rajeev          2020-10-21  269  	unsigned long mmcra = regs->dsisr;
-d9f7088dd6d885 arch/powerpc/perf/core-book3s.c    Athira Rajeev          2020-10-21 @270  	int marked = mmcra & MMCRA_SAMPLE_ENABLE;
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  271  	unsigned long siar = mfspr(SPRN_SIAR);
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  272  	unsigned long addr;
-98fb1807b97e3e arch/powerpc/kernel/perf_counter.c Paul Mackerras         2009-06-17  273  
-75382aa72f0682 arch/powerpc/perf/core-book3s.c    Anton Blanchard        2012-06-26  274  	if (!use_siar)
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  275  		return perf_flags_from_msr(regs);
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  276  
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  277  	/*
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  278  	 * If we don't have flags in MMCRA, rather than using
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  279  	 * the MSR, we intuit the flags from the address in
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  280  	 * SIAR which should give slightly more reliable
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  281  	 * results
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  282  	 */
-cbda6aa10bd2d9 arch/powerpc/perf/core-book3s.c    Michael Ellerman       2013-05-15  283  	if (ppmu->flags & PPMU_NO_SIPR) {
-a2391b35f1d9d5 arch/powerpc/perf/core-book3s.c    Madhavan Srinivasan    2016-12-24  284  		if (is_kernel_addr(siar))
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  285  			return PERF_RECORD_MISC_KERNEL;
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  286  		return PERF_RECORD_MISC_USER;
-1ce447b90f3e71 arch/powerpc/perf/core-book3s.c    Benjamin Herrenschmidt 2012-03-26  287  	}
-98fb1807b97e3e arch/powerpc/kernel/perf_counter.c Paul Mackerras         2009-06-17  288  
-7abb840b496f83 arch/powerpc/kernel/perf_event.c   Michael Neuling        2009-10-14  289  	/* PR has priority over HV, so order below is important */
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  290  	if (regs_sipr(regs)) {
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  291  		if (!(ppmu->flags & PPMU_ARCH_31))
-7abb840b496f83 arch/powerpc/kernel/perf_event.c   Michael Neuling        2009-10-14  292  			return PERF_RECORD_MISC_USER;
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  293  	} else if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
-cdd6c482c9ff9c arch/powerpc/kernel/perf_event.c   Ingo Molnar            2009-09-21  294  		return PERF_RECORD_MISC_HYPERVISOR;
-5682c460264149 arch/powerpc/perf/core-book3s.c    Michael Ellerman       2013-04-25  295  
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  296  	/*
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  297  	 * Check the address in SIAR to identify the
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  298  	 * privilege levels since the SIER[MSR_HV, MSR_PR]
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  299  	 * bits are not set correctly in power10 sometimes
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  300  	 */
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  301  	if (ppmu->flags & PPMU_ARCH_31) {
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  302  		addr = siar ? siar : regs->nip;
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  303  		if (!is_kernel_addr(addr))
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  304  			return PERF_RECORD_MISC_USER;
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  305  	}
-c1c4353f6493af arch/powerpc/perf/core-book3s.c    Anjali K               2024-05-11  306  
-7abb840b496f83 arch/powerpc/kernel/perf_event.c   Michael Neuling        2009-10-14  307  	return PERF_RECORD_MISC_KERNEL;
-98fb1807b97e3e arch/powerpc/kernel/perf_counter.c Paul Mackerras         2009-06-17  308  }
-98fb1807b97e3e arch/powerpc/kernel/perf_counter.c Paul Mackerras         2009-06-17  309  
+-----BEGIN PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmZBF4IACgkQupfNUreW
+QU9xuQv/YFyBb9/xZK9W6ra0XdeKb8z3ZWpkNSHIv3kTsWlpjHIUGjL9mIouwgtX
+ucB2RAOEbwUG/wNKHsedhqti2gFMPnF80bZWiJkwVvBZRx4cuAugLBni1rZLceMm
+OTViVchXY8AlHpbOVVvxbIZDNSK+YVZh+Z4b9dhhmHYbQl/dj9vWFPNSRSH0wQp6
+hi9DrWsZPQ1eidi2uDK7d7VhOARS7U6VB6vL5UV4tjSVLueGaz3lNucP8HMoxa7Q
+jHEXeQelWtXg3jTaoIKF3q6FjulWqte8/D9DaKmbD7WvsHtrVfLeLYITADCwCmul
+yadKXGJy6kxxaEnPBB08M8jVy/o2c+VvWBpgyZlYRwSAShf5cPQOV5uGqBU9cdPf
+sPEZKG+UfmIEAUVTZYPrtvnha1nI4Nz6Ov4OlTz7PLJWAc0aiQKxBZMsnYdz9HMH
+hMZo0JyJNZ0UY4PfA43N223QFB8CD8SeGFCXl2aKBymtgrDOL3PV4IxLh4OsowVy
+pKdwnrKn
+=zOqJ
+-----END PGP SIGNATURE-----
+
+--3bxd2gyoppot6odw--
