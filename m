@@ -1,89 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF248C4EBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 12:12:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6368C4F48
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 12:44:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A7lfD8OZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s0YfS3fI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VdscD0LSmz3cTP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 20:12:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VdtJQ3Q2Hz3cGY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 20:44:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A7lfD8OZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s0YfS3fI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VdsbR0cbfz2yvh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2024 20:12:02 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44EA2vr8006787;
-	Tue, 14 May 2024 10:05:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=gGxQ91Axlxx23byS5Dc2PLh8wMyfpqwYAXQ6C5lw/9c=;
- b=A7lfD8OZI1loLA1j5kjbhnF7QF4MUkISm+EOPVZLjpDKUz0eUHYKOGPP9EgGoZMfhZGG
- CUGYzcrQ6lLVs3a4o25lRLN5rxPQ7uYsDPa89kU+04nfA4Q5+HhLsDvdFH/HzKEBV7ex
- hs/ZSX4FQxA3ACcbOSYtyfUiBwLj3ny3F9WyPEHTy4iE1vaUj2uDDBBoN418lsnWR8wC
- 5bALS6LOHDaYxEncioJ11oWU20f0bsRhcxDfYOooO7ROFQn5zihrRqlgnkUllFQO0Y4J
- kUaTV5MyTYqqn1/td01Jr7gmOQetFmKR11SQYZdO6NDg8kwnJtmHmo8zDCpsY4OgfL+y Ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y45urr09n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 10:05:19 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44EA5JHk010137;
-	Tue, 14 May 2024 10:05:19 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y45urr09j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 10:05:19 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44E9TM7Q029603;
-	Tue, 14 May 2024 10:05:18 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2n7kmeft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 10:05:18 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44EA5CQK45547884
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 May 2024 10:05:14 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6B1A20075;
-	Tue, 14 May 2024 10:05:12 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 57C1F20071;
-	Tue, 14 May 2024 10:05:11 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.in.ibm.com (unknown [9.204.206.66])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 May 2024 10:05:11 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen.n.rao@linux.ibm.com
-Subject: [PATCH] arch/powerpc: Remove the definition of unused cede function
-Date: Tue, 14 May 2024 15:35:03 +0530
-Message-ID: <20240514100507.271681-1-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VdtHf6dgyz2yvs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2024 20:43:26 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id F0B9A61228;
+	Tue, 14 May 2024 10:43:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38261C4AF07;
+	Tue, 14 May 2024 10:43:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715683403;
+	bh=PJLtc52CgWNVdrSsNgEHGl0SbAdysC2zMmcc++VErTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s0YfS3fIDJVU8JEKuKxoi0jyF9bX7Lq1eXONyZpqldx5P9BR9EpGTOo+4QR901dVd
+	 1/H+S61zWWwWROa+0oZq2uI6445nS+zyPy9pLEDgr/iV7l/bAXZ26YksRsbsfjjJ6j
+	 WjJyfY0lPRmWlKdcskxWxQUk9KZH3jAm0nlaJFGeKWikv0r+zigTzBJExtGegSmBX2
+	 BLKgB/8/3arMGRtCV90OdlGhYJcBPb8YEaerwbsLoK9v6gg6YRO1wK/wPrIp3zm9rS
+	 viZY4Fks9pt31kJHPWPs9dXsLXc5wdkFutb/SK7o2el2hcNdcuRD4xd1GaVYrRmKUA
+	 ab9OSpF2I1Kiw==
+Date: Tue, 14 May 2024 16:12:19 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 3/5] powerpc/64: Convert patch_instruction() to
+ patch_u32()
+Message-ID: <u4irwuytaii74mmblujmnb67222dgybo7kb7ywnzxv6tluqyei@jefh52acwfic>
+References: <20240325055302.876434-1-bgray@linux.ibm.com>
+ <20240325055302.876434-4-bgray@linux.ibm.com>
+ <xjnc3usfjrn3pqitpvvs4fkackuzcrnguqmqm2otocnhtrxmux@cd4d7bsyoweq>
+ <8d6ba809067eb332e1c1a8e6103303cd4814df41.camel@linux.ibm.com>
+ <1cf1c19a-c070-4d86-9351-85e8e58d3180@csgroup.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mbN2y1aKuSdvXTmoMoRmioguwuAxtATH
-X-Proofpoint-GUID: RKI_YwUqWiqI5eskDM1V7UKXBGt5gC5o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-14_04,2024-05-10_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 spamscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=598 adultscore=0 phishscore=0 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405140071
+In-Reply-To: <1cf1c19a-c070-4d86-9351-85e8e58d3180@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,47 +66,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove extended_cede_processor() definition as it has no callers since
-commit 48f6e7f6d948("powerpc/pseries: remove cede offline state for CPUs")
+On Tue, May 14, 2024 at 04:39:30AM GMT, Christophe Leroy wrote:
+> 
+> 
+> Le 14/05/2024 à 04:59, Benjamin Gray a écrit :
+> > On Tue, 2024-04-23 at 15:09 +0530, Naveen N Rao wrote:
+> >> On Mon, Mar 25, 2024 at 04:53:00PM +1100, Benjamin Gray wrote:
+> >>> This use of patch_instruction() is working on 32 bit data, and can
+> >>> fail
+> >>> if the data looks like a prefixed instruction and the extra write
+> >>> crosses a page boundary. Use patch_u32() to fix the write size.
+> >>>
+> >>> Fixes: 8734b41b3efe ("powerpc/module_64: Fix livepatching for RO
+> >>> modules")
+> >>> Link: https://lore.kernel.org/all/20230203004649.1f59dbd4@yea/
+> >>> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> >>>
+> >>> ---
+> >>>
+> >>> v2: * Added the fixes tag, it seems appropriate even if the subject
+> >>> does
+> >>>        mention a more robust solution being required.
+> >>>
+> >>> patch_u64() should be more efficient, but judging from the bug
+> >>> report
+> >>> it doesn't seem like the data is doubleword aligned.
+> >>
+> >> Asking again, is that still the case? It looks like at least the
+> >> first
+> >> fix below can be converted to patch_u64().
+> >>
+> >> - Naveen
+> > 
+> > Sorry, I think I forgot this question last time. Reading the commit
+> > descriptions you linked, I don't see any mention of "entry->funcdata
+> > will always be doubleword aligned because XYZ". If the patch makes it
+> > doubleword aligned anyway, I wouldn't be confident asserting all
+> > callers will always do this without looking into it a lot more.
 
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
- arch/powerpc/include/asm/plpar_wrappers.h | 18 ------------------
- 1 file changed, 18 deletions(-)
+No worries. I was asking primarily to check if you had noticed a 
+specific issue with alignment.
 
-diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
-index b3ee44a40c2f..6431fa1e1cb1 100644
---- a/arch/powerpc/include/asm/plpar_wrappers.h
-+++ b/arch/powerpc/include/asm/plpar_wrappers.h
-@@ -37,24 +37,6 @@ static inline long cede_processor(void)
- 	return plpar_hcall_norets_notrace(H_CEDE);
- }
+As Christophe mentions, the structure is aligned. It is primarily 
+allotted in a separate stubs section for modules. Looking at it closer 
+though, I wonder if we need the below:
+
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index cccb1f78e058..0226d73a0007 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -428,8 +428,11 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
  
--static inline long extended_cede_processor(unsigned long latency_hint)
--{
--	long rc;
--	u8 old_latency_hint = get_cede_latency_hint();
--
--	set_cede_latency_hint(latency_hint);
--
--	rc = cede_processor();
--
--	/* Ensure that H_CEDE returns with IRQs on */
--	if (WARN_ON(IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG) && !(mfmsr() & MSR_EE)))
--		__hard_irq_enable();
--
--	set_cede_latency_hint(old_latency_hint);
--
--	return rc;
--}
--
- static inline long vpa_call(unsigned long flags, unsigned long cpu,
- 		unsigned long vpa)
- {
--- 
-2.45.0
+        /* Find .toc and .stubs sections, symtab and strtab */
+        for (i = 1; i < hdr->e_shnum; i++) {
+-               if (strcmp(secstrings + sechdrs[i].sh_name, ".stubs") == 0)
++               if (strcmp(secstrings + sechdrs[i].sh_name, ".stubs") == 0) {
+                        me->arch.stubs_section = i;
++                       if (sechdrs[i].sh_addralign < 8)
++                               sechdrs[i].sh_addralign = 8;
++               }
+ #ifdef CONFIG_PPC_KERNEL_PCREL
+                else if (strcmp(secstrings + sechdrs[i].sh_name, ".data..percpu") == 0)
+                        me->arch.pcpu_section = i;
+
+> > 
+> > Perhaps a separate series could optimise it with appropriate
+> > justification/assertions to catch bad alignment. But I think leaving it
+> > out of this series is fine because the original works in words, so it's
+> > not regressing anything.
+
+That should be fine.
+
+> 
+> As far as I can see, the struct is 64 bits aligned by definition so 
+> funcdata field is aligned too as there are just 8x u32 before it:
+> 
+> struct ppc64_stub_entry {
+> 	/*
+> 	 * 28 byte jump instruction sequence (7 instructions) that can
+> 	 * hold ppc64_stub_insns or stub_insns. Must be 8-byte aligned
+> 	 * with PCREL kernels that use prefix instructions in the stub.
+> 	 */
+> 	u32 jump[7];
+> 	/* Used by ftrace to identify stubs */
+> 	u32 magic;
+> 	/* Data for the above code */
+> 	func_desc_t funcdata;
+> } __aligned(8);
+> 
+
+Thanks,
+Naveen
 
