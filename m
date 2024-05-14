@@ -1,131 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B08A8C5C59
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 22:33:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC8F8C5CE8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 23:35:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=B26BTArW;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1IRBTVc1;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=B26BTArW;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1IRBTVc1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BTIT9KHw;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BTIT9KHw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vf7Nn66rqz3cPS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 06:33:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vf8lr3FHYz3cVF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 07:35:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=B26BTArW;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1IRBTVc1;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=B26BTArW;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1IRBTVc1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BTIT9KHw;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BTIT9KHw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 363 seconds by postgrey-1.37 at boromir; Wed, 15 May 2024 06:33:06 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vf7N263Yqz2xps
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 06:33:06 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 731611F8BF;
-	Tue, 14 May 2024 20:26:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715718416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vf8l6631xz2ytN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 07:34:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1715722475;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
-	b=B26BTArW7pLJtAbCnS8oHTPC4ZDZhEY+OSzSERTB3KdheXmHuHHbJerwugQ/S4xJqV7buD
-	5mSzjHiXphrrAcFgozcOGhK+RBxF6kqZWb4uYjACars0BkL4RuLEL9E20b3DvyaNL2AxJJ
-	kRt1K249Nnxyi7njIRMt1tqGOy8m4fE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715718416;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=Q2Xu6ycBxA1ncNcxZjTIGSkpvUsVz0mp4Jxa+4CoWmo=;
+	b=BTIT9KHw68mN4wCkOXqiaWaVuqqAC5cOpFTlCr7QNfcppPB8rDIGUjTJiGis4TBWK0wZ5S
+	Gr0j+aBgTggMB27XKFXm1kq0WwFhDv70iQ8JrG55FMq8L9aYQQpTyywwcoSsIr70XpHFL/
+	MZvmKHMadcFzuw7q8Hjt5BtSQIUahsY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1715722475;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
-	b=1IRBTVc1wBNIu6pO4byzhdDLYzRc7KSHpbB5c3jy4WMztCRTijmkU8eYjPHutAAcT0vUZ/
-	V4wKrHrvTZFnLpAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B26BTArW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1IRBTVc1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715718416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
-	b=B26BTArW7pLJtAbCnS8oHTPC4ZDZhEY+OSzSERTB3KdheXmHuHHbJerwugQ/S4xJqV7buD
-	5mSzjHiXphrrAcFgozcOGhK+RBxF6kqZWb4uYjACars0BkL4RuLEL9E20b3DvyaNL2AxJJ
-	kRt1K249Nnxyi7njIRMt1tqGOy8m4fE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715718416;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
-	b=1IRBTVc1wBNIu6pO4byzhdDLYzRc7KSHpbB5c3jy4WMztCRTijmkU8eYjPHutAAcT0vUZ/
-	V4wKrHrvTZFnLpAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DB3B1372E;
-	Tue, 14 May 2024 20:26:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IIFZOw7JQ2YLHwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 14 May 2024 20:26:54 +0000
-Date: Tue, 14 May 2024 22:26:49 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Peter Xu <peterx@redhat.com>
+	bh=Q2Xu6ycBxA1ncNcxZjTIGSkpvUsVz0mp4Jxa+4CoWmo=;
+	b=BTIT9KHw68mN4wCkOXqiaWaVuqqAC5cOpFTlCr7QNfcppPB8rDIGUjTJiGis4TBWK0wZ5S
+	Gr0j+aBgTggMB27XKFXm1kq0WwFhDv70iQ8JrG55FMq8L9aYQQpTyywwcoSsIr70XpHFL/
+	MZvmKHMadcFzuw7q8Hjt5BtSQIUahsY=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-wZIEzoP4OgCgjSTJ5egxmA-1; Tue, 14 May 2024 17:34:33 -0400
+X-MC-Unique: wZIEzoP4OgCgjSTJ5egxmA-1
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2b978f93aeeso423087a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2024 14:34:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715722472; x=1716327272;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q2Xu6ycBxA1ncNcxZjTIGSkpvUsVz0mp4Jxa+4CoWmo=;
+        b=QY+mVqm93vrnyROW3wR1gUFOU1+ohCePDaA/NtM4Lg1FkdLCPK1Pz1m3vBo9NqAjh0
+         7yK+hboOYG7caEcoNt+MwmjBHM5MSY0UVfSI8wXUOlzVy9IrjZB4sbknh91+XWW22Swn
+         q6bjMnBTECbx3ngWIxzSPGvI/GqIPVFJKHHO6qCT2GkcJdLxqNHBFid1+IGgExAiMwFd
+         FNv/Ql2H5aPfXIl751EHFDGAFC34yZ+htlwIFtEcyp/gfUq5Lgzsf7hK20pHcc/7S5h2
+         T8sNzrW5sm9dO57NfSF3x3cdhO5tHmTBP+VOOjEv937E9QXELN5GSUtwTjYNa/D8Cv8Z
+         myHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWN+EXaBX8EtrsaD8s0OmN0VN9Oyo7mVlxecHrOrSCc9WZJGuDGcro3np/knLKX+8JPzIon8sDjr2wsUbzL2+tn+i2+T5EF4qOPiuNmGQ==
+X-Gm-Message-State: AOJu0YyEz5aTilnlxnicfG9LgzrEZyodn1cfvqlwEWKtcojkXOX9UGpe
+	tKf0uSavr3dTWBhQdUFIsKnClt81Ov6bmF6v+5NbiAd+ThtgNIFOx41S+pAmip7UuHoQUUi/6k6
+	DogcK9VYJ+WlgQ+ZxL1whRdXkTUmv9zrnYyQDCKuBSzeZrtwCUAI3AdW6gb5dURg=
+X-Received: by 2002:a17:903:246:b0:1eb:50eb:c07d with SMTP id d9443c01a7336-1ef441aa0a2mr161489295ad.4.1715722472099;
+        Tue, 14 May 2024 14:34:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGlPBl9ea4KstMsjdvAfVmaII4uiOPY4sbbUGcaeXkU+KlSg8op9ntpdI4qQN60DSBg7ZfBtw==
+X-Received: by 2002:a17:903:246:b0:1eb:50eb:c07d with SMTP id d9443c01a7336-1ef441aa0a2mr161488855ad.4.1715722471349;
+        Tue, 14 May 2024 14:34:31 -0700 (PDT)
+Received: from x1n ([50.204.89.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0bad9da4sm102645805ad.107.2024.05.14.14.34.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 May 2024 14:34:30 -0700 (PDT)
+Date: Tue, 14 May 2024 15:34:24 -0600
+From: Peter Xu <peterx@redhat.com>
+To: Oscar Salvador <osalvador@suse.de>
 Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
  poison errors
-Message-ID: <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+Message-ID: <ZkPY4CSnZWZnxjTa@x1n>
 References: <20240510182926.763131-1-axelrasmussen@google.com>
  <20240510182926.763131-2-axelrasmussen@google.com>
  <Zj51rEwZeSK4Vr1G@x1n>
+ <ZkPJCc5N1Eotpa4u@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Zj51rEwZeSK4Vr1G@x1n>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	FREEMAIL_CC(0.00)[google.com,linux-foundation.org,kernel.org,alien8.de,csgroup.eu,linux.intel.com,redhat.com,zytor.com,gmx.de,hansenpartnership.com,nvidia.com,huawei.com,infradead.org,ellerman.id.au,linux.dev,linux.ibm.com,gmail.com,linutronix.de,vger.kernel.org,kvack.org,lists.ozlabs.org];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLeqp5gkuwhygrjzi4zhnnr4iu)];
-	MISSING_XM_UA(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 731611F8BF
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -6.51
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,44 +106,101 @@ Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 10, 2024 at 03:29:48PM -0400, Peter Xu wrote:
-> IMHO we shouldn't mention that detail, but only state the effect which is
-> to not report the event to syslog.
+On Tue, May 14, 2024 at 10:26:49PM +0200, Oscar Salvador wrote:
+> On Fri, May 10, 2024 at 03:29:48PM -0400, Peter Xu wrote:
+> > IMHO we shouldn't mention that detail, but only state the effect which is
+> > to not report the event to syslog.
+> > 
+> > There's no hard rule that a pte marker can't reflect a real page poison in
+> > the future even MCE.  Actually I still remember most places don't care
+> > about the pfn in the hwpoison swap entry so maybe we can even do it? But
+> > that's another story regardless..
 > 
-> There's no hard rule that a pte marker can't reflect a real page poison in
-> the future even MCE.  Actually I still remember most places don't care
-> about the pfn in the hwpoison swap entry so maybe we can even do it? But
-> that's another story regardless..
+> But we should not use pte markers for real hwpoisons events (aka MCE), right?
 
-But we should not use pte markers for real hwpoisons events (aka MCE), right?
-I mean, we do have the means to mark a page as hwpoisoned when a real
-MCE gets triggered, why would we want a pte marker to also reflect that?
-Or is that something for userfaultd realm?
+The question is whether we can't.
 
-> And also not report swapin error is, IMHO, only because arch errors said
-> "MCE" in the error logs which may not apply here.  Logically speaking
-> swapin error should also be reported so admin knows better on why a proc is
-> killed.  Now it can still confuse the admin if it really happens, iiuc.
+Now we reserved a swp entry just for hwpoison and it makes sense only
+because we cached the poisoned pfn inside.  My long standing question is
+why do we ever need that pfn after all.  If we don't need the pfn, we
+simply need a bit in the pgtable entry saying that it's poisoned, if
+accessed we should kill the process using sigbus.
 
-I am bit confused by this.
-It seems we create poisoned pte markers on swap errors (e.g:
-unuse_pte()), which get passed down the chain with VM_FAULT_HWPOISON,
-which end up in sigbus (I guess?).
+I used to comment on this before, the only path that uses that pfn is
+check_hwpoisoned_entry(), which was introduced in:
 
-This all seems very subtle to me.
+commit a3f5d80ea401ac857f2910e28b15f35b2cf902f4
+Author: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Date:   Mon Jun 28 19:43:14 2021 -0700
 
-First of all, why not passing VM_FAULT_SIGBUS if that is what will end
-up happening?
-I mean, at the moment that is not possible because we convolute swaping
-errors and uffd poison in the same type of marker, so we do not have any
-means to differentiate between the two of them.
+    mm,hwpoison: send SIGBUS with error virutal address
+    
+    Now an action required MCE in already hwpoisoned address surely sends a
+    SIGBUS to current process, but the SIGBUS doesn't convey error virtual
+    address.  That's not optimal for hwpoison-aware applications.
+    
+    To fix the issue, make memory_failure() call kill_accessing_process(),
+    that does pagetable walk to find the error virtual address.  It could find
+    multiple virtual addresses for the same error page, and it seems hard to
+    tell which virtual address is correct one.  But that's rare and sending
+    incorrect virtual address could be better than no address.  So let's
+    report the first found virtual address for now.
 
-Would it make sense to create yet another pte marker type to split that
-up? Because when I look at VM_FAULT_HWPOISON, I get reminded of MCE
-stuff, and that does not hold here.
+So this time I read more on this and Naoya explained why - it's only used
+so far to dump the VA of the poisoned entry.
 
- 
+However what confused me is, if an entry is poisoned already logically we
+dump that message in the fault handler not memory_failure(), which is:
+
+MCE: Killing uffd-unit-tests:650 due to hardware memory corruption fault at 7f3589d7e000
+
+So perhaps we're trying to also dump that when the MCEs (points to the same
+pfn) are only generated concurrently?  I donno much on hwpoison so I cannot
+tell, there's also implication where it's only triggered if
+MF_ACTION_REQUIRED.  But I think it means hwpoison may work without pfn
+encoded, but I don't know the implication to lose that dmesg line.
+
+> I mean, we do have the means to mark a page as hwpoisoned when a real
+> MCE gets triggered, why would we want a pte marker to also reflect that?
+> Or is that something for userfaultd realm?
+
+No it's not userfaultfd realm.. it's just that pte marker should be a
+generic concept, so it logically can be used outside userfaultfd.  That's
+also why it's used in swapin errors, in which case we don't use anything
+else in this case but a bit to reflect "this page is bad".
+
+> 
+> > And also not report swapin error is, IMHO, only because arch errors said
+> > "MCE" in the error logs which may not apply here.  Logically speaking
+> > swapin error should also be reported so admin knows better on why a proc is
+> > killed.  Now it can still confuse the admin if it really happens, iiuc.
+> 
+> I am bit confused by this.
+> It seems we create poisoned pte markers on swap errors (e.g:
+> unuse_pte()), which get passed down the chain with VM_FAULT_HWPOISON,
+> which end up in sigbus (I guess?).
+> 
+> This all seems very subtle to me.
+> 
+> First of all, why not passing VM_FAULT_SIGBUS if that is what will end
+> up happening?
+> I mean, at the moment that is not possible because we convolute swaping
+> errors and uffd poison in the same type of marker, so we do not have any
+> means to differentiate between the two of them.
+> 
+> Would it make sense to create yet another pte marker type to split that
+> up? Because when I look at VM_FAULT_HWPOISON, I get reminded of MCE
+> stuff, and that does not hold here.
+
+We used to not dump error for swapin error.  Note that here what I am
+saying is not that Axel is doing things wrong, but it's just that logically
+swapin error (as pte marker) can also be with !QUIET, so my final point is
+we may want to avoid having the assumption that "pte marker should always
+be QUITE", because I want to make it clear that pte marker can used in any
+form, so itself shouldn't imply anything..
+
+Thanks,
 
 -- 
-Oscar Salvador
-SUSE Labs
+Peter Xu
+
