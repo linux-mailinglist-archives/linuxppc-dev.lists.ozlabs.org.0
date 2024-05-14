@@ -2,80 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C568C4B00
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 03:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887F68C4B01
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 03:48:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FlfxUvx2;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XyBtwoOe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VdfNf1R2Jz3cTP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 11:46:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VdfQt0W2Lz3cYQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 May 2024 11:48:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FlfxUvx2;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XyBtwoOe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VdfMw3BRwz30Tj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2024 11:46:19 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44E1Kf8x004444;
-	Tue, 14 May 2024 01:46:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=IPBYzr9Z0ikvvD30gG88ZaySiKeH2fF0GVe1B8/LI0A=;
- b=FlfxUvx2AxidS6TYslVQNiy4lDIR/Hqk0qErAZwsVBgQYdacAf/xl//DjmffasdV9ijf
- RJ70b85EuyMleb/LrqECT/sX1U0mPPRc9hautz0jmPejSYIIptzFTuG8vuAnFSBQgQRF
- j7NZ8cUVX6pXdxdOeIg1gicrje+drI1FtAKbN9DYdb4dOkWMjbshz4X4hRGdhQIX0ro2
- ls33nChSYTFfH7EH8FSr44VAAH5lnnj6VZa+l8n7+x1kZ8hgl1OyEmuIqS4twcaV1jOW
- t7AxH/XStjyRgMolaPbWGsnzxSaqQ01tXVxr4C9j7LUaRSj2+HMMS1S2lDCAKSy2jf1x TQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y3wbr84uq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 01:46:13 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44E13LqR005981;
-	Tue, 14 May 2024 01:46:12 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2mgmapgj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 01:46:12 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44E1kAvv16974570
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 May 2024 01:46:12 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E7E6C58155;
-	Tue, 14 May 2024 01:46:09 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E2A258143;
-	Tue, 14 May 2024 01:46:09 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.67.91.85])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 May 2024 01:46:09 +0000 (GMT)
-From: Gaurav Batra <gbatra@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/pseries/iommu: Split Dynamic DMA Window to be used in Hybrid mode
-Date: Mon, 13 May 2024 20:46:08 -0500
-Message-Id: <20240514014608.35537-1-gbatra@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qxauSdMZj5Dy8RkeQSUqSDuRTsN9if5J
-X-Proofpoint-GUID: qxauSdMZj5Dy8RkeQSUqSDuRTsN9if5J
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-13_17,2024-05-10_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0
- bulkscore=0 mlxscore=0 spamscore=0 phishscore=0 priorityscore=1501
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405140011
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VdfQ74zdZz30Tj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 May 2024 11:48:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715651297; x=1747187297;
+  h=date:from:to:cc:subject:message-id;
+  bh=I/R9PV8n2p1tZUQbKdO5sRkD/oEopbH2t04MFMLuNDM=;
+  b=XyBtwoOen0Q5NdAdwalm4UV1CC4qUrQgvZ9DDtnbRUnOdwJ4jEmjCGz+
+   A7a2dijp8b2XCu5S5XWhs0b+ynyRx7HKE+OzwAIH8Nrj9F63hGyR8xmyB
+   IWSzX/5dJ+AMW1g0rgH+XjvY5A1Xo/uowA1mvkcU/pkXzTtzLqjAVwH31
+   fuQXSEhPsToU6yFS+eQuHoVpdxt7bIspV/n82tvE1MhukRU6a2nSAgyFN
+   +9rVN2c4IzG5ebv4oKdTULOWBPyzuFinxsCjBFkXMZbHtelIHhQW6H24I
+   wP6AnMxLuUS6juqUGP1LIUOZjBR+aaQlOxi6BSz1Qu6xyjhG6fTgRUgSt
+   w==;
+X-CSE-ConnectionGUID: 8KAKf0tNRLKBlCyfal2dQA==
+X-CSE-MsgGUID: T8ejPoj1QEKnOWYxJYH4Jw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="15448866"
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; 
+   d="scan'208";a="15448866"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 18:48:10 -0700
+X-CSE-ConnectionGUID: G378f/V3TrOKFBGUIDST6Q==
+X-CSE-MsgGUID: SgjL5OCUTd6uOpSM3AyniQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; 
+   d="scan'208";a="35278257"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 13 May 2024 18:48:08 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s6hGv-000Avh-2C;
+	Tue, 14 May 2024 01:48:05 +0000
+Date: Tue, 14 May 2024 09:48:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ e789d4499abdb488dd9cabce4f95c74dac6bcbe5
+Message-ID: <202405140958.KvcMsLmU-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,206 +70,199 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gaurav Batra <gbatra@linux.ibm.com>, Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dynamic DMA Window (DDW) supports TCEs that are backed by 2MB page size.
-In most configurations, DDW is big enough to pre-map all of LPAR memory
-for IO. Pre-mapping of memory for DMA results in improvements in IO
-performance.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: e789d4499abdb488dd9cabce4f95c74dac6bcbe5  Merge branch 'topic/kdump-hotplug' into next
 
-Persistent memory, vPMEM, can be assigned to an LPAR as well. vPMEM is not
-contiguous with LPAR memory and usually is assigned at high memory
-addresses.  This makes is not possible to pre-map both vPMEM and LPAR
-memory in the same DDW.
+elapsed time: 733m
 
-For a dedicated adapter this limitation is not an issue. Dedicated
-adapters can have both Default DMA window, which is backed by 4K page size
-and a DDW backed by 2MB page size TCEs. In this scenario, LPAR memory is
-pre-mapped in the DDW.  Any DMA going to the vPMEM is routed via
-dynamically allocated TCEs in the default window.
+configs tested: 176
+configs skipped: 4
 
-The issue arises with SR-IOV adapters. There is only one DMA window -
-either Default or DDW. If an LPAR has vPMEM assigned, memory is not
-pre-mapped in the DDW since TCEs needs to be allocated for vPMEM as well.
-In this case, DDW is created and TCEs are dynamically allocated for both
-vPMEM and LPAR memory.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Today, DDW is only used in single mode - direct mapped TCEs or dynamically
-mapped TCEs. This enhancement breaks a single DDW in 2 regions -
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                        nsim_700_defconfig   gcc  
+arc                   randconfig-001-20240514   gcc  
+arc                   randconfig-002-20240514   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                         bcm2835_defconfig   clang
+arm                     davinci_all_defconfig   clang
+arm                                 defconfig   clang
+arm                           imxrt_defconfig   clang
+arm                            mmp2_defconfig   gcc  
+arm                         mv78xx0_defconfig   clang
+arm                        neponset_defconfig   gcc  
+arm                   randconfig-001-20240514   clang
+arm                   randconfig-002-20240514   gcc  
+arm                   randconfig-003-20240514   gcc  
+arm                   randconfig-004-20240514   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240514   clang
+arm64                 randconfig-002-20240514   clang
+arm64                 randconfig-003-20240514   gcc  
+arm64                 randconfig-004-20240514   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240514   gcc  
+csky                  randconfig-002-20240514   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240514   clang
+hexagon               randconfig-002-20240514   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240513   clang
+i386         buildonly-randconfig-002-20240513   clang
+i386         buildonly-randconfig-003-20240513   gcc  
+i386         buildonly-randconfig-004-20240513   clang
+i386         buildonly-randconfig-005-20240513   gcc  
+i386         buildonly-randconfig-006-20240513   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240513   gcc  
+i386                  randconfig-002-20240513   clang
+i386                  randconfig-003-20240513   gcc  
+i386                  randconfig-004-20240513   clang
+i386                  randconfig-005-20240513   gcc  
+i386                  randconfig-006-20240513   gcc  
+i386                  randconfig-011-20240513   gcc  
+i386                  randconfig-012-20240513   clang
+i386                  randconfig-013-20240513   clang
+i386                  randconfig-014-20240513   gcc  
+i386                  randconfig-015-20240513   gcc  
+i386                  randconfig-016-20240513   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240514   gcc  
+loongarch             randconfig-002-20240514   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                          rm200_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240514   gcc  
+nios2                 randconfig-002-20240514   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                generic-32bit_defconfig   gcc  
+parisc                randconfig-001-20240514   gcc  
+parisc                randconfig-002-20240514   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      ep88xc_defconfig   gcc  
+powerpc               randconfig-001-20240514   gcc  
+powerpc               randconfig-002-20240514   gcc  
+powerpc               randconfig-003-20240514   clang
+powerpc                     tqm8541_defconfig   clang
+powerpc64             randconfig-001-20240514   clang
+powerpc64             randconfig-002-20240514   clang
+powerpc64             randconfig-003-20240514   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                    nommu_virt_defconfig   clang
+riscv                 randconfig-001-20240514   gcc  
+riscv                 randconfig-002-20240514   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240514   gcc  
+s390                  randconfig-002-20240514   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240514   gcc  
+sh                    randconfig-002-20240514   gcc  
+sh                            titan_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240514   gcc  
+sparc64               randconfig-002-20240514   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240514   clang
+um                    randconfig-002-20240514   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240514   clang
+x86_64       buildonly-randconfig-002-20240514   clang
+x86_64       buildonly-randconfig-003-20240514   gcc  
+x86_64       buildonly-randconfig-004-20240514   clang
+x86_64       buildonly-randconfig-005-20240514   clang
+x86_64       buildonly-randconfig-006-20240514   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240514   gcc  
+x86_64                randconfig-002-20240514   gcc  
+x86_64                randconfig-003-20240514   clang
+x86_64                randconfig-004-20240514   clang
+x86_64                randconfig-005-20240514   gcc  
+x86_64                randconfig-006-20240514   gcc  
+x86_64                randconfig-011-20240514   clang
+x86_64                randconfig-012-20240514   gcc  
+x86_64                randconfig-013-20240514   gcc  
+x86_64                randconfig-014-20240514   clang
+x86_64                randconfig-015-20240514   gcc  
+x86_64                randconfig-016-20240514   gcc  
+x86_64                randconfig-071-20240514   clang
+x86_64                randconfig-072-20240514   clang
+x86_64                randconfig-073-20240514   gcc  
+x86_64                randconfig-074-20240514   gcc  
+x86_64                randconfig-075-20240514   clang
+x86_64                randconfig-076-20240514   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240514   gcc  
+xtensa                randconfig-002-20240514   gcc  
 
-	1. First region to pre-map LPAR memory
-	2. Second region to dynamically allocate TCEs for IO to vPMEM
-
-The DDW is split only if it is big enough to pre-map complete LPAR memory
-and still have some space left to dynamically map vPMEM. Maximum size
-possible DDW is created as permitted by the Hypervisor.
-
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/iommu.h       |  2 +
- arch/powerpc/platforms/pseries/iommu.c | 71 ++++++++++++++++++++------
- 2 files changed, 56 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 026695943550..bb252a15cd4c 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -31,6 +31,8 @@
- #define DIRECT64_PROPNAME "linux,direct64-ddr-window-info"
- #define DMA64_PROPNAME "linux,dma64-ddr-window-info"
- 
-+#define	MIN_DDW_VPMEM_DMA_WINDOW	SZ_2G
-+
- /* Boot time flags */
- extern int iommu_is_off;
- extern int iommu_force_on;
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e8c4129697b1..b0a8e8d2159e 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1296,7 +1296,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	struct ddw_query_response query;
- 	struct ddw_create_response create;
- 	int page_shift;
--	u64 win_addr;
-+	u64 win_addr, dynamic_offset = 0;
- 	const char *win_name;
- 	struct device_node *dn;
- 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
-@@ -1304,6 +1304,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	struct property *win64;
- 	struct failed_ddw_pdn *fpdn;
- 	bool default_win_removed = false, direct_mapping = false;
-+	bool dynamic_mapping = false;
- 	bool pmem_present;
- 	struct pci_dn *pci = PCI_DN(pdn);
- 	struct property *default_win = NULL;
-@@ -1399,7 +1400,6 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		goto out_failed;
- 	}
- 
--
- 	/*
- 	 * The "ibm,pmemory" can appear anywhere in the address space.
- 	 * Assuming it is still backed by page structs, try MAX_PHYSMEM_BITS
-@@ -1424,14 +1424,43 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			1ULL << page_shift);
- 
- 		len = order_base_2(query.largest_available_block << page_shift);
--		win_name = DMA64_PROPNAME;
-+
-+		dynamic_mapping = true;
- 	} else {
- 		direct_mapping = !default_win_removed ||
- 			(len == MAX_PHYSMEM_BITS) ||
- 			(!pmem_present && (len == max_ram_len));
--		win_name = direct_mapping ? DIRECT64_PROPNAME : DMA64_PROPNAME;
-+
-+		/* DDW is big enough to direct map RAM. If there is vPMEM, check
-+		 * if enough space is left in DDW where we can dynamically
-+		 * allocate TCEs for vPMEM. For now, this Hybrid sharing of DDW
-+		 * is only for SR-IOV devices.
-+		 */
-+		if (default_win_removed && pmem_present && !direct_mapping) {
-+			/* DDW is big enough to be split */
-+			if ((query.largest_available_block << page_shift) >=
-+			     MIN_DDW_VPMEM_DMA_WINDOW + (1ULL << max_ram_len)) {
-+
-+				direct_mapping = true;
-+
-+				/* offset of the Dynamic part of DDW */
-+				dynamic_offset = 1ULL << max_ram_len;
-+			}
-+
-+			/* DDW will at least have dynamic allocation */
-+			dynamic_mapping = true;
-+
-+			/* create max size DDW possible */
-+			len = order_base_2(query.largest_available_block
-+							<< page_shift);
-+		}
- 	}
- 
-+	/* Even if the DDW is split into both direct mapped RAM and dynamically
-+	 * mapped vPMEM, the DDW property in OF will be marked as Direct.
-+	 */
-+	win_name = direct_mapping ? DIRECT64_PROPNAME : DMA64_PROPNAME;
-+
- 	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
- 	if (ret != 0)
- 		goto out_failed;
-@@ -1459,9 +1488,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	if (!window)
- 		goto out_del_prop;
- 
--	if (direct_mapping) {
--		window->direct = true;
-+	window->direct = direct_mapping;
- 
-+	if (direct_mapping) {
- 		/* DDW maps the whole partition, so enable direct DMA mapping */
- 		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
- 					    win64->value, tce_setrange_multi_pSeriesLP_walk);
-@@ -1473,12 +1502,13 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			clean_dma_window(pdn, win64->value);
- 			goto out_del_list;
- 		}
--	} else {
-+	}
-+
-+	if (dynamic_mapping) {
- 		struct iommu_table *newtbl;
- 		int i;
- 		unsigned long start = 0, end = 0;
--
--		window->direct = false;
-+		u64 dynamic_addr, dynamic_len;
- 
- 		for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
- 			const unsigned long mask = IORESOURCE_MEM_64 | IORESOURCE_MEM;
-@@ -1498,8 +1528,16 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 			goto out_del_list;
- 		}
- 
--		iommu_table_setparms_common(newtbl, pci->phb->bus->number, create.liobn, win_addr,
--					    1UL << len, page_shift, NULL, &iommu_table_lpar_multi_ops);
-+		/* If the DDW is split between directly mapped RAM and Dynamic
-+		 * mapped for TCES, offset into the DDW where the dynamic part
-+		 * begins.
-+		 */
-+		dynamic_addr = win_addr + dynamic_offset;
-+		dynamic_len = (1UL << len) - dynamic_offset;
-+		iommu_table_setparms_common(newtbl, pci->phb->bus->number,
-+						create.liobn, dynamic_addr,
-+						dynamic_len, page_shift, NULL,
-+						&iommu_table_lpar_multi_ops);
- 		iommu_init_table(newtbl, pci->phb->node, start, end);
- 
- 		pci->table_group->tables[1] = newtbl;
-@@ -1551,13 +1589,12 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- out_unlock:
- 	mutex_unlock(&dma_win_init_mutex);
- 
--	/*
--	 * If we have persistent memory and the window size is only as big
--	 * as RAM, then we failed to create a window to cover persistent
--	 * memory and need to set the DMA limit.
-+	/* If we have persistent memory and the window size is not big enough
-+	 * to directly map both RAM and vPMEM, then we need to set DMA limit.
- 	 */
--	if (pmem_present && direct_mapping && len == max_ram_len)
--		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset + (1ULL << len);
-+	if (pmem_present && direct_mapping && len != MAX_PHYSMEM_BITS)
-+		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset +
-+						(1ULL << max_ram_len);
- 
- 	return direct_mapping;
- }
-
-base-commit: e8f897f4afef0031fe618a8e94127a0934896aba
 -- 
-2.39.3 (Apple Git-146)
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
