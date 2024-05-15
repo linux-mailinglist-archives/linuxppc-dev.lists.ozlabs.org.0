@@ -1,75 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D8E8C65DA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 13:37:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A468C65DB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 13:38:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=l9I4ake1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=pmJT7ccq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VfWRk6SZ0z3d2x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 21:37:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VfWSW3Njrz3cc0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 21:38:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cryptogams.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=l9I4ake1;
+	dkim=pass (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=pmJT7ccq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cryptogams.org (client-ip=2a00:1450:4864:20::22c; helo=mail-lj1-x22c.google.com; envelope-from=appro@cryptogams.org; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cryptogams.org (client-ip=2a00:1450:4864:20::233; helo=mail-lj1-x233.google.com; envelope-from=appro@cryptogams.org; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfRHH5mT4z3bNs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 18:30:01 +1000 (AEST)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2dcc8d10d39so76671341fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 01:30:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfS6037h2z30fM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 19:07:03 +1000 (AEST)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2e52181c228so52985551fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 02:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cryptogams.org; s=gmail; t=1715761797; x=1716366597; darn=lists.ozlabs.org;
+        d=cryptogams.org; s=gmail; t=1715764019; x=1716368819; darn=lists.ozlabs.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kdZ6+CYbkRe4GWY6A69afts7kPSMUQxevIZoOvytkAk=;
-        b=l9I4ake1B60uOzEOmV0gs8s9raAR+KlRBWytYC+ndQakQcgI2YnDWibOu9QU4LZ4lu
-         AAy+eX2+/Bn04hj5ND9FTB+8MOAR6f4oMtGfW0vdExKzbeVrCZwwcZyGNYuMIOxI3In+
-         G1W0/pu6A0bamGh2gEXoFgtPg4viqyqc4pGPqek00FLFEoZbJUOhF2j6aL0Ul6EbCC1a
-         jNdBR8c2+MuLUho4Ed+g4hVZ2NDp8r4lkEejKc893sfEIq2uH1cQFfacmen3WcsR4TSC
-         SDz2hP0WSeXpPxKe0iuRRB+eZgZK/itFrARxMuKQBcTM3xZvYLu5po5dFAU5aUDK8uQf
-         ncdA==
+        bh=sCN4Aw4+b34uYf5T+77CTVPm7n3v2SZABsZPxP6R4EM=;
+        b=pmJT7ccq0DW/Pn/Z9tFfGiuW44+pgVdoBAQQyP0b7TtwL7emM8e8goY3c9EFpmrWeY
+         hWhpgOAEPzSosyL43p5FNaToMvukl6RZ2LjhlQzHTJmKMZOcDLwiLV5/NbJPbB1mb8Os
+         z4j98LvjUsT4g0ZwwxkWYgcIa7hCeH93wjuJJ+vaI6C4pqqHdo57w+D3N2V9F+H3q7Uh
+         PdzAScPFnVhkNde4UK5LmcP1uPaF7if1IsVmQbUeoBERe+rIdsf6Uzy0MWWdwbkQUyTi
+         elrvZIupMykcLnbOyAaS8GsQavgHs0wZKwRpYhGbx4vTeg98/f3ETDpJYHcqT7UJUwgf
+         ysUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715761797; x=1716366597;
+        d=1e100.net; s=20230601; t=1715764019; x=1716368819;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdZ6+CYbkRe4GWY6A69afts7kPSMUQxevIZoOvytkAk=;
-        b=T2L9F6Evw7IKMetHc5TQ778hZW6r3hqm/9aJBuf8LuXN72YOjYZrbnmgZEsfRL1NHJ
-         JBnjJvDYdL4nRrQcqZkRnongcsBAJtrdMULwe1dROgpHG7baQ4tv6DXMoqE+b989eV1/
-         /40FObE+7ZLW915BSpL47N7zNKIVlCsnBEBgn7VAzVhfWLqZ9b0+jKrpMOrG4m0Q1Sjz
-         XTHo9FoGrGdUR7HXTpQfKYYbHBhbxuwhvKzI/vhPI+vCO5B+Zdj7Ksbme2e8e9YThDmj
-         kDiD1TFrXsFWrtCdeSjwOrev+tRIn2YuvVsWC+yDxwR5gybW2fitZQewKmBrQg3XFSIM
-         1rag==
-X-Forwarded-Encrypted: i=1; AJvYcCWX28VFFts4bfoaxqywALNwCj90eGyCXrBJPZdnqrf1nfFJwDPsw6a/fVQ4g+Z6P4Q2JPiTNFoGLicD+NM4/P29EeXVbPeNzKhU18oOCQ==
-X-Gm-Message-State: AOJu0YzV7hea5kTyiaYQwYye9QrVRs31LK0mmWy95WOFqSrJrbuGhAI6
-	FQ1wjLCIOgU5Jub0FprTv1qamEo9ODNW38ukF8/nLbKw/6MPUoku4ITPMCY0glI=
-X-Google-Smtp-Source: AGHT+IGrFyIGNekgvi7YvLggWgiFyAjxsuUBqcC1ibM/CNjEyWzWGDg20jTRgwWYO3bbnH8X0/j41Q==
-X-Received: by 2002:a2e:a591:0:b0:2e2:9416:a649 with SMTP id 38308e7fff4ca-2e5205c3760mr106145011fa.53.1715761796962;
-        Wed, 15 May 2024 01:29:56 -0700 (PDT)
+        bh=sCN4Aw4+b34uYf5T+77CTVPm7n3v2SZABsZPxP6R4EM=;
+        b=gOjeb80ZYu7pZ1aC07pIZSNCFJe2pDfxugvNEnNogjkkTwbvw+vQQb9rn79c/C54fT
+         lkTwqAuEMDLOTpP5nRMBjn9FDipqsj2MtD62TgerDQxdEHpHCWW2Gluoqjoe6nDO2kT4
+         TC9HsZknamLEoQ+nXIp534+0rFU4Tl0GMwr/IHguGWEI/BdIMtOARBkuDaglWsdrGnuS
+         v+R0bmoKux6EkACYxtzcU0vnq1fKFIlHEf3W1Ci3MfpkHDZbBmfXKVgt77tF4Q8w9hAH
+         +mbxC6/e9AyH81Q1KS7w7g5ag+rRImHD00Nkta3wa+zAzpHFoE+ci+MOv4EtuaNK4UZx
+         oVAw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+WgDsfIfhoK4x2tUo8isbAyloQ/liP6zQrrhpPtDvveKP10UW4FtgRYghQ9p4+MIduXnyf8rVHK2kvQcEZXxE2DfJF3BHTEDZgBI8Rg==
+X-Gm-Message-State: AOJu0Yxr6r+kSL/68C04sTgfbIpkMwaY63kJU0WMhDDiWAAtPs7nNgGV
+	ew4eNUEhkxN8hnU7Keac5rwYdGTYOH6fz2BWYP22CH+Jl/OoU7ntGpCl4Nb6aEz0lDuPEUUjit6
+	F
+X-Google-Smtp-Source: AGHT+IFGA1MJpKD7oQyr1PZIq0Tmx5HGUB13Z1Mg0iiS0ZqwHQj3FyTq5u9WwgiEAYYNn+VyIwyrpw==
+X-Received: by 2002:a2e:a794:0:b0:2e6:f3af:c6aa with SMTP id 38308e7fff4ca-2e6f3afcb13mr16822391fa.40.1715764019239;
+        Wed, 15 May 2024 02:06:59 -0700 (PDT)
 Received: from [10.0.1.129] (c-922370d5.012-252-67626723.bbcust.telenor.se. [213.112.35.146])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2e6a8a64d84sm8110551fa.76.2024.05.15.01.29.56
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2e4d1621233sm20272571fa.126.2024.05.15.02.06.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 May 2024 01:29:56 -0700 (PDT)
-Message-ID: <847f2e4f-ace1-415d-b129-ed2751429eec@cryptogams.org>
-Date: Wed, 15 May 2024 10:29:56 +0200
+        Wed, 15 May 2024 02:06:58 -0700 (PDT)
+Message-ID: <db513fd8-4723-4b4c-bc14-7da7222617b3@cryptogams.org>
+Date: Wed, 15 May 2024 11:06:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] crypto: X25519 core functions for ppc64le
+Subject: Re: [PATCH 1/3] crypto: X25519 low-level primitives for ppc64le.
 To: Danny Tsen <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org
 References: <20240514173835.4814-1-dtsen@linux.ibm.com>
- <20240514173835.4814-3-dtsen@linux.ibm.com>
+ <20240514173835.4814-2-dtsen@linux.ibm.com>
 Content-Language: en-US
 From: Andy Polyakov <appro@cryptogams.org>
-In-Reply-To: <20240514173835.4814-3-dtsen@linux.ibm.com>
+In-Reply-To: <20240514173835.4814-2-dtsen@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Wed, 15 May 2024 21:36:22 +1000
@@ -90,29 +91,39 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi,
 
-> +static void cswap(fe51 p, fe51 q, unsigned int bit)
-> +{
-> +	u64 t, i;
-> +	u64 c = 0 - (u64) bit;
+> +SYM_FUNC_START(x25519_fe51_sqr_times)
+> ...
 > +
-> +	for (i = 0; i < 5; ++i) {
-> +		t = c & (p[i] ^ q[i]);
-> +		p[i] ^= t;
-> +		q[i] ^= t;
-> +	}
-> +}
+> +.Lsqr_times_loop:
+> ...
+> +
+> +	std	9,16(3)
+> +	std	10,24(3)
+> +	std	11,32(3)
+> +	std	7,0(3)
+> +	std	8,8(3)
+> +	bdnz	.Lsqr_times_loop
 
-The "c" in cswap stands for "constant-time," and the problem is that 
-contemporary compilers have exhibited the ability to produce 
-non-constant-time machine code as result of compilation of the above 
-kind of technique. The outcome is platform-specific and ironically some 
-of PPC code generators were observed to generate "most" 
-non-constant-time code. "Most" in sense that execution time variations 
-would be most easy to catch. One way to work around the problem, at 
-least for the time being, is to add 'asm volatile("" : "+r"(c))' after 
-you calculate 'c'. But there is no guarantee that the next compiler 
-version won't see through it, hence the permanent solution is to do it 
-in assembly. I can put together something...
+I see no reason for why the stores can't be moved outside the loop in 
+question.
+
+> +SYM_FUNC_START(x25519_fe51_frombytes)
+> +.align	5
+> +
+> +	li	12, -1
+> +	srdi	12, 12, 13	# 0x7ffffffffffff
+> +
+> +	ld	5, 0(4)
+> +	ld	6, 8(4)
+> +	ld	7, 16(4)
+> +	ld	8, 24(4)
+
+Is there actual guarantee that the byte input is 64-bit aligned? While 
+it is true that processor is obliged to handle misaligned loads and 
+stores by the ISA specification, them being inefficient doesn't go 
+against it. Most notably inefficiency is likely to be noted at the page 
+boundaries. What I'm trying to say is that it would be more appropriate 
+to avoid the unaligned loads (and stores).
 
 Cheers.
 
