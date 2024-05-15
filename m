@@ -1,81 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182F68C676F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 15:35:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC058C683B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 16:04:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AkFZQRxB;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=fUruR3hW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VfZ3r3gbqz3cf8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 23:35:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VfZjb1FZhz3cyf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 00:04:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AkFZQRxB;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=fUruR3hW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::131; helo=mail-il1-x131.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfZ3564L5z30gp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 23:34:57 +1000 (AEST)
-Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-36c5d26045bso776195ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 06:34:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfZdh3qGyz3cXd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 00:01:27 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id CAD0A9C58F5;
+	Wed, 15 May 2024 09:54:22 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id Vsvw-3Gl_yow; Wed, 15 May 2024 09:54:22 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id F3B129C58F1;
+	Wed, 15 May 2024 09:54:21 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com F3B129C58F1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715780095; x=1716384895; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qKaNiR2tHzqJJTEKvrwnceIlUex2fFxFPfEzvQnl9LY=;
-        b=AkFZQRxBsqhhWtpcH1bdKZ2I4/SMpirIvpIu+XD+oPu3NkQrnmNpgOxTxCQ29oBJw9
-         GFB7FNxv7XOWqpiW/3/pJcxjYWkXkbZYMFXWkflkCR94okzQkhSVAVb//YsBU0yUI7zM
-         4fAqUsbaDpl6ObJDbsaQ7KP84+t6psb/wIlHitR6v/Uq4kV5cZmsXW5An5CL+8PEFgU/
-         hVnvJ+6V6YJ/xCno+lXpdWTWPNZQMF5VkRC0TCgFDWzjNc4oKgP7p04i+W5Kv4jVHDKn
-         /jr4Dunt+uSP0igSMKxwOlx6H+/iZKZpeyBtKBZ3Omu2CzlBVwxR/F3oV0UoPfTu/4ai
-         DQ9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715780095; x=1716384895;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qKaNiR2tHzqJJTEKvrwnceIlUex2fFxFPfEzvQnl9LY=;
-        b=ZISzVvvnUUtVXipd899jIj/A8eiCy2SGWglhP7u/aSz+hCZB53pUNamLyCyjnrgp0C
-         YO/T+iBdueyN05gDw2qkXprM6xaDajBIZM2Zr7p4oYXSb8AV1yGJFRL7ix27gezyYTnA
-         6sWg3zKxgdKAxMyKsZXvo3nBlQzIOXCZC70yn4J710Slp3NdRcYXuPSOL4VlUIk4MyLx
-         ZxVeiDVrsYIx9Oz2BdM9slaawO+YQbwFlLTo6TmdNwBOZ0cyXm9RM+nKzK+IOG3BS5P5
-         9RZKHOemR4DJ5fmAqE+JDVZCOHS1lQKXalPF6T0bJsnEHjzDMLfdzPWxu1hj7JAy51wW
-         dDMg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLTaR81r+ZzkvJCQJMXQuQNYfDyqpx9kMxfHNEv98OqVrhSFbCDyteDFbIrQKkHwBNuUeF8HWE25jfRr+qjGrQJZyKIdbIJkzwKljF5A==
-X-Gm-Message-State: AOJu0YwlQ4PwnEBToqQqbPEJEYfVi4AeySW8Dx30F4Wb85j0qbWr4P3M
-	7FWdB6hjuH5SSBF1IQekHLewzgh4odX4z/iz6Kyfz7aZJrjZBpnCaPlsCdB03MCAO1uO2MAB2Rf
-	Z+IcCiC0gK9VGKzbPbv4zmyyN0lE=
-X-Google-Smtp-Source: AGHT+IHfRlOUxQoum9oYFbcfElme0a98PvIrTeymgurRG3pRPNQgq34N6O3Htci09zrMSFYrILhaT785x6RkUCQvVK8=
-X-Received: by 2002:a05:6e02:12cd:b0:36c:c536:80dd with SMTP id
- e9e14a558f8ab-36cc536824dmr181987035ab.11.1715780095030; Wed, 15 May 2024
- 06:34:55 -0700 (PDT)
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1715781262; bh=/chpUC0ukdj/AkYVw/i/VbX5GAidH0oA2LX3Jzux/F4=;
+	h=From:To:Date:Message-Id:MIME-Version;
+	b=fUruR3hWfJ3B2AU7MRup/BInecKGrZqxqzu0u7skxC3oxODqJFKJTES78g28qZjrV
+	 D3fhVpjgRpmYhPlugcWM3q9hh87WXH+ZH+3AAXMrQzRhadUd3h5vcF1M7ufHaQ9A7A
+	 LcbJKTLgT+3OsxoOmOZKdGrwpIdySqlZKjDHhc+wIeYYanPo+BF2mgo9Bn69eUq8CX
+	 X1SdSF3ue5LY1y+VktZKEKv4K6uYT304Y/Naxucn4ZWOTiuezh6Ge0AE5y7EPjvJwt
+	 zwDQqZzyipiVxncOHQKaOJ82VXt6HLqyE3ZZjl2T2/dbFueh/7+csp9yDn7tX97Yek
+	 P+xo17keh9A4g==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id XlufncGnrO2c; Wed, 15 May 2024 09:54:21 -0400 (EDT)
+Received: from gerard.rennes.sfl (lmontsouris-657-1-69-118.w80-15.abo.wanadoo.fr [80.15.101.118])
+	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id 02C819C58F5;
+	Wed, 15 May 2024 09:54:19 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCHv4 1/9] ASoC: fsl-asoc-card: add support for dai links with multiple codecs
+Date: Wed, 15 May 2024 15:54:03 +0200
+Message-Id: <20240515135411.343333-2-elinor.montmasson@savoirfairelinux.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com>
+References: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com>
 MIME-Version: 1.0
-References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
- <87sez0k661.wl-tiwai@suse.de> <20240502095956.0a8c5b26@sal.lan>
- <20240502102643.4ee7f6c2@sal.lan> <ZjRCJ2ZcmKOIo7_p@finisterre.sirena.org.uk>
- <20240503094225.47fe4836@sal.lan> <CAA+D8APfM3ayXHAPadHLty52PYE9soQM6o780=mZs+R4px-AOQ@mail.gmail.com>
- <22d94c69-7e9f-4aba-ae71-50cc2e5dd8ab@xs4all.nl> <51408e79-646d-4d23-bc5b-cd173d363327@linux.intel.com>
- <CAA+D8AM7+SvXBi=LKRqvJkLsrYW=nkHTfFe957z2Qzm89bc48g@mail.gmail.com>
- <cd71e8e8-b4dc-40ed-935e-a84c222997e6@linux.intel.com> <CAA+D8AMpLB0N++_iLWLN_qettNz-gKGQz2c2yLsY8qSycibkYg@mail.gmail.com>
- <2f771fe9-7c09-4e74-9b04-de52581133fd@linux.intel.com> <CAA+D8AMJKPVR99jzYCR5EsbMa8P95jQrDL=4ayYMuz+Cu1d2mQ@mail.gmail.com>
- <28d423b1-49d8-4180-8394-622b1afd9cd9@perex.cz> <850a80b2-d952-4c14-bd0b-98cb5a5c0233@perex.cz>
- <c5dbb765-8c93-4050-84e1-c0f63b43d6c2@xs4all.nl> <8a6f84ac-5813-4954-b852-84f5118e607c@perex.cz>
- <87o7975qcw.wl-tiwai@suse.de> <e63ec6c8-7da7-4b87-b7ff-a71ff12dcfc1@perex.cz>
-In-Reply-To: <e63ec6c8-7da7-4b87-b7ff-a71ff12dcfc1@perex.cz>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 15 May 2024 21:34:43 +0800
-Message-ID: <CAA+D8AOj2ZkiSg2sXfQypg-xc4f8dMykENu5GoGMx6REGu+WBQ@mail.gmail.com>
-Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
-To: Jaroslav Kysela <perex@perex.cz>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,143 +81,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 15, 2024 at 6:46=E2=80=AFPM Jaroslav Kysela <perex@perex.cz> wr=
-ote:
->
-> On 15. 05. 24 12:19, Takashi Iwai wrote:
-> > On Wed, 15 May 2024 11:50:52 +0200,
-> > Jaroslav Kysela wrote:
-> >>
-> >> On 15. 05. 24 11:17, Hans Verkuil wrote:
-> >>> Hi Jaroslav,
-> >>>
-> >>> On 5/13/24 13:56, Jaroslav Kysela wrote:
-> >>>> On 09. 05. 24 13:13, Jaroslav Kysela wrote:
-> >>>>> On 09. 05. 24 12:44, Shengjiu Wang wrote:
-> >>>>>>>> mem2mem is just like the decoder in the compress pipeline. which=
- is
-> >>>>>>>> one of the components in the pipeline.
-> >>>>>>>
-> >>>>>>> I was thinking of loopback with endpoints using compress streams,
-> >>>>>>> without physical endpoint, something like:
-> >>>>>>>
-> >>>>>>> compress playback (to feed data from userspace) -> DSP (processin=
-g) ->
-> >>>>>>> compress capture (send data back to userspace)
-> >>>>>>>
-> >>>>>>> Unless I'm missing something, you should be able to process data =
-as fast
-> >>>>>>> as you can feed it and consume it in such case.
-> >>>>>>>
-> >>>>>>
-> >>>>>> Actually in the beginning I tried this,  but it did not work well.
-> >>>>>> ALSA needs time control for playback and capture, playback and cap=
-ture
-> >>>>>> needs to synchronize.  Usually the playback and capture pipeline i=
-s
-> >>>>>> independent in ALSA design,  but in this case, the playback and ca=
-pture
-> >>>>>> should synchronize, they are not independent.
-> >>>>>
-> >>>>> The core compress API core no strict timing constraints. You can ev=
-entually0
-> >>>>> have two half-duplex compress devices, if you like to have really i=
-ndependent
-> >>>>> mechanism. If something is missing in API, you can extend this API =
-(like to
-> >>>>> inform the user space that it's a producer/consumer processing with=
-out any
-> >>>>> relation to the real time). I like this idea.
-> >>>>
-> >>>> I was thinking more about this. If I am right, the mentioned use in =
-gstreamer
-> >>>> is supposed to run the conversion (DSP) job in "one shot" (can be ha=
-ndled
-> >>>> using one system call like blocking ioctl).  The goal is just to off=
-load the
-> >>>> CPU work to the DSP (co-processor). If there are no requirements for=
- the
-> >>>> queuing, we can implement this ioctl in the compress ALSA API easily=
- using the
-> >>>> data management through the dma-buf API. We can eventually define a =
-new
-> >>>> direction (enum snd_compr_direction) like SND_COMPRESS_CONVERT or so=
- to allow
-> >>>> handle this new data scheme. The API may be extended later on real d=
-emand, of
-> >>>> course.
-> >>>>
-> >>>> Otherwise all pieces are already in the current ALSA compress API
-> >>>> (capabilities, params, enumeration). The realtime controls may be cr=
-eated
-> >>>> using ALSA control API.
-> >>>
-> >>> So does this mean that Shengjiu should attempt to use this ALSA appro=
-ach first?
-> >>
-> >> I've not seen any argument to use v4l2 mem2mem buffer scheme for this
-> >> data conversion forcefully. It looks like a simple job and ALSA APIs
-> >> may be extended for this simple purpose.
-> >>
-> >> Shengjiu, what are your requirements for gstreamer support? Would be a
-> >> new blocking ioctl enough for the initial support in the compress ALSA
-> >> API?
-> >
-> > If it works with compress API, it'd be great, yeah.
-> > So, your idea is to open compress-offload devices for read and write,
-> > then and let them convert a la batch jobs without timing control?
-> >
-> > For full-duplex usages, we might need some more extensions, so that
-> > both read and write parameters can be synchronized.  (So far the
-> > compress stream is a unidirectional, and the runtime buffer for a
-> > single stream.)
-> >
-> > And the buffer management is based on the fixed size fragments.  I
-> > hope this doesn't matter much for the intended operation?
->
-> It's a question, if the standard I/O is really required for this case. My
-> quick idea was to just implement a new "direction" for this job supportin=
-g
-> only one ioctl for the data processing which will execute the job in "one
-> shot" at the moment. The I/O may be handled through dma-buf API (which se=
-ems
-> to be standard nowadays for this purpose and allows future chaining).
->
-> So something like:
->
-> struct dsp_job {
->     int source_fd;     /* dma-buf FD with source data - for dma_buf_get()=
- */
->     int target_fd;     /* dma-buf FD for target data - for dma_buf_get() =
-*/
->     ... maybe some extra data size members here ...
->     ... maybe some special parameters here ...
-> };
->
-> #define SNDRV_COMPRESS_DSPJOB _IOWR('C', 0x60, struct dsp_job)
->
-> This ioctl will be blocking (thus synced). My question is, if it's feasib=
-le
-> for gstreamer or not. For this particular case, if the rate conversion is
-> implemented in software, it will block the gstreamer data processing, too=
-.
->
+Add support for dai links using multiple codecs for multi-codec
+use cases.
 
-Thanks.
+Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Co-authored-by: Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux=
+.com>
+---
+ sound/soc/fsl/fsl-asoc-card.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-I have several questions:
-1.  Compress API alway binds to a sound card.  Can we avoid that?
-     For ASRC, it is just one component,
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 5ddc0c2fe53f..8a2a6e5461dc 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -815,10 +815,10 @@ static int fsl_asoc_card_probe(struct platform_device=
+ *pdev)
+=20
+ 	/* Normal DAI Link */
+ 	priv->dai_link[0].cpus->of_node =3D cpu_np;
+-	priv->dai_link[0].codecs->dai_name =3D codec_dai_name;
++	priv->dai_link[0].codecs[0].dai_name =3D codec_dai_name;
+=20
+ 	if (!fsl_asoc_card_is_ac97(priv))
+-		priv->dai_link[0].codecs->of_node =3D codec_np;
++		priv->dai_link[0].codecs[0].of_node =3D codec_np;
+ 	else {
+ 		u32 idx;
+=20
+@@ -829,11 +829,11 @@ static int fsl_asoc_card_probe(struct platform_device=
+ *pdev)
+ 			goto asrc_fail;
+ 		}
+=20
+-		priv->dai_link[0].codecs->name =3D
++		priv->dai_link[0].codecs[0].name =3D
+ 				devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 					       "ac97-codec.%u",
+ 					       (unsigned int)idx);
+-		if (!priv->dai_link[0].codecs->name) {
++		if (!priv->dai_link[0].codecs[0].name) {
+ 			ret =3D -ENOMEM;
+ 			goto asrc_fail;
+ 		}
+@@ -844,13 +844,19 @@ static int fsl_asoc_card_probe(struct platform_device=
+ *pdev)
+ 	priv->card.num_links =3D 1;
+=20
+ 	if (asrc_pdev) {
++		int i;
++		struct snd_soc_dai_link_component *codec;
++		struct snd_soc_dai_link *link;
++
+ 		/* DPCM DAI Links only if ASRC exists */
+ 		priv->dai_link[1].cpus->of_node =3D asrc_np;
+ 		priv->dai_link[1].platforms->of_node =3D asrc_np;
+-		priv->dai_link[2].codecs->dai_name =3D codec_dai_name;
+-		priv->dai_link[2].codecs->of_node =3D codec_np;
+-		priv->dai_link[2].codecs->name =3D
+-				priv->dai_link[0].codecs->name;
++		link =3D &(priv->dai_link[2]);
++		for_each_link_codecs(link, i, codec) {
++			codec->dai_name =3D priv->dai_link[0].codecs[i].dai_name;
++			codec->of_node =3D priv->dai_link[0].codecs[i].of_node;
++			codec->name =3D priv->dai_link[0].codecs[i].name;
++		}
+ 		priv->dai_link[2].cpus->of_node =3D cpu_np;
+ 		priv->dai_link[2].dai_fmt =3D priv->dai_fmt;
+ 		priv->card.num_links =3D 3;
+--=20
+2.34.1
 
-2.  Compress API doesn't seem to support mmap().  Is this a problem
-     for sending and getting data to/from the driver?
-
-3. How does the user get output data from ASRC after each conversion?
-   it should happen every period.
-
-best regards
-Shengjiu Wang.
