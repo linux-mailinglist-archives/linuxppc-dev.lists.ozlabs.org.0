@@ -1,73 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86B08C6C37
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 20:33:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715F88C6CC0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 21:20:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=NNcmssn5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=I1oH+X3M;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vfhgv2vP8z3dHL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 04:33:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vfjk86bLgz3d2c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 05:20:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=NNcmssn5;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=I1oH+X3M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 28234 seconds by postgrey-1.37 at boromir; Thu, 16 May 2024 04:33:08 AEST
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=axelrasmussen@google.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vfhg823SDz3ccS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 04:33:07 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C9CD440E0244;
-	Wed, 15 May 2024 18:33:03 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9vDdpDFf5kxS; Wed, 15 May 2024 18:33:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715797979; bh=Hm7EEfZwJI4EYLlWeG98fmfbg67gUcFmPW/+3Lw+0eM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NNcmssn5qPrIpNNCkSfiTnfWD2z1w21vdoZu1NS83caf/javSnvE1oJXT+ZlXNp5G
-	 mylWM8TFisrlSNRpcQ3QQUneVDN3u8tAOR49ZzTVUC45U3ROdrBp7IfKMmX/7t1LqA
-	 5TcLzqUsT5yLDImfC7YT5HmUsx+BdgFE+vTShmPP3x3kcB65tPo0V6qL707YzidMw7
-	 lqQoTm3p7XuTNoOIFjBWfpD+q8N9zcRvPzA4BtKg5GQ1VkqCj87ANfFS9Q5UqpKPx3
-	 4uDufH5nyuc3d4/fjwQMqimEshOgxSeDlKKTjlUyvGKaS6DiOkY/3HLz54XzekSFQQ
-	 Vh36R3bGRbKxksUZUUCjvUqWKPQ7HPoOJ+HDku4E1Kz5adIF8dHVkUn0McK4LNFcyL
-	 woIewpgBkUvFMn8rqC65+jq7h7VyTMAOUXHqd2FSUJj+iufewUmeYbXHDiM3/nYDV8
-	 CAZpPHRcwxRmeAfb2RpMrWKW8lfvw9Yl/ezfkC3ZQAjJa7AMx8VAemzLBa/52ZMFCx
-	 WsvtIubJzBZJKHvT8or3pk0cLynKdR4Sooc7+g1mbqRaNNBomRgiJX44xcazeGspJf
-	 rcMtWXcZ8SZXHxXkzvfnw1JrUuF8C9FjvAW669dUA98YboAOpXNSlKba7sqXLBo2rD
-	 7xvQMItMtRQAEQ24XsxQ/6ww=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EA18940E016A;
-	Wed, 15 May 2024 18:32:30 +0000 (UTC)
-Date: Wed, 15 May 2024 20:32:22 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Axel Rasmussen <axelrasmussen@google.com>
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
- poison errors
-Message-ID: <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com>
- <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
- <ZkSUaVx3uCIPkpkJ@localhost.localdomain>
- <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfjjN34JZz3cb1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 05:20:07 +1000 (AEST)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2e0933d3b5fso108402301fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 12:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715800795; x=1716405595; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HXjROtfQXycrwTZbHgAfwgBM9LbMzawmBcCZtk8pkcY=;
+        b=I1oH+X3Mk/n3BdMicSHEZ9rwSESSvL8domrENU8JFKd0OiKjAWf5rqUZk6ib4Va71H
+         zL1Crqz1n2nGZJvl0/1pI0aoylWeoiA89BOVrbCiADm7bCQHAeEIxoKMemx90MmuI4gj
+         hEz4skgt1ghVbm2sJA6JnlvbnFJD9b0USYOyi49Ok5IfG2fpswmo7cOcztg3wpFGrHB5
+         s9hVzDm7Z5Z3dzIjOS7c58hfIF4LLYq7F5R5jntDyfFvUcLYbIg1qplHzALRJgYwOnWZ
+         /EIZ5+aftf2ZGiD1rxTqpc/oKQsT4GVAqU1XxNKDSEBV1s7/7rD/oyF7MPK4Y/pHVVkF
+         541w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715800795; x=1716405595;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HXjROtfQXycrwTZbHgAfwgBM9LbMzawmBcCZtk8pkcY=;
+        b=APQkgazsYx6+GefFCFrdG712JH7DlbOWNZXJDz7AsjI8TXCi6D6fUe79HCiDSdUqJj
+         yrrgXy9hEyVJBWNjypQI+TpHPJLagQiUPMNiE8F/xyx135zR4Y0lMKDuY4kdPp25YXHD
+         u54MYYzD59+tyD9uQ6mBmR5XGRJDVV8KGjj74TRavAsDkTzplpV6ma7+UQu5pXVibIIG
+         uW5bwhTQx3riz0WVRh2tbKhpNq1jylS7oZSJ8oBsjGkJ1aJUHMWrZebMFMYlmEGt1mrf
+         +GsrRSeLhIHePWVCnhAquKL5vbyLr/sLYLHsWGc5LlANVOep3x+2lmng0fnsA05KNbck
+         gUDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWhNzfkwsuRnpLZ7KTo9F21DZ5ap635mpEEglMp8BrSpDerZoXu9vfECKa34RjOQYSyJPRyEk82afWiukRM0dHQ4Gy2ByBt8xXT6RJ8Q==
+X-Gm-Message-State: AOJu0YzU9Ursix1l4IqxPJxgGo7dL965CVdI4ZZoNsDf0vXhMhFctbji
+	AsLYhTDz/WsJHnQp2WBDIOEEKNrl3G9hKFjm5gtbu9REmrhuge3nwt5Q92TGYx3NxTXNJkEolov
+	lc5RGeqpff4Dgf8uXB96bMw2hvgadto1aDFn3
+X-Google-Smtp-Source: AGHT+IEsh1fgFOZ5mQCmTXHCQZJjsjH7zDpAl9YdV3FVukl1MJHO71DKDwXJtDNtSkwq75f+AarVWw4jtJy3Fg3K69Q=
+X-Received: by 2002:a2e:a591:0:b0:2e2:9416:a649 with SMTP id
+ 38308e7fff4ca-2e5205c3760mr118614971fa.53.1715800795037; Wed, 15 May 2024
+ 12:19:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com> <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
+ <ZkSUaVx3uCIPkpkJ@localhost.localdomain> <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
+ <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
+In-Reply-To: <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Wed, 15 May 2024 12:19:16 -0700
+Message-ID: <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker poison errors
+To: Borislav Petkov <bp@alien8.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,35 +85,73 @@ Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 15, 2024 at 10:33:03AM -0700, Axel Rasmussen wrote:
-> Right, the goal is to still have the process get a SIGBUS, but to
-> avoid the "MCE error" log message. The basic issue is, unprivileged
-> users can set these markers up, and thereby completely spam up the
-> log.
+On Wed, May 15, 2024 at 11:33=E2=80=AFAM Borislav Petkov <bp@alien8.de> wro=
+te:
+>
+> On Wed, May 15, 2024 at 10:33:03AM -0700, Axel Rasmussen wrote:
+> > Right, the goal is to still have the process get a SIGBUS, but to
+> > avoid the "MCE error" log message. The basic issue is, unprivileged
+> > users can set these markers up, and thereby completely spam up the
+> > log.
+>
+> What is the real attack scenario you want to protect against?
+>
+> Or is this something hypothetical?
 
-What is the real attack scenario you want to protect against?
+An unprivileged process can allocate a VMA, use the userfaultfd API to
+install one of these PTE markers, and then register a no-op SIGBUS
+handler. Now it can access that address in a tight loop, generating a
+huge number of kernel log messages. This can e.g. bog down the system,
+or at least drown out other important log messages.
 
-Or is this something hypothetical?
+For example the userfaultfd selftest does something similar to this to
+test that the API works properly. :)
 
-> That said, one thing I'm not sure about is whether or not
-> VM_FAULT_SIGBUS is a viable alternative (returned for a new PTE marker
-> type specific to simulated poison). The goal of the simulated poison
-> feature is to "closely simulate" a real hardware poison event. If you
-> live migrate a VM from a host with real poisoned memory, to a new
-> host: you'd want to keep the same behavior if the guest accessed those
-> addresses again, so as not to confuse the guest about why it suddenly
-> became "un-poisoned".
+Even in a non-contrived / non-malicious case, use of this API could
+have similar effects. If nothing else, the log message can be
+confusing to administrators: they state that an MCE occurred, whereas
+with the simulated poison API, this is not the case; it isn't a "real"
+MCE / hardware error.
 
-Well, the recovery action is to poison the page and the process should
-be resilient enough and allocate a new, clean page which doesn't trigger
-hw poison hopefully, if possible.
+>
+> > That said, one thing I'm not sure about is whether or not
+> > VM_FAULT_SIGBUS is a viable alternative (returned for a new PTE marker
+> > type specific to simulated poison). The goal of the simulated poison
+> > feature is to "closely simulate" a real hardware poison event. If you
+> > live migrate a VM from a host with real poisoned memory, to a new
+> > host: you'd want to keep the same behavior if the guest accessed those
+> > addresses again, so as not to confuse the guest about why it suddenly
+> > became "un-poisoned".
+>
+> Well, the recovery action is to poison the page and the process should
+> be resilient enough and allocate a new, clean page which doesn't trigger
+> hw poison hopefully, if possible.
+>
+> It doesn't make a whole lotta sense if poison "remains". Hardware poison
+> you don't want to touch a second time either - otherwise you might
+> consume that poison and die.
 
-It doesn't make a whole lotta sense if poison "remains". Hardware poison
-you don't want to touch a second time either - otherwise you might
-consume that poison and die.
+In the KVM use case, the host can't just allocate a new page, because
+it doesn't know what the guest might have had stored there. Best we
+can do is propagate the poison into the guest, and let the guest OS
+deal with it as it sees fit, and mark the page poisoned on the host. I
+don't disagree the guest *shouldn't* reaccess it in this case. :) But
+if it did, it should get another poison event just as you say.
 
--- 
-Regards/Gruss,
-    Boris.
+And, live migration between physical hosts should be transparent to
+the guest. So if the guest gets a poison, and then we live migrate it,
+and then it accesses that address again, it should likewise get
+another poison event, just as before. Even though the underlying
+physical memory is *not* poisoned on the new host machine.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+So the use case is, after live migration, we install one of these PTE
+markers to simulate a poison event in case the address is accessed
+again. But since it isn't *really* a hardware error on the new host,
+no reason to spam the host kernel log when / if this occurs.
+
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
