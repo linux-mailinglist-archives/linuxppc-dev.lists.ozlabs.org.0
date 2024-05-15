@@ -1,90 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4DF8C6812
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 15:59:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE808C6841
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 16:06:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bz+kHhm3;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=Td6C1HQc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VfZbP6HfKz3cYw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 23:59:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VfZlx67qDz3fwm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 00:06:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bz+kHhm3;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=Td6C1HQc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfZZf0y4Sz3cX6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 23:58:49 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44FDfX0D023613;
-	Wed, 15 May 2024 13:58:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=zPt37DEPyt+WFz7Qhwmd8YhDjXwM3w+eiE4uQ3f7kEo=;
- b=Bz+kHhm3r5w7i5M7D6850hAvlijpvflEnP5mI80VknGWmLmmIInb5x+cK7USTNKL9hPp
- a7PZm/6lcCD5DQQvRBpx8/xSZsdcgbx28GYScE8FuLiiEX+CcCaqUOmkGH5hvjxtoLQO
- 36P94EjSxJlhXPq9qQXedalcm3SrFWk/VLNuj1V6QcDxAyjueYTZWcrq9A2TGNrZxu1y
- sn7PKD4Q3I0FEyPaZbe5lgHstr2o3BqGISaUbo+3NS32edWv6y4MTv7JArTYnM7rubD5
- Mjp8VeUFjmGAvVXFn6661X6R6RbWg6PH/jPO4G09q54xYtR0UfHCqeisUYefFA6l/ieR aA== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y4x5681nx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 13:58:37 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44FAiFlv018764;
-	Wed, 15 May 2024 13:58:36 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2k0tm50m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 13:58:36 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44FDwXnp44499700
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 May 2024 13:58:35 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18E845806A;
-	Wed, 15 May 2024 13:58:33 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBA5F58068;
-	Wed, 15 May 2024 13:58:31 +0000 (GMT)
-Received: from [9.67.88.41] (unknown [9.67.88.41])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 May 2024 13:58:31 +0000 (GMT)
-Message-ID: <7859e867-ddf4-494f-8ddb-2949aafbb40a@linux.ibm.com>
-Date: Wed, 15 May 2024 08:58:31 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] crypto: X25519 core functions for ppc64le
-To: Andy Polyakov <appro@cryptogams.org>, linux-crypto@vger.kernel.org
-References: <20240514173835.4814-1-dtsen@linux.ibm.com>
- <20240514173835.4814-3-dtsen@linux.ibm.com>
- <847f2e4f-ace1-415d-b129-ed2751429eec@cryptogams.org>
- <7eb6bf4b-5510-48fe-aa6c-ac5207d5a2c1@cryptogams.org>
-Content-Language: en-US
-From: Danny Tsen <dtsen@linux.ibm.com>
-In-Reply-To: <7eb6bf4b-5510-48fe-aa6c-ac5207d5a2c1@cryptogams.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 44D4IcrovAzxQUN07xlYZFX7Nka1sESy
-X-Proofpoint-GUID: 44D4IcrovAzxQUN07xlYZFX7Nka1sESy
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfZdm2pl2z3cYB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 00:01:32 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 4A7719C5818;
+	Wed, 15 May 2024 09:54:21 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id fFMLMWQGlLgx; Wed, 15 May 2024 09:54:20 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id E10049C58EA;
+	Wed, 15 May 2024 09:54:19 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com E10049C58EA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1715781260; bh=9rD/3giniaHUn4tfYhFlufR+6C3wG/E6x6qDZI5qkbI=;
+	h=From:To:Date:Message-Id:MIME-Version;
+	b=Td6C1HQca4ZqBgvcF6hj2mgY9wXFWGbiyXP/Yp4HUmYsTdKKQqcLMmlsWdK1i3+Fy
+	 x9z2MdmShQG3NlTVhIXzYiKWXiHiDoaOLMA3Ms26RXmTReq52KGGP9VZJTd6HVQ2Iv
+	 wybi9Od8okL9AGj4fkgwhLaXZ7reXVDGQw4vPkk0+G5ndH6RSOtr7D/59u3CBG9o7J
+	 9Nnu2XO88JxrkB3qxOnVYPvGvYQnm17cAxPbANDSvchiUFll5FneSheUsjUoVWvgoG
+	 OEzv3gqVB3YFlPLvFKm15XRs6G98kHvwNJej+xhjjtc+LCChJAfOiTPtC0Dgq7/X21
+	 8vbun28p1Pj9g==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 3sJiTzQkGwk9; Wed, 15 May 2024 09:54:19 -0400 (EDT)
+Received: from gerard.rennes.sfl (lmontsouris-657-1-69-118.w80-15.abo.wanadoo.fr [80.15.101.118])
+	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id CEC679C5818;
+	Wed, 15 May 2024 09:54:17 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCHv4 0/9] ASoC: fsl-asoc-card: compatibility integration of a generic codec use case for use with S/PDIF controller
+Date: Wed, 15 May 2024 15:54:02 +0200
+Message-Id: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-15_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=945
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405150098
+Content-Type: text/plain; charset=quoted-printable
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,55 +80,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
+Hello,
 
-Thanks for the info.  I should be able to do it.  I was hoping an 
-assembly guru like you can show me some tricks here if there is :)
+This is the v4 of the series of patch aiming to make the machine driver
+"fsl-asoc-card" compatible with use cases where there is no real codec
+driver. It proposes to use the "spdif_receiver" and "spdif_transmitter"
+drivers instead of the dummy codec.
+This is a first step in using the S/PDIF controller with the ASRC.
 
-Thanks.
+The five first patches add compatibility with the pair of codecs
+"spdif_receiver" and "spdif_transmitter" with a new compatible,
+"fsl,imx-audio-generic". Codec parameters are set with default values.
+Consequently, the driver is modified to work with multi-codec use cases.
+It can get 2 codecs phandles from the device tree, and the
+"fsl_asoc_card_priv" struct now has 2 "codec_priv" to store properties
+of both codecs. It is fixed to 2 codecs as only "fsl,imx-audio-generic"
+uses multiple codecs at the moment.
+However, the driver now uses "for_each_codecs" macros when possible to
+ease future implementations of multi-codec configurations.
 
--Danny
+The three following patches add configuration options for the
+devicetree. They configure the CPU DAI when using
+"fsl,imx-audio-generic". These options are usually hard-coded in
+"fsl-asoc-card.c" for each audio codec. Because the generic codec could
+be used with other CPU DAIs than the S/PDIF controller, setting these
+parameters could be required.
+These new options try to follow the style of the simple-card driver:
+* standard TDM properties are used, as defined in "tdm-slot.txt".
+* the CPU DAI system-clock can be specified, allowing the codec to
+retrieve its frequency.
+* the CPU DAI system-clock direction can be specified through a new
+binding, the same way it is done in simple-card.
 
-On 5/15/24 8:33 AM, Andy Polyakov wrote:
->>> +static void cswap(fe51 p, fe51 q, unsigned int bit)
->>> +{
->>> +    u64 t, i;
->>> +    u64 c = 0 - (u64) bit;
->>> +
->>> +    for (i = 0; i < 5; ++i) {
->>> +        t = c & (p[i] ^ q[i]);
->>> +        p[i] ^= t;
->>> +        q[i] ^= t;
->>> +    }
->>> +}
->>
->> The "c" in cswap stands for "constant-time," and the problem is that 
->> contemporary compilers have exhibited the ability to produce 
->> non-constant-time machine code as result of compilation of the above 
->> kind of technique. The outcome is platform-specific and ironically 
->> some of PPC code generators were observed to generate "most" 
->> non-constant-time code. "Most" in sense that execution time 
->> variations would be most easy to catch.
->
-> Just to substantiate the point, consider 
-> https://godbolt.org/z/faYnEcPT7, and note the conditional branch in 
-> the middle of the loop, which flies in the face of constant-time-ness. 
-> In case you object 'bit &= 1' on line 7 in the C code. Indeed, if you 
-> comment it out, the generated code will be fine. But the point is that 
-> the compiler is capable of and was in fact observed to figure out that 
-> the caller passes either one or zero and generate the machine code in 
-> the assembly window. In other words 'bit &= 1' is just a reflection of 
-> what the caller does.
->
->> ... the permanent solution is to do it in assembly. I can put 
->> together something...
->
-> Though you should be able to do this just as well :-) So should I or 
-> would you?
->
-> Cheers.
->
+The last commit updates the DT bindings documentation and add a new
+example for the generic codec use case.
+
+This series of patch was successfully built for arm64 and x86 on top of
+the latest=C2=A0"for-next" branch of the ASoC git tree on the 14th of May
+2024.
+These modifications have also been tested on an i.MX8MN evaluation
+board, with a linux kernel RT v6.1.26-rt8.
+
+If you have any question or remark about these commits, don't hesitate
+to reply.
+
+Best regards,
+Elinor Montmasson
+
+
+Changelog:
+v3 -> v4:
+* Use the standard TDM bidings, as defined in "tdm-slot.txt", for the
+new optional DT bindings setting the TDM slots number and width.
+* Use the clock DT bindings to optionally specify the CPU DAI system
+clock frequency, instead of a dedicated new binding.
+* Rename the new DT binding "cpu-sysclk-dir-out" to
+"cpu-system-clock-direction-out" to better follow the style of the
+simple-card driver.
+* Merge TX an RX bindings for CPU DAI system-clock, to better follow the
+style of the simple-card driver, and also as there was no use case in
+fsl-asoc-card where TX and RX settings had to be different.
+* Add the documentation for the new bindings in the new DT schema
+bindings documentation. Also add an example with the generic codec.
+* v3 patch series at :
+https://lore.kernel.org/alsa-devel/20231218124058.2047167-1-elinor.montmass=
+on@savoirfairelinux.com/
+
+v2 -> v3:
+* When the bitmaster or framemaster are retrieved from the device tree,
+the driver will now compare them with the two codecs possibly given in
+device tree, and not just the first codec.
+* Improve driver modifications to use multiple codecs for better
+integration of future multi-codec use cases:
+    * Use "for_each_codec" macros when possible.
+    * "fsl_asoc_card_priv" struct now has 2 "codec_priv" as the driver
+    can currently retrieve 2 codec phandles from the device tree.
+* Fix subject of patch 10/10 to follow the style of the subsystem
+* v2 patch series at:
+https://lore.kernel.org/alsa-devel/20231027144734.3654829-1-elinor.montmass=
+on@savoirfairelinux.com/
+
+v1 -> v2:
+* Replace use of the dummy codec by the pair of codecs spdif_receiver /
+spdif_transmitter.
+* Adapt how dai links codecs are used to take into account the
+possibility for multiple codecs per link.
+* Change compatible name.
+* Adapt driver to be able to register two codecs given in the device
+tree.
+* v1 patch series at:
+https://lore.kernel.org/alsa-devel/20230901144550.520072-1-elinor.montmasso=
+n@savoirfairelinux.com/
+
+
+Elinor Montmasson (9):
+  ASoC: fsl-asoc-card: add support for dai links with multiple codecs
+  ASoC: fsl-asoc-card: add second dai link component for codecs
+  ASoC: fsl-asoc-card: add compatibility to use 2 codecs in dai-links
+  ASoC: fsl-asoc-card: add new compatible for a generic codec use case
+  ASoC: fsl-asoc-card: set generic codec as clock provider
+  ASoC: fsl-asoc-card: add use of devicetree TDM slot properties
+  ASoC: fsl-asoc-card: add DT clock "cpu_sysclk" with generic codec
+  ASoC: fsl-asoc-card: add DT property "cpu-system-clock-direction-out"
+  ASoC: dt-bindings: fsl-asoc-card: add compatible for generic codec
+
+ .../bindings/sound/fsl-asoc-card.yaml         |  96 +++++-
+ sound/soc/fsl/fsl-asoc-card.c                 | 306 +++++++++++-------
+ 2 files changed, 287 insertions(+), 115 deletions(-)
+
+--=20
+2.34.1
+
