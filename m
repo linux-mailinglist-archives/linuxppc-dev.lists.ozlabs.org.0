@@ -1,79 +1,139 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A468C65DB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 13:38:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D9E8C64EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 12:20:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=pmJT7ccq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LuntKrpi;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ic6aR64+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LuntKrpi;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ic6aR64+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VfWSW3Njrz3cc0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 21:38:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VfTkk00xfz3cXs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 20:20:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cryptogams.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=pmJT7ccq;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LuntKrpi;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ic6aR64+;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LuntKrpi;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ic6aR64+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cryptogams.org (client-ip=2a00:1450:4864:20::233; helo=mail-lj1-x233.google.com; envelope-from=appro@cryptogams.org; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfS6037h2z30fM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 19:07:03 +1000 (AEST)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2e52181c228so52985551fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 02:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cryptogams.org; s=gmail; t=1715764019; x=1716368819; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sCN4Aw4+b34uYf5T+77CTVPm7n3v2SZABsZPxP6R4EM=;
-        b=pmJT7ccq0DW/Pn/Z9tFfGiuW44+pgVdoBAQQyP0b7TtwL7emM8e8goY3c9EFpmrWeY
-         hWhpgOAEPzSosyL43p5FNaToMvukl6RZ2LjhlQzHTJmKMZOcDLwiLV5/NbJPbB1mb8Os
-         z4j98LvjUsT4g0ZwwxkWYgcIa7hCeH93wjuJJ+vaI6C4pqqHdo57w+D3N2V9F+H3q7Uh
-         PdzAScPFnVhkNde4UK5LmcP1uPaF7if1IsVmQbUeoBERe+rIdsf6Uzy0MWWdwbkQUyTi
-         elrvZIupMykcLnbOyAaS8GsQavgHs0wZKwRpYhGbx4vTeg98/f3ETDpJYHcqT7UJUwgf
-         ysUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715764019; x=1716368819;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sCN4Aw4+b34uYf5T+77CTVPm7n3v2SZABsZPxP6R4EM=;
-        b=gOjeb80ZYu7pZ1aC07pIZSNCFJe2pDfxugvNEnNogjkkTwbvw+vQQb9rn79c/C54fT
-         lkTwqAuEMDLOTpP5nRMBjn9FDipqsj2MtD62TgerDQxdEHpHCWW2Gluoqjoe6nDO2kT4
-         TC9HsZknamLEoQ+nXIp534+0rFU4Tl0GMwr/IHguGWEI/BdIMtOARBkuDaglWsdrGnuS
-         v+R0bmoKux6EkACYxtzcU0vnq1fKFIlHEf3W1Ci3MfpkHDZbBmfXKVgt77tF4Q8w9hAH
-         +mbxC6/e9AyH81Q1KS7w7g5ag+rRImHD00Nkta3wa+zAzpHFoE+ci+MOv4EtuaNK4UZx
-         oVAw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+WgDsfIfhoK4x2tUo8isbAyloQ/liP6zQrrhpPtDvveKP10UW4FtgRYghQ9p4+MIduXnyf8rVHK2kvQcEZXxE2DfJF3BHTEDZgBI8Rg==
-X-Gm-Message-State: AOJu0Yxr6r+kSL/68C04sTgfbIpkMwaY63kJU0WMhDDiWAAtPs7nNgGV
-	ew4eNUEhkxN8hnU7Keac5rwYdGTYOH6fz2BWYP22CH+Jl/OoU7ntGpCl4Nb6aEz0lDuPEUUjit6
-	F
-X-Google-Smtp-Source: AGHT+IFGA1MJpKD7oQyr1PZIq0Tmx5HGUB13Z1Mg0iiS0ZqwHQj3FyTq5u9WwgiEAYYNn+VyIwyrpw==
-X-Received: by 2002:a2e:a794:0:b0:2e6:f3af:c6aa with SMTP id 38308e7fff4ca-2e6f3afcb13mr16822391fa.40.1715764019239;
-        Wed, 15 May 2024 02:06:59 -0700 (PDT)
-Received: from [10.0.1.129] (c-922370d5.012-252-67626723.bbcust.telenor.se. [213.112.35.146])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2e4d1621233sm20272571fa.126.2024.05.15.02.06.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 May 2024 02:06:58 -0700 (PDT)
-Message-ID: <db513fd8-4723-4b4c-bc14-7da7222617b3@cryptogams.org>
-Date: Wed, 15 May 2024 11:06:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] crypto: X25519 low-level primitives for ppc64le.
-To: Danny Tsen <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org
-References: <20240514173835.4814-1-dtsen@linux.ibm.com>
- <20240514173835.4814-2-dtsen@linux.ibm.com>
-Content-Language: en-US
-From: Andy Polyakov <appro@cryptogams.org>
-In-Reply-To: <20240514173835.4814-2-dtsen@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Wed, 15 May 2024 21:36:22 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfTjy0dkNz30Wn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 20:19:49 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4719833A33;
+	Wed, 15 May 2024 10:19:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715768383; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/WcIX7aYgrF5z87fxeBmfRGYcPU8ynjCCVZypleGzlQ=;
+	b=LuntKrpiFO0c3TV3TilWxFY+6ACqhtdTjrgI9mEDVJnMIeh++UG6f7bnw6Nhnp96+Wq1jh
+	rkSEi4Tf8r/lJJFdQ2GNA7hDvLi40zf37RH/kkLnX26UOHz8TQj+p+TgPMmeCVloOlRLuH
+	uVbxQo7cy30DmknHdjS9cDBrgSpBiFk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715768383;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/WcIX7aYgrF5z87fxeBmfRGYcPU8ynjCCVZypleGzlQ=;
+	b=Ic6aR64+5T59q/QkWj7My1F1gI0I76pVeHSGYkinZvkHxW1hsrkFisriLEYnbPuBfm5rhl
+	TpfNNAGQHtrBsfBw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715768383; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/WcIX7aYgrF5z87fxeBmfRGYcPU8ynjCCVZypleGzlQ=;
+	b=LuntKrpiFO0c3TV3TilWxFY+6ACqhtdTjrgI9mEDVJnMIeh++UG6f7bnw6Nhnp96+Wq1jh
+	rkSEi4Tf8r/lJJFdQ2GNA7hDvLi40zf37RH/kkLnX26UOHz8TQj+p+TgPMmeCVloOlRLuH
+	uVbxQo7cy30DmknHdjS9cDBrgSpBiFk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715768383;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/WcIX7aYgrF5z87fxeBmfRGYcPU8ynjCCVZypleGzlQ=;
+	b=Ic6aR64+5T59q/QkWj7My1F1gI0I76pVeHSGYkinZvkHxW1hsrkFisriLEYnbPuBfm5rhl
+	TpfNNAGQHtrBsfBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5BFB139B3;
+	Wed, 15 May 2024 10:19:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jrUhKz6MRGZoNAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 15 May 2024 10:19:42 +0000
+Date: Wed, 15 May 2024 12:19:59 +0200
+Message-ID: <87o7975qcw.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Jaroslav Kysela <perex@perex.cz>
+Subject: Re: [PATCH v15 00/16] Add audio support in v4l2 framework
+In-Reply-To: <8a6f84ac-5813-4954-b852-84f5118e607c@perex.cz>
+References: <1710834674-3285-1-git-send-email-shengjiu.wang@nxp.com>
+	<20240430172752.20ffcd56@sal.lan>
+	<ZjGhPz-bokg6ZbDJ@finisterre.sirena.org.uk>
+	<87sez0k661.wl-tiwai@suse.de>
+	<20240502095956.0a8c5b26@sal.lan>
+	<20240502102643.4ee7f6c2@sal.lan>
+	<ZjRCJ2ZcmKOIo7_p@finisterre.sirena.org.uk>
+	<20240503094225.47fe4836@sal.lan>
+	<CAA+D8APfM3ayXHAPadHLty52PYE9soQM6o780=mZs+R4px-AOQ@mail.gmail.com>
+	<22d94c69-7e9f-4aba-ae71-50cc2e5dd8ab@xs4all.nl>
+	<51408e79-646d-4d23-bc5b-cd173d363327@linux.intel.com>
+	<CAA+D8AM7+SvXBi=LKRqvJkLsrYW=nkHTfFe957z2Qzm89bc48g@mail.gmail.com>
+	<cd71e8e8-b4dc-40ed-935e-a84c222997e6@linux.intel.com>
+	<CAA+D8AMpLB0N++_iLWLN_qettNz-gKGQz2c2yLsY8qSycibkYg@mail.gmail.com>
+	<2f771fe9-7c09-4e74-9b04-de52581133fd@linux.intel.com>
+	<CAA+D8AMJKPVR99jzYCR5EsbMa8P95jQrDL=4ayYMuz+Cu1d2mQ@mail.gmail.com>
+	<28d423b1-49d8-4180-8394-622b1afd9cd9@perex.cz>
+	<850a80b2-d952-4c14-bd0b-98cb5a5c0233@perex.cz>
+	<c5dbb765-8c93-4050-84e1-c0f63b43d6c2@xs4all.nl>
+	<8a6f84ac-5813-4954-b852-84f5118e607c@perex.cz>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,xs4all.nl];
+	FREEMAIL_CC(0.00)[xs4all.nl,gmail.com,linux.intel.com,kernel.org,collabora.com,nxp.com,iki.fi,chromium.org,samsung.com,vger.kernel.org,suse.com,alsa-project.org,lists.ozlabs.org];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -1.80
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,45 +145,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Sebastian Fricke <sebastian.fricke@collabora.com>, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, festevam@gmail.com, Amadeusz =?ISO-8859-2?Q?S=B3awi=F1ski?= <amadeuszx.slawinski@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Wed, 15 May 2024 11:50:52 +0200,
+Jaroslav Kysela wrote:
+> 
+> On 15. 05. 24 11:17, Hans Verkuil wrote:
+> > Hi Jaroslav,
+> > 
+> > On 5/13/24 13:56, Jaroslav Kysela wrote:
+> >> On 09. 05. 24 13:13, Jaroslav Kysela wrote:
+> >>> On 09. 05. 24 12:44, Shengjiu Wang wrote:
+> >>>>>> mem2mem is just like the decoder in the compress pipeline. which is
+> >>>>>> one of the components in the pipeline.
+> >>>>> 
+> >>>>> I was thinking of loopback with endpoints using compress streams,
+> >>>>> without physical endpoint, something like:
+> >>>>> 
+> >>>>> compress playback (to feed data from userspace) -> DSP (processing) ->
+> >>>>> compress capture (send data back to userspace)
+> >>>>> 
+> >>>>> Unless I'm missing something, you should be able to process data as fast
+> >>>>> as you can feed it and consume it in such case.
+> >>>>> 
+> >>>> 
+> >>>> Actually in the beginning I tried this,  but it did not work well.
+> >>>> ALSA needs time control for playback and capture, playback and capture
+> >>>> needs to synchronize.  Usually the playback and capture pipeline is
+> >>>> independent in ALSA design,  but in this case, the playback and capture
+> >>>> should synchronize, they are not independent.
+> >>> 
+> >>> The core compress API core no strict timing constraints. You can eventually0
+> >>> have two half-duplex compress devices, if you like to have really independent
+> >>> mechanism. If something is missing in API, you can extend this API (like to
+> >>> inform the user space that it's a producer/consumer processing without any
+> >>> relation to the real time). I like this idea.
+> >> 
+> >> I was thinking more about this. If I am right, the mentioned use in gstreamer
+> >> is supposed to run the conversion (DSP) job in "one shot" (can be handled
+> >> using one system call like blocking ioctl).  The goal is just to offload the
+> >> CPU work to the DSP (co-processor). If there are no requirements for the
+> >> queuing, we can implement this ioctl in the compress ALSA API easily using the
+> >> data management through the dma-buf API. We can eventually define a new
+> >> direction (enum snd_compr_direction) like SND_COMPRESS_CONVERT or so to allow
+> >> handle this new data scheme. The API may be extended later on real demand, of
+> >> course.
+> >> 
+> >> Otherwise all pieces are already in the current ALSA compress API
+> >> (capabilities, params, enumeration). The realtime controls may be created
+> >> using ALSA control API.
+> > 
+> > So does this mean that Shengjiu should attempt to use this ALSA approach first?
+> 
+> I've not seen any argument to use v4l2 mem2mem buffer scheme for this
+> data conversion forcefully. It looks like a simple job and ALSA APIs
+> may be extended for this simple purpose.
+> 
+> Shengjiu, what are your requirements for gstreamer support? Would be a
+> new blocking ioctl enough for the initial support in the compress ALSA
+> API?
 
-> +SYM_FUNC_START(x25519_fe51_sqr_times)
-> ...
-> +
-> +.Lsqr_times_loop:
-> ...
-> +
-> +	std	9,16(3)
-> +	std	10,24(3)
-> +	std	11,32(3)
-> +	std	7,0(3)
-> +	std	8,8(3)
-> +	bdnz	.Lsqr_times_loop
+If it works with compress API, it'd be great, yeah.
+So, your idea is to open compress-offload devices for read and write,
+then and let them convert a la batch jobs without timing control?
 
-I see no reason for why the stores can't be moved outside the loop in 
-question.
+For full-duplex usages, we might need some more extensions, so that
+both read and write parameters can be synchronized.  (So far the
+compress stream is a unidirectional, and the runtime buffer for a
+single stream.)
 
-> +SYM_FUNC_START(x25519_fe51_frombytes)
-> +.align	5
-> +
-> +	li	12, -1
-> +	srdi	12, 12, 13	# 0x7ffffffffffff
-> +
-> +	ld	5, 0(4)
-> +	ld	6, 8(4)
-> +	ld	7, 16(4)
-> +	ld	8, 24(4)
+And the buffer management is based on the fixed size fragments.  I
+hope this doesn't matter much for the intended operation?
 
-Is there actual guarantee that the byte input is 64-bit aligned? While 
-it is true that processor is obliged to handle misaligned loads and 
-stores by the ISA specification, them being inefficient doesn't go 
-against it. Most notably inefficiency is likely to be noted at the page 
-boundaries. What I'm trying to say is that it would be more appropriate 
-to avoid the unaligned loads (and stores).
 
-Cheers.
+thanks,
 
+Takashi
