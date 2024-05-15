@@ -2,87 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8E88C66E7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 15:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 038EF8C676C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 15:34:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y61M7fN+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=AXekDMCF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VfYVf6tYFz3cnR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 23:10:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VfZ1r5hkRz3cWR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 May 2024 23:33:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cryptogams.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y61M7fN+;
+	dkim=pass (2048-bit key; unprotected) header.d=cryptogams.org header.i=@cryptogams.org header.a=rsa-sha256 header.s=gmail header.b=AXekDMCF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cryptogams.org (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=appro@cryptogams.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfYTz2qkYz3bnL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 23:09:42 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44FD26Bb015083;
-	Wed, 15 May 2024 13:09:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Je8U2UY3rc1I4AkmbgNevevdjkjvB7fm8bL0HEh64WE=;
- b=Y61M7fN+tPqlrqXlfmls/IYw6qvfo5LdkLIh/CpHmZAQ+GfHI7Rz6YpRxjRouiUNSkZo
- autp7HVJsKwfKC1xSJ04ooxYUI9K01vjlOS3Kx1Zjs3Zjsh4wHDU0icrBo3Xo2y86OK8
- MC4YcJ7FrJ/TgMc4RhGX5Rg43CVzpumeRHhoLzPEeLWk24UIYvzrMjucCFm5y4M4mNrM
- HaLDuLpLtNd7Wkg5EgFkrwKflfBMiMCB9siuuxD9NzJ18AxoGVQknKLssDKudM2yJ3r5
- XJoOkvhSMdxZrGpYpw6zHcTxyYoIPuTcDUL3qLSkOsnZxbJqE68yV6c6oDs5ZHVCEPoz TQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y4wjw00cx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 13:09:28 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44FBf8o0006183;
-	Wed, 15 May 2024 13:06:06 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2mgmkn2t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 May 2024 13:06:06 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44FD63ag24052460
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 May 2024 13:06:05 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 29DC158064;
-	Wed, 15 May 2024 13:06:03 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EADB55805A;
-	Wed, 15 May 2024 13:06:01 +0000 (GMT)
-Received: from [9.67.88.41] (unknown [9.67.88.41])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 May 2024 13:06:01 +0000 (GMT)
-Message-ID: <74a95c1b-5137-46bc-beb1-45a7e93f8bdb@linux.ibm.com>
-Date: Wed, 15 May 2024 08:06:01 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VfZ150hMfz30WB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 23:33:11 +1000 (AEST)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-51fb14816f6so8912488e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 May 2024 06:33:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cryptogams.org; s=gmail; t=1715779988; x=1716384788; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IZnKfmHcaXKfk4mANRDz90u7oAjx4Am3VbR95ZF3WgM=;
+        b=AXekDMCF9W8LLFH/i6i8CKgyWYRnnTq5M1jUUH6Rq3jZ1Vv+X3f5/oAha/3itEDVwB
+         kDs1sVXoFcpmwOGoCsW+hRyPEeUTYo3geLRMxpuheq2YF+aPho9ioztb97nAew1XBmnH
+         Lr5DhXx/6fWx73+Sjm3Q9jCHMsFB6BfmP/ft8pP7rPMi76tp+s4batGjl6MMtKSHw5yQ
+         747GCjjG+td2xkHaozyPEPgPPGGHPvsocoKX1dOfdQTlZYu+scX1zkoc40Jjv5F5pStc
+         eS21OGFc3/OIh18MPCo9v7ad6dPVj+DqA6OkOfigyaZ1FIGk/HFxmOhKwAiG7Jp7vVyv
+         c7SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715779988; x=1716384788;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IZnKfmHcaXKfk4mANRDz90u7oAjx4Am3VbR95ZF3WgM=;
+        b=uIcsiqKWQqGXSUa/vhv9xp+73rCpd/KP2BKPnkMbg7FiLlxJb28IGFY/LpARetMZaI
+         iqbf1zZhbCxfITbu7I+p3E7Tzvf4H0+ss3fRMLByRCRwLa41TBuvOESUpkrFOLc8cJdy
+         Fl5Eiho/8v9lzPANZ+oM5A7h62XbdV0jqLLpUXWPWOZrMqROzDpngyzpefz5ql1rGwpK
+         RfRRAUDCSIjtsaqBYZs9QWMZmsMMYa+TFB37fddM3QCfwEHGKjv4E6xfl64+JCi9VGFb
+         eUZTNl2k5Ue7XKbmSOS4Zq0etFAKa3GbRVt7dByON0bD3mRTZRqJQE4EsqAECV5m75XP
+         ZfYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWjr0GL2whicpuvPWpExAmEG33LPemkJLbYurTfsbiVNrGvuWsbGcht43IbFW3YjkQwWoVGHDPsq1wcrh3RRO6EwLSzePYMJOeEjxea6A==
+X-Gm-Message-State: AOJu0YxijUhxZ6plfcrCitl2ZxXSeij8R0T8krcI7wXQbCeOshGvvDAy
+	b/BFuq7VAtQ1iXpXzaRYMVQWWyAO5n3/N80NSyQLe51GBPyJpDNxN4LDeOr9KWs=
+X-Google-Smtp-Source: AGHT+IHARK6h98zaZeHwpQW3CC/oAdRtrkGoOz4whPQzV2TK8WECwB1HF5F/+Wjw4JdTyvdc6/Eqyw==
+X-Received: by 2002:a05:6512:3e10:b0:51a:f16d:52a8 with SMTP id 2adb3069b0e04-52210070178mr14110770e87.50.1715779987823;
+        Wed, 15 May 2024 06:33:07 -0700 (PDT)
+Received: from [10.0.1.129] (c-922370d5.012-252-67626723.bbcust.telenor.se. [213.112.35.146])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-521f38d86b3sm2613126e87.210.2024.05.15.06.33.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 May 2024 06:33:07 -0700 (PDT)
+Message-ID: <7eb6bf4b-5510-48fe-aa6c-ac5207d5a2c1@cryptogams.org>
+Date: Wed, 15 May 2024 15:33:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/3] crypto: X25519 core functions for ppc64le
-To: Andy Polyakov <appro@cryptogams.org>, linux-crypto@vger.kernel.org
+From: Andy Polyakov <appro@cryptogams.org>
+To: Danny Tsen <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org
 References: <20240514173835.4814-1-dtsen@linux.ibm.com>
  <20240514173835.4814-3-dtsen@linux.ibm.com>
  <847f2e4f-ace1-415d-b129-ed2751429eec@cryptogams.org>
 Content-Language: en-US
-From: Danny Tsen <dtsen@linux.ibm.com>
 In-Reply-To: <847f2e4f-ace1-415d-b129-ed2751429eec@cryptogams.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TSAG0K77Roghbt5nN-MN6XF1lYphDOFS
-X-Proofpoint-ORIG-GUID: TSAG0K77Roghbt5nN-MN6XF1lYphDOFS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-15_06,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- phishscore=0 mlxscore=0 mlxlogscore=884 lowpriorityscore=0 clxscore=1015
- bulkscore=0 spamscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405150092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,17 +88,6 @@ Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-ke
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
-
-Points taken.  And much appreciate for the help.
-
-Thanks.
-
--Danny
-
-On 5/15/24 3:29 AM, Andy Polyakov wrote:
-> Hi,
->
 >> +static void cswap(fe51 p, fe51 q, unsigned int bit)
 >> +{
 >> +    u64 t, i;
@@ -120,18 +99,30 @@ On 5/15/24 3:29 AM, Andy Polyakov wrote:
 >> +        q[i] ^= t;
 >> +    }
 >> +}
->
+> 
 > The "c" in cswap stands for "constant-time," and the problem is that 
 > contemporary compilers have exhibited the ability to produce 
 > non-constant-time machine code as result of compilation of the above 
-> kind of technique. The outcome is platform-specific and ironically 
-> some of PPC code generators were observed to generate "most" 
+> kind of technique. The outcome is platform-specific and ironically some 
+> of PPC code generators were observed to generate "most" 
 > non-constant-time code. "Most" in sense that execution time variations 
-> would be most easy to catch. One way to work around the problem, at 
-> least for the time being, is to add 'asm volatile("" : "+r"(c))' after 
-> you calculate 'c'. But there is no guarantee that the next compiler 
-> version won't see through it, hence the permanent solution is to do it 
+> would be most easy to catch.
+
+Just to substantiate the point, consider 
+https://godbolt.org/z/faYnEcPT7, and note the conditional branch in the 
+middle of the loop, which flies in the face of constant-time-ness. In 
+case you object 'bit &= 1' on line 7 in the C code. Indeed, if you 
+comment it out, the generated code will be fine. But the point is that 
+the compiler is capable of and was in fact observed to figure out that 
+the caller passes either one or zero and generate the machine code in 
+the assembly window. In other words 'bit &= 1' is just a reflection of 
+what the caller does.
+
+> ... the permanent solution is to do it 
 > in assembly. I can put together something...
->
-> Cheers.
->
+
+Though you should be able to do this just as well :-) So should I or 
+would you?
+
+Cheers.
+
