@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7E98C75B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 14:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B87C8C75BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 14:14:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MFGv9a8x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tQmjf34/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vg8980fYxz3dSd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 22:12:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vg8CJ5c3Kz3dRf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 22:14:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MFGv9a8x;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tQmjf34/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vg88P0C4Tz3cXQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 22:11:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vg8Bc3KvBz2yt0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 22:13:28 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 1FCE4CE18AB;
-	Thu, 16 May 2024 12:11:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE16C113CC;
-	Thu, 16 May 2024 12:11:14 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id E2D46CE18A6;
+	Thu, 16 May 2024 12:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473CFC113CC;
+	Thu, 16 May 2024 12:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715861477;
-	bh=vzWty9Z112mKSwQmpKl9H1kFTMkTlX2pGHRLOpUzc/8=;
+	s=k20201202; t=1715861605;
+	bh=PgBb5IuMLJI8Ia1873iobO8fM2Zu/m/kbxqQ5D7vmUY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MFGv9a8xqo8bIibuLTC9Sb22GP+YNQKltzSiK5BkAxKn0wNtLMgfSglvsKWq8NCFn
-	 2p66bCe8JEZjQtBko0q30KPK5AEzNRLzP8+9Ybw2o/zP2GFmWoqGXdtMT+7ullrGHM
-	 KsFRznanFdd7euh+hybdzmSQGcdITWEBsycbxu8GmiVmHbk/jrJXQUsgtR4MGWKPYi
-	 aeKu03Xzz8FiBxjPfCL5MqFn9JRzfSdeGQ3b3a2r9C+qwOjRBWfTQRJFP/nHf9LdVA
-	 Ujd3ycfgTKc6iR/hkJDzhkWpL6UkTirq8EiK1I5/EnNlQcy9QyxtdmikyTkTapXMno
-	 cU/ARVbKxuyEQ==
-Date: Thu, 16 May 2024 13:11:11 +0100
+	b=tQmjf34/DI3xuTTNyYHqNO9Y/SzC1Ul8Bh5Hu+0vGFB8gLlzi8DfFjCbxwFVAkksY
+	 7pbHIbnuztMGwl4OwgLI/36pKCrOIFMgMHKkd2CAbCjoDZq4R9w9r1uvbWavioECN0
+	 7IDtEej3Hn1PQZd5zakbze5ot2Mt8tcpCPVlfHUufn+mMeNc4bCOdOEg+cilymEIAu
+	 IXq/FaXZVwMirysn/WaRj5qqNYqcmP8kQZQ30eGDhnsSTL2uWwQSILi6K2rXm49Bpt
+	 tlIxPQImgZFBFIaGoNowYSElmiroyRw6bNrdeMgUGWgVmAbIAyOTC5xnftJaB0IRwd
+	 GtyYNhZE87yrA==
+Date: Thu, 16 May 2024 13:13:19 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Subject: Re: [PATCHv4 9/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
- for generic codec
-Message-ID: <ce9a87c6-4a5c-4f0a-a8df-1fdce8c1f5df@sirena.org.uk>
+Subject: Re: [PATCHv4 7/9] ASoC: fsl-asoc-card: add DT clock "cpu_sysclk"
+ with generic codec
+Message-ID: <ffb3624f-2170-4642-aaa5-fb6736a75d59@sirena.org.uk>
 References: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com>
- <20240515135411.343333-10-elinor.montmasson@savoirfairelinux.com>
+ <20240515135411.343333-8-elinor.montmasson@savoirfairelinux.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XZeYRrKEjeLfbFL9"
+	protocol="application/pgp-signature"; boundary="LqD9gI/K1pmwN8AU"
 Content-Disposition: inline
-In-Reply-To: <20240515135411.343333-10-elinor.montmasson@savoirfairelinux.com>
+In-Reply-To: <20240515135411.343333-8-elinor.montmasson@savoirfairelinux.com>
 X-Cookie: I'm having a MID-WEEK CRISIS!
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,45 +68,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---XZeYRrKEjeLfbFL9
+--LqD9gI/K1pmwN8AU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, May 15, 2024 at 03:54:11PM +0200, Elinor Montmasson wrote:
+On Wed, May 15, 2024 at 03:54:09PM +0200, Elinor Montmasson wrote:
 
-> Add documentation about new dts bindings following new support
-> for compatible "fsl,imx-audio-generic".
+> Add an optional DT clock "cpu_sysclk" to get the CPU DAI system-clock
+> frequency when using the generic codec.
+> It is set for both Tx and Rx.
+> The way the frequency value is used is up to the CPU DAI driver
+> implementation.
 
->    audio-codec:
-> -    $ref: /schemas/types.yaml#/definitions/phandle
-> -    description: The phandle of an audio codec
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description: |
-> +      The phandle of an audio codec.
-> +      If using the "fsl,imx-audio-generic" compatible, give instead a pair of
-> +      phandles with the spdif_transmitter first (driver SPDIF DIT) and the
-> +      spdif_receiver second (driver SPDIF DIR).
-> +    items:
-> +      maxItems: 1
+> +		struct clk *cpu_sysclk = clk_get(&pdev->dev, "cpu_sysclk");
+> +		if (!IS_ERR(cpu_sysclk)) {
+> +			priv->cpu_priv.sysclk_freq[TX] = clk_get_rate(cpu_sysclk);
+> +			priv->cpu_priv.sysclk_freq[RX] = priv->cpu_priv.sysclk_freq[TX];
+> +			clk_put(cpu_sysclk);
+> +		}
 
-This description (and the code) don't feel like they're actually generic
-- they're clearly specific to the bidrectional S/PDIF case.  I'd expect
-something called -generic to cope with single CODECs as well as double,
-and not to have any constraints on what those are.
+I don't really understand the goal here - this is just reading whatever
+frequency happens to be set in the hardware when the driver starts up
+which if nothing else seems rather fragile?
 
---XZeYRrKEjeLfbFL9
+--LqD9gI/K1pmwN8AU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZF994ACgkQJNaLcl1U
-h9B7owf/abYbh4drI6QTSdLIrmNMdhFX4cLfs8jwRLolmoqXOy0BxV3+SchLf/aR
-T+1Cls7jAUyeAqoS8Z4NyDeCa/5Y17c7+QVmcgr53BmGgWjkKhxiyOjrl6q6gEXy
-VMZBcrNghdW1k5rzO3OCOiO38eFODTZ6RzBL0sh3iThDf+qQLKwgKWeZgL7tsuNz
-zJWwE0UVPkuiX9iR2pNWfWb0Q4VuEY9LieR9Onw5+rusb0xLF1PxGD6FaZIHLBBT
-CeeFfhBmLKorYQzK0o8oROWKEIx2o+HFCt/VO4aVmT+xFS5qK2wAOm4u/GtwnQLD
-6C87130dv/yD0+qYIIG6L3mTkpJ29A==
-=nO6y
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZF+F4ACgkQJNaLcl1U
+h9AXTAf/eg99B2kknpaDwJ9DZYFFkcxJ6324qRL4RTcRJNsgycwZKlovGPFG7PVB
+29K3gLq85wh/oTwmaxu0ytCzdOUaYcKNAec6vzs2Ro15xt1N728lxhxfM1JnH4F3
+0WTtEvxm1RB//7l8dl3SNGm+tZEPMZZf5vjpDhYF0KctVTrlgekUNwQvSXbEpi9T
+Xpxz8LYxSROWirKxovgWZefVgP9CDqERbTny2dUnaFZJUwV1CZg33QsIL6S6Szg1
++6XGOwJ1XLprfuqZlcejaGFjAcaaYyscdyypTVEFxfZrm9O1sy40NL+z/QEksF7r
+/BTWFjcskN42Qd4lgOeScS/BzpHJ8A==
+=filG
 -----END PGP SIGNATURE-----
 
---XZeYRrKEjeLfbFL9--
+--LqD9gI/K1pmwN8AU--
