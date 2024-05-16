@@ -2,83 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B700B8C793F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 17:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF458C79AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 May 2024 17:48:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dJij+bKi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=c/2Q+N1d;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FVqCAeJ3;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=NzJEOyRg;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UCdB6xDN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VgDPJ0wCkz3fnr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 01:23:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VgDz23Q2Kz3ft8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 01:48:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dJij+bKi;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=c/2Q+N1d;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FVqCAeJ3;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=NzJEOyRg;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UCdB6xDN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 528 seconds by postgrey-1.37 at boromir; Fri, 17 May 2024 01:48:06 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgDLG2kJhz3fRK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 01:20:22 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44GDEIhu030613;
-	Thu, 16 May 2024 15:20:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=5nMelTmMbO56bSQrp6/Ccu6IA7pxu29++FFJZKkFP4U=;
- b=dJij+bKi7kBQOHgGxhLbhz2xsJmhQRTSgasK+VeKofOBTS/b5WKGEt6jR+tNi7FWksy3
- T3Oipu+qBvcvCqgKRTXkyLlw/Hff9eTsjMdMhEm5LAHvqmln1IvzlQyg0mk2wrHBBKOV
- wZ68PWPmJh3OV3qdsPjHfL/vadtrBkKWaaSjtBx3sjcpfSqXPjw84+yfpbaAAtuGTHP1
- KqUrQ/9ZwBH0XzHiN6/zWWZ31eJxW70b6zGTuIjckBRcke2YAUE0kJMhVj+n/7JER/M8
- 9P9QUsy6Ib44oXh3MPjHRL7MO5Igk6YbwWueftxbBcUTCYsv9U2GGycEwbk3clwi68dB sQ== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y5ju60bdf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 15:20:10 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44GC3Bk8029599;
-	Thu, 16 May 2024 15:20:08 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2n7m29fx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 15:20:08 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44GFK56V39059846
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 May 2024 15:20:07 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D98CE58078;
-	Thu, 16 May 2024 15:20:03 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A0FFD5806B;
-	Thu, 16 May 2024 15:20:03 +0000 (GMT)
-Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 May 2024 15:20:03 +0000 (GMT)
-From: Danny Tsen <dtsen@linux.ibm.com>
-To: linux-crypto@vger.kernel.org
-Subject: [PATCH v2 3/3] crypto: Update Kconfig and Makefile for ppc64le x25519.
-Date: Thu, 16 May 2024 11:19:57 -0400
-Message-Id: <20240516151957.2215-4-dtsen@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240516151957.2215-1-dtsen@linux.ibm.com>
-References: <20240516151957.2215-1-dtsen@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgDyG48t5z3flf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 01:48:05 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5A39F34B83;
+	Thu, 16 May 2024 15:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1715873941;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ljb6iEdJgsES4YgAa+ABFGeaYU8BOkPNGhpZeJJA+Wo=;
+	b=c/2Q+N1dkaved4rxJ9+tgDhlTJe03v3OzUeTIVVomtDlnsSoYvAzbI7t32WimCGbnSfY/8
+	urAAUngq4LpGGb7E8W3hx/YicoFHfXgnGO7+9CUqABK4lhuetDIQq4SznZNZMwZmCt9SGG
+	+dk30/JHXZeNo1+LX2HDZZFfKRG601U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1715873941;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ljb6iEdJgsES4YgAa+ABFGeaYU8BOkPNGhpZeJJA+Wo=;
+	b=FVqCAeJ3M7TxQyL1og5veAbgfTe9qn7V7nEGNgeQAtEyn2ZJgOVKS1KCIb48Sjcuwqp7wL
+	SmLF2ajeoevQiHCg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1715873940;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ljb6iEdJgsES4YgAa+ABFGeaYU8BOkPNGhpZeJJA+Wo=;
+	b=NzJEOyRgsy22iK7fykjrnuqY4IgZwezv17pI46JJFLp2ynAgO5Zc8Ie+lz5yCDZniODdeq
+	6jqCVqpXhEB+h0l5HA9vxMR3MpcB56X+SJQP2S+EsJLi/1qeu9qeb3RJI8iAL/gZkJTDXb
+	ZfrRx/5dcbRw/BXyhmoCRcnbYmdTVAo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1715873940;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ljb6iEdJgsES4YgAa+ABFGeaYU8BOkPNGhpZeJJA+Wo=;
+	b=UCdB6xDNIMRsO3HA5tu2S4282E0WZoxkVklicNH/IkQyFGX8APG1bimeH/j0Lp60gNYZXr
+	rz7wl1dPx0I0u2Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36F6E13991;
+	Thu, 16 May 2024 15:39:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id seAlDZQoRmZeCAAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Thu, 16 May 2024 15:39:00 +0000
+Date: Thu, 16 May 2024 17:38:54 +0200
+From: David Sterba <dsterba@suse.cz>
+To: syzbot <syzbot+adec8406ad17413d4c06@syzkaller.appspotmail.com>
+Subject: Re: [syzbot] WARNING in btrfs_free_reserved_data_space_noquota
+Message-ID: <20240516153854.GE4449@suse.cz>
+References: <000000000000fac82605ee97fb72@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: MP_AHtOf1pFp6RPU5qSUDGVev9rTglGp
-X-Proofpoint-ORIG-GUID: MP_AHtOf1pFp6RPU5qSUDGVev9rTglGp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=678 suspectscore=0 phishscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405160108
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <000000000000fac82605ee97fb72@google.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=2325e409a9a893e1];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[adec8406ad17413d4c06];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[csgroup.eu,fb.com,suse.com,toxicpanda.com,vger.kernel.org,lists.ozlabs.org,ellerman.id.au,gmail.com,kernel.org,googlegroups.com,zte.com.cn];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,syzkaller.appspot.com:url]
+X-Spam-Score: -1.50
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,62 +133,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>, appro@cryptogams.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Reply-To: dsterba@suse.cz
+Cc: shuah@kernel.org, syzkaller-bugs@googlegroups.com, josef@toxicpanda.com, linux-kernel@vger.kernel.org, clm@fb.com, npiggin@gmail.com, linux-kselftest@vger.kernel.org, ye.xingchen@zte.com.cn, dsterba@suse.com, linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Defined CRYPTO_CURVE25519_PPC64 to support X25519 for ppc64le.
+On Tue, Nov 29, 2022 at 12:43:38AM -0800, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    b7b275e60bcd Linux 6.1-rc7
+> git tree:       upstream
+> console+strace: https://syzkaller.appspot.com/x/log.txt?x=158a7b73880000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=2325e409a9a893e1
+> dashboard link: https://syzkaller.appspot.com/bug?extid=adec8406ad17413d4c06
+> compiler:       Debian clang version 13.0.1-++20220126092033+75e33f71c2da-1~exp1~20220126212112.63, GNU ld (GNU Binutils for Debian) 2.35.2
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=169ccb75880000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17bf7153880000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/525233126d34/disk-b7b275e6.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/e8299bf41400/vmlinux-b7b275e6.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/eebf691dbf6f/bzImage-b7b275e6.xz
+> mounted in repro: https://storage.googleapis.com/syzbot-assets/5423c2d2ad62/mount_0.gz
+> 
+> The issue was bisected to:
+> 
+> commit c814bf958926ff45a9c1e899bd001006ab6cfbae
+> Author: ye xingchen <ye.xingchen@zte.com.cn>
+> Date:   Tue Aug 16 10:51:06 2022 +0000
+> 
+>     powerpc/selftests: Use timersub() for gettimeofday()
+> 
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=118c3d03880000
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=138c3d03880000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=158c3d03880000
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+adec8406ad17413d4c06@syzkaller.appspotmail.com
+> Fixes: c814bf958926 ("powerpc/selftests: Use timersub() for gettimeofday()")
+> 
+> RDX: 0000000000000001 RSI: 0000000020000280 RDI: 0000000000000005
+> RBP: 00007ffd32e91c70 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000008000000 R11: 0000000000000246 R12: 0000000000000006
+> R13: 00007ffd32e91cb0 R14: 00007ffd32e91c90 R15: 0000000000000006
+>  </TASK>
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 3764 at fs/btrfs/space-info.h:122 btrfs_space_info_free_bytes_may_use fs/btrfs/space-info.h:154 [inline]
+> WARNING: CPU: 1 PID: 3764 at fs/btrfs/space-info.h:122 btrfs_free_reserved_data_space_noquota+0x219/0x2b0 fs/btrfs/delalloc-space.c:179
 
-Added new module curve25519-ppc64le for X25519.
+Most likely fixed by 9e65bfca24cf1d ("btrfs: fix
+qgroup_free_reserved_data int overflow"), it's an 32bit type overflow
+that can cause various accounting errors, the function names match the
+context.
 
-Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
----
- arch/powerpc/crypto/Kconfig  | 11 +++++++++++
- arch/powerpc/crypto/Makefile |  2 ++
- 2 files changed, 13 insertions(+)
-
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 1e201b7ae2fc..09ebcbdfb34f 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -2,6 +2,17 @@
- 
- menu "Accelerated Cryptographic Algorithms for CPU (powerpc)"
- 
-+config CRYPTO_CURVE25519_PPC64
-+	tristate "Public key crypto: Curve25519 (PowerPC64)"
-+	depends on PPC64 && CPU_LITTLE_ENDIAN
-+	select CRYPTO_LIB_CURVE25519_GENERIC
-+	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
-+	help
-+	  Curve25519 algorithm
-+
-+	  Architecture: PowerPC64
-+	  - Little-endian
-+
- config CRYPTO_CRC32C_VPMSUM
- 	tristate "CRC32c"
- 	depends on PPC64 && ALTIVEC
-diff --git a/arch/powerpc/crypto/Makefile b/arch/powerpc/crypto/Makefile
-index fca0e9739869..59808592f0a1 100644
---- a/arch/powerpc/crypto/Makefile
-+++ b/arch/powerpc/crypto/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_CRYPTO_AES_GCM_P10) += aes-gcm-p10-crypto.o
- obj-$(CONFIG_CRYPTO_CHACHA20_P10) += chacha-p10-crypto.o
- obj-$(CONFIG_CRYPTO_POLY1305_P10) += poly1305-p10-crypto.o
- obj-$(CONFIG_CRYPTO_DEV_VMX_ENCRYPT) += vmx-crypto.o
-+obj-$(CONFIG_CRYPTO_CURVE25519_PPC64) += curve25519-ppc64le.o
- 
- aes-ppc-spe-y := aes-spe-core.o aes-spe-keys.o aes-tab-4k.o aes-spe-modes.o aes-spe-glue.o
- md5-ppc-y := md5-asm.o md5-glue.o
-@@ -29,6 +30,7 @@ aes-gcm-p10-crypto-y := aes-gcm-p10-glue.o aes-gcm-p10.o ghashp10-ppc.o aesp10-p
- chacha-p10-crypto-y := chacha-p10-glue.o chacha-p10le-8x.o
- poly1305-p10-crypto-y := poly1305-p10-glue.o poly1305-p10le_64.o
- vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
-+curve25519-ppc64le-y := curve25519-ppc64le-core.o curve25519-ppc64le_asm.o
- 
- ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
- override flavour := linux-ppc64le
--- 
-2.31.1
-
+#syz fix: btrfs: fix qgroup_free_reserved_data int overflow
