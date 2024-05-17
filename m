@@ -1,57 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9BD8C8A80
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 19:05:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2C98C8B2D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 19:37:30 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JYKmb3xW;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vgtd70939z30gp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 03:05:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VgvKz4rRQz30W9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 03:37:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.179; helo=mail-pf1-f179.google.com; envelope-from=kswilczynski@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JYKmb3xW;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vgtcg6gsDz2ysf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2024 03:05:06 +1000 (AEST)
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6f44bcbaae7so1253396b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 10:05:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715965501; x=1716570301;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgvKD3wQLz2xWS;
+	Sat, 18 May 2024 03:36:46 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1eeabda8590so15115195ad.0;
+        Fri, 17 May 2024 10:36:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715967399; x=1716572199; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZAF2nClB9tdRe2nZvO7iQeg/IDzJ4PErDPhyqSEtfbs=;
-        b=niGcP7GYLqsMmmpUzRZrEcDHAxZ9EczMtpo+mU4vnDbwtW76V/1XopmXOcPlaxa5+a
-         e6rFLvB0Ye2mX5e7U0Dbyfdi35qGW0Uyk825rdFzQhJgQ7a1efyWd0FFNPnaxaf9cs1h
-         qJQB0HLr0WZq11eYHkZfUL2wvESsFz5xWyBdq/6jK+YZKpQpS2J51fDj6OwUqIo2Xchu
-         Zsc+0enO8u1sh6Yp6tuGAnniMkYl16pK5YC8UNuAqsDEdG82mym3l3cmIA2TdYkU7z+u
-         GxzZ+zdlbSMv+Tw8IQKJAEarED3T2WDihTZk3DJL61U084sO7c+W1NrBqwd2gm9wMUUm
-         OQZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYKgol/DgjvmNHEAWSNqnvoIycoIS1Mh/iNTOQ0hEPmsVv9iwvkAFtbipontaqA9S0bS3NZr8RvZkAtla1KfOKIJBcw9rq7BSGcwA1EA==
-X-Gm-Message-State: AOJu0YyWevfcP5KxoWl3gin1ZzDWIr0JbgZU9bodJ23evTeGPEOxY53o
-	3aH0G0f6gqbEY665zpAJrnlIsE7w7Uz7fQXjWzJSxJS5KrrRD+hj
-X-Google-Smtp-Source: AGHT+IGDk5wz8T58ydDnsgGbyCZmHKCAeGjDn9utiYyGXMhzVl4Lcok/JS9rF8CQMUTTLF/lj2nWEQ==
-X-Received: by 2002:a05:6a00:238b:b0:6ea:afdb:6d03 with SMTP id d2e1a72fcca58-6f4e02d3ef9mr24111615b3a.19.1715965501417;
-        Fri, 17 May 2024 10:05:01 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f68c7d3651sm1904783b3a.183.2024.05.17.10.04.59
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rzMfxbAB8QJEcJdIySGROcUOqAKXWq8nqUdcExbi1Zk=;
+        b=JYKmb3xWmtU1aAMhOenfYW0U6OIr9YXCfYPQhXxdjh2rzsNVfrY2affuaSQNZ2vTFw
+         9V49paFhXT93a7M7VHjmuv59ZWrEms5RPaIWnHbNzvo2y4Yk5ev9fOJ0dfktV4qP5ENA
+         qS88+GIjn76DEGVFF03gWY5nDoseiC8GfLbPMdyjXPA9Y7n/UJ0ywcr2S+/z9fs6cA/b
+         4WLn6pukv9YEi4YkGFE8kpU9FmTfQckbzSe9yRfhUsPSYNVDQeV8AiUSQ038k+Oz8GX6
+         kGeS3nNJvMtdT2eLbFMU3kbS2XaEvkNPX1hL1y31SkPpZOVNBO6YdDynjDuE52B1PDPE
+         zU7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715967399; x=1716572199;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rzMfxbAB8QJEcJdIySGROcUOqAKXWq8nqUdcExbi1Zk=;
+        b=gqGICmiMYZ9Cy3o7dOS2sgvT7CD/5ed3/h4eFaaLK6Dy/WQo+rHL85m+odbeK1aUT4
+         SvKS3XFumYeTZqUEA6AM/1MA+ct+PFTEbmLgkmdxysSuMfXIsBiSvSoF5Wl8S76MmNgU
+         h9rOmhZGowPdbwNu88qJRarCfVKA4da8E/kL1sn+2hSoA4sNL8kXxdMBpjfCQzNZlfF5
+         iQSkA+RNWtIU77zoCKvGdPZW4fOjenKLwz1zdNPpTDFLpavInmJcPBHVkrv3QR9T5/WJ
+         gstKTP4yfVS2pPdH3PpHqBIXqcTbcbKgBB7GCYBBHeEF4u0NdCjPYdjt4ldiE69Zh3ky
+         mPQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWum3ywveRLpbZBjK3hq7lYOGQ6tArc8h5QcYkehTuQAp+vLUM+DhouHrwsICjL0ItmLW8tr1TizSgtS49x8zVQTyE7bguGSKH978B9otTmnhPrEm2NjCj3AGOKw8KkVN7wlVeLjaxOd39yEw==
+X-Gm-Message-State: AOJu0YzYW2PMVM35m5ChbYBZq55fqCvWMe8rTAdaVaIMD0htw4r0C4N0
+	rSLlE6f3qnDd+h8DurJY0uJT7wfKII+PaO9hZaIIdLKSAwmhpgxG
+X-Google-Smtp-Source: AGHT+IHJ9PZtASiLb9HJkYrHy1DRhdQlVEuKbRr0NYIRv4Tx+av91BIA0wx1gBcIQQlm9sd2COIQnQ==
+X-Received: by 2002:a17:90a:9606:b0:2b9:a299:928e with SMTP id 98e67ed59e1d1-2b9a29994c9mr10436893a91.24.1715967398710;
+        Fri, 17 May 2024 10:36:38 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2b67105666csm15749258a91.8.2024.05.17.10.36.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 May 2024 10:04:59 -0700 (PDT)
-Date: Sat, 18 May 2024 02:04:58 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v12 0/8] PCI: dwc: ep: Fix DBI access failure for drivers
- requiring refclk from host
-Message-ID: <20240517170458.GA1947919@rocinante>
-References: <20240327-pci-dbi-rework-v12-0-082625472414@linaro.org>
+        Fri, 17 May 2024 10:36:38 -0700 (PDT)
+Date: Fri, 17 May 2024 10:36:37 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] tracing/treewide: Remove second parameter of
+ __assign_str()
+Message-ID: <5080f4c5-e0b3-4c2e-9732-f673d7e6ca66@roeck-us.net>
+References: <20240516133454.681ba6a0@rorschach.local.home>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240327-pci-dbi-rework-v12-0-082625472414@linaro.org>
+In-Reply-To: <20240516133454.681ba6a0@rorschach.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,60 +81,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Frank Li <Frank.Li@nxp.com>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, NXP Linux Team <linux-imx@nxp.com>, Shawn Lin <shawn.lin@rock-chips.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org,
-  Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, Vidya Sagar <vidyas@nvidia.com>, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, brcm80211@lists.linux.dev, ath10k@lists.infradead.org, Julia Lawall <Julia.Lawall@inria.fr>, linux-s390@vger.kernel.org, dev@openvswitch.org, linux-cifs@vger.kernel.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, io-uring@vger.kernel.org, linux-bcachefs@vger.kernel.org, iommu@lists.linux.dev, ath11k@lists.infradead.org, linux-media@vger.kernel.org, linux-wpan@vger.kernel.org, linux-pm@vger.kernel.org, selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-erofs@lists.ozlabs.org, virtualization@lists.linux.dev, linux-sound@vger.kernel.org, linux-block@vger.kernel.org, ocfs2-devel@lists.linux.dev, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-cxl@vger.kernel.org, linux-tegra@vger.kernel.org, intel-xe@lists.freedesktop.org, linux-edac@vger.kernel.org, linux-hwmon@vger.kernel.org, brcm80211-dev-list.pdl@broa
+ dcom.com, Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org, ath12k@lists.infradead.org, tipc-discussion@lists.sourceforge.net, Masami Hiramatsu <mhiramat@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, Linux trace kernel <linux-trace-kernel@vger.kernel.org>, freedreno@lists.freedesktop.org, linux-nfs@vger.kernel.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, May 16, 2024 at 01:34:54PM -0400, Steven Rostedt wrote:
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> 
+> [
+>    This is a treewide change. I will likely re-create this patch again in
+>    the second week of the merge window of v6.10 and submit it then. Hoping
+>    to keep the conflicts that it will cause to a minimum.
+> ]
+> 
+> With the rework of how the __string() handles dynamic strings where it
+> saves off the source string in field in the helper structure[1], the
+> assignment of that value to the trace event field is stored in the helper
+> value and does not need to be passed in again.
+> 
+> This means that with:
+> 
+>   __string(field, mystring)
+> 
+> Which use to be assigned with __assign_str(field, mystring), no longer
+> needs the second parameter and it is unused. With this, __assign_str()
+> will now only get a single parameter.
+> 
+> There's over 700 users of __assign_str() and because coccinelle does not
+> handle the TRACE_EVENT() macro I ended up using the following sed script:
+> 
+>   git grep -l __assign_str | while read a ; do
+>       sed -e 's/\(__assign_str([^,]*[^ ,]\) *,[^;]*/\1)/' $a > /tmp/test-file;
+>       mv /tmp/test-file $a;
+>   done
+> 
+> I then searched for __assign_str() that did not end with ';' as those
+> were multi line assignments that the sed script above would fail to catch.
+> 
 
-Hello,
+Building csky:allmodconfig (and others) ... failed
+--------------
+Error log:
+In file included from include/trace/trace_events.h:419,
+                 from include/trace/define_trace.h:102,
+                 from drivers/cxl/core/trace.h:737,
+                 from drivers/cxl/core/trace.c:8:
+drivers/cxl/core/./trace.h:383:1: error: macro "__assign_str" passed 2 arguments, but takes just 1
 
-> This series is the continuation of previous work by Vidya Sagar [1] to fix the
-> issues related to accessing DBI register space before completing the core
-> initialization in some EP platforms like Tegra194/234 and Qcom EP.
-> 
-> Since Vidya is busy, I took over the series based on his consent (off-list
-> discussion).
-> 
-> NOTE
-> ====
-> 
-> Based on the comments received in v7 [2], I've heavily modified the series
-> to fix several other issues reported by Bjorn and Niklas. One noticeable
-> change is getting rid of the 'core_init_notifer' flag added to differentiate
-> between glue drivers requiring refclk from host and drivers getting refclk
-> locally.
-> 
-> By getting rid of this flag, now both the DWC EP driver and the EPF drivers
-> can use a single flow and need not distinguish between the glue drivers.
-> 
-> We can also get rid of the 'link_up_notifier' flag in the future by following
-> the same convention.
-> 
-> Testing
-> =======
-> 
-> I've tested the series on Qcom SM8450 based dev board that depends on refclk
-> from host with EPF_MHI driver. It'd be good to test this series on platforms
-> that generate refclk locally and also with EPF_TEST driver.
+This is with the patch applied on top of v6.9-8410-gff2632d7d08e.
+So far that seems to be the only build failure.
+Introduced with commit 6aec00139d3a8 ("cxl/core: Add region info to
+cxl_general_media and cxl_dram events"). Guess we'll see more of those
+towards the end of the commit window.
 
-Applied to controller/dwc, thank you!
-
-[01/08] PCI: dwc: ep: Fix DBI access failure for drivers requiring refclk from host
-        https://git.kernel.org/pci/pci/c/869bc5253406
-[02/08] PCI: dwc: ep: Add Kernel-doc comments for APIs
-        https://git.kernel.org/pci/pci/c/7cbebc86c72a
-[03/08] PCI: dwc: ep: Remove deinit() callback from struct dw_pcie_ep_ops
-        https://git.kernel.org/pci/pci/c/b7dec6b85089
-[04/08] PCI: dwc: ep: Rename dw_pcie_ep_exit() to dw_pcie_ep_deinit()
-        https://git.kernel.org/pci/pci/c/c8682a3314c1
-[05/08] PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#
-        https://git.kernel.org/pci/pci/c/570d7715eed8
-[06/08] PCI: dwc: ep: Rename dw_pcie_ep_init_complete() to dw_pcie_ep_init_registers()
-        https://git.kernel.org/pci/pci/c/7d6e64c443ea
-[07/08] PCI: dwc: ep: Call dw_pcie_ep_init_registers() API directly from all glue drivers
-        https://git.kernel.org/pci/pci/c/df69e17ccc2f
-[08/08] PCI: endpoint: Remove "core_init_notifier" flag
-        https://git.kernel.org/pci/pci/c/a01e7214bef9
-
-	Krzysztof
+Guenter
