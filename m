@@ -2,94 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490FB8C865A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 14:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A12508C862B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 14:13:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mvab/JPm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nak1r/Xs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vgmdp5KPSz3fs2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 22:35:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vgm8S0dfpz3cJl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 22:13:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mvab/JPm;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nak1r/Xs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=krishnak@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vgkry63LHz2yvv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 21:15:14 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44H9WUn6011746;
-	Fri, 17 May 2024 11:15:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : subject : to : cc : references : from :
- in-reply-to; s=pp1; bh=2ZnqHX2hKFitdHTwQKH/qQGiuwzKCUaHKqwkFGYaHrI=;
- b=mvab/JPmLzgYhzwExKrOYcUELZvnNiQnOU2cfNI7FLun3HYfYaEcqfdran7qmNN5wvTn
- 5KaGhPcPKHOai2mhOUr2kfCzovuv/w1Su9oUcFv/ZvJ5k+YsdpHnUWFSX9X0zU/Kc2do
- Lu20KDQzqJWYAQaKdHJVLaX09vjMJBpVofhszesj0o96coSXJ5X1DTuAroDZ21p4GmCa
- Vv8k67k20KAnLh+iggvwuqQQ4RdtBXWU++I0FcznyEHVjDlffCwkL5kkJJYSXGSFLS5Y
- XBFxxqCkkojzMOnBxBWinBg1wLimlGvUlTUwRgw4yBYBLhypWReCJAocr6IbZgkxZvSI 5w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y64pj88a1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 May 2024 11:15:02 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44HBF1Mx029345;
-	Fri, 17 May 2024 11:15:01 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y64pj88a0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 May 2024 11:15:01 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44H9xsGh018764;
-	Fri, 17 May 2024 11:15:00 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2k0tyyp3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 May 2024 11:15:00 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44HBEuuH21824200
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 May 2024 11:14:59 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C380E58063;
-	Fri, 17 May 2024 11:14:56 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B25458052;
-	Fri, 17 May 2024 11:14:53 +0000 (GMT)
-Received: from [9.109.241.85] (unknown [9.109.241.85])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 May 2024 11:14:52 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------w2Abro4c46mvBT9wBxFVKX0a"
-Message-ID: <fd0e22ab-5998-4b57-828e-224dda6bf490@linux.ibm.com>
-Date: Fri, 17 May 2024 16:44:51 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vgm7f5Dlpz30Vc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 22:13:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1715947973;
+	bh=lHFe+M/eM+QKHheEj+UQqPDqDJDbQqDrL5WTRpJ5lus=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nak1r/XsC9G4BYZGRpMW0M2WesMzn5tkNRviZboOObLOvNkYWLXs1dnDmdB6pRZAs
+	 zhfJe8QhnnvA9G6B1ZetrGi59pjPEMvtlRBxSWbkP4VAl6IhoHNHU7aLwjy5lOrMHl
+	 rDw6XuN87iKJUSeC1Oc7olITKrjYnCbjDMu+3ZjLnCZivu1mWIPbBx4MVS+iHpW3pL
+	 4tge6iTXdnmAehtQ/II3kkm2j6jLSU75suoBrBd04pt/Idl8AF0kVoHPe5VxYcjZRf
+	 fuo7c+2v74Bgu3nKAkP+UmNQgPwErVbeYblEZyoQoTEqhEHupLiW/lY2KyfclHwA4M
+	 agit1zAHLPn2Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Vgm7N0dSmz4wyh;
+	Fri, 17 May 2024 22:12:48 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.10-1 tag
+Date: Fri, 17 May 2024 22:12:46 +1000
+Message-ID: <8734qgwsap.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] powerpc: hotplug driver bridge support
-To: "Oliver O'Halloran" <oohall@gmail.com>
-References: <20240514135303.176134-1-krishnak@linux.ibm.com>
- <20240514135303.176134-3-krishnak@linux.ibm.com>
- <CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com>
-Content-Language: en-US
-From: krishna kumar <krishnak@linux.ibm.com>
-In-Reply-To: <CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6JDKP9ggUi4ipoGJA5lg2tWTjfiIGEkc
-X-Proofpoint-ORIG-GUID: dXfg880jrtrEBUpEfSpMrCgwsRBbJ7Uu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-17_03,2024-05-17_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- suspectscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
- phishscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405170090
-X-Mailman-Approved-At: Fri, 17 May 2024 22:30:12 +1000
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,487 +57,500 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, mahesh@linux.ibm.com, Gaurav Batra <gbatra@linux.ibm.com>, Bjorn Helgaas <bhelgaas@google.com>, Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: ritesh.list@gmail.com, chentao@kylinos.cn, mahesh@linux.ibm.com, lidong.zhong@suse.com, nicholas@linux.ibm.com, bgray@linux.ibm.com, sfr@canb.auug.org.au, maddy@linux.ibm.com, matthias.schiffer@ew.tq-group.com, bhe@redhat.com, masahiroy@kernel.org, guozihua@huawei.com, aneesh.kumar@kernel.org, ganeshgr@linux.ibm.com, joel@jms.id.au, sshegde@linux.ibm.com, colin.i.king@gmail.com, nathanl@linux.ibm.com, prosunofficial@gmail.com, arnd@arndb.de, thorsten.blum@toblux.com, groug@kaod.org, naveen@kernel.org, nathan@kernel.org, christophe.jaillet@wanadoo.fr, bhelgaas@google.com, andriy.shevchenko@linux.intel.com, hbathini@linux.ibm.com, xiaowei.bao@nxp.com, geoff@infradead.org, rdunlap@infradead.org, ghanshyam1898@gmail.com, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, leoyang.li@nxp.com, yang.lee@linux.alibaba.com, linux@treblig.org, vaibhav@linux.ibm.com, ran.wang_1@nxp.com, linuxppc-dev@lists.ozlabs.org, jsavitz@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------w2Abro4c46mvBT9wBxFVKX0a
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Hi Oliver,
+Hi Linus,
 
-Thanks for review. Please find my response below -
+Please pull powerpc updates for 6.10.
+
+There's one pending conflict against the RISC-V tree, in uapi/linux/prctl.h.
+I've updated our prctl number to account for it, they used 71, we took 72 a=
+nd
+73, so it's just a textual conflict.
+
+There's a few x86 & generic changes as part of the kdump hotplug series,
+but it has acks and has been in linux-next so should be no issues AFAIK.
+
+cheers
+
+Notable out of area changes:
+  # fae573060c8d Documentation: Fix the address of the linuxppc-dev mailing=
+ list
+    Documentation/ABI/testing/sysfs-devices-system-cpu
+    etc.
+
+  # 651d61bc8b7d KVM: PPC: Fix documentation for ppc mmu caps
+    Documentation/virt/kvm/api.rst
+    include/uapi/linux/kvm.h
+    tools/include/uapi/linux/kvm.h
+
+  # 79365026f869 crash: add a new kexec flag for hotplug support
+    arch/x86/include/asm/kexec.h
+    arch/x86/kernel/crash.c
+    drivers/base/cpu.c
+    drivers/base/memory.c
+    include/linux/crash_core.h
+    include/linux/kexec.h
+    include/uapi/linux/kexec.h
+    kernel/crash_core.c
+    kernel/kexec.c
+    kernel/kexec_file.c
+
+  # 628d701f2de5 powerpc/dexcr: Add DEXCR prctl interface
+    include/uapi/linux/prctl.h
+    kernel/sys.c
+
+The following changes since commit 39cd87c4eb2b893354f3b850f916353f2658ae6f:
+
+  Linux 6.9-rc2 (2024-03-31 14:32:39 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-6.10-1
+
+for you to fetch changes up to 61700f816e6f58f6b1aaa881a69a784d146e30f0:
+
+  powerpc/fadump: Fix section mismatch warning (2024-05-16 23:26:44 +1000)
+
+- ------------------------------------------------------------------
+powerpc updates for 6.10
+
+ - Enable BPF Kernel Functions (kfuncs) in the powerpc BPF JIT.
+
+ - Allow per-process DEXCR (Dynamic Execution Control Register) settings via
+   prctl, notably NPHIE which controls hashst/hashchk for ROP protection.
+
+ - Install powerpc selftests in sub-directories. Note this changes the way
+   run_kselftest.sh needs to be invoked for powerpc selftests.
+
+ - Change fadump (Firmware Assisted Dump) to better handle memory add/remov=
+e.
+
+ - Add support for passing additional parameters to the fadump kernel.
+
+ - Add support for updating the kdump image on CPU/memory add/remove events.
+
+ - Other small features, cleanups and fixes.
+
+Thanks to: Andrew Donnellan, Andy Shevchenko, Aneesh Kumar K.V, Arnd Bergma=
+nn,
+Benjamin Gray, Bjorn Helgaas, Christian Zigotzky, Christophe Jaillet, Chris=
+tophe
+Leroy, Colin Ian King, C=C3=A9dric Le Goater, Dr. David Alan Gilbert, Erhar=
+d Furtner,
+Frank Li, GUO Zihua, Ganesh Goudar, Geoff Levand, Ghanshyam Agrawal, Greg K=
+urz,
+Hari Bathini, Joel Stanley, Justin Stitt, Kunwu Chan, Li Yang, Lidong Zhong,
+Madhavan Srinivasan, Mahesh Salgaonkar, Masahiro Yamada, Matthias Schiffer,
+Naresh Kamboju, Nathan Chancellor, Nathan Lynch, Naveen N Rao, Nicholas
+Miehlbradt, Ran Wang, Randy Dunlap, Ritesh Harjani, Sachin Sant, Shirisha G=
+anta,
+Shrikanth Hegde, Sourabh Jain, Stephen Rothwell, sundar, Thorsten Blum, Vai=
+bhav
+Jain, Xiaowei Bao, Yang Li, Zhao Chenhui.
+
+- ------------------------------------------------------------------
+Andy Shevchenko (1):
+      powerpc/52xx: Replace of_gpio.h by proper one
+
+Aneesh Kumar K.V (IBM) (3):
+      powerpc/mm: Align memory_limit value specified using mem=3D kernel pa=
+rameter
+      powerpc/fadump: Don't update the user-specified memory limit
+      powerpc/mm: Update the memory limit based on direct mapping restricti=
+ons
+
+Arnd Bergmann (1):
+      powerpc/fsl-soc: hide unused const variable
+
+Benjamin Gray (13):
+      powerpc: Error on assembly warnings
+      selftests/powerpc/dexcr: Add -no-pie to hashchk tests
+      powerpc/dexcr: Track the DEXCR per-process
+      powerpc/dexcr: Reset DEXCR value across exec
+      powerpc/dexcr: Add DEXCR prctl interface
+      selftests/powerpc/dexcr: Add DEXCR prctl interface test
+      selftests/powerpc/dexcr: Attempt to enable NPHIE in hashchk selftest
+      selftests/powerpc/dexcr: Add DEXCR config details to lsdexcr
+      selftests/powerpc/dexcr: Add chdexcr utility
+      Documentation: Document PowerPC kernel dynamic DEXCR interface
+      powerpc64/kasan: Pass virtual addresses to kasan_init_phys_region()
+      powerpc/code-patching: Test patch_instructions() during boot
+      powerpc/code-patching: Use dedicated memory routines for patching
+
+Bjorn Helgaas (1):
+      powerpc: Fix typos
+
+Christophe JAILLET (1):
+      KVM: PPC: Book3S HV nestedv2: Fix an error handling path in gs_msg_op=
+s_kvmhv_nestedv2_config_fill_info()
+
+Christophe Leroy (1):
+      powerpc/bpf/32: Fix failing test_bpf tests
+
+Colin Ian King (1):
+      selftests/powerpc/dexcr: Fix spelling mistake "predicition" -> "predi=
+ction"
+
+Dr. David Alan Gilbert (1):
+      powerpc/module: Remove arch specific module bug stuff
+
+GUO Zihua (1):
+      powerpc: Fix preserved memory size for int-vectors
+
+Ganesh Goudar (1):
+      powerpc/eeh: Permanently disable the removed device
+
+Geoff Levand (1):
+      powerpc: Fix PS3 allmodconfig warning
+
+Ghanshyam Agrawal (1):
+      powerpc/eeh: Fix spelling of the word "auxillary" and update comment
+
+Greg Kurz (1):
+      powerpc/xmon: Check cpu id in commands "c#", "dp#" and "dx#"
+
+Hari Bathini (7):
+      powerpc/64/bpf: fix tail calls for PCREL addressing
+      powerpc/bpf: enable kfunc call
+      powerpc/pseries/fadump: add support for multiple boot memory regions
+      powerpc/fadump: setup additional parameters for dump capture kernel
+      powerpc/fadump: pass additional parameters when fadump is active
+      powerpc/fadump: update documentation about bootargs_append
+      powerpc/85xx: fix compile error without CONFIG_CRASH_DUMP
+
+Joel Stanley (1):
+      KVM: PPC: Fix documentation for ppc mmu caps
+
+Kunwu Chan (4):
+      powerpc/iommu: Code cleanup for cell/iommu.c
+      powerpc/cell: Code cleanup for spufs_mfc_flush
+      powerpc/pseries/pci: Code cleanup
+      KVM: PPC: code cleanup for kvmppc_book3s_irqprio_deliver
+
+Li Yang (2):
+      powerpc: dts: mpc85xx: remove "simple-bus" compatible from ifc node
+      powerpc: dts: fsl: rename ifc node name to be memory-controller
+
+Lidong Zhong (1):
+      powerpc/pseries/vio: Don't return ENODEV if node or compatible missing
+
+Madhavan Srinivasan (3):
+      selftests/powerpc: Re-order *FLAGS to follow lib.mk
+      selftests/powerpc: Add flags.mk to support pmu buildable
+      selftests/powerpc: make sub-folders buildable on their own
+
+Mahesh Salgaonkar (1):
+      powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
+
+Masahiro Yamada (1):
+      powerpc: remove unused *_syscall_64.o variables in Makefile
+
+Matthias Schiffer (1):
+      powerpc: rename SPRN_HID2 define to SPRN_HID2_750FX
+
+Michael Ellerman (12):
+      powerpc/dart: Drop unnecessary call to kmemleak_no_scan()
+      selftests/powerpc: Convert pmu Makefile to for loop style
+      selftests/powerpc: Install tests in sub-directories
+      powerpc: Mark memory_limit as initdata
+      MAINTAINERS: powerpc: Remove Aneesh
+      MAINTAINERS: MMU GATHER: Update Aneesh's address
+      powerpc/io: Avoid clang null pointer arithmetic warnings
+      powerpc/64: Set _IO_BASE to POISON_POINTER_DELTA not 0 for CONFIG_PCI=
+=3Dn
+      macintosh/ams: Fix unused variable warning
+      Merge branch 'topic/ppc-kvm' into next
+      Merge branch 'topic/kdump-hotplug' into next
+      powerpc/fadump: Fix section mismatch warning
+
+Nathan Chancellor (1):
+      powerpc: Fix fatal warnings flag for LLVM's integrated assembler
+
+Nathan Lynch (1):
+      powerpc/pseries: Enforce hcall result buffer validity and size
+
+Naveen N Rao (1):
+      powerpc/Makefile: Remove bits related to the previous use of -mcmodel=
+=3Dlarge
+
+Nicholas Miehlbradt (1):
+      powerpc: Add static_key_feature_checks_initialized flag
+
+Ran Wang (1):
+      powerpc: dts: add power management nodes to FSL chips
+
+Ritesh Harjani (IBM) (1):
+      powerpc/ptdump: Fix walk_vmemmap() to also print first vmemmap entry
+
+Shrikanth Hegde (2):
+      powerpc/pseries: Add pool idle time at LPAR boot
+      powerpc/pseries: Add failure related checks for h_get_mpp and h_get_p=
+pp
+
+Sourabh Jain (10):
+      crash: forward memory_notify arg to arch crash hotplug handler
+      crash: add a new kexec flag for hotplug support
+      powerpc/kexec: move *_memory_ranges functions to ranges.c
+      powerpc/kexec: make the update_cpus_node() function public
+      powerpc/crash: add crash CPU hotplug support
+      powerpc/crash: add crash memory hotplug support
+      powerpc: make fadump resilient with memory add/remove events
+      powerpc/fadump: add hotplug_ready sysfs interface
+      Documentation/powerpc: update fadump implementation details
+      powerpc/crash: remove unnecessary NULL check before kvfree()
+
+Stephen Rothwell (1):
+      Documentation: Fix the address of the linuxppc-dev mailing list
+
+Thorsten Blum (1):
+      powerpc: Use str_plural() in cpu_init_thread_core_maps()
+
+Vaibhav Jain (1):
+      KVM: PPC: Book3S HV nestedv2: Cancel pending DEC exception
+
+Xiaowei Bao (1):
+      powerpc: dts: p1010rdb: fix INTx interrupt issue on P1010RDB-PB
+
+Yang Li (3):
+      powerpc: boot: Fix kernel-doc param for partial_decompress
+      powerpc: Fix kernel-doc comments in fsl_gtm.c
+      powerpc/rtas: Add kernel-doc comments to smp_startup_cpu()
+
+sundar (1):
+      macintosh/macio-adb: replace of_node_put() with __free
 
 
-On 5/17/24 08:12, Oliver O'Halloran wrote:
-> On Tue, May 14, 2024 at 11:54 PM Krishna Kumar<krishnak@linux.ibm.com>  wrote:
->> There is an issue with the hotplug operation when it's done on the
->> bridge/switch slot. The bridge-port and devices behind the bridge, which
->> become offline by hot-unplug operation, don't get hot-plugged/enabled by
->> doing hot-plug operation on that slot. Only the first port of the bridge
->> gets enabled and the remaining port/devices remain unplugged. The hot
->> plug/unplug operation is done by the hotplug driver
->> (drivers/pci/hotplug/pnv_php.c).
->>
->> Root Cause Analysis: This behavior is due to missing code for the DPC
->> switch/bridge.
-> I don't see anything touching DPC in this series?
+ Documentation/ABI/testing/sysfs-devices-system-cpu              |  14 +-
+ Documentation/ABI/testing/sysfs-firmware-opal-powercap          |   4 +-
+ Documentation/ABI/testing/sysfs-firmware-opal-psr               |   4 +-
+ Documentation/ABI/testing/sysfs-firmware-opal-sensor-groups     |   4 +-
+ Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info |  10 +-
+ Documentation/ABI/testing/sysfs-kernel-fadump                   |  18 +
+ Documentation/arch/powerpc/dexcr.rst                            | 141 ++++-
+ Documentation/arch/powerpc/firmware-assisted-dump.rst           |  91 ++--
+ Documentation/virt/kvm/api.rst                                  |   8 +-
+ MAINTAINERS                                                     |   3 +-
+ arch/powerpc/Kbuild                                             |   3 +-
+ arch/powerpc/Kconfig                                            |   4 +
+ arch/powerpc/Makefile                                           |   6 +-
+ arch/powerpc/boot/Makefile                                      |   4 +-
+ arch/powerpc/boot/decompress.c                                  |   2 +-
+ arch/powerpc/boot/dts/acadia.dts                                |   2 +-
+ arch/powerpc/boot/dts/fsl/b4si-post.dtsi                        |   2 +-
+ arch/powerpc/boot/dts/fsl/bsc9131rdb.dts                        |   2 +-
+ arch/powerpc/boot/dts/fsl/bsc9131si-post.dtsi                   |   2 +-
+ arch/powerpc/boot/dts/fsl/bsc9132qds.dts                        |   2 +-
+ arch/powerpc/boot/dts/fsl/bsc9132si-post.dtsi                   |   2 +-
+ arch/powerpc/boot/dts/fsl/c293pcie.dts                          |   2 +-
+ arch/powerpc/boot/dts/fsl/c293si-post.dtsi                      |   2 +-
+ arch/powerpc/boot/dts/fsl/mpc8536si-post.dtsi                   |  14 +-
+ arch/powerpc/boot/dts/fsl/mpc8544si-post.dtsi                   |   2 +
+ arch/powerpc/boot/dts/fsl/mpc8548si-post.dtsi                   |   2 +
+ arch/powerpc/boot/dts/fsl/mpc8572si-post.dtsi                   |   2 +
+ arch/powerpc/boot/dts/fsl/p1010rdb-pb.dts                       |  16 +
+ arch/powerpc/boot/dts/fsl/p1010rdb-pb_36b.dts                   |  16 +
+ arch/powerpc/boot/dts/fsl/p1010rdb.dtsi                         |  16 -
+ arch/powerpc/boot/dts/fsl/p1010rdb_32b.dtsi                     |   2 +-
+ arch/powerpc/boot/dts/fsl/p1010rdb_36b.dtsi                     |   2 +-
+ arch/powerpc/boot/dts/fsl/p1010si-post.dtsi                     |  16 +-
+ arch/powerpc/boot/dts/fsl/p1020si-post.dtsi                     |   5 +
+ arch/powerpc/boot/dts/fsl/p1021si-post.dtsi                     |   5 +
+ arch/powerpc/boot/dts/fsl/p1022si-post.dtsi                     |   7 +-
+ arch/powerpc/boot/dts/fsl/p2020si-post.dtsi                     |  17 +-
+ arch/powerpc/boot/dts/fsl/pq3-power.dtsi                        |  19 +
+ arch/powerpc/boot/dts/fsl/t1023si-post.dtsi                     |   2 +-
+ arch/powerpc/boot/dts/fsl/t1024rdb.dts                          |   2 +-
+ arch/powerpc/boot/dts/fsl/t1040rdb.dts                          |   2 +-
+ arch/powerpc/boot/dts/fsl/t1040si-post.dtsi                     |   2 +-
+ arch/powerpc/boot/dts/fsl/t1042rdb.dts                          |   2 +-
+ arch/powerpc/boot/dts/fsl/t1042rdb_pi.dts                       |   2 +-
+ arch/powerpc/boot/dts/fsl/t2081si-post.dtsi                     |   2 +-
+ arch/powerpc/boot/dts/fsl/t4240si-post.dtsi                     |   2 +-
+ arch/powerpc/boot/main.c                                        |   2 +-
+ arch/powerpc/boot/ps3.c                                         |   2 +-
+ arch/powerpc/include/asm/cpu_has_feature.h                      |   2 +-
+ arch/powerpc/include/asm/eeh.h                                  |   2 +-
+ arch/powerpc/include/asm/fadump-internal.h                      |  36 +-
+ arch/powerpc/include/asm/fadump.h                               |   2 +
+ arch/powerpc/include/asm/feature-fixups.h                       |   2 +
+ arch/powerpc/include/asm/hvcall.h                               |  10 +-
+ arch/powerpc/include/asm/interrupt.h                            |  10 +
+ arch/powerpc/include/asm/io.h                                   |  28 +-
+ arch/powerpc/include/asm/kexec.h                                |  15 +
+ arch/powerpc/include/asm/kexec_ranges.h                         |  20 +-
+ arch/powerpc/include/asm/mmu.h                                  |   2 +-
+ arch/powerpc/include/asm/module.h                               |   5 -
+ arch/powerpc/include/asm/opal-api.h                             |   4 +-
+ arch/powerpc/include/asm/percpu.h                               |  10 +
+ arch/powerpc/include/asm/pmac_feature.h                         |   2 +-
+ arch/powerpc/include/asm/ppc-opcode.h                           |   4 +
+ arch/powerpc/include/asm/processor.h                            |  13 +-
+ arch/powerpc/include/asm/reg.h                                  |   2 +-
+ arch/powerpc/include/asm/uninorth.h                             |   2 +-
+ arch/powerpc/include/uapi/asm/bootx.h                           |   2 +-
+ arch/powerpc/kernel/Makefile                                    |   7 +-
+ arch/powerpc/kernel/cpu_setup_6xx.S                             |   4 +-
+ arch/powerpc/kernel/dexcr.c                                     | 124 +++++
+ arch/powerpc/kernel/eeh.c                                       |  11 +-
+ arch/powerpc/kernel/eeh_driver.c                                |  13 +-
+ arch/powerpc/kernel/eeh_pe.c                                    |   8 +-
+ arch/powerpc/kernel/fadump.c                                    | 542 ++++=
++++++++++-------
+ arch/powerpc/kernel/misc_64.S                                   |   4 +-
+ arch/powerpc/kernel/module.c                                    |   2 -
+ arch/powerpc/kernel/process.c                                   |  29 +-
+ arch/powerpc/kernel/prom.c                                      |  23 +-
+ arch/powerpc/kernel/prom_init.c                                 |   4 +-
+ arch/powerpc/kernel/ptrace/ptrace-tm.c                          |   2 +-
+ arch/powerpc/kernel/ptrace/ptrace-view.c                        |   7 +-
+ arch/powerpc/kernel/setup-common.c                              |   2 +-
+ arch/powerpc/kernel/setup_64.c                                  |   2 +
+ arch/powerpc/kernel/smp.c                                       |   2 +-
+ arch/powerpc/kernel/sysfs.c                                     |   4 +-
+ arch/powerpc/kexec/Makefile                                     |   4 +-
+ arch/powerpc/kexec/core_64.c                                    |  91 ++++
+ arch/powerpc/kexec/crash.c                                      | 195 ++++=
++++
+ arch/powerpc/kexec/elf_64.c                                     |   3 +-
+ arch/powerpc/kexec/file_load_64.c                               | 314 ++--=
+--------
+ arch/powerpc/kexec/ranges.c                                     | 312 ++++=
+++++++-
+ arch/powerpc/kvm/book3s.c                                       |   4 -
+ arch/powerpc/kvm/book3s_emulate.c                               |   4 +-
+ arch/powerpc/kvm/book3s_hv.c                                    |   2 +-
+ arch/powerpc/kvm/book3s_hv_nestedv2.c                           |   4 +-
+ arch/powerpc/kvm/book3s_xive.c                                  |   2 +-
+ arch/powerpc/lib/Makefile                                       |   2 -
+ arch/powerpc/lib/code-patching.c                                |  31 +-
+ arch/powerpc/lib/feature-fixups.c                               |   8 +
+ arch/powerpc/lib/test-code-patching.c                           |  92 ++++
+ arch/powerpc/mm/Makefile                                        |   2 -
+ arch/powerpc/mm/book3s64/Makefile                               |   2 -
+ arch/powerpc/mm/cacheflush.c                                    |   2 +-
+ arch/powerpc/mm/kasan/init_book3e_64.c                          |   2 +-
+ arch/powerpc/mm/kasan/init_book3s_64.c                          |   2 +-
+ arch/powerpc/mm/mem.c                                           |   2 +-
+ arch/powerpc/mm/nohash/Makefile                                 |   2 -
+ arch/powerpc/mm/nohash/kaslr_booke.c                            |   2 +-
+ arch/powerpc/mm/ptdump/hashpagetable.c                          |   2 +-
+ arch/powerpc/net/bpf_jit_comp.c                                 |  10 +
+ arch/powerpc/net/bpf_jit_comp32.c                               | 137 +++--
+ arch/powerpc/net/bpf_jit_comp64.c                               |  77 ++-
+ arch/powerpc/platforms/512x/mpc512x_shared.c                    |   2 +-
+ arch/powerpc/platforms/52xx/lite5200_sleep.S                    |   6 +-
+ arch/powerpc/platforms/52xx/mpc52xx_common.c                    |   2 -
+ arch/powerpc/platforms/52xx/mpc52xx_gpt.c                       |   2 +-
+ arch/powerpc/platforms/83xx/suspend-asm.S                       |   6 +-
+ arch/powerpc/platforms/85xx/smp.c                               |   9 +-
+ arch/powerpc/platforms/cell/iommu.c                             |  17 -
+ arch/powerpc/platforms/cell/smp.c                               |   1 +
+ arch/powerpc/platforms/cell/spufs/file.c                        |  20 +-
+ arch/powerpc/platforms/cell/spufs/sched.c                       |   2 +-
+ arch/powerpc/platforms/maple/pci.c                              |   2 +-
+ arch/powerpc/platforms/powermac/pic.c                           |   2 +-
+ arch/powerpc/platforms/powermac/sleep.S                         |   2 +-
+ arch/powerpc/platforms/powernv/opal-fadump.c                    |  35 +-
+ arch/powerpc/platforms/powernv/pci-sriov.c                      |   4 +-
+ arch/powerpc/platforms/powernv/vas-window.c                     |   2 +-
+ arch/powerpc/platforms/ps3/device-init.c                        |  61 +--
+ arch/powerpc/platforms/pseries/Makefile                         |   1 -
+ arch/powerpc/platforms/pseries/lpar.c                           |   6 +-
+ arch/powerpc/platforms/pseries/lparcfg.c                        |  45 +-
+ arch/powerpc/platforms/pseries/pci.c                            |  27 -
+ arch/powerpc/platforms/pseries/rtas-fadump.c                    | 322 ++++=
++++-----
+ arch/powerpc/platforms/pseries/rtas-fadump.h                    |  29 +-
+ arch/powerpc/platforms/pseries/vas.c                            |   2 +-
+ arch/powerpc/platforms/pseries/vio.c                            |   8 +-
+ arch/powerpc/sysdev/Makefile                                    |   2 -
+ arch/powerpc/sysdev/dart_iommu.c                                |   4 -
+ arch/powerpc/sysdev/fsl_gtm.c                                   |   6 +-
+ arch/powerpc/sysdev/fsl_msi.c                                   |   2 +
+ arch/powerpc/sysdev/xive/common.c                               |   4 +-
+ arch/powerpc/sysdev/xive/native.c                               |   2 +-
+ arch/powerpc/xmon/Makefile                                      |   2 -
+ arch/powerpc/xmon/xmon.c                                        |   6 +-
+ arch/x86/include/asm/kexec.h                                    |  13 +-
+ arch/x86/kernel/crash.c                                         |  32 +-
+ drivers/base/cpu.c                                              |   2 +-
+ drivers/base/memory.c                                           |   2 +-
+ drivers/cpufreq/pmac32-cpufreq.c                                |   8 +-
+ drivers/macintosh/Kconfig                                       |   2 +-
+ drivers/macintosh/macio-adb.c                                   |  24 +-
+ include/linux/crash_core.h                                      |  15 +-
+ include/linux/kexec.h                                           |  11 +-
+ include/uapi/linux/kexec.h                                      |   1 +
+ include/uapi/linux/kvm.h                                        |   4 +-
+ include/uapi/linux/prctl.h                                      |  16 +
+ kernel/crash_core.c                                             |  29 +-
+ kernel/kexec.c                                                  |   4 +-
+ kernel/kexec_file.c                                             |   5 +
+ kernel/sys.c                                                    |  16 +
+ tools/include/uapi/linux/kvm.h                                  |   2 +-
+ tools/testing/selftests/powerpc/Makefile                        |  11 +-
+ tools/testing/selftests/powerpc/alignment/Makefile              |   1 +
+ tools/testing/selftests/powerpc/benchmarks/Makefile             |   5 +-
+ tools/testing/selftests/powerpc/cache_shape/Makefile            |   1 +
+ tools/testing/selftests/powerpc/copyloops/Makefile              |  21 +-
+ tools/testing/selftests/powerpc/dexcr/.gitignore                |   2 +
+ tools/testing/selftests/powerpc/dexcr/Makefile                  |   9 +-
+ tools/testing/selftests/powerpc/dexcr/chdexcr.c                 | 112 ++++
+ tools/testing/selftests/powerpc/dexcr/dexcr.c                   |  40 ++
+ tools/testing/selftests/powerpc/dexcr/dexcr.h                   |  57 ++
+ tools/testing/selftests/powerpc/dexcr/dexcr_test.c              | 215 ++++=
+++++
+ tools/testing/selftests/powerpc/dexcr/hashchk_test.c            |   8 +-
+ tools/testing/selftests/powerpc/dexcr/lsdexcr.c                 | 103 ++--
+ tools/testing/selftests/powerpc/dscr/Makefile                   |   1 +
+ tools/testing/selftests/powerpc/eeh/Makefile                    |   1 +
+ tools/testing/selftests/powerpc/flags.mk                        |  12 +
+ tools/testing/selftests/powerpc/math/Makefile                   |   1 +
+ tools/testing/selftests/powerpc/mce/Makefile                    |   1 +
+ tools/testing/selftests/powerpc/mm/Makefile                     |   1 +
+ tools/testing/selftests/powerpc/nx-gzip/Makefile                |   5 +-
+ tools/testing/selftests/powerpc/papr_attributes/Makefile        |   3 +-
+ tools/testing/selftests/powerpc/papr_sysparm/Makefile           |   1 +
+ tools/testing/selftests/powerpc/papr_vpd/Makefile               |   1 +
+ tools/testing/selftests/powerpc/pmu/Makefile                    |  44 +-
+ tools/testing/selftests/powerpc/pmu/ebb/Makefile                |  21 +-
+ tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile   |   5 +-
+ tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile     |   5 +-
+ tools/testing/selftests/powerpc/primitives/Makefile             |   5 +-
+ tools/testing/selftests/powerpc/ptrace/Makefile                 |   1 +
+ tools/testing/selftests/powerpc/security/Makefile               |   5 +-
+ tools/testing/selftests/powerpc/signal/Makefile                 |   4 +-
+ tools/testing/selftests/powerpc/stringloops/Makefile            |  11 +-
+ tools/testing/selftests/powerpc/switch_endian/Makefile          |   5 +-
+ tools/testing/selftests/powerpc/syscalls/Makefile               |   5 +-
+ tools/testing/selftests/powerpc/tm/Makefile                     |   1 +
+ tools/testing/selftests/powerpc/vphn/Makefile                   |   5 +-
+ 199 files changed, 3053 insertions(+), 1271 deletions(-)
+ create mode 100644 arch/powerpc/boot/dts/fsl/pq3-power.dtsi
+ create mode 100644 arch/powerpc/kernel/dexcr.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/chdexcr.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/dexcr_test.c
+ create mode 100644 tools/testing/selftests/powerpc/flags.mk
+-----BEGIN PGP SIGNATURE-----
 
-I apologize for the confusion. When I mentioned DPC, I was referring to 
-the downward bridge port (the sibling ones) that were not enabled after 
-the hot plug operation. I didn't mean to refer to DPC events. It seems 
-that this caused some confusion, and I will remove this word in my next 
-version of the patch. Thank you!
-
->
->> *snip*
->>
->> Command for reproducing the issue :
->>
->> For hot unplug/disable - echo 0 > /sys/bus/pci/slots/C5/power
->> For hot plug/enable -    echo 1 > /sys/bus/pci/slots/C5/power
->>
->> where C5 is slot associated with bridge.
->>
->> Scenario/Tests:
->> Output of lspci -nn before test is given below. This snippet contains
->> devices used for testing on Powernv machine.
->>
->> 0004:02:00.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
->> 0004:02:01.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
->> 0004:02:02.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
->> 0004:02:03.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
->> 0004:08:00.0 Serial Attached SCSI controller [0107]:
->> Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3 [1000:00c9] (rev 01)
->> 0004:09:00.0 Serial Attached SCSI controller [0107]:
->> Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3 [1000:00c9] (rev 01)
->>
->> Output of lspci -tv before test is as follows:
->>
->> # lspci -tv
->>   +-[0004:00]---00.0-[01-0e]--+-00.0-[02-0e]--+-00.0-[03-07]--
->>   |                           |               +-01.0-[08]----00.0  Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3
->>   |                           |               +-02.0-[09]----00.0  Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3
->>   |                           |               \-03.0-[0a-0e]--
->>   |                           \-00.1  PMC-Sierra Inc. Device 4052
->>
->> C5(bridge) and C6(End Point) slot address are as below:
->> # cat /sys/bus/pci/slots/C5/address
->> 0004:02:00
->> # cat /sys/bus/pci/slots/C6/address
->> 0004:09:00
-> Uh, if I'm reading this right it looks like your "slot" C5 is actually
-> the PCIe switch's internal bus which is definitely not hot pluggable.
-
-It's a hotplug slot. Please see the snippet below:
-
-:~$ sudo lspci -vvv -s 0004:02:00.0 | grep --color HotPlug
-
-          SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-
-
-:~$
-
-:~$ sudo lspci -vvv -s 0004:02:01.0 | grep --color HotPlug
-
-         SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-
-
-:~$
-
-:~$ sudo lspci -vvv -s 0004:02:02.0 | grep --color HotPlug
-
-         SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-
-
-:~$
-
-:~$ sudo lspci -vvv -s 0004:02:03.0 | grep --color HotPlug
-
-         SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-
-
-:~$
-
-
-> I find it helps to look at the PCI topology in terms of where the
-> physical PCIe links are. Here we've got:
->
-> - A link between the PHB (0004:00:00.0) and the switch upstream port
-> (0004:01:00.0)
-> - A link from switch downstream port 0 (0004:02:00.0) to nothing
-> - A link from switch downstream port 1 (0004:02:01.0) to a SAS card
-> - A link from switch downstream port 2 (0004:02:02.0) to a SAS card
-> - A link from switch downstream port 2 (0004:02:03.0) to nothing
->
-> Note that there's no PCIe link between the switch upstream port
-> (0004:01:00.0) and the downstream ports on bus 0004:02. The connection
-> between those is invisible to us because it's custom bus logic
-> internal to the PCIe switch ASIC. What I think has happened here is
-> that system firmware has supplied bad PCIe slot information to OPAL
-> which has resulted in pnv_php advertising a slot in the wrong place.
-> Assuming this following the usual IBM convention I'd expect the bridge
-> device for C5 to be the PHB's root port and the bus should be 0004:01.
-
-It seems like your explanation about the missing 0004:01:00.0 may be 
-correct and could be due to a firmware bug. However, the scope of this 
-patch does not relate to this issue. Additionally, if it starts with 
-0004:01:00.0 to 0004:01:03.0, the behavior of hot-unplug and hot-plug 
-operations will remain inconsistent. This patch aims to address the 
-inconsistent behavior of hot-unplug and hot-plug.
-
-> It might be worth adding some logic to pnv_php to verify the PCI
-> bridge upstream of the slot actually has the PCIe slot capability to
-> guard against this problem.
-
-We can have a look at this problem in another patch.
-
->
->> Hot-unplug operation on slot associated with bridge:
->> # echo 0 > /sys/bus/pci/slots/C5/power
->> # lspci -tv
->>   +-[0004:00]---00.0-[01-0e]--+-00.0-[02-0e]--
->>   |                           \-00.1  PMC-Sierra Inc. Device 4052
-> Yep, "powering off" C5 doesn't remove the upstream port device. This
-> would create problems if you physically removed the card from C5 since
-> the kernel would assume the switch device is still present.
-
-Powering off C5 does removes 0004:02:00.0 to 0004:02:00.3 (all the downstream
-sibling bridge ports) and SAS devices behind these bridge ports. But Powering
-on does not enable them. The behavior should be in sync. Please see the snippet
-in patch.
-
->
->> *snip*
->
->> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
->> index 38561d6a2079..bea612759832 100644
->> --- a/arch/powerpc/kernel/pci_dn.c
->> +++ b/arch/powerpc/kernel/pci_dn.c
->> @@ -493,4 +493,36 @@ static void pci_dev_pdn_setup(struct pci_dev *pdev)
->>          pdn = pci_get_pdn(pdev);
->>          pdev->dev.archdata.pci_data = pdn;
->>   }
->> +
->> +void pci_traverse_sibling_nodes_and_scan_slot(struct device_node *start, struct pci_bus *bus)
->> +{
->> +       struct device_node *dn;
->> +       int slotno;
->> +
->> +       u32 class = 0;
->> +
->> +       if (!of_property_read_u32(start->child, "class-code", &class)) {
->> +               /* Call of pci_scan_slot for non-bridge/EP case */
->> +               if (!((class >> 8) == PCI_CLASS_BRIDGE_PCI)) {
->> +                       slotno = PCI_SLOT(PCI_DN(start->child)->devfn);
->> +                       pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
->> +                       return;
->> +               }
->> +       }
->> +
->> +       /* Iterate all siblings */
->> +       for_each_child_of_node(start, dn) {
->> +               class = 0;
->> +
->> +               if (!of_property_read_u32(start->child, "class-code", &class)) {
->> +                       /* Call of pci_scan_slot on each sibling-nodes/bridge-ports */
->> +                       if ((class >> 8) == PCI_CLASS_BRIDGE_PCI) {
->> +                               slotno = PCI_SLOT(PCI_DN(dn)->devfn);
->> +                               pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
->> +                       }
->> +               }
->> +       }
-> If you're going to iterate over all the DT nodes why not just scan all
-> of them rather than special casing bridges? IIRC current logic is the
-> way it is because PowerVM only puts single devices under a PHB and in
-> the PowerNV (pnv_php) case the PCIe spec guarantees that only device 0
-> will be present on the end of a link. If you want to handle the more
-> generic case then feel free, but do it properly.
-
-We wanted to handle the more generic case and did not want to be 
-confined to only one device assumption. We want to fix the current 
-inconsistent behavior more generically. Regarding the fix, the fix is 
-obvious: We have to traverse and find the bridge ports from DT and 
-invoke pci_scan_slot() on them. This will discover and create the entry 
-for bridge ports (0004:02:00.0 to 0004:02:00.3 on the given bus- 
-0004:02). There is already an existing function, pci_scan_bridge() 
-which is doing invocation of pci_scan_slot () for the devices behind the 
-bridge, in this case for SAS device. So eventually, we are doing a scan 
-of all the entities behind the slot. Would you like me to combine the 
-non-bridge and bridge cases into one? I can attempt to do this. 
-Hopefully, if we incorporate the iterate sibling logic case correctly, 
-we may not need to maintain these two separate cases for bridge and 
-non-bridge. I will attempt this, and if it works, I will include it in 
-the next patch. Thanks. Best Regards, Krishna
-
---------------w2Abro4c46mvBT9wBxFVKX0a
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <pre>Hi Oliver,</pre>
-    <pre>Thanks for review. Please find my response below -
-</pre>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 5/17/24 08:12, Oliver O'Halloran
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">On Tue, May 14, 2024 at 11:54 PM Krishna Kumar <a class="moz-txt-link-rfc2396E" href="mailto:krishnak@linux.ibm.com">&lt;krishnak@linux.ibm.com&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-There is an issue with the hotplug operation when it's done on the
-bridge/switch slot. The bridge-port and devices behind the bridge, which
-become offline by hot-unplug operation, don't get hot-plugged/enabled by
-doing hot-plug operation on that slot. Only the first port of the bridge
-gets enabled and the remaining port/devices remain unplugged. The hot
-plug/unplug operation is done by the hotplug driver
-(drivers/pci/hotplug/pnv_php.c).
-
-Root Cause Analysis: This behavior is due to missing code for the DPC
-switch/bridge.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-I don't see anything touching DPC in this series?</pre>
-    </blockquote>
-    <pre><span data-preserver-spaces="true">I apologize for the confusion. When I mentioned DPC, I </span><span
-    data-preserver-spaces="true">was referring</span><span
-    data-preserver-spaces="true"> to the 
-downward bridge port (the sibling ones) that </span><span
-    data-preserver-spaces="true">were not enabled</span><span
-    data-preserver-spaces="true"> after the hot 
-plug operation. I didn't mean to refer to DPC events. </span><span
-    data-preserver-spaces="true">It seems </span><span
-    data-preserver-spaces="true">that</span><span
-    data-preserver-spaces="true"> this 
-caused some confusion, and I will remove this word in my next </span><span
-    data-preserver-spaces="true">version of the 
-patch</span><span data-preserver-spaces="true">.</span><span
-    data-preserver-spaces="true"> Thank you!</span></pre>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">*snip*
-
-Command for reproducing the issue :
-
-For hot unplug/disable - echo 0 &gt; /sys/bus/pci/slots/C5/power
-For hot plug/enable -    echo 1 &gt; /sys/bus/pci/slots/C5/power
-
-where C5 is slot associated with bridge.
-
-Scenario/Tests:
-Output of lspci -nn before test is given below. This snippet contains
-devices used for testing on Powernv machine.
-
-0004:02:00.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-0004:02:01.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-0004:02:02.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-0004:02:03.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-0004:08:00.0 Serial Attached SCSI controller [0107]:
-Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3 [1000:00c9] (rev 01)
-0004:09:00.0 Serial Attached SCSI controller [0107]:
-Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3 [1000:00c9] (rev 01)
-
-Output of lspci -tv before test is as follows:
-
-# lspci -tv
- +-[0004:00]---00.0-[01-0e]--+-00.0-[02-0e]--+-00.0-[03-07]--
- |                           |               +-01.0-[08]----00.0  Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3
- |                           |               +-02.0-[09]----00.0  Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3
- |                           |               \-03.0-[0a-0e]--
- |                           \-00.1  PMC-Sierra Inc. Device 4052
-
-C5(bridge) and C6(End Point) slot address are as below:
-# cat /sys/bus/pci/slots/C5/address
-0004:02:00
-# cat /sys/bus/pci/slots/C6/address
-0004:09:00
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Uh, if I'm reading this right it looks like your "slot" C5 is actually
-the PCIe switch's internal bus which is definitely not hot pluggable.</pre>
-    </blockquote>
-    <pre><span data-preserver-spaces="true">It's a hotplug slot. Please see the snippet below:</span></pre>
-    <pre>:~$ sudo lspci -vvv -s 0004:02:00.0 | grep --color HotPlug 
-</pre>
-    <pre>         SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-</pre>
-    <pre>:~$ </pre>
-    <pre>:~$ sudo lspci -vvv -s 0004:02:01.0 | grep --color HotPlug</pre>
-    <pre>        SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-</pre>
-    <pre>:~$ </pre>
-    <pre>:~$ sudo lspci -vvv -s 0004:02:02.0 | grep --color HotPlug</pre>
-    <pre>        SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-</pre>
-    <pre>:~$ </pre>
-    <pre>:~$ sudo lspci -vvv -s 0004:02:03.0 | grep --color HotPlug</pre>
-    <pre>        SltCap:    AttnBtn- PwrCtrl+ MRL- AttnInd- PwrInd- HotPlug+ Surprise-</pre>
-    <pre>:~$ </pre>
-    <br>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">
-I find it helps to look at the PCI topology in terms of where the
-physical PCIe links are. Here we've got:
-
-- A link between the PHB (0004:00:00.0) and the switch upstream port
-(0004:01:00.0)
-- A link from switch downstream port 0 (0004:02:00.0) to nothing
-- A link from switch downstream port 1 (0004:02:01.0) to a SAS card
-- A link from switch downstream port 2 (0004:02:02.0) to a SAS card
-- A link from switch downstream port 2 (0004:02:03.0) to nothing
-
-Note that there's no PCIe link between the switch upstream port
-(0004:01:00.0) and the downstream ports on bus 0004:02. The connection
-between those is invisible to us because it's custom bus logic
-internal to the PCIe switch ASIC. What I think has happened here is
-that system firmware has supplied bad PCIe slot information to OPAL
-which has resulted in pnv_php advertising a slot in the wrong place.
-Assuming this following the usual IBM convention I'd expect the bridge
-device for C5 to be the PHB's root port and the bus should be 0004:01.</pre>
-    </blockquote>
-    <pre><span data-preserver-spaces="true">It seems like your explanation about the missing 0004:01:00.0 may be 
-correct and could be due to a firmware bug. However, the scope of this 
-patch does not relate to this issue. Additionally, if it starts with 
-0004:01:00.0 to 0004:01:03.0, the behavior of hot-unplug and hot-plug 
-operations will remain inconsistent. This patch aims to address the 
-inconsistent behavior of hot-unplug and hot-plug.</span></pre>
-    <pre></pre>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">
-It might be worth adding some logic to pnv_php to verify the PCI
-bridge upstream of the slot actually has the PCIe slot capability to
-guard against this problem.</pre>
-    </blockquote>
-    <pre><span data-preserver-spaces="true">We can have a look at this problem in another patch.</span></pre>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Hot-unplug operation on slot associated with bridge:
-# echo 0 &gt; /sys/bus/pci/slots/C5/power
-# lspci -tv
- +-[0004:00]---00.0-[01-0e]--+-00.0-[02-0e]--
- |                           \-00.1  PMC-Sierra Inc. Device 4052
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Yep, "powering off" C5 doesn't remove the upstream port device. This
-would create problems if you physically removed the card from C5 since
-the kernel would assume the switch device is still present.</pre>
-    </blockquote>
-    <pre>Powering off C5 does removes 0004:02:00.0 to 0004:02:00.3 (all the downstream 
-sibling bridge ports) and SAS devices behind these bridge ports. But Powering 
-on does not enable them. The behavior should be in sync. Please see the snippet 
-in patch.</pre>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">*snip*
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-index 38561d6a2079..bea612759832 100644
---- a/arch/powerpc/kernel/pci_dn.c
-+++ b/arch/powerpc/kernel/pci_dn.c
-@@ -493,4 +493,36 @@ static void pci_dev_pdn_setup(struct pci_dev *pdev)
-        pdn = pci_get_pdn(pdev);
-        pdev-&gt;dev.archdata.pci_data = pdn;
- }
-+
-+void pci_traverse_sibling_nodes_and_scan_slot(struct device_node *start, struct pci_bus *bus)
-+{
-+       struct device_node *dn;
-+       int slotno;
-+
-+       u32 class = 0;
-+
-+       if (!of_property_read_u32(start-&gt;child, "class-code", &amp;class)) {
-+               /* Call of pci_scan_slot for non-bridge/EP case */
-+               if (!((class &gt;&gt; 8) == PCI_CLASS_BRIDGE_PCI)) {
-+                       slotno = PCI_SLOT(PCI_DN(start-&gt;child)-&gt;devfn);
-+                       pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
-+                       return;
-+               }
-+       }
-+
-+       /* Iterate all siblings */
-+       for_each_child_of_node(start, dn) {
-+               class = 0;
-+
-+               if (!of_property_read_u32(start-&gt;child, "class-code", &amp;class)) {
-+                       /* Call of pci_scan_slot on each sibling-nodes/bridge-ports */
-+                       if ((class &gt;&gt; 8) == PCI_CLASS_BRIDGE_PCI) {
-+                               slotno = PCI_SLOT(PCI_DN(dn)-&gt;devfn);
-+                               pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
-+                       }
-+               }
-+       }
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-If you're going to iterate over all the DT nodes why not just scan all
-of them rather than special casing bridges? IIRC current logic is the
-way it is because PowerVM only puts single devices under a PHB and in
-the PowerNV (pnv_php) case the PCIe spec guarantees that only device 0
-will be present on the end of a link. If you want to handle the more
-generic case then feel free, but do it properly.</pre>
-    </blockquote>
-    <pre><span data-preserver-spaces="true">We wanted to handle the more generic case and did not want to </span><span
-    data-preserver-spaces="true">be confined</span><span
-    data-preserver-spaces="true"> to 
-only one device assumption. We want to fix the current inconsistent behavior 
-more generically. Regarding the fix, the fix is obvious:  We have to traverse 
-and find the bridge ports from DT and invoke  pci_scan_slot() on them. </span><span
-    data-preserver-spaces="true">This</span><span
-    data-preserver-spaces="true"> will 
-discover and create the entry for bridge ports (0004:02:00.0 to 0004:02:00.3 on 
-the given bus- 0004:02). There is already an existing function, pci_scan_bridge() </span><span
-    data-preserver-spaces="true">
-which</span><span data-preserver-spaces="true"> is doing invocation of pci_scan_slot () for the devices behind the bridge, 
-in this case for  SAS device. So eventually, we are doing a scan of all the entities 
-behind the slot.
-
-</span><span data-preserver-spaces="true">Would you like me to combine the non-bridge and bridge cases into one? I can attempt 
-to do this. </span><span data-preserver-spaces="true">Hopefully, if we incorporate the iterate sibling logic case </span><span
-    data-preserver-spaces="true">correctly</span><span
-    data-preserver-spaces="true">, 
-we may not need to maintain these </span><span
-    data-preserver-spaces="true">two</span><span
-    data-preserver-spaces="true"> separate cases for bridge and non-bridge.</span><span
-    data-preserver-spaces="true"> I 
-will attempt this, and if it works, I will include it in the next patch. Thanks.
-
-Best Regards,
-Krishna
-</span></pre>
-    <blockquote type="cite"
-cite="mid:CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------w2Abro4c46mvBT9wBxFVKX0a--
-
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmZHR3wACgkQUevqPMjh
+pYAzUxAAq6O4NwbVaL4EvZYtou3H++YUC9quA70V2HY+XaHHGwNp6dC1LEWjsEu+
+G0IQJXSknho7t673Nvhz5k1ZL0nWNZthDc79BqwMOT69KDwTtPa8sxAKKeGbDNXE
+t4wMNs3zLKNiB2BJckKn+KBZnSPH1b8Rmrx9S2rwYZku1qaP9bYL2EFPNwsCY04T
+Vl6qO0onXDSmSrMl06OZ6HsxdqhuM1TOsM+vzzAL/8NZlbui2KWUfPZDx16bIyYS
+fZmc5Ya06l9iIf3COB5VS+GMbUiHw4DkXRiUsetcoYPCc+PQfPJaTXVJJ1URlWlj
+tqqgBPOf2NAuLnVWqSvF9C73p7+SqWLcjwGDxu4WBcUu9cwnxO7psAVvuFDYM1gN
+VpX2DlNEFHrxXpmNMZah9w8Ymd0PrdeZEzGJam15zA/dGlThG6RVuYs0nmkWJeXB
+otIfGfxCvfnj7ZH14fFaxiVfdDJEHDTJyXwHU+isIb9Vh5ubLRgefob7+4RLyPsE
+3qlsWiFH2tRcpFzYCvxS14l8bPDweITzXfJXacQZ+H4YewJQ4ETG0gUFOY2aR18b
+BHA5DiwWP/46E6vbP8mr/uozorhFura++TvS01Sk4dE+sj19e89t1Nv0YL5JXsb3
+bPdAFoR18mqSDUrBQNfuopa92Gq0gjL7tx391lXscoHu8YVsIP0=3D
+=3DdIGB
+-----END PGP SIGNATURE-----
