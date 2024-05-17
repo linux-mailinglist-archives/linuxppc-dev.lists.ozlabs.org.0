@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C6B8C8C7E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 21:04:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1869C8C8C81
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 21:04:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VgxG60V8Wz3gF6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 05:04:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VgxGW48jsz3dDy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 05:04:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
@@ -15,27 +15,27 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgxC96S6Bz3cYG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2024 05:01:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgxCG2Vq1z3cZ5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2024 05:01:46 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4Vgx9b14Wqz9tCB;
-	Fri, 17 May 2024 21:00:19 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4Vgx9c50q8z9t2k;
+	Fri, 17 May 2024 21:00:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id awkweTb108lI; Fri, 17 May 2024 21:00:19 +0200 (CEST)
+	with ESMTP id 6G-lIAk78RJz; Fri, 17 May 2024 21:00:20 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4Vgx9R4Tj5z9t2k;
-	Fri, 17 May 2024 21:00:11 +0200 (CEST)
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4Vgx9S16kFz9t5L;
+	Fri, 17 May 2024 21:00:12 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 957818B775;
-	Fri, 17 May 2024 21:00:11 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 21D618B766;
+	Fri, 17 May 2024 21:00:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id xdfh3cHWQ4DC; Fri, 17 May 2024 21:00:11 +0200 (CEST)
+	with ESMTP id hhOBvouUQuaH; Fri, 17 May 2024 21:00:12 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.121])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 16AE48B766;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9891D8B783;
 	Fri, 17 May 2024 21:00:11 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -44,14 +44,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Oscar Salvador <osalvador@suse.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>
-Subject: [RFC PATCH v2 15/20] powerpc/85xx: Switch to 64 bits PGD
-Date: Fri, 17 May 2024 21:00:09 +0200
-Message-ID: <a1d92dd7c390672c163ce0611600dde8cb0eaab4.1715971869.git.christophe.leroy@csgroup.eu>
+Subject: [RFC PATCH v2 16/20] powerpc/e500: Encode hugepage size in PTE bits
+Date: Fri, 17 May 2024 21:00:10 +0200
+Message-ID: <f4f76cf605b84ff60cd8cb347775a8ff2338ce18.1715971869.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1715971869.git.christophe.leroy@csgroup.eu>
 References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1715972397; l=2171; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=S24pIBxGP2mbrQFGO3lIOuFe18XifxlaeypwhWa5OmM=; b=dq4KYwp67s1XoUtlQUnziM5iWCqv4B+5JoZKA8fii7u5shKTuks/fAZJdGLz9mZklcw01TvVi NVxevrzLaMuCdgrWuh0m4GD4H5Aa8EYu47sl/Pn0TX/xCXEgTOVG6Uy
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1715972397; l=1805; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=uUFe3OogHVPo7wrS42BAn509SjAdI6hEiXUNXjCP0Kk=; b=ZgscMOKggwgeUW8ncdg8rGYCt7h02SBiakLBEZEpYpkN9wL1AvbyEIRM/zdAcHOxiTUxbvNRQ 6qrfpdtSNAjBTfOxtzk4DxhQ+HTfvJ4908nLHcsf5pB37r7rthBwVvE
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,58 +69,47 @@ Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to allow leaf PMD entries, switch the PGD to 64 bits entries.
+Use U0-U3 bits to encode hugepage size, more exactly page shift.
+
+As we start using hugepages at shift 21 (2Mbytes), substract 20
+so that it fits into 4 bits. That may change in the future if
+we want to use smaller hugepages.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/pgtable-types.h |  4 ++++
- arch/powerpc/kernel/head_85xx.S          | 10 ++++++----
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/nohash/hugetlb-e500.h | 6 ++++++
+ arch/powerpc/include/asm/nohash/pte-e500.h     | 3 +++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/include/asm/pgtable-types.h
-index 082c85cc09b1..db965d98e0ae 100644
---- a/arch/powerpc/include/asm/pgtable-types.h
-+++ b/arch/powerpc/include/asm/pgtable-types.h
-@@ -49,7 +49,11 @@ static inline unsigned long pud_val(pud_t x)
- #endif /* CONFIG_PPC64 */
+diff --git a/arch/powerpc/include/asm/nohash/hugetlb-e500.h b/arch/powerpc/include/asm/nohash/hugetlb-e500.h
+index 8f04ad20e040..d8e51a3f8557 100644
+--- a/arch/powerpc/include/asm/nohash/hugetlb-e500.h
++++ b/arch/powerpc/include/asm/nohash/hugetlb-e500.h
+@@ -42,4 +42,10 @@ static inline int check_and_get_huge_psize(int shift)
+ 	return shift_to_mmu_psize(shift);
+ }
  
- /* PGD level */
-+#if defined(CONFIG_PPC_E500) && defined(CONFIG_PTE_64BIT)
-+typedef struct { unsigned long long pgd; } pgd_t;
-+#else
- typedef struct { unsigned long pgd; } pgd_t;
-+#endif
- #define __pgd(x)	((pgd_t) { (x) })
- static inline unsigned long pgd_val(pgd_t x)
- {
-diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
-index 39724ff5ae1f..a305244afc9f 100644
---- a/arch/powerpc/kernel/head_85xx.S
-+++ b/arch/powerpc/kernel/head_85xx.S
-@@ -307,8 +307,9 @@ set_ivor:
- #ifdef CONFIG_PTE_64BIT
- #ifdef CONFIG_HUGETLB_PAGE
- #define FIND_PTE	\
--	rlwinm	r12, r10, 13, 19, 29;	/* Compute pgdir/pmd offset */	\
--	lwzx	r11, r12, r11;		/* Get pgd/pmd entry */		\
-+	rlwinm	r12, r10, 14, 18, 28;	/* Compute pgdir/pmd offset */	\
-+	add	r12, r11, r12;						\
-+	lwz	r11, 4(r12);		/* Get pgd/pmd entry */		\
- 	rlwinm.	r12, r11, 0, 0, 20;	/* Extract pt base address */	\
- 	blt	1000f;			/* Normal non-huge page */	\
- 	beq	2f;			/* Bail if no table */		\
-@@ -321,8 +322,9 @@ set_ivor:
- 1001:	lwz	r11, 4(r12);		/* Get pte entry */
- #else
- #define FIND_PTE	\
--	rlwinm	r12, r10, 13, 19, 29;	/* Compute pgdir/pmd offset */	\
--	lwzx	r11, r12, r11;		/* Get pgd/pmd entry */		\
-+	rlwinm	r12, r10, 14, 18, 28;	/* Compute pgdir/pmd offset */	\
-+	add	r12, r11, r12;						\
-+	lwz	r11, 4(r12);		/* Get pgd/pmd entry */		\
- 	rlwinm.	r12, r11, 0, 0, 20;	/* Extract pt base address */	\
- 	beq	2f;			/* Bail if no table */		\
- 	rlwimi	r12, r10, 23, 20, 28;	/* Compute pte address */	\
++static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
++{
++	return __pte(pte_val(entry) | (_PAGE_U3 * (shift - 20)));
++}
++#define arch_make_huge_pte arch_make_huge_pte
++
+ #endif /* _ASM_POWERPC_NOHASH_HUGETLB_E500_H */
+diff --git a/arch/powerpc/include/asm/nohash/pte-e500.h b/arch/powerpc/include/asm/nohash/pte-e500.h
+index 975facc7e38e..091e4bff1fba 100644
+--- a/arch/powerpc/include/asm/nohash/pte-e500.h
++++ b/arch/powerpc/include/asm/nohash/pte-e500.h
+@@ -46,6 +46,9 @@
+ #define _PAGE_NO_CACHE	0x400000 /* I: cache inhibit */
+ #define _PAGE_WRITETHRU	0x800000 /* W: cache write-through */
+ 
++#define _PAGE_HSIZE_MSK (_PAGE_U0 | _PAGE_U1 | _PAGE_U2 | _PAGE_U3)
++#define _PAGE_HSIZE_SHIFT	14
++
+ /* "Higher level" linux bit combinations */
+ #define _PAGE_EXEC		(_PAGE_BAP_SX | _PAGE_BAP_UX) /* .. and was cache cleaned */
+ #define _PAGE_READ		(_PAGE_BAP_SR | _PAGE_BAP_UR) /* User read permission */
 -- 
 2.44.0
 
