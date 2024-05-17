@@ -1,92 +1,117 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EB28C880F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 16:27:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F578C8811
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 16:27:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bph42rcm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IQGJUkqk;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=d93YTo6p;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IQGJUkqk;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=d93YTo6p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vgq6V6qXmz3cCt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 00:27:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vgq7J66kqz3bhD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 00:27:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bph42rcm;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IQGJUkqk;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=d93YTo6p;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IQGJUkqk;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=d93YTo6p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nilay@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vgq5B4lmJz30fM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2024 00:26:06 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44HEBTfp009575;
-	Fri, 17 May 2024 14:26:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=J1lYX9to5uE5ouAsEU8SPl9o1h0IUiEjVF9NL1+DPkQ=;
- b=Bph42rcmNl9RnYFqT62W0CPwerJocOTZm7QfR6s1p5fDhN37BKNcxzpamyeoUC6/1f3Z
- NSTA8OqD7/e/zgwVGvVP9XBmDQ19yllNHhUivwkZBkUYYfzeofI7eb534CvzvBDuQOra
- pIsgT/hK0aA8fuXZCqX6TG38m39169LZGKTxIhyRC5Apa93B0OChjezhlwBGwBJXE7Sf
- LUZZlK/sipGPdTB5mu0cwlXhPF9VkN5DL9XJ6oBbFZW75L3oTcbYsKdcHh6lFpqjjvhd
- xwrLDHjUMiGKrp18FgfUChDTmPKrlbEZfh03o5FV/ejj2AwU3scWOIinML4/MKQyAyWH dA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y67uqr65u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 May 2024 14:26:00 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44HEIV0B023098;
-	Fri, 17 May 2024 14:25:59 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y67uqr65s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 May 2024 14:25:59 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44HCoK1s005721;
-	Fri, 17 May 2024 14:25:59 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y2nq384mx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 May 2024 14:25:59 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44HEProD52953516
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 May 2024 14:25:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BFB120049;
-	Fri, 17 May 2024 14:25:53 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5F04320040;
-	Fri, 17 May 2024 14:25:51 +0000 (GMT)
-Received: from li-c9696b4c-3419-11b2-a85c-f9edc3bf8a84.in.ibm.com (unknown [9.109.198.160])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 17 May 2024 14:25:51 +0000 (GMT)
-From: Nilay Shroff <nilay@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen.n.rao@linux.ibm.com
-Subject: [PATCH v2 1/1] powerpc/numa: Online a node if PHB is attached.
-Date: Fri, 17 May 2024 19:55:23 +0530
-Message-ID: <20240517142531.3273464-3-nilay@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240517142531.3273464-1-nilay@linux.ibm.com>
-References: <20240517142531.3273464-1-nilay@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vgq6X2w9qz3cXt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2024 00:27:16 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 277C03753E;
+	Fri, 17 May 2024 14:27:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715956033; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jFIvzqT1E77ELTg/8u02x5Dv1NLQX6WrR+4hhQiT4oM=;
+	b=IQGJUkqkkohUkV66RGC0pnNG0TgpepqS59fTIPw+Z7nvfEFzM+llsBAe/AI2704WalsXw3
+	8/SXxt6dJmfCR506rd25Vdl9elilP4wDnZoxxZkAFw9Lr4MRML47/DXry/FA0RK86m9ZmA
+	ncgCd3+jXDvYY2ZfWKood7VRMUOLjP4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715956033;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jFIvzqT1E77ELTg/8u02x5Dv1NLQX6WrR+4hhQiT4oM=;
+	b=d93YTo6ppEpbIMm6E++0P43k5l8zG+mImUCLwKIVLmOn54pWg4sV5khUUnFpcs5eRFWcYd
+	urwDymmLzA+I8ZBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715956033; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jFIvzqT1E77ELTg/8u02x5Dv1NLQX6WrR+4hhQiT4oM=;
+	b=IQGJUkqkkohUkV66RGC0pnNG0TgpepqS59fTIPw+Z7nvfEFzM+llsBAe/AI2704WalsXw3
+	8/SXxt6dJmfCR506rd25Vdl9elilP4wDnZoxxZkAFw9Lr4MRML47/DXry/FA0RK86m9ZmA
+	ncgCd3+jXDvYY2ZfWKood7VRMUOLjP4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715956033;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jFIvzqT1E77ELTg/8u02x5Dv1NLQX6WrR+4hhQiT4oM=;
+	b=d93YTo6ppEpbIMm6E++0P43k5l8zG+mImUCLwKIVLmOn54pWg4sV5khUUnFpcs5eRFWcYd
+	urwDymmLzA+I8ZBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B59AD13942;
+	Fri, 17 May 2024 14:27:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PrieKUBpR2YlegAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Fri, 17 May 2024 14:27:12 +0000
+Date: Fri, 17 May 2024 16:27:11 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH 0/8] Reimplement huge pages without hugepd on powerpc
+ 8xx
+Message-ID: <ZkdpP-6znZS5Fvz2@localhost.localdomain>
+References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: l0pM-rAs9vciPdlqaOFCEchRi2lgtPqn
-X-Proofpoint-ORIG-GUID: EwshrbWNb3LA8NPsDfmI40kLhrgsHcvO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-17_05,2024-05-17_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
- mlxscore=0 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405170114
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1711377230.git.christophe.leroy@csgroup.eu>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,99 +123,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gjoyce@linux.ibm.com, srikar@linux.ibm.com, Nilay Shroff <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, sshegde@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the current design, a numa-node is made online only if
-that node is attached to cpu/memory. With this design, if
-any PCI/IO device is found to be attached to a numa-node
-which is not online then the numa-node id of the corresponding
-PCI/IO device is set to NUMA_NO_NODE(-1). This design may
-negatively impact the performance of PCIe device if the
-numa-node assigned to PCIe device is -1 because in such case
-we may not be able to accurately calculate the distance
-between two nodes.
-The multi-controller NVMe PCIe disk has an issue with
-calculating the node distance if the PCIe NVMe controller
-is attached to a PCI host bridge which has numa-node id
-value set to NUMA_NO_NODE. This patch helps fix this ensuring
-that a cpu/memory less numa node is made online if it's
-attached to PCI host bridge.
+On Mon, Mar 25, 2024 at 03:55:53PM +0100, Christophe Leroy wrote:
+> This series reimplements hugepages with hugepd on powerpc 8xx.
+> 
+> Unlike most architectures, powerpc 8xx HW requires a two-level
+> pagetable topology for all page sizes. So a leaf PMD-contig approach
+> is not feasible as such.
+> 
+> Possible sizes are 4k, 16k, 512k and 8M.
+> 
+> First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD entries
+> must point to a single entry level-2 page table. Until now that was
+> done using hugepd. This series changes it to use standard page tables
+> where the entry is replicated 1024 times on each of the two pagetables
+> refered by the two associated PMD entries for that 8M page.
+> 
+> At the moment it has to look into each helper to know if the
+> hugepage ptep is a PTE or a PMD in order to know it is a 8M page or
+> a lower size. I hope this can me handled by core-mm in the future.
+> 
+> There are probably several ways to implement stuff, so feedback is
+> very welcome.
 
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
----
- arch/powerpc/mm/numa.c                     | 14 +++++++++++++-
- arch/powerpc/platforms/pseries/pci_dlpar.c | 14 ++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index a490724e84ad..aa89899f0c1a 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -896,7 +896,7 @@ static int __init numa_setup_drmem_lmb(struct drmem_lmb *lmb,
- 
- static int __init parse_numa_properties(void)
- {
--	struct device_node *memory;
-+	struct device_node *memory, *pci;
- 	int default_nid = 0;
- 	unsigned long i;
- 	const __be32 *associativity;
-@@ -1010,6 +1010,18 @@ static int __init parse_numa_properties(void)
- 			goto new_range;
- 	}
- 
-+	for_each_node_by_name(pci, "pci") {
-+		int nid = NUMA_NO_NODE;
-+
-+		associativity = of_get_associativity(pci);
-+		if (associativity) {
-+			nid = associativity_to_nid(associativity);
-+			initialize_form1_numa_distance(associativity);
-+		}
-+		if (likely(nid >= 0) && !node_online(nid))
-+			node_set_online(nid);
-+	}
-+
- 	/*
- 	 * Now do the same thing for each MEMBLOCK listed in the
- 	 * ibm,dynamic-memory property in the
-diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
-index 4448386268d9..52e2623a741d 100644
---- a/arch/powerpc/platforms/pseries/pci_dlpar.c
-+++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
-@@ -11,6 +11,7 @@
- 
- #include <linux/pci.h>
- #include <linux/export.h>
-+#include <linux/node.h>
- #include <asm/pci-bridge.h>
- #include <asm/ppc-pci.h>
- #include <asm/firmware.h>
-@@ -21,9 +22,22 @@
- struct pci_controller *init_phb_dynamic(struct device_node *dn)
- {
- 	struct pci_controller *phb;
-+	int nid;
- 
- 	pr_debug("PCI: Initializing new hotplug PHB %pOF\n", dn);
- 
-+	nid = of_node_to_nid(dn);
-+	if (likely((nid) >= 0)) {
-+		if (!node_online(nid)) {
-+			if (__register_one_node(nid)) {
-+				pr_err("PCI: Failed to register node %d\n", nid);
-+			} else {
-+				update_numa_distance(dn);
-+				node_set_online(nid);
-+			}
-+		}
-+	}
-+
- 	phb = pcibios_alloc_controller(dn);
- 	if (!phb)
- 		return NULL;
+Hi Christophe,
+
+I have been looking into this because I am interested in the ongoing work of
+the hugetlb unification, but my knowledge of ppc pagetables tends to zero,
+So be prepared for some stupid questions.
+
+First, let me have a clear picture of the current situation:
+
+power8xx has 4KB, 16KB, 512KB, and 8MB page sizes, and operate on a 2Level 
+pagetables. Wiki [1] mentions PGD + PTE, here you seem to be referring them
+as PMD + PTE though.
+
+And we can have 1024 PGDs, each of one covers 4MB, so we can cover a total of
+of 4GB.
+
+Looking at the page table diagram for power8xx, it seems power8xx has also some
+sort of CONTIG_PTE? (same as arm64 does) So we can have contig_ptes representing
+bigger page sizes?
+I also guess that although power8xx supports all these different sizes, only one
+of them can be active at any time, right?
+
+It also seems that this whole hugepd thing is only used when we are using 8MB
+PAGE_SIZE, right?
+And when that is active, we do have 2 PGDs(4MB each) pointing to the same 8MB
+hugepd.
+E.g:
+                        ____________
+ [PGD#0] ------------> |            |
+                       | 8MB hugepd |
+ [PGD#1] ------------> |____________|
+
+What you want to do with this work is to get rid of that hugepd abstraction
+because it is something power8xx/hugetlb specific and cannot be represented
+with our "normal" page table layout (PGD,P4D,PUD,PMD,PTE).
+I did not check, but I guess we cannot walk the hugepd thing with a normal
+page table walker, or can we? (how special is a hugepd? can you describe its
+internal layout?)
+
+So, what you proprose, is something like the following?
+
+ [PGD#X] -----------> [PTE#0]
+         -----------> [PTE..#1023]
+ [PGD#Y] -----------> [PTE#0]
+         -----------> [PTE..#1023]
+
+so a 8MB hugepage will be covered by PGD#X and PGD#Y using contiguos PTEs.
+
+The diagram at [1] for 8xx 16K seems a bit misleading to me (or maybe it is
+just me). They say that a Level2 table (aka PTE) covers 4KB chunks regardless
+of the pagesize, but either I read that wrong or..else.
+Because on 16K page size, they show that each pte covers for 16KB memory chunk.
+But that would mean 16KB << 10 = 16M each PGD, which is not really that, so what
+is the deal there? Or it is just that we always use 4KB PTEs, and use contiguous
+PTEs for bigger sizes?
+
+Now, it seems that power8xx has no-p4d, no-pud and no-pmd, right?
+
+Peter mentioned that we should have something like:
+
+X       X
+[PGD] - [P4D] - [PUD] - [PMD] - [PTE]
+
+where the PMD and PTE would be the ones we use for representing the 2Level
+ptage table, and PGD,P4D and PUD would just be dummies.
+
+But, is not the convention to at least have PGD-PTE always, and have anything
+in between as optional? E.g:
+
+  X       ?       ?       ?       X
+[PGD] - [P4D] - [PUD] - [PMD] - [PTE]
+
+I mean, are page table walkers ready to deal with non-PGD? I thought they were
+not.
+
+Also, in patch#1, you mentioned:
+
+"At the time being, for 512k pages the flag is kept in the PTE and inserted in
+the PMD entry at TLB miss exception".
+
+Can you point out where to look for that in the code?
+
+Also, what exactly is the "sz" parameter that gets passed down to pmd_populate_size()?
+Is the size of the current mapping we are establishing?
+I see that you only make a distinction when the mapping size is 8MB.
+So the PMD will have _PMD_PAGE_8MB, so it works that all 1024 PTEs below are contiguous
+representing a 4MB chunk?
+
+I will start looking deeper into this series on Monday, but just wanted to have a better
+insight of what is going on.
+
+PD: I think we could make the changelog of the coverletter a bit fatter and cover some
+details in there, e.g: layout of page-tables for different page sizes, layout of hugepd,
+expected layout after the work, etc.
+I think it would help in reviewing this series.
+
+Thanks!
+
+[1] https://github.com/linuxppc/wiki/wiki/Huge-pages
+
+
 -- 
-2.44.0
-
+Oscar Salvador
+SUSE Labs
