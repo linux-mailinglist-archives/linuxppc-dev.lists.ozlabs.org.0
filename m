@@ -2,70 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A998C800C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 04:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8466A8C8015
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 04:54:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IT4m7iRS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OnwFhMwl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VgWTw0SrTz3cWr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 12:43:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VgWkx754Dz3cT3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 12:54:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IT4m7iRS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OnwFhMwl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=oohall@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgWTC26GQz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 12:42:21 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1ed012c1afbso1074035ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 May 2024 19:42:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715913735; x=1716518535; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Iu2nPLySUoXUvyZFL//KZJHIe3bVp51aDCyU25xG8Wc=;
-        b=IT4m7iRSN9kekbtHta39Sphe1uCar83EH3bVfwvLRmH/p5OYg5edrFlSYNXMXUSC1b
-         4dZYGsHMqEN22CstUXhwydaHhhzJa/99Ok5Dkiz8fsg6IuJchEj9mvNdlzmTBczt9cy3
-         a6qveYuP6afXiOWuuEtmM7NdVeCh0CVxGZu7ncuUe9L8+rdUbfByer7aUiduYP1g3vNN
-         L+vPYF0+tKZwhGwaWQuFVkfOtliNYPQh1ZIJ5+yxVJ7cXpX+T/G1DaLCrUF56PZbUesO
-         K0G8fgyKFHT8bD97ofsOcSp+8rjymJZs6GLZfQ/sfy5GxvjxKaFZ1xqZqftDaTgntX0d
-         ObEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715913735; x=1716518535;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Iu2nPLySUoXUvyZFL//KZJHIe3bVp51aDCyU25xG8Wc=;
-        b=LX++5SoZf71gtvhxQ/aG0o4EwP32wX+wPWm34hbZHzl6cwZuVLiOgcIIK22AZIo5Y1
-         Jg60Tl1oHo7hRWBnvJzwE2kUe+pqn/uPG0Qvbhdm08rCS2eFPxForhEKBl+XFNpFV2cO
-         pJKI2UEEjwhVvQ9M9HCzuop0UUbgD2SzCeMpd1YR478ZdbT547DU9q36N9VcYKNg6ZdQ
-         bSlDk3WApWfpPcaM7zcH09F5smXlSfZpu6Z6T55qVZxaztkM6Y6scnEyguzKdoLmD1ae
-         IfuGmBJhuh7ebto/1oqbVYM8z2Ad8Eo/oBsbRWSjGhe4CFrlaxfkUlKaBbyM+rrxEeC7
-         vcRw==
-X-Gm-Message-State: AOJu0YxAXcKfRHxFlmBcmwI+bmL+jalAhBpd5iS6t7pYsFhw0fqAUk8l
-	2OzVm22wcJI3zVDMcE2GXKLoaHMDGvuZi7FbkDnbweewuZGPJncD35jCnrJlXkaPeHMdnJBznqE
-	OvyQs72Tl8yp+iLBskRJd45xCXzw=
-X-Google-Smtp-Source: AGHT+IE7uRqBXeAzMfuqLbYuTXVXbvlPnrQXyKR5487DosEK/gQYeAYo0nrbJDK9UIA4h+1m4rmLYPVdqJ4nkX+rXu4=
-X-Received: by 2002:a17:903:1cf:b0:1e7:b6f4:2d77 with SMTP id
- d9443c01a7336-1ef4318d7aamr290234415ad.22.1715913734487; Thu, 16 May 2024
- 19:42:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240514135303.176134-1-krishnak@linux.ibm.com> <20240514135303.176134-3-krishnak@linux.ibm.com>
-In-Reply-To: <20240514135303.176134-3-krishnak@linux.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Fri, 17 May 2024 12:42:03 +1000
-Message-ID: <CAOSf1CFDCTMdmrjoSRdP09rJgtzPVDnCPXpfS-S+J7XKHzKRCw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] powerpc: hotplug driver bridge support
-To: Krishna Kumar <krishnak@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgWkD5gySz2ygY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 12:53:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715914421; x=1747450421;
+  h=date:from:to:cc:subject:message-id;
+  bh=bg0tvdneI6RHPz4bu9qD7fnrfshVKa9f7k2KZt7v/3s=;
+  b=OnwFhMwlAB+yi2FkoUJS7xgWcCmL74+73kxjXVb5VIC5ZMZPnzFaZF9u
+   2z91h1ecbSF/5we0lP3DIJg/5kYg58qxjO72OU0i5ZHnJjumd5MXkcJ+S
+   z08trbIYps+BQCv0oyV3BBl6/O8YLtMpWzg+I8mKSTIaftmSfh05uafzy
+   rZy9FYz2QLYj0BYMnm1Um5AfOe2LtUGtLSKawAPFJhEjPUT0JKFZfHo7T
+   1bvP0qDEKXA/ydTJ1MLr/dfxZ8hlhRF96TgbmqDduSJ99x2Uylzv9MTsi
+   7dXWvG5Mz8pNeA9JwhsvzsPUfxre+y61TWLUzB05jc4S4ktQzgI8VaZko
+   Q==;
+X-CSE-ConnectionGUID: bgShFn+aQOexOcFfnht4nA==
+X-CSE-MsgGUID: Ba1e4lSrREKaMdEY7l7yZg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="23481905"
+X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; 
+   d="scan'208";a="23481905"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 19:53:35 -0700
+X-CSE-ConnectionGUID: 1DC2Hb0jS0GYs1bnMLTBFg==
+X-CSE-MsgGUID: WbjRejwfRqSM+oiletLN+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; 
+   d="scan'208";a="31651117"
+Received: from unknown (HELO 108735ec233b) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 16 May 2024 19:53:32 -0700
+Received: from kbuild by 108735ec233b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s7nib-00006R-34;
+	Fri, 17 May 2024 02:53:16 +0000
+Date: Fri, 17 May 2024 10:49:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ 61700f816e6f58f6b1aaa881a69a784d146e30f0
+Message-ID: <202405171055.bQ3F0Ktc-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,146 +70,213 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Gaurav Batra <gbatra@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, mahesh@linux.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Brian King <brking@linux.vnet.ibm.com>, linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 14, 2024 at 11:54=E2=80=AFPM Krishna Kumar <krishnak@linux.ibm.=
-com> wrote:
->
-> There is an issue with the hotplug operation when it's done on the
-> bridge/switch slot. The bridge-port and devices behind the bridge, which
-> become offline by hot-unplug operation, don't get hot-plugged/enabled by
-> doing hot-plug operation on that slot. Only the first port of the bridge
-> gets enabled and the remaining port/devices remain unplugged. The hot
-> plug/unplug operation is done by the hotplug driver
-> (drivers/pci/hotplug/pnv_php.c).
->
-> Root Cause Analysis: This behavior is due to missing code for the DPC
-> switch/bridge.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 61700f816e6f58f6b1aaa881a69a784d146e30f0  powerpc/fadump: Fix section mismatch warning
 
-I don't see anything touching DPC in this series?
+elapsed time: 734m
 
-> *snip*
->
-> Command for reproducing the issue :
->
-> For hot unplug/disable - echo 0 > /sys/bus/pci/slots/C5/power
-> For hot plug/enable -    echo 1 > /sys/bus/pci/slots/C5/power
->
-> where C5 is slot associated with bridge.
->
-> Scenario/Tests:
-> Output of lspci -nn before test is given below. This snippet contains
-> devices used for testing on Powernv machine.
->
-> 0004:02:00.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-> 0004:02:01.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-> 0004:02:02.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-> 0004:02:03.0 PCI bridge [0604]: PMC-Sierra Inc. Device [11f8:4052]
-> 0004:08:00.0 Serial Attached SCSI controller [0107]:
-> Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3 [1000:00c9] (rev 01)
-> 0004:09:00.0 Serial Attached SCSI controller [0107]:
-> Broadcom / LSI SAS3216 PCI-Express Fusion-MPT SAS-3 [1000:00c9] (rev 01)
->
-> Output of lspci -tv before test is as follows:
->
-> # lspci -tv
->  +-[0004:00]---00.0-[01-0e]--+-00.0-[02-0e]--+-00.0-[03-07]--
->  |                           |               +-01.0-[08]----00.0  Broadco=
-m / LSI SAS3216 PCI-Express Fusion-MPT SAS-3
->  |                           |               +-02.0-[09]----00.0  Broadco=
-m / LSI SAS3216 PCI-Express Fusion-MPT SAS-3
->  |                           |               \-03.0-[0a-0e]--
->  |                           \-00.1  PMC-Sierra Inc. Device 4052
->
-> C5(bridge) and C6(End Point) slot address are as below:
-> # cat /sys/bus/pci/slots/C5/address
-> 0004:02:00
-> # cat /sys/bus/pci/slots/C6/address
-> 0004:09:00
+configs tested: 190
+configs skipped: 3
 
-Uh, if I'm reading this right it looks like your "slot" C5 is actually
-the PCIe switch's internal bus which is definitely not hot pluggable.
-I find it helps to look at the PCI topology in terms of where the
-physical PCIe links are. Here we've got:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-- A link between the PHB (0004:00:00.0) and the switch upstream port
-(0004:01:00.0)
-- A link from switch downstream port 0 (0004:02:00.0) to nothing
-- A link from switch downstream port 1 (0004:02:01.0) to a SAS card
-- A link from switch downstream port 2 (0004:02:02.0) to a SAS card
-- A link from switch downstream port 2 (0004:02:03.0) to nothing
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240517   gcc  
+arc                   randconfig-002-20240517   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                          collie_defconfig   gcc  
+arm                     davinci_all_defconfig   clang
+arm                                 defconfig   clang
+arm                            dove_defconfig   gcc  
+arm                            hisi_defconfig   gcc  
+arm                         lpc32xx_defconfig   clang
+arm                         nhk8815_defconfig   clang
+arm                             pxa_defconfig   gcc  
+arm                   randconfig-001-20240517   clang
+arm                   randconfig-002-20240517   clang
+arm                   randconfig-003-20240517   clang
+arm                   randconfig-004-20240517   clang
+arm                           sama7_defconfig   clang
+arm                       spear13xx_defconfig   gcc  
+arm                           tegra_defconfig   gcc  
+arm                         vf610m4_defconfig   gcc  
+arm                         wpcm450_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240517   clang
+arm64                 randconfig-002-20240517   gcc  
+arm64                 randconfig-003-20240517   clang
+arm64                 randconfig-004-20240517   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240517   gcc  
+csky                  randconfig-002-20240517   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240517   clang
+hexagon               randconfig-002-20240517   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240516   clang
+i386         buildonly-randconfig-001-20240517   clang
+i386         buildonly-randconfig-002-20240516   clang
+i386         buildonly-randconfig-002-20240517   clang
+i386         buildonly-randconfig-003-20240516   clang
+i386         buildonly-randconfig-003-20240517   gcc  
+i386         buildonly-randconfig-004-20240516   gcc  
+i386         buildonly-randconfig-004-20240517   clang
+i386         buildonly-randconfig-005-20240516   gcc  
+i386         buildonly-randconfig-005-20240517   clang
+i386         buildonly-randconfig-006-20240516   gcc  
+i386         buildonly-randconfig-006-20240517   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240516   gcc  
+i386                  randconfig-001-20240517   gcc  
+i386                  randconfig-002-20240516   gcc  
+i386                  randconfig-002-20240517   gcc  
+i386                  randconfig-003-20240516   clang
+i386                  randconfig-003-20240517   gcc  
+i386                  randconfig-004-20240516   clang
+i386                  randconfig-004-20240517   gcc  
+i386                  randconfig-005-20240516   clang
+i386                  randconfig-005-20240517   gcc  
+i386                  randconfig-006-20240516   clang
+i386                  randconfig-006-20240517   gcc  
+i386                  randconfig-011-20240516   gcc  
+i386                  randconfig-011-20240517   gcc  
+i386                  randconfig-012-20240516   gcc  
+i386                  randconfig-012-20240517   clang
+i386                  randconfig-013-20240516   clang
+i386                  randconfig-013-20240517   gcc  
+i386                  randconfig-014-20240516   gcc  
+i386                  randconfig-014-20240517   gcc  
+i386                  randconfig-015-20240516   gcc  
+i386                  randconfig-015-20240517   clang
+i386                  randconfig-016-20240516   gcc  
+i386                  randconfig-016-20240517   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240517   gcc  
+loongarch             randconfig-002-20240517   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                       m5208evb_defconfig   gcc  
+m68k                           virt_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                           jazz_defconfig   clang
+mips                      loongson3_defconfig   gcc  
+mips                  maltasmvp_eva_defconfig   gcc  
+mips                         rt305x_defconfig   clang
+nios2                         10m50_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240517   gcc  
+nios2                 randconfig-002-20240517   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240517   gcc  
+parisc                randconfig-002-20240517   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                     asp8347_defconfig   clang
+powerpc                      bamboo_defconfig   clang
+powerpc                      chrp32_defconfig   clang
+powerpc                     mpc5200_defconfig   clang
+powerpc                      pasemi_defconfig   clang
+powerpc                      ppc40x_defconfig   clang
+powerpc                      ppc6xx_defconfig   gcc  
+powerpc               randconfig-001-20240517   clang
+powerpc               randconfig-002-20240517   clang
+powerpc               randconfig-003-20240517   gcc  
+powerpc                    sam440ep_defconfig   gcc  
+powerpc                     tqm8540_defconfig   gcc  
+powerpc                      walnut_defconfig   gcc  
+powerpc64             randconfig-001-20240517   gcc  
+powerpc64             randconfig-002-20240517   gcc  
+powerpc64             randconfig-003-20240517   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240517   clang
+riscv                 randconfig-002-20240517   gcc  
+s390                             alldefconfig   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240517   clang
+s390                  randconfig-002-20240517   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240517   gcc  
+sh                    randconfig-002-20240517   gcc  
+sh                           se7619_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240517   gcc  
+sparc64               randconfig-002-20240517   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240517   clang
+um                    randconfig-002-20240517   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64                              defconfig   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                  audio_kc705_defconfig   gcc  
+xtensa                generic_kc705_defconfig   gcc  
+xtensa                randconfig-001-20240517   gcc  
+xtensa                randconfig-002-20240517   gcc  
 
-Note that there's no PCIe link between the switch upstream port
-(0004:01:00.0) and the downstream ports on bus 0004:02. The connection
-between those is invisible to us because it's custom bus logic
-internal to the PCIe switch ASIC. What I think has happened here is
-that system firmware has supplied bad PCIe slot information to OPAL
-which has resulted in pnv_php advertising a slot in the wrong place.
-Assuming this following the usual IBM convention I'd expect the bridge
-device for C5 to be the PHB's root port and the bus should be 0004:01.
-It might be worth adding some logic to pnv_php to verify the PCI
-bridge upstream of the slot actually has the PCIe slot capability to
-guard against this problem.
-
-> Hot-unplug operation on slot associated with bridge:
-> # echo 0 > /sys/bus/pci/slots/C5/power
-> # lspci -tv
->  +-[0004:00]---00.0-[01-0e]--+-00.0-[02-0e]--
->  |                           \-00.1  PMC-Sierra Inc. Device 4052
-
-Yep, "powering off" C5 doesn't remove the upstream port device. This
-would create problems if you physically removed the card from C5 since
-the kernel would assume the switch device is still present.
-
-> *snip*
-
-
-> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-> index 38561d6a2079..bea612759832 100644
-> --- a/arch/powerpc/kernel/pci_dn.c
-> +++ b/arch/powerpc/kernel/pci_dn.c
-> @@ -493,4 +493,36 @@ static void pci_dev_pdn_setup(struct pci_dev *pdev)
->         pdn =3D pci_get_pdn(pdev);
->         pdev->dev.archdata.pci_data =3D pdn;
->  }
-> +
-> +void pci_traverse_sibling_nodes_and_scan_slot(struct device_node *start,=
- struct pci_bus *bus)
-> +{
-> +       struct device_node *dn;
-> +       int slotno;
-> +
-> +       u32 class =3D 0;
-> +
-> +       if (!of_property_read_u32(start->child, "class-code", &class)) {
-> +               /* Call of pci_scan_slot for non-bridge/EP case */
-> +               if (!((class >> 8) =3D=3D PCI_CLASS_BRIDGE_PCI)) {
-> +                       slotno =3D PCI_SLOT(PCI_DN(start->child)->devfn);
-> +                       pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
-> +                       return;
-> +               }
-> +       }
-> +
-> +       /* Iterate all siblings */
-> +       for_each_child_of_node(start, dn) {
-> +               class =3D 0;
-> +
-> +               if (!of_property_read_u32(start->child, "class-code", &cl=
-ass)) {
-> +                       /* Call of pci_scan_slot on each sibling-nodes/br=
-idge-ports */
-> +                       if ((class >> 8) =3D=3D PCI_CLASS_BRIDGE_PCI) {
-> +                               slotno =3D PCI_SLOT(PCI_DN(dn)->devfn);
-> +                               pci_scan_slot(bus, PCI_DEVFN(slotno, 0));
-> +                       }
-> +               }
-> +       }
-
-If you're going to iterate over all the DT nodes why not just scan all
-of them rather than special casing bridges? IIRC current logic is the
-way it is because PowerVM only puts single devices under a PHB and in
-the PowerNV (pnv_php) case the PCIe spec guarantees that only device 0
-will be present on the end of a link. If you want to handle the more
-generic case then feel free, but do it properly.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
