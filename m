@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD998C805E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 06:27:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287EE8C808B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 07:07:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ig4VW+DF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ok1b98yt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VgYpf5lDPz30Tj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 14:27:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VgZhN53z7z3cCt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 15:07:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ig4VW+DF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ok1b98yt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgYnt41BBz2yvm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 14:26:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgZgc53Z3z2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 15:06:24 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715920019; x=1747456019;
+  t=1715922397; x=1747458397;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=GWyXOoyKk2RnwYCSHy+P9Ba1M58+I9n6Er/ZRA9duHQ=;
-  b=Ig4VW+DFdLh6QaeuTQ5HcQRnDIxTgHfrs/VXtyfiePvRNnP57e+ZFg8r
-   490zKWFpAyRXPVLAvDyWx0Nq2Ny8ClZcEw9UJgeI2RAnNCRrfoX/eveV4
-   tWqmoRS94xmoq47dPY1QMBWt6K42No9skKvaZLoWTYDdqMsz7n7WpBfPC
-   Hpfik55r9bVOyh/uCQKd/Dq+iiu3g4LpkWawKOZFkynq6pkuLAGTgOaep
-   gcvtS7rZ2Z5WIu82gXw7FxkyozHKS2RnUz7L61bXd7ltjnSzzKXdX7Tbl
-   A+HQDNpwQj6wQLlXmgVLG1Qt7U1M5Vpt4x56vj4WV+Te93LOU0pW9xR4/
+  bh=iAeXwU+FDcTMei3N8LOX/9KrK4aB9Laf5Ujy5EX2FGo=;
+  b=Ok1b98yt0NjjcEO5GDI7Px8jSEWmfAA+aqDbfGiuPI76pdFoauXk9mYz
+   uoGjh0N1Ccg3sk5oZ3Wk0u2BfYi24DhfPIcUVF1XJ1jvDVce/fFvr1Mfd
+   1oJ6gKVtDsuwszcfoEjbYlva9rG0rQ+9Bqepc5KmKrea/sxVDOs4vxu44
+   U/EU6r+4H+P9ndmQ4TluelhBwdL7aGNtdMX4BRolj8jCgD0KHrCJ5E/WL
+   tRaP2mq49Wqbh/QygKldlToiUgUiqMJLvIz1/sze+CrsuqpHBfr38ULm+
+   kWSXhIGmF7yK8nKwrYOpEbl3RTtMlaklwP2+oUvtIuj1Rj5U9Shs0/4Zx
    A==;
-X-CSE-ConnectionGUID: B0S/+AF6Sne9GtQjYHa3eg==
-X-CSE-MsgGUID: ulxvxDOuRRC0XrOIZmK+xg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="29593933"
+X-CSE-ConnectionGUID: r6L5HC2zTDa+fuu8p3tK+g==
+X-CSE-MsgGUID: qQPBKZQLRxKvsOr/taKFHw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="34592858"
 X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; 
-   d="scan'208";a="29593933"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 21:26:53 -0700
-X-CSE-ConnectionGUID: ToWroi0yQuSi5r5w3KhFTA==
-X-CSE-MsgGUID: v/KLNac5SYWSyeJHoSME5g==
+   d="scan'208";a="34592858"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 22:06:20 -0700
+X-CSE-ConnectionGUID: g3J3dyehStKB3UGgLDqV9w==
+X-CSE-MsgGUID: BfJyx6y1TWCjKfqqpHqoPA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; 
-   d="scan'208";a="31485769"
+   d="scan'208";a="69129355"
 Received: from unknown (HELO 108735ec233b) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 16 May 2024 21:26:51 -0700
+  by orviesa001.jf.intel.com with ESMTP; 16 May 2024 22:06:19 -0700
 Received: from kbuild by 108735ec233b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1s7pAy-0000CZ-2g;
-	Fri, 17 May 2024 04:26:39 +0000
-Date: Fri, 17 May 2024 12:25:37 +0800
+	id 1s7pmu-0000Eo-2g;
+	Fri, 17 May 2024 05:06:03 +0000
+Date: Fri, 17 May 2024 12:56:46 +0800
 From: kernel test robot <lkp@intel.com>
 To: Abhishek Dubey <adubey@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH] PowerPC: Replace kretprobe with rethook
-Message-ID: <202405171247.spWNTdJg-lkp@intel.com>
+Message-ID: <202405171203.CasoixJG-lkp@intel.com>
 References: <20240516134646.1059114-1-adubey@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,7 +74,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.vnet.ibm.com, Abhishek Dubey <adubey@linux.ibm.com>, mhiramat@kernel.org, npiggin@gmail.com, oe-kbuild-all@lists.linux.dev
+Cc: llvm@lists.linux.dev, npiggin@gmail.com, Abhishek Dubey <adubey@linux.ibm.com>, mhiramat@kernel.org, oe-kbuild-all@lists.linux.dev, naveen.n.rao@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -92,20 +92,22 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Abhishek-Dubey/PowerPC-Re
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
 patch link:    https://lore.kernel.org/r/20240516134646.1059114-1-adubey%40linux.ibm.com
 patch subject: [PATCH] PowerPC: Replace kretprobe with rethook
-config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20240517/202405171247.spWNTdJg-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240517/202405171247.spWNTdJg-lkp@intel.com/reproduce)
+config: powerpc-asp8347_defconfig (https://download.01.org/0day-ci/archive/20240517/202405171203.CasoixJG-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240517/202405171203.CasoixJG-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405171247.spWNTdJg-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405171203.CasoixJG-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   powerpc-linux-ld: arch/powerpc/kernel/stacktrace.o: in function `arch_stack_walk_reliable':
->> stacktrace.c:(.text+0x172): undefined reference to `arch_rethook_trampoline'
->> powerpc-linux-ld: stacktrace.c:(.text+0x17e): undefined reference to `arch_rethook_trampoline'
+>> ld.lld: error: undefined symbol: arch_rethook_trampoline
+   >>> referenced by stacktrace.c
+   >>>               arch/powerpc/kernel/stacktrace.o:(arch_stack_walk_reliable) in archive vmlinux.a
+   >>> referenced by stacktrace.c
+   >>>               arch/powerpc/kernel/stacktrace.o:(arch_stack_walk_reliable) in archive vmlinux.a
 
 -- 
 0-DAY CI Kernel Test Service
