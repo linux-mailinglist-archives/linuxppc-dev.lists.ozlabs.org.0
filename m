@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF3F8C8483
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 12:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32678C847E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 12:06:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VgjKT6Hw4z3cPf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 20:06:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VgjK40hxMz2yvv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 May 2024 20:06:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
@@ -14,17 +14,17 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgjJd68FTz2yhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 20:05:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VgjJd66BDz2yN8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 May 2024 20:05:37 +1000 (AEST)
 Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 67BEE1A0EAB;
-	Fri, 17 May 2024 12:05:33 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D0A601A04A4;
+	Fri, 17 May 2024 12:05:34 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1C72F1A04A4;
-	Fri, 17 May 2024 12:05:33 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 86D221A0F4C;
+	Fri, 17 May 2024 12:05:34 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 71255181D0FF;
-	Fri, 17 May 2024 18:05:31 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id DFB7B1820F76;
+	Fri, 17 May 2024 18:05:32 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org,
@@ -42,10 +42,12 @@ To: lgirdwood@gmail.com,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/2] ASoC: fsl_mqs: Add i.MX95 platform support
-Date: Fri, 17 May 2024 17:45:44 +0800
-Message-Id: <1715939146-13031-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH 1/2] ASoC: dt-bindings: fsl,mqs: Add i.MX95 platform support
+Date: Fri, 17 May 2024 17:45:45 +0800
+Message-Id: <1715939146-13031-2-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1715939146-13031-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1715939146-13031-1-git-send-email-shengjiu.wang@nxp.com>
 X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,14 +81,46 @@ platform, there are four parts (bits for module enablement,
 bits for reset, bits for oversampling ratio, bits for divider ratio).
 This new property includes all these things.
 
-Shengjiu Wang (2):
-  ASoC: dt-bindings: fsl,mqs: Add i.MX95 platform support
-  ASoC: fsl_mqs: Add i.MX95 platform support
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ .../devicetree/bindings/sound/fsl,mqs.yaml      | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
- .../devicetree/bindings/sound/fsl,mqs.yaml    |  17 +++
- sound/soc/fsl/fsl_mqs.c                       | 106 ++++++++++++++----
- 2 files changed, 103 insertions(+), 20 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/sound/fsl,mqs.yaml b/Documentation/devicetree/bindings/sound/fsl,mqs.yaml
+index 8b33353a80ca..a2129b7cb147 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,mqs.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,mqs.yaml
+@@ -23,6 +23,7 @@ properties:
+       - fsl,imx8qm-mqs
+       - fsl,imx8qxp-mqs
+       - fsl,imx93-mqs
++      - fsl,imx95-mqs
+ 
+   clocks:
+     minItems: 1
+@@ -45,6 +46,22 @@ properties:
+   resets:
+     maxItems: 1
+ 
++  fsl,mqs-ctrl:
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 6
++    maxItems: 6
++    description: |
++      Contains the control register information, defined as,
++      Cell #1: register type
++               0 - the register in owned register map
++               1 - the register in general purpose register map
++               2 - the register in control of system manager
++      Cell #2: offset of the control register from the syscon
++      Cell #3: shift bits for module enable bit
++      Cell #4: shift bits for reset bit
++      Cell #5: shift bits for oversampling ratio bit
++      Cell #6: shift bits for divider ratio control bit
++
+ required:
+   - compatible
+   - clocks
 -- 
 2.34.1
 
