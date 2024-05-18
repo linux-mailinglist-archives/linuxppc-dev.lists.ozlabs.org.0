@@ -2,123 +2,160 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A36D8C8F2B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 03:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBC08C8FD1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 08:30:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mUcTrddI;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=BwNqRgbU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vh5kd5K74z3cLv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 11:26:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VhDTZ18Cjz3cXC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 May 2024 16:30:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mUcTrddI;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=BwNqRgbU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c30; helo=mail-oo1-xc30.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::3; helo=paup264cu001.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PAUP264CU001.outbound.protection.outlook.com (mail-francecentralazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vh5js3h0hz2yvx;
-	Sat, 18 May 2024 11:25:19 +1000 (AEST)
-Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-5b2a66dce8fso1468741eaf.1;
-        Fri, 17 May 2024 18:25:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715995511; x=1716600311; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJqjedwoYcqSzJKmZSEwT+6hVhtxWLfg/8QtauvSdx4=;
-        b=mUcTrddI20R2dGRUJ082SSasDeC0pDntvDAEMIwSlvzzAiJR2RaB5UK8npBRhTURHH
-         yGGCjNHgDHMmbcbTrN7gsdOGQFMqONlTXDSa/2rFJbkr+Gg6QoWAy1EzDr3j0LPxkjz8
-         qRYDFZYgDh4CdabJsPOGY8nsdNVd/2+wBLL5Krzz/Q6Rs1Onbvjdve3jEG1E/0er1OgO
-         xuKQHc5os5URlQKsgNprbk/wCyT3w/XdGDfTQ3wE32wDvTrw1EQRtql8WXGqZIoE+Sx+
-         8ap+LfxANk4vqWpvnUkdBLuhmBSTKv53HxR9Gn9gScHWN7IaDRKtP8jOAn91VQmtC1zp
-         hBtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715995511; x=1716600311;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cJqjedwoYcqSzJKmZSEwT+6hVhtxWLfg/8QtauvSdx4=;
-        b=YQowbCVUf+L37/0oS+3vq7VnR4Pep+bnZDHu12szY2U+ek4C34GXxCREaqPy+bEMkV
-         zbnKuJNsz7PC65hSd3gqVb2+gNnZG9see5pV5P9plwlsDBz4drx3zLrd2WUS6nfVv7U3
-         lIrEjBgm76fi+6F/N6QT8Ii4mYe5oHVAu10wIS9sH+X7WvYWexDTjfGAWQH4dk2RnW32
-         evskra9bhRkliC5hNMEuvKk916OTU7iHPf5k1obDGx4mc2YzmoxdwR6/RtoRGIGahNra
-         2mfAxG+ssch13Z83dMP9yGt+ukoMyMJ9k2yRIGgz16otP0tEmt16nNCWSQGDsB0xlQ5P
-         xmiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQnTLsdHf1zGjn4lrr/Kw25KXMbQDUHmyPYKk+AiOibueCTD7peqGronounoPSz8dxmtCib902zQCRnvpLsCigdfZqxSy0E5SvX4+rLmjdMepFjCO6Rz+uy1iuiiLW3wJS4DrLgFf+qL98Xg==
-X-Gm-Message-State: AOJu0YzoSTIpSYJZuKCFBzGA4l4fQykSfoUdMpKYFoZxlblschbDybIB
-	T4aiKJDlWQYJcBeF9zeUDH4YWR7yG7Llf/Y+hlXYV2StJlJ0m9at
-X-Google-Smtp-Source: AGHT+IFRaG5+veBhAS+2oO1Mq9a7mnKgK9vX9unu3cCbE/KbyDzrBjSt084GN8tso2cWg108BqN4VA==
-X-Received: by 2002:a05:6870:a3d2:b0:240:c8ff:c96a with SMTP id 586e51a60fabf-241728fc1damr27553351fac.27.1715995510785;
-        Fri, 17 May 2024 18:25:10 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a66316sm15339938b3a.35.2024.05.17.18.25.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 18:25:09 -0700 (PDT)
-Message-ID: <64db2b94-edb3-4ea3-87cf-bb91746869e6@roeck-us.net>
-Date: Fri, 17 May 2024 18:25:06 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VhDSm646cz3bTP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 May 2024 16:29:27 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hakCEF+RdqbRc1TVjcrWGTwhmF6ZPYmOYQ/Kplx+BmVELzxQsWgkI8EDBfaJ2bHkromLEgMt+lXhoUWoa3ltJwsV/zN8fIEC6aoUXWInKJf2XOajljmdO8iZW/GKUTPNgxnY4laJcgVYce0nGPpNIXubQ2WCiP4Gj5E2IVPXaIhHWiGdo5H9tyd87oksGIP+2yibb2UcBfkuAUx4iQC0yYvOCIRMQ4GW4wNdgPnu1Lp7MpgqLOS2w8tGnAv7/vmbWGBlU5yoEoGKt5PG/ywG8w78vlNZ8jwNitdTb1DnYywiaZwk19PsZTswQxqMlHAjNivkCj3JVBY2Z2fwj5yWVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HEtxmTO6Q/CHqCIi3Z5giPLGLHHng/h4m2/pazJNLu0=;
+ b=VcMTxXml8yrBu5XuhQ0B1DuO78XQysgVTIasBvGvVC/0vdhpyyRBQ2B1vR2iGextA02J7inBTmRhoAAfTl0ZCl01OQL5zvQnXovmEMy63EXpQQEC7Ref+cqDy+ZHFJuXgAg3yRSNThG+fjFa8JrFWZFawIOctV/HK156X6JoD6v5cjUjn6lhFpzaCVHToyQtvzt80w7CiFoMsVqA6XM4z0YiCDdiOC00WjuZsYwkY2J0y+TwtXV6Unhyo2HGZmMLNDMTsvrl8HKyPq1PwUnww28UPjCR13o+jc3R9aUZpuZKHwuxuL/5RvJVTSFnNnW4frPA/+866D8LYJ3mY/id7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HEtxmTO6Q/CHqCIi3Z5giPLGLHHng/h4m2/pazJNLu0=;
+ b=BwNqRgbUx9FrjCNS+Jjv8ZQNMoIYf42SfNtBVnR1iRYL5+FJZd6oOb9P0Yf69U9l40h6WgjO0U0X8uHPeSurUIEmoBTxQrc9u5m9xFc3vmOgtZ+JleVDWVfbEUBiaXgUH7FYGdzMQtZl3NCs+DGX4ayJYKZwP7M1CQatn6pxIvJaxdjfhvu8/OH6YOpqo38uwE3UuWgZkWlT6vxXQoGGpKK6gsHexHk8GRxa6LNOkKvhvRvN+Ii4s0ON73XiAasy8l/DexkTQXCBcDdZUiFcsPv1YQN6cR+Venw9EOogeG+fji9lgYYVhR4TNqFrEPRBfmKKHjCKT6f0gpQTQ+uOgw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR0P264MB2584.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e3::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.28; Sat, 18 May
+ 2024 06:28:56 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::e6d7:9670:c147:b801]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::e6d7:9670:c147:b801%3]) with mapi id 15.20.7587.030; Sat, 18 May 2024
+ 06:28:56 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC PATCH v2 00/20] Reimplement huge pages without hugepd on
+ powerpc (8xx, e500, book3s/64)
+Thread-Topic: [RFC PATCH v2 00/20] Reimplement huge pages without hugepd on
+ powerpc (8xx, e500, book3s/64)
+Thread-Index: AQHaqIxtZis3HNlt1kaC437Gs4/T37GbyXmAgAC+vIA=
+Date: Sat, 18 May 2024 06:28:56 +0000
+Message-ID: <0dcd9649-fd48-495a-9cb3-88f8a4b3abb0@csgroup.eu>
+References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
+ <20240517190613.GC20229@nvidia.com>
+In-Reply-To: <20240517190613.GC20229@nvidia.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2584:EE_
+x-ms-office365-filtering-correlation-id: b930ef10-3f12-4fb0-1d09-08dc7703cb9d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|376005|366007|1800799015|38070700009;
+x-microsoft-antispam-message-info:  =?utf-8?B?MXovYU9aemJLZjRlU3ZmallHUkJ4MmEvdjhjUzNHbWJUMFB5Y1VuQXhtSVJQ?=
+ =?utf-8?B?eTRpSGZkTzI1OXpGREdiUmhhUDJ3YzZ0YjZyMjRKWWNPbWpKNVFuV2lSUjRz?=
+ =?utf-8?B?S2dCNWJNbXh2aUNwbStxU3ZsRUl6eXJsSFBmbC9INkM2bWFBK0ZBMnVIelpG?=
+ =?utf-8?B?UWtXeHpCa0cxQXU0NndEWHF5V0lqYncrUExCMkZrR09xR0RrLzBEMENGQXdB?=
+ =?utf-8?B?OUVvanQxNktPTEE1NkRNczI3L05XVDRYS3JDeWl1LzRlenFuY3BKeUpRZXcx?=
+ =?utf-8?B?a2MyQTk3VVF1NEdLL1BUeDMyakNOVDVqcUd5dGhEWjlaMzNtK3NpT3RoYWFO?=
+ =?utf-8?B?Mmk0SFJTSWxuSGZ2cXIvUERqMUdQUFNkanpDUzM1ZzRaZzlqMlExdzRhTy9C?=
+ =?utf-8?B?WWdJdllYK1lBOExiT0VuOFhhSW1XVHpNSjk1KzFmc0NkYmFRMzBWR0pOVjZE?=
+ =?utf-8?B?QlVmS1FBcTR0cDdEbERpdXQzZXdoempQVmZ2TkU2b0hEVi9RRHRPMjhIR2Mr?=
+ =?utf-8?B?TUdxU0wxSDlFY3E5L3o0WGJMa1JEYUtlR2ZsZU0xU2RkQnpTc3dsdUlmYWlF?=
+ =?utf-8?B?WDR4czhJTU9UenFOdUNJN05SMk5xeTkxWEtLWnVsUDB5bktLZ0RBMFJzL1pL?=
+ =?utf-8?B?OWhwaVo0d3hyL0xZdVByMDd5d2w0bE14MEtWMXhkR3A3U0tnSS9JQVA5UlF0?=
+ =?utf-8?B?WGZNVHRkMUhqdDF2WEpLU3lQdmoxSnhJYXIxSjZNMVduUVRtYVRGa0l5cGVI?=
+ =?utf-8?B?Zk1YWlNJS0NjWUp1Q3pRcVhlS09aMmt2RGwrR1ZKZTJKakc3cTNXalNXOVBP?=
+ =?utf-8?B?T2wwYS9wUDRoYStZWmgybkxVR2lhQ1Z0VStUdVp2NXFpNlZtdStCRmZ1ZUhu?=
+ =?utf-8?B?K3NOU3YwTzErZ2Ezajd1Y2dpVlliNDN6b1lmNXNNMFdpcVMxajNDZVp2UjhR?=
+ =?utf-8?B?S0hCM2lwaTBXdGV6T1dDZTE3cXNLK1pBN2V6SUhOUzlCaXVZZzlWOFBsdnhz?=
+ =?utf-8?B?MHNQTU85TzMzdGFoTEgvZEEwa0d1MnpUa0wvMHU2a3FnZnFVa1pkTWlnMWhI?=
+ =?utf-8?B?b2VzaDJRK0xEbHllZFZkeitaZzg3cWRRU0F5V3UvRFhPY3hIK2VOdHZoSTlH?=
+ =?utf-8?B?cmFnUVhmUXIvTGNNa1RKVkx4aE1tZHMrdCtWRC84eHUvUEkxVkxGTFFUQStR?=
+ =?utf-8?B?TG5xakg5TGVMSitTR2NZekVUQWR0MUhlQXgwOGVNOXR3K250bWJxcFRENVl3?=
+ =?utf-8?B?Yk5XMVdqbnd6RW9vNUhYN2pVa2ZLcVNhZ2QzaGh1aVhxYXFnYVZZd2tVRWpU?=
+ =?utf-8?B?NnZYSE1KcUNpSWthNFB6clQ1VlNYTW1SVW1qUnRqTEdtQUZDbFBrMk51QkI0?=
+ =?utf-8?B?enRqdWo3elJ2MjFuSTZLcHpZMDhUOFZ5SWg1ZG5ON0JWUWhwcm5UOCtnek5Z?=
+ =?utf-8?B?WWluNFI0Y29UQWtBS1V3MFIvRVhTOVNheFZYQTlBNnFFTHRWRkxCMGxOeFNr?=
+ =?utf-8?B?UmxYRHp5WjNiZzFjNTJ5U3d4N3dqbVB3SVVBZEZnaFY5TjVtVkUwbksxQUlL?=
+ =?utf-8?B?ZFBRMjdJcWhDVVVma0Y1TGRCNG5ZNUIzWWppU04wcEFrQ1JQR1NSZ2paUC91?=
+ =?utf-8?B?cGRKMlgwVmJyL1ZOc2ZOTkZFRFB0c3VMK1RIZXpRL0lhZmVqZjlmSTB0Ny90?=
+ =?utf-8?B?d1VDK1UrRThLZyt6Y2tqd2xod2UwRXRNdW4yTXJxcUV3WmcrcEVkbFlLcHhk?=
+ =?utf-8?B?d3p3N0dySmpvbUpML2xLYk1VeldVQTcrZGtoUWk0QXBHWE12R1lBZVZHVklx?=
+ =?utf-8?B?VUIrVHIrWVNwL2QxYTU0dz09?=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?ZEx6ZDRNQ2doYnRqM3UwRHVsUU5VUEZ3L3cxSWpsVXdTMWlOeGVtSCtCbWVH?=
+ =?utf-8?B?RFRMSWZKaDZVNW9lMWJKcEhEYmswbGZJTUJTUTUzWHQ1NkJjUlgvTjdjZ0Nh?=
+ =?utf-8?B?SkpWcXBLb01WazZCcTZFTGV6Q1hUOXQzbkMvTDlXeDRnOEsrVmR1TGZlTktI?=
+ =?utf-8?B?ekJkaWRIRlM3THVnRnJmSzFMbGVyZnFUcThHY1FlamVDeklTZ3hhVnhhRUtQ?=
+ =?utf-8?B?dVBTUU8wcFJaZEdmaGVlVEZ2dlJsVjJpRUJMakFONDhnTWtSUG4vTjg4c0lq?=
+ =?utf-8?B?TTU2L3FQenh4WEtMNE9abTVFb09GdEpNWUFRV2hJaTlsWHg3Q2kvQUp0RVRN?=
+ =?utf-8?B?TUtRcW5RbW54M1RGT1ZmWUNneithcS83N1ZVZzEwenZ1RDJpam9NQUZDd1lV?=
+ =?utf-8?B?V3NGdTFqcDdsM3BHTlZKNXZsamNHZ05HS25qRFdYOVR5QU5tTHl0NXdXV3NY?=
+ =?utf-8?B?RXlpM3FiV09jM3Q4cHhxM21weG5weW13VVhndEgzYU5xUDFWOU5LVGRoY3dC?=
+ =?utf-8?B?NWt0cmk5RkdMMnhLeTFHM3dBV09VM2llYTNzUms2bE5Ra2E1SVJ0K2tmTDEw?=
+ =?utf-8?B?MXFwS3o0MUR2Y1RiVHQ2bDVUcTY2YmtwU2tHQ3R6cGhBdWtOcnNTYVBwUFFz?=
+ =?utf-8?B?QzlBQ2xTeVhPNXBrVUtKQmFvUUQzNGdtMmR1eEhjYUVNd3BPV2p6MmFYQmJT?=
+ =?utf-8?B?dzc0cUZHam9sWjFnM1paL0VrbnRTL2x4RnZ5MlREamdvZXNuTW1jdmp4Q1Nn?=
+ =?utf-8?B?K2s0T1p6cUh3WG5pSkZKQ3grWmtiZWxDOG9LT01PejFpYjVYRVF2NlF5ZzdN?=
+ =?utf-8?B?c1VmRXZUUm9ZU0U0N1pyM0w0YXp1MHFoRjdLS2FEamZYZkFabWNiN0tUSTFN?=
+ =?utf-8?B?V0g3RDBwUTA4VVFDVFY2VzhWbU0zRnhUcEJ1K1RGUHJpRE5lZG9DUUptMDR6?=
+ =?utf-8?B?NDBRZzdVZmZQQitXQzd1eHAzOTVDTzRwN2lZc2owVGRWNDJqc21jRWwzVnky?=
+ =?utf-8?B?QnpZWitFOCtPZjJXeVAwdFR1UGZZTkc1a2YzR2VzQW1kVUgzM25scFhSRFJV?=
+ =?utf-8?B?SXpGZER2ZVY4RDFQa0YwM0xIUkdnSzhWSVlPdXJ2QnpHbUJxeEpYVVhDcWhp?=
+ =?utf-8?B?Syt2eHZpNGliN1I2L3FHaUY4Y1ZvRUxhc1lFL0RiUVBoVEFhNVRVRUVLM1FJ?=
+ =?utf-8?B?ZC8ycU9Mb0crWWk0cENWK01LYWFxWXphcG9DVDc4VjVYbEk3Q3VrMXdnME1C?=
+ =?utf-8?B?UFp1Z0dTRmNDcEw2S0R2cHVjMGI3Rjk2K1hwclQ0ZWZwM1ZwVlBCNTdhM0Mx?=
+ =?utf-8?B?YkpRbmJuRTBPclZQTnM1MjJiWWw2NmNWbFFjVTMxdTc0OFhidjRFelpCYXZl?=
+ =?utf-8?B?dWhvd3V6NmtlN05mMEFhaW56OHd0WW1oamM4UncyOEZsbUluSVFhdEk5NmZH?=
+ =?utf-8?B?U2pyc0V3VWhoeE43ck9pRlR0OFVDMGZFK2M3a0Z1QXY3TUdoV1UrMHJDL3ZD?=
+ =?utf-8?B?SWRqNVdXQ015MWhBUFdGUUs2QTArbHAxZmE0ZjMrL1k0VnQ3dFV0WnN4UUNj?=
+ =?utf-8?B?amJZdWdKaTNtZ0prUnNnRHVTdjUvT3l0NFR2cUZHelprMHVLWTBtRGJ0TVlB?=
+ =?utf-8?B?YXZKQ1RidE1iYkN5Vzk4eGRvSlVuU3oxYXlmR0RsSFJHQW8rMitZbjlVOUZB?=
+ =?utf-8?B?a2NXR0FtM1ppbThWSEhobVBERm96Yjk2T1ZzRTJEMEdNclFPYjdVSDIxVGtS?=
+ =?utf-8?B?d3VaNmcrb0xyWFA0eFQ3MTV5K2JHeDRScFkvUmw5M3ZwRDVHYzZGOUdFd25m?=
+ =?utf-8?B?K1d4YVdaZ2toTXVFUFhRYzVpZ09NRDNyMm40dXdYaGtDa1JzblVJMkd1RS8x?=
+ =?utf-8?B?MXNQWVVWOFg5M3ZsZHFwS0RmM25ZSzV6VXlZcGU3V0hpNENHVThTZDdoZi9j?=
+ =?utf-8?B?WFBlUExmQUEra0RVTnV4ajV1ZGhSMDJsUGo0aFJ0UjdZM20vNmtLWDFzcmh1?=
+ =?utf-8?B?NE5kelNjeWcveDZ1TjA3MDMzYUcvSzh5ajkyZ0hMcEdNR0FkZHNvckkyNTBL?=
+ =?utf-8?B?RXVxQUI5WWV6RERaa3RqNGhCL0IxY3grc3FCK082Z1VxSVVNMklQdkUvUjBo?=
+ =?utf-8?B?TGtMbWF1QlRWNEpMV3ZvVFlUbVJDSGdSN0NHTzl5NTlGNDhoSmRtakh2Mktk?=
+ =?utf-8?Q?vijKoT6/jvrWWjRZODgl3NHYrXf2ZFsBvpsdAowcApaC?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FB4B94852FE9B043B3EE6EED606F12AE@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tracing/treewide: Remove second parameter of
- __assign_str()
-From: Guenter Roeck <linux@roeck-us.net>
-To: Steven Rostedt <rostedt@goodmis.org>
-References: <20240516133454.681ba6a0@rorschach.local.home>
- <5080f4c5-e0b3-4c2e-9732-f673d7e6ca66@roeck-us.net>
- <20240517134834.43e726dd@gandalf.local.home>
- <5cff0ff0-48d1-49f8-84f4-bb33571fdf16@roeck-us.net>
-Content-Language: en-US
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <5cff0ff0-48d1-49f8-84f4-bb33571fdf16@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: b930ef10-3f12-4fb0-1d09-08dc7703cb9d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2024 06:28:56.4076
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: m6m9MCAya48kbJ95fLaPkfeo1U+XwDDpMn7ElPmSGVhpOjKS2YwcPpZWfDtKqhs4U3wZMA40Wn3ItX17aOOBV7xwbPgbRbaVMzxPL2tnqpk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2584
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,53 +167,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, brcm80211@lists.linux.dev, ath10k@lists.infradead.org, Julia Lawall <Julia.Lawall@inria.fr>, linux-s390@vger.kernel.org, dev@openvswitch.org, linux-cifs@vger.kernel.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, io-uring@vger.kernel.org, linux-bcachefs@vger.kernel.org, iommu@lists.linux.dev, ath11k@lists.infradead.org, linux-media@vger.kernel.org, linux-wpan@vger.kernel.org, linux-pm@vger.kernel.org, selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-erofs@lists.ozlabs.org, virtualization@lists.linux.dev, linux-sound@vger.kernel.org, linux-block@vger.kernel.org, ocfs2-devel@lists.linux.dev, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-cxl@vger.kernel.org, linux-tegra@vger.kernel.org, intel-xe@lists.freedesktop.org, linux-edac@vger.kernel.org, linux-hwmon@vger.kernel.org, brcm80211-dev-list.pdl@broa
- dcom.com, Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org, ath12k@lists.infradead.org, tipc-discussion@lists.sourceforge.net, Masami Hiramatsu <mhiramat@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, Linux trace kernel <linux-trace-kernel@vger.kernel.org>, freedreno@lists.freedesktop.org, linux-nfs@vger.kernel.org, linux-btrfs@vger.kernel.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/17/24 11:00, Guenter Roeck wrote:
-> On 5/17/24 10:48, Steven Rostedt wrote:
->> On Fri, 17 May 2024 10:36:37 -0700
->> Guenter Roeck <linux@roeck-us.net> wrote:
->>
->>> Building csky:allmodconfig (and others) ... failed
->>> --------------
->>> Error log:
->>> In file included from include/trace/trace_events.h:419,
->>>                   from include/trace/define_trace.h:102,
->>>                   from drivers/cxl/core/trace.h:737,
->>>                   from drivers/cxl/core/trace.c:8:
->>> drivers/cxl/core/./trace.h:383:1: error: macro "__assign_str" passed 2 arguments, but takes just 1
->>>
->>> This is with the patch applied on top of v6.9-8410-gff2632d7d08e.
->>> So far that seems to be the only build failure.
->>> Introduced with commit 6aec00139d3a8 ("cxl/core: Add region info to
->>> cxl_general_media and cxl_dram events"). Guess we'll see more of those
->>> towards the end of the commit window.
->>
->> Looks like I made this patch just before this commit was pulled into
->> Linus's tree.
->>
->> Which is why I'll apply and rerun the above again probably on Tuesday of
->> next week against Linus's latest.
->>
->> This patch made it through both an allyesconfig and an allmodconfig, but on
->> the commit I had applied it to, which was:
->>
->>    1b294a1f3561 ("Merge tag 'net-next-6.10' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next")
->>
->> I'll be compiling those two builds after I update it then.
->>
-> 
-> I am currently repeating my test builds with the above errors fixed.
-> That should take a couple of hours. I'll let you know how it goes.
-> 
-
-There are no more build failures caused by this patch after fixing the above
-errors.
-
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
-Guenter
-
+DQoNCkxlIDE3LzA1LzIwMjQgw6AgMjE6MDYsIEphc29uIEd1bnRob3JwZSBhIMOpY3JpdMKgOg0K
+PiBPbiBGcmksIE1heSAxNywgMjAyNCBhdCAwODo1OTo1NFBNICswMjAwLCBDaHJpc3RvcGhlIExl
+cm95IHdyb3RlOg0KPj4gVGhpcyBpcyB0aGUgY29udGludWF0aW9uIG9mIHRoZSBSRkMgdjEgc2Vy
+aWVzICJSZWltcGxlbWVudCBodWdlIHBhZ2VzDQo+PiB3aXRob3V0IGh1Z2VwZCBvbiBwb3dlcnBj
+IDh4eCIuIEl0IG5vdyBnZXQgcmlkIG9mIGh1Z2VwZCBjb21wbGV0ZWx5DQo+PiBhZnRlciBoYW5k
+bGluZyBhbHNvIGU1MDAgYW5kIGJvb2szcy82NA0KPiANCj4gVGhpcyBpcyByZWFsbHkgYW1hemlu
+ZywgdGhhbmsgeW91IGZvciBkb2luZyBpdCENCj4gDQoNCllvdSBhcmUgd2VsY29tZS4NCg0KSSBo
+YXZlIG5vdCB5ZXQgdGFrZW4gaW50byBhY2NvdW50IHlvdXIgcmV2aWV3IGNvbW1lbnRzIG9uIHYx
+LiBJIGZpcnN0IA0Kd2FudGVkIHRvIGhhdmUgYSBnbG9iYWwgcGljdHVyZS4NCg0KQ2hyaXN0b3Bo
+ZQ0K
