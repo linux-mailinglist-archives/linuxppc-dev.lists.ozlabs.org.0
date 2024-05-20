@@ -2,34 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id AC8288C9FB8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2024 17:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 582978CA0B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 May 2024 18:26:37 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZVIH+1ZK;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VjhHB0XwJz3fvp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2024 01:26:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VjjPZ35cJz3fwv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2024 02:16:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lst.de (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 605 seconds by postgrey-1.37 at boromir; Tue, 21 May 2024 01:25:50 AEST
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZVIH+1ZK;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VjhGk5PgXz3cjr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2024 01:25:50 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 1542168AFE; Mon, 20 May 2024 17:15:37 +0200 (CEST)
-Date: Mon, 20 May 2024 17:15:36 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 04/23] scsi: initialize scsi midlayer limits before
- allocating the queue
-Message-ID: <20240520151536.GA32532@lst.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VjjNp0PvDz3clf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2024 02:16:09 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 7AC13CE0B1C;
+	Mon, 20 May 2024 16:16:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BCFC2BD10;
+	Mon, 20 May 2024 16:16:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716221763;
+	bh=UOi1n2UYMr/FQbVKWQcyqklCKnrURV8Jm+y0d+1xmXU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZVIH+1ZKPc7nCIgzITvynSYYWTuhtNjvapabvfzI39kdCUv/cP4aImgHpSanyEI85
+	 fc0TB8ke+DtxyB2CtlKbVnrDZ+ddR8fPUrDgiu1uANtDlzM7XYr/LabR/5B7Owbk9B
+	 4hWwZd/6EdR6d5bT8cObim94znIZbhwjsgTCCHrNHbap8pX+INKZ4MMCPgO7PIan7o
+	 hDxrSRyQfKhn+fdEOfUX72EyR2VWY0B4ikj9one8DIBkv4VQ6jLc7h/YSffPOXtIrt
+	 0+kuwP0OcIO4tSATpnsSyiEcc58emRDd1LfmGCTInzD7GPHZ57rqhnUe52uXrVT0eP
+	 VBwc46NopDv5A==
+Date: Mon, 20 May 2024 11:16:02 -0500
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 1/2] ASoC: dt-bindings: fsl,xcvr: Add compatible
+ string for i.MX95
+Message-ID: <20240520161602.GA733483-robh@kernel.org>
+References: <1715656329-8061-1-git-send-email-shengjiu.wang@nxp.com>
+ <1715656329-8061-2-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <08beb913-f525-49e2-8ef2-f62e9d466e53@roeck-us.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <1715656329-8061-2-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,41 +61,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, John Garry <john.g.garry@oracle.com>, linux-block@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Adding ben and the linuxppc list.
+On Tue, May 14, 2024 at 11:12:08AM +0800, Shengjiu Wang wrote:
+> Add compatible string "fsl,imx95-xcvr" for i.MX95 platform.
+> 
+> The difference between each platform is in below table.
+> 
+> +---------+--------+----------+--------+
+> |  SOC	  |  PHY   | eARC/ARC | SPDIF  |
+> +---------+--------+----------+--------+
+> | i.MX8MP |  V1    |  Yes     |  Yes   |
+> +---------+--------+----------+--------+
+> | i.MX93  |  N/A   |  N/A     |  Yes   |
+> +---------+--------+----------+--------+
+> | i.MX95  |  V2    |  N/A     |  Yes   |
+> +---------+--------+----------+--------+
+> 
+> On i.MX95, there are two PLL clock sources, they are the parent
+> clocks of the XCVR root clock. one is for 8kHz series rates, named
+> as 'pll8k', another one is for 11kHz series rates, named as 'pll11k'.
+> They are optional clocks, if there are such clocks, then the driver
+> can switch between them to support more accurate sample rates.
+> 
+> As 'pll8k' and 'pll11k' are optional, then add 'minItems: 4'
+> for clocks and clock-names properties.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,xcvr.yaml   | 55 +++++++++++++++----
+>  1 file changed, 45 insertions(+), 10 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> index 0eb0c1ba8710..70bcde33e986 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> @@ -22,6 +22,7 @@ properties:
+>      enum:
+>        - fsl,imx8mp-xcvr
+>        - fsl,imx93-xcvr
+> +      - fsl,imx95-xcvr
+>  
+>    reg:
+>      items:
+> @@ -44,18 +45,12 @@ properties:
+>      minItems: 1
+>  
+>    clocks:
+> -    items:
+> -      - description: Peripheral clock
+> -      - description: PHY clock
+> -      - description: SPBA clock
+> -      - description: PLL clock
 
-Context: pata_macio initialization now fails as we enforce that the
-segment size is set properly.
+Leave these here and add pll8k and pll11k.
 
-On Wed, May 15, 2024 at 04:52:29PM -0700, Guenter Roeck wrote:
-> pata_macio_common_init() Calling ata_host_activate() with limit 65280
-> ...
-> max_segment_size is 65280; PAGE_SIZE is 65536; BLK_MAX_SEGMENT_SIZE is 65536
-> WARNING: CPU: 0 PID: 12 at block/blk-settings.c:202 blk_validate_limits+0x2d4/0x364
-> ...
->
-> This is with PPC_BOOK3S_64 which selects a default page size of 64k.
+> +    minItems: 4
 
-Yeah.  Did you actually manage to use pata macio previously?  Or is
-it just used because it's part of the pmac default config?
+Keep this.
 
-> Looking at the old code, I think it did what you suggested above,
+> +    maxItems: 6
+>  
+>    clock-names:
+> -    items:
+> -      - const: ipg
+> -      - const: phy
+> -      - const: spba
+> -      - const: pll_ipg
+> +    minItems: 4
+> +    maxItems: 6
 
-> but assuming that the driver requested a lower limit on purpose that
-> may not be the best solution.
+Same here.
 
-> Never mind, though - I updated my test configuration to explicitly
-> configure the page size to 4k to work around the problem. With that,
-> please consider this report a note in case someone hits the problem
-> on a real system (and sorry for the noise).
+>  
+>    dmas:
+>      items:
+> @@ -97,6 +92,46 @@ allOf:
+>        properties:
+>          interrupts:
+>            maxItems: 1
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx95-xcvr
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Peripheral clock
+> +            - description: PHY clock
+> +            - description: SPBA clock
+> +            - description: PLL clock
+> +            - description: PLL clock source for 8kHz series
+> +            - description: PLL clock source for 11kHz series
+> +          minItems: 4
+> +        clock-names:
+> +          items:
+> +            - const: ipg
+> +            - const: phy
+> +            - const: spba
+> +            - const: pll_ipg
+> +            - const: pll8k
+> +            - const: pll11k
+> +          minItems: 4
 
-Yes, the idea behind this change was to catch such errors.  So far
-most errors have been drivers setting lower limits than what the
-hardware can actually handle, but I'd love to track this down.
+Drop all this.
 
-If the hardware can't actually handle the lower limit we should
-probably just fail the probe gracefully with a well comment if
-statement instead.
+> +    else:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Peripheral clock
+> +            - description: PHY clock
+> +            - description: SPBA clock
+> +            - description: PLL clock
+> +        clock-names:
+> +          items:
+> +            - const: ipg
+> +            - const: phy
+> +            - const: spba
+> +            - const: pll_ipg
+
+And for this case, you just need 'maxItems: 4'.
+
+Rob
