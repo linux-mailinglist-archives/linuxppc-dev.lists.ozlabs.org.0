@@ -2,72 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 6838A8CA814
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2024 08:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 638248CA887
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2024 09:11:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l3rbGvfu;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=zxTcwa2k;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vk4Q066Ctz3g9N
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2024 16:33:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vk56V6Zmxz3gBG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 May 2024 17:05:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l3rbGvfu;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=zxTcwa2k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::135; helo=mail-il1-x135.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vk4PD2gXtz3dFx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2024 16:32:47 +1000 (AEST)
-Received: by mail-il1-x135.google.com with SMTP id e9e14a558f8ab-36c85170db2so14736425ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 May 2024 23:32:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716273164; x=1716877964; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9v5h6PC3m5viZM1uwwljp97r1zeipYab7bRIWScSl2M=;
-        b=l3rbGvfuDdUmLCspuAmat3hna0DVUDMJBnD3KE8CX8qgOggR4I9shYgXnZkGwOo/kT
-         QhKUS/5I67fiWdI6MkFSQfQKR6V3aAwO2aE8jGxTzg9Cacqs7ETvnzXYRaaab6DptmEY
-         l6L6x3BJmNPLI2yAfQo+OjoOqDHRRQnRnBgRnPkQSty6jn22Ua3IjDRYjTWW39wGBy41
-         OPvlOoimAnw9cmUh9F9dFkbWuC/Q+MO85NmR5xD4vwNzAP4pCl6z1mgKTHfXQkP8DP8l
-         3R2haLso5rgFL/vJY+VklykJVb85LyZHVZFXjuVVRiSal4QyJSQOUBRLfuN+DmTt473F
-         pMng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716273164; x=1716877964;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9v5h6PC3m5viZM1uwwljp97r1zeipYab7bRIWScSl2M=;
-        b=wt2e/ARPbNHKls740oAXsw0jVQzSEk5lzdd4cWquX+dFgV3UUnIa9fc1G6RlK4DgNi
-         t8691czcM2Ez5b8a6gJtmVmurMdXPeoGQN++eYkC6N0r+XKjiMwFE/ecF3O1EDANEQIL
-         ZrvA8GH41Q9VFIN0ozWA2F8K1tbMkHEvdeIM1N6L70Bk90zYS0+rozNGmJmbN3ieQU9O
-         GgUyWKDp0dAxPMfrbT9JEdZsqNphP9vq7WoIenVzPwfd71aG0fNnhlNHtv2OAuQL+iGK
-         Li3YvRYDJ5aLZwiQp2w/uSLWjKjoqTVDmDQLg1rew6EuuJ4Gl8eb6GU2BZB7akhZmeLb
-         Yxmg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0Mk32L/O+JycNxft+nx+ckv4Wk2rkeB1aoCl4PAhsDssQdqcDpoLuweNc+LIfJgokni6hSKXXDbrZqQFmYDW+ef6+gEfb4wF9jylxwA==
-X-Gm-Message-State: AOJu0YxhSJQ4TncrGsdpqDQc73/bmCLR+A3upxE37zR62hNuq+e/atU3
-	jj/zuI7tm2Zib3aEQH98VdAz54eitaWUScand8gfQXDFGYwu2TnaL1hDoGkOAbdPmt12xQcjgaW
-	zrpjHw+gFN0OCti3HgnQee35aJIs=
-X-Google-Smtp-Source: AGHT+IHxK0DDX2uyvGgjkFhMSHqcRRzxekD6O/b+tOay3l5GstPgFhvbAwzUrXw/5NT70QAMEfkIjbuJ3XTfQfLanXw=
-X-Received: by 2002:a05:6e02:1fea:b0:36c:4b17:e06a with SMTP id
- e9e14a558f8ab-36cc148e51amr385802135ab.18.1716273163845; Mon, 20 May 2024
- 23:32:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vk55n3gnCz3dPs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2024 17:04:28 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 84F9361DFA;
+	Tue, 21 May 2024 07:04:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4214C2BD11;
+	Tue, 21 May 2024 07:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1716275063;
+	bh=jTFoWep9CrjPm1XdT0Ss5Vaisoeq5vLKtBQmSKNyKao=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zxTcwa2k5RLnNo+p6Ae7dMqqW/o/VXwgPrQ0pHPTb3Yz1qNn3vC2feW8/x0Q9so3+
+	 MdxDPBsuKTJXE8RgRs3zsFf2orypvFvyaGqWmUKqYKPIpEIfnZdsoEWa0PcRP2938d
+	 pI3lkNbE2zrUm2O6Yrpt9DG1tEc1FRNLGReRX8G8=
+Date: Tue, 21 May 2024 09:04:20 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: CVE-2023-52665: powerpc/ps3_defconfig: Disable
+ PPC64_BIG_ENDIAN_ELF_ABI_V2
+Message-ID: <2024052108-observing-veteran-a175@gregkh>
+References: <2024051725-CVE-2023-52665-1d6f@gregkh>
+ <87zfslufoo.fsf@mail.lhotse>
+ <d8c56e37-38c6-454e-81be-a574b42c83be@infradead.org>
+ <2024052016-footnote-smelting-842e@gregkh>
+ <8734qc3v1m.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <1715939146-13031-1-git-send-email-shengjiu.wang@nxp.com>
- <1715939146-13031-2-git-send-email-shengjiu.wang@nxp.com> <4727a091-bc64-46ea-8652-db6797dd93d2@linaro.org>
-In-Reply-To: <4727a091-bc64-46ea-8652-db6797dd93d2@linaro.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 21 May 2024 14:32:32 +0800
-Message-ID: <CAA+D8APgcZo4fhmzft83ZFeG2bfF19Ew5Fi4o5Gqh3Ej=OPCuA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl,mqs: Add i.MX95 platform support
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8734qc3v1m.fsf@mail.lhotse>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,75 +61,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, lgirdwood@gmail.com, robh+dt@kernel.org, linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com, broonie@kernel.org, linux-sound@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, festevam@gmail.com
+Cc: Geoff Levand <geoff@infradead.org>, cve@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-cve-announce@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 20, 2024 at 6:47=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 17/05/2024 11:45, Shengjiu Wang wrote:
-> > In order to support the MQS module on i.MX95, a new property
-> > "fsl,mqs-ctrl" needs to be added, as there are two MQS instances
-> > on the i.MX95 platform, the definition of bit positions in the
-> > control register is different. This new property is to distinguish
-> > these two instances.
+On Tue, May 21, 2024 at 09:47:33AM +1000, Michael Ellerman wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > On Mon, May 20, 2024 at 05:35:32PM +0900, Geoff Levand wrote:
+> >> On 5/20/24 16:04, Michael Ellerman wrote:
+> >> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> >> >> Description
+> >> >> ===========
+> >> >>
+> >> >> In the Linux kernel, the following vulnerability has been resolved:
+> >> >>
+> >> >> powerpc/ps3_defconfig: Disable PPC64_BIG_ENDIAN_ELF_ABI_V2
+> >> >>
+> >> >> Commit 8c5fa3b5c4df ("powerpc/64: Make ELFv2 the default for big-endian
+> >> >> builds"), merged in Linux-6.5-rc1 changes the calling ABI in a way
+> >> >> that is incompatible with the current code for the PS3's LV1 hypervisor
+> >> >> calls.
+> >> >>
+> >> >> This change just adds the line '# CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not set'
+> >> >> to the ps3_defconfig file so that the PPC64_ELF_ABI_V1 is used.
+> >> >>
+> >> >> Fixes run time errors like these:
+> >> >>
+> >> >>   BUG: Kernel NULL pointer dereference at 0x00000000
+> >> >>   Faulting instruction address: 0xc000000000047cf0
+> >> >>   Oops: Kernel access of bad area, sig: 11 [#1]
+> >> >>   Call Trace:
+> >> >>   [c0000000023039e0] [c00000000100ebfc] ps3_create_spu+0xc4/0x2b0 (unreliable)
+> >> >>   [c000000002303ab0] [c00000000100d4c4] create_spu+0xcc/0x3c4
+> >> >>   [c000000002303b40] [c00000000100eae4] ps3_enumerate_spus+0xa4/0xf8
+> >> >>
+> >> >> The Linux kernel CVE team has assigned CVE-2023-52665 to this issue.
+> >> > 
+> >> > IMHO this doesn't warrant a CVE. The crash mentioned above happens at
+> >> > boot, so the system is not vulnerable it's just broken :)
+> >> 
+> >> As Greg says, with PPC64_BIG_ENDIAN_ELF_ABI_V2 enabled the system won't
+> >> boot, so there is no chance of a vulnerability.
 > >
-> > Without this property, the difference of platforms except the
-> > i.MX95 was handled by the driver itself. But this new property can
-> > also be used for previous platforms.
+> > The definition of "vulnerability" from CVE.org is:
+> > 	An instance of one or more weaknesses in a Product that can be
+> > 	exploited, causing a negative impact to confidentiality, integrity, or
+> > 	availability; a set of conditions or behaviors that allows the
+> > 	violation of an explicit or implicit security policy.
 > >
-> > The MQS only has one control register, the register may be
-> > in General Purpose Register memory space, or MQS its own
-> > memory space, or controlled by System Manager.
-> > The bit position in the register may be different for each
-> > platform, there are four parts (bits for module enablement,
-> > bits for reset, bits for oversampling ratio, bits for divider ratio).
-> > This new property includes all these things.
->
-> ...
->
+> > Having a system that does not boot is a "negative impact to
+> > availability", which is why this was selected for a CVE.  I.e. if a new
+> > kernel update has this problem in it, it would not allow the system to
+> > boot correctly.
+> 
+> I think the key word above is "exploited", implying some sort of
+> unauthorised action.
+> 
+> This bug can cause the system to not boot, but only by someone who
+> builds a new kernel and installs it - and if they have permission to do
+> that they can just replace the kernel with anything, they don't need a
+> bug.
+> 
+> > But, if the maintainer of the subsystem thinks this should not be
+> > assigned a CVE because of this fix, we'll be glad to revoke it.
 > >
-> >    clocks:
-> >      minItems: 1
-> > @@ -45,6 +46,22 @@ properties:
-> >    resets:
-> >      maxItems: 1
-> >
-> > +  fsl,mqs-ctrl:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> > +    minItems: 6
-> > +    maxItems: 6
-> > +    description: |
-> > +      Contains the control register information, defined as,
-> > +      Cell #1: register type
-> > +               0 - the register in owned register map
-> > +               1 - the register in general purpose register map
-> > +               2 - the register in control of system manager
-> > +      Cell #2: offset of the control register from the syscon
-> > +      Cell #3: shift bits for module enable bit
-> > +      Cell #4: shift bits for reset bit
-> > +      Cell #5: shift bits for oversampling ratio bit
-> > +      Cell #6: shift bits for divider ratio control bit
->
-> Thanks for detailed explanation in commit msg, but no, please do not
-> describe layout of registers in DTS. For the syscon phandles, you can
-> pass an argument (although not 6 arguments...). Usually this is enough.
-> For some cases, like you have differences in capabilities of this device
-> or its programming model, maybe you need different compatible.
->
-> If these are different capabilities, sometimes new properties are
-> applicable (describing hardware, not register bits...).
->
-The main difference between the two instances on i.MX95 is the register
-difference. looks like I need to use two compatible strings:
-      - fsl,imx95-aonmix-mqs
-      - fsl,imx95-netcmix-mqs
-to distinguish them.
+> > Michael, still want this revoked?
+> 
+> Yes please.
 
-best regards
-Shengjiu Wang
+Now rejected, thanks all for the review!
 
-> Best regards,
-> Krzysztof
->
+greg k-h
