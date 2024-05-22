@@ -2,78 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F7488CB78B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 03:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D99C78CB823
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 03:22:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pw3LlgZM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IBeNuloZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VkY1j2XLJz3gLM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 11:02:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VkYHl27k1z3gLV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 11:14:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pw3LlgZM;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IBeNuloZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--edliaw.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3-ennzgykdo0tsaxplvddvat.rdbaxcjmeer-stkaxhih.doapqh.dgv@flex--edliaw.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VkY0y2TFpz3fsL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2024 11:01:52 +1000 (AEST)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-5ce12b4c1c9so9156409a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2024 18:01:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VkYGz122Mz3fsL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2024 11:14:02 +1000 (AEST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6f693306b7cso1341186b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 May 2024 18:14:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716339705; x=1716944505; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AiMPkaHI6QhK2CJmpq8+zpj49LtomD4JDB1lxnZxnw8=;
-        b=pw3LlgZMXkNJLvA/sriR2SD9zCY11HVqW8KI40rXAMNBK4TLWRsc9tNDHoo7w2xp8J
-         j8mkpiA8XUNM8Z66o10P0xOXyy+e/mNHG7JWLfcnuwjCLATTKwEdO74k46cTmlqc/FDI
-         WQ6NjsBL7aok7TYmnlhHQM3K7n5XGVPyWBFuiPMvjDYwgnIwpk0kWZNq7dmh5x8Gknfb
-         0JEqugSoNCstxqpg5TWzOzMh1+6qXLGQuiEUaorRVcHV/66exWOS5IUQi4jTQTbsMYfp
-         1Izt3d+Ue/rGXBDfzC4lWyXZ6LUYzbrc3zHVLe9MMuSyyeaPjIRBQAj5wviInySfW6WA
-         NGTA==
+        d=gmail.com; s=20230601; t=1716340440; x=1716945240; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Ucokp0AAkm1JrdVm50A3xJsq/C1UNhIjxFEJPxYe7E=;
+        b=IBeNuloZrn4YcMQeNandIPw2dll/OSMKAhEqsll5ptl6VzSLnwU+vL3CrMRLXw+RbP
+         Vidr76aTnrJ9opyutQBcQaU7jmw+LIHwRnb8MvhyWO8OdYCMhSjt+t2b3SeaYl0qahAZ
+         3C73OaOVP0zAXXsBmf0+vrck/GNiVoUW5peLayF+RAPqLul2NsmFbGmPNLjhPwCU2+1j
+         ZfszLtz1BvWuc5g7y39u3k7HiNktDgheuW75eg3PeangkLhGsdhJAMVw51G9gBlsXyDI
+         fyzDwBIBcHm/dvsT8OxZth3OseA5QulfszWBsQQVVi4eslEGfqXwymy2SCcBusidr4TV
+         fcPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716339705; x=1716944505;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AiMPkaHI6QhK2CJmpq8+zpj49LtomD4JDB1lxnZxnw8=;
-        b=K1bjfvpAZkO8d+7l5LoF3U1fnLL+KnIP0pHNL1gxJz0vL9UNi47P7SBoPSRWJQiE8v
-         0G4wjmFx5H4ocLaNtIAX3WhWjVJk7EAaHU8gJpl+4ZNdMdwGBI80vtp4bJu8r4LQhllV
-         vXyptiZRRH3seGIxwS+HdPnh9MQvv0OeAf4Zbky4lIHP7SP5fkJ9qKKLhxogeFAz/Nr6
-         +B2DViqN8zVhDxq/qXp9UsqkZF8aNp5SdYVyL8z2tRxdc13YDBleBQr5TG/XKTFJiyBs
-         begQdyNY4Cs+8gVkB9gHPES/Qn+BkNA7r81krUcSQac22Kf+C/vPqlglY41i/ktzrvBt
-         qyYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXls6HRLTt4vKb+vfQoa/5UTWwCl1VQ8Jzf810LTNwRq5PFbQIX0NHKg4XozhE6AYLklmDBeWmi13mOAJ1dA63M2H4O5mJDZlle50cKDg==
-X-Gm-Message-State: AOJu0YwlA1Jl9ZXIET3+X0inEzobxBRgBwtxV/ctKt1BmZQYlQZi/6SP
-	jaGojWJW1qq9xTGn2SmjvbNRnT0qjChdZG0/EY2a8Euv4eDI5sdH18dF4QL36+xOVYzMcfKg3Vb
-	C/w==
-X-Google-Smtp-Source: AGHT+IEwhtcP2Wsrdw72dBNsjGFNbq5Xi2dgNZXJr6MvEmRavTI9gEBV8KtVsZkCMmfkVAyLe8n71LMPcBA=
-X-Received: from edliaw.c.googlers.com ([fda3:e722:ac3:cc00:24:72f4:c0a8:305d])
- (user=edliaw job=sendgmr) by 2002:a17:90b:20d:b0:2b6:2079:7289 with SMTP id
- 98e67ed59e1d1-2bd9f5c0f79mr1868a91.7.1716339704761; Tue, 21 May 2024 18:01:44
- -0700 (PDT)
-Date: Wed, 22 May 2024 00:57:30 +0000
-In-Reply-To: <20240522005913.3540131-1-edliaw@google.com>
+        d=1e100.net; s=20230601; t=1716340440; x=1716945240;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2Ucokp0AAkm1JrdVm50A3xJsq/C1UNhIjxFEJPxYe7E=;
+        b=jY+uJnZ7gS66yHlnnf7SrHus+tkWmY5vHanG8W7fOqcQcfUIjQVlKDToidieh+QNth
+         J9DSGhT5Bcx2mTFzcwCe207mmR/gIjo4BczNTbflDTWNtaZDXy3G0cs+w5u10RvP8LxE
+         /MVmKPKiZyZzJZsTJP7KGEjYGRHhv16D3OG93+UtsjoXIvuif1qe470lWsj6moAt+WK9
+         bFSG0H+OTOw7CXli+JCe8Ql3+b8wLHyy8Wy6FN35eRn8JC1oGb0LDqGNA4lDAxWbjQ7I
+         BQ3mI/fCYLiK9PzsmB4v5HzqLoa3MsD9aU5km116m0KN+u0CCSs5A7v8SvuFMj0GkoL/
+         akgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpzMnxUU2CgXwjjL+7ElZkhHwda7N79QY4seXssIkItNnnlDe0lX68ONN+vDjMI9zw6g3RPabvh2YMpDjxvgzKX8yMP0JwayUi/FdwOg==
+X-Gm-Message-State: AOJu0Yz9Nj1v3qmaO+paOO3mQTUhulxrDq32ReMvk4w+r/Z10jq+uUFv
+	OwCmd/Wz+ngt1YLUDsXHFsb99wkmGXbDDfoREjKhWk55BBiWpImZ
+X-Google-Smtp-Source: AGHT+IEeVFE7TfOpUrd1nI8e4z4RKvVMRMKWzoj8PEjSm761mXEMfBxfjcGLSveVOlL3LkbU11N+RQ==
+X-Received: by 2002:a05:6a20:c909:b0:1b0:1025:2d5 with SMTP id adf61e73a8af0-1b1f88a6e1fmr780915637.36.1716340440370;
+        Tue, 21 May 2024 18:14:00 -0700 (PDT)
+Received: from localhost (110-175-65-7.tpgi.com.au. [110.175.65.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bd930a3bf0sm1972833a91.5.2024.05.21.18.13.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 May 2024 18:13:59 -0700 (PDT)
 Mime-Version: 1.0
-References: <20240522005913.3540131-1-edliaw@google.com>
-X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
-Message-ID: <20240522005913.3540131-45-edliaw@google.com>
-Subject: [PATCH v5 44/68] selftests/powerpc: Drop define _GNU_SOURCE
-From: Edward Liaw <edliaw@google.com>
-To: shuah@kernel.org, "=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?=" <mic@digikod.net>, 
-	"=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, Christian Brauner <brauner@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 22 May 2024 11:13:53 +1000
+Message-Id: <D1FRWM5DHHOT.3EAJGCLO0YTND@gmail.com>
+Subject: Re: [RFC PATCH v2 18/20] powerpc/64s: Use contiguous PMD/PUD
+ instead of HUGEPD
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Jason Gunthorpe" <jgg@nvidia.com>, "Peter Xu"
+ <peterx@redhat.com>, "Oscar Salvador" <osalvador@suse.de>, "Michael
+ Ellerman" <mpe@ellerman.id.au>
+X-Mailer: aerc 0.17.0
+References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
+ <ac9f4f2d6e571e4579a8125b81eaa88fbddd6187.1715971869.git.christophe.leroy@csgroup.eu> <D1EHK0STZ19E.3CTOAWG7LVBPK@gmail.com> <99575c2c-7840-4fa4-b84e-aaddc7fef4cb@csgroup.eu>
+In-Reply-To: <99575c2c-7840-4fa4-b84e-aaddc7fef4cb@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,500 +86,218 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-riscv@lists.infradead.org, kernel-team@android.com, bpf@vger.kernel.org, Edward Liaw <edliaw@google.com>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-_GNU_SOURCE is provided by lib.mk, so it should be dropped to prevent
-redefinition warnings.
+On Tue May 21, 2024 at 2:43 AM AEST, Christophe Leroy wrote:
+>
+>
+> Le 20/05/2024 =C3=A0 14:54, Nicholas Piggin a =C3=A9crit=C2=A0:
+> > On Sat May 18, 2024 at 5:00 AM AEST, Christophe Leroy wrote:
+> >> On book3s/64, the only user of hugepd is hash in 4k mode.
+> >>
+> >> All other setups (hash-64, radix-4, radix-64) use leaf PMD/PUD.
+> >>
+> >> Rework hash-4k to use contiguous PMD and PUD instead.
+> >>
+> >> In that setup there are only two huge page sizes: 16M and 16G.
+> >>
+> >> 16M sits at PMD level and 16G at PUD level.
+> >>
+> >> pte_update doesn't know page size, lets use the same trick as
+> >> hpte_need_flush() to get page size from segment properties. That's
+> >> not the most efficient way but let's do that until callers of
+> >> pte_update() provide page size instead of just a huge flag.
+> >>
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >> ---
+> >>   arch/powerpc/include/asm/book3s/64/hash-4k.h  | 15 --------
+> >>   arch/powerpc/include/asm/book3s/64/hash.h     | 38 +++++++++++++++--=
+--
+> >>   arch/powerpc/include/asm/book3s/64/hugetlb.h  | 38 -----------------=
+--
+> >>   .../include/asm/book3s/64/pgtable-4k.h        | 34 -----------------
+> >>   .../include/asm/book3s/64/pgtable-64k.h       | 20 ----------
+> >>   arch/powerpc/include/asm/hugetlb.h            |  4 ++
+> >>   .../include/asm/nohash/32/hugetlb-8xx.h       |  4 --
+> >>   .../powerpc/include/asm/nohash/hugetlb-e500.h |  4 --
+> >>   arch/powerpc/include/asm/page.h               |  8 ----
+> >>   arch/powerpc/mm/book3s64/hash_utils.c         | 11 ++++--
+> >>   arch/powerpc/mm/book3s64/pgtable.c            | 12 ------
+> >>   arch/powerpc/mm/hugetlbpage.c                 | 19 ----------
+> >>   arch/powerpc/mm/pgtable.c                     |  2 +-
+> >>   arch/powerpc/platforms/Kconfig.cputype        |  1 -
+> >>   14 files changed, 43 insertions(+), 167 deletions(-)
+> >>
+> >> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/power=
+pc/include/asm/book3s/64/hash-4k.h
+> >> index 6472b08fa1b0..c654c376ef8b 100644
+> >> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> >> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> >> @@ -74,21 +74,6 @@
+> >>   #define remap_4k_pfn(vma, addr, pfn, prot)	\
+> >>   	remap_pfn_range((vma), (addr), (pfn), PAGE_SIZE, (prot))
+> >>  =20
+> >> -#ifdef CONFIG_HUGETLB_PAGE
+> >> -static inline int hash__hugepd_ok(hugepd_t hpd)
+> >> -{
+> >> -	unsigned long hpdval =3D hpd_val(hpd);
+> >> -	/*
+> >> -	 * if it is not a pte and have hugepd shift mask
+> >> -	 * set, then it is a hugepd directory pointer
+> >> -	 */
+> >> -	if (!(hpdval & _PAGE_PTE) && (hpdval & _PAGE_PRESENT) &&
+> >> -	    ((hpdval & HUGEPD_SHIFT_MASK) !=3D 0))
+> >> -		return true;
+> >> -	return false;
+> >> -}
+> >> -#endif
+> >> -
+> >>   /*
+> >>    * 4K PTE format is different from 64K PTE format. Saving the hash_s=
+lot is just
+> >>    * a matter of returning the PTE bits that need to be modified. On 6=
+4K PTE,
+> >> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/=
+include/asm/book3s/64/hash.h
+> >> index faf3e3b4e4b2..509811ca7695 100644
+> >> --- a/arch/powerpc/include/asm/book3s/64/hash.h
+> >> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
+> >> @@ -4,6 +4,7 @@
+> >>   #ifdef __KERNEL__
+> >>  =20
+> >>   #include <asm/asm-const.h>
+> >> +#include <asm/book3s/64/slice.h>
+> >>  =20
+> >>   /*
+> >>    * Common bits between 4K and 64K pages in a linux-style PTE.
+> >> @@ -161,14 +162,10 @@ extern void hpte_need_flush(struct mm_struct *mm=
+, unsigned long addr,
+> >>   			    pte_t *ptep, unsigned long pte, int huge);
+> >>   unsigned long htab_convert_pte_flags(unsigned long pteflags, unsigne=
+d long flags);
+> >>   /* Atomic PTE updates */
+> >> -static inline unsigned long hash__pte_update(struct mm_struct *mm,
+> >> -					 unsigned long addr,
+> >> -					 pte_t *ptep, unsigned long clr,
+> >> -					 unsigned long set,
+> >> -					 int huge)
+> >> +static inline unsigned long hash__pte_update_one(pte_t *ptep, unsigne=
+d long clr,
+> >> +						 unsigned long set)
+> >>   {
+> >>   	__be64 old_be, tmp_be;
+> >> -	unsigned long old;
+> >>  =20
+> >>   	__asm__ __volatile__(
+> >>   	"1:	ldarx	%0,0,%3		# pte_update\n\
+> >> @@ -182,11 +179,38 @@ static inline unsigned long hash__pte_update(str=
+uct mm_struct *mm,
+> >>   	: "r" (ptep), "r" (cpu_to_be64(clr)), "m" (*ptep),
+> >>   	  "r" (cpu_to_be64(H_PAGE_BUSY)), "r" (cpu_to_be64(set))
+> >>   	: "cc" );
+> >> +
+> >> +	return be64_to_cpu(old_be);
+> >> +}
+> >> +
+> >> +static inline unsigned long hash__pte_update(struct mm_struct *mm,
+> >> +					 unsigned long addr,
+> >> +					 pte_t *ptep, unsigned long clr,
+> >> +					 unsigned long set,
+> >> +					 int huge)
+> >> +{
+> >> +	unsigned long old;
+> >> +
+> >> +	old =3D hash__pte_update_one(ptep, clr, set);
+> >> +
+> >> +	if (huge && IS_ENABLED(CONFIG_PPC_4K_PAGES)) {
+> >> +		unsigned int psize =3D get_slice_psize(mm, addr);
+> >> +		int nb, i;
+> >> +
+> >> +		if (psize =3D=3D MMU_PAGE_16M)
+> >> +			nb =3D SZ_16M / PMD_SIZE;
+> >> +		else if (psize =3D=3D MMU_PAGE_16G)
+> >> +			nb =3D SZ_16G / PUD_SIZE;
+> >> +		else
+> >> +			nb =3D 1;
+> >> +
+> >> +		for (i =3D 1; i < nb; i++)
+> >> +			hash__pte_update_one(ptep + i, clr, set);
+> >> +	}
+> >>   	/* huge pages use the old page table lock */
+> >>   	if (!huge)
+> >>   		assert_pte_locked(mm, addr);
+> >>  =20
+> >> -	old =3D be64_to_cpu(old_be);
+> >>   	if (old & H_PAGE_HASHPTE)
+> >>   		hpte_need_flush(mm, addr, ptep, old, huge);
+> >>  =20
+> >=20
+> > Nice series, I don't know this hugepd code very well but I'll try.
+> > Why do you have to replicate the PTE entry here? The hash table refill
+> > should always be working on the first PTE of the page otherwise we have
+> > bigger problems.
+>
+> I don't know how book3s/64 works exactly, but on nohash, when you get a=
+=20
+> TLB miss exception the only thing you have is the address and you don't=
+=20
+> know yes it is a hugepage so you get the PTE as if it was a 4k page and=
+=20
+> it is only when you read that PTE that you know it is a hugepage.
+>
+> Ok, on book3s/64 the page size seems to be encoded inside the segment so=
+=20
+> maybe it is a bit different but anyway the TLB miss exception (or DSI ?)=
+=20
+> can happen at any address.
 
-Signed-off-by: Edward Liaw <edliaw@google.com>
----
- tools/testing/selftests/powerpc/benchmarks/context_switch.c    | 2 --
- tools/testing/selftests/powerpc/benchmarks/exec_target.c       | 2 --
- tools/testing/selftests/powerpc/benchmarks/fork.c              | 2 --
- tools/testing/selftests/powerpc/benchmarks/futex_bench.c       | 3 ---
- tools/testing/selftests/powerpc/dexcr/hashchk_test.c           | 3 ---
- tools/testing/selftests/powerpc/dscr/dscr_default_test.c       | 3 ---
- tools/testing/selftests/powerpc/dscr/dscr_explicit_test.c      | 3 ---
- tools/testing/selftests/powerpc/dscr/dscr_sysfs_thread_test.c  | 1 -
- tools/testing/selftests/powerpc/mm/exec_prot.c                 | 2 --
- tools/testing/selftests/powerpc/mm/pkey_exec_prot.c            | 2 --
- tools/testing/selftests/powerpc/mm/pkey_siginfo.c              | 2 --
- tools/testing/selftests/powerpc/mm/tlbie_test.c                | 2 --
- tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c            | 1 -
- tools/testing/selftests/powerpc/pmu/count_instructions.c       | 3 ---
- tools/testing/selftests/powerpc/pmu/count_stcx_fail.c          | 3 ---
- tools/testing/selftests/powerpc/pmu/ebb/ebb.c                  | 3 ---
- .../testing/selftests/powerpc/pmu/ebb/instruction_count_test.c | 3 ---
- tools/testing/selftests/powerpc/pmu/event.c                    | 2 --
- tools/testing/selftests/powerpc/pmu/lib.c                      | 3 ---
- tools/testing/selftests/powerpc/pmu/per_event_excludes.c       | 3 ---
- tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c          | 3 ---
- tools/testing/selftests/powerpc/ptrace/ptrace-syscall.c        | 2 --
- tools/testing/selftests/powerpc/signal/sig_sc_double_restart.c | 1 -
- tools/testing/selftests/powerpc/signal/sigreturn_kernel.c      | 3 ---
- tools/testing/selftests/powerpc/signal/sigreturn_vdso.c        | 3 ---
- tools/testing/selftests/powerpc/syscalls/ipc_unmuxed.c         | 2 --
- tools/testing/selftests/powerpc/tm/tm-exec.c                   | 2 --
- tools/testing/selftests/powerpc/tm/tm-poison.c                 | 2 --
- .../testing/selftests/powerpc/tm/tm-signal-context-force-tm.c  | 2 --
- tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c    | 2 --
- tools/testing/selftests/powerpc/tm/tm-tmspr.c                  | 2 --
- tools/testing/selftests/powerpc/tm/tm-trap.c                   | 2 --
- tools/testing/selftests/powerpc/tm/tm-unavailable.c            | 2 --
- tools/testing/selftests/powerpc/utils.c                        | 3 ---
- 34 files changed, 79 deletions(-)
+Right.
 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/context_switch.c b/tools/testing/selftests/powerpc/benchmarks/context_switch.c
-index 96554e2794d1..0b245572bd45 100644
---- a/tools/testing/selftests/powerpc/benchmarks/context_switch.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/context_switch.c
-@@ -4,8 +4,6 @@
-  *
-  * Copyright (C) 2015 Anton Blanchard <anton@au.ibm.com>, IBM
-  */
--
--#define _GNU_SOURCE
- #include <errno.h>
- #include <sched.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-index c14b0fc1edde..8646540037d8 100644
---- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-@@ -5,8 +5,6 @@
-  *
-  * Copyright 2018, Anton Blanchard, IBM Corp.
-  */
--
--#define _GNU_SOURCE
- #include <unistd.h>
- #include <sys/syscall.h>
- 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/fork.c b/tools/testing/selftests/powerpc/benchmarks/fork.c
-index d312e638cb37..327231646a2a 100644
---- a/tools/testing/selftests/powerpc/benchmarks/fork.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/fork.c
-@@ -5,8 +5,6 @@
-  *
-  * Copyright 2018, Anton Blanchard, IBM Corp.
-  */
--
--#define _GNU_SOURCE
- #include <assert.h>
- #include <errno.h>
- #include <getopt.h>
-diff --git a/tools/testing/selftests/powerpc/benchmarks/futex_bench.c b/tools/testing/selftests/powerpc/benchmarks/futex_bench.c
-index 017057090490..0483a13c88f9 100644
---- a/tools/testing/selftests/powerpc/benchmarks/futex_bench.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/futex_bench.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2016, Anton Blanchard, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE
--
- #include <stdio.h>
- #include <sys/syscall.h>
- #include <time.h>
-diff --git a/tools/testing/selftests/powerpc/dexcr/hashchk_test.c b/tools/testing/selftests/powerpc/dexcr/hashchk_test.c
-index 645224bdc142..2499ab7fe563 100644
---- a/tools/testing/selftests/powerpc/dexcr/hashchk_test.c
-+++ b/tools/testing/selftests/powerpc/dexcr/hashchk_test.c
-@@ -1,7 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0+
--
--#define _GNU_SOURCE
--
- #include <errno.h>
- #include <fcntl.h>
- #include <limits.h>
-diff --git a/tools/testing/selftests/powerpc/dscr/dscr_default_test.c b/tools/testing/selftests/powerpc/dscr/dscr_default_test.c
-index 60ab02525b79..fe6aff1e5dad 100644
---- a/tools/testing/selftests/powerpc/dscr/dscr_default_test.c
-+++ b/tools/testing/selftests/powerpc/dscr/dscr_default_test.c
-@@ -9,9 +9,6 @@
-  * Copyright 2012, Anton Blanchard, IBM Corporation.
-  * Copyright 2015, Anshuman Khandual, IBM Corporation.
-  */
--
--#define _GNU_SOURCE
--
- #include "dscr.h"
- 
- #include <pthread.h>
-diff --git a/tools/testing/selftests/powerpc/dscr/dscr_explicit_test.c b/tools/testing/selftests/powerpc/dscr/dscr_explicit_test.c
-index e2268e9183a8..93b6efdc2eef 100644
---- a/tools/testing/selftests/powerpc/dscr/dscr_explicit_test.c
-+++ b/tools/testing/selftests/powerpc/dscr/dscr_explicit_test.c
-@@ -15,9 +15,6 @@
-  * Copyright 2012, Anton Blanchard, IBM Corporation.
-  * Copyright 2015, Anshuman Khandual, IBM Corporation.
-  */
--
--#define _GNU_SOURCE
--
- #include "dscr.h"
- #include "utils.h"
- 
-diff --git a/tools/testing/selftests/powerpc/dscr/dscr_sysfs_thread_test.c b/tools/testing/selftests/powerpc/dscr/dscr_sysfs_thread_test.c
-index 191ed126f118..ace7d23492c1 100644
---- a/tools/testing/selftests/powerpc/dscr/dscr_sysfs_thread_test.c
-+++ b/tools/testing/selftests/powerpc/dscr/dscr_sysfs_thread_test.c
-@@ -9,7 +9,6 @@
-  *
-  * Copyright 2015, Anshuman Khandual, IBM Corporation.
-  */
--#define _GNU_SOURCE
- #include "dscr.h"
- 
- static int test_thread_dscr(unsigned long val)
-diff --git a/tools/testing/selftests/powerpc/mm/exec_prot.c b/tools/testing/selftests/powerpc/mm/exec_prot.c
-index db75b2225de1..65712597cc68 100644
---- a/tools/testing/selftests/powerpc/mm/exec_prot.c
-+++ b/tools/testing/selftests/powerpc/mm/exec_prot.c
-@@ -6,8 +6,6 @@
-  *
-  * Test if applying execute protection on pages works as expected.
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-index 0af4f02669a1..5cf72cd9694d 100644
---- a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-+++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-@@ -6,8 +6,6 @@
-  * Test if applying execute protection on pages using memory
-  * protection keys works as expected.
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/mm/pkey_siginfo.c b/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
-index 2db76e56d4cb..fcaa591abf88 100644
---- a/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
-+++ b/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
-@@ -8,8 +8,6 @@
-  * attempted to be protected by two different keys from two competing
-  * threads at the same time.
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-index 48344a74b212..512cd405de92 100644
---- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
-+++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-@@ -14,8 +14,6 @@
-  * and copy it back to the original area. This helps us to detect if any
-  * store continued to happen after we marked the memory PROT_READ.
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <sys/mman.h>
- #include <sys/types.h>
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-index d6f99eb9be65..0b9b20668fa4 100644
---- a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-+++ b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-@@ -1,5 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0-only
--#define _GNU_SOURCE
- #include <errno.h>
- #include <fcntl.h>
- #include <stdlib.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/count_instructions.c b/tools/testing/selftests/powerpc/pmu/count_instructions.c
-index a3984ef1e96a..57d63ff75397 100644
---- a/tools/testing/selftests/powerpc/pmu/count_instructions.c
-+++ b/tools/testing/selftests/powerpc/pmu/count_instructions.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2013, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE
--
- #include <stdio.h>
- #include <stdbool.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/count_stcx_fail.c b/tools/testing/selftests/powerpc/pmu/count_stcx_fail.c
-index 2070a1e2b3a5..5d3bbd38528d 100644
---- a/tools/testing/selftests/powerpc/pmu/count_stcx_fail.c
-+++ b/tools/testing/selftests/powerpc/pmu/count_stcx_fail.c
-@@ -2,9 +2,6 @@
-  * Copyright 2013, Michael Ellerman, IBM Corp.
-  * Licensed under GPLv2.
-  */
--
--#define _GNU_SOURCE
--
- #include <stdio.h>
- #include <stdbool.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/ebb.c b/tools/testing/selftests/powerpc/pmu/ebb/ebb.c
-index 21537d6eb6b7..e99a455e8c2e 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/ebb.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/ebb.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2014, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE	/* For CPU_ZERO etc. */
--
- #include <sched.h>
- #include <sys/wait.h>
- #include <setjmp.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/instruction_count_test.c b/tools/testing/selftests/powerpc/pmu/ebb/instruction_count_test.c
-index eed338b18e11..ab3f888922d6 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/instruction_count_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/instruction_count_test.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2014, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE
--
- #include <stdio.h>
- #include <stdbool.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/event.c b/tools/testing/selftests/powerpc/pmu/event.c
-index 0c1c1bdba081..5468bd2c3c5b 100644
---- a/tools/testing/selftests/powerpc/pmu/event.c
-+++ b/tools/testing/selftests/powerpc/pmu/event.c
-@@ -2,8 +2,6 @@
- /*
-  * Copyright 2013, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE
- #include <unistd.h>
- #include <sys/syscall.h>
- #include <string.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/lib.c b/tools/testing/selftests/powerpc/pmu/lib.c
-index 321357987408..fa208701dbdc 100644
---- a/tools/testing/selftests/powerpc/pmu/lib.c
-+++ b/tools/testing/selftests/powerpc/pmu/lib.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2014, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE	/* For CPU_ZERO etc. */
--
- #include <errno.h>
- #include <sched.h>
- #include <setjmp.h>
-diff --git a/tools/testing/selftests/powerpc/pmu/per_event_excludes.c b/tools/testing/selftests/powerpc/pmu/per_event_excludes.c
-index ad32a09a6540..066e0c4799fd 100644
---- a/tools/testing/selftests/powerpc/pmu/per_event_excludes.c
-+++ b/tools/testing/selftests/powerpc/pmu/per_event_excludes.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2014, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE
--
- #include <elf.h>
- #include <limits.h>
- #include <stdio.h>
-diff --git a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-index e374c6b7ace6..1f7e3c63742d 100644
---- a/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-+++ b/tools/testing/selftests/powerpc/ptrace/perf-hwbreak.c
-@@ -16,9 +16,6 @@
-  *
-  * Copyright (C) 2018 Michael Neuling, IBM Corporation.
-  */
--
--#define _GNU_SOURCE
--
- #include <unistd.h>
- #include <assert.h>
- #include <sched.h>
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-syscall.c b/tools/testing/selftests/powerpc/ptrace/ptrace-syscall.c
-index 3353210dcdbd..6e5294c1b60b 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-syscall.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-syscall.c
-@@ -8,8 +8,6 @@
-  * test, and it was adapted to run on Powerpc by
-  * Breno Leitao <leitao@debian.org>
-  */
--#define _GNU_SOURCE
--
- #include <sys/ptrace.h>
- #include <sys/types.h>
- #include <sys/wait.h>
-diff --git a/tools/testing/selftests/powerpc/signal/sig_sc_double_restart.c b/tools/testing/selftests/powerpc/signal/sig_sc_double_restart.c
-index e3972264615b..8bad5e65bbb7 100644
---- a/tools/testing/selftests/powerpc/signal/sig_sc_double_restart.c
-+++ b/tools/testing/selftests/powerpc/signal/sig_sc_double_restart.c
-@@ -18,7 +18,6 @@
-  *  that sucker at the same time.  Same for multiple signals of any kind
-  *  interrupting that sucker on 64bit...
-  */
--#define _GNU_SOURCE
- #include <sys/types.h>
- #include <sys/wait.h>
- #include <sys/syscall.h>
-diff --git a/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c b/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c
-index 0a1b6e591eee..772c3373560f 100644
---- a/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c
-+++ b/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c
-@@ -2,9 +2,6 @@
- /*
-  * Test that we can't sigreturn to kernel addresses, or to kernel mode.
-  */
--
--#define _GNU_SOURCE
--
- #include <stdio.h>
- #include <signal.h>
- #include <stdlib.h>
-diff --git a/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c b/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
-index e282fff0fe25..d5aecd2c4b95 100644
---- a/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
-+++ b/tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
-@@ -5,9 +5,6 @@
-  *
-  * See handle_rt_signal64() and setup_trampoline() in signal_64.c
-  */
--
--#define _GNU_SOURCE
--
- #include <errno.h>
- #include <stdio.h>
- #include <signal.h>
-diff --git a/tools/testing/selftests/powerpc/syscalls/ipc_unmuxed.c b/tools/testing/selftests/powerpc/syscalls/ipc_unmuxed.c
-index 4c582524aeb3..a49c699d86d4 100644
---- a/tools/testing/selftests/powerpc/syscalls/ipc_unmuxed.c
-+++ b/tools/testing/selftests/powerpc/syscalls/ipc_unmuxed.c
-@@ -5,8 +5,6 @@
-  * This test simply tests that certain syscalls are implemented. It doesn't
-  * actually exercise their logic in any way.
-  */
--
--#define _GNU_SOURCE
- #include <errno.h>
- #include <stdio.h>
- #include <unistd.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-exec.c b/tools/testing/selftests/powerpc/tm/tm-exec.c
-index c59919d6710d..8cfc859dcf37 100644
---- a/tools/testing/selftests/powerpc/tm/tm-exec.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-exec.c
-@@ -8,8 +8,6 @@
-  * It makes little sense for after an exec() call for the previously
-  * suspended transaction to still exist.
-  */
--
--#define _GNU_SOURCE
- #include <errno.h>
- #include <inttypes.h>
- #include <libgen.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-poison.c b/tools/testing/selftests/powerpc/tm/tm-poison.c
-index a7bbf034b5bb..1b3a596a6a51 100644
---- a/tools/testing/selftests/powerpc/tm/tm-poison.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-poison.c
-@@ -11,8 +11,6 @@
-  * present child's poison will leak into parent's f31 or vr31 registers,
-  * otherwise, poison will never leak into parent's f31 and vr31 registers.
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <unistd.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-signal-context-force-tm.c b/tools/testing/selftests/powerpc/tm/tm-signal-context-force-tm.c
-index 421cb082f6be..f28ba2828df6 100644
---- a/tools/testing/selftests/powerpc/tm/tm-signal-context-force-tm.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-signal-context-force-tm.c
-@@ -15,8 +15,6 @@
-  * This test never fails (as returning EXIT_FAILURE). It either succeeds,
-  * or crash the kernel (on a buggy kernel).
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <signal.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c b/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c
-index 06b801906f27..73f8e7dd5a1a 100644
---- a/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-signal-sigreturn-nt.c
-@@ -8,8 +8,6 @@
-  * It returns from the signal handler with the CPU at suspended state, but
-  * without setting usercontext MSR Transaction State (TS) fields.
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <signal.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-tmspr.c b/tools/testing/selftests/powerpc/tm/tm-tmspr.c
-index dd5ddffa28b7..01118f7db1b2 100644
---- a/tools/testing/selftests/powerpc/tm/tm-tmspr.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-tmspr.c
-@@ -22,8 +22,6 @@
-  *    	(b) abort transaction
-  *	(c) check TEXASR to see if FS has been corrupted
-  */
--
--#define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <unistd.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-trap.c b/tools/testing/selftests/powerpc/tm/tm-trap.c
-index 97cb74768e30..164b345b5bd3 100644
---- a/tools/testing/selftests/powerpc/tm/tm-trap.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-trap.c
-@@ -26,8 +26,6 @@
-  * the endianness is verified on subsequent traps to determine if the
-  * endianness "flipped back" to the native endianness (BE).
-  */
--
--#define _GNU_SOURCE
- #include <error.h>
- #include <stdio.h>
- #include <stdlib.h>
-diff --git a/tools/testing/selftests/powerpc/tm/tm-unavailable.c b/tools/testing/selftests/powerpc/tm/tm-unavailable.c
-index 6bf1b65b020d..712267831112 100644
---- a/tools/testing/selftests/powerpc/tm/tm-unavailable.c
-+++ b/tools/testing/selftests/powerpc/tm/tm-unavailable.c
-@@ -13,8 +13,6 @@
-  * corruption, but only for registers vs0 and vs32, which are respectively
-  * representatives of FP and VEC/Altivec reg sets.
-  */
--
--#define _GNU_SOURCE
- #include <error.h>
- #include <stdio.h>
- #include <stdlib.h>
-diff --git a/tools/testing/selftests/powerpc/utils.c b/tools/testing/selftests/powerpc/utils.c
-index e5f2d8735c64..664722a01636 100644
---- a/tools/testing/selftests/powerpc/utils.c
-+++ b/tools/testing/selftests/powerpc/utils.c
-@@ -2,9 +2,6 @@
- /*
-  * Copyright 2013-2015, Michael Ellerman, IBM Corp.
-  */
--
--#define _GNU_SOURCE	/* For CPU_ZERO etc. */
--
- #include <elf.h>
- #include <errno.h>
- #include <fcntl.h>
--- 
-2.45.1.288.g0e0cd299f1-goog
+If you think of the hash page table as a software loaded TLB (which
+is how Linux kind of thinks of it), then DSI is a TLB miss. hash_page_x
+calls find the Linux pte and load that translation into hash page table.
 
+One of the hard parts is keeping them coherent with low overhead. This
+requires pte bits H_PAGE_BUSY as a lock and H_PAGE_HASHPTE which means
+it might be in the hash table. So Linux PTE and hash PTE have to be
+1:1 in general.
+
+There are probably cases where we could get away from 1:1, but I would
+much prefer not to. Maybe read-only access would be okay though. But
+the hash_page will have to always operate on the 0th pte, which I think
+we get via segment size masking, same for any set / update / clear of
+the pte.
+
+> >=20
+> > What paths look at the N > 0 PTEs of a contiguous page entry?
+> >=20
+>
+> pte_offset_kernel() or pte_offset_map_lock() will land on any contiguous=
+=20
+> PTE based on the address handed to pte_index(), as if it was a standard=
+=20
+> (4k or 64k) page.
+>
+> pte_index() doesn't know it is a hugepage, that's the reason why we need=
+=20
+> to duplicate the entry.
+
+From the mm/ side of things, hugetlb page tables are always walked via
+the huge vma which knows the page size and could align address... I
+guess except for fast gup? Which should be read-only. So okay you do
+need to replicate huge ptes for fast gup at least. Any others?
+
+There's going to need to be a little more to it. __hash_page_huge sets
+PTE accessed and dirty for example, so if we allow any PTE readers to
+check the non-0th pte we would have to do something about that.
+
+How do you deal with dirty/accessed bits for other subarchs?
+
+We could just remove the hash_page setting of those bits and just cause
+a fault and require Linux mm to set them. At least for hugepages we
+could do that probably without any real performance worry.
+
+Thanks,
+Nick
