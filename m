@@ -2,53 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id BEAF48CB9DB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 05:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 221978CBD10
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 10:36:40 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pylsohzq;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VkcH770pqz78n1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 13:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vkkxp1p2yz3vc9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 May 2024 18:29:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pylsohzq;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VkcFq50Jmz3g99
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2024 13:28:15 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id E20011A0E4D;
-	Wed, 22 May 2024 05:28:12 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7A31D1A033A;
-	Wed, 22 May 2024 05:28:12 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 8E96F183B72B;
-	Wed, 22 May 2024 11:28:10 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shengjiu.wang@gmail.com,
-	linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] ASoC: fsl_mqs: Add i.MX95 platform support
-Date: Wed, 22 May 2024 11:08:25 +0800
-Message-Id: <1716347305-18457-3-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1716347305-18457-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1716347305-18457-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vkkx137BNz3fxk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2024 18:29:08 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44M7b7XW031016;
+	Wed, 22 May 2024 08:28:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=fYoR7iiLcArZtU74aSNT/rc2QYYoMKNLjO+XV8CNcUo=;
+ b=pylsohzqdyFVQwiM+iERvLNd2+IDMezd1NgPPVRzxu0n4HvX5Iw9ul8TwMlElOnlrUOY
+ wKn895KEQuUj+WGzkUWvvNzIXTjIR+EyGwqxCP4QPWCXRWDxWB2oMLNtbJ5FQLYGRiEH
+ 4BtkcPhCVeDfdv+dHqrg/BjvIq2Y1yXDkLi7gFzog6+6dn1nlDOc8/Va6Lgx3yUDVXLl
+ QV/FVCZfrsbcSm/A3REEyL5CmEqiyuT3Kbj1HbTBH4QE+K4Zf3AgP4ENqK52W8IdwdJU
+ 6JAlpKjSQqJr5mUOfxn7HUApiNWw+QzQ26wXeSErTA8VwW+mIcJLsdi4G/FORE7VQJ6S Ow== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9c1xg739-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 08:28:54 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44M8ORQP010376;
+	Wed, 22 May 2024 08:28:54 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9c1xg736-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 08:28:54 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44M73xHZ023565;
+	Wed, 22 May 2024 08:28:53 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y77npawv0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 08:28:53 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44M8Sl3D50528600
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 May 2024 08:28:49 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 531642004D;
+	Wed, 22 May 2024 08:28:47 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 297FD20040;
+	Wed, 22 May 2024 08:28:45 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.in.ibm.com (unknown [9.204.206.66])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 May 2024 08:28:44 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, corbet@lwn.net
+Subject: [PATCH] arch/powerpc/kvm: Fix doorbell emulation by adding DPDES support
+Date: Wed, 22 May 2024 13:58:20 +0530
+Message-ID: <20240522082838.121769-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: grk0eM8ItSChuzW7eKwq1BlMjSNV81hm
+X-Proofpoint-GUID: Im1o3r3rcrkjg4qz4uyhGHNhWtcAIdWz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-22_03,2024-05-21_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 mlxlogscore=586
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405220060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,131 +95,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are two MQS instances on the i.MX95 platform.
-The definition of bit positions in the control register are
-different. In order to support these MQS modules, define
-two compatible strings to distinguish them.
+Doorbell emulation is broken for KVM on PowerVM guests as support for
+DPDES was not added in the initial patch series. Due to this, a KVM on
+PowerVM guest cannot be booted with the XICS interrupt controller as
+doorbells are to be setup in the initial probe path when using XICS
+(pSeries_smp_probe()). Add DPDES support in the host KVM code to fix
+doorbell emulation.
 
-Define different soc data according to compatible strings
-
-On i.MX95 one instance in nect-mix is supported by this
-commit, another instance in always-on-mix is not supported,
-which depends on System Manager function readiness.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Fixes: 6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffers")
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 ---
- sound/soc/fsl/fsl_mqs.c | 46 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 40 insertions(+), 6 deletions(-)
+ Documentation/arch/powerpc/kvm-nested.rst     |  4 +++-
+ arch/powerpc/include/asm/guest-state-buffer.h |  3 ++-
+ arch/powerpc/include/asm/kvm_book3s.h         |  1 +
+ arch/powerpc/kvm/book3s_hv.c                  | 14 +++++++++++++-
+ arch/powerpc/kvm/book3s_hv_nestedv2.c         |  7 +++++++
+ arch/powerpc/kvm/test-guest-state-buffer.c    |  2 +-
+ 6 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-index 60929c36a0e3..c95b84a54dc4 100644
---- a/sound/soc/fsl/fsl_mqs.c
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -28,10 +28,16 @@
- #define MQS_CLK_DIV_MASK		(0xFF << 0)
- #define MQS_CLK_DIV_SHIFT		(0)
+diff --git a/Documentation/arch/powerpc/kvm-nested.rst b/Documentation/arch/powerpc/kvm-nested.rst
+index 630602a8aa00..5defd13cc6c1 100644
+--- a/Documentation/arch/powerpc/kvm-nested.rst
++++ b/Documentation/arch/powerpc/kvm-nested.rst
+@@ -546,7 +546,9 @@ table information.
+ +--------+-------+----+--------+----------------------------------+
+ | 0x1052 | 0x08  | RW |   T    | CTRL                             |
+ +--------+-------+----+--------+----------------------------------+
+-| 0x1053-|       |    |        | Reserved                         |
++| 0x1053 | 0x08  | RW |   T    | DPDES                            |
+++--------+-------+----+--------+----------------------------------+
++| 0x1054-|       |    |        | Reserved                         |
+ | 0x1FFF |       |    |        |                                  |
+ +--------+-------+----+--------+----------------------------------+
+ | 0x2000 | 0x04  | RW |   T    | CR                               |
+diff --git a/arch/powerpc/include/asm/guest-state-buffer.h b/arch/powerpc/include/asm/guest-state-buffer.h
+index 808149f31576..d107abe1468f 100644
+--- a/arch/powerpc/include/asm/guest-state-buffer.h
++++ b/arch/powerpc/include/asm/guest-state-buffer.h
+@@ -81,6 +81,7 @@
+ #define KVMPPC_GSID_HASHKEYR			0x1050
+ #define KVMPPC_GSID_HASHPKEYR			0x1051
+ #define KVMPPC_GSID_CTRL			0x1052
++#define KVMPPC_GSID_DPDES			0x1053
  
-+enum reg_type {
-+	TYPE_REG_OWN,  /* module own register space */
-+	TYPE_REG_GPR,  /* register in GPR space */
-+	TYPE_REG_SM,   /* System Manager controls the register */
-+};
+ #define KVMPPC_GSID_CR				0x2000
+ #define KVMPPC_GSID_PIDR			0x2001
+@@ -110,7 +111,7 @@
+ #define KVMPPC_GSE_META_COUNT (KVMPPC_GSE_META_END - KVMPPC_GSE_META_START + 1)
+ 
+ #define KVMPPC_GSE_DW_REGS_START KVMPPC_GSID_GPR(0)
+-#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_CTRL
++#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_DPDES
+ #define KVMPPC_GSE_DW_REGS_COUNT \
+ 	(KVMPPC_GSE_DW_REGS_END - KVMPPC_GSE_DW_REGS_START + 1)
+ 
+diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+index 3e1e2a698c9e..10618622d7ef 100644
+--- a/arch/powerpc/include/asm/kvm_book3s.h
++++ b/arch/powerpc/include/asm/kvm_book3s.h
+@@ -594,6 +594,7 @@ static inline u##size kvmppc_get_##reg(struct kvm_vcpu *vcpu)		\
+ 
+ 
+ KVMPPC_BOOK3S_VCORE_ACCESSOR(vtb, 64, KVMPPC_GSID_VTB)
++KVMPPC_BOOK3S_VCORE_ACCESSOR(dpdes, 64, KVMPPC_GSID_DPDES)
+ KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(arch_compat, 32, KVMPPC_GSID_LOGICAL_PVR)
+ KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(lpcr, 64, KVMPPC_GSID_LPCR)
+ KVMPPC_BOOK3S_VCORE_ACCESSOR_SET(tb_offset, 64, KVMPPC_GSID_TB_OFFSET)
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 35cb014a0c51..cf285e5153ba 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4116,6 +4116,11 @@ static int kvmhv_vcpu_entry_nestedv2(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	int trap;
+ 	long rc;
+ 
++	if (vcpu->arch.doorbell_request) {
++		vcpu->arch.doorbell_request = 0;
++		kvmppc_set_dpdes(vcpu, 1);
++	}
 +
- /**
-  * struct fsl_mqs_soc_data - soc specific data
-  *
-- * @use_gpr: control register is in General Purpose Register group
-+ * @type: control register space type
-  * @ctrl_off: control register offset
-  * @en_mask: enable bit mask
-  * @en_shift: enable bit shift
-@@ -43,7 +49,7 @@
-  * @div_shift: clock divider bit shift
-  */
- struct fsl_mqs_soc_data {
--	bool use_gpr;
-+	enum reg_type type;
- 	int  ctrl_off;
- 	int  en_mask;
- 	int  en_shift;
-@@ -200,7 +206,7 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 	 */
- 	mqs_priv->soc = of_device_get_match_data(&pdev->dev);
+ 	io = &vcpu->arch.nestedv2_io;
  
--	if (mqs_priv->soc->use_gpr) {
-+	if (mqs_priv->soc->type == TYPE_REG_GPR) {
- 		gpr_np = of_parse_phandle(np, "gpr", 0);
- 		if (!gpr_np) {
- 			dev_err(&pdev->dev, "failed to get gpr node by phandle\n");
-@@ -304,7 +310,7 @@ static const struct dev_pm_ops fsl_mqs_pm_ops = {
- };
+ 	msr = mfmsr();
+@@ -4278,9 +4283,16 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	if (kvmhv_on_pseries()) {
+ 		if (kvmhv_is_nestedv1())
+ 			trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
+-		else
++		else {
+ 			trap = kvmhv_vcpu_entry_nestedv2(vcpu, time_limit, lpcr, tb);
  
- static const struct fsl_mqs_soc_data fsl_mqs_imx8qm_data = {
--	.use_gpr = false,
-+	.type = TYPE_REG_OWN,
- 	.ctrl_off = REG_MQS_CTRL,
- 	.en_mask  = MQS_EN_MASK,
- 	.en_shift = MQS_EN_SHIFT,
-@@ -317,7 +323,7 @@ static const struct fsl_mqs_soc_data fsl_mqs_imx8qm_data = {
- };
- 
- static const struct fsl_mqs_soc_data fsl_mqs_imx6sx_data = {
--	.use_gpr = true,
-+	.type = TYPE_REG_GPR,
- 	.ctrl_off = IOMUXC_GPR2,
- 	.en_mask  = IMX6SX_GPR2_MQS_EN_MASK,
- 	.en_shift = IMX6SX_GPR2_MQS_EN_SHIFT,
-@@ -330,7 +336,7 @@ static const struct fsl_mqs_soc_data fsl_mqs_imx6sx_data = {
- };
- 
- static const struct fsl_mqs_soc_data fsl_mqs_imx93_data = {
--	.use_gpr = true,
-+	.type = TYPE_REG_GPR,
- 	.ctrl_off = 0x20,
- 	.en_mask  = BIT(1),
- 	.en_shift = 1,
-@@ -342,10 +348,38 @@ static const struct fsl_mqs_soc_data fsl_mqs_imx93_data = {
- 	.div_shift = 8,
- };
- 
-+static const struct fsl_mqs_soc_data fsl_mqs_imx95_aon_data = {
-+	.type = TYPE_REG_SM,
-+	.ctrl_off = 0x88,
-+	.en_mask  = BIT(1),
-+	.en_shift = 1,
-+	.rst_mask = BIT(2),
-+	.rst_shift = 2,
-+	.osr_mask = BIT(3),
-+	.osr_shift = 3,
-+	.div_mask = GENMASK(15, 8),
-+	.div_shift = 8,
-+};
++			/* Remember doorbell if it is pending  */
++			if (kvmppc_get_dpdes(vcpu)) {
++				vcpu->arch.doorbell_request = 1;
++				kvmppc_set_dpdes(vcpu, 0);
++			}
++		}
 +
-+static const struct fsl_mqs_soc_data fsl_mqs_imx95_netc_data = {
-+	.type = TYPE_REG_GPR,
-+	.ctrl_off = 0x0,
-+	.en_mask  = BIT(2),
-+	.en_shift = 2,
-+	.rst_mask = BIT(3),
-+	.rst_shift = 3,
-+	.osr_mask = BIT(4),
-+	.osr_shift = 4,
-+	.div_mask = GENMASK(16, 9),
-+	.div_shift = 9,
-+};
-+
- static const struct of_device_id fsl_mqs_dt_ids[] = {
- 	{ .compatible = "fsl,imx8qm-mqs", .data = &fsl_mqs_imx8qm_data },
- 	{ .compatible = "fsl,imx6sx-mqs", .data = &fsl_mqs_imx6sx_data },
- 	{ .compatible = "fsl,imx93-mqs", .data = &fsl_mqs_imx93_data },
-+	{ .compatible = "fsl,imx95-aonmix-mqs", .data = &fsl_mqs_imx95_aon_data },
-+	{ .compatible = "fsl,imx95-netcmix-mqs", .data = &fsl_mqs_imx95_netc_data },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, fsl_mqs_dt_ids);
+ 		/* H_CEDE has to be handled now, not later */
+ 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !nested &&
+ 		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
+diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+index 8e6f5355f08b..36863fff2a99 100644
+--- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
++++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
+@@ -311,6 +311,10 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
+ 			rc = kvmppc_gse_put_u64(gsb, iden,
+ 						vcpu->arch.vcore->vtb);
+ 			break;
++		case KVMPPC_GSID_DPDES:
++			rc = kvmppc_gse_put_u64(gsb, iden,
++						vcpu->arch.vcore->dpdes);
++			break;
+ 		case KVMPPC_GSID_LPCR:
+ 			rc = kvmppc_gse_put_u64(gsb, iden,
+ 						vcpu->arch.vcore->lpcr);
+@@ -543,6 +547,9 @@ static int gs_msg_ops_vcpu_refresh_info(struct kvmppc_gs_msg *gsm,
+ 		case KVMPPC_GSID_VTB:
+ 			vcpu->arch.vcore->vtb = kvmppc_gse_get_u64(gse);
+ 			break;
++		case KVMPPC_GSID_DPDES:
++			vcpu->arch.vcore->dpdes = kvmppc_gse_get_u64(gse);
++			break;
+ 		case KVMPPC_GSID_LPCR:
+ 			vcpu->arch.vcore->lpcr = kvmppc_gse_get_u64(gse);
+ 			break;
+diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kvm/test-guest-state-buffer.c
+index 4720b8dc8837..91ae660cfe21 100644
+--- a/arch/powerpc/kvm/test-guest-state-buffer.c
++++ b/arch/powerpc/kvm/test-guest-state-buffer.c
+@@ -151,7 +151,7 @@ static void test_gs_bitmap(struct kunit *test)
+ 		i++;
+ 	}
+ 
+-	for (u16 iden = KVMPPC_GSID_GPR(0); iden <= KVMPPC_GSID_CTRL; iden++) {
++	for (u16 iden = KVMPPC_GSID_GPR(0); iden <= KVMPPC_GSID_DPDES; iden++) {
+ 		kvmppc_gsbm_set(&gsbm, iden);
+ 		kvmppc_gsbm_set(&gsbm1, iden);
+ 		KUNIT_EXPECT_TRUE(test, kvmppc_gsbm_test(&gsbm, iden));
 -- 
-2.34.1
+2.45.0
 
