@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 280548CC93E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 00:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C8C28CC9CD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 01:41:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Difkpi8p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nnrWrKxA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vl5yl1PDvz78gb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 08:46:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vl7003dwQz78hN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 09:33:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Difkpi8p;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nnrWrKxA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vl5xx5qjGz3gFt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 08:46:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vl6zG0YVzz3gFk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 09:32:26 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8EB1B62B44;
-	Wed, 22 May 2024 22:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11A8C2BBFC;
-	Wed, 22 May 2024 22:46:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1716417969;
-	bh=Wt/lYOMjZ5EiLqgZDOMSYLAv6ghVbecXbWEEUnbdvAk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Difkpi8pE8zKRNDX2+VZ7EyZcNiHjM0HR8FJLGZH0pip8MxP1u7thd/rd83PcA09V
-	 TVYuNLsB9uDO/0L6O8a4XCtYe8AGfV2GMFw/WHUCsVYFKPfQALg/JlSvIlzFXcExDp
-	 AtnoA3XHUlrJl32QhYOsFNsXhIwLTMDFKtCKGeoA=
-Date: Wed, 22 May 2024 15:46:07 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Eric Chanudet <echanude@redhat.com>
-Subject: Re: [PATCH v2] mm/mm_init: use node's number of cpus in
- deferred_page_init_max_threads
-Message-Id: <20240522154607.bd5790c0b0dc642aefd3a05c@linux-foundation.org>
-In-Reply-To: <20240522203758.626932-4-echanude@redhat.com>
-References: <20240522203758.626932-4-echanude@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3A02F62BF7;
+	Wed, 22 May 2024 23:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A476C32782;
+	Wed, 22 May 2024 23:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716420743;
+	bh=DMZ8A416rj3K/WIir9WPtL3TV/SPPZCOPyqRSy00irs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=nnrWrKxAo9mkqq71SM15auqRvSuvMo1cwsc6uvNC0KmIf+8W+IFcGygA3Eo10mVeF
+	 G2s+yrZMHPymUXLo+nLgP9UO7ySUEsYIr50vVERehi9hXlgnqcVX15e5hUtoNM1MCz
+	 KdnJ408xiD+Wl9pXpBy3F6o9nfLEvLRX7/+b2odzWwlKArAQUij/s2m/3Jjh97LXPg
+	 F8nJXMua61Qqa3D8YshT5wUFNBblfy5aUQ+sDx/fnkyS8EUbkRV5Kgi4KlL/y5Jmh6
+	 7bCukgmu47qPQMBbXvCJyTY00enK+zaAd4j5um3XBgM7w9fHKYmb4gx7qdCy7Br/vb
+	 fDCO7Xn+t58qw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7625CC43638;
+	Wed, 22 May 2024 23:32:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] kprobe/ftrace: bail out if ftrace was killed
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id:  <171642074348.9409.15455041633304152397.git-patchwork-notify@kernel.org>
+Date: Wed, 22 May 2024 23:32:23 +0000
+References: <20240501162956.229427-1-stephen.s.brennan@oracle.com>
+In-Reply-To: <20240501162956.229427-1-stephen.s.brennan@oracle.com>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,51 +62,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, linux-arm-kernel@lists.infradead.org, Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: mark.rutland@arm.com, x86@kernel.org, dave.hansen@linux.intel.com, James.Bottomley@HansenPartnership.com, guoren@kernel.org, linux-csky@vger.kernel.org, hpa@zytor.com, agordeev@linux.ibm.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, deller@gmx.de, chenhuacai@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, aou@eecs.berkeley.edu, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, loongarch@lists.linux.dev, paul.walmsley@sifive.com, tglx@linutronix.de, linux-parisc@vger.kernel.org, kernel@xen0n.name, linux-kernel@vger.kernel.org, palmer@dabbelt.com, mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 22 May 2024 16:38:01 -0400 Eric Chanudet <echanude@redhat.com> wrote:
+Hello:
 
-> x86_64 is already using the node's cpu as maximum threads. Make that the
-> default for all archs setting DEFERRED_STRUCT_PAGE_INIT.
+This patch was applied to riscv/linux.git (fixes)
+by Masami Hiramatsu (Google) <mhiramat@kernel.org>:
+
+On Wed,  1 May 2024 09:29:56 -0700 you wrote:
+> If an error happens in ftrace, ftrace_kill() will prevent disarming
+> kprobes. Eventually, the ftrace_ops associated with the kprobes will be
+> freed, yet the kprobes will still be active, and when triggered, they
+> will use the freed memory, likely resulting in a page fault and panic.
 > 
-> This returns to the behavior prior making the function arch-specific
-> with commit ecd096506922 ("mm: make deferred init's max threads
-> arch-specific").
+> This behavior can be reproduced quite easily, by creating a kprobe and
+> then triggering a ftrace_kill(). For simplicity, we can simulate an
+> ftrace error with a kernel module like [1]:
 > 
+> [...]
 
-It isn't clear to me what is the runtime effect of this change upon our
-users.  Can you please prepare a sentence which spells this out?
+Here is the summary with links:
+  - [v3] kprobe/ftrace: bail out if ftrace was killed
+    https://git.kernel.org/riscv/c/1a7d0890dd4a
 
-> 
-> ---
-> Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
-> shows faster deferred_init_memmap completions:
-> 
-> |         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
-> |         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
-> |         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
-> |---------|-------------|--------------|-----------------|--------------|
-> | threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
-> |---------|-------------|--------------|-----------------|--------------|
-> | 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
-> | cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-The above is useful info, I'll hoist it into the main changelog.
 
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2126,7 +2126,7 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->  __weak int __init
->  deferred_page_init_max_threads(const struct cpumask *node_cpumask)
->  {
-> -	return 1;
-> +	return max_t(int, cpumask_weight(node_cpumask), 1);
->  }
-
-It's an unrelated cleanup , but that could be
-
-	max(cpumask_weight(node_cpumask), 1U);
-
-and the function could/should return unsigned.
