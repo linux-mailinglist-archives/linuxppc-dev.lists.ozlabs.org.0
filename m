@@ -2,55 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8C28CC9CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 01:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C478CCAE8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 05:01:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nnrWrKxA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VgAcZW/U;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vl7003dwQz78hN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 09:33:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VlCQ65bh4z78k7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 12:52:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nnrWrKxA;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VgAcZW/U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vl6zG0YVzz3gFk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 09:32:26 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3A02F62BF7;
-	Wed, 22 May 2024 23:32:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8A476C32782;
-	Wed, 22 May 2024 23:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716420743;
-	bh=DMZ8A416rj3K/WIir9WPtL3TV/SPPZCOPyqRSy00irs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nnrWrKxAo9mkqq71SM15auqRvSuvMo1cwsc6uvNC0KmIf+8W+IFcGygA3Eo10mVeF
-	 G2s+yrZMHPymUXLo+nLgP9UO7ySUEsYIr50vVERehi9hXlgnqcVX15e5hUtoNM1MCz
-	 KdnJ408xiD+Wl9pXpBy3F6o9nfLEvLRX7/+b2odzWwlKArAQUij/s2m/3Jjh97LXPg
-	 F8nJXMua61Qqa3D8YshT5wUFNBblfy5aUQ+sDx/fnkyS8EUbkRV5Kgi4KlL/y5Jmh6
-	 7bCukgmu47qPQMBbXvCJyTY00enK+zaAd4j5um3XBgM7w9fHKYmb4gx7qdCy7Br/vb
-	 fDCO7Xn+t58qw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7625CC43638;
-	Wed, 22 May 2024 23:32:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlCPM3C43z3fvS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 12:51:49 +1000 (AEST)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-2bd9284dd31so1547342a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 May 2024 19:51:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716432698; x=1717037498; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2t+NNcAooBs+1uLVQmd6CHKgztQaFCVL8iN2oZTgqXk=;
+        b=VgAcZW/UXwz+ZNkjKjrlZGs84v1BI8loOOu4HVvFxqXsGP5HAf5ADLYuSvFEF6PwJ2
+         bJKuR+4T20JNARu8rF5ht1TqweGLBRPQGN5IF58kENYE67CIhbaF0aQ16xL42hTgAnOZ
+         CmPBQqOQpoSW/huYlOwD6WUEdXrjtR/Mr7tJPs5xFccq0ex6+0pIHnJGs8K6kAK0JwoG
+         ExuI5znnvJQNQgXvQXvUtBk2dgM+dAK0cBibXeIQ0C2iOZNh1Dw3F8k/XpdIbLzsRQmJ
+         rB8P42jBp8vbWpp8Jh/I6eYlo5xb7LOuaHukeeo5TFFXXmKJx5P62fsn4wwMksAQF5ew
+         gXzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716432698; x=1717037498;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2t+NNcAooBs+1uLVQmd6CHKgztQaFCVL8iN2oZTgqXk=;
+        b=eKtMQiqPIdHTMxo6zRHkMW1fNanhn8zxtLPE/Q7+DZN469DmiQi/2EVS7EQtPqNWyg
+         buNkc2Kw6OrkSvdhy9aValK5HNTD550VeHf4udoEXEVEsOCZCf4sGVpdoT7mAI6zX90v
+         vNxY9DdbVUInP3lSTaWS/zBt/lMHYIRi0VgC669DEYP9agM8QUbR7mWhzmbSpeWVsZhM
+         5M9OjI+PuyyGQ24i8KNa0LCUQqbIIiyy8vy2G8oSaEnxhhVRvTtk8Sx/HdQLOxmwMqe9
+         OMoXA+CZAzcsYrFG2O1cbniAgrC3p4snt64y4JypzShHaU0EemeH9BmziadJU3azwTTa
+         RBrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWbf21hjik1ZH+kC98JXt4CwE4AnMCJ5Dum6Dh1Rz8IyhjK8fUUJs3LSJfUnvsJqwl7ODYjRySm4Ah9l9sp8ZPQgsndlKQ/541SYOpuUA==
+X-Gm-Message-State: AOJu0Yxm/9o8J94l9QMnYUXE/SF74/sN8Mn4JoGm1B61coJ8VoioM+ey
+	xvuCnSxmAu62rH1ad0vx3lRGT2nLfu/IsOb2rfAdYBzNJfY5Ai0G
+X-Google-Smtp-Source: AGHT+IFkp6UpIh1AGPSwzeu7PRXoylLdjeBnYEOtYMQKu1m9NKdsV0nftrMR0T4y+aBKEkMG7hxvGw==
+X-Received: by 2002:a17:90a:a506:b0:2ad:6294:7112 with SMTP id 98e67ed59e1d1-2bd9f456c77mr4103774a91.14.1716432698305;
+        Wed, 22 May 2024 19:51:38 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bdd9f0b3d3sm575494a91.26.2024.05.22.19.51.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 May 2024 19:51:37 -0700 (PDT)
+Date: Wed, 22 May 2024 19:51:35 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH 2/2] treewide: Use sysfs_bin_attr_simple_read() helper
+Message-ID: <e12b0027-b199-4de7-b83d-668171447ccc@roeck-us.net>
+References: <cover.1712410202.git.lukas@wunner.de>
+ <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] kprobe/ftrace: bail out if ftrace was killed
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id:  <171642074348.9409.15455041633304152397.git-patchwork-notify@kernel.org>
-Date: Wed, 22 May 2024 23:32:23 +0000
-References: <20240501162956.229427-1-stephen.s.brennan@oracle.com>
-In-Reply-To: <20240501162956.229427-1-stephen.s.brennan@oracle.com>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,34 +81,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, x86@kernel.org, dave.hansen@linux.intel.com, James.Bottomley@HansenPartnership.com, guoren@kernel.org, linux-csky@vger.kernel.org, hpa@zytor.com, agordeev@linux.ibm.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, deller@gmx.de, chenhuacai@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, aou@eecs.berkeley.edu, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, loongarch@lists.linux.dev, paul.walmsley@sifive.com, tglx@linutronix.de, linux-parisc@vger.kernel.org, kernel@xen0n.name, linux-kernel@vger.kernel.org, palmer@dabbelt.com, mhiramat@kernel.org, linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: intel-gvt-dev@lists.freedesktop.org, Jean Delvare <jdelvare@suse.com>, Zhi Wang <zhi.wang.linux@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-kernel@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, linux-acpi@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+Hi,
 
-This patch was applied to riscv/linux.git (fixes)
-by Masami Hiramatsu (Google) <mhiramat@kernel.org>:
-
-On Wed,  1 May 2024 09:29:56 -0700 you wrote:
-> If an error happens in ftrace, ftrace_kill() will prevent disarming
-> kprobes. Eventually, the ftrace_ops associated with the kprobes will be
-> freed, yet the kprobes will still be active, and when triggered, they
-> will use the freed memory, likely resulting in a page fault and panic.
+On Sat, Apr 06, 2024 at 03:52:02PM +0200, Lukas Wunner wrote:
+> Deduplicate ->read() callbacks of bin_attributes which are backed by a
+> simple buffer in memory:
 > 
-> This behavior can be reproduced quite easily, by creating a kprobe and
-> then triggering a ftrace_kill(). For simplicity, we can simulate an
-> ftrace error with a kernel module like [1]:
+> Use the newly introduced sysfs_bin_attr_simple_read() helper instead,
+> either by referencing it directly or by declaring such bin_attributes
+> with BIN_ATTR_SIMPLE_RO() or BIN_ATTR_SIMPLE_ADMIN_RO().
 > 
-> [...]
+> Aside from a reduction of LoC, this shaves off a few bytes from vmlinux
+> (304 bytes on an x86_64 allyesconfig).
+> 
+> No functional change intended.
+> 
 
-Here is the summary with links:
-  - [v3] kprobe/ftrace: bail out if ftrace was killed
-    https://git.kernel.org/riscv/c/1a7d0890dd4a
+Not really; see below.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> ---
+...
+> index da79760..5193fae 100644
+> --- a/init/initramfs.c
+> +++ b/init/initramfs.c
+> @@ -575,15 +575,7 @@ static int __init initramfs_async_setup(char *str)
+>  #include <linux/initrd.h>
+>  #include <linux/kexec.h>
+>  
+> -static ssize_t raw_read(struct file *file, struct kobject *kobj,
+> -			struct bin_attribute *attr, char *buf,
+> -			loff_t pos, size_t count)
+> -{
+> -	memcpy(buf, attr->private + pos, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR(initrd, 0440, raw_read, NULL, 0);
+> +static BIN_ATTR(initrd, 0440, sysfs_bin_attr_simple_read, NULL, 0);
+>  
 
+sysfs_bin_attr_simple_read is only declared and available if CONFIG_SYSFS=y.
+With m68k:m5208evb_defconfig + CONFIG_BLK_DEV_INITRD=y, this results in
 
+/opt/buildbot/slave/qemu-m68k/build/init/initramfs.c:578:31:
+	error: 'sysfs_bin_attr_simple_read' undeclared here (not in a function)
+
+This happens because CONFIG_SYSFS=n and there is no dummy function for
+sysfs_bin_attr_simple_read(). Presumably the problem will be seen for all
+configurations with CONFIG_BLK_DEV_INITRD=y and CONFIG_SYSFS=n.
+
+On a side note, init/initramfs.c does not directly include linux/sysfs.h.
+I don't know if that might cause problems with other builds.
+
+Guenter
