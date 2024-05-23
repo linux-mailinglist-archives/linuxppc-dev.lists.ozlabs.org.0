@@ -2,95 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CFF18CD817
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 18:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6F68CDB0C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 21:46:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ACRUEcZ+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Oyq203z1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VlXv41vY8z793W
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 02:00:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vldnw5cm6z797b
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 05:41:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ACRUEcZ+;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Oyq203z1;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlXtJ1Rx4z3wY4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 01:59:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VldnD3ZB1z78sS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 05:40:30 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716479972;
+	s=mimecast20190719; t=1716493227;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
-	b=EkuI6ESz7UcfwyCxWXp89lrkSYMtteJFdGnEcweqJ0OXNBlkqJTZoJYmhbvDFibLuGAVNB
-	08+BhOZpDBnvos+pyPa5DsW7eWT6W426V/C1vOS73gGjzxJ2QF/1p1UyVgy3ybu3KpGOxU
-	4fux0G42jdjatF1f3mmeORNRosp3Hgc=
+	bh=OCvWufVacLGgXuxtEqrctwgkg9qLQ+urbHg5QGQf0Ok=;
+	b=ACRUEcZ+WrwZAHUK07Kn73ORZmovWt0pXNMWauij/ncolqRIpjxzqUfL9x31q9gbCP+Rgx
+	nP6ZWO3+ZlhOD512ahtdcLsraghQw0g8A2c6eEJhe3ZBo0n1vVi/se6m5NIcNw4/6rjYxk
+	m3xxfkvCPtwd5WwBAm8jZ7BffcD/cOU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716479972;
+	s=mimecast20190719; t=1716493228;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
-	b=EkuI6ESz7UcfwyCxWXp89lrkSYMtteJFdGnEcweqJ0OXNBlkqJTZoJYmhbvDFibLuGAVNB
-	08+BhOZpDBnvos+pyPa5DsW7eWT6W426V/C1vOS73gGjzxJ2QF/1p1UyVgy3ybu3KpGOxU
-	4fux0G42jdjatF1f3mmeORNRosp3Hgc=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=OCvWufVacLGgXuxtEqrctwgkg9qLQ+urbHg5QGQf0Ok=;
+	b=Oyq203z1YImHmzRtMPlBf/xfIrJ5ko5f7hWuPDGTmNSfr+JS/H5wj7QFTZfs5isvj1h9eP
+	lCWGiE1y7b78jAEB1wdNKlhdqqRYTT5bF91HOPSTddXDibfFNFDjPd3S+cwVe8jamkZBwN
+	+x773Xa8OKXddLA/QYgSvOk5O9qg3nw=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-158-tARenD7MNS6SNYeDw6zDyQ-1; Thu, 23 May 2024 11:59:30 -0400
-X-MC-Unique: tARenD7MNS6SNYeDw6zDyQ-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6ab9836827eso777996d6.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 08:59:30 -0700 (PDT)
+ us-mta-148-R48lQ9yeM9-IKux65e9-rA-1; Thu, 23 May 2024 15:40:25 -0400
+X-MC-Unique: R48lQ9yeM9-IKux65e9-rA-1
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3c9b5776fccso258872b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 12:40:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716479970; x=1717084770;
+        d=1e100.net; s=20230601; t=1716493225; x=1717098025;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
-        b=YVVhY/HWoy/+591bcjM5AheU6lOQlyC7lTdyNxQM/S48FLip07ENZVH3aMVXWwClAW
-         froL7I57CW8DhGuuy+/YyXPqo3lD39RUoansTfYHnVPY7ZX/kDlaoAlQVeB9LTeAdO7f
-         Px6Dt0+lfYBdaMcO42ltmgnPhuuluwdL25jd4v2xYUpAkGzetVJ80MtD6a+zaNjo4g+g
-         Qw7bg/Fafo3vGSJKEFt8BmHY3Ai9gRI8HIm7U1g/9o5POMQnWH1DR0kMa/K63Ubf8WTL
-         q5XQO3E+OqysLP81EGldM54SanACEtSTxgtp2IiQjDvocNVwyx+KivA/yzCqiL7cLvND
-         9fbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDed1vnPiA958tbYy2Fk3bOVfjheaniuBU6AbPpk9kZypF24WBd02c8+ttly0MrC8JU3ql+MdTBO4gUW1Qo428Vlo9XjPvnAzrnJ8u+g==
-X-Gm-Message-State: AOJu0YxDchLXIY9i7gPql4Azd5sNTQ08JVlK+z4OwOB4Kp1MB74/ODAf
-	DQfYs9FZSjqmFpMkF2TODtWOs9+tScE3ccOfq7i0PjNGduGdDkQfg/4wC2vQ3XFXfeos3adrBTU
-	+fue1bYis/ATPgXM57iryPUSKP+e/YI3fbm5DkEPJxMVBIg1oCHyQLMPIbsLj+WI=
-X-Received: by 2002:a05:6214:2484:b0:69b:1c5c:28fb with SMTP id 6a1803df08f44-6ab7f19ec6amr55473376d6.0.1716479969666;
-        Thu, 23 May 2024 08:59:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfEZ/MxR7kXEObGm96kXld53lPLAn57DT2wv2+Ejd7pVHUF2vvfPDOcD/zLRIDa0eVAMCLMw==
-X-Received: by 2002:a05:6214:2484:b0:69b:1c5c:28fb with SMTP id 6a1803df08f44-6ab7f19ec6amr55472786d6.0.1716479968823;
-        Thu, 23 May 2024 08:59:28 -0700 (PDT)
+        bh=OCvWufVacLGgXuxtEqrctwgkg9qLQ+urbHg5QGQf0Ok=;
+        b=DzxviD8O249nM1KOpTWTCpKrhWSCdMauvxz9+5MJnspeb8L6pcWspNaktUZRz/gqNs
+         zjCNrlE8Bve/afCVFnFB+vWS7QMS6Nbc5XihlGFnD/sehBBZywDookw+j00ZZ4xvFZkb
+         oxOnevOLNFx2ngPzmVgwYQHjuX4uPqAngB/PrNa53c8fGXlMwOcQkolG1KEUXVZacws9
+         CJokzd+ALEPjZ4KeKdo+NT4Cfg4v5ZG2DzH6SeB1/OqAN1gqEuXVuaixp0eJ7Z+RddJa
+         jbI5VcYyNvkVPMpFF6jUWn/xQ3vq8iEu9vbJZtvNeIBjFlzte8+yfdWjyV0G0LI6EnZB
+         flGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUl6Y+KthU/Q8sefu1bARzUhcwwyRM6rbCcYuZiw1NlaZIpLwDBPc+0yZZlmw8IXUmIDonTTSP4KKqsc9+DwG4k5eNMXs2eAW1JHX2tSA==
+X-Gm-Message-State: AOJu0YyrHQ9yjqP7TlWt302gNdQzcmwic19TUdHZlATM5cgzKACYSwev
+	WxIiPTG8SyqrN5EbnwR/RVaC1IW7+Dg8nj57Xt1ZyirFkm8eLCAYf6Msb0dr23kVXg7hM7IoE0/
+	/nw59JwXNTieKEzicBZZ1N1nLYuR4YawO1lNG0wod7DEJ6bJgCWGauAE/OOiqj0A=
+X-Received: by 2002:a05:6808:3087:b0:3c8:4cc6:4f0c with SMTP id 5614622812f47-3d1a966af20mr343308b6e.5.1716493224718;
+        Thu, 23 May 2024 12:40:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5T0Za11sb8Fsxy+MXgLZp568ubN3owF+qKZJ+eJpG1Em8U4RQw4I+vJsVrvCB0c6vSaNEQg==
+X-Received: by 2002:a05:6808:3087:b0:3c8:4cc6:4f0c with SMTP id 5614622812f47-3d1a966af20mr343274b6e.5.1716493224004;
+        Thu, 23 May 2024 12:40:24 -0700 (PDT)
 Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6a15f17960csm144178206d6.25.2024.05.23.08.59.27
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf2a3e3esm1517490185a.68.2024.05.23.12.40.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 08:59:28 -0700 (PDT)
-Date: Thu, 23 May 2024 11:59:25 -0400
+        Thu, 23 May 2024 12:40:23 -0700 (PDT)
+Date: Thu, 23 May 2024 15:40:20 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
- poison errors
-Message-ID: <Zk9n3aXbOufWpAhn@x1n>
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com>
- <Zj51rEwZeSK4Vr1G@x1n>
- <ZkPJCc5N1Eotpa4u@localhost.localdomain>
- <ZkPY4CSnZWZnxjTa@x1n>
- <ZkSMv31Cwx080no7@localhost.localdomain>
- <Zk5noUEYI4lknyJy@x1n>
- <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v2 00/20] Reimplement huge pages without hugepd on
+ powerpc (8xx, e500, book3s/64)
+Message-ID: <Zk-bpBZ_yjsj_B2z@x1n>
+References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
+In-Reply-To: <cover.1715971869.git.christophe.leroy@csgroup.eu>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
@@ -106,36 +99,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Suren Baghdasaryan <surenb@google.com>, Liu Shixin <liushixin2@huawei.com>, linux-parisc@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 23, 2024 at 05:08:29AM +0200, Oscar Salvador wrote:
-> On Wed, May 22, 2024 at 05:46:09PM -0400, Peter Xu wrote:
-> > > Now, ProcessB still has the page mapped, so upon re-accessing it,
-> > > it will trigger a new MCE event. memory-failure code will see that this
-> > 
-> > The question is why accessing that hwpoison entry from ProcB triggers an
-> > MCE.  Logically that's a swap entry and it should generate a page fault
-> > rather than MCE.  Then in the pgfault hanlder we don't need that encoded
-> > pfn as we have vmf->address.
+On Fri, May 17, 2024 at 08:59:54PM +0200, Christophe Leroy wrote:
+> This is the continuation of the RFC v1 series "Reimplement huge pages
+> without hugepd on powerpc 8xx". It now get rid of hugepd completely
+> after handling also e500 and book3s/64
 > 
-> It would be a swap entry if we reach try_to_umap_one() without trouble.
-> Then we have the code that converts it:
+> Unlike most architectures, powerpc 8xx HW requires a two-level
+> pagetable topology for all page sizes. So a leaf PMD-contig approach
+> is not feasible as such.
 > 
->  ...
->  if (PageHWPoison(p))
->          pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
-> 	 set_{huge_}pte_at
->  ...
+> Possible sizes are 4k, 16k, 512k and 8M.
 > 
-> But maybe we could only do that for ProcA, while ProcB failed to do that,
-> which means that for ProcA that is a hwpoisoned-swap-entry, but ProcB still
-> has this page mapped as usual, so if ProcB re-access it, that will not
-> trigger a fault (because the page is still mapped in its pagetables).
+> First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD entries
+> must point to a single entry level-2 page table. Until now that was
+> done using hugepd. This series changes it to use standard page tables
+> where the entry is replicated 1024 times on each of the two pagetables
+> refered by the two associated PMD entries for that 8M page.
+> 
+> At the moment it has to look into each helper to know if the
+> hugepage ptep is a PTE or a PMD in order to know it is a 8M page or
+> a lower size. I hope this can me handled by core-mm in the future.
+> 
+> For e500 and book3s/64 there are less constraints because it is not
+> tied to the HW assisted tablewalk like on 8xx, so it is easier to use
+> leaf PMDs (and PUDs).
+> 
+> On e500 the supported page sizes are 4M, 16M, 64M, 256M and 1G. All at
+> PMD level on e500/32 and mix of PMD and PUD for e500/64. We encode page
+> size with 4 available bits in PTE entries. On e300/32 PGD entries size
+> is increases to 64 bits in order to allow leaf-PMD entries because PTE
+> are 64 bits on e500.
+> 
+> On book3s/64 only the hash-4k mode is concerned. It supports 16M pages
+> as cont-PMD and 16G pages as cont-PUD. In other modes (radix-4k, radix-6k
+> and hash-64k) the sizes match with PMD and PUD sizes so that's just leaf
+> entries.
+> 
+> Christophe Leroy (20):
+>   mm: Provide pagesize to pmd_populate()
+>   mm: Provide page size to pte_alloc_huge()
+>   mm: Provide pmd to pte_leaf_size()
+>   mm: Provide mm_struct and address to huge_ptep_get()
+>   powerpc/mm: Allow hugepages without hugepd
+>   powerpc/8xx: Fix size given to set_huge_pte_at()
+>   powerpc/8xx: Rework support for 8M pages using contiguous PTE entries
+>   powerpc/8xx: Simplify struct mmu_psize_def
+>   powerpc/mm: Remove _PAGE_PSIZE
+>   powerpc/mm: Fix __find_linux_pte() on 32 bits with PMD leaf entries
+>   powerpc/mm: Complement huge_pte_alloc() for all non HUGEPD setups
+>   powerpc/64e: Remove unneeded #ifdef CONFIG_PPC_E500
+>   powerpc/64e: Clean up impossible setups
+>   powerpc/e500: Remove enc field from struct mmu_psize_def
+>   powerpc/85xx: Switch to 64 bits PGD
+>   powerpc/e500: Encode hugepage size in PTE bits
+>   powerpc/e500: Use contiguous PMD instead of hugepd
+>   powerpc/64s: Use contiguous PMD/PUD instead of HUGEPD
+>   powerpc/mm: Remove hugepd leftovers
+>   mm: Remove CONFIG_ARCH_HAS_HUGEPD
 
-But in that case "whether encode pfn in hwpoison swap entry" doesn't matter
-either.. as it's not yet converted to a swap entry, so the pfn is there.
+Great to see this series, thanks again Christophe.
+
+I requested for help on the lsfmm hugetlb unification session, but
+unfortunately I don't think there were Power people around.. I'd like to
+request help from Power developers again here on the list: it will be very
+appreciated if you can help have a look at this series.
+
+It's a direct dependent work to the hugetlb refactoring that we'll be
+working on, while it looks like the hugetlb refactoring is something the
+community as a whole would like to see in the near future.
+
+We don't want to add more Power-only CONFIG_ARCH_HAS_HUGEPD checks for
+hugetlb in any new code.
+
+Currently Oscar offered help on that hugetlb project, and Oscar will start
+to work on page_walk API refactoring.  I guess currently the simple way is
+we'll work on top of Christophe's series.  Some proper review on this
+series will definitely make it clearer on what we should do next.
 
 Thanks,
 
