@@ -2,53 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id AF9288CD6C6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 17:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CFF18CD817
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 18:06:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dsR/erEG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VlWcb2Zpqz78wj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 01:02:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VlXv41vY8z793W
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 02:00:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dsR/erEG;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkuI6ESz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlWbq2wrgz3vZb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 01:01:59 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A23DB62853;
-	Thu, 23 May 2024 15:01:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F92C32781;
-	Thu, 23 May 2024 15:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716476511;
-	bh=vjt+cmVcTd/Pb33Pdy5i3IcyArhpy6Hbpole/X6gRcQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dsR/erEGWqTrpUYgBr8bhaGLVokjd8cGzstRgXhQ2zvCED20LY5mA0MnJl4aB4HJc
-	 La4XclaMTB3PLF5t0NJgcHpcBikZatrx9W4WY9ygCpu1jkJvp4V89pXQqDXr566CAL
-	 gTkjCgb0GVECIIBAC7rE9Vcc1BNWnE1kQBSn89vMljOj6PktOdWsJ4kFOSyrO2FQOr
-	 YJRZELiVBmkHdkK9xYQW0SBB5IY9tYW95xCXMJLE7tBB8hjy9m3a/szl7vBydpvJgo
-	 1cI8r/UjUvpLRpRRJc65nGhaaJ0KJTCyhyGWqb4hhOTwLwf4mJQ8SN2F9cBm49eRrj
-	 334Kp8GdszKmQ==
-Date: Thu, 23 May 2024 17:59:57 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Eric Chanudet <echanude@redhat.com>
-Subject: Re: [PATCH v2] mm/mm_init: use node's number of cpus in
- deferred_page_init_max_threads
-Message-ID: <Zk9Z7S_wbumOekP6@kernel.org>
-References: <20240522203758.626932-4-echanude@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlXtJ1Rx4z3wY4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 01:59:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716479972;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
+	b=EkuI6ESz7UcfwyCxWXp89lrkSYMtteJFdGnEcweqJ0OXNBlkqJTZoJYmhbvDFibLuGAVNB
+	08+BhOZpDBnvos+pyPa5DsW7eWT6W426V/C1vOS73gGjzxJ2QF/1p1UyVgy3ybu3KpGOxU
+	4fux0G42jdjatF1f3mmeORNRosp3Hgc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716479972;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
+	b=EkuI6ESz7UcfwyCxWXp89lrkSYMtteJFdGnEcweqJ0OXNBlkqJTZoJYmhbvDFibLuGAVNB
+	08+BhOZpDBnvos+pyPa5DsW7eWT6W426V/C1vOS73gGjzxJ2QF/1p1UyVgy3ybu3KpGOxU
+	4fux0G42jdjatF1f3mmeORNRosp3Hgc=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-tARenD7MNS6SNYeDw6zDyQ-1; Thu, 23 May 2024 11:59:30 -0400
+X-MC-Unique: tARenD7MNS6SNYeDw6zDyQ-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6ab9836827eso777996d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 08:59:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716479970; x=1717084770;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
+        b=YVVhY/HWoy/+591bcjM5AheU6lOQlyC7lTdyNxQM/S48FLip07ENZVH3aMVXWwClAW
+         froL7I57CW8DhGuuy+/YyXPqo3lD39RUoansTfYHnVPY7ZX/kDlaoAlQVeB9LTeAdO7f
+         Px6Dt0+lfYBdaMcO42ltmgnPhuuluwdL25jd4v2xYUpAkGzetVJ80MtD6a+zaNjo4g+g
+         Qw7bg/Fafo3vGSJKEFt8BmHY3Ai9gRI8HIm7U1g/9o5POMQnWH1DR0kMa/K63Ubf8WTL
+         q5XQO3E+OqysLP81EGldM54SanACEtSTxgtp2IiQjDvocNVwyx+KivA/yzCqiL7cLvND
+         9fbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDed1vnPiA958tbYy2Fk3bOVfjheaniuBU6AbPpk9kZypF24WBd02c8+ttly0MrC8JU3ql+MdTBO4gUW1Qo428Vlo9XjPvnAzrnJ8u+g==
+X-Gm-Message-State: AOJu0YxDchLXIY9i7gPql4Azd5sNTQ08JVlK+z4OwOB4Kp1MB74/ODAf
+	DQfYs9FZSjqmFpMkF2TODtWOs9+tScE3ccOfq7i0PjNGduGdDkQfg/4wC2vQ3XFXfeos3adrBTU
+	+fue1bYis/ATPgXM57iryPUSKP+e/YI3fbm5DkEPJxMVBIg1oCHyQLMPIbsLj+WI=
+X-Received: by 2002:a05:6214:2484:b0:69b:1c5c:28fb with SMTP id 6a1803df08f44-6ab7f19ec6amr55473376d6.0.1716479969666;
+        Thu, 23 May 2024 08:59:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfEZ/MxR7kXEObGm96kXld53lPLAn57DT2wv2+Ejd7pVHUF2vvfPDOcD/zLRIDa0eVAMCLMw==
+X-Received: by 2002:a05:6214:2484:b0:69b:1c5c:28fb with SMTP id 6a1803df08f44-6ab7f19ec6amr55472786d6.0.1716479968823;
+        Thu, 23 May 2024 08:59:28 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6a15f17960csm144178206d6.25.2024.05.23.08.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 08:59:28 -0700 (PDT)
+Date: Thu, 23 May 2024 11:59:25 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Oscar Salvador <osalvador@suse.de>
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
+ poison errors
+Message-ID: <Zk9n3aXbOufWpAhn@x1n>
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com>
+ <Zj51rEwZeSK4Vr1G@x1n>
+ <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+ <ZkPY4CSnZWZnxjTa@x1n>
+ <ZkSMv31Cwx080no7@localhost.localdomain>
+ <Zk5noUEYI4lknyJy@x1n>
+ <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240522203758.626932-4-echanude@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,89 +106,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org
+Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, x86@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, John Hubbard <jhubbard@nvidia.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Suren Baghdasaryan <surenb@google.com>, Liu Shixin <liushixin2@huawei.com>, linux-parisc@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 22, 2024 at 04:38:01PM -0400, Eric Chanudet wrote:
-> x86_64 is already using the node's cpu as maximum threads. Make that the
-> default for all archs setting DEFERRED_STRUCT_PAGE_INIT.
+On Thu, May 23, 2024 at 05:08:29AM +0200, Oscar Salvador wrote:
+> On Wed, May 22, 2024 at 05:46:09PM -0400, Peter Xu wrote:
+> > > Now, ProcessB still has the page mapped, so upon re-accessing it,
+> > > it will trigger a new MCE event. memory-failure code will see that this
+> > 
+> > The question is why accessing that hwpoison entry from ProcB triggers an
+> > MCE.  Logically that's a swap entry and it should generate a page fault
+> > rather than MCE.  Then in the pgfault hanlder we don't need that encoded
+> > pfn as we have vmf->address.
 > 
-> This returns to the behavior prior making the function arch-specific
-> with commit ecd096506922 ("mm: make deferred init's max threads
-> arch-specific").
+> It would be a swap entry if we reach try_to_umap_one() without trouble.
+> Then we have the code that converts it:
 > 
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
+>  ...
+>  if (PageHWPoison(p))
+>          pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+> 	 set_{huge_}pte_at
+>  ...
 > 
-> ---
-> Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
-> shows faster deferred_init_memmap completions:
-> 
-> |         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
-> |         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
-> |         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
-> |---------|-------------|--------------|-----------------|--------------|
-> | threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
-> |---------|-------------|--------------|-----------------|--------------|
-> | 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
-> | cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
-> 
-> - v1: https://lore.kernel.org/linux-arm-kernel/20240520231555.395979-5-echanude@redhat.com
-> - Changes since v1:
->  - Make the generic function return the number of cpus of the node as
->    max threads limit instead overriding it for arm64.
-> - Drop Baoquan He's R-b on v1 since the logic changed.
-> - Add CCs according to patch changes (ppc and s390 set
->   DEFERRED_STRUCT_PAGE_INIT by default).
-> 
->  arch/x86/mm/init_64.c | 12 ------------
->  mm/mm_init.c          |  2 +-
->  2 files changed, 1 insertion(+), 13 deletions(-)
-> 
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index 7e177856ee4f..adec42928ec1 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1354,18 +1354,6 @@ void __init mem_init(void)
->  	preallocate_vmalloc_pages();
->  }
->  
-> -#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> -int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask)
-> -{
-> -	/*
-> -	 * More CPUs always led to greater speedups on tested systems, up to
-> -	 * all the nodes' CPUs.  Use all since the system is otherwise idle
-> -	 * now.
-> -	 */
-> -	return max_t(int, cpumask_weight(node_cpumask), 1);
-> -}
-> -#endif
-> -
->  int kernel_set_to_readonly;
->  
->  void mark_rodata_ro(void)
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index f72b852bd5b8..e0023aa68555 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2126,7 +2126,7 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->  __weak int __init
+> But maybe we could only do that for ProcA, while ProcB failed to do that,
+> which means that for ProcA that is a hwpoisoned-swap-entry, but ProcB still
+> has this page mapped as usual, so if ProcB re-access it, that will not
+> trigger a fault (because the page is still mapped in its pagetables).
 
-If s390 folks confirm there's no regression for them I think we can make
-this static.
+But in that case "whether encode pfn in hwpoison swap entry" doesn't matter
+either.. as it's not yet converted to a swap entry, so the pfn is there.
 
->  deferred_page_init_max_threads(const struct cpumask *node_cpumask)
->  {
-> -	return 1;
-> +	return max_t(int, cpumask_weight(node_cpumask), 1);
->  }
->  
->  /* Initialise remaining memory on a node */
-> -- 
-> 2.44.0
-> 
+Thanks,
 
 -- 
-Sincerely yours,
-Mike.
+Peter Xu
+
