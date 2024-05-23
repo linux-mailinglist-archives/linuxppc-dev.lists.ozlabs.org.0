@@ -2,70 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA528CD646
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 16:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF9288CD6C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 May 2024 17:11:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=NkAsg038;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dsR/erEG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VlWGZ4ttwz78vS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 00:47:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VlWcb2Zpqz78wj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 01:02:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=NkAsg038;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dsR/erEG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlWFs4dZnz3vZl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 00:46:25 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A6C0B40E02A6;
-	Thu, 23 May 2024 14:46:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id l2nRQhdxUtB6; Thu, 23 May 2024 14:46:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1716475569; bh=lMSeCakuwLRl6qGLg3e16nybVlse1JsLGi9aJxe5ftU=;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlWbq2wrgz3vZb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 01:01:59 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A23DB62853;
+	Thu, 23 May 2024 15:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F92C32781;
+	Thu, 23 May 2024 15:01:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716476511;
+	bh=vjt+cmVcTd/Pb33Pdy5i3IcyArhpy6Hbpole/X6gRcQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NkAsg038Z89PME2UN43DYilqftlUXNoYQ0I2xyQ+Dd87EiGQjCd2nHlYvBfwh+hwX
-	 GQqXnErGMdybQAuqCqJMt1qbQ5oNP8WRw45nq1DUGAAJGH0tRQWRpVlSeRyp24f2Qr
-	 UsoGBxlgCF83MDFxnI3qDTIlHZtAj+XQeCACCTVVkO4GR0V1cgoASkFFeuTyl+4P4O
-	 EFaMZ7aOXrgmyqguiWfbw4vsFn5OnQO5Hfljlxn53B4AmauZf/QL4y8IV66VZE1qO1
-	 y2Nms1+rheRklnlsw6m+9XtdgeY5WG3O16CucUtSn8S0qF/KMloZkrbw8L6r0vzeai
-	 gRjh5MGKTOpMlw86P805CQmNb1QnHi/uXa5insULj9NwWUayOZCAyxm8G64CSZRjjZ
-	 xnDcKc8GzOEJi9MLB8QwO3Bc/Hhb3zs1bMFAv/ohVFarLlV5FodOiEAHW0CBTbAKhk
-	 KcpxoimWRptFK1V9CPXJ6IavRh5th2QUaNHd5zOWFQwtjQir1HqLiADLfuGGiV1klE
-	 viyd4zCpOG5RVEZNgKPKv6VX5uo0GUD+aJT8NJj0O5q56KjltkI5HHxX1btqaGuxwm
-	 V98KtpFeJ1V6e6l9xn2DQhfe6p9+yTTVqLuYD/zbX/dizkoOKWmbk3/G6oo3BQHnDG
-	 ob4/bbWz/FqktDEHgWCsy1Ic=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CAE0740E016A;
-	Thu, 23 May 2024 14:45:48 +0000 (UTC)
-Date: Thu, 23 May 2024 16:45:43 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Balasubrmanian, Vignesh" <vigbalas@amd.com>
-Subject: Re: [PATCH v2 1/1] x86/elf: Add a new .note section containing
- Xfeatures information to x86 core files
-Message-ID: <20240523144543.GDZk9WlwKpCKx8I3RE@fat_crate.local>
-References: <87wmo4o3r4.ffs@tglx>
- <4a090901-9705-40aa-ac3d-d67c52660f22@amd.com>
- <20240522153433.GCZk4QiX4Hf0OuI48E@fat_crate.local>
- <902b1bf0-15e6-42df-8f86-21387deef437@amd.com>
+	b=dsR/erEGWqTrpUYgBr8bhaGLVokjd8cGzstRgXhQ2zvCED20LY5mA0MnJl4aB4HJc
+	 La4XclaMTB3PLF5t0NJgcHpcBikZatrx9W4WY9ygCpu1jkJvp4V89pXQqDXr566CAL
+	 gTkjCgb0GVECIIBAC7rE9Vcc1BNWnE1kQBSn89vMljOj6PktOdWsJ4kFOSyrO2FQOr
+	 YJRZELiVBmkHdkK9xYQW0SBB5IY9tYW95xCXMJLE7tBB8hjy9m3a/szl7vBydpvJgo
+	 1cI8r/UjUvpLRpRRJc65nGhaaJ0KJTCyhyGWqb4hhOTwLwf4mJQ8SN2F9cBm49eRrj
+	 334Kp8GdszKmQ==
+Date: Thu, 23 May 2024 17:59:57 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Eric Chanudet <echanude@redhat.com>
+Subject: Re: [PATCH v2] mm/mm_init: use node's number of cpus in
+ deferred_page_init_max_threads
+Message-ID: <Zk9Z7S_wbumOekP6@kernel.org>
+References: <20240522203758.626932-4-echanude@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <902b1bf0-15e6-42df-8f86-21387deef437@amd.com>
+In-Reply-To: <20240522203758.626932-4-echanude@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,19 +60,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "felix.willgerodt@intel.com" <felix.willgerodt@intel.com>, "matz@suse.de" <matz@suse.de>, "George, Jini Susan" <JiniSusan.George@amd.com>, "keescook@chromium.org" <keescook@chromium.org>, "jhb@FreeBSD.org" <jhb@freebsd.org>, "binutils@sourceware.org" <binutils@sourceware.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-toolchains@vger.kernel.org" <linux-toolchains@vger.kernel.org>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Balasubrmanian, Vignesh" <Vignesh.Balasubrmanian@amd.com>, "ebiederm@xmission.com" <ebiederm@xmission.com>
+Cc: linux-s390@vger.kernel.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 23, 2024 at 11:57:00AM +0530, Balasubrmanian, Vignesh wrote:
-> Currently, this enum is the same as XSAVE, but when we add other features, this
-> enum might have a different value of the XSAVE features and can be modified
-> without disturbing the existing kernel code.
+On Wed, May 22, 2024 at 04:38:01PM -0400, Eric Chanudet wrote:
+> x86_64 is already using the node's cpu as maximum threads. Make that the
+> default for all archs setting DEFERRED_STRUCT_PAGE_INIT.
+> 
+> This returns to the behavior prior making the function arch-specific
+> with commit ecd096506922 ("mm: make deferred init's max threads
+> arch-specific").
+> 
+> Signed-off-by: Eric Chanudet <echanude@redhat.com>
+> 
+> ---
+> Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
+> shows faster deferred_init_memmap completions:
+> 
+> |         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
+> |         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
+> |         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
+> |---------|-------------|--------------|-----------------|--------------|
+> | threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
+> |---------|-------------|--------------|-----------------|--------------|
+> | 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
+> | cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
+> 
+> - v1: https://lore.kernel.org/linux-arm-kernel/20240520231555.395979-5-echanude@redhat.com
+> - Changes since v1:
+>  - Make the generic function return the number of cpus of the node as
+>    max threads limit instead overriding it for arm64.
+> - Drop Baoquan He's R-b on v1 since the logic changed.
+> - Add CCs according to patch changes (ppc and s390 set
+>   DEFERRED_STRUCT_PAGE_INIT by default).
+> 
+>  arch/x86/mm/init_64.c | 12 ------------
+>  mm/mm_init.c          |  2 +-
+>  2 files changed, 1 insertion(+), 13 deletions(-)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 7e177856ee4f..adec42928ec1 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1354,18 +1354,6 @@ void __init mem_init(void)
+>  	preallocate_vmalloc_pages();
+>  }
+>  
+> -#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+> -int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask)
+> -{
+> -	/*
+> -	 * More CPUs always led to greater speedups on tested systems, up to
+> -	 * all the nodes' CPUs.  Use all since the system is otherwise idle
+> -	 * now.
+> -	 */
+> -	return max_t(int, cpumask_weight(node_cpumask), 1);
+> -}
+> -#endif
+> -
+>  int kernel_set_to_readonly;
+>  
+>  void mark_rodata_ro(void)
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index f72b852bd5b8..e0023aa68555 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2126,7 +2126,7 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>  __weak int __init
 
-We will do that when we cross that bridge, right?
+If s390 folks confirm there's no regression for them I think we can make
+this static.
+
+>  deferred_page_init_max_threads(const struct cpumask *node_cpumask)
+>  {
+> -	return 1;
+> +	return max_t(int, cpumask_weight(node_cpumask), 1);
+>  }
+>  
+>  /* Initialise remaining memory on a node */
+> -- 
+> 2.44.0
+> 
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sincerely yours,
+Mike.
