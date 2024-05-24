@@ -2,53 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EFD28CE16D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 09:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78C1A8CE182
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 09:31:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FD2N3ewJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ByOKk0V7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vlx4q6HJFz87RH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 17:10:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VlxRB35nyz87ZJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 17:25:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FD2N3ewJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ByOKk0V7;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vlx461KLCz87Gm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 17:09:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlxQT2rlDz3cbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 17:25:21 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1716534560;
-	bh=Esb2KY6b1PqEQxysInOUkGshLUVvXJHL4fIErYt0EbY=;
+	s=201909; t=1716535518;
+	bh=6Nxzlvh6hi/K9obT/OWbCZiouMvR46Xa9Rav7X3CLf0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FD2N3ewJox45JFZSUsks0vEqEKj3SmDBFivg+uAiR+YCaa7oV4t+DVFIEKT1vFf3R
-	 aZ7wlqs9JxKBUzkCxL+lgdqO1UQ3BEMbTUfi9EFDtCD+y3+WjZOT7oMprLT10KyOBd
-	 WtLUrGX/NW2gYMDfieBu7zTdY3NUAio2gRDRIXCV/BbHy6I3jCnffgTFQ7Mpw9Izkt
-	 a57/LfMnHvKkU6GcozZDvrxFxmazqYm52ZL5T0WUsW7458I5wcp5y03xtt4pFiv7bJ
-	 YhH94A1k8kWzHa4bZdiNjkaWh7V/URxwNogHLscHlzWaxRIzeYGJp8KMYzDyrSzjC8
-	 q4eoDQ+gzQ73w==
+	b=ByOKk0V7ZEccbM3hSsVjeYiyQfMGD14qpRTg9787+rmXSGvxNYhpt/FkKoBZT6pFb
+	 ONsGC97njz2dXaztOnEyCwHTdBC7Ho8dGBHffh5fZTFjh1ZCjsCwetR9ezghEBY2kG
+	 zuxRO3Bqm22lj6cNVCBH0K+3f2+31JyB7YUN28655vsElCurpxtqp7LOZJKWdk721b
+	 UcheUeZVS9LquznNQs1qlKhvDNfhBPxW24QfHthpjLEnI6Gi/u7xJWaytfN9n2NFbq
+	 GGkQy1qq3mW/Lstk3DYMcVrsczv9aGsF9/AxkS3S3Qk00r9JWJqNrhDNdR8TCuVhZa
+	 VWLcRzwgAfEJQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Vlx3y60jZz4wcC;
-	Fri, 24 May 2024 17:09:18 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VlxQQ2Frvz4wc5;
+	Fri, 24 May 2024 17:25:18 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH 1/2] powerpc/uaccess: Fix build errors seen with GCC 14
-In-Reply-To: <CAKwvOdm0_dAvQtuJXWfSCwh+2Jy=79DyjG+tKp9NGv9tunwj1A@mail.gmail.com>
-References: <20240521123919.245886-1-mpe@ellerman.id.au>
- <CAKwvOdm0_dAvQtuJXWfSCwh+2Jy=79DyjG+tKp9NGv9tunwj1A@mail.gmail.com>
-Date: Fri, 24 May 2024 17:09:17 +1000
-Message-ID: <87h6en4rfm.fsf@mail.lhotse>
+To: Anjali K <anjalik@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] powerpc/perf: Set cpumode flags using sample address
+In-Reply-To: <20240517094607.422166-1-anjalik@linux.ibm.com>
+References: <20240517094607.422166-1-anjalik@linux.ibm.com>
+Date: Fri, 24 May 2024 17:25:17 +1000
+Message-ID: <87ed9r4qoy.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,58 +58,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathan@kernel.org, linuxppc-dev@lists.ozlabs.org, linkw@gcc.gnu.org
+Cc: anjalik@linux.ibm.com, kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nick Desaulniers <ndesaulniers@google.com> writes:
-> On Tue, May 21, 2024 at 5:39=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
-.au> wrote:
->>
->> Building ppc64le_defconfig with GCC 14 fails with assembler errors:
->>
->>     CC      fs/readdir.o
->>   /tmp/ccdQn0mD.s: Assembler messages:
->>   /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multipl=
-e of 4)
->>   /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multipl=
-e of 4)
->>   ... [6 lines]
->>   /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multip=
-le of 4)
->>
->> A snippet of the asm shows:
->>
->>   # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name,=
- name, namlen, efault_end);
->>          ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *=
-)name_38(D) + _88 * 1]
->>   # 210 "../fs/readdir.c" 1
->>          1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[=
-(u64 *)name_38(D) + _88 * 1]
->>
->> The 'std' instruction requires a 4-byte aligned displacement because
->> it is a DS-form instruction, and as the assembler says, 18 is not a
->> multiple of 4.
->>
->> The fix is to change the constraint on the memory operand to put_user(),
->> from "m" which is a general memory reference to "YZ".
->>
->> The "Z" constraint is documented in the GCC manual PowerPC machine
->> constraints, and specifies a "memory operand accessed with indexed or
->> indirect addressing". "Y" is not documented in the manual but specifies
->> a "memory operand for a DS-form instruction". Using both allows the
->> compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
->>
->> The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
->> the "Y" constraint does not guarantee 4-byte alignment when prefixed
->> instructions are enabled.
->>
->> Unfortunately clang doesn't support the "Y" constraint so that has to be
->> behind an ifdef.
->
-> Filed: https://github.com/llvm/llvm-project/issues/92939
+Hi Anjali,
 
-Thanks. I will file one to have the GCC constraint documented.
+Anjali K <anjalik@linux.ibm.com> writes:
+> Currently in some cases, when the sampled instruction address register
+> latches to a specific address during sampling, there is an inconsistency
+> in the privilege bits captured in the sampled event register.
+ 
+I don't really like "inconsistency", it's vague.
+
+The sampled address is correct, and the privilege bits are incorrect.
+
+If someone is offended by that wording you can direct them to me :)
+
+> For example, a snippet from the perf report on a power10 system is:
+> Overhead  Address             Command       Shared Object      Symbol
+> ........  ..................  ............  .................  .......................
+>      2.41%  0x7fff9f94a02c      null_syscall  [unknown]          [k] 0x00007fff9f94a02c
+>      2.20%  0x7fff9f94a02c      null_syscall  libc.so.6          [.] syscall
+>
+> perf_get_misc_flags() function looks at the privilege bits to return
+> the corresponding flags to be used for the address symbol and these
+> privilege bit details are read from the sampled event register. In the
+> above snippet, address "0x00007fff9f94a02c" is shown as "k" (kernel) due
+> to the inconsistent privilege bits captured in the sampled event register.
+ 
+"incorrect privilege bits"
+
+> To address this case, the proposed fix is to additionally check whether the
+ 
+"To address this case check whether the"
+
+> sampled address is in the kernel area. Since this is specific to the latest
+> platform, a new pmu flag is added called "PPMU_P10" and is used to
+> contain the proposed fix.
+
+You should explain why this fix replaces the existing P10_DD1 logic.
+
+> Signed-off-by: Anjali K <anjalik@linux.ibm.com>
+> ---
+> Changelog:
+> V1->V2:
+> Fixed the build warning reported by the kernel test bot
+> Added a new flag PPMU_P10 and used it instead of PPMU_ARCH_31 to restrict
+> the changes to the current platform (Power10)
+>
+>  arch/powerpc/include/asm/perf_event_server.h |  1 +
+>  arch/powerpc/perf/core-book3s.c              | 43 ++++++++------------
+>  arch/powerpc/perf/power10-pmu.c              |  3 +-
+>  3 files changed, 20 insertions(+), 27 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
+> index e2221d29fdf9..12f7bfb4cab1 100644
+> --- a/arch/powerpc/include/asm/perf_event_server.h
+> +++ b/arch/powerpc/include/asm/perf_event_server.h
+> @@ -90,6 +90,7 @@ struct power_pmu {
+>  #define PPMU_ARCH_31		0x00000200 /* Has MMCR3, SIER2 and SIER3 */
+>  #define PPMU_P10_DD1		0x00000400 /* Is power10 DD1 processor version */
+>  #define PPMU_HAS_ATTR_CONFIG1	0x00000800 /* Using config1 attribute */
+> +#define PPMU_P10			0x00001000 /* For power10 pmu */
+  
+Can you put PPMU_P10 immediately after PPMU_P10_DD1. It's OK to renumber
+PPMU_HAS_ATTR_CONFIG1.
+
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+> index 6b5f8a94e7d8..8a2677463a73 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -266,31 +266,12 @@ static inline u32 perf_flags_from_msr(struct pt_regs *regs)
+>  static inline u32 perf_get_misc_flags(struct pt_regs *regs)
+>  {
+>  	bool use_siar = regs_use_siar(regs);
+> -	unsigned long mmcra = regs->dsisr;
+> -	int marked = mmcra & MMCRA_SAMPLE_ENABLE;
+> +	unsigned long siar = mfspr(SPRN_SIAR);
+ 
+We shouldn't read SPRN_SIAR until we know it will be used.
+
+> +	unsigned long addr;
+>  
+>  	if (!use_siar)
+>  		return perf_flags_from_msr(regs);
+>  
+> -	/*
+> -	 * Check the address in SIAR to identify the
+> -	 * privilege levels since the SIER[MSR_HV, MSR_PR]
+> -	 * bits are not set for marked events in power10
+> -	 * DD1.
+> -	 */
+> -	if (marked && (ppmu->flags & PPMU_P10_DD1)) {
+> -		unsigned long siar = mfspr(SPRN_SIAR);
+> -		if (siar) {
+> -			if (is_kernel_addr(siar))
+> -				return PERF_RECORD_MISC_KERNEL;
+> -			return PERF_RECORD_MISC_USER;
+> -		} else {
+> -			if (is_kernel_addr(regs->nip))
+> -				return PERF_RECORD_MISC_KERNEL;
+> -			return PERF_RECORD_MISC_USER;
+> -		}
+> -	}
+> -
+>  	/*
+>  	 * If we don't have flags in MMCRA, rather than using
+>  	 * the MSR, we intuit the flags from the address in
+> @@ -298,19 +279,29 @@ static inline u32 perf_get_misc_flags(struct pt_regs *regs)
+>  	 * results
+>  	 */
+>  	if (ppmu->flags & PPMU_NO_SIPR) {
+> -		unsigned long siar = mfspr(SPRN_SIAR);
+>  		if (is_kernel_addr(siar))
+>  			return PERF_RECORD_MISC_KERNEL;
+>  		return PERF_RECORD_MISC_USER;
+>  	}
+>  
+>  	/* PR has priority over HV, so order below is important */
+> -	if (regs_sipr(regs))
+> -		return PERF_RECORD_MISC_USER;
+> -
+> -	if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
+> +	if (regs_sipr(regs)) {
+> +		if (!(ppmu->flags & PPMU_P10))
+> +			return PERF_RECORD_MISC_USER;
+> +	} else if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
+>  		return PERF_RECORD_MISC_HYPERVISOR;
+>  
+> +	/*
+> +	 * Check the address in SIAR to identify the
+> +	 * privilege levels since the SIER[MSR_HV, MSR_PR]
+> +	 * bits are not set correctly in power10 sometimes
+> +	 */
+> +	if (ppmu->flags & PPMU_P10) {
+> +		addr = siar ? siar : regs->nip;
+> +		if (!is_kernel_addr(addr))
+> +			return PERF_RECORD_MISC_USER;
+> +	}
+> +
+>  	return PERF_RECORD_MISC_KERNEL;
+>  }
 
 cheers
