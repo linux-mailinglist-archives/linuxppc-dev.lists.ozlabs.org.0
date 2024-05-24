@@ -1,77 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B4868CDF55
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 03:56:42 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lVTKr8+t;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTP id F130C8CDF59
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 04:01:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vlnwz5jkGz87kS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 11:47:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vlp2X6Pc1z884F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 11:52:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lVTKr8+t;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=richard.weiyang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlnwG3T9rz3vw3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 11:47:08 +1000 (AEST)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3550840d92dso322987f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 May 2024 18:47:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716515218; x=1717120018; darn=lists.ozlabs.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t6jwG8DKwa2D68PCR9THchOvJn/p8bGOM0gVPOEmuF4=;
-        b=lVTKr8+tU4x19purSFr1NIWw1u1Mg3UTivQP51g/DjMLWcaGCNf9SLL1YzhGPw5v69
-         S0CCEMab4/mCnYmykTqjwmo5ZCaeUPqTvUwdb9k+trv/tWRQ7MmYny0cYKUAxhdJWe2E
-         o+6U+WkSE4MlpLypWj+Fh969aJSL1rSzkmmqdt3ofGcRBdUJjBw/vAcIbot9SUJ8MFVn
-         MHXdRDYRhQh/hnZWt0wONbknmsRTR8JbaNTrHVM9YPfDOxcKd/eOorCo4fULQlpfhQ+d
-         2zTwjELqqyk0N7atYYfoKMxVi68+2rX2N+tkJl7xmCf1umYc16//DwbsrRWIs4JqyaCX
-         qZYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716515218; x=1717120018;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t6jwG8DKwa2D68PCR9THchOvJn/p8bGOM0gVPOEmuF4=;
-        b=PamGNPRRIz+p8jRVMAxAEL5tD6/+NFhfn9cKGjm2ecW0evybLYHOaC51Lt8/CSSlzf
-         cYZa0FqZY/KLYy6BTzNPEIHHKuEy5v3lwGVCdTTQnFFS+ME17MKrtQVa3fOSkc2AUUfp
-         8941OyWnplvwSDnV52VC2HhW/nGTNClkFmRw3THlfQsqVRUK6pyOgWtY7CWy5gIWWCHn
-         L36l42R/+My/V+Hd2ykhj3OBVxitjwFW3586hPMYpXXvHt/57itTWtwN465l3S+odUuB
-         6x1/gDrvwRYoYRebClp78OX4LkuMzhws3Wk184k810IMmWFnrkBhQrd8HBRJyohIu6oJ
-         DjTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOFBYTM7VKX6O8h3g/MmEECUJv5kvbN+8mE/L7v/YcirZN4h5310igPoVIcAr7V2/CoHNTYBJvweSskp2oa01VsHs2+EDAw7IOw0372g==
-X-Gm-Message-State: AOJu0Yz1h9djoteazBHwRhMZYjh52/ScXAYANLVHUjpkBL5Q+2eKAkJf
-	ms4rKlsgyvcjNpDQGItW3hfV+Xd9LXibu2PIdHHtHzjooCro2PHz
-X-Google-Smtp-Source: AGHT+IHDazZVS98g6jCPWCi6GMzJXJccQeP8EnJhTsM0NPuM+NoCFvUGXOm/kOMvOGJZBv5HNLIsdg==
-X-Received: by 2002:adf:ffce:0:b0:354:f802:f3a6 with SMTP id ffacd0b85a97d-355245e31b5mr430730f8f.9.1716515217640;
-        Thu, 23 May 2024 18:46:57 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc51ee7sm41771366b.139.2024.05.23.18.46.56
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 May 2024 18:46:56 -0700 (PDT)
-Date: Fri, 24 May 2024 01:46:56 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [Patch v2] mm/memblock: discard .text/.data if
- CONFIG_ARCH_KEEP_MEMBLOCK not set
-Message-ID: <20240524014656.odw4yuvhgbu4dgf7@master>
-References: <20240510020422.8038-1-richard.weiyang@gmail.com>
- <ZkxLkK7vgzzaEvyw@kernel.org>
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=maobibo@loongson.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 70 seconds by postgrey-1.37 at boromir; Fri, 24 May 2024 11:52:13 AEST
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vlp256jGbz87sP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 11:52:13 +1000 (AEST)
+Received: from loongson.cn (unknown [10.20.42.173])
+	by gateway (Coremail) with SMTP id _____8Bx3+t_8k9mSjkDAA--.9007S3;
+	Fri, 24 May 2024 09:50:55 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8BxHMd78k9mJHEHAA--.20507S3;
+	Fri, 24 May 2024 09:50:53 +0800 (CST)
+Subject: Re: [PATCH v2 4/6] KVM: Delete the now unused kvm_arch_sched_in()
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao
+ <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20240522014013.1672962-1-seanjc@google.com>
+ <20240522014013.1672962-5-seanjc@google.com>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <d2810a82-3111-36f0-c27d-fb7c4c7efe58@loongson.cn>
+Date: Fri, 24 May 2024 09:50:50 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZkxLkK7vgzzaEvyw@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20240522014013.1672962-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxHMd78k9mJHEHAA--.20507S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxtF47GFW5Jry5Jr4DGw45Arc_yoWxtF4Upa
+	s3uFs5Wa1fKryrKa4DJr4q93y5Zws5Kw1av34UKrW5JFn8trn8JF4kKr9rJr98JrW093WS
+	kFy3KF1ruF4jywcCm3ZEXasCq-sJn29KB7ZKAUJUUUUP529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
+	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUstxhDUUUU
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,113 +74,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-arch@vger.kernel.org, arnd@arndb.de, anshuman.khandual@arm.com, linux-kernel@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>, aneesh.kumar@kernel.org, linux-mm@kvack.org, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 21, 2024 at 10:21:52AM +0300, Mike Rapoport wrote:
->Hi,
->
->On Fri, May 10, 2024 at 02:04:22AM +0000, Wei Yang wrote:
->> When CONFIG_ARCH_KEEP_MEMBLOCK not set, we expect to discard related
->> code and data. But it doesn't until CONFIG_MEMORY_HOTPLUG not set
->> neither.
->> 
->> This patch puts memblock's .text/.data into its own section, so that it
->> only depends on CONFIG_ARCH_KEEP_MEMBLOCK to discard related code and
->> data.
->> 
->> After this, from the log message in mem_init_print_info(), init size
->> increase from 2420K to 2432K on arch x86.
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> 
->> ---
->> v2: fix orphan section for powerpc
->> ---
->>  arch/powerpc/kernel/vmlinux.lds.S |  1 +
->>  include/asm-generic/vmlinux.lds.h | 14 +++++++++++++-
->>  include/linux/memblock.h          |  8 ++++----
->>  3 files changed, 18 insertions(+), 5 deletions(-)
->>  
->> +#define __init_memblock        __section(".mbinit.text") __cold notrace \
->> +						  __latent_entropy
->> +#define __initdata_memblock    __section(".mbinit.data")
->> +
->
->The new .mbinit.* sections should be added to scripts/mod/modpost.c
->alongside .meminit.* sections and then I expect modpost to report a bunch
->of section mismatches because many memblock functions are called on memory
->hotplug even on architectures that don't select ARCH_KEEP_MEMBLOCK.
->
-
-I tried to add some code in modpost.c, "make all" looks good.
-
-May I ask how can I trigger the "mismatch" warning?
-
-BTW, if ARCH_KEEP_MEMBLOCK unset, we would discard memblock meta-data. If
-hotplug would call memblock function, it would be dangerous?
-
-The additional code I used is like below.
-
----
- scripts/mod/modpost.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 937294ff164f..c837e2882904 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -777,14 +777,14 @@ static void check_section(const char *modname, struct elf_info *elf,
- 
- #define ALL_INIT_DATA_SECTIONS \
- 	".init.setup", ".init.rodata", ".meminit.rodata", \
--	".init.data", ".meminit.data"
-+	".init.data", ".meminit.data", "mbinit.data"
- 
- #define ALL_PCI_INIT_SECTIONS	\
- 	".pci_fixup_early", ".pci_fixup_header", ".pci_fixup_final", \
- 	".pci_fixup_enable", ".pci_fixup_resume", \
- 	".pci_fixup_resume_early", ".pci_fixup_suspend"
- 
--#define ALL_XXXINIT_SECTIONS ".meminit.*"
-+#define ALL_XXXINIT_SECTIONS ".meminit.*", "mbinit.*"
- 
- #define ALL_INIT_SECTIONS INIT_SECTIONS, ALL_XXXINIT_SECTIONS
- #define ALL_EXIT_SECTIONS ".exit.*"
-@@ -799,7 +799,7 @@ static void check_section(const char *modname, struct elf_info *elf,
- 
- #define INIT_SECTIONS      ".init.*"
- 
--#define ALL_TEXT_SECTIONS  ".init.text", ".meminit.text", ".exit.text", \
-+#define ALL_TEXT_SECTIONS  ".init.text", ".meminit.text", ".mbinit.text", ".exit.text", \
- 		TEXT_SECTIONS, OTHER_TEXT_SECTIONS
- 
- enum mismatch {
--- 
-2.34.1
 
 
->>  #ifndef CONFIG_ARCH_KEEP_MEMBLOCK
->> -#define __init_memblock __meminit
->> -#define __initdata_memblock __meminitdata
->>  void memblock_discard(void);
->>  #else
->> -#define __init_memblock
->> -#define __initdata_memblock
->>  static inline void memblock_discard(void) {}
->>  #endif
->>  
->> -- 
->> 2.34.1
->> 
->> 
->
->-- 
->Sincerely yours,
->Mike.
+On 2024/5/22 上午9:40, Sean Christopherson wrote:
+> Delete kvm_arch_sched_in() now that all implementations are nops.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   arch/arm64/include/asm/kvm_host.h     | 1 -
+>   arch/loongarch/include/asm/kvm_host.h | 1 -
+>   arch/mips/include/asm/kvm_host.h      | 1 -
+>   arch/powerpc/include/asm/kvm_host.h   | 1 -
+>   arch/riscv/include/asm/kvm_host.h     | 1 -
+>   arch/s390/include/asm/kvm_host.h      | 1 -
+>   arch/x86/kvm/pmu.c                    | 6 +++---
+>   arch/x86/kvm/x86.c                    | 5 -----
+>   include/linux/kvm_host.h              | 2 --
+>   virt/kvm/kvm_main.c                   | 1 -
+>   10 files changed, 3 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 8170c04fde91..615e7a2e5590 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -1225,7 +1225,6 @@ static inline bool kvm_system_needs_idmapped_vectors(void)
+>   }
+>   
+>   static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+> -static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+>   
+>   void kvm_arm_init_debug(void);
+>   void kvm_arm_vcpu_init_debug(struct kvm_vcpu *vcpu);
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+> index c87b6ea0ec47..4162a252cdf6 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -261,7 +261,6 @@ static inline bool kvm_is_ifetch_fault(struct kvm_vcpu_arch *arch)
+>   static inline void kvm_arch_hardware_unsetup(void) {}
+>   static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+>   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+> -static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+>   static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+>   static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+>   static inline void kvm_arch_vcpu_block_finish(struct kvm_vcpu *vcpu) {}
+> diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+> index 179f320cc231..6743a57c1ab4 100644
+> --- a/arch/mips/include/asm/kvm_host.h
+> +++ b/arch/mips/include/asm/kvm_host.h
+> @@ -890,7 +890,6 @@ static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+>   static inline void kvm_arch_free_memslot(struct kvm *kvm,
+>   					 struct kvm_memory_slot *slot) {}
+>   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+> -static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+>   static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+>   static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+>   
+> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+> index 8abac532146e..c4fb6a27fb92 100644
+> --- a/arch/powerpc/include/asm/kvm_host.h
+> +++ b/arch/powerpc/include/asm/kvm_host.h
+> @@ -897,7 +897,6 @@ struct kvm_vcpu_arch {
+>   static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+>   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+>   static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
+> -static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+>   static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+>   static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+>   
+> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+> index d96281278586..dd77c2db6819 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+> @@ -286,7 +286,6 @@ struct kvm_vcpu_arch {
+>   };
+>   
+>   static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+> -static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+>   
+>   #define KVM_RISCV_GSTAGE_TLB_MIN_ORDER		12
+>   
+> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+> index 95990461888f..e9fcaf4607a6 100644
+> --- a/arch/s390/include/asm/kvm_host.h
+> +++ b/arch/s390/include/asm/kvm_host.h
+> @@ -1045,7 +1045,6 @@ extern int kvm_s390_gisc_register(struct kvm *kvm, u32 gisc);
+>   extern int kvm_s390_gisc_unregister(struct kvm *kvm, u32 gisc);
+>   
+>   static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+> -static inline void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu) {}
+>   static inline void kvm_arch_free_memslot(struct kvm *kvm,
+>   					 struct kvm_memory_slot *slot) {}
+>   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index a593b03c9aed..f9149c9fc275 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -521,9 +521,9 @@ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu)
+>   	}
+>   
+>   	/*
+> -	 * Unused perf_events are only released if the corresponding MSRs
+> -	 * weren't accessed during the last vCPU time slice. kvm_arch_sched_in
+> -	 * triggers KVM_REQ_PMU if cleanup is needed.
+> +	 * Release unused perf_events if the corresponding guest MSRs weren't
+> +	 * accessed during the last vCPU time slice (need_cleanup is set when
+> +	 * the vCPU is scheduled back in).
+>   	 */
+>   	if (unlikely(pmu->need_cleanup))
+>   		kvm_pmu_cleanup(vcpu);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index e924d1c51e31..59aa772af755 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -12586,11 +12586,6 @@ bool kvm_vcpu_is_bsp(struct kvm_vcpu *vcpu)
+>   	return (vcpu->arch.apic_base & MSR_IA32_APICBASE_BSP) != 0;
+>   }
+>   
+> -void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu)
+> -{
+> -
+> -}
+> -
+>   void kvm_arch_free_vm(struct kvm *kvm)
+>   {
+>   #if IS_ENABLED(CONFIG_HYPERV)
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index bde69f74b031..c404c428a866 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -1495,8 +1495,6 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
+>   					struct kvm_guest_debug *dbg);
+>   int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu);
+>   
+> -void kvm_arch_sched_in(struct kvm_vcpu *vcpu, int cpu);
+> -
+>   void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
+>   void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu);
+>   int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id);
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 7ecea573d121..b312d0cbe60b 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -6286,7 +6286,6 @@ static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
+>   	WRITE_ONCE(vcpu->ready, false);
+>   
+>   	__this_cpu_write(kvm_running_vcpu, vcpu);
+> -	kvm_arch_sched_in(vcpu, cpu);
+>   	kvm_arch_vcpu_load(vcpu, cpu);
+>   
+>   	WRITE_ONCE(vcpu->scheduled_out, false);
+> 
 
--- 
-Wei Yang
-Help you, Help me
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+
