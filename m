@@ -2,127 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C0B58CE118
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 08:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EFD28CE16D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 09:16:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=J0pXQxul;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Q9FWROvK;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=J0pXQxul;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Q9FWROvK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FD2N3ewJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VlwFc5p5Mz7946
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 16:32:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vlx4q6HJFz87RH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 17:10:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=J0pXQxul;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Q9FWROvK;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=J0pXQxul;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Q9FWROvK;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FD2N3ewJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VlwDs15gHz78lF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 16:31:56 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vlx461KLCz87Gm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 May 2024 17:09:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1716534560;
+	bh=Esb2KY6b1PqEQxysInOUkGshLUVvXJHL4fIErYt0EbY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=FD2N3ewJox45JFZSUsks0vEqEKj3SmDBFivg+uAiR+YCaa7oV4t+DVFIEKT1vFf3R
+	 aZ7wlqs9JxKBUzkCxL+lgdqO1UQ3BEMbTUfi9EFDtCD+y3+WjZOT7oMprLT10KyOBd
+	 WtLUrGX/NW2gYMDfieBu7zTdY3NUAio2gRDRIXCV/BbHy6I3jCnffgTFQ7Mpw9Izkt
+	 a57/LfMnHvKkU6GcozZDvrxFxmazqYm52ZL5T0WUsW7458I5wcp5y03xtt4pFiv7bJ
+	 YhH94A1k8kWzHa4bZdiNjkaWh7V/URxwNogHLscHlzWaxRIzeYGJp8KMYzDyrSzjC8
+	 q4eoDQ+gzQ73w==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D62F7207F9;
-	Fri, 24 May 2024 06:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716532311; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3InHPw4zDCqDhiB22k++dKm8geIUyYGdUQMnurPTGoo=;
-	b=J0pXQxuliTeq56lmsQC5gpb+X6Xw18yN1jNFB4l+7PmDYN51B543hH5eIv5kDHxmgETLwJ
-	dUSN0ivO5IAF5bdYBECKohssOoetQU2uGUaj3Zr2wDdl0GD1VJCYT46eek1Uzt7VzfKasg
-	hwPdWpOXHzwNL8z/nitiAsoWO2GItEM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716532311;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3InHPw4zDCqDhiB22k++dKm8geIUyYGdUQMnurPTGoo=;
-	b=Q9FWROvKUiebbih++9Dxzqk0ge2cOSBCE6PF+73p4zXOSwHPxx3rFa7BcyZ5lb5vNRRLz8
-	TQSPWDXwyrjQa6Bw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J0pXQxul;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Q9FWROvK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716532311; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3InHPw4zDCqDhiB22k++dKm8geIUyYGdUQMnurPTGoo=;
-	b=J0pXQxuliTeq56lmsQC5gpb+X6Xw18yN1jNFB4l+7PmDYN51B543hH5eIv5kDHxmgETLwJ
-	dUSN0ivO5IAF5bdYBECKohssOoetQU2uGUaj3Zr2wDdl0GD1VJCYT46eek1Uzt7VzfKasg
-	hwPdWpOXHzwNL8z/nitiAsoWO2GItEM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716532311;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3InHPw4zDCqDhiB22k++dKm8geIUyYGdUQMnurPTGoo=;
-	b=Q9FWROvKUiebbih++9Dxzqk0ge2cOSBCE6PF+73p4zXOSwHPxx3rFa7BcyZ5lb5vNRRLz8
-	TQSPWDXwyrjQa6Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A5A513A6B;
-	Fri, 24 May 2024 06:31:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2qmLE1c0UGblNAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Fri, 24 May 2024 06:31:51 +0000
-Date: Fri, 24 May 2024 08:31:45 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [RFC PATCH v2 00/20] Reimplement huge pages without hugepd on
- powerpc (8xx, e500, book3s/64)
-Message-ID: <ZlA0Uc_gJ32g0btA@localhost.localdomain>
-References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
- <Zk-bpBZ_yjsj_B2z@x1n>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Vlx3y60jZz4wcC;
+	Fri, 24 May 2024 17:09:18 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH 1/2] powerpc/uaccess: Fix build errors seen with GCC 14
+In-Reply-To: <CAKwvOdm0_dAvQtuJXWfSCwh+2Jy=79DyjG+tKp9NGv9tunwj1A@mail.gmail.com>
+References: <20240521123919.245886-1-mpe@ellerman.id.au>
+ <CAKwvOdm0_dAvQtuJXWfSCwh+2Jy=79DyjG+tKp9NGv9tunwj1A@mail.gmail.com>
+Date: Fri, 24 May 2024 17:09:17 +1000
+Message-ID: <87h6en4rfm.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zk-bpBZ_yjsj_B2z@x1n>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[csgroup.eu,linux-foundation.org,nvidia.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: D62F7207F9
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,22 +60,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: nathan@kernel.org, linuxppc-dev@lists.ozlabs.org, linkw@gcc.gnu.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 23, 2024 at 03:40:20PM -0400, Peter Xu wrote:
-> I requested for help on the lsfmm hugetlb unification session, but
-> unfortunately I don't think there were Power people around.. I'd like to
-> request help from Power developers again here on the list: it will be very
-> appreciated if you can help have a look at this series.
+Nick Desaulniers <ndesaulniers@google.com> writes:
+> On Tue, May 21, 2024 at 5:39=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+>>
+>> Building ppc64le_defconfig with GCC 14 fails with assembler errors:
+>>
+>>     CC      fs/readdir.o
+>>   /tmp/ccdQn0mD.s: Assembler messages:
+>>   /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multipl=
+e of 4)
+>>   /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multipl=
+e of 4)
+>>   ... [6 lines]
+>>   /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multip=
+le of 4)
+>>
+>> A snippet of the asm shows:
+>>
+>>   # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name,=
+ name, namlen, efault_end);
+>>          ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *=
+)name_38(D) + _88 * 1]
+>>   # 210 "../fs/readdir.c" 1
+>>          1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[=
+(u64 *)name_38(D) + _88 * 1]
+>>
+>> The 'std' instruction requires a 4-byte aligned displacement because
+>> it is a DS-form instruction, and as the assembler says, 18 is not a
+>> multiple of 4.
+>>
+>> The fix is to change the constraint on the memory operand to put_user(),
+>> from "m" which is a general memory reference to "YZ".
+>>
+>> The "Z" constraint is documented in the GCC manual PowerPC machine
+>> constraints, and specifies a "memory operand accessed with indexed or
+>> indirect addressing". "Y" is not documented in the manual but specifies
+>> a "memory operand for a DS-form instruction". Using both allows the
+>> compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
+>>
+>> The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
+>> the "Y" constraint does not guarantee 4-byte alignment when prefixed
+>> instructions are enabled.
+>>
+>> Unfortunately clang doesn't support the "Y" constraint so that has to be
+>> behind an ifdef.
+>
+> Filed: https://github.com/llvm/llvm-project/issues/92939
 
-I am not a powerpc developer but I plan on keep on reviewing this series
-today and next week.
+Thanks. I will file one to have the GCC constraint documented.
 
-thanks
-
-
--- 
-Oscar Salvador
-SUSE Labs
+cheers
