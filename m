@@ -2,54 +2,132 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 146F78CEE77
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 12:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C3EF8CEE90
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 12:41:39 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FG25BSdz;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9j5f2Qw9;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FG25BSdz;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9j5f2Qw9;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vmd4l3LQkz7B0w
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 20:12:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VmdYh107wz79bJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 20:34:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FG25BSdz;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9j5f2Qw9;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FG25BSdz;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9j5f2Qw9;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vmd3p0J8Tz79Gm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 20:11:34 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1sAoMN-0005QQ-16; Sat, 25 May 2024 12:10:43 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1sAoMI-002uS7-MQ; Sat, 25 May 2024 12:10:38 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1sAoMI-00Bs4j-1u;
-	Sat, 25 May 2024 12:10:38 +0200
-Date: Sat, 25 May 2024 12:10:38 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Corey Minyard <minyard@acm.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 0/6] ipmi: Convert to platform remove callback returning
- void
-Message-ID: <sjgseqireuaswtbuwl3rvcszpsjzph4opq52x2kbudczxutz7o@2tua2oueufdd>
-References: <cover.1709655755.git.u.kleine-koenig@pengutronix.de>
- <3uhfeeahn2u23mxyumyxcyx4kmcxzczipkan7eqh4aslsmhxyz@zgsmwj2jvb2v>
- <Zhf9mQx/KgXOzPTs@mail.minyard.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmdXw3cSSz3gLc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 20:33:19 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3BC452236D;
+	Sat, 25 May 2024 10:33:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716633196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EyBe1R67Y6bo/xYFCjuP3FnAjryZ50/E+t5thd4tmxY=;
+	b=FG25BSdzOpetS/IcEGGX5wNv68kYfzzfQ4D2FuLb+Wlmv7jM84OYtJ+rwZdJo5P6qEJRh1
+	LaUtbPo8WUkODUMyo+9q1NUCOvZslgIWsJn/JSG7gIknOHhHcR76SXrcsDuuURUkiSkXOG
+	FNLLQW7xw9wCsoxFzVAKAXfHETmlK28=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716633196;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EyBe1R67Y6bo/xYFCjuP3FnAjryZ50/E+t5thd4tmxY=;
+	b=9j5f2Qw9DCUifMKOgP+MHV7pFrM6j2unk/1MLKLMjkCOsJG8bj7MJTuJpSzkS2/OX15ABe
+	IdScGMMpByiheLAA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FG25BSdz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9j5f2Qw9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716633196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EyBe1R67Y6bo/xYFCjuP3FnAjryZ50/E+t5thd4tmxY=;
+	b=FG25BSdzOpetS/IcEGGX5wNv68kYfzzfQ4D2FuLb+Wlmv7jM84OYtJ+rwZdJo5P6qEJRh1
+	LaUtbPo8WUkODUMyo+9q1NUCOvZslgIWsJn/JSG7gIknOHhHcR76SXrcsDuuURUkiSkXOG
+	FNLLQW7xw9wCsoxFzVAKAXfHETmlK28=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716633196;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EyBe1R67Y6bo/xYFCjuP3FnAjryZ50/E+t5thd4tmxY=;
+	b=9j5f2Qw9DCUifMKOgP+MHV7pFrM6j2unk/1MLKLMjkCOsJG8bj7MJTuJpSzkS2/OX15ABe
+	IdScGMMpByiheLAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF24313A6B;
+	Sat, 25 May 2024 10:33:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PUUdKGu+UWbBIQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 25 May 2024 10:33:15 +0000
+Date: Sat, 25 May 2024 12:33:14 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v2 11/20] powerpc/mm: Complement huge_pte_alloc() for
+ all non HUGEPD setups
+Message-ID: <ZlG-av78reSt_ksh@localhost.localdomain>
+References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
+ <59a1390923c40b0b83ae062e3041873292186577.1715971869.git.christophe.leroy@csgroup.eu>
+ <ZlFpPBlLoBZNjd73@localhost.localdomain>
+ <d7da9fcb-2516-4233-b24f-22391cc7a553@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ajph324orx2jafee"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zhf9mQx/KgXOzPTs@mail.minyard.net>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <d7da9fcb-2516-4233-b24f-22391cc7a553@csgroup.eu>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 3BC452236D
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,66 +139,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Fair <benjaminfair@google.com>, linux-aspeed@lists.ozlabs.org, Avi Fishman <avifishman70@gmail.com>, openbmc@lists.ozlabs.org, Tomer Maimon <tmaimon77@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Tali Perry <tali.perry1@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nancy Yuen <yuenn@google.com>, kernel@pengutronix.de, Patrick Venture <venture@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, openipmi-developer@lists.sourceforge.net, Andrew Jeffery <andrew@codeconstruct.com.au>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Joel Stanley <joel@jms.id.au>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, May 25, 2024 at 06:44:06AM +0000, Christophe Leroy wrote:
+> No, all have cont-PMD but only 8xx handles pages greater than PMD_SIZE 
+> as cont-PTE instead of cont-PMD.
 
---ajph324orx2jafee
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, sorry, I managed to confuse myself. It is obvious from the code.
 
-Hello Corey,
-
-On Thu, Apr 11, 2024 at 10:11:21AM -0500, Corey Minyard wrote:
-> On Thu, Apr 11, 2024 at 09:15:03AM +0200, Uwe Kleine-K=F6nig wrote:
-> > Hello,
-> >=20
-> > On Tue, Mar 05, 2024 at 05:26:57PM +0100, Uwe Kleine-K=F6nig wrote:
-> > > this series converts all drivers below drivers/char/ipmi to struct
-> > > platform_driver::remove_new(). See commit 5c5a7680e67b ("platform: Pr=
-ovide a
-> > > remove callback that returns no value") for an extended explanation a=
-nd the
-> > > eventual goal.
-> > >=20
-> > > All conversations are trivial, because their .remove() callbacks
-> > > returned zero unconditionally.
-> > >=20
-> > > There are no interdependencies between these patches, so they could be
-> > > picked up individually. But I'd hope that they get picked up all
-> > > together by Corey.
->=20
-> Yeah, I was kind of waiting for more reviews, but this is pretty
-> straightforward.  I've pulled this into my tree.
-
-These changes are in next since a while but didn't land in Linus tree
-for v6.10-rc1. I intend to send a PR to Greg early next week changing
-platform_driver::remove to match remove_new. If these commits don't make
-it in in time, I'll be so bold and just include the commits from your
-for-next branch in my PR.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ajph324orx2jafee
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmZRuR0ACgkQj4D7WH0S
-/k7iXQf+JY2QTPcPdx/jTOE0dUvCeBEjZ4bRh4mIpawNO0kdNbwYcQUVpo5OrDQ8
-qnEQRMBPPam51IgxAWEEO1+xa86RbYUrSqNsVQn+chiBr+EQHeAXYpGKuHK8STRO
-8Mg38AeS0M4k35+W9RE5WdQQRPbVv/SvIZIWHvqnK7unCaCJmWxbL6LHj6Vy5cR/
-BMMd87EEIR+dBbK1EvHqJgKqrtlF58qBMWWiIA9N67SdRSE96WXwRffe+o63evky
-YHUl2bvlEn3uwDDwLyFUV6Inqu0RR8YLCS1M2nYpGZE91xQFN9DG7AyXEKMPbXyD
-nAHcivIcWONurbCNqax3/T91fn8ftA==
-=mxtd
------END PGP SIGNATURE-----
-
---ajph324orx2jafee--
+-- 
+Oscar Salvador
+SUSE Labs
