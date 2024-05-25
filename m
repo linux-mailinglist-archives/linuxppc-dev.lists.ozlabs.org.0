@@ -1,72 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B978CEA62
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 May 2024 21:36:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTP id 907768CEDC4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 05:46:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vqw/a7yZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Uwqw16Hj;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9CbiNVzJ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Uwqw16Hj;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9CbiNVzJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VmFWN5PB9z79FT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 05:30:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VmSKH1kkLz79R0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 13:37:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vqw/a7yZ;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Uwqw16Hj;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9CbiNVzJ;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Uwqw16Hj;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9CbiNVzJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmFVf1Rvdz78qb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 05:30:02 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4B09463200;
-	Fri, 24 May 2024 19:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F2566C2BBFC;
-	Fri, 24 May 2024 19:29:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716578999;
-	bh=fQc3hu9PNTUaaXT1d+s0kQugD3afWKZUaVD8b4wu//c=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Vqw/a7yZltvR9bAtUrgn5Yw9tC5IyJwweS+n8JCKruH0OU8c3by8wPs3rLYKcw6G1
-	 fCwf8ftgAg4WMywgXN6yzkK7Hk5YXiixkeBIrjJYVtm2F5CbTbExroMvw/Vxuu2Ris
-	 P8dQ6WUn+WjIbirIafeTn7Kdhz7g43I6CmJCDbnzNoHsIquBmbkBx7MzMQHRDy8pTU
-	 WdoPdmuP7WqW5gI63uLeo6NnlFxHKnCVRVxBzslfEVzz/7T035NobAsn0tYpKaPSOJ
-	 WVIkVhRuOplHooEjTpBjrXRMALz7bJ8XplzO3HvkB7+YOSqJgHTMVZQ8g1+w9PoXIk
-	 2eBh2n8iEJAkQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DFE3BC25B79;
-	Fri, 24 May 2024 19:29:58 +0000 (UTC)
-From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Fri, 24 May 2024 14:29:54 -0500
-Subject: [PATCH v2] powerpc/pseries/lparcfg: drop error message from guest
- name lookup
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmSJW499Hz78Zp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 13:36:59 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4D6633405A;
+	Sat, 25 May 2024 03:36:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716608214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bIDylrp4rAhC0c41PjakISlV7LrJwB6HuPbm/+rCJHc=;
+	b=Uwqw16HjUJg6/uq7vYSrf4/zhZbRm4HhvRVzl9PA8qemuQLwP7ObtZjDhMajHX84rRfPWB
+	o2JLCg2GHeKvPVlY7YmWfmV9lrdlPu8fe+yfXOCepAGJfhR2AQ1lP9pchFu67tDXxiupnC
+	Kproe7bZpVx16psAq9ZO+2//Uimzxec=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716608214;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bIDylrp4rAhC0c41PjakISlV7LrJwB6HuPbm/+rCJHc=;
+	b=9CbiNVzJueLBbwIJRZD0Jy/fglymQ55KSDVWQeV8fYlxVFGccoz+ghzdSuC+MLKaLCbMzs
+	0l8Bv4ctN1/DZgCQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Uwqw16Hj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9CbiNVzJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716608214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bIDylrp4rAhC0c41PjakISlV7LrJwB6HuPbm/+rCJHc=;
+	b=Uwqw16HjUJg6/uq7vYSrf4/zhZbRm4HhvRVzl9PA8qemuQLwP7ObtZjDhMajHX84rRfPWB
+	o2JLCg2GHeKvPVlY7YmWfmV9lrdlPu8fe+yfXOCepAGJfhR2AQ1lP9pchFu67tDXxiupnC
+	Kproe7bZpVx16psAq9ZO+2//Uimzxec=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716608214;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bIDylrp4rAhC0c41PjakISlV7LrJwB6HuPbm/+rCJHc=;
+	b=9CbiNVzJueLBbwIJRZD0Jy/fglymQ55KSDVWQeV8fYlxVFGccoz+ghzdSuC+MLKaLCbMzs
+	0l8Bv4ctN1/DZgCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C14A713A1E;
+	Sat, 25 May 2024 03:36:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2HaZLNVcUWa/aAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 25 May 2024 03:36:53 +0000
+Date: Sat, 25 May 2024 05:36:44 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v2 08/20] powerpc/8xx: Simplify struct mmu_psize_def
+Message-ID: <ZlFczHaQ0JNi6PVu@localhost.localdomain>
+References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
+ <ca2d232f07adfd7b3ed56d339a6071155cc9bcb7.1715971869.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240524-lparcfg-updates-v2-1-62e2e9d28724@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIALLqUGYC/2WNywqDMBBFf0Vm3UgmRi1d9T+KixhHHfAREhWL+
- O+Nbrs8B+65BwTyTAFeyQGeNg48TxHUIwHbm6kjwU1kUFJlqFCJwRlv206srjELBUEt5jorbZG
- XEuLKeWp5v4ufKnLPYZn99z7Y8LJXS0uU+q+1oUBRFEbiUxtNNb4HntY95XpM7TxCdZ7nD2v1R
- f2yAAAA
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716578998; l=1381;
- i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=NEUhSoj0WlsPQRe4cTFyD/u1YuoW2Ozw67ZFMVrHt8s=;
- b=8dDzzlfhfwDYt/+lQsriCZU9IsT5xbUPTZR+JEVH3hp8IOKBL4E+ZAzPklOxA5xc9KBLyldxu
- ErXiV9kd143BL3FQsGuzqbkxAOt48q/t9IPGBg68X7uzXJjjwDSO10z
-X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
- pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
-X-Endpoint-Received: by B4 Relay for nathanl@linux.ibm.com/20230817 with
- auth_id=78
-X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca2d232f07adfd7b3ed56d339a6071155cc9bcb7.1715971869.git.christophe.leroy@csgroup.eu>
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 4D6633405A
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,50 +132,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: nathanl@linux.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+On Fri, May 17, 2024 at 09:00:02PM +0200, Christophe Leroy wrote:
+> On 8xx, only the shift field is used in struct mmu_psize_def
+> 
+> Remove other fields and related macros.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-It's not an error or exceptional situation when the hosting
-environment does not expose a name for the LP/guest via RTAS or the
-device tree. This happens with qemu when run without the '-name'
-option. The message also lacks a newline. Remove it.
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: eddaa9a40275 ("powerpc/pseries: read the lpar name from the firmware")
----
-Changes in v2:
-- Added Fixes: tag
-- Link to v1: https://lore.kernel.org/r/20240104-lparcfg-updates-v1-1-66a0184a4eb1@linux.ibm.com
----
- arch/powerpc/platforms/pseries/lparcfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index 6e7029640c0c..62da20f9700a 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -371,8 +371,8 @@ static int read_dt_lpar_name(struct seq_file *m)
- 
- static void read_lpar_name(struct seq_file *m)
- {
--	if (read_rtas_lpar_name(m) && read_dt_lpar_name(m))
--		pr_err_once("Error can't get the LPAR name");
-+	if (read_rtas_lpar_name(m))
-+		read_dt_lpar_name(m);
- }
- 
- #define SPLPAR_MAXLENGTH 1026*(sizeof(char))
-
----
-base-commit: 61700f816e6f58f6b1aaa881a69a784d146e30f0
-change-id: 20231212-lparcfg-updates-ef15437c6570
-
-Best regards,
 -- 
-Nathan Lynch <nathanl@linux.ibm.com>
-
-
+Oscar Salvador
+SUSE Labs
