@@ -2,58 +2,119 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 612BC8CEDEA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 06:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C76E88CEDE8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 06:41:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=LQUHY/SU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jEuDA50d;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hw080IjZ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jEuDA50d;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hw080IjZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VmTmc6Jn3z79gl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 14:42:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VmTd105BQz79nT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 14:36:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=LQUHY/SU;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jEuDA50d;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hw080IjZ;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=jEuDA50d;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hw080IjZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=46.235.227.194; helo=madrid.collaboradmins.com; envelope-from=usama.anjum@collabora.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 525 seconds by postgrey-1.37 at boromir; Sat, 25 May 2024 14:41:37 AEST
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmTl560mkz3g4r
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 14:41:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1716611582;
-	bh=VdZ3ZkVDoMmOUPpYGpxwg0tdv3KvlTxSUGRQXFANGLA=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=LQUHY/SUh+v6SkttUeAbv2lyIGF2c8PC82u9hZ0d34n1qUhEYyuTfWcLusrsk87eV
-	 TgumHvVVRCQeL8glSF0geZSTOCmAs/eyqNgimJFMk/ngjv5IbPqH5UbsDCQINgoZAM
-	 gvtVf8odHwfozFmtIJaKICOtf+XfvfAnqg8P2//MSGd7Dpm9x9lxTohUayB8et8NxM
-	 z678v0i2n2PH9okYSneaqB0F2Zv5QHYScxj3e87HnuaXNdW1HyWGqbkkydSBk+qn44
-	 DA5Ckk2sQTkc+do0VPX9RJgcZZHwQuC06At3IIGrZtDHXTK1CiRGyFP+NpCiSsHXRo
-	 UKh8ROJfEJLvw==
-Received: from [100.113.15.66] (ec2-34-240-57-77.eu-west-1.compute.amazonaws.com [34.240.57.77])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmTcF0Qw0z79Zh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 14:35:40 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id A827637820A4;
-	Sat, 25 May 2024 04:33:00 +0000 (UTC)
-Message-ID: <c6a02989-b50b-4cb3-891e-a45be9391731@collabora.com>
-Date: Fri, 24 May 2024 21:32:46 -0700
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B3778340A3;
+	Sat, 25 May 2024 04:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716611734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAR/KSCrC5bL7GZChS4ptojHBPTVtU1QG1noLesxm6g=;
+	b=jEuDA50dLntxOGELXKI4qEeWr/V+CaRxCdiOUzPdnIRvDi5/zK0XkRCmTAZy1wMQPCIS80
+	0IaM+NLFjiKWQzgpy/cufDsUy0SP+eHYbytzXy+ubegIB20C8TMmqXTKJ/inBorr91nUr7
+	pBGs3iF56AnWXc9vlBjyET4uDr5BrrQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716611734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAR/KSCrC5bL7GZChS4ptojHBPTVtU1QG1noLesxm6g=;
+	b=Hw080IjZdbmzoh1NF9fvOmgSZm3v0K6OCVCqVSDn1Th3qHiq/yI5pSgIecmVycDo0Ce0wr
+	mUYgoFCwNmLo81Dw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716611734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAR/KSCrC5bL7GZChS4ptojHBPTVtU1QG1noLesxm6g=;
+	b=jEuDA50dLntxOGELXKI4qEeWr/V+CaRxCdiOUzPdnIRvDi5/zK0XkRCmTAZy1wMQPCIS80
+	0IaM+NLFjiKWQzgpy/cufDsUy0SP+eHYbytzXy+ubegIB20C8TMmqXTKJ/inBorr91nUr7
+	pBGs3iF56AnWXc9vlBjyET4uDr5BrrQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716611734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAR/KSCrC5bL7GZChS4ptojHBPTVtU1QG1noLesxm6g=;
+	b=Hw080IjZdbmzoh1NF9fvOmgSZm3v0K6OCVCqVSDn1Th3qHiq/yI5pSgIecmVycDo0Ce0wr
+	mUYgoFCwNmLo81Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3903D13A6B;
+	Sat, 25 May 2024 04:35:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id q3RoC5ZqUWZpJwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 25 May 2024 04:35:34 +0000
+Date: Sat, 25 May 2024 06:35:32 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v2 14/20] powerpc/e500: Remove enc field from struct
+ mmu_psize_def
+Message-ID: <ZlFqlO7oic7_Isn4@localhost.localdomain>
+References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
+ <9c7f189b7733b00e8dc9825e76b6bb257bbd519b.1715971869.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Fix build warnings on ppc64
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org,
- skhan@linuxfoundation.org
-References: <20240521030219.57439-1-mpe@ellerman.id.au>
-Content-Language: en-US
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20240521030219.57439-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9c7f189b7733b00e8dc9825e76b6bb257bbd519b.1715971869.git.christophe.leroy@csgroup.eu>
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,51 +126,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/20/24 8:02 PM, Michael Ellerman wrote:
-> Fix warnings like:
+On Fri, May 17, 2024 at 09:00:08PM +0200, Christophe Leroy wrote:
+> enc field is hidden behind BOOK3E_PAGESZ_XX macros, and when you look
+> closer you realise that this field is nothing else than the value of
+> shift minus ten.
 > 
->   In file included from uffd-unit-tests.c:8:
->   uffd-unit-tests.c: In function ‘uffd_poison_handle_fault’:
->   uffd-common.h:45:33: warning: format ‘%llu’ expects argument of type
->   ‘long long unsigned int’, but argument 3 has type ‘__u64’ {aka ‘long
->   unsigned int’} [-Wformat=]
+> So remove enc field and calculate tsize from shift field.
 > 
-> By switching to unsigned long long for u64 for ppc64 builds.
+> Also remove inc filed which is unused.
 > 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-> ---
->  tools/testing/selftests/mm/gup_test.c    | 1 +
->  tools/testing/selftests/mm/uffd-common.h | 1 +
->  2 files changed, 2 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-> index bd335cf9bc0e..bdeaac67ff9a 100644
-> --- a/tools/testing/selftests/mm/gup_test.c
-> +++ b/tools/testing/selftests/mm/gup_test.c
-> @@ -1,3 +1,4 @@
-> +#define __SANE_USERSPACE_TYPES__ // Use ll64
->  #include <fcntl.h>
->  #include <errno.h>
->  #include <stdio.h>
-> diff --git a/tools/testing/selftests/mm/uffd-common.h b/tools/testing/selftests/mm/uffd-common.h
-> index cc5629c3d2aa..a70ae10b5f62 100644
-> --- a/tools/testing/selftests/mm/uffd-common.h
-> +++ b/tools/testing/selftests/mm/uffd-common.h
-> @@ -8,6 +8,7 @@
->  #define __UFFD_COMMON_H__
->  
->  #define _GNU_SOURCE
-> +#define __SANE_USERSPACE_TYPES__ // Use ll64
->  #include <stdio.h>
->  #include <errno.h>
->  #include <unistd.h>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
 -- 
-BR,
-Muhammad Usama Anjum
+Oscar Salvador
+SUSE Labs
