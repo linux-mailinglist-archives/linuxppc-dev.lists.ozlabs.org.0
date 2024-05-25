@@ -1,96 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8498CEDCF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 06:21:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTP id E21168CEDE4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 06:36:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=A5CjUT33;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+oVJuGwR;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VnjQaARY;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1sJLPbvA;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l1u02PQ7;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/P4sqCWy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l1u02PQ7;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/P4sqCWy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VmT6s6Qsmz79PR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 14:13:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VmTVH6mW2z79Qk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 May 2024 14:30:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=A5CjUT33;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=+oVJuGwR;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=VnjQaARY;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1sJLPbvA;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l1u02PQ7;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/P4sqCWy;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l1u02PQ7;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/P4sqCWy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmT685zr1z792m
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 14:13:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VmTTZ0mgZz797j
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 14:29:53 +1000 (AEST)
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CDD123408E;
-	Sat, 25 May 2024 04:13:00 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B90FE210B7;
+	Sat, 25 May 2024 04:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716610381; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1716611390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rdi7hlA9h9Co0a/ynH1F9A1yZigACenw5JizREvilf0=;
-	b=A5CjUT33XB5GQRJTtT+Z3EX+niUwuq2kjx/fWhi5RLf3FxMYgrZRmFWdDQ3JX6mpKTtfWi
-	ZSIw5bxOk18Eg/NnvYFgXO+etgxf8rpPkOXzjf3quPBP9s3d9badkvFv5XdowyXzhRByHF
-	SUsmfrlRQ1UoaocDyoX5FWs59Y2owGY=
+	bh=0jMHt0Q/JR84IkdUwzp1Rd4JSoh8dVTU4aWoOj2QTcg=;
+	b=l1u02PQ7mUeizPUtziKZMSjLfSDrBiAuCREz31HsHEIKq6Y05wZ/ksZDnm96yJCEyTPp89
+	s+woPlXhybRjXGtzwwPgGx4OyhUH2WiS/97dN6hchsbJ593I1ri2VE0E9y1EHydxnEf6Jq
+	zRIaWjIMf0LqWRyNkCQmi3MLLt8gtr0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716610381;
+	s=susede2_ed25519; t=1716611390;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rdi7hlA9h9Co0a/ynH1F9A1yZigACenw5JizREvilf0=;
-	b=+oVJuGwRSjw4vmjCEjdO+J9kmtVZoNZbsUKPGIGeTGGpKEHFDhq+c+GRTjxCtc436P4Nl/
-	96up70AHOW2XHwBg==
-Authentication-Results: smtp-out1.suse.de;
+	bh=0jMHt0Q/JR84IkdUwzp1Rd4JSoh8dVTU4aWoOj2QTcg=;
+	b=/P4sqCWykN268llQRDZDNDK/3U5kd/JdBzk4bO/RCBrUwi8Yi3n/+zg7ms3JYCFIumrcNw
+	wnHCd3Mdif0hhBDg==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716610380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1716611390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rdi7hlA9h9Co0a/ynH1F9A1yZigACenw5JizREvilf0=;
-	b=VnjQaARYlkBAJNqfEFPaJryFW44XnmAe1VkotDNmZowF3WP6baaFzjCYyi7vbIoML10hH2
-	3YUwnKBSHvjwK5tXJ2FyAs2nBgoClyxhxGDrLKqsyC0Y1tEmNLHISI29TjKMQYfe52luA5
-	HUT6ClfHOQPd1rdCcaFSMdAWyRQWOeA=
+	bh=0jMHt0Q/JR84IkdUwzp1Rd4JSoh8dVTU4aWoOj2QTcg=;
+	b=l1u02PQ7mUeizPUtziKZMSjLfSDrBiAuCREz31HsHEIKq6Y05wZ/ksZDnm96yJCEyTPp89
+	s+woPlXhybRjXGtzwwPgGx4OyhUH2WiS/97dN6hchsbJ593I1ri2VE0E9y1EHydxnEf6Jq
+	zRIaWjIMf0LqWRyNkCQmi3MLLt8gtr0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716610380;
+	s=susede2_ed25519; t=1716611390;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rdi7hlA9h9Co0a/ynH1F9A1yZigACenw5JizREvilf0=;
-	b=1sJLPbvAtnBRNsclzks5oIwJlKVIulF0vwObA4tlla2lUfaMiP/hpnM19gHTTREWiNbtV4
-	2HwvEB8foC1AZLBg==
+	bh=0jMHt0Q/JR84IkdUwzp1Rd4JSoh8dVTU4aWoOj2QTcg=;
+	b=/P4sqCWykN268llQRDZDNDK/3U5kd/JdBzk4bO/RCBrUwi8Yi3n/+zg7ms3JYCFIumrcNw
+	wnHCd3Mdif0hhBDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F1DB13A1E;
-	Sat, 25 May 2024 04:13:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F5F513A6B;
+	Sat, 25 May 2024 04:29:50 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id o9+tEExlUWZ8BQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sat, 25 May 2024 04:13:00 +0000
-Date: Sat, 25 May 2024 06:12:54 +0200
+	id vwuLDD5pUWaVPAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sat, 25 May 2024 04:29:50 +0000
+Date: Sat, 25 May 2024 06:29:48 +0200
 From: Oscar Salvador <osalvador@suse.de>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v2 10/20] powerpc/mm: Fix __find_linux_pte() on 32
- bits with PMD leaf entries
-Message-ID: <ZlFlRr26AvS6n7p8@localhost.localdomain>
+Subject: Re: [RFC PATCH v2 11/20] powerpc/mm: Complement huge_pte_alloc() for
+ all non HUGEPD setups
+Message-ID: <ZlFpPBlLoBZNjd73@localhost.localdomain>
 References: <cover.1715971869.git.christophe.leroy@csgroup.eu>
- <41bf05806501c0091a7d52e118b187416d24a76f.1715971869.git.christophe.leroy@csgroup.eu>
+ <59a1390923c40b0b83ae062e3041873292186577.1715971869.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <41bf05806501c0091a7d52e118b187416d24a76f.1715971869.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <59a1390923c40b0b83ae062e3041873292186577.1715971869.git.christophe.leroy@csgroup.eu>
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 X-Spam-Level: 
 X-Spamd-Result: default: False [-4.30 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
@@ -112,8 +114,6 @@ X-Spamd-Result: default: False [-4.30 / 50.00];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	RCVD_COUNT_TWO(0.00)[2];
 	TO_DN_SOME(0.00)[]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,79 +129,65 @@ Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 17, 2024 at 09:00:04PM +0200, Christophe Leroy wrote:
-> Building on 32 bits with pmd_leaf() not returning always false leads
-> to the following error:
-
-I am curious though.
-pmd_leaf is only defined in include/linux/pgtable.h for 32bits, and is hardcoded
-to false.
-I do not see where we change it in previous patches, so is this artificial?
-
-> 
->   CC      arch/powerpc/mm/pgtable.o
-> arch/powerpc/mm/pgtable.c: In function '__find_linux_pte':
-> arch/powerpc/mm/pgtable.c:506:1: error: function may return address of local variable [-Werror=return-local-addr]
->   506 | }
->       | ^
-> arch/powerpc/mm/pgtable.c:394:15: note: declared here
->   394 |         pud_t pud, *pudp;
->       |               ^~~
-> arch/powerpc/mm/pgtable.c:394:15: note: declared here
-> 
-> This is due to pmd_offset() being a no-op in that case.
-
-This is because 32bits powerpc include pgtable-nopmd.h?
-
-> So rework it for powerpc/32 so that pXd_offset() are used on real
-> pointers and not on on-stack copies.
+On Fri, May 17, 2024 at 09:00:05PM +0200, Christophe Leroy wrote:
+> huge_pte_alloc() for non-HUGEPD targets is reserved for 8xx at the
+> moment. In order to convert other targets for non-HUGEPD, complement
+> huge_pte_alloc() to support any standard cont-PxD setup.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/mm/pgtable.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>  arch/powerpc/mm/hugetlbpage.c | 25 ++++++++++++++++++++++++-
+>  1 file changed, 24 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index 59f0d7706d2f..51ee508eeb5b 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -390,8 +390,12 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
->  			bool *is_thp, unsigned *hpage_shift)
+> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+> index 42b12e1ec851..f8aefa1e7363 100644
+> --- a/arch/powerpc/mm/hugetlbpage.c
+> +++ b/arch/powerpc/mm/hugetlbpage.c
+> @@ -195,11 +195,34 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+>  pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+>  		      unsigned long addr, unsigned long sz)
 >  {
->  	pgd_t *pgdp;
-> -	p4d_t p4d, *p4dp;
-> -	pud_t pud, *pudp;
-> +	p4d_t *p4dp;
-> +	pud_t *pudp;
-> +#ifdef CONFIG_PPC64
-> +	p4d_t p4d;
-> +	pud_t pud;
-> +#endif
->  	pmd_t pmd, *pmdp;
->  	pte_t *ret_pte;
->  	hugepd_t *hpdp = NULL;
-> @@ -412,6 +416,7 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
->  	 */
->  	pgdp = pgdir + pgd_index(ea);
->  	p4dp = p4d_offset(pgdp, ea);
-> +#ifdef CONFIG_PPC64
->  	p4d  = READ_ONCE(*p4dp);
->  	pdshift = P4D_SHIFT;
+> -	pmd_t *pmd = pmd_off(mm, addr);
+> +	pgd_t *pgd;
+> +	p4d_t *p4d;
+> +	pud_t *pud;
+> +	pmd_t *pmd;
+> +
+> +	addr &= ~(sz - 1);
+> +	pgd = pgd_offset(mm, addr);
+> +
+> +	p4d = p4d_offset(pgd, addr);
+> +	if (sz >= PGDIR_SIZE)
+> +		return (pte_t *)p4d;
+> +
+> +	pud = pud_alloc(mm, p4d, addr);
+> +	if (!pud)
+> +		return NULL;
+> +	if (sz >= PUD_SIZE)
+> +		return (pte_t *)pud;
+> +
+> +	pmd = pmd_alloc(mm, pud, addr);
+> +	if (!pmd)
+> +		return NULL;
 >  
-> @@ -452,6 +457,11 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+>  	if (sz < PMD_SIZE)
+>  		return pte_alloc_huge(mm, pmd, addr, sz);
 >  
->  	pdshift = PMD_SHIFT;
->  	pmdp = pmd_offset(&pud, ea);
-> +#else
-> +	p4dp = p4d_offset(pgdp, ea);
-> +	pudp = pud_offset(p4dp, ea);
-> +	pmdp = pmd_offset(pudp, ea);
+> +	if (!IS_ENABLED(CONFIG_PPC_8xx))
+> +		return (pte_t *)pmd;
 
-I would drop a comment on top explaining that these are no-op for 32bits,
-otherwise it might not be obvious to people as why this distiction between 64 and
-32bits.
+So only 8xx has cont-PMD for hugepages?
 
-Other than that looks good to me
+> +
+>  	if (sz != SZ_8M)
+>  		return NULL;
+
+Since this function is the core for allocation huge pages, I think it would
+benefit from a comment at the top explaining the possible layouts.
+e.g: Who can have cont-{P4d,PUD,PMD} etc.
+A brief explanation of the possible scheme for all powerpc platforms.
+
+That would help people looking into this in a future.
 
  
 
