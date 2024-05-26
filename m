@@ -2,58 +2,160 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1758CF327
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2024 11:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14D248CF32C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2024 11:37:36 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=JrJI2vym;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VnD4f1Xvsz8BXL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2024 19:29:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VnD5N28yzz8Bly
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 May 2024 19:30:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=JrJI2vym;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f403:c20a::1; helo=pa5p264cu001.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from PA5P264CU001.outbound.protection.outlook.com (mail-francecentralazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VnCyf62lBz87fB
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2024 19:24:10 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4VnCx01J55z9sx4;
-	Sun, 26 May 2024 11:22:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id e43tbkECTMAR; Sun, 26 May 2024 11:22:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4VnCwr6429z9tCB;
-	Sun, 26 May 2024 11:22:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CC2628B773;
-	Sun, 26 May 2024 11:22:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id BWs5MIGftZLi; Sun, 26 May 2024 11:22:36 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.45])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 405F18B764;
-	Sun, 26 May 2024 11:22:36 +0200 (CEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VnD1B5vsVz88k2
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2024 19:26:22 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VUe4+VCmBES78B5zvjJHDikTFWXGdU//L4LMqCLDIoPN0InMJCDVbrh63GkRyx6M8QVOB9Kyx9eA6H7iUORq8BEM13arj1POQqim0WaUYYZEZFP2AgyA0cd0GFXGFVRLkd/ebLE198USDsFSk608dBTEpsmkae02fWTrF/9uP+eTFieA2ud5eP9J9qa/BfZBrjZFkg0GM4AVOaGKcKGoVC2BdwGNQ5C39R66ntY/VP1Eg+39p4D08dy85Wqgpg1abNTV7Mva4i2AzWoUHEBadjWd4sBQNXrKkiroyC2FBD3U2iV9S5tS8JroppcVxl2EWLZVtkolt52+9z+uqFBHEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0hO9gYfBbjsHx39gVBDThXeCeoGWZtRtuaY7kTPr7LE=;
+ b=jlt9KP5spaNvu91cAozfnhpdSJg0Tx0DKJb4EGPyIabuiG75H4THhPszKrkwH994YC0VxKxBAs3u3sckJMcF/wESV/IVUP2LBUPAo5FXkdkA2p/+Flv1fQMzhpGQREYQINWW6Iz7IqRBe+BKVvGBJmNzgDEev2tQl4WUlA18IGkAkhETRxRxeJ4CJDa5GAKsGT2sFIjmzDKkSkSnjMoA4ppGAKxbuDH/8PiJvuVBLo0ikkQLjf7aCNOErFpx/u19Y8RfKsf5PybNtsA5rYj4X9pssiFIKAq39Mw8zMnESokZvFO0y8+nxw6z1syCGS8Q8sSGBQeIbTaqKhsNd7Io7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0hO9gYfBbjsHx39gVBDThXeCeoGWZtRtuaY7kTPr7LE=;
+ b=JrJI2vymOZb5JTdUvJvs9FjfA+PCwYCpN4hxD5N6s5GSvsml2WvFnCqcBMhffEhlt4NcHBTB2LBarLw9pfnqnNxzm+BFY3pxiy0yVwv8N7S9ZmGvnS6SoRB99msM5L6hXORgjzzoPhWkb5A+sYeukiWlQFbRxtHINpcGPAUj5BaGV3l0FlaIznt2uGHWaQifvavxli5DHM1kTdem02RNatYpEfEXXUFO1tZ0LNqtEzPEqlwOf51L2+Ysb5lI0nwPTWAV0fCBdx1c4W13LVPozghtQm7rh65F9RgEldY8OCAC8S7Bp+Gip3GRLQPH2DEzT0mAN6NpYpnlwuouPQcjyw==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB3164.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.29; Sun, 26 May
+ 2024 09:25:58 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::96ff:7284:1fa1:b02a]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::96ff:7284:1fa1:b02a%4]) with mapi id 15.20.7611.025; Sun, 26 May 2024
+ 09:25:57 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: [RFC PATCH v3 16/16] mm: Remove CONFIG_ARCH_HAS_HUGEPD
-Date: Sun, 26 May 2024 11:22:36 +0200
-Message-ID: <4655a5bb3ed235f8a9f22c0c539a289669f9db78.1716714720.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1716714720.git.christophe.leroy@csgroup.eu>
-References: <cover.1716714720.git.christophe.leroy@csgroup.eu>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [RFC PATCH 4/8] mm: Provide mm_struct and address to
+ huge_ptep_get()
+Thread-Topic: [RFC PATCH 4/8] mm: Provide mm_struct and address to
+ huge_ptep_get()
+Thread-Index: AQHafsSXMVrLile8AEeabKnjy8x1+bFIp3+AgGD4ZAA=
+Date: Sun, 26 May 2024 09:25:57 +0000
+Message-ID: <94d68801-e74a-40ea-8455-41a30490ab6b@csgroup.eu>
+References: <cover.1711377230.git.christophe.leroy@csgroup.eu>
+ <1abe6cfaba2ad41a9deb705a4d3de8d1a9b6d5ca.1711377230.git.christophe.leroy@csgroup.eu>
+ <20240325163559.GE6245@nvidia.com>
+In-Reply-To: <20240325163559.GE6245@nvidia.com>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB3164:EE_
+x-ms-office365-filtering-correlation-id: e3ce1506-4cc8-4570-d0ac-08dc7d65d9ca
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|376005|366007|1800799015|38070700009;
+x-microsoft-antispam-message-info:  =?utf-8?B?VWRQQzBRSFZ3ZHJDcWVnLzAxWWFBTVY2ejBOQm43VXU3NEI0S25FNGlMREpw?=
+ =?utf-8?B?RjgzbVZsU2VQb0swYUxDdDllQmQ1RWs3eFZwWFl3eTlEQUtzczVrSGlNbHp6?=
+ =?utf-8?B?eDBCU1h1QXArWkdaS2FORzNzNkEvOHJFMVVndFdtZjFPMnUraWs3T0FKL3dP?=
+ =?utf-8?B?MWh6Y3h1VWlacHpleWg0Q2FScFhJMy9qdlFYV1lTa2F5WmZrc2F6U2FUYnpQ?=
+ =?utf-8?B?dlA4bTFKUU1rK1VSWEhsRDZEeC9va1RuVXVuRGl5K3krQm00NTV0cXA1RHVV?=
+ =?utf-8?B?VEpVV2d3NktDTHdVTFZtRDA4cEVkZ0laVUZ5K09NM0dkV1o2T0hDRTZnT1Vo?=
+ =?utf-8?B?VS9Wdjd0NktvbTVveTVhdStub09UWTEzSEZwcTRJNHdXSmluZ3ZsK2VWMEpV?=
+ =?utf-8?B?cmlmRGg4M2gyZGQ1WnhhalAvR3pwd296UmFjUndOOW9YRzZ1Y3AzRmJiblNw?=
+ =?utf-8?B?UmZKMXNzb1ZLclJhd0YvS3F1ZFVXYW8xT1JRWGkrdW43NzI1elFDR3oxK2Vk?=
+ =?utf-8?B?YTdzOHNXb084NVdkM1JJa2hKTEs0U04zS05NTmtmSElZOEdlRTI3SXdQL05X?=
+ =?utf-8?B?elJab0Z6T1dGNDBETG8zS2dBdjMzWTJSMnFpVk9YNXBGbnhoM2ZocHVFWitm?=
+ =?utf-8?B?Wi9TL05LS2JFSTJGRmY4UmZDd3RDV085aERlQURJbW04cDNRcUY1TENxcEZ3?=
+ =?utf-8?B?MStuKzQ2b0NuUEdqVkdCUGRWSkhRUEVtUUdDR2pIbjViNk1NK3VvcFdNQ0ly?=
+ =?utf-8?B?VnNmTUNXRHZGMkM2V2M0Qy9zclNIU3hPY083S3IxQXIxS3AxSkVvQWRJTW42?=
+ =?utf-8?B?ME45ZXVCUXhrSUVoZElJdWRnSXN5b0UrQkxDUmJFZUJVRXBZZXBKc1BYR2Jr?=
+ =?utf-8?B?Q05HSGlTc3I1bGxVSnUySGthaHZ2S1htMERsSGErRTZrR21RMFFaUlJORFU1?=
+ =?utf-8?B?S0tPbUhNbmR5YzRxWVEveHpzVy9OS0NlMUwyVGo2YlN2TXZDV3d2SlZnR0NV?=
+ =?utf-8?B?ekJLZk82dEQ5QVdBMjFMUU5PVWtvUWgxRytOZnhUQ1lYaVVEWGQ3WU5NWllN?=
+ =?utf-8?B?ZUFWb2JkSUJ5Q04zYTQvdjMxL3NYT0pnaHRoYXY2TXZWTnhIL1VzMnBmMys4?=
+ =?utf-8?B?TDZBeGhRSnVWb2pmUmFRR0ZsVFZRL296Z0dYRzF4TUNVTkErRXVHVFo1Ym0r?=
+ =?utf-8?B?THliVGdFVXlkV2pmekZ4TGt1alJVTmh2ZmRuQlJFeXRkNmtHTUwzSmF2OWsr?=
+ =?utf-8?B?MXd1MHZNY2tTaWg2TUNoQUF4NkNHejBDSHA5Q3M0cllZdEc3RWhSU2s1UkxE?=
+ =?utf-8?B?YWhDMEZRUEg2Y0xsRWZteUhUS1ZvQUFSYVN3OHF3b0JjSlFmdHpzU0NzNDRq?=
+ =?utf-8?B?aDI2NWZvd0VQL3A5VkduTmFTdEo2b0g2aUJWeVd4dWRreFg0eE90ZTMyVWEw?=
+ =?utf-8?B?M0FKWGhtZnBYd0g1aWFSTGdKMk9vZmlkYm5lOWc1aVFvSWx2M0dOVWwvd1Vo?=
+ =?utf-8?B?Z3hnYXFRejdGeHlra3pOdGlrOTZyZXNFNzdkajdIdG1qSHVoWmdrVlhwMWpy?=
+ =?utf-8?B?SWlZdHloMU5qbzVHQnVhNFJ0Wi9UeWZEZ01xQmRxTG5TTzkxaTVRLzhhOVhs?=
+ =?utf-8?B?bHVUU1hzNHlvUXJtb3pRVDhISXhlb3R2Uld3VkNZNFRBaC9CdTBoT1VxTDBu?=
+ =?utf-8?B?bm9tZ3RqcDJwOFl4WklLamVpN3YwMDcxOGZNMjhFT05RQlAycGg4TUJHT1Zn?=
+ =?utf-8?B?LzU4ZVRpRzhIb0N0SDJDUnRtZ1FhckJsakFuUm1PdzZOZmREU0NPekVGcHpj?=
+ =?utf-8?B?K1liSzAvSkNMWXlCeXc2dz09?=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?aFRMRjhJUDhzME1BUGRqdVdidWpPd1lwY0dBVmNQeTRrc1RLUnVtUTlQYXQ3?=
+ =?utf-8?B?L2trU0FxTXNzaEIxckFJd0tkcUFRZUdmTVFkOUwyTmZFRkZVVDhpU0w5SitV?=
+ =?utf-8?B?S0puV0FQa3dJdGZwalFHdi8rdER0Sy9TQjd3b1V2Y0psVlp4UlFhanFrTVZS?=
+ =?utf-8?B?MUVaeGp5OGZMMm4yUlV6ZzJOcEVSbTZkLzg4b2hWV3ZPYmdyMkxLVWRXNWJX?=
+ =?utf-8?B?ZEFkcnI2TGZjQlZNdDZPRzF0TW12VjZiaUc0Z242SFN0U0dWR21RSEgvZHA0?=
+ =?utf-8?B?K2IveXcwZlhuZVFIUzNhVTJ5MWxmcy9JY0xoS3JnUjFaKzFER3d3MW1sQVc0?=
+ =?utf-8?B?eVdZaGdGU3V1bExUdXQxb1NZbUxYQkFsRzVHcGhyd0tTSkk1SzVmSGZtRXZa?=
+ =?utf-8?B?V2Q2ZllNM2MvVGE4Z2o0Zy9zdmJOejBhclRzZ2g3MjhCYkZvRmh6YTBCVFE2?=
+ =?utf-8?B?OWhXRWE0WVBpMTA0UElVZHUvbG82ZGtFZDUycmkwWk50N0hrT1UyNlo4cDkw?=
+ =?utf-8?B?clB0eDBIVnIrMEVVN1h3b3g2MWh3MDRmSzlYWlMvRlZvOFR0a0k3NGtVYXlw?=
+ =?utf-8?B?U2Q2UDArclVZcVhZZkJwVHVyY1cydFZjUVJpRnAweEF1NGJnRzlObzlmU3VF?=
+ =?utf-8?B?WXRTcy9XcHBDaUpqZUJqVlpYTGcxZlNWa1VGNThueGhFOUJITWp0Q2tiTEN5?=
+ =?utf-8?B?dVUrc3ZMWk1NckdXTVd1SStzQnpTWDJLeDMwb3dQL3krd0oycEhIeU9rOFNw?=
+ =?utf-8?B?Sm1zMUp0alAvRVl3MkpyN3dvRUVsSysvR2UvQ3pTL3pmVCsra2N0NjhMVnNJ?=
+ =?utf-8?B?bFZtOHR0QXFaeDlMRkh3c0xFUURCbHBRN2tYRTVsdDR2SHRlcnBRR1g4ODdi?=
+ =?utf-8?B?Y0wwT2FYL3ZLWTc5Qzh5aCttcWRpaHplbjVBSWRyWGcyQXBheGp2M0tVSUNk?=
+ =?utf-8?B?R2F5dlpHaDlyRXA2K3R6ZlU3UlZPY0h5aHFoazkxN0FualhoTVFMRWVFUDVS?=
+ =?utf-8?B?WVd3aXJSRHY4YytETHlqcGgvdUswQm9SMlpteXEyZUg2YkF6WGRYMmRUM2d5?=
+ =?utf-8?B?bGx4REUwQU5NS0t6WGRUNExxZlJzR3dtMnA1bVRCbEcxMVNoNm56bjJQUm03?=
+ =?utf-8?B?cllMN3lxa2twSUdlZklGSnU2UThjTWNWeTdQak5YMndGbVBsdXo0eHA2WjJH?=
+ =?utf-8?B?NDlIWVV5MFpuU0k0YnpJaFRXTU9JSGpESzU2Y3hqRHdtZVBUQWk3YVZCV05n?=
+ =?utf-8?B?NnFRM294VnBiL2g0RDVieXA1RGMxa0xPdTRPL1N1RDdlVlR2WmduR0QzdnVz?=
+ =?utf-8?B?MU1Sd0xMU0p4c2Yxelp0WnlsRWFpTnFKWDRCN1A4eUNGZzFDUksvZkNNanU4?=
+ =?utf-8?B?cEkzSWdNZTVEMGdDZi9LckFkWDY3MnpHeGlBenRYaFNvMndtZ1paNm00NHJY?=
+ =?utf-8?B?Y2FjUXpMNXJra2pNbGQ0eGR0aTRnMlZHUnY1YSt0MnZwMThuWWtETVZrTjBY?=
+ =?utf-8?B?WUM0UkFESng5Vjl5eW5qSmZkNjVBeWR5ZXFpbHpjcWNkRTcxMnZnS3JCOGNZ?=
+ =?utf-8?B?MzIxSFpLclBoc0lYZ1lWbWxSMnQ3ZW11NzFvYml5MEMzcTVkVVJpaFFMRTRC?=
+ =?utf-8?B?MjlKWS96SUpJTkF3U1UxL2E5TW51R1J6MVBGSkxST2JUeHE5dFdlK1hScmhN?=
+ =?utf-8?B?RnFqbllHcXlKSnJmc3BBWVZKMWhxczZQdDFFaVhycGJ0OE1kVURnVWswZlp0?=
+ =?utf-8?B?U2JxdXVwb0tDd0FxQnp2N2RCclBtNTJsSCtpSEE3Y1B3Nm10bEsxcmxNZ1Yw?=
+ =?utf-8?B?YnozNkUrNG5zbXVPdEZCWWx6WkVLK05Dd3NudkF3bGhFZkpBZzdKU0lwNHJv?=
+ =?utf-8?B?cnNibnF0d3ViWFFSRGlsc1FkbnhWWWtLWHUyOXg5bjFmUWdlV05KSHhyN0wz?=
+ =?utf-8?B?WkF5RkpXaC9pdlAwbHVjdE52c1FwK2ljZ1I5RUZoK1hEQm9mbjJBb2c2TnFK?=
+ =?utf-8?B?dWxTODhOUER5YWhrTzNlVnZaTDhXU0l4dHByKzlVMXdSUmFyRWRQUmd1MWZP?=
+ =?utf-8?B?R2pIa0JUc3ZQNUVqMnliUUQrZ2M1bVU4aFRkK2IwbHROUkZmSk1YSDZ5Umpz?=
+ =?utf-8?Q?g5lGKlMqaf2yswVZKwnECzKHF?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <606330E84D7FD24BB4A444812290AD0F@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716715344; l=9686; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=YBZKKmp3eD7Iomi12QR3QcSdbF4Q6xzuY14thrUhQoI=; b=0r4IhBGW/Ne1WYtt05SHsuCc8GlLS81x6sfkFW0OII2AS/3V7Z2yhqfj1WxiSOgFIQ9SUvvGY hLbH3ScpIi7DgGxii/MaXDw+6SHVYzL6vn1a9EtZrqHBV8A6IIDEjLQ
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3ce1506-4cc8-4570-d0ac-08dc7d65d9ca
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 May 2024 09:25:57.8301
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jfz5wXPIY9JWANIXuWN6KeUr09QFuuzzBcngmOyrgaWkOS/fyJZWJ/ohnE5WSs6n2gmfBhrkjO+n8aJQ0HOXtTsZOod+JbTH9ypwBF31st8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB3164
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,312 +167,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc was the only user of CONFIG_ARCH_HAS_HUGEPD and doesn't
-use it anymore, so remove all related code.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/hugetlbpage.c |   1 -
- include/linux/hugetlb.h       |   6 --
- mm/Kconfig                    |  10 ----
- mm/gup.c                      | 105 +---------------------------------
- mm/pagewalk.c                 |  57 ++----------------
- 5 files changed, 5 insertions(+), 174 deletions(-)
-
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index 76846c6014e4..6b043180220a 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -78,7 +78,6 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
- 
- 	return pte_alloc_huge(mm, pmd, addr);
- }
--#endif
- 
- #ifdef CONFIG_PPC_BOOK3S_64
- /*
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 77b30a8c6076..f6a509487773 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -20,12 +20,6 @@ struct user_struct;
- struct mmu_gather;
- struct node;
- 
--#ifndef CONFIG_ARCH_HAS_HUGEPD
--typedef struct { unsigned long pd; } hugepd_t;
--#define is_hugepd(hugepd) (0)
--#define __hugepd(x) ((hugepd_t) { (x) })
--#endif
--
- void free_huge_folio(struct folio *folio);
- 
- #ifdef CONFIG_HUGETLB_PAGE
-diff --git a/mm/Kconfig b/mm/Kconfig
-index b1448aa81e15..a52f8e3224fb 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1114,16 +1114,6 @@ config DMAPOOL_TEST
- config ARCH_HAS_PTE_SPECIAL
- 	bool
- 
--#
--# Some architectures require a special hugepage directory format that is
--# required to support multiple hugepage sizes. For example a4fe3ce76
--# "powerpc/mm: Allow more flexible layouts for hugepage pagetables"
--# introduced it on powerpc.  This allows for a more flexible hugepage
--# pagetable layouts.
--#
--config ARCH_HAS_HUGEPD
--	bool
--
- config MAPPING_DIRTY_HELPERS
-         bool
- 
-diff --git a/mm/gup.c b/mm/gup.c
-index 86b5105b82a1..95f121223f04 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2790,89 +2790,6 @@ static int record_subpages(struct page *page, unsigned long addr,
- 	return nr;
- }
- 
--#ifdef CONFIG_ARCH_HAS_HUGEPD
--static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
--				      unsigned long sz)
--{
--	unsigned long __boundary = (addr + sz) & ~(sz-1);
--	return (__boundary - 1 < end - 1) ? __boundary : end;
--}
--
--static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
--		       unsigned long end, unsigned int flags,
--		       struct page **pages, int *nr)
--{
--	unsigned long pte_end;
--	struct page *page;
--	struct folio *folio;
--	pte_t pte;
--	int refs;
--
--	pte_end = (addr + sz) & ~(sz-1);
--	if (pte_end < end)
--		end = pte_end;
--
--	pte = huge_ptep_get(NULL, addr, ptep);
--
--	if (!pte_access_permitted(pte, flags & FOLL_WRITE))
--		return 0;
--
--	/* hugepages are never "special" */
--	VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
--
--	page = nth_page(pte_page(pte), (addr & (sz - 1)) >> PAGE_SHIFT);
--	refs = record_subpages(page, addr, end, pages + *nr);
--
--	folio = try_grab_folio(page, refs, flags);
--	if (!folio)
--		return 0;
--
--	if (unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
--		gup_put_folio(folio, refs, flags);
--		return 0;
--	}
--
--	if (!folio_fast_pin_allowed(folio, flags)) {
--		gup_put_folio(folio, refs, flags);
--		return 0;
--	}
--
--	if (!pte_write(pte) && gup_must_unshare(NULL, flags, &folio->page)) {
--		gup_put_folio(folio, refs, flags);
--		return 0;
--	}
--
--	*nr += refs;
--	folio_set_referenced(folio);
--	return 1;
--}
--
--static int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
--		unsigned int pdshift, unsigned long end, unsigned int flags,
--		struct page **pages, int *nr)
--{
--	pte_t *ptep;
--	unsigned long sz = 1UL << hugepd_shift(hugepd);
--	unsigned long next;
--
--	ptep = hugepte_offset(hugepd, addr, pdshift);
--	do {
--		next = hugepte_addr_end(addr, end, sz);
--		if (!gup_hugepte(ptep, sz, addr, end, flags, pages, nr))
--			return 0;
--	} while (ptep++, addr = next, addr != end);
--
--	return 1;
--}
--#else
--static inline int gup_huge_pd(hugepd_t hugepd, unsigned long addr,
--		unsigned int pdshift, unsigned long end, unsigned int flags,
--		struct page **pages, int *nr)
--{
--	return 0;
--}
--#endif /* CONFIG_ARCH_HAS_HUGEPD */
--
- static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
- 			unsigned long end, unsigned int flags,
- 			struct page **pages, int *nr)
-@@ -3026,14 +2943,6 @@ static int gup_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr, unsigned lo
- 				pages, nr))
- 				return 0;
- 
--		} else if (unlikely(is_hugepd(__hugepd(pmd_val(pmd))))) {
--			/*
--			 * architecture have different format for hugetlbfs
--			 * pmd format and THP pmd format
--			 */
--			if (!gup_huge_pd(__hugepd(pmd_val(pmd)), addr,
--					 PMD_SHIFT, next, flags, pages, nr))
--				return 0;
- 		} else if (!gup_pte_range(pmd, pmdp, addr, next, flags, pages, nr))
- 			return 0;
- 	} while (pmdp++, addr = next, addr != end);
-@@ -3058,10 +2967,6 @@ static int gup_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr, unsigned lo
- 			if (!gup_huge_pud(pud, pudp, addr, next, flags,
- 					  pages, nr))
- 				return 0;
--		} else if (unlikely(is_hugepd(__hugepd(pud_val(pud))))) {
--			if (!gup_huge_pd(__hugepd(pud_val(pud)), addr,
--					 PUD_SHIFT, next, flags, pages, nr))
--				return 0;
- 		} else if (!gup_pmd_range(pudp, pud, addr, next, flags, pages, nr))
- 			return 0;
- 	} while (pudp++, addr = next, addr != end);
-@@ -3083,11 +2988,7 @@ static int gup_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr, unsigned lo
- 		if (p4d_none(p4d))
- 			return 0;
- 		BUILD_BUG_ON(p4d_huge(p4d));
--		if (unlikely(is_hugepd(__hugepd(p4d_val(p4d))))) {
--			if (!gup_huge_pd(__hugepd(p4d_val(p4d)), addr,
--					 P4D_SHIFT, next, flags, pages, nr))
--				return 0;
--		} else if (!gup_pud_range(p4dp, p4d, addr, next, flags, pages, nr))
-+		if (!gup_pud_range(p4dp, p4d, addr, next, flags, pages, nr))
- 			return 0;
- 	} while (p4dp++, addr = next, addr != end);
- 
-@@ -3111,10 +3012,6 @@ static void gup_pgd_range(unsigned long addr, unsigned long end,
- 			if (!gup_huge_pgd(pgd, pgdp, addr, next, flags,
- 					  pages, nr))
- 				return;
--		} else if (unlikely(is_hugepd(__hugepd(pgd_val(pgd))))) {
--			if (!gup_huge_pd(__hugepd(pgd_val(pgd)), addr,
--					 PGDIR_SHIFT, next, flags, pages, nr))
--				return;
- 		} else if (!gup_p4d_range(pgdp, pgd, addr, next, flags, pages, nr))
- 			return;
- 	} while (pgdp++, addr = next, addr != end);
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index f46c80b18ce4..ae2f08ce991b 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -73,45 +73,6 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	return err;
- }
- 
--#ifdef CONFIG_ARCH_HAS_HUGEPD
--static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
--			     unsigned long end, struct mm_walk *walk, int pdshift)
--{
--	int err = 0;
--	const struct mm_walk_ops *ops = walk->ops;
--	int shift = hugepd_shift(*phpd);
--	int page_size = 1 << shift;
--
--	if (!ops->pte_entry)
--		return 0;
--
--	if (addr & (page_size - 1))
--		return 0;
--
--	for (;;) {
--		pte_t *pte;
--
--		spin_lock(&walk->mm->page_table_lock);
--		pte = hugepte_offset(*phpd, addr, pdshift);
--		err = ops->pte_entry(pte, addr, addr + page_size, walk);
--		spin_unlock(&walk->mm->page_table_lock);
--
--		if (err)
--			break;
--		if (addr >= end - page_size)
--			break;
--		addr += page_size;
--	}
--	return err;
--}
--#else
--static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
--			     unsigned long end, struct mm_walk *walk, int pdshift)
--{
--	return 0;
--}
--#endif
--
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
- {
-@@ -159,10 +120,7 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 		if (walk->vma)
- 			split_huge_pmd(walk->vma, pmd, addr);
- 
--		if (is_hugepd(__hugepd(pmd_val(*pmd))))
--			err = walk_hugepd_range((hugepd_t *)pmd, addr, next, walk, PMD_SHIFT);
--		else
--			err = walk_pte_range(pmd, addr, next, walk);
-+		err = walk_pte_range(pmd, addr, next, walk);
- 		if (err)
- 			break;
- 
-@@ -215,10 +173,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
- 		if (pud_none(*pud))
- 			goto again;
- 
--		if (is_hugepd(__hugepd(pud_val(*pud))))
--			err = walk_hugepd_range((hugepd_t *)pud, addr, next, walk, PUD_SHIFT);
--		else
--			err = walk_pmd_range(pud, addr, next, walk);
-+		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
- 	} while (pud++, addr = next, addr != end);
-@@ -250,9 +205,7 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
- 			if (err)
- 				break;
- 		}
--		if (is_hugepd(__hugepd(p4d_val(*p4d))))
--			err = walk_hugepd_range((hugepd_t *)p4d, addr, next, walk, P4D_SHIFT);
--		else if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
-+		if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
- 			err = walk_pud_range(p4d, addr, next, walk);
- 		if (err)
- 			break;
-@@ -287,9 +240,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
- 			if (err)
- 				break;
- 		}
--		if (is_hugepd(__hugepd(pgd_val(*pgd))))
--			err = walk_hugepd_range((hugepd_t *)pgd, addr, next, walk, PGDIR_SHIFT);
--		else if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
-+		if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
- 			err = walk_p4d_range(pgd, addr, next, walk);
- 		if (err)
- 			break;
--- 
-2.44.0
-
+DQoNCkxlIDI1LzAzLzIwMjQgw6AgMTc6MzUsIEphc29uIEd1bnRob3JwZSBhIMOpY3JpdMKgOg0K
+PiBPbiBNb24sIE1hciAyNSwgMjAyNCBhdCAwMzo1NTo1N1BNICswMTAwLCBDaHJpc3RvcGhlIExl
+cm95IHdyb3RlOg0KPiANCj4+ICAgYXJjaC9hcm02NC9pbmNsdWRlL2FzbS9odWdldGxiLmggfCAg
+MiArLQ0KPj4gICBmcy9odWdldGxiZnMvaW5vZGUuYyAgICAgICAgICAgICB8ICAyICstDQo+PiAg
+IGZzL3Byb2MvdGFza19tbXUuYyAgICAgICAgICAgICAgIHwgIDggKysrLS0tDQo+PiAgIGZzL3Vz
+ZXJmYXVsdGZkLmMgICAgICAgICAgICAgICAgIHwgIDIgKy0NCj4+ICAgaW5jbHVkZS9hc20tZ2Vu
+ZXJpYy9odWdldGxiLmggICAgfCAgMiArLQ0KPj4gICBpbmNsdWRlL2xpbnV4L3N3YXBvcHMuaCAg
+ICAgICAgICB8ICAyICstDQo+PiAgIG1tL2RhbW9uL3ZhZGRyLmMgICAgICAgICAgICAgICAgIHwg
+IDYgKystLS0NCj4+ICAgbW0vZ3VwLmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMiArLQ0K
+Pj4gICBtbS9obW0uYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyICstDQo+PiAgIG1tL2h1
+Z2V0bGIuYyAgICAgICAgICAgICAgICAgICAgIHwgNDYgKysrKysrKysrKysrKysrKy0tLS0tLS0t
+LS0tLS0tLS0NCj4+ICAgbW0vbWVtb3J5LWZhaWx1cmUuYyAgICAgICAgICAgICAgfCAgMiArLQ0K
+Pj4gICBtbS9tZW1wb2xpY3kuYyAgICAgICAgICAgICAgICAgICB8ICAyICstDQo+PiAgIG1tL21p
+Z3JhdGUuYyAgICAgICAgICAgICAgICAgICAgIHwgIDQgKy0tDQo+PiAgIG1tL21pbmNvcmUuYyAg
+ICAgICAgICAgICAgICAgICAgIHwgIDIgKy0NCj4+ICAgbW0vdXNlcmZhdWx0ZmQuYyAgICAgICAg
+ICAgICAgICAgfCAgMiArLQ0KPj4gICAxNSBmaWxlcyBjaGFuZ2VkLCA0MyBpbnNlcnRpb25zKCsp
+LCA0MyBkZWxldGlvbnMoLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9xYXJtNjQvaW5jbHVk
+ZS9hc20vaHVnZXRsYi5oIGIvYXJjaC9hcm02NC9pbmNsdWRlL2FzbS9odWdldGxiLmgNCj4+IGlu
+ZGV4IDJkZGMzM2Q5M2IxMy4uMWFmMzlhNzRlNzkxIDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9hcm02
+NC9pbmNsdWRlL2FzbS9odWdldGxiLmgNCj4+ICsrKyBiL2FyY2gvYXJtNjQvaW5jbHVkZS9hc20v
+aHVnZXRsYi5oDQo+PiBAQCAtNDYsNyArNDYsNyBAQCBleHRlcm4gcHRlX3QgaHVnZV9wdGVwX2Ns
+ZWFyX2ZsdXNoKHN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqdm1hLA0KPj4gICBleHRlcm4gdm9pZCBo
+dWdlX3B0ZV9jbGVhcihzdHJ1Y3QgbW1fc3RydWN0ICptbSwgdW5zaWduZWQgbG9uZyBhZGRyLA0K
+Pj4gICAJCQkgICBwdGVfdCAqcHRlcCwgdW5zaWduZWQgbG9uZyBzeik7DQo+PiAgICNkZWZpbmUg
+X19IQVZFX0FSQ0hfSFVHRV9QVEVQX0dFVA0KPj4gLWV4dGVybiBwdGVfdCBodWdlX3B0ZXBfZ2V0
+KHB0ZV90ICpwdGVwKTsNCj4+ICtleHRlcm4gcHRlX3QgaHVnZV9wdGVwX2dldChzdHJ1Y3QgbW1f
+c3RydWN0ICptbSwgdW5zaWduZWQgbG9uZyBhZGRyLCBwdGVfdCAqcHRlcCk7DQo+IA0KPiBUaGUg
+aGVhZGVyIGNoYW5nZWQgYnV0IG5vdCB0aGUgaW1wbGVtZW50YXRpb24/IFRoaXMgd2lsbCBuZWVk
+IHRvIGRvDQo+IHJpc2N2IGFuZCBzMzkwIHRvby4NCg0KSXQgaXMgbm93IGZpeGVkLg0KDQo+IA0K
+PiBUaG91Z2gsIHJlYWxseSwgSSB0aGluayB0aGUgcmlnaHQgcGF0aCBpcyB0byB3b3JrIHRvd2Fy
+ZCByZW1vdmluZw0KPiBodWdlX3B0ZXBfZ2V0KCkgZnJvbSB0aGUgYXJjaCBjb2RlLi4NCj4gDQo+
+IHJpc2N2IGFuZCBhcm0gYXJlIGRvaW5nIHRoZSBzYW1lIHRoaW5nIC0gcHJvcG9nYXRpbmcgZGly
+dHkveW91bmcgYml0cw0KPiBmcm9tIHRoZSBjb250aWcgUFRFcyB0byB0aGUgcmVzdWx0cy4gVGhl
+IGNvcmUgY29kZSBjYW4gZG8gdGhpcywgbWF5YmUNCj4gd2l0aCBhIEFSQ0ggI2RlZmluZSBvcHQg
+aW4uDQo+IA0KPiBzMzkwLi4gT3VjaHkgLSBpcyB0aGlzIGJlY2F1c2UgaHVnZXRsYiB3YW50cyB0
+byBwcmV0ZW5kIHRoYXQgZXZlcnkNCj4gbGV2ZWwgaXMgZW5jb2RlZCBhcyBhIFBURSBzbyBpdCB0
+YWtlcyB0aGUgUEdEIGFuZCByZWNvZGVzIHRoZSBmbGFncyB0bw0KPiB0aGUgUFRFIGxheW91dD8/
+DQo+IA0KPiBKYXNvbg0K
