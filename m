@@ -1,82 +1,131 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FDF08CFC9A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 11:16:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTP id AEDE88CFEE9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 13:26:42 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1v9HSqmM;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xlQOYgcr;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1v9HSqmM;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xlQOYgcr;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VnqXT02ZKz3gJy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 19:07:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VntV40FvQz3gL3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 21:20:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=anjalik@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1v9HSqmM;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xlQOYgcr;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1v9HSqmM;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xlQOYgcr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VnqX13Hjcz2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2024 19:06:41 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44R8qgkE002132;
-	Mon, 27 May 2024 09:06:36 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1;_a=3Drsa-sha256;_c=3Drelaxed/relaxed;_d=3Dibm.com;_h=3Dcc?=
- =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:in-reply-to:m?=
- =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3D9VN?=
- =?UTF-8?Q?GgwJp0/qAvI1UvmSQ9pLb1afIenqCAYLigWrCnVo=3D;_b=3DkPCiNS4pwddak8?=
- =?UTF-8?Q?X+7bL4X0UOLVKbjhlYf9c0uHw8p7OtprVjtzNDsam0mILpL2BdBLPR_6B/qWXJ9?=
- =?UTF-8?Q?D9LkxSFpjZw41TgS4T0XBPlVxA448IrCEFa0cEDmzFpk1vw1yxCcWyEUbvBP_3T?=
- =?UTF-8?Q?jPx2uHWZQTIudBOUWXs3r2eZ/6w4wFlZqErq55nNdbmxsYhJJqXA8iWp7ZlsI3H?=
- =?UTF-8?Q?/QK_wcm0l1/x2mk9Yh8kLMTAyf9adDX5U7cprO5WTJZ44eBJc00LpYBSZ/oOHuo?=
- =?UTF-8?Q?0I6DQHKCS_h/MeTUJ2ONNJ347bF8/MX80SLzY7EysIlB5r6fAZEAIergyCu636k?=
- =?UTF-8?Q?+loo2Qfu7Vc6Xgx_WQ=3D=3D_?=
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycq1y0155-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 May 2024 09:06:35 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44R8XdNR004505;
-	Mon, 27 May 2024 09:06:35 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybuanr2ea-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 May 2024 09:06:35 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44R96TWj47907202
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 May 2024 09:06:31 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7A98C2004F;
-	Mon, 27 May 2024 09:06:29 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 74EA620049;
-	Mon, 27 May 2024 09:06:28 +0000 (GMT)
-Received: from [9.204.205.198] (unknown [9.204.205.198])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 May 2024 09:06:28 +0000 (GMT)
-Message-ID: <917f58e9-b002-4c71-b714-2d4a201f4038@linux.ibm.com>
-Date: Mon, 27 May 2024 14:36:27 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VntTJ1VMdz3fy0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2024 21:19:31 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6711B1FCF9;
+	Mon, 27 May 2024 11:19:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716808762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Bi7Ql1X3s4Dacbspx0O9yRaUH+sqke7d9JnW3emmk4=;
+	b=1v9HSqmM3ByGTDpUJcOlBE7lZwtRH36akLa3r92ozdA0Vig4wwX77SMggBICDlvZtiLWgR
+	B8dzgwKBbCvIkiUrm0pdDG75+gyFW9El6tBG2pV3ODs/5dr+uE9sfV3JgNyMpuoEDap//n
+	RAFkcpV7txMFEaS2dFHuPjxdeukGqOU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716808762;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Bi7Ql1X3s4Dacbspx0O9yRaUH+sqke7d9JnW3emmk4=;
+	b=xlQOYgcrsgLz/gT/b41UXdxr3G8IJM2z3u2ptnaoTmir+HwvA8vbdcYm2iRO2RtmV6nnwz
+	lsjfsRa3+2HSBIDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1v9HSqmM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=xlQOYgcr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716808762; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Bi7Ql1X3s4Dacbspx0O9yRaUH+sqke7d9JnW3emmk4=;
+	b=1v9HSqmM3ByGTDpUJcOlBE7lZwtRH36akLa3r92ozdA0Vig4wwX77SMggBICDlvZtiLWgR
+	B8dzgwKBbCvIkiUrm0pdDG75+gyFW9El6tBG2pV3ODs/5dr+uE9sfV3JgNyMpuoEDap//n
+	RAFkcpV7txMFEaS2dFHuPjxdeukGqOU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716808762;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2Bi7Ql1X3s4Dacbspx0O9yRaUH+sqke7d9JnW3emmk4=;
+	b=xlQOYgcrsgLz/gT/b41UXdxr3G8IJM2z3u2ptnaoTmir+HwvA8vbdcYm2iRO2RtmV6nnwz
+	lsjfsRa3+2HSBIDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CDAD713A6B;
+	Mon, 27 May 2024 11:19:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4gE/LzlsVGYmDwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 27 May 2024 11:19:21 +0000
+Date: Mon, 27 May 2024 13:19:12 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v3 03/16] mm: Provide mm_struct and address to
+ huge_ptep_get()
+Message-ID: <ZlRsMCvVo9tSEFQV@localhost.localdomain>
+References: <cover.1716714720.git.christophe.leroy@csgroup.eu>
+ <fbba60d762faad40ebb959bf9517c5c22301f69e.1716714720.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/perf: Set cpumode flags using sample address
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20240517094607.422166-1-anjalik@linux.ibm.com>
- <87ed9r4qoy.fsf@mail.lhotse>
-Content-Language: en-US
-From: Anjali K <anjalik@linux.ibm.com>
-In-Reply-To: <87ed9r4qoy.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jfmINDppSwKX_h6toa5p_sIW73IvRIcb
-X-Proofpoint-ORIG-GUID: jfmINDppSwKX_h6toa5p_sIW73IvRIcb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-26_09,2024-05-24_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- mlxlogscore=999 impostorscore=0 priorityscore=1501 adultscore=0
- suspectscore=0 spamscore=0 mlxscore=0 clxscore=1015 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405270074
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbba60d762faad40ebb959bf9517c5c22301f69e.1716714720.git.christophe.leroy@csgroup.eu>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-6.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 6711B1FCF9
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -6.51
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,152 +137,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sun, May 26, 2024 at 11:22:23AM +0200, Christophe Leroy wrote:
+> On powerpc 8xx huge_ptep_get() will need to know whether the given
+> ptep is a PTE entry or a PMD entry. This cannot be known with the
+> PMD entry itself because there is no easy way to know it from the
+> content of the entry.
+> 
+> So huge_ptep_get() will need to know either the size of the page
+> or get the pmd.
+> 
+> In order to be consistent with huge_ptep_get_and_clear(), give
+> mm and address to huge_ptep_get().
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v2: Add missing changes in arch implementations
+> v3: Fixed a comment in ARM and missing changes in S390
+> ---
+>  arch/arm/include/asm/hugetlb-3level.h |  4 +--
+>  arch/arm64/include/asm/hugetlb.h      |  2 +-
+>  arch/arm64/mm/hugetlbpage.c           |  2 +-
+>  arch/riscv/include/asm/hugetlb.h      |  2 +-
+>  arch/riscv/mm/hugetlbpage.c           |  2 +-
+>  arch/s390/include/asm/hugetlb.h       |  4 +--
+>  arch/s390/mm/hugetlbpage.c            |  4 +--
 
-On 24/05/24 12:55, Michael Ellerman wrote:
-> Hi Anjali,
->
-> Anjali K <anjalik@linux.ibm.com> writes:
->> Currently in some cases, when the sampled instruction address register
->> latches to a specific address during sampling, there is an inconsistency
->> in the privilege bits captured in the sampled event register.
->  
-> I don't really like "inconsistency", it's vague.
->
-> The sampled address is correct, and the privilege bits are incorrect.
->
-> If someone is offended by that wording you can direct them to me :)
->
->> For example, a snippet from the perf report on a power10 system is:
->> Overhead  Address             Command       Shared Object      Symbol
->> ........  ..................  ............  .................  .......................
->>      2.41%  0x7fff9f94a02c      null_syscall  [unknown]          [k] 0x00007fff9f94a02c
->>      2.20%  0x7fff9f94a02c      null_syscall  libc.so.6          [.] syscall
->>
->> perf_get_misc_flags() function looks at the privilege bits to return
->> the corresponding flags to be used for the address symbol and these
->> privilege bit details are read from the sampled event register. In the
->> above snippet, address "0x00007fff9f94a02c" is shown as "k" (kernel) due
->> to the inconsistent privilege bits captured in the sampled event register.
->  
-> "incorrect privilege bits"
->
->> To address this case, the proposed fix is to additionally check whether the
->  
-> "To address this case check whether the"
->
->> sampled address is in the kernel area. Since this is specific to the latest
->> platform, a new pmu flag is added called "PPMU_P10" and is used to
->> contain the proposed fix.
-> You should explain why this fix replaces the existing P10_DD1 logic.
->
->> Signed-off-by: Anjali K <anjalik@linux.ibm.com>
->> ---
->> Changelog:
->> V1->V2:
->> Fixed the build warning reported by the kernel test bot
->> Added a new flag PPMU_P10 and used it instead of PPMU_ARCH_31 to restrict
->> the changes to the current platform (Power10)
->>
->>  arch/powerpc/include/asm/perf_event_server.h |  1 +
->>  arch/powerpc/perf/core-book3s.c              | 43 ++++++++------------
->>  arch/powerpc/perf/power10-pmu.c              |  3 +-
->>  3 files changed, 20 insertions(+), 27 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
->> index e2221d29fdf9..12f7bfb4cab1 100644
->> --- a/arch/powerpc/include/asm/perf_event_server.h
->> +++ b/arch/powerpc/include/asm/perf_event_server.h
->> @@ -90,6 +90,7 @@ struct power_pmu {
->>  #define PPMU_ARCH_31		0x00000200 /* Has MMCR3, SIER2 and SIER3 */
->>  #define PPMU_P10_DD1		0x00000400 /* Is power10 DD1 processor version */
->>  #define PPMU_HAS_ATTR_CONFIG1	0x00000800 /* Using config1 attribute */
->> +#define PPMU_P10			0x00001000 /* For power10 pmu */
->   
-> Can you put PPMU_P10 immediately after PPMU_P10_DD1. It's OK to renumber
-> PPMU_HAS_ATTR_CONFIG1.
->
->> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
->> index 6b5f8a94e7d8..8a2677463a73 100644
->> --- a/arch/powerpc/perf/core-book3s.c
->> +++ b/arch/powerpc/perf/core-book3s.c
->> @@ -266,31 +266,12 @@ static inline u32 perf_flags_from_msr(struct pt_regs *regs)
->>  static inline u32 perf_get_misc_flags(struct pt_regs *regs)
->>  {
->>  	bool use_siar = regs_use_siar(regs);
->> -	unsigned long mmcra = regs->dsisr;
->> -	int marked = mmcra & MMCRA_SAMPLE_ENABLE;
->> +	unsigned long siar = mfspr(SPRN_SIAR);
->  
-> We shouldn't read SPRN_SIAR until we know it will be used.
->
->> +	unsigned long addr;
->>  
->>  	if (!use_siar)
->>  		return perf_flags_from_msr(regs);
->>  
->> -	/*
->> -	 * Check the address in SIAR to identify the
->> -	 * privilege levels since the SIER[MSR_HV, MSR_PR]
->> -	 * bits are not set for marked events in power10
->> -	 * DD1.
->> -	 */
->> -	if (marked && (ppmu->flags & PPMU_P10_DD1)) {
->> -		unsigned long siar = mfspr(SPRN_SIAR);
->> -		if (siar) {
->> -			if (is_kernel_addr(siar))
->> -				return PERF_RECORD_MISC_KERNEL;
->> -			return PERF_RECORD_MISC_USER;
->> -		} else {
->> -			if (is_kernel_addr(regs->nip))
->> -				return PERF_RECORD_MISC_KERNEL;
->> -			return PERF_RECORD_MISC_USER;
->> -		}
->> -	}
->> -
->>  	/*
->>  	 * If we don't have flags in MMCRA, rather than using
->>  	 * the MSR, we intuit the flags from the address in
->> @@ -298,19 +279,29 @@ static inline u32 perf_get_misc_flags(struct pt_regs *regs)
->>  	 * results
->>  	 */
->>  	if (ppmu->flags & PPMU_NO_SIPR) {
->> -		unsigned long siar = mfspr(SPRN_SIAR);
->>  		if (is_kernel_addr(siar))
->>  			return PERF_RECORD_MISC_KERNEL;
->>  		return PERF_RECORD_MISC_USER;
->>  	}
->>  
->>  	/* PR has priority over HV, so order below is important */
->> -	if (regs_sipr(regs))
->> -		return PERF_RECORD_MISC_USER;
->> -
->> -	if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
->> +	if (regs_sipr(regs)) {
->> +		if (!(ppmu->flags & PPMU_P10))
->> +			return PERF_RECORD_MISC_USER;
->> +	} else if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
->>  		return PERF_RECORD_MISC_HYPERVISOR;
->>  
->> +	/*
->> +	 * Check the address in SIAR to identify the
->> +	 * privilege levels since the SIER[MSR_HV, MSR_PR]
->> +	 * bits are not set correctly in power10 sometimes
->> +	 */
->> +	if (ppmu->flags & PPMU_P10) {
->> +		addr = siar ? siar : regs->nip;
->> +		if (!is_kernel_addr(addr))
->> +			return PERF_RECORD_MISC_USER;
->> +	}
->> +
->>  	return PERF_RECORD_MISC_KERNEL;
->>  }
-> cheers
+I was wondering whether we could do something similar for what we did in
+patch#1, so we do not touch architectures code.
 
-Thank you for reviewing. I will address the review comments and send the next version of the patch.
-Anjali K
+  
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 1611e73b1121..86b5105b82a1 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2812,7 +2812,7 @@ static int gup_hugepte(pte_t *ptep, unsigned long sz, unsigned long addr,
+>  	if (pte_end < end)
+>  		end = pte_end;
+>  
+> -	pte = huge_ptep_get(ptep);
+> +	pte = huge_ptep_get(NULL, addr, ptep);
+
+I know that after this series all this code is gone, but I was not sure
+about the behaviour between this patch and the last one.
+
+It made me nervous, until I realized that this code is only used
+on CONFIG_ARCH_HAS_HUGEPD, which should not be the case anymore for 8xx after
+patch#8, and since 8xx is the only one that will use the mm parameter from
+huge_ptep_get, we are all good.
 
 
+
+-- 
+Oscar Salvador
+SUSE Labs
