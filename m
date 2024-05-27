@@ -1,79 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447BB8D5557
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:25:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5A28D5558
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:26:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=minyard-net.20230601.gappssmtp.com header.i=@minyard-net.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tivBEOZc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kbg3ZAZ4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr16d3pnkz3dTf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:25:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr17X5lWzz3dWZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:26:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=minyard.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=minyard-net.20230601.gappssmtp.com header.i=@minyard-net.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tivBEOZc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kbg3ZAZ4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=minyard.net (client-ip=2607:f8b0:4864:20::329; helo=mail-ot1-x329.google.com; envelope-from=corey@minyard.net; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 28 May 2024 00:45:23 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vml1H3lwrz3gKG
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 May 2024 00:39:46 +1000 (AEST)
-Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6f8d0a215deso832770a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 May 2024 07:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1716647979; x=1717252779; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2ijbRL5KgMxfBrVDKaGT/ZS1YTwf/exNuTTCo0hJfeM=;
-        b=tivBEOZcHsIaGg5PcrCR7rTOyMOtFPCAu+H/Tc2UfcZYZOyfnPOPYUy/UScoTtWo9z
-         7pMRNj2jcIbcBTLfKu8LgbAnYjE4nbC4mXH9IL6wI7o2xKHt5P4+ARbkVT6M1wwZRSDc
-         8tzFOx6tJAoJEi5PMaoyFPq9dY/vwq7dVtlUqie8Oq6KbHC5eJtdhTwftpHRv3EObzcb
-         aeNbtPhSURzRJWDeW89s48vh/4935rUDRK4MeRHszO5LDQsBYS6kgJBsE1p0YqCx2Ntt
-         LTD1hlAGdUL8E1MCo8lKypoc9RGSPK19Zxd9ZIxc1VZqzjYJjiIv22y8akqmmhnXG4Nn
-         9Dng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716647979; x=1717252779;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ijbRL5KgMxfBrVDKaGT/ZS1YTwf/exNuTTCo0hJfeM=;
-        b=P77Quk1W7Equ7I45TCXYoBo7ZyddxW44Q61ssXQQLsFbTihw/eu1P9RkpQB8ZKgx08
-         ur/ebnc3DIsMTaXg16xU/hW42qB/4kHNMT3Nkqk8EOajasB3NjFYHxDRBul2Gl80oFrw
-         smjhOz5ooY4Xk0oKv1nI/822TlHHzzIbtKfZJXgEI8U69cy5stMMZzVuoWc4kGexaWd3
-         wU0PU7J75WhpKyD5qBcXtWPsVwih2mTy2R09zhJXKsLNLrcrUAYDpczUsZ/Jwa3dasD9
-         DIWBBuMhZ0XkNjCm9hUkc7E6Imu8Ym+PJ4P9TftUizGeSkQzEeN4/MZbwlyoLpGs2DxA
-         XHNw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1b8cK/sd1oxm7e/aBIBv00fcoSZ7r6F52HfTWku3orojeMpt5uiNG0Si7ms8NIKHBWnhhBvvLtGphhyZXgHfpIsjlC6NUHDwFxnJupQ==
-X-Gm-Message-State: AOJu0YxYaIAh5QdReirGftg5iVZTOxPsja/QBtgMkKtT/f4nWDnyLD/a
-	uNHMKIdrzrFW/qj6D8yGeZZ461a15IXUh3gTmZMlXQ0OEgvN8mx4E+QTDeT7Bew=
-X-Google-Smtp-Source: AGHT+IF0BZKLWwLOASvb2XVCtA5cGrrbycBktJDxiP8zfqL1QN+0/jXbjbKfObTeb3B2Xr8wgSINVg==
-X-Received: by 2002:a05:6830:f96:b0:6f1:248a:b5ba with SMTP id 46e09a7af769-6f7d65af20bmr3958986a34.18.1716647979022;
-        Sat, 25 May 2024 07:39:39 -0700 (PDT)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:b41a:8a2e:362d:fa53])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f8d0e61558sm768131a34.51.2024.05.25.07.39.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 May 2024 07:39:38 -0700 (PDT)
-Date: Sat, 25 May 2024 09:39:36 -0500
-From: Corey Minyard <corey@minyard.net>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 0/6] ipmi: Convert to platform remove callback returning
- void
-Message-ID: <ZlH4KFZ3MYzelzZK@mail.minyard.net>
-References: <cover.1709655755.git.u.kleine-koenig@pengutronix.de>
- <3uhfeeahn2u23mxyumyxcyx4kmcxzczipkan7eqh4aslsmhxyz@zgsmwj2jvb2v>
- <Zhf9mQx/KgXOzPTs@mail.minyard.net>
- <sjgseqireuaswtbuwl3rvcszpsjzph4opq52x2kbudczxutz7o@2tua2oueufdd>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vnz2q5g8wz3dDT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 00:45:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716821124; x=1748357124;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N2BkBEfMjIfRh7g1dfIjn0MfLhYtzu3BShYG5yFIizg=;
+  b=kbg3ZAZ4Y+wFAfVUy1JIQjGp3hClPpiaF6qBKS5YrZ7Kx0a8ob9kOz7X
+   D+lYLATxpqx/sYh062PDMy+G5LFSrn6h2QeYB3uZPFYvmgqi9FU/15CXM
+   fJRK/iSYXQicnwVmR+d7nlKaewsNMUtnl+glyNRNPOwQGSJVV9Ulvgl2K
+   YBiA6CvIdsVYxNBy8lAqznhKmiD7NXNbhltRJuz5Fl+q/DnANQuqlYeCx
+   RfqxzkBnbBtM6P4ZEjJ73OF/FsH9dPBcF8VoKbJMv07xgeUwqDP1wArXr
+   DisG2cHsH+wJTu3Vuv+55zhQBnSdtO9tvNWk0S4NZwTI4jsAyJtsnlFRM
+   w==;
+X-CSE-ConnectionGUID: JPHHW0zbRVOdG+xOpq8jjA==
+X-CSE-MsgGUID: US0ikNO2T66XOKrZcJEuOg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13269744"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
+   d="scan'208";a="13269744"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:44:13 -0700
+X-CSE-ConnectionGUID: Y71KIk33R0SQTM5KxhYC5w==
+X-CSE-MsgGUID: R+PV6+o1R+Oqcy6DJptl2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
+   d="scan'208";a="35279780"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.246.214])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:44:09 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O'Halloran" <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Fabio M . De Francesco" <fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH 0/2] Make ELOG log and trace consistently with GHES
+Date: Mon, 27 May 2024 16:43:39 +0200
+Message-ID: <20240527144356.246220-1-fabio.m.de.francesco@linux.intel.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <sjgseqireuaswtbuwl3rvcszpsjzph4opq52x2kbudczxutz7o@2tua2oueufdd>
 X-Mailman-Approved-At: Fri, 31 May 2024 08:19:55 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,50 +80,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: corey@minyard.net
-Cc: Corey Minyard <minyard@acm.org>, Benjamin Fair <benjaminfair@google.com>, linux-aspeed@lists.ozlabs.org, Avi Fishman <avifishman70@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, openbmc@lists.ozlabs.org, Tomer Maimon <tmaimon77@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Tali Perry <tali.perry1@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nancy Yuen <yuenn@google.com>, Patrick Venture <venture@google.com>, kernel@pengutronix.de, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, openipmi-developer@lists.sourceforge.net, Andrew Jeffery <andrew@codeconstruct.com.au>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Joel Stanley <joel@jms.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 25, 2024 at 12:10:38PM +0200, Uwe Kleine-König wrote:
-> Hello Corey,
-> 
-> On Thu, Apr 11, 2024 at 10:11:21AM -0500, Corey Minyard wrote:
-> > On Thu, Apr 11, 2024 at 09:15:03AM +0200, Uwe Kleine-König wrote:
-> > > Hello,
-> > > 
-> > > On Tue, Mar 05, 2024 at 05:26:57PM +0100, Uwe Kleine-König wrote:
-> > > > this series converts all drivers below drivers/char/ipmi to struct
-> > > > platform_driver::remove_new(). See commit 5c5a7680e67b ("platform: Provide a
-> > > > remove callback that returns no value") for an extended explanation and the
-> > > > eventual goal.
-> > > > 
-> > > > All conversations are trivial, because their .remove() callbacks
-> > > > returned zero unconditionally.
-> > > > 
-> > > > There are no interdependencies between these patches, so they could be
-> > > > picked up individually. But I'd hope that they get picked up all
-> > > > together by Corey.
-> > 
-> > Yeah, I was kind of waiting for more reviews, but this is pretty
-> > straightforward.  I've pulled this into my tree.
-> 
-> These changes are in next since a while but didn't land in Linus tree
-> for v6.10-rc1. I intend to send a PR to Greg early next week changing
-> platform_driver::remove to match remove_new. If these commits don't make
-> it in in time, I'll be so bold and just include the commits from your
-> for-next branch in my PR.
+When Firmware First is enabled, BIOS handles errors first and then it
+makes them available to the kernel via the Common Platform Error Record
+(CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
+via one of two similar paths, either ELOG or GHES.
 
-I sent them to Linus right after 6.9 dropped, let me resend...
+Currently, ELOG and GHES show some inconsistencies in how they print to
+the kernel log as well as in how they report to userspace via trace
+events.
 
--corey
+Make the two mentioned paths act similarly for what relates to logging
+and tracing.
 
-> 
-> Best regards
-> Uwe
-> 
-> -- 
-> Pengutronix e.K.                           | Uwe Kleine-König            |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+--- Changes for v1 ---
 
+	- Drop the RFC prefix and restart from PATCH v1
+	- Drop patch 3/3 because a discussion on it has not yet been
+	  settled
+	- Drop namespacing in export of pci_print_aer while() (Dan)
+	- Don't use '#ifdef' in *.c files (Dan)
+	- Drop a reference on pdev after operation is complete (Dan)
+	- Don't log an error message if pdev is NULL (Dan)
+
+--- Changes for RFC v2 ---
+	
+	- 0/3: rework the subject line and the letter.
+        - 1/3: no changes.
+        - 2/3: trace CPER PCIe Section only if CONFIG_ACPI_APEI_PCIEAER
+          is defined; the kernel test robot reported the use of two
+          undefined symbols because the test for the config option was
+          missing; rewrite the subject line and part of commit message.
+        - 3/3: no changes.
+
+Fabio M. De Francesco (2):
+  ACPI: extlog: Trace CPER Non-standard Section Body
+  ACPI: extlog: Trace CPER PCI Express Error Section
+
+ drivers/acpi/acpi_extlog.c | 35 +++++++++++++++++++++++++++++++++++
+ drivers/pci/pcie/aer.c     |  2 +-
+ include/linux/aer.h        |  9 ++++++---
+ 3 files changed, 42 insertions(+), 4 deletions(-)
+
+-- 
+2.45.1
 
