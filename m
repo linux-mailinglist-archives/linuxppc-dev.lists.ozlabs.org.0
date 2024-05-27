@@ -2,119 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C48A8CFFC4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 14:16:43 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vh099PAn;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KrIgFpoO;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vh099PAn;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KrIgFpoO;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTP id AAF178D01B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 15:36:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vnvd10cccz3vY4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 22:11:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VnxNc0KCtz3vbK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 May 2024 23:30:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vh099PAn;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KrIgFpoO;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vh099PAn;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KrIgFpoO;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VnvcF5ntQz3ftN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2024 22:10:37 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 285A921E8D;
-	Mon, 27 May 2024 12:10:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716811833; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvaI30Lc501OfGJxpLRPDdHJVdqbMySFwG1G/Pb/Fhs=;
-	b=vh099PAndxLyEPIsy9E4zQcvEjjwomGo17E1z61rShLO1l/oy81WjLcrx6E9YBLFqcxuN1
-	4NJKbjtWlt3gj3LXl4MROawdJ3lmA1PecehlPSKQumw0obvCt/GfrrY1ZDa+xZTM0QWg8m
-	CoFvcrONeO5ObJq6WjivL7O0auPCm7M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716811833;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvaI30Lc501OfGJxpLRPDdHJVdqbMySFwG1G/Pb/Fhs=;
-	b=KrIgFpoO8KoA/E7A1TKrafaMlo1xGEQnE5ztSYWcl7Qbv4WAXr8pwACx+wRii1Hg3aHJRi
-	PiXfifP6mdP/otAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716811833; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvaI30Lc501OfGJxpLRPDdHJVdqbMySFwG1G/Pb/Fhs=;
-	b=vh099PAndxLyEPIsy9E4zQcvEjjwomGo17E1z61rShLO1l/oy81WjLcrx6E9YBLFqcxuN1
-	4NJKbjtWlt3gj3LXl4MROawdJ3lmA1PecehlPSKQumw0obvCt/GfrrY1ZDa+xZTM0QWg8m
-	CoFvcrONeO5ObJq6WjivL7O0auPCm7M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716811833;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mvaI30Lc501OfGJxpLRPDdHJVdqbMySFwG1G/Pb/Fhs=;
-	b=KrIgFpoO8KoA/E7A1TKrafaMlo1xGEQnE5ztSYWcl7Qbv4WAXr8pwACx+wRii1Hg3aHJRi
-	PiXfifP6mdP/otAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E42613A88;
-	Mon, 27 May 2024 12:10:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SHkOIDh4VGYEVgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 27 May 2024 12:10:32 +0000
-Date: Mon, 27 May 2024 14:10:23 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v3 08/16] powerpc/8xx: Rework support for 8M pages
- using contiguous PTE entries
-Message-ID: <ZlR4L9g9uQ6j7J3Y@localhost.localdomain>
-References: <cover.1716714720.git.christophe.leroy@csgroup.eu>
- <09f4ae803da751de7741f3d6bc5d94b8acf18829.1716714720.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VnxNC3QSWz3g6J
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 May 2024 23:30:17 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4VnxN1430kz9syd;
+	Mon, 27 May 2024 15:30:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Pj7Yxgttc3ll; Mon, 27 May 2024 15:30:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4VnxN12xRmz9sqS;
+	Mon, 27 May 2024 15:30:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 603768B773;
+	Mon, 27 May 2024 15:30:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id DVj7Btd2kdXr; Mon, 27 May 2024 15:30:09 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.49])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 709598B764;
+	Mon, 27 May 2024 15:30:07 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: [RFC PATCH v4 00/16] Reimplement huge pages without hugepd on powerpc (8xx, e500, book3s/64)
+Date: Mon, 27 May 2024 15:29:58 +0200
+Message-ID: <cover.1716815901.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09f4ae803da751de7741f3d6bc5d94b8acf18829.1716714720.git.christophe.leroy@csgroup.eu>
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_TLS_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716816600; l=7097; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=J9J2V9eVNWcolO4HkttaKyavsOHGJwEhHxVyvbC/t/U=; b=l5tcmLFXyLhyJA1651pcJ8HDgdTLLgQZ5Ri35StgetQseLuCtSay7uca9/k26SbU/8/pM8+II nrgQ21YmA5LA0uB4MF/pDpA8UhSeWSUuKbva1aAJ/UX0oE3bAvdksol
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,37 +63,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 26, 2024 at 11:22:28AM +0200, Christophe Leroy wrote:
-> In order to fit better with standard Linux page tables layout, add
-> support for 8M pages using contiguous PTE entries in a standard
-> page table. Page tables will then be populated with 1024 similar
-> entries and two PMD entries will point to that page table.
-> 
-> The PMD entries also get a flag to tell it is addressing an 8M page,
-> this is required for the HW tablewalk assistance.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+This is the continuation of the RFC v1 series "Reimplement huge pages
+without hugepd on powerpc 8xx". It now get rid of hugepd completely
+after handling also e500 and book3s/64
 
-I did not look close into KSAN bits, and I trust you with the assembly part,
-but other than that looks good to me, so FWIW:
+Also see https://github.com/linuxppc/issues/issues/483
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Unlike most architectures, powerpc 8xx HW requires a two-level
+pagetable topology for all page sizes. So a leaf PMD-contig approach
+is not feasible as such.
 
-Just a nit below:
+Possible sizes on 8xx are 4k, 16k, 512k and 8M.
 
-> +#define __HAVE_ARCH_HUGE_PTEP_GET
-> +static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
-> +{
-> +	if (ptep_is_8m_pmdp(mm, addr, ptep))
-> +		ptep = pte_offset_kernel((pmd_t *)ptep, 0);
+First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD entries
+must point to a single entry level-2 page table. Until now that was
+done using hugepd. This series changes it to use standard page tables
+where the entry is replicated 1024 times on each of the two pagetables
+refered by the two associated PMD entries for that 8M page.
 
-Would it not be more clear to use pmd_page_vaddr directly there?
+For e500 and book3s/64 there are less constraints because it is not
+tied to the HW assisted tablewalk like on 8xx, so it is easier to use
+leaf PMDs (and PUDs).
 
+On e500 the supported page sizes are 4M, 16M, 64M, 256M and 1G. All at
+PMD level on e500/32 (mpc85xx) and mix of PMD and PUD for e500/64. We
+encode page size with 4 available bits in PTE entries. On e300/32 PGD
+entries size is increases to 64 bits in order to allow leaf-PMD entries
+because PTE are 64 bits on e500.
+
+On book3s/64 only the hash-4k mode is concerned. It supports 16M pages
+as cont-PMD and 16G pages as cont-PUD. In other modes (radix-4k, radix-6k
+and hash-64k) the sizes match with PMD and PUD sizes so that's just leaf
+entries. The hash processing make things a bit more complex. To ease
+things, __hash_page_huge() is modified to bail out when DIRTY or ACCESSED
+bits are missing, leaving it to mm core to fix it.
+
+Global changes in v4:
+- Fixed a few issues reported privately by robots
+- Rebased on top of v6.10-rc1
+
+Global changes in v3:
+- Removed patches 1 and 2
+- Squashed patch 11 into patch 5
+- Replaced patches 12 and 13 with a series from Michael
+- Reordered patches a bit to have more general patches up front
+
+For more details on changes, see in each patch.
+
+Christophe Leroy (15):
+  mm: Define __pte_leaf_size() to also take a PMD entry
+  mm: Provide mm_struct and address to huge_ptep_get()
+  powerpc/mm: Remove _PAGE_PSIZE
+  powerpc/mm: Fix __find_linux_pte() on 32 bits with PMD leaf entries
+  powerpc/mm: Allow hugepages without hugepd
+  powerpc/8xx: Fix size given to set_huge_pte_at()
+  powerpc/8xx: Rework support for 8M pages using contiguous PTE entries
+  powerpc/8xx: Simplify struct mmu_psize_def
+  powerpc/e500: Remove enc and ind fields from struct mmu_psize_def
+  powerpc/e500: Switch to 64 bits PGD on 85xx (32 bits)
+  powerpc/e500: Encode hugepage size in PTE bits
+  powerpc/e500: Use contiguous PMD instead of hugepd
+  powerpc/64s: Use contiguous PMD/PUD instead of HUGEPD
+  powerpc/mm: Remove hugepd leftovers
+  mm: Remove CONFIG_ARCH_HAS_HUGEPD
+
+Michael Ellerman (1):
+  powerpc/64e: Remove unused IBM HTW code [SQUASHED]
+
+ arch/arm/include/asm/hugetlb-3level.h         |   4 +-
+ arch/arm64/include/asm/hugetlb.h              |   2 +-
+ arch/arm64/mm/hugetlbpage.c                   |   2 +-
+ arch/powerpc/Kconfig                          |   1 -
+ arch/powerpc/include/asm/book3s/32/pgalloc.h  |   2 -
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |  15 -
+ arch/powerpc/include/asm/book3s/64/hash.h     |  38 +-
+ arch/powerpc/include/asm/book3s/64/hugetlb.h  |  38 --
+ .../include/asm/book3s/64/pgtable-4k.h        |  47 --
+ .../include/asm/book3s/64/pgtable-64k.h       |  20 -
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  22 +-
+ arch/powerpc/include/asm/hugetlb.h            |  15 +-
+ .../include/asm/nohash/32/hugetlb-8xx.h       |  38 +-
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h  |   9 +-
+ arch/powerpc/include/asm/nohash/32/pte-40x.h  |   3 -
+ arch/powerpc/include/asm/nohash/32/pte-44x.h  |   3 -
+ arch/powerpc/include/asm/nohash/32/pte-85xx.h |   3 -
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h  |  58 ++-
+ .../powerpc/include/asm/nohash/hugetlb-e500.h |  36 +-
+ arch/powerpc/include/asm/nohash/mmu-e500.h    |   6 +-
+ arch/powerpc/include/asm/nohash/pgalloc.h     |   2 -
+ arch/powerpc/include/asm/nohash/pgtable.h     |  41 +-
+ arch/powerpc/include/asm/nohash/pte-e500.h    |  35 +-
+ arch/powerpc/include/asm/page.h               |  32 --
+ arch/powerpc/include/asm/pgtable-be-types.h   |  10 -
+ arch/powerpc/include/asm/pgtable-types.h      |  13 +-
+ arch/powerpc/include/asm/pgtable.h            |   3 +
+ arch/powerpc/kernel/exceptions-64e.S          |   4 +-
+ arch/powerpc/kernel/head_85xx.S               |  33 +-
+ arch/powerpc/kernel/head_8xx.S                |  10 +-
+ arch/powerpc/kernel/setup_64.c                |   6 +-
+ arch/powerpc/mm/book3s64/hash_utils.c         |  11 +-
+ arch/powerpc/mm/book3s64/hugetlbpage.c        |  10 +
+ arch/powerpc/mm/book3s64/pgtable.c            |  12 -
+ arch/powerpc/mm/hugetlbpage.c                 | 455 +---------------
+ arch/powerpc/mm/init-common.c                 |   8 +-
+ arch/powerpc/mm/kasan/8xx.c                   |  21 +-
+ arch/powerpc/mm/nohash/8xx.c                  |  43 +-
+ arch/powerpc/mm/nohash/Makefile               |   2 +-
+ arch/powerpc/mm/nohash/book3e_pgtable.c       |   4 +-
+ arch/powerpc/mm/nohash/tlb.c                  | 407 +--------------
+ arch/powerpc/mm/nohash/tlb_64e.c              | 314 ++++++++++++
+ arch/powerpc/mm/nohash/tlb_low_64e.S          | 484 ++----------------
+ arch/powerpc/mm/pgtable.c                     |  94 ++--
+ arch/powerpc/mm/pgtable_32.c                  |   2 +-
+ arch/riscv/include/asm/hugetlb.h              |   2 +-
+ arch/riscv/mm/hugetlbpage.c                   |   2 +-
+ arch/s390/include/asm/hugetlb.h               |   4 +-
+ arch/s390/mm/hugetlbpage.c                    |   4 +-
+ fs/hugetlbfs/inode.c                          |   2 +-
+ fs/proc/task_mmu.c                            |  10 +-
+ fs/userfaultfd.c                              |   2 +-
+ include/asm-generic/hugetlb.h                 |   2 +-
+ include/linux/hugetlb.h                       |   6 -
+ include/linux/pgtable.h                       |   3 +
+ include/linux/swapops.h                       |   4 +-
+ kernel/events/core.c                          |   2 +-
+ mm/Kconfig                                    |  10 -
+ mm/damon/vaddr.c                              |   6 +-
+ mm/gup.c                                      | 183 +------
+ mm/hmm.c                                      |   2 +-
+ mm/hugetlb.c                                  |  44 +-
+ mm/memory-failure.c                           |   2 +-
+ mm/mempolicy.c                                |   2 +-
+ mm/migrate.c                                  |   4 +-
+ mm/mincore.c                                  |   2 +-
+ mm/pagewalk.c                                 |  57 +--
+ mm/userfaultfd.c                              |   2 +-
+ 68 files changed, 756 insertions(+), 2019 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/book3s/64/pgtable-4k.h
+ create mode 100644 arch/powerpc/mm/nohash/tlb_64e.c
 
 -- 
-Oscar Salvador
-SUSE Labs
+2.44.0
+
