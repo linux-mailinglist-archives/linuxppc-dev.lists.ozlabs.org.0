@@ -2,76 +2,129 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 857D58D1338
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 06:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 620978D134B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 06:21:44 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ydGePfnm;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rMs5cO0m;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ydGePfnm;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rMs5cO0m;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VpJp841zPz79bb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 14:05:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VpJz60JvRz79gC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 14:13:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=anjalik@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ydGePfnm;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rMs5cO0m;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ydGePfnm;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rMs5cO0m;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpJnh5lJfz3vw3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 14:05:12 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44S438Ed014664;
-	Tue, 28 May 2024 04:05:06 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1;_a=3Drsa-sha256;_c=3Drelaxed/relaxed;_d=3Dibm.com;_h=3Dcc?=
- =?UTF-8?Q?:content-transfer-encoding:date:from:message-id:mime-version:su?=
- =?UTF-8?Q?bject:to;_s=3Dpp1;_bh=3DaNNSajwxh/IVT4qbUcbyH22zpkeg0Ce/bvvVeHA?=
- =?UTF-8?Q?H0zI=3D;_b=3DPtE0mjQBAxvwpiPAEhyo/DoU/My/zMsTYsa/rM1z2fVWNO43a1?=
- =?UTF-8?Q?/p2OAOOW2b2sVlf0so_8fF95bZJuE6l5JGAOV9CTu4d/z028gqA+jZ3Ieo7Kxrt?=
- =?UTF-8?Q?eiKCeQTiv7QYx9wC5gSS9Q2u_qhIz0bJCgmuZqJ6kJOY29uvZ4HJ8QHU9TZ6qSO?=
- =?UTF-8?Q?h4ouwvbxUV86v4PuepXDutLGgdR6NL_6sDNScUt19UQOfkRkC6QhEPjY7/MmPtu?=
- =?UTF-8?Q?3NqDpMPmX9EDPpWJviD4TyvUOQSg0SyupdvE_Aibq0K9nQyV7ov3BZqBtlUVTgf?=
- =?UTF-8?Q?l/fIoUTxEpoqJ2pj39cEPv2dWL3fgKN8KcRU6RcsoM_+w=3D=3D_?=
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd7w5004p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 May 2024 04:05:06 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44S1T8Tm011076;
-	Tue, 28 May 2024 04:05:05 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybtq04wnf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 May 2024 04:05:05 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44S44xlq48234932
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 May 2024 04:05:01 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 772472004B;
-	Tue, 28 May 2024 04:04:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D33B20040;
-	Tue, 28 May 2024 04:04:58 +0000 (GMT)
-Received: from li-e43b234c-2c54-11b2-a85c-fec5a724df9f.ibm.com.com (unknown [9.43.62.68])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 May 2024 04:04:57 +0000 (GMT)
-From: Anjali K <anjalik@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/perf: Set cpumode flags using sample address
-Date: Tue, 28 May 2024 09:33:56 +0530
-Message-Id: <20240528040356.2722275-1-anjalik@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: A3ahTdtAuZRZWtHw67nS99JyaMl0npBZ
-X-Proofpoint-ORIG-GUID: A3ahTdtAuZRZWtHw67nS99JyaMl0npBZ
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpJyK5qBWz3g1n
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 14:12:41 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 79B2A200EB;
+	Tue, 28 May 2024 04:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716869550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gy2fmPzIz29y+vFL0cHH3XbtFn60EEpegJmC7HngM3Y=;
+	b=ydGePfnmIFiekzX2yeycuMFI3rGMkCkSm045XqJUhrvys0C8qxOEGBafgRcN84NeAq4CEd
+	i4q/rp5lq07sxDnmBMITYthirZ3qtBaTXrZepvWmFStMArWSYrIr9hgRpBvwHlzaZ10PNi
+	OGWSInYJGkJWj9AkxN0yT42eNwHcWW0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716869550;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gy2fmPzIz29y+vFL0cHH3XbtFn60EEpegJmC7HngM3Y=;
+	b=rMs5cO0mrpiKyRxl6kONIAW8jrBVplDJSL5Vofvz1QfKe7+Et5CXrdDbpsDo69bBRaEmJf
+	EoRZbtRSGLab+kDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ydGePfnm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rMs5cO0m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1716869550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gy2fmPzIz29y+vFL0cHH3XbtFn60EEpegJmC7HngM3Y=;
+	b=ydGePfnmIFiekzX2yeycuMFI3rGMkCkSm045XqJUhrvys0C8qxOEGBafgRcN84NeAq4CEd
+	i4q/rp5lq07sxDnmBMITYthirZ3qtBaTXrZepvWmFStMArWSYrIr9hgRpBvwHlzaZ10PNi
+	OGWSInYJGkJWj9AkxN0yT42eNwHcWW0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1716869550;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gy2fmPzIz29y+vFL0cHH3XbtFn60EEpegJmC7HngM3Y=;
+	b=rMs5cO0mrpiKyRxl6kONIAW8jrBVplDJSL5Vofvz1QfKe7+Et5CXrdDbpsDo69bBRaEmJf
+	EoRZbtRSGLab+kDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EF59913A6B;
+	Tue, 28 May 2024 04:12:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vbSXN61ZVWYJCwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 28 May 2024 04:12:29 +0000
+Date: Tue, 28 May 2024 06:12:24 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v4 03/16] mm: Provide mm_struct and address to
+ huge_ptep_get()
+Message-ID: <ZlVZqNfjCw5Ay5qo@localhost.localdomain>
+References: <cover.1716815901.git.christophe.leroy@csgroup.eu>
+ <941ae68c7813cafc7aee3f34131f895fb7599636.1716815901.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-27_06,2024-05-27_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- clxscore=1015 impostorscore=0 spamscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405280029
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <941ae68c7813cafc7aee3f34131f895fb7599636.1716815901.git.christophe.leroy@csgroup.eu>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 79B2A200EB
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,158 +136,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: anjalik@linux.ibm.com, kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently in some cases, when the sampled instruction address register
-latches to a specific address during sampling, the privilege bits captured
-in the sampled event register are incorrect.
-For example, a snippet from the perf report on a power10 system is:
-Overhead  Address             Command       Shared Object      Symbol
-........  ..................  ............  .................  .......................
-     2.41%  0x7fff9f94a02c      null_syscall  [unknown]          [k] 0x00007fff9f94a02c
-     2.20%  0x7fff9f94a02c      null_syscall  libc.so.6          [.] syscall
+On Mon, May 27, 2024 at 03:30:01PM +0200, Christophe Leroy wrote:
+> On powerpc 8xx huge_ptep_get() will need to know whether the given
+> ptep is a PTE entry or a PMD entry. This cannot be known with the
+> PMD entry itself because there is no easy way to know it from the
+> content of the entry.
+> 
+> So huge_ptep_get() will need to know either the size of the page
+> or get the pmd.
+> 
+> In order to be consistent with huge_ptep_get_and_clear(), give
+> mm and address to huge_ptep_get().
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-perf_get_misc_flags() function looks at the privilege bits to return the
-corresponding flags to be used for the address symbol and these privilege
-bit details are read from the sampled event register. In the above snippet,
-address "0x00007fff9f94a02c" is shown as "k" (kernel) due to the incorrect
-privilege bits captured in the sampled event register.
-To address this case check whether the sampled address is in the kernel
-area. Since this is specific to the latest platform, a new pmu flag is
-added called "PPMU_P10" and is used to contain the proposed fix.
-PPMU_P10_DD1 marked events are also included under PPMU_P10, hence
-remove the code specific to PPMU_P10_DD1 marked events.
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-Signed-off-by: Anjali K <anjalik@linux.ibm.com>
----
-Changelog:
-v2->v3:
-Addressed review comments from Michael Ellerman to change the commit 
-message and update the values of PPMU_P10 and PPMU_HAS_ATTR_CONFIG1 flags
-to move the PPMU_P10 flag near the PPMU_P10_DD1 flag
-Rebased on linux 6.10-rc1
-v2 patch link:
-https://lore.kernel.org/linuxppc-dev/20240517094607.422166-1-anjalik@linux.ibm.com/
+ 
 
-v1->v2:
-Fixed the build warning reported by the kernel test bot 
-Added a new flag PPMU_P10 and used it instead of PPMU_ARCH_31 to restrict
-the changes to the current platform (Power10)
-v1 patch link:
-https://lore.kernel.org/linuxppc-dev/20240511075344.1393631-1-anjalik@linux.ibm.com/
-
- arch/powerpc/include/asm/perf_event_server.h |  3 +-
- arch/powerpc/perf/core-book3s.c              | 45 +++++++++-----------
- arch/powerpc/perf/power10-pmu.c              |  3 +-
- 3 files changed, 23 insertions(+), 28 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
-index e2221d29fdf9..5995614e9062 100644
---- a/arch/powerpc/include/asm/perf_event_server.h
-+++ b/arch/powerpc/include/asm/perf_event_server.h
-@@ -89,7 +89,8 @@ struct power_pmu {
- #define PPMU_NO_SIAR		0x00000100 /* Do not use SIAR */
- #define PPMU_ARCH_31		0x00000200 /* Has MMCR3, SIER2 and SIER3 */
- #define PPMU_P10_DD1		0x00000400 /* Is power10 DD1 processor version */
--#define PPMU_HAS_ATTR_CONFIG1	0x00000800 /* Using config1 attribute */
-+#define PPMU_P10		0x00000800 /* For power10 pmu */
-+#define PPMU_HAS_ATTR_CONFIG1	0x00001000 /* Using config1 attribute */
- 
- /*
-  * Values for flags to get_alternatives()
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 6b5f8a94e7d8..42867469752d 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -266,31 +266,12 @@ static inline u32 perf_flags_from_msr(struct pt_regs *regs)
- static inline u32 perf_get_misc_flags(struct pt_regs *regs)
- {
- 	bool use_siar = regs_use_siar(regs);
--	unsigned long mmcra = regs->dsisr;
--	int marked = mmcra & MMCRA_SAMPLE_ENABLE;
-+	unsigned long siar;
-+	unsigned long addr;
- 
- 	if (!use_siar)
- 		return perf_flags_from_msr(regs);
- 
--	/*
--	 * Check the address in SIAR to identify the
--	 * privilege levels since the SIER[MSR_HV, MSR_PR]
--	 * bits are not set for marked events in power10
--	 * DD1.
--	 */
--	if (marked && (ppmu->flags & PPMU_P10_DD1)) {
--		unsigned long siar = mfspr(SPRN_SIAR);
--		if (siar) {
--			if (is_kernel_addr(siar))
--				return PERF_RECORD_MISC_KERNEL;
--			return PERF_RECORD_MISC_USER;
--		} else {
--			if (is_kernel_addr(regs->nip))
--				return PERF_RECORD_MISC_KERNEL;
--			return PERF_RECORD_MISC_USER;
--		}
--	}
--
- 	/*
- 	 * If we don't have flags in MMCRA, rather than using
- 	 * the MSR, we intuit the flags from the address in
-@@ -298,19 +279,31 @@ static inline u32 perf_get_misc_flags(struct pt_regs *regs)
- 	 * results
- 	 */
- 	if (ppmu->flags & PPMU_NO_SIPR) {
--		unsigned long siar = mfspr(SPRN_SIAR);
-+		siar = mfspr(SPRN_SIAR);
- 		if (is_kernel_addr(siar))
- 			return PERF_RECORD_MISC_KERNEL;
- 		return PERF_RECORD_MISC_USER;
- 	}
- 
- 	/* PR has priority over HV, so order below is important */
--	if (regs_sipr(regs))
--		return PERF_RECORD_MISC_USER;
--
--	if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
-+	if (regs_sipr(regs)) {
-+		if (!(ppmu->flags & PPMU_P10))
-+			return PERF_RECORD_MISC_USER;
-+	} else if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
- 		return PERF_RECORD_MISC_HYPERVISOR;
- 
-+	/*
-+	 * Check the address in SIAR to identify the
-+	 * privilege levels since the SIER[MSR_HV, MSR_PR]
-+	 * bits are not set correctly in power10 sometimes
-+	 */
-+	if (ppmu->flags & PPMU_P10) {
-+		siar = mfspr(SPRN_SIAR);
-+		addr = siar ? siar : regs->nip;
-+		if (!is_kernel_addr(addr))
-+			return PERF_RECORD_MISC_USER;
-+	}
-+
- 	return PERF_RECORD_MISC_KERNEL;
- }
- 
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index 62a68b6b2d4b..bb57b7cfe640 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -593,7 +593,8 @@ static struct power_pmu power10_pmu = {
- 	.get_mem_weight		= isa207_get_mem_weight,
- 	.disable_pmc		= isa207_disable_pmc,
- 	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S |
--				  PPMU_ARCH_31 | PPMU_HAS_ATTR_CONFIG1,
-+				  PPMU_ARCH_31 | PPMU_HAS_ATTR_CONFIG1 |
-+				  PPMU_P10,
- 	.n_generic		= ARRAY_SIZE(power10_generic_events),
- 	.generic_events		= power10_generic_events,
- 	.cache_events		= &power10_cache_events,
-
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
 -- 
-2.39.3
-
+Oscar Salvador
+SUSE Labs
