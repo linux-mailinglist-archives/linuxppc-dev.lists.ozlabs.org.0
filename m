@@ -2,100 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 79C128D1DBA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 15:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F398D2040
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 17:21:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NJGitwkN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cUCcJuLj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VpYkx1w1gz79vF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 23:48:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vpbh25R6dz79th
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 01:16:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NJGitwkN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cUCcJuLj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpYkD1T6fz3vcb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 23:48:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpbgK5bt3z3vdv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 01:15:41 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8C14F620A0;
-	Tue, 28 May 2024 13:48:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713EDC3277B;
-	Tue, 28 May 2024 13:47:57 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 8B7ADCE1140;
+	Tue, 28 May 2024 15:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942F9C3277B;
+	Tue, 28 May 2024 15:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716904082;
-	bh=I5QCYdEFcv7RlobsjH6ZfbNpvtHXvU/zeLRLW9dDO5A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NJGitwkNCge4f1+ZFigpQ95yS9L2Yyej7/EyDxHQBs+CD0edLzFzsyk0mwjsXjlaX
-	 RIcWcOofAuxtfQOQuYLBw+jKMKaxH36OlTatoIHjwbHxCxcTT8dLEpbjcQP/+nIL3U
-	 0+sT60WNH5QR0MehfSnWhi2ULHXgJlOhsS3w7id0kkQmlizYu+r27kSgvkpJcdM1Hz
-	 IQOHd1hAXdoPDRC+V7fYbsG30RXA+3Z+fv7HpW1t5Ao90Vx/a6RhlP29G3eeDFeK/t
-	 kaP8hfXD/8PpTflZ1+4biyo1orcW4E6EQrlOCwPoNOErgkMRot99ksIBYMC/FpUA+G
-	 k6pDenvEKrAhw==
-Message-ID: <b21fa5e9-f8a7-4963-88e5-16204dc2c997@kernel.org>
-Date: Tue, 28 May 2024 15:47:55 +0200
+	s=k20201202; t=1716909337;
+	bh=xpk0Yqw/VN8ddEnECwmM/UpM6KoNoPvI14IHu2eBrJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cUCcJuLjneqe7FsY8PDzBO8l6FMtnMWAfv87RASRNOn7ANCjpyTOCQZHUK1hT0ig2
+	 6B8fVVMjnGid5Z1MERtu5+/uuCMrqzvGKzWVgyuK7/U7zOtQH5qc+wywSAG3cokDKX
+	 yv20Iz5vrXsx1n19nf9LXAx1T/uoIJA9hWwBrHU19WulFHEsUnTLyUZ1CABB+XaZzC
+	 2d/GYyyoaPLkTIkHMFf6WVDQ5y0ScYlfjJbkGlTNXzAJ1+ZnT2F0F+lj2jZ+BYIV8E
+	 gBq03xNbxHelWp5K2URHJuTM6b/mG6uRgHfrEUhHnOlx2fS1p1a3sY/0AY5GiTNnjJ
+	 wlbxl/nHstHPg==
+Date: Tue, 28 May 2024 10:15:36 -0500
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v3 1/2] ASoC: dt-bindings: fsl,xcvr: Add compatible
+ string for i.MX95
+Message-ID: <20240528151536.GA275498-robh@kernel.org>
+References: <1716286416-17621-1-git-send-email-shengjiu.wang@nxp.com>
+ <1716286416-17621-2-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] powerpc/configs: Update defconfig with now
- user-visible CONFIG_FSL_IFC
-To: Esben Haabendal <esben@geanix.com>
-References: <20240528-fsl-ifc-config-v2-0-5fd7be76650d@geanix.com>
- <20240528-fsl-ifc-config-v2-2-5fd7be76650d@geanix.com>
- <096662e8-03cf-4c13-baa0-11918cab7511@kernel.org> <87le3ukqnj.fsf@geanix.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <87le3ukqnj.fsf@geanix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1716286416-17621-2-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,65 +61,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Walle <mwalle@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Pratyush Yadav <pratyush@kernel.org>
+Cc: devicetree@vger.kernel.org, conor+dt@kernel.org, linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com, broonie@kernel.org, krzysztof.kozlowski+dt@linaro.org, perex@perex.cz, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28/05/2024 15:33, Esben Haabendal wrote:
-> Krzysztof Kozlowski <krzk@kernel.org> writes:
+On Tue, May 21, 2024 at 06:13:35PM +0800, Shengjiu Wang wrote:
+> Add compatible string "fsl,imx95-xcvr" for i.MX95 platform.
 > 
->> On 28/05/2024 14:28, Esben Haabendal wrote:
->>> With CONFIG_FSL_IFC now being user-visible, and thus changed from a select
->>> to depends in CONFIG_MTD_NAND_FSL_IFC, the dependencies needs to be
->>> selected in config snippets.
->>>
->>> Signed-off-by: Esben Haabendal <esben@geanix.com>
->>> ---
->>>  arch/powerpc/configs/85xx-hw.config | 2 ++
->>>  1 file changed, 2 insertions(+)
->>>
->>> diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.config
->>> index 524db76f47b7..8aff83217397 100644
->>> --- a/arch/powerpc/configs/85xx-hw.config
->>> +++ b/arch/powerpc/configs/85xx-hw.config
->>> @@ -24,6 +24,7 @@ CONFIG_FS_ENET=y
->>>  CONFIG_FSL_CORENET_CF=y
->>>  CONFIG_FSL_DMA=y
->>>  CONFIG_FSL_HV_MANAGER=y
->>> +CONFIG_FSL_IFC=y
->>
->> Does not look like placed according to config order.
+> The difference between each platform is in below table.
 > 
-> Correct.
+> +---------+--------+----------+--------+
+> |  SOC	  |  PHY   | eARC/ARC | SPDIF  |
+> +---------+--------+----------+--------+
+> | i.MX8MP |  V1    |  Yes     |  Yes   |
+> +---------+--------+----------+--------+
+> | i.MX93  |  N/A   |  N/A     |  Yes   |
+> +---------+--------+----------+--------+
+> | i.MX95  |  V2    |  N/A     |  Yes   |
+> +---------+--------+----------+--------+
 > 
->> This is not alphabetically sorted, but as Kconfig creates it (make
->> savedefconfig).
+> On i.MX95, there are two PLL clock sources, they are the parent
+> clocks of the XCVR root clock. one is for 8kHz series rates, named
+> as 'pll8k', another one is for 11kHz series rates, named as 'pll11k'.
+> They are optional clocks, if there are such clocks, then the driver
+> can switch between them to support more accurate sample rates.
 > 
-> Are you sure about this?
+> As 'pll8k' and 'pll11k' are optional, then add 'minItems: 4' for
+> clocks and clock-names properties.
 > 
-> It looks very much alphabetically sorted, with only two "errors"
+> On i.MX95, the 'interrupts' configuration has the same constraint
+> as i.MX93.
+> 
+> Only on i.MX8MP, the 'resets' is required, but for i.MX95 and i.MX93
+> there is no such hardware setting.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,xcvr.yaml   | 37 ++++++++++++++++++-
+>  1 file changed, 36 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> index 0eb0c1ba8710..d1dcc27655eb 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,xcvr.yaml
+> @@ -22,6 +22,7 @@ properties:
+>      enum:
+>        - fsl,imx8mp-xcvr
+>        - fsl,imx93-xcvr
+> +      - fsl,imx95-xcvr
+>  
+>    reg:
+>      items:
+> @@ -49,6 +50,9 @@ properties:
+>        - description: PHY clock
+>        - description: SPBA clock
+>        - description: PLL clock
+> +      - description: PLL clock source for 8kHz series
+> +      - description: PLL clock source for 11kHz series
+> +    minItems: 4
+>  
+>    clock-names:
+>      items:
+> @@ -56,6 +60,9 @@ properties:
+>        - const: phy
+>        - const: spba
+>        - const: pll_ipg
+> +      - const: pll8k
+> +      - const: pll11k
+> +    minItems: 4
+>  
+>    dmas:
+>      items:
+> @@ -79,15 +86,24 @@ required:
+>    - clock-names
+>    - dmas
+>    - dma-names
+> -  - resets
+>  
+>  allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx8mp-xcvr
+> +    then:
+> +      required:
+> +        - resets
+> +
+>    - if:
+>        properties:
+>          compatible:
+>            contains:
+>              enum:
+>                - fsl,imx93-xcvr
+> +              - fsl,imx95-xcvr
+>      then:
+>        properties:
+>          interrupts:
+> @@ -98,6 +114,25 @@ allOf:
+>          interrupts:
+>            maxItems: 1
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx95-xcvr
+> +    then:
+> +      properties:
+> +        clocks:
+> +          maxItems: 6
+> +        clock-names:
+> +          maxItems: 6
 
-Uh, ok, in general this is savedefconfig-sorted, but of course some
-platforms can choose other way. At least all arm and arm64 are
-savedefconfig-sorted.
+6 is already the max. Drop these and add a 'not' into the if schema (or 
+list out the other compatibles).
 
-Follow whatever is there already, so in this case alphabetical.
-
-...
-
+> +    else:
+> +      properties:
+> +        clocks:
+> +          maxItems: 4
+> +        clock-names:
+> +          maxItems: 4
+> +
+>  additionalProperties: false
+>  
+>  examples:
+> -- 
+> 2.34.1
 > 
->>>  CONFIG_FSL_PQ_MDIO=y
->>>  CONFIG_FSL_RIO=y
->>
->> You also missed to update second defconfig - arm64.
-> 
-> Argh. I thought I checked, and it did not need any changes. But it needs
-> to have CONFIG_FSL_IFC=y added.
-> 
-> I will add that for v3.
-> 
-> /Esben
-
-Best regards,
-Krzysztof
-
