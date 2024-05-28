@@ -2,60 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E51E8D1D4A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 15:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79C128D1DBA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 15:56:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GGVio4F8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NJGitwkN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VpYNr5CDBz79xR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 23:33:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VpYkx1w1gz79vF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 23:48:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GGVio4F8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NJGitwkN;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpYN73ZqTz3gG2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 23:32:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpYkD1T6fz3vcb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 23:48:04 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A9004620AF;
-	Tue, 28 May 2024 13:32:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C84C3277B;
-	Tue, 28 May 2024 13:32:15 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8C14F620A0;
+	Tue, 28 May 2024 13:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713EDC3277B;
+	Tue, 28 May 2024 13:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716903140;
-	bh=dhSBmo/CC8MHZ1NdaR65BMzydNIYHlnG51CFEasQqa4=;
+	s=k20201202; t=1716904082;
+	bh=I5QCYdEFcv7RlobsjH6ZfbNpvtHXvU/zeLRLW9dDO5A=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GGVio4F8HQcSQI6ogGTFqUV09ymhEAV3eJ8dZtUX0yF1uA+tlRby5UG1FgyP+T+gO
-	 ilXgioCHnRwpdC7xVWyWcrZE0jvzbK+/T3H/2S1VoFv6LRJUQVKlg8ZHG5NzZmbbkP
-	 4Pf7iGGM1d+25rcP7xYZlNNlH7+jlJf4yw+6hmTLeJfgjbAelU365GQS5KqniZM+0+
-	 pxcRLATpBOyhV/3VATXPRjqrOKditoOh/+TS9SVgb0oxMfiG2UGp6fVkMfcbKpGsMN
-	 oGcUn8F1EsjT0mNNCa/s3cNkcO+0djD/5w/etRNX8oDuCTVYm0l/sCPB0OXBOyug8S
-	 ZKQe4BwQH7dZQ==
-Message-ID: <56f19120-7ddb-4006-99f6-e1b043ed88e1@kernel.org>
-Date: Tue, 28 May 2024 15:32:12 +0200
+	b=NJGitwkNCge4f1+ZFigpQ95yS9L2Yyej7/EyDxHQBs+CD0edLzFzsyk0mwjsXjlaX
+	 RIcWcOofAuxtfQOQuYLBw+jKMKaxH36OlTatoIHjwbHxCxcTT8dLEpbjcQP/+nIL3U
+	 0+sT60WNH5QR0MehfSnWhi2ULHXgJlOhsS3w7id0kkQmlizYu+r27kSgvkpJcdM1Hz
+	 IQOHd1hAXdoPDRC+V7fYbsG30RXA+3Z+fv7HpW1t5Ao90Vx/a6RhlP29G3eeDFeK/t
+	 kaP8hfXD/8PpTflZ1+4biyo1orcW4E6EQrlOCwPoNOErgkMRot99ksIBYMC/FpUA+G
+	 k6pDenvEKrAhw==
+Message-ID: <b21fa5e9-f8a7-4963-88e5-16204dc2c997@kernel.org>
+Date: Tue, 28 May 2024 15:47:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] memory: fsl_ifc: Make FSL_IFC config visible and
- selectable
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Esben Haabendal <esben@geanix.com>, Tudor Ambarus
- <tudor.ambarus@linaro.org>, Pratyush Yadav <pratyush@kernel.org>,
- Michael Walle <mwalle@kernel.org>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
- Vignesh Raghavendra <vigneshr@ti.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v2 2/2] powerpc/configs: Update defconfig with now
+ user-visible CONFIG_FSL_IFC
+To: Esben Haabendal <esben@geanix.com>
 References: <20240528-fsl-ifc-config-v2-0-5fd7be76650d@geanix.com>
- <20240528-fsl-ifc-config-v2-1-5fd7be76650d@geanix.com>
- <eb911c50-2f66-43dd-a1ff-398a3e7c56a2@csgroup.eu>
+ <20240528-fsl-ifc-config-v2-2-5fd7be76650d@geanix.com>
+ <096662e8-03cf-4c13-baa0-11918cab7511@kernel.org> <87le3ukqnj.fsf@geanix.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,9 +93,9 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <eb911c50-2f66-43dd-a1ff-398a3e7c56a2@csgroup.eu>
+In-Reply-To: <87le3ukqnj.fsf@geanix.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,49 +107,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Michael Walle <mwalle@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Pratyush Yadav <pratyush@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 28/05/2024 15:15, Christophe Leroy wrote:
+On 28/05/2024 15:33, Esben Haabendal wrote:
+> Krzysztof Kozlowski <krzk@kernel.org> writes:
 > 
-> 
-> Le 28/05/2024 à 14:28, Esben Haabendal a écrit :
->> [Vous ne recevez pas souvent de courriers de esben@geanix.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>> On 28/05/2024 14:28, Esben Haabendal wrote:
+>>> With CONFIG_FSL_IFC now being user-visible, and thus changed from a select
+>>> to depends in CONFIG_MTD_NAND_FSL_IFC, the dependencies needs to be
+>>> selected in config snippets.
+>>>
+>>> Signed-off-by: Esben Haabendal <esben@geanix.com>
+>>> ---
+>>>  arch/powerpc/configs/85xx-hw.config | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.config
+>>> index 524db76f47b7..8aff83217397 100644
+>>> --- a/arch/powerpc/configs/85xx-hw.config
+>>> +++ b/arch/powerpc/configs/85xx-hw.config
+>>> @@ -24,6 +24,7 @@ CONFIG_FS_ENET=y
+>>>  CONFIG_FSL_CORENET_CF=y
+>>>  CONFIG_FSL_DMA=y
+>>>  CONFIG_FSL_HV_MANAGER=y
+>>> +CONFIG_FSL_IFC=y
 >>
->> While use of fsl_ifc driver with NAND flash is fine, as the fsl_ifc_nand
->> driver selects FSL_IFC automatically, we need the CONFIG_FSL_IFC option to
->> be selectable for platforms using fsl_ifc with NOR flash.
+>> Does not look like placed according to config order.
 > 
-> I don't understand.
+> Correct.
 > 
-> Shall I understand :
+>> This is not alphabetically sorted, but as Kconfig creates it (make
+>> savedefconfig).
 > 
-> While use of fsl_ifc driver with NAND flash is fine as the fsl_ifc_nand 
-> driver selects FSL_IFC automatically, ....
+> Are you sure about this?
 > 
-> or
-> 
-> ..., as the fsl_ifc_nand driver selects FSL_IFC automatically we need 
-> the CONFIG_FSL_IFC option to be selectable for platforms using fsl_ifc 
-> with NOR flash
-> 
-> 
-> 
-> I'm fine with the fact that you want to be able to select it when you 
-> use NOR flashes, 
+> It looks very much alphabetically sorted, with only two "errors"
 
-But users are not fine... their memory won't work if they cannot choose
-it (if you meant select=choose).
+Uh, ok, in general this is savedefconfig-sorted, but of course some
+platforms can choose other way. At least all arm and arm64 are
+savedefconfig-sorted.
 
-> allthough I can't see why, but why do you need to 
-> change the "select" to a "depend" ? You should be able to leave it as a 
+Follow whatever is there already, so in this case alphabetical.
 
-As explained in v1: user-visible symbols should not be selected. Nothing
-odd here.
+...
 
-> "select" in which case patch 2 wouldn't be necessary.
-
+> 
+>>>  CONFIG_FSL_PQ_MDIO=y
+>>>  CONFIG_FSL_RIO=y
+>>
+>> You also missed to update second defconfig - arm64.
+> 
+> Argh. I thought I checked, and it did not need any changes. But it needs
+> to have CONFIG_FSL_IFC=y added.
+> 
+> I will add that for v3.
+> 
+> /Esben
 
 Best regards,
 Krzysztof
