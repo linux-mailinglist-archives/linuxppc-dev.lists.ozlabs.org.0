@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 764098D1211
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 04:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 506D18D1212
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 04:27:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Axvz5ywf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XpEnBpfF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VpGSK2Rc1z79ps
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 12:20:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VpGT628dkz87ST
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 May 2024 12:20:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Axvz5ywf;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XpEnBpfF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpGR407SHz3vwl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 12:18:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpGRK5YpJz79N0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 12:19:09 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0E9DF61DA1;
-	Tue, 28 May 2024 02:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B045C32782;
-	Tue, 28 May 2024 02:18:48 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7366B61DAA;
+	Tue, 28 May 2024 02:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02233C2BBFC;
+	Tue, 28 May 2024 02:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716862732;
-	bh=lA8NtYKtmK3cU7OzJId506XmthIl4+Xkz0k+EAhBp88=;
+	s=k20201202; t=1716862748;
+	bh=DYwIRoN2C7rBJfLlUVd7IdAgf6u/jVHpwWH2EcdaZ94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Axvz5ywfvv5NCCeWiNd4DctfJCA0vjaT485oNWPEQKjVqj0Y2+3+36tWY0sBG2ad2
-	 OLAzvC9jRTUbWifS1heZBpzhnAyovbATXzNZI+IturryiEU4Ya0NLkOMbvVxOCxcv7
-	 iftnDNda/gOyLih5LkWt6dtQe6uz++kwoqVj/eVksdrsB9b7MaGjzMsmOHjGgrekLD
-	 qgJwezvdf2yiPvnALMJZGZIczT99F7OFi5CGpPu0o7pCr/hplaeUAJdVMcKZA4M1Qx
-	 1rhSbhpeRCEJX9YYcX5YqzUPNwZFufKX948Y6k6lzoUWh+sv2XCaFMLb1CWgqgecyz
-	 ctiu/mRuFJ2uQ==
+	b=XpEnBpfFtPGHxHkGcvJKww/D6f4dF/3j/joEH05If9tPrbU74Ddk9zRReYGlvt1up
+	 nKi5A3PymMXULM3I3s0etiUxCigLqDjFh6JE9mXaIeWP0RRgGi4tyFv2OICCeBasaa
+	 +7a9bq6+5GQnzgt60vJn0IPQgfNzSjph+7smS/kL44t3tr9ifUug39yQx9fT6b4Z9n
+	 Aqln8NjxpnKX39X9zYfmvPwhKMPYpXoDXpwQ9No3z7moE+i3Agbsb+SjMgpt3N+OJj
+	 0/5P2iK/UeyeXLDpA4RioUtx7Weya1WhOYPmwtkP+s/FR6JTdKaYnOu2cQ+f0evLvH
+	 O/S785S6Nzm1w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 4/4] kprobe/ftrace: bail out if ftrace was killed
-Date: Mon, 27 May 2024 22:18:39 -0400
-Message-ID: <20240528021840.3905128-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 4/4] kprobe/ftrace: bail out if ftrace was killed
+Date: Mon, 27 May 2024 22:18:53 -0400
+Message-ID: <20240528021854.3905245-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240528021840.3905128-1-sashal@kernel.org>
-References: <20240528021840.3905128-1-sashal@kernel.org>
+In-Reply-To: <20240528021854.3905245-1-sashal@kernel.org>
+References: <20240528021854.3905245-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.11
+X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -220,10 +220,10 @@ index dd2ec14adb77b..15af7e98e161a 100644
  	if (bit < 0)
  		return;
 diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 0ff44d6633e33..5fcbc254d1864 100644
+index 8de5d51a0b5e7..45d5b0a76b0bd 100644
 --- a/include/linux/kprobes.h
 +++ b/include/linux/kprobes.h
-@@ -378,11 +378,15 @@ static inline void wait_for_kprobe_optimizer(void) { }
+@@ -383,11 +383,15 @@ static inline void wait_for_kprobe_optimizer(void) { }
  extern void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
  				  struct ftrace_ops *ops, struct ftrace_regs *fregs);
  extern int arch_prepare_kprobe_ftrace(struct kprobe *p);
@@ -239,7 +239,7 @@ index 0ff44d6633e33..5fcbc254d1864 100644
  #endif /* CONFIG_KPROBES_ON_FTRACE */
  
  /* Get the kprobe at this addr (if any) - called with preemption disabled */
-@@ -495,6 +499,9 @@ static inline void kprobe_flush_task(struct task_struct *tk)
+@@ -496,6 +500,9 @@ static inline void kprobe_flush_task(struct task_struct *tk)
  static inline void kprobe_free_init_mem(void)
  {
  }
@@ -250,7 +250,7 @@ index 0ff44d6633e33..5fcbc254d1864 100644
  {
  	return -EOPNOTSUPP;
 diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 65adc815fc6e6..166ebf81dc450 100644
+index c2841e5957130..c8720bed8ed6a 100644
 --- a/kernel/kprobes.c
 +++ b/kernel/kprobes.c
 @@ -1068,6 +1068,7 @@ static struct ftrace_ops kprobe_ipmodify_ops __read_mostly = {
