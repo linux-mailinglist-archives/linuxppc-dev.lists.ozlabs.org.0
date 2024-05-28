@@ -2,67 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290C38D556F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF308D5573
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:33:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=default2211 header.b=bK0TBYfG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IeBdV/9j;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZOfuseJ9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1H232qNz3fmN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:33:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1Hv10CFz3dLc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:33:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=geanix.com header.i=@geanix.com header.a=rsa-sha256 header.s=default2211 header.b=bK0TBYfG;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IeBdV/9j;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZOfuseJ9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=geanix.com (client-ip=188.40.30.78; helo=www530.your-server.de; envelope-from=esben@geanix.com; receiver=lists.ozlabs.org)
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=echanude@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VpYcc6TWzz3vbC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 23:43:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=vrlJg+gvxce4qVnPpoGhK+rjv8ov8o6eVLj/sB5TAi0=; b=bK0TBYfG69Gq6mE4Z1ATMxRxh5
-	cD1jn5Ebio45blOl+cszvxPDr8Mr0I1fYUM3T942NiVkYED/yNwm0/0NpAgih4y/fOAURV+/Ze0ly
-	kp6r6zMtOWZbovRQVdAiYU/44dk0suMbg4gzamSTaeajiuAlRF04iGOq6q4dAJzgh4Ed8jaxY8fuw
-	OFp8Lk+6xZ0dSqututm9mXSOE8YR5iPDaLNoIwpOiciYpzSca6cN2R6QcK72hGXv/dTfk8rMQswhn
-	Lq5Q1d0J8mDmK6GtAJ/fj20GvfI1HMTT0kWqHjr9JERhhFOx2npeUMmsiB8dpTQ7fw69sN8zxX4Go
-	OyPktYHQ==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1sBx6b-0003Op-4c; Tue, 28 May 2024 15:43:09 +0200
-Received: from [185.17.218.86] (helo=localhost)
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <esben@geanix.com>)
-	id 1sBx6a-000KRY-1q;
-	Tue, 28 May 2024 15:43:08 +0200
-From: Esben Haabendal <esben@geanix.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 1/2] memory: fsl_ifc: Make FSL_IFC config visible and
- selectable
-In-Reply-To: <56f19120-7ddb-4006-99f6-e1b043ed88e1@kernel.org> (Krzysztof
-	Kozlowski's message of "Tue, 28 May 2024 15:32:12 +0200")
-References: <20240528-fsl-ifc-config-v2-0-5fd7be76650d@geanix.com>
-	<20240528-fsl-ifc-config-v2-1-5fd7be76650d@geanix.com>
-	<eb911c50-2f66-43dd-a1ff-398a3e7c56a2@csgroup.eu>
-	<56f19120-7ddb-4006-99f6-e1b043ed88e1@kernel.org>
-Date: Tue, 28 May 2024 15:43:07 +0200
-Message-ID: <87jzjevyqc.fsf@geanix.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vphg53Yk4z3wFj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 05:00:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716922842;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EroyhAMtYZlwFiF+i06GpFh0h6zXLI4AvXcFdjRTODk=;
+	b=IeBdV/9jcqGNNyYozKP3D1mIkx/7YJEIIxvsd4/XHcIy2I5Qd/Qk2YIjGDR7ZGwPg7mpE1
+	EDH1JHZ8lfhj8sScrZKL82jQuVOrYqtAIjDwZu0WOGXI7wlUVjjfqT8KIR/RORlRmHK50k
+	q1FveX9b6r5IbnXiB9CCpckrOnNy47k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716922843;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EroyhAMtYZlwFiF+i06GpFh0h6zXLI4AvXcFdjRTODk=;
+	b=ZOfuseJ9EDGaYH/iCWacWsbvyQT4BsRG4OxXWHS34QJd8JBOquotwDIL2xEqQcSZRCbJrd
+	iBTLGsjmYgxd7oag/b5cGiyAFYnWdRI/vRiKfF02zI41iVZtRfRuIfknd1+GuFx7cskBnA
+	2/YZ9Fdwp2nAqVsO3Y1Aak85RKxXeN0=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-249-fOmUSTJPNZ26ethS8BG6NA-1; Tue, 28 May 2024 15:00:41 -0400
+X-MC-Unique: fOmUSTJPNZ26ethS8BG6NA-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-43fc7d851f5so12374241cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 May 2024 12:00:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716922838; x=1717527638;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EroyhAMtYZlwFiF+i06GpFh0h6zXLI4AvXcFdjRTODk=;
+        b=T8fl+J3vX4V78Fj04NHqkXWIYtty4SqUYOKuRb1bDGQ43AVIp7Y9yavOmCT6Wo7D+B
+         i08Twd+RbgjniVgoowzLNlMwhn16ZyJnRTIC9kJMFkgXNvppqG7dz5TnxTqrf44s/xpg
+         CVor9knXNDO1EvX8UM9hE/AAEqdXZDVxn0f7yppWTtQLfP0SHaPJSa9tY5upuvfF4hzL
+         vt/bNhEGBUqCIhbqt9aKdyg361sjXaBU5fO3dXI9p8hHQ76SGR09EZxFkgyiIQP56r3W
+         PuMc9mkA1KNk2J7HYNBnWI8G9eysElcau5Cc8dq84RpcnKdnG9b+5y0UrfqWUxvF+ge9
+         sfEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWbAgZjUrrD8eWPJBujefSvarApr3yuHGYNaIXXUs35UQUQeZimJotOAxFGDXWrdeh/OT2RKUGI85Kd7VvcKc6tfuYZEtr/+DYVuXhasw==
+X-Gm-Message-State: AOJu0YydR7YudfkjAaF5L3zobPVLwO8pfsIrL5bQrbaifRSIBYSeh+ld
+	lUb6HZSOWtFjM9uiKqzcO3Z9yYjSLuulq7NFaIL1SvoklwAuSGt14vYeeUndh+sUgyyds+FoF7E
+	5prha5ctXrtYdej9qHvomqU303v22/0D785W0W/fo7fiVzWTgms49lG6OZoaWuI8=
+X-Received: by 2002:a05:622a:10a:b0:43e:34ea:80ee with SMTP id d75a77b69052e-43fb0e8d809mr134383941cf.29.1716922837921;
+        Tue, 28 May 2024 12:00:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLHIs0G4ODwLtaTgMc9fP7BM4N2EDamkPS2f5rSvXhQ/RuodqmrywBv65gQp5ZlO5A4PV4Ug==
+X-Received: by 2002:a05:622a:10a:b0:43e:34ea:80ee with SMTP id d75a77b69052e-43fb0e8d809mr134383451cf.29.1716922837199;
+        Tue, 28 May 2024 12:00:37 -0700 (PDT)
+Received: from localhost (pool-71-184-142-128.bstnma.fios.verizon.net. [71.184.142.128])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-43fb17f69ddsm44981881cf.41.2024.05.28.12.00.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 May 2024 12:00:36 -0700 (PDT)
+From: Eric Chanudet <echanude@redhat.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nick Piggin <npiggin@gmail.com>
+Subject: [PATCH v3] mm/mm_init: use node's number of cpus in deferred_page_init_max_threads
+Date: Tue, 28 May 2024 14:54:58 -0400
+Message-ID: <20240528185455.643227-4-echanude@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27289/Tue May 28 10:30:59 2024)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 31 May 2024 08:19:55 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,51 +109,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Walle <mwalle@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Richard Weinberger <richard@nod.at>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, "Aneesh Kumar
- K.V" <aneesh.kumar@kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, Miquel Raynal <miquel.raynal@bootlin.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Pratyush Yadav <pratyush@kernel.org>
+Cc: linux-s390@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Eric Chanudet <echanude@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Krzysztof Kozlowski <krzk@kernel.org> writes:
+When DEFERRED_STRUCT_PAGE_INIT=y, use a node's cpu count as maximum
+thread count for the deferred initialization of struct pages via padata.
+This should result in shorter boot times for these configurations by
+going through page_alloc_init_late() faster as systems tend not to be
+under heavy load that early in the bootstrap.
 
-> On 28/05/2024 15:15, Christophe Leroy wrote:
->> Le 28/05/2024 =C3=A0 14:28, Esben Haabendal a =C3=A9crit=C2=A0:
->>> [Vous ne recevez pas souvent de courriers de esben@geanix.com. D=C3=A9c=
-ouvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSenderId=
-entification ]
->>>
->>> While use of fsl_ifc driver with NAND flash is fine, as the fsl_ifc_nand
->>> driver selects FSL_IFC automatically, we need the CONFIG_FSL_IFC option=
- to
->>> be selectable for platforms using fsl_ifc with NOR flash.
->>=20
->> I don't understand.
->>=20
->> Shall I understand :
->>=20
->> While use of fsl_ifc driver with NAND flash is fine as the fsl_ifc_nand=
-=20
->> driver selects FSL_IFC automatically, ....
->>=20
->> or
->>=20
->> ..., as the fsl_ifc_nand driver selects FSL_IFC automatically we need=20
->> the CONFIG_FSL_IFC option to be selectable for platforms using fsl_ifc=20
->> with NOR flash
->>=20
->>=20
->>=20
->> I'm fine with the fact that you want to be able to select it when you=20
->> use NOR flashes,=20
->
-> But users are not fine... their memory won't work if they cannot choose
-> it (if you meant select=3Dchoose).
+Only x86_64 does that now. Make it archs agnostic when
+DEFERRED_STRUCT_PAGE_INIT is set. With the default defconfigs, that
+includes powerpc and s390.
 
-Exactly. The IFC controller supports both NAND and NOR flashes. Since
-commit ea0c0ad6b6eb ("memory: Enable compile testing for most of the driver=
-s"),
-it has not been possible to use IFC controller for NOR flashes without
-selecting the IFC NAND driver (CONFIG_MTD_NAND_FSL_IFC), which is
-obviously not how it is supposed to be.
+It used to be so before offering archs to override the function for
+tuning with commit ecd096506922 ("mm: make deferred init's max threads
+arch-specific").
 
-/Esben
+Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
+shows faster deferred_init_memmap completions:
+|         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
+|         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
+|         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
+|---------|-------------|--------------|-----------------|--------------|
+| threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
+|---------|-------------|--------------|-----------------|--------------|
+| 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
+| cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
+
+Michael Ellerman on a powerpc machine (1TB, 40 cores, 4KB pages) reports
+faster deferred_init_memmap from 210-240ms to 90-110ms between nodes.
+
+Signed-off-by: Eric Chanudet <echanude@redhat.com>
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+---
+- v1: https://lore.kernel.org/linux-arm-kernel/20240520231555.395979-5-echanude@redhat.com
+- Changes since v1:
+ - Make the generic function return the number of cpus of the node as
+   max threads limit instead overriding it for arm64.
+ - Drop Baoquan He's R-b on v1 since the logic changed.
+ - Add CCs according to patch changes (ppc and s390 set
+   DEFERRED_STRUCT_PAGE_INIT by default).
+
+- v2: https://lore.kernel.org/linux-arm-kernel/20240522203758.626932-4-echanude@redhat.com/
+- Changes since v2:
+ - deferred_page_init_max_threads returns unsigned and use max instead
+   of max_t.
+ - Make deferred_page_init_max_threads static since there are no more
+   override.
+ - Rephrase description.
+ - Add T-b and report from Michael Ellerman.
+
+ arch/x86/mm/init_64.c    | 12 ------------
+ include/linux/memblock.h |  2 --
+ mm/mm_init.c             |  5 ++---
+ 3 files changed, 2 insertions(+), 17 deletions(-)
+
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index 7e177856ee4f..adec42928ec1 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1354,18 +1354,6 @@ void __init mem_init(void)
+ 	preallocate_vmalloc_pages();
+ }
+ 
+-#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+-int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask)
+-{
+-	/*
+-	 * More CPUs always led to greater speedups on tested systems, up to
+-	 * all the nodes' CPUs.  Use all since the system is otherwise idle
+-	 * now.
+-	 */
+-	return max_t(int, cpumask_weight(node_cpumask), 1);
+-}
+-#endif
+-
+ int kernel_set_to_readonly;
+ 
+ void mark_rodata_ro(void)
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index e2082240586d..40c62aca36ec 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -335,8 +335,6 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
+ 	for (; i != U64_MAX;					  \
+ 	     __next_mem_pfn_range_in_zone(&i, zone, p_start, p_end))
+ 
+-int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask);
+-
+ #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
+ 
+ /**
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index f72b852bd5b8..acfeba508796 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2122,11 +2122,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+ 	}
+ }
+ 
+-/* An arch may override for more concurrency. */
+-__weak int __init
++static unsigned int __init
+ deferred_page_init_max_threads(const struct cpumask *node_cpumask)
+ {
+-	return 1;
++	return max(cpumask_weight(node_cpumask), 1U);
+ }
+ 
+ /* Initialise remaining memory on a node */
+-- 
+2.44.0
+
