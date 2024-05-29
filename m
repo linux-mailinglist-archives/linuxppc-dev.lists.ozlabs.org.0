@@ -1,59 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7B98D3ACC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 17:26:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTP id E729A8D3B6B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 17:51:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=Huo3D8tg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ra7TUX2g;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqChx4sQxz79tf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 01:19:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqDG65r2kz79wM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 01:44:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=Huo3D8tg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ra7TUX2g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2478 seconds by postgrey-1.37 at boromir; Thu, 30 May 2024 01:18:33 AEST
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqCh91Mqnz3vYn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 01:18:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=B7XB8qUIcTmB1ehnipB+Kf3z1BPRYE36ZBSUE8NS1go=;
-	t=1716995913; x=1717427913; b=Huo3D8tgGWjPMzfVu++Q6YTyHYoNIE6Ok6o8tCKUaWHx2lP
-	Q8/tdP1JT9NT5RcjceTLYh8AZXqzAiJcsu63jCgQvdKA68cXv7LJvTXxNcu22tqrkEIJnKsGJPnXe
-	pY+ii8IgN8UGWq6QDCNmsQIYuzLdYhDrrVlcO0V50/o/YYl84TYM7GYKzyD5qxNFaO4sQBMwCuHU5
-	5/CeV+HOoJLRRne6O9epC0gfAvFYMM7iFHEM9DzJOfaWjX0YmKGZRgODm+l5pobb4mJdE8M1lrEEn
-	0udwsDy/HftxkuLNWoE2pHVPbp+GmLQTpF0Kb7Bgespp4OzF//BIDKau1d+Mm3MQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sCKQF-0003Dv-Nj; Wed, 29 May 2024 16:36:59 +0200
-Message-ID: <fc6a2243-6982-45e9-a640-9d98c29a8f53@leemhuis.info>
-Date: Wed, 29 May 2024 16:36:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/23] scsi: initialize scsi midlayer limits before
- allocating the queue
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20240520151536.GA32532@lst.de>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <20240520151536.GA32532@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716995913;bcdaae5d;
-X-HE-SMSGID: 1sCKQF-0003Dv-Nj
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqDFM1l4Sz3vdp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 01:43:51 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id EB745CE1707;
+	Wed, 29 May 2024 15:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7CFC113CC;
+	Wed, 29 May 2024 15:43:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716997424;
+	bh=rtiYzR2d0gNJz+xTIr5OK/69rdIOERezItOLSlVDENg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ra7TUX2g8mo33GD3tl07Um+9ADUtOuW+I9YHAg1nbuNNCESxcOFqeFmlTxyhh5SMy
+	 u61BQTt8Z/zsylvsEh1eTwivoY9rewzZFA3PpZumClT55KWnsgxtC4+Mm4mcVHIYit
+	 fE8TpLVlIgXl8c+JINnJx09RYtIngXYaNRICYHF2+Q0cPVBEZC/H8wpqRTb/MoKgsH
+	 M5T1T9zQtm4HOmm+pQWRwcScbW3QP+Hn7zs4w16keDW0rue4hiJo1xXBwFLDMPNbI7
+	 ZfSv66doNzzRkNRMwJ68TlGPtQ9xx4HXZGxkesI9D0XrBK51IOVddNkZZZGI6ckeRu
+	 iw3NWVOWRHXJw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sCLSn-00GflM-HC;
+	Wed, 29 May 2024 16:43:41 +0100
+Date: Wed, 29 May 2024 16:43:40 +0100
+Message-ID: <864jagmxn7.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Subject: Re: [PATCH v4 07/29] KVM: arm64: Save/restore POE registers
+In-Reply-To: <20240503130147.1154804-8-joey.gouly@arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+	<20240503130147.1154804-8-joey.gouly@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org, aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, bp@alien8.de, broonie@kernel.org, catalin.marinas@arm.com, christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com, hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com, oliver.upton@linux.dev, shuah@kernel.org, szabolcs.nagy@arm.com, tglx@linutronix.de, will@kernel.org, x86@kernel.org, kvmarm@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,54 +72,187 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, John Garry <john.g.garry@oracle.com>, linux-block@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, Guenter Roeck <linux@roeck-us.net>, Linux kernel regressions list <regressions@lists.linux.dev>
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, aneesh.kumar@linux.ibm.com, x86@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[CCing the regression list, as it should be in the loop for regressions:
-https://docs.kernel.org/admin-guide/reporting-regressions.html]
+On Fri, 03 May 2024 14:01:25 +0100,
+Joey Gouly <joey.gouly@arm.com> wrote:
+> 
+> Define the new system registers that POE introduces and context switch them.
+> 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> ---
+>  arch/arm64/include/asm/kvm_host.h          |  4 +++
+>  arch/arm64/include/asm/vncr_mapping.h      |  1 +
+>  arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h | 29 ++++++++++++++++++++++
+>  arch/arm64/kvm/sys_regs.c                  |  8 ++++--
+>  4 files changed, 40 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 9e8a496fb284..28042da0befd 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -419,6 +419,8 @@ enum vcpu_sysreg {
+>  	GCR_EL1,	/* Tag Control Register */
+>  	TFSRE0_EL1,	/* Tag Fault Status Register (EL0) */
+>  
+> +	POR_EL0,	/* Permission Overlay Register 0 (EL0) */
+> +
+>  	/* 32bit specific registers. */
+>  	DACR32_EL2,	/* Domain Access Control Register */
+>  	IFSR32_EL2,	/* Instruction Fault Status Register */
+> @@ -489,6 +491,8 @@ enum vcpu_sysreg {
+>  	VNCR(PIR_EL1),	 /* Permission Indirection Register 1 (EL1) */
+>  	VNCR(PIRE0_EL1), /*  Permission Indirection Register 0 (EL1) */
+>  
+> +	VNCR(POR_EL1),	/* Permission Overlay Register 1 (EL1) */
+> +
+>  	VNCR(HFGRTR_EL2),
+>  	VNCR(HFGWTR_EL2),
+>  	VNCR(HFGITR_EL2),
+> diff --git a/arch/arm64/include/asm/vncr_mapping.h b/arch/arm64/include/asm/vncr_mapping.h
+> index df2c47c55972..06f8ec0906a6 100644
+> --- a/arch/arm64/include/asm/vncr_mapping.h
+> +++ b/arch/arm64/include/asm/vncr_mapping.h
+> @@ -52,6 +52,7 @@
+>  #define VNCR_PIRE0_EL1		0x290
+>  #define VNCR_PIRE0_EL2		0x298
+>  #define VNCR_PIR_EL1		0x2A0
+> +#define VNCR_POR_EL1		0x2A8
+>  #define VNCR_ICH_LR0_EL2        0x400
+>  #define VNCR_ICH_LR1_EL2        0x408
+>  #define VNCR_ICH_LR2_EL2        0x410
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> index 4be6a7fa0070..1c9536557bae 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> @@ -16,9 +16,15 @@
+>  #include <asm/kvm_hyp.h>
+>  #include <asm/kvm_mmu.h>
+>  
+> +static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt);
+> +
+>  static inline void __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
+>  {
+>  	ctxt_sys_reg(ctxt, MDSCR_EL1)	= read_sysreg(mdscr_el1);
+> +
+> +	// POR_EL0 can affect uaccess, so must be saved/restored early.
+> +	if (ctxt_has_s1poe(ctxt))
+> +		ctxt_sys_reg(ctxt, POR_EL0)	= read_sysreg_s(SYS_POR_EL0);
+>  }
+>  
+>  static inline void __sysreg_save_user_state(struct kvm_cpu_context *ctxt)
+> @@ -55,6 +61,17 @@ static inline bool ctxt_has_s1pie(struct kvm_cpu_context *ctxt)
+>  	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1PIE, IMP);
+>  }
+>  
+> +static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +
+> +	if (!system_supports_poe())
+> +		return false;
+> +
+> +	vcpu = ctxt_to_vcpu(ctxt);
+> +	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1POE, IMP);
+> +}
+> +
+>  static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+>  {
+>  	ctxt_sys_reg(ctxt, SCTLR_EL1)	= read_sysreg_el1(SYS_SCTLR);
+> @@ -77,6 +94,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+>  		ctxt_sys_reg(ctxt, PIR_EL1)	= read_sysreg_el1(SYS_PIR);
+>  		ctxt_sys_reg(ctxt, PIRE0_EL1)	= read_sysreg_el1(SYS_PIRE0);
+>  	}
+> +
+> +	if (ctxt_has_s1poe(ctxt))
+> +		ctxt_sys_reg(ctxt, POR_EL1)	= read_sysreg_el1(SYS_POR);
+> +
 
-On 20.05.24 17:15, Christoph Hellwig wrote:
-> Adding ben and the linuxppc list.
+Since you are hacking around here, could you please make the
+save/restore of TCR2_EL1 conditional on FEAT_TCR2 being advertised
+instead of just checking what's on the host?
 
-Hmm, no reply and no other progress to get this resolved afaics. So lets
-bring Michael into the mix, he might be able to help out.
+Given that this feature is implied by both S1PIE and S1POE, you'd just
+have to have some local flag. Doesn't have to be part of this patch
+either.
 
-BTW TWIMC: a PowerMac G5 user user reported similar symptoms here
-recently: https://bugzilla.kernel.org/show_bug.cgi?id=218858
+>  	ctxt_sys_reg(ctxt, PAR_EL1)	= read_sysreg_par();
+>  	ctxt_sys_reg(ctxt, TPIDR_EL1)	= read_sysreg(tpidr_el1);
+>  
+> @@ -107,6 +128,10 @@ static inline void __sysreg_save_el2_return_state(struct kvm_cpu_context *ctxt)
+>  static inline void __sysreg_restore_common_state(struct kvm_cpu_context *ctxt)
+>  {
+>  	write_sysreg(ctxt_sys_reg(ctxt, MDSCR_EL1),  mdscr_el1);
+> +
+> +	// POR_EL0 can affect uaccess, so must be saved/restored early.
+> +	if (ctxt_has_s1poe(ctxt))
+> +		write_sysreg_s(ctxt_sys_reg(ctxt, POR_EL0),	SYS_POR_EL0);
+>  }
+>  
+>  static inline void __sysreg_restore_user_state(struct kvm_cpu_context *ctxt)
+> @@ -153,6 +178,10 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt)
+>  		write_sysreg_el1(ctxt_sys_reg(ctxt, PIR_EL1),	SYS_PIR);
+>  		write_sysreg_el1(ctxt_sys_reg(ctxt, PIRE0_EL1),	SYS_PIRE0);
+>  	}
+> +
+> +	if (ctxt_has_s1poe(ctxt))
+> +		write_sysreg_el1(ctxt_sys_reg(ctxt, POR_EL1),	SYS_POR);
+> +
+>  	write_sysreg(ctxt_sys_reg(ctxt, PAR_EL1),	par_el1);
+>  	write_sysreg(ctxt_sys_reg(ctxt, TPIDR_EL1),	tpidr_el1);
+>  
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index c9f4f387155f..be04fae35afb 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -2423,6 +2423,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	{ SYS_DESC(SYS_MAIR_EL1), access_vm_reg, reset_unknown, MAIR_EL1 },
+>  	{ SYS_DESC(SYS_PIRE0_EL1), NULL, reset_unknown, PIRE0_EL1 },
+>  	{ SYS_DESC(SYS_PIR_EL1), NULL, reset_unknown, PIR_EL1 },
+> +	{ SYS_DESC(SYS_POR_EL1), NULL, reset_unknown, POR_EL1 },
+>  	{ SYS_DESC(SYS_AMAIR_EL1), access_vm_reg, reset_amair_el1, AMAIR_EL1 },
+>  
+>  	{ SYS_DESC(SYS_LORSA_EL1), trap_loregion },
+> @@ -2506,6 +2507,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	  .access = access_pmovs, .reg = PMOVSSET_EL0,
+>  	  .get_user = get_pmreg, .set_user = set_pmreg },
+>  
+> +	{ SYS_DESC(SYS_POR_EL0), NULL, reset_unknown, POR_EL0 },
+>  	{ SYS_DESC(SYS_TPIDR_EL0), NULL, reset_unknown, TPIDR_EL0 },
+>  	{ SYS_DESC(SYS_TPIDRRO_EL0), NULL, reset_unknown, TPIDRRO_EL0 },
+>  	{ SYS_DESC(SYS_TPIDR2_EL0), undef_access },
+> @@ -4057,8 +4059,6 @@ void kvm_init_sysreg(struct kvm_vcpu *vcpu)
+>  	kvm->arch.fgu[HFGxTR_GROUP] = (HFGxTR_EL2_nAMAIR2_EL1		|
+>  				       HFGxTR_EL2_nMAIR2_EL1		|
+>  				       HFGxTR_EL2_nS2POR_EL1		|
+> -				       HFGxTR_EL2_nPOR_EL1		|
+> -				       HFGxTR_EL2_nPOR_EL0		|
+>  				       HFGxTR_EL2_nACCDATA_EL1		|
+>  				       HFGxTR_EL2_nSMPRI_EL1_MASK	|
+>  				       HFGxTR_EL2_nTPIDR2_EL0_MASK);
+> @@ -4093,6 +4093,10 @@ void kvm_init_sysreg(struct kvm_vcpu *vcpu)
+>  		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPIRE0_EL1 |
+>  						HFGxTR_EL2_nPIR_EL1);
+>  
+> +	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, S1POE, IMP))
+> +		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPOR_EL1 |
+> +						HFGxTR_EL2_nPOR_EL0);
+> +
+>  	if (!kvm_has_feat(kvm, ID_AA64PFR0_EL1, AMU, IMP))
+>  		kvm->arch.fgu[HAFGRTR_GROUP] |= ~(HAFGRTR_EL2_RES0 |
+>  						  HAFGRTR_EL2_RES1);
 
-Ciao, Thorsten
+Otherwise, looks good.
 
-> Context: pata_macio initialization now fails as we enforce that the
-> segment size is set properly.
-> 
-> On Wed, May 15, 2024 at 04:52:29PM -0700, Guenter Roeck wrote:
->> pata_macio_common_init() Calling ata_host_activate() with limit 65280
->> ...
->> max_segment_size is 65280; PAGE_SIZE is 65536; BLK_MAX_SEGMENT_SIZE is 65536
->> WARNING: CPU: 0 PID: 12 at block/blk-settings.c:202 blk_validate_limits+0x2d4/0x364
->> ...
->>
->> This is with PPC_BOOK3S_64 which selects a default page size of 64k.
-> 
-> Yeah.  Did you actually manage to use pata macio previously?  Or is
-> it just used because it's part of the pmac default config?
-> 
->> Looking at the old code, I think it did what you suggested above,
-> 
->> but assuming that the driver requested a lower limit on purpose that
->> may not be the best solution.
-> 
->> Never mind, though - I updated my test configuration to explicitly
->> configure the page size to 4k to work around the problem. With that,
->> please consider this report a note in case someone hits the problem
->> on a real system (and sorry for the noise).
-> 
-> Yes, the idea behind this change was to catch such errors.  So far
-> most errors have been drivers setting lower limits than what the
-> hardware can actually handle, but I'd love to track this down.
-> 
-> If the hardware can't actually handle the lower limit we should
-> probably just fail the probe gracefully with a well comment if
-> statement instead.
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
