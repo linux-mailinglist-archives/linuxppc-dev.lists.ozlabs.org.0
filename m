@@ -1,92 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAB88D2D65
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 08:36:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTP id 57FBE8D3061
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 10:11:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SQ09H8HL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=YIExD2GG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vpzxt11vtz7993
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 16:29:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vq22Q5PcMz79Cn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 18:03:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SQ09H8HL;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=YIExD2GG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=osalvador@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vpzx625xwz3vb4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 16:28:57 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44T6FdfC013776;
-	Wed, 29 May 2024 06:28:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc : content-type : date
- : from : in-reply-to : message-id : mime-version : references : subject :
- to; s=pp1; bh=+9ciCvK01Z1vwRn+uCkI0yr1rl0idUx0MxgT/mBTRp8=;
- b=SQ09H8HLx9M78yQKlYrmKQm3yRxz1UsM0yOx61dlY2w+9sF8O+xHQhR9iABxbxsT+7gO
- s+LrGy67cIxS6LjHK+sxpjTOW44tKZOwE9W6+seZUgjQMkYIC7bY1V8EjBKDSPa24dv0
- sywA3JHM33X3ibL7DgFJvo/y2rAqjlzx2svhLtZlHBoTORB7o3QoVEcDBDTRTtt3WL3j
- cjv37MFKCUJWtJsSriNhlIOOkKRDRDRZLlY2Wz1eBmpDGlBoH2WY1WxeLf8tQrFMJU1S
- gzUrI6MwKduWFKEOQjpuQd4HUxfYJe9d8up06QTVJHvmHLfgAfjhfVZpypusiYyJsGfq rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydxr601rc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 06:28:26 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44T6SQbX000843;
-	Wed, 29 May 2024 06:28:26 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydxr601ra-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 06:28:26 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44T4AE7O009841;
-	Wed, 29 May 2024 06:28:25 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ydpbbj886-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 06:28:25 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44T6SLGc52166990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 May 2024 06:28:23 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C67C20040;
-	Wed, 29 May 2024 06:28:21 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 028962004B;
-	Wed, 29 May 2024 06:28:20 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.179.17.188])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 29 May 2024 06:28:19 +0000 (GMT)
-Date: Wed, 29 May 2024 08:28:18 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Eric Chanudet <echanude@redhat.com>
-Subject: Re: [PATCH v3] mm/mm_init: use node's number of cpus in
- deferred_page_init_max_threads
-Message-ID: <ZlbLAg94/2SC24Qz@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20240528185455.643227-4-echanude@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vq21f3rngz3g8B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 18:03:00 +1000 (AEST)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-35af7bf408aso1675288f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 01:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1716969775; x=1717574575; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SXNn4brV8l1cKgDS0zwRf7wcdauWIB3ooZqqAlvwD7I=;
+        b=YIExD2GGTEzoxn8iP4Sth7YGDG4V3g4P2T8s4d9tNQLPuoLgtiD9C5OhabMJ0PPhkW
+         BK+3gHgOV8sNmCziOkV3F5JjV0rHJmHgQImCX+UGjEmNNTE24vGXiblZgi5gC9wibXtH
+         sacjtaZZtOiTl9Jy3RCZxaQgjQuTcwkx2ucewidflswhahv2Fm8OEAmJnAkJNHawvqg8
+         z+RZ/65e3fHlZMGeVuQQcQofDcPjgdCSJlfQ4yhTKrS0gTbWQ6eRrflh2lZRi6cZ+Dl+
+         L2B9zyx12zNy+OiqsuWsVD5oUpanbpBxlMVF2NzXaJ8sAJi4O9Rm3qtemj+v8zITtFEW
+         1+JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716969775; x=1717574575;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SXNn4brV8l1cKgDS0zwRf7wcdauWIB3ooZqqAlvwD7I=;
+        b=FtTKrjr9Rdmxbd095IIBsjcY/RO0gIuugjTYi02t4n9G6FcBthbZAU3fJu3tDdu5mj
+         7PUT8kOqP5VnYnDqOna6+Gr1zVsvc4Z+XOOvrX28/4WneWenB39LXHmYD/sbTi8cVDzQ
+         2YpnROjCFgn6g+kvz0BWhettJzbw8Aui0PJPfc2k7IhyoJM7IEvfWm0J/aa5cRspnEGW
+         pC8bLDNo0pRubavmoeHq49CnuTqZUTXfjcIovmr8r83ZGVg5s6Rhy4UPekhbz15WjIyj
+         uKAGqxD63YxuhDbuUTYLy+X/ZkXGJWKD6PzRJnERqfLBDxMYVSh+eT5gaUrqxiVAbwvt
+         SXlg==
+X-Forwarded-Encrypted: i=1; AJvYcCW+850RJt82AWVY0oFLITpjp5g0MQBP48kAPHXWUktBXj2zyTX3IUhvpET4BXR/T714rrFH3tWeCPBLPFCCK6Rrq0dX3E4oeojv9QX91w==
+X-Gm-Message-State: AOJu0YwZddYwUa5wrJtbvU9pfLdeplX8WgafTH2LIPGPIE6Sirb3Wjj8
+	ePI9pxoWRargzTbOECU8xrGDetLyTGiAPSt09Cj/Xy3fUvyVta1VRjbaZ5grzlc=
+X-Google-Smtp-Source: AGHT+IGHtnpYsPo68r8KO+o5cak6O4GpcpzRjyYOkzKRLlpb/rBAfxulIRtpV3zXqfuo4S13urHc6g==
+X-Received: by 2002:a5d:6042:0:b0:354:f371:de64 with SMTP id ffacd0b85a97d-35526c5a10emr10971727f8f.31.1716969774592;
+        Wed, 29 May 2024 01:02:54 -0700 (PDT)
+Received: from localhost.localdomain (62.83.84.125.dyn.user.ono.com. [62.83.84.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3557a1c93c6sm14009154f8f.85.2024.05.29.01.02.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 01:02:54 -0700 (PDT)
+From: Oscar Salvador <osalvador@suse.com>
+X-Google-Original-From: Oscar Salvador <osalvador@suse.de>
+Date: Wed, 29 May 2024 10:02:52 +0200
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v4 08/16] powerpc/8xx: Rework support for 8M pages
+ using contiguous PTE entries
+Message-ID: <ZlbhLJF5w59BQIoK@localhost.localdomain>
+References: <cover.1716815901.git.christophe.leroy@csgroup.eu>
+ <c592d725af6c1a3b81090fd8b25676612430b24d.1716815901.git.christophe.leroy@csgroup.eu>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240528185455.643227-4-echanude@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: z22Gsl5oLmrdkoQNWXaaSgLxF8vW1NJ4
-X-Proofpoint-ORIG-GUID: TLy3r68G42Y8NzR4SwGlMiiYEiCLM0KP
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_14,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- suspectscore=0 impostorscore=0 clxscore=1011 adultscore=0 spamscore=0
- bulkscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405290040
+In-Reply-To: <c592d725af6c1a3b81090fd8b25676612430b24d.1716815901.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,65 +82,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, linux-arm-kernel@lists.infradead.org, Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 28, 2024 at 02:54:58PM -0400, Eric Chanudet wrote:
-> When DEFERRED_STRUCT_PAGE_INIT=y, use a node's cpu count as maximum
-> thread count for the deferred initialization of struct pages via padata.
-> This should result in shorter boot times for these configurations by
-> going through page_alloc_init_late() faster as systems tend not to be
-> under heavy load that early in the bootstrap.
+On Mon, May 27, 2024 at 03:30:06PM +0200, Christophe Leroy wrote:
+> In order to fit better with standard Linux page tables layout, add
+> support for 8M pages using contiguous PTE entries in a standard
+> page table. Page tables will then be populated with 1024 similar
+> entries and two PMD entries will point to that page table.
 > 
-> Only x86_64 does that now. Make it archs agnostic when
-> DEFERRED_STRUCT_PAGE_INIT is set. With the default defconfigs, that
-> includes powerpc and s390.
+> The PMD entries also get a flag to tell it is addressing an 8M page,
+> this is required for the HW tablewalk assistance.
 > 
-> It used to be so before offering archs to override the function for
-> tuning with commit ecd096506922 ("mm: make deferred init's max threads
-> arch-specific").
-> 
-> Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
-> shows faster deferred_init_memmap completions:
-> |         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
-> |         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
-> |         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
-> |---------|-------------|--------------|-----------------|--------------|
-> | threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
-> |---------|-------------|--------------|-----------------|--------------|
-> | 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
-> | cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
-> 
-> Michael Ellerman on a powerpc machine (1TB, 40 cores, 4KB pages) reports
-> faster deferred_init_memmap from 210-240ms to 90-110ms between nodes.
-> 
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 > ---
-> - v1: https://lore.kernel.org/linux-arm-kernel/20240520231555.395979-5-echanude@redhat.com
-> - Changes since v1:
->  - Make the generic function return the number of cpus of the node as
->    max threads limit instead overriding it for arm64.
->  - Drop Baoquan He's R-b on v1 since the logic changed.
->  - Add CCs according to patch changes (ppc and s390 set
->    DEFERRED_STRUCT_PAGE_INIT by default).
-> 
-> - v2: https://lore.kernel.org/linux-arm-kernel/20240522203758.626932-4-echanude@redhat.com/
-> - Changes since v2:
->  - deferred_page_init_max_threads returns unsigned and use max instead
->    of max_t.
->  - Make deferred_page_init_max_threads static since there are no more
->    override.
->  - Rephrase description.
->  - Add T-b and report from Michael Ellerman.
-> 
->  arch/x86/mm/init_64.c    | 12 ------------
->  include/linux/memblock.h |  2 --
->  mm/mm_init.c             |  5 ++---
->  3 files changed, 2 insertions(+), 17 deletions(-)
+...  
+> +#define __HAVE_ARCH_HUGE_PTEP_GET
+> +static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+> +{
+> +	if (ptep_is_8m_pmdp(mm, addr, ptep))
+> +		ptep = pte_offset_kernel((pmd_t *)ptep, 0);
 
-It does speed up. For s390:
+Yes, you are right that this should have had the addr aligned down.
 
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+I can speak for others, but for me it is more clear to think of it this way:
+
+1) check if ptep points to the first PMD entry for address
+2) if it does, we know that the PMD describes a 8MB hugepage
+3) return the PMD
+
+That is why I thought that directly calling pmd_page_vaddr() gave a more clear
+overview.
+
+Now, feel free to ignore this if you think this is not clear or adds confusion,
+I just wanted to give my insight reflecting on what I considered more
+logical.
+
+
+-- 
+Oscar Salvador
+SUSE Labs
