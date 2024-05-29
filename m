@@ -1,57 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B2E8D3BA0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 18:01:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTP id 3BCF38D3CDA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 18:36:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GaoQuU+O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=U6nBRG4z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqDQw1yDcz882x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 01:52:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqFGC42bPz79lg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 02:29:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GaoQuU+O;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=U6nBRG4z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqDPr4DYJz87Xj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 01:51:12 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id C3631CE1851;
-	Wed, 29 May 2024 15:51:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C84C32789;
-	Wed, 29 May 2024 15:51:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716997869;
-	bh=yfp/7KVmaD9soBtmKL6q5BZ78PtD4h6vksVq6qycOPU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GaoQuU+Ob2D3PlaLdueq8ggVFX6iSg+v2w6qHqkuwkS9CIgWTLw5y7rGQ7+5GR4Fg
-	 uANNlFpP1VgfT6if855Wvm9NdJN5hRzQP8OUOXnuwKFyjKE8G12ivBjGrC1LcCD6w/
-	 2CbGLQHQSM6PJj0po0Ffs9ICz8Me24rTqw+GAiNZZ5D95XM1c/Be35pC/WsJGQWlhu
-	 cvJiH6240yh986469ZD5sWVoor/vICC4R7TZnHLH5OlRmYRov3nFNqae7tV2jRXm5t
-	 74bcVyy7YRqfNy5it18K2OpzG2/9T12ylaqtFtRDxi1h/k1btvzJcvqZ8OIz1ZIaEz
-	 EaoL1OtvzQsog==
-Date: Wed, 29 May 2024 16:51:00 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Subject: Re: [PATCH v4 28/29] kselftest/arm64: Add test case for POR_EL0
- signal frame records
-Message-ID: <58fb8a27-6c40-4b13-a231-b0db1c16916c@sirena.org.uk>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-29-joey.gouly@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqFFV5908z798q
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 02:29:01 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1f47f07aceaso19398655ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 09:29:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1717000135; x=1717604935; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iUKf6RPGHkE9ueRDvwJp4yAPIvOh2riYCScZzEfcavE=;
+        b=U6nBRG4zpvlSqMRbmFpCx0uaJ3BRr4NVxmd90SDmcZ7mNZ5YB80OA0m57mjWdlKUFh
+         msfQhEYoRdt6YIjh0tJ2jgcYmqp/eomBUKFHtv4NgYPgGSTMqJtlZONiwJ47UHmPRUIy
+         ORoSV4X/87nCbBFpYrrdJtgmFYgB5TJz48Z9oQn62wqfUSNINzNTphmenPOxXdlj4HyQ
+         PtL/vIF6tlXYShgaFqmlsTTHnA1o6sOSWJ4u+orw812LkMsGjTzTrQ7FpUS8hqcpbsy9
+         N7MiQSmDsTCqvRQveU8hw3fEEvkuJHRFAFE5L8dYPuIHC3Gk4G1cv7ki3/vLZs7F5Qh1
+         XSbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717000135; x=1717604935;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iUKf6RPGHkE9ueRDvwJp4yAPIvOh2riYCScZzEfcavE=;
+        b=MR5Imyv/k8Jvt7gLx+Tfo82VUyNMHlGXg2NMMrMhUZkB6gj7MfDbxi4imPDp35TWBV
+         aZ1gNbY19SLDyC9Fs8/DiwPXLW4aMIUTVDCFyqh9Y3eMCWUtjwrf13lYIs6QE9EIkiJe
+         AYHcKYPm3wiH77QEVIjbtstbBtyQXJCgknGIfABuwYlh7Gw1ZEmZaKR2YeVdCjgNX2eB
+         sxIgGeB9UPpPSk7mqDI5W9fyJsmM3s0Ugw5ODqzpiVvsjgMKFuaGmcB/4WPcLmu7UBCZ
+         O79jVa72DdYbJcKj590y+a9pZGCO4M5TwRYT6GAlVLAh+8b2b9rsssa71EFf1TyczrwM
+         ZIIw==
+X-Gm-Message-State: AOJu0Yz3NVOvy0H9rsNgDTDRj0alr30OgxC+zC8YuSkrXGCk2+6NNSen
+	oXeADfhkFnfGzaoKNbnPslbXVi1KWG2/9R+OZArLXqjOnQ6DwXZpeU8bdmKUR/F/UU8YrTdJHSj
+	6l8aUHOIy2MOdDCOnc0tf5W6H0WwSzYS+zLlYTvryDpJx4Vw23evJAhzbJLZXnqr/1dlow88nxC
+	WbAtYp5BSE6E096JEs53CGI2oGwyn07Scx4bbeOlwGdtCsD3P691druA==
+X-Google-Smtp-Source: AGHT+IEjVPCvcjtvs+arO36qgagTdadtsaeqU3GiNIZQ/tvSccsvX/2ca/K2QWSCF0VhUZl8F1kyfA==
+X-Received: by 2002:a17:902:c943:b0:1f4:64ba:af9f with SMTP id d9443c01a7336-1f464bab2f7mr139578315ad.48.1717000134988;
+        Wed, 29 May 2024 09:28:54 -0700 (PDT)
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c9a88e0sm101756305ad.231.2024.05.29.09.28.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 09:28:54 -0700 (PDT)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: Limit ARCH_HAS_KERNEL_FPU_SUPPORT to PPC64
+Date: Wed, 29 May 2024 09:28:50 -0700
+Message-ID: <20240529162852.1209-1-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.44.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BFkxsI+/n7XbdM1d"
-Content-Disposition: inline
-In-Reply-To: <20240503130147.1154804-29-joey.gouly@arm.com>
-X-Cookie: Everybody gets free BORSCHT!
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,34 +78,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When building a 32-bit kernel, some toolchains do not allow mixing soft
+float and hard float object files:
 
---BFkxsI+/n7XbdM1d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+    LD      vmlinux.o
+  powerpc64le-unknown-linux-musl-ld: lib/test_fpu_impl.o uses hard float, arch/powerpc/kernel/udbg.o uses soft float
+  powerpc64le-unknown-linux-musl-ld: failed to merge target specific data of file lib/test_fpu_impl.o
+  make[2]: *** [scripts/Makefile.vmlinux_o:62: vmlinux.o] Error 1
+  make[1]: *** [Makefile:1152: vmlinux_o] Error 2
+  make: *** [Makefile:240: __sub-make] Error 2
 
-On Fri, May 03, 2024 at 02:01:46PM +0100, Joey Gouly wrote:
-> Ensure that we get signal context for POR_EL0 if and only if POE is present
-> on the system.
+This is not an issue when building a 64-bit kernel. To unbreak the
+build, limit ARCH_HAS_KERNEL_FPU_SUPPORT to 64-bit kernels. This is okay
+because the only real user of this option, amdgpu, was previously
+limited to PPC64 anyway; see commit a28e4b672f04 ("drm/amd/display: use
+ARCH_HAS_KERNEL_FPU_SUPPORT").
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+Fixes: 01db473e1aa3 ("powerpc: implement ARCH_HAS_KERNEL_FPU_SUPPORT")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202405250851.Z4daYSWG-lkp@intel.com/
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/lkml/eeffaec3-df63-4e55-ab7a-064a65c00efa@roeck-us.net/
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+---
 
---BFkxsI+/n7XbdM1d
-Content-Type: application/pgp-signature; name="signature.asc"
+ arch/powerpc/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 3c968f2f4ac4..c88c6d46a5bc 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -137,7 +137,7 @@ config PPC
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_HUGEPD			if HUGETLB_PAGE
+ 	select ARCH_HAS_KCOV
+-	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC_FPU
++	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+ 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN	if PPC_64S_HASH_MMU
+-- 
+2.44.1
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZXTuQACgkQJNaLcl1U
-h9B5sgf9GRRafV0J2nOmiAXvWZuutE7IagLikzc5FwyU8kvRSUOCwAK+THgPINah
-BKWEKe5a8EKzbzzeOWUu2mhw/twKyx6t92RRQsEc4fzFmotuq+6dET2hiVcbjtyk
-c1ipV82q2LVB1L7pmftHRXKUZ0DHxgT346HzSi6Oz8hl/+FIN2Wi/AnTmIIqnDrn
-VSmKA7dRfJ8aQ7dsRIBk1sbuBHtNHqE0sCsy1CgaRxnh92opgwRwCy/E3g9bl+mw
-hfGE1FluYz3zipMP7rHeVMPXJm95ejVZUENNlNglTFZ97NTPJB7hAYc6BVumdHNx
-FHZxeYLHzVUNbVEs0vYJplYVSegMdg==
-=IfbO
------END PGP SIGNATURE-----
-
---BFkxsI+/n7XbdM1d--
