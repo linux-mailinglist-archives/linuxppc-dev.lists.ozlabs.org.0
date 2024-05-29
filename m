@@ -2,73 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id EEFF08D3260
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 10:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D958B8D325F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 10:56:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=In7miBU2;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=In7miBU2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=NtBfSV6F;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vq3386v8sz79H4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 18:49:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vq33y4dVsz79qj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 18:50:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=In7miBU2;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=In7miBU2;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=NtBfSV6F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=osalvador@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vq32P06RZz3vXH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 18:48:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716972521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znIpA3udPqKI4MZkxSxCZR6WCKKDK3sQ7qzxLXZGsaI=;
-	b=In7miBU205BHJqcmbYRN7dkSXzYRmcxx5I8pEgO2Fn989rgoRInV5N+M/DxQmWS356xWud
-	VmbuMkUo2g34ZComvu5IRu1cHS6RCX632hMi2gX/pRDfxuxr0iIcolzn/gbeFXbO/Z3qO+
-	9EKxxzZni3MgKvf/E9HtV6mQhd4VpeU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716972521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znIpA3udPqKI4MZkxSxCZR6WCKKDK3sQ7qzxLXZGsaI=;
-	b=In7miBU205BHJqcmbYRN7dkSXzYRmcxx5I8pEgO2Fn989rgoRInV5N+M/DxQmWS356xWud
-	VmbuMkUo2g34ZComvu5IRu1cHS6RCX632hMi2gX/pRDfxuxr0iIcolzn/gbeFXbO/Z3qO+
-	9EKxxzZni3MgKvf/E9HtV6mQhd4VpeU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-fYMqePKiMEm9xRyDkphb7w-1; Wed, 29 May 2024 04:48:37 -0400
-X-MC-Unique: fYMqePKiMEm9xRyDkphb7w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90DC185A58C;
-	Wed, 29 May 2024 08:48:36 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.54])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id CDD611C0D104;
-	Wed, 29 May 2024 08:48:34 +0000 (UTC)
-Date: Wed, 29 May 2024 16:48:31 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Eric Chanudet <echanude@redhat.com>
-Subject: Re: [PATCH v3] mm/mm_init: use node's number of cpus in
- deferred_page_init_max_threads
-Message-ID: <Zlbr38h/kwxMWLLs@MiWiFi-R3L-srv>
-References: <20240528185455.643227-4-echanude@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vq33C4wrzz79Jd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 18:49:26 +1000 (AEST)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-420180b58c5so15633435e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 01:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1716972563; x=1717577363; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8FqWscTuoS7Z7zXndqslsCK2s/b+E7GOJQ0fFCGFa0k=;
+        b=NtBfSV6FYxd6o1pI1/WqyNR4qQSXR3LG9p3Aftl5dWrBBu4X/hOc8T9rZmqjjvbLhq
+         AyOy+WjLmgMeAObIZJ5B07QJmg+nokfMBKNSoRZCMWDzKqrSUyoCDH088ZumHh7M1Dxt
+         Bh6SD5WdpnlnCWrwZ2KVnmJQO+uwbapfPGREWSkBTv1jgYjHghIy0BSTCUO1zQfIwJyW
+         iSTxAsrvCUfOfR+I/F1CXkYGz4ZgCPw2NSmeql/01vvSazV9MiulOVNyAzxi92AWaLxe
+         gzc0Mmw7h7hw/ENLOWcsQ3bm6FDJ8bpG60qQK60subiYcG6HMjYuNDUYFe64JoGx33X0
+         vwow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716972563; x=1717577363;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8FqWscTuoS7Z7zXndqslsCK2s/b+E7GOJQ0fFCGFa0k=;
+        b=ONGOHBsvpuGDBM+ixev3V0vt6TgTafu9a7jPUsdtcJZL7UBWavzSLmn2UbiWGL9+Wj
+         /tT0pEdGV3JjW1uyMZzfCuVObqJ2y2EvaVO2/+nrrur71rpPbvcNMBDP/SrE6q0Ubyk3
+         i4QMDh3tuVKJ8kYFjzALudAXrDjEWmgJG/nC7Obk6Mz8bpmSgZuOy1Yzguq7ZBxLuqnX
+         pK9NmsMudVD2Q8sVIxZoVOhVcvDyTntXnuknuORGSmv9MHe08n/rdjwvSkOcrS/sf62S
+         68nAjN9/AY6j4Wyfo0mxIpOWVtaCkAeUhlAZupTWxgIkumEJrpJUUtHvlO1xKxW5M9Pu
+         mr6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXWUgHCxy4/YXOutCMDbuokh3dVNtO8XZnL36oE/Ga4hTQPodsAx++y8B7NNOJWIFd5+U0v0415u8MvkS4RxPZBFA8xvwVMexFhjnN8EA==
+X-Gm-Message-State: AOJu0Yync8SaI1buEXbBsyFbLON4NBBchN6vpvNs6QNDk1ZyheXZ2zBC
+	n47S8ghgmndMSmNuv+tO1Oj8rIm8r6IXgLq2O7I91LRRyCP0d1kEzWaHR7uz70s=
+X-Google-Smtp-Source: AGHT+IFirCm930ok6c0waccClyLojOOhDizCBj1LVv0U/qJp1ipt5v04MsZ7oUfrdlcX266KE3FIUw==
+X-Received: by 2002:a05:600c:224e:b0:420:fb99:ed02 with SMTP id 5b1f17b1804b1-421089b2283mr134252545e9.6.1716972563537;
+        Wed, 29 May 2024 01:49:23 -0700 (PDT)
+Received: from localhost.localdomain (62.83.84.125.dyn.user.ono.com. [62.83.84.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100ee806esm204152935e9.3.2024.05.29.01.49.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 01:49:23 -0700 (PDT)
+From: Oscar Salvador <osalvador@suse.com>
+X-Google-Original-From: Oscar Salvador <osalvador@suse.de>
+Date: Wed, 29 May 2024 10:49:21 +0200
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v4 13/16] powerpc/e500: Use contiguous PMD instead of
+ hugepd
+Message-ID: <ZlbsEb_T2eQYO-g4@localhost.localdomain>
+References: <cover.1716815901.git.christophe.leroy@csgroup.eu>
+ <56cf925576285e2b97550f4f7317183d98d596c5.1716815901.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240528185455.643227-4-echanude@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+In-Reply-To: <56cf925576285e2b97550f4f7317183d98d596c5.1716815901.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,123 +82,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, x86@kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, linux-arm-kernel@lists.infradead.org, Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/28/24 at 02:54pm, Eric Chanudet wrote:
-> When DEFERRED_STRUCT_PAGE_INIT=y, use a node's cpu count as maximum
-> thread count for the deferred initialization of struct pages via padata.
-> This should result in shorter boot times for these configurations by
-> going through page_alloc_init_late() faster as systems tend not to be
-> under heavy load that early in the bootstrap.
+On Mon, May 27, 2024 at 03:30:11PM +0200, Christophe Leroy wrote:
+> e500 supports many page sizes among which the following size are
+> implemented in the kernel at the time being: 4M, 16M, 64M, 256M, 1G.
 > 
-> Only x86_64 does that now. Make it archs agnostic when
-> DEFERRED_STRUCT_PAGE_INIT is set. With the default defconfigs, that
-> includes powerpc and s390.
+> On e500, TLB miss for hugepages is exclusively handled by SW even
+> on e6500 which has HW assistance for 4k pages, so there are no
+> constraints like on the 8xx.
 > 
-> It used to be so before offering archs to override the function for
-> tuning with commit ecd096506922 ("mm: make deferred init's max threads
-> arch-specific").
+> On e500/32, all are at PGD/PMD level and can be handled as
+> cont-PMD.
 > 
-> Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
-> shows faster deferred_init_memmap completions:
-> |         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
-> |         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
-> |         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
-> |---------|-------------|--------------|-----------------|--------------|
-> | threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
-> |---------|-------------|--------------|-----------------|--------------|
-> | 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
-> | cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
+> On e500/64, smaller ones are on PMD while bigger ones are on PUD.
+> Again, they can easily be handled as cont-PMD and cont-PUD instead
+> of hugepd.
 > 
-> Michael Ellerman on a powerpc machine (1TB, 40 cores, 4KB pages) reports
-> faster deferred_init_memmap from 210-240ms to 90-110ms between nodes.
-> 
-> Signed-off-by: Eric Chanudet <echanude@redhat.com>
-> Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> 
-> ---
-> - v1: https://lore.kernel.org/linux-arm-kernel/20240520231555.395979-5-echanude@redhat.com
-> - Changes since v1:
->  - Make the generic function return the number of cpus of the node as
->    max threads limit instead overriding it for arm64.
->  - Drop Baoquan He's R-b on v1 since the logic changed.
->  - Add CCs according to patch changes (ppc and s390 set
->    DEFERRED_STRUCT_PAGE_INIT by default).
-> 
-> - v2: https://lore.kernel.org/linux-arm-kernel/20240522203758.626932-4-echanude@redhat.com/
-> - Changes since v2:
->  - deferred_page_init_max_threads returns unsigned and use max instead
->    of max_t.
->  - Make deferred_page_init_max_threads static since there are no more
->    override.
->  - Rephrase description.
->  - Add T-b and report from Michael Ellerman.
-> 
->  arch/x86/mm/init_64.c    | 12 ------------
->  include/linux/memblock.h |  2 --
->  mm/mm_init.c             |  5 ++---
->  3 files changed, 2 insertions(+), 17 deletions(-)
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+...
 
-> 
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index 7e177856ee4f..adec42928ec1 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1354,18 +1354,6 @@ void __init mem_init(void)
->  	preallocate_vmalloc_pages();
->  }
+> diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+> index 90d6a0943b35..f7421d1a1693 100644
+> --- a/arch/powerpc/include/asm/nohash/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/pgtable.h
+> @@ -52,11 +52,36 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+>  {
+>  	pte_basic_t old = pte_val(*p);
+>  	pte_basic_t new = (old & ~(pte_basic_t)clr) | set;
+> +	unsigned long sz;
+> +	unsigned long pdsize;
+> +	int i;
 >  
-> -#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> -int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask)
-> -{
-> -	/*
-> -	 * More CPUs always led to greater speedups on tested systems, up to
-> -	 * all the nodes' CPUs.  Use all since the system is otherwise idle
-> -	 * now.
-> -	 */
-> -	return max_t(int, cpumask_weight(node_cpumask), 1);
-> -}
-> -#endif
-> -
->  int kernel_set_to_readonly;
+>  	if (new == old)
+>  		return old;
 >  
->  void mark_rodata_ro(void)
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index e2082240586d..40c62aca36ec 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -335,8 +335,6 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
->  	for (; i != U64_MAX;					  \
->  	     __next_mem_pfn_range_in_zone(&i, zone, p_start, p_end))
->  
-> -int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask);
-> -
->  #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
->  
->  /**
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index f72b852bd5b8..acfeba508796 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2122,11 +2122,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> -	*p = __pte(new);
+> +#ifdef CONFIG_PPC_E500
+> +	if (huge)
+> +		sz = 1UL << (((old & _PAGE_HSIZE_MSK) >> _PAGE_HSIZE_SHIFT) + 20);
+> +	else
+
+I think this will not compile when CONFIG_PPC_85xx && !CONFIG_PTE_64BIT.
+
+You have declared _PAGE_HSIZE_MSK and _PAGE_HSIZE_SHIFT in
+arch/powerpc/include/asm/nohash/hugetlb-e500.h.
+
+But hugetlb-e500.h is only included if CONFIG_PPC_85xx && CONFIG_PTE_64BIT
+(see arch/powerpc/include/asm/nohash/32/pgtable.h).
+
+
+
+> +#endif
+> +		sz = PAGE_SIZE;
+> +
+> +	if (!huge || sz < PMD_SIZE)
+> +		pdsize = PAGE_SIZE;
+> +	else if (sz < PUD_SIZE)
+> +		pdsize = PMD_SIZE;
+> +	else if (sz < P4D_SIZE)
+> +		pdsize = PUD_SIZE;
+> +	else if (sz < PGDIR_SIZE)
+> +		pdsize = P4D_SIZE;
+> +	else
+> +		pdsize = PGDIR_SIZE;
+> +
+> +	for (i = 0; i < sz / pdsize; i++, p++) {
+> +		*p = __pte(new);
+> +		if (new)
+> +			new += (unsigned long long)(pdsize / PAGE_SIZE) << PTE_RPN_SHIFT;
+
+I guess 'new' can be 0 if pte_update() is called on behave of clearing the pte?
+
+> +static inline unsigned long pmd_leaf_size(pmd_t pmd)
+> +{
+> +	return 1UL << (((pmd_val(pmd) & _PAGE_HSIZE_MSK) >> _PAGE_HSIZE_SHIFT) + 20);
+
+Can we have the '20' somewhere defined with a comment on top explaining
+what is so it is not a magic number?
+Otherwise people might come look at this and wonder why 20.
+
+> --- a/arch/powerpc/mm/pgtable.c
+> +++ b/arch/powerpc/mm/pgtable.c
+> @@ -331,6 +331,37 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+>  		__set_huge_pte_at(pmdp, ptep, pte_val(pte));
 >  	}
 >  }
->  
-> -/* An arch may override for more concurrency. */
-> -__weak int __init
-> +static unsigned int __init
->  deferred_page_init_max_threads(const struct cpumask *node_cpumask)
->  {
-> -	return 1;
-> +	return max(cpumask_weight(node_cpumask), 1U);
->  }
->  
->  /* Initialise remaining memory on a node */
-> -- 
-> 2.44.0
-> 
+> +#elif defined(CONFIG_PPC_E500)
+> +void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+> +		     pte_t pte, unsigned long sz)
+> +{
+> +	unsigned long pdsize;
+> +	int i;
+> +
+> +	pte = set_pte_filter(pte, addr);
+> +
+> +	/*
+> +	 * Make sure hardware valid bit is not set. We don't do
+> +	 * tlb flush for this update.
+> +	 */
+> +	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
+> +
+> +	if (sz < PMD_SIZE)
+> +		pdsize = PAGE_SIZE;
+> +	else if (sz < PUD_SIZE)
+> +		pdsize = PMD_SIZE;
+> +	else if (sz < P4D_SIZE)
+> +		pdsize = PUD_SIZE;
+> +	else if (sz < PGDIR_SIZE)
+> +		pdsize = P4D_SIZE;
+> +	else
+> +		pdsize = PGDIR_SIZE;
+> +
+> +	for (i = 0; i < sz / pdsize; i++, ptep++, addr += pdsize) {
+> +		__set_pte_at(mm, addr, ptep, pte, 0);
+> +		pte = __pte(pte_val(pte) + ((unsigned long long)pdsize / PAGE_SIZE << PFN_PTE_SHIFT));
 
+You can use pte_advance_pfn() here? Just give have
+
+ nr = (unsigned long long)pdsize / PAGE_SIZE << PFN_PTE_SHIFT)
+ pte_advance_pfn(pte, nr)
+
+Which 'sz's can we have here? You mentioned that e500 support:
+
+4M, 16M, 64M, 256M, 1G.
+
+which of these ones can be huge?
+
+
+-- 
+Oscar Salvador
+SUSE Labs
