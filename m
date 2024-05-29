@@ -1,91 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 899048D2C18
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 07:11:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTP id 6114C8D2CA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 07:42:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s6Mkm2O/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LeEZBqXs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vpy0b0W1kz79Dl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 15:01:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VpyhX5z3vz79Fb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 15:33:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s6Mkm2O/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LeEZBqXs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vpxzr1vX1z3gGY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 15:01:11 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44T4blX1000523;
-	Wed, 29 May 2024 05:01:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc : content-type : date
- : from : in-reply-to : message-id : mime-version : references : subject :
- to; s=pp1; bh=xSqHcKYEDaxxJfuUNzVrGGQy133EFKDCw6O99I9og2M=;
- b=s6Mkm2O/+HQigUNXpRnK8pes1dELq1cJKBxJ+Ivkal+KJORumKieXjuIlim7BpvC02/B
- 4be1g97rPaRVo7ywQjVNOtyT93MuPUUVyA5FS5G5xOz6/speW6sG8JTYcETZ9KsIsauN
- pHMJneV5H7X1ZeChqEUmIJ9Oe/MlWqjPlsQ9SQ7fWp7TJ07nNjyxr29J7MvYq77ggYLC
- QTXIqgAhIx8xUvSWw4ZqQ7QMInnug2N/LyLadaUdb4a+A+DX+e6R+I80rCzJ/NCoO91p
- OHg9+tSPEVgkregiDw+gqM2veYySpFspZzk4llM4ZZsC6NrEGetqU/gcD5Wm6M6Fswi5 lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydwgj0222-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 05:01:00 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44T4qvHN022363;
-	Wed, 29 May 2024 05:01:00 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydwgj021x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 05:01:00 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44T4PG6T009811;
-	Wed, 29 May 2024 05:00:59 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ydpbbhwb3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 05:00:59 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44T50tTB46137728
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 May 2024 05:00:57 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C10752004B;
-	Wed, 29 May 2024 05:00:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E7EE20040;
-	Wed, 29 May 2024 05:00:54 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.204.206.66])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 29 May 2024 05:00:53 +0000 (GMT)
-Date: Wed, 29 May 2024 10:30:51 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen.n.rao@linux.ibm.com, clg@kaod.org
-Subject: Re: [RESEND PATCH 0/3] XICS emulation optimizations in KVM for PPC
-Message-ID: <oj3kgyo7erm23w5jg4bsik5zzyaknmezurm3i67iy4duxg4jwm@aaqussro73bm>
-References: <20240520082014.140697-1-gautam@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vpygp4KRNz3gKL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 15:32:22 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id B5E97623CF;
+	Wed, 29 May 2024 05:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7FFC2BD10;
+	Wed, 29 May 2024 05:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716960739;
+	bh=aBznwI196mCXdIjypa7AmSwqqkGS5EsYJK31pzgSYXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LeEZBqXsaFwHKqq22xYJkq1anme+3hC9y4dtkgVlEK8L0HpFZWUwdSNmDY9Dkw6NW
+	 jmYzLhjePapm2TqQULKLIdowZXJ5+4rkJdUNI6remV3ooCQ/tnpDnrCOCjxWLhxWUa
+	 wnIWzdQOEkuJE9hEeHvETExo8PPpuO700JnCabxsCN0WeaNU6RsdbqNH06C052cUbz
+	 pcYHVG/nEm6xkBGENDwx7i0hAa/WwhPnHmaFiBu7FRjnOtZfVtTI158ewx8yBQdXzA
+	 2PEUKqEd3KrOUZjq6zO2DU3cPgp149y+59wWRzK4VAWqxaA4LAIaxHdvKkBqK7f830
+	 Q8mHay2aWjJlg==
+Date: Wed, 29 May 2024 08:30:27 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Eric Chanudet <echanude@redhat.com>
+Subject: Re: [PATCH v3] mm/mm_init: use node's number of cpus in
+ deferred_page_init_max_threads
+Message-ID: <Zla9cwSorlNg98F5@kernel.org>
+References: <20240528185455.643227-4-echanude@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240520082014.140697-1-gautam@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iYKXO3KBcQdCEOP_c_8ZoDjnrZyBGoF2
-X-Proofpoint-ORIG-GUID: vZxMD4m2KcMZnEI-ezQ6ohrIEzAaxK-X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_14,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=352 phishscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405290029
+In-Reply-To: <20240528185455.643227-4-echanude@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,13 +60,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, x86@kernel.org, Baoquan He <bhe@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Tue, May 28, 2024 at 02:54:58PM -0400, Eric Chanudet wrote:
+> When DEFERRED_STRUCT_PAGE_INIT=y, use a node's cpu count as maximum
+> thread count for the deferred initialization of struct pages via padata.
+> This should result in shorter boot times for these configurations by
+> going through page_alloc_init_late() faster as systems tend not to be
+> under heavy load that early in the bootstrap.
+> 
+> Only x86_64 does that now. Make it archs agnostic when
+> DEFERRED_STRUCT_PAGE_INIT is set. With the default defconfigs, that
+> includes powerpc and s390.
+> 
+> It used to be so before offering archs to override the function for
+> tuning with commit ecd096506922 ("mm: make deferred init's max threads
+> arch-specific").
+> 
+> Setting DEFERRED_STRUCT_PAGE_INIT and testing on a few arm64 platforms
+> shows faster deferred_init_memmap completions:
+> |         | x13s        | SA8775p-ride | Ampere R137-P31 | Ampere HR330 |
+> |         | Metal, 32GB | VM, 36GB     | VM, 58GB        | Metal, 128GB |
+> |         | 8cpus       | 8cpus        | 8cpus           | 32cpus       |
+> |---------|-------------|--------------|-----------------|--------------|
+> | threads |  ms     (%) | ms       (%) |  ms         (%) |  ms      (%) |
+> |---------|-------------|--------------|-----------------|--------------|
+> | 1       | 108    (0%) | 72      (0%) | 224        (0%) | 324     (0%) |
+> | cpus    |  24  (-77%) | 36    (-50%) |  40      (-82%) |  56   (-82%) |
+> 
+> Michael Ellerman on a powerpc machine (1TB, 40 cores, 4KB pages) reports
+> faster deferred_init_memmap from 210-240ms to 90-110ms between nodes.
+> 
+> Signed-off-by: Eric Chanudet <echanude@redhat.com>
+> Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Please review this series and let me know if any changes are needed.
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-Thanks,
-Gautam
+> ---
+> - v1: https://lore.kernel.org/linux-arm-kernel/20240520231555.395979-5-echanude@redhat.com
+> - Changes since v1:
+>  - Make the generic function return the number of cpus of the node as
+>    max threads limit instead overriding it for arm64.
+>  - Drop Baoquan He's R-b on v1 since the logic changed.
+>  - Add CCs according to patch changes (ppc and s390 set
+>    DEFERRED_STRUCT_PAGE_INIT by default).
+> 
+> - v2: https://lore.kernel.org/linux-arm-kernel/20240522203758.626932-4-echanude@redhat.com/
+> - Changes since v2:
+>  - deferred_page_init_max_threads returns unsigned and use max instead
+>    of max_t.
+>  - Make deferred_page_init_max_threads static since there are no more
+>    override.
+>  - Rephrase description.
+>  - Add T-b and report from Michael Ellerman.
+> 
+>  arch/x86/mm/init_64.c    | 12 ------------
+>  include/linux/memblock.h |  2 --
+>  mm/mm_init.c             |  5 ++---
+>  3 files changed, 2 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 7e177856ee4f..adec42928ec1 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1354,18 +1354,6 @@ void __init mem_init(void)
+>  	preallocate_vmalloc_pages();
+>  }
+>  
+> -#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+> -int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask)
+> -{
+> -	/*
+> -	 * More CPUs always led to greater speedups on tested systems, up to
+> -	 * all the nodes' CPUs.  Use all since the system is otherwise idle
+> -	 * now.
+> -	 */
+> -	return max_t(int, cpumask_weight(node_cpumask), 1);
+> -}
+> -#endif
+> -
+>  int kernel_set_to_readonly;
+>  
+>  void mark_rodata_ro(void)
+> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> index e2082240586d..40c62aca36ec 100644
+> --- a/include/linux/memblock.h
+> +++ b/include/linux/memblock.h
+> @@ -335,8 +335,6 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
+>  	for (; i != U64_MAX;					  \
+>  	     __next_mem_pfn_range_in_zone(&i, zone, p_start, p_end))
+>  
+> -int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask);
+> -
+>  #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
+>  
+>  /**
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index f72b852bd5b8..acfeba508796 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2122,11 +2122,10 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+>  	}
+>  }
+>  
+> -/* An arch may override for more concurrency. */
+> -__weak int __init
+> +static unsigned int __init
+>  deferred_page_init_max_threads(const struct cpumask *node_cpumask)
+>  {
+> -	return 1;
+> +	return max(cpumask_weight(node_cpumask), 1U);
+>  }
+>  
+>  /* Initialise remaining memory on a node */
+> -- 
+> 2.44.0
+> 
+
+-- 
+Sincerely yours,
+Mike.
