@@ -1,78 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B928D344E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 12:17:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTP id 006E88D3473
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 12:22:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=PWB6DBi5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ZeXuGQhf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vq4rv1yRSz88hD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 20:10:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vq4ty4lWkz884t
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 20:12:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=PWB6DBi5;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ZeXuGQhf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=osalvador@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=osalvador@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vq4r96rsxz88T2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 20:10:01 +1000 (AEST)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-42011507a54so4254465e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 03:10:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vq4tF1DgFz3vcy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 20:11:48 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-5238b5c07efso2138663e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 03:11:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1716977398; x=1717582198; darn=lists.ozlabs.org;
+        d=suse.com; s=google; t=1716977504; x=1717582304; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1FTKNsuia3RWpQHnWn/8QDl0FBPSRwXXETwGl7wxFKo=;
-        b=PWB6DBi529DBnO1eIkadB/reTeEZJB+Dxti0PpOdCU7kdaYD9xZSIJv+WWBQp7O+SS
-         wG3yPTlDfPeRSKocScA7+BDlhGuRAeCkP8Io0I0UsKr6SfUzYjBu/X6wNfLtcPmp7MrW
-         8VdMRaFszCbod069qyIWrxzLExbDRhUrMe9H2+YQPBvKxfXJ0uNcZrRJ2VLxRxgarxx0
-         9qgYXiEKeJ5ppQQSCiqglrRSuMR/XsZv1YnsrJlscRxp3vQUBjg2DPt0EC0sAR1MoDO+
-         vavixmMhAfDigyQvND2A0R04bIr8M6FyIoWjlBLdRhPxZv/xl7CpzRYF0Z5saYVx1DT6
-         JlIg==
+        bh=k0oPejzF1w45d4ohzjxE+rStMmo86jxOO0aZ2z51+qs=;
+        b=ZeXuGQhfpmEzxz2Pv7eel/DspfBjQ8H5ggTmmEsMVJfNBWz2ZHO7tKGM3ljVOS+3ui
+         AYRnW+bcoYMtIa/lLFi+a01ELhcfkJGsfXaeiXZE2QXMzME/1G6w37U9SLQwtmpU9CoA
+         ky2BVuIExD9mKFpJeuytznL9x5CrsDYCVcDlaPm/YyCQSP1tyHoUut9Yy9wDO2GonCDu
+         FOypE38kLCjJRKklDSDJvgy2X8EMAkCk7pcDifOsqvTxwv42hloKde6jjWfJkrQyKBxr
+         u79WqtPyWo+bDHtQXa2Ovj7hJN9ew24fx47Fbo1FlS1hYIDBS+HwBX4ZNcnHM12Eacte
+         bZtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716977398; x=1717582198;
+        d=1e100.net; s=20230601; t=1716977504; x=1717582304;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1FTKNsuia3RWpQHnWn/8QDl0FBPSRwXXETwGl7wxFKo=;
-        b=gUmYecwo31gNib4wkPUq/mW4riKpolb33dJcEj9LyULAIHsGTp7lDcu+/ARS0+pY4E
-         YZ7aaHki8d4LQa8E4fZEW3/sOqNJBLp1hmSRnudebOub4F0OpBnTAa1gNB+b+qQ/ILrV
-         8wX8Yesf4e2737ODpTGUceiT96PkkAhbNEIBqmtnjbNN2iZN2LbDeKpBVH9cilMCUYXZ
-         U7vPW8gICSz3D/Qqyc0Grt65C1eWvLrKmcZhmhWiGuOo13D3q2QQmjOt3FuzkLEoXZuC
-         a4ee9SuUdpbsMbLqUe1pRZwEwziXNZqYvywCHsZ2QSNbKHbPvW3EVW8tcljHIGMOx4IF
-         9jnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYfHNjAvZPwzRYQN+3RQxo2mUlY9bicy708bceWJ1RSDa4mNupq17QNwDhNJhOXcom3SHrTTi0oZ0Ciqd38odnAXmsTdOYe5tztjsPUQ==
-X-Gm-Message-State: AOJu0Yx0XVq69JSBLNfjW8+YK5qYaF84eZnn45MQwtBo42gOOMcY6JC/
-	OoMtYOFFoe6lJLvuHKmxSGAuCfmvB0+3UT5bVt/m05zmQGSUbZ3TWY9VOMb/f5M=
-X-Google-Smtp-Source: AGHT+IH9bfmSIStk/91xm8BYd9HX9NO21rvFMlN/xg/x0L9tsKc+sRpjBrjeX+ypNPkNr6P9URfuKg==
-X-Received: by 2002:a05:600c:4fd1:b0:41b:d6ca:eefa with SMTP id 5b1f17b1804b1-42122b01e91mr13915835e9.16.1716977398527;
-        Wed, 29 May 2024 03:09:58 -0700 (PDT)
+        bh=k0oPejzF1w45d4ohzjxE+rStMmo86jxOO0aZ2z51+qs=;
+        b=b1s2N9RdtcysU5gKg6NVXQ1rFdkjnLWxry/vt5DmJMf5nlfKz/EeKF4hqrWvK2X82v
+         n1LY6N0aTYfShAf+LiADJFPbpFPd37YyofhvU2ZJRjyEgFANfLXth2kVVV1B4PcG4SW9
+         oBC2B26i6a3AWwGbddZjZtq63QoBQ26QfoY7zlALIxkOaRprh/HQeYX5XZE5t2c5JWst
+         9TyeSkaRkuVEC13Dvi/rioUHsOH5q7ZLnn0HpVb44XnBzJ9HmksugChWgu1AbEFjbRXy
+         QA8xcoEeg1TdXDKFP8z+z+jmWxxSkx1nooHelww15KEcuDqp1JtCyooWknX5ZPWDyLLr
+         AlZg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2m+eWvHEqiVjNbP0TGZR9G+rEl0/7nBVxXLQjE3xcYeTdMU1jsphT2fESoRIGE3hhUL4Rijrj0ktLrp5OwOjCMCIUDteiE786srVuYQ==
+X-Gm-Message-State: AOJu0YyxlLfVhfyhqVr5pXs90b29d0OiyFHq6kGxtxHpVseiqioqPEsh
+	ZNFk/F3MLHmy/k5OOLm7Ul5VG5WFBdJ1FDpkEQQ2cXF6LnqxJc95wa4al4H4ysI=
+X-Google-Smtp-Source: AGHT+IFgYrZo5ta4E3uoE7uAwXaw0QkKXO8VSmlKA6YJb4kJBFmoM8GRlbMlJbE7XEdqt2jjmDPZMw==
+X-Received: by 2002:a19:8c5e:0:b0:51d:bbb:7a4e with SMTP id 2adb3069b0e04-529645e344bmr9036378e87.24.1716977503662;
+        Wed, 29 May 2024 03:11:43 -0700 (PDT)
 Received: from localhost.localdomain (62.83.84.125.dyn.user.ono.com. [62.83.84.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42122299300sm26362175e9.42.2024.05.29.03.09.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089cd6f7sm174662585e9.46.2024.05.29.03.11.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 03:09:58 -0700 (PDT)
+        Wed, 29 May 2024 03:11:43 -0700 (PDT)
 From: Oscar Salvador <osalvador@suse.com>
 X-Google-Original-From: Oscar Salvador <osalvador@suse.de>
-Date: Wed, 29 May 2024 12:09:56 +0200
+Date: Wed, 29 May 2024 12:11:41 +0200
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v4 12/16] powerpc/e500: Encode hugepage size in PTE
- bits
-Message-ID: <Zlb-9DNmRzIYRdJO@localhost.localdomain>
+Subject: Re: [RFC PATCH v4 14/16] powerpc/64s: Use contiguous PMD/PUD instead
+ of HUGEPD
+Message-ID: <Zlb_XT12arHu9vu3@localhost.localdomain>
 References: <cover.1716815901.git.christophe.leroy@csgroup.eu>
- <10eae3c6815e3aba5f624af92321948e4684c95a.1716815901.git.christophe.leroy@csgroup.eu>
- <Zlbh5Bwsx7WqEEWr@localhost.localdomain>
- <3cf95f5e-cc8b-4417-a3fa-80dc3b24ac63@csgroup.eu>
+ <610be6003a6d215e9e9ca87d7f5402042da1e355.1716815901.git.christophe.leroy@csgroup.eu>
+ <Zlb0BugOwko4PrLm@localhost.localdomain>
+ <315d1dc7-9eda-45cd-863d-803bfae4c29b@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3cf95f5e-cc8b-4417-a3fa-80dc3b24ac63@csgroup.eu>
+In-Reply-To: <315d1dc7-9eda-45cd-863d-803bfae4c29b@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,34 +88,38 @@ Cc: Oscar Salvador <osalvador@suse.com>, "linux-kernel@vger.kernel.org" <linux-k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 29, 2024 at 09:49:48AM +0000, Christophe Leroy wrote:
-> Doesn't really matter if it's PUD or PMD at this point. On a 32 bits 
-> kernel it will be all PMD while on a 64 bits kernel it is both PMD and PUD.
-> 
-> At the time being (as implemented with hugepd), Linux support 4M, 16M, 
-> 64M, 256M and 1G (Shifts 22, 24, 26, 28, 30)
-> 
-> The hardware supports the following page sizes, and encodes them on 4 
-> bits allthough it is not directly a shift. Maybe it would be better to 
-> use that encoding after all:
+On Wed, May 29, 2024 at 10:07:55AM +0000, Christophe Leroy wrote:
+> We can't but I didn't want to leave nb undefined or with a value that 
+> might lead to writing in the weed. Value 1 seems a safe default.
 
-I think so.
+Might be worth to throw a WARN_ON?
 
+> >> diff --git a/arch/powerpc/mm/book3s64/hugetlbpage.c b/arch/powerpc/mm/book3s64/hugetlbpage.c
+> >> index 5a2e512e96db..83c3361b358b 100644
+> >> --- a/arch/powerpc/mm/book3s64/hugetlbpage.c
+> >> +++ b/arch/powerpc/mm/book3s64/hugetlbpage.c
+> >> @@ -53,6 +53,16 @@ int __hash_page_huge(unsigned long ea, unsigned long access, unsigned long vsid,
+> >>   		/* If PTE permissions don't match, take page fault */
+> >>   		if (unlikely(!check_pte_access(access, old_pte)))
+> >>   			return 1;
+> >> +		/*
+> >> +		 * If hash-4k, hugepages use seeral contiguous PxD entries
+> > 'several'
+> >> +		 * so bail out and let mm make the page young or dirty
+> >> +		 */
+> >> +		if (IS_ENABLED(CONFIG_PPC_4K_PAGES)) {
+> >> +			if (!(old_pte & _PAGE_ACCESSED))
+> >> +				return 1;
+> >> +			if ((access & _PAGE_WRITE) && !(old_pte & _PAGE_DIRTY))
+> >> +				return 1;
+> > 
+> > I have 0 clue about this code. What would happen if we do not bail out?
+> > 
 > 
-> 0001 4 Kbytes (Shift 12)
-> 0010 16 Kbytes (Shift 14)
-> 0011 64 Kbytes (Shift 16)
-> 0100 256 Kbytes (Shift 18)
-> 0101 1 Mbyte (Shift 20)
-> 0110 4 Mbytes (Shift 22)
-> 0111 16 Mbytes (Shift 24)
-> 1000 64 Mbytes (Shift 26)
-> 1001 256 Mbytes (Shift 28)
-> 1010 1 Gbyte (e500v2 only) (Shift 30)
-> 1011 4 Gbytes (e500v2 only) (Shift 32)
+> In that case the pte_xchg() in the while () will only set ACCESS or 
+> DIRTY bit on the first PxD entry, not on all cont-PxD entries.
 
-You say hugehages start at 2MB (shift 21), but you say that the smallest hugepage
-Linux support is 4MB (shift 22).?
+I see, thanks for explaining.
 
 
 -- 
