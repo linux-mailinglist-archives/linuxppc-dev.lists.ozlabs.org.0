@@ -1,75 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 66C418D4112
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 00:06:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTP id 97DDF8D415F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 00:26:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=u7jqO97t;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=LpJNQAzN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqNc80DVWz882P
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 08:00:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqP2S3T8Lz7B7w
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 08:20:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=u7jqO97t;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=LpJNQAzN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com; envelope-from=3xkvxzgykdd8tfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d2e; helo=mail-io1-xd2e.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqNbP4j8kz87lK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 07:59:59 +1000 (AEST)
-Received: by mail-pf1-x44a.google.com with SMTP id d2e1a72fcca58-701b7ef17fcso265973b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 15:00:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqP1f1Nfqz3vgd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 08:19:16 +1000 (AEST)
+Received: by mail-io1-xd2e.google.com with SMTP id ca18e2360f4ac-7e1e8502d02so150739f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 15:19:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717019997; x=1717624797; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VygQSYtgJkxGCNbSiB1TmlrjiVcPo9FASZn5iwrGyKo=;
-        b=u7jqO97towFbOD4HG5OjSrKRMYUGAmWhCuOdZcHDPVbRvbk57Dg1s3/dspGkNKB+Mq
-         1u90s2szotAo3zR6U/1CYxQ6H22viYZEPUyuAUQ99MUfrW+k+2ZoQdI0NhLhE/HUEkzR
-         oHLP7g0jt64UH0clfv7Xcp6pURSzkMzerV0pQ0XTTZ0H2ED7rSLWT4OEdjEBpSZUS+4v
-         frFnA4B7qfl7Jeu6bFAregfXQ9SPksZ36Gyu0hsI6IirmKYtfzDYnvQCcgmTZ2I0ahjQ
-         LtCr0ta5swTFb2CrzsdMURR2QVC7xZjXWO8iUbyVWztY6zS+5LBYTBmYDyejQk8PGzff
-         V0Fw==
+        d=linuxfoundation.org; s=google; t=1717021153; x=1717625953; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QIQsNObstWkWgKnY1UZsOrj0Wfr/JVGgFuTZShWQ62k=;
+        b=LpJNQAzNWnAUIR5sAIS5Cm7c0ydH885hjCGqsy2Oy7tiT4hIo9SBEcwKlhziCA/4Vr
+         mlRvEXktBU3a5MNZKIS8vQuaVht9bT76DTzBEyKVPCaYk9DhorRio65CkYg0wW/HjByT
+         i3SxvsohUA2bMRoUgITdzj+srjS4RV812LtfY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717019997; x=1717624797;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VygQSYtgJkxGCNbSiB1TmlrjiVcPo9FASZn5iwrGyKo=;
-        b=F9h/Yar4bTXRUh5YYAaXZHPYO8jq0EeGOVrC1ZQxwPMP4UL47XZK1B1UVKPcSr1XZ5
-         Uomi2F4IuMhaAW6x8aS+2umUvUreXT6ITxxYYw3fyNp32Wuh6CyJ+jbwgrPDeJuae4Y7
-         ZvzYtMYa7++2GZETIX96Z+iFqisw37T0QItRPHEHtpqUFwzWbNuL+e0clRTjZFkKPL5x
-         sYnTD2jaOAWlryLH37IP008902zXmXuDSUvSsPzRCxYeJy/cBhSIzRTm0TUn9umpuJRy
-         nYem6GePOOnHSSXQ96SLIulItnbXf+VYZaMAU7o+xbmBirU7sLbn17cGR8KzL3YTL+k3
-         7BCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXp4k9xthmoEOBxcj4RVtach5M/kjcK3fu2gKgtiW48tM3XqsOuSHUTQxV99y+V+SaDPOhid6hWjuPGjpJf8DHX0H5cjWe6pudLqLV2OQ==
-X-Gm-Message-State: AOJu0YzdHCarahAN6LY9c4ZNW8Xs5IZN/ab8lPTqvtTDJkKyCby83wsH
-	mmJc0KKuSuLbX8hy6DIEo51+gHhJq50YuV5tYUwx+EY9OQxDKcwLK8udpKL2NUGz151UYnJX35T
-	5Sg==
-X-Google-Smtp-Source: AGHT+IErfD3/6U7Yg0vFWmN+JznLDOE9vgR2lO1JhTGk52Ll6iOJE5uAx2O1dqENYjCcQTLMPcB8oRdC9wY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:8607:b0:702:1e25:a47c with SMTP id
- d2e1a72fcca58-70231a8676amr343b3a.1.1717019996755; Wed, 29 May 2024 14:59:56
- -0700 (PDT)
-Date: Wed, 29 May 2024 14:59:55 -0700
-In-Reply-To: <CAOUHufYFHKLwt1PWp2uS6g174GZYRZURWJAmdUWs5eaKmhEeyQ@mail.gmail.com>
-Mime-Version: 1.0
-References: <20240529180510.2295118-1-jthoughton@google.com>
- <20240529180510.2295118-3-jthoughton@google.com> <CAOUHufYFHKLwt1PWp2uS6g174GZYRZURWJAmdUWs5eaKmhEeyQ@mail.gmail.com>
-Message-ID: <ZlelW93_T6P-ZuSZ@google.com>
-Subject: Re: [PATCH v4 2/7] mm: multi-gen LRU: Have secondary MMUs participate
- in aging
-From: Sean Christopherson <seanjc@google.com>
-To: Yu Zhao <yuzhao@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20230601; t=1717021153; x=1717625953;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QIQsNObstWkWgKnY1UZsOrj0Wfr/JVGgFuTZShWQ62k=;
+        b=d7+b6GNrnFTI5nV3SX+KsPe0nzzAxrIrFJady/D7knNYtpvkflE1+N8fcRUFTuqZqv
+         b6iFlKzIDpp9Ta7a2ghYfpbxp9A2IM6bmUcc/xIBLtou0vCBBbjtDtMsL4nEgivnX8Fw
+         Voxj6XwMg+3l4DpB92qnevKtc10OVJCMqGlYqdIxtPZkPTx2p0KSVdox9a5RlQJeVLCw
+         JQ9s2s0XuiofJTDam9SHrenEUcRNrrZozcg0xeJV16F4JBsmNNl9ICpqu1yLAhSH+1bF
+         SLRyNHzz4r7gn+9v/lHs+eqFdhGV4NqCSRN65Q8ygW9Ig8VtSKVD+zuQPj31F5PT9X2d
+         d3uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/hTarjDDZnaEUVzhL4t79Uordyhnilsz6t0Up/PiO00GbCtEFlIq1W8JGb4V//xeTh2RhJF36nXwjJvzUE2Bi21UpYq0T/2+tCG+xww==
+X-Gm-Message-State: AOJu0YzyJXAiNZOeidjsrSDu4BfJUInvKUyyMtMpbYkDf8k8jC84DIS6
+	Z/Z0V61Es2miJXhAxT6B3VlTcnHUfGM1qtDodP6hpkrHK44IkwjKbdYbkhq7ZeY=
+X-Google-Smtp-Source: AGHT+IGX3vM7AirEhD0z1TjIJ73Jy0G+hX175YByeN8PNH6Y8OAF4RTa4RM3+I+p92DV9/6KWiuc1Q==
+X-Received: by 2002:a05:6602:1d41:b0:7de:e495:42bf with SMTP id ca18e2360f4ac-7eaf5d79567mr28209339f.1.1717021152820;
+        Wed, 29 May 2024 15:19:12 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b0e80c3b6fsm1483913173.135.2024.05.29.15.19.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 May 2024 15:19:12 -0700 (PDT)
+Message-ID: <3f3a70ba-40d2-4624-b8c5-7c3ae2a025fb@linuxfoundation.org>
+Date: Wed, 29 May 2024 16:19:11 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/overlayfs: Fix build error on ppc64
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org
+References: <20240521022616.45240-1-mpe@ellerman.id.au>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240521022616.45240-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,39 +79,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>, linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, David Rientjes <rientjes@google.com>, Zenghui Yu <yuzenghui@huawei.com>, Axel Rasmussen <axelrasmussen@google.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, David Matlack <dmatlack@google.com>, Palmer Dabbelt <palmer@
- dabbelt.com>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, Ankit Agrawal <ankita@nvidia.com>, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: shuah <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 29, 2024, Yu Zhao wrote:
-> On Wed, May 29, 2024 at 12:05=E2=80=AFPM James Houghton <jthoughton@googl=
-e.com> wrote:
-> >
-> > Secondary MMUs are currently consulted for access/age information at
-> > eviction time, but before then, we don't get accurate age information.
-> > That is, pages that are mostly accessed through a secondary MMU (like
-> > guest memory, used by KVM) will always just proceed down to the oldest
-> > generation, and then at eviction time, if KVM reports the page to be
-> > young, the page will be activated/promoted back to the youngest
-> > generation.
->=20
-> Correct, and as I explained offline, this is the only reasonable
-> behavior if we can't locklessly walk secondary MMUs.
->=20
-> Just for the record, the (crude) analogy I used was:
-> Imagine a large room with many bills ($1, $5, $10, ...) on the floor,
-> but you are only allowed to pick up 10 of them (and put them in your
-> pocket). A smart move would be to survey the room *first and then*
-> pick up the largest ones. But if you are carrying a 500 lbs backpack,
-> you would just want to pick up whichever that's in front of you rather
-> than walk the entire room.
->=20
-> MGLRU should only scan (or lookaround) secondary MMUs if it can be
-> done lockless. Otherwise, it should just fall back to the existing
-> approach, which existed in previous versions but is removed in this
-> version.
+On 5/20/24 20:26, Michael Ellerman wrote:
+> Fix build error on ppc64:
+>    dev_in_maps.c: In function ‘get_file_dev_and_inode’:
+>    dev_in_maps.c:60:59: error: format ‘%llu’ expects argument of type
+>    ‘long long unsigned int *’, but argument 7 has type ‘__u64 *’ {aka ‘long
+>    unsigned int *’} [-Werror=format=]
+> 
+> By switching to unsigned long long for u64 for ppc64 builds.
+> 
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>   tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+> index 759f86e7d263..2862aae58b79 100644
+> --- a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+> +++ b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+> @@ -1,5 +1,6 @@
+>   // SPDX-License-Identifier: GPL-2.0
+>   #define _GNU_SOURCE
+> +#define __SANE_USERSPACE_TYPES__ // Use ll64
+>   
+>   #include <inttypes.h>
+>   #include <unistd.h>
 
-IIUC, by "existing approach" you mean completely ignore secondary MMUs that=
- don't
-implement a lockless walk?
+Applied to linux-kselftest fixes for the next rc.
+
+Michael, If you want to take this through, let me know, I can drop this.
+
+thanks,
+-- Shuah
