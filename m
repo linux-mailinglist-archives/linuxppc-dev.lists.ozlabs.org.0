@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962E38D5577
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A188D5578
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:35:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dW10up0t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m7TwUBgo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1Jl4GR3z3fnV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:34:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1Kc4Wk0z3frL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:35:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dW10up0t;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m7TwUBgo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=marilene.agarcia@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=marilene.agarcia@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqKqf2n0cz794Z
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 05:55:24 +1000 (AEST)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1f4a52b94c3so1121785ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 12:55:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqL0t3S1xz79cN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 06:03:26 +1000 (AEST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-681919f89f2so121929a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 13:03:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717012516; x=1717617316; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1717013003; x=1717617803; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SeUDyLz07Yf4A3ibn/qcJdcShL7dSWLOCdG8yEpv21E=;
-        b=dW10up0tFIJwDlS0nJwrQtMPNX4moj+QHf2bhNfzlEn8+yUN2IoZA7eairgnOfDgS5
-         /rYIWDyfKE/1XOn9+qq/UMNKLGnN4LlJikOyZ6Ea3G4W584f+/Dau/G6WYYRPOosE+Oi
-         MnmyAqRhUmAiKwbev/5rvT9pvpHTfDnSIMsTTlhdXDzHvcKUDMdhDXY3S6qnqbzYHcmz
-         +1d8WlVeIqQ7Iyj3ryfQrVwJkWdCuf9tiS2ihwB7G+m8FgyP6/iClMj4zZBlNSiGmwpr
-         Ts1dNwq5TgvmqbfsOySVw8KhlaO7j5N3CqJnJJE1Yzg0oSsTIZ8rcdMp7gc5+UoyatMC
-         FUfg==
+        bh=3Yw+tyisOoQIVKsFGGfntBjZv+48Mnl1871MjZUM50o=;
+        b=m7TwUBgoxvX8SHCzuFkVdWflmPXvwrfVVafdAIYPApOAqW06z7zi6fl/js5Mh3c9V8
+         yc4tVoUGovVDN8ln4+AVo6EhEajDt1DX4FCs/+7+ajxMJP1vYOFOLU0phu5NRrgqdp3S
+         g6DY4y+uZc/wD6zSLggxeJGdco+Op1Ycx4B/oJ0dVKy/TqeemRyB6rkB3NzhsRGnvkCw
+         ZxDgUoOumAv74HbWQGQh5Eieoqe+trb9+WQWlQR0H4rBzqG2f0fpxw+J7uNhxN7Ategs
+         QaEjaGEPvc3qA1H3OdHVhLhbhjiCWhj/UOPoQtF3e84f+JxcaNEtejMFjHx7gG0E6c2B
+         YPVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717012516; x=1717617316;
+        d=1e100.net; s=20230601; t=1717013003; x=1717617803;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SeUDyLz07Yf4A3ibn/qcJdcShL7dSWLOCdG8yEpv21E=;
-        b=Sm053677yL7E4z9x192C5vzJXEn0MA/T42o89JU/JzcVAL4KvD+Jymh2cmjygDwMZe
-         iHu3uoL9lT52KE609VjzkWQBKzw8Jebzle0imH6dtCUd36CZ46zzIWavEa1nqVEwiB5Y
-         H17B8UfmGF2/KZquD77ru9tRwTQ1A5z4TNvfW7RizL/NewQi1o38Fbij/LsCQ9BHUZC8
-         +ZC2opcZLf7zhoKAix6CsxcGFRX6dUjgex7J1PIApArB/7RXO4Ejkf//wvxvMmw5u/5I
-         Z1xFk/474lvaSWeATbXzSPyiCMHLXVZkTtgm+Cb9ZK14V5c4+Vf3VrA7Cz+0h4Op1daI
-         9SFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXB+2DgmTPZIrKRZJ+bT1I/0cGVEVDKaa4Mmn0IgBQ0yr+qYFeUY2YS7kTepUgRK4hll86WUpw4LUJ4ofYU/IeUB489yjXy9/Klazxahg==
-X-Gm-Message-State: AOJu0YwuPuEyiIl//l24BLBrjoewi3JaRN+wBLeHUM7Fsv5B6GzvWEL0
-	sU7RnvCf/atU1kLPMxBidUEg1BjAiXSEbhbvDKZx/dumAkQHk0Xk
-X-Google-Smtp-Source: AGHT+IHhMDqWPEjxt7r+Lc3nVAdOtTDOEBn2i6vof9omWzEupAsWiqDbTT3kDVtrCqWogGRWHq5S4A==
-X-Received: by 2002:a17:903:184:b0:1f4:8bb7:6842 with SMTP id d9443c01a7336-1f6193faa4bmr422435ad.8.1717012516258;
-        Wed, 29 May 2024 12:55:16 -0700 (PDT)
+        bh=3Yw+tyisOoQIVKsFGGfntBjZv+48Mnl1871MjZUM50o=;
+        b=TgJrxrbgEfHZ3scIAWvmWF9hygapJNsc2jL8YU2Z5xl2uUtD24qyNonr/lmhDcaSoN
+         uZ3m6igCnyKLsFYGzrzNvbGbm8c8o3/S6orheCMSCTz7/L/lAneC7UyEUYWzHesKEu7T
+         RIQ18n89JloPEPduW3fqE9fqaKaBscUd2igwW/3Byioe13KPQTTXjNOjFkjlZ2hyXPSJ
+         JJ20U+vLjjrxFN1O79RPCAV6JT50IKeSKpGsHVwDaNJBNqNiFWqIwr8JUo7q68//lRTG
+         ypF6CMmKn6VtpZwC/XgBodQElVbd0lGPHw3vTFGSZ4hSd1OaLkAYFroUbRL5H6qTi11f
+         jWng==
+X-Forwarded-Encrypted: i=1; AJvYcCWaQhjojVmo2C9VfWUdNpf616C9rhIjxaZAA2VLQU00a7cY8NW38+gk3og6hdPhhAi5s3lVZgokSFvjOYTfpKMf62pB2/5sM3fqQ2dHzg==
+X-Gm-Message-State: AOJu0YzLgMzzioM2QZYXRgVgnptTztor9iIqmn3o3soAbj+yVhTc5Plg
+	75FmsclTPkoE8oiBTsm4qWW4IgV2hHlj9dllngdo54o6ZmFNlMMFJsLkbyQL
+X-Google-Smtp-Source: AGHT+IG7IdKzoHGQCcegnZ5ZEN+4I3xWMqeAiyKe7kepJv5SgpccOmkronM5R/00B3eceGnBZkfXoA==
+X-Received: by 2002:a17:90b:1883:b0:2c0:1fe6:b10f with SMTP id 98e67ed59e1d1-2c1ab9d9e45mr170095a91.7.1717013003271;
+        Wed, 29 May 2024 13:03:23 -0700 (PDT)
 Received: from mari.. ([2804:431:cfd2:68a4:d1e5:41de:6992:6d45])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c9684bfsm103990195ad.140.2024.05.29.12.55.10
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c1a779e835sm192127a91.48.2024.05.29.13.03.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 12:55:15 -0700 (PDT)
+        Wed, 29 May 2024 13:03:22 -0700 (PDT)
 From: MarileneGarcia <marilene.agarcia@gmail.com>
 To: Pavel Machek <pavel@ucw.cz>,
 	Lee Jones <lee@kernel.org>,
@@ -66,9 +66,9 @@ To: Pavel Machek <pavel@ucw.cz>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
 	Julia Lawall <julia.lawall@inria.fr>
-Subject: [PATCH] leds: powernv: replace of_node_put to __free
-Date: Wed, 29 May 2024 16:53:54 -0300
-Message-Id: <20240529195354.1187882-1-marilene.agarcia@gmail.com>
+Subject: [PATCH v2 linux-next] leds: powernv: replace of_node_put to __free
+Date: Wed, 29 May 2024 17:02:33 -0300
+Message-Id: <20240529200233.1188228-1-marilene.agarcia@gmail.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -102,19 +102,17 @@ for_each_available_child_of_node_scoped which use the __free.
 Suggested-by: Julia Lawall <julia.lawall@inria.fr>
 Signed-off-by: MarileneGarcia <marilene.agarcia@gmail.com>
 ---
-Changes:
-These changes intend to add the new __free cleanup handler 
-to device_node initialisations, which ensures that the resource is 
-freed as soon as the variable goes out of scope. Thus removing the 
-need to manually free up the resource using of_node_put
+Changes v2:
+It was missing a blank line.
 
-Thank you.
-
- drivers/leds/leds-powernv.c | 29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+Suggested-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: MarileneGarcia <marilene.agarcia@gmail.com>
+---
+ drivers/leds/leds-powernv.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/leds/leds-powernv.c b/drivers/leds/leds-powernv.c
-index 4f01acb75727..68fe47cd1a4f 100644
+index 4f01acb75727..8f94d2efed9f 100644
 --- a/drivers/leds/leds-powernv.c
 +++ b/drivers/leds/leds-powernv.c
 @@ -246,29 +246,25 @@ static int powernv_led_classdev(struct platform_device *pdev,
@@ -151,7 +149,7 @@ index 4f01acb75727..68fe47cd1a4f 100644
  		} /* while end */
  	}
  
-@@ -278,12 +274,10 @@ static int powernv_led_classdev(struct platform_device *pdev,
+@@ -278,12 +274,11 @@ static int powernv_led_classdev(struct platform_device *pdev,
  /* Platform driver probe */
  static int powernv_led_probe(struct platform_device *pdev)
  {
@@ -159,14 +157,14 @@ index 4f01acb75727..68fe47cd1a4f 100644
  	struct powernv_led_common *powernv_led_common;
  	struct device *dev = &pdev->dev;
 -	int rc;
--
--	led_node = of_find_node_by_path("/ibm,opal/leds");
 +	struct device_node *led_node __free(device_node) =
 +							of_find_node_by_path("/ibm,opal/leds");
+ 
+-	led_node = of_find_node_by_path("/ibm,opal/leds");
  	if (!led_node) {
  		dev_err(dev, "%s: LED parent device node not found\n",
  			__func__);
-@@ -292,20 +286,15 @@ static int powernv_led_probe(struct platform_device *pdev)
+@@ -292,20 +287,15 @@ static int powernv_led_probe(struct platform_device *pdev)
  
  	powernv_led_common = devm_kzalloc(dev, sizeof(*powernv_led_common),
  					  GFP_KERNEL);
