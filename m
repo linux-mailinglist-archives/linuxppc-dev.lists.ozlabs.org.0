@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F978D4160
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 00:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DB7C8D4161
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 00:27:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cvgJVUuX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MK8w1Ve9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqP3J69hrz7BSd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 08:20:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqP4825w2z7BjR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 08:21:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=cvgJVUuX;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MK8w1Ve9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d2d; helo=mail-io1-xd2d.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqP2J5GLKz7B35
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 08:19:52 +1000 (AEST)
-Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-7e8e7306174so798739f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 15:19:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqP2W160bz7B8x
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 08:20:02 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1f47db642c2so2158495ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 15:20:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1717021189; x=1717625989; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mC4b6Il0GC2QVDL2/I1OYkGxzS6sqepYodC6YDu796A=;
-        b=cvgJVUuXK95HbGTYoojl2ZKlI4ZrXdG03sd3dFr9BoLPrIoJf7Do+VzDqZ6bfXgXRy
-         ptLT+MS5h0iNRmI2FCWI0K6XQ9lisacqx6cESOd6gXZWHY1E8tQV8R9S62Xk5ZjFmWuM
-         D0/sQbSuRtFk/qJyun1jem1KMWqpIkWYGGET8=
+        d=gmail.com; s=20230601; t=1717021200; x=1717626000; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oJrQ16Mm4mEHJBUvo1EcXZ5YtU50XKHhoA+vzh0jLKc=;
+        b=MK8w1Ve9zBedneTwGHnpD2Kv8p/iGDf9xaLzJxIE/cOHH2WL+ADtTYPWG+ZYqQnm/B
+         yc0TzU3MTMfO5Y0LJ2WxDIyHxwJbYARzGmNET1snbtPwm7W1TjxNRmRFK5PO5G94q9s5
+         urrp81d+dwv6YmHKejWs5BhopcgaehZESDbvqy1a79JqY0opem9fCDllta/E/sOm2unX
+         AAmSUX2wn4kdynm0AelKKXf6fO4J8VHyP7CaTm5nlSa9W5PEBCPQt5MPb+fCv7gUbGS8
+         SJ0/5zmRZX6n/PIuaHolq4TazWYCV+4C3Dij02eVsgSkS1nHmQUGNSEQzJsH/xYNoIlS
+         4JHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717021189; x=1717625989;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mC4b6Il0GC2QVDL2/I1OYkGxzS6sqepYodC6YDu796A=;
-        b=r68Y7quzSf3B/VqvCbqNmPQ0qnkZ5PAkpv9iH7GQyi+iZG05Q9ATL9lehS+NMENI6a
-         MCbsfHBuv+IztzR+kZOMLeR4N8yLjmTqsXHC+YZoxlYwjnYo308Fd6xQh03TtcCQQ/4u
-         6sJssk0Tn7wjCmGjPXMsFzCzX4h73HhNW8/uWR7EuspgfX4uB4ZVOgbjGw4tLi5Z1yQH
-         26pkzpRQ6h34/3p1LkIBfCgaPsUlv7wcJ1bMmeYhCcTDiI6ps/+wFlEJC4ZQj2O01JLl
-         4kkFaUJrzGZqW+jKuwsPL1cjEXeg9gTCnSexAXpnvWPdYFuhVsYHRRZwCHAwjbATqzBs
-         7W9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXYZ088t8eXuzCI31V1+b9Mxj6q4XnZdshQkZdZ/RdRV1035T5LnXo1LeOKAXWZc1314f6sTu8GywJed3yMBTAax5DnikjM6jeeqADW5g==
-X-Gm-Message-State: AOJu0YzBzlm4EhuKHLR9C4rd5LbFwUnJLtVd9iPsjkdzExphFwmrFVE8
-	oH+GrWEJ6PBQvNsID57I3PzyRgMsBiq4OWRM5tLQxsn3/qftvlxaj3NMvLMyI7Q=
-X-Google-Smtp-Source: AGHT+IHkLiHSvg/KtR3lDXPP39vKvdxIInqwjcrMHdeIk4e1kiHq6u41EdK9U8AuM2KlTdWAHFCSVA==
-X-Received: by 2002:a5d:961a:0:b0:7e1:7e15:6471 with SMTP id ca18e2360f4ac-7eaf5d698c8mr34483339f.1.1717021189367;
-        Wed, 29 May 2024 15:19:49 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b10cf31917sm1013611173.45.2024.05.29.15.19.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 May 2024 15:19:49 -0700 (PDT)
-Message-ID: <2359b378-d664-4d63-bd64-f539ec8607ac@linuxfoundation.org>
-Date: Wed, 29 May 2024 16:19:48 -0600
+        d=1e100.net; s=20230601; t=1717021200; x=1717626000;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oJrQ16Mm4mEHJBUvo1EcXZ5YtU50XKHhoA+vzh0jLKc=;
+        b=OA6IivrDovuLicb73CmtMIsxb3G8DRL8wyv8kQLWzRanuKghZ8lNMg57V9Ht06Cxpu
+         6ENpErDE8qEXoxrJDHFXX12/3JIjkqg5y2RGPWw+bhwbNKObsC5YFzLB6JharBgXHpnz
+         dk8dgLiOqJjjyZ5+ERNd/UdA447WpN01aH7KxqLoY7kOsH3/8tS7KERGMN4lNE0AG0hz
+         CZksRCiKI46TlYvHsHmIONxhq3hBzz0SzqZzxVQZ+WES6NrhJy4y/LV0KJttCQLf/Tg9
+         RIRu4I+EVaIZqDGL1uEuklFIW364hcFTLOPrjkoepqFFAktpQKO490rTHqIXWuwbzicI
+         HToA==
+X-Gm-Message-State: AOJu0YzC67VsxX6BOqmSlAmPdqgQQbKoKu1pp+k9ADPpqHSqSueDVBhq
+	GTfsAIl3esJZhll9Ht+/dwvHBPdMUDBZtopjCyFOfCKMQXJDV7sz
+X-Google-Smtp-Source: AGHT+IG5kR8kOYyzVRzRqbZxqWuOKj6SQweoCw18V8qyrX/WdpuKPWyVew4BiSOzbkoQNpLbeJYeng==
+X-Received: by 2002:a17:902:ecd1:b0:1e6:7700:1698 with SMTP id d9443c01a7336-1f619624c66mr4414635ad.35.1717021199966;
+        Wed, 29 May 2024 15:19:59 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f476f665b0sm79991985ad.250.2024.05.29.15.19.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 15:19:59 -0700 (PDT)
+Date: Wed, 29 May 2024 15:19:57 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Samuel Holland <samuel.holland@sifive.com>
+Subject: Re: [PATCH] powerpc: Limit ARCH_HAS_KERNEL_FPU_SUPPORT to PPC64
+Message-ID: <109b63cc-1dcd-4f40-881b-0fe88ed9ac9c@roeck-us.net>
+References: <20240529162852.1209-1-samuel.holland@sifive.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: cachestat: Fix build warnings on ppc64
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org
-References: <20240521030111.56568-1-mpe@ellerman.id.au>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240521030111.56568-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240529162852.1209-1-samuel.holland@sifive.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,39 +79,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nphamcs@gmail.com, linuxppc-dev@lists.ozlabs.org, hannes@cmpxchg.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, shuah <shuah@kernel.org>
+Cc: kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/20/24 21:01, Michael Ellerman wrote:
-> Fix warnings like:
->    test_cachestat.c: In function ‘print_cachestat’:
->    test_cachestat.c:30:38: warning: format ‘%llu’ expects argument of
->    type ‘long long unsigned int’, but argument 2 has type ‘__u64’ {aka
->    ‘long unsigned int’} [-Wformat=]
+On Wed, May 29, 2024 at 09:28:50AM -0700, Samuel Holland wrote:
+> When building a 32-bit kernel, some toolchains do not allow mixing soft
+> float and hard float object files:
 > 
-> By switching to unsigned long long for u64 for ppc64 builds.
+>     LD      vmlinux.o
+>   powerpc64le-unknown-linux-musl-ld: lib/test_fpu_impl.o uses hard float, arch/powerpc/kernel/udbg.o uses soft float
+>   powerpc64le-unknown-linux-musl-ld: failed to merge target specific data of file lib/test_fpu_impl.o
+>   make[2]: *** [scripts/Makefile.vmlinux_o:62: vmlinux.o] Error 1
+>   make[1]: *** [Makefile:1152: vmlinux_o] Error 2
+>   make: *** [Makefile:240: __sub-make] Error 2
 > 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> This is not an issue when building a 64-bit kernel. To unbreak the
+> build, limit ARCH_HAS_KERNEL_FPU_SUPPORT to 64-bit kernels. This is okay
+> because the only real user of this option, amdgpu, was previously
+> limited to PPC64 anyway; see commit a28e4b672f04 ("drm/amd/display: use
+> ARCH_HAS_KERNEL_FPU_SUPPORT").
+> 
+> Fixes: 01db473e1aa3 ("powerpc: implement ARCH_HAS_KERNEL_FPU_SUPPORT")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202405250851.Z4daYSWG-lkp@intel.com/
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Closes: https://lore.kernel.org/lkml/eeffaec3-df63-4e55-ab7a-064a65c00efa@roeck-us.net/
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+
 > ---
->   tools/testing/selftests/cachestat/test_cachestat.c | 1 +
->   1 file changed, 1 insertion(+)
 > 
-> diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
-> index b171fd53b004..632ab44737ec 100644
-> --- a/tools/testing/selftests/cachestat/test_cachestat.c
-> +++ b/tools/testing/selftests/cachestat/test_cachestat.c
-> @@ -1,5 +1,6 @@
->   // SPDX-License-Identifier: GPL-2.0
->   #define _GNU_SOURCE
-> +#define __SANE_USERSPACE_TYPES__ // Use ll64
->   
->   #include <stdio.h>
->   #include <stdbool.h>
-
-Applied to linux-kselftest fixes for the next rc.
-
-Michael, If you want to take this through, let me know, I can drop this.
-
-thanks,
--- Shuah
+>  arch/powerpc/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 3c968f2f4ac4..c88c6d46a5bc 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -137,7 +137,7 @@ config PPC
+>  	select ARCH_HAS_GCOV_PROFILE_ALL
+>  	select ARCH_HAS_HUGEPD			if HUGETLB_PAGE
+>  	select ARCH_HAS_KCOV
+> -	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC_FPU
+> +	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
+>  	select ARCH_HAS_MEMBARRIER_CALLBACKS
+>  	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>  	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN	if PPC_64S_HASH_MMU
+> -- 
+> 2.44.1
+> 
