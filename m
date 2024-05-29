@@ -1,72 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F5B8D36F3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 15:01:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTP id ED7B98D3ACC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 17:26:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=XTueE6Eb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=Huo3D8tg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vq8Vd6dCJz79WX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 May 2024 22:55:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqChx4sQxz79tf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 01:19:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=XTueE6Eb;
+	dkim=pass (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=Huo3D8tg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3fcvxzgykdf0n95ie7bjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2478 seconds by postgrey-1.37 at boromir; Thu, 30 May 2024 01:18:33 AEST
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vq8Tv1wb2z3gL3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 22:54:25 +1000 (AEST)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-6658175f9d4so2000417a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 05:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716987260; x=1717592060; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1KVQFhVFh80Fdd96OAcePaAYKBvjrIO3JB8q5MbeFQU=;
-        b=XTueE6EbKl4g8JQP3wK464wJsNTD2EolTD4cTuFi297ULHCBcXq6sqju7lAtnE3Jt6
-         53fslLQNzUxSlqB6+uEfX2bWHAyffLLFPyQj1SCn9M7Ha2Wm/n6M3vA3Pvfqqi5U4aGT
-         gRHrODxefRJir8rqeRmc9EZMa+zm2cC4MiOzlhv1rSIiwGvp6de18ILJ6rA4k9qwDK0r
-         tjwVE36D5t9r4bjsMFyaUPhFoEnJmA5Be2xR1gInv6NaMFBIOI/SrTozuVTQx48TEvRD
-         JkPQZZyH40ctm+N20F9iQdmmaHSCP+1+WgRlVkHl5jhWXzK3Qy72izUpSJ5K9wxAfk9o
-         XuWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716987260; x=1717592060;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1KVQFhVFh80Fdd96OAcePaAYKBvjrIO3JB8q5MbeFQU=;
-        b=KuFsWEQEpV6+kPEBuRbNBpSalUbuD2Por0GnIVnthIZMuoekhwHCnrpO0Xll5bGLZK
-         2gLe7MgAiOUr2LysMMfJ1owSFy9kviQZzs7RY2flL07aMJ6tIeTuj2XErizaV2Ap9Jcz
-         TJ4zLpHcJRSaCQo2l8jP/n23QFlYRsd+x3iwTbW5JhJ/ppLwtDIWqRaZVexb5RSMFimv
-         sTX6SRam7rA0rmZC3zl69fyJWrwM81y1fQx+tLQ7RMcW3Bu+Gr+/vn42ed9Pr3Nnkkn7
-         W9Pb+7UjYLmP4XLkWbEOHnLkvTouxgCcXQOMeVCh5YWUGPR4VVUltOy2ZMD7Ssg7RML1
-         vy+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVDg2FnZXw1gXnaz+Aah4iIHNDF9XC2yBrUfI5DRNhnfv1EkuxjeTD72PLDclH9YWRys69EYlk83O5NW6/lKScHKB9sRH6FaJBf+3cMCw==
-X-Gm-Message-State: AOJu0YzJFeyOvuY1dxZIVlNNvnaF84+6ymRxzz1Baj0utkvEAnreH28o
-	BQn6MguVNZ4JIKkgKm2LTdRJvv9DpRdPwKCqtEwJDc+6u380OIcXZW2fR3rY0M5IUVJPNwzbB17
-	tPw==
-X-Google-Smtp-Source: AGHT+IHBbZP8iE9LJoz88cSwyGPtf4IYoLcqAZBm04Syis1dHtNGwvMpLLvLxNB1S+GJVlzsrbdgQQ4xG0k=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:1421:0:b0:680:1ce8:ba9a with SMTP id
- 41be03b00d2f7-681aea7d0ecmr40830a12.11.1716987260030; Wed, 29 May 2024
- 05:54:20 -0700 (PDT)
-Date: Wed, 29 May 2024 05:54:18 -0700
-In-Reply-To: <2a221116a03f57dca8274b6bc2da7541b21d86bb.camel@intel.com>
-Mime-Version: 1.0
-References: <20240522014013.1672962-1-seanjc@google.com> <20240522014013.1672962-4-seanjc@google.com>
- <c77f3931-31b2-4695-bd74-c69cba9b96c1@intel.com> <ZlYte16cvQpPGHkx@google.com>
- <2a221116a03f57dca8274b6bc2da7541b21d86bb.camel@intel.com>
-Message-ID: <ZlclevRvntUMYG6O@google.com>
-Subject: Re: [PATCH v2 3/6] KVM: x86: Fold kvm_arch_sched_in() into kvm_arch_vcpu_load()
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqCh91Mqnz3vYn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 01:18:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=B7XB8qUIcTmB1ehnipB+Kf3z1BPRYE36ZBSUE8NS1go=;
+	t=1716995913; x=1717427913; b=Huo3D8tgGWjPMzfVu++Q6YTyHYoNIE6Ok6o8tCKUaWHx2lP
+	Q8/tdP1JT9NT5RcjceTLYh8AZXqzAiJcsu63jCgQvdKA68cXv7LJvTXxNcu22tqrkEIJnKsGJPnXe
+	pY+ii8IgN8UGWq6QDCNmsQIYuzLdYhDrrVlcO0V50/o/YYl84TYM7GYKzyD5qxNFaO4sQBMwCuHU5
+	5/CeV+HOoJLRRne6O9epC0gfAvFYMM7iFHEM9DzJOfaWjX0YmKGZRgODm+l5pobb4mJdE8M1lrEEn
+	0udwsDy/HftxkuLNWoE2pHVPbp+GmLQTpF0Kb7Bgespp4OzF//BIDKau1d+Mm3MQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sCKQF-0003Dv-Nj; Wed, 29 May 2024 16:36:59 +0200
+Message-ID: <fc6a2243-6982-45e9-a640-9d98c29a8f53@leemhuis.info>
+Date: Wed, 29 May 2024 16:36:58 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/23] scsi: initialize scsi midlayer limits before
+ allocating the queue
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20240520151536.GA32532@lst.de>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <20240520151536.GA32532@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716995913;bcdaae5d;
+X-HE-SMSGID: 1sCKQF-0003Dv-Nj
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,27 +65,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, "maz@kernel.org" <maz@kernel.org>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "maobibo@loongson.cn" <maobibo@loongson.cn>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, "anup@brainfault.org" 
- <anup@brainfault.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, John Garry <john.g.garry@oracle.com>, linux-block@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, Guenter Roeck <linux@roeck-us.net>, Linux kernel regressions list <regressions@lists.linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 29, 2024, Kai Huang wrote:
-> I am not familiar with SVM, but it seems the relevant parts are:
-> 
-> 	control->pause_filter_count;
-> 	vmcb_mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
-> 
-> And it seems they are directly related to programming the hardware, i.e.,
-> they got automatically loaded to hardware during VMRUN.
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-"control" is the control area of the VMCB, i.e. the above pause_filter_count is
-equivalent to a VMCS field.
+On 20.05.24 17:15, Christoph Hellwig wrote:
+> Adding ben and the linuxppc list.
 
-> They need to be updated in the SVM specific code when @ple_window_dirty is
-> true in the relevant code path.
+Hmm, no reply and no other progress to get this resolved afaics. So lets
+bring Michael into the mix, he might be able to help out.
+
+BTW TWIMC: a PowerMac G5 user user reported similar symptoms here
+recently: https://bugzilla.kernel.org/show_bug.cgi?id=218858
+
+Ciao, Thorsten
+
+> Context: pata_macio initialization now fails as we enforce that the
+> segment size is set properly.
 > 
-> Anyway, even it is feasible and worth to do, we should do in a separate
-> patchset.
-
-Ya.
+> On Wed, May 15, 2024 at 04:52:29PM -0700, Guenter Roeck wrote:
+>> pata_macio_common_init() Calling ata_host_activate() with limit 65280
+>> ...
+>> max_segment_size is 65280; PAGE_SIZE is 65536; BLK_MAX_SEGMENT_SIZE is 65536
+>> WARNING: CPU: 0 PID: 12 at block/blk-settings.c:202 blk_validate_limits+0x2d4/0x364
+>> ...
+>>
+>> This is with PPC_BOOK3S_64 which selects a default page size of 64k.
+> 
+> Yeah.  Did you actually manage to use pata macio previously?  Or is
+> it just used because it's part of the pmac default config?
+> 
+>> Looking at the old code, I think it did what you suggested above,
+> 
+>> but assuming that the driver requested a lower limit on purpose that
+>> may not be the best solution.
+> 
+>> Never mind, though - I updated my test configuration to explicitly
+>> configure the page size to 4k to work around the problem. With that,
+>> please consider this report a note in case someone hits the problem
+>> on a real system (and sorry for the noise).
+> 
+> Yes, the idea behind this change was to catch such errors.  So far
+> most errors have been drivers setting lower limits than what the
+> hardware can actually handle, but I'd love to track this down.
+> 
+> If the hardware can't actually handle the lower limit we should
+> probably just fail the probe gracefully with a well comment if
+> statement instead.
