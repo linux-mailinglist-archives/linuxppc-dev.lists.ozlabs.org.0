@@ -2,72 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69898D4C4D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 15:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 652218D4DFA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 16:29:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d+UkOban;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Gq9AAZ2u;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqmpX0Klgz3cbQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 23:11:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqpXd4yQnz3cb8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:29:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d+UkOban;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Gq9AAZ2u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vqmnp5jYgz3cWv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 23:10:22 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4E7D3627CB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 13:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 02BDFC3277B
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 13:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717074621;
-	bh=2pJqIK9ABAU4bSzWMNTlBkoQObsZplWIp+53BvGa664=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=d+UkObanKkx2PezWMg6/rQYsexq2dcwSFu9P6b7ir1X8IZAJLhYl3q74rMtmu+YVu
-	 bgV80gp7F2cmFcRNmBszgVk7rEkvW1S2K94jLcxRdsbcI2B39KiVWGqtt0DitrWzGK
-	 F+SPKvQZcdRPUzJv/1W628rYtMiXHAKs2vx30bX1LwsOS6/VS7t6haM025ekUEv7+c
-	 Yo9PrTSGaGkQGTdW3FewucdyiW7fawVgQvNZ8M9eBEk/CcXX8Ss51mrJ7p4rWmLA9s
-	 06cl4wtcMww0j068DGGE50CYbWvdTpp6I+idOTT6bUPmjxLyd2ZJHLRiJ7JDUrnfHk
-	 uNAkBBGzrcQLg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id D0C04C53B7E; Thu, 30 May 2024 13:10:20 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
- scanning, some SCSI devices might not be configured
-Date: Thu, 30 May 2024 13:10:20 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: high
-X-Bugzilla-Who: doru.iorgulescu1@gmail.com
-X-Bugzilla-Status: NEEDINFO
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218858-206035-SE0dOqnRFI@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
-References: <bug-218858-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqpWt4B6mz3cX5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 00:28:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1717079303;
+	bh=TepJdMu5Kgqt4hFWQ/knF8KsMyDM2pCe5l3NAhbAlr0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Gq9AAZ2u93VW1D0x6Na4RcZUHk90fmGkZEWk8KeWCfGT4bL493v8+w0tcTJ9hsRkM
+	 4XDO0HcsykkcEpCJdlsHn8IcqCapHKhg3S8aluPMzfsmu2wtre70g04ccbHxsqlKfx
+	 C4cqvFpr/umZfy9AnM6SmI/NdUQ+q8oLGNvbALKhHqY83jJI6xkA2LwnPuh21keJ22
+	 LlU1LoJ0GcAzcYfDUhR1TB49I6xrk3V6xFU+rqyCAF4HK6bTrCm3nUrys+1upui+ze
+	 mXbO3gkQecvwBuSOjmSecncOMEgipu1oC1HgQkrjIy0dSNoyFcs2Z4Z6PLRsNJOq6u
+	 x12ptIkbo4bhw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VqpWp35Nwz4wcC;
+	Fri, 31 May 2024 00:28:22 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
+Subject: Re: [PATCH 04/23] scsi: initialize scsi midlayer limits before
+ allocating the queue
+In-Reply-To: <8734pz4gdh.fsf@mail.lhotse>
+References: <20240520151536.GA32532@lst.de>
+ <fc6a2243-6982-45e9-a640-9d98c29a8f53@leemhuis.info>
+ <8734pz4gdh.fsf@mail.lhotse>
+Date: Fri, 31 May 2024 00:28:21 +1000
+Message-ID: <87wmnb2x2y.fsf@mail.lhotse>
 MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,19 +61,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, John Garry <john.g.garry@oracle.com>, linux-block@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, Guenter Roeck <linux@roeck-us.net>, Linux kernel regressions list <regressions@lists.linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info> writes:
+>> [CCing the regression list, as it should be in the loop for regressions:
+>> https://docs.kernel.org/admin-guide/reporting-regressions.html]
+>>
+>> On 20.05.24 17:15, Christoph Hellwig wrote:
+>>> Adding ben and the linuxppc list.
+>>
+>> Hmm, no reply and no other progress to get this resolved afaics. So lets
+>> bring Michael into the mix, he might be able to help out.
+>
+> Sorry I didn't see the original forward for some reason.
+>
+> I haven't seen this on my G5, but it's hard drive is on SATA. I think
+> the CDROM is pata_macio, but there isn't a disk in the drive to test
+> with.
+>
+>> BTW TWIMC: a PowerMac G5 user user reported similar symptoms here
+>> recently: https://bugzilla.kernel.org/show_bug.cgi?id=218858
+>
+> AFAICS that report is from a 4K page size kernel (Page orders: ...
+> virtual = 12), so there must be something else going on?
 
---- Comment #6 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
-I have upload config-6.10.0-rc1.txt
-I compile 6.10.0-rc1 starting from 6.9.3
-Thank You
-Regards
+No that's wrong. The actual hardware page size is 4K, but
+CONFIG_PAGE_SIZE and PAGE_SHIFT etc. is 64K.
 
---=20
-You may reply to this email to add a comment.
+So at least for this user the driver used to work with 64K pages, and
+now doesn't.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+cheers
