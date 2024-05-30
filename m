@@ -2,56 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB278D4C0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 14:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA168D4C49
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 15:09:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=V+X/jXKu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IJCHTWSw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqmPF2NlKz3cZq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 22:52:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqmmR04xSz3cdn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 23:09:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=V+X/jXKu;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IJCHTWSw;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqmNY1q8Lz3cVt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 22:51:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1717073517;
-	bh=nbpfdIkBoH4ag3VRmmnhOBkhh97JDa0cmnf8dyt1Ebc=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=V+X/jXKuNB5khu+w3zhoYa9uXNCiwVZ1oGrrcsrrbLlpQD9n2ANEevqE20KmFCvRa
-	 t3pQXrBr9MvM8TmVYPzgbY9boaQ6zH9kmlgJFEEYFsw7HRYKzTS/Smz3wJ4KHVysBk
-	 oZB/NT2M2lyvS4Zcs3o+m0KJchtY3tJSMlIq5lWBaIZAO2iP+Ledss9r+/czolf2HI
-	 w/EnoRkDboJc8noG6FjE6RoyOyVbgcEfqleglP2WRi6+f6eUix2bdeDNB2XrkIKVsA
-	 /e2MaMnfIyZw/cxm9NAhafSDBO/SSFKf1hWcQekSyiMUe4qi/lJn/JPAyaptQOmIzk
-	 CKyqKxvWIUlFg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VqmNY21yWz4x1C;
-	Thu, 30 May 2024 22:51:56 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>, mad skateman <madskateman@gmail.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Linux kernel regressions list
- <regressions@lists.linux.dev>
-Subject: Re: Xorg doesn't start and some other issues with the RC1 of kernel
- 6.10
-In-Reply-To: <93f42bc8-f0ae-4f7f-8f25-a4e9faf8664b@xenosoft.de>
-References: <34d848f4-670b-4493-bf21-130ef862521b@xenosoft.de>
- <93f42bc8-f0ae-4f7f-8f25-a4e9faf8664b@xenosoft.de>
-Date: Thu, 30 May 2024 22:51:56 +1000
-Message-ID: <87zfs731jn.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vqmlh3n89z3cXJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 23:08:32 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 8DFE3CE1A33
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 13:08:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CD9B9C2BBFC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 13:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717074509;
+	bh=0Hv79TJfdbo9F4pLaVEoRBKksiMtqI43ZeiKGWVIR/U=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=IJCHTWSwmGQ/dwth4066V9r+Z2kynPmF27oe/YMvnKvueU4d2npjL6mghMbZuQSGq
+	 nq+WsVaANAgkUR+qnomyZ7MOaA0HMgNLrxrdiK+tO3ufW200Wsj0rfvxNDVigq2hc0
+	 qYgQnuYK8F9GhhPYpe7TnBiVaYwWWlP2i5EQXyqSHx335M0z7h/MY/f3G4XS9d4XVk
+	 QJrlKx/OiWywrs7olpI1JyhEbf6sHbAzvr0+G3/20FKmf6HDwq1recRNd+NK3L4cDi
+	 wRvydZJi3zYaMTh56gVFgsyBcR+Vgz/nX8WMJ+gQp1FWAUuH0ruwRwgbeFFBV6uoS0
+	 lAPeTQOJHK11Q==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id BAFB8C53B7E; Thu, 30 May 2024 13:08:29 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
+ scanning, some SCSI devices might not be configured
+Date: Thu, 30 May 2024 13:08:29 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: high
+X-Bugzilla-Who: doru.iorgulescu1@gmail.com
+X-Bugzilla-Status: NEEDINFO
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-218858-206035-go5hkEtqZq@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
+References: <bug-218858-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,30 +82,15 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian Zigotzky <chzigotzky@xenosoft.de> writes:
-> On 28.05.24 22:00, Christian Zigotzky wrote:
->> Hi All,
->>
->> Xorg doesn't start anymore since the RC1 of kernel 6.10. We tested it 
->> with the VirtIO GPU and with some Radeon cards.
->>
->> Another error message: Failed to start Setup Virtual Console.
->>
->> Maybe this is the issue: + CONFIG_ARCH_HAS_KERNEL_FPU_SUPPORT=y
->>
->> Tested with FSL P5040, FSL P5020, and PASEMI boards.
->>
->> Could you please test Xorg on your PowerPC machines?
->>
->> Thanks,
->> Christian
-> I tested the RC1 in a virtual e5500 QEMU PowerPC machine with Bochs VGA 
-> (-device VGA,vgamem_mb=256) and Xorg doesn't start either.
->
-> Error message: xf86OpenConsole: KDSETMODE KD_GRAPHICS failed 
-> Inappropriate ioctl for device.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
-That is presumably because of this:
-  https://lore.kernel.org/all/0da9785e-ba44-4718-9d08-4e96c1ba7ab2@kernel.org/
+--- Comment #5 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
+Created attachment 306380
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D306380&action=3Dedit
+config-6.10.0-rc1.txt
 
-cheers
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
