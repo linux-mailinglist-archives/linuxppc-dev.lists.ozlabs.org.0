@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A628D557C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:37:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760368D5582
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:39:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ePqfRUmf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NltOoTaK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1N900nFz3fvV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:37:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1Ps5GjCz3fqs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:38:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ePqfRUmf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NltOoTaK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com; envelope-from=coelacanthushex@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com; envelope-from=coelacanthushex@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqkLj6dNKz2ykt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 21:20:12 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id d9443c01a7336-1f082d92864so6320505ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 04:20:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqkLm3G7hz2yD6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 21:20:16 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id d2e1a72fcca58-70109d34a16so670170b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 04:20:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717068010; x=1717672810; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1717068013; x=1717672813; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UKDbsptHUOf10z9ycdwLPkvcPnlZIVKylvaMWlEqffg=;
-        b=ePqfRUmfXowbGfZMiOGaaXZ56eTFOU5jsb//T2l/9+Y/+zeckSHNwdZj8Nn0eGhLEV
-         w0YN2CBl3cca6eg1hD02jt10VawD/dW5098KAfEfGd+LDfZFVZMP6qohSXNbuVaoql23
-         KzVtJkc9U1SicHOpypwNP40nOmGgKwUm4t6ObC7R5vcJ/NtFYR1Ju8vcQ2+O2Gbd6uJU
-         VgyrlJZGze9jlfZDaK6Zi4CMrmi+fQICy0nncCig30nAfZbQUoIYbcqXdIyDpM6KZkpt
-         jpGk7erua/++tvxtoARb7KyWpf5wHXWFS1EmhjJOQ1Ohc4A56a3+yUwtDYfZ+7Ruy6JZ
-         PE5g==
+        bh=iS6/3rMP5XMaNOKzvqnjBVlN/YxRA0hOsUbIiKByQ6o=;
+        b=NltOoTaKkZLGpcToNm0f5byiiYyiA+pl/TVrdM9CBCh9fhbPCIKbmziYyNQeTtrq4P
+         9nLnTk5nLvujZhgIarQIFOUT3ctn5C0CYxp4r+qDQ8v+2pZKUlfy1j+XBV0q2i0Xav54
+         /KiGqT++HMa4W2+rlWy2f8TKp0VOI1hmnkrCqFHxTZuAdteOJN/IXxLRps41u/JVDieX
+         Wk0q3kdOH8dzDDXLyl7j30q3QfxlcNihqXMqjlsKgvNUhiVpEmKoCxSInd2hBspD8m05
+         k5kSf1CXMUAcA5yyvsrJ4j0CIQGfX7xJjO4/4zDpNOCv4Rv6T67azzpr4m6rI9nIDe3N
+         zhKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717068010; x=1717672810;
+        d=1e100.net; s=20230601; t=1717068013; x=1717672813;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UKDbsptHUOf10z9ycdwLPkvcPnlZIVKylvaMWlEqffg=;
-        b=gh1xfQL7peoCreqi3BPNpahRzxANx3PHKQxspkwUlnnsuILJpAZALpsgljerjkci7w
-         sfdOJPIVfHZYfhWHpUjsFuVIp2uPQY+fo+7HIPjop23sVIW71xy2SMrQmle3ZAuFVL/R
-         D+rdNzF8Uhq9W9lKakRe8JsUEdRfR9Dw+WjjwCtMgc6Aololea1XaWVefpIzeuhRsvG6
-         sV8hrkkomOteE0XaaJIU9R6pZ7RqliToI9XGQ/zSy/hSVo0S2QTdqDlu0jvWVJFRDnSv
-         JYvjGN6DearklA8b7WQPkfZHNK3kNjBYFrR7LZJKYBDgD3FVx1ZGFX7Z1DHO+FsPw/qC
-         lpig==
-X-Forwarded-Encrypted: i=1; AJvYcCX1j7+5dg1Aj7O/CpF0dkRpMy8woU9rI0U+plGRs1aB2nFbUQm6JtmmyZtaW2Qlr9VKbX17C1FhBYg5kJQJW1SkikdNgxS9DXLSzAHhZw==
-X-Gm-Message-State: AOJu0Yx0fB4HNIu5cahR1n1/3DIkisGwhSYT+rlrczFNNpsTj6yidldw
-	9p2Oe19UqS5NMiS/QfPYNvc+rNYFLQfNoPOTIm/DlbfdcGuNHI9X
-X-Google-Smtp-Source: AGHT+IG8jDyJ8as1gn+77mY1eHAg+/C0hnh88tNUqGm5hMTpX2IBrtY6RK5OpQr2kS5B3uzx1FXS4g==
-X-Received: by 2002:a17:90a:b005:b0:2bd:f3dc:62d0 with SMTP id 98e67ed59e1d1-2c1abc41427mr1745172a91.37.1717068010054;
-        Thu, 30 May 2024 04:20:10 -0700 (PDT)
+        bh=iS6/3rMP5XMaNOKzvqnjBVlN/YxRA0hOsUbIiKByQ6o=;
+        b=r6nfh4NiRmEPp0aec6iu2c/ulFJVRmcy6EREQn8vrrkILSiP/JqxLp13giT9wpPN8S
+         SV8pjGLVtZ7hV52/Yx21j1V/jXEjN1csGy4urZbOouw/Jva+49yfusJOvpiCrPRTZ5n2
+         Zaa6BGMIdmARKeWpnVY82OQfT0Jp3eRTGO7O4mYWVaHOvFYXcu6ddEZBqxzMmwYGZ5FI
+         r+8t7e2H3ukW69A5q/WOdcyDnFGeGkjKoOtsydzPHMFejI8AeNEkqmN94BLpQlRLr7er
+         5X8iQJ00292dPXal1LP29RLPoGtRKn2jN/nm0oovKQK1e1fPJ0zJD/sTJr5+z0dBdqf1
+         inRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIIi0tBr0aP1H0+xvxNnhlWZUOerb6eLNI+cQ5+lUHzbI8cdNcBmukF60Eep3diNYu4FfMh7pvWFHAFAimc+jq5Nec9nGjJQvtRNISUg==
+X-Gm-Message-State: AOJu0YzVcL7wdXbkPAzdzMbuvxQjLwDizfmW0mR7tU9YSHZxdnXS+xGb
+	aktMUYCvFkmeBQK2WObUwjVF4lAcU1gB44Jeeqpk4u3tbgz0dtJr
+X-Google-Smtp-Source: AGHT+IEz4if+6nQ+0nx1w/27JH/n7YuyuluXY8+GolxtiPn58HNH1t1JZeRF1Dn7No9YQVVS74OoWg==
+X-Received: by 2002:a05:6a21:9982:b0:1b0:111f:2b7f with SMTP id adf61e73a8af0-1b264645684mr2023903637.39.1717068013130;
+        Thu, 30 May 2024 04:20:13 -0700 (PDT)
 Received: from localhost ([212.107.28.52])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c1a777a976sm1534201a91.20.2024.05.30.04.20.09
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7021feb0b7dsm2116952b3a.25.2024.05.30.04.20.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 04:20:09 -0700 (PDT)
+        Thu, 30 May 2024 04:20:12 -0700 (PDT)
 From: Celeste Liu <coelacanthushex@gmail.com>
 X-Google-Original-From: Celeste Liu <CoelacanthusHex@gmail.com>
 To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
@@ -99,14 +99,14 @@ To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
 	linux-mips@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-sh@vger.kernel.org
-Subject: [PATCH 2/6] loongarch: defconfig: drop RT_GROUP_SCHED=y
-Date: Thu, 30 May 2024 19:19:50 +0800
-Message-ID: <20240530111947.549474-10-CoelacanthusHex@gmail.com>
+Subject: [PATCH 3/6] mips: defconfig: drop RT_GROUP_SCHED=y from generic/db1xxx/eyeq5
+Date: Thu, 30 May 2024 19:19:51 +0800
+Message-ID: <20240530111947.549474-11-CoelacanthusHex@gmail.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240530111947.549474-8-CoelacanthusHex@gmail.com>
 References: <20240530111947.549474-8-CoelacanthusHex@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1629; i=CoelacanthusHex@gmail.com; h=from:subject; bh=h4glHeoHIj1lCrO/9cfcaGCSQbc7rI3O4B300cL/OlA=; b=owJ4nJvAy8zAJfY4pvNJRPo6U8bTakkMaREJ1/n69Xxaeu7NP36NP963pkB213cGx83nk+e+3 76w6tID+4kdpSwMYlwMsmKKLGI7n75eVvrowzJekxkwc1iZQIYwcHEKwESKNRn+WU/3fra1weNu krm/TiCjVtvfa8brLyYvXBxW9+bE9hjTBwx/hWUiri0SdmdLcHzGfvl11UovoVVOsWVy29fF/F/ 2874CBwCfBE2n
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2501; i=CoelacanthusHex@gmail.com; h=from:subject; bh=iuzxupRQlKvaCQIBiZ4xlf2r612WVp0v0y+1iZrYbx8=; b=owJ4nJvAy8zAJfY4pvNJRPo6U8bTakkMaREJN5aHbSvetGXDI9/Lgg/2RZ0Pr9tZ2Zeh8l34s JFf/NkbX3s7SlkYxLgYZMUUWcR2Pn29rPTRh2W8JjNg5rAygQxh4OIUgIkc2cnw3+dB99H+ecua Oiy0mLQjDFasNi7dvfTwkdv38ytDfrqaLGRkOOx28cCrP0VHmn/UfmB7LhiTWCzOvmna5ka3YIu yCes1WADtNVCT
 X-Developer-Key: i=CoelacanthusHex@gmail.com; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 31 May 2024 08:19:55 +1000
@@ -145,21 +145,47 @@ support it.[2]
 
 Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
 ---
- arch/loongarch/configs/loongson3_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/configs/db1xxx_defconfig  | 1 -
+ arch/mips/configs/eyeq5_defconfig   | 1 -
+ arch/mips/configs/generic_defconfig | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index b4252c357c8e..4d93adb3f1a2 100644
---- a/arch/loongarch/configs/loongson3_defconfig
-+++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -23,7 +23,6 @@ CONFIG_NUMA_BALANCING=y
+diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
+index b2d9253ff786..6eff21ff15d5 100644
+--- a/arch/mips/configs/db1xxx_defconfig
++++ b/arch/mips/configs/db1xxx_defconfig
+@@ -12,7 +12,6 @@ CONFIG_MEMCG=y
+ CONFIG_BLK_CGROUP=y
+ CONFIG_CGROUP_SCHED=y
+ CONFIG_CFS_BANDWIDTH=y
+-CONFIG_RT_GROUP_SCHED=y
+ CONFIG_CGROUP_FREEZER=y
+ CONFIG_CGROUP_DEVICE=y
+ CONFIG_CGROUP_CPUACCT=y
+diff --git a/arch/mips/configs/eyeq5_defconfig b/arch/mips/configs/eyeq5_defconfig
+index c35c29a4d479..3794707c9522 100644
+--- a/arch/mips/configs/eyeq5_defconfig
++++ b/arch/mips/configs/eyeq5_defconfig
+@@ -8,7 +8,6 @@ CONFIG_IKCONFIG_PROC=y
  CONFIG_MEMCG=y
  CONFIG_BLK_CGROUP=y
  CONFIG_CFS_BANDWIDTH=y
 -CONFIG_RT_GROUP_SCHED=y
  CONFIG_CGROUP_PIDS=y
- CONFIG_CGROUP_RDMA=y
  CONFIG_CGROUP_FREEZER=y
+ CONFIG_CPUSETS=y
+diff --git a/arch/mips/configs/generic_defconfig b/arch/mips/configs/generic_defconfig
+index 071e2205c7ed..fa916407bdd4 100644
+--- a/arch/mips/configs/generic_defconfig
++++ b/arch/mips/configs/generic_defconfig
+@@ -5,7 +5,6 @@ CONFIG_IKCONFIG_PROC=y
+ CONFIG_MEMCG=y
+ CONFIG_BLK_CGROUP=y
+ CONFIG_CFS_BANDWIDTH=y
+-CONFIG_RT_GROUP_SCHED=y
+ CONFIG_CGROUP_PIDS=y
+ CONFIG_CGROUP_FREEZER=y
+ CONFIG_CPUSETS=y
 -- 
 2.45.1
 
