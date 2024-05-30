@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA838D4BC6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 14:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AE78D4BD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 14:44:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tp+bHHWB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NrTvwsGi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vqm2c4Hl2z3cWm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 22:36:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqmD90QcTz3cWG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 22:44:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tp+bHHWB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NrTvwsGi;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vqm1s30Myz3cTb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 22:35:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqmCS6Gmgz3cTb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 22:44:04 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3E5FC627A2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:35:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E6910C2BBFC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:35:38 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5CD9F6173D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 11567C2BBFC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717072538;
-	bh=kBlgKDJ/BI15QQXa38cdWvqibUnGzh3ngG15AHS7Ipg=;
+	s=k20201202; t=1717073043;
+	bh=8F2QpeXm5NUHpAcGeyqS33ASffFQWpYBkhhfbBuJw10=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Tp+bHHWBrPwzoeEY9tT6C1LagN/31AFQtMhlSnqws0hGu3JLtfCsxxQN2msqDGsjB
-	 thYFdbKe1PaHEnzDl22Yq5BI8pURp66Bl3Iy39hC7y9TeAqJNHF0tFocHymVV9lLQK
-	 OFZerML8t/omXEfrDBHAKvaQzhzPutHccNQzMPijMUNkd4r/HULkW/nzhXzqXq2mLc
-	 INWk9WiSLtQ3NigW7EIW0caLjjMRIW2W1kkCPT1XzlbXEoOvpyViYZwEami90y9cgm
-	 DpdMUEjpEytXDkQyXQa9pNVTa+klCRj6yQfIPg3ki7o/mGZGxzSh3IYFz8qzcuFiTU
-	 wOO+gNEeBXtWw==
+	b=NrTvwsGirIvPuGHVeK2BwPlRkkkAMKd5udEEC1LQZQqP0SFsHK3gTvPwgs7+9q2Pj
+	 WZdkZLpTmf7eku10DbWLHHboF9BzTmQxLA5u0Sj3aYYegCmEE2eUbVuEExLC0+d2l/
+	 OgH91rfh0dpX1R9jAqb1+QwDRmUdfI22tfbYIwgH5pPBcDxaAqUexQPuklyj0QBaTS
+	 HNjabiTktn/3C1tf/DrIT2/CgDQQTZ+JZdZhN0dlJGItoXKeBiXv+KgIPHodo5bHFL
+	 Ndjez8RZ/qUkCzJC8+TFwsrv62Ox8yW190lKA90bAsgKN5NN1Y4sviIVZRoQcrA5i+
+	 RsSSQaS44XrKA==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id D4901C53B7E; Thu, 30 May 2024 12:35:38 +0000 (UTC)
+	id EE922C53B50; Thu, 30 May 2024 12:44:02 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
  scanning, some SCSI devices might not be configured
-Date: Thu, 30 May 2024 12:35:38 +0000
+Date: Thu, 30 May 2024 12:44:02 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -53,14 +53,14 @@ X-Bugzilla-Component: PPC-64
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: high
-X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Who: doru.iorgulescu1@gmail.com
 X-Bugzilla-Status: NEEDINFO
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status
-Message-ID: <bug-218858-206035-MVLon8V7YO@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218858-206035-Sf4li1eeDq@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
 References: <bug-218858-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,16 +84,18 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+--- Comment #3 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
+For Linux Kernel 6.9.3
+root@mirela:/boot# grep PAGE_SIZE config-6.9.3=20
+CONFIG_MMU_GATHER_PAGE_SIZE=3Dy
+CONFIG_HAVE_PAGE_SIZE_64KB=3Dy
+CONFIG_PAGE_SIZE_64KB=3Dy
+CONFIG_PAGE_SIZE_LESS_THAN_256KB=3Dy
+CONFIG_HUGETLB_PAGE_SIZE_VARIABLE=3Dy
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |NEEDINFO
-
---- Comment #2 from Michael Ellerman (michael@ellerman.id.au) ---
-Can you confirm what page size your kernel is configured to use? By running:
-
-$ grep PAGE_SIZE .config
+I can upload config-6.9.3=20
+Thank You
+Regards
 
 --=20
 You may reply to this email to add a comment.
