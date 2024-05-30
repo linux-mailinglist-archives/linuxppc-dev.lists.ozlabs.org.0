@@ -2,52 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTP id 037F28D43F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 05:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB6B98D4434
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 05:36:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FlBbOh4Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=o6YZhAS/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VqWGm4NFCz7BQl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 13:01:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VqWsv42hDz7BLp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 13:28:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FlBbOh4Y;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=o6YZhAS/;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::829; helo=mail-qt1-x829.google.com; envelope-from=jthoughton@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqWG10CPKz79N2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 13:00:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1717038022;
-	bh=iylmbElts6rbIaBJgVgvReqoNsA+FU35YPufgnhE8Do=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FlBbOh4Y78Fxlvp6m2kkxiz/CGCkxiwvegkQt2vP5IJIo8Pj16HZ5Oyjk250J2gA7
-	 rSnu65YAx6Mw7YfRUCfLyZZV/HiYlFCnZyBYcuRJYXu8gfDlGdwD7QuXITo0Q2A6xg
-	 ZHXCgnNmLl7FEDescz8psPJssk++rS1a09TjCNcCuMwc5tFOLkafLlCTEVW2yBSQkt
-	 khQ4Ks+Fkvv6XxK7NDUKchc191iBZp2yB80gsSE9/xZu4qa1XMU70yqZjTLwMG9V2b
-	 yanBof6OB4Pq58aEtehNgtLAgl0R6/jQohS18NpmozlnQF/9oKWeMOlVuuplCKozfh
-	 NOJGnhBmx5UfA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VqWFy33wKz4wqK;
-	Thu, 30 May 2024 13:00:22 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Shuah Khan <skhan@linuxfoundation.org>, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests/overlayfs: Fix build error on ppc64
-In-Reply-To: <3f3a70ba-40d2-4624-b8c5-7c3ae2a025fb@linuxfoundation.org>
-References: <20240521022616.45240-1-mpe@ellerman.id.au>
- <3f3a70ba-40d2-4624-b8c5-7c3ae2a025fb@linuxfoundation.org>
-Date: Thu, 30 May 2024 13:00:20 +1000
-Message-ID: <878qzs3sxn.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqWs70v4nz79LP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 13:27:21 +1000 (AEST)
+Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-43e14f0bd75so110761cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 20:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717039638; x=1717644438; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kzO8DZyZzCqrZIAMGt7yPpLcZJsj3wUliJt03pVmX2A=;
+        b=o6YZhAS/MIGpdPsP7uMYq63blbmfW3iociRZFqWv17i/V2mMIb8OuToTeYjku7u+1o
+         wGxF+csIT3CbTcHT/98WvaxkAivrUUCDqBceszYXPZybsIOhnzgHjjDHW1xoGe5Mz7if
+         Z4x8DApvKcU5KuZ3HK7sQiLuM+sNv1VZafrE0nfy0Sg4YxriiRp6fwgSv4nxxs8pmv2P
+         itw9CA0nuqRzAJ/R1riIg5sXReiGP/yfs6UoxlzW/8JVfKucP4o6Xm9VPElhlXTub3mD
+         WkRZdj7FwKxpPkOOwdoi5WIMUOpcttR+XfkrXUkoUPFuBIBuY5ICcf2XKwkc7CQFjR19
+         J2qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717039638; x=1717644438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kzO8DZyZzCqrZIAMGt7yPpLcZJsj3wUliJt03pVmX2A=;
+        b=rZgsPui+5xrvyt8jLyowdw5emW9Sm2LXwy2I3OeDU/xOM40LLCe7IbZ3xcwMua0ATV
+         1BYoK3i5lLqtSi7LA55PJDBVujo25FUgZJ0Wef38sAaIyrLEEYl7hlyp3DNwWDFfoG6a
+         R8jcewptqcHwmyPoEMggxt8hGZRc/gDRcs11tsRQePmTw4sx40WgbxHwXqzXiynbEDKZ
+         hAyqpqWFCEel5wEgJ8eI6de2fh13f8dA8TQj5pCymbAUvsPHtJukSDVsCRX2xJ6imxjw
+         pLHm0OuEQnvpBIwI4sS/4qg8cLD7vwPsS3jU0sB0BsMPrbTSeiwixR+ok/pioaB43Fdz
+         msgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWExE5lmMC+LVHfs8Jmz5tpE3WAijtZFpl9hfmXkbWGfMU8Sx4BMcDDW0rJB9nv5NTXHDHHZAdrvRwybdS3/2AkvZ9DyNJrD0MSuYNFyw==
+X-Gm-Message-State: AOJu0YwTdVewKCTifF5FbIlNW7wTodFNbJVeTQUKYXnWQsHHOE6B3DBL
+	96okWUQb1XwsGhsiC/jH7quZ03F+r5/l+d280zD+9P/x1+GmYOZ05+RehicgVCCQp3KJPy5312+
+	AvRliT4tkIukp7/KGuqXtSk+KKG5ES9nfmxQ4
+X-Google-Smtp-Source: AGHT+IFVU+i/PACo9p4/Bfxh1CqiMIWSQeR950pdjWP8hj1BhsXnC5rRHtunLNirP/Gyt4FL6G7AiU0HcN3VuQYeCls=
+X-Received: by 2002:a05:622a:a313:b0:43f:ebce:be50 with SMTP id
+ d75a77b69052e-43febcebe65mr835941cf.16.1717039638165; Wed, 29 May 2024
+ 20:27:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240529180510.2295118-1-jthoughton@google.com>
+ <20240529180510.2295118-4-jthoughton@google.com> <ZlejXCYIuJ7_DlwL@google.com>
+In-Reply-To: <ZlejXCYIuJ7_DlwL@google.com>
+From: James Houghton <jthoughton@google.com>
+Date: Wed, 29 May 2024 20:26:41 -0700
+Message-ID: <CADrL8HUa9o+G6-Yn9oWt2LUgoVYGU=sYE2-JhkpoRgrS6Wi57g@mail.gmail.com>
+Subject: Re: [PATCH v4 3/7] KVM: Add lockless memslot walk to KVM
+To: Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,46 +79,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shuah <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>, linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>, Yu Zhao <yuzhao@google.com>, Jonathan Corbet <corbet@lwn.net>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, David Rientjes <rientjes@google.com>, Zenghui Yu <yuzenghui@huawei.com>, Axel Rasmussen <axelrasmussen@google.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, David Matlack <dmatlack@google.com>, Palmer Dabbelt <palmer@dabbelt.com
+ >, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, Ankit Agrawal <ankita@nvidia.com>, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Shuah Khan <skhan@linuxfoundation.org> writes:
-> On 5/20/24 20:26, Michael Ellerman wrote:
->> Fix build error on ppc64:
->>    dev_in_maps.c: In function =E2=80=98get_file_dev_and_inode=E2=80=99:
->>    dev_in_maps.c:60:59: error: format =E2=80=98%llu=E2=80=99 expects arg=
-ument of type
->>    =E2=80=98long long unsigned int *=E2=80=99, but argument 7 has type =
-=E2=80=98__u64 *=E2=80=99 {aka =E2=80=98long
->>    unsigned int *=E2=80=99} [-Werror=3Dformat=3D]
->>=20
->> By switching to unsigned long long for u64 for ppc64 builds.
->>=20
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->> ---
->>   tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c | 1 +
->>   1 file changed, 1 insertion(+)
->>=20
->> diff --git a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c=
- b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
->> index 759f86e7d263..2862aae58b79 100644
->> --- a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
->> +++ b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
->> @@ -1,5 +1,6 @@
->>   // SPDX-License-Identifier: GPL-2.0
->>   #define _GNU_SOURCE
->> +#define __SANE_USERSPACE_TYPES__ // Use ll64
->>=20=20=20
->>   #include <inttypes.h>
->>   #include <unistd.h>
+On Wed, May 29, 2024 at 2:51=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
 >
-> Applied to linux-kselftest fixes for the next rc.
+> On Wed, May 29, 2024, James Houghton wrote:
+> > @@ -686,10 +694,12 @@ static __always_inline int kvm_handle_hva_range(s=
+truct mmu_notifier *mn,
+> >       return __kvm_handle_hva_range(kvm, &range).ret;
+> >  }
+> >
+> > -static __always_inline int kvm_handle_hva_range_no_flush(struct mmu_no=
+tifier *mn,
+> > -                                                      unsigned long st=
+art,
+> > -                                                      unsigned long en=
+d,
+> > -                                                      gfn_handler_t ha=
+ndler)
+> > +static __always_inline int kvm_handle_hva_range_no_flush(
+> > +             struct mmu_notifier *mn,
+> > +             unsigned long start,
+> > +             unsigned long end,
+> > +             gfn_handler_t handler,
+> > +             bool lockless)
+>
+> Unnecessary and unwanted style change.
 
-Thanks.
+Sorry -- this will be fixed.
 
-> Michael, If you want to take this through, let me know, I can drop this.
+>
+> >  {
+> >       struct kvm *kvm =3D mmu_notifier_to_kvm(mn);
+> >       const struct kvm_mmu_notifier_range range =3D {
+> > @@ -699,6 +709,7 @@ static __always_inline int kvm_handle_hva_range_no_=
+flush(struct mmu_notifier *mn
+> >               .on_lock        =3D (void *)kvm_null_fn,
+> >               .flush_on_ret   =3D false,
+> >               .may_block      =3D false,
+> > +             .lockless       =3D lockless,
+>
+> Why add @lockess to kvm_handle_hva_range_no_flush()?  Both callers immedi=
+ately
+> pass %false, and conceptually, locking is always optional for a "no flush=
+" variant.
 
-I'm happy for you to take this one and the others.
+Right, this isn't needed in this patch. But I think I need it
+eventually (like, in the next patch), so I'll move it where it is
+really needed.
 
-cheers
+
+
+>
+> >       };
+> >
+> >       return __kvm_handle_hva_range(kvm, &range).ret;
+> > @@ -889,7 +900,8 @@ static int kvm_mmu_notifier_clear_young(struct mmu_=
+notifier *mn,
+> >        * cadence. If we find this inaccurate, we might come up with a
+> >        * more sophisticated heuristic later.
+> >        */
+> > -     return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn)=
+;
+> > +     return kvm_handle_hva_range_no_flush(mn, start, end,
+> > +                                          kvm_age_gfn, false);
+> >  }
+> >
+> >  static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+> > @@ -899,7 +911,7 @@ static int kvm_mmu_notifier_test_young(struct mmu_n=
+otifier *mn,
+> >       trace_kvm_test_age_hva(address);
+> >
+> >       return kvm_handle_hva_range_no_flush(mn, address, address + 1,
+> > -                                          kvm_test_age_gfn);
+> > +                                          kvm_test_age_gfn, false);
+> >  }
+> >
+> >  static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+> > --
+> > 2.45.1.288.g0e0cd299f1-goog
+> >
