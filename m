@@ -1,77 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A188D5578
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:35:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5388D557A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 00:36:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m7TwUBgo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Ai1TMFBK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1Kc4Wk0z3frL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:35:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr1LT4F91z3fn3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 08:36:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=m7TwUBgo;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Ai1TMFBK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=marilene.agarcia@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2001:4860:4864:20::2d; helo=mail-oa1-x2d.google.com; envelope-from=cuiyunhui@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VqL0t3S1xz79cN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 06:03:26 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-681919f89f2so121929a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 May 2024 13:03:26 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vqh1y3qQ4z30ft
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 19:35:32 +1000 (AEST)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-24cbb884377so357212fac.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 02:35:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717013003; x=1717617803; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Yw+tyisOoQIVKsFGGfntBjZv+48Mnl1871MjZUM50o=;
-        b=m7TwUBgoxvX8SHCzuFkVdWflmPXvwrfVVafdAIYPApOAqW06z7zi6fl/js5Mh3c9V8
-         yc4tVoUGovVDN8ln4+AVo6EhEajDt1DX4FCs/+7+ajxMJP1vYOFOLU0phu5NRrgqdp3S
-         g6DY4y+uZc/wD6zSLggxeJGdco+Op1Ycx4B/oJ0dVKy/TqeemRyB6rkB3NzhsRGnvkCw
-         ZxDgUoOumAv74HbWQGQh5Eieoqe+trb9+WQWlQR0H4rBzqG2f0fpxw+J7uNhxN7Ategs
-         QaEjaGEPvc3qA1H3OdHVhLhbhjiCWhj/UOPoQtF3e84f+JxcaNEtejMFjHx7gG0E6c2B
-         YPVA==
+        d=bytedance.com; s=google; t=1717061728; x=1717666528; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aIKK60Me9RhDM5LPzOVIbg3hAvv72+j6Tp3QihasYZ0=;
+        b=Ai1TMFBKTs1+km2qRCXCSRsBF/nMJvRowWjZ6rEfXGL1asVGmdiSJ0q8PHR2WP4Iiq
+         /eDdbzBCh+JynWE7qAw6HAJDk+Kj0DY7wlsGBRRx10kHR0rT4p8wrDWZqOIjrLXkndh6
+         BbdfEkU+YaCf+Cuh1jti3eQfWQCG+4U8tFdaKYgP/KpcB9h/yNBClYDFzcR4VuuXukwy
+         9WgDjGRz2qJKJ3A3EBeJYGYX9shNSvoaPwqxqUHEe0Fhu2vRxaRQpOl07QTWsS5RK6zW
+         tGvvqL0UFZImXAV/EKxPfU9ORm9y/aEXuSni4HJaBkD1eaefL9pNF26ok6Jnf88cw6VB
+         9k6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717013003; x=1717617803;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3Yw+tyisOoQIVKsFGGfntBjZv+48Mnl1871MjZUM50o=;
-        b=TgJrxrbgEfHZ3scIAWvmWF9hygapJNsc2jL8YU2Z5xl2uUtD24qyNonr/lmhDcaSoN
-         uZ3m6igCnyKLsFYGzrzNvbGbm8c8o3/S6orheCMSCTz7/L/lAneC7UyEUYWzHesKEu7T
-         RIQ18n89JloPEPduW3fqE9fqaKaBscUd2igwW/3Byioe13KPQTTXjNOjFkjlZ2hyXPSJ
-         JJ20U+vLjjrxFN1O79RPCAV6JT50IKeSKpGsHVwDaNJBNqNiFWqIwr8JUo7q68//lRTG
-         ypF6CMmKn6VtpZwC/XgBodQElVbd0lGPHw3vTFGSZ4hSd1OaLkAYFroUbRL5H6qTi11f
-         jWng==
-X-Forwarded-Encrypted: i=1; AJvYcCWaQhjojVmo2C9VfWUdNpf616C9rhIjxaZAA2VLQU00a7cY8NW38+gk3og6hdPhhAi5s3lVZgokSFvjOYTfpKMf62pB2/5sM3fqQ2dHzg==
-X-Gm-Message-State: AOJu0YzLgMzzioM2QZYXRgVgnptTztor9iIqmn3o3soAbj+yVhTc5Plg
-	75FmsclTPkoE8oiBTsm4qWW4IgV2hHlj9dllngdo54o6ZmFNlMMFJsLkbyQL
-X-Google-Smtp-Source: AGHT+IG7IdKzoHGQCcegnZ5ZEN+4I3xWMqeAiyKe7kepJv5SgpccOmkronM5R/00B3eceGnBZkfXoA==
-X-Received: by 2002:a17:90b:1883:b0:2c0:1fe6:b10f with SMTP id 98e67ed59e1d1-2c1ab9d9e45mr170095a91.7.1717013003271;
-        Wed, 29 May 2024 13:03:23 -0700 (PDT)
-Received: from mari.. ([2804:431:cfd2:68a4:d1e5:41de:6992:6d45])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c1a779e835sm192127a91.48.2024.05.29.13.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 13:03:22 -0700 (PDT)
-From: MarileneGarcia <marilene.agarcia@gmail.com>
-To: Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Julia Lawall <julia.lawall@inria.fr>
-Subject: [PATCH v2 linux-next] leds: powernv: replace of_node_put to __free
-Date: Wed, 29 May 2024 17:02:33 -0300
-Message-Id: <20240529200233.1188228-1-marilene.agarcia@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1717061728; x=1717666528;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aIKK60Me9RhDM5LPzOVIbg3hAvv72+j6Tp3QihasYZ0=;
+        b=e6/h480k4WLl6t/DXRmH80c3dLzq8Wj7pMctlTPu4o94XyAq86lOth+RLUC2sXbW45
+         ujGnEieuv7V98K+6xBa+klDBKitdQV72Pvb5tqJaZqESM1EuxSLhiB5hdvDEluQinTCW
+         lp3Z7s70R69tkTfOxOo18GpDh2YwyI0VA9Sn39bjxuUy42qRDxLV6QArOhZa4cheonvs
+         PsincPlqAU+/t8qGEjHETWC777CebxcioU/IgbulH0Gf78qnabvBLJ/Mx1zJH+5pynuq
+         fEy3hovXSuPo0Wacwv0hym7JVJPiH5KJNn86xv5I9qSaRP+atcMpH+6dg3L7mbG/udT8
+         iFvg==
+X-Forwarded-Encrypted: i=1; AJvYcCXaSEeBjFYGHDA9KrLbBYZJ/gnTeHeHiOz35KdNUbkmmzjzE4jwLcxrvwVd9DqJ6NgcwuYMcP+p5IJFSEkppi1nl09ptkk9sH1P14IIaQ==
+X-Gm-Message-State: AOJu0YzAnQffJVgDZYIRQVYLLWsekpa63igpdoz2VaQ0dcAnralB2D07
+	llTo8F6TP9BnJ5iHH9N8EzWpw8kuk/0SGODso4XNMOFK10Rcm+CITq5grVq6JFuavyLvaJyXJ+u
+	Rd3JnxTLPADr9Ixq++UdKU1BRrXaY+SvI0tvhvg==
+X-Google-Smtp-Source: AGHT+IGQo/4+Bcec7GR4w4t9VuGgDnfgRuIzi4gbmVB9EXNZxFk4++tYC42KZVEUtna/+lcQBmHO84N93cneyoHhbbs=
+X-Received: by 2002:a05:6871:3329:b0:24c:ac96:ac78 with SMTP id
+ 586e51a60fabf-25060de9e8amr1722957fac.44.1717061727430; Thu, 30 May 2024
+ 02:35:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240131155929.169961-1-alexghiti@rivosinc.com> <20240131155929.169961-5-alexghiti@rivosinc.com>
+In-Reply-To: <20240131155929.169961-5-alexghiti@rivosinc.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Thu, 30 May 2024 17:35:16 +0800
+Message-ID: <CAEEQ3wnmCr5NTEFo3wTN_zWse2DPkE6ieVUk_=Vv7A-UzDCCvQ@mail.gmail.com>
+Subject: Re: [External] [PATCH RFC/RFT v2 4/4] riscv: Stop emitting preventive
+ sfence.vma for new userspace mappings with Svvptc
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Fri, 31 May 2024 08:19:55 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,110 +80,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-kernel@vger.kernel.org, MarileneGarcia <marilene.agarcia@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, linux-leds@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Matt Evans <mev@rivosinc.com>, Albert Ou <aou@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Ved Shanbhogue <ved@rivosinc.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Dylan Jhong <dylan@andestech.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use __free for device_node values, and thus drop calls to
-of_node_put.
+Hi Alex,
 
-The variable attribute __free adds a scope based cleanup to
-the device node. The goal is to reduce memory management issues
-in the kernel code.
+On Thu, Feb 1, 2024 at 12:04=E2=80=AFAM Alexandre Ghiti <alexghiti@rivosinc=
+.com> wrote:
+>
+> The preventive sfence.vma were emitted because new mappings must be made
+> visible to the page table walker but Svvptc guarantees that xRET act as
+> a fence, so no need to sfence.vma for the uarchs that implement this
+> extension.
+>
+> This allows to drastically reduce the number of sfence.vma emitted:
+>
+> * Ubuntu boot to login:
+> Before: ~630k sfence.vma
+> After:  ~200k sfence.vma
+>
+> * ltp - mmapstress01
+> Before: ~45k
+> After:  ~6.3k
+>
+> * lmbench - lat_pagefault
+> Before: ~665k
+> After:   832 (!)
+>
+> * lmbench - lat_mmap
+> Before: ~546k
+> After:   718 (!)
+>
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> ---
+>  arch/riscv/include/asm/pgtable.h | 16 +++++++++++++++-
+>  arch/riscv/mm/pgtable.c          | 13 +++++++++++++
+>  2 files changed, 28 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pg=
+table.h
+> index 0c94260b5d0c..50986e4c4601 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -473,6 +473,9 @@ static inline void update_mmu_cache_range(struct vm_f=
+ault *vmf,
+>                 struct vm_area_struct *vma, unsigned long address,
+>                 pte_t *ptep, unsigned int nr)
+>  {
+> +       asm_volatile_goto(ALTERNATIVE("nop", "j %l[svvptc]", 0, RISCV_ISA=
+_EXT_SVVPTC, 1)
+> +                         : : : : svvptc);
+> +
+>         /*
+>          * The kernel assumes that TLBs don't cache invalid entries, but
+>          * in RISC-V, SFENCE.VMA specifies an ordering constraint, not a
+> @@ -482,12 +485,23 @@ static inline void update_mmu_cache_range(struct vm=
+_fault *vmf,
+>          */
+>         while (nr--)
+>                 local_flush_tlb_page(address + nr * PAGE_SIZE);
+> +
+> +svvptc:
+> +       /*
+> +        * Svvptc guarantees that xRET act as a fence, so when the uarch =
+does
+> +        * not cache invalid entries, we don't have to do anything.
+> +        */
+> +       ;
+>  }
 
-The of_node_put calls were removed, and the
-for_each_available_child_of_node was replaced to the equivalent
-for_each_available_child_of_node_scoped which use the __free.
+From the perspective of RISC-V arch, the logic of this patch is
+reasonable. The code of mm comm submodule may be missing
+update_mmu_cache_range(), for example: there is no flush TLB in
+remap_pte_range() after updating pte.
+I will send a patch to mm/ to fix this problem next.
 
-Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: MarileneGarcia <marilene.agarcia@gmail.com>
----
-Changes v2:
-It was missing a blank line.
 
-Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: MarileneGarcia <marilene.agarcia@gmail.com>
----
- drivers/leds/leds-powernv.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/leds/leds-powernv.c b/drivers/leds/leds-powernv.c
-index 4f01acb75727..8f94d2efed9f 100644
---- a/drivers/leds/leds-powernv.c
-+++ b/drivers/leds/leds-powernv.c
-@@ -246,29 +246,25 @@ static int powernv_led_classdev(struct platform_device *pdev,
- 	const char *cur = NULL;
- 	int rc = -1;
- 	struct property *p;
--	struct device_node *np;
- 	struct powernv_led_data *powernv_led;
- 	struct device *dev = &pdev->dev;
- 
--	for_each_available_child_of_node(led_node, np) {
-+	for_each_available_child_of_node_scoped(led_node, np) {
- 		p = of_find_property(np, "led-types", NULL);
- 
- 		while ((cur = of_prop_next_string(p, cur)) != NULL) {
- 			powernv_led = devm_kzalloc(dev, sizeof(*powernv_led),
- 						   GFP_KERNEL);
--			if (!powernv_led) {
--				of_node_put(np);
-+			if (!powernv_led)
- 				return -ENOMEM;
--			}
- 
- 			powernv_led->common = powernv_led_common;
- 			powernv_led->loc_code = (char *)np->name;
- 
- 			rc = powernv_led_create(dev, powernv_led, cur);
--			if (rc) {
--				of_node_put(np);
-+			if (rc)
- 				return rc;
--			}
-+
- 		} /* while end */
- 	}
- 
-@@ -278,12 +274,11 @@ static int powernv_led_classdev(struct platform_device *pdev,
- /* Platform driver probe */
- static int powernv_led_probe(struct platform_device *pdev)
- {
--	struct device_node *led_node;
- 	struct powernv_led_common *powernv_led_common;
- 	struct device *dev = &pdev->dev;
--	int rc;
-+	struct device_node *led_node __free(device_node) =
-+							of_find_node_by_path("/ibm,opal/leds");
- 
--	led_node = of_find_node_by_path("/ibm,opal/leds");
- 	if (!led_node) {
- 		dev_err(dev, "%s: LED parent device node not found\n",
- 			__func__);
-@@ -292,20 +287,15 @@ static int powernv_led_probe(struct platform_device *pdev)
- 
- 	powernv_led_common = devm_kzalloc(dev, sizeof(*powernv_led_common),
- 					  GFP_KERNEL);
--	if (!powernv_led_common) {
--		rc = -ENOMEM;
--		goto out;
--	}
-+	if (!powernv_led_common)
-+		return -ENOMEM;
- 
- 	mutex_init(&powernv_led_common->lock);
- 	powernv_led_common->max_led_type = cpu_to_be64(OPAL_SLOT_LED_TYPE_MAX);
- 
- 	platform_set_drvdata(pdev, powernv_led_common);
- 
--	rc = powernv_led_classdev(pdev, led_node, powernv_led_common);
--out:
--	of_node_put(led_node);
--	return rc;
-+	return powernv_led_classdev(pdev, led_node, powernv_led_common);
- }
- 
- /* Platform driver remove */
--- 
-2.34.1
-
+Thanks,
+Yunhui
