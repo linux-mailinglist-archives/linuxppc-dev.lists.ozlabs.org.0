@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C333C8D4B90
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 14:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA838D4BC6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 14:36:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bk07Y8Fs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tp+bHHWB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vqlpc0S0nz3cV1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 22:26:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vqm2c4Hl2z3cWm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 May 2024 22:36:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bk07Y8Fs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tp+bHHWB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vqlnv1nyXz3cSX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 22:25:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vqm1s30Myz3cTb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 22:35:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AE47C6271F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:25:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5F29BC32786
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:25:19 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3E5FC627A2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:35:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E6910C2BBFC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 May 2024 12:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717071919;
-	bh=b1TrAR2tlzrubt9mxc68WNTvuuUQOtATuasZSxg0q5w=;
+	s=k20201202; t=1717072538;
+	bh=kBlgKDJ/BI15QQXa38cdWvqibUnGzh3ngG15AHS7Ipg=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Bk07Y8Fsh8BpQXxJZVvGhTfu68TvKlTZG/IqdIdKNyxuRcPj3fnveLEUKEsUy6hGE
-	 BNjY4dCHx8Ug5+x+OH/0D58xOldNyS7ctR3izO3kg9EZhGSELB+kWwgIuK1UWdQCRY
-	 C0CcSpzdDP06YFLD8QUxS+skKA6VPOm2UoMbNowqkm0/acaT5hmBVC8iL5ae0WEAr8
-	 HadQOTUdr8shdvEubKNmuFWgppylKJSPRIS41iEesRSyv30qLDvlzah07YUjgimfUL
-	 WhFOS//2tt1B3RjP0LogC/Rao4lkXAliK9BWuluBtTGkx/ZVroDv4ixWDDeFv4v6jn
-	 uk0K3CGoog1ig==
+	b=Tp+bHHWBrPwzoeEY9tT6C1LagN/31AFQtMhlSnqws0hGu3JLtfCsxxQN2msqDGsjB
+	 thYFdbKe1PaHEnzDl22Yq5BI8pURp66Bl3Iy39hC7y9TeAqJNHF0tFocHymVV9lLQK
+	 OFZerML8t/omXEfrDBHAKvaQzhzPutHccNQzMPijMUNkd4r/HULkW/nzhXzqXq2mLc
+	 INWk9WiSLtQ3NigW7EIW0caLjjMRIW2W1kkCPT1XzlbXEoOvpyViYZwEami90y9cgm
+	 DpdMUEjpEytXDkQyXQa9pNVTa+klCRj6yQfIPg3ki7o/mGZGxzSh3IYFz8qzcuFiTU
+	 wOO+gNEeBXtWw==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 54B7BC53B50; Thu, 30 May 2024 12:25:19 +0000 (UTC)
+	id D4901C53B7E; Thu, 30 May 2024 12:35:38 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 218905] scsi_alloc_sdev: Allocation failure during SCSI
+Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
  scanning, some SCSI devices might not be configured
-Date: Thu, 30 May 2024 12:25:19 +0000
+Date: Thu, 30 May 2024 12:35:38 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -54,15 +54,15 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: high
 X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: NEW
+X-Bugzilla-Status: NEEDINFO
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc component version assigned_to product
-Message-ID: <bug-218905-206035-yUmRbXQuwQ@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218905-206035@https.bugzilla.kernel.org/>
-References: <bug-218905-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status
+Message-ID: <bug-218858-206035-MVLon8V7YO@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
+References: <bug-218858-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -82,18 +82,18 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218905
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
 Michael Ellerman (michael@ellerman.id.au) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
-                 CC|                            |michael@ellerman.id.au
-          Component|Kernel                      |PPC-64
-            Version|unspecified                 |2.5
-           Assignee|linux-kernel@kernel-bugs.ke |platform_ppc-64@kernel-bugs
-                   |rnel.org                    |.osdl.org
-            Product|Linux                       |Platform Specific/Hardware
+             Status|NEW                         |NEEDINFO
+
+--- Comment #2 from Michael Ellerman (michael@ellerman.id.au) ---
+Can you confirm what page size your kernel is configured to use? By running:
+
+$ grep PAGE_SIZE .config
 
 --=20
 You may reply to this email to add a comment.
