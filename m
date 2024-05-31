@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19EAC8D5EAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 11:42:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05988D5EB3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 11:44:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zxj39EVS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WHrjWZTy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrJ7z2P66z3cXc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 19:42:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrJ9r6tHcz3cY1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 19:44:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zxj39EVS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WHrjWZTy;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrJ7D3JtNz3cXS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 19:42:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrJ990qYGz30Ts
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 19:43:57 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 2CE60CE1BD6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 09:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3184CC116B1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 09:42:12 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id DAD6ACE1C07
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 09:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DFE4DC32781
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 09:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717148532;
-	bh=Js/Da9MefCxVX12ck4JhhZvET43/L8pqVbTM+oPdlzI=;
+	s=k20201202; t=1717148634;
+	bh=UYfkhwk/ItnNzSsmKzkLUhfzyTnjHmA2ym6TFW2Xr8U=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Zxj39EVShwoISfF2VXa1iBNmu4iH8/BAfte3HyV/c0+P/lSpPNGglPNOgODHA4i2v
-	 xEovT9tlINYmNPHNwJQ87UtnGIar1rPisn/ea213XPBkDcJqc0Z5Nl6ks4oJRpUgkS
-	 ZKKRl5lL9VsgQQQM5mxu10di4P4l+8/g/mkodr3WRZsP/xqpwCBUi8ZvESWXmNr0k7
-	 pKKkBaah4S+3CQ62BJ43OoNLtPRAklEd75QPPxmHkvTDUngcYh4+3JOb/Rltlg1zLE
-	 mApmlcUYDNgoc5c5qoh7ROPgU6c72rWdsHpb8A5t62keszdsFqp2HucxWA8GqIj4DN
-	 6PUrvIumNGvMg==
+	b=WHrjWZTyF6cFs0VnSKM1sPtkqkVSP1JRxfE0w/KxaiWaFl8zpeFpDMqniat47Mi9t
+	 zY5OIe0lB9XB5fkefDouEls2s5kh5OyJsQwz/Hx1NkVLJ/K4oRP/kbOFh29olVQ7vM
+	 OA4htPbXhmub7KLi9nXD73TYKuNR18BQykOrfdXIsOmmSH2Vg/+jy0meYkaFU/pFxO
+	 uST7WVDXpsOkpmeNqTZFYG2O7gSiQ27fH2XmqNc6CamU1jghDKRiN5q8EnWed75ZyO
+	 yX0V9x3F1Jci7PZ1s981lfoQZTjm3NFBmjLBWTeu+usARDtpM5c0QTgapX5bl5ONeb
+	 EHiwpjNpcoznA==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 1EF94C53B73; Fri, 31 May 2024 09:42:12 +0000 (UTC)
+	id D26ACC53B50; Fri, 31 May 2024 09:43:54 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
  scanning, some SCSI devices might not be configured
-Date: Fri, 31 May 2024 09:42:11 +0000
+Date: Fri, 31 May 2024 09:43:54 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -59,8 +59,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-218858-206035-QuNjSWb8gG@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218858-206035-Jv4faqwc5M@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
 References: <bug-218858-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,10 +84,13 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
---- Comment #9 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
-Created attachment 306385
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D306385&action=3Dedit
-dmesg-next.txt
+--- Comment #10 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
+I have upload dmesg-next.txt
+Linux mirela 6.11.0-next-20240529 #2 SMP Fri May 31 09:17:14 EEST 2024 ppc64
+GNU/Linux
+The problems are the same!
+Thank You
+Regards
 
 --=20
 You may reply to this email to add a comment.
