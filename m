@@ -2,87 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FF18D6B4E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 23:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EF68D6B6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 23:19:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hO0+5HwC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ls3C5/08;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrbQh3Rd4z3dXK
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 07:11:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vrbbg2hMkz3fq3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 07:19:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hO0+5HwC;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ls3C5/08;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.182; helo=out-182.mta0.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrbPF70BZz3dXK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 07:10:25 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44VKjlQs003440;
-	Fri, 31 May 2024 21:10:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
- content-transfer-encoding : content-type : date : from : in-reply-to :
- message-id : mime-version : references : subject : to; s=pp1;
- bh=rA8cLUV+37eItOYNc5h1LCYPwTbIyEdRLeqhTlQuMEs=;
- b=hO0+5HwC7D139vrOI1ZibjPY1kt2/Tqj0mRtxNt1v5MS4ojs4hQ1Sh4KfQYn1CW21voF
- VdgkrLDShVQj+K6KL2ULpme4OR3m7dYKGmK5yk4XfsCnTK+JNetD4HglxBLVOWG9yQYe
- YUCeU71n26KLYuUm2YeOSNQRn6znQubjE/twiiigw1GCIw2ImozuY8/j02r8dur3XNLM
- 17o5xs3dFtZtYC5YjzaxxScDlWVyyHDU/B5COBMWPLikhFTNM+JzVMEua8wfIW89oOEJ
- zgOcItZH+z4vFZHdj/+UOLAu4F0EpuzBAIuCwKi9n68ARJ+YC56cWqUZ3FFXzhRzXyZM bQ== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yfnd103a8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 21:10:10 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44VJZ1uq002437;
-	Fri, 31 May 2024 21:10:09 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ydpb123f6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 21:10:09 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44VLA68811797172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 May 2024 21:10:08 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADAE658071;
-	Fri, 31 May 2024 21:10:06 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B11E958076;
-	Fri, 31 May 2024 21:10:05 +0000 (GMT)
-Received: from [9.67.180.145] (unknown [9.67.180.145])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 May 2024 21:10:05 +0000 (GMT)
-Message-ID: <cc3c8213-cf64-4eb5-9508-8d80b1ce6333@linux.ibm.com>
-Date: Fri, 31 May 2024 16:10:05 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] crypto: X25519 supports for ppc64le
-To: Herbert Xu <herbert@gondor.apana.org.au>
-References: <20240516151957.2215-1-dtsen@linux.ibm.com>
- <Zlmkgisql2NxPcXi@gondor.apana.org.au>
-Content-Language: en-US
-From: Danny Tsen <dtsen@linux.ibm.com>
-In-Reply-To: <Zlmkgisql2NxPcXi@gondor.apana.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0-CDeAQI6eP4-dv1vUzumlx09OVAU8yg
-X-Proofpoint-ORIG-GUID: 0-CDeAQI6eP4-dv1vUzumlx09OVAU8yg
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrbZv0vs6z3dWZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 07:18:44 +1000 (AEST)
+X-Envelope-To: yuzhao@google.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1717190302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b4Xmi0701V1mOSvq8yprUubnI972AbFWvRE29wJdk78=;
+	b=Ls3C5/08/280zRJqgHSiEjY525Nc+6AHW21VTOJinn6gvpWo5wGpHRdfxPSCAblARNzCTk
+	Ef8yPQJkMIbUZrU0gLqIxyh5em+aap01i8qUkndBnnlYA3LWYTDaFt+T56XGowNC6n0gMV
+	1xZHPusSMv7Np2WADZqnpp/2B0dMfIM=
+X-Envelope-To: jthoughton@google.com
+X-Envelope-To: akpm@linux-foundation.org
+X-Envelope-To: pbonzini@redhat.com
+X-Envelope-To: aou@eecs.berkeley.edu
+X-Envelope-To: ankita@nvidia.com
+X-Envelope-To: anup@brainfault.org
+X-Envelope-To: atishp@atishpatra.org
+X-Envelope-To: axelrasmussen@google.com
+X-Envelope-To: maobibo@loongson.cn
+X-Envelope-To: catalin.marinas@arm.com
+X-Envelope-To: dmatlack@google.com
+X-Envelope-To: rientjes@google.com
+X-Envelope-To: chenhuacai@kernel.org
+X-Envelope-To: james.morse@arm.com
+X-Envelope-To: corbet@lwn.net
+X-Envelope-To: maz@kernel.org
+X-Envelope-To: mpe@ellerman.id.au
+X-Envelope-To: npiggin@gmail.com
+X-Envelope-To: palmer@dabbelt.com
+X-Envelope-To: paul.walmsley@sifive.com
+X-Envelope-To: rananta@google.com
+X-Envelope-To: ryan.roberts@arm.com
+X-Envelope-To: seanjc@google.com
+X-Envelope-To: shahuang@redhat.com
+X-Envelope-To: shuah@kernel.org
+X-Envelope-To: suzuki.poulose@arm.com
+X-Envelope-To: zhaotianrui@loongson.cn
+X-Envelope-To: will@kernel.org
+X-Envelope-To: yuzenghui@huawei.com
+X-Envelope-To: kvm-riscv@lists.infradead.org
+X-Envelope-To: kvm@vger.kernel.org
+X-Envelope-To: kvmarm@lists.linux.dev
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-doc@vger.kernel.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: linux-kselftest@vger.kernel.org
+X-Envelope-To: linux-mips@vger.kernel.org
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: linux-riscv@lists.infradead.org
+X-Envelope-To: linuxppc-dev@lists.ozlabs.org
+X-Envelope-To: loongarch@lists.linux.dev
+Date: Fri, 31 May 2024 21:18:12 +0000
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Yu Zhao <yuzhao@google.com>
+Subject: Re: [PATCH v4 2/7] mm: multi-gen LRU: Have secondary MMUs
+ participate in aging
+Message-ID: <Zlo-lKbrshZmT0mx@linux.dev>
+References: <20240529180510.2295118-1-jthoughton@google.com>
+ <20240529180510.2295118-3-jthoughton@google.com>
+ <CAOUHufYFHKLwt1PWp2uS6g174GZYRZURWJAmdUWs5eaKmhEeyQ@mail.gmail.com>
+ <Zll7IuGYGG5uI20W@linux.dev>
+ <CAOUHufa50Dy8CJ5+D10Khs4NU-3Pv0B8qi-GYkcppctTVUkPcA@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-31_14,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 mlxscore=0 priorityscore=1501 phishscore=0 spamscore=0
- impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405310161
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOUHufa50Dy8CJ5+D10Khs4NU-3Pv0B8qi-GYkcppctTVUkPcA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,38 +104,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, appro@cryptogams.org, linux-crypto@vger.kernel.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>, linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, David Rientjes <rientjes@google.com>, Zenghui Yu <yuzenghui@huawei.com>, Axel Rasmussen <axelrasmussen@google.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, David Matlack <dmatlack@google.com>, Palmer Dabbelt <palmer@
+ dabbelt.com>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, Sean Christopherson <seanjc@google.com>, Ankit Agrawal <ankita@nvidia.com>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks Herbert.
+On Fri, May 31, 2024 at 02:31:17PM -0600, Yu Zhao wrote:
+> On Fri, May 31, 2024 at 1:24 AM Oliver Upton <oliver.upton@linux.dev> wrote:
 
+[...]
 
-On 5/31/24 5:20 AM, Herbert Xu wrote:
-> On Thu, May 16, 2024 at 11:19:54AM -0400, Danny Tsen wrote:
->> This patch series provide X25519 support for ppc64le with a new module
->> curve25519-ppc64le.
->>
->> The implementation is based on CRYPTOGAMs perl output from x25519-ppc64.pl.
->> (see https://github.com/dot-asm/cryptogams/)
->> Modified and added 4 supporting functions.
->>
->> This patch has passed the selftest by running modprobe
->> curve25519-ppc64le.
->>
->> Danny Tsen (3):
->>    X25519 low-level primitives for ppc64le.
->>    X25519 core functions for ppc64le
->>    Update Kconfig and Makefile for ppc64le x25519.
->>
->>   arch/powerpc/crypto/Kconfig                   |  11 +
->>   arch/powerpc/crypto/Makefile                  |   2 +
->>   arch/powerpc/crypto/curve25519-ppc64le-core.c | 299 ++++++++
->>   arch/powerpc/crypto/curve25519-ppc64le_asm.S  | 671 ++++++++++++++++++
->>   4 files changed, 983 insertions(+)
->>   create mode 100644 arch/powerpc/crypto/curve25519-ppc64le-core.c
->>   create mode 100644 arch/powerpc/crypto/curve25519-ppc64le_asm.S
->>
->> -- 
->> 2.31.1
-> All applied.  Thanks.
+> > Grabbing the MMU lock for write to scan sucks, no argument there. But
+> > can you please be specific about the impact of read lock v. RCU in the
+> > case of arm64? I had asked about this before and you never replied.
+> >
+> > My concern remains that adding support for software table walkers
+> > outside of the MMU lock entirely requires more work than just deferring
+> > the deallocation to an RCU callback. Walkers that previously assumed
+> > 'exclusive' access while holding the MMU lock for write must now cope
+> > with volatile PTEs.
+> >
+> > Yes, this problem already exists when hardware sets the AF, but the
+> > lock-free walker implementation needs to be generic so it can be applied
+> > for other PTE bits.
+> 
+> Direct reclaim is multi-threaded and each reclaimer can take the mmu
+> lock for read (testing the A-bit) or write (unmapping before paging
+> out) on arm64. The fundamental problem of using the readers-writer
+> lock in this case is priority inversion: the readers have lower
+> priority than the writers, so ideally, we don't want the readers to
+> block the writers at all.
+
+So we already have this sort of problem of stage-2 fault handling v.
+secondary MMU invalidations, which is why I've been doubtful of the
+perceived issue. In fact, I'd argue that needing to wait for faults is
+worse than aging participation since those can be trivially influenced
+by userspace/guest.
+
+In any case, we shouldn't ever be starved since younger readers cannot
+enter the critical section with a pending writer.
+
+> As I said earlier, I prefer we drop the arm64 support for now, but I
+> will not object to taking the mmu lock for read when clearing the
+> A-bit, as long as we fully understand the problem here and document it
+> clearly.
+
+I'd be convinced of this if there's data that shows read lock
+acquisition is in fact consequential. Otherwise, I'm not sure the added
+complexity of RCU table walkers (per my statement above) is worth the
+effort / maintenance burden.
+
+-- 
+Thanks,
+Oliver
