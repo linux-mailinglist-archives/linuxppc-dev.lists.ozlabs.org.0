@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449328D6491
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 16:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953BD8D64CB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 16:49:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B7PeScBW;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=dOdOJWcE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrQYM4VLLz3cnR
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 00:31:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrQxz5tYbz3clL
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 00:49:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B7PeScBW;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=dOdOJWcE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrQXZ4YlTz3cVM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 00:31:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717165872; x=1748701872;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JvE95VldL4Wm6uxSEGwGimYI1FBYwpi2JYmljsv3ZAA=;
-  b=B7PeScBWvp8LyW/x9Sgi1zd3KrQkViy28VzoQPAQ52Ze+41Qc190BN19
-   yFyBTC4l9FGkAQtbr2sE/EE6czdW3Q8aGe3Fm9c/ixffV67Huwi9//DdA
-   idxSruQ+Bk12rjf3WgrvbjlV2X85014UJprSkObuPnwM8A5It8Wp3Pf7T
-   JS2A7mtOAcNU9EUHhvxoPcZD7AxqdY7u9BcckInXHVVk5kF6s2tVSrVMn
-   moZWsRsvNBeNUGksY0olCVImljKt2rQywZsdz7XkmIaxEmLJlWblSOyO4
-   tDycltVIsB6h2xAw+qgTXohwwQQ6EGU7oLoaga0bZ7HKgBCCJYz7b3S7Z
-   g==;
-X-CSE-ConnectionGUID: L+1o6W3IRmuAA91SFrUv0Q==
-X-CSE-MsgGUID: EIGteJ3nRnq/uBdR/ILzqA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="36242699"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="36242699"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 07:31:06 -0700
-X-CSE-ConnectionGUID: 0FTBQ/SASnC/QvwnryK7fA==
-X-CSE-MsgGUID: KgUFmX8zTD2bMRaXcoAYwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="73666970"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 07:30:59 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sD3HS-0000000CUNA-19F6;
-	Fri, 31 May 2024 17:30:54 +0300
-Date: Fri, 31 May 2024 17:30:53 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
-Message-ID: <ZlnfHWx3uPzCoJwX@smile.fi.intel.com>
-References: <20240530230037.1156253-2-andriy.shevchenko@linux.intel.com>
- <202405311428.tzsBMIPs-lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrQwN5PBxz3cVM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 00:48:19 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 36E239C53DB;
+	Fri, 31 May 2024 10:48:14 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id OWmkbaQti6vx; Fri, 31 May 2024 10:48:13 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 328EF9C584C;
+	Fri, 31 May 2024 10:48:13 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 328EF9C584C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1717166893; bh=4gJOT2TZM2vOr96kCkDrX091SaTjqssoW8NSELgeEzE=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=dOdOJWcEsLtRJnvmZHrd7joAl03hH1oLp9K4prLenwv82raBUOBImRW4hxEktPxXA
+	 EYyPIxUtmyJFKap11cje6hg71HRxQKTFEn+8oTyaqpLhSw6XWZxobCVOr3RKeAyNtn
+	 x6bfE1KhLhAnYzMWhEc/DwzKbfQ6CZQfBckFeP4mRXK/MV0SUpO+GcklsYZTOkb+Kj
+	 XL15epmwTYJ2exGvzlIFi0qyvm+CXfbfeb9JdK32vJSszSUNpgKPGzrW/RVr/BK9LU
+	 LjYSQyTy1TVR+0E/uNLt0Vox/0OiDrYus5FMBOIThFzilOQk0WOgkuVJgf6kRhLJTK
+	 1VeDckfjArpdQ==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 7DO2Pw_eVkH3; Fri, 31 May 2024 10:48:13 -0400 (EDT)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id E7B269C53DB;
+	Fri, 31 May 2024 10:48:12 -0400 (EDT)
+Date: Fri, 31 May 2024 10:48:12 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Mark Brown <broonie@kernel.org>
+Message-ID: <1200863744.706237.1717166892907.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <826f6c22-d1f1-42ce-a8d1-2d5cb894a970@sirena.org.uk>
+References: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com> <20240515135411.343333-8-elinor.montmasson@savoirfairelinux.com> <ffb3624f-2170-4642-aaa5-fb6736a75d59@sirena.org.uk> <822567441.349330.1715936735603.JavaMail.zimbra@savoirfairelinux.com> <da74d276-b028-448b-bb28-295de49dbcda@sirena.org.uk> <1660761484.701255.1717159615755.JavaMail.zimbra@savoirfairelinux.com> <826f6c22-d1f1-42ce-a8d1-2d5cb894a970@sirena.org.uk>
+Subject: Re: [PATCHv4 7/9] ASoC: fsl-asoc-card: add DT clock "cpu_sysclk"
+ with generic codec
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202405311428.tzsBMIPs-lkp@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: ASoC: fsl-asoc-card: add DT clock "cpu_sysclk" with generic codec
+Thread-Index: KvvrpDg7ywtOAT1UfAfWnw0nFmtERw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,40 +75,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, alsa-devel@alsa-project.org, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Xiubo Li <Xiubo.Lee@gmail.com>, llvm@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>, linux-kernel@vger.kernel.org, Kevin Lu <kevin-lu@ti.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, Rob Herring <robh@kernel.org>, Takashi Iwai <tiwai@suse.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, linux-rockchip@lists.infradead.org, Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Baojun Xu <baojun.xu@ti.com>, Shenghao Ding <shenghao-ding@ti.com>, James Schulman <james.schulman@cirrus.com>, Alper Nebi Yasak <alpernebiyasak@gmail.com>, Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org, oe-kbuild-all@lists.linux.dev, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, Weidong Wang <wangweidong.a@awinic.com>, David Rhodes <david.rhodes@cirrus.com>, Liam Girdwood <lgirdwood@
- gmail.com>, Chancel Liu <chancel.liu@nxp.com>, Banajit Goswami <bgoswami@quicinc.com>, patches@opensource.cirrus.com, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound <linux-sound@vger.kernel.org>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, shengjiu wang <shengjiu.wang@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 31, 2024 at 02:42:33PM +0800, kernel test robot wrote:
-> Hi Andy,
+From: "Mark Brown" <broonie@kernel.org>
+Sent: Friday, 31 May, 2024 15:05:28
+> On Fri, May 31, 2024 at 08:46:55AM -0400, Elinor Montmasson wrote:
+>> From: "Mark Brown" <broonie@kernel.org>
+>> > On Fri, May 17, 2024 at 05:05:35AM -0400, Elinor Montmasson wrote:
+>> >> From: "Mark Brown" <broonie@kernel.org>
+>> >> > On Wed, May 15, 2024 at 03:54:09PM +0200, Elinor Montmasson wrote:
 > 
-> kernel test robot noticed the following build errors:
+>> >> >> +		struct clk *cpu_sysclk = clk_get(&pdev->dev, "cpu_sysclk");
+>> >> >> +		if (!IS_ERR(cpu_sysclk)) {
+>> >> >> +			priv->cpu_priv.sysclk_freq[TX] = clk_get_rate(cpu_sysclk);
+>> >> >> +			priv->cpu_priv.sysclk_freq[RX] = priv->cpu_priv.sysclk_freq[TX];
+>> >> >> +			clk_put(cpu_sysclk);
+>> >> >> +		}
 > 
-> [auto build test ERROR on broonie-sound/for-next]
-> [also build test ERROR on shawnguo/for-next rockchip/for-next linus/master v6.10-rc1 next-20240529]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>> >> > I don't really understand the goal here - this is just reading whatever
+>> >> > frequency happens to be set in the hardware when the driver starts up
+>> >> > which if nothing else seems rather fragile?
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/ASoC-codecs-Remove-unused-of_gpio-h/20240531-070350
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-> patch link:    https://lore.kernel.org/r/20240530230037.1156253-2-andriy.shevchenko%40linux.intel.com
-> patch subject: [PATCH v1 1/6] ASoC: codecs: Remove unused of_gpio.h
-> config: i386-buildonly-randconfig-006-20240531 (https://download.01.org/0day-ci/archive/20240531/202405311428.tzsBMIPs-lkp@intel.com/config)
-> compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240531/202405311428.tzsBMIPs-lkp@intel.com/reproduce)
+>> >> The driver allow to set the sysclk frequency
+>> >> of the CPU DAI through `priv->cpu_priv.sysclk_freq` when calling
+>> >> `fsl_asoc_card_hw_params()`.
+>> >> Currently it is hard-coded per use-case in the driver.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202405311428.tzsBMIPs-lkp@intel.com/
+>> >> My reasoning was that with a generic codec/compatible, there might
+>> >> be use-cases needing to use this parameter, so I exposed it here via DT.
+>> > 
+>> >> Is it a bad idea to expose this parameter ? This is not a requirement for the
+>> >> driver to work, most of the current compatibles do not use this parameter.
+>> >> It is currently used only for `fsl,imx-audio-cs42888`.
+>> >> In that case I can remove this commit.
+> 
+>> > I'm having a hard time connecting your reply here with my comment.  This
+>> > isn't as far as I can see allowing the frequency to be explicitly
+>> > configured, it's just using whatever value happens to be programmed in
+>> > the clock when the driver starts.
+> 
+>> In v3 I used parameters `cpu-sysclk-freq-rx/tx` to explicitly
+>> set the frequency.
+>> In its review Rob Herring said that the clock bindings should
+>> be used, so that's why I changed it to use this `cpu_sysclk` clock.
+> 
+> So you're trying to use this as the audio clock?  There's no code that
+> enables the clock which seems worrying, and I'd expect that if the
+> device is using it's own clock the device would be querying it directly
+> via the clock API rather than this.  This all seems really confused.
 
-My gosh, the whoever wrote the GPIO code in that driver has no clue what they
-are doing. It's a pure mess.
+It's not specifically the audio clock, I am merely using this
+in the machine driver to let the user the possibility
+to configure the CPU DAI sysclock frequency.
+The CPU DAI and codec drivers already manage their
+own clocks.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I agree it is confused, I am trying to expose a driver option
+for this generic compatible without really knowing a use case where it
+would be needed.
+With the S/PDIF it isn't needed, so I should probably remove this commit.
