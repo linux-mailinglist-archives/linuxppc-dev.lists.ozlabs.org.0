@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4118D62B6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 15:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C348D62AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 15:16:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G4za6dA7;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fl7Sn7nR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrNv44zHVz30WC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 23:17:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrNtJ1wncz3cWR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 23:16:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G4za6dA7;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fl7Sn7nR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrNsZ0SPdz3cQD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 23:15:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrNsX59jjz3bvP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 23:15:42 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717161347; x=1748697347;
+  t=1717161346; x=1748697346;
   h=date:from:to:cc:subject:message-id;
-  bh=yAjCqCnQORGSW6+5Dcjxdp+de1+K/jDIIP5EciQy32w=;
-  b=G4za6dA7s/PnmMVyOWtucyIUZH3mDNvZNRXj7LfR8ZYtaZneYsPa4K9B
-   YuASN9kAaQff7HvQXq2IDVog01tsWfcLA/LPemrGK+8vtb4GnNMJ8LWkl
-   DwaRx6Xa1tBPYzsHoFgK1/O1zbNoTNK11xZmopKSMfyvqXeIa4lDHbI9h
-   4jH8QBZ+wOvHNwD11eYKC8GHNfhV5wL+jns0iBbJK7H7DHUJFV2bj92MA
-   rp3FRlgEAdwp/vVSIWCpRNLJGklFw5UNcEzB53znbgq+T4kqeWZgUf6BN
-   lnJGukwR0iD6ve3nnU1F2iyzsNF9qgQdIokbWTe0AqVei0Wj8ZIHgUgqk
-   Q==;
-X-CSE-ConnectionGUID: PqU2yA71TEOphXGL0F4oFg==
-X-CSE-MsgGUID: uAUl2vB0SoSqrgtrg34wNg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13824548"
+  bh=BfnLM6IsNnDV4ystUcs83N+Y4NPhFiSCW1O5UaPfO80=;
+  b=fl7Sn7nRGow/nuMRAtpl7skvMehVVELKGm2ZdmgK0Hdo0taJ9G9IO8zk
+   7GNyAIfOVfdsP8j68HBpywk/P6CYBP7VSkuKqKv+QrYVrg449gC+/XEQy
+   2hCgKuyGlJu2Q1BMOC2ylTBiMKLCmD9BvPuthtTvPxh9GpE+G48Ed0QqW
+   JeEN6VXJ9fb0XZ4hvRm0TQUSHYYJh4dzs20ifempodCI3dYGyzWnnZzSP
+   5RPqeszR4KaxD/xKim2k5qYIvMXC62rxK/LrEq4Q5vZCotRPEhYyajE6H
+   ARQYUnVk6F6nY2uvZIu84QphbCk/DF+7dcywxO8GyULCcI3o/s7RPqBmW
+   g==;
+X-CSE-ConnectionGUID: XeZpWsv6RXaRVZ6y9O1Ynw==
+X-CSE-MsgGUID: DKGs0eVtRdKzDuLGl4pzvA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24263434"
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13824548"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 06:15:44 -0700
-X-CSE-ConnectionGUID: D2cGD/DqQjqKQbYC2pqgyw==
-X-CSE-MsgGUID: e3dHW4uSTRC9FLPeQOTi+w==
+   d="scan'208";a="24263434"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 06:15:40 -0700
+X-CSE-ConnectionGUID: NW9BPvq6TWSSY0E2MF7bdA==
+X-CSE-MsgGUID: Nz/nDmkHRZ24jdRUDjs3zQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="40715208"
+   d="scan'208";a="40610804"
 Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 31 May 2024 06:15:43 -0700
+  by fmviesa005.fm.intel.com with ESMTP; 31 May 2024 06:15:38 -0700
 Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sD26c-000H8A-0k;
-	Fri, 31 May 2024 13:15:39 +0000
-Date: Fri, 31 May 2024 21:14:30 +0800
+	id 1sD26W-000H83-1w;
+	Fri, 31 May 2024 13:15:33 +0000
+Date: Fri, 31 May 2024 21:15:21 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
- c6482eb8d937f3c97f4e73253810173c0040fd7d
-Message-ID: <202405312127.mFBb4ftQ-lkp@intel.com>
+Subject: [powerpc:fixes] BUILD SUCCESS
+ be2fc65d66e0406cc9d39d40becaecdf4ee765f3
+Message-ID: <202405312118.Cl0kgRvk-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,10 +74,10 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-branch HEAD: c6482eb8d937f3c97f4e73253810173c0040fd7d  KVM: PPC: Book3S HV nestedv2: Add support for reading VPA counters for pseries guests
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
+branch HEAD: be2fc65d66e0406cc9d39d40becaecdf4ee765f3  powerpc: Limit ARCH_HAS_KERNEL_FPU_SUPPORT to PPC64
 
-elapsed time: 1338m
+elapsed time: 1339m
 
 configs tested: 117
 configs skipped: 155
