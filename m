@@ -2,36 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F948D65A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303F58D65D1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:32:58 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YT+9jQg6;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRh21qtLz3frd
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:22:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRvq2ws0z3ftZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:32:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRgd3n0Yz3fm1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:22:20 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D4BD1424;
-	Fri, 31 May 2024 08:22:11 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31AA63F641;
-	Fri, 31 May 2024 08:21:44 -0700 (PDT)
-Date: Fri, 31 May 2024 16:21:38 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Szabolcs Nagy <szabolcs.nagy@arm.com>, dave.hansen@linux.intel.com
-Subject: Re: [PATCH v4 17/29] arm64: implement PKEYS support
-Message-ID: <20240531152138.GA1805682@e124191.cambridge.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-18-joey.gouly@arm.com>
- <ZlnlQ/avUAuSum5R@arm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YT+9jQg6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRsW04Dgz3fmT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:30:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717169455; x=1748705455;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hsjA0x6Srt7WNltFPQm36M1XEQClgGGCUWLHMkEXdTw=;
+  b=YT+9jQg6ROLiTIR2loc+gu467/qFCoLB+476yFr805YZDnr0VN6K/X0p
+   klDTAbX4S4ZydlBmfDKNR+0iIOXLFhKVdqwVO6qhqu8wsyTcP4tMFDT1m
+   nTidGRln19bVBDwb2TnH7zUZ04LC3xL0fwANSQK9nfuXpzDei5DzAXCV4
+   6AngJDqIqVubArMxz24GSWqydv91S7IBmjCKzMiAusyZT5lyVRJ+5/Kiz
+   TpYARsJItwZg+1wahSROCSj+c7R/MCkkgeeEklpzGvvsbL55lGeR8mDJu
+   i589FVSV6QpKdRRsn1coVX70qfzixkCD6ZlskosUIyMbUBW3DiT3NyUFi
+   Q==;
+X-CSE-ConnectionGUID: Zw7YksInTIipNHsiBzixOw==
+X-CSE-MsgGUID: FH35cM4tQQq6hR0c8ccLBg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839583"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="13839583"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:50 -0700
+X-CSE-ConnectionGUID: rj6obq2ERMO5QDiPGyKZ2g==
+X-CSE-MsgGUID: q2N5xO0fShaiM6SvMI6SaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="40627259"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:40 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 8ED9F228; Fri, 31 May 2024 18:30:39 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Rob Herring <robh@kernel.org>,
+	Weidong Wang <wangweidong.a@awinic.com>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	patches@opensource.cirrus.com,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH v2 0/6] ASoC: Drop or replace of_gpio.h
+Date: Fri, 31 May 2024 18:29:27 +0300
+Message-ID: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZlnlQ/avUAuSum5R@arm.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,72 +88,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Nicolin Chen <nicoleotsuka@gmail.com>, Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Liam Girdwood <lgirdwood@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, David Rhodes <david.rhodes@cirrus.com>, Kevin Lu <kevin-lu@ti.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Banajit Goswami <bgoswami@quicinc.com>, Shawn Guo <shawnguo@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Jaroslav Kysela <perex@perex.cz>, Baojun Xu <baojun.xu@ti.com>, Heiko Stuebner <heiko@sntech.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Szabolcs,
+Replace or drop the legacy header that is subject to remove.
+Not all of them were compile-tested, the series might have
+hidden compilation errors.
 
-On Fri, May 31, 2024 at 03:57:07PM +0100, Szabolcs Nagy wrote:
-> The 05/03/2024 14:01, Joey Gouly wrote:
-> > Implement the PKEYS interface, using the Permission Overlay Extension.
-> ...
-> > +#ifdef CONFIG_ARCH_HAS_PKEYS
-> > +int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long init_val)
-> > +{
-> > +	u64 new_por = POE_RXW;
-> > +	u64 old_por;
-> > +	u64 pkey_shift;
-> > +
-> > +	if (!arch_pkeys_enabled())
-> > +		return -ENOSPC;
-> > +
-> > +	/*
-> > +	 * This code should only be called with valid 'pkey'
-> > +	 * values originating from in-kernel users.  Complain
-> > +	 * if a bad value is observed.
-> > +	 */
-> > +	if (WARN_ON_ONCE(pkey >= arch_max_pkey()))
-> > +		return -EINVAL;
-> > +
-> > +	/* Set the bits we need in POR:  */
-> > +	if (init_val & PKEY_DISABLE_ACCESS)
-> > +		new_por = POE_X;
-> > +	else if (init_val & PKEY_DISABLE_WRITE)
-> > +		new_por = POE_RX;
-> > +
-> 
-> given that the architecture allows r,w,x permissions to be
-> set independently, should we have a 'PKEY_DISABLE_EXEC' or
-> similar api flag?
-> 
-> (on other targets it can be some invalid value that fails)
+In v2:
+- added tags (Kuninori, Charles)
+- ripped out TAS2781 (it's a mess from GPIO handling perspective)
 
-I didn't think about the best way to do that yet. PowerPC has a PKEY_DISABLE_EXECUTE.
+Andy Shevchenko (6):
+  ASoC: codecs: Remove unused of_gpio.h
+  ASoC: fsl: Remove unused of_gpio.h
+  ASoC: rockchip: Remove unused of_gpio.h
+  ASoC: codecs: Replace of_gpio.h by proper one
+  ASoC: generic: Replace of_gpio.h by proper one
+  ASoC: samsung: Replace of_gpio.h by proper one
 
-We could either make that generic, and X86 has to error if it sees that bit, or
-we add a arch-specific PKEY_DISABLE_EXECUTE like PowerPC.
+ sound/soc/codecs/ak4118.c                           | 1 -
+ sound/soc/codecs/ak4458.c                           | 1 -
+ sound/soc/codecs/aw88395/aw88395.c                  | 2 +-
+ sound/soc/codecs/aw88399.c                          | 1 -
+ sound/soc/codecs/cs53l30.c                          | 1 -
+ sound/soc/codecs/max98390.c                         | 1 -
+ sound/soc/codecs/pcm3168a.c                         | 1 -
+ sound/soc/codecs/rk817_codec.c                      | 1 -
+ sound/soc/codecs/tas2552.c                          | 1 -
+ sound/soc/codecs/tas2764.c                          | 1 -
+ sound/soc/codecs/tas2770.c                          | 1 -
+ sound/soc/codecs/tas2780.c                          | 1 -
+ sound/soc/codecs/tlv320adc3xxx.c                    | 1 -
+ sound/soc/codecs/tlv320adcx140.c                    | 1 -
+ sound/soc/codecs/tlv320aic31xx.c                    | 1 -
+ sound/soc/codecs/ts3a227e.c                         | 1 -
+ sound/soc/codecs/wsa883x.c                          | 1 -
+ sound/soc/fsl/imx-es8328.c                          | 1 -
+ sound/soc/fsl/imx-rpmsg.c                           | 2 --
+ sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
+ sound/soc/rockchip/rockchip_i2s.c                   | 1 -
+ sound/soc/rockchip/rockchip_spdif.c                 | 1 -
+ sound/soc/samsung/aries_wm8994.c                    | 2 +-
+ 23 files changed, 4 insertions(+), 24 deletions(-)
 
-A user can still set it by interacting with the register directly, but I guess
-we want something for the glibc interface..
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-Dave, any thoughts here?
-
-> 
-> > +	/* Shift the bits in to the correct place in POR for pkey: */
-> > +	pkey_shift = pkey * POR_BITS_PER_PKEY;
-> > +	new_por <<= pkey_shift;
-> > +
-> > +	/* Get old POR and mask off any old bits in place: */
-> > +	old_por = read_sysreg_s(SYS_POR_EL0);
-> > +	old_por &= ~(POE_MASK << pkey_shift);
-> > +
-> > +	/* Write old part along with new part: */
-> > +	write_sysreg_s(old_por | new_por, SYS_POR_EL0);
-> > +
-> > +	return 0;
-> > +}
-> > +#endif
-
-Thanks,
-Joey
