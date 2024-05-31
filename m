@@ -1,64 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C348D62AE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 15:16:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156478D6312
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 15:34:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fl7Sn7nR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eZJe2E3V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrNtJ1wncz3cWR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 23:16:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrPHd2NfDz3cYf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 23:34:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fl7Sn7nR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eZJe2E3V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrNsX59jjz3bvP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 23:15:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717161346; x=1748697346;
-  h=date:from:to:cc:subject:message-id;
-  bh=BfnLM6IsNnDV4ystUcs83N+Y4NPhFiSCW1O5UaPfO80=;
-  b=fl7Sn7nRGow/nuMRAtpl7skvMehVVELKGm2ZdmgK0Hdo0taJ9G9IO8zk
-   7GNyAIfOVfdsP8j68HBpywk/P6CYBP7VSkuKqKv+QrYVrg449gC+/XEQy
-   2hCgKuyGlJu2Q1BMOC2ylTBiMKLCmD9BvPuthtTvPxh9GpE+G48Ed0QqW
-   JeEN6VXJ9fb0XZ4hvRm0TQUSHYYJh4dzs20ifempodCI3dYGyzWnnZzSP
-   5RPqeszR4KaxD/xKim2k5qYIvMXC62rxK/LrEq4Q5vZCotRPEhYyajE6H
-   ARQYUnVk6F6nY2uvZIu84QphbCk/DF+7dcywxO8GyULCcI3o/s7RPqBmW
-   g==;
-X-CSE-ConnectionGUID: XeZpWsv6RXaRVZ6y9O1Ynw==
-X-CSE-MsgGUID: DKGs0eVtRdKzDuLGl4pzvA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24263434"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="24263434"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 06:15:40 -0700
-X-CSE-ConnectionGUID: NW9BPvq6TWSSY0E2MF7bdA==
-X-CSE-MsgGUID: Nz/nDmkHRZ24jdRUDjs3zQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="40610804"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 31 May 2024 06:15:38 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sD26W-000H83-1w;
-	Fri, 31 May 2024 13:15:33 +0000
-Date: Fri, 31 May 2024 21:15:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes] BUILD SUCCESS
- be2fc65d66e0406cc9d39d40becaecdf4ee765f3
-Message-ID: <202405312118.Cl0kgRvk-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrPGt0Mhkz30WL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 23:34:13 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7B2A562C5E
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 13:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2EC2FC32781
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 13:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717162451;
+	bh=pE1Z7Nn17cjs6GOXnWUpYEPc1fK/k9O3BQ52SHBSNrE=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=eZJe2E3VUzkXmIxiPYeS4Tp4AiqTum41n/nkRXfXdzI2wnyczHsodC5q1u1CV2M91
+	 PiBiGc+5rkyBhmj1kldlLeyeeexzbyZ/sppxXc5/icqXqbldKLU/SwdkRt0MEjUk0b
+	 T/ONb67/fkhKNSyTjyFbCrcIy4uC2xGv4C8jjMoS2ZVb98Q1nIk0mcAEynynXqv1uA
+	 nuoooefHgJXhGTa+GNWh5tTJ/e5AfHfZ5DHGRTpjZgpHVPGB1gkacEP8eASG05mF1i
+	 02z7thSPmdTmatsS6H9/apJFXNwBzoiegg0fuGaKD+QedPzVLG+JLUNF9XdGyBpFXe
+	 OAPNqiwq2zTew==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 1DAA2C53B7E; Fri, 31 May 2024 13:34:11 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
+ scanning, some SCSI devices might not be configured
+Date: Fri, 31 May 2024 13:34:10 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: high
+X-Bugzilla-Who: doru.iorgulescu1@gmail.com
+X-Bugzilla-Status: NEEDINFO
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-218858-206035-pcHuoSmV5w@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
+References: <bug-218858-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,140 +79,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
-branch HEAD: be2fc65d66e0406cc9d39d40becaecdf4ee765f3  powerpc: Limit ARCH_HAS_KERNEL_FPU_SUPPORT to PPC64
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
-elapsed time: 1339m
+--- Comment #15 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
+Created attachment 306389
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D306389&action=3Dedit
+hdparam-I.txt
 
-configs tested: 117
-configs skipped: 155
+--=20
+You may reply to this email to add a comment.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240531   gcc  
-arc                   randconfig-002-20240531   gcc  
-arm                            mmp2_defconfig   gcc  
-arm                       omap2plus_defconfig   gcc  
-arm                        vexpress_defconfig   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   clang
-arm64                               defconfig   gcc  
-arm64                 randconfig-003-20240531   gcc  
-arm64                 randconfig-004-20240531   gcc  
-csky                              allnoconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240531   gcc  
-csky                  randconfig-002-20240531   gcc  
-hexagon                          allmodconfig   clang
-hexagon                          allyesconfig   clang
-i386         buildonly-randconfig-001-20240531   clang
-i386         buildonly-randconfig-004-20240531   clang
-i386         buildonly-randconfig-006-20240531   clang
-i386                                defconfig   clang
-i386                  randconfig-002-20240531   clang
-i386                  randconfig-003-20240531   clang
-i386                  randconfig-005-20240531   clang
-i386                  randconfig-006-20240531   clang
-i386                  randconfig-011-20240531   clang
-i386                  randconfig-014-20240531   clang
-i386                  randconfig-016-20240531   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240531   gcc  
-loongarch             randconfig-002-20240531   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  decstation_64_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240531   gcc  
-nios2                 randconfig-002-20240531   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                    or1ksim_defconfig   gcc  
-parisc                randconfig-001-20240531   gcc  
-parisc                randconfig-002-20240531   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240531   clang
-powerpc               randconfig-002-20240531   clang
-powerpc               randconfig-003-20240531   gcc  
-powerpc                  storcenter_defconfig   gcc  
-powerpc64             randconfig-001-20240531   clang
-powerpc64             randconfig-002-20240531   clang
-powerpc64             randconfig-003-20240531   gcc  
-riscv                            allmodconfig   clang
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240531   gcc  
-s390                  randconfig-002-20240531   gcc  
-sh                               allmodconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                    randconfig-001-20240531   gcc  
-sh                    randconfig-002-20240531   gcc  
-sh                           se7343_defconfig   gcc  
-sh                   secureedge5410_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64               randconfig-001-20240531   gcc  
-sparc64               randconfig-002-20240531   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                    randconfig-001-20240531   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240531   clang
-x86_64       buildonly-randconfig-003-20240531   clang
-x86_64       buildonly-randconfig-004-20240531   clang
-x86_64       buildonly-randconfig-006-20240531   clang
-x86_64                randconfig-002-20240531   clang
-x86_64                randconfig-011-20240531   clang
-x86_64                randconfig-014-20240531   clang
-x86_64                randconfig-071-20240531   clang
-x86_64                randconfig-075-20240531   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                  audio_kc705_defconfig   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa                randconfig-001-20240531   gcc  
-xtensa                randconfig-002-20240531   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+You are receiving this mail because:
+You are watching the assignee of the bug.=
