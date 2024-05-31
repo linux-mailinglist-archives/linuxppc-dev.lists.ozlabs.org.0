@@ -1,64 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A81F8D6541
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:10:26 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S2PLFqCk;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F948D65A4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:22:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRPq53pMz3c13
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:10:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRh21qtLz3frd
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:22:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S2PLFqCk;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRP32TsGz3fln
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:09:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717168185; x=1748704185;
-  h=date:from:to:cc:subject:message-id;
-  bh=Yll7Dlnx3HTZft1itAg7V0TUjUe6bgc1sw22MhvAPyk=;
-  b=S2PLFqCkLGKiNtDwYWUlvcmI7DnW1+9YlAhHtdRz9Eh0O4fOCDqBBNmg
-   wRSxfUFULpG5kPoDGRMthXCsndGLLC0VJq37BAwHW8bRcGSf4h73nXjEp
-   HzJmMZxdIWNJmoztNWWPXsjGTVkUmOAmq2Q6czl7XccxNQS+EE+/uwgt5
-   pXI1MAi0ICoDWlkfkLsCG9JpDCd7MAp5SkmRyaUhRZ5aAL7ixS2w321bI
-   MZm4tImcUvQ1Xl1Z3QX/Ui4VY4tWRl5ShkR/JZwyAcu4RduWZyTQkvH9W
-   LiWGAXoZDZ4VaOLEc5F8TgyJ+fruWrm3r17CINifV9or6LTJVyP8ncSom
-   A==;
-X-CSE-ConnectionGUID: uLDfupJETd2CVigIEHgFgw==
-X-CSE-MsgGUID: WjyjqvvRReKpUm7g90igZg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24291597"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="24291597"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:09:38 -0700
-X-CSE-ConnectionGUID: FcvO3Mc7RNe21gyxKxL1HQ==
-X-CSE-MsgGUID: O1opCDiDRyip1QClqCS5Kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="67389443"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 31 May 2024 08:09:36 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sD3sQ-000HEf-2t;
-	Fri, 31 May 2024 15:09:16 +0000
-Date: Fri, 31 May 2024 23:07:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 9a5fe0d1529f1a514d042b1cd504c383e6f622ad
-Message-ID: <202405312302.npORZ8us-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRgd3n0Yz3fm1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:22:20 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D4BD1424;
+	Fri, 31 May 2024 08:22:11 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31AA63F641;
+	Fri, 31 May 2024 08:21:44 -0700 (PDT)
+Date: Fri, 31 May 2024 16:21:38 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Szabolcs Nagy <szabolcs.nagy@arm.com>, dave.hansen@linux.intel.com
+Subject: Re: [PATCH v4 17/29] arm64: implement PKEYS support
+Message-ID: <20240531152138.GA1805682@e124191.cambridge.arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-18-joey.gouly@arm.com>
+ <ZlnlQ/avUAuSum5R@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZlnlQ/avUAuSum5R@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,205 +43,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 9a5fe0d1529f1a514d042b1cd504c383e6f622ad  Automatic merge of 'master' into merge (2024-05-29 22:46)
+Hi Szabolcs,
 
-elapsed time: 1450m
+On Fri, May 31, 2024 at 03:57:07PM +0100, Szabolcs Nagy wrote:
+> The 05/03/2024 14:01, Joey Gouly wrote:
+> > Implement the PKEYS interface, using the Permission Overlay Extension.
+> ...
+> > +#ifdef CONFIG_ARCH_HAS_PKEYS
+> > +int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long init_val)
+> > +{
+> > +	u64 new_por = POE_RXW;
+> > +	u64 old_por;
+> > +	u64 pkey_shift;
+> > +
+> > +	if (!arch_pkeys_enabled())
+> > +		return -ENOSPC;
+> > +
+> > +	/*
+> > +	 * This code should only be called with valid 'pkey'
+> > +	 * values originating from in-kernel users.  Complain
+> > +	 * if a bad value is observed.
+> > +	 */
+> > +	if (WARN_ON_ONCE(pkey >= arch_max_pkey()))
+> > +		return -EINVAL;
+> > +
+> > +	/* Set the bits we need in POR:  */
+> > +	if (init_val & PKEY_DISABLE_ACCESS)
+> > +		new_por = POE_X;
+> > +	else if (init_val & PKEY_DISABLE_WRITE)
+> > +		new_por = POE_RX;
+> > +
+> 
+> given that the architecture allows r,w,x permissions to be
+> set independently, should we have a 'PKEY_DISABLE_EXEC' or
+> similar api flag?
+> 
+> (on other targets it can be some invalid value that fails)
 
-configs tested: 182
-configs skipped: 3
+I didn't think about the best way to do that yet. PowerPC has a PKEY_DISABLE_EXECUTE.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+We could either make that generic, and X86 has to error if it sees that bit, or
+we add a arch-specific PKEY_DISABLE_EXECUTE like PowerPC.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240531   gcc  
-arc                   randconfig-002-20240531   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                            mmp2_defconfig   gcc  
-arm                       omap2plus_defconfig   gcc  
-arm                   randconfig-001-20240531   clang
-arm                   randconfig-002-20240531   clang
-arm                   randconfig-003-20240531   clang
-arm                   randconfig-004-20240531   clang
-arm                        vexpress_defconfig   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   clang
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240531   clang
-arm64                 randconfig-002-20240531   clang
-arm64                 randconfig-003-20240531   gcc  
-arm64                 randconfig-004-20240531   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240531   gcc  
-csky                  randconfig-002-20240531   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240531   clang
-hexagon               randconfig-002-20240531   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240531   clang
-i386         buildonly-randconfig-002-20240531   gcc  
-i386         buildonly-randconfig-003-20240531   gcc  
-i386         buildonly-randconfig-004-20240531   clang
-i386         buildonly-randconfig-005-20240531   gcc  
-i386         buildonly-randconfig-006-20240531   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240531   gcc  
-i386                  randconfig-002-20240531   clang
-i386                  randconfig-003-20240531   clang
-i386                  randconfig-004-20240531   gcc  
-i386                  randconfig-005-20240531   clang
-i386                  randconfig-006-20240531   clang
-i386                  randconfig-011-20240531   clang
-i386                  randconfig-012-20240531   gcc  
-i386                  randconfig-013-20240531   gcc  
-i386                  randconfig-014-20240531   clang
-i386                  randconfig-015-20240531   gcc  
-i386                  randconfig-016-20240531   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                        allyesconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240531   gcc  
-loongarch             randconfig-002-20240531   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                             allmodconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                  decstation_64_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240531   gcc  
-nios2                 randconfig-002-20240531   gcc  
-openrisc                         allmodconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                    or1ksim_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240531   gcc  
-parisc                randconfig-002-20240531   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240531   clang
-powerpc               randconfig-002-20240531   clang
-powerpc               randconfig-003-20240531   gcc  
-powerpc                  storcenter_defconfig   gcc  
-powerpc64             randconfig-001-20240531   clang
-powerpc64             randconfig-002-20240531   clang
-powerpc64             randconfig-003-20240531   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240531   clang
-riscv                 randconfig-002-20240531   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240531   gcc  
-s390                  randconfig-002-20240531   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240531   gcc  
-sh                    randconfig-002-20240531   gcc  
-sh                           se7343_defconfig   gcc  
-sh                   secureedge5410_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240531   gcc  
-sparc64               randconfig-002-20240531   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240531   gcc  
-um                    randconfig-002-20240531   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240531   clang
-x86_64       buildonly-randconfig-002-20240531   gcc  
-x86_64       buildonly-randconfig-003-20240531   clang
-x86_64       buildonly-randconfig-004-20240531   clang
-x86_64       buildonly-randconfig-005-20240531   gcc  
-x86_64       buildonly-randconfig-006-20240531   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240531   gcc  
-x86_64                randconfig-002-20240531   clang
-x86_64                randconfig-003-20240531   gcc  
-x86_64                randconfig-004-20240531   gcc  
-x86_64                randconfig-005-20240531   gcc  
-x86_64                randconfig-006-20240531   gcc  
-x86_64                randconfig-011-20240531   clang
-x86_64                randconfig-012-20240531   gcc  
-x86_64                randconfig-013-20240531   gcc  
-x86_64                randconfig-014-20240531   clang
-x86_64                randconfig-015-20240531   gcc  
-x86_64                randconfig-016-20240531   gcc  
-x86_64                randconfig-071-20240531   clang
-x86_64                randconfig-072-20240531   gcc  
-x86_64                randconfig-073-20240531   gcc  
-x86_64                randconfig-074-20240531   gcc  
-x86_64                randconfig-075-20240531   clang
-x86_64                randconfig-076-20240531   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                           allyesconfig   gcc  
-xtensa                  audio_kc705_defconfig   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa                randconfig-001-20240531   gcc  
-xtensa                randconfig-002-20240531   gcc  
+A user can still set it by interacting with the register directly, but I guess
+we want something for the glibc interface..
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Dave, any thoughts here?
+
+> 
+> > +	/* Shift the bits in to the correct place in POR for pkey: */
+> > +	pkey_shift = pkey * POR_BITS_PER_PKEY;
+> > +	new_por <<= pkey_shift;
+> > +
+> > +	/* Get old POR and mask off any old bits in place: */
+> > +	old_por = read_sysreg_s(SYS_POR_EL0);
+> > +	old_por &= ~(POE_MASK << pkey_shift);
+> > +
+> > +	/* Write old part along with new part: */
+> > +	write_sysreg_s(old_por | new_por, SYS_POR_EL0);
+> > +
+> > +	return 0;
+> > +}
+> > +#endif
+
+Thanks,
+Joey
