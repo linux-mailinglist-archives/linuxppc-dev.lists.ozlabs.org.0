@@ -1,84 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1588D65DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:35:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43318D6652
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 18:07:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fbSaCZcm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oNn7ecS+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRz706YQz3g4D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:35:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrSgV6kzkz3fpl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 02:07:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fbSaCZcm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oNn7ecS+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRsl4rs9z3fp4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:31:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169468; x=1748705468;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=sA6qI//FTL7pgyGldUMsd1jU+l556RY52OWXWgjHnto=;
-  b=fbSaCZcm8N8HKi8gZrGKas/ywWbCiuAMkq9uLNWe4WW/skW13gqpSov2
-   Qc6XDzYfEzZJ8vh61K/97s4JYOijMbr6MdABnQlsNTiL7//rl/irRRxKf
-   rxihGcALNR1gSOjcz0xkP4arqjXoG68OpEYeiUx/Sl0SHIMNcuWMWKdal
-   n84qHNfrPWUYxirx9H+LL6E5JsqfJi2QVUmf0ZN8t3swyuMj+sXF+zbHr
-   g2ZjXitwYguo8Y9O7rN4Moi7JdxiJLfbbdNgy8yi6G5JSEOIBLf3zrms3
-   vrugG0amxNEBCWBRUV0jmY1RIQCPXDtRZ20j6gvm6w9iLydRYW/BcrsAz
-   w==;
-X-CSE-ConnectionGUID: LhCA3AdvT1inoz3grnbNnQ==
-X-CSE-MsgGUID: GON6P8ahT0igkmqIuyUVJQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839678"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13839678"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:57 -0700
-X-CSE-ConnectionGUID: hHqXtMjBQrmkR3of3UKpuQ==
-X-CSE-MsgGUID: 7H/Fjvj9SyuUz1KNLZXrwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="40627351"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 04665692; Fri, 31 May 2024 18:30:39 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Rob Herring <robh@kernel.org>,
-	Weidong Wang <wangweidong.a@awinic.com>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
-	Chancel Liu <chancel.liu@nxp.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	patches@opensource.cirrus.com,
-	linuxppc-dev@lists.ozlabs.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH v2 6/6] ASoC: samsung: Replace of_gpio.h by proper one
-Date: Fri, 31 May 2024 18:29:33 +0300
-Message-ID: <20240531153038.1590171-7-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
-References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrSfn1KJJz3flj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 02:06:41 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 99935CE1D13;
+	Fri, 31 May 2024 16:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60699C116B1;
+	Fri, 31 May 2024 16:06:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717171596;
+	bh=xEdqlVv+yc6xxPC8F436pV7MA4qGjyS+19cc5fL/qdE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oNn7ecS+B1fnRsmy8+fl1HimszXdSyd42J3hvvDH6VHJHwaci4o+Ez3/vR/y4flHT
+	 8aUVVrsXUEvmDdPEU3VsuOQAI6pib0urxj+kBakXS48rdyvD121L3v4+MlurlMs8q/
+	 wkWU6mJcQCzyHSjOteiZcxQrXIAZU/nkb4DxRUGwSq0hBuUUZH37mkrkgT7NKDkGT9
+	 AfgSO6wzjvces+aADq3LHoZdBoVTd/yqSQI2pvLq2lHLyb2BuiFxO2Gvq/I10XY++m
+	 JzSw1s/zlo+7ZCXH99HZfZkwnpPe7283pyOHoxgiKzxImKdYesyl0n9HteStQ6EIyV
+	 xjGVLgjyF8uXw==
+Date: Fri, 31 May 2024 17:06:30 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Subject: Re: [PATCHv4 9/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
+ for generic codec
+Message-ID: <47a7a618-31d5-4dfc-9b6b-9426c6409e80@sirena.org.uk>
+References: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com>
+ <20240515135411.343333-10-elinor.montmasson@savoirfairelinux.com>
+ <ce9a87c6-4a5c-4f0a-a8df-1fdce8c1f5df@sirena.org.uk>
+ <599489232.349333.1715936741672.JavaMail.zimbra@savoirfairelinux.com>
+ <500db9de-6113-4e73-ba92-6e52ea292b32@sirena.org.uk>
+ <1598202415.701258.1717159684103.JavaMail.zimbra@savoirfairelinux.com>
+ <291daed8-a2e1-44d4-9a71-5bca2c585720@sirena.org.uk>
+ <1220272166.706254.1717166894551.JavaMail.zimbra@savoirfairelinux.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yZnX6EMpaBNVB9zA"
+Content-Disposition: inline
+In-Reply-To: <1220272166.706254.1717166894551.JavaMail.zimbra@savoirfairelinux.com>
+X-Cookie: Serving suggestion.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,36 +69,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolin Chen <nicoleotsuka@gmail.com>, Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Liam Girdwood <lgirdwood@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, David Rhodes <david.rhodes@cirrus.com>, Kevin Lu <kevin-lu@ti.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Banajit Goswami <bgoswami@quicinc.com>, Shawn Guo <shawnguo@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Jaroslav Kysela <perex@perex.cz>, Baojun Xu <baojun.xu@ti.com>, Heiko Stuebner <heiko@sntech.de>
+Cc: devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound <linux-sound@vger.kernel.org>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, shengjiu wang <shengjiu.wang@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-of_gpio.h is deprecated and subject to remove.
-The driver doesn't use it directly, replace it
-with what is really being used.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- sound/soc/samsung/aries_wm8994.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--yZnX6EMpaBNVB9zA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/sound/soc/samsung/aries_wm8994.c b/sound/soc/samsung/aries_wm8994.c
-index a548ac33dd94..01716df0c842 100644
---- a/sound/soc/samsung/aries_wm8994.c
-+++ b/sound/soc/samsung/aries_wm8994.c
-@@ -1,11 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0+
- #include <linux/extcon.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/iio/consumer.h>
- #include <linux/input-event-codes.h>
- #include <linux/mfd/wm8994/registers.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/regulator/consumer.h>
- #include <sound/jack.h>
- #include <sound/pcm_params.h>
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+On Fri, May 31, 2024 at 10:48:14AM -0400, Elinor Montmasson wrote:
+> From: "Mark Brown" <broonie@kernel.org>
 
+> > Why not just use the existing compatible - why would someone not want to
+> > be able to use the ASRC if it's available in their system?
+
+> That's true but it will be a problem if both `fsl-asoc-card.c` and
+> `imx-spdif.c` drivers have the same compatible, and they don't
+> have the same DT properties.
+
+So merge the two then?
+
+--yZnX6EMpaBNVB9zA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZZ9YUACgkQJNaLcl1U
+h9Ah0wf9F6py9uWrUIg1Rnm8ihwTDC9bWMpewQrTH27b7Ps5H2TxzLO6KV2GCTHH
+bAcv+oyDym09iXKcPq3vvTrenJ0iPIaZWSOOwYS38JtGL5dAMnv07C3R6iWJJd98
+z94n+vvDb3EL3UBU2+atXg0gUN5e4ekRdLRf7MmkjlGRszzVTuUafLdHUue4uPRw
+gKDNcu2v2gC2e3OaZnA5jQh5ypP74fLrnWxyktzZg8acu482DkDBA7h13lSFCF7H
+sZb+MsvHM7euPdKQ9nwfFk7bVErS0yb3PEPvNrd0ZJNvEE2aClUiFgNlKfNUY1hu
+PvxfhbZEbZGiNyV8WXYwqtqGyzHB9w==
+=o/G2
+-----END PGP SIGNATURE-----
+
+--yZnX6EMpaBNVB9zA--
