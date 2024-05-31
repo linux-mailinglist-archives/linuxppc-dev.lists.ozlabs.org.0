@@ -1,63 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBA68D677E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 18:56:15 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TwJWdVwE;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F938D681B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 19:21:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrTlw48wrz3fv5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 02:56:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrVK30wfTz3fyy
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 03:21:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TwJWdVwE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.51; helo=mail-lf1-f51.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrTlD3Fvjz3frg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 02:55:36 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9BD1362AEF;
-	Fri, 31 May 2024 16:55:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B972C32786;
-	Fri, 31 May 2024 16:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717174533;
-	bh=RH77djBrTwFxe/ywwViYLxao4C1lTcLNgr3/+jlMw7E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TwJWdVwEKQxLLuT2zhjCTU4ofNhZhMJQVWLYsNllbzmiMq4g+3q/az/Usq4y43LMF
-	 hOqKdVWc9tUeRo8JlaOG3viw8wq3006D8Rxih/RtMd6tIkX+7jcI9m3QUyEupqHLb7
-	 9/fXTCFvzSKzAnFIyyoQAJl7Sc79Wz2apuktg47kb417rVbeqJUxup0/AHvwrj5R0k
-	 JdicKCg+5jWkfBM+/gO/px8hBHvP4bnvaDIlNnSzVr32iJbIuPwq+Htln1qwJS55Uf
-	 rQuxZg0TrapwSzjUPs22HW6dEGALSrMySthcq4Y8XGU5ySw0hTiTJdviQTZcsl5hif
-	 EoZ1rzO7n4e0w==
-Date: Fri, 31 May 2024 17:55:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-Subject: Re: [PATCHv4 7/9] ASoC: fsl-asoc-card: add DT clock "cpu_sysclk"
- with generic codec
-Message-ID: <5d98d8b0-dd48-48dc-9552-b2906e31ce05@sirena.org.uk>
-References: <20240515135411.343333-1-elinor.montmasson@savoirfairelinux.com>
- <20240515135411.343333-8-elinor.montmasson@savoirfairelinux.com>
- <ffb3624f-2170-4642-aaa5-fb6736a75d59@sirena.org.uk>
- <822567441.349330.1715936735603.JavaMail.zimbra@savoirfairelinux.com>
- <da74d276-b028-448b-bb28-295de49dbcda@sirena.org.uk>
- <1660761484.701255.1717159615755.JavaMail.zimbra@savoirfairelinux.com>
- <826f6c22-d1f1-42ce-a8d1-2d5cb894a970@sirena.org.uk>
- <1200863744.706237.1717166892907.JavaMail.zimbra@savoirfairelinux.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrVJd5VJMz3frv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 03:21:04 +1000 (AEST)
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52b8bb0c059so938852e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 10:21:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717176061; x=1717780861;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UcZffNit3Q48QxaxBeTWm9BAi+VW/T91AWLE1RFtijg=;
+        b=ZqpHJi9kEfPcdo2uTqWqkzVfzQxZj8uSMctosb5AcJUgmpC0ETWP63rzL94/EK9XCD
+         muRoiNHQgaHX0K7hIQ5pbtazKjKzuqhy+10x37Yjj1FS+yVWxC90E/VGZQSb1aEtNasj
+         On/BMK3o3V34n2VFr8IRCfm2aDEfnMM+jbKdNXdmFc4DfT9UAPoSabEGLO3hnWuKxDSC
+         6PRAJnC7UrG1EXTLri+JdjHnJiDTo2fkMc121m5bjKv2ulNP2v2ni60WBUZJYwcSKc6u
+         C9q8lWBwwE/CZ1VrLyiB4LXZR7x/Y0X+DZEsmAblHzuaUp6hswrr4WUD4fOnXc8FW/Cj
+         KUAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWvntuW8m7Q5nSMX5I0FK7myGFTXbFkmK1tcWZLsbQ+7BWOxFth+0DuHIHfhC4YdFHY0xKYhbc4GVhJjm0fN3ixfXMlmrybhJX1vIgUSw==
+X-Gm-Message-State: AOJu0YwSbV3ic0qAK4fiK2fJgQkMtfa7Zjw2fLDNA1/UpmakbvewpO+9
+	PXPrS5OU5mxuGlchYH5Pj4iAk/DbDfsreyLAiCx9hy80h09z7bBg
+X-Google-Smtp-Source: AGHT+IG7Z5BYF385iHI0i33jHgHSCeGKSd6hDjXdu/WI/o3Y5RcAwwxAqoEMRU2Tq6s3pbIzs/V89A==
+X-Received: by 2002:ac2:5b8c:0:b0:52b:3738:f56b with SMTP id 2adb3069b0e04-52b895970ecmr1918800e87.36.1717176060725;
+        Fri, 31 May 2024 10:21:00 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-006.fbsv.net. [2a03:2880:30ff:6::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a31b990easm1201899a12.6.2024.05.31.10.20.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 May 2024 10:21:00 -0700 (PDT)
+Date: Fri, 31 May 2024 10:20:58 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/rtas: Prevent Spectre v1 gadget construction in
+ sys_rtas()
+Message-ID: <ZloG+sK1aZ7mSnKj@gmail.com>
+References: <20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com>
+ <ZlnUaZiXM3Fuy+0g@gmail.com>
+ <87le3q3p6r.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="O3x7E8WE+Xf+WtR6"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1200863744.706237.1717166892907.JavaMail.zimbra@savoirfairelinux.com>
-X-Cookie: Serving suggestion.
+In-Reply-To: <87le3q3p6r.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,47 +65,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound <linux-sound@vger.kernel.org>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, shengjiu wang <shengjiu.wang@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, May 31, 2024 at 11:45:48AM -0500, Nathan Lynch wrote:
+> Breno Leitao <leitao@debian.org> writes:
+> 
+> > On Thu, May 30, 2024 at 07:44:12PM -0500, Nathan Lynch via B4 Relay wrote:
+> >> From: Nathan Lynch <nathanl@linux.ibm.com>
 
---O3x7E8WE+Xf+WtR6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> >> +	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
+> >> +	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
+> >
+> > On an unrelated note, can nargs and nret are integers and could be
+> > eventually negative. Is this a valid use case?
+> 
+> No, it's not valid for a caller to provide negative nargs or nret. I
+> convinced myself that this bounds check:
+> 
+> 	nargs = be32_to_cpu(args.nargs);
+> 	nret  = be32_to_cpu(args.nret);
+> 
+> 	if (nargs >= ARRAY_SIZE(args.args)
+> 	    || nret > ARRAY_SIZE(args.args)
+> 	    || nargs + nret > ARRAY_SIZE(args.args))
+> 		return -EINVAL;
+> 
+> rejects negative values of nargs or nret due to C's "usual arithmetic
+> conversions", where nargs and nret are implicitly converted to size_t
+> for the comparisons.
+> 
+> However I don't see any value in keeping them as signed int. I have some
+> changes in progress in this area and I'll plan on making these unsigned.
 
-On Fri, May 31, 2024 at 10:48:12AM -0400, Elinor Montmasson wrote:
-> From: "Mark Brown" <broonie@kernel.org>
+yea, I think it will help to make this code easier to read/review.
 
-> > So you're trying to use this as the audio clock?  There's no code that
-> > enables the clock which seems worrying, and I'd expect that if the
-> > device is using it's own clock the device would be querying it directly
-> > via the clock API rather than this.  This all seems really confused.
-
-> It's not specifically the audio clock, I am merely using this
-> in the machine driver to let the user the possibility
-> to configure the CPU DAI sysclock frequency.
-> The CPU DAI and codec drivers already manage their
-> own clocks.
-
-I would expect that if the clocks used by the devices are configured via
-the clock API then the drivers for those devices will configure
-themselves via the clock API.  I still don't understand what this change
-is intended to accomplish.
-
---O3x7E8WE+Xf+WtR6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZaAP4ACgkQJNaLcl1U
-h9C7Dwf/VLPq1S4H7OOi5cno1DA8yYITCEnfB9hv+QK0u+IGgQEVBH3ZIHElkzjs
-Vqj1WunQBboYBEZjSS67nJ4jCvB6G9AWz8D+yWfWP+YDOs08fCFLNG4pTtc+ooME
-lkLEVgJedtSHdOscDTWWlntBQJEXcWtEKccBh4BOPdqlb2zV/fJywO/shUPPksfA
-ZW7bi8SFI5chXBl+xgKcYaBXfI306bBmQK3ImFZk5o/6j2izLhL703EZXBRFi0yX
-2wjSn+Kxq9sMVe7igXvkQ53pQjVLz+tKaqS0YIEKGVs+nKMs/aihz0ie3wk3yexM
-dDL8RGtQmKuDLwU9/pZho2FiLBkLfg==
-=xMcC
------END PGP SIGNATURE-----
-
---O3x7E8WE+Xf+WtR6--
+Thanks again for fixing it.
