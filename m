@@ -1,87 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288548D5704
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 02:36:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A088D574B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 02:45:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cWTelCmJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H65rFeAt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr4172yCQz3fwG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 10:36:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vr4CN6Hslz3fvn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 10:45:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cWTelCmJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H65rFeAt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vr40M1zCmz3dTB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 10:35:30 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44V0TAQ2001938;
-	Fri, 31 May 2024 00:35:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc : content-type : date
- : from : in-reply-to : message-id : mime-version : references : subject :
- to; s=pp1; bh=Gksg9ASmB4oUKniGsv1oGIGtEURLj504u/+VF+hKbow=;
- b=cWTelCmJPAc6uyIA7jfoRiwqN25cyptudYb8BOqc4zJ/Q+jBgqNH3wVXzZUf0PZetzK7
- GXFMvs3eGf/GDbg1EGzbD8VBMcyxJoDZNlnLW3+4GaRtstSa3nWV8Tv5UExJcEQmSs7d
- GMnEd1oT3OfTKf7Q140d9yo92dR8rvvWagUKUXhIvl0dCZbbzlwV8uRpN1n2+7xoAHqC
- Z07P00z/72dpMOS96CSa+XHEAHLEXwp0dzzNkKmd1jsxq1cvfo5t4ojzcnFyXo4Sg0j6
- az3CKAUxsFaD0J7DM0bk7N0C4duGPNkXL6OCMcHdEaul76ZF4sakBOUx3qpO0h95wzEn rA== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yf41dr0xp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 00:35:11 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44UM9kad024784;
-	Fri, 31 May 2024 00:35:09 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ydphqvwgq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 00:35:09 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44V0Z79864029024
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 May 2024 00:35:09 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2ACD65806C;
-	Fri, 31 May 2024 00:35:07 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD1815804B;
-	Fri, 31 May 2024 00:35:06 +0000 (GMT)
-Received: from localhost (unknown [9.67.129.78])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 May 2024 00:35:06 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Breno Leitao <leitao@debian.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/kernel: Fix potential spectre v1 in syscall
-In-Reply-To: <87wmno2c11.fsf@mail.lhotse>
-References: <1534876926-21849-1-git-send-email-leitao@debian.org>
- <baf6af2b-d6e1-4df8-9466-98d19f8c765f@csgroup.eu>
- <ZfAa59Z8njiGUnRW@gmail.com> <874jdb4sj9.fsf@mail.lhotse>
- <875xxj36ke.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
- <87wmno2c11.fsf@mail.lhotse>
-Date: Thu, 30 May 2024 19:35:05 -0500
-Message-ID: <87o78m4y4m.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vr4Bg4kk4z3dWj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 May 2024 10:44:27 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9058D62A08;
+	Fri, 31 May 2024 00:44:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 431CDC2BBFC;
+	Fri, 31 May 2024 00:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717116260;
+	bh=p8P5EFg9jX/xIlWusoJGVR/jjFQ7suvFWvc+eVntG3o=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=H65rFeAt1H8IjDSk5Sq8WCDlN1wBpSw0QtlkjFWv5gW/vhKFJ/VWLBJyqrqncYf9+
+	 tC05yqdLOJFfCXvf+72PmiDu0crwrHwDjria4L3aPYfPZgGQoHuiZPCOEm/0vgsJnD
+	 9DjLtnkCCC3hMCJVx8EJgtCwS+uaiKgonL7/afOazvIuDzN4sSgcltfsc26d39giK1
+	 r7/gHPsBZrPw3yUsXtRBudpdNHmQWjjSWML4MiedXT5iYYbCyEP/AmQqQByQ1KMvJ/
+	 MoDRqqff0vfxPX4mEJ419FyrjYNRiWU5IIGngjZxma79+71tJfw8wgiLUZvFiScOGV
+	 ysaNJ2fzI6Yfg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F583C25B74;
+	Fri, 31 May 2024 00:44:20 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Thu, 30 May 2024 19:44:12 -0500
+Subject: [PATCH] powerpc/rtas: Prevent Spectre v1 gadget construction in
+ sys_rtas()
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: N-IHrn_CQ9ipB2o6vDrFfqGA95DR2fL-
-X-Proofpoint-ORIG-GUID: N-IHrn_CQ9ipB2o6vDrFfqGA95DR2fL-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-30_21,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- mlxscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=408
- priorityscore=1501 adultscore=0 clxscore=1011 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405310002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAFsdWWYC/x2MQQqAMAzAvjJ6dlCnA/ErIlK0ai9TWhFF/LvDS
+ yCH5AFjFTZo3QPKp5hsKUtZOBhXSgt7mbJDwFBjrNDbbYMeZD6RLpnKh6eyaZjmSBERcrkrz3L
+ 9165/3w+Mize3ZQAAAA==
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1717116259; l=1865;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=7xdTGOSOmIr2E7Iy/w6Rg7Grsm0W7C5NyiYeRCwJGRk=;
+ b=K3GPmYx5N84KLR0/qh9q9edOJUNZHWejzXHxWhtyGcMGgZV+2MFcgwuA0kVuqTb6vgrnVVgB8
+ YKELPWKjFKhA7C1N8mz+/fvBCPRfcx1VdeMBwpAHktyb8WCWem7PwzF
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received: by B4 Relay for nathanl@linux.ibm.com/20230817 with
+ auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,43 +78,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Reply-To: nathanl@linux.ibm.com
+Cc: Breno Leitao <leitao@debian.org>, Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Nathan Lynch <nathanl@linux.ibm.com> writes:
->>
->> 1. The patch sanitizes 'nargs' immediately before the call to memset(),
->>    but shouldn't that happen before 'nargs' is used as an input to
->>    copy_from_user()?
->
-> I think the reasoning is that there's no way to exploit an out of bounds
-> value using copy_from_user(). But it's much easier to reason about if we
-> just do the sanitisation up front.
->
->> 2. If 'nargs' needs this treatment, then why wouldn't the user-supplied
->>    'nret' and 'token' need them as well? 'nret' is used to index the
->>    same array as 'nargs'. And at least conceptually, 'token' is used to
->>    index a data structure (xarray) with array-like semantics (to be
->>    fair, this is a relatively recent development and was not the case
->>    when this change was submitted).
->     
-> I don't know exactly what smatch looks for when trying to detect these,
-> but I suspect it's a plain array access. Not sure why it doesn't
-> complain about nret, but I think it would be good to sanitise it as
-> well.
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-Agreed. I'm sending a new patch that does this.
+Smatch warns:
 
-> token is different, at least in the above code, because it's not bounds
-> checked, so there's no bounds check to bypass.
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
 
-Right.
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
 
-> Though maybe there is one inside the rtas lookup code that should be
-> masked.
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
 
-In rtas_function_token()? I think it's OK... the handles passed to it
-are always build-time constants that are supposed to be within the
-bounds of the function table.
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+---
+Based on a change originally submitted by Breno Leitao in 2018:
+
+https://lore.kernel.org/linuxppc-dev/1534876926-21849-1-git-send-email-leitao@debian.org/
+
+I've used a Reported-by: tag to credit Breno, let me know if you would
+prefer a different tag (perhaps Co-developed-by?)
+---
+ arch/powerpc/kernel/rtas.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 8064d9c3de86..f7e86e09c49f 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -19,6 +19,7 @@
+ #include <linux/lockdep.h>
+ #include <linux/memblock.h>
+ #include <linux/mutex.h>
++#include <linux/nospec.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ #include <linux/reboot.h>
+@@ -1916,6 +1917,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
+ 		return -EINVAL;
+ 
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
+
+---
+base-commit: be2fc65d66e0406cc9d39d40becaecdf4ee765f3
+change-id: 20240530-sys_rtas-nargs-nret-a188eaf5a500
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
+
