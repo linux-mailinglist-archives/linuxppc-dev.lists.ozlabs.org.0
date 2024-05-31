@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BFE8D6525
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:08:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A81F8D6541
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:10:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OCkJBu6o;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S2PLFqCk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRMD5R4tz3fmG
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:08:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRPq53pMz3c13
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:10:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OCkJBu6o;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S2PLFqCk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRLV1PT2z3flk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:07:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRP32TsGz3fln
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:09:42 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717168051; x=1748704051;
+  t=1717168185; x=1748704185;
   h=date:from:to:cc:subject:message-id;
-  bh=KBufb4wm2L6XUW4ORqBukJGzmcCyJ74qbevWtks+/4g=;
-  b=OCkJBu6o7msM4DxQyb+C0nGfW17bSaWVziZXE20vTc2ClmAGzUv8lXNy
-   P+1cRvdD9AaIqB2ijOn0UHYJX7r2jHdNL4XFDKTxeHgryjIJbUZ9+YCPY
-   MTDUrKXXqScP/ZjxbthJQAlDfDM1ov/l98N3rkijgbEVTIg6W2MYONl1z
-   Vb2q33a82KAosaVIwoQ2tvPB/cd0CUkbYDYF6rCpUHhHJN0U15FCoIRvD
-   CNUCY1aK8Im4oJ0V+ZO+2qsvqpJwz+omnDAU+UDvkHgaY9LL6nkhzwlQA
-   LF3+BFuMx7Cs3Nnk0aH6WetBRRUf9RdsDuQtSGZTpBwA+XiYORCuVkY8w
+  bh=Yll7Dlnx3HTZft1itAg7V0TUjUe6bgc1sw22MhvAPyk=;
+  b=S2PLFqCkLGKiNtDwYWUlvcmI7DnW1+9YlAhHtdRz9Eh0O4fOCDqBBNmg
+   wRSxfUFULpG5kPoDGRMthXCsndGLLC0VJq37BAwHW8bRcGSf4h73nXjEp
+   HzJmMZxdIWNJmoztNWWPXsjGTVkUmOAmq2Q6czl7XccxNQS+EE+/uwgt5
+   pXI1MAi0ICoDWlkfkLsCG9JpDCd7MAp5SkmRyaUhRZ5aAL7ixS2w321bI
+   MZm4tImcUvQ1Xl1Z3QX/Ui4VY4tWRl5ShkR/JZwyAcu4RduWZyTQkvH9W
+   LiWGAXoZDZ4VaOLEc5F8TgyJ+fruWrm3r17CINifV9or6LTJVyP8ncSom
    A==;
-X-CSE-ConnectionGUID: 0PECO/xnQFi06LOICZp1jA==
-X-CSE-MsgGUID: O8piWHeGSb+gq97E2a0nbA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13533415"
+X-CSE-ConnectionGUID: uLDfupJETd2CVigIEHgFgw==
+X-CSE-MsgGUID: WjyjqvvRReKpUm7g90igZg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24291597"
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="13533415"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:07:25 -0700
-X-CSE-ConnectionGUID: RD2IXzoXR/Glj6gkjt/ZeQ==
-X-CSE-MsgGUID: 4NemZY4UQym7OjZQYvRL3g==
+   d="scan'208";a="24291597"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:09:38 -0700
+X-CSE-ConnectionGUID: FcvO3Mc7RNe21gyxKxL1HQ==
+X-CSE-MsgGUID: O1opCDiDRyip1QClqCS5Kw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="36294326"
+   d="scan'208";a="67389443"
 Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa009.fm.intel.com with ESMTP; 31 May 2024 08:07:23 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 31 May 2024 08:09:36 -0700
 Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sD3qE-000HET-3B;
-	Fri, 31 May 2024 15:06:53 +0000
-Date: Fri, 31 May 2024 23:06:26 +0800
+	id 1sD3sQ-000HEf-2t;
+	Fri, 31 May 2024 15:09:16 +0000
+Date: Fri, 31 May 2024 23:07:07 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 57584d4249870a4d382f0016981ceae5c9b2eebc
-Message-ID: <202405312323.mdMxmxYA-lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 9a5fe0d1529f1a514d042b1cd504c383e6f622ad
+Message-ID: <202405312302.npORZ8us-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,8 +74,8 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 57584d4249870a4d382f0016981ceae5c9b2eebc  KVM: PPC: Book3S HV: Fix doorbell emulation by adding DPDES support
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 9a5fe0d1529f1a514d042b1cd504c383e6f622ad  Automatic merge of 'master' into merge (2024-05-29 22:46)
 
 elapsed time: 1450m
 
