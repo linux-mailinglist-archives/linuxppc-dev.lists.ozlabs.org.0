@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122F58D65D9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1588D65DD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 May 2024 17:35:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kowDqJdA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fbSaCZcm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRyC09SHz3fyh
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:34:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrRz706YQz3g4D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 01:35:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kowDqJdA;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fbSaCZcm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRsY4qvwz3fmd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:30:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrRsl4rs9z3fp4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 01:31:07 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717169458; x=1748705458;
+  t=1717169468; x=1748705468;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=SGwfez3lrOf2K/YTWirwKNhphy+WK2Ug6UhveRqerj0=;
-  b=kowDqJdAcv4GpDIwpgCt1gJQ2qkkHko3kwQsytTQMO95gx2+EurE8FZ+
-   wJMnfKTapSHiExTCDFXAsnLpTzKys3ltfoxq8MV7pRltGrQ2BSmuLq8Wp
-   ocBkmD6hx0QT7snY5qExB98M/IDxLUh2FMBK8JZI6LiWS6Ub6jvLp7WTg
-   YRT6dgpPJgcfIOtS+8CaVlbE1XTvPaFkFUXCbLUFSd/b5Ca5RdqFYnVyv
-   w7FS6F3oebWN1neUrleXnODnC6PyqrcoRymLcXrb3cBqxbyVZDVi3gzpn
-   JGprmVkLgkXcQBp98FpXnfJhl9StJ7wE0P58f9fw5HLb5gBCwHZ3etXpm
-   Q==;
-X-CSE-ConnectionGUID: FX3rFKW8Tp+tvY6GakqZow==
-X-CSE-MsgGUID: H+vXjllEThK1pIKw7E/VQQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24348183"
+  bh=sA6qI//FTL7pgyGldUMsd1jU+l556RY52OWXWgjHnto=;
+  b=fbSaCZcm8N8HKi8gZrGKas/ywWbCiuAMkq9uLNWe4WW/skW13gqpSov2
+   Qc6XDzYfEzZJ8vh61K/97s4JYOijMbr6MdABnQlsNTiL7//rl/irRRxKf
+   rxihGcALNR1gSOjcz0xkP4arqjXoG68OpEYeiUx/Sl0SHIMNcuWMWKdal
+   n84qHNfrPWUYxirx9H+LL6E5JsqfJi2QVUmf0ZN8t3swyuMj+sXF+zbHr
+   g2ZjXitwYguo8Y9O7rN4Moi7JdxiJLfbbdNgy8yi6G5JSEOIBLf3zrms3
+   vrugG0amxNEBCWBRUV0jmY1RIQCPXDtRZ20j6gvm6w9iLydRYW/BcrsAz
+   w==;
+X-CSE-ConnectionGUID: LhCA3AdvT1inoz3grnbNnQ==
+X-CSE-MsgGUID: GON6P8ahT0igkmqIuyUVJQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13839678"
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="24348183"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:57 -0700
-X-CSE-ConnectionGUID: R+7+mf/zRxCcV6DbRi4D6A==
-X-CSE-MsgGUID: +8jCcKrWQP6iKzrYNSNOUw==
+   d="scan'208";a="13839678"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 08:30:57 -0700
+X-CSE-ConnectionGUID: hHqXtMjBQrmkR3of3UKpuQ==
+X-CSE-MsgGUID: 7H/Fjvj9SyuUz1KNLZXrwg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
-   d="scan'208";a="73678789"
+   d="scan'208";a="40627351"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 31 May 2024 08:30:49 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 31 May 2024 08:30:49 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id EA704679; Fri, 31 May 2024 18:30:39 +0300 (EEST)
+	id 04665692; Fri, 31 May 2024 18:30:39 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Rob Herring <robh@kernel.org>,
@@ -71,9 +71,9 @@ To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-rockchip@lists.infradead.org
-Subject: [PATCH v2 5/6] ASoC: generic: Replace of_gpio.h by proper one
-Date: Fri, 31 May 2024 18:29:32 +0300
-Message-ID: <20240531153038.1590171-6-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 6/6] ASoC: samsung: Replace of_gpio.h by proper one
+Date: Fri, 31 May 2024 18:29:33 +0300
+Message-ID: <20240531153038.1590171-7-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
 References: <20240531153038.1590171-1-andriy.shevchenko@linux.intel.com>
@@ -98,27 +98,28 @@ of_gpio.h is deprecated and subject to remove.
 The driver doesn't use it directly, replace it
 with what is really being used.
 
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/samsung/aries_wm8994.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/generic/audio-graph-card2-custom-sample.c b/sound/soc/generic/audio-graph-card2-custom-sample.c
-index 1b6ccd2de964..8e5a51098490 100644
---- a/sound/soc/generic/audio-graph-card2-custom-sample.c
-+++ b/sound/soc/generic/audio-graph-card2-custom-sample.c
-@@ -5,8 +5,9 @@
- // Copyright (C) 2020 Renesas Electronics Corp.
- // Copyright (C) 2020 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
- //
-+#include <linux/device.h>
-+#include <linux/mod_devicetable.h>
+diff --git a/sound/soc/samsung/aries_wm8994.c b/sound/soc/samsung/aries_wm8994.c
+index a548ac33dd94..01716df0c842 100644
+--- a/sound/soc/samsung/aries_wm8994.c
++++ b/sound/soc/samsung/aries_wm8994.c
+@@ -1,11 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ #include <linux/extcon.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/iio/consumer.h>
+ #include <linux/input-event-codes.h>
+ #include <linux/mfd/wm8994/registers.h>
  #include <linux/module.h>
+ #include <linux/of.h>
 -#include <linux/of_gpio.h>
- #include <linux/platform_device.h>
- #include <sound/graph_card.h>
- 
+ #include <linux/regulator/consumer.h>
+ #include <sound/jack.h>
+ #include <sound/pcm_params.h>
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
