@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CB28D6E99
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 09:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B49648D6F32
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 11:47:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UJ1sgS4z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l9gwYJDA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VrrZ005qZz30PH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 17:03:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VrwBR650qz30fM
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jun 2024 19:47:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UJ1sgS4z;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l9gwYJDA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VrrYC62Wrz30PH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 17:03:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vrw9g4d6nz30Wj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 19:46:31 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 61ECC6059E
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 07:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 169ADC32786
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 07:03:08 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 919AA6069C
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 09:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 446B5C32781
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Jun 2024 09:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717225388;
-	bh=Cb5gqmpJL6av1pmEYfMN2uy8URB76+MljDbNtvhDX38=;
+	s=k20201202; t=1717235184;
+	bh=OIwzss5FxTiMZVYinOMAjvMtIF830brVAPH4s/LXR20=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=UJ1sgS4zp9ZJyP39Bh3fsxv0beMIE2UZJn3MQFDRNZxNGzVCh7M8Tn3wd+LGUQVIa
-	 pWPp+x0HcT/QbdJeWTsX9d8+6HrQXq6XydmpNTdt0Vcof/sJ/Dn+o7jfFElz0QWqOi
-	 FYMvl90UixNL3iGWNNDD8/QazFH24VJlpQWPnAF0DHb1KzHxVJy704BEpWBLHc4UI8
-	 FXutCa8RYt/hbTvnYy/yxqQ2R6K9Iu4sRDx67lEwk4p8Yo+i1GC7y45jYISBcaW+lN
-	 pxGayOH1Iai0A4jn78pjnCHg5OGEm/uXr4hjM/6lY+ojb+L+i6w5Bm2ZwwEvnjf4fo
-	 qZKe0OBUHFe2g==
+	b=l9gwYJDAy/7g/9sJLT3aHAvRxV13oa2IUCHTlZyjalWSQPHVxRJkTit6f7670Uq5K
+	 1x1s/jwT+UUb5/Bav0e/sZ2vL7Y03JTL2s1t05XkR23rIM/W0zV6efbAXVbYez/D/p
+	 60TwBDez7UQSRdkAd+47NDb4QAHGMiXpMLMW/0wpqWgAjpQpRu+/ADRQmcbVsE7gRU
+	 dpLV5qq/TEAv2wq3fBLDMGl2dpQt+hHYv+l5ytwOGHHNUvLmsdHw6TYrDhN43jdlLm
+	 DpaB+4IPomdRNOeOagG2UcsYunvQZ6Av5mf8lnPHFCbLXiQZYRQax6DEvcTNAQIw/U
+	 3A/kX/dZ0QBJw==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id F0795C433E5; Sat,  1 Jun 2024 07:03:07 +0000 (UTC)
+	id 2BAC8C53B50; Sat,  1 Jun 2024 09:46:24 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
  scanning, some SCSI devices might not be configured
-Date: Sat, 01 Jun 2024 07:03:07 +0000
+Date: Sat, 01 Jun 2024 09:46:23 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -60,7 +60,7 @@ X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218858-206035-BQw9rwsKzH@https.bugzilla.kernel.org/>
+Message-ID: <bug-218858-206035-Kup6LFfINo@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
 References: <bug-218858-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,12 +84,13 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
---- Comment #17 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
-This problem is currently discussed and handled on the lists:
-https://lore.kernel.org/all/ce2bf6af-4382-4fe1-b392-cc6829f5ceb2@roeck-us.n=
-et/
-A Patch for this ?
-Tank You
+--- Comment #18 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
+The patch responsable
+[04/23] scsi: initialize scsi midlayer limits before allocating the queue
+https://patchwork.kernel.org/project/linux-scsi/patch/20240324235448.203907=
+4-5-hch@lst.de/
+This must be reverted
+Thank You
 Regards
 
 --=20
