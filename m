@@ -2,59 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF388D72EE
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 02:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E138D73E5
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 07:21:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s3k1v3Dq;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=kQKqP7vz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VsJ6D37q7z3cF1
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 10:44:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VsQFv4VQRz3cRr
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 15:21:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s3k1v3Dq;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=kQKqP7vz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsJ5V0BvCz3cB2
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2024 10:44:13 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 00515609FB;
-	Sun,  2 Jun 2024 00:44:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9E328C116B1;
-	Sun,  2 Jun 2024 00:44:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717289050;
-	bh=mGw2Qsp3atamupAl7mGgIPYLQzWf1Cg+vKAzx6wkWUs=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=s3k1v3Dq7rYnijxd61hoaHVOtLswxGCzBhz4h1MWen46cZbM+WXm8MKTkyH9W1LFM
-	 QgXTI/pMeGG6Htm5g5oyTpL0k8/G9rIgYS9hAoUQgCV2BvhC7tro6JlSJF0SIgcxWC
-	 mCcj8fspLW6nowFP9VZ3WpzvxyXqFznh62OGEyOkj0LIjBLPD947K813x1/Z1COLCb
-	 BKvyWiZ17ZacWRp0vLqDNUiMd4QdYENufBvEGjE/dhZ8v9Nl4fysYkt+H2M4KdAxAC
-	 nUo3CXur+dK+A3SgZvcrmVP1Ji6+sX19a2F9HZF5M+B28r2GzuUvGUnLQcq5LNnUCn
-	 ky932K4JIULGg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 94715C4361B;
-	Sun,  2 Jun 2024 00:44:10 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.10-2 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87jzj82p3m.fsf@mail.lhotse>
-References: <87jzj82p3m.fsf@mail.lhotse>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87jzj82p3m.fsf@mail.lhotse>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.10-2
-X-PR-Tracked-Commit-Id: be2fc65d66e0406cc9d39d40becaecdf4ee765f3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 83814698cf48ce3aadc5d88a3f577f04482ff92a
-Message-Id: <171728905060.19494.12879025475093263825.pr-tracker-bot@kernel.org>
-Date: Sun, 02 Jun 2024 00:44:10 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsQF70qlZz30PH
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2024 15:21:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1717305664;
+	bh=2DwQizc09vDj0hOjBYqRErLzcC3C4KoGCg/eObaIELQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kQKqP7vzTVSHQ0UhYzQS+fJfdSjUIRTz68+/tuhR49fK+SsRzk4Vw1vNGEsXbfNB5
+	 fGOuy6Yiiw227C0/JWf+ik0edpxXuEdM+AvWSavHHfWZD1Y/E+tSesT+4lCfVay0rf
+	 GYBiJIyk8fpTM7sp8KrCOgYAb1B+4kMu3nJ/M1wMgL/rwkcIIQqfVJupqnETH+5OQk
+	 fr0RpL+/uT3OZ7AOOvH/hKQmDZTQVgcm1mGP7x4OTp/AOVNGiRNzwBawuVslTZSSuA
+	 YzsPafN1/y8kCjWABXqB0SrFohVLUvelemj9OTG7dr2u8f7ft6SGR+IyZavSh02sFo
+	 izYrZmMzumNmQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VsQDv4xCLz4wcg;
+	Sun,  2 Jun 2024 15:21:03 +1000 (AEST)
+Date: Sun, 2 Jun 2024 15:20:58 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: Please add powerpc topic/kdump-hotplug branch to linux-next
+Message-ID: <20240602152058.276df8e9@canb.auug.org.au>
+In-Reply-To: <87mso42pag.fsf@mail.lhotse>
+References: <87bk60ji79.fsf@mail.lhotse>
+	<20240424074023.43932cca@canb.auug.org.au>
+	<87mso42pag.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/kx7e0nSXIXyfuOD1Yc5aE8u";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +61,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, puranjay@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, samuel.holland@sifive.com, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kexec@lists.infradead.org, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bhe@redhat.com, sourabhjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 02 Jun 2024 09:57:33 +1000:
+--Sig_/kx7e0nSXIXyfuOD1Yc5aE8u
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.10-2
+Hi Michael,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/83814698cf48ce3aadc5d88a3f577f04482ff92a
+On Sun, 02 Jun 2024 09:53:27 +1000 Michael Ellerman <mpe@ellerman.id.au> wr=
+ote:
+>
+> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> >
+> > On Tue, 23 Apr 2024 23:56:42 +1000 Michael Ellerman <mpe@ellerman.id.au=
+> wrote: =20
+> >>
+> >> Can you please add the topic/kdump-hotplug branch of the powerpc tree =
+to
+> >> linux-next. It contains a series that touches generic kexec code as we=
+ll
+> >> as x86 and powerpc code.
+> >>=20
+> >> The hope is to have to get it merged for v6.10, so it should go along
+> >> with the powerpc next branch in the merge order.
+> >>=20
+> >> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/=
+?h=3Dtopic/kdump-hotplug =20
+> >
+> > Added from today. =20
+>=20
+> This branch has now been merged and can be dropped from linux-next,
+> thanks.
 
-Thank you!
+Removed.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/kx7e0nSXIXyfuOD1Yc5aE8u
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmZcAToACgkQAVBC80lX
+0Gw/4gf/Xpxz7iv8f7mNzqzlovFpBO0pdnSSU2Ui6uHaRbl5irBMzCK5n+S6JpKy
+EFMO2NWyzrMI2g80hQjkve0Q5bygdABPAEjBJBMM1Dsp6sBgCZHU/hj8qnxfNh2c
+ZVP2Jp90JdK37Iu8usPBJKTDX+OkX2l1dxcxiBjIOwGEI9UZ/gIvifoWlrSUFHb0
+uKzGxKmsqUdc3wjY/f5MGgVaWnTK9Kr3Tj/iLFA+dvAbIkGjDbXEd7Q6XbWvg8A6
+zPSsD/ph4RBfUOM26R3GcwGr8Su/wNm2qfG/0TcD3+a25j5DjBSjbetZxjav1fQr
+sFqgwtONYNnL+JbVrmzNz8G5VlLosw==
+=mtNi
+-----END PGP SIGNATURE-----
+
+--Sig_/kx7e0nSXIXyfuOD1Yc5aE8u--
