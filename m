@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E138D73E5
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 07:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A27598D740C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 09:06:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=kQKqP7vz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u9mpHkty;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VsQFv4VQRz3cRr
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 15:21:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VsSZL3GbRz3cQD
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jun 2024 17:06:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=kQKqP7vz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u9mpHkty;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsQF70qlZz30PH
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2024 15:21:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1717305664;
-	bh=2DwQizc09vDj0hOjBYqRErLzcC3C4KoGCg/eObaIELQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kQKqP7vzTVSHQ0UhYzQS+fJfdSjUIRTz68+/tuhR49fK+SsRzk4Vw1vNGEsXbfNB5
-	 fGOuy6Yiiw227C0/JWf+ik0edpxXuEdM+AvWSavHHfWZD1Y/E+tSesT+4lCfVay0rf
-	 GYBiJIyk8fpTM7sp8KrCOgYAb1B+4kMu3nJ/M1wMgL/rwkcIIQqfVJupqnETH+5OQk
-	 fr0RpL+/uT3OZ7AOOvH/hKQmDZTQVgcm1mGP7x4OTp/AOVNGiRNzwBawuVslTZSSuA
-	 YzsPafN1/y8kCjWABXqB0SrFohVLUvelemj9OTG7dr2u8f7ft6SGR+IyZavSh02sFo
-	 izYrZmMzumNmQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VsQDv4xCLz4wcg;
-	Sun,  2 Jun 2024 15:21:03 +1000 (AEST)
-Date: Sun, 2 Jun 2024 15:20:58 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: Please add powerpc topic/kdump-hotplug branch to linux-next
-Message-ID: <20240602152058.276df8e9@canb.auug.org.au>
-In-Reply-To: <87mso42pag.fsf@mail.lhotse>
-References: <87bk60ji79.fsf@mail.lhotse>
-	<20240424074023.43932cca@canb.auug.org.au>
-	<87mso42pag.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsSYf12f9z30Ts
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2024 17:05:42 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id B959C60ACE
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2024 07:05:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 572CAC2BBFC
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jun 2024 07:05:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717311935;
+	bh=hP3RFDX80tGUx2Ha7egw5VbPL65n+t/c77IMy76cGf0=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=u9mpHkty4d8pnQPCXAvlZbOYkyUG0mHQFmAJULa9SLiYQhzP2ZhtNK0LGFKYesZEw
+	 w1c54S+Qwr9LKhShLt0Nfrx0aSqtZBZZLjW8qOAce/2ufBizxmkJUYs44Jnv5xn0QS
+	 mYGFiohBJ4FQzp4A1gRH5ysxvYR5l9F/CrKmggSSn0uMvaMlw3BfWQjgC/vl3UoJW5
+	 yzPcpPA6ftNzah11NLh7XOG6xKS9WJC0g7zZFssidATTcWB7vpxiSg0wX/hRlyMdQ5
+	 IyZp0n33vo9MdNQCBdVc7pMuxTpD6PDfBkmLYDbB561Brjd6DhwRxLD6Bjf2zfP1ee
+	 WUk26KIyVvGpw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 49881C53B73; Sun,  2 Jun 2024 07:05:35 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
+ scanning, some SCSI devices might not be configured
+Date: Sun, 02 Jun 2024 07:05:35 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: high
+X-Bugzilla-Who: doru.iorgulescu1@gmail.com
+X-Bugzilla-Status: NEEDINFO
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218858-206035-mtUNseO1rZ@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
+References: <bug-218858-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/kx7e0nSXIXyfuOD1Yc5aE8u";
- protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,61 +79,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bhe@redhat.com, sourabhjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/kx7e0nSXIXyfuOD1Yc5aE8u
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
 
-Hi Michael,
-
-On Sun, 02 Jun 2024 09:53:27 +1000 Michael Ellerman <mpe@ellerman.id.au> wr=
-ote:
->
-> Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> >
-> > On Tue, 23 Apr 2024 23:56:42 +1000 Michael Ellerman <mpe@ellerman.id.au=
-> wrote: =20
-> >>
-> >> Can you please add the topic/kdump-hotplug branch of the powerpc tree =
-to
-> >> linux-next. It contains a series that touches generic kexec code as we=
-ll
-> >> as x86 and powerpc code.
-> >>=20
-> >> The hope is to have to get it merged for v6.10, so it should go along
-> >> with the powerpc next branch in the merge order.
-> >>=20
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/=
-?h=3Dtopic/kdump-hotplug =20
-> >
-> > Added from today. =20
->=20
-> This branch has now been merged and can be dropped from linux-next,
-> thanks.
-
-Removed.
+--- Comment #19 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
+Please a pach for this warning
+Thank You
+Regards
 
 --=20
-Cheers,
-Stephen Rothwell
+You may reply to this email to add a comment.
 
---Sig_/kx7e0nSXIXyfuOD1Yc5aE8u
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmZcAToACgkQAVBC80lX
-0Gw/4gf/Xpxz7iv8f7mNzqzlovFpBO0pdnSSU2Ui6uHaRbl5irBMzCK5n+S6JpKy
-EFMO2NWyzrMI2g80hQjkve0Q5bygdABPAEjBJBMM1Dsp6sBgCZHU/hj8qnxfNh2c
-ZVP2Jp90JdK37Iu8usPBJKTDX+OkX2l1dxcxiBjIOwGEI9UZ/gIvifoWlrSUFHb0
-uKzGxKmsqUdc3wjY/f5MGgVaWnTK9Kr3Tj/iLFA+dvAbIkGjDbXEd7Q6XbWvg8A6
-zPSsD/ph4RBfUOM26R3GcwGr8Su/wNm2qfG/0TcD3+a25j5DjBSjbetZxjav1fQr
-sFqgwtONYNnL+JbVrmzNz8G5VlLosw==
-=mtNi
------END PGP SIGNATURE-----
-
---Sig_/kx7e0nSXIXyfuOD1Yc5aE8u--
+You are receiving this mail because:
+You are watching the assignee of the bug.=
