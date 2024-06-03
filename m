@@ -2,139 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA84D8D79FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 03:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A9E8D7A14
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 04:27:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nokia-sbell.com header.i=@nokia-sbell.com header.a=rsa-sha256 header.s=selector2 header.b=EeEbp9iv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=kghQZjD/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VsxgD0HxZz3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 11:57:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VsyKp0bmPz3cRK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 12:27:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nokia-sbell.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nokia-sbell.com header.i=@nokia-sbell.com header.a=rsa-sha256 header.s=selector2 header.b=EeEbp9iv;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=kghQZjD/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nokia-sbell.com (client-ip=2a01:111:f403:2606::619; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=qianbin.zheng@nokia-sbell.com; receiver=lists.ozlabs.org)
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on20619.outbound.protection.outlook.com [IPv6:2a01:111:f403:2606::619])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2001:4860:4864:20::2e; helo=mail-oa1-x2e.google.com; envelope-from=cuiyunhui@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsxS53jqTz30Wf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 11:47:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RIeIAqfnY+DQJmrZBkV9ZGhY1E8xFNbfRljZ1bK1mmmVFIJVk8srWkiO037v+dXqQ8KIGGv5RxYqVY8HZdIEzqXiGiUHWEeBNC7fNkTCYYNYdOtYqEnOWLWaes9WpLbNPky6fVDbO0tc9j1H3+M948Vmtlkk6gwQNDcJxXCpudBBWU0aj5/T/t/GAnVuwMl9qKAADx68kZofd1bHhEoOfT3sEZfW0WJwcB6JNHnXCXUKxGhLVnjspzx7+9jO3jyOWOGuv7wRUAuws4zBqWNybDIXiWmtHbuxzyXEnapB/57mYIY+UPg92Y48umyuHFHDVuNY3sJThsCU40eVBd9r5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3f5l3jyuUgkJyW0jPm2QZBJLMIq7NSzIo2nuxrTDNq8=;
- b=eucjbDuQdHOjCEFbjlSUOPdkmbr7wNKUGwt+9pCvDARZxalZxQ0gwj5UINBKK4ifo1Oe6WjNbZ2xDIpPmECi2/vVR5yion/IeS7VVKi8rWoIwZHuy5O2tPgZx4xPM0AbZvxGTs+9Gw5xuvGNrAHYfitCQUvsaoWDHsV0np9pyXgFZDGr2VDrljWrJfBvRrNTm2aax9UqGkeACfUrEXZH8rR5e91++buKsnDeGRsVs8M+Lig5Qj62ckLXLP4JOV0c9Kt2+kB8RwDBBDKZltJCeNvH59sCrnglJu8fjFBIPT06CECVMQ14yVYeU3oaqzuteWTqjS/0ML8YsldyjPtzKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nokia-sbell.com; dmarc=pass action=none
- header.from=nokia-sbell.com; dkim=pass header.d=nokia-sbell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-sbell.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3f5l3jyuUgkJyW0jPm2QZBJLMIq7NSzIo2nuxrTDNq8=;
- b=EeEbp9ivsJTD8TKa1WTlkqB6vWPmeU8iLnoAT+tzvftgwteTkxgtP+KbwtCmGIXqfkF4Iy8mdCbXJACwijA9/f+IAD9RJ8aWBGpGUtimXkkxkKrLIgIufpF55DXSYI6xsYycATBOsr+L1WQZ6eQRiSt6DIr7sDs52rICTQKVcDtm9H6NoT5R91dovabQ1NkOEy4v92lLeijmUjvAMg+MhsdShADO2QEzptzMziyKlSgT7iOo8U54+G86+IroTVbtPs4KOW1dXQpsdysXqdyWZxZaji7dGM4RitIWupBcO2Mf6/CbrTmKKfWX3X4wM2Qbdou8GxtFhDZohlEW9ZfB5g==
-Received: from HE1PR07MB4169.eurprd07.prod.outlook.com (2603:10a6:7:9d::25) by
- PA4PR07MB8390.eurprd07.prod.outlook.com (2603:10a6:102:2a1::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Mon, 3 Jun
- 2024 01:46:52 +0000
-Received: from HE1PR07MB4169.eurprd07.prod.outlook.com
- ([fe80::93cb:c23a:3cda:4fa1]) by HE1PR07MB4169.eurprd07.prod.outlook.com
- ([fe80::93cb:c23a:3cda:4fa1%4]) with mapi id 15.20.7633.018; Mon, 3 Jun 2024
- 01:46:50 +0000
-From: "Qianbin Zheng (NSB)" <qianbin.zheng@nokia-sbell.com>
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-Subject: [PATCH] usb: gadget: fsl: Enable usb snoop on PPC64
-Thread-Topic: [PATCH] usb: gadget: fsl: Enable usb snoop on PPC64
-Thread-Index: AQHaszupw160VnAcEUi+I4pyUMNTnrGxERVQ
-Date: Mon, 3 Jun 2024 01:46:50 +0000
-Message-ID:  <HE1PR07MB4169B7A47CC7105A9FC3E993ACFF2@HE1PR07MB4169.eurprd07.prod.outlook.com>
-References: <20240531091926.3324847-1-qianbin.zheng@nokia-sbell.com>
-In-Reply-To: <20240531091926.3324847-1-qianbin.zheng@nokia-sbell.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nokia-sbell.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: HE1PR07MB4169:EE_|PA4PR07MB8390:EE_
-x-ms-office365-filtering-correlation-id: 7b78c9c9-b7f4-4b06-6035-08dc836f0984
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230031|376005|366007|1800799015|38070700009;
-x-microsoft-antispam-message-info:  =?us-ascii?Q?Fu1Zx73sQFZQdLJ1HsrC/1M+FqXhYsaWZOZvdPlRjDWKvNZkgDW0dxvNlaql?=
- =?us-ascii?Q?PApalWmz+niY7/kqfTwnpvuGTQgzd1LbVYQlmSl9K5X9OCPsUiuaxtL+ys9a?=
- =?us-ascii?Q?hjLunjrTEL+qYm2ANa3LtvpEQdz0PISqKug3pgmuTKqS/EYeE367r1Fq+01U?=
- =?us-ascii?Q?AKTMNiVT3/d4cqFyYQe+sUKg+kYWX1Ntnlb9HJWdjSwxXnhYPB4AIxhtJAr0?=
- =?us-ascii?Q?M3VCadfADsThDwXZ4aBqWd+JEBfJh9B11k1+K7P1FyQOd3gJO5pq4vhOCa5Z?=
- =?us-ascii?Q?/z14YFsUbNa2VnGgC3jrc3IU+hSiKZrdBuEx93sAYDoglWnpl4n3hHVmn0jm?=
- =?us-ascii?Q?UeHMC5fbUTKKNQcJxlDbQcWK/TLJpbXNV6PxC0RRiO6/VDHOD+91Vt1ea9te?=
- =?us-ascii?Q?nMHd3LTDjGJbptI2ppLPdgp3Zpb8Di5bhGlZcN5ACaXu1IGGtd6cCML+FFO7?=
- =?us-ascii?Q?v+foVP1k6rcZdc9RZlDTgXh5RI9/Temu8gePd0EINE+uF5TTl+rtHhVj5Jiz?=
- =?us-ascii?Q?z1Z9FlUAgm8rEgWOzjGxy5sqL63CGeq2reG/ux0zCfXkFPVLOctzwvqoYQey?=
- =?us-ascii?Q?uOc4H+GoLOfnAEY5EUVFkl/pYb9XFbN46MKj30zcl/KNdRKcSUjBFHIFMfkh?=
- =?us-ascii?Q?WdFxVRwdvNCBYn6trUs6YLxjXlE87UsrObZgUnh/SQIC54Uchvy5guIvem7T?=
- =?us-ascii?Q?Eph6LBwdJULNOukVGz/lc+W/N27o3jTu7NPxo+OLA58486l/ac9lYUdLKkIj?=
- =?us-ascii?Q?+GiwGUko7WQbJkBS5JU0FOQsxRWoOY5Qv40Q5AUdZ8FYEXYKtNl/jHD19GEU?=
- =?us-ascii?Q?vnNbbIZv6hipIg3lImtBYT/Ww/ZtsoIMlQACTNtXasbOkqPwmn9sxWiLOdNg?=
- =?us-ascii?Q?bR+gwJQUhhX1ddBHHIJAjeUdz0hFRvIUE+hrItlrkJKeDgUQDBe+ad5M8+IT?=
- =?us-ascii?Q?iQBqJ9rzjF4qJ1J8XFH8Ce4L8K8WVHfCVsaC0/6Zc+hvNvg5djztmVseyMZY?=
- =?us-ascii?Q?UvKrXuALvDlmORkxgHmLSRVDswmK+K48xHu7ZzVL9vT9+PswmOUgGmO+wK7L?=
- =?us-ascii?Q?qtpLhdH1TreFaiTbVxuzZfBFCVEfmiNmn+DWlfCGpKBdMPA+qcvZszZJM640?=
- =?us-ascii?Q?uiwj2/FZB2SNxGRkrSifAUR1rcUXJb9I0vM7fGb9yxfKc3Bpen5l+bi5J5xQ?=
- =?us-ascii?Q?34sygJsq0U7vIFiwxW5/20M8+/AhvzrlWUY35Z+N0UcjkaQVDThv8iy3WxIm?=
- =?us-ascii?Q?Z+PVfi7MlN7QPSxfeCPmD0uzxjXfFf0tVqwHMAYsCvyPvb2lh0g1i3vaLlBV?=
- =?us-ascii?Q?Hjg+T6JQkOkN0xYV5Q4JeyUFvBwRhiI8HciuE73DOKx5kQ=3D=3D?=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR07MB4169.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?c5lMwK3fen+A2UX2JMH0loPTqUh2UgOysh6y/2yf/ZZqcTOQ1hvCXtFmHbDS?=
- =?us-ascii?Q?DTX9XxRTevTvaqjmsK0QthnLEb7yK5uT7zyynjfCIB5WW5WAktBmMP6B+Xy0?=
- =?us-ascii?Q?rvSBoCHWwMOGahMduU5BgMy1hGIE1DyZuKEGknr6ZIZ9VLr5esiowVeqRHwY?=
- =?us-ascii?Q?ayEVRMWL3ODpgxTZRRQ/dELflemXL4jmW4zY4RYEPOcpFXj2hXDpCkvu8p7c?=
- =?us-ascii?Q?JlNPlgpo15n0lW5SCk77BpenPv2iDpsqmNwpQfMm/3U/sOaaFJPVHLUTpMXp?=
- =?us-ascii?Q?CQCKSnRR/5/giN31FetVkHPNuH661OgqitQPykpW7uuQsFQCpO5fuvcP6+Lk?=
- =?us-ascii?Q?b+ictMtU3Xt8/nDppUBdHD7hj4YTVaXRw/FmJ2QTivFtgUBjePsemU8nbqSs?=
- =?us-ascii?Q?lGgd7MMaFesOjE2nu6WO8mrwXn12N9dlSoHmGDBtMQnqvGG0sLs0UQUGgU1i?=
- =?us-ascii?Q?cbW5LWDCn17jf9A9w1B4wNARkqHDeU4bmHeZuLlRAF2CACX8NwW3tSVuKGqu?=
- =?us-ascii?Q?irrLyd6xceXb1POjZlQsQHJZthKQ0RhWdH1smtTcthexJic2dMxx8a057Gj7?=
- =?us-ascii?Q?/gDU9hXugEzvtkUAk+UcQ4EybnPhh9ZeTqa8D6lSYKUOXnsw0k5OWWdS4ocM?=
- =?us-ascii?Q?pHlvJClftFvkahpvbib4TRjp+bLZs/gpMcgdiKFJ5fDyWbuYovrQthLaQf2R?=
- =?us-ascii?Q?Ca7wy/XBXUpiZuBFhKQqIn6Lra3i3Hnh2h13JnyUjoryTdQ9bMjhxUC5IdSd?=
- =?us-ascii?Q?Lse/sFDJUFpnjnOD6Zmnju9eUSe8VsbeTeIhpOBIiIDAqdcqGkMZBSBCwRde?=
- =?us-ascii?Q?KXpnrs5BYQfddosZTVNpj1fj1jI6RvzZkhpNekVHO7ZALtbsh+2SBloem1At?=
- =?us-ascii?Q?SW466bWhwXpYRBf5Rdfv9UlZnx1DYS5o2UD70c5CE0dfyw69+kZyMN70BAO3?=
- =?us-ascii?Q?qZ+hvNYI0PdjX06hRrLAt3jeiE6G4pcMYoic1mtlwjsLuXq8rUSJu7cdvzHv?=
- =?us-ascii?Q?mDRGQ311o64MjpfmVTi2HHcD4k0YhzlOpjZW+bOpXY2POy5a+E2ZUbKVwRJ1?=
- =?us-ascii?Q?JvrbEI0ZQCulq9mF+egq6F7jnwhbx3ZWzTI1XN87O4UoXtB7OiFqgA73nUlb?=
- =?us-ascii?Q?QxmEalHwbZfBEtJyGGi4u5HhvoxmG1b7xPcEdQh92Ruy2mnqU3y9Pe9wU9G/?=
- =?us-ascii?Q?TPDkoHg5/yvJZ9NAY87cusDDOeeaOLUR+SiZWv1s6Hyqg6oynjwgTnleqzR0?=
- =?us-ascii?Q?ZF2okyQciGpTrDYFUShsJRVaSdedAqiV5lNpVy7lwMRpCgV7T5cu3oeYWfIT?=
- =?us-ascii?Q?Q5N1cJEVMD7ZU5YzEgfZ1PEZUZ7izYK3fb3cgBujAgmAnF9r6NL5GLcZkIcn?=
- =?us-ascii?Q?D61H6wdmnJ9fxwlZYvqeDfvC/wjWprZCsnWUFLyDCZK82F8+7Eycgjq5Fq0z?=
- =?us-ascii?Q?K9BGnSVdsrnLaiHKQrPqDRI/TVwgH3f05nM5wpCGC2mEFgAIcvaG4IiSZdfb?=
- =?us-ascii?Q?gBpyM5IVlBPBn9hJ19H5p0IzPavtnG9VOsx2NBSocbwbrRI9wu9PAwrmXvGp?=
- =?us-ascii?Q?+9hF+gqsAi3Y87wPaUeahsLEmkwCo8Waezj+UKRSPKPrpspWKl1El2UoWyOh?=
- =?us-ascii?Q?5g=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsyK207Ssz30Ss
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 12:26:27 +1000 (AEST)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-24ca0876a83so2118735fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Jun 2024 19:26:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1717381580; x=1717986380; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9FVO8FfbvRSq3lInIu0BX0h7ckGi2C3dp5Cu4roUh7Y=;
+        b=kghQZjD/GFyvXdxDfeOjvmAH8rNsNbGnEGBLTTn5ZJkhM9dtmcV5/hTNQ/UpLYdtpa
+         tEaqAB/qsp2EEnnJLus2E19mDK/Levej05H/dow5s4sbYjzmSPlJWimGeOrY2xhljVoh
+         rwgMMuLNd6iFBLbtnU6carUyo6kmWWjL523XauIgRdXtlGdxDtGCgBOxziia/k0WnyR/
+         6m4o27qX9O6brqtQRXrJWpzx6aL+TLA240SJHCxj/xp1pIgtLciYs0+Ywz2xT96kzk5/
+         cxzTvokL1hwwKSGsrf7r5vUay5PYIWCLJnQfbvrodQqwOWBkWchrim025T0w+4ydTtM5
+         eyFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717381580; x=1717986380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9FVO8FfbvRSq3lInIu0BX0h7ckGi2C3dp5Cu4roUh7Y=;
+        b=Gcukgof3KKMZjPncwD2zJxPVOlmMNtj7B/lV+rTwRYCLvfXGnAdCp6kmrLNA9F2osZ
+         g/iXng0T7R9QUvYnD5UzGd8VI5DawZ8/DIE+LgVlc4Ww4kdcaoeQKkjZr7r371iKZV4r
+         v629uAvZbHSkzZqVrRAmHsIbJHq0wpkyH8uLxxi7PBWXRjsCwfBZsNkvTwdaKAOXNh6k
+         ZYbYyAX9QuTs1OR769Nw8UQ5zLYLuXhV43RdOoykE7Mld0Gpn1oKosSkS2AwgzxTsZxD
+         cWyvhXo45A0UYz5JnSHxMp/7bwaDxZglaXnnzWDl1ECu0FzXR80Ai4FR6ffxCg7JN6gT
+         UxHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVG4fXjRJoBOaP79nAlLHU7l8rmlJkCH4lIFqF7/xGzM3whrOzfgOSTvfWISL9pQzDs4atFMVkayWZ5/7lDKdPlsTGZoEArSEz8DJk8IA==
+X-Gm-Message-State: AOJu0YxQ2Vb3jigPWLlDeIUFNRr/9A/32O/WxxMx8EU4eSjLKXc2cmcj
+	/c9usWq/JwPCH5iCTY01/MiO7y5ZZYqJrqnAgBiJPf/M/ZS2/S+z+c4Cv1I/El3Dngx6ok9jhHy
+	tjJfitLGRUgOO5GpQYmD0aF2RB1AQqUbHCorgvg==
+X-Google-Smtp-Source: AGHT+IGCM0LMNQOovDp9kRtkZJlNH3sjfjIsZCkVxfHkVGktafrBKJCLQKJDpHSDg3IP3UkbyTARIWGa6hF9KT8otKE=
+X-Received: by 2002:a05:6870:55ce:b0:24f:df31:9bbf with SMTP id
+ 586e51a60fabf-2508bcb8b9bmr9214174fac.39.1717381580128; Sun, 02 Jun 2024
+ 19:26:20 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: nokia-sbell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR07MB4169.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b78c9c9-b7f4-4b06-6035-08dc836f0984
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jun 2024 01:46:50.3665
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vXKvjukFJarVPRHJMY6x7wf3N82j4rR2djMptYIyWtzzyDTaXDexUQ0b0Yegc68GaPLuzOtGN7+ZgqR9aqDbPgAXCrPibtM3drO8UwrD2xo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR07MB8390
-X-Mailman-Approved-At: Mon, 03 Jun 2024 11:56:37 +1000
+References: <20240131155929.169961-1-alexghiti@rivosinc.com> <20240131155929.169961-4-alexghiti@rivosinc.com>
+In-Reply-To: <20240131155929.169961-4-alexghiti@rivosinc.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Mon, 3 Jun 2024 10:26:09 +0800
+Message-ID: <CAEEQ3wnT-K18R1KQjJbeSdnFnRFQZt=wCuAHeDrf7EohwZ7n=w@mail.gmail.com>
+Subject: Re: [External] [PATCH RFC/RFT v2 3/4] riscv: Stop emitting preventive
+ sfence.vma for new vmalloc mappings
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -146,32 +79,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>
+Cc: linux-riscv@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Matt Evans <mev@rivosinc.com>, Albert Ou <aou@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>, Nicholas Piggin <npiggin@gmail.com>, Ved Shanbhogue <ved@rivosinc.com>, Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, Dylan Jhong <dylan@andestech.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Turn on usb snooping on PPC64.
+Hi Alexandre,
 
-Signed-off-by: Qianbin Zheng <qianbin.zheng@nokia-sbell.com>
----
- drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Feb 1, 2024 at 12:03=E2=80=AFAM Alexandre Ghiti <alexghiti@rivosinc=
+.com> wrote:
+>
+> In 6.5, we removed the vmalloc fault path because that can't work (see
+> [1] [2]). Then in order to make sure that new page table entries were
+> seen by the page table walker, we had to preventively emit a sfence.vma
+> on all harts [3] but this solution is very costly since it relies on IPI.
+>
+> And even there, we could end up in a loop of vmalloc faults if a vmalloc
+> allocation is done in the IPI path (for example if it is traced, see
+> [4]), which could result in a kernel stack overflow.
+>
+> Those preventive sfence.vma needed to be emitted because:
+>
+> - if the uarch caches invalid entries, the new mapping may not be
+>   observed by the page table walker and an invalidation may be needed.
+> - if the uarch does not cache invalid entries, a reordered access
+>   could "miss" the new mapping and traps: in that case, we would actually
+>   only need to retry the access, no sfence.vma is required.
+>
+> So this patch removes those preventive sfence.vma and actually handles
+> the possible (and unlikely) exceptions. And since the kernel stacks
+> mappings lie in the vmalloc area, this handling must be done very early
+> when the trap is taken, at the very beginning of handle_exception: this
+> also rules out the vmalloc allocations in the fault path.
+>
+> Link: https://lore.kernel.org/linux-riscv/20230531093817.665799-1-bjorn@k=
+ernel.org/ [1]
+> Link: https://lore.kernel.org/linux-riscv/20230801090927.2018653-1-dylan@=
+andestech.com [2]
+> Link: https://lore.kernel.org/linux-riscv/20230725132246.817726-1-alexghi=
+ti@rivosinc.com/ [3]
+> Link: https://lore.kernel.org/lkml/20200508144043.13893-1-joro@8bytes.org=
+/ [4]
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> ---
+>  arch/riscv/include/asm/cacheflush.h  | 18 +++++-
+>  arch/riscv/include/asm/thread_info.h |  5 ++
+>  arch/riscv/kernel/asm-offsets.c      |  5 ++
+>  arch/riscv/kernel/entry.S            | 84 ++++++++++++++++++++++++++++
+>  arch/riscv/mm/init.c                 |  2 +
+>  5 files changed, 113 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm=
+/cacheflush.h
+> index a129dac4521d..b0d631701757 100644
+> --- a/arch/riscv/include/asm/cacheflush.h
+> +++ b/arch/riscv/include/asm/cacheflush.h
+> @@ -37,7 +37,23 @@ static inline void flush_dcache_page(struct page *page=
+)
+>         flush_icache_mm(vma->vm_mm, 0)
+>
+>  #ifdef CONFIG_64BIT
+> -#define flush_cache_vmap(start, end)           flush_tlb_kernel_range(st=
+art, end)
+> +extern u64 new_vmalloc[NR_CPUS / sizeof(u64) + 1];
+> +extern char _end[];
+> +#define flush_cache_vmap flush_cache_vmap
+> +static inline void flush_cache_vmap(unsigned long start, unsigned long e=
+nd)
+> +{
+> +       if (is_vmalloc_or_module_addr((void *)start)) {
+> +               int i;
+> +
+> +               /*
+> +                * We don't care if concurrently a cpu resets this value =
+since
+> +                * the only place this can happen is in handle_exception(=
+) where
+> +                * an sfence.vma is emitted.
+> +                */
+> +               for (i =3D 0; i < ARRAY_SIZE(new_vmalloc); ++i)
+> +                       new_vmalloc[i] =3D -1ULL;
+> +       }
+> +}
+>  #define flush_cache_vmap_early(start, end)     local_flush_tlb_kernel_ra=
+nge(start, end)
+>  #endif
+>
+> diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/as=
+m/thread_info.h
+> index 5d473343634b..32631acdcdd4 100644
+> --- a/arch/riscv/include/asm/thread_info.h
+> +++ b/arch/riscv/include/asm/thread_info.h
+> @@ -60,6 +60,11 @@ struct thread_info {
+>         void                    *scs_base;
+>         void                    *scs_sp;
+>  #endif
+> +       /*
+> +        * Used in handle_exception() to save a0, a1 and a2 before knowin=
+g if we
+> +        * can access the kernel stack.
+> +        */
+> +       unsigned long           a0, a1, a2;
+>  };
+>
+>  #ifdef CONFIG_SHADOW_CALL_STACK
+> diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offs=
+ets.c
+> index a03129f40c46..939ddc0e3c6e 100644
+> --- a/arch/riscv/kernel/asm-offsets.c
+> +++ b/arch/riscv/kernel/asm-offsets.c
+> @@ -35,6 +35,8 @@ void asm_offsets(void)
+>         OFFSET(TASK_THREAD_S9, task_struct, thread.s[9]);
+>         OFFSET(TASK_THREAD_S10, task_struct, thread.s[10]);
+>         OFFSET(TASK_THREAD_S11, task_struct, thread.s[11]);
+> +
+> +       OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
+>         OFFSET(TASK_TI_FLAGS, task_struct, thread_info.flags);
+>         OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_co=
+unt);
+>         OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
+> @@ -42,6 +44,9 @@ void asm_offsets(void)
+>  #ifdef CONFIG_SHADOW_CALL_STACK
+>         OFFSET(TASK_TI_SCS_SP, task_struct, thread_info.scs_sp);
+>  #endif
+> +       OFFSET(TASK_TI_A0, task_struct, thread_info.a0);
+> +       OFFSET(TASK_TI_A1, task_struct, thread_info.a1);
+> +       OFFSET(TASK_TI_A2, task_struct, thread_info.a2);
+>
+>         OFFSET(TASK_TI_CPU_NUM, task_struct, thread_info.cpu);
+>         OFFSET(TASK_THREAD_F0,  task_struct, thread.fstate.f[0]);
+> diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+> index 9d1a305d5508..c1ffaeaba7aa 100644
+> --- a/arch/riscv/kernel/entry.S
+> +++ b/arch/riscv/kernel/entry.S
+> @@ -19,6 +19,78 @@
+>
+>         .section .irqentry.text, "ax"
+>
+> +.macro new_vmalloc_check
+> +       REG_S   a0, TASK_TI_A0(tp)
+> +       REG_S   a1, TASK_TI_A1(tp)
+> +       REG_S   a2, TASK_TI_A2(tp)
+> +
+> +       csrr    a0, CSR_CAUSE
+> +       /* Exclude IRQs */
+> +       blt     a0, zero, _new_vmalloc_restore_context
+> +       /* Only check new_vmalloc if we are in page/protection fault */
+> +       li      a1, EXC_LOAD_PAGE_FAULT
+> +       beq     a0, a1, _new_vmalloc_kernel_address
+> +       li      a1, EXC_STORE_PAGE_FAULT
+> +       beq     a0, a1, _new_vmalloc_kernel_address
+> +       li      a1, EXC_INST_PAGE_FAULT
+> +       bne     a0, a1, _new_vmalloc_restore_context
+> +
+> +_new_vmalloc_kernel_address:
+> +       /* Is it a kernel address? */
+> +       csrr    a0, CSR_TVAL
+> +       bge     a0, zero, _new_vmalloc_restore_context
+> +
+> +       /* Check if a new vmalloc mapping appeared that could explain the=
+ trap */
+> +
+> +       /*
+> +        * Computes:
+> +        * a0 =3D &new_vmalloc[BIT_WORD(cpu)]
+> +        * a1 =3D BIT_MASK(cpu)
+> +        */
+> +       REG_L   a2, TASK_TI_CPU(tp)
+> +       /*
+> +        * Compute the new_vmalloc element position:
+> +        * (cpu / 64) * 8 =3D (cpu >> 6) << 3
+> +        */
+> +       srli    a1, a2, 6
+> +       slli    a1, a1, 3
+> +       la      a0, new_vmalloc
+> +       add     a0, a0, a1
+> +       /*
+> +        * Compute the bit position in the new_vmalloc element:
+> +        * bit_pos =3D cpu % 64 =3D cpu - (cpu / 64) * 64 =3D cpu - (cpu =
+>> 6) << 6
+> +        *         =3D cpu - ((cpu >> 6) << 3) << 3
+> +        */
+> +       slli    a1, a1, 3
+> +       sub     a1, a2, a1
+> +       /* Compute the "get mask": 1 << bit_pos */
+> +       li      a2, 1
+> +       sll     a1, a2, a1
+> +
+> +       /* Check the value of new_vmalloc for this cpu */
+> +       REG_L   a2, 0(a0)
+> +       and     a2, a2, a1
+> +       beq     a2, zero, _new_vmalloc_restore_context
+> +
+> +       /* Atomically reset the current cpu bit in new_vmalloc */
+> +       amoxor.w        a0, a1, (a0)
+> +
+> +       /* Only emit a sfence.vma if the uarch caches invalid entries */
+> +       ALTERNATIVE("sfence.vma", "nop", 0, RISCV_ISA_EXT_SVVPTC, 1)
+> +
+> +       REG_L   a0, TASK_TI_A0(tp)
+> +       REG_L   a1, TASK_TI_A1(tp)
+> +       REG_L   a2, TASK_TI_A2(tp)
+> +       csrw    CSR_SCRATCH, x0
+> +       sret
+> +
+> +_new_vmalloc_restore_context:
+> +       REG_L   a0, TASK_TI_A0(tp)
+> +       REG_L   a1, TASK_TI_A1(tp)
+> +       REG_L   a2, TASK_TI_A2(tp)
+> +.endm
+> +
+> +
+>  SYM_CODE_START(handle_exception)
+>         /*
+>          * If coming from userspace, preserve the user thread pointer and=
+ load
+> @@ -30,6 +102,18 @@ SYM_CODE_START(handle_exception)
+>
+>  .Lrestore_kernel_tpsp:
+>         csrr tp, CSR_SCRATCH
+> +
+> +       /*
+> +        * The RISC-V kernel does not eagerly emit a sfence.vma after eac=
+h
+> +        * new vmalloc mapping, which may result in exceptions:
+> +        * - if the uarch caches invalid entries, the new mapping would n=
+ot be
+> +        *   observed by the page table walker and an invalidation is nee=
+ded.
+> +        * - if the uarch does not cache invalid entries, a reordered acc=
+ess
+> +        *   could "miss" the new mapping and traps: in that case, we onl=
+y need
+> +        *   to retry the access, no sfence.vma is required.
+> +        */
+> +       new_vmalloc_check
+> +
+>         REG_S sp, TASK_TI_KERNEL_SP(tp)
+>
+>  #ifdef CONFIG_VMAP_STACK
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index eafc4c2200f2..54c9fdeda11e 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -36,6 +36,8 @@
+>
+>  #include "../kernel/head.h"
+>
+> +u64 new_vmalloc[NR_CPUS / sizeof(u64) + 1];
+> +
+>  struct kernel_mapping kernel_map __ro_after_init;
+>  EXPORT_SYMBOL(kernel_map);
+>  #ifdef CONFIG_XIP_KERNEL
+> --
+> 2.39.2
+>
+>
 
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc=
-/fsl_udc_core.c
-index 3432ebfae978..a0f3498086d5 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -328,7 +328,7 @@ static int dr_controller_setup(struct fsl_udc *udc)
- 		__raw_writel(ctrl, &usb_sys_regs->control);
- 	}
-=20
--#if defined(CONFIG_PPC32) && !defined(CONFIG_NOT_COHERENT_CACHE)
-+#if (defined(CONFIG_PPC32) || (defined(CONFIG_PPC64))) && !defined(CONFIG_=
-NOT_COHERENT_CACHE)
- 	/* Turn on cache snooping hardware, since some PowerPC platforms
- 	 * wholly rely on hardware to deal with cache coherent. */
-=20
---=20
-2.31.1
+Can we consider using new_vmalloc as a percpu variable, so that we
+don't need to add a0/1/2 in thread_info? Also, try not to do too much
+calculation logic in new_vmalloc_check, after all, handle_exception is
+a high-frequency path. In this case, can we consider writing
+new_vmalloc_check in C language to increase readability?
 
+Thanks,
+Yunhui
