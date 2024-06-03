@@ -1,78 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27598FA657
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 01:18:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2418FA66A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 01:25:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=SxaqibJz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=HpEOxFII;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VtV546N31z3dD1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 09:18:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VtVFl1t3wz3d94
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 09:25:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=SxaqibJz;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=HpEOxFII;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com; envelope-from=jthoughton@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::22f; helo=mail-lj1-x22f.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtV4L3MQPz3cBN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 09:17:21 +1000 (AEST)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-43fe3289fc5so57821cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2024 16:17:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtVDz74nfz3d8K
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 09:24:51 +1000 (AEST)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2eaa80cb4d3so40234581fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2024 16:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717456638; x=1718061438; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KDykUGLfvL3M1lWs+oKStYngTbEIAr5rRwVrwRKKurY=;
-        b=SxaqibJztEN4X7L3lI1thpiBaK9TT42H4yisTOz3/jLyzl3AmAkcKPYQsprNWi2Pgq
-         GkAT8SNMdKxnYawU8QrJ1Lp42gIL084e1XfI8LijvKswDusYUVL45Lvx4R4sXNZIgMjW
-         P9Ucd+kcmUnhD5yF9nSdpoJEteen68R6l851Vl2I8mPlxHnaGBJi5yWZkJK8eKdD4TeA
-         j9bw3UwL901+kDjo6SOvtzZTaVNDnmApSaSdgTTkNt82i5vUkB1GAr7gXh6fC3ZbWW5b
-         YXGxqJaC57GqjjuI9zoHMVBCoB2VQZmAkhov7i4XgThtpo5P4lD3P6ZSiSmffBT1de3S
-         P8yg==
+        d=google.com; s=20230601; t=1717457081; x=1718061881; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uI9O5jaQ0kfa653hSR6g4hwsO4WQYRAKjh78vr8MtSY=;
+        b=HpEOxFIIds2IbEyCrge99cO64X1PIjsA9JD64BnxdfdwVQLYtbGjPlLkY08TNnxxi8
+         uy7x035L3mfnr6kuHKp+k8czHPGyWM2gXTOoZVkibU1FsfT/3DpA1C0wYSNUhXG57M8A
+         OrFt08N/CLduaM0VuZb+N9X518ejoZb3DfksC0eEgGTYVqHTPD7ozoUzQUdGAFAeDR+f
+         pb08WTh+5wtQaWh7kwRsYur4IjE2h6FEFjgyRziHJNDBupDgsIASm7ZiQ+M64YqL32dZ
+         D6q4ijRyG6QdWNDfuz3NMhDOL1rVc07j7G3VNfiexgBxmXJe1amxDQieWmYZkqDZTKay
+         Wlww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717456638; x=1718061438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KDykUGLfvL3M1lWs+oKStYngTbEIAr5rRwVrwRKKurY=;
-        b=ttKQ78wZTra3XGv2t7kovbMwhb4siEFQpOvbNgpxo06BvZr8Zhux2s+1U97FMm/axR
-         MefSFKs/JW+B5nIjhRLBrf2X00zsz7TWEoKVcqbpLsnPQyZbDPy3zXFotbTP7UY/z0VK
-         XNc2WaCJWywmdbtdcFHr2UjQeO54oYfhSJGrNmUJSvS8An2VSIYv13u4aoeNRQGjyCru
-         6Rfs7QOto9Jge7aOR1YTR3iHO4zmtvkMn3X8WLAEpEeBvY4lfCB5ZLKukbSIF5DI2amW
-         XmVg7dSuTcv8oue2Ajrt71EzTpN5ij8M1Na6eOK8fbldh7+RnCeivN7pvssG9YdCP/5F
-         GmQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVN6m16en5tWRq8eR06WHD96f/get/dP28KIdfjBje8IZZ8nWT6wQmoKAqs6pxzvr/CEtEaTwB5EjDXyWV+KrF5jBwj1uRUhnIXfxkGBA==
-X-Gm-Message-State: AOJu0YyNY4ARRkV0Ie3f6StgNMiki2PMxfyWp+puT8UUPH2O4ZFtWAf2
-	V+LnCu+h0d4I14+Jl/1N4Z6/W3bRRXic3HPEFX5lYvieMwvoAvHrAdvaB/cSARyzThLYuwoVYlv
-	sXNvWEGuGGoH8ERl1oobwe5jdA8i00M5xZfMS
-X-Google-Smtp-Source: AGHT+IERlDy+7BDKGdKU12nHNHCd2TlJ06DKBFhjKpTdcIQ5T8pyrt6cuvlCSmsOxFEEGgqtt5PP7LKTO7CDtdLxk+8=
-X-Received: by 2002:a05:622a:4ccc:b0:43a:aa3f:917a with SMTP id
- d75a77b69052e-4401e68c145mr1144381cf.27.1717456637692; Mon, 03 Jun 2024
- 16:17:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717457081; x=1718061881;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uI9O5jaQ0kfa653hSR6g4hwsO4WQYRAKjh78vr8MtSY=;
+        b=Gt0lnYP2pkn3NY9fiCdNTzKaX4yiSDK8CmZKuvRU/MZhlx2kmySGalfChz+xaMVln/
+         sslmbbhVCR8RuNsjbz+IqoY1nKYDcAFSe8NkpJpTYHj0b7F7P87hZGqmdHH35l4biEvA
+         oa3Q5exUicGgtmf2swR8dKvTCbfQ8+vrnISg9E9PUm3gk2ffeJoFK+IHMM4cw1ykuDyn
+         mtE/MMhqFDEsuWbjndIxSgdpI7RDkjk4U1pewykapSDJIEozXEoD8qAnhNQCbP75Ze5C
+         4mJRE7JcjOLntlvvznd9fCQt2ddwwsQor9F1g08RsAc9jCfNQ6gmSqMVikbwkmTo1mTS
+         F36A==
+X-Forwarded-Encrypted: i=1; AJvYcCXNlLaX8ziyj5AOIao4mI3ZcyXsKfMqViD6IC4ajlTm8ag29DgFu3TYhC7f53bMpbowaaJCQHgHrR4oAsK96RBCRT5kA+THOA3xm/HXeQ==
+X-Gm-Message-State: AOJu0YwcSk1QiP0/CTf9yK0SJOwCTDZ6XA50dRQrtryByqyYhsB7/xlL
+	NGg2JOAzw5a81be2Yr6mJXelq2wcTR1JjAm1Jo8YAp2kNSUuaYIBlJ+89VeeCKvX1DRKxicYPgC
+	3KX77dtS6jau1sPW8JqCtpdAtfEgHijMt9dqc
+X-Google-Smtp-Source: AGHT+IEUNuM7g9YhDLjaOVQ6ME5e+H6g213LZO/+a9W4oW0WyCXsRz0fuPpEZFPzvaRVcCL1qlZJdtZGuETggOjtRqc=
+X-Received: by 2002:a2e:9d88:0:b0:2e1:9c57:195a with SMTP id
+ 38308e7fff4ca-2ea951de27fmr86665761fa.32.1717457080443; Mon, 03 Jun 2024
+ 16:24:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240529180510.2295118-1-jthoughton@google.com>
- <20240529180510.2295118-3-jthoughton@google.com> <CAOUHufYFHKLwt1PWp2uS6g174GZYRZURWJAmdUWs5eaKmhEeyQ@mail.gmail.com>
- <ZlelW93_T6P-ZuSZ@google.com> <CAOUHufZdEpY6ra73SMHA33DegKxKaUM=Os7A7aDBFND6NkbUmQ@mail.gmail.com>
- <Zley-u_dOlZ-S-a6@google.com> <CADrL8HXHWg_MkApYQTngzmN21NEGNWC6KzJDw_Lm63JHJkR=5A@mail.gmail.com>
- <CAOUHufZq6DwpStzHtjG+TOiHaQ6FFbkTfHMCe8Yy0n_M9MKdqw@mail.gmail.com>
- <CADrL8HW44Hx_Ejx_6+FVKt1V17PdgT6rw+sNtKzumqc9UCVDfA@mail.gmail.com> <Zl5LqcusZ88QOGQY@google.com>
-In-Reply-To: <Zl5LqcusZ88QOGQY@google.com>
-From: James Houghton <jthoughton@google.com>
-Date: Mon, 3 Jun 2024 16:16:41 -0700
-Message-ID: <CADrL8HU734C_OQhzszWJWMXEXLN6HkBo4yweN2fX4BbOegXrFA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/7] mm: multi-gen LRU: Have secondary MMUs participate
- in aging
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
+ <CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
+ <CAOUHufZ36rQc8AfLtRv2QrEareysdvbprAEO5XkcG-FeDOxFLA@mail.gmail.com>
+ <20240602200332.3e531ff1@yea> <20240604001304.5420284f@yea>
+In-Reply-To: <20240604001304.5420284f@yea>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Mon, 3 Jun 2024 16:24:02 -0700
+Message-ID: <CAJD7tkbCRLdy0vD2Pd17fNrxHgkzW1VucN4qMkohLFLBLaaeCQ@mail.gmail.com>
+Subject: Re: kswapd0: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
+ nodemask=(null),cpuset=/,mems_allowed=0 (Kernel v6.5.9, 32bit ppc)
+To: Erhard Furtner <erhard_f@mailbox.org>
+Content-Type: multipart/mixed; boundary="00000000000033ca02061a04a3f5"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,111 +80,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Atish Patra <atishp@atishpatra.org>, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>, linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>, Yu Zhao <yuzhao@google.com>, Jonathan Corbet <corbet@lwn.net>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, David Rientjes <rientjes@google.com>, Zenghui Yu <yuzenghui@huawei.com>, Axel Rasmussen <axelrasmussen@google.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, David Matlack <dmatlack@google.com>, Palmer Dabbelt <palmer@dabbelt.com
- >, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, Ankit Agrawal <ankita@nvidia.com>, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Yu Zhao <yuzhao@google.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 3, 2024 at 4:03=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
+--00000000000033ca02061a04a3f5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jun 3, 2024 at 3:13=E2=80=AFPM Erhard Furtner <erhard_f@mailbox.org=
+> wrote:
 >
-> On Mon, Jun 03, 2024, James Houghton wrote:
-> > On Thu, May 30, 2024 at 11:06=E2=80=AFPM Yu Zhao <yuzhao@google.com> wr=
-ote:
-> > > What I don't think is acceptable is simplifying those optimizations
-> > > out without documenting your justifications (I would even call it a
-> > > design change, rather than simplification, from v3 to v4).
+> On Sun, 2 Jun 2024 20:03:32 +0200
+> Erhard Furtner <erhard_f@mailbox.org> wrote:
+>
+> > On Sat, 1 Jun 2024 00:01:48 -0600
+> > Yu Zhao <yuzhao@google.com> wrote:
 > >
-> > I'll put back something similar to what you had before (like a
-> > test_clear_young() with a "fast" parameter instead of "bitmap"). I
-> > like the idea of having a new mmu notifier, like
-> > fast_test_clear_young(), while leaving test_young() and clear_young()
-> > unchanged (where "fast" means "prioritize speed over accuracy").
->
-> Those two statements are contradicting each other, aren't they?
-
-I guess it depends on how you define "similar". :)
-
-> Anyways, I vote
-> for a "fast only" variant, e.g. test_clear_young_fast_only() or so.  gup(=
-) has
-> already established that terminology in mm/, so hopefully it would be fam=
-iliar
-> to readers.  We could pass a param, but then the MGLRU code would likely =
-end up
-> doing a bunch of useless indirect calls into secondary MMUs, whereas a de=
-dicated
-> hook allows implementations to nullify the pointer if the API isn't suppo=
-rted
-> for whatever reason.
->
-> And pulling in Oliver's comments about locking, I think it's important th=
-at the
-> mmu_notifier API express it's requirement that the operation be "fast", n=
-ot that
-> it be lockless.  E.g. if a secondary MMU can guarantee that a lock will b=
-e
-> contented only in rare, slow cases, then taking a lock is a-ok.  Or a sec=
-ondary
-> MMU could do try-lock and bail if the lock is contended.
->
-> That way KVM can honor the intent of the API with an implementation that =
-works
-> best for KVM _and_ for MGRLU.  I'm sure there will be future adjustments =
-and fixes,
-> but that's just more motivation for using something like "fast only" inst=
-ead of
-> "lockless".
-
-Yes, thanks, this is exactly what I meant. I really should have "only"
-in the name to signify that it is a requirement that it be fast.
-Thanks for wording it so clearly.
-
->
-> > > > I made this logic change as part of removing batching.
-> > > >
-> > > > I'd really appreciate guidance on what the correct thing to do is.
-> > > >
-> > > > In my mind, what would work great is: by default, do aging exactly
-> > > > when KVM can do it locklessly, and then have a Kconfig to always ha=
-ve
-> > > > MGLRU to do aging with KVM if a user really cares about proactive
-> > > > reclaim (when the feature bit is set). The selftest can check the
-> > > > Kconfig + feature bit to know for sure if aging will be done.
+> > > The OOM kills on both kernel versions seem to be reasonable to me.
 > > >
-> > > I still don't see how that Kconfig helps. Or why the new static branc=
-h
-> > > isn't enough?
-> >
-> > Without a special Kconfig, the feature bit just tells us that aging
-> > with KVM is possible, not that it will necessarily be done. For the
-> > self-test, it'd be good to know exactly when aging is being done or
-> > not, so having a Kconfig like LRU_GEN_ALWAYS_WALK_SECONDARY_MMU would
-> > help make the self-test set the right expectations for aging.
-> >
-> > The Kconfig would also allow a user to know that, no matter what,
-> > we're going to get correct age data for VMs, even if, say, we're using
-> > the shadow MMU.
+> > > Your system has 2GB memory and it uses zswap with zsmalloc (which is
+> > > good since it can allocate from the highmem zone) and zstd/lzo (which
+> > > doesn't matter much). Somehow -- I couldn't figure out why -- it
+> > > splits the 2GB into a 0.25GB DMA zone and a 1.75GB highmem zone:
+> > >
+> > > [    0.000000] Zone ranges:
+> > > [    0.000000]   DMA      [mem 0x0000000000000000-0x000000002fffffff]
+> > > [    0.000000]   Normal   empty
+> > > [    0.000000]   HighMem  [mem 0x0000000030000000-0x000000007fffffff]
+> > >
+> > > The kernel can't allocate from the highmem zone -- only userspace and
+> > > zsmalloc can. OOM kills were due to the low memory conditions in the
+> > > DMA zone where the kernel itself failed to allocate from.
+> > >
+> > > Do you know a kernel version that doesn't have OOM kills while runnin=
+g
+> > > the same workload? If so, could you send that .config to me? If not,
+> > > could you try disabling CONFIG_HIGHMEM? (It might not help but I'm ou=
+t
+> > > of ideas at the moment.)
 >
-> Heh, unless KVM flushes, you won't get "correct" age data.
+> Ok, the bisect I did actually revealed something meaningful:
 >
-> > This is somewhat important for me/Google Cloud. Is that reasonable? May=
-be
-> > there's a better solution.
+>  # git bisect good
+> b8cf32dc6e8c75b712cbf638e0fd210101c22f17 is the first bad commit
+> commit b8cf32dc6e8c75b712cbf638e0fd210101c22f17
+> Author: Yosry Ahmed <yosryahmed@google.com>
+> Date:   Tue Jun 20 19:46:44 2023 +0000
 >
-> Hmm, no?  There's no reason to use a Kconfig, e.g. if we _really_ want to=
- prioritize
-> accuracy over speed, then a KVM (x86?) module param to have KVM walk nest=
-ed TDP
-> page tables would give us what we want.
->
-> But before we do that, I think we need to perform due dilegence (or provi=
-de data)
-> showing that having KVM take mmu_lock for write in the "fast only" API pr=
-ovides
-> better total behavior.  I.e. that the additional accuracy is indeed worth=
- the cost.
+>     mm: zswap: multiple zpools support
 
-That sounds good to me. I'll drop the Kconfig. I'm not really sure
-what to do about the self-test, but that's not really all that
-important.
+Thanks for bisecting. Taking a look at the thread, it seems like you
+have a very limited area of memory to allocate kernel memory from. One
+possible reason why that commit can cause an issue is because we will
+have multiple instances of the zsmalloc slab caches 'zspage' and
+'zs_handle', which may contribute to fragmentation in slab memory.
+
+Do you have /proc/slabinfo from a good and a bad run by any chance?
+
+Also, could you check if the attached patch helps? It makes sure that
+even when we use multiple zsmalloc zpools, we will use a single slab
+cache of each type.
+
+--00000000000033ca02061a04a3f5
+Content-Type: application/octet-stream; 
+	name="0001-mm-zsmalloc-share-slab-caches-for-all-zsmalloc-zpool.patch"
+Content-Disposition: attachment; 
+	filename="0001-mm-zsmalloc-share-slab-caches-for-all-zsmalloc-zpool.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lwzlkqoq0>
+X-Attachment-Id: f_lwzlkqoq0
+
+RnJvbSAxYWMwZmEzNDc4M2Y2NmVhNzMzNGZkMmU5MTI5YmMzNjJiZWU1MWRkIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBZb3NyeSBBaG1lZCA8eW9zcnlhaG1lZEBnb29nbGUuY29tPgpE
+YXRlOiBTYXQsIDEzIE1heSAyMDIzIDAxOjEwOjM0ICswMDAwClN1YmplY3Q6IFtQQVRDSF0gbW06
+IHpzbWFsbG9jOiBzaGFyZSBzbGFiIGNhY2hlcyBmb3IgYWxsIHpzbWFsbG9jIHpwb29scwoKWnN3
+YXAgY3JlYXRlcyAzMiB6cG9vbHMgdG8gaW1wcm92ZSBjb25jdXJyZW5jeS4gRWFjaCB6c21hbGxv
+YyB6cG9vbApjcmVhdGVzIGl0cyBvd24gJ3pzX2hhbmRsZScgYW5kICd6c3BhZ2UnIHNsYWIgY2Fj
+aGVzLiBXZSBlbmQgdXAgd2l0aCAzMgpzbGFiIGNhY2hlcyBvZiBlYWNoIHR5cGUuCgpTaW5jZSBl
+YWNoIHNsYWIgY2FjaGUgaG9sZHMgc29tZSBmcmVlIG9iamVjdHMsIHdlIGVuZCB1cCB3aXRoIGEg
+bG90IG9mCmZyZWUgb2JqZWN0cyBkaXN0cmlidXRlZCBhbW9uZyB0aGUgc2VwYXJhdGUgenBvb2wg
+Y2FjaGVzLiBTbGFiIGNhY2hlcwphcmUgZGVzaWduZWQgdG8gaGFuZGxlIGNvbmN1cnJlbnQgYWxs
+b2NhdGlvbnMgYnkgdXNpbmcgcGVyY3B1CnN0cnVjdHVyZXMsIHNvIGhhdmluZyBhIHNpbmdsZSBp
+bnN0YW5jZSBvZiBlYWNoIGNhY2hlIHNob3VsZCBiZSBlbm91Z2gsCmFuZCBhdm9pZHMgd2FzdGlu
+ZyBtb3JlIG1lbW9yeSB0aGFuIG5lZWRlZCBkdWUgdG8gZnJhZ21lbnRhdGlvbi4KCkFkZGl0aW9u
+YWxseSwgaGF2aW5nIG1vcmUgc2xhYiBjYWNoZXMgdGhhbiBuZWVkZWQgdW5uZWNlc3NhcmlseSBz
+bG93cwpkb3duIGNvZGUgcGF0aHMgdGhhdCBpdGVyYXRlIHNsYWJfY2FjaGVzLgoKU2lnbmVkLW9m
+Zi1ieTogWW9zcnkgQWhtZWQgPHlvc3J5YWhtZWRAZ29vZ2xlLmNvbT4KLS0tCiBtbS96c21hbGxv
+Yy5jIHwgNjAgKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCiAxIGZpbGUgY2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygrKSwgMjcgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvbW0venNtYWxsb2MuYyBiL21tL3pzbWFsbG9jLmMKaW5kZXggYjQyZDM1NDVj
+YTg1Ni4uYzNjOTA2MThlYzhiNCAxMDA2NDQKLS0tIGEvbW0venNtYWxsb2MuYworKysgYi9tbS96
+c21hbGxvYy5jCkBAIC0yODksMjkgKzI4OSw4IEBAIHN0YXRpYyB2b2lkIGluaXRfZGVmZXJyZWRf
+ZnJlZShzdHJ1Y3QgenNfcG9vbCAqcG9vbCkge30KIHN0YXRpYyB2b2lkIFNldFpzUGFnZU1vdmFi
+bGUoc3RydWN0IHpzX3Bvb2wgKnBvb2wsIHN0cnVjdCB6c3BhZ2UgKnpzcGFnZSkge30KICNlbmRp
+ZgogCi1zdGF0aWMgaW50IGNyZWF0ZV9jYWNoZShzdHJ1Y3QgenNfcG9vbCAqcG9vbCkKLXsKLQlw
+b29sLT5oYW5kbGVfY2FjaGVwID0ga21lbV9jYWNoZV9jcmVhdGUoInpzX2hhbmRsZSIsIFpTX0hB
+TkRMRV9TSVpFLAotCQkJCQkwLCAwLCBOVUxMKTsKLQlpZiAoIXBvb2wtPmhhbmRsZV9jYWNoZXAp
+Ci0JCXJldHVybiAxOwotCi0JcG9vbC0+enNwYWdlX2NhY2hlcCA9IGttZW1fY2FjaGVfY3JlYXRl
+KCJ6c3BhZ2UiLCBzaXplb2Yoc3RydWN0IHpzcGFnZSksCi0JCQkJCTAsIDAsIE5VTEwpOwotCWlm
+ICghcG9vbC0+enNwYWdlX2NhY2hlcCkgewotCQlrbWVtX2NhY2hlX2Rlc3Ryb3kocG9vbC0+aGFu
+ZGxlX2NhY2hlcCk7Ci0JCXBvb2wtPmhhbmRsZV9jYWNoZXAgPSBOVUxMOwotCQlyZXR1cm4gMTsK
+LQl9Ci0KLQlyZXR1cm4gMDsKLX0KLQotc3RhdGljIHZvaWQgZGVzdHJveV9jYWNoZShzdHJ1Y3Qg
+enNfcG9vbCAqcG9vbCkKLXsKLQlrbWVtX2NhY2hlX2Rlc3Ryb3kocG9vbC0+aGFuZGxlX2NhY2hl
+cCk7Ci0Ja21lbV9jYWNoZV9kZXN0cm95KHBvb2wtPnpzcGFnZV9jYWNoZXApOwotfQorc3RhdGlj
+IHN0cnVjdCBrbWVtX2NhY2hlICp6c19oYW5kbGVfY2FjaGU7CitzdGF0aWMgc3RydWN0IGttZW1f
+Y2FjaGUgKnpzcGFnZV9jYWNoZTsKIAogc3RhdGljIHVuc2lnbmVkIGxvbmcgY2FjaGVfYWxsb2Nf
+aGFuZGxlKHN0cnVjdCB6c19wb29sICpwb29sLCBnZnBfdCBnZnApCiB7CkBAIC0yMTA3LDEzICsy
+MDg2LDEzIEBAIHN0cnVjdCB6c19wb29sICp6c19jcmVhdGVfcG9vbChjb25zdCBjaGFyICpuYW1l
+KQogCXNwaW5fbG9ja19pbml0KCZwb29sLT5sb2NrKTsKIAlhdG9taWNfc2V0KCZwb29sLT5jb21w
+YWN0aW9uX2luX3Byb2dyZXNzLCAwKTsKIAorCXBvb2wtPmhhbmRsZV9jYWNoZXAgPSB6c19oYW5k
+bGVfY2FjaGU7CisJcG9vbC0+enNwYWdlX2NhY2hlcCA9IHpzcGFnZV9jYWNoZTsKKwogCXBvb2wt
+Pm5hbWUgPSBrc3RyZHVwKG5hbWUsIEdGUF9LRVJORUwpOwogCWlmICghcG9vbC0+bmFtZSkKIAkJ
+Z290byBlcnI7CiAKLQlpZiAoY3JlYXRlX2NhY2hlKHBvb2wpKQotCQlnb3RvIGVycjsKLQogCS8q
+CiAJICogSXRlcmF0ZSByZXZlcnNlbHksIGJlY2F1c2UsIHNpemUgb2Ygc2l6ZV9jbGFzcyB0aGF0
+IHdlIHdhbnQgdG8gdXNlCiAJICogZm9yIG1lcmdpbmcgc2hvdWxkIGJlIGxhcmdlciBvciBlcXVh
+bCB0byBjdXJyZW50IHNpemUuCkBAIC0yMjM0LDE2ICsyMjEzLDQxIEBAIHZvaWQgenNfZGVzdHJv
+eV9wb29sKHN0cnVjdCB6c19wb29sICpwb29sKQogCQlrZnJlZShjbGFzcyk7CiAJfQogCi0JZGVz
+dHJveV9jYWNoZShwb29sKTsKIAlrZnJlZShwb29sLT5uYW1lKTsKIAlrZnJlZShwb29sKTsKIH0K
+IEVYUE9SVF9TWU1CT0xfR1BMKHpzX2Rlc3Ryb3lfcG9vbCk7CiAKK3N0YXRpYyB2b2lkIHpzX2Rl
+c3Ryb3lfY2FjaGVzKHZvaWQpCit7CisJa21lbV9jYWNoZV9kZXN0cm95KHpzX2hhbmRsZV9jYWNo
+ZSk7CisJa21lbV9jYWNoZV9kZXN0cm95KHpzcGFnZV9jYWNoZSk7CisJenNfaGFuZGxlX2NhY2hl
+ID0gTlVMTDsKKwl6c3BhZ2VfY2FjaGUgPSBOVUxMOworfQorCitzdGF0aWMgaW50IHpzX2NyZWF0
+ZV9jYWNoZXModm9pZCkKK3sKKwl6c19oYW5kbGVfY2FjaGUgPSBrbWVtX2NhY2hlX2NyZWF0ZSgi
+enNfaGFuZGxlIiwgWlNfSEFORExFX1NJWkUsCisJCQkJCSAgICAwLCAwLCBOVUxMKTsKKwl6c3Bh
+Z2VfY2FjaGUgPSBrbWVtX2NhY2hlX2NyZWF0ZSgienNwYWdlIiwgc2l6ZW9mKHN0cnVjdCB6c3Bh
+Z2UpLAorCQkJCQkgMCwgMCwgTlVMTCk7CisKKwlpZiAoIXpzX2hhbmRsZV9jYWNoZSB8fCAhenNw
+YWdlX2NhY2hlKSB7CisJCXpzX2Rlc3Ryb3lfY2FjaGVzKCk7CisJCXJldHVybiAtMTsKKwl9CisJ
+cmV0dXJuIDA7Cit9CisKIHN0YXRpYyBpbnQgX19pbml0IHpzX2luaXQodm9pZCkKIHsKIAlpbnQg
+cmV0OwogCisJcmV0ID0genNfY3JlYXRlX2NhY2hlcygpOworCWlmIChyZXQpCisJCWdvdG8gb3V0
+OworCiAJcmV0ID0gY3B1aHBfc2V0dXBfc3RhdGUoQ1BVSFBfTU1fWlNfUFJFUEFSRSwgIm1tL3pz
+bWFsbG9jOnByZXBhcmUiLAogCQkJCXpzX2NwdV9wcmVwYXJlLCB6c19jcHVfZGVhZCk7CiAJaWYg
+KHJldCkKQEAgLTIyNTgsNiArMjI2Miw3IEBAIHN0YXRpYyBpbnQgX19pbml0IHpzX2luaXQodm9p
+ZCkKIAlyZXR1cm4gMDsKIAogb3V0OgorCXpzX2Rlc3Ryb3lfY2FjaGVzKCk7CiAJcmV0dXJuIHJl
+dDsKIH0KIApAQCAtMjI2OSw2ICsyMjc0LDcgQEAgc3RhdGljIHZvaWQgX19leGl0IHpzX2V4aXQo
+dm9pZCkKIAljcHVocF9yZW1vdmVfc3RhdGUoQ1BVSFBfTU1fWlNfUFJFUEFSRSk7CiAKIAl6c19z
+dGF0X2V4aXQoKTsKKwl6c19kZXN0cm95X2NhY2hlcygpOwogfQogCiBtb2R1bGVfaW5pdCh6c19p
+bml0KTsKLS0gCjIuNDUuMS4yODguZzBlMGNkMjk5ZjEtZ29vZwoK
+--00000000000033ca02061a04a3f5--
