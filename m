@@ -2,77 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9008D7D08
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 10:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A7A8D7D5D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 10:30:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NURlsjLB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ixGWhgcF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vt5tT11bJz3cVs
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 18:07:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vt6PL1Nq2z3cQq
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 18:30:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NURlsjLB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ixGWhgcF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vt5sh73Gwz30Vg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 18:06:47 +1000 (AEST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-70245b22365so2106554b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2024 01:06:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717402004; x=1718006804; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7+YI0NLfFFhJ1Ir8e+Xv+54jNSfB0DM2jKBTzfdKYSc=;
-        b=NURlsjLBs9Ui3fcH29nM02as5i7E+eeNuJFvk+Z1t55FV2YIOYDRkvq2ukOpmhKYq/
-         NOoEaVuGQ5wNcNvIpeOPaIEkWEslgJB307QPXhEIkRV0ZlUu9vqPipiwdcxcAOHr46Bf
-         9ULPaXGu7bazRpgiJAEeZtkVSevYXuHMrBfe4wqp08pKz3Ni814gQdgPhJuEy2e+Njdl
-         1duCYtOKv/lpvGo7m7AMPs5hZJ6KYkh18vW12nwskyjFcblr9SgOGdd9doV1FkAPqYTY
-         mpgKP4nIED2+9l1QYSkLZtZq7nNhJxH1ISjaNgOPKHu8Zg6HfgKpgkjokps7poWyeb6I
-         LnKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717402004; x=1718006804;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7+YI0NLfFFhJ1Ir8e+Xv+54jNSfB0DM2jKBTzfdKYSc=;
-        b=meIXdK0S5HUwZJWqrrS/gpKHHEbtJccFMa1HUSU48fkstyRTnupU7FcSzevWD+q0cp
-         onHLr8ZmKJzY945b8GJLQ99BnpvJW6ZHhM2JrPlf7rOH4jnmeUEaWXi+w8oS3mDPRHmy
-         Tu8+TxHP/6Wrr+gK8UK9fi8JsJVOroVNPSy6vpHA2OdGfWgaP3h6KKxBvfiCVWKMyzMM
-         8GWq2ZOqyZenDu+jJfuokmVEnSEIxMW9DfqJkC17+uVyzMjeoBmk5i5eJohobnkeryZz
-         lEe/+paAaSTdkqBLiZ4o7y6jG5W5YsEUyxrBWuD7xiX4+m9xIDD+/z2WkZ+tNLasvTqE
-         nNmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJHf5Eyh+f9BVNC3i//hOPQMmMowp6cLh+5GBngv6tZxmGy108hPTrkaikgPfxGemlh8au7czzJuYxu/7S0TZAjEtv5aHLj7tOIX8m3A==
-X-Gm-Message-State: AOJu0YyDvuZKYKv2NraR6WpSUbrYf979Gx5oNby/mClQk++CrG+7TyKa
-	CT7J/B7XpopYGo0TFnPO6JoD/ufHp1B0txp7T0NomBRV98wawQIo
-X-Google-Smtp-Source: AGHT+IFaSCiBLUqxuj94VGdEbKH32ndbrZ5lhrXNp1WeqlQIk5zQGJLCHuJbczmyaB3iwXX3V10u8g==
-X-Received: by 2002:a05:6a20:1585:b0:1b2:5674:2225 with SMTP id adf61e73a8af0-1b26f205176mr8935937637.28.1717402003835;
-        Mon, 03 Jun 2024 01:06:43 -0700 (PDT)
-Received: from localhost ([1.128.198.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6323dd824sm59986955ad.128.2024.06.03.01.06.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jun 2024 01:06:43 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Jun 2024 18:06:34 +1000
-Message-Id: <D1Q874JKY23A.3LB0GHUQQEEAW@gmail.com>
-Subject: Re: [PATCH v1 RESEND] arch/powerpc/kvm: Fix doorbell emulation by
- adding DPDES support
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Gautam Menghani" <gautam@linux.ibm.com>
-X-Mailer: aerc 0.17.0
-References: <20240522084949.123148-1-gautam@linux.ibm.com>
- <D1Q54PY40E3B.22QS5DMQRA58N@gmail.com>
- <r74chlv6bgs5csvuf4nxxtylmgartvibftp3xuztyfuynqetp5@ythddpzo6yfi>
-In-Reply-To: <r74chlv6bgs5csvuf4nxxtylmgartvibftp3xuztyfuynqetp5@ythddpzo6yfi>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vt6Nb1dgnz3cLj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 18:30:06 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4538MBB8026092;
+	Mon, 3 Jun 2024 08:29:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
+ content-transfer-encoding : content-type : date : from : in-reply-to :
+ message-id : mime-version : references : subject : to; s=pp1;
+ bh=eWH5bLGCUpIUBw3aYsfuetIptN2dR03ub3UD4L5dxgk=;
+ b=ixGWhgcF4vrEJd1WYVo153O4c89aLev/RVgZHfAdaeBP4rkbMXlt7oABgG0FhbupaVwd
+ 2OQgZG2IunqEKzXvenzMOFiECdC7GW0IgIBOPNFwO01ooU+y8s1lzEiuh6tmwg+ztIO0
+ W+DLzeygGADWM7sdsOh3V30r3i4rFr3hhL8yVQ5YEJofq6TQaCaYtiZiL14iBAm6TyNy
+ GQrWSxv8/FdqMHEL9zvq+wDkKCLBAsjv3Ke9q/UsMgYs+uYMU7b0wcKau1/DVcMy/Hxj
+ RhxpnCfKyVv/2lmdIXmI/dTezljlF7N4E/jX6tb7+Xr1xrzDG23MLLRaFe6YLuWXGefX kQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yha8r80mw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Jun 2024 08:29:40 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4538SjeJ006962;
+	Mon, 3 Jun 2024 08:29:39 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yha8r80mu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Jun 2024 08:29:39 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4537mKP7026513;
+	Mon, 3 Jun 2024 08:29:38 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yggp2p9x1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Jun 2024 08:29:38 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4538TWFN52953448
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Jun 2024 08:29:34 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CACDA2004E;
+	Mon,  3 Jun 2024 08:29:32 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7CF7920040;
+	Mon,  3 Jun 2024 08:29:29 +0000 (GMT)
+Received: from [9.199.155.138] (unknown [9.199.155.138])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Jun 2024 08:29:29 +0000 (GMT)
+Message-ID: <9393df04-403d-4530-8f13-c8a5c6d302d2@linux.vnet.ibm.com>
+Date: Mon, 3 Jun 2024 13:59:28 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] objtool/powerpc: Enhance objtool to fixup
+ alternate feature relative addresses
+To: Nathan Chancellor <nathan@kernel.org>,
+        Sathvika Vasireddy <sv@linux.ibm.com>
+References: <20240422092206.147078-1-sv@linux.ibm.com>
+ <20240422092206.147078-2-sv@linux.ibm.com>
+ <20240423002833.GA1436185@dev-arch.thelio-3990X>
+Content-Language: en-US
+From: Sathvika Vasireddy <sv@linux.vnet.ibm.com>
+In-Reply-To: <20240423002833.GA1436185@dev-arch.thelio-3990X>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HKTp6dWdjXnm9fJx9q3JmAmORBUNFqq8
+X-Proofpoint-ORIG-GUID: F9Hmk5DWuY7udzyUJCT_319cKzwzStQ0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-06-03_04,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ adultscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2406030070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,135 +104,270 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, aneesh.kumar@kernel.org, stable@vger.kernel.org, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, peterz@infradead.org, masahiroy@kernel.org, mahesh@linux.ibm.com, mingo@kernel.org, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Jun 3, 2024 at 5:09 PM AEST, Gautam Menghani wrote:
-> On Mon, Jun 03, 2024 at 03:42:22PM GMT, Nicholas Piggin wrote:
-> > On Wed May 22, 2024 at 6:49 PM AEST, Gautam Menghani wrote:
-> > > Doorbell emulation is broken for KVM on PowerVM guests as support for
-> > > DPDES was not added in the initial patch series. Due to this, a KVM o=
-n
-> > > PowerVM guest cannot be booted with the XICS interrupt controller as
-> > > doorbells are to be setup in the initial probe path when using XICS
-> > > (pSeries_smp_probe()). Add DPDES support in the host KVM code to fix
-> > > doorbell emulation.
-> >=20
-> > This is broken when the KVM guest has SMT > 1? Or is it broken for SMT=
-=3D1
-> > as well? Can you explain a bit more of what breaks if it's the latter?
+Hi Nathan,
+
+On 4/23/24 5:58 AM, Nathan Chancellor wrote:
+> Hi Sathvika,
 >
-> Yes, doorbells are only setup when we use SMT>1 and interrupt controller
-> is XICS. So without this patch, L2 KOP guest with XICS IC mode and SMT>1=
-=20
-> does not boot. SMT 1 is fine in all cases.
-
-Okay good. Make that clear in the changelog, ideally if you can give
-a recipe the reader is able to recreate is good too, (e.g., run the
-guest machine with -smp 4,threads=3D4 and xive=3Doff boot parameter).
-
-> > > Fixes: 6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Bu=
-ffers")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> > > ---
-> > > v1 -> v1 resend:
-> > > 1. Add the stable tag
-> > >
-> > >  Documentation/arch/powerpc/kvm-nested.rst     |  4 +++-
-> > >  arch/powerpc/include/asm/guest-state-buffer.h |  3 ++-
-> > >  arch/powerpc/include/asm/kvm_book3s.h         |  1 +
-> > >  arch/powerpc/kvm/book3s_hv.c                  | 14 +++++++++++++-
-> > >  arch/powerpc/kvm/book3s_hv_nestedv2.c         |  7 +++++++
-> > >  arch/powerpc/kvm/test-guest-state-buffer.c    |  2 +-
-> > >  6 files changed, 27 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/Documentation/arch/powerpc/kvm-nested.rst b/Documentatio=
-n/arch/powerpc/kvm-nested.rst
-> > > index 630602a8aa00..5defd13cc6c1 100644
-> > > --- a/Documentation/arch/powerpc/kvm-nested.rst
-> > > +++ b/Documentation/arch/powerpc/kvm-nested.rst
-> > > @@ -546,7 +546,9 @@ table information.
-> > >  +--------+-------+----+--------+----------------------------------+
-> > >  | 0x1052 | 0x08  | RW |   T    | CTRL                             |
-> > >  +--------+-------+----+--------+----------------------------------+
-> > > -| 0x1053-|       |    |        | Reserved                         |
-> > > +| 0x1053 | 0x08  | RW |   T    | DPDES                            |
-> > > ++--------+-------+----+--------+----------------------------------+
-> > > +| 0x1054-|       |    |        | Reserved                         |
-> > >  | 0x1FFF |       |    |        |                                  |
-> > >  +--------+-------+----+--------+----------------------------------+
-> > >  | 0x2000 | 0x04  | RW |   T    | CR                               |
-> > > diff --git a/arch/powerpc/include/asm/guest-state-buffer.h b/arch/pow=
-erpc/include/asm/guest-state-buffer.h
-> > > index 808149f31576..d107abe1468f 100644
-> > > --- a/arch/powerpc/include/asm/guest-state-buffer.h
-> > > +++ b/arch/powerpc/include/asm/guest-state-buffer.h
-> > > @@ -81,6 +81,7 @@
-> > >  #define KVMPPC_GSID_HASHKEYR			0x1050
-> > >  #define KVMPPC_GSID_HASHPKEYR			0x1051
-> > >  #define KVMPPC_GSID_CTRL			0x1052
-> > > +#define KVMPPC_GSID_DPDES			0x1053
-> > > =20
-> > >  #define KVMPPC_GSID_CR				0x2000
-> > >  #define KVMPPC_GSID_PIDR			0x2001
-> > > @@ -110,7 +111,7 @@
-> > >  #define KVMPPC_GSE_META_COUNT (KVMPPC_GSE_META_END - KVMPPC_GSE_META=
-_START + 1)
-> > > =20
-> > >  #define KVMPPC_GSE_DW_REGS_START KVMPPC_GSID_GPR(0)
-> > > -#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_CTRL
-> > > +#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_DPDES
-> > >  #define KVMPPC_GSE_DW_REGS_COUNT \
-> > >  	(KVMPPC_GSE_DW_REGS_END - KVMPPC_GSE_DW_REGS_START + 1)
-> > > =20
-> > > diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/inc=
-lude/asm/kvm_book3s.h
-> > > index 3e1e2a698c9e..10618622d7ef 100644
-> > > --- a/arch/powerpc/include/asm/kvm_book3s.h
-> > > +++ b/arch/powerpc/include/asm/kvm_book3s.h
-> > > @@ -594,6 +594,7 @@ static inline u##size kvmppc_get_##reg(struct kvm=
-_vcpu *vcpu)		\
-> > > =20
-> > > =20
-> > >  KVMPPC_BOOK3S_VCORE_ACCESSOR(vtb, 64, KVMPPC_GSID_VTB)
-> > > +KVMPPC_BOOK3S_VCORE_ACCESSOR(dpdes, 64, KVMPPC_GSID_DPDES)
-> > >  KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(arch_compat, 32, KVMPPC_GSID_LOGICA=
-L_PVR)
-> > >  KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(lpcr, 64, KVMPPC_GSID_LPCR)
-> > >  KVMPPC_BOOK3S_VCORE_ACCESSOR_SET(tb_offset, 64, KVMPPC_GSID_TB_OFFSE=
-T)
-> > > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_h=
-v.c
-> > > index 35cb014a0c51..cf285e5153ba 100644
-> > > --- a/arch/powerpc/kvm/book3s_hv.c
-> > > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > > @@ -4116,6 +4116,11 @@ static int kvmhv_vcpu_entry_nestedv2(struct kv=
-m_vcpu *vcpu, u64 time_limit,
-> > >  	int trap;
-> > >  	long rc;
-> > > =20
-> > > +	if (vcpu->arch.doorbell_request) {
-> > > +		vcpu->arch.doorbell_request =3D 0;
-> > > +		kvmppc_set_dpdes(vcpu, 1);
-> > > +	}
-> >=20
-> > This probably looks okay... hmm, is the v1 KVM emulating doorbells
-> > correctly for SMT L2 guests? I wonder if doorbell emulation isn't
-> > broken there too because the L1 code looks to be passing in vc->dpdes
-> > but all the POWER9 emulation code uses doorbell_request.
-> >=20
+> On Mon, Apr 22, 2024 at 02:52:06PM +0530, Sathvika Vasireddy wrote:
+>> Implement build-time fixup of alternate feature relative addresses for
+>> the out-of-line (else) patch code. Initial posting to achieve the same
+>> using another tool can be found at [1]. Idea is to implement this using
+>> objtool instead of introducing another tool since it already has elf
+>> parsing and processing covered.
+>>
+>> Introduce --ftr-fixup as an option to objtool to do feature fixup at
+>> build-time.
+>>
+>> Couple of issues and warnings encountered while implementing feature
+>> fixup using objtool are as follows:
+>>
+>> 1. libelf is creating corrupted vmlinux file after writing necessary
+>> changes to the file. Due to this, kexec is not able to load new
+>> kernel.
+>>
+>> It gives the following error:
+>>          ELF Note corrupted !
+>>          Cannot determine the file type of vmlinux
+>>
+>> To fix this issue, after opening vmlinux file, make a call to
+>> elf_flagelf (e, ELF_C_SET, ELF_F_LAYOUT). This instructs libelf not
+>> to touch the segment and section layout. It informs the library
+>> that the application will take responsibility for the layout of the
+>> file and that the library should not insert any padding between
+>> sections.
+>>
+>> 2. Fix can't find starting instruction warnings when run on vmlinux
+>>
+>> Objtool throws a lot of can't find starting instruction warnings
+>> when run on vmlinux with --ftr-fixup option.
+>>
+>> These warnings are seen because find_insn() function looks for
+>> instructions at offsets that are relative to the start of the section.
+>> In case of individual object files (.o), there are no can't find
+>> starting instruction warnings seen because the actual offset
+>> associated with an instruction is itself a relative offset since the
+>> sections start at offset 0x0.
+>>
+>> However, in case of vmlinux, find_insn() function fails to find
+>> instructions at the actual offset associated with an instruction
+>> since the sections in vmlinux do not start at offset 0x0. Due to
+>> this, find_insn() will look for absolute offset and not the relative
+>> offset. This is resulting in a lot of can't find starting instruction
+>> warnings when objtool is run on vmlinux.
+>>
+>> To fix this, pass offset that is relative to the start of the section
+>> to find_insn().
+>>
+>> find_insn() is also looking for symbols of size 0. But, objtool does
+>> not store empty STT_NOTYPE symbols in the rbtree. Due to this,
+>> for empty symbols, objtool is throwing can't find starting
+>> instruction warnings. Fix this by ignoring symbols that are of
+>> size 0 since objtool does not add them to the rbtree.
+>>
+>> 3. Objtool is throwing unannotated intra-function call warnings
+>> when run on vmlinux with --ftr-fixup option.
+>>
+>> One such example:
+>>
+>> vmlinux: warning: objtool: .text+0x3d94:
+>>                          unannotated intra-function call
+>>
+>> .text + 0x3d94 = c000000000008000 + 3d94 = c0000000000081d4
+>>
+>> c0000000000081d4: 45 24 02 48  bl c00000000002a618
+>> <system_reset_exception+0x8>
+>>
+>> c00000000002a610 <system_reset_exception>:
+>> c00000000002a610:       0e 01 4c 3c     addis   r2,r12,270
+>>                          c00000000002a610: R_PPC64_REL16_HA    .TOC.
+>> c00000000002a614:       f0 6c 42 38     addi    r2,r2,27888
+>>                          c00000000002a614: R_PPC64_REL16_LO    .TOC.+0x4
+>> c00000000002a618:       a6 02 08 7c     mflr    r0
+>>
+>> This is happening because we should be looking for destination
+>> symbols that are at absolute offsets instead of relative offsets.
+>> After fixing dest_off to point to absolute offset, there are still
+>> a lot of these warnings shown.
+>>
+>> In the above example, objtool is computing the destination
+>> offset to be c00000000002a618, which points to a completely
+>> different instruction. find_call_destination() is looking for this
+>> offset and failing. Instead, we should be looking for destination
+>> offset c00000000002a610 which points to system_reset_exception
+>> function.
+>>
+>> Even after fixing the way destination offset is computed, and
+>> after looking for dest_off - 0x8 in cases where the original offset
+>> is not found, there are still a lot of unannotated intra-function
+>> call warnings generated. This is due to symbols that are not
+>> properly annotated.
+>>
+>> So, for now, as a hack to curb these warnings, do not emit
+>> unannotated intra-function call warnings when objtool is run
+>> with --ftr-fixup option.
+>>
+>> TODO:
+>> This patch enables build time feature fixup only for powerpc little
+>> endian configs. There are boot failures with big endian configs.
+>> Posting this as an initial RFC to get some review comments while I work
+>> on big endian issues.
+>>
+>> [1]
+>> https://lore.kernel.org/linuxppc-dev/20170521010130.13552-1-npiggin@gmail.com/
+>>
+>> Co-developed-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+> When I build this series with LLVM 14 [1] (due to an issue I report
+> below), I am getting a crash when CONFIG_FTR_FIXUP_SELFTEST is disabled.
 >
-> Yes launching SMT L2 on V1 API fails with a kernel Oops, I'll see if I
-> can fix that as well.
+> diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
+> index 544a65fda77b..95d2906ec814 100644
+> --- a/arch/powerpc/configs/ppc64_defconfig
+> +++ b/arch/powerpc/configs/ppc64_defconfig
+> @@ -427,7 +427,6 @@ CONFIG_BLK_DEV_IO_TRACE=y
+>   CONFIG_IO_STRICT_DEVMEM=y
+>   CONFIG_PPC_EMULATED_STATS=y
+>   CONFIG_CODE_PATCHING_SELFTEST=y
+> -CONFIG_FTR_FIXUP_SELFTEST=y
+>   CONFIG_MSI_BITMAP_SELFTEST=y
+>   CONFIG_XMON=y
+>   CONFIG_BOOTX_TEXT=y
+>
+>    $ make -kj"$(nproc)" ARCH=powerpc LLVM=$PWD/llvm-14.0.6-x86_64/bin/ ppc64le_defconfig vmlinux
+>    ...
+>      LD      vmlinux
+>      NM      System.map
+>      SORTTAB vmlinux
+>      CHKHEAD vmlinux
+>      CHKREL  vmlinux
+>    make[4]: *** [scripts/Makefile.vmlinux:38: vmlinux] Error 139
+>    make[4]: *** Deleting file 'vmlinux
+>    ...
+>
+> I do not see the objtool command in V=1 output but I do see the end of
+> scripts/link-vmlinux.sh, so it does seem like it is crashing in objtool.
+>
+> [1]: from https://mirrors.edge.kernel.org/pub/tools/llvm/
 
-Okay then I didn't miss something. Thanks v1 fix would be good too.
-I think it should look something like putting doorbell_request into
-hv_guest_state->dpdes that make the H_ENTER_NESTED call with.
+Thanks for reporting this, and apologies for the delay in response.
 
-For v1 you will need to restore the state back from dpdes back to
-doorbell_request on exit, because the L0 doesn't keep it for you.
+This issue is happening while processing __fw_ftr_fixup section, which 
+has no data and dereferencing this null pointer is causing segmentation 
+fault. I was able to recreate the issue, and the below diff fixes it for me.
+
+diff --git a/tools/objtool/arch/powerpc/special.c 
+b/tools/objtool/arch/powerpc/special.c
+index 5ec3eed34eb0..67329d44db24 100644
+--- a/tools/objtool/arch/powerpc/special.c
++++ b/tools/objtool/arch/powerpc/special.c
+@@ -53,38 +53,39 @@ int process_fixup_entries(struct objtool_file *file)
+                 if (strstr(sec->name, "_ftr_fixup") != NULL) {
+                         Elf_Data *data = sec->data;
+
+-                       if (data && data->d_size > 0)
++                       if (data && data->d_size > 0) {
+                                 nr = data->d_size / sizeof(struct 
+fixup_entry);
+
+-                       for (i = 0; i < nr; i++) {
+-                               struct fixup_entry *dst;
+-                               unsigned long idx;
+-                               unsigned long long off;
+-                               struct fixup_entry *src;
++                               for (i = 0; i < nr; i++) {
++                                       struct fixup_entry *dst;
++                                       unsigned long idx;
++                                       unsigned long long off;
++                                       struct fixup_entry *src;
+
+-                               idx = i * sizeof(struct fixup_entry);
+-                               off = sec->sh.sh_addr + data->d_off + idx;
+-                               src = data->d_buf + idx;
++                                       idx = i * sizeof(struct 
+fixup_entry);
++                                       off = sec->sh.sh_addr + 
+data->d_off + idx;
++                                       src = data->d_buf + idx;
+
+-                               if (src->alt_start_off == src->alt_end_off)
+-                                       continue;
++                                       if (src->alt_start_off == 
+src->alt_end_off)
++                                               continue;
+
+-                               fes = realloc(fes, (nr_fes + 1) * 
+sizeof(struct fixup_entry));
+-                               dst = &fes[nr_fes];
+-                               nr_fes++;
++                                       fes = realloc(fes, (nr_fes + 1) 
+* sizeof(struct fixup_entry));
++                                       dst = &fes[nr_fes];
++                                       nr_fes++;
+
+-                               dst->mask = __le64_to_cpu(src->mask);
+-                               dst->value = __le64_to_cpu(src->value);
+-                               dst->start_off = 
+__le64_to_cpu(src->start_off) + off;
+-                               dst->end_off = 
+__le64_to_cpu(src->end_off) + off;
+-                               dst->alt_start_off = 
+__le64_to_cpu(src->alt_start_off) + off;
+-                               dst->alt_end_off = 
+__le64_to_cpu(src->alt_end_off) + off;
++                                       dst->mask = 
+__le64_to_cpu(src->mask);
++                                       dst->value = 
+__le64_to_cpu(src->value);
++                                       dst->start_off = 
+__le64_to_cpu(src->start_off) + off;
++                                       dst->end_off = 
+__le64_to_cpu(src->end_off) + off;
++                                       dst->alt_start_off = 
+__le64_to_cpu(src->alt_start_off) + off;
++                                       dst->alt_end_off = 
+__le64_to_cpu(src->alt_end_off) + off;
+
+-                               if (dst->alt_start_off < fe_alt_start)
+-                                       fe_alt_start = dst->alt_start_off;
++                                       if (dst->alt_start_off < 
+fe_alt_start)
++                                               fe_alt_start = 
+dst->alt_start_off;
+
+-                               if (dst->alt_end_off > fe_alt_end)
+-                                       fe_alt_end = dst->alt_end_off;
++                                       if (dst->alt_end_off > fe_alt_end)
++                                               fe_alt_end = 
+dst->alt_end_off;
++                               }
+                         }
+                 }
+         }
+@@ -246,7 +247,6 @@ static struct symbol *find_symbol_at_address(struct 
+objtool_file *file,
+  int process_alt_relocations(struct objtool_file *file)
+  {
+         struct section *section;
+-       size_t n = 0;
+         uint32_t insn;
+         uint32_t *i;
+         unsigned int opcode;
+@@ -276,8 +276,6 @@ int process_alt_relocations(struct objtool_file *file)
+                                 target = target + 0x8;
+                 }
+
+-               n++;
+-
+                 fe = find_fe_altaddr(addr);
+                 if (fe) {
+
+I'll include these changes in the next version.
 
 Thanks,
-Nick
+Sathvika
