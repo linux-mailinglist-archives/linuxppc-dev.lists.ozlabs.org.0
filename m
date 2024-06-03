@@ -2,61 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3366B8FA569
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 00:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF4B8FA604
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 00:47:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=jMkzvXns;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=yYEftY3C;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VtSgP1fmJz3cyc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 08:14:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VtTPn4Vr6z3d9V
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 08:47:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=jMkzvXns;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=yYEftY3C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::201; helo=mout-p-201.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-201.mailbox.org (unknown [IPv6:2001:67c:2050:0:465::201])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=jthoughton@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtSfY5Q3pz3bdm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 08:13:23 +1000 (AEST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4VtSfC58Zlz9sZG;
-	Tue,  4 Jun 2024 00:13:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1717452787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A4mvgXvzsnDLCwao81wHmfd72l0a/3E0/ihIluzp53E=;
-	b=jMkzvXnsDbJMZoaVvMV9HUytnV1y8iZ5KUo9y1GdlxePPX3XfQBk/s6pqxLBiUcOLlfkVk
-	4ayMfjjbjpLwwPRDTtLkMZ5InIqxthuD8ZRRSJim7C9L/McHiAtiPQYFKFgLEHGnmKr0jg
-	lC2U+4tuwDf2dvtnn9jtqQ3sO8A+XweQPmmOJmBAphNUhej6GQiaB4ZsNl7D/rvOH+Q4bS
-	Tn5EGAmlejUafEI1k+QohoXu2A/Qsz5asXCr/dzhX1DHEkx6xcjLedRWCTcJ+xtZHcIDjX
-	ndxSvjfgjMTvemQUY67wki8rSZf9iWh39Q0vuis64IX65xKphxiJwA3SQFM/1w==
-Date: Tue, 4 Jun 2024 00:13:04 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: Yu Zhao <yuzhao@google.com>
-Subject: Re: kswapd0: page allocation failure: order:0,
- mode:0x820(GFP_ATOMIC), nodemask=(null),cpuset=/,mems_allowed=0 (Kernel
- v6.5.9, 32bit ppc)
-Message-ID: <20240604001304.5420284f@yea>
-In-Reply-To: <20240602200332.3e531ff1@yea>
-References: <20240508202111.768b7a4d@yea>
-	<20240515224524.1c8befbe@yea>
-	<CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
-	<CAOUHufZ36rQc8AfLtRv2QrEareysdvbprAEO5XkcG-FeDOxFLA@mail.gmail.com>
-	<20240602200332.3e531ff1@yea>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtTNz3fTXz3ckp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 08:46:42 +1000 (AEST)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-43fe3289fc5so50581cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2024 15:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717454796; x=1718059596; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zwApvMmCxi6kRvhFpeZNrHVjs/fSYi202Vq8O0y7Pvc=;
+        b=yYEftY3CSZAyKxRE8yL1sqsGbtAQymUC3a+qtBB7IYeCipKFZi/rxh48BHVuMbmaXk
+         6u37g7FhGzcM/cyckUkyIBTVlaF7f/KLc73YLywySECLbFd0evLQDNOuvqojAQuPX2Zk
+         FeybKryl/VJTRcmooQUF1kNn2x6PJZAEozTZ0b372pQ0VbatgHtIWuTjPTgdpnX/rrDL
+         xo3KTVOY/7ojiyVZnAdrwxSzLACCGvN/XLRB6J1Vw368tgHnNYycCJiZOrbQenVvz0ak
+         2UTVq/K9yoFiNGcQK/Vh7kpv0V+Vb7n1u6UDhzg/t/dfIQd5FuyGh+nZOk5BuSdGPgj0
+         A9zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717454796; x=1718059596;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zwApvMmCxi6kRvhFpeZNrHVjs/fSYi202Vq8O0y7Pvc=;
+        b=IKpzxXX6j5eU2lAz0UJwV8aQDJWEV2On08PnhvvlQlCdXvzhwPM7G4+CgeClhCM2gx
+         xcqN+nJJsdBWhtjgeXd4cnttts0U+HjiZubjK2A8slHtcgHmhZ8fBWoWG/AyiZVpGl87
+         Jcrc0HP89nQHw9s+fE7uCmWZkYabIiDWG7sjW4NOfuot4fhpUEcCkEwKeUkVKxY6DhUy
+         FrvKVK+bD00H6xdP7TMt2nXHoy+YnGzePF5Dxt0vctGvKdBm1s8S4AINIBk8684INAbX
+         dKf5C9tPsVxccZ8yE9XzFBgwiQ6Qvrt79uQzbnGxM5N6GOX9mwt8oXEsIvT/ljhFeVA3
+         WRHw==
+X-Forwarded-Encrypted: i=1; AJvYcCXojeX9kQOk33kxCQNyew4/jdUaaewe+xcO93KH4Jr0UlX5hU2sf9qwyl5jJPXi7dMoti5uMUpILjnDPOAV5s6lkT/v85Iwm4ZgiiIGaQ==
+X-Gm-Message-State: AOJu0Ywg9RgcSDFNRfUKqJBIvg0CrWg5RdjCEQWexAYXdRCkJg8sf1l5
+	AprxTbLrZPNf8At6dc27eRe1xUjCIwSRN5UjGKqLkgf1wSrdqv0bpCh5/bw8Jxsvm3yCS7EPv3G
+	0lbUswTT9h9JSLGbMgcZto4e57X4U1E0lVm5D
+X-Google-Smtp-Source: AGHT+IFNqO3Eeca3fb/gjbGejzk9epZFQKuRMTX94UERp2ub7SAJHzg0ElHPjQ2U8grOlDfvsiNhgYwFk5rOK4wQGMU=
+X-Received: by 2002:a05:622a:59ce:b0:43f:ff89:dfb9 with SMTP id
+ d75a77b69052e-4401bd281f4mr1732131cf.6.1717454795966; Mon, 03 Jun 2024
+ 15:46:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="MP_/L6u2AePrH2ig2h2isRGtuja"
-X-MBO-RS-ID: 1fbfa6395497c39efc6
-X-MBO-RS-META: 46pgksj1cfgiiro3owzb3sxib5g9z6g6
+References: <20240529180510.2295118-1-jthoughton@google.com>
+ <20240529180510.2295118-3-jthoughton@google.com> <CAOUHufYFHKLwt1PWp2uS6g174GZYRZURWJAmdUWs5eaKmhEeyQ@mail.gmail.com>
+ <ZlelW93_T6P-ZuSZ@google.com> <CAOUHufZdEpY6ra73SMHA33DegKxKaUM=Os7A7aDBFND6NkbUmQ@mail.gmail.com>
+ <Zley-u_dOlZ-S-a6@google.com> <CADrL8HXHWg_MkApYQTngzmN21NEGNWC6KzJDw_Lm63JHJkR=5A@mail.gmail.com>
+ <CAOUHufZq6DwpStzHtjG+TOiHaQ6FFbkTfHMCe8Yy0n_M9MKdqw@mail.gmail.com>
+In-Reply-To: <CAOUHufZq6DwpStzHtjG+TOiHaQ6FFbkTfHMCe8Yy0n_M9MKdqw@mail.gmail.com>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 3 Jun 2024 15:45:59 -0700
+Message-ID: <CADrL8HW44Hx_Ejx_6+FVKt1V17PdgT6rw+sNtKzumqc9UCVDfA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/7] mm: multi-gen LRU: Have secondary MMUs participate
+ in aging
+To: Yu Zhao <yuzhao@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,190 +83,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yosry Ahmed <yosryahmed@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>, linux-riscv@lists.infradead.org, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, David Rientjes <rientjes@google.com>, Zenghui Yu <yuzenghui@huawei.com>, Axel Rasmussen <axelrasmussen@google.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, Shaoqin Huang <shahuang@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, David Matlack <dmatlack@google.com>, Palmer Dabbelt <palmer@dabbelt.c
+ om>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, Sean Christopherson <seanjc@google.com>, Ankit Agrawal <ankita@nvidia.com>, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---MP_/L6u2AePrH2ig2h2isRGtuja
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Thu, May 30, 2024 at 11:06=E2=80=AFPM Yu Zhao <yuzhao@google.com> wrote:
+>
+> On Wed, May 29, 2024 at 7:08=E2=80=AFPM James Houghton <jthoughton@google=
+.com> wrote:
+> >
+> > Hi Yu, Sean,
+> >
+> > Perhaps I "simplified" this bit of the series a little bit too much.
+> > Being able to opportunistically do aging with KVM (even without
+> > setting the Kconfig) is valuable.
+> >
+> > IIUC, we have the following possibilities:
+> > - v4: aging with KVM is done if the new Kconfig is set.
+> > - v3: aging with KVM is always done.
+>
+> This is not true -- in v3, MGLRU only scans secondary MMUs if it can
+> be done locklessly on x86. It uses a bitmap to imply this requirement.
+>
+> > - v2: aging with KVM is done when the architecture reports that it can
+> > probably be done locklessly, set at KVM MMU init time.
+>
+> Not really -- it's only done if it can be done locklessly on both x86 and=
+ arm64.
+>
+> > - Another possibility?: aging with KVM is only done exactly when it
+> > can be done locklessly (i.e., mmu_notifier_test/clear_young() called
+> > such that it will not grab any locks).
+>
+> This is exactly the case for v2.
 
-On Sun, 2 Jun 2024 20:03:32 +0200
-Erhard Furtner <erhard_f@mailbox.org> wrote:
+Thanks for clarifying; sorry for getting this wrong.
 
-> On Sat, 1 Jun 2024 00:01:48 -0600
-> Yu Zhao <yuzhao@google.com> wrote:
-> 
-> > The OOM kills on both kernel versions seem to be reasonable to me.
-> > 
-> > Your system has 2GB memory and it uses zswap with zsmalloc (which is
-> > good since it can allocate from the highmem zone) and zstd/lzo (which
-> > doesn't matter much). Somehow -- I couldn't figure out why -- it
-> > splits the 2GB into a 0.25GB DMA zone and a 1.75GB highmem zone:
-> > 
-> > [    0.000000] Zone ranges:
-> > [    0.000000]   DMA      [mem 0x0000000000000000-0x000000002fffffff]
-> > [    0.000000]   Normal   empty
-> > [    0.000000]   HighMem  [mem 0x0000000030000000-0x000000007fffffff]
-> > 
-> > The kernel can't allocate from the highmem zone -- only userspace and
-> > zsmalloc can. OOM kills were due to the low memory conditions in the
-> > DMA zone where the kernel itself failed to allocate from.
-> > 
-> > Do you know a kernel version that doesn't have OOM kills while running
-> > the same workload? If so, could you send that .config to me? If not,
-> > could you try disabling CONFIG_HIGHMEM? (It might not help but I'm out
-> > of ideas at the moment.)
+>
+> > I like the v4 approach because:
+> > 1. We can choose whether or not to do aging with KVM no matter what
+> > architecture we're using (without requiring userspace be aware to
+> > disable the feature at runtime with sysfs to avoid regressing
+> > performance if they don't care about proactive reclaim).
+> > 2. If we check the new feature bit (0x8) in sysfs, we can know for
+> > sure if aging is meant to be working or not. The selftest changes I
+> > made won't work properly unless there is a way to be sure that aging
+> > is working with KVM.
+>
+> I'm not convinced, but it doesn't mean your point of view is invalid.
+> If you fully understand the implications of your design choice and
+> document them, I will not object.
+>
+> All optimizations in v2 were measured step by step. Even that bitmap,
+> which might be considered overengineered, brought a readily
+> measuarable 4% improvement in memcached throughput on Altra Max
+> swapping to Optane:
+>
+> Using the bitmap (64 KVM PTEs for each call)
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50
+> Latency     p99 Latency   p99.9 Latency       KB/sec
+> -------------------------------------------------------------------------=
+---------------------------------------------------
+> Sets            0.00          ---          ---             ---
+>     ---             ---             ---         0.00
+> Gets      1012801.92    431436.92     14965.11         0.06246
+> 0.04700         0.16700         4.31900     39635.83
+> Waits           0.00          ---          ---             ---
+>     ---             ---             ---          ---
+> Totals    1012801.92    431436.92     14965.11         0.06246
+> 0.04700         0.16700         4.31900     39635.83
+>
+>
+> Not using the bitmap (1 KVM PTEs for each call)
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Type         Ops/sec     Hits/sec   Misses/sec    Avg. Latency     p50
+> Latency     p99 Latency   p99.9 Latency       KB/sec
+> -------------------------------------------------------------------------=
+---------------------------------------------------
+> Sets            0.00          ---          ---             ---
+>     ---             ---             ---         0.00
+> Gets       968210.02    412443.85     14303.89         0.06517
+> 0.04700         0.15900         7.42300     37890.74
+> Waits           0.00          ---          ---             ---
+>     ---             ---             ---          ---
+> Totals     968210.02    412443.85     14303.89         0.06517
+> 0.04700         0.15900         7.42300     37890.74
+>
+>
+> FlameGraphs with bitmap (1.svg) and without bitmap (2.svg) attached.
+>
+> What I don't think is acceptable is simplifying those optimizations
+> out without documenting your justifications (I would even call it a
+> design change, rather than simplification, from v3 to v4).
 
-Ok, the bisect I did actually revealed something meaningful:
+I'll put back something similar to what you had before (like a
+test_clear_young() with a "fast" parameter instead of "bitmap"). I
+like the idea of having a new mmu notifier, like
+fast_test_clear_young(), while leaving test_young() and clear_young()
+unchanged (where "fast" means "prioritize speed over accuracy"). It
+seems a little more straightforward that way.
 
- # git bisect good
-b8cf32dc6e8c75b712cbf638e0fd210101c22f17 is the first bad commit
-commit b8cf32dc6e8c75b712cbf638e0fd210101c22f17
-Author: Yosry Ahmed <yosryahmed@google.com>
-Date:   Tue Jun 20 19:46:44 2023 +0000
+>
+> > For look-around at eviction time:
+> > - v4: done if the main mm PTE was young and no MMU notifiers are subscr=
+ibed.
+> > - v2/v3: done if the main mm PTE was young or (the SPTE was young and
+> > the MMU notifier was lockless/fast).
+>
+> The host and secondary MMUs are two *independent* cases, IMO:
+> 1. lookaround the host MMU if the PTE mapping the folio under reclaim is =
+young.
+> 2. lookaround the secondary MMU if it can be done locklessly.
+>
+> So the v2/v3 behavior sounds a lot more reasonable to me.
 
-    mm: zswap: multiple zpools support
-    
-    Support using multiple zpools of the same type in zswap, for concurrency
-    purposes.  A fixed number of 32 zpools is suggested by this commit, which
-    was determined empirically.  It can be later changed or made into a config
-    option if needed.
-    
-    On a setup with zswap and zsmalloc, comparing a single zpool to 32 zpools
-    shows improvements in the zsmalloc lock contention, especially on the swap
-    out path.
-    
-    The following shows the perf analysis of the swapout path when 10
-    workloads are simultaneously reclaiming and refaulting tmpfs pages.  There
-    are some improvements on the swap in path as well, but less significant.
-    
-    1 zpool:
-    
-     |--28.99%--zswap_frontswap_store
-           |
-           <snip>
-           |
-           |--8.98%--zpool_map_handle
-           |     |
-           |      --8.98%--zs_zpool_map
-           |           |
-           |            --8.95%--zs_map_object
-           |                 |
-           |                  --8.38%--_raw_spin_lock
-           |                       |
-           |                        --7.39%--queued_spin_lock_slowpath
-           |
-           |--8.82%--zpool_malloc
-           |     |
-           |      --8.82%--zs_zpool_malloc
-           |           |
-           |            --8.80%--zs_malloc
-           |                 |
-           |                 |--7.21%--_raw_spin_lock
-           |                 |     |
-           |                 |      --6.81%--queued_spin_lock_slowpath
-           <snip>
-    
-    32 zpools:
-    
-     |--16.73%--zswap_frontswap_store
-           |
-           <snip>
-           |
-           |--1.81%--zpool_malloc
-           |     |
-           |      --1.81%--zs_zpool_malloc
-           |           |
-           |            --1.79%--zs_malloc
-           |                 |
-           |                  --0.73%--obj_malloc
-           |
-           |--1.06%--zswap_update_total_size
-           |
-           |--0.59%--zpool_map_handle
-           |     |
-           |      --0.59%--zs_zpool_map
-           |           |
-           |            --0.57%--zs_map_object
-           |                 |
-           |                  --0.51%--_raw_spin_lock
-           <snip>
-    
-    Link: https://lkml.kernel.org/r/20230620194644.3142384-1-yosryahmed@google.com
-    Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-    Suggested-by: Yu Zhao <yuzhao@google.com>
-    Acked-by: Chris Li (Google) <chrisl@kernel.org>
-    Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-    Tested-by: Nhat Pham <nphamcs@gmail.com>
-    Cc: Dan Streetman <ddstreet@ieee.org>
-    Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-    Cc: Johannes Weiner <hannes@cmpxchg.org>
-    Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-    Cc: Seth Jennings <sjenning@redhat.com>
-    Cc: Vitaly Wool <vitaly.wool@konsulko.com>
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+I'll restore the v2/v3 behavior. I initially removed it because,
+without batching, we (mostly) lose the spatial locality that, IIUC,
+look-around is designed to exploit.
 
- mm/zswap.c | 81 +++++++++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 54 insertions(+), 27 deletions(-)
+>
+> Also a nit -- don't use 'else' in the following case (should_look_around(=
+)):
+>
+>   if (foo)
+>     return bar;
+>   else
+>     do_something();
 
+Oh, yes, sorry. I wrote and rewrote should_look_around() quite a few
+times while trying to figure out what made sense in a no-batching
+series. I'll fix this.
 
-'bad' bisects were where the "kswapd0: page allocation failure:" showed up when running the workload, 'good' bisects were the cases where I only got the kernels OOM reaper killing the workload. In the good cases the machine stayed usable via VNC, in the bad cases with the issue showing up the machine crashed and rebooted >80% of the time shortly after showing the issue in dmesg (via netconsole). I triple checked the good cases to be sure only the OOM reaper showed up and not the kswapd0: page allocation failure.
+>
+> > I made this logic change as part of removing batching.
+> >
+> > I'd really appreciate guidance on what the correct thing to do is.
+> >
+> > In my mind, what would work great is: by default, do aging exactly
+> > when KVM can do it locklessly, and then have a Kconfig to always have
+> > MGLRU to do aging with KVM if a user really cares about proactive
+> > reclaim (when the feature bit is set). The selftest can check the
+> > Kconfig + feature bit to know for sure if aging will be done.
+>
+> I still don't see how that Kconfig helps. Or why the new static branch
+> isn't enough?
 
-Bisect.log attached.
+Without a special Kconfig, the feature bit just tells us that aging
+with KVM is possible, not that it will necessarily be done. For the
+self-test, it'd be good to know exactly when aging is being done or
+not, so having a Kconfig like LRU_GEN_ALWAYS_WALK_SECONDARY_MMU would
+help make the self-test set the right expectations for aging.
 
-Regards,
-Erhard
-
---MP_/L6u2AePrH2ig2h2isRGtuja
-Content-Type: text/x-log
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename=bisect.log
-
-git bisect start
-# Status: warte auf guten und schlechten Commit
-# good: [88690811da69826fdb59d908a6e5e9d0c63b581a] Linux 6.1.92
-git bisect good 88690811da69826fdb59d908a6e5e9d0c63b581a
-# Status: warte auf schlechten Commit, 1 guter Commit bekannt
-# bad: [a38297e3fb012ddfa7ce0321a7e5a8daeb1872b6] Linux 6.9
-git bisect bad a38297e3fb012ddfa7ce0321a7e5a8daeb1872b6
-# good: [830b3c68c1fb1e9176028d02ef86f3cf76aa2476] Linux 6.1
-git bisect good 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
-# good: [1b580c9bb63414903cfb414571e92e4fd36d6969] Merge branch 'samples-bpf-remove-unmaintained-xdp-sample-utilities'
-git bisect good 1b580c9bb63414903cfb414571e92e4fd36d6969
-# bad: [5ab500d6f9f50d8246865a2ead85d0e88ea30004] Merge branch 'sfc-implement-ndo_hwtstamp_-get-set'
-git bisect bad 5ab500d6f9f50d8246865a2ead85d0e88ea30004
-# bad: [cc33a80b816406f900a53c7f98a50f6eacdd2e31] MAINTAINERS: Maintainer change for ptp_vmw driver
-git bisect bad cc33a80b816406f900a53c7f98a50f6eacdd2e31
-# bad: [4debf77169ee459c46ec70e13dc503bc25efd7d2] Merge tag 'for-linus-iommufd' of git://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd
-git bisect bad 4debf77169ee459c46ec70e13dc503bc25efd7d2
-# bad: [1086eeac9c333b6db6c98594f02996c8261c60c5] Merge tag 'lsm-pr-20230829' of git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm
-git bisect bad 1086eeac9c333b6db6c98594f02996c8261c60c5
-# good: [0fc81f376468ce67d70ecd1016dfe901a51a39f5] Merge tag 'regmap-v6.6' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap
-git bisect good 0fc81f376468ce67d70ecd1016dfe901a51a39f5
-# good: [bd6c11bc43c496cddfc6cf603b5d45365606dbd5] Merge tag 'net-next-6.6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
-git bisect good bd6c11bc43c496cddfc6cf603b5d45365606dbd5
-# bad: [5553b15a4bbba8039e1f31b63642048286f540dc] m68k: implement the new page table range API
-git bisect bad 5553b15a4bbba8039e1f31b63642048286f540dc
-# good: [0c2e394ab23017303f676e6206a54c54bb0e3681] mm: move FAULT_FLAG_VMA_LOCK check down in handle_pte_fault()
-git bisect good 0c2e394ab23017303f676e6206a54c54bb0e3681
-# bad: [3f32c49ed6f15c8412a8abc93a92c4b37e6c4592] mm: memtest: convert to memtest_report_meminfo()
-git bisect bad 3f32c49ed6f15c8412a8abc93a92c4b37e6c4592
-# bad: [6ad243b83b5094026fdb3171711ddb25246b3d8a] mm/damon/sysfs: implement a command for updating only schemes tried total bytes
-git bisect bad 6ad243b83b5094026fdb3171711ddb25246b3d8a
-# bad: [68af05143fd4b49d4b12eab8d63c91ffbc7c4e5e] kernel/iomem.c: remove __weak ioremap_cache helper
-git bisect bad 68af05143fd4b49d4b12eab8d63c91ffbc7c4e5e
-# good: [27af67f35631ac4b61b5e4455b44c9aee8d2cc4b] powerpc/book3s64/mm: enable transparent pud hugepage
-git bisect good 27af67f35631ac4b61b5e4455b44c9aee8d2cc4b
-# bad: [34f4c198bfbe86612c368eb122002787acecaa93] zswap: make zswap_store() take a folio
-git bisect bad 34f4c198bfbe86612c368eb122002787acecaa93
-# good: [601f006fddc66e369fdac7c572f981eafd159dac] powerpc/book3s64/radix: remove mmu_vmemmap_psize
-git bisect good 601f006fddc66e369fdac7c572f981eafd159dac
-# bad: [b8cf32dc6e8c75b712cbf638e0fd210101c22f17] mm: zswap: multiple zpools support
-git bisect bad b8cf32dc6e8c75b712cbf638e0fd210101c22f17
-# good: [6be3601517d90b728095d70c14f3a04b9adcb166] powerpc/book3s64/radix: add debug message to give more details of vmemmap allocation
-git bisect good 6be3601517d90b728095d70c14f3a04b9adcb166
-# first bad commit: [b8cf32dc6e8c75b712cbf638e0fd210101c22f17] mm: zswap: multiple zpools support
-
---MP_/L6u2AePrH2ig2h2isRGtuja--
+The Kconfig would also allow a user to know that, no matter what,
+we're going to get correct age data for VMs, even if, say, we're using
+the shadow MMU. This is somewhat important for me/Google Cloud. Is
+that reasonable? Maybe there's a better solution.
