@@ -2,91 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB518D7EA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 11:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 964F78D7ED1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 11:34:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FTd8Twxe;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A462yvQ5;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=itblKfMX;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=itblKfMX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vt7kz2b4vz3cRy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 19:31:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vt7qM5bmwz3cTv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 19:34:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FTd8Twxe;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A462yvQ5;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=itblKfMX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=itblKfMX;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vt7kB51SBz3cG6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 19:30:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vt7pf6Xsgz3cG6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 19:34:18 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717407020;
+	s=mimecast20190719; t=1717407256;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ATKzEjTtVPhwoSjjxK06J60WfW4dF9UMbHQlAPwliZ4=;
-	b=FTd8TwxeIbqN3oLYu+W2aRIAcC8L44taunMiCdjaOHDYdSruE9pupaiuas0+lhUP+Eppq/
-	J+22vNACWTf99/wsYiWIN3iQ2UVXjL6DKaQREC5JWqyfcqIypG40d34tZgp0g96tkxht4d
-	pDPWD9iN86xSRfkiqjbvD1xGYekpUdk=
+	bh=infxpK+k9ZLlsTQqf8XnBBNOcIjsLHMwF7zpH2Bo4PQ=;
+	b=itblKfMXo5L4o5SPuICsID91+8+cNmNO3bIUTkeM4sC3JBJ9xYpDnp8rkXI42BKRAP/xAC
+	sK2SLxSePh3BTZBNyDne2Xy4JT4QHxjgpnuUQgFrIBL6VhDxVOftj37v9ZrUlHyK48WwZI
+	krER43Abqdf6/iO9aUw42fao1g3ZFKI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717407021;
+	s=mimecast20190719; t=1717407256;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ATKzEjTtVPhwoSjjxK06J60WfW4dF9UMbHQlAPwliZ4=;
-	b=A462yvQ5gvHoP31Z7rvD+rpgeOGl6b3LSMrN5vNzvZZxC6SplBoMegPryj2MRcJrRu02IH
-	9sNj3fT4Yt+zX4/l05WjG0/G5a7rtEURODDb06FiPcAYiVRkQwV6wlcfEDHnUQ6UmCCTmE
-	vw04NOJXe+Sj1qlxZ4fgeiVaRwwEblg=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=infxpK+k9ZLlsTQqf8XnBBNOcIjsLHMwF7zpH2Bo4PQ=;
+	b=itblKfMXo5L4o5SPuICsID91+8+cNmNO3bIUTkeM4sC3JBJ9xYpDnp8rkXI42BKRAP/xAC
+	sK2SLxSePh3BTZBNyDne2Xy4JT4QHxjgpnuUQgFrIBL6VhDxVOftj37v9ZrUlHyK48WwZI
+	krER43Abqdf6/iO9aUw42fao1g3ZFKI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-gZwf4YMUNDy9MLimHqvXEA-1; Mon, 03 Jun 2024 05:30:17 -0400
-X-MC-Unique: gZwf4YMUNDy9MLimHqvXEA-1
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-48bd1ed71a5so981436137.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2024 02:30:17 -0700 (PDT)
+ us-mta-451-FIo2oZrsPMuuLBBOCIsHhA-1; Mon, 03 Jun 2024 05:34:14 -0400
+X-MC-Unique: FIo2oZrsPMuuLBBOCIsHhA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4212a921370so27987345e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jun 2024 02:34:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717407017; x=1718011817;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ATKzEjTtVPhwoSjjxK06J60WfW4dF9UMbHQlAPwliZ4=;
-        b=JeXjfuDlBlocsCQKECQRdkR057ydNwgDy8ZdEQA+NzDyYtK1hkBs4rtbUA7se2CodR
-         N9tidbp6o2IfswIYwcL5vc66UFxGaCmvneY9bwRjFaEkSdsSgZkUWooTi0eSrITmRn/b
-         4VYlJIYTYaiQxcZ0u1MdNagGFCufhISsP4NSkLkFeh8XqqXttu1xXyfnDMqtA/Sc92XC
-         uSWrC+2ai0w/5QEIXhRIrA+8pelk975O+7zBWu8wpxmh1fHW83f3KZQzQr2ixT6q4F7z
-         5pQvoET+QI2KNDO2iC2x1STIF0ZIXkOjQT+nePjwoD7nCKnxFkWScnL7xV9+a0kcDx4E
-         wCdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRjhJu1jet+g+X8N81vPiWlCWDiSCTE+0WnN/r76Il+ggS92XhWCtSn1RAhYPPLYxRqbaGkuxB7DrP1l5wdek+v52o3reEpHGMH6xBig==
-X-Gm-Message-State: AOJu0Yz/Ow5FMD0zh6dV78LziR0jOX0a7rGUldVwL8N+qFhL5quuo/Eb
-	HitbRRtARBfdwlvMzlmGYuDZSwxBZRDbkw2cuhgEVxsXorePlzLYv2gvLqBXA7O34I45XHla4hs
-	rwXD362kvExoKyuRnryCmRLpV3tfI5Yo6XF8+uAB20lnd8k5QiSgpZkWM0MAAS18=
-X-Received: by 2002:a05:6102:4611:b0:48b:bee2:51b7 with SMTP id ada2fe7eead31-48bc21fdcf2mr8405402137.20.1717407016826;
-        Mon, 03 Jun 2024 02:30:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFlN4I59TIHRaEkyAfCcRV5h9lx+hRj1kj+g78z3rnLpQBN/u6U+5EiPCZTHbCyPkEEfN3FiA==
-X-Received: by 2002:a05:6102:4611:b0:48b:bee2:51b7 with SMTP id ada2fe7eead31-48bc21fdcf2mr8405386137.20.1717407016434;
-        Mon, 03 Jun 2024 02:30:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717407253; x=1718012053;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=infxpK+k9ZLlsTQqf8XnBBNOcIjsLHMwF7zpH2Bo4PQ=;
+        b=W/UHlbY5j9NapSOeb3px92wEvntl9hVOuIRuOCJgs3DygaC96SaIh4U/Gl+2YRI9Hd
+         9HO/7CE7aWEvAr9hR3ZzApubxfaN6YdHMi5lkbOLjZ57X2/YrQkqeS342a4AlExkkIRG
+         dX9XTKater3MMKsT2UEzWAZy+1Nv8zk05CIuy/8SQNZP05iLMeaJ9FWJDjyH4AxJUg25
+         NodfNUn3+mCYOzJyRqSYAtBm9fYKgcXfWuLayK0UB9LMTPqkEPmBrNx6zLq3oEXwT4Yd
+         ooKVoHeoxDFuHf+oflrFf8NKc9jNJTQbqOELMutqd9HA/fmAU+ytcUNI870NdKaQHO7F
+         DSZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyIFZ2zgsIrxbtOgq93VM1dCgeXGGcfVyxgrywanSJHfw4n0QlByUGNRdc+pvpxeGW1tLZhjGAW8sVYPvOXuXDcIhMFgen1tPSt8qzqg==
+X-Gm-Message-State: AOJu0YyrD8Zc6jEVTEDOIXX49RNWmKT2Eg9JnJ54UCMu/Rk1PUd83DNa
+	J1LE9VRGEA+iIezEEcbwEfN3a9WHZWpVzhA2wLW+D6DMZK16CNqGzP1qGFgUjms3kdJ4pOv+orT
+	0ScAtFtIum3rOxrVkOL3qKqm514n5e9SmIsvmgOHPeW8FM69mt5ksS8Wub1Cjnm8=
+X-Received: by 2002:a05:600c:4704:b0:41b:eaf2:f7e6 with SMTP id 5b1f17b1804b1-4212e046c83mr83461855e9.2.1717407252995;
+        Mon, 03 Jun 2024 02:34:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGirsPtAPAuIW3XYtLJpOhQCCYU6ftfpY6BE8KOxDXC3PFRdRcTH4QTquOHz6Bwf+spoyizQ==
+X-Received: by 2002:a05:600c:4704:b0:41b:eaf2:f7e6 with SMTP id 5b1f17b1804b1-4212e046c83mr83461645e9.2.1717407252515;
+        Mon, 03 Jun 2024 02:34:12 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-176-229.web.vodafone.de. [109.43.176.229])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-80adf321cb1sm867963241.39.2024.06.03.02.30.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421386d858esm62692875e9.48.2024.06.03.02.34.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jun 2024 02:30:16 -0700 (PDT)
-Message-ID: <7059d458-048a-40a5-b21e-4e15568d1f54@redhat.com>
-Date: Mon, 3 Jun 2024 11:30:08 +0200
+        Mon, 03 Jun 2024 02:34:12 -0700 (PDT)
+Message-ID: <a0fdb18b-3cc1-42be-b1cb-66ef305b0a9e@redhat.com>
+Date: Mon, 3 Jun 2024 11:34:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v9 14/31] powerpc: Remove broken SMP
- exception stack setup
+Subject: Re: [kvm-unit-tests PATCH v9 15/31] powerpc: Enable page alloc
+ operations
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
- <20240504122841.1177683-15-npiggin@gmail.com>
+ <20240504122841.1177683-16-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -130,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240504122841.1177683-15-npiggin@gmail.com>
+In-Reply-To: <20240504122841.1177683-16-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -152,21 +152,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 04/05/2024 14.28, Nicholas Piggin wrote:
-> The exception stack setup does not work correctly for SMP, because
-> it is the boot processor that calls cpu_set() which sets SPRG2 to
-> the exception stack, not the target CPU itself. So secondaries
-> never got their SPRG2 set to a valid exception stack.
-
-So secondary CPUs currently must not run into any exceptions?
-
-> Remove the SMP code and just set an exception stack for the boot
-> processor. Make the stack 64kB while we're here, to match the
-> size of the regular stack.
+> These will be used for stack allocation for secondary CPUs.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/setup.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
+>   lib/powerpc/setup.c     | 8 ++++++++
+>   powerpc/Makefile.common | 1 +
+>   2 files changed, 9 insertions(+)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
