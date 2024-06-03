@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10678D7A24
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 04:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A14428D7A27
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 04:46:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vsym91HXcz3cVy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 12:46:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VsymZ68T2z3d28
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jun 2024 12:46:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
@@ -14,20 +14,20 @@ Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsylP3jvNz30T1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VsylP3rsKz3bTP
 	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jun 2024 12:45:53 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VsylN0BQcz4wyw;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VsylN3kNRz4x10;
 	Mon,  3 Jun 2024 12:45:52 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nathan Lynch <nathanl@linux.ibm.com>
-In-Reply-To: <20240524-lparcfg-updates-v2-1-62e2e9d28724@linux.ibm.com>
-References: <20240524-lparcfg-updates-v2-1-62e2e9d28724@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/pseries/lparcfg: drop error message from guest name lookup
-Message-Id: <171738271134.1517513.498664518863290267.b4-ty@ellerman.id.au>
+To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, paulmck@kernel.org, Puranjay Mohan <puranjay@kernel.org>
+In-Reply-To: <20240513100248.110535-1-puranjay@kernel.org>
+References: <20240513100248.110535-1-puranjay@kernel.org>
+Subject: Re: [PATCH bpf v3] powerpc/bpf: enforce full ordering for ATOMIC operations with BPF_FETCH
+Message-Id: <171738271132.1517513.12789013884540856700.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jun 2024 12:45:11 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,21 +43,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Puranjay Mohan <puranjay@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 24 May 2024 14:29:54 -0500, Nathan Lynch wrote:
-> It's not an error or exceptional situation when the hosting
-> environment does not expose a name for the LP/guest via RTAS or the
-> device tree. This happens with qemu when run without the '-name'
-> option. The message also lacks a newline. Remove it.
+On Mon, 13 May 2024 10:02:48 +0000, Puranjay Mohan wrote:
+> The Linux Kernel Memory Model [1][2] requires RMW operations that have a
+> return value to be fully ordered.
 > 
+> BPF atomic operations with BPF_FETCH (including BPF_XCHG and
+> BPF_CMPXCHG) return a value back so they need to be JITed to fully
+> ordered operations. POWERPC currently emits relaxed operations for
+> these.
 > 
+> [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/pseries/lparcfg: drop error message from guest name lookup
-      https://git.kernel.org/powerpc/c/12870ae3818e39ea65bf710f645972277b634f72
+[1/1] powerpc/bpf: enforce full ordering for ATOMIC operations with BPF_FETCH
+      https://git.kernel.org/powerpc/c/b1e7cee96127468c2483cf10c2899c9b5cf79bf8
 
 cheers
