@@ -2,78 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DA48FBB04
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 19:55:05 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=v+Lqm+ZJ;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F0D8FBB2C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 20:04:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vtysy1t94z3cVx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 03:55:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vtz4P4rN9z3dSk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 04:04:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=v+Lqm+ZJ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=yuzhao@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huaweicloud.com (client-ip=45.249.212.51; helo=dggsgout11.his.huawei.com; envelope-from=luogengkun@huaweicloud.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1114 seconds by postgrey-1.37 at boromir; Tue, 04 Jun 2024 22:09:41 AEST
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtysB2fmNz30Vk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 03:54:21 +1000 (AEST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso2241a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 10:54:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717523658; x=1718128458; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pvjvNFsuZm1XCxQL706IG6zhzQH06/KtKZ39FICaL2E=;
-        b=v+Lqm+ZJ9YApgmlXviVNy8Uhp7xItYOAiHwCnYtEDKcnLRKkrMElc7P/L5+Ii4xiVZ
-         xQYB3d8Kvmw4bD8fguA8ZwE+UZbdoFeBBEDZ5vXdBqHpzg9+Fa+tPau+S5W5Cnx5aicb
-         e8RfrfWwLnnqAFXxndlsCeEuUBNH9oWOhrrC362APNo4BrbO6NmLkM08cxRBsfHd8oyD
-         ahWPC/1tqx9/1CEiWQtkVe8wsRpm9kebKbVI5DEhqfIp6FQyq7N1AFXV6ZXUmppYvwbv
-         bzCrGnbvp5BnfSxPtuJQTqDSIvPOzBbvXcHrBLYmVdGi7DsUYyB25h3m2DkPMnYTFYPb
-         HXRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717523658; x=1718128458;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pvjvNFsuZm1XCxQL706IG6zhzQH06/KtKZ39FICaL2E=;
-        b=PzjpZx/N4L7Gdr2pdq2deOjE2i77achWgG0sHEhFjj3GBMDuVbWHoxSAOodlz0ENB7
-         +kc9O2g8SPxqyX6Cx2dqJbj7dO13BjvHSLykeZ0TIbmtSjTMBLwDbuE3q85XfHxwDx4m
-         ipJVTpq2lzH/1WNmw5cUnkeGjfW40rh7bS1xgLoJRyHVQC1SxAXfzO5Y3sy3HlTdXkYS
-         DgIvVi5VNGHT5PkgTPZzC3vKipg21FR/qLvRVWTo9nv9zxpP9L28W9NvLqQOnG86/9nX
-         TN9tmmAwVlt8Ib5z15KNVJOC7VHWm2481fB2lSKVuNSiIbb5/OXbbhjtwwnTMFXLGxo1
-         qjGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzY9FMurnodlunNYS0oRVVXFUfvtnA0U2JYbo7ehqjm9lw3aGX/svGlUFZTvydKFDO0xW8jY6G5RyY6N/vx/yKB9NG653sF994V1aHOQ==
-X-Gm-Message-State: AOJu0YzvBP6wVpL82GNcqtw/3wYp1MLJ5ltX1qMzSUFxFpLJ2vTts1nE
-	gX8Op8VtOh4BDCDT615BtQroPRDVqdGqwqEifLbs7S6hVf5JgjlPsYoO8DEylrlwoeYX6xt9+38
-	splDdTH6qtFQj+CR1dcJalUfNddsQzmOA3x0c
-X-Google-Smtp-Source: AGHT+IEqQH4VcW+bet6kw3ahjQXxsK9cW/QD3nBI7Uk5BIGc4R3Umj4HZMjvuIihX6oNv84m9DLjuGyDpzWWY0nDRIs=
-X-Received: by 2002:aa7:c245:0:b0:57a:2276:2a86 with SMTP id
- 4fb4d7f45d1cf-57a8d6e48c9mr2045a12.4.1717523657843; Tue, 04 Jun 2024 10:54:17
- -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtqCT4Lfkz3cM5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 22:09:37 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Vtpng1l5lz4f3nTs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 19:50:47 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 528621A0AAB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 19:50:58 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.67.174.193])
+	by APP1 (Coremail) with SMTP id cCh0CgBnOBGd_15metYuOg--.43086S4;
+	Tue, 04 Jun 2024 19:50:55 +0800 (CST)
+From: Luo Gengkun <luogengkun@huaweicloud.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] watchdog/core: Fix AA deadlock causeb by watchdog
+Date: Tue,  4 Jun 2024 11:57:36 +0000
+Message-Id: <20240604115736.1013341-1-luogengkun@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
- <CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
- <CAOUHufZ36rQc8AfLtRv2QrEareysdvbprAEO5XkcG-FeDOxFLA@mail.gmail.com>
- <20240602200332.3e531ff1@yea> <20240604001304.5420284f@yea>
- <CAJD7tkbCRLdy0vD2Pd17fNrxHgkzW1VucN4qMkohLFLBLaaeCQ@mail.gmail.com>
- <20240604134458.3ae4396a@yea> <CAJD7tkYjJJGthQ_8NukGw6Q9EYbLA=8sAH_7=B90KXEL6HWdSw@mail.gmail.com>
- <CAOUHufa0Fpj6SjNgB-z0n5Jg63q1ewkbOAU65forpDwQVs45qg@mail.gmail.com> <CAJD7tkb=5GJ9SNUwDsu1Zy3Tus4rjsNo60Hg9N7=gGth409Diw@mail.gmail.com>
-In-Reply-To: <CAJD7tkb=5GJ9SNUwDsu1Zy3Tus4rjsNo60Hg9N7=gGth409Diw@mail.gmail.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Tue, 4 Jun 2024 11:53:39 -0600
-Message-ID: <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
-Subject: Re: kswapd0: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
- nodemask=(null),cpuset=/,mems_allowed=0 (Kernel v6.5.9, 32bit ppc)
-To: Yosry Ahmed <yosryahmed@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: cCh0CgBnOBGd_15metYuOg--.43086S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxArW5tFykAF47Aw4UAFWDJwb_yoW5AF47pr
+	9FvFy7tw4UCr4kZayfJ3sxGry8Ca4vgr43GF4DG3yFkF1YkFn8Xrna9FnxXrZ0vrZxZF4j
+	vwn0qrWfta4UtaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvF14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AK
+	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
+	fUOmhFUUUUU
+X-CM-SenderInfo: 5oxrwvpqjn3046kxt4xhlfz01xgou0bp/
+X-Mailman-Approved-At: Wed, 05 Jun 2024 03:59:10 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,99 +65,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>, Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linuxppc-dev@lists.ozlabs.org
+Cc: pmladek@suse.com, mhocko@suse.com, lecopzer.chen@mediatek.com, yaoma@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org, dianders@chromium.org, song@kernel.org, bpf@vger.kernel.org, npiggin@gmail.com, trix@redhat.com, naveen.n.rao@linux.ibm.com, kernelfans@gmail.com, akpm@linux-foundation.org, luogengkun@huaweicloud.com, tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 4, 2024 at 11:34=E2=80=AFAM Yosry Ahmed <yosryahmed@google.com>=
- wrote:
->
-> On Tue, Jun 4, 2024 at 10:19=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote=
-:
-> >
-> > On Tue, Jun 4, 2024 at 10:12=E2=80=AFAM Yosry Ahmed <yosryahmed@google.=
-com> wrote:
-> > >
-> > > On Tue, Jun 4, 2024 at 4:45=E2=80=AFAM Erhard Furtner <erhard_f@mailb=
-ox.org> wrote:
-> > > >
-> > > > On Mon, 3 Jun 2024 16:24:02 -0700
-> > > > Yosry Ahmed <yosryahmed@google.com> wrote:
-> > > >
-> > > > > Thanks for bisecting. Taking a look at the thread, it seems like =
-you
-> > > > > have a very limited area of memory to allocate kernel memory from=
-. One
-> > > > > possible reason why that commit can cause an issue is because we =
-will
-> > > > > have multiple instances of the zsmalloc slab caches 'zspage' and
-> > > > > 'zs_handle', which may contribute to fragmentation in slab memory=
-.
-> > > > >
-> > > > > Do you have /proc/slabinfo from a good and a bad run by any chanc=
-e?
-> > > > >
-> > > > > Also, could you check if the attached patch helps? It makes sure =
-that
-> > > > > even when we use multiple zsmalloc zpools, we will use a single s=
-lab
-> > > > > cache of each type.
-> > > >
-> > > > Thanks for looking into this! I got you 'cat /proc/slabinfo' from a=
- good HEAD, from a bad HEAD and from the bad HEAD + your patch applied.
-> > > >
-> > > > Good was 6be3601517d90b728095d70c14f3a04b9adcb166, bad was b8cf32dc=
-6e8c75b712cbf638e0fd210101c22f17 which I got both from my bisect.log. I got=
- the slabinfo shortly after boot and a 2nd time shortly before the OOM or t=
-he kswapd0: page allocation failure happens. I terminated the workload (str=
-ess-ng --vm 2 --vm-bytes 1930M --verify -v) manually shortly before the 2 G=
-iB RAM exhausted and got the slabinfo then.
-> > > >
-> > > > The patch applied to git b8cf32dc6e8c75b712cbf638e0fd210101c22f17 u=
-nfortunately didn't make a difference, I got the kswapd0: page allocation f=
-ailure nevertheless.
-> > >
-> > > Thanks for trying this out. The patch reduces the amount of wasted
-> > > memory due to the 'zs_handle' and 'zspage' caches by an order of
-> > > magnitude, but it was a small number to begin with (~250K).
-> > >
-> > > I cannot think of other reasons why having multiple zsmalloc pools
-> > > will end up using more memory in the 0.25GB zone that the kernel
-> > > allocations can be made from.
-> > >
-> > > The number of zpools can be made configurable or determined at runtim=
-e
-> > > by the size of the machine, but I don't want to do this without
-> > > understanding the problem here first. Adding other zswap and zsmalloc
-> > > folks in case they have any ideas.
-> >
-> > Hi Erhard,
-> >
-> > If it's not too much trouble, could you "grep nr_zspages /proc/vmstat"
-> > on kernels before and after the bad commit? It'd be great if you could
-> > run the grep command right before the OOM kills.
-> >
-> > The overall internal fragmentation of multiple zsmalloc pools might be
-> > higher than a single one. I suspect this might be the cause.
->
-> I thought about the internal fragmentation of pools, but zsmalloc
-> should have access to highmem, and if I understand correctly the
-> problem here is that we are running out of space in the DMA zone when
-> making kernel allocations.
->
-> Do you suspect zsmalloc is allocating memory from the DMA zone
-> initially, even though it has access to highmem?
+We found an AA deadlock problem as shown belowed:
 
-There was a lot of user memory in the DMA zone. So at a point the
-highmem zone was full and allocation fallback happened.
+TaskA				TaskB				WatchDog			system_wq
 
-The problem with zone fallback is that recent allocations go into
-lower zones, meaning they are further back on the LRU list. This
-applies to both user memory and zsmalloc memory -- the latter has a
-writeback LRU. On top of this, neither the zswap shrinker nor the
-zsmalloc shrinker (compaction) is zone aware. So page reclaim might
-have trouble hitting the right target zone.
+...
+css_killed_work_fn:
+P(cgroup_mutex)
+...
+								...
+								__lockup_detector_reconfigure:
+								P(cpu_hotplug_lock.read)
+								...
+				...
+				percpu_down_write:
+				P(cpu_hotplug_lock.write)
+												...
+												cgroup_bpf_release:
+												P(cgroup_mutex)
+								smp_call_on_cpu:
+								Wait system_wq
 
-We can't really tell how zspages are distributed across zones, but the
-overall number might be helpful. It'd be great if someone could make
-nr_zspages per zone :)
+cpuset_css_offline:
+P(cpu_hotplug_lock.read)
+
+WatchDog is waitting for system_wq, who is waitting for cgroup_mutex, to finish
+the jobs, but the owner of the cgroup_mutex is waitting for cpu_hotplug_lock.
+The key point is the cpu_hotplug_lock, cause the system_wq may be waitting other
+lock. What's more, it seems that smp_call_on_cpu doesn't need protection from
+cpu_hotplug_lock. I try to revert the old patch to fix this problem, but I
+encountered some conflicts. Or I should just release and acquire cpu_hotplug_lock
+during between smp_call_on_cpu? I'm looking forward any suggestion :).
+
+Fixes: e31d6883f21c ("watchdog/core, powerpc: Lock cpus across reconfiguration")
+
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+---
+ arch/powerpc/kernel/watchdog.c | 4 ++++
+ kernel/watchdog.c              | 9 ---------
+ 2 files changed, 4 insertions(+), 9 deletions(-)
+
+diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
+index 8c464a5d8246..f33f532ea7fa 100644
+--- a/arch/powerpc/kernel/watchdog.c
++++ b/arch/powerpc/kernel/watchdog.c
+@@ -550,17 +550,21 @@ void watchdog_hardlockup_stop(void)
+ {
+ 	int cpu;
+ 
++	cpus_read_lock();
+ 	for_each_cpu(cpu, &wd_cpus_enabled)
+ 		stop_watchdog_on_cpu(cpu);
++	cpus_read_unlock();
+ }
+ 
+ void watchdog_hardlockup_start(void)
+ {
+ 	int cpu;
+ 
++	cpus_read_lock();
+ 	watchdog_calc_timeouts();
+ 	for_each_cpu_and(cpu, cpu_online_mask, &watchdog_cpumask)
+ 		start_watchdog_on_cpu(cpu);
++	cpus_read_unlock();
+ }
+ 
+ /*
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index 51915b44ac73..13303a932cde 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -867,7 +867,6 @@ int lockup_detector_offline_cpu(unsigned int cpu)
+ 
+ static void __lockup_detector_reconfigure(void)
+ {
+-	cpus_read_lock();
+ 	watchdog_hardlockup_stop();
+ 
+ 	softlockup_stop_all();
+@@ -877,12 +876,6 @@ static void __lockup_detector_reconfigure(void)
+ 		softlockup_start_all();
+ 
+ 	watchdog_hardlockup_start();
+-	cpus_read_unlock();
+-	/*
+-	 * Must be called outside the cpus locked section to prevent
+-	 * recursive locking in the perf code.
+-	 */
+-	__lockup_detector_cleanup();
+ }
+ 
+ void lockup_detector_reconfigure(void)
+@@ -916,11 +909,9 @@ static __init void lockup_detector_setup(void)
+ #else /* CONFIG_SOFTLOCKUP_DETECTOR */
+ static void __lockup_detector_reconfigure(void)
+ {
+-	cpus_read_lock();
+ 	watchdog_hardlockup_stop();
+ 	lockup_detector_update_enable();
+ 	watchdog_hardlockup_start();
+-	cpus_read_unlock();
+ }
+ void lockup_detector_reconfigure(void)
+ {
+-- 
+2.34.1
+
