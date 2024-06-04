@@ -1,41 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D2E8FBB34
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 20:06:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1A08FBB3D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 20:07:48 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LLXwiEcX;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vtz796lPqz3d2N
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 04:06:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vtz8b3ph3z3dtJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 04:07:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=dfpp=ng=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LLXwiEcX;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::22f; helo=mail-oi1-x22f.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vtw9n69RBz3cNt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 01:53:33 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8618E6134C;
-	Tue,  4 Jun 2024 15:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D41BC2BBFC;
-	Tue,  4 Jun 2024 15:52:38 +0000 (UTC)
-Date: Tue, 4 Jun 2024 11:52:35 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] treewide: Align match_string() with
- sysfs_match_string()
-Message-ID: <20240604115235.044acfd6@gandalf.local.home>
-In-Reply-To: <87tti9cfry.fsf@intel.com>
-References: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
-	<87tti9cfry.fsf@intel.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vtz2V0wYBz3cy9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 04:02:25 +1000 (AEST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3d1f7593ddcso1181153b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 11:02:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717524139; x=1718128939; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tHWLGQWisUQj7HhRAw2go4sy8LHyULISrzif4HyJkSE=;
+        b=LLXwiEcXa8s0P86kchlCLl1rAHFgjnxV36M63feHBPbWjKoHS9w/BVBGLgniDulHLJ
+         RndiO1uuYksEVPtuwY6p36K0WDVCdurUe9GwCEUY2IxONpYgGN3JUelqNAnCf3HpemXk
+         TPna7pyicD+aIoDG7cMtO8O/fNL0HvAFyY+pJRiqB4Nz67pavVEDrhQT/PdbqMavLrxy
+         Qo6TeScg3hJxemFf80g84kZe2tVaZ2F+DaWksb83GKIQ+KdU/8AR+AVD4XMjj3HdIC1p
+         ThaP6gRRnkci8R/Ocy/MtMPmSmUPQpTBFceorxJu2Ek8IVC9T4WCsC9rD58y4gqMaDC9
+         464A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717524139; x=1718128939;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tHWLGQWisUQj7HhRAw2go4sy8LHyULISrzif4HyJkSE=;
+        b=Q85GYWXrK+cURAkavcY7iUoY+IrzbsIbsnc7T19S43sR6rx6UKRZLd7WzjRzw7MeXR
+         tZcE57+bYopOIZ2KvrJd/OvSY5yqWeK2gk4ZbW8Y6dNTDjvXGTxmjYj6VzQwUflC5hmf
+         Rvj/ejjPDl31MV5zBdLMhVUEnpI2C6QQ1xoB0Hg9OM8GFwVmCRTUQC2evjlUrAM6d7nJ
+         62g59JdxpNlI+2V2Xv/mtzjuR3mBECaIg0R8zmGVUazH9QYOBuexGDgXlSBMaddcgdjf
+         o75Vmzu6Xfn9/cxBXKoseD8GuN/FPK4mZl4vDDS4tV1B46+sJ/yw0hKXLPXdj9u+ghR+
+         cQeA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1vIEpZD+kPJPImJ0O8mZUwJStKxUx3eQ9CxBmByMRJPoNCpNiSYp7NCbUcN75VJo+1ft2upHmJi8UxoJ53Pp/iAL0UPDtArl0Sg7eOw==
+X-Gm-Message-State: AOJu0Yza0Dfk0UDyrji52rKqj4gj8ZMHkfRphODbv2STT04qr5uWlM0M
+	36FE6w3Tu5yVvsAu1pYgXZPrM0IxTBdsL/GYorA71yAISFpxckRIf9hgoFJXgTQIxX3amyrdp/6
+	HRVi1AvxyEb7rAZqYBMdkfM6TbC5dmFkVSF14
+X-Google-Smtp-Source: AGHT+IGLP4t3hL8c6rQwnWojRitsYcXuRXha13VBXTuVelVGnvix3EEiSfqrbr4AO/JmxEnQlMJSjTPnhcgT9+b9UCM=
+X-Received: by 2002:a05:6808:911:b0:3d1:d9e6:7ee9 with SMTP id
+ 5614622812f47-3d20439d504mr112188b6e.33.1717524139167; Tue, 04 Jun 2024
+ 11:02:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Wed, 05 Jun 2024 03:59:10 +1000
+References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
+ <CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
+ <CAOUHufZ36rQc8AfLtRv2QrEareysdvbprAEO5XkcG-FeDOxFLA@mail.gmail.com>
+ <20240602200332.3e531ff1@yea> <20240604001304.5420284f@yea>
+ <CAJD7tkbCRLdy0vD2Pd17fNrxHgkzW1VucN4qMkohLFLBLaaeCQ@mail.gmail.com>
+ <20240604134458.3ae4396a@yea> <CAJD7tkYjJJGthQ_8NukGw6Q9EYbLA=8sAH_7=B90KXEL6HWdSw@mail.gmail.com>
+ <CAOUHufa0Fpj6SjNgB-z0n5Jg63q1ewkbOAU65forpDwQVs45qg@mail.gmail.com>
+ <CAJD7tkb=5GJ9SNUwDsu1Zy3Tus4rjsNo60Hg9N7=gGth409Diw@mail.gmail.com> <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
+In-Reply-To: <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
+From: Yosry Ahmed <yosryahmed@google.com>
+Date: Tue, 4 Jun 2024 11:01:39 -0700
+Message-ID: <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
+Subject: Re: kswapd0: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
+ nodemask=(null),cpuset=/,mems_allowed=0 (Kernel v6.5.9, 32bit ppc)
+To: Yu Zhao <yuzhao@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,68 +86,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Heiko Stuebner <heiko@sntech.de>, "Rafael J. Wysocki" <rafael@kernel.org>, Takashi Iwai <tiwai@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>, Linus Walleij <linus.walleij@linaro.org>, dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>, Ben Segall <bsegall@google.com>, Perry Yuan <perry.yuan@amd.com>, Prashant Gaikwad <pgaikwad@nvidia.com>, Pavel Machek <pavel@ucw.cz>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Abel Wu <wuyun.abel@bytedance.com>, Vincent Guittot <vincent.guittot@linaro.org>, Karol Herbst <kherbst@redhat.com>, Samuel Holland <samuel@sholland.org>, Sebastian Reichel <sebastian.reichel@collabora.com>, Tvrtko Ursulin <tursulin@ursulin.net>, linux-acpi@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, Mel Gorman <mgorman@suse.de>, linux-sunxi@lists.
- linux.dev, Guenter Roeck <linux@roeck-us.net>, Jean Delvare <jdelvare@suse.com>, linux-pm@vger.kernel.org, Potnuri Bharat Teja <bharat@chelsio.com>, James Morris <jmorris@namei.org>, linux-sound@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, Zhihao Cheng <chengzhihao1@huawei.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Niklas Cassel <cassel@kernel.org>, Scott Branden <sbranden@broadcom.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Elad Nachman <enachman@marvell.com>, Linus Torvalds <torvalds@linux-foundation.org>, Lukasz Luba <lukasz.luba@arm.com>, linux-fbdev@vger.kernel.org, linux-usb@vger.kernel.org, Zefan Li <lizefan.x@bytedance.com>, nouveau@
- lists.freedesktop.org, Dave Hansen <dave.hansen@linux.intel.com>, Clemens Ladisch <clemens@ladisch.de>, Mimi Zohar <zohar@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Hu Ziji <huziji@marvell.com>, Eric Dumazet <edumazet@google.com>, keyrings@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, linux-i2c@vger.kernel.org, Gregory Greenman <gregory.greenman@intel.com>, Ingo Molnar <mingo@kernel.org>, linux-security-module@vger.kernel.org, Valentin Schneider <vschneid@redhat.com>, Corey Minyard <minyard@acm.org>, Gregory Clement <gregory.clement@bootlin.com>, Lee Jones <lee@kernel.org>, Hugh Dickins <hughd@google.com>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, linux-trace-kernel@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rrichter@amd.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Brian Foster <bfoster@redhat.com>, Maxime Ripard <mripard@kernel.org>, linux-gpio@vger.kernel.org, Jason Baron <jbaron@
- akamai.com>, linux-rpi-kernel@lists.infradead.org, Bjorn Helgaas <bhelgaas@google.com>, cgroups@vger.kernel.org, Allen Pais <apais@linux.microsoft.com>, linux-arm-kernel@lists.infradead.org, Daniel Lezcano <daniel.lezcano@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Roberto Sassu <roberto.sassu@huawei.com>, linux-integrity@vger.kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Len Brown <lenb@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Miri Korenblit <miriam.rachel.korenblit@intel.com>, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Ulf Hansson <ulf.hansson@linaro.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, linux-pci@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, alsa-devel@alsa-project.org, Nuno Sa <nuno.sa@analog.com>, Matthias Brugger <matthias.bgg@gmail.com>, linux-mtd@lists
- .infradead.org, linux-hardening@vger.kernel.org, linux-phy@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, linux-staging@lists.linux.dev, Jernej Skrabec <jernej.skrabec@gmail.com>, Nikita Kravets <teackot@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Chen-Yu Tsai <wens@csie.org>, Abdel Alkuor <abdelalkuor@geotab.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Paolo Abeni <pabeni@redhat.com>, "Serge E. Hallyn" <serge@hallyn.com>, Lyude Paul <lyude@redhat.com>, Kees Cook <keescook@chromium.org>, Ray Jui <rjui@broadcom.com>, intel-gfx@lists.freedesktop.org, Johannes Berg <johannes.berg@intel.com>, Paul Moore <paul@paul-moore.com>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Stanley Chang <stanley_chang@realtek.com>, Daniel Vetter <daniel@ffwll.ch>, openipmi-developer@list
- s.sourceforge.net, linux-hwmon@vger.kernel.org, Sergey Shtylyov <s.shtylyov@omp.ru>, linux-mm@kvack.org, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-mmc@vger.kernel.org, Sebastian Reichel <sre@kernel.org>, Takashi Sakamoto <o-takashi@sakamocchi.jp>, Daniel Scally <djrscally@gmail.com>, JC Kuo <jckuo@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, "David S. Miller" <davem@davemloft.net>, Mario Limonciello <mario.limonciello@amd.com>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Vignesh Raghavendra <vigneshr@ti.com>, Eric Biggers <ebiggers@google.com>, Tony Lindgren <tony@atomide.com>, Takashi Iwai <tiwai@suse.com>, David Howells <dhowells@redhat.com>, linux-ide@vger.kernel.org, Huang Rui <ray.huang@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, David Airlie <airlied@gmail.com>, Jim Cromie <jim.cromie@gmail.com>, linux-leds@vger.kernel.org, Eric Snowberg <eric.snowberg@oracle.com>, Herbert 
- Xu <herbert@gondor.apana.org.au>, Florian Fainelli <florian.fainelli@broadcom.com>, Richard Weinberger <richard@nod.at>, x86@kernel.org, qat-linux@intel.com, linux-bcachefs@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Chunfeng Yun <chunfeng.yun@mediatek.com>, Jakub Kicinski <kuba@kernel.org>, Zhang Rui <rui.zhang@intel.com>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, platform-driver-x86@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Kalle Valo <kvalo@kernel.org>, apparmor@lists.ubuntu.com, Hans de Goede <hdegoede@redhat.com>, linux-mediatek@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Benjamin Berg <benjamin.berg@intel.com>, linux-tegra@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, intel-xe@lists.freedesktop.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, John Johansen <john.johansen@canonical.com>, L
- iam Girdwood <lgirdwood@gmail.com>, netdev@vger.kernel.org, Peter De Schrijver <pdeschrijver@nvidia.com>, Kent Overstreet <kent.overstreet@linux.dev>, Adrian Hunter <adrian.hunter@intel.com>, Vinod Koul <vkoul@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Daniel Bristot de Oliveira <bristot@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linuxppc-dev@lists.ozlabs.org, Helge Deller <deller@gmx.de>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: Erhard Furtner <erhard_f@mailbox.org>, Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 04 Jun 2024 10:45:37 +0300
-Jani Nikula <jani.nikula@linux.intel.com> wrote:
+On Tue, Jun 4, 2024 at 10:54=E2=80=AFAM Yu Zhao <yuzhao@google.com> wrote:
+>
+> On Tue, Jun 4, 2024 at 11:34=E2=80=AFAM Yosry Ahmed <yosryahmed@google.co=
+m> wrote:
+> >
+> > On Tue, Jun 4, 2024 at 10:19=E2=80=AFAM Yu Zhao <yuzhao@google.com> wro=
+te:
+> > >
+> > > On Tue, Jun 4, 2024 at 10:12=E2=80=AFAM Yosry Ahmed <yosryahmed@googl=
+e.com> wrote:
+> > > >
+> > > > On Tue, Jun 4, 2024 at 4:45=E2=80=AFAM Erhard Furtner <erhard_f@mai=
+lbox.org> wrote:
+> > > > >
+> > > > > On Mon, 3 Jun 2024 16:24:02 -0700
+> > > > > Yosry Ahmed <yosryahmed@google.com> wrote:
+> > > > >
+> > > > > > Thanks for bisecting. Taking a look at the thread, it seems lik=
+e you
+> > > > > > have a very limited area of memory to allocate kernel memory fr=
+om. One
+> > > > > > possible reason why that commit can cause an issue is because w=
+e will
+> > > > > > have multiple instances of the zsmalloc slab caches 'zspage' an=
+d
+> > > > > > 'zs_handle', which may contribute to fragmentation in slab memo=
+ry.
+> > > > > >
+> > > > > > Do you have /proc/slabinfo from a good and a bad run by any cha=
+nce?
+> > > > > >
+> > > > > > Also, could you check if the attached patch helps? It makes sur=
+e that
+> > > > > > even when we use multiple zsmalloc zpools, we will use a single=
+ slab
+> > > > > > cache of each type.
+> > > > >
+> > > > > Thanks for looking into this! I got you 'cat /proc/slabinfo' from=
+ a good HEAD, from a bad HEAD and from the bad HEAD + your patch applied.
+> > > > >
+> > > > > Good was 6be3601517d90b728095d70c14f3a04b9adcb166, bad was b8cf32=
+dc6e8c75b712cbf638e0fd210101c22f17 which I got both from my bisect.log. I g=
+ot the slabinfo shortly after boot and a 2nd time shortly before the OOM or=
+ the kswapd0: page allocation failure happens. I terminated the workload (s=
+tress-ng --vm 2 --vm-bytes 1930M --verify -v) manually shortly before the 2=
+ GiB RAM exhausted and got the slabinfo then.
+> > > > >
+> > > > > The patch applied to git b8cf32dc6e8c75b712cbf638e0fd210101c22f17=
+ unfortunately didn't make a difference, I got the kswapd0: page allocation=
+ failure nevertheless.
+> > > >
+> > > > Thanks for trying this out. The patch reduces the amount of wasted
+> > > > memory due to the 'zs_handle' and 'zspage' caches by an order of
+> > > > magnitude, but it was a small number to begin with (~250K).
+> > > >
+> > > > I cannot think of other reasons why having multiple zsmalloc pools
+> > > > will end up using more memory in the 0.25GB zone that the kernel
+> > > > allocations can be made from.
+> > > >
+> > > > The number of zpools can be made configurable or determined at runt=
+ime
+> > > > by the size of the machine, but I don't want to do this without
+> > > > understanding the problem here first. Adding other zswap and zsmall=
+oc
+> > > > folks in case they have any ideas.
+> > >
+> > > Hi Erhard,
+> > >
+> > > If it's not too much trouble, could you "grep nr_zspages /proc/vmstat=
+"
+> > > on kernels before and after the bad commit? It'd be great if you coul=
+d
+> > > run the grep command right before the OOM kills.
+> > >
+> > > The overall internal fragmentation of multiple zsmalloc pools might b=
+e
+> > > higher than a single one. I suspect this might be the cause.
+> >
+> > I thought about the internal fragmentation of pools, but zsmalloc
+> > should have access to highmem, and if I understand correctly the
+> > problem here is that we are running out of space in the DMA zone when
+> > making kernel allocations.
+> >
+> > Do you suspect zsmalloc is allocating memory from the DMA zone
+> > initially, even though it has access to highmem?
+>
+> There was a lot of user memory in the DMA zone. So at a point the
+> highmem zone was full and allocation fallback happened.
+>
+> The problem with zone fallback is that recent allocations go into
+> lower zones, meaning they are further back on the LRU list. This
+> applies to both user memory and zsmalloc memory -- the latter has a
+> writeback LRU. On top of this, neither the zswap shrinker nor the
+> zsmalloc shrinker (compaction) is zone aware. So page reclaim might
+> have trouble hitting the right target zone.
 
-> On Sun, 02 Jun 2024, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > Make two APIs look similar. Hence convert match_string() to be
-> > a 2-argument macro. In order to avoid unneeded churn, convert
-> > all users as well. There is no functional change intended.  
-> 
-> Why do we think it's a good idea to increase and normalize the use of
-> double-underscore function names across the kernel, like
-> __match_string() in this case? It should mean "reserved for the
-> implementation, not to be called directly".
-> 
-> If it's to be used directly, it should be named accordingly, right?
-> 
-> Being in line with __sysfs_match_string() isn't a great argument alone,
-> because this adds three times the number of __match_string() calls than
-> there are __sysfs_match_string() calls. It's not a good model to follow.
-> Arguably both should be renamed.
+I see what you mean. In this case, yeah I think the internal
+fragmentation in the zsmalloc pools may be the reason behind the
+problem.
 
-Agreed. I want to get rid of any functions starting with an underscore
-except for those that are basically the same function used internally for
-convenience.
+How many CPUs does this machine have? I am wondering if 32 can be an
+overkill for small machines, perhaps the number of pools should be
+max(nr_cpus, 32)?
 
-Perhaps "match_string_dynamic()"? Where it is used for dynamically
-allocated arrays without known size. Or, allow a third parameter for
-dynamic arrays.
+Alternatively, the number of pools should scale with the memory size
+in some way, such that we only increase fragmentation when it's
+tolerable.
 
-#define match_string(_a, _s, ...)
-	char _______STR[] = __stringify((__VA_ARGS__));	\
-	if (sizeof(_______STR) > 3)			\
-		__match_string(_a, _s, ##__VA_ARGS__);  \
-	else						\
-		__match_string(_a, _s, ARRAY_SIZE(_a));
-
-What the above stringify((__VA_ARGS__)) does is to check the size of any
-args added to match_string(). if there isn't any, it will turn into:
-"()\0", which is of size 3. If you add an argument, it will be:
-"(<arg>)\0", which will have a size greater than three.
-
-(trace_printk() does this trick in include/linux/kernel.h).
-
-This way, both:
-
- match_string(array, sting);
-
-or
-
- match_string(array, string, size);
-
-will work.
-
--- Steve
-
+>
+> We can't really tell how zspages are distributed across zones, but the
+> overall number might be helpful. It'd be great if someone could make
+> nr_zspages per zone :)
