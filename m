@@ -1,91 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070FF8FAC06
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 09:31:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F214B8FAC9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 09:54:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WVVQAyAD;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WVVQAyAD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RkzQ+Uyf;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SVErniNJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vtj2l1FyPz3cVX
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 17:31:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VtjY910Qkz3cWD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 17:54:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WVVQAyAD;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WVVQAyAD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RkzQ+Uyf;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SVErniNJ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vtj202vZyz3bqP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 17:31:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtjXS0fNgz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 17:53:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717486260;
+	s=mimecast20190719; t=1717487636;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TsL19mGL2R17JenZwmF+AzwbMkbWhCiBk2OX/4KYHpk=;
-	b=WVVQAyADLLAkwsKzEHoYtRa99eat5QDG6Py9clWUR5mAkQY8HwLOS+j+msfK1lEb2kAECM
-	YLV0BBQ1yuN00yWs3eNeAjxo9tRUCzkw3NL4nCq+xulsaZcX/gCgi6nPqye4SLz1FEFz9F
-	27shxQ3Xlc8bGCg6StTIdc7HtFPDRLM=
+	bh=vjx0ykS4nJ+697RVcEhJUXV4++oM9wmiHnBblhEdRT0=;
+	b=RkzQ+Uyf0HSc+70B1wEf8C7OAMyab86g1zaIupQxzIlxXykzAJ2cwLmVrjJJr5b0hLvG4U
+	LlUEQx199g6NGHuRWuctp8F9pPHT8Ef/Hn6ZnLCI+7zodhhK7xJuv7mjTd0+A+DvGLH/lV
+	bImcfgqdJ3AHrf8appGN6ZQhNqMa8pM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717486260;
+	s=mimecast20190719; t=1717487637;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TsL19mGL2R17JenZwmF+AzwbMkbWhCiBk2OX/4KYHpk=;
-	b=WVVQAyADLLAkwsKzEHoYtRa99eat5QDG6Py9clWUR5mAkQY8HwLOS+j+msfK1lEb2kAECM
-	YLV0BBQ1yuN00yWs3eNeAjxo9tRUCzkw3NL4nCq+xulsaZcX/gCgi6nPqye4SLz1FEFz9F
-	27shxQ3Xlc8bGCg6StTIdc7HtFPDRLM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vjx0ykS4nJ+697RVcEhJUXV4++oM9wmiHnBblhEdRT0=;
+	b=SVErniNJlDwOOfwjHmDqUgipO/+K5/bEjWDcVBQ+GEne2UAsJQPPJK933t1mP7oJ79mhvX
+	7IzRddCSuQSGbbO2/AQWQ2YysnfyLb72jjYtqWmhIHlcfmWPnaUUkRB6hpmdFCBcfIfOBK
+	jDtLlqODr28EPP7N0ZmaryYxIo9krXs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-RWK89qe6P42JNdSYhJKGSQ-1; Tue, 04 Jun 2024 03:30:56 -0400
-X-MC-Unique: RWK89qe6P42JNdSYhJKGSQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a6917eb045bso65629066b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 00:30:56 -0700 (PDT)
+ us-mta-7-HksJOJ7AP-mBAZjmZX9HMw-1; Tue, 04 Jun 2024 03:53:49 -0400
+X-MC-Unique: HksJOJ7AP-mBAZjmZX9HMw-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-35dca4922a4so2824813f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 00:53:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717486255; x=1718091055;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TsL19mGL2R17JenZwmF+AzwbMkbWhCiBk2OX/4KYHpk=;
-        b=FTuqBt8B2reZ2SiLSMjA82RpK1qD8RycS2oKOZWNTJNkn+fv+XZMqFPkI00aQMRcwo
-         Nfuar5CFHnqr9lVXVwB0xUE5FYDfOf7232xmXV69PDszFy1s5rruPHXRos8hfneau0hi
-         4OcqGoARWNiyB9Cc+0AgYcR09kjL8HzqgC6JKJ8GBRQVEjUc36PgxMY9yuHt+ORLZmvB
-         I342f6eatojegIxhVqTULPVK6g5AoQu8VZL6te6JdSjYXsXmWjebBwmUkFLmbkfpDDSm
-         huKpnBvJE/HaC08Q5oZTtYLgONmhBNsgc4a1fvUxdvcpa3XmKeLnyci/zywjFGIbh6PB
-         s4Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWOhU9ZFiFGEnbM5MEV/f+qv+QvNP92oyVQj8bvsfCcM5y4FkI8HSHZL7wnuOioGRMbFq3eiW/ipPS0g5nRmEhvaJnoQjXuxCEfdnF6sQ==
-X-Gm-Message-State: AOJu0Yzgc+KZy87deY3askEwCgp3mIVTNDtqo8VKME9+v6kzPkxmxHjQ
-	JJG8fk7aEAZ2TAkzBtpwy+F090qJklB20NBvMgClH2csXQA4idEqGp8nsBNZ1eod2xcvZSG21M3
-	jLhVAOMvrV1ynKI2Xg0P8I5LKiKHzfuhA0woUYNz22S1UWkIZHNoYETFsxYcHYyY=
-X-Received: by 2002:a17:906:3411:b0:a68:f6c7:fed5 with SMTP id a640c23a62f3a-a68f6c7ffffmr333745966b.34.1717486255372;
-        Tue, 04 Jun 2024 00:30:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFl4u9DCCzR7ZL9ZSxjy8x1q2NwB/erh1Hb52yDr4RfsMA8vvObCE0FdOfURN/kSozOxH7c5A==
-X-Received: by 2002:a17:906:3411:b0:a68:f6c7:fed5 with SMTP id a640c23a62f3a-a68f6c7ffffmr333744466b.34.1717486254987;
-        Tue, 04 Jun 2024 00:30:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717487628; x=1718092428;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vjx0ykS4nJ+697RVcEhJUXV4++oM9wmiHnBblhEdRT0=;
+        b=J2FOLfy3V+rhWg5beJNNkkZrJDjRlUcJPLVbveem6SnVR3w2S/+JggHDKG6JJnZoea
+         Tz3hacwrIE3Db0cMz2O3LeD33tRUzMP2wZD1x+JXY0sI1UTy4rzc6+1De7bqOWxhPUJe
+         Cbf+zdsnuHPHGXHUAvR7Yjbd9Lmg+Yl8hfk0RXt4kD7X8L+21UrR3zHbqtachp0FsxOr
+         zj/rBHL4kR7lhJBl/IGb/bmeiLld5Nx73tgv8oIv+5s9ACkxkcYkzzdgQ2yVyJzqML90
+         SXOv/zDlHP4UbpJ790x5Nt5YLHKSx0N63jKN4O/EoYTlz2ITJGzKk3rX3bZjpDo8XkB2
+         Aw6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWI7og4WBxY6LEd9DKXMM9nKLPLmDOvCS1CAIFS6UDhbyXUfHR6cOBldcE+bSUAMoItFsfMMKcyJdJyMlMYKlLXiRttP1h7bwfNPhu8Hw==
+X-Gm-Message-State: AOJu0YxzJDn+SHNPCy21VcQP+exg/6dDHCEOOiK8NKkiWS97/e72+JlA
+	vXOu5olC5TSlvGjtUj9SDlM/Ro59vIwxgS2FcfVI7ryGS5+0pypkzcKz+k0qJArlAc1jzhvARSv
+	VxzhRWUFC6Wcy8/PU3DnGI+w+OrlY/aV/JukFXLc1CnSdqjYtTVeowWT3+CQP7XY=
+X-Received: by 2002:a5d:69cd:0:b0:357:16f6:71dc with SMTP id ffacd0b85a97d-35e7c52d9e1mr1553251f8f.13.1717487628717;
+        Tue, 04 Jun 2024 00:53:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/buMjqh/S6XIE3/Gj7KXIbP8ZU5F/ofjLANGt6dwHgExj1IaPc6eVwgDYsQUxonlxF7aukg==
+X-Received: by 2002:a5d:69cd:0:b0:357:16f6:71dc with SMTP id ffacd0b85a97d-35e7c52d9e1mr1553224f8f.13.1717487628397;
+        Tue, 04 Jun 2024 00:53:48 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-178-97.web.vodafone.de. [109.43.178.97])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a68fbf068fesm315229066b.26.2024.06.04.00.30.53
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35e5e3d1902sm3814122f8f.32.2024.06.04.00.53.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jun 2024 00:30:54 -0700 (PDT)
-Message-ID: <75adb602-7ccc-4dcd-916e-5f79fcd1cdd3@redhat.com>
-Date: Tue, 4 Jun 2024 09:30:52 +0200
+        Tue, 04 Jun 2024 00:53:48 -0700 (PDT)
+Message-ID: <a9e7ea2d-2737-4f4c-ab38-59349e325dfa@redhat.com>
+Date: Tue, 4 Jun 2024 09:53:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v9 22/31] powerpc: Add MMU support
+Subject: Re: [kvm-unit-tests PATCH v9 23/31] common/sieve: Use vmalloc.h for
+ setup_mmu definition
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
- <20240504122841.1177683-23-npiggin@gmail.com>
+ <20240504122841.1177683-24-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -129,12 +130,12 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240504122841.1177683-23-npiggin@gmail.com>
+In-Reply-To: <20240504122841.1177683-24-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -146,132 +147,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
+Cc: Laurent Vivier <lvivier@redhat.com>, linux-s390@vger.kernel.org, =?UTF-8?Q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Andrew Jones <andrew.jones@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 04/05/2024 14.28, Nicholas Piggin wrote:
-> Add support for radix MMU, 4kB and 64kB pages.
+> There is no good reason to put setup_vm in libcflat.h when it's
+> defined in vmalloc.h.
 > 
-> This also adds MMU interrupt test cases, and runs the interrupts
-> test entirely with MMU enabled if it is available (aside from
-> machine check tests).
-> 
-> Acked-by: Andrew Jones <andrew.jones@linux.dev> (configure changes)
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Thomas Huth <thuth@redhat.com>
+> Cc: Janosch Frank <frankja@linux.ibm.com>
+> Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Cc: Nico Böhr <nrb@linux.ibm.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: kvm@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Acked-by: Andrew Jones <andrew.jones@linux.dev>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-...
-> diff --git a/lib/ppc64/mmu.c b/lib/ppc64/mmu.c
-> new file mode 100644
-> index 000000000..5307cd862
-> --- /dev/null
-> +++ b/lib/ppc64/mmu.c
-> @@ -0,0 +1,281 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Radix MMU support
-> + *
-> + * Copyright (C) 2024, IBM Inc, Nicholas Piggin <npiggin@gmail.com>
-> + *
-> + * Derived from Linux kernel MMU code.
-> + */
-> +#include <asm/mmu.h>
-> +#include <asm/setup.h>
-> +#include <asm/smp.h>
-> +#include <asm/page.h>
-> +#include <asm/io.h>
-> +#include <asm/processor.h>
-> +#include <asm/hcall.h>
-> +
-> +#include "alloc_page.h"
-> +#include "vmalloc.h"
-> +#include <asm/pgtable-hwdef.h>
-> +#include <asm/pgtable.h>
-> +
-> +#include <linux/compiler.h>
-> +
-> +static pgd_t *identity_pgd;
-> +
-> +bool vm_available(void)
-> +{
-> +	return cpu_has_radix;
-> +}
-> +
-> +bool mmu_enabled(void)
-> +{
-> +	return current_cpu()->pgtable != NULL;
-> +}
-> +
-> +void mmu_enable(pgd_t *pgtable)
-> +{
-> +	struct cpu *cpu = current_cpu();
-> +
-> +	if (!pgtable)
-> +		pgtable = identity_pgd;
-> +
-> +	cpu->pgtable = pgtable;
-> +
-> +	mtmsr(mfmsr() | (MSR_IR|MSR_DR));
-> +}
-> +
-> +void mmu_disable(void)
-> +{
-> +	struct cpu *cpu = current_cpu();
-> +
-> +	cpu->pgtable = NULL;
-> +
-> +	mtmsr(mfmsr() & ~(MSR_IR|MSR_DR));
-> +}
-> +
-> +static inline void tlbie(unsigned long rb, unsigned long rs, int ric, int prs, int r)
-> +{
-> +	asm volatile(".machine push ; .machine power9; ptesync ; tlbie %0,%1,%2,%3,%4 ; eieio ; tlbsync ; ptesync ; .machine pop" :: "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r) : "memory");
 
-That's a very long line, please split it up after every assembly instruction 
-(using \n for new lines).
 
-> +}
-...
-> diff --git a/powerpc/mmu.c b/powerpc/mmu.c
-> new file mode 100644
-> index 000000000..fef790506
-> --- /dev/null
-> +++ b/powerpc/mmu.c
-> @@ -0,0 +1,283 @@
-> +/* SPDX-License-Identifier: LGPL-2.0-only */
-> +/*
-> + * MMU Tests
-> + *
-> + * Copyright 2024 Nicholas Piggin, IBM Corp.
-> + */
-> +#include <libcflat.h>
-> +#include <asm/atomic.h>
-> +#include <asm/barrier.h>
-> +#include <asm/processor.h>
-> +#include <asm/mmu.h>
-> +#include <asm/smp.h>
-> +#include <asm/setup.h>
-> +#include <asm/ppc_asm.h>
-> +#include <vmalloc.h>
-> +#include <devicetree.h>
-> +
-> +static inline void tlbie(unsigned long rb, unsigned long rs, int ric, int prs, int r)
-> +{
-> +	asm volatile(".machine push ; .machine power9; ptesync ; tlbie %0,%1,%2,%3,%4 ; eieio ; tlbsync ; ptesync ; .machine pop" :: "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r) : "memory");
-> +}
-
-Same function again? Maybe it could go into mmu.h instead?
-
-> +static inline void tlbiel(unsigned long rb, unsigned long rs, int ric, int prs, int r)
-> +{
-> +	asm volatile(".machine push ; .machine power9; ptesync ; tlbiel %0,%1,%2,%3,%4 ; ptesync ; .machine pop" :: "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r) : "memory");
-> +}
-
-Please also split up the above long line.
-
-It would also be cool if you could get one of the other ppc guys at IBM to 
-review this patch, since I don't have a clue about this MMU stuff at all.
-
-  Thanks,
-   Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
