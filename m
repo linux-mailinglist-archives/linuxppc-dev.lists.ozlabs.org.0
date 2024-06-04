@@ -2,91 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7658FB063
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 12:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135EA8FB092
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 12:54:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fX3MrB35;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fX3MrB35;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aHUua9eX;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aHUua9eX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VtnSF1TXWz3cbC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 20:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VtnXP1MYnz3cby
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jun 2024 20:54:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fX3MrB35;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fX3MrB35;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aHUua9eX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aHUua9eX;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtnRV466tz30Ts
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 20:49:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VtnWh6pVqz30Sv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jun 2024 20:53:35 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717498196;
+	s=mimecast20190719; t=1717498414;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U1w2bG5lPOfWEVpr4xHtf9bwg5SohkWgMrHEQtHuoCA=;
-	b=fX3MrB35JfygwFsUucpi8ywMHWD3S5wp2+i4fEBi5fBPGdKScaoMzjRW2qDJaMnDgG+NPs
-	LopmfvWe94LAeBGNk0oaOaxAeoYQw0mPmBquk8xxYOCBZnb5DlXm5j0I0f/6O9GgsuI4OI
-	a6InJPrhT67VB4xepdQX7Py/BrVKkgs=
+	bh=khLXT47kqpcrtDLU6hojN1Y8iwI4i0MMg0kRPkLwAKQ=;
+	b=aHUua9eX8N7Ti6ScdZQo5GAwcrVIGI2k19BwfDOXI0ABD3pCgAjyXGhOTlWJGKT+Y24DzA
+	WvJlG+DVWQiybu+2W4eOrlYyTXkUgpPt2ZLqUUfmWUdCCrhR/aEkufuE8h/Z3xk+6uJwOR
+	nwOAWEPXmPyeM5culfshY/NoXmtJK5E=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717498196;
+	s=mimecast20190719; t=1717498414;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U1w2bG5lPOfWEVpr4xHtf9bwg5SohkWgMrHEQtHuoCA=;
-	b=fX3MrB35JfygwFsUucpi8ywMHWD3S5wp2+i4fEBi5fBPGdKScaoMzjRW2qDJaMnDgG+NPs
-	LopmfvWe94LAeBGNk0oaOaxAeoYQw0mPmBquk8xxYOCBZnb5DlXm5j0I0f/6O9GgsuI4OI
-	a6InJPrhT67VB4xepdQX7Py/BrVKkgs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=khLXT47kqpcrtDLU6hojN1Y8iwI4i0MMg0kRPkLwAKQ=;
+	b=aHUua9eX8N7Ti6ScdZQo5GAwcrVIGI2k19BwfDOXI0ABD3pCgAjyXGhOTlWJGKT+Y24DzA
+	WvJlG+DVWQiybu+2W4eOrlYyTXkUgpPt2ZLqUUfmWUdCCrhR/aEkufuE8h/Z3xk+6uJwOR
+	nwOAWEPXmPyeM5culfshY/NoXmtJK5E=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-mPCdqXEGPmCKc6tf7gZKjQ-1; Tue, 04 Jun 2024 06:49:55 -0400
-X-MC-Unique: mPCdqXEGPmCKc6tf7gZKjQ-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4212ddfb1acso26155545e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 03:49:54 -0700 (PDT)
+ us-mta-442-IaebEvwlNzGcA7JeiUdQwg-1; Tue, 04 Jun 2024 06:53:32 -0400
+X-MC-Unique: IaebEvwlNzGcA7JeiUdQwg-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-794affd50bcso709147885a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 03:53:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717498194; x=1718102994;
+        d=1e100.net; s=20230601; t=1717498412; x=1718103212;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=U1w2bG5lPOfWEVpr4xHtf9bwg5SohkWgMrHEQtHuoCA=;
-        b=EKShJcMffjs8k8pMqX84Fec0hL43LniiGGXAPaSFsBMio7bRh89BpHh8oX/QiQpgoA
-         hGXUDglvw/8RjnESDamLRY3X/Gjv7LX4BTtib8A4IbsOMWlDJGAevW/GKCFPNAQRcC71
-         aJCvqceKgJnsWxIM+MUsvnwSuNO1zMoZotygA8gKn4EGDHIxiAPcM4TNnrbba8lxl5xL
-         z3xIaDLcEF1QYqde4s5fWeLe+HAEHqF+0IYRiZduLcYc4CVPkPgULd0pUI34NdyCp+Xm
-         PTyGzam5WDbJmCKUlUAKafq8XO5BwfSqIEjm6ClE2XYurQjVZhmvm4RP8YWRAGBWKcLw
-         hQWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXwdmofTp+K+XP/fT/y9AhcQgEsVrVAfH8uoJtNgkhL2FUJ2Y+y0SEwjM7+12VV94V2nqafi1/HtgwAV9IqEwlu/VgcPjqKzqNkykmePg==
-X-Gm-Message-State: AOJu0YwcwMz8z2AYJ2RmklmDU+GnMAezN920efJUuk/Yf9jOquEvoGa/
-	chckAO5zayJp8k7PiIrYQ4eBPKsiQZ0es8OnL7GmF/qbb7ZfxDVqrl3RdftfUi5wYZQQwpqiz+D
-	GtPlGCaJOCaBCeIPoBUwNRMAPjZQxjLXKoeX6OJgEuo9f9OQbDaOePEqP2DMlUgc=
-X-Received: by 2002:a05:600c:3ba5:b0:421:2065:3799 with SMTP id 5b1f17b1804b1-4212e0addecmr98197835e9.29.1717498193926;
-        Tue, 04 Jun 2024 03:49:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHolKe0OTesc59eKyR5Tl4T4Nj5Xg2kbayiJShosCk0JGDK4I2jUvKZhoSBsne4+vdw1UBVxg==
-X-Received: by 2002:a05:600c:3ba5:b0:421:2065:3799 with SMTP id 5b1f17b1804b1-4212e0addecmr98197695e9.29.1717498193554;
-        Tue, 04 Jun 2024 03:49:53 -0700 (PDT)
+        bh=khLXT47kqpcrtDLU6hojN1Y8iwI4i0MMg0kRPkLwAKQ=;
+        b=MPuQec1PuFHtmQc69NY4ktU8ir2VrQ2Pw9kdUcyKbGQfsraSMPFOn+/f43HfDfUmAV
+         cO/ZeVKacYN4PVVrVe7UrXP5folYDfNGTTExuB58KGmJCmDw56zFS3+ASsnxdzYSbwdB
+         VbZBB49vdVI+fp/llALgWH6BznTOsd4IWYD1MCK9ldZortBMxyxhg6mBfMuDMAkfMT7u
+         h+vIjnXfj2QVtIVT43YibDwOKLPFVPO5PBnhBr+6BDuvTwzCr2nIfG2ZyObP4k9csS6Q
+         vfN00TAL8cSMen9QAwlTUt6vjF0WNtGBCYBu9VMulCO3c28wr17GqfKJga4W0ZiPSQe/
+         s0tA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZOgO4Fr506JZdGvtsuPd+qioFz2QCHwXOnL/OBlUGSs/0ckU3TaLtwGbQd0Q2wCESvKiP0eN98dikzXdYMizygaaFaTobJmNCgfDpKQ==
+X-Gm-Message-State: AOJu0YwgMMzhlYsz/fpv6sZHeFYbo3zuCQZlWraAvHaYjdFYodLmkrgF
+	FN94901AO73/tDkH1H/aRX4DMhWa5o9/2uOzu4kvcE2YAJoYmE4bgJfFI74HeUMBZnJa2wHpBvI
+	WziOJK2X+9AvXJTG4Hgw2iU9hSG+PFAZ48XoDZLTbPkc4o0AW05ei3GWqEluXU58=
+X-Received: by 2002:a05:620a:46a6:b0:794:f011:7a30 with SMTP id af79cd13be357-794f5c669c0mr1562812185a.14.1717498411885;
+        Tue, 04 Jun 2024 03:53:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHymc98QpftOUqvFlvr/bYlT6Z8NbMKWzQR6dsIzYHNQdoHJ2RUVlPg2ortFt5CFWmtmRCzbQ==
+X-Received: by 2002:a05:620a:46a6:b0:794:f011:7a30 with SMTP id af79cd13be357-794f5c669c0mr1562810185a.14.1717498411452;
+        Tue, 04 Jun 2024 03:53:31 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-178-97.web.vodafone.de. [109.43.178.97])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421526593cfsm12414475e9.42.2024.06.04.03.49.52
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-794f2efc653sm352278885a.18.2024.06.04.03.53.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jun 2024 03:49:53 -0700 (PDT)
-Message-ID: <15d6ae85-a46e-4a99-a3b9-6aa6420e0639@redhat.com>
-Date: Tue, 4 Jun 2024 12:49:51 +0200
+        Tue, 04 Jun 2024 03:53:30 -0700 (PDT)
+Message-ID: <4938edb7-c057-4f92-b59b-31f0b7ba6f54@redhat.com>
+Date: Tue, 4 Jun 2024 12:53:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v9 29/31] powerpc: Remove remnants of ppc64
- directory and build structure
-To: Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>
+Subject: Re: [kvm-unit-tests PATCH v9 30/31] powerpc: Add facility to query
+ TCG or KVM host
+To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240504122841.1177683-1-npiggin@gmail.com>
- <20240504122841.1177683-30-npiggin@gmail.com>
+ <20240504122841.1177683-31-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -130,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240504122841.1177683-30-npiggin@gmail.com>
+In-Reply-To: <20240504122841.1177683-31-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -147,34 +147,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 04/05/2024 14.28, Nicholas Piggin wrote:
-> This moves merges ppc64 directories and files into powerpc, and
-> merges the 3 makefiles into one.
+> Use device tree properties to determine whether KVM or TCG is in
+> use.
 > 
-> The configure --arch=powerpc option is aliased to ppc64 for
-> good measure.
+> Logically these are not the inverse of one another, because KVM can be
+> used on top of a TCG processor (if TCG is emulating HV mode, or if it
+> provides a nested hypervisor interface with spapr). This can be a
+> problem because some issues relate to TCG CPU emulation, and some to
+> the spapr hypervisor implementation. At the moment there is no way to
+> determine TCG is running a KVM host that is running the tests, but the
+> two independent variables are added in case that is able to be
+> determined in future. For now that case is just incorrectly considered
+> to be kvm && !tcg.
+> 
+> Use this facility to restrict some of the known test failures to TCG.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
-...
-> diff --git a/powerpc/Makefile b/powerpc/Makefile
-> index 8a007ab54..e4b5312a2 100644
-> --- a/powerpc/Makefile
-> +++ b/powerpc/Makefile
-> @@ -1 +1,111 @@
-> -include $(SRCDIR)/$(TEST_DIR)/Makefile.$(ARCH)
-> +#
-> +# powerpc makefile
-> +#
-> +# Authors: Andrew Jones <drjones@redhat.com>
+>   lib/powerpc/asm/processor.h |  3 +++
+>   lib/powerpc/setup.c         | 25 +++++++++++++++++++++++++
+>   powerpc/atomics.c           |  2 +-
+>   powerpc/interrupts.c        |  6 ++++--
+>   powerpc/mmu.c               |  2 +-
+>   powerpc/pmu.c               |  6 +++---
+>   powerpc/sprs.c              |  2 +-
+>   powerpc/timebase.c          |  4 ++--
+>   powerpc/tm.c                |  2 +-
+>   9 files changed, 41 insertions(+), 11 deletions(-)
 
-I'd maybe drop that e-mail address now since it it not valid anymore. 
-Andrew, do want to see your new mail address here?
+As mentioned elsewhere, it would be nice to have this earlier in the series 
+so you could use the conditions in the earlier patches already (but if it is 
+too cumbersome to rework, I don't insist on that).
 
-Apart from that:
-Acked-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
