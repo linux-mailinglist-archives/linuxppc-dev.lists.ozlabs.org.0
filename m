@@ -1,68 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24E08FC14E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 03:31:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797148FC106
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 02:57:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X6SZkmnf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lWmphl+D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vv90X6vyJz3fnM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 11:31:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vv8F54dPVz3dVw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 10:57:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X6SZkmnf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lWmphl+D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vbabka@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vv3006rtZz3cY1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 07:00:32 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 723F2614E1;
-	Tue,  4 Jun 2024 21:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02085C2BBFC;
-	Tue,  4 Jun 2024 21:00:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717534831;
-	bh=y2QXvMKu+toawTwirI1umsvW2EK6ZKNHpsp7PVAKxNs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X6SZkmnfZNgOG3Y3weWs3ETi/VO+/8FSLGaEoUwWuqLXTY+QWWASCFl7GDG8ZuDYY
-	 WUGo/nq/1yyD6/1E9RZwQ0gQNaw7wvYTOxdctLnUUvGc8e8UBk70GAHvtAtllUogFZ
-	 8w8QyXtLYb6/U3wSGLRWhHL6h6bXtvRpsKtHn6uAZTsmwIBmjp3dJqYF0ntVRjq5OP
-	 Q0PXMqPXX4Bm3KwVcHMW9SIf4aL+HFzr/sMZIy0N4mn43ZTCOpKn8j3qdcbmOH25eJ
-	 QfIKgwYun7772uIhfxPV5HsYtwifcSZ6P8JqKO8hMiS6sGhhFnQkOGCJ0uDa0U8ZJJ
-	 UdLaDsEIykCJg==
-Message-ID: <f1f527d6-2866-4a64-8018-453c468c88ab@kernel.org>
-Date: Tue, 4 Jun 2024 23:00:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: kswapd0: page allocation failure: order:0,
- mode:0x820(GFP_ATOMIC), nodemask=(null),cpuset=/,mems_allowed=0 (Kernel
- v6.5.9, 32bit ppc)
-Content-Language: en-US
-To: Yosry Ahmed <yosryahmed@google.com>, Yu Zhao <yuzhao@google.com>
-References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
- <CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
- <CAOUHufZ36rQc8AfLtRv2QrEareysdvbprAEO5XkcG-FeDOxFLA@mail.gmail.com>
- <20240602200332.3e531ff1@yea> <20240604001304.5420284f@yea>
- <CAJD7tkbCRLdy0vD2Pd17fNrxHgkzW1VucN4qMkohLFLBLaaeCQ@mail.gmail.com>
- <20240604134458.3ae4396a@yea>
- <CAJD7tkYjJJGthQ_8NukGw6Q9EYbLA=8sAH_7=B90KXEL6HWdSw@mail.gmail.com>
- <CAOUHufa0Fpj6SjNgB-z0n5Jg63q1ewkbOAU65forpDwQVs45qg@mail.gmail.com>
- <CAJD7tkb=5GJ9SNUwDsu1Zy3Tus4rjsNo60Hg9N7=gGth409Diw@mail.gmail.com>
- <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
- <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vv8DL03n3z3bqP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 10:56:32 +1000 (AEST)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1f630e35a01so40496205ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jun 2024 17:56:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717548990; x=1718153790; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9huCQo5OeMQ2GXZXH/PcOAOacIsXohZlshI/DLAZU3Y=;
+        b=lWmphl+DX4+z8uOxhpbxbgRGH8pNFjODe9KHadRpGf2A3MHPxyEG1i5jM6QqzVLJaE
+         aC/maX7AQmeVR0idM2swVyj0ACsIUCn+KJ51lbd8W2zW6ZyJ1tlh4fTcdaM438FvYwu0
+         bqN1TM/hidKEBL4Tl+zCmdTFGtjpsOsWXAa95fTtApPfX42/WBMM8lfPopC1dvZTaClr
+         3a+j0iOK80chK9GUk27v+WlIUydR9lmNqxM0ZwSTQQkUWA9WCdawV7t9iHbIqQb2OCDS
+         Yu9uxJfBkuzAalmY1kHAWa58QO6kOj6Kfiznd15a32oyGBqYb5acMiOxSpabtnzQ+qiw
+         0EUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717548990; x=1718153790;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9huCQo5OeMQ2GXZXH/PcOAOacIsXohZlshI/DLAZU3Y=;
+        b=lnR4vqPOT13KlXjpTutm6v/kxebh0hsVQm9I4P9Zjc1WnuQY80ruGcpRx3P+Zmu8+p
+         SQFfxYd/mK2xJXD8tPtBKRsBZpMcBHEUZ+f/skMltEd+4W78r+fTcOprlYofIOhUG24M
+         Yc7h2V1MkXyv4z31gVxh8Xq977EMhPbuom1csklefavrPRDHWORInyQrD/OOzw8ORSlr
+         ZaBePe7XtkC9wEcCQ6dZXw/BILTwlQfwV+xiONbQRv1xtmHlGOP4wWYvWeot+lB2MuGm
+         2jwPBwq8ZT5m3/VajFABPH8fGRzbk6lgLd/XqyVg8o+z1wR1bSydDLNsTUsv68HAvsF4
+         m5Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMh1NleCi8rkal8igeu6JxxyCRe6gMa5Ycg7gD7hhhvR33MuOHILea9TYl9ZOo0+H8UP4A2D8Mk75ORWFIrkhWMasi4FEMKf+tn5Ms5g==
+X-Gm-Message-State: AOJu0YzTKaOmTDWZUsRmGoDRlGe78hukCXTDCBuOT3aWbZRTa5tb1LvQ
+	rtne8ETlCdzguNgoRQCkirZhIP7qYkhn5tbLGoO3iM3Jp6FIYworaDhq5g==
+X-Google-Smtp-Source: AGHT+IFSpl4wPVJEy5u2D9rGJENCBEPO6VfjcqsxcBNhC3faz21X18sVaWwxbYFiyPgX03MuKJvycg==
+X-Received: by 2002:a17:903:182:b0:1f6:6c52:7231 with SMTP id d9443c01a7336-1f6a5a0de72mr14897915ad.20.1717548989834;
+        Tue, 04 Jun 2024 17:56:29 -0700 (PDT)
+Received: from localhost (110-175-65-7.tpgi.com.au. [110.175.65.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6324115ccsm90454085ad.268.2024.06.04.17.56.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jun 2024 17:56:29 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 05 Jun 2024 11:28:46 +1000
+Date: Wed, 05 Jun 2024 10:56:24 +1000
+Message-Id: <D1ROAUX2AA16.3V8OOJDK62KEL@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v9 19/31] powerpc: Avoid using larx/stcx.
+ in spinlocks when only one CPU is running
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Thomas Huth" <thuth@redhat.com>
+X-Mailer: aerc 0.17.0
+References: <20240504122841.1177683-1-npiggin@gmail.com>
+ <20240504122841.1177683-20-npiggin@gmail.com>
+ <d167cb31-11d4-4a0f-8b4e-056fc2afaaf0@redhat.com>
+In-Reply-To: <d167cb31-11d4-4a0f-8b4e-056fc2afaaf0@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,34 +84,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>, Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linuxppc-dev@lists.ozlabs.org
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/4/24 8:01 PM, Yosry Ahmed wrote:
-> On Tue, Jun 4, 2024 at 10:54 AM Yu Zhao <yuzhao@google.com> wrote:
->> There was a lot of user memory in the DMA zone. So at a point the
->> highmem zone was full and allocation fallback happened.
->>
->> The problem with zone fallback is that recent allocations go into
->> lower zones, meaning they are further back on the LRU list. This
->> applies to both user memory and zsmalloc memory -- the latter has a
->> writeback LRU. On top of this, neither the zswap shrinker nor the
->> zsmalloc shrinker (compaction) is zone aware. So page reclaim might
->> have trouble hitting the right target zone.
-> 
-> I see what you mean. In this case, yeah I think the internal
-> fragmentation in the zsmalloc pools may be the reason behind the
-> problem.
-> 
-> How many CPUs does this machine have? I am wondering if 32 can be an
-> overkill for small machines, perhaps the number of pools should be
-> max(nr_cpus, 32)?
-> 
-> Alternatively, the number of pools should scale with the memory size
-> in some way, such that we only increase fragmentation when it's
-> tolerable.
+On Tue Jun 4, 2024 at 3:27 PM AEST, Thomas Huth wrote:
+> On 04/05/2024 14.28, Nicholas Piggin wrote:
+> > The test harness uses spinlocks if they are implemented with larx/stcx.
+> > it can prevent some test scenarios such as testing migration of a
+> > reservation.
+>
+> I'm having a hard time to understand that patch description. Maybe you co=
+uld=20
+> rephrase it / elaborate what's the exact problem here?
 
-Sounds like a good idea to me, maybe a combination of both. No point in
-trying to scale if there's no benefit and only downside of more memory
-consumption.
+Yeah that's wrong, "harness uses spinlocks *which are* implemented with
+larx/stcx."
+
+The problem IIRC was only testing migration of reservations, so I should
+be explicit about that in the changelog.
+
+You could leave this out for now.
+
+Thanks,
+Nick
