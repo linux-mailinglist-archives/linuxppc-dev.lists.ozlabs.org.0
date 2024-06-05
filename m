@@ -2,51 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63AF8FD976
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 23:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D32538FD9AF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 00:15:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jynu4bSk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lH63JI+/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VvhFZ6sJ6z3brC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 07:59:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvhcK02R4z3cXw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 08:15:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jynu4bSk;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lH63JI+/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvhDr0fCNz2y70
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 07:58:52 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 03FC2CE18F1;
-	Wed,  5 Jun 2024 21:58:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E600C2BD11;
-	Wed,  5 Jun 2024 21:58:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717624730;
-	bh=LWOLMGrH5N2gPZ93B8pHBq6TnKvAfq2vS3ahIjsTjdw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Jynu4bSkImO8IqHtm+3jiN9qiAD9ewBiRk0PE0yEZ+zElWILWk216XorAPgNDBENd
-	 NK0xjtf8ROxwO028OP0/6en3xTOGj2EWTsNueN93OMfgH/nX30yWQpfMwg8FJgJtOw
-	 PJJrsJ9uXVvTgWBO//SpM5MC9J3JF972AnDW2oKLutRHzj2o0zBip0u3fk4v6N41tm
-	 muYZGCs//ESgvmeT84OzXxo3M8eQ+ea8ndE4mprl5Crie5PiA//dlMK+4SILrxQLcn
-	 ksgT3rYoRj5moB9fkqk7UYLWqo4WQXSqu3JPaHgd5PSf7HpFL9qv4+CbblaY68VoFr
-	 NJX9AO/b3s7SA==
-Date: Wed, 5 Jun 2024 16:58:48 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Abhinav Jain <jain.abhinav177@gmail.com>
-Subject: Re: [PATCH v2] PCI/AER: Print error message as per the TODO
-Message-ID: <20240605215848.GA782210@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvhbT5YMFz30TW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 08:15:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717625703; x=1749161703;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dwECkwwPLF86p2uDLyCcd8vztQ4JautCXDJYA3o9rvk=;
+  b=lH63JI+/8wAQp8XZPTcT23wFbjcNO7adnOQE7hQu+oqPzKhBloZC3jHQ
+   hzxWgKI1pgNfR8qdZFP9YJ29fISjdZzVDkIq7qLf/bcJDOUiJmCpDNOsC
+   AWhweX6qm+O/Hvtraf0Zm+yLLB+TIUeYTIPT7f3+PBHOK9ZAFGakfL13x
+   8pahWpwafGsHnUPacX3m0iuuANmaZ6PqwT7XmHbuTyQAUsISVQXl98pJM
+   aAd/EeN3l9zRTY2bCbsGxmYEFeX1f7mUGoAwg3lX9vIvbmqJjgBzoJjjn
+   Q0LaTNGs0geYj/euIPdz6MX8X1mOyCcf13g8rLA5B4MVqvTWBBFPHsNtX
+   Q==;
+X-CSE-ConnectionGUID: EfXBIBLYTmuZ4wlvHcyI8g==
+X-CSE-MsgGUID: 9qPDL0VzQtWdJHTiCq+7qQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14218697"
+X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; 
+   d="scan'208";a="14218697"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 15:14:57 -0700
+X-CSE-ConnectionGUID: JP45dUK1TdW/fW9g0ksUVQ==
+X-CSE-MsgGUID: zMDwYyHVQI2ocTPWwtYvvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; 
+   d="scan'208";a="37621427"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 05 Jun 2024 15:14:49 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 975E024D; Thu, 06 Jun 2024 01:14:47 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Rob Herring <robh@kernel.org>,
+	Weidong Wang <wangweidong.a@awinic.com>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	patches@opensource.cirrus.com,
+	linux-arm-msm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH v2 0/6] ASoC: Drop or replace of_gpio.h
+Date: Thu,  6 Jun 2024 00:27:23 +0300
+Message-ID: <20240605221446.2624964-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240605212344.21808-1-jain.abhinav177@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,63 +89,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: javier.carrasco.cruz@gmail.com, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-kernel@vger.kernel.org, oohall@gmail.com, skhan@linuxfoundation.org, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Nicolin Chen <nicoleotsuka@gmail.com>, Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Liam Girdwood <lgirdwood@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, David Rhodes <david.rhodes@cirrus.com>, Kevin Lu <kevin-lu@ti.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Banajit Goswami <bgoswami@quicinc.com>, Shawn Guo <shawnguo@kernel.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Jaroslav Kysela <perex@perex.cz>, Baojun Xu <baojun.xu@ti.com>, Heiko Stuebner <heiko@sntech.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 05, 2024 at 09:23:44PM +0000, Abhinav Jain wrote:
-> Print the add device error in find_device_iter()
-> 
-> Signed-off-by: Abhinav Jain <jain.abhinav177@gmail.com>
-> 
-> PATCH v1 link : https://lore.kernel.org/all/20240415161055.8316-1-jain.abhinav177@gmail.com/
-> 
-> Changes since v1:
->  - Replaced pr_err() with pr_notice()
->  - Removed unncessary whitespaces
-> ---
+Replace or drop the legacy header that is subject to remove.
+Not all of them were compile-tested, the series might have
+hidden compilation errors.
 
-Thanks for looking at this.
+In v3:
+- moved aw88399 from the "Remove ..." patch to the "Replace ..." (LKP)
 
-  - It doesn't apply to -rc1 (the TODO message is missing).  In PCI,
-    we normally apply patches on topic branches based on -rc1.
+In v2:
+- added tags (Kuninori, Charles)
+- ripped out TAS2781 (it's a mess from GPIO handling perspective)
 
-  - The subject should be more specific so it makes sense all by
-    itself, e.g., "Log note if we find too many devices with errors"
+Andy Shevchenko (6):
+  ASoC: codecs: Remove unused of_gpio.h
+  ASoC: fsl: Remove unused of_gpio.h
+  ASoC: rockchip: Remove unused of_gpio.h
+  ASoC: codecs: Replace of_gpio.h by proper one
+  ASoC: generic: Replace of_gpio.h by proper one
+  ASoC: samsung: Replace of_gpio.h by proper one
 
-  - Add period at end of sentence in commit log.
+ sound/soc/codecs/ak4118.c                           | 1 -
+ sound/soc/codecs/ak4458.c                           | 1 -
+ sound/soc/codecs/aw88395/aw88395.c                  | 2 +-
+ sound/soc/codecs/aw88399.c                          | 2 +-
+ sound/soc/codecs/cs53l30.c                          | 1 -
+ sound/soc/codecs/max98390.c                         | 1 -
+ sound/soc/codecs/pcm3168a.c                         | 1 -
+ sound/soc/codecs/rk817_codec.c                      | 1 -
+ sound/soc/codecs/tas2552.c                          | 1 -
+ sound/soc/codecs/tas2764.c                          | 1 -
+ sound/soc/codecs/tas2770.c                          | 1 -
+ sound/soc/codecs/tas2780.c                          | 1 -
+ sound/soc/codecs/tlv320adc3xxx.c                    | 1 -
+ sound/soc/codecs/tlv320adcx140.c                    | 1 -
+ sound/soc/codecs/tlv320aic31xx.c                    | 1 -
+ sound/soc/codecs/ts3a227e.c                         | 1 -
+ sound/soc/codecs/wsa883x.c                          | 1 -
+ sound/soc/fsl/imx-es8328.c                          | 1 -
+ sound/soc/fsl/imx-rpmsg.c                           | 2 --
+ sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
+ sound/soc/rockchip/rockchip_i2s.c                   | 1 -
+ sound/soc/rockchip/rockchip_spdif.c                 | 1 -
+ sound/soc/samsung/aries_wm8994.c                    | 2 +-
+ 23 files changed, 5 insertions(+), 24 deletions(-)
 
-  - Move historical notes (v1 URL, changes since v1) below the "---"
-    line so they don't get included in the commit log.
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-  - __func__ is not relevant here -- that's generally a debugging
-    thing.  We can find the function by searching for the message
-    text.  In cases like this, I'd rather have something that helps
-    identify a *device* that's related to the message, e.g., the
-    pci_dev in this case.  So I'd suggest pci_err(dev, "...") here.
-
-  - I'd keep pci_err() instead of switching to pr_notice().  If we get
-    this message, we should re-think the way we collect this
-    information, so I want to hear about it.
-
->  drivers/pci/pcie/aer.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 0e1ad2998116..8b820a74dd6b 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -885,8 +885,8 @@ static int find_device_iter(struct pci_dev *dev, void *data)
->  		/* List this device */
->  		if (add_error_device(e_info, dev)) {
->  			/* We cannot handle more... Stop iteration */
-> -			pr_err("find_device_iter: Cannot handle more devices.
-> -					Stopping iteration");
-> +			pr_notice("%s: Cannot handle more devices - iteration stopped\n",
-> +					__func__);
->  			return 1;
->  		}
->  
-> -- 
-> 2.34.1
-> 
