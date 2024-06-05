@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9036C8FDAC6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 01:42:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FA68FDAF7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 01:54:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=gqB1nvbr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KRUu6a9e;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VvkXw4lLGz30WJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 09:42:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vvknh0JZ3z3cVx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 09:54:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=gqB1nvbr;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KRUu6a9e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::92f; helo=mail-ua1-x92f.google.com; envelope-from=yosryahmed@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=yuzhao@google.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvkX76gDxz30Vc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 09:42:15 +1000 (AEST)
-Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-804c45a47b6so126494241.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2024 16:42:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvkmv4w0Kz30WG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 09:53:18 +1000 (AEST)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-4215bfce9e1so16895e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2024 16:53:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717630931; x=1718235731; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1717631592; x=1718236392; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fURZ+GlEwn1DW8Z6q3RkvHuwBmyZjfx8HFK5EMb98t4=;
-        b=gqB1nvbrGz4yVTv1niyEhdBndTQpum+dyKCUiEPXI7ECsjRHbP6wED+JhnNv/zm8o8
-         qWGupkFAa9OzrSPZ/IR3BXZH+2gE8/HOGXelt4knI1c5RxxEJSqjuUbnmcyHuS8sxNoR
-         8PzVHj13CpK81l26ns3c+hZAdHScpI5qKxmFKSrdb79QkSTFehGefrQeyCLx1Z2H23n0
-         mcsqHv2L9Ce6V+rlgGk+u6l5g9MvAw7zSBkkiCbpfQM0dc7Nzgggjw6YFkNdi06tnXuT
-         Vu3W8tI8Gnn/KWfSq3Xx5JwLAYG2TX1uc2wHwbuT7/GnYafKIZ+zzDpWkmCrDj7kU0r8
-         Ti3Q==
+        bh=odPagFywCeLVckyJ7u7Ej1gNPxTHuemqTZ9yer+TyAs=;
+        b=KRUu6a9eaf3WVfrKYj95grADXNKiG8i/eRfDykIl2ZkajKY7msJ/McFKdTYMuQ51Xm
+         jXmBUbZ2g5sugMszR00MOXoQD0kTX7E2Jo/whA7h+iFcZDNIvo4iHLTXtT6aXCuWaO4U
+         ZLp+7Lme6fe2q6TXJ3/P6g1rs/Ph6fWDiRYHr7zBLu7hf7mBMgDPtlkSZtrx5a2/f/Fz
+         gK6ZX0Mmc8DYqYMZxaBBkYGirzBxG37WdVvH5izYQWwu5q1JZavrmFhVfHPobK/3k1zs
+         PlVY/qrf6POBisE6rOUKDCTC+sHHNaq7P1NAMV3xfDOtb9jL1er2fICKVbLCC5VJyc4l
+         ROpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717630931; x=1718235731;
+        d=1e100.net; s=20230601; t=1717631592; x=1718236392;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fURZ+GlEwn1DW8Z6q3RkvHuwBmyZjfx8HFK5EMb98t4=;
-        b=Qiq047Q+G8UWDmA62IOY6RHS17jspuHp8wGmcTOYm8/bNpVrI3LPIil1aswpZezZow
-         po6Tn7mibsUs7LPFIHxj05qqtXDPGS2bpwFMXsg1eCVE4M0wjOSSA/+JDew30P8NH3xW
-         8e8zVGG2CjmIFsSvnDUUqjOuOf66E5fRMORq9TC+1r5dDEFNQcdTkkivEC6icT7VNOw9
-         b2RoB5DiJoXpUJ6WDWs79td7KEBQjICdPeEX0Ej8tqVkuhXeHjCD9ILdfSVzTw8C/r1e
-         xrtbjGII54BLiIyC+F4BY7q3u4g0JNT3V6TerJIdpFI6XU3yAyFJb2F949kkgzhxLXWI
-         mxUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWoX6Xq/sBJdrNSqikRJTX1avogaridT98B2m0nIP3HSq+RcZbGfUkcT2n++BEfSyGUxdMkh9/If8D4ZJMGyuAK6vMrLybAdhauRyArww==
-X-Gm-Message-State: AOJu0YywPAyjU6YQ3LloH1LW2L1UgUaJJ8C3DD/XJtJlkGGBa0lLBsT9
-	tuPaNWqC4OPLNPf9Xv7CBSgACvzso/JfQpr0iNUTPocRBGPmI8M9q9wkJmgdegwKlhNgMCMJpmP
-	0HNIGoDsKZzi0chI9pjhECQNMbWqUUZCv6GRg
-X-Google-Smtp-Source: AGHT+IHB5vbuYgoHzyE4VqkkyenDd0XtXJRfmN4AlQZzBmVBqpqyc1bRUTgyVv8nXskKAUiYew/UvTVdsYWeXMBGKpQ=
-X-Received: by 2002:a05:6102:5089:b0:47f:40f7:2b5f with SMTP id
- ada2fe7eead31-48c047f4db6mr5870916137.5.1717630930642; Wed, 05 Jun 2024
- 16:42:10 -0700 (PDT)
+        bh=odPagFywCeLVckyJ7u7Ej1gNPxTHuemqTZ9yer+TyAs=;
+        b=omY/N2j99bGrtBJMk+6NYW9ik5jyuOx3rKas+5ClsUzroIS2ncI1RY/dd7d6BNVfQ0
+         jkedbT9/XTOGgw2InrBamR2xauc5cbC4IsPAn5pUVxpRYKLH6tAuSHgAfs5yyiBlr0tS
+         cgNNJCZmo1wA7Q8GzGD3iPRGDwHAF5ABvtKKoLM/rWA3AhLOZiHGcNUcwmYCd8d6zebV
+         Y/U4dzzVN3J+w6DsCVrxVISNdpLpldHwQAOjvLs1X/f16XnjcMICKz7L3KqKTlr/7E2O
+         MWplqgyi9wo4pq79tLw56Qeg1eReouIU5YAjXhHny5l6KdvPP3EUi18phjdGXka+VyBG
+         g/1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWtOyH0cGYswnZSU2gfKFiZH1C3seDlxqimb/AcL7A435VXur09XAN24+54J9Mmf7//uCsZpOKgq3YLhyCnKRirt4qGQ4zVVjiehQJhfg==
+X-Gm-Message-State: AOJu0YwEIlXKSOk+8BeLYa7SylbNAViSd3IJRcW0KuG3V56I/1zws/ZY
+	MthGEPeM77uhsivuMRyWOwyKHQWl0Jo3aqYPqHXpieJwVMkdpmoKjcAMKG0TJ1Q9U0lyvxi7och
+	odLOU+dEsDjajGrQcRhRJRgdmoVcEmHZ0J/9D
+X-Google-Smtp-Source: AGHT+IFaz0i8cgEfY0DYlrzEKrDKTNo5RklXtakhOCYBmYhqAaimHaovnYvcnFQZUHdgJHAfZ9A9l/1Vg2XhMu6EH+c=
+X-Received: by 2002:a05:600c:3ba9:b0:41c:ab7:f9af with SMTP id
+ 5b1f17b1804b1-4215c0da3e7mr514005e9.3.1717631592034; Wed, 05 Jun 2024
+ 16:53:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
  <CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
@@ -69,14 +69,14 @@ References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
  <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
  <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
  <20240604231019.18e2f373@yea> <CAJD7tkYq5u7B+0UH2XKpeWJnUxoO2kJ1_XZ2JOgYpyNEVR7u0g@mail.gmail.com>
- <20240606010431.2b33318c@yea>
-In-Reply-To: <20240606010431.2b33318c@yea>
-From: Yosry Ahmed <yosryahmed@google.com>
-Date: Wed, 5 Jun 2024 16:41:31 -0700
-Message-ID: <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
+ <20240606010431.2b33318c@yea> <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
+In-Reply-To: <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
+From: Yu Zhao <yuzhao@google.com>
+Date: Wed, 5 Jun 2024 17:52:34 -0600
+Message-ID: <CAOUHufZ8BTTx1LoXHjHGnzJE9dzyv8EnvhpXMUm0NOt=P5KHVg@mail.gmail.com>
 Subject: Re: kswapd0: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
  nodemask=(null),cpuset=/,mems_allowed=0 (Kernel v6.5.9, 32bit ppc)
-To: Erhard Furtner <erhard_f@mailbox.org>
+To: Yosry Ahmed <yosryahmed@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,79 +90,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nhat Pham <nphamcs@gmail.com>, Yu Zhao <yuzhao@google.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linuxppc-dev@lists.ozlabs.org, "Vlastimil Babka \(SUSE\)" <vbabka@kernel.org>
+Cc: Erhard Furtner <erhard_f@mailbox.org>, Nhat Pham <nphamcs@gmail.com>, "Vlastimil Babka \(SUSE\)" <vbabka@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 5, 2024 at 4:04=E2=80=AFPM Erhard Furtner <erhard_f@mailbox.org=
-> wrote:
+On Wed, Jun 5, 2024 at 5:42=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com> =
+wrote:
 >
-> On Tue, 4 Jun 2024 20:03:27 -0700
-> Yosry Ahmed <yosryahmed@google.com> wrote:
+> On Wed, Jun 5, 2024 at 4:04=E2=80=AFPM Erhard Furtner <erhard_f@mailbox.o=
+rg> wrote:
+> >
+> > On Tue, 4 Jun 2024 20:03:27 -0700
+> > Yosry Ahmed <yosryahmed@google.com> wrote:
+> >
+> > > Could you check if the attached patch helps? It basically changes the
+> > > number of zpools from 32 to min(32, nr_cpus).
+> >
+> > Thanks! The patch does not fix the issue but it helps.
+> >
+> > Means I still get to see the 'kswapd0: page allocation failure' in the =
+dmesg, a 'stress-ng-vm: page allocation failure' later on, another kswapd0 =
+error later on, etc. _but_ the machine keeps running the workload, stays us=
+able via VNC and I get no hard crash any longer.
+> >
+> > Without patch kswapd0 error and hard crash (need to power-cycle) <3min.=
+ With patch several kswapd0 errors but running for 2 hrs now. I double chec=
+ked this to be sure.
 >
-> > Could you check if the attached patch helps? It basically changes the
-> > number of zpools from 32 to min(32, nr_cpus).
+> Thanks for trying this out. This is interesting, so even two zpools is
+> too much fragmentation for your use case.
+
+Now I'm a little bit skeptical that the problem is due to fragmentation.
+
+> I think there are multiple ways to go forward here:
+> (a) Make the number of zpools a config option, leave the default as
+> 32, but allow special use cases to set it to 1 or similar. This is
+> probably not preferable because it is not clear to users how to set
+> it, but the idea is that no one will have to set it except special use
+> cases such as Erhard's (who will want to set it to 1 in this case).
 >
-> Thanks! The patch does not fix the issue but it helps.
+> (b) Make the number of zpools scale linearly with the number of CPUs.
+> Maybe something like nr_cpus/4 or nr_cpus/8. The problem with this
+> approach is that with a large number of CPUs, too many zpools will
+> start having diminishing returns. Fragmentation will keep increasing,
+> while the scalability/concurrency gains will diminish.
 >
-> Means I still get to see the 'kswapd0: page allocation failure' in the dm=
-esg, a 'stress-ng-vm: page allocation failure' later on, another kswapd0 er=
-ror later on, etc. _but_ the machine keeps running the workload, stays usab=
-le via VNC and I get no hard crash any longer.
+> (c) Make the number of zpools scale logarithmically with the number of
+> CPUs. Maybe something like 4log2(nr_cpus). This will keep the number
+> of zpools from increasing too much and close to the status quo. The
+> problem is that at a small number of CPUs (e.g. 2), 4log2(nr_cpus)
+> will actually give a nr_zpools > nr_cpus. So we will need to come up
+> with a more fancy magic equation (e.g. 4log2(nr_cpus/4)).
 >
-> Without patch kswapd0 error and hard crash (need to power-cycle) <3min. W=
-ith patch several kswapd0 errors but running for 2 hrs now. I double checke=
-d this to be sure.
-
-Thanks for trying this out. This is interesting, so even two zpools is
-too much fragmentation for your use case.
-
-I think there are multiple ways to go forward here:
-(a) Make the number of zpools a config option, leave the default as
-32, but allow special use cases to set it to 1 or similar. This is
-probably not preferable because it is not clear to users how to set
-it, but the idea is that no one will have to set it except special use
-cases such as Erhard's (who will want to set it to 1 in this case).
-
-(b) Make the number of zpools scale linearly with the number of CPUs.
-Maybe something like nr_cpus/4 or nr_cpus/8. The problem with this
-approach is that with a large number of CPUs, too many zpools will
-start having diminishing returns. Fragmentation will keep increasing,
-while the scalability/concurrency gains will diminish.
-
-(c) Make the number of zpools scale logarithmically with the number of
-CPUs. Maybe something like 4log2(nr_cpus). This will keep the number
-of zpools from increasing too much and close to the status quo. The
-problem is that at a small number of CPUs (e.g. 2), 4log2(nr_cpus)
-will actually give a nr_zpools > nr_cpus. So we will need to come up
-with a more fancy magic equation (e.g. 4log2(nr_cpus/4)).
-
-(d) Make the number of zpools scale linearly with memory. This makes
-more sense than scaling with CPUs because increasing the number of
-zpools increases fragmentation, so it makes sense to limit it by the
-available memory. This is also more consistent with other magic
-numbers we have (e.g. SWAP_ADDRESS_SPACE_SHIFT).
-
-The problem is that unlike zswap trees, the zswap pool is not
-connected to the swapfile size, so we don't have an indication for how
-much memory will be in the zswap pool. We can scale the number of
-zpools with the entire memory on the machine during boot, but this
-seems like it would be difficult to figure out, and will not take into
-consideration memory hotplugging and the zswap global limit changing.
-
-(e) A creative mix of the above.
-
-(f) Something else (probably simpler).
-
-I am personally leaning toward (c), but I want to hear the opinions of
-other people here. Yu, Vlastimil, Johannes, Nhat? Anyone else?
-
-In the long-term, I think we may want to address the lock contention
-in zsmalloc itself instead of zswap spawning multiple zpools.
-
+> (d) Make the number of zpools scale linearly with memory. This makes
+> more sense than scaling with CPUs because increasing the number of
+> zpools increases fragmentation, so it makes sense to limit it by the
+> available memory. This is also more consistent with other magic
+> numbers we have (e.g. SWAP_ADDRESS_SPACE_SHIFT).
 >
-> The patch did not apply cleanly on v6.9.3 so I applied it on v6.10-rc2. d=
-mesg of the current v6.10-rc2 run attached.
+> The problem is that unlike zswap trees, the zswap pool is not
+> connected to the swapfile size, so we don't have an indication for how
+> much memory will be in the zswap pool. We can scale the number of
+> zpools with the entire memory on the machine during boot, but this
+> seems like it would be difficult to figure out, and will not take into
+> consideration memory hotplugging and the zswap global limit changing.
 >
-> Regards,
-> Erhard
+> (e) A creative mix of the above.
+>
+> (f) Something else (probably simpler).
+>
+> I am personally leaning toward (c), but I want to hear the opinions of
+> other people here. Yu, Vlastimil, Johannes, Nhat? Anyone else?
+
+I double checked that commit and didn't find anything wrong. If we are
+all in the mood of getting to the bottom, can we try using only 1
+zpool while there are 2 available? I.e.,
+
+static struct zpool *zswap_find_zpool(struct zswap_entry *entry)
+{
+ - return entry->pool->zpools[hash_ptr(entry, ilog2(ZSWAP_NR_ZPOOLS))];
+ + return entry->pool->zpools[0];
+}
+
+> In the long-term, I think we may want to address the lock contention
+> in zsmalloc itself instead of zswap spawning multiple zpools.
+>
+> >
+> > The patch did not apply cleanly on v6.9.3 so I applied it on v6.10-rc2.=
+ dmesg of the current v6.10-rc2 run attached.
+> >
+> > Regards,
+> > Erhard
