@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9248FD9CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 00:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B618C8FD9CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 00:20:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V6h/QSWS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jravAiIm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VvhhT0jPHz3cZ1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 08:19:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvhjH56YBz3d88
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 08:20:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V6h/QSWS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jravAiIm;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvhbb2Ylcz30Tm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 08:15:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvhbc3cHlz30Vh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 08:15:08 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717625708; x=1749161708;
+  t=1717625709; x=1749161709;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=SGwfez3lrOf2K/YTWirwKNhphy+WK2Ug6UhveRqerj0=;
-  b=V6h/QSWS4Jwv+XcdW9emWMUyCZEkGYA0qoUAnRpA51bI7HkL76dDROwK
-   BaMtkS75B9qJHJ3nNY6lAPQX2ESfEudxZtIf4mHPLxmZ7tp0k+SkhcgYg
-   eKnRcDNHSWwlmPRfX+xwPaDITSymuJhToZKAhFgMjRHoAwfdgVgI6qXZO
-   U9/nwGjXqBWLteIt3M23/7OMQgnWuf9C204q913I1rQFIaHZVojibkheg
-   wUop5fCXi+ae3mG8PU+oNvlIpVAR0wxK4JEHTavjbYEeRvOAtX94H3s9V
-   AjTV2X3+ZeM3V8nIZ9Oolr587POC6eVMFZlr1ZAW2tW5OjbHyp/OV5ONA
-   w==;
-X-CSE-ConnectionGUID: IuqfdJ3HQWuUWhWywd3uJw==
-X-CSE-MsgGUID: H/MFCtozSIWwrGtGTWsfRw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="24895513"
+  bh=sA6qI//FTL7pgyGldUMsd1jU+l556RY52OWXWgjHnto=;
+  b=jravAiImVaAdN9jW0iW3DWTKHnyn2vW1UN/yrIb1bOo2yTDqgB8CqOrE
+   /GH1h7Yffkc4kz64U9BD/pbwC3tJhd+YAD9VjqBcYac/i1fMhYrNRTQRb
+   5/0Gxnw00o4eFVWGi7LJCsIzHEWcQ+wuMEJHsyFYITuTnCdW/3CeT9mM+
+   sxHxQGAbH2YlE+OWcwl+g5ZVJdtpOYwuIo9JGMi/beAxv7Lqe/P8MeqX8
+   XjVCjrcjtHLwO1KI3Xs01/Go8bELrUncPl1m/Kp6hGgPKfMHcxB50Vy0C
+   p64S74N0qqaOJYibSNxPdQp9F/WE+0xFgY9rsSmAB5eHAeBZllZ5GUB6K
+   g==;
+X-CSE-ConnectionGUID: ntji0EvsTw6LFBwcv7+5vg==
+X-CSE-MsgGUID: 7IcQZkYaSD++76LVddFInw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="24895539"
 X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; 
-   d="scan'208";a="24895513"
+   d="scan'208";a="24895539"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 15:15:06 -0700
-X-CSE-ConnectionGUID: iPCqY0lBTKatrBzAwnb8Lw==
-X-CSE-MsgGUID: +aj2d5oZRpGkSjNLeON5+w==
+X-CSE-ConnectionGUID: CjAg4+gWRbypiKqJjeHDUQ==
+X-CSE-MsgGUID: piyqwJk4TFeL6djtFhzbCg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; 
-   d="scan'208";a="38168625"
+   d="scan'208";a="38168626"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa006.jf.intel.com with ESMTP; 05 Jun 2024 15:14:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id E7E797B5; Thu, 06 Jun 2024 01:14:47 +0300 (EEST)
+	id 00374801; Thu, 06 Jun 2024 01:14:47 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Rob Herring <robh@kernel.org>,
@@ -72,9 +72,9 @@ To: Charles Keepax <ckeepax@opensource.cirrus.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-rockchip@lists.infradead.org
-Subject: [PATCH v2 5/6] ASoC: generic: Replace of_gpio.h by proper one
-Date: Thu,  6 Jun 2024 00:27:28 +0300
-Message-ID: <20240605221446.2624964-6-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 6/6] ASoC: samsung: Replace of_gpio.h by proper one
+Date: Thu,  6 Jun 2024 00:27:29 +0300
+Message-ID: <20240605221446.2624964-7-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240605221446.2624964-1-andriy.shevchenko@linux.intel.com>
 References: <20240605221446.2624964-1-andriy.shevchenko@linux.intel.com>
@@ -99,27 +99,28 @@ of_gpio.h is deprecated and subject to remove.
 The driver doesn't use it directly, replace it
 with what is really being used.
 
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- sound/soc/generic/audio-graph-card2-custom-sample.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/samsung/aries_wm8994.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/generic/audio-graph-card2-custom-sample.c b/sound/soc/generic/audio-graph-card2-custom-sample.c
-index 1b6ccd2de964..8e5a51098490 100644
---- a/sound/soc/generic/audio-graph-card2-custom-sample.c
-+++ b/sound/soc/generic/audio-graph-card2-custom-sample.c
-@@ -5,8 +5,9 @@
- // Copyright (C) 2020 Renesas Electronics Corp.
- // Copyright (C) 2020 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
- //
-+#include <linux/device.h>
-+#include <linux/mod_devicetable.h>
+diff --git a/sound/soc/samsung/aries_wm8994.c b/sound/soc/samsung/aries_wm8994.c
+index a548ac33dd94..01716df0c842 100644
+--- a/sound/soc/samsung/aries_wm8994.c
++++ b/sound/soc/samsung/aries_wm8994.c
+@@ -1,11 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ #include <linux/extcon.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/iio/consumer.h>
+ #include <linux/input-event-codes.h>
+ #include <linux/mfd/wm8994/registers.h>
  #include <linux/module.h>
+ #include <linux/of.h>
 -#include <linux/of_gpio.h>
- #include <linux/platform_device.h>
- #include <sound/graph_card.h>
- 
+ #include <linux/regulator/consumer.h>
+ #include <sound/jack.h>
+ #include <sound/pcm_params.h>
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 
