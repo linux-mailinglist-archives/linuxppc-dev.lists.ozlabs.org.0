@@ -1,77 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017BB8FCE75
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 15:09:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0BF8FCE7A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 15:09:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rtWUhHBk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bmm2P7su;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VvSTf0fyhz3bTt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 23:09:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvSVQ349tz3cVl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 23:09:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rtWUhHBk;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bmm2P7su;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sbhat@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvSRZ71ywz30VY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 23:07:22 +1000 (AEST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455Cv73r032125;
-	Wed, 5 Jun 2024 13:07:14 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvSRp3Rkbz3cTG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jun 2024 23:07:34 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 455BPuHt030611;
+	Wed, 5 Jun 2024 13:07:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
  content-transfer-encoding : content-type : date : from : in-reply-to :
  message-id : mime-version : references : subject : to; s=pp1;
- bh=65kRB3COaqAUVvLza2YlzCjywkZSYYviDgHfYjK4FJQ=;
- b=rtWUhHBkGtrinlAuQZ6y0rS8hMQC0TR31szIRJyflDO5luyQvodE/RhZvFtgV9CSfDuC
- vsistNmQLKtIAsclf8T/1aA3c9sv5bi4LZKio4O3Cy+1vgOcvNUwJE088wW4rjvBJtGk
- 1wvAFV6PWBwqx69pfOTVDzY003rKbX+Nyjsjkml1mXU5XEXEEYxgKCkYUa+bhqxAXUTA
- 6Qohfa/YTI82Q8kDBOH37tEUcZDorND9h9XJH+Fvn3Jt8UTFDbS42wcmHIzMY39kBl7A
- 3ZmznWGnmi+YBbo7jCrfp2NPkER4Y+aIk1nAa+CdaiCd28BbTRo6fSo69osbG34RPhXt Cg== 
+ bh=A5J5bZW4BjB3ZXe4CujwfLf8tIwsn9920kLDIbw8Rbc=;
+ b=bmm2P7suK9W8melA/zJX0qtNopl1jn2DvtbwVAVib4p5mhvABF/sFJGxuTnjOyMNA+LL
+ 0efOqo3dZ270WXfklbqeGsgcdzO4lgs66MlMC4tMthfLmx0QPsQlL/CMPUPG9GRACrqc
+ IojlTKnK98gX/rfARsFTrovnBhXu0FESBJ38BsnZ/3AVY8+04mKRUcVW8TVUoAR46OUX
+ ieY2xFo/N0N1S62r/vcmop701AL10myIoRMPov5AbqHqYXuff+fPGz+SBMpXU3AeSRwg
+ MgdkLtCTQxOUz0hs0cPHDh97Zk7Uv3wiGNmVYEx/TZ2VPlKa24lqYY2BHZbSf8GdjYxV ug== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjrfn80s5-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjns38epy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 13:07:14 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 455D7DSA016116;
-	Wed, 5 Jun 2024 13:07:13 GMT
+	Wed, 05 Jun 2024 13:07:25 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 455D7PU3023393;
+	Wed, 5 Jun 2024 13:07:25 GMT
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjrfn80s0-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yjns38epr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 13:07:13 +0000
+	Wed, 05 Jun 2024 13:07:25 +0000
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455CMtXS008468;
-	Wed, 5 Jun 2024 13:07:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygec0ve7x-1
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 455CYD4d008479;
+	Wed, 5 Jun 2024 13:07:24 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygec0ve8n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jun 2024 13:07:12 +0000
+	Wed, 05 Jun 2024 13:07:24 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455D76Sw49807720
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 455D7ITT51708310
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jun 2024 13:07:08 GMT
+	Wed, 5 Jun 2024 13:07:20 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 73EB320040;
-	Wed,  5 Jun 2024 13:07:06 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 89DC020043;
+	Wed,  5 Jun 2024 13:07:18 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 897392004B;
-	Wed,  5 Jun 2024 13:07:04 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 752D420040;
+	Wed,  5 Jun 2024 13:07:16 +0000 (GMT)
 Received: from [172.17.0.2] (unknown [9.3.101.175])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jun 2024 13:07:04 +0000 (GMT)
-Subject: [PATCH v2 4/8] KVM: PPC: Book3S HV nestedv2: Keep nested guest DEXCR
- in sync
+	Wed,  5 Jun 2024 13:07:16 +0000 (GMT)
+Subject: [PATCH v2 5/8] KVM: PPC: Book3S HV: Add one-reg interface for
+ HASHKEYR register
 From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 To: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org
-Date: Wed, 05 Jun 2024 13:07:04 +0000
-Message-ID: <171759281060.1480.654592298305141881.stgit@linux.ibm.com>
+Date: Wed, 05 Jun 2024 13:07:15 +0000
+Message-ID: <171759283170.1480.12904332463112769129.stgit@linux.ibm.com>
 In-Reply-To: <171759276071.1480.9356137231993600304.stgit@linux.ibm.com>
 References: <171759276071.1480.9356137231993600304.stgit@linux.ibm.com>
 User-Agent: StGit/1.5
@@ -79,15 +79,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: d-QnL1F6SFNwTvmNCisfgUqSQYQNSca-
-X-Proofpoint-GUID: 9qDg-aPxDAZFStNZWqAg9C3r8j_sOg1R
+X-Proofpoint-GUID: Jqgrxh-IyGd-YLngvEAUm9H2ZZUUujr2
+X-Proofpoint-ORIG-GUID: N0hpz9VkpdGrovlkSMgzJ_6CFcIoZN5V
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-05_02,2024-06-05_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 adultscore=0 mlxlogscore=909
- mlxscore=0 impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1015 adultscore=0 suspectscore=0 mlxscore=0 spamscore=0
+ bulkscore=0 impostorscore=0 mlxlogscore=664 malwarescore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2406050099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -104,40 +104,92 @@ Cc: atrajeev@linux.vnet.ibm.com, sbhat@linux.ibm.com, corbet@lwn.net, linux-kern
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The nestedv2 APIs has the guest state element defined for DEXCR
-for the save-restore with L0. However, its ignored in the code.
-
-The patch takes care of this for the DEXCR GSID.
+The patch adds a one-reg register identifier which can be used to
+read and set the virtual HASHKEYR for the guest during enter/exit
+with KVM_REG_PPC_HASHKEYR. The specific SPR KVM API documentation
+too updated.
 
 Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_nestedv2.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ Documentation/virt/kvm/api.rst      |    1 +
+ arch/powerpc/include/asm/kvm_host.h |    1 +
+ arch/powerpc/include/uapi/asm/kvm.h |    1 +
+ arch/powerpc/kvm/book3s_hv.c        |    6 ++++++
+ arch/powerpc/kvm/book3s_hv.h        |    1 +
+ 5 files changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_nestedv2.c b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-index 1091f7a83b25..d207a6d936ff 100644
---- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
-+++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-@@ -193,6 +193,9 @@ static int gs_msg_ops_vcpu_fill_info(struct kvmppc_gs_buff *gsb,
- 		case KVMPPC_GSID_DAWRX1:
- 			rc = kvmppc_gse_put_u32(gsb, iden, vcpu->arch.dawrx1);
- 			break;
-+		case KVMPPC_GSID_DEXCR:
-+			rc = kvmppc_gse_put_u64(gsb, iden, vcpu->arch.dexcr);
-+			break;
- 		case KVMPPC_GSID_CIABR:
- 			rc = kvmppc_gse_put_u64(gsb, iden, vcpu->arch.ciabr);
- 			break;
-@@ -441,6 +444,9 @@ static int gs_msg_ops_vcpu_refresh_info(struct kvmppc_gs_msg *gsm,
- 		case KVMPPC_GSID_DAWRX1:
- 			vcpu->arch.dawrx1 = kvmppc_gse_get_u32(gse);
- 			break;
-+		case KVMPPC_GSID_DEXCR:
-+			vcpu->arch.dexcr = kvmppc_gse_get_u64(gse);
-+			break;
- 		case KVMPPC_GSID_CIABR:
- 			vcpu->arch.ciabr = kvmppc_gse_get_u64(gse);
- 			break;
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 81077c654281..0c22cb4196d8 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -2439,6 +2439,7 @@ registers, find a list below:
+   PPC     KVM_REG_PPC_PSSCR               64
+   PPC     KVM_REG_PPC_DEC_EXPIRY          64
+   PPC     KVM_REG_PPC_PTCR                64
++  PPC     KVM_REG_PPC_HASHKEYR            64
+   PPC     KVM_REG_PPC_DAWR1               64
+   PPC     KVM_REG_PPC_DAWRX1              64
+   PPC     KVM_REG_PPC_DEXCR               64
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 1e2fdcbecffd..a0cd9dbf534f 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -600,6 +600,7 @@ struct kvm_vcpu_arch {
+ 	ulong dawr1;
+ 	ulong dawrx1;
+ 	ulong dexcr;
++	ulong hashkeyr;
+ 	ulong ciabr;
+ 	ulong cfar;
+ 	ulong ppr;
+diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+index fcb947f65667..23a0af739c78 100644
+--- a/arch/powerpc/include/uapi/asm/kvm.h
++++ b/arch/powerpc/include/uapi/asm/kvm.h
+@@ -646,6 +646,7 @@ struct kvm_ppc_cpu_char {
+ #define KVM_REG_PPC_DAWR1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc4)
+ #define KVM_REG_PPC_DAWRX1	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc5)
+ #define KVM_REG_PPC_DEXCR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc6)
++#define KVM_REG_PPC_HASHKEYR	(KVM_REG_PPC | KVM_REG_SIZE_U64 | 0xc7)
+ 
+ /* Transactional Memory checkpointed state:
+  * This is all GPRs, all VSX regs and a subset of SPRs
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 1294c6839d37..ccc9564c5a31 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2352,6 +2352,9 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 	case KVM_REG_PPC_DEXCR:
+ 		*val = get_reg_val(id, kvmppc_get_dexcr_hv(vcpu));
+ 		break;
++	case KVM_REG_PPC_HASHKEYR:
++		*val = get_reg_val(id, kvmppc_get_hashkeyr_hv(vcpu));
++		break;
+ 	case KVM_REG_PPC_CIABR:
+ 		*val = get_reg_val(id, kvmppc_get_ciabr_hv(vcpu));
+ 		break;
+@@ -2598,6 +2601,9 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 	case KVM_REG_PPC_DEXCR:
+ 		kvmppc_set_dexcr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
++	case KVM_REG_PPC_HASHKEYR:
++		kvmppc_set_hashkeyr_hv(vcpu, set_reg_val(id, *val));
++		break;
+ 	case KVM_REG_PPC_CIABR:
+ 		kvmppc_set_ciabr_hv(vcpu, set_reg_val(id, *val));
+ 		/* Don't allow setting breakpoints in hypervisor code */
+diff --git a/arch/powerpc/kvm/book3s_hv.h b/arch/powerpc/kvm/book3s_hv.h
+index 7b0fd282fe95..c073fdfa7dc4 100644
+--- a/arch/powerpc/kvm/book3s_hv.h
++++ b/arch/powerpc/kvm/book3s_hv.h
+@@ -117,6 +117,7 @@ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawr1, 64, KVMPPC_GSID_DAWR1)
+ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawrx0, 64, KVMPPC_GSID_DAWRX0)
+ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawrx1, 64, KVMPPC_GSID_DAWRX1)
+ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dexcr, 64, KVMPPC_GSID_DEXCR)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(hashkeyr, 64, KVMPPC_GSID_HASHKEYR)
+ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(ciabr, 64, KVMPPC_GSID_CIABR)
+ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(wort, 64, KVMPPC_GSID_WORT)
+ KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(ppr, 64, KVMPPC_GSID_PPR)
 
 
