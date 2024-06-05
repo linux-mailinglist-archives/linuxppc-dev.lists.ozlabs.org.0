@@ -2,59 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A74F8FD93D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 23:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C63AF8FD976
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jun 2024 23:59:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lQxwQXuR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jynu4bSk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vvgpj1W7Gz30TB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 07:39:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvhFZ6sJ6z3brC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 07:59:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lQxwQXuR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jynu4bSk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvgnP4VPTz3cF4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 07:38:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvhDr0fCNz2y70
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 07:58:52 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0106D61B1C;
-	Wed,  5 Jun 2024 21:38:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B38C4AF09;
-	Wed,  5 Jun 2024 21:38:26 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 03FC2CE18F1;
+	Wed,  5 Jun 2024 21:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E600C2BD11;
+	Wed,  5 Jun 2024 21:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717623509;
-	bh=yrMbNY2Gr7i5mUw30Jlna/5JAKzdrHFu4hvA2gyNBkg=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=lQxwQXuRvfm9OWCFsbHuZEiWtVU5w6nccY6yS+rlo0rS2J+6lU3V/M6LSrtC2U0NK
-	 l9brby4WmHNVoLDfTQn/MnwGvLoeFge6FjifxDqZTg3+7dw2P42pu3rwCcnk0Fo8LR
-	 djuvepdmdBlyxG0uerykdOmWo4+bePL3hzmdc8Ei4+0mU7ry8ttbAhtWAxpKXQLLgB
-	 Uu+PWn93L1CKJR4v/j05j+462Wa74MvY6sfGYtzT0dzNImxNELgR00pFp1Tt/7C7Zb
-	 yS8YotY8URtKUMYU24Enw0Fugh7uPxyYALCETLFebOTPKfkjyghDGIAufUNb5sMnB1
-	 Nkj1PnPb5aKLg==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, robh+dt@kernel.org, 
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
- shengjiu.wang@gmail.com, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com, 
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org, 
- linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1716972002-2315-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1716972002-2315-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v4 0/2] ASoC: fsl_xcvr: Support i.MX95 platform
-Message-Id: <171762350655.565712.3068600680938105880.b4-ty@kernel.org>
-Date: Wed, 05 Jun 2024 22:38:26 +0100
+	s=k20201202; t=1717624730;
+	bh=LWOLMGrH5N2gPZ93B8pHBq6TnKvAfq2vS3ahIjsTjdw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Jynu4bSkImO8IqHtm+3jiN9qiAD9ewBiRk0PE0yEZ+zElWILWk216XorAPgNDBENd
+	 NK0xjtf8ROxwO028OP0/6en3xTOGj2EWTsNueN93OMfgH/nX30yWQpfMwg8FJgJtOw
+	 PJJrsJ9uXVvTgWBO//SpM5MC9J3JF972AnDW2oKLutRHzj2o0zBip0u3fk4v6N41tm
+	 muYZGCs//ESgvmeT84OzXxo3M8eQ+ea8ndE4mprl5Crie5PiA//dlMK+4SILrxQLcn
+	 ksgT3rYoRj5moB9fkqk7UYLWqo4WQXSqu3JPaHgd5PSf7HpFL9qv4+CbblaY68VoFr
+	 NJX9AO/b3s7SA==
+Date: Wed, 5 Jun 2024 16:58:48 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Abhinav Jain <jain.abhinav177@gmail.com>
+Subject: Re: [PATCH v2] PCI/AER: Print error message as per the TODO
+Message-ID: <20240605215848.GA782210@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev-d4707
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240605212344.21808-1-jain.abhinav177@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,46 +58,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: javier.carrasco.cruz@gmail.com, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-kernel@vger.kernel.org, oohall@gmail.com, skhan@linuxfoundation.org, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 29 May 2024 16:40:00 +0800, Shengjiu Wang wrote:
-> On i.MX95 wakeup domain, there is one instance of Audio XCVR
-> supporting SPDIF mode with a connection to the Audio XCVR physical
-> interface.
+On Wed, Jun 05, 2024 at 09:23:44PM +0000, Abhinav Jain wrote:
+> Print the add device error in find_device_iter()
 > 
-> changes in v4:
-> - refine the constarint for 'clocks' according to Rob's comments
+> Signed-off-by: Abhinav Jain <jain.abhinav177@gmail.com>
 > 
-> [...]
+> PATCH v1 link : https://lore.kernel.org/all/20240415161055.8316-1-jain.abhinav177@gmail.com/
+> 
+> Changes since v1:
+>  - Replaced pr_err() with pr_notice()
+>  - Removed unncessary whitespaces
+> ---
 
-Applied to
+Thanks for looking at this.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+  - It doesn't apply to -rc1 (the TODO message is missing).  In PCI,
+    we normally apply patches on topic branches based on -rc1.
 
-Thanks!
+  - The subject should be more specific so it makes sense all by
+    itself, e.g., "Log note if we find too many devices with errors"
 
-[1/2] ASoC: dt-bindings: fsl,xcvr: Add compatible string for i.MX95
-      commit: fc1277335ffa0d180c76ddccf5fe27fc75674e67
-[2/2] ASoC: fsl_xcvr: Add support for i.MX95 platform
-      commit: f13b349e3c70320ef5a86edfc888a6feb612abb0
+  - Add period at end of sentence in commit log.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+  - Move historical notes (v1 URL, changes since v1) below the "---"
+    line so they don't get included in the commit log.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  - __func__ is not relevant here -- that's generally a debugging
+    thing.  We can find the function by searching for the message
+    text.  In cases like this, I'd rather have something that helps
+    identify a *device* that's related to the message, e.g., the
+    pci_dev in this case.  So I'd suggest pci_err(dev, "...") here.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+  - I'd keep pci_err() instead of switching to pr_notice().  If we get
+    this message, we should re-think the way we collect this
+    information, so I want to hear about it.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+>  drivers/pci/pcie/aer.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 0e1ad2998116..8b820a74dd6b 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -885,8 +885,8 @@ static int find_device_iter(struct pci_dev *dev, void *data)
+>  		/* List this device */
+>  		if (add_error_device(e_info, dev)) {
+>  			/* We cannot handle more... Stop iteration */
+> -			pr_err("find_device_iter: Cannot handle more devices.
+> -					Stopping iteration");
+> +			pr_notice("%s: Cannot handle more devices - iteration stopped\n",
+> +					__func__);
+>  			return 1;
+>  		}
+>  
+> -- 
+> 2.34.1
+> 
