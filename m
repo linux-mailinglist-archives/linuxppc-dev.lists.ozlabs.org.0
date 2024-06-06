@@ -1,53 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20A58FE4FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 13:15:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E56B8FE612
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 14:07:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nXEUUmHi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=fJKOa/ws;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vw1w75HtFz3dLl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 21:15:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vw33j3Q73z3dW3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 22:07:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nXEUUmHi;
+	dkim=pass (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=fJKOa/ws;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ti.com (client-ip=198.47.19.142; helo=fllv0016.ext.ti.com; envelope-from=s-vadapalli@ti.com; receiver=lists.ozlabs.org)
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vw1vP5fQwz3cyc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 21:14:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1717672496;
-	bh=JkMBHpq5K4ie+dfHpGJjCUD7zTfjKpLevGsS4Gkp3Mo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nXEUUmHiHHZhMfTLqAfWPU4HerXeYWMJtunn0PvlF4di3y67hn37mGLFF9awnrkD5
-	 qrk328KUcQi/8DamBIXcYuQd6sgdPo4ymjWbEFwQ7jZxB4FUU/pYmDGCpefnb3/b6g
-	 6RA9fwnz+RYxkkAgont6xbe5h1sdAz1jb26tUuYY7TNJjq12YSpSbhDRg3WcbZkwEw
-	 Jxkqg+sPV9K9klXKYv2gvf3mJCQwniM/M3LmM3qEjb/zEnwvpEHQmZP+ziCzT9RurX
-	 1hrepvtq0dkhjBwWMt6cfpVQDD2nrcqQ60qkK1391r8vAfoh9SUYwWXA2XIJ5Hikso
-	 tR9/WQv+MKAPA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Vw1vM4l74z4wc5;
-	Thu,  6 Jun 2024 21:14:55 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: martin.petersen@oracle.com,
-	dlemoal@kernel.org,
-	cassel@kernel.org
-Subject: [PATCH] ata: pata_macio: Fix max_segment_size with PAGE_SIZE == 64K
-Date: Thu,  6 Jun 2024 21:14:45 +1000
-Message-ID: <20240606111445.400001-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.45.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vw2b84qnBz3d4D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 21:45:54 +1000 (AEST)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 456ATv4r063258;
+	Thu, 6 Jun 2024 05:29:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1717669797;
+	bh=9ZCEA6cP5eUu5u5Wy7c5Qa6XpiJ0SNZvrvxHy3jwf1w=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=fJKOa/wsX3EBlujkA6t8UrFIGrAbdCE7KR+XE/HH97gbjeGaHaXL8+1qU/H0jK2cx
+	 wC5KT1F0rQ2h8e/E6HwyoyY7Yb2Ndc6I6UApNJoGJiIawowiz3rWLsr43MMzL7YLve
+	 kn2shltk136jLtQaP9TWHjtZ3qM7fvv3uKDOccqs=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 456ATvxF027716
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 6 Jun 2024 05:29:57 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 6
+ Jun 2024 05:29:57 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 6 Jun 2024 05:29:57 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 456ATu3Y111689;
+	Thu, 6 Jun 2024 05:29:57 -0500
+Date: Thu, 6 Jun 2024 15:59:55 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH 1/5] PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+Message-ID: <ef98f581-e2a3-419c-90a8-6cb64ca4e835@ti.com>
+References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
+ <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Mailman-Approved-At: Thu, 06 Jun 2024 22:05:16 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,83 +71,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: doru.iorgulescu1@gmail.com, regressions@lists.linux.dev, linux-scsi@vger.kernel.org, john.g.garry@oracle.com, linux-ide@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, imx@lists.linux.dev, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, Bjorn Helgaas <helgaas@kernel.org>, linux-arm-kernel@lists.infradead.org, Siddharth Vadapalli <s-vadapalli@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, mhi@lists.linux.dev, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pata_macio driver advertises a max_segment_size of 0xff00, because
-the hardware doesn't cope with requests >= 64K.
+On Thu, Jun 06, 2024 at 12:56:34PM +0530, Manivannan Sadhasivam wrote:
+> Currently dw_pcie_ep_init_notify() wrapper just calls pci_epc_init_notify()
+> directly. So this wrapper provides no benefit to the glue drivers.
+> 
+> So let's remove it and call pci_epc_init_notify() directly from glue
+> drivers.
+> 
+> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-However the SCSI core requires max_segment_size to be at least
-PAGE_SIZE, which is a problem for pata_macio when the kernel is built
-with 64K pages.
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-In older kernels the SCSI core would just increase the segment size to
-be equal to PAGE_SIZE, however since the commit tagged below it causes a
-warning and the device fails to probe:
+[...]
 
-  WARNING: CPU: 0 PID: 26 at block/blk-settings.c:202 .blk_validate_limits+0x2f8/0x35c
-  CPU: 0 PID: 26 Comm: kworker/u4:1 Not tainted 6.10.0-rc1 #1
-  Hardware name: PowerMac7,2 PPC970 0x390202 PowerMac
-  ...
-  NIP .blk_validate_limits+0x2f8/0x35c
-  LR  .blk_alloc_queue+0xc0/0x2f8
-  Call Trace:
-    .blk_alloc_queue+0xc0/0x2f8
-    .blk_mq_alloc_queue+0x60/0xf8
-    .scsi_alloc_sdev+0x208/0x3c0
-    .scsi_probe_and_add_lun+0x314/0x52c
-    .__scsi_add_device+0x170/0x1a4
-    .ata_scsi_scan_host+0x2bc/0x3e4
-    .async_port_probe+0x6c/0xa0
-    .async_run_entry_fn+0x60/0x1bc
-    .process_one_work+0x228/0x510
-    .worker_thread+0x360/0x530
-    .kthread+0x134/0x13c
-    .start_kernel_thread+0x10/0x14
-  ...
-  scsi_alloc_sdev: Allocation failure during SCSI scanning, some SCSI devices might not be configured
-
-Although the hardware can't cope with a 64K segment, the driver
-already deals with that internally by splitting large requests in
-pata_macio_qc_prep(). That is how the driver has managed to function
-until now on 64K kernels.
-
-So fix the driver to advertise a max_segment_size of 64K, which avoids
-the warning and keeps the SCSI core happy.
-
-Fixes: afd53a3d8528 ("scsi: core: Initialize scsi midlayer limits before allocating the queue")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/ce2bf6af-4382-4fe1-b392-cc6829f5ceb2@roeck-us.net/
-Reported-by: Doru Iorgulescu <doru.iorgulescu1@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218858
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
- drivers/ata/pata_macio.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 817838e2f70e..3cb455a32d92 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -915,10 +915,13 @@ static const struct scsi_host_template pata_macio_sht = {
- 	.sg_tablesize		= MAX_DCMDS,
- 	/* We may not need that strict one */
- 	.dma_boundary		= ATA_DMA_BOUNDARY,
--	/* Not sure what the real max is but we know it's less than 64K, let's
--	 * use 64K minus 256
-+	/*
-+	 * The SCSI core requires the segment size to cover at least a page, so
-+	 * for 64K page size kernels this must be at least 64K. However the
-+	 * hardware can't handle 64K, so pata_macio_qc_prep() will split large
-+	 * requests.
- 	 */
--	.max_segment_size	= MAX_DBDMA_SEG,
-+	.max_segment_size	= SZ_64K,
- 	.device_configure	= pata_macio_device_configure,
- 	.sdev_groups		= ata_common_sdev_groups,
- 	.can_queue		= ATA_DEF_QUEUE,
--- 
-2.45.1
-
+Regards,
+Siddharth.
