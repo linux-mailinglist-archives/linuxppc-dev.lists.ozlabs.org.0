@@ -2,72 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96B58FEB77
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 16:25:31 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sDf8ox+g;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 933B18FF09B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 17:26:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vw67F024hz3dX1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 00:25:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vw7T85361z3fnT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 01:26:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sDf8ox+g;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vw66X5Rvrz3dX1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 00:24:52 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 16A84CE1BB7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 14:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 66AE0C2BD10
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 14:24:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717683887;
-	bh=evRaw2bCoAk5OT7ZXt2uCIsC6VoT+aTLtMzGr+cvb6g=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=sDf8ox+gz+Hrogs31/zLmEUFrBXDt8wBwNyGZ833p5M03ngTZQwODzinLjJZL+f8P
-	 Ag8cTPaaLIIN0eQk69x1ss02kz4F5t01SYSeOis3/35yOyp8czga+McFuPoWdlMKt3
-	 I5DN2Ef/QmzuJ/Gksi0h3sf5sMY8q01LZbhpszSDnmraPegCgg64fFBEcP9O87a6sA
-	 kPYFk53a/m4lk9ZWkiyfV+o+yIX47YSwJZE32my5LlKu9xUs4GeZbw980vm2jEHj0T
-	 fOzUoATGMXyxelT2mLl7rOd3z0cuWY+3EMOQqWwusG/GL0ZPQlnC7Gv/mIFpttIEck
-	 2GZ6jgresHGNg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 5385BC53B50; Thu,  6 Jun 2024 14:24:47 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 218858] scsi_alloc_sdev: Allocation failure during SCSI
- scanning, some SCSI devices might not be configured
-Date: Thu, 06 Jun 2024 14:24:46 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: high
-X-Bugzilla-Who: doru.iorgulescu1@gmail.com
-X-Bugzilla-Status: NEEDINFO
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218858-206035-np8MvTwIGx@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218858-206035@https.bugzilla.kernel.org/>
-References: <bug-218858-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vw7Sl3yWBz3d4D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 01:25:39 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vw6xw2ZG0z6HJbs;
+	Thu,  6 Jun 2024 23:02:28 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C2658140B63;
+	Thu,  6 Jun 2024 23:06:49 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Jun
+ 2024 16:06:48 +0100
+Date: Thu, 6 Jun 2024 16:06:47 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: Re: [PATCH v4 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
+ ANFE in aer_err_info
+Message-ID: <20240606160647.0000644e@Huawei.com>
+In-Reply-To: <20240509084833.2147767-2-zhenzhong.duan@intel.com>
+References: <20240509084833.2147767-1-zhenzhong.duan@intel.com>
+	<20240509084833.2147767-2-zhenzhong.duan@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,21 +54,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linmiaohe@huawei.com, alison.schofield@intel.com, rafael@kernel.org, sathyanarayanan.kuppuswamy@intel.com, linux-pci@vger.kernel.org, erwin.tsaur@intel.com, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, oohall@gmail.com, ira.weiny@intel.com, dave@stgolabs.net, dave.jiang@intel.com, vishal.l.verma@intel.com, Smita.KoralahalliChannabasappa@amd.com, linux-acpi@vger.kernel.org, helgaas@kernel.org, lenb@kernel.org, chao.p.peng@intel.com, rrichter@amd.com, yudong.wang@intel.com, bp@alien8.de, qingshun.wang@linux.intel.com, bhelgaas@google.com, dan.j.williams@intel.com, linux-edac@vger.kernel.org, tony.luck@intel.com, feiting.wanyan@intel.com, adam.c.preble@intel.com, mahesh@linux.ibm.com, lukas@wunner.de, james.morse@arm.com, linuxppc-dev@lists.ozlabs.org, shiju.jose@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218858
+On Thu,  9 May 2024 16:48:31 +0800
+Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
 
---- Comment #25 from doru iorgulescu (doru.iorgulescu1@gmail.com) ---
-I finalized to compile linux kernel 6.10.0-rc2 uith the patch aplied and is=
- OK!
-Thank You
-I have atached dmesg-6100-rc2.txt
-Thank You Very mutch
-Regards
+> In some cases the detector of a Non-Fatal Error(NFE) is not the most
+> appropriate agent to determine the type of the error. For example,
+> when software performs a configuration read from a non-existent
+> device or Function, completer will send an ERR_NONFATAL Message.
+> On some platforms, ERR_NONFATAL results in a System Error, which
+> breaks normal software probing.
+> 
+> Advisory Non-Fatal Error(ANFE) is a special case that can be used
+> in above scenario. It is predominantly determined by the role of the
+> detecting agent (Requester, Completer, or Receiver) and the specific
+> error. In such cases, an agent with AER signals the NFE (if enabled)
+> by sending an ERR_COR Message as an advisory to software, instead of
+> sending ERR_NONFATAL.
+> 
+> When processing an ANFE, ideally both correctable error(CE) status and
+> uncorrectable error(UE) status should be cleared. However, there is no
+> way to fully identify the UE associated with ANFE. Even worse, Non-Fatal
+> Error(NFE) may set the same UE status bit as ANFE. Treating an ANFE as
+> NFE will reproduce above mentioned issue, i.e., breaking softwore probing;
+> treating NFE as ANFE will make us ignoring some UEs which need active
+> recover operation. To avoid clearing UEs that are not ANFE by accident,
+> the most conservative route is taken here: If any of the NFE Detected
+> bits is set in Device Status, do not touch UE status, they should be
+> cleared later by the UE handler. Otherwise, a specific set of UEs that
+> may be raised as ANFE according to the PCIe specification will be cleared
+> if their corresponding severity is Non-Fatal.
+> 
+> To achieve above purpose, store UNCOR_STATUS bits that might be ANFE
+> in aer_err_info.anfe_status. So that those bits could be printed and
+> processed later.
+> 
+> Tested-by: Yudong Wang <yudong.wang@intel.com>
+> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
---=20
-You may reply to this email to add a comment.
+Not my most confident review ever as this is nasty and gives
+me a headache but your description is good and I think the
+implementation looks reasonable.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+
