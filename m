@@ -2,80 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68E68FDE39
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 07:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 945138FDE55
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 07:49:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NYAG7FZc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QtJGZlhg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VvtYx6Y0vz3cXV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 15:44:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvtgZ51Sbz3cWm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 15:49:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NYAG7FZc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QtJGZlhg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvtYC70dJz3cCb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 15:43:41 +1000 (AEST)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-6ce533b6409so403053a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2024 22:43:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1717652619; x=1718257419; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9evaiRpo0K0MKjvHd6Fu6tPQEBbm84cbZFPUlgH+U/c=;
-        b=NYAG7FZcqoW6GbF0o6522fc58l9iFOhfQM6xuR5juNlsfPG6varS5ZYiUGU+8P1zt8
-         RyGjIozwuV6j1En+SC8OGLRgEaGeGO2bPOQlnnZVBBwd2AgXBNfpUEJvyb7PMO8p3Ngj
-         Ys3oVRG9qrRAgphOh2lZ+mh5cccDOsbsZfTVU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717652619; x=1718257419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9evaiRpo0K0MKjvHd6Fu6tPQEBbm84cbZFPUlgH+U/c=;
-        b=MKiaC9yLvrRnAC2UOkRqhb5LI8tbSWDEv0R7MQQ4MX8VEpwxpFgwcL/NLrBLHnsnAk
-         QPoX0+yXUt/zH7gK0kFnzTcrnFgxzmfai8jAjAFZTSXCQvZnyvuPcg6trrM40yppgtZ5
-         GBdWo60bBoZBpsYaggeSO8f7REtnYTnDnJo9k9lZfnUH/tneY6lfhn6UguK6Q/1sMfbd
-         D9f4LtpbpJrwU29LWpi+eGGQV+I5ASvNoc/mUHuLVT79jnJXdpkrXoEx9AggBJYaU1/4
-         +RF2NbvsPow3De19JB6uNGzSBlJocyc/qHh4TJx62VkutGEq25+2wkItLiQYm7sqXnbj
-         qd1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWwTB0vr787903YbeFxJOft2fPWyYjlGMbNhkS3hiWsJkB88ijRDsDqBaS1TaTTfXs2NZc9VipI9ejQpKsDTvrxnuB8ViJVRbE20vPuug==
-X-Gm-Message-State: AOJu0Ywtf/0RyCjKIPjuiX2+WkG/oSHDE6LNk8pGZXdKmdD6ypdGOyjS
-	EJcJAo3aczri5YM+lRW01EsvxT1AOAlSwDqUDypRg8zmyYyYfPJGchhEKfMmMA==
-X-Google-Smtp-Source: AGHT+IFy7hjyNVNxBD93ScL0gjQe1sK4zEeKhq1Mmbs2AmOIwNZ2Z1Ekq4heMJmewPkxaRSXKcuUxw==
-X-Received: by 2002:a05:6a20:430f:b0:1af:dae8:5ea2 with SMTP id adf61e73a8af0-1b2b710b40fmr5480556637.48.1717652619298;
-        Wed, 05 Jun 2024 22:43:39 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:22f8:8e4a:7027:de56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd7f28adsm5220295ad.265.2024.06.05.22.43.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jun 2024 22:43:38 -0700 (PDT)
-Date: Thu, 6 Jun 2024 14:43:34 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Chengming Zhou <chengming.zhou@linux.dev>
-Subject: Re: kswapd0: page allocation failure: order:0,
- mode:0x820(GFP_ATOMIC), nodemask=(null),cpuset=/,mems_allowed=0 (Kernel
- v6.5.9, 32bit ppc)
-Message-ID: <20240606054334.GD11718@google.com>
-References: <CAJD7tkb=5GJ9SNUwDsu1Zy3Tus4rjsNo60Hg9N7=gGth409Diw@mail.gmail.com>
- <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
- <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
- <20240604231019.18e2f373@yea>
- <CAJD7tkYq5u7B+0UH2XKpeWJnUxoO2kJ1_XZ2JOgYpyNEVR7u0g@mail.gmail.com>
- <20240606010431.2b33318c@yea>
- <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
- <e68bcc6a-25b1-42aa-83b3-5d457b254cbe@linux.dev>
- <20240606043156.GC11718@google.com>
- <6335c05d-9493-4b03-85a7-f2dd91db9451@linux.dev>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvtfr0DNqz2yN3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 15:48:35 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4564fQ1l031562;
+	Thu, 6 Jun 2024 05:48:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc : content-type : date
+ : from : in-reply-to : message-id : mime-version : references : subject :
+ to; s=pp1; bh=F1QxdnanM0DI+xMmZuQK1XU1kD0sRkv46FM+ALv8/RY=;
+ b=QtJGZlhgqgx4YR8FKPwgMLc7QHJXCg1ncKiGb8ewrAUZYkfnr6a4dxPLnWAg13NWNePA
+ vGZudAhNawb/e7bGe0QaJ/Pldlz+cuaBQ4Nr86ua8HjDUu1Kxx4By4nAV4JJ4+4Vj4AN
+ tNXmeQDcTecG7/V5UjT0gVg+ypwNw1npXaZW8rtiIYTD0rgCPLqmKWybQEdrMixGqrNH
+ Gv/bgOpJvacHCgUAfcu24rFbOSZ4Gm/3v5PNswzqqp7HTUa0fnpc0winUYwuXwJ0Z+Mn
+ iOeM9Fw1zdPWbAOhZiMxJio+X2IevmzNgnr7ShIRk78MnLVf9qKTobWdKDA4ALwx8M6u 0w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yk4n18bee-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jun 2024 05:48:24 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4565mNsq004930;
+	Thu, 6 Jun 2024 05:48:23 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yk4n18be9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jun 2024 05:48:23 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4564gXQW008458;
+	Thu, 6 Jun 2024 05:48:22 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ygec10xc1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jun 2024 05:48:22 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4565mIDC25559620
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Jun 2024 05:48:20 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75F6F20956;
+	Thu,  6 Jun 2024 05:46:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 365242093B;
+	Thu,  6 Jun 2024 05:46:12 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.43.32.207])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Jun 2024 05:46:11 +0000 (GMT)
+Date: Thu, 6 Jun 2024 11:16:08 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, corbet@lwn.net
+Subject: Re: [PATCH v2 0/2] Fix doorbell emulation for v2 API on PPC
+Message-ID: <yzixdicgdqcten6eglcc4zlhn3sbnqrax3ymzzqvdmxvdh63zx@xymyajel3aoh>
+References: <20240605113913.83715-1-gautam@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6335c05d-9493-4b03-85a7-f2dd91db9451@linux.dev>
+In-Reply-To: <20240605113913.83715-1-gautam@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EblB2tKXDq9detrDQrwOMaMKSlbJs6rb
+X-Proofpoint-GUID: -G_Cdwm-ls8YhJt_YOO4Dh9rKtQGZgs8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-06_01,2024-06-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
+ mlxlogscore=583 mlxscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ spamscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2406060040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,32 +97,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>, Nhat Pham <nphamcs@gmail.com>, Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, Yosry Ahmed <yosryahmed@google.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, "Vlastimil Babka \(SUSE\)" <vbabka@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On (24/06/06 12:46), Chengming Zhou wrote:
-> >> Agree, I think we should try to improve locking scalability of zsmalloc.
-> >> I have some thoughts to share, no code or test data yet:
-> >>
-> >> 1. First, we can change the pool global lock to per-class lock, which
-> >>    is more fine-grained.
-> > 
-> > Commit c0547d0b6a4b6 "zsmalloc: consolidate zs_pool's migrate_lock
-> > and size_class's locks" [1] claimed no significant difference
-> > between class->lock and pool->lock.
+On Wed, Jun 05, 2024 at 05:09:08PM GMT, Gautam Menghani wrote:
+> Doorbell emulation for KVM on PAPR guests is broken as support for DPDES
+> was not added in initial patch series [1].
+> Add DPDES support and doorbell handling support for V2 API. 
 > 
-> Ok, I haven't looked into the history much, that seems preparation of trying
-> to introduce reclaim in the zsmalloc? Not sure. But now with the reclaim code
-> in zsmalloc has gone, should we change back to the per-class lock? Which is
+> [1] lore.kernel.org/linuxppc-dev/20230914030600.16993-1-jniethe5@gmail.com
+> 
+> Changes in v2:
+> 1. Split DPDES support into its own patch
+> 
+> Gautam Menghani (2):
+>   arch/powerpc/kvm: Add DPDES support in helper library for Guest state
+>     buffer
+>   arch/powerpc/kvm: Fix doorbell emulation for v2 API
+> 
+>  Documentation/arch/powerpc/kvm-nested.rst     | 4 +++-
+>  arch/powerpc/include/asm/guest-state-buffer.h | 3 ++-
+>  arch/powerpc/include/asm/kvm_book3s.h         | 1 +
+>  arch/powerpc/kvm/book3s_hv.c                  | 5 +++++
+>  arch/powerpc/kvm/book3s_hv_nestedv2.c         | 7 +++++++
+>  arch/powerpc/kvm/test-guest-state-buffer.c    | 2 +-
+>  6 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> -- 
+> 2.45.1
+> 
 
-Well, the point that commit made was that Nhat (and Johannes?) were
-unable to detect any impact of pool->lock on a variety of cases.  So
-we went on with code simplification.
 
-> obviously more fine-grained than the pool lock. Actually, I have just done it,
-> will test to get some data later.
+Hi Michael,
 
-Thanks, we'll need data on this.  I'm happy to take the patch, but
-jumping back and forth between class->lock and pool->lock merely
-"for obvious reasons" is not what I'm extremely excited about.
+This patch series is to be backported for all kernels >= 6.7. So the tag
+should be 
+Cc: stable@vger.kernel.org # v6.7+
+
+and not
+Cc: stable@vger.kernel.org # v6.7
+
+Should I send a new version of this series or can you please make this 
+change when pulling in your tree?
+
+Thanks,
+Gautam
