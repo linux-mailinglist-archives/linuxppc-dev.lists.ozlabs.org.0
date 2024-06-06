@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B568FDEC9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 08:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAAE8FDF25
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 08:53:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFnpitGl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PaiC5FDh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vvvg85fdGz3cfK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 16:33:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vvw5c37Gtz30W6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 16:53:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFnpitGl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PaiC5FDh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VvvfS50hkz3cQq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 16:33:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvw4s3Tvbz30VN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 16:52:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4832661BC4;
-	Thu,  6 Jun 2024 06:33:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75168C4AF0C;
-	Thu,  6 Jun 2024 06:33:17 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 13658CE1912;
+	Thu,  6 Jun 2024 06:52:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACBCC2BD10;
+	Thu,  6 Jun 2024 06:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717655598;
-	bh=Uhu+KFLXXWQmIS9busJjbM9iWvKGKbQaK7TAgsHdn1U=;
+	s=k20201202; t=1717656727;
+	bh=aVZFhiIpqTKVnjdLgL8jJJWTtDahdSBgcm8WObNGDZ8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qFnpitGlvXRH1PN3cBpTQrl1lxHirtYlcCdJKdkuqZpZX4VvEL0Wu2RZra8KgYXqg
-	 zb+is1WrHirfaOeMqEj8z7tP0hzTm6lpPFnkhuxVnRO9gRDHQKKwxk2B7y6G1bjyUp
-	 10qtfaTSUTyAZw/oxmzFlMEKOZIHyGLim1c48/xtXhSzLx92MimoK1fDIjCcySsIEe
-	 wLzxHXDZffqngv885lFIwtRgx6686bu7B02hMOko1LpoMmA23BwuZaP/airHBW5Zpv
-	 tXSbIjr7IAXDs13+6cOwUZnTmn+koKVgv1UBI1JmUjtAPu3TUaD57aaJ67+jwk7aTp
-	 WxQkrK7RU5OLQ==
-Date: Wed, 5 Jun 2024 23:33:16 -0700
+	b=PaiC5FDhxjkXPXOd01cb4MzBHU7YcQobjTq10qEMNZhEXFQyCVxVDs4OhuB5MptLG
+	 Upv9FJUnRJwjc7HKBZilZmPJIoNh8o2G8zhCqbSHViVNDEKro22ee9d1MqmmOG54G9
+	 QcD1884LVgUC7Bs/yebPEVKfy4pRh5N1odpBUbtEkCcm0kvYOvsba37DICuUUD/M29
+	 /4CLzkl6kTdiepz6YW/E6A7OiT/JVu72+mq+oBIZZqba+UQJhkJW+OmH2cABr5wvC9
+	 rys2aA4RhWyzJv1PxI1BguPKw3enKaihOP+4KG1tWen5akxpPswrdfbUQ5ko2+W5J9
+	 weZCWEf0ET7rw==
+Date: Wed, 5 Jun 2024 23:52:05 -0700
 From: Namhyung Kim <namhyung@kernel.org>
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V3 05/14] tools/perf: Add disasm_line__parse to parse raw
- instruction for powerpc
-Message-ID: <ZmFYLK3pK3Uov4pe@google.com>
+Subject: Re: [PATCH V3 06/14] tools/perf: Update parameters for reg extract
+ functions to use raw instruction on powerpc
+Message-ID: <ZmFclbqQytaZt1Ep@google.com>
 References: <20240601060941.13692-1-atrajeev@linux.vnet.ibm.com>
- <20240601060941.13692-6-atrajeev@linux.vnet.ibm.com>
+ <20240601060941.13692-7-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240601060941.13692-6-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20240601060941.13692-7-atrajeev@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,271 +65,342 @@ Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Sat, Jun 01, 2024 at 11:39:32AM +0530, Athira Rajeev wrote:
-> Currently, the perf tool infrastructure disasm_line__parse function to
-> parse disassembled line.
+On Sat, Jun 01, 2024 at 11:39:33AM +0530, Athira Rajeev wrote:
+> Use the raw instruction code and macros to identify memory instructions,
+> extract register fields and also offset. The implementation addresses
+> the D-form, X-form, DS-form instructions. Two main functions are added.
+> New parse function "load_store__parse" as instruction ops parser for
+> memory instructions. Unlink other parser (like mov__parse), this parser
+> fills in the "raw_insn" field for source/target and new added "mem_ref"
+> field. Also set if it is multi_regs and opcode as well. No other fields
+> are set because, here there is no need to parse the disassembled
+> code and arch specific macros will take care of extracting offset and
+> regs which is easier and will be precise.
 > 
-> Example snippet from objdump:
-> objdump  --start-address=<address> --stop-address=<address>  -d --no-show-raw-insn -C <vmlinux>
-> 
-> c0000000010224b4:	lwz     r10,0(r9)
-> 
-> This line "lwz r10,0(r9)" is parsed to extract instruction name,
-> registers names and offset. In powerpc, the approach for data type
-> profiling uses raw instruction instead of result from objdump to identify
-> the instruction category and extract the source/target registers.
-> 
-> Example: 38 01 81 e8     ld      r4,312(r1)
-> 
-> Here "38 01 81 e8" is the raw instruction representation. Add function
-> "disasm_line__parse_powerpc" to handle parsing of raw instruction. Also
-> update "struct ins" and "struct ins_operands" to save "opcode" and
-> binary code. With the change, function captures:
-> 
-> line -> "38 01 81 e8     ld      r4,312(r1)"
-> opcode and raw instruction "38 01 81 e8"
-> 
-> Raw instruction is used later to extract the reg/offset fields. Macros
-> are added to extract opcode and register fields. "struct ins_operands"
-> and "struct ins" is updated to carry opcode and raw instruction binary
-> code (raw_insn). Function "disasm_line__parse_powerpc fills the raw
-> instruction hex value and opcode in newly added fields. There is no
-> changes in existing code paths, which parses the disassembled code.
-> The architecture using the instruction name and present approach is
-> not altered. Since this approach targets powerpc, the macro
-> implementation is added for powerpc as of now.
-> 
-> Since the disasm_line__parse is used in other cases (perf annotate) and
-> not only data tye profiling, the powerpc callback includes changes to
-> work with binary code as well as mneumonic representation. Also in case
-> if the DSO read fails and libcapstone is not supported, the approach
-> fallback to use objdump as option. Hence as option, patch has changes to
-> ensure objdump option also works well.
+> In powerpc, all instructions with a primary opcode from 32 to 63
+> are memory instructions. Update "ins__find" function to have "raw_insn"
+> also as a parameter. Don't use the "extract_reg_offset", instead use
+> newly added function "get_arch_regs" which will set these fields: reg1,
+> reg2, offset depending of where it is source or target ops.
 > 
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  tools/include/linux/string.h                  |  2 +
->  tools/lib/string.c                            | 13 ++++
->  .../perf/arch/powerpc/annotate/instructions.c |  1 +
->  tools/perf/arch/powerpc/util/dwarf-regs.c     |  9 +++
->  tools/perf/util/disasm.c                      | 63 ++++++++++++++++++-
->  tools/perf/util/disasm.h                      |  7 +++
->  6 files changed, 94 insertions(+), 1 deletion(-)
+>  .../perf/arch/powerpc/annotate/instructions.c | 16 +++++
+>  tools/perf/arch/powerpc/util/dwarf-regs.c     | 44 +++++++++++++
+>  tools/perf/util/annotate.c                    | 25 +++++++-
+>  tools/perf/util/disasm.c                      | 64 +++++++++++++++++--
+>  tools/perf/util/disasm.h                      |  4 +-
+>  tools/perf/util/include/dwarf-regs.h          |  3 +
+>  6 files changed, 147 insertions(+), 9 deletions(-)
 > 
-> diff --git a/tools/include/linux/string.h b/tools/include/linux/string.h
-> index db5c99318c79..0acb1fc14e19 100644
-> --- a/tools/include/linux/string.h
-> +++ b/tools/include/linux/string.h
-> @@ -46,5 +46,7 @@ extern char * __must_check skip_spaces(const char *);
->  
->  extern char *strim(char *);
->  
-> +extern void remove_spaces(char *s);
-> +
->  extern void *memchr_inv(const void *start, int c, size_t bytes);
->  #endif /* _TOOLS_LINUX_STRING_H_ */
-> diff --git a/tools/lib/string.c b/tools/lib/string.c
-> index 8b6892f959ab..3126d2cff716 100644
-> --- a/tools/lib/string.c
-> +++ b/tools/lib/string.c
-> @@ -153,6 +153,19 @@ char *strim(char *s)
->  	return skip_spaces(s);
->  }
->  
-> +/*
-> + * remove_spaces - Removes whitespaces from @s
-> + */
-> +void remove_spaces(char *s)
-> +{
-> +	char *d = s;
-> +
-> +	do {
-> +		while (*d == ' ')
-> +			++d;
-> +	} while ((*s++ = *d++));
-> +}
-> +
->  /**
->   * strreplace - Replace all occurrences of character in string.
->   * @s: The string to operate on.
 > diff --git a/tools/perf/arch/powerpc/annotate/instructions.c b/tools/perf/arch/powerpc/annotate/instructions.c
-> index a3f423c27cae..d57fd023ef9c 100644
+> index d57fd023ef9c..10fea5e5cf4c 100644
 > --- a/tools/perf/arch/powerpc/annotate/instructions.c
 > +++ b/tools/perf/arch/powerpc/annotate/instructions.c
-> @@ -55,6 +55,7 @@ static int powerpc__annotate_init(struct arch *arch, char *cpuid __maybe_unused)
->  		arch->initialized = true;
->  		arch->associate_instruction_ops = powerpc__associate_instruction_ops;
->  		arch->objdump.comment_char      = '#';
-> +		annotate_opts.show_asm_raw = true;
->  	}
->  
->  	return 0;
-> diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c b/tools/perf/arch/powerpc/util/dwarf-regs.c
-> index 0c4f4caf53ac..430623ca5612 100644
-> --- a/tools/perf/arch/powerpc/util/dwarf-regs.c
-> +++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
-> @@ -98,3 +98,12 @@ int regs_query_register_offset(const char *name)
->  			return roff->ptregs_offset;
->  	return -EINVAL;
->  }
-> +
-> +#define PPC_OP(op)	(((op) >> 26) & 0x3F)
-> +#define PPC_RA(a)	(((a) >> 16) & 0x1f)
-> +#define PPC_RT(t)	(((t) >> 21) & 0x1f)
-> +#define PPC_RB(b)	(((b) >> 11) & 0x1f)
-> +#define PPC_D(D)	((D) & 0xfffe)
-> +#define PPC_DS(DS)	((DS) & 0xfffc)
-> +#define OP_LD	58
-> +#define OP_STD	62
-> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-> index 3cd187f08193..61f0f1656f82 100644
-> --- a/tools/perf/util/disasm.c
-> +++ b/tools/perf/util/disasm.c
-> @@ -45,6 +45,7 @@ static int call__scnprintf(struct ins *ins, char *bf, size_t size,
->  
->  static void ins__sort(struct arch *arch);
->  static int disasm_line__parse(char *line, const char **namep, char **rawp);
-> +static int disasm_line__parse_powerpc(struct disasm_line *dl);
->  
->  static __attribute__((constructor)) void symbol__init_regexpr(void)
->  {
-> @@ -844,6 +845,63 @@ static int disasm_line__parse(char *line, const char **namep, char **rawp)
->  	return -1;
+> @@ -49,6 +49,22 @@ static struct ins_ops *powerpc__associate_instruction_ops(struct arch *arch, con
+>  	return ops;
 >  }
 >  
-> +/*
-> + * Parses the result captured from symbol__disassemble_*
-> + * Example, line read from DSO file in powerpc:
-> + * line:    38 01 81 e8
-> + * opcode: fetched from arch specific get_opcode_insn
-> + * rawp_insn: e8810138
-> + *
-> + * rawp_insn is used later to extract the reg/offset fields
-> + */
-> +#define	PPC_OP(op)	(((op) >> 26) & 0x3F)
+> +#define PPC_OP(op)      (((op) >> 26) & 0x3F)
 > +
-> +static int disasm_line__parse_powerpc(struct disasm_line *dl)
+> +static struct ins_ops *check_ppc_insn(int raw_insn)
 > +{
-> +	char *line = dl->al.line;
-> +	const char **namep = &dl->ins.name;
-> +	char **rawp = &dl->ops.raw;
-> +	char tmp, *tmp_opcode, *name_opcode = skip_spaces(line);
-> +	char *name = skip_spaces(name_opcode + 11);
-> +	int objdump = 0;
+> +	int opcode = PPC_OP(raw_insn);
 > +
-> +	if (strlen(line) > 11)
-> +		objdump = 1;
+> +	/*
+> +	 * Instructions with opcode 32 to 63 are memory
+> +	 * instructions in powerpc
+> +	 */
+> +	if ((opcode & 0x20))
+> +		return &load_store_ops;
 > +
-> +	if (name_opcode[0] == '\0')
-> +		return -1;
-> +
-> +	if (objdump) {
-> +		*rawp = name + 1;
-> +		while ((*rawp)[0] != '\0' && !isspace((*rawp)[0]))
-> +			++*rawp;
-> +		tmp = (*rawp)[0];
-> +		(*rawp)[0] = '\0';
-> +
-> +		*namep = strdup(name);
-> +		if (*namep == NULL)
-> +			return -1;
-> +
-> +		(*rawp)[0] = tmp;
-> +		*rawp = strim(*rawp);
-> +	} else
-> +		*namep = "";
-> +
-> +	tmp_opcode = strdup(name_opcode);
-> +	tmp_opcode[11] = '\0';
-> +	remove_spaces(tmp_opcode);
-> +
-> +	dl->ins.opcode = PPC_OP(strtol(tmp_opcode, NULL, 16));
-> +	if (objdump)
-> +		dl->ins.opcode = PPC_OP(be32_to_cpu(strtol(tmp_opcode, NULL, 16)));
-> +	dl->ops.opcode = dl->ins.opcode;
-> +
-> +	dl->ops.raw_insn = strtol(tmp_opcode, NULL, 16);
-> +	if (objdump)
-> +		dl->ops.raw_insn = be32_to_cpu(strtol(tmp_opcode, NULL, 16));
-> +	return 0;
+> +	return NULL;
 > +}
 > +
->  static void annotation_line__init(struct annotation_line *al,
->  				  struct annotate_args *args,
->  				  int nr)
-> @@ -897,7 +955,10 @@ struct disasm_line *disasm_line__new(struct annotate_args *args)
->  		goto out_delete;
->  
->  	if (args->offset != -1) {
-> -		if (disasm_line__parse(dl->al.line, &dl->ins.name, &dl->ops.raw) < 0)
-> +		if (arch__is(args->arch, "powerpc")) {
-> +			if (disasm_line__parse_powerpc(dl) < 0)
-> +				goto out_free_line;
-> +		} else if (disasm_line__parse(dl->al.line, &dl->ins.name, &dl->ops.raw) < 0)
->  			goto out_free_line;
->  
->  		disasm_line__init_ins(dl, args->arch, &args->ms);
-> diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
-> index 718177fa4775..a391e1bb81f7 100644
-> --- a/tools/perf/util/disasm.h
-> +++ b/tools/perf/util/disasm.h
-> @@ -43,14 +43,19 @@ struct arch {
->  
->  struct ins {
->  	const char     *name;
-> +	int	opcode;
+>  static int powerpc__annotate_init(struct arch *arch, char *cpuid __maybe_unused)
+>  {
+>  	if (!arch->initialized) {
+> diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c b/tools/perf/arch/powerpc/util/dwarf-regs.c
+> index 430623ca5612..38b74fa01d8b 100644
+> --- a/tools/perf/arch/powerpc/util/dwarf-regs.c
+> +++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
+> @@ -107,3 +107,47 @@ int regs_query_register_offset(const char *name)
+>  #define PPC_DS(DS)	((DS) & 0xfffc)
+>  #define OP_LD	58
+>  #define OP_STD	62
+> +
+> +static int get_source_reg(unsigned int raw_insn)
+> +{
+> +	return PPC_RA(raw_insn);
+> +}
+> +
+> +static int get_target_reg(unsigned int raw_insn)
+> +{
+> +	return PPC_RT(raw_insn);
+> +}
+> +
+> +static int get_offset_opcode(int raw_insn __maybe_unused)
 
-I don't think this is the right place as 'ins' can be shared for
-different opcodes.  IIUC it's like a class and disasm_line should
-have a pointer instead of a copy of the arch instructions.  So I'd
-like to keep a single instance if they behave in the same way.  But
-this is a separate change.
+The argument is used below, no need for __maybe_unused.
 
-I guess we can move it to struct disasm_line and use helper macros when
-we need to access the opcode.  This will be helpful for other arches.
+> +{
+> +	int opcode = PPC_OP(raw_insn);
+> +
+> +	/* DS- form */
+> +	if ((opcode == OP_LD) || (opcode == OP_STD))
+> +		return PPC_DS(raw_insn);
+> +	else
+> +		return PPC_D(raw_insn);
+> +}
+> +
+> +/*
+> + * Fills the required fields for op_loc depending on if it
+> + * is a source or target.
+> + * D form: ins RT,D(RA) -> src_reg1 = RA, offset = D, dst_reg1 = RT
+> + * DS form: ins RT,DS(RA) -> src_reg1 = RA, offset = DS, dst_reg1 = RT
+> + * X form: ins RT,RA,RB -> src_reg1 = RA, src_reg2 = RB, dst_reg1 = RT
+> + */
+> +void get_arch_regs(int raw_insn __maybe_unused, int is_source __maybe_unused,
+> +		struct annotated_op_loc *op_loc __maybe_unused)
 
-  struct disasm_line {
-      struct ins *ins;
-      struct ins_operands ops;
-      union {
-          u8 bytes[4];
-          u32 opcode;
-      } raw;
-      struct annotation_line al;
-  };
-  
-  #define PPC_OP(dl)  (((dl)->raw.bytes[0] >> 2) & 0x3F)
+Ditto.
 
 Thanks,
 Namhyung
 
->
->  	struct ins_ops *ops;
+
+> +{
+> +	if (is_source)
+> +		op_loc->reg1 = get_source_reg(raw_insn);
+> +	else
+> +		op_loc->reg1 = get_target_reg(raw_insn);
+> +
+> +	if (op_loc->multi_regs)
+> +		op_loc->reg2 = PPC_RB(raw_insn);
+> +
+> +	/* TODO: Implement offset handling for X Form */
+> +	if ((op_loc->mem_ref) && (PPC_OP(raw_insn) != 31))
+> +		op_loc->offset = get_offset_opcode(raw_insn);
+> +}
+> diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+> index 1451caf25e77..2b8cc759ae35 100644
+> --- a/tools/perf/util/annotate.c
+> +++ b/tools/perf/util/annotate.c
+> @@ -2079,6 +2079,12 @@ static int extract_reg_offset(struct arch *arch, const char *str,
+>  	return 0;
+>  }
+>  
+> +__weak void get_arch_regs(int raw_insn __maybe_unused, int is_source __maybe_unused,
+> +		struct annotated_op_loc *op_loc __maybe_unused)
+> +{
+> +	return;
+> +}
+> +
+>  /**
+>   * annotate_get_insn_location - Get location of instruction
+>   * @arch: the architecture info
+> @@ -2123,20 +2129,33 @@ int annotate_get_insn_location(struct arch *arch, struct disasm_line *dl,
+>  	for_each_insn_op_loc(loc, i, op_loc) {
+>  		const char *insn_str = ops->source.raw;
+>  		bool multi_regs = ops->source.multi_regs;
+> +		bool mem_ref = ops->source.mem_ref;
+>  
+>  		if (i == INSN_OP_TARGET) {
+>  			insn_str = ops->target.raw;
+>  			multi_regs = ops->target.multi_regs;
+> +			mem_ref = ops->target.mem_ref;
+>  		}
+>  
+>  		/* Invalidate the register by default */
+>  		op_loc->reg1 = -1;
+>  		op_loc->reg2 = -1;
+>  
+> -		if (insn_str == NULL)
+> -			continue;
+> +		if (insn_str == NULL) {
+> +			if (!arch__is(arch, "powerpc"))
+> +				continue;
+> +		}
+>  
+> -		if (strchr(insn_str, arch->objdump.memory_ref_char)) {
+> +		/*
+> +		 * For powerpc, call get_arch_regs function which extracts the
+> +		 * required fields for op_loc, ie reg1, reg2, offset from the
+> +		 * raw instruction.
+> +		 */
+> +		if (arch__is(arch, "powerpc")) {
+> +			op_loc->mem_ref = mem_ref;
+> +			op_loc->multi_regs = multi_regs;
+> +			get_arch_regs(ops->raw_insn, !i, op_loc);
+> +		} else if (strchr(insn_str, arch->objdump.memory_ref_char)) {
+>  			op_loc->mem_ref = true;
+>  			op_loc->multi_regs = multi_regs;
+>  			extract_reg_offset(arch, insn_str, op_loc);
+> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+> index 61f0f1656f82..252cb0d1f5d1 100644
+> --- a/tools/perf/util/disasm.c
+> +++ b/tools/perf/util/disasm.c
+> @@ -37,6 +37,7 @@ static struct ins_ops mov_ops;
+>  static struct ins_ops nop_ops;
+>  static struct ins_ops lock_ops;
+>  static struct ins_ops ret_ops;
+> +static struct ins_ops load_store_ops;
+>  
+>  static int jump__scnprintf(struct ins *ins, char *bf, size_t size,
+>  			   struct ins_operands *ops, int max_ins_name);
+> @@ -517,7 +518,7 @@ static int lock__parse(struct arch *arch, struct ins_operands *ops, struct map_s
+>  	if (disasm_line__parse(ops->raw, &ops->locked.ins.name, &ops->locked.ops->raw) < 0)
+>  		goto out_free_ops;
+>  
+> -	ops->locked.ins.ops = ins__find(arch, ops->locked.ins.name);
+> +	ops->locked.ins.ops = ins__find(arch, ops->locked.ins.name, 0);
+>  
+>  	if (ops->locked.ins.ops == NULL)
+>  		goto out_free_ops;
+> @@ -672,6 +673,47 @@ static struct ins_ops mov_ops = {
+>  	.scnprintf = mov__scnprintf,
 >  };
 >  
->  struct ins_operands {
->  	char	*raw;
-> +	int	raw_insn;
-> +	int	opcode;
->  	struct {
->  		char	*raw;
->  		char	*name;
-> +		int	opcode;
-> +		int	raw_insn;
->  		struct symbol *sym;
->  		u64	addr;
->  		s64	offset;
-> @@ -62,6 +67,8 @@ struct ins_operands {
+> +static int load_store__scnprintf(struct ins *ins, char *bf, size_t size,
+> +		struct ins_operands *ops, int max_ins_name)
+> +{
+> +	return scnprintf(bf, size, "%-*s %s", max_ins_name, ins->name,
+> +			ops->raw);
+> +}
+> +
+> +/*
+> + * Sets the fields: "raw_insn", opcode, multi_regs and "mem_ref".
+> + * "mem_ref" is set for ops->source which is later used to
+> + * fill the objdump->memory_ref-char field. This ops is currently
+> + * used by powerpc and since binary instruction code is used to
+> + * extract opcode, regs and offset, no other parsing is needed here
+> + */
+> +static int load_store__parse(struct arch *arch __maybe_unused, struct ins_operands *ops,
+> +		struct map_symbol *ms __maybe_unused)
+> +{
+> +	ops->source.raw_insn = ops->raw_insn;
+> +	ops->source.mem_ref = true;
+> +	ops->source.opcode = ops->opcode;
+> +	ops->source.multi_regs = false;
+> +
+> +	if (!ops->source.raw_insn)
+> +		return -1;
+> +
+> +	ops->target.raw_insn = ops->raw_insn;
+> +	ops->target.mem_ref = false;
+> +	ops->target.multi_regs = false;
+> +	ops->target.opcode = ops->opcode;
+> +
+> +	if (!ops->target.raw_insn)
+> +		return -1;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct ins_ops load_store_ops = {
+> +	.parse     = load_store__parse,
+> +	.scnprintf = load_store__scnprintf,
+> +};
+> +
+>  static int dec__parse(struct arch *arch __maybe_unused, struct ins_operands *ops, struct map_symbol *ms __maybe_unused)
+>  {
+>  	char *target, *comment, *s, prev;
+> @@ -762,11 +804,23 @@ static void ins__sort(struct arch *arch)
+>  	qsort(arch->instructions, nmemb, sizeof(struct ins), ins__cmp);
+>  }
+>  
+> -static struct ins_ops *__ins__find(struct arch *arch, const char *name)
+> +static struct ins_ops *__ins__find(struct arch *arch, const char *name, int raw_insn)
+>  {
+>  	struct ins *ins;
+>  	const int nmemb = arch->nr_instructions;
+>  
+> +	if (arch__is(arch, "powerpc")) {
+> +		/*
+> +		 * For powerpc, identify the instruction ops
+> +		 * from the opcode using raw_insn.
+> +		 */
+> +		struct ins_ops *ops;
+> +
+> +		ops = check_ppc_insn(raw_insn);
+> +		if (ops)
+> +			return ops;
+> +	}
+> +
+>  	if (!arch->sorted_instructions) {
+>  		ins__sort(arch);
+>  		arch->sorted_instructions = true;
+> @@ -796,9 +850,9 @@ static struct ins_ops *__ins__find(struct arch *arch, const char *name)
+>  	return ins ? ins->ops : NULL;
+>  }
+>  
+> -struct ins_ops *ins__find(struct arch *arch, const char *name)
+> +struct ins_ops *ins__find(struct arch *arch, const char *name, int raw_insn)
+>  {
+> -	struct ins_ops *ops = __ins__find(arch, name);
+> +	struct ins_ops *ops = __ins__find(arch, name, raw_insn);
+>  
+>  	if (!ops && arch->associate_instruction_ops)
+>  		ops = arch->associate_instruction_ops(arch, name);
+> @@ -808,7 +862,7 @@ struct ins_ops *ins__find(struct arch *arch, const char *name)
+>  
+>  static void disasm_line__init_ins(struct disasm_line *dl, struct arch *arch, struct map_symbol *ms)
+>  {
+> -	dl->ins.ops = ins__find(arch, dl->ins.name);
+> +	dl->ins.ops = ins__find(arch, dl->ins.name, dl->ops.raw_insn);
+>  
+>  	if (!dl->ins.ops)
+>  		return;
+> diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
+> index a391e1bb81f7..831ebcc329cd 100644
+> --- a/tools/perf/util/disasm.h
+> +++ b/tools/perf/util/disasm.h
+> @@ -62,6 +62,7 @@ struct ins_operands {
+>  		bool	offset_avail;
+>  		bool	outside;
+>  		bool	multi_regs;
+> +		bool	mem_ref;
+>  	} target;
+>  	union {
 >  		struct {
->  			char	*raw;
->  			char	*name;
-> +			int	opcode;
-> +			int	raw_insn;
+> @@ -71,6 +72,7 @@ struct ins_operands {
+>  			int	raw_insn;
 >  			u64	addr;
 >  			bool	multi_regs;
+> +			bool	mem_ref;
 >  		} source;
+>  		struct {
+>  			struct ins	    ins;
+> @@ -104,7 +106,7 @@ struct annotate_args {
+>  struct arch *arch__find(const char *name);
+>  bool arch__is(struct arch *arch, const char *name);
+>  
+> -struct ins_ops *ins__find(struct arch *arch, const char *name);
+> +struct ins_ops *ins__find(struct arch *arch, const char *name, int raw_insn);
+>  int ins__scnprintf(struct ins *ins, char *bf, size_t size,
+>  		   struct ins_operands *ops, int max_ins_name);
+>  
+> diff --git a/tools/perf/util/include/dwarf-regs.h b/tools/perf/util/include/dwarf-regs.h
+> index 01fb25a1150a..7ea39362ecaf 100644
+> --- a/tools/perf/util/include/dwarf-regs.h
+> +++ b/tools/perf/util/include/dwarf-regs.h
+> @@ -1,6 +1,7 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+>  #ifndef _PERF_DWARF_REGS_H_
+>  #define _PERF_DWARF_REGS_H_
+> +#include "annotate.h"
+>  
+>  #define DWARF_REG_PC  0xd3af9c /* random number */
+>  #define DWARF_REG_FB  0xd3affb /* random number */
+> @@ -31,6 +32,8 @@ static inline int get_dwarf_regnum(const char *name __maybe_unused,
+>  }
+>  #endif
+>  
+> +void get_arch_regs(int raw_insn, int is_source, struct annotated_op_loc *op_loc);
+> +
+>  #ifdef HAVE_ARCH_REGS_QUERY_REGISTER_OFFSET
+>  /*
+>   * Arch should support fetching the offset of a register in pt_regs
 > -- 
 > 2.43.0
 > 
