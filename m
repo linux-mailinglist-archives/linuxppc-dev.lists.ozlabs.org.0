@@ -1,76 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634A58FDD90
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 05:39:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1197E8FDE57
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 07:49:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=S8KKg8Qy;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=b15hR+TW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vvqnw0bWSz3cXM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 13:39:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvthN1sr1z3cXy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 15:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=S8KKg8Qy;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=b15hR+TW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=yuzhao@google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.178; helo=out-178.mta1.migadu.com; envelope-from=chengming.zhou@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 400 seconds by postgrey-1.37 at boromir; Thu, 06 Jun 2024 12:56:50 AEST
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvqn74JbWz2yvf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 13:38:50 +1000 (AEST)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-42152bb7b81so41325e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jun 2024 20:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717645122; x=1718249922; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n+sCN4gd5xRSv8MbZzfOM4BQL071QPAHGQYJsY8mOBI=;
-        b=S8KKg8QyyQK2xtGzDeoIbrE6ZPdHWBiQm+0JiFnF83WBe2zAEVzGh/8m3t5qsbyeLv
-         SDK58Y0YC8dU0iWKovV0IDDToSdwfER/yBEuIL30wv3ojvxX5/hQA2Gx0D1CnbKeY+nN
-         Sc5Q9UADcFnnkwHlNLcyoRJuIXTGpmNbtsvP6SQpJtnYu3ZjXKZYjmu77MeupLBYcQL7
-         F2Yh21ncjNz6AtfAiiqfjfB111WFWjOVn4+KaNo+b7xOCeKwpGc6rtDaxLb7StBeJm4w
-         v3cR5F2hPKA/hcrcjWFE0wKvv2VD2lvZEr/dmYdoM1Ok0EjwRNouztYZN5kUhc1IjI13
-         st1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717645122; x=1718249922;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n+sCN4gd5xRSv8MbZzfOM4BQL071QPAHGQYJsY8mOBI=;
-        b=D1XDYy16YQu1Zs6iIMHJzrv0b0HyWXJuuN3q6/Pywgw+LwomdsyClRywCE9iLiqU2u
-         vg1gq/UUCChwJaTbYwGG+IXz1njh7TsOIjEY5ejSMc0sEHdk46Gx7BldpgkKLo+mMfT9
-         uggMgBMIwUgbNZOrcddNfUDfcdblNaZN/B6RdM+a7XtYfrnUX7CUq+W+udQ7WPP0OtnR
-         uyDqa4DH+wh+pYvmNEacc3PjnDATNReFYhNeF0Nhq/cpni68aucu5YeQgTe3AUMuLIlk
-         sqvOXbOKy+6j7aS8URZiCasaljwPNvsnbTKcPSOJruTgupPEeooOL5fTbcp3Sz+7ACoD
-         JhMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUZ1LxhrZHr1eJ/VZYFf61UQeZB/yprEq61rpHr1UlppkZtDDhCpAfg5IjmVW/mJBrpYpQVF/uYeDca9VcnJeYQil9FyHcxa4ReUieyQ==
-X-Gm-Message-State: AOJu0YwfAG3Ek3mQAXsfPnBDK1uihNFW+2UcTIIuxgK3u8bN2rcS20lM
-	RZieA6zhhKY9zCYbsoY4eWj67he5b/FyDWfwH9qYDi5vzO6DpsrOU2LeM8YcSLJfB9CbsD9hv9z
-	vCdUqdAkzlOHSu/OQjLsoH3DmZiwnhspuxiC6
-X-Google-Smtp-Source: AGHT+IED6sI5jxhMT1wmnXVkKvgDEwPtPXeaSABuPbsUuWB+6ngoSn1LlcVFANBPnv+O+WxbFbVMvWEPm1NPGNA5yhc=
-X-Received: by 2002:a05:600c:1c09:b0:41a:444b:e1d9 with SMTP id
- 5b1f17b1804b1-4215b7a0ae5mr1228175e9.4.1717645121762; Wed, 05 Jun 2024
- 20:38:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvprf5q3Wz30WG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 12:56:50 +1000 (AEST)
+X-Envelope-To: yosryahmed@google.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1717642183;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5TRIXdZH0MFsDrtAUMxWXmV78YJWERsVBogU5sB6ock=;
+	b=b15hR+TWR7d88Ppv7+DQY4gI99mEhGw5y7HNfof+KNldn8mCJBaHtegIi55tjR8gLi7Fvh
+	LzjNotdZuArhnxmgbjP0qzxxvOOs2urIoOC9W/bzm/+ieKLjcNz5xptVOgnI8jeg+7zGhh
+	r3/nehoX5EfkUhFIM6+BkpxU1JkFNF4=
+X-Envelope-To: erhard_f@mailbox.org
+X-Envelope-To: yuzhao@google.com
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: linuxppc-dev@lists.ozlabs.org
+X-Envelope-To: hannes@cmpxchg.org
+X-Envelope-To: nphamcs@gmail.com
+X-Envelope-To: senozhatsky@chromium.org
+X-Envelope-To: minchan@kernel.org
+X-Envelope-To: vbabka@kernel.org
+Message-ID: <e68bcc6a-25b1-42aa-83b3-5d457b254cbe@linux.dev>
+Date: Thu, 6 Jun 2024 10:49:14 +0800
 MIME-Version: 1.0
+Subject: Re: kswapd0: page allocation failure: order:0,
+ mode:0x820(GFP_ATOMIC), nodemask=(null),cpuset=/,mems_allowed=0 (Kernel
+ v6.5.9, 32bit ppc)
+Content-Language: en-US
+To: Yosry Ahmed <yosryahmed@google.com>, Erhard Furtner <erhard_f@mailbox.org>
 References: <20240508202111.768b7a4d@yea> <20240515224524.1c8befbe@yea>
  <CAOUHufZ-9NmzOKjLedvZFp0=N0LvRZn77qC6k1WXK+NHtKr=0w@mail.gmail.com>
  <CAOUHufZ36rQc8AfLtRv2QrEareysdvbprAEO5XkcG-FeDOxFLA@mail.gmail.com>
- <45fc081c-ee8d-4774-a597-708d2924f812@redhat.com> <87tti6pxxc.fsf@mail.lhotse>
-In-Reply-To: <87tti6pxxc.fsf@mail.lhotse>
-From: Yu Zhao <yuzhao@google.com>
-Date: Wed, 5 Jun 2024 21:38:04 -0600
-Message-ID: <CAOUHufacbbpS3ghEwsQ-pObttnQk__xo0vjpGWXNq1i-bsuiGw@mail.gmail.com>
-Subject: Re: kswapd0: page allocation failure: order:0, mode:0x820(GFP_ATOMIC),
- nodemask=(null),cpuset=/,mems_allowed=0 (Kernel v6.5.9, 32bit ppc)
-To: Michael Ellerman <mpe@ellerman.id.au>, Erhard Furtner <erhard_f@mailbox.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20240602200332.3e531ff1@yea> <20240604001304.5420284f@yea>
+ <CAJD7tkbCRLdy0vD2Pd17fNrxHgkzW1VucN4qMkohLFLBLaaeCQ@mail.gmail.com>
+ <20240604134458.3ae4396a@yea>
+ <CAJD7tkYjJJGthQ_8NukGw6Q9EYbLA=8sAH_7=B90KXEL6HWdSw@mail.gmail.com>
+ <CAOUHufa0Fpj6SjNgB-z0n5Jg63q1ewkbOAU65forpDwQVs45qg@mail.gmail.com>
+ <CAJD7tkb=5GJ9SNUwDsu1Zy3Tus4rjsNo60Hg9N7=gGth409Diw@mail.gmail.com>
+ <CAOUHufb6zXr14Wm3T-4-OJh7iAq+vzDKwVYfHLhMMt96SpiZXg@mail.gmail.com>
+ <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
+ <20240604231019.18e2f373@yea>
+ <CAJD7tkYq5u7B+0UH2XKpeWJnUxoO2kJ1_XZ2JOgYpyNEVR7u0g@mail.gmail.com>
+ <20240606010431.2b33318c@yea>
+ <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Mailman-Approved-At: Thu, 06 Jun 2024 15:49:14 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,71 +86,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, David Hildenbrand <david@redhat.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, Yu Zhao <yuzhao@google.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, "Vlastimil Babka \(SUSE\)" <vbabka@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 5, 2024 at 9:12=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.au=
-> wrote:
->
-> David Hildenbrand <david@redhat.com> writes:
-> > On 01.06.24 08:01, Yu Zhao wrote:
-> >> On Wed, May 15, 2024 at 4:06=E2=80=AFPM Yu Zhao <yuzhao@google.com> wr=
-ote:
-> ...
-> >>
-> >> Your system has 2GB memory and it uses zswap with zsmalloc (which is
-> >> good since it can allocate from the highmem zone) and zstd/lzo (which
-> >> doesn't matter much). Somehow -- I couldn't figure out why -- it
-> >> splits the 2GB into a 0.25GB DMA zone and a 1.75GB highmem zone:
-> >>
-> >> [    0.000000] Zone ranges:
-> >> [    0.000000]   DMA      [mem 0x0000000000000000-0x000000002fffffff]
-> >> [    0.000000]   Normal   empty
-> >> [    0.000000]   HighMem  [mem 0x0000000030000000-0x000000007fffffff]
-> >
-> > That's really odd. But we are messing with "PowerMac3,6", so I don't
-> > really know what's right or wrong ...
->
-> The DMA zone exists because 9739ab7eda45 ("powerpc: enable a 30-bit
-> ZONE_DMA for 32-bit pmac") selects it.
->
-> It's 768MB (not 0.25GB) because it's clamped at max_low_pfn:
+On 2024/6/6 07:41, Yosry Ahmed wrote:
+> On Wed, Jun 5, 2024 at 4:04 PM Erhard Furtner <erhard_f@mailbox.org> wrote:
+>>
+>> On Tue, 4 Jun 2024 20:03:27 -0700
+>> Yosry Ahmed <yosryahmed@google.com> wrote:
+>>
+>>> Could you check if the attached patch helps? It basically changes the
+>>> number of zpools from 32 to min(32, nr_cpus).
+>>
+>> Thanks! The patch does not fix the issue but it helps.
+>>
+>> Means I still get to see the 'kswapd0: page allocation failure' in the dmesg, a 'stress-ng-vm: page allocation failure' later on, another kswapd0 error later on, etc. _but_ the machine keeps running the workload, stays usable via VNC and I get no hard crash any longer.
+>>
+>> Without patch kswapd0 error and hard crash (need to power-cycle) <3min. With patch several kswapd0 errors but running for 2 hrs now. I double checked this to be sure.
+> 
+> Thanks for trying this out. This is interesting, so even two zpools is
+> too much fragmentation for your use case.
+> 
+> I think there are multiple ways to go forward here:
+> (a) Make the number of zpools a config option, leave the default as
+> 32, but allow special use cases to set it to 1 or similar. This is
+> probably not preferable because it is not clear to users how to set
+> it, but the idea is that no one will have to set it except special use
+> cases such as Erhard's (who will want to set it to 1 in this case).
+> 
+> (b) Make the number of zpools scale linearly with the number of CPUs.
+> Maybe something like nr_cpus/4 or nr_cpus/8. The problem with this
+> approach is that with a large number of CPUs, too many zpools will
+> start having diminishing returns. Fragmentation will keep increasing,
+> while the scalability/concurrency gains will diminish.
+> 
+> (c) Make the number of zpools scale logarithmically with the number of
+> CPUs. Maybe something like 4log2(nr_cpus). This will keep the number
+> of zpools from increasing too much and close to the status quo. The
+> problem is that at a small number of CPUs (e.g. 2), 4log2(nr_cpus)
+> will actually give a nr_zpools > nr_cpus. So we will need to come up
+> with a more fancy magic equation (e.g. 4log2(nr_cpus/4)).
+> 
+> (d) Make the number of zpools scale linearly with memory. This makes
+> more sense than scaling with CPUs because increasing the number of
+> zpools increases fragmentation, so it makes sense to limit it by the
+> available memory. This is also more consistent with other magic
+> numbers we have (e.g. SWAP_ADDRESS_SPACE_SHIFT).
+> 
+> The problem is that unlike zswap trees, the zswap pool is not
+> connected to the swapfile size, so we don't have an indication for how
+> much memory will be in the zswap pool. We can scale the number of
+> zpools with the entire memory on the machine during boot, but this
+> seems like it would be difficult to figure out, and will not take into
+> consideration memory hotplugging and the zswap global limit changing.
+> 
+> (e) A creative mix of the above.
+> 
+> (f) Something else (probably simpler).
+> 
+> I am personally leaning toward (c), but I want to hear the opinions of
+> other people here. Yu, Vlastimil, Johannes, Nhat? Anyone else?
+> 
+> In the long-term, I think we may want to address the lock contention
+> in zsmalloc itself instead of zswap spawning multiple zpools.
+> 
 
-Right. (I meant 0.75GB.)
+Agree, I think we should try to improve locking scalability of zsmalloc.
+I have some thoughts to share, no code or test data yet:
 
-> #ifdef CONFIG_ZONE_DMA
->         max_zone_pfns[ZONE_DMA] =3D min(max_low_pfn,
->                                       1UL << (zone_dma_bits - PAGE_SHIFT)=
-);
-> #endif
->
-> Which comes eventually from CONFIG_LOWMEM_SIZE, which defaults to 768MB.
+1. First, we can change the pool global lock to per-class lock, which
+   is more fine-grained.
+2. Actually, we only need to take per-zspage lock when malloc/free,
+   only need to take class lock when its fullness changed.
+3. If this is not enough, we can have fewer fullness groups, so the
+   need to take class lock becomes fewer. (will need some test data)
 
-I see. I grep'ed VMSPLIT which is used on x86 and arm but apparently
-not on powerpc.
-
-> I think it's 768MB because the user:kernel split is 3G:1G, and then the
-> kernel needs some of that 1G virtual space for vmalloc/ioremap/highmem,
-> so it splits it 768M:256M.
->
-> Then ZONE_NORMAL is empty because it is also limited to max_low_pfn:
->
->         max_zone_pfns[ZONE_NORMAL] =3D max_low_pfn;
->
-> The rest of RAM is highmem.
->
-> So I think that's all behaving as expected, but I don't know 32-bit /
-> highmem stuff that well so I could be wrong.
-
-Yes, the three zones work as intended.
-
-Erhard,
-
-Since your system only has 2GB memory, I'd try the 2G:2G split, which
-would in theory allow both the kernel and userspace to all memory.
-
-CONFIG_LOWMEM_SIZE_BOOL=3Dy
-CONFIG_LOWMEM_SIZE=3D0x7000000
-
-(Michael, please correct me if the above wouldn't work.)
+More comments are welcome. Thanks!
