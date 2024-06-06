@@ -1,71 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE048FDFAC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 09:28:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC468FDFBA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 09:29:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VCwoJZI+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=j9lgoT+P;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VvwtH1H0yz3ck3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 17:28:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VvwvB5w9cz3d2n
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jun 2024 17:29:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VCwoJZI+;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=j9lgoT+P;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvwrq1X9nz30VT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 17:27:23 +1000 (AEST)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-70245b22365so500894b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2024 00:27:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vvws02f5sz3cfn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jun 2024 17:27:32 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-7024cd9dd3dso517074b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jun 2024 00:27:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717658841; x=1718263641; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1717658850; x=1718263650; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rBwbkrCA0TqUNhFf1X74rV9wZuOSuStFGznhcPYGXFs=;
-        b=VCwoJZI+RFybII+4/xkeprfHi4GpjOXfR0yb+AJiOS18nI9R99EXTloIkGK7lHNwV0
-         ZrNyAIs3pB0qN5m9fPM+6xfhz9+LMJBH3GgVn/+16ZNIIdfnfLEz4buDALU7NJq1ScdI
-         is/lXju6DUqRfETl4DL321v88xSYg/JHRI+QKvwHNM2qKwh4E+8FgGzR8Q0uLm3NyZ6t
-         EJOrMw8lCvOwj/EVkwx6/ipIXorjjp0KBYvFEH8oHalwE8o1uzNJvSSMdfHH7AmAs4xT
-         pU4KJVdAMi4zK19X1H08WCmtYlYvzio3VlmXa3kRUVPZPKNkfZ+rixYjhXbSIX6jqWpI
-         dhoA==
+        bh=4s6tIDIkxRPAkTqdlcJJCzh5RP/VyC6Pay0yvubVfws=;
+        b=j9lgoT+PuziDORdgN0zYDduiEmvqyUa+TVAz5zGnM2m+zQsZR4QCRJN171Zxv6fvxd
+         svFoHeMayCN6KnkjDgzAk9D13MnihWjkSN7eilltT4JDcfoPM0CvqvT2r81a9aAeLCZ2
+         v8QGy5WNJsYjJafpK84YDhqDJi50MjZ8KtF5rujf+kKTiUxTduFVd3bz7dux75uiJ77F
+         nj0ptySCY0piHO/Q7MvehBx95icSJ2R0JTzixcudA9IE6ErEShL8hDqdoJvLGAXFGXDO
+         A9uP4C6ygQY9EiNzn1WCzoXhjl5weUEAWSmBqrswTbOIgbnNtrHMv3yr/+iVvN+6Cxjt
+         z1MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717658841; x=1718263641;
+        d=1e100.net; s=20230601; t=1717658850; x=1718263650;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rBwbkrCA0TqUNhFf1X74rV9wZuOSuStFGznhcPYGXFs=;
-        b=geLQdZUiqiApphtXfi/dfd7XYsBe6uqjl46342+0jBDxJCoRLtGC+iG+lboUdpBEYb
-         Wpp0bZT7seKbgp7HuECyvONT2Qfmrpc/o7KosfHren+knFHhwmbaPc1Fc3aS3RinbX5g
-         lShKZOKyRtaoBZyoRcPEOR4ne+OjM9AQ2yH3/vXU9F1eyKQCg9J2lZVksI13YGPzQIt3
-         6jS5tAoKaIB+1j2xOs4Wj0eb9ZjqAamh1bKKgutBWIHIMLOrnX5I1aWoBK0HFVqSMZVL
-         iv++8ex2McIQbTf+NEUFIm7VnOr77qXQ551th9W5zRYcct9h36Eesn9LPhlDCmhDAoU7
-         S9HA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ4TStGBaCRSDKQ9Zuch0ZbuMt1xrun1PqdQRHS1NcyQKBUgeZcdf+gZunJ3gAx4qTfY+o6HVYCzQ+xiQZiT77iq4vbb18Ak1tnRma6w==
-X-Gm-Message-State: AOJu0YwYff53ncoJGF+/mmn8+RMUy00GNVS1O7PoTCJmHz1T4vGawCv2
-	jPdIqtnDLN/dxyW37KdiWk4MlAQBDY4ECJNt6Rsfx2iuq3CKPcPlNdNac0hVYg==
-X-Google-Smtp-Source: AGHT+IFnIUwznqu9u6MYNsnelzJn1VgHUtykElhx3ssZeiNo68mnCPqGNdTRBVe2iI9ZvQRVR2Dx9A==
-X-Received: by 2002:a05:6a00:98a:b0:6e9:38d0:5019 with SMTP id d2e1a72fcca58-703e56fb190mr5742198b3a.0.1717658840683;
-        Thu, 06 Jun 2024 00:27:20 -0700 (PDT)
+        bh=4s6tIDIkxRPAkTqdlcJJCzh5RP/VyC6Pay0yvubVfws=;
+        b=U82nRaADSW3dL9lDTxx/JAeS14J+yw4YMBWpwls9F50oMi6xpMma7aTgXFmSO8uiAg
+         nz6zo+SB08PMcU6Rni5Ty2NPGgzqjhY9z9yGF45F3+8ByW4/g9mnPthM5ENt1jidc4U2
+         jUikhQn2V5eEfaKt0T753CqMunas6u9+DJ5R0+QluvUIS+tePwL/BAOL1KCMnpuiFoW0
+         evoiU0ubSupNUIn5U6/HiivIAuyPIZgAQZc82mf6ApJmGorsZAsLfg8wmZvbFsIEGcLp
+         D3Yc8gPrV7LhEP1QmMpRE9T5bgoYjgxzrkrGVt+8oAknRSaXw7TFZ5vDuInXJp/JMS03
+         +g8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXPjpqeLZtEXNyj3LATdS49G8lgN/QtSpR08m2k3NYfoF3o6Vo1Z/XMFM2czvG2pA/eeZq3c0HGpwEQyIoAOIYJBOxKsDYXQcy/Jxg4eA==
+X-Gm-Message-State: AOJu0YyKTX8GPbP3SsQpxha0lI3r5HF4ED8y7PQtsY5jNmGH2TPk1jvx
+	yBzKMP94ZsJM0aj3LnEmLjqhQf54L0Pp9mAWigcwKE3Dbl60dQnsA9BeCBtucw==
+X-Google-Smtp-Source: AGHT+IGaiybGi6wCqyOqfW7h/JsBn0scowWpyUza0Yrm57kHbK5xdefouT9nQfmNiEsFANaf/ZRQSg==
+X-Received: by 2002:a05:6a21:329a:b0:1af:3715:80c8 with SMTP id adf61e73a8af0-1b2b70f893amr5554061637.46.1717658849988;
+        Thu, 06 Jun 2024 00:27:29 -0700 (PDT)
 Received: from [127.0.1.1] ([120.60.142.92])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd494feasm566621b3a.100.2024.06.06.00.27.10
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd494feasm566621b3a.100.2024.06.06.00.27.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 00:27:20 -0700 (PDT)
+        Thu, 06 Jun 2024 00:27:29 -0700 (PDT)
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Thu, 06 Jun 2024 12:56:34 +0530
-Subject: [PATCH 1/5] PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+Date: Thu, 06 Jun 2024 12:56:35 +0530
+Subject: [PATCH 2/5] PCI: endpoint: Introduce 'epc_deinit' event and notify
+ the EPF drivers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240606-pci-deinit-v1-1-4395534520dc@linaro.org>
+Message-Id: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
 References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
 In-Reply-To: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
 To: Vignesh Raghavendra <vigneshr@ti.com>, 
@@ -88,16 +89,16 @@ To: Vignesh Raghavendra <vigneshr@ti.com>,
  Masami Hiramatsu <mhiramat@kernel.org>, 
  Kishon Vijay Abraham I <kishon@kernel.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8261;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9560;
  i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=XfhruISZ6W6R/LbDDvmS/1LRRcCdxW1e2vnybSWgY64=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmYWTCd6OusAPWj8/EhofvKCGw0bb2fJ7CBP789
- MUhRI4+ZwmJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZmFkwgAKCRBVnxHm/pHO
- 9UPbCACmpesgufNbd+/06XFOPPifCGFzoXuFNZvjloHcTt5jKhb91yQtvvslDVmrsSO7MPGXfNV
- sWYep9sTwAits18G98ywyuTzVz01h0PD/4W9QSTh+3n7svU3XY9LQy/1JOfxCJMQlsLhQTijMF6
- HSJC65HnT3yTkO+pBo/AsQtv9uHgnqv3OD63v71cK1ofkiF1Gk7GQgp0buARc1SOYAQ7UyQ7ZWO
- V151SUoUGcqz0qzCJAZXQNBVsg5NmZ3bca4RsFWH77rv4NFm54xKjWT33Skf8Gs43Wz4NLrcrqc
- ZhIF2srA1GaMOp43xafLsUweSWlQI9flN6hMwWnek6Nmh2Ja
+ bh=GbOYu+TwhG+hMHKPWYPlU9l5l4iVl79aA0bUKAASNCY=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmYWTCfUyadm2FsfT89qYm970AY7lKnZuqPFOxN
+ 5rQzJ3x5yOJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZmFkwgAKCRBVnxHm/pHO
+ 9aD6B/9LE0t3lGEsKHXfOUpCw4cw1jDP5BxV1sJGlu1vOgp0Xka3RLQ5uhUlPtsjp6hb9MsvhXd
+ 4JvJeI9wFxsz0eqjQuUIDnxtr9xrEBvJFLdpAECsRTlLBQIE5ePIh7rYsZvUn9gWiagsu8W/F+S
+ l/iuFgHvtI12yumK+1N+5K5E3c4yUPjiZV9DllTZmwdQLtAf0o7BpHeWMhpdbcToZ26w62K31zv
+ kJSnZXzIsK/B/OrwnCbLVh8Xdq0iK81iAiqHBHuscXRJWmW3HpFMzyetAlDmXIBC1gV2eoMBQ4P
+ nzak2S/MZ7yZQtluW+e3mLZ24byLk56hZgRySSN6KoDL5ZJJ
 X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -111,223 +112,252 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, linux-pci@vger.kernel.org, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linux-kernel@vger.kernel.org, linux-arm-kernel@axis.com, mhi@lists.linux.dev, linux-renesas-soc@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: imx@lists.linux.dev, linux-pci@vger.kernel.org, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linux-kernel@vger.kernel.org, linux-arm-kernel@axis.com, mhi@lists.linux.dev, linux-renesas-soc@vger.kernel.org, Niklas Cassel <cassel@kernel.org>, linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently dw_pcie_ep_init_notify() wrapper just calls pci_epc_init_notify()
-directly. So this wrapper provides no benefit to the glue drivers.
+As like the 'epc_init' event, that is used to signal the EPF drivers about
+the EPC initialization, let's introduce 'epc_deinit' event that is used to
+signal EPC deinitialization.
 
-So let's remove it and call pci_epc_init_notify() directly from glue
+The EPC deinitialization applies only when any sort of fundamental reset
+is supported by the endpoint controller as per the PCIe spec.
+
+Reference: PCIe Base spec v5.0, sections 4.2.4.9.1 and 6.6.1.
+
+Currently, some EPC drivers like pcie-qcom-ep and pcie-tegra194 support
+PERST# as the fundamental reset. So the 'deinit' event will be notified to
+the EPF drivers when PERST# assert happens in the above mentioned EPC
 drivers.
 
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+The EPF drivers, on receiving the event through the epc_deinit() callback
+should reset the EPF state machine and also cleanup any configuration that
+got affected by the fundamental reset like BAR, DMA etc...
+
+This change also warrants skipping the cleanups in unbind() if already done
+in epc_deinit().
+
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/pci/controller/dwc/pci-dra7xx.c           |  2 +-
- drivers/pci/controller/dwc/pci-imx6.c             |  2 +-
- drivers/pci/controller/dwc/pci-keystone.c         |  2 +-
- drivers/pci/controller/dwc/pci-layerscape-ep.c    |  2 +-
- drivers/pci/controller/dwc/pcie-artpec6.c         |  2 +-
- drivers/pci/controller/dwc/pcie-designware-ep.c   | 12 ------------
- drivers/pci/controller/dwc/pcie-designware-plat.c |  2 +-
- drivers/pci/controller/dwc/pcie-designware.h      |  5 -----
- drivers/pci/controller/dwc/pcie-keembay.c         |  2 +-
- drivers/pci/controller/dwc/pcie-qcom-ep.c         |  2 +-
- drivers/pci/controller/dwc/pcie-rcar-gen4.c       |  2 +-
- drivers/pci/controller/dwc/pcie-tegra194.c        |  2 +-
- drivers/pci/controller/dwc/pcie-uniphier-ep.c     |  2 +-
- 13 files changed, 11 insertions(+), 28 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |  1 -
+ drivers/pci/controller/dwc/pcie-qcom-ep.c       |  1 +
+ drivers/pci/controller/dwc/pcie-tegra194.c      |  1 +
+ drivers/pci/endpoint/functions/pci-epf-mhi.c    | 19 +++++++++++++++++++
+ drivers/pci/endpoint/functions/pci-epf-test.c   | 17 +++++++++++++++--
+ drivers/pci/endpoint/pci-epc-core.c             | 25 +++++++++++++++++++++++++
+ include/linux/pci-epc.h                         | 13 +++++++++++++
+ include/linux/pci-epf.h                         |  2 ++
+ 8 files changed, 76 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
-index d2d17d37d3e0..e491d0ff3962 100644
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -474,7 +474,7 @@ static int dra7xx_add_pcie_ep(struct dra7xx_pcie *dra7xx,
- 		return ret;
- 	}
- 
--	dw_pcie_ep_init_notify(ep);
-+	pci_epc_init_notify(ep->epc);
- 
- 	return 0;
- }
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 917c69edee1d..a876b8e6e741 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1131,7 +1131,7 @@ static int imx6_add_pcie_ep(struct imx6_pcie *imx6_pcie,
- 		return ret;
- 	}
- 
--	dw_pcie_ep_init_notify(ep);
-+	pci_epc_init_notify(ep->epc);
- 
- 	/* Start LTSSM. */
- 	imx6_pcie_ltssm_enable(dev);
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index d3a7d14ee685..ca1054f5c79a 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1293,7 +1293,7 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 			goto err_ep_init;
- 		}
- 
--		dw_pcie_ep_init_notify(&pci->ep);
-+		pci_epc_init_notify(pci->ep.epc);
- 
- 		break;
- 	default:
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index 7dde6d5fa4d8..35bb481564c7 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -286,7 +286,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	dw_pcie_ep_init_notify(&pci->ep);
-+	pci_epc_init_notify(pci->ep.epc);
- 
- 	return ls_pcie_ep_interrupt_init(pcie, pdev);
- }
-diff --git a/drivers/pci/controller/dwc/pcie-artpec6.c b/drivers/pci/controller/dwc/pcie-artpec6.c
-index a4630b92489b..dc8dd7f27b78 100644
---- a/drivers/pci/controller/dwc/pcie-artpec6.c
-+++ b/drivers/pci/controller/dwc/pcie-artpec6.c
-@@ -452,7 +452,7 @@ static int artpec6_pcie_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 
--		dw_pcie_ep_init_notify(&pci->ep);
-+		pci_epc_init_notify(pci->ep.epc);
- 
- 		break;
- 	default:
 diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 47391d7d3a73..2e69f81baf99 100644
+index 2e69f81baf99..78d5fc72c9cb 100644
 --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
 +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -27,18 +27,6 @@ void dw_pcie_ep_linkup(struct dw_pcie_ep *ep)
+@@ -620,7 +620,6 @@ void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep)
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 
+ 	dw_pcie_edma_remove(pci);
+-	ep->epc->init_complete = false;
  }
- EXPORT_SYMBOL_GPL(dw_pcie_ep_linkup);
+ EXPORT_SYMBOL_GPL(dw_pcie_ep_cleanup);
  
--/**
-- * dw_pcie_ep_init_notify - Notify EPF drivers about EPC initialization complete
-- * @ep: DWC EP device
-- */
--void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
--{
--	struct pci_epc *epc = ep->epc;
--
--	pci_epc_init_notify(epc);
--}
--EXPORT_SYMBOL_GPL(dw_pcie_ep_init_notify);
--
- /**
-  * dw_pcie_ep_get_func_from_ep - Get the struct dw_pcie_ep_func corresponding to
-  *				 the endpoint function
-diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
-index 8490c5d6ff9f..771b9d9be077 100644
---- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-@@ -154,7 +154,7 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
- 			dw_pcie_ep_deinit(&pci->ep);
- 		}
- 
--		dw_pcie_ep_init_notify(&pci->ep);
-+		pci_epc_init_notify(pci->ep.epc);
- 
- 		break;
- 	default:
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index f8e5431a207b..49ae845a3662 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -670,7 +670,6 @@ static inline void __iomem *dw_pcie_own_conf_map_bus(struct pci_bus *bus,
- void dw_pcie_ep_linkup(struct dw_pcie_ep *ep);
- int dw_pcie_ep_init(struct dw_pcie_ep *ep);
- int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep);
--void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep);
- void dw_pcie_ep_deinit(struct dw_pcie_ep *ep);
- void dw_pcie_ep_cleanup(struct dw_pcie_ep *ep);
- int dw_pcie_ep_raise_intx_irq(struct dw_pcie_ep *ep, u8 func_no);
-@@ -698,10 +697,6 @@ static inline int dw_pcie_ep_init_registers(struct dw_pcie_ep *ep)
- 	return 0;
- }
- 
--static inline void dw_pcie_ep_init_notify(struct dw_pcie_ep *ep)
--{
--}
--
- static inline void dw_pcie_ep_deinit(struct dw_pcie_ep *ep)
- {
- }
-diff --git a/drivers/pci/controller/dwc/pcie-keembay.c b/drivers/pci/controller/dwc/pcie-keembay.c
-index 98bbc83182b4..278205db60a2 100644
---- a/drivers/pci/controller/dwc/pcie-keembay.c
-+++ b/drivers/pci/controller/dwc/pcie-keembay.c
-@@ -442,7 +442,7 @@ static int keembay_pcie_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 
--		dw_pcie_ep_init_notify(&pci->ep);
-+		pci_epc_init_notify(pci->ep.epc);
- 
- 		break;
- 	default:
 diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-index 1ecf602c225a..4d2d7457dcb3 100644
+index 4d2d7457dcb3..2324e56c9bfc 100644
 --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
 +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-@@ -482,7 +482,7 @@ static int qcom_pcie_perst_deassert(struct dw_pcie *pci)
- 	val &= ~PARF_MSTR_AXI_CLK_EN;
- 	writel_relaxed(val, pcie_ep->parf + PARF_MHI_CLOCK_RESET_CTRL);
- 
--	dw_pcie_ep_init_notify(&pcie_ep->pci.ep);
-+	pci_epc_init_notify(pcie_ep->pci.ep.epc);
- 
- 	/* Enable LTSSM */
- 	val = readl_relaxed(pcie_ep->parf + PARF_LTSSM);
-diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-index cfeccc2f9ee1..237a6a8818de 100644
---- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-+++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-@@ -437,7 +437,7 @@ static int rcar_gen4_add_dw_pcie_ep(struct rcar_gen4_pcie *rcar)
- 		rcar_gen4_pcie_ep_deinit(rcar);
+@@ -507,6 +507,7 @@ static void qcom_pcie_perst_assert(struct dw_pcie *pci)
+ 		return;
  	}
  
--	dw_pcie_ep_init_notify(ep);
-+	pci_epc_init_notify(ep->epc);
- 
- 	return ret;
- }
++	pci_epc_deinit_notify(pci->ep.epc);
+ 	dw_pcie_ep_cleanup(&pci->ep);
+ 	qcom_pcie_disable_resources(pcie_ep);
+ 	pcie_ep->link_status = QCOM_PCIE_EP_LINK_DISABLED;
 diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 93f5433c5c55..432ed9d9a463 100644
+index 432ed9d9a463..4ca7404246a3 100644
 --- a/drivers/pci/controller/dwc/pcie-tegra194.c
 +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1903,7 +1903,7 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
- 		goto fail_init_complete;
- 	}
+@@ -1715,6 +1715,7 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	if (ret)
+ 		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
  
--	dw_pcie_ep_init_notify(ep);
-+	pci_epc_init_notify(ep->epc);
++	pci_epc_deinit_notify(pcie->pci.ep.epc);
+ 	dw_pcie_ep_cleanup(&pcie->pci.ep);
  
- 	/* Program the private control to allow sending LTR upstream */
- 	if (pcie->of_data->has_ltr_req_fix) {
-diff --git a/drivers/pci/controller/dwc/pcie-uniphier-ep.c b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-index a2b844268e28..d6e73811216e 100644
---- a/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-uniphier-ep.c
-@@ -410,7 +410,7 @@ static int uniphier_pcie_ep_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	dw_pcie_ep_init_notify(&priv->pci.ep);
-+	pci_epc_init_notify(priv->pci.ep.epc);
- 
+ 	reset_control_assert(pcie->core_rst);
+diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+index 205c02953f25..5832989e55e8 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
++++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+@@ -764,6 +764,24 @@ static int pci_epf_mhi_epc_init(struct pci_epf *epf)
  	return 0;
  }
+ 
++static void pci_epf_mhi_epc_deinit(struct pci_epf *epf)
++{
++	struct pci_epf_mhi *epf_mhi = epf_get_drvdata(epf);
++	const struct pci_epf_mhi_ep_info *info = epf_mhi->info;
++	struct pci_epf_bar *epf_bar = &epf->bar[info->bar_num];
++	struct mhi_ep_cntrl *mhi_cntrl = &epf_mhi->mhi_cntrl;
++	struct pci_epc *epc = epf->epc;
++
++	if (mhi_cntrl->mhi_dev) {
++		mhi_ep_power_down(mhi_cntrl);
++		if (info->flags & MHI_EPF_USE_DMA)
++			pci_epf_mhi_dma_deinit(epf_mhi);
++		mhi_ep_unregister_controller(mhi_cntrl);
++	}
++
++	pci_epc_clear_bar(epc, epf->func_no, epf->vfunc_no, epf_bar);
++}
++
+ static int pci_epf_mhi_link_up(struct pci_epf *epf)
+ {
+ 	struct pci_epf_mhi *epf_mhi = epf_get_drvdata(epf);
+@@ -898,6 +916,7 @@ static void pci_epf_mhi_unbind(struct pci_epf *epf)
+ 
+ static const struct pci_epc_event_ops pci_epf_mhi_event_ops = {
+ 	.epc_init = pci_epf_mhi_epc_init,
++	.epc_deinit = pci_epf_mhi_epc_deinit,
+ 	.link_up = pci_epf_mhi_link_up,
+ 	.link_down = pci_epf_mhi_link_down,
+ 	.bus_master_enable = pci_epf_mhi_bus_master_enable,
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index e771be7512a1..7c2ed6eae53a 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -782,6 +782,15 @@ static int pci_epf_test_epc_init(struct pci_epf *epf)
+ 	return 0;
+ }
+ 
++static void pci_epf_test_epc_deinit(struct pci_epf *epf)
++{
++	struct pci_epf_test *epf_test = epf_get_drvdata(epf);
++
++	cancel_delayed_work(&epf_test->cmd_handler);
++	pci_epf_test_clean_dma_chan(epf_test);
++	pci_epf_test_clear_bar(epf);
++}
++
+ static int pci_epf_test_link_up(struct pci_epf *epf)
+ {
+ 	struct pci_epf_test *epf_test = epf_get_drvdata(epf);
+@@ -803,6 +812,7 @@ static int pci_epf_test_link_down(struct pci_epf *epf)
+ 
+ static const struct pci_epc_event_ops pci_epf_test_event_ops = {
+ 	.epc_init = pci_epf_test_epc_init,
++	.epc_deinit = pci_epf_test_epc_deinit,
+ 	.link_up = pci_epf_test_link_up,
+ 	.link_down = pci_epf_test_link_down,
+ };
+@@ -905,10 +915,13 @@ static int pci_epf_test_bind(struct pci_epf *epf)
+ static void pci_epf_test_unbind(struct pci_epf *epf)
+ {
+ 	struct pci_epf_test *epf_test = epf_get_drvdata(epf);
++	struct pci_epc *epc = epf->epc;
+ 
+ 	cancel_delayed_work(&epf_test->cmd_handler);
+-	pci_epf_test_clean_dma_chan(epf_test);
+-	pci_epf_test_clear_bar(epf);
++	if (epc->init_complete) {
++		pci_epf_test_clean_dma_chan(epf_test);
++		pci_epf_test_clear_bar(epf);
++	}
+ 	pci_epf_test_free_space(epf);
+ }
+ 
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index 56b60330355d..47a91dcb07d7 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -774,6 +774,31 @@ void pci_epc_notify_pending_init(struct pci_epc *epc, struct pci_epf *epf)
+ }
+ EXPORT_SYMBOL_GPL(pci_epc_notify_pending_init);
+ 
++/**
++ * pci_epc_deinit_notify() - Notify the EPF device about EPC deinitialization
++ * @epc: the EPC device whose deinitialization is completed
++ *
++ * Invoke to notify the EPF device that the EPC deinitialization is completed.
++ */
++void pci_epc_deinit_notify(struct pci_epc *epc)
++{
++	struct pci_epf *epf;
++
++	if (IS_ERR_OR_NULL(epc))
++		return;
++
++	mutex_lock(&epc->list_lock);
++	list_for_each_entry(epf, &epc->pci_epf, list) {
++		mutex_lock(&epf->lock);
++		if (epf->event_ops && epf->event_ops->epc_deinit)
++			epf->event_ops->epc_deinit(epf);
++		mutex_unlock(&epf->lock);
++	}
++	epc->init_complete = false;
++	mutex_unlock(&epc->list_lock);
++}
++EXPORT_SYMBOL_GPL(pci_epc_deinit_notify);
++
+ /**
+  * pci_epc_bus_master_enable_notify() - Notify the EPF device that the EPC
+  *					device has received the Bus Master
+diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
+index 11115cd0fe5b..85bdf2adb760 100644
+--- a/include/linux/pci-epc.h
++++ b/include/linux/pci-epc.h
+@@ -197,6 +197,8 @@ struct pci_epc_features {
+ 
+ #define to_pci_epc(device) container_of((device), struct pci_epc, dev)
+ 
++#ifdef CONFIG_PCI_ENDPOINT
++
+ #define pci_epc_create(dev, ops)    \
+ 		__pci_epc_create((dev), (ops), THIS_MODULE)
+ #define devm_pci_epc_create(dev, ops)    \
+@@ -226,6 +228,7 @@ void pci_epc_linkup(struct pci_epc *epc);
+ void pci_epc_linkdown(struct pci_epc *epc);
+ void pci_epc_init_notify(struct pci_epc *epc);
+ void pci_epc_notify_pending_init(struct pci_epc *epc, struct pci_epf *epf);
++void pci_epc_deinit_notify(struct pci_epc *epc);
+ void pci_epc_bus_master_enable_notify(struct pci_epc *epc);
+ void pci_epc_remove_epf(struct pci_epc *epc, struct pci_epf *epf,
+ 			enum pci_epc_interface_type type);
+@@ -272,4 +275,14 @@ void __iomem *pci_epc_mem_alloc_addr(struct pci_epc *epc,
+ 				     phys_addr_t *phys_addr, size_t size);
+ void pci_epc_mem_free_addr(struct pci_epc *epc, phys_addr_t phys_addr,
+ 			   void __iomem *virt_addr, size_t size);
++
++#else
++static inline void pci_epc_init_notify(struct pci_epc *epc)
++{
++}
++
++static inline void pci_epc_deinit_notify(struct pci_epc *epc)
++{
++}
++#endif /* CONFIG_PCI_ENDPOINT */
+ #endif /* __LINUX_PCI_EPC_H */
+diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
+index dc759eb7157c..0639d4dc8986 100644
+--- a/include/linux/pci-epf.h
++++ b/include/linux/pci-epf.h
+@@ -71,12 +71,14 @@ struct pci_epf_ops {
+ /**
+  * struct pci_epc_event_ops - Callbacks for capturing the EPC events
+  * @epc_init: Callback for the EPC initialization complete event
++ * @epc_deinit: Callback for the EPC deinitialization event
+  * @link_up: Callback for the EPC link up event
+  * @link_down: Callback for the EPC link down event
+  * @bus_master_enable: Callback for the EPC Bus Master Enable event
+  */
+ struct pci_epc_event_ops {
+ 	int (*epc_init)(struct pci_epf *epf);
++	void (*epc_deinit)(struct pci_epf *epf);
+ 	int (*link_up)(struct pci_epf *epf);
+ 	int (*link_down)(struct pci_epf *epf);
+ 	int (*bus_master_enable)(struct pci_epf *epf);
 
 -- 
 2.25.1
