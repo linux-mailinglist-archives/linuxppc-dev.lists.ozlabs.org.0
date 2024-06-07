@@ -1,54 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E67A8FFA19
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 05:11:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAB58FFABC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 06:44:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a+lPQnr+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tfFtpes6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VwR6k2bGyz2xdp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 13:11:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VwTBt0Yvbz3c4r
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 14:44:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a+lPQnr+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tfFtpes6;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VwR5y4HR3z30VY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 13:10:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1717729830;
-	bh=9lFwEx/JP+T+tWQXbEOOpWSpvQQLktCyT0QZNUBEBwk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=a+lPQnr+Hnyw9k4PYjdItxkPOKkzpbq1xDGrmf9objw3RJOsGfDNkk6kSXDnqMZAa
-	 JnknCa8WBXOCOPeF6PLMjiqipv2f8aEyttcN+W/h4CKUL6DmOfx/m+uaUzFkhIxrr/
-	 Q/2ZJZeD3PTtuw48WIFqfGAv7imifCi9XSNcA1Xaphf3B/szumvFTpkUjZoAeasVju
-	 Np++rhcJmzGs6m/QnGKZs9p7yuarwU8jTd2NmBsa0MARAmElxFYUmx0feSgupgFiO7
-	 8ArAOcVNEMjnJMXXKdD1ryHmh3JFwOp+KSgzF5E+b0md7so63XmiCVjvXKBFhCqYsE
-	 gS6Efuir3IqzA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VwR5w0Q8qz4wc8;
-	Fri,  7 Jun 2024 13:10:28 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH] ata: pata_macio: Fix max_segment_size with PAGE_SIZE ==
- 64K
-In-Reply-To: <ZmG0TUiw0Nagwroj@ryzen.lan>
-References: <20240606111445.400001-1-mpe@ellerman.id.au>
- <ZmG0TUiw0Nagwroj@ryzen.lan>
-Date: Fri, 07 Jun 2024 13:10:25 +1000
-Message-ID: <87ikylphwe.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VwTB85Ltkz30TF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 14:44:15 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4574gxFl012994;
+	Fri, 7 Jun 2024 04:44:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
+ content-transfer-encoding : date : from : message-id : mime-version :
+ subject : to; s=pp1; bh=ZaK4mk94zyhYPuPAT0QgH3F3Mkdn4Jiuwrg1XPnUqxw=;
+ b=tfFtpes64kYhasvwLF/gOFvOHyULvOytFZBeZ3H4OO/4pyZmS+omqttK46Qhm4luJL0A
+ b1bpq+brcR2Nnf10WiiisR9KG6keQ/oik0hNib/i793kl2HGKQS9ccgKynNWsj3f3Raq
+ BKSMgoFOcSuaFM0biNWhEKebLXzEHlHKG7WjbHT8HM4JB32iUu4z7g93BofYee1aIbUl
+ Tg2DUdfldkOIGLiAxLjfVUW8DKXbQtN2PQKvt5Qs6spPvyMPOuOE5VU6Myt2k//+mgQ+
+ zKCMdhgm0Vk15VvYsU92jg5XALhFxwzUsw//YZGcQiqwKSd38OqfCYIygX2m/2JML3tb rA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ykudr802y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Jun 2024 04:44:08 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4574i7jZ014928;
+	Fri, 7 Jun 2024 04:44:07 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ykudr802v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Jun 2024 04:44:07 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4573MpCS022786;
+	Fri, 7 Jun 2024 04:44:06 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ygg6mpchw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Jun 2024 04:44:06 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4574i12Z56689040
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Jun 2024 04:44:03 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 31F8220040;
+	Fri,  7 Jun 2024 04:44:01 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 64E502004E;
+	Fri,  7 Jun 2024 04:43:58 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.45.47])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Jun 2024 04:43:58 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Subject: [PATCH 1/3] tools/perf: Fix the nrcpus in perf bench futex to enable the run when all CPU's are not online
+Date: Fri,  7 Jun 2024 10:13:52 +0530
+Message-Id: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Uw5po7FFKbqOtXw3Rbo61Ls2HLAhdWMX
+X-Proofpoint-GUID: eoysQNuo0S2w2fSmS_NJ-nfPEcFDtu4n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-06_20,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ mlxscore=0 phishscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2406070032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,68 +95,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: doru.iorgulescu1@gmail.com, martin.petersen@oracle.com, linux-scsi@vger.kernel.org, john.g.garry@oracle.com, linux-ide@vger.kernel.org, dlemoal@kernel.org, linuxppc-dev@lists.ozlabs.org, hch@lst.de, regressions@lists.linux.dev
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Niklas Cassel <cassel@kernel.org> writes:
-> On Thu, Jun 06, 2024 at 09:14:45PM +1000, Michael Ellerman wrote:
->> The pata_macio driver advertises a max_segment_size of 0xff00, because
->> the hardware doesn't cope with requests >= 64K.
->> 
->> However the SCSI core requires max_segment_size to be at least
->> PAGE_SIZE, which is a problem for pata_macio when the kernel is built
->> with 64K pages.
->> 
->> In older kernels the SCSI core would just increase the segment size to
->> be equal to PAGE_SIZE, however since the commit tagged below it causes a
->> warning and the device fails to probe:
->> 
->>   WARNING: CPU: 0 PID: 26 at block/blk-settings.c:202 .blk_validate_limits+0x2f8/0x35c
->>   CPU: 0 PID: 26 Comm: kworker/u4:1 Not tainted 6.10.0-rc1 #1
->>   Hardware name: PowerMac7,2 PPC970 0x390202 PowerMac
->>   ...
->>   NIP .blk_validate_limits+0x2f8/0x35c
->>   LR  .blk_alloc_queue+0xc0/0x2f8
->>   Call Trace:
->>     .blk_alloc_queue+0xc0/0x2f8
->>     .blk_mq_alloc_queue+0x60/0xf8
->>     .scsi_alloc_sdev+0x208/0x3c0
->>     .scsi_probe_and_add_lun+0x314/0x52c
->>     .__scsi_add_device+0x170/0x1a4
->>     .ata_scsi_scan_host+0x2bc/0x3e4
->>     .async_port_probe+0x6c/0xa0
->>     .async_run_entry_fn+0x60/0x1bc
->>     .process_one_work+0x228/0x510
->>     .worker_thread+0x360/0x530
->>     .kthread+0x134/0x13c
->>     .start_kernel_thread+0x10/0x14
->>   ...
->>   scsi_alloc_sdev: Allocation failure during SCSI scanning, some SCSI devices might not be configured
->> 
->> Although the hardware can't cope with a 64K segment, the driver
->> already deals with that internally by splitting large requests in
->> pata_macio_qc_prep(). That is how the driver has managed to function
->> until now on 64K kernels.
->> 
->> So fix the driver to advertise a max_segment_size of 64K, which avoids
->> the warning and keeps the SCSI core happy.
->> 
->> Fixes: afd53a3d8528 ("scsi: core: Initialize scsi midlayer limits before allocating the queue")
->> Reported-by: Guenter Roeck <linux@roeck-us.net>
->> Closes: https://lore.kernel.org/all/ce2bf6af-4382-4fe1-b392-cc6829f5ceb2@roeck-us.net/
->> Reported-by: Doru Iorgulescu <doru.iorgulescu1@gmail.com>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218858
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->> Reviewed-by: Christoph Hellwig <hch@lst.de>
->> ---
->
-> Applied to libata/for-6.10-fixes:
-> https://git.kernel.org/pub/scm/linux/kernel/git/libata/linux.git/log/?h=for-6.10-fixes
->
-> With John's Reviewed-by from the other thread:
-> https://lore.kernel.org/linux-ide/171362345502.571343.9746199181827642774.b4-ty@oracle.com/T/#t
+Perf bench futex fails as below when attempted to run on
+on a powerpc system:
 
-Thanks.
+ ./perf bench futex all
+ Running futex/hash benchmark...
+Run summary [PID 626307]: 80 threads, each operating on 1024 [private] futexes for 10 secs.
 
-cheers
+perf: pthread_create: No such file or directory
+
+In the setup where this perf bench was ran, difference was that
+partition had 640 CPU's, but not all CPUs were online. 80 CPUs
+were online. While blocking the threads with futex_wait, code
+sets the affinity using cpumask. The cpumask size used is 80
+which is picked from "nrcpus = perf_cpu_map__nr(cpu)". Here the
+benchmark reports fail while setting affinity for cpu number which
+is greater than 80 or higher, because it attempts to set a bit
+position which is not allocated on the cpumask. Fix this by changing
+the size of cpumask to number of possible cpus and not the number
+of online cpus.
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ tools/perf/bench/futex-hash.c          | 2 +-
+ tools/perf/bench/futex-lock-pi.c       | 2 +-
+ tools/perf/bench/futex-requeue.c       | 2 +-
+ tools/perf/bench/futex-wake-parallel.c | 2 +-
+ tools/perf/bench/futex-wake.c          | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/tools/perf/bench/futex-hash.c b/tools/perf/bench/futex-hash.c
+index 0c69d20efa32..b472eded521b 100644
+--- a/tools/perf/bench/futex-hash.c
++++ b/tools/perf/bench/futex-hash.c
+@@ -174,7 +174,7 @@ int bench_futex_hash(int argc, const char **argv)
+ 	pthread_attr_init(&thread_attr);
+ 	gettimeofday(&bench__start, NULL);
+ 
+-	nrcpus = perf_cpu_map__nr(cpu);
++	nrcpus = cpu__max_cpu().cpu;
+ 	cpuset = CPU_ALLOC(nrcpus);
+ 	BUG_ON(!cpuset);
+ 	size = CPU_ALLOC_SIZE(nrcpus);
+diff --git a/tools/perf/bench/futex-lock-pi.c b/tools/perf/bench/futex-lock-pi.c
+index 7a4973346180..0416120c091b 100644
+--- a/tools/perf/bench/futex-lock-pi.c
++++ b/tools/perf/bench/futex-lock-pi.c
+@@ -122,7 +122,7 @@ static void create_threads(struct worker *w, struct perf_cpu_map *cpu)
+ {
+ 	cpu_set_t *cpuset;
+ 	unsigned int i;
+-	int nrcpus =  perf_cpu_map__nr(cpu);
++	int nrcpus =  cpu__max_cpu().cpu;
+ 	size_t size;
+ 
+ 	threads_starting = params.nthreads;
+diff --git a/tools/perf/bench/futex-requeue.c b/tools/perf/bench/futex-requeue.c
+index d9ad736c1a3e..aad5bfc4fe18 100644
+--- a/tools/perf/bench/futex-requeue.c
++++ b/tools/perf/bench/futex-requeue.c
+@@ -125,7 +125,7 @@ static void block_threads(pthread_t *w, struct perf_cpu_map *cpu)
+ {
+ 	cpu_set_t *cpuset;
+ 	unsigned int i;
+-	int nrcpus = perf_cpu_map__nr(cpu);
++	int nrcpus = cpu__max_cpu().cpu;
+ 	size_t size;
+ 
+ 	threads_starting = params.nthreads;
+diff --git a/tools/perf/bench/futex-wake-parallel.c b/tools/perf/bench/futex-wake-parallel.c
+index b66df553e561..90a5b91bf139 100644
+--- a/tools/perf/bench/futex-wake-parallel.c
++++ b/tools/perf/bench/futex-wake-parallel.c
+@@ -149,7 +149,7 @@ static void block_threads(pthread_t *w, struct perf_cpu_map *cpu)
+ {
+ 	cpu_set_t *cpuset;
+ 	unsigned int i;
+-	int nrcpus = perf_cpu_map__nr(cpu);
++	int nrcpus = cpu__max_cpu().cpu;
+ 	size_t size;
+ 
+ 	threads_starting = params.nthreads;
+diff --git a/tools/perf/bench/futex-wake.c b/tools/perf/bench/futex-wake.c
+index 690fd6d3da13..49b3c89b0b35 100644
+--- a/tools/perf/bench/futex-wake.c
++++ b/tools/perf/bench/futex-wake.c
+@@ -100,7 +100,7 @@ static void block_threads(pthread_t *w, struct perf_cpu_map *cpu)
+ 	cpu_set_t *cpuset;
+ 	unsigned int i;
+ 	size_t size;
+-	int nrcpus = perf_cpu_map__nr(cpu);
++	int nrcpus = cpu__max_cpu().cpu;
+ 	threads_starting = params.nthreads;
+ 
+ 	cpuset = CPU_ALLOC(nrcpus);
+-- 
+2.43.0
+
