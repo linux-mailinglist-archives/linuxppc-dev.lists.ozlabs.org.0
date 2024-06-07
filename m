@@ -2,80 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFF29001F7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 13:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 809FB900217
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 13:26:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lcMEDcYJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OMTMs5NL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vwf0l0W9pz3cGc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 21:21:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vwf694Yqrz3cZm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 21:26:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lcMEDcYJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OMTMs5NL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=marilene.agarcia@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vwdzz2vq7z30WP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 21:21:01 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-7041b6b7be0so88928b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2024 04:21:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vwf5S1t0Wz30WP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 21:25:48 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1f6ab88dfaeso17507845ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2024 04:25:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1717759258; x=1718364058; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E2l49zcksVFHxJOzvcguhpGhpvEDYlJVx4kXyjc2FXw=;
-        b=lcMEDcYJE8rfMNv1NW6Y/q3td30M4FnriAesBKvySyosOfxF6Hmas8DujCsHke/ANB
-         dULX+H0rl/lq98dIFqkRCTibgOREgEYauJE3pguP0nFw1208zMi6Vs49y//QOnlJTt8i
-         zelm3hzumfJJZIY9fUZlUvdq2LYt8xjJd3Fb4=
+        d=gmail.com; s=20230601; t=1717759545; x=1718364345; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AL2peTkLtP/iuUU0Wor02p7UZI/DaudYxquldAAWqLY=;
+        b=OMTMs5NLNWZVAyK3qVFkjw9Ai1Dv+rijjXT9yN+VDeDx3/xqu2c0AtQGHHfa5eNtuE
+         pKyYaBJkJZJAvXHcL/wK99ntYnEzaMOSrJWvOrxRuhYgjaZiJLtaVW0aANM5X+YpAvME
+         2eYLm/u9g6wN9zq+eMkDBGq0+lXWFlhGfqg+dV91fYTdeKwItzc7MAuqWWBVpyZ9/v6n
+         Irim+I9NwAIoSB0K2SKY2kjEuHT2c9Lw5RI2TA9OwrJ7VWiwGlxEmkk19HWm+SU8u4SK
+         sUQpkv3BR5y4sGFJQUuzeyhZtbAKhKLGCeNt/CvT/l/Rnl8Cx0ePpcEk4kXHqoU+fO+E
+         yb7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717759258; x=1718364058;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E2l49zcksVFHxJOzvcguhpGhpvEDYlJVx4kXyjc2FXw=;
-        b=MCtq3Tju6ZNbHD/fOdZ1jaDhqus5cBmrVmPrH28EYEFjuppJMTtEl0SQ6YI9urxymV
-         g0KrvpZv/PKZMsBa1FJh43rbcAiZSgKMTYOa1yZZvVLjQCcPIQMop2ffaDVcL7R7xyP4
-         a9DPYuwC9oI2Qr2JDyplSJdlnwueyBZ5FczGPiCbCKk0z2cayMaG9Hmgu78svO4okxr0
-         NdsAZPUk5tzsQDJxLEHvWhL/xD7yggdC5HvulERtEPb4E5jFKw5hRapcUYLvrHTTdXKu
-         4YJL9zeK9TwA8oOTT137AWv7FuPny+auRXthsiCt/S38cUpFod+Uw8pNJ8FtUpM8L0qD
-         2QGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXhd+iyui9Boz9NbxDUzuc6x1MN5+ErcEbXtxBoDYImeDQk2lNafIy47+4mfGhrzseZ679NIVtfvyImSTO75XhNydwZa9FU5MIfwdLpeQ==
-X-Gm-Message-State: AOJu0Yxaa/jPkJBW2HlLZt+ZYgWLSfgKQbm6vtfrv2ln1mHfp4N5QgH1
-	I1WPFJUTyJXydDBcaBcifyOU2CjWL/bWcBbkLN0jmngASexXcBnqeo0grpQylw==
-X-Google-Smtp-Source: AGHT+IFZnai7nKK+47+INXizzgR1Xx/LFDvPDJsaelMa42GjTo09b1xp3Xvko+TvKEPwpjRbZYeKxA==
-X-Received: by 2002:a05:6a00:308d:b0:702:5514:4cb8 with SMTP id d2e1a72fcca58-703f85f2828mr5811403b3a.4.1717759258453;
-        Fri, 07 Jun 2024 04:20:58 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:bd91:9a1b:54a5:7a73])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd3b187fsm2392521b3a.85.2024.06.07.04.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 04:20:57 -0700 (PDT)
-Date: Fri, 7 Jun 2024 20:20:52 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Subject: Re: kswapd0: page allocation failure: order:0,
- mode:0x820(GFP_ATOMIC), nodemask=(null),cpuset=/,mems_allowed=0 (Kernel
- v6.5.9, 32bit ppc)
-Message-ID: <20240607112052.GA479513@google.com>
-References: <CAJD7tkZ+QY55GTzW9A7ZCm=rxAEfrW76cWXf8o5nwiKSXp8z=w@mail.gmail.com>
- <20240604231019.18e2f373@yea>
- <CAJD7tkYq5u7B+0UH2XKpeWJnUxoO2kJ1_XZ2JOgYpyNEVR7u0g@mail.gmail.com>
- <20240606010431.2b33318c@yea>
- <CAJD7tkbhWYzx=6YmzAh0F+cK-_Bn8mPOH7gMbQS7YVXmaFSgFg@mail.gmail.com>
- <e68bcc6a-25b1-42aa-83b3-5d457b254cbe@linux.dev>
- <20240606043156.GC11718@google.com>
- <6335c05d-9493-4b03-85a7-f2dd91db9451@linux.dev>
- <20240606054334.GD11718@google.com>
- <CAKEwX=OAEzKW9zO9pn41V71A8Ua2dJjD3DY6RsDMNdSd-4ts5w@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1717759545; x=1718364345;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AL2peTkLtP/iuUU0Wor02p7UZI/DaudYxquldAAWqLY=;
+        b=IdHiVGV0K6htoFGVyEofhUmQxYCuRVTuzLgGH+LG2oJJbfDOXKja+8Vx3Lrxy523Ox
+         Eq421PyJiwWJGBncWl5f0TWQVSrFoC8vYlCu8hjL0xDej622U/90+bhSOZiOdnM3gN9u
+         PDfo+hs+K+scfNM2ATOv35vvN0HSb6bSz3XerqKKOLioUsErrgkw29HM9+OIj62oYphq
+         VEkga8ofB9e1PrXUrztxwSf7WnmZqIqFKiuH0CgLQRLX4US3/qvtI04LcDtl2Xo/fS+g
+         Duiy+1EqCLUL22UEC1bXoZl9v1KttNyyj7WRYueg36Uj3qARgpBhE6+dvBy6WLieROzz
+         AV9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUUm/ZS/qhp7MjpoeR0OJA3eJd3IZn50kZu6rMFOUSbpfskKJNw2j2uGNLpfq+GRpaIWeEcLDhWtbjWPLDQDIMzJ3MFFV6rRKyIQmE59A==
+X-Gm-Message-State: AOJu0YyHRU+aWwCwpqApfXoXQn2DdAF3D/6Am8b2ATThPTSZa9v29QYD
+	vzlzde6asu4o+punuXDM5uF9r4P/seqvam4ouRI7DDYhm49v9VEv
+X-Google-Smtp-Source: AGHT+IFOT8iHEEUZhPIDkDJbUx2BKhUqXB05g0I/13p7fXXmVD1Oc6aBBY7OKTHpeTkGO3Q1/ojkCA==
+X-Received: by 2002:a17:902:d4c4:b0:1f6:857b:b5c with SMTP id d9443c01a7336-1f6d02fdd2emr27360715ad.32.1717759544944;
+        Fri, 07 Jun 2024 04:25:44 -0700 (PDT)
+Received: from ?IPV6:2804:431:cfd3:42f5:5119:119d:e1d9:57b4? ([2804:431:cfd3:42f5:5119:119d:e1d9:57b4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd75ef93sm32034235ad.3.2024.06.07.04.25.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Jun 2024 04:25:44 -0700 (PDT)
+Message-ID: <98a5e808-68b5-42d0-8572-78b724b7078d@gmail.com>
+Date: Fri, 7 Jun 2024 08:25:38 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKEwX=OAEzKW9zO9pn41V71A8Ua2dJjD3DY6RsDMNdSd-4ts5w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 linux-next] leds: powernv: replace of_node_put to
+ __free
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Julia Lawall <julia.lawall@inria.fr>
+References: <20240601031713.1307859-1-marilene.agarcia@gmail.com>
+Content-Language: en-US
+From: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
+In-Reply-To: <20240601031713.1307859-1-marilene.agarcia@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,29 +87,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>, Yu Zhao <yuzhao@google.com>, linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, Yosry Ahmed <yosryahmed@google.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Johannes Weiner <hannes@cmpxchg.org>, Chengming Zhou <chengming.zhou@linux.dev>, linuxppc-dev@lists.ozlabs.org, "Vlastimil Babka \(SUSE\)" <vbabka@kernel.org>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On (24/06/07 10:40), Nhat Pham wrote:
-> Personally, I'm not super convinced about class locks. We're
-> essentially relying on the post-compression size of the data to
-> load-balance the queries - I can imagine a scenario where a workload
-> has a concentrated distribution of post-compression data (i.e its
-> pages are compressed to similar-ish sizes), and we're once again
-> contending for a (few) lock(s) again.
+On 01/06/2024 00:17, MarileneGarcia wrote:
+> Use __free for device_node values, and thus drop calls to
+> of_node_put.
 > 
-> That said, I'll let the data tell the story :) We don't need a perfect
-> solution, just a good enough solution for now.
+> The variable attribute __free adds a scope based cleanup to
+> the device node. The goal is to reduce memory management issues
+> in the kernel code.
+> 
+> The of_node_put calls were removed, and the
+> for_each_available_child_of_node was replaced to the equivalent
+> for_each_available_child_of_node_scoped which use the __free.
+> 
+> Suggested-by: Julia Lawall <julia.lawall@inria.fr>
+> Signed-off-by: MarileneGarcia <marilene.agarcia@gmail.com>
+> ---
+> Hello,
+> Thank you for the feedback.
+> 
+> The line-break strategy was fixed, and now it is according to
+> the top one suggested.
+> 
+> The __free is a wrapper to __attribute__((__cleanup__())) so
+> the variavel definition is needed. And according to Julia, it
+> is preferred to combine the declaration and the allocation to
+> ensure that there is no return that can occur after the declaration,
+> but before the allocation (or more precisely the initialization).
+> If there is no other option for the initialization of the variable,
+> then it should be NULL.
+> 
+>   drivers/leds/leds-powernv.c | 28 +++++++++-------------------
+>   1 file changed, 9 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/leds/leds-powernv.c b/drivers/leds/leds-powernv.c
+> index 4f01acb75727..49ab8c9a3f29 100644
+> --- a/drivers/leds/leds-powernv.c
+> +++ b/drivers/leds/leds-powernv.c
+> @@ -246,29 +246,25 @@ static int powernv_led_classdev(struct platform_device *pdev,
+>   	const char *cur = NULL;
+>   	int rc = -1;
+>   	struct property *p;
+> -	struct device_node *np;
+>   	struct powernv_led_data *powernv_led;
+>   	struct device *dev = &pdev->dev;
+>   
+> -	for_each_available_child_of_node(led_node, np) {
+> +	for_each_available_child_of_node_scoped(led_node, np) {
+>   		p = of_find_property(np, "led-types", NULL);
+>   
+>   		while ((cur = of_prop_next_string(p, cur)) != NULL) {
+>   			powernv_led = devm_kzalloc(dev, sizeof(*powernv_led),
+>   						   GFP_KERNEL);
+> -			if (!powernv_led) {
+> -				of_node_put(np);
+> +			if (!powernv_led)
+>   				return -ENOMEM;
+> -			}
+>   
+>   			powernv_led->common = powernv_led_common;
+>   			powernv_led->loc_code = (char *)np->name;
+>   
+>   			rc = powernv_led_create(dev, powernv_led, cur);
+> -			if (rc) {
+> -				of_node_put(np);
+> +			if (rc)
+>   				return rc;
+> -			}
+> +
+>   		} /* while end */
+>   	}
+>   
+> @@ -278,12 +274,11 @@ static int powernv_led_classdev(struct platform_device *pdev,
+>   /* Platform driver probe */
+>   static int powernv_led_probe(struct platform_device *pdev)
+>   {
+> -	struct device_node *led_node;
+>   	struct powernv_led_common *powernv_led_common;
+>   	struct device *dev = &pdev->dev;
+> -	int rc;
+> +	struct device_node *led_node
+> +		__free(device_node) = of_find_node_by_path("/ibm,opal/leds");
+>   
+> -	led_node = of_find_node_by_path("/ibm,opal/leds");
+>   	if (!led_node) {
+>   		dev_err(dev, "%s: LED parent device node not found\n",
+>   			__func__);
+> @@ -292,20 +287,15 @@ static int powernv_led_probe(struct platform_device *pdev)
+>   
+>   	powernv_led_common = devm_kzalloc(dev, sizeof(*powernv_led_common),
+>   					  GFP_KERNEL);
+> -	if (!powernv_led_common) {
+> -		rc = -ENOMEM;
+> -		goto out;
+> -	}
+> +	if (!powernv_led_common)
+> +		return -ENOMEM;
+>   
+>   	mutex_init(&powernv_led_common->lock);
+>   	powernv_led_common->max_led_type = cpu_to_be64(OPAL_SLOT_LED_TYPE_MAX);
+>   
+>   	platform_set_drvdata(pdev, powernv_led_common);
+>   
+> -	rc = powernv_led_classdev(pdev, led_node, powernv_led_common);
+> -out:
+> -	of_node_put(led_node);
+> -	return rc;
+> +	return powernv_led_classdev(pdev, led_node, powernv_led_common);
+>   }
+>   
+>   /* Platform driver remove */
 
-Speaking of size class locks:
+Hello,
+Did you have a chance to look at the patch after the requested change?
 
-One thing to mention is that zsmalloc merges size classes, we never have
-documented/claimed 256 size classe, the actual number is always much
-much lower.  Each such "cluster" (merged size classes) holds a range of
-objects' sizes (e.g. 3504-3584 bytes).  The wider the cluster's size range
-the more likely the (size class) lock contention is.
-
-Setting CONFIG_ZSMALLOC_CHAIN_SIZE to 10 or higher makes zsmalloc pool
-to be configured with more size class clusters (which means that clusters
-hold narrower size intervals).
+Thank you,
+Marilene
