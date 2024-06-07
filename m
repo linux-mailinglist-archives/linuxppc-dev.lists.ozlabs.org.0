@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C888FFF4F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 11:24:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B614B8FFF92
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 11:32:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wd/bO7uQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YvgS8d5/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VwbPH07zBz3cNc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 19:24:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VwbZT63RGz3cTL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 19:32:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wd/bO7uQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YvgS8d5/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VwbMN4CrKz3cRr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 19:22:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VwbYp5Lgsz30TZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 19:31:42 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 0B469CE1CE7;
-	Fri,  7 Jun 2024 09:22:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2B2C4AF07;
-	Fri,  7 Jun 2024 09:22:31 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 568B8CE1CF7;
+	Fri,  7 Jun 2024 09:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D64AC2BBFC;
+	Fri,  7 Jun 2024 09:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717752159;
-	bh=D7lvHQq+tZorV1+pcjIY5sjD02wKITLOPmyvKO904yI=;
+	s=k20201202; t=1717752699;
+	bh=rhqvtgLdAjJDetwu1HLnQ9oLmOzc4vfXBUwHh6e/WhU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wd/bO7uQuUWMF88y073MEYdcJkxc/T9boJd1q64JFfETO37/4iGwJryBTybOc9dBY
-	 DY4Mx3hhpcqNSOELqeCujEVhpgMhJ5CU3Zz20fZ6Uks+q9Iwu1cuA5Ee9f/IDfJUP/
-	 7A4BQ2Pv9OFhpgJ8KT5sHHNz3Dk0rvg9rKg6AkOTs6isY+Zqf24Xlvd9geCjfS3IXS
-	 95TqGUH3d2BNJFSN9ou8DWOSXJTdrplMPW6d4/jiOi7Q3GXaqc9Pkdx3VUGF9POD/G
-	 l3vf8BeR4RCcbq+dfKMEEdjdgOr4koutz4uJh4BZVuxoN3Jt+PxxzxdXkCLhy+F/SE
-	 /WaTgN5oouNKw==
-Date: Fri, 7 Jun 2024 11:22:29 +0200
+	b=YvgS8d5/r8o92wmID2/l03gbU9QAWi7CUT0IEKy/7vK4blclQl++O0siD+W1pPIRG
+	 /s9Z0+oaUX8bOt6GmBL5GhYuGexbsFKFZsuXnRguzAumckCsBKgglkzab0VySUz0tP
+	 4/EqJQD5Z6OVOQeETexIJPP/WkAcfu8yg30yYDDU1xFm6BvPkQ4Oud+e5SIiJw4jTd
+	 0lD1ADHlCHs7c04IQZIMzrXLNniJTMxbSR4JO+3aL4oTsTCsP9fT1TOfYQrPANoAUL
+	 fPprirrsaqFRhHwkKVzNeVkm1xgc/DvgYPVHJ77wqpDhdnaLG0j0wSLMv3CnTJ7yfb
+	 ZRogfCZ0zHcWA==
+Date: Fri, 7 Jun 2024 11:31:28 +0200
 From: Niklas Cassel <cassel@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH 5/5] PCI: layerscape-ep: Use the generic
- dw_pcie_ep_linkdown() API to handle Link Down event
-Message-ID: <ZmLRVQgLBx457R8E@ryzen.lan>
+Subject: Re: [PATCH 0/5] PCI: endpoint: Add EPC 'deinit' event and
+ dw_pcie_ep_linkdown() API
+Message-ID: <ZmLTcNz0FxAWRYcd@ryzen.lan>
 References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
- <20240606-pci-deinit-v1-5-4395534520dc@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240606-pci-deinit-v1-5-4395534520dc@linaro.org>
+In-Reply-To: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,34 +64,81 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <v
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 06, 2024 at 12:56:38PM +0530, Manivannan Sadhasivam wrote:
-> Now that the API is available, let's make use of it. It also handles the
-> reinitialization of DWC non-sticky registers in addition to sending the
-> notification to EPF drivers.
+On Thu, Jun 06, 2024 at 12:56:33PM +0530, Manivannan Sadhasivam wrote:
+> Hi,
 > 
-> Reported-by: Bjorn Helgaas <helgaas@kernel.org>
-> Closes: https://lore.kernel.org/linux-pci/20240528195539.GA458945@bhelgaas/
+> This series includes patches that were left over from previous series [1] for
+> making the host reboot handling robust in endpoint framework.
+> 
+> When the above mentioned series got merged to pci/endpoint, we got a bug report
+> from LKP bot [2] and due to that the offending patches were dropped.
+> 
+> This series addressed the issue reported by the bot by adding the stub APIs in
+> include/pci/pci-epc.h and also removed the unused dwc wrapper as concluded in
+> [3].
+> 
+> Testing
+> =======
+> 
+> This series is tested on Qcom SM8450 based development board with 2 SM8450 SoCs
+> connected over PCIe.
+> 
+> - Mani
+> 
+> [1] https://lore.kernel.org/linux-pci/20240430-pci-epf-rework-v4-0-22832d0d456f@linaro.org/
+> [2] https://lore.kernel.org/linux-pci/202405130815.BwBrIepL-lkp@intel.com/
+> [3] https://lore.kernel.org/linux-pci/20240529141614.GA3293@thinkpad/
+> 
 > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Manivannan Sadhasivam (5):
+>       PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+>       PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers
+>       PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API to handle Link Down event
+>       PCI: qcom-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
+>       PCI: layerscape-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 35bb481564c7..a4a800699f89 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -104,7 +104,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  		dev_dbg(pci->dev, "Link up\n");
->  	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
->  		dev_dbg(pci->dev, "Link down\n");
-> -		pci_epc_linkdown(pci->ep.epc);
-> +		dw_pcie_ep_linkdown(&pci->ep);
->  	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
->  		dev_dbg(pci->dev, "Hot reset\n");
->  	}
+>  drivers/pci/controller/dwc/pci-dra7xx.c           |   2 +-
+>  drivers/pci/controller/dwc/pci-imx6.c             |   2 +-
+>  drivers/pci/controller/dwc/pci-keystone.c         |   2 +-
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c    |   4 +-
+>  drivers/pci/controller/dwc/pcie-artpec6.c         |   2 +-
+>  drivers/pci/controller/dwc/pcie-designware-ep.c   | 116 +++++++++++++---------
+>  drivers/pci/controller/dwc/pcie-designware-plat.c |   2 +-
+>  drivers/pci/controller/dwc/pcie-designware.h      |  10 +-
+>  drivers/pci/controller/dwc/pcie-keembay.c         |   2 +-
+>  drivers/pci/controller/dwc/pcie-qcom-ep.c         |   5 +-
+>  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |   2 +-
+>  drivers/pci/controller/dwc/pcie-tegra194.c        |   3 +-
+>  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |   2 +-
+>  drivers/pci/endpoint/functions/pci-epf-mhi.c      |  19 ++++
+>  drivers/pci/endpoint/functions/pci-epf-test.c     |  17 +++-
+>  drivers/pci/endpoint/pci-epc-core.c               |  25 +++++
+>  include/linux/pci-epc.h                           |  13 +++
+>  include/linux/pci-epf.h                           |   2 +
+>  18 files changed, 162 insertions(+), 68 deletions(-)
+> ---
+> base-commit: 7d96527bc16e46545739c6fe0ab6e4c915e9910e
+> change-id: 20240606-pci-deinit-2e6cdf1bd69f
 > 
+> Best regards,
 > -- 
-> 2.25.1
+> Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > 
 
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Considering certain dependency patches have been merged to
+pci/endpoint and other dependency patches have been merged to
+pci/controller/dwc, perhaps it is best if you split this series:
+
+Series 1 based on pci/endpoint: with patch 1/5 and 2/5.
+Series 2 based on pci/controller/dwc: with patch 5/5.
+
+Just a friendly suggestion to make Bjorn's life easier
+(and grease the path of your patch) ;) [0]
+
+
+Kind regards,
+Niklas
+
+[0]: https://lore.kernel.org/linux-pci/20171026223701.GA25649@bhelgaas-glaptop.roam.corp.google.com/
+(I still have this in my bookmarks :P)
