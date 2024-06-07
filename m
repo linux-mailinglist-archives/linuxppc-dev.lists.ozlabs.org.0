@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBFB8FFF41
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 11:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B12BC8FFF4A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 11:23:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vq/ngASC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N0K3tGbO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VwbMk3F6Xz3cVv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 19:22:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VwbNV5r27z3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 19:23:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vq/ngASC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N0K3tGbO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VwbLY0HPbz3c5J
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 19:21:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VwbM15ZLTz3cTp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 19:22:21 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BA79C61F2E;
-	Fri,  7 Jun 2024 09:21:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA625C2BBFC;
-	Fri,  7 Jun 2024 09:21:47 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 31058CE1CF5;
+	Fri,  7 Jun 2024 09:22:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBACC32786;
+	Fri,  7 Jun 2024 09:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717752115;
-	bh=mkI9Zleemp+5fJfBU0GcUZWrMN2oLrp/WKztAvoJ3vY=;
+	s=k20201202; t=1717752138;
+	bh=i87Nc6pwMyOziR5UsyM3i5Jx7xdBUnjr6/ThfnlGrVQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vq/ngASCb2PCKhRAbva5iVV9N8kqnIlkHsohtzvANVFjV1DDyAL0TN2UQAPoldLNW
-	 v3sAUcxfKxJTN15EKoiI4H9hbsB5XBUN8xvf8LvEyHWVv0YLhDtQnttgClP7zcf9bB
-	 9+cimC+7UIPVxS6hSHqNafOxRvskvteDvcNu5W9bFgN+IJuB+xYSA3VRh8HeJ3ciF5
-	 245pY+YWiCo1jQGVdSXp/8it4oYatSXX2GsENiVxQ63kTkCousJoMMY88chQs2Nvz9
-	 Qkviu3aYYBDgpM2AWvu7CUwyLcQCTh/XN/iBZspUoxv3tH5+pIE3JeS5oP2rY6oq/l
-	 GEEiy0iiT1ZFA==
-Date: Fri, 7 Jun 2024 11:21:44 +0200
+	b=N0K3tGbOG/KlWvHC/ZEtFlYqv3Nb5yevw2PW0nItTW6wfEYD+fL0Uytt5tzqebPJm
+	 6a0fESmeZBYbIFmpZtH0PobfZq9VKeCGEI1vUSzLFHWev8XyEzJwd1+9HhGHRem9JC
+	 Zc7G23Pk+TCQFw0COQem39+1Mpevm3+HXgWZuDk3l4OoBnUqY4fQ18oa6reGth02CP
+	 VDznnmzmbTu9Dt9xxylw9oYAvmQnQY9qCnNzoVVWRPJyQuB7qMEltbnCgOLvfYMJ07
+	 Q0bvzFTTCh3Kork9WnKl9VJWG1EKWOuBEqJXCd1922kkSLk5EpMbndeisk7U5rB5UW
+	 a76JBfNY9vaDw==
+Date: Fri, 7 Jun 2024 11:22:07 +0200
 From: Niklas Cassel <cassel@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH 3/5] PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown()
+Subject: Re: [PATCH 4/5] PCI: qcom-ep: Use the generic dw_pcie_ep_linkdown()
  API to handle Link Down event
-Message-ID: <ZmLRKJ76esDBgYW1@ryzen.lan>
+Message-ID: <ZmLRP2pYds3LkmdQ@ryzen.lan>
 References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
- <20240606-pci-deinit-v1-3-4395534520dc@linaro.org>
+ <20240606-pci-deinit-v1-4-4395534520dc@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240606-pci-deinit-v1-3-4395534520dc@linaro.org>
+In-Reply-To: <20240606-pci-deinit-v1-4-4395534520dc@linaro.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,34 +65,33 @@ Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <v
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 06, 2024 at 12:56:36PM +0530, Manivannan Sadhasivam wrote:
-> As per the PCIe base spec r5.0, section 5.2, Link Down event can happen
-> under any of the following circumstances:
-> 
-> 1. Fundamental/Hot reset
-> 2. Link disable transmission by upstream component
-> 3. Moving from L2/L3 to L0
-> 
-> In those cases, Link Down causes some non-sticky DWC registers to loose the
-> state (like REBAR, etc...). So the drivers need to reinitialize them to
-> function properly once the link comes back again.
-> 
-> This is not a problem for drivers supporting PERST# IRQ, since they can
-> reinitialize the registers in the PERST# IRQ callback. But for the drivers
-> not supporting PERST#, there is no way they can reinitialize the registers
-> other than relying on Link Down IRQ received when the link goes down. So
-> let's add a DWC generic API dw_pcie_ep_linkdown() that reinitializes the
-> non-sticky registers and also notifies the EPF drivers about link going
-> down.
-> 
-> This API can also be used by the drivers supporting PERST# to handle the
-> scenario (2) mentioned above.
-> 
-> NOTE: For the sake of code organization, move the dw_pcie_ep_linkup()
-> definition just above dw_pcie_ep_linkdown().
+On Thu, Jun 06, 2024 at 12:56:37PM +0530, Manivannan Sadhasivam wrote:
+> Now that the API is available, let's make use of it. It also handles the
+> reinitialization of DWC non-sticky registers in addition to sending the
+> notification to EPF drivers.
 > 
 > Reviewed-by: Niklas Cassel <cassel@kernel.org>
 > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
+>  drivers/pci/controller/dwc/pcie-qcom-ep.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> index 2324e56c9bfc..02a2a871a91f 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+> @@ -641,7 +641,7 @@ static irqreturn_t qcom_pcie_ep_global_irq_thread(int irq, void *data)
+>  	if (FIELD_GET(PARF_INT_ALL_LINK_DOWN, status)) {
+>  		dev_dbg(dev, "Received Linkdown event\n");
+>  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_DOWN;
+> -		pci_epc_linkdown(pci->ep.epc);
+> +		dw_pcie_ep_linkdown(&pci->ep);
+>  	} else if (FIELD_GET(PARF_INT_ALL_BME, status)) {
+>  		dev_dbg(dev, "Received Bus Master Enable event\n");
+>  		pcie_ep->link_status = QCOM_PCIE_EP_LINK_ENABLED;
+> 
+> -- 
+> 2.25.1
+> 
 
 Like Siddharth reported, this patch is already in pci/next.
