@@ -2,80 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809FB900217
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 13:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7713F900305
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 14:07:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OMTMs5NL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cnuyrWzY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vwf694Yqrz3cZm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 21:26:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vwg1c3zbrz3cMQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 22:07:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OMTMs5NL;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cnuyrWzY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=marilene.agarcia@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vwf5S1t0Wz30WP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 21:25:48 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1f6ab88dfaeso17507845ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2024 04:25:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vwg0s5VXRz3bq0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jun 2024 22:06:51 +1000 (AEST)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1f4a5344ec7so15789105ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2024 05:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717759545; x=1718364345; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AL2peTkLtP/iuUU0Wor02p7UZI/DaudYxquldAAWqLY=;
-        b=OMTMs5NLNWZVAyK3qVFkjw9Ai1Dv+rijjXT9yN+VDeDx3/xqu2c0AtQGHHfa5eNtuE
-         pKyYaBJkJZJAvXHcL/wK99ntYnEzaMOSrJWvOrxRuhYgjaZiJLtaVW0aANM5X+YpAvME
-         2eYLm/u9g6wN9zq+eMkDBGq0+lXWFlhGfqg+dV91fYTdeKwItzc7MAuqWWBVpyZ9/v6n
-         Irim+I9NwAIoSB0K2SKY2kjEuHT2c9Lw5RI2TA9OwrJ7VWiwGlxEmkk19HWm+SU8u4SK
-         sUQpkv3BR5y4sGFJQUuzeyhZtbAKhKLGCeNt/CvT/l/Rnl8Cx0ePpcEk4kXHqoU+fO+E
-         yb7g==
+        d=linaro.org; s=google; t=1717762007; x=1718366807; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=k7NnO3DgcXmjQU2TFy5q5V0KcneMOGXb1GGo0qLmGSA=;
+        b=cnuyrWzYphGKHKy/r/ukHOJraBFyqLR9fB5B8jxRnYRvefoKHz1U/QZAwIAJxFrO9n
+         82jsu8k/5cMWJPSVJ0JAxXUNGdsNC3s2SaDMjYwMHuyYY3DBMbdHLJjJq7g2REaKe8E3
+         cm20E+ZePtZD6oSDBCb4iW5Pm+kst/81FfnBG5+ChzLSpA32G2LCqIqJVep5SqJxu/93
+         Einf/JGj62H0Cuw7GPwVadfC0u8HOSAL/OkDTxTNxo2xsOTpzF6LRPnPMZCYqxmW164F
+         qEO8dj+GlP+05YsRdYu5UrHPbPtH/XrrYYQf15Jn4HeFqLD/1u37982mqMNQsrGmmcMT
+         i44g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717759545; x=1718364345;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1717762007; x=1718366807;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AL2peTkLtP/iuUU0Wor02p7UZI/DaudYxquldAAWqLY=;
-        b=IdHiVGV0K6htoFGVyEofhUmQxYCuRVTuzLgGH+LG2oJJbfDOXKja+8Vx3Lrxy523Ox
-         Eq421PyJiwWJGBncWl5f0TWQVSrFoC8vYlCu8hjL0xDej622U/90+bhSOZiOdnM3gN9u
-         PDfo+hs+K+scfNM2ATOv35vvN0HSb6bSz3XerqKKOLioUsErrgkw29HM9+OIj62oYphq
-         VEkga8ofB9e1PrXUrztxwSf7WnmZqIqFKiuH0CgLQRLX4US3/qvtI04LcDtl2Xo/fS+g
-         Duiy+1EqCLUL22UEC1bXoZl9v1KttNyyj7WRYueg36Uj3qARgpBhE6+dvBy6WLieROzz
-         AV9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUUm/ZS/qhp7MjpoeR0OJA3eJd3IZn50kZu6rMFOUSbpfskKJNw2j2uGNLpfq+GRpaIWeEcLDhWtbjWPLDQDIMzJ3MFFV6rRKyIQmE59A==
-X-Gm-Message-State: AOJu0YyHRU+aWwCwpqApfXoXQn2DdAF3D/6Am8b2ATThPTSZa9v29QYD
-	vzlzde6asu4o+punuXDM5uF9r4P/seqvam4ouRI7DDYhm49v9VEv
-X-Google-Smtp-Source: AGHT+IFOT8iHEEUZhPIDkDJbUx2BKhUqXB05g0I/13p7fXXmVD1Oc6aBBY7OKTHpeTkGO3Q1/ojkCA==
-X-Received: by 2002:a17:902:d4c4:b0:1f6:857b:b5c with SMTP id d9443c01a7336-1f6d02fdd2emr27360715ad.32.1717759544944;
-        Fri, 07 Jun 2024 04:25:44 -0700 (PDT)
-Received: from ?IPV6:2804:431:cfd3:42f5:5119:119d:e1d9:57b4? ([2804:431:cfd3:42f5:5119:119d:e1d9:57b4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd75ef93sm32034235ad.3.2024.06.07.04.25.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Jun 2024 04:25:44 -0700 (PDT)
-Message-ID: <98a5e808-68b5-42d0-8572-78b724b7078d@gmail.com>
-Date: Fri, 7 Jun 2024 08:25:38 -0300
+        bh=k7NnO3DgcXmjQU2TFy5q5V0KcneMOGXb1GGo0qLmGSA=;
+        b=OsW70uoNXtaqSLaROfp5aoOKRSP9IQ4HE3qEfpmVIsdnl6uI6PJdkVQL+KrlkDB8KG
+         P8rCX3KP12+AqhQeI+Pt0s3Ug16Ej0q/8EkiN4vW0CF8rIXN5uGVkCJATuyjqElCmRxA
+         8u5IBzwb+H8SqP+D8A2FADuNcGFD9dUZEqG8YCaZwmLhLRKa0HdOrlyRxYQyabAONZRR
+         zn+HlqQnTznUS3eVCRKhbXVufEEB+PoTINH8B3PrIEVAFXgoM7mJQpb/1ZwgUMbGkKz0
+         FkMThSIyQOal1e8DChFD2b7gVF2gh4JK80n4Em9oNU7Dg1jtJG0VOe5OTztGCHEkWXUH
+         9N4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXLpLjkyKgxvByk7II6K0EpkR6M++0/TOY5bKqOu2eJ1MAHJ3Bz+vEE2SoYlH4lIg1Kcf5l11cbxZ2QyUz7r5sLQrkKWNx01MtPdE2XwA==
+X-Gm-Message-State: AOJu0YzMb59WRhRpA8EHTVi7BVKVuQwpNKA69Y2MeftYcoAY3Pja3XR9
+	TptdH6idl5zCrEGs3WuyTCiSryg0VS1xOPg5jJ/Kl+O6w4LSDK2yIG8JH7xKgA==
+X-Google-Smtp-Source: AGHT+IHZn1FxYEr2n48jlTtRBDfIAQDg5hiBd+j5q8YaNLn1ULoVlYRkUzjPoDR891koRVR82SXEYA==
+X-Received: by 2002:a17:902:e84e:b0:1f6:7f8f:65ac with SMTP id d9443c01a7336-1f6b8f075b0mr80949715ad.26.1717762006991;
+        Fri, 07 Jun 2024 05:06:46 -0700 (PDT)
+Received: from thinkpad ([120.56.207.43])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd761ac8sm32756425ad.54.2024.06.07.05.06.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 05:06:46 -0700 (PDT)
+Date: Fri, 7 Jun 2024 17:36:36 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH 0/5] PCI: endpoint: Add EPC 'deinit' event and
+ dw_pcie_ep_linkdown() API
+Message-ID: <20240607120636.GA4122@thinkpad>
+References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
+ <ZmLTcNz0FxAWRYcd@ryzen.lan>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 linux-next] leds: powernv: replace of_node_put to
- __free
-To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Julia Lawall <julia.lawall@inria.fr>
-References: <20240601031713.1307859-1-marilene.agarcia@gmail.com>
-Content-Language: en-US
-From: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
-In-Reply-To: <20240601031713.1307859-1-marilene.agarcia@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZmLTcNz0FxAWRYcd@ryzen.lan>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,122 +83,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, imx@lists.linux.dev, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, Bjorn Helgaas <helgaas@kernel.org>, linux-arm-kernel@lists.infradead.org, Siddharth Vadapalli <s-vadapalli@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, mhi@lists.linux.dev, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/06/2024 00:17, MarileneGarcia wrote:
-> Use __free for device_node values, and thus drop calls to
-> of_node_put.
+On Fri, Jun 07, 2024 at 11:31:28AM +0200, Niklas Cassel wrote:
+> On Thu, Jun 06, 2024 at 12:56:33PM +0530, Manivannan Sadhasivam wrote:
+> > Hi,
+> > 
+> > This series includes patches that were left over from previous series [1] for
+> > making the host reboot handling robust in endpoint framework.
+> > 
+> > When the above mentioned series got merged to pci/endpoint, we got a bug report
+> > from LKP bot [2] and due to that the offending patches were dropped.
+> > 
+> > This series addressed the issue reported by the bot by adding the stub APIs in
+> > include/pci/pci-epc.h and also removed the unused dwc wrapper as concluded in
+> > [3].
+> > 
+> > Testing
+> > =======
+> > 
+> > This series is tested on Qcom SM8450 based development board with 2 SM8450 SoCs
+> > connected over PCIe.
+> > 
+> > - Mani
+> > 
+> > [1] https://lore.kernel.org/linux-pci/20240430-pci-epf-rework-v4-0-22832d0d456f@linaro.org/
+> > [2] https://lore.kernel.org/linux-pci/202405130815.BwBrIepL-lkp@intel.com/
+> > [3] https://lore.kernel.org/linux-pci/20240529141614.GA3293@thinkpad/
+> > 
+> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > ---
+> > Manivannan Sadhasivam (5):
+> >       PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
+> >       PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers
+> >       PCI: dwc: ep: Add a generic dw_pcie_ep_linkdown() API to handle Link Down event
+> >       PCI: qcom-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
+> >       PCI: layerscape-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
+> > 
+> >  drivers/pci/controller/dwc/pci-dra7xx.c           |   2 +-
+> >  drivers/pci/controller/dwc/pci-imx6.c             |   2 +-
+> >  drivers/pci/controller/dwc/pci-keystone.c         |   2 +-
+> >  drivers/pci/controller/dwc/pci-layerscape-ep.c    |   4 +-
+> >  drivers/pci/controller/dwc/pcie-artpec6.c         |   2 +-
+> >  drivers/pci/controller/dwc/pcie-designware-ep.c   | 116 +++++++++++++---------
+> >  drivers/pci/controller/dwc/pcie-designware-plat.c |   2 +-
+> >  drivers/pci/controller/dwc/pcie-designware.h      |  10 +-
+> >  drivers/pci/controller/dwc/pcie-keembay.c         |   2 +-
+> >  drivers/pci/controller/dwc/pcie-qcom-ep.c         |   5 +-
+> >  drivers/pci/controller/dwc/pcie-rcar-gen4.c       |   2 +-
+> >  drivers/pci/controller/dwc/pcie-tegra194.c        |   3 +-
+> >  drivers/pci/controller/dwc/pcie-uniphier-ep.c     |   2 +-
+> >  drivers/pci/endpoint/functions/pci-epf-mhi.c      |  19 ++++
+> >  drivers/pci/endpoint/functions/pci-epf-test.c     |  17 +++-
+> >  drivers/pci/endpoint/pci-epc-core.c               |  25 +++++
+> >  include/linux/pci-epc.h                           |  13 +++
+> >  include/linux/pci-epf.h                           |   2 +
+> >  18 files changed, 162 insertions(+), 68 deletions(-)
+> > ---
+> > base-commit: 7d96527bc16e46545739c6fe0ab6e4c915e9910e
+> > change-id: 20240606-pci-deinit-2e6cdf1bd69f
+> > 
+> > Best regards,
+> > -- 
+> > Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > 
 > 
-> The variable attribute __free adds a scope based cleanup to
-> the device node. The goal is to reduce memory management issues
-> in the kernel code.
+> Considering certain dependency patches have been merged to
+> pci/endpoint and other dependency patches have been merged to
+> pci/controller/dwc, perhaps it is best if you split this series:
 > 
-> The of_node_put calls were removed, and the
-> for_each_available_child_of_node was replaced to the equivalent
-> for_each_available_child_of_node_scoped which use the __free.
+> Series 1 based on pci/endpoint: with patch 1/5 and 2/5.
+> Series 2 based on pci/controller/dwc: with patch 5/5.
 > 
-> Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-> Signed-off-by: MarileneGarcia <marilene.agarcia@gmail.com>
-> ---
-> Hello,
-> Thank you for the feedback.
-> 
-> The line-break strategy was fixed, and now it is according to
-> the top one suggested.
-> 
-> The __free is a wrapper to __attribute__((__cleanup__())) so
-> the variavel definition is needed. And according to Julia, it
-> is preferred to combine the declaration and the allocation to
-> ensure that there is no return that can occur after the declaration,
-> but before the allocation (or more precisely the initialization).
-> If there is no other option for the initialization of the variable,
-> then it should be NULL.
-> 
->   drivers/leds/leds-powernv.c | 28 +++++++++-------------------
->   1 file changed, 9 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/leds/leds-powernv.c b/drivers/leds/leds-powernv.c
-> index 4f01acb75727..49ab8c9a3f29 100644
-> --- a/drivers/leds/leds-powernv.c
-> +++ b/drivers/leds/leds-powernv.c
-> @@ -246,29 +246,25 @@ static int powernv_led_classdev(struct platform_device *pdev,
->   	const char *cur = NULL;
->   	int rc = -1;
->   	struct property *p;
-> -	struct device_node *np;
->   	struct powernv_led_data *powernv_led;
->   	struct device *dev = &pdev->dev;
->   
-> -	for_each_available_child_of_node(led_node, np) {
-> +	for_each_available_child_of_node_scoped(led_node, np) {
->   		p = of_find_property(np, "led-types", NULL);
->   
->   		while ((cur = of_prop_next_string(p, cur)) != NULL) {
->   			powernv_led = devm_kzalloc(dev, sizeof(*powernv_led),
->   						   GFP_KERNEL);
-> -			if (!powernv_led) {
-> -				of_node_put(np);
-> +			if (!powernv_led)
->   				return -ENOMEM;
-> -			}
->   
->   			powernv_led->common = powernv_led_common;
->   			powernv_led->loc_code = (char *)np->name;
->   
->   			rc = powernv_led_create(dev, powernv_led, cur);
-> -			if (rc) {
-> -				of_node_put(np);
-> +			if (rc)
->   				return rc;
-> -			}
-> +
->   		} /* while end */
->   	}
->   
-> @@ -278,12 +274,11 @@ static int powernv_led_classdev(struct platform_device *pdev,
->   /* Platform driver probe */
->   static int powernv_led_probe(struct platform_device *pdev)
->   {
-> -	struct device_node *led_node;
->   	struct powernv_led_common *powernv_led_common;
->   	struct device *dev = &pdev->dev;
-> -	int rc;
-> +	struct device_node *led_node
-> +		__free(device_node) = of_find_node_by_path("/ibm,opal/leds");
->   
-> -	led_node = of_find_node_by_path("/ibm,opal/leds");
->   	if (!led_node) {
->   		dev_err(dev, "%s: LED parent device node not found\n",
->   			__func__);
-> @@ -292,20 +287,15 @@ static int powernv_led_probe(struct platform_device *pdev)
->   
->   	powernv_led_common = devm_kzalloc(dev, sizeof(*powernv_led_common),
->   					  GFP_KERNEL);
-> -	if (!powernv_led_common) {
-> -		rc = -ENOMEM;
-> -		goto out;
-> -	}
-> +	if (!powernv_led_common)
-> +		return -ENOMEM;
->   
->   	mutex_init(&powernv_led_common->lock);
->   	powernv_led_common->max_led_type = cpu_to_be64(OPAL_SLOT_LED_TYPE_MAX);
->   
->   	platform_set_drvdata(pdev, powernv_led_common);
->   
-> -	rc = powernv_led_classdev(pdev, led_node, powernv_led_common);
-> -out:
-> -	of_node_put(led_node);
-> -	return rc;
-> +	return powernv_led_classdev(pdev, led_node, powernv_led_common);
->   }
->   
->   /* Platform driver remove */
 
-Hello,
-Did you have a chance to look at the patch after the requested change?
+Thanks Niklas! I didn't check the 'dwc' branch, so ended up posting patches 3/5
+and 4/5 again.
 
-Thank you,
-Marilene
+Bjorn, if you are OK with this series, I can go ahead and apply patches 1/5 and
+2/5 to 'pci/endpoint' and bank on Krzysztof to handle 5/5.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
