@@ -2,63 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F278900978
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 17:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E2E900B27
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jun 2024 19:24:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PXSPuPU5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=sWq7wGNY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VwlrY3X3Dz3cRs
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 01:45:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vwp2s1TXbz3cWx
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 03:24:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PXSPuPU5;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=sWq7wGNY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vwlqp07Stz30TB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2024 01:44:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717775063; x=1749311063;
-  h=date:from:to:cc:subject:message-id;
-  bh=iCnLizKfBQY7v4+G3Bm2gfw4lbKRDdTOIy4eX1amTno=;
-  b=PXSPuPU5nerDirBqhjdhPdk4AfaaeQuPzMo+CtqCUoVVDx/mvNHSjxsb
-   TCzOCoqcW4Y7YVeMkIAyl3lMu+A+e8udVkGaUOxitqtSInfvkCnnVeYBQ
-   aQPXHCdi85FAeDorgjtLpvRIaJgqsypWnZf3wcZi8sHJosS1r7AAKp/gx
-   oci03oTnTwWrU0Zh/bKpeQPM9tEnF2KSpTWX2R0m0NDLNLcKHMIOMU5rL
-   0v/eYXkoFQz/7Qncg8hfW5yrXI7e+XvS4H98VbPgzd+QwNTvGkjFmLyP7
-   z1VH16RjaZMvEvVDoiniL1WK8tJHr4mThLNYNEy4dv7vd+uZoYzNRRMvO
-   Q==;
-X-CSE-ConnectionGUID: tS7Xy2w3T6+giaP2NNgfuw==
-X-CSE-MsgGUID: 1hEgb/nGSuau9YI9f4YIgQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14620731"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="14620731"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 08:44:17 -0700
-X-CSE-ConnectionGUID: sUpcbytuS+K0nUOkxG0S0A==
-X-CSE-MsgGUID: 1GzgZXC1SdK2Cunp5yVSbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="38805951"
-Received: from lkp-server01.sh.intel.com (HELO 472b94a103a1) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 07 Jun 2024 08:44:17 -0700
-Received: from kbuild by 472b94a103a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFblG-000030-0F;
-	Fri, 07 Jun 2024 15:44:14 +0000
-Date: Fri, 07 Jun 2024 23:43:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 2b85b7fb1376481f7d4c2cf92e5da942f06b2547
-Message-ID: <202406072321.YTgr8ggQ-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vwp263yG8z2ysW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2024 03:23:25 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1f6a270d1b8so8725ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jun 2024 10:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717781004; x=1718385804; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6W7eNzUkVsvxh0fs7QApe4zLHB8YHFiMurfzjOn05Cc=;
+        b=sWq7wGNYa6J2ig0x26/NTZUL9xUxbwPu+LSlF7aH64CGWlUZ7bOHd3zTzTrw4cRbG8
+         6ighBLVV/hVWwZeT/KwBFH2lz9SI+jO4CUUCO/k7L7ftJRbzHqYv0pxotfMTQjXGZSAE
+         AoEhUja0eVHm/21LFbPAynLYfiF92g1v+tJo5BBxtKKHF6PSJxkYpPUh+uvU+LYsVc2a
+         nE2kvs9SZgBSmRKOLdautbPdHxns2m4iFWkpKNDcV+VcP8aCrambj+GNedV/YhcPAwj9
+         xBp8NcA0nTF+VUD6gryeTSjV9FYmYG2L2jsoPl5qld2lln/ekT/y3ei3i6e64hrpafBc
+         It7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717781004; x=1718385804;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6W7eNzUkVsvxh0fs7QApe4zLHB8YHFiMurfzjOn05Cc=;
+        b=lx3kxglWAtp6IEwFlETIqjExOxOYO5x33oTK/qx55fkuh++/EH7IYsuX335ZnbAJ/q
+         c9Sl5QlPZR0Fg5djvCI8IoJ90YSppkZSoHYLzda4Gee2F2Q3sOTO0Qe2d4MXYaLQYIWp
+         TDNPPTaXVUKAjkNromVrDA7pe0wAQzUShd1xzTlyRgSiqgAMwT6h3nIGQY5fh4u7txXv
+         X5HwaPsHnpdMMam0n4WuETS7rvcAzol8Si9iDRT1hgvUUcfMFXDmm50fIBt1zYYLSxxg
+         OJd8msbjkThKz3y8utK/OOuvUZ74O2ePXJgLlfVynZVvlYcZZNsssCDGSTQgotWX/YyQ
+         Pw3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUwG+YnbuGRNgRpxfXNhnUecxjP/Uz+Ah066zxMRoCkCIu4bFjZaaX2vUyJK4tUhPrDgsKpoXaXVkRF5yY//jqkm7UA6kZmQL3m8xVpyw==
+X-Gm-Message-State: AOJu0YyA4rqWox54lWiOZBl56OHIi4jkdC7rtvLBoyFcQPadIk9rU3+b
+	saRDim9wBMBY6gSRCuyWUz3f6uIcG8jhDGFzQ+9WuEtpRC0cUkDO9zsNy9Qroh+zCoQiIeXuTeV
+	uRsIT7h8q8WpV/6U9Rp/UGlLHOFCZrVNsydxe
+X-Google-Smtp-Source: AGHT+IF1kBumIybHOnEycCWnTnGC0ewzKueFu/6w+DPgOcUa8Oae8IA/SWiwu846ZjxfYxHaSpC5xnVHoTfKDKov8ws=
+X-Received: by 2002:a17:902:6b03:b0:1e0:f525:a831 with SMTP id
+ d9443c01a7336-1f6ba65584cmr7839045ad.28.1717781003038; Fri, 07 Jun 2024
+ 10:23:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Fri, 7 Jun 2024 10:23:11 -0700
+Message-ID: <CAP-5=fVCXW1FEBra5aFLJm48f0-b4a+oTugTZt+VYEv1EySBKg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] tools/perf: Fix the nrcpus in perf bench futex to
+ enable the run when all CPU's are not online
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,91 +79,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, acme@kernel.org, adrian.hunter@intel.com, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 2b85b7fb1376481f7d4c2cf92e5da942f06b2547  powerpc/crypto: Add generated P8 asm to .gitignore
+On Thu, Jun 6, 2024 at 9:44=E2=80=AFPM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+> Perf bench futex fails as below when attempted to run on
+> on a powerpc system:
+>
+>  ./perf bench futex all
+>  Running futex/hash benchmark...
+> Run summary [PID 626307]: 80 threads, each operating on 1024 [private] fu=
+texes for 10 secs.
+>
+> perf: pthread_create: No such file or directory
+>
+> In the setup where this perf bench was ran, difference was that
+> partition had 640 CPU's, but not all CPUs were online. 80 CPUs
+> were online. While blocking the threads with futex_wait, code
+> sets the affinity using cpumask. The cpumask size used is 80
+> which is picked from "nrcpus =3D perf_cpu_map__nr(cpu)". Here the
+> benchmark reports fail while setting affinity for cpu number which
+> is greater than 80 or higher, because it attempts to set a bit
+> position which is not allocated on the cpumask. Fix this by changing
+> the size of cpumask to number of possible cpus and not the number
+> of online cpus.
+>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-elapsed time: 1591m
+For the series:
+Reviewed-by: Ian Rogers <irogers@google.com>
 
-configs tested: 68
-configs skipped: 161
+Thanks,
+Ian
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                                 defconfig   gcc  
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                                defconfig   gcc  
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                                defconfig   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>  tools/perf/bench/futex-hash.c          | 2 +-
+>  tools/perf/bench/futex-lock-pi.c       | 2 +-
+>  tools/perf/bench/futex-requeue.c       | 2 +-
+>  tools/perf/bench/futex-wake-parallel.c | 2 +-
+>  tools/perf/bench/futex-wake.c          | 2 +-
+>  5 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/tools/perf/bench/futex-hash.c b/tools/perf/bench/futex-hash.=
+c
+> index 0c69d20efa32..b472eded521b 100644
+> --- a/tools/perf/bench/futex-hash.c
+> +++ b/tools/perf/bench/futex-hash.c
+> @@ -174,7 +174,7 @@ int bench_futex_hash(int argc, const char **argv)
+>         pthread_attr_init(&thread_attr);
+>         gettimeofday(&bench__start, NULL);
+>
+> -       nrcpus =3D perf_cpu_map__nr(cpu);
+> +       nrcpus =3D cpu__max_cpu().cpu;
+>         cpuset =3D CPU_ALLOC(nrcpus);
+>         BUG_ON(!cpuset);
+>         size =3D CPU_ALLOC_SIZE(nrcpus);
+> diff --git a/tools/perf/bench/futex-lock-pi.c b/tools/perf/bench/futex-lo=
+ck-pi.c
+> index 7a4973346180..0416120c091b 100644
+> --- a/tools/perf/bench/futex-lock-pi.c
+> +++ b/tools/perf/bench/futex-lock-pi.c
+> @@ -122,7 +122,7 @@ static void create_threads(struct worker *w, struct p=
+erf_cpu_map *cpu)
+>  {
+>         cpu_set_t *cpuset;
+>         unsigned int i;
+> -       int nrcpus =3D  perf_cpu_map__nr(cpu);
+> +       int nrcpus =3D  cpu__max_cpu().cpu;
+>         size_t size;
+>
+>         threads_starting =3D params.nthreads;
+> diff --git a/tools/perf/bench/futex-requeue.c b/tools/perf/bench/futex-re=
+queue.c
+> index d9ad736c1a3e..aad5bfc4fe18 100644
+> --- a/tools/perf/bench/futex-requeue.c
+> +++ b/tools/perf/bench/futex-requeue.c
+> @@ -125,7 +125,7 @@ static void block_threads(pthread_t *w, struct perf_c=
+pu_map *cpu)
+>  {
+>         cpu_set_t *cpuset;
+>         unsigned int i;
+> -       int nrcpus =3D perf_cpu_map__nr(cpu);
+> +       int nrcpus =3D cpu__max_cpu().cpu;
+>         size_t size;
+>
+>         threads_starting =3D params.nthreads;
+> diff --git a/tools/perf/bench/futex-wake-parallel.c b/tools/perf/bench/fu=
+tex-wake-parallel.c
+> index b66df553e561..90a5b91bf139 100644
+> --- a/tools/perf/bench/futex-wake-parallel.c
+> +++ b/tools/perf/bench/futex-wake-parallel.c
+> @@ -149,7 +149,7 @@ static void block_threads(pthread_t *w, struct perf_c=
+pu_map *cpu)
+>  {
+>         cpu_set_t *cpuset;
+>         unsigned int i;
+> -       int nrcpus =3D perf_cpu_map__nr(cpu);
+> +       int nrcpus =3D cpu__max_cpu().cpu;
+>         size_t size;
+>
+>         threads_starting =3D params.nthreads;
+> diff --git a/tools/perf/bench/futex-wake.c b/tools/perf/bench/futex-wake.=
+c
+> index 690fd6d3da13..49b3c89b0b35 100644
+> --- a/tools/perf/bench/futex-wake.c
+> +++ b/tools/perf/bench/futex-wake.c
+> @@ -100,7 +100,7 @@ static void block_threads(pthread_t *w, struct perf_c=
+pu_map *cpu)
+>         cpu_set_t *cpuset;
+>         unsigned int i;
+>         size_t size;
+> -       int nrcpus =3D perf_cpu_map__nr(cpu);
+> +       int nrcpus =3D cpu__max_cpu().cpu;
+>         threads_starting =3D params.nthreads;
+>
+>         cpuset =3D CPU_ALLOC(nrcpus);
+> --
+> 2.43.0
+>
