@@ -2,95 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C065900FC8
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 09:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 045B6900FCA
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 09:09:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NyIO59+E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AljNxu1V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vx8KG6xg2z3cVS
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 17:07:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vx8M00v64z3cXL
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 17:09:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NyIO59+E;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AljNxu1V;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vx8Hm3Jccz3cXT
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2024 17:06:28 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4586pXkG002918;
-	Sat, 8 Jun 2024 07:06:25 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vx8LJ21vSz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2024 17:08:40 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45864YXd000319;
+	Sat, 8 Jun 2024 07:08:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
 	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=J
-	Wp15AgTYXOmkMihCN9uUDq/fJj8+NIpDaT4n3kTfjU=; b=NyIO59+E3RqYjCnu2
-	hsSlrkZegiXfjkxlKRg4c2ClRMVg+cR0m/wlHWmxz7os+qM/mOmkNmhOBkE+UdXs
-	panV8S8Q0YGoLk747Rixv3U0EMWUvt67l6frn816riHRdvjy4CJfbuv915duTcel
-	TQqqoxXnDYD2sAwu2f1UsS/yzIVQQ7eN2UBDe4+hlGBVK43V5fi1VWDEBa53+Bzn
-	C71npgjpAoXJVxuCKDT2xJc87RDASCMrHNofIeYIWxT1FcPAYtA5ePRgYqolgaTm
-	jxU1FXtjnWvp1Ru19c9pGnfW8ZR3fw7/auykA8Pqbh3Ssl/MR5xnDG8MjgTl8/GJ
-	1x2vQ==
+	:content-transfer-encoding:message-id:references:to; s=pp1; bh=0
+	1W8QivgVJI8K1/wJeJ50OhZ+tmbZlJDl+KonnRamhg=; b=AljNxu1V4bRyy4wv0
+	v8guA2vc1LjPhFrkEKltmyNZXg1Pz4qXInNnUeHnQdGkwVuVZeTzikD+F9MA5h1S
+	cpUp8pMZDndPGVFh5Uk3KSZsNxMRgL2H5+kEGlX3MuEin4b8QuWWoNLKUJCz+Slv
+	OaEn47OWruEAKua7ndn369yFHPaSqqmivbq/aq5bSBv34a36BC2o1bmyoulfXZDY
+	XmduIRNWwpHL+lPP7vf3+VC3Wl6ZX5Gm4Z4KelTGd4uOSlcUZI+6SS2nxhlhPy9V
+	VgIGPTG4WYnxNtV9qYnHUb5XmZfJlIsRZ4FwiGRM6cuCwLkCbToOB0RSqZ4U/I3u
+	MN8Ng==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhf8046k-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhj303r3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Jun 2024 07:06:25 +0000 (GMT)
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45876O4H005892;
-	Sat, 8 Jun 2024 07:06:24 GMT
+	Sat, 08 Jun 2024 07:08:30 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45878UlI021752;
+	Sat, 8 Jun 2024 07:08:30 GMT
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhf8046j-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhj303r0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Jun 2024 07:06:24 +0000 (GMT)
+	Sat, 08 Jun 2024 07:08:30 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4583gL9n025354;
-	Sat, 8 Jun 2024 07:06:23 GMT
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4583gLAF025354;
+	Sat, 8 Jun 2024 07:08:28 GMT
 Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ymfmp8rh2-1
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ymfmp8rrt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Jun 2024 07:06:23 +0000
+	Sat, 08 Jun 2024 07:08:28 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45876HGU50594054
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45878N4w42533254
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 8 Jun 2024 07:06:19 GMT
+	Sat, 8 Jun 2024 07:08:25 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 79AA320043;
-	Sat,  8 Jun 2024 07:06:17 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 38C1C20043;
+	Sat,  8 Jun 2024 07:08:23 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 202D620040;
-	Sat,  8 Jun 2024 07:06:15 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5B7C820040;
+	Sat,  8 Jun 2024 07:08:20 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.43.125.209])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sat,  8 Jun 2024 07:06:14 +0000 (GMT)
+	Sat,  8 Jun 2024 07:08:20 +0000 (GMT)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH 1/3] tools/perf: Fix the nrcpus in perf bench futex to
- enable the run when all CPU's are not online
+Subject: Re: [PATCH V3 06/14] tools/perf: Update parameters for reg extract
+ functions to use raw instruction on powerpc
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <CAP-5=fVCXW1FEBra5aFLJm48f0-b4a+oTugTZt+VYEv1EySBKg@mail.gmail.com>
-Date: Sat, 8 Jun 2024 12:36:04 +0530
+In-Reply-To: <ZmFclbqQytaZt1Ep@google.com>
+Date: Sat, 8 Jun 2024 12:38:08 +0530
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8232BA2A-C7C5-4413-B174-6088EBF863C0@linux.vnet.ibm.com>
-References: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
- <CAP-5=fVCXW1FEBra5aFLJm48f0-b4a+oTugTZt+VYEv1EySBKg@mail.gmail.com>
-To: Ian Rogers <irogers@google.com>
+Message-Id: <3AAD3E17-571C-4775-BF4B-34EDFCC94079@linux.vnet.ibm.com>
+References: <20240601060941.13692-1-atrajeev@linux.vnet.ibm.com>
+ <20240601060941.13692-7-atrajeev@linux.vnet.ibm.com>
+ <ZmFclbqQytaZt1Ep@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
 X-Mailer: Apple Mail (2.3774.500.171.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZQeodHpPrKo6DiahG6RJkTnE8CjRzBdc
-X-Proofpoint-ORIG-GUID: UOGdbADrrMEHa15MF07ZCE0W2cSRDGZB
+X-Proofpoint-ORIG-GUID: 50XXHJ8SRxj124TZpET4tMKoQvGz6n8E
+X-Proofpoint-GUID: UDnBHGh_Z---__2CDh_aH9ZvZsnhBg5u
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-08_01,2024-06-06_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- mlxscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0
- priorityscore=1501 mlxlogscore=999 suspectscore=0 malwarescore=0
- clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406080049
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 mlxscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406080049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,136 +103,392 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On 7 Jun 2024, at 10:53=E2=80=AFPM, Ian Rogers <irogers@google.com> =
+> On 6 Jun 2024, at 12:22=E2=80=AFPM, Namhyung Kim <namhyung@kernel.org> =
 wrote:
 >=20
-> On Thu, Jun 6, 2024 at 9:44=E2=80=AFPM Athira Rajeev
-> <atrajeev@linux.vnet.ibm.com> wrote:
+> On Sat, Jun 01, 2024 at 11:39:33AM +0530, Athira Rajeev wrote:
+>> Use the raw instruction code and macros to identify memory =
+instructions,
+>> extract register fields and also offset. The implementation addresses
+>> the D-form, X-form, DS-form instructions. Two main functions are =
+added.
+>> New parse function "load_store__parse" as instruction ops parser for
+>> memory instructions. Unlink other parser (like mov__parse), this =
+parser
+>> fills in the "raw_insn" field for source/target and new added =
+"mem_ref"
+>> field. Also set if it is multi_regs and opcode as well. No other =
+fields
+>> are set because, here there is no need to parse the disassembled
+>> code and arch specific macros will take care of extracting offset and
+>> regs which is easier and will be precise.
 >>=20
->> Perf bench futex fails as below when attempted to run on
->> on a powerpc system:
->>=20
->> ./perf bench futex all
->> Running futex/hash benchmark...
->> Run summary [PID 626307]: 80 threads, each operating on 1024 =
-[private] futexes for 10 secs.
->>=20
->> perf: pthread_create: No such file or directory
->>=20
->> In the setup where this perf bench was ran, difference was that
->> partition had 640 CPU's, but not all CPUs were online. 80 CPUs
->> were online. While blocking the threads with futex_wait, code
->> sets the affinity using cpumask. The cpumask size used is 80
->> which is picked from "nrcpus =3D perf_cpu_map__nr(cpu)". Here the
->> benchmark reports fail while setting affinity for cpu number which
->> is greater than 80 or higher, because it attempts to set a bit
->> position which is not allocated on the cpumask. Fix this by changing
->> the size of cpumask to number of possible cpus and not the number
->> of online cpus.
+>> In powerpc, all instructions with a primary opcode from 32 to 63
+>> are memory instructions. Update "ins__find" function to have =
+"raw_insn"
+>> also as a parameter. Don't use the "extract_reg_offset", instead use
+>> newly added function "get_arch_regs" which will set these fields: =
+reg1,
+>> reg2, offset depending of where it is source or target ops.
 >>=20
 >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> .../perf/arch/powerpc/annotate/instructions.c | 16 +++++
+>> tools/perf/arch/powerpc/util/dwarf-regs.c     | 44 +++++++++++++
+>> tools/perf/util/annotate.c                    | 25 +++++++-
+>> tools/perf/util/disasm.c                      | 64 =
++++++++++++++++++--
+>> tools/perf/util/disasm.h                      |  4 +-
+>> tools/perf/util/include/dwarf-regs.h          |  3 +
+>> 6 files changed, 147 insertions(+), 9 deletions(-)
+>>=20
+>> diff --git a/tools/perf/arch/powerpc/annotate/instructions.c =
+b/tools/perf/arch/powerpc/annotate/instructions.c
+>> index d57fd023ef9c..10fea5e5cf4c 100644
+>> --- a/tools/perf/arch/powerpc/annotate/instructions.c
+>> +++ b/tools/perf/arch/powerpc/annotate/instructions.c
+>> @@ -49,6 +49,22 @@ static struct ins_ops =
+*powerpc__associate_instruction_ops(struct arch *arch, con
+>> return ops;
+>> }
+>>=20
+>> +#define PPC_OP(op)      (((op) >> 26) & 0x3F)
+>> +
+>> +static struct ins_ops *check_ppc_insn(int raw_insn)
+>> +{
+>> + int opcode =3D PPC_OP(raw_insn);
+>> +
+>> + /*
+>> +  * Instructions with opcode 32 to 63 are memory
+>> +  * instructions in powerpc
+>> +  */
+>> + if ((opcode & 0x20))
+>> + return &load_store_ops;
+>> +
+>> + return NULL;
+>> +}
+>> +
+>> static int powerpc__annotate_init(struct arch *arch, char *cpuid =
+__maybe_unused)
+>> {
+>> if (!arch->initialized) {
+>> diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c =
+b/tools/perf/arch/powerpc/util/dwarf-regs.c
+>> index 430623ca5612..38b74fa01d8b 100644
+>> --- a/tools/perf/arch/powerpc/util/dwarf-regs.c
+>> +++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
+>> @@ -107,3 +107,47 @@ int regs_query_register_offset(const char *name)
+>> #define PPC_DS(DS) ((DS) & 0xfffc)
+>> #define OP_LD 58
+>> #define OP_STD 62
+>> +
+>> +static int get_source_reg(unsigned int raw_insn)
+>> +{
+>> + return PPC_RA(raw_insn);
+>> +}
+>> +
+>> +static int get_target_reg(unsigned int raw_insn)
+>> +{
+>> + return PPC_RT(raw_insn);
+>> +}
+>> +
+>> +static int get_offset_opcode(int raw_insn __maybe_unused)
 >=20
-> For the series:
-> Reviewed-by: Ian Rogers <irogers@google.com>
+> The argument is used below, no need for __maybe_unused.
+>=20
+>> +{
+>> + int opcode =3D PPC_OP(raw_insn);
+>> +
+>> + /* DS- form */
+>> + if ((opcode =3D=3D OP_LD) || (opcode =3D=3D OP_STD))
+>> + return PPC_DS(raw_insn);
+>> + else
+>> + return PPC_D(raw_insn);
+>> +}
+>> +
+>> +/*
+>> + * Fills the required fields for op_loc depending on if it
+>> + * is a source or target.
+>> + * D form: ins RT,D(RA) -> src_reg1 =3D RA, offset =3D D, dst_reg1 =3D=
+ RT
+>> + * DS form: ins RT,DS(RA) -> src_reg1 =3D RA, offset =3D DS, =
+dst_reg1 =3D RT
+>> + * X form: ins RT,RA,RB -> src_reg1 =3D RA, src_reg2 =3D RB, =
+dst_reg1 =3D RT
+>> + */
+>> +void get_arch_regs(int raw_insn __maybe_unused, int is_source =
+__maybe_unused,
+>> + struct annotated_op_loc *op_loc __maybe_unused)
+>=20
+> Ditto.
 
-Hi Ian
+Yes, right. Will fix it both the places.
 
-Thanks for the review=20
-
+Thanks
 Athira
 >=20
 > Thanks,
-> Ian
+> Namhyung
+
 >=20
->> ---
->> tools/perf/bench/futex-hash.c          | 2 +-
->> tools/perf/bench/futex-lock-pi.c       | 2 +-
->> tools/perf/bench/futex-requeue.c       | 2 +-
->> tools/perf/bench/futex-wake-parallel.c | 2 +-
->> tools/perf/bench/futex-wake.c          | 2 +-
->> 5 files changed, 5 insertions(+), 5 deletions(-)
+>=20
+>> +{
+>> + if (is_source)
+>> + op_loc->reg1 =3D get_source_reg(raw_insn);
+>> + else
+>> + op_loc->reg1 =3D get_target_reg(raw_insn);
+>> +
+>> + if (op_loc->multi_regs)
+>> + op_loc->reg2 =3D PPC_RB(raw_insn);
+>> +
+>> + /* TODO: Implement offset handling for X Form */
+>> + if ((op_loc->mem_ref) && (PPC_OP(raw_insn) !=3D 31))
+>> + op_loc->offset =3D get_offset_opcode(raw_insn);
+>> +}
+>> diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+>> index 1451caf25e77..2b8cc759ae35 100644
+>> --- a/tools/perf/util/annotate.c
+>> +++ b/tools/perf/util/annotate.c
+>> @@ -2079,6 +2079,12 @@ static int extract_reg_offset(struct arch =
+*arch, const char *str,
+>> return 0;
+>> }
 >>=20
->> diff --git a/tools/perf/bench/futex-hash.c =
-b/tools/perf/bench/futex-hash.c
->> index 0c69d20efa32..b472eded521b 100644
->> --- a/tools/perf/bench/futex-hash.c
->> +++ b/tools/perf/bench/futex-hash.c
->> @@ -174,7 +174,7 @@ int bench_futex_hash(int argc, const char **argv)
->>        pthread_attr_init(&thread_attr);
->>        gettimeofday(&bench__start, NULL);
+>> +__weak void get_arch_regs(int raw_insn __maybe_unused, int is_source =
+__maybe_unused,
+>> + struct annotated_op_loc *op_loc __maybe_unused)
+>> +{
+>> + return;
+>> +}
+>> +
+>> /**
+>>  * annotate_get_insn_location - Get location of instruction
+>>  * @arch: the architecture info
+>> @@ -2123,20 +2129,33 @@ int annotate_get_insn_location(struct arch =
+*arch, struct disasm_line *dl,
+>> for_each_insn_op_loc(loc, i, op_loc) {
+>> const char *insn_str =3D ops->source.raw;
+>> bool multi_regs =3D ops->source.multi_regs;
+>> + bool mem_ref =3D ops->source.mem_ref;
 >>=20
->> -       nrcpus =3D perf_cpu_map__nr(cpu);
->> +       nrcpus =3D cpu__max_cpu().cpu;
->>        cpuset =3D CPU_ALLOC(nrcpus);
->>        BUG_ON(!cpuset);
->>        size =3D CPU_ALLOC_SIZE(nrcpus);
->> diff --git a/tools/perf/bench/futex-lock-pi.c =
-b/tools/perf/bench/futex-lock-pi.c
->> index 7a4973346180..0416120c091b 100644
->> --- a/tools/perf/bench/futex-lock-pi.c
->> +++ b/tools/perf/bench/futex-lock-pi.c
->> @@ -122,7 +122,7 @@ static void create_threads(struct worker *w, =
-struct perf_cpu_map *cpu)
+>> if (i =3D=3D INSN_OP_TARGET) {
+>> insn_str =3D ops->target.raw;
+>> multi_regs =3D ops->target.multi_regs;
+>> + mem_ref =3D ops->target.mem_ref;
+>> }
+>>=20
+>> /* Invalidate the register by default */
+>> op_loc->reg1 =3D -1;
+>> op_loc->reg2 =3D -1;
+>>=20
+>> - if (insn_str =3D=3D NULL)
+>> - continue;
+>> + if (insn_str =3D=3D NULL) {
+>> + if (!arch__is(arch, "powerpc"))
+>> + continue;
+>> + }
+>>=20
+>> - if (strchr(insn_str, arch->objdump.memory_ref_char)) {
+>> + /*
+>> +  * For powerpc, call get_arch_regs function which extracts the
+>> +  * required fields for op_loc, ie reg1, reg2, offset from the
+>> +  * raw instruction.
+>> +  */
+>> + if (arch__is(arch, "powerpc")) {
+>> + op_loc->mem_ref =3D mem_ref;
+>> + op_loc->multi_regs =3D multi_regs;
+>> + get_arch_regs(ops->raw_insn, !i, op_loc);
+>> + } else if (strchr(insn_str, arch->objdump.memory_ref_char)) {
+>> op_loc->mem_ref =3D true;
+>> op_loc->multi_regs =3D multi_regs;
+>> extract_reg_offset(arch, insn_str, op_loc);
+>> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+>> index 61f0f1656f82..252cb0d1f5d1 100644
+>> --- a/tools/perf/util/disasm.c
+>> +++ b/tools/perf/util/disasm.c
+>> @@ -37,6 +37,7 @@ static struct ins_ops mov_ops;
+>> static struct ins_ops nop_ops;
+>> static struct ins_ops lock_ops;
+>> static struct ins_ops ret_ops;
+>> +static struct ins_ops load_store_ops;
+>>=20
+>> static int jump__scnprintf(struct ins *ins, char *bf, size_t size,
+>>    struct ins_operands *ops, int max_ins_name);
+>> @@ -517,7 +518,7 @@ static int lock__parse(struct arch *arch, struct =
+ins_operands *ops, struct map_s
+>> if (disasm_line__parse(ops->raw, &ops->locked.ins.name, =
+&ops->locked.ops->raw) < 0)
+>> goto out_free_ops;
+>>=20
+>> - ops->locked.ins.ops =3D ins__find(arch, ops->locked.ins.name);
+>> + ops->locked.ins.ops =3D ins__find(arch, ops->locked.ins.name, 0);
+>>=20
+>> if (ops->locked.ins.ops =3D=3D NULL)
+>> goto out_free_ops;
+>> @@ -672,6 +673,47 @@ static struct ins_ops mov_ops =3D {
+>> .scnprintf =3D mov__scnprintf,
+>> };
+>>=20
+>> +static int load_store__scnprintf(struct ins *ins, char *bf, size_t =
+size,
+>> + struct ins_operands *ops, int max_ins_name)
+>> +{
+>> + return scnprintf(bf, size, "%-*s %s", max_ins_name, ins->name,
+>> + ops->raw);
+>> +}
+>> +
+>> +/*
+>> + * Sets the fields: "raw_insn", opcode, multi_regs and "mem_ref".
+>> + * "mem_ref" is set for ops->source which is later used to
+>> + * fill the objdump->memory_ref-char field. This ops is currently
+>> + * used by powerpc and since binary instruction code is used to
+>> + * extract opcode, regs and offset, no other parsing is needed here
+>> + */
+>> +static int load_store__parse(struct arch *arch __maybe_unused, =
+struct ins_operands *ops,
+>> + struct map_symbol *ms __maybe_unused)
+>> +{
+>> + ops->source.raw_insn =3D ops->raw_insn;
+>> + ops->source.mem_ref =3D true;
+>> + ops->source.opcode =3D ops->opcode;
+>> + ops->source.multi_regs =3D false;
+>> +
+>> + if (!ops->source.raw_insn)
+>> + return -1;
+>> +
+>> + ops->target.raw_insn =3D ops->raw_insn;
+>> + ops->target.mem_ref =3D false;
+>> + ops->target.multi_regs =3D false;
+>> + ops->target.opcode =3D ops->opcode;
+>> +
+>> + if (!ops->target.raw_insn)
+>> + return -1;
+>> +
+>> + return 0;
+>> +}
+>> +
+>> +static struct ins_ops load_store_ops =3D {
+>> + .parse     =3D load_store__parse,
+>> + .scnprintf =3D load_store__scnprintf,
+>> +};
+>> +
+>> static int dec__parse(struct arch *arch __maybe_unused, struct =
+ins_operands *ops, struct map_symbol *ms __maybe_unused)
 >> {
->>        cpu_set_t *cpuset;
->>        unsigned int i;
->> -       int nrcpus =3D  perf_cpu_map__nr(cpu);
->> +       int nrcpus =3D  cpu__max_cpu().cpu;
->>        size_t size;
+>> char *target, *comment, *s, prev;
+>> @@ -762,11 +804,23 @@ static void ins__sort(struct arch *arch)
+>> qsort(arch->instructions, nmemb, sizeof(struct ins), ins__cmp);
+>> }
 >>=20
->>        threads_starting =3D params.nthreads;
->> diff --git a/tools/perf/bench/futex-requeue.c =
-b/tools/perf/bench/futex-requeue.c
->> index d9ad736c1a3e..aad5bfc4fe18 100644
->> --- a/tools/perf/bench/futex-requeue.c
->> +++ b/tools/perf/bench/futex-requeue.c
->> @@ -125,7 +125,7 @@ static void block_threads(pthread_t *w, struct =
-perf_cpu_map *cpu)
+>> -static struct ins_ops *__ins__find(struct arch *arch, const char =
+*name)
+>> +static struct ins_ops *__ins__find(struct arch *arch, const char =
+*name, int raw_insn)
 >> {
->>        cpu_set_t *cpuset;
->>        unsigned int i;
->> -       int nrcpus =3D perf_cpu_map__nr(cpu);
->> +       int nrcpus =3D cpu__max_cpu().cpu;
->>        size_t size;
+>> struct ins *ins;
+>> const int nmemb =3D arch->nr_instructions;
 >>=20
->>        threads_starting =3D params.nthreads;
->> diff --git a/tools/perf/bench/futex-wake-parallel.c =
-b/tools/perf/bench/futex-wake-parallel.c
->> index b66df553e561..90a5b91bf139 100644
->> --- a/tools/perf/bench/futex-wake-parallel.c
->> +++ b/tools/perf/bench/futex-wake-parallel.c
->> @@ -149,7 +149,7 @@ static void block_threads(pthread_t *w, struct =
-perf_cpu_map *cpu)
+>> + if (arch__is(arch, "powerpc")) {
+>> + /*
+>> +  * For powerpc, identify the instruction ops
+>> +  * from the opcode using raw_insn.
+>> +  */
+>> + struct ins_ops *ops;
+>> +
+>> + ops =3D check_ppc_insn(raw_insn);
+>> + if (ops)
+>> + return ops;
+>> + }
+>> +
+>> if (!arch->sorted_instructions) {
+>> ins__sort(arch);
+>> arch->sorted_instructions =3D true;
+>> @@ -796,9 +850,9 @@ static struct ins_ops *__ins__find(struct arch =
+*arch, const char *name)
+>> return ins ? ins->ops : NULL;
+>> }
+>>=20
+>> -struct ins_ops *ins__find(struct arch *arch, const char *name)
+>> +struct ins_ops *ins__find(struct arch *arch, const char *name, int =
+raw_insn)
 >> {
->>        cpu_set_t *cpuset;
->>        unsigned int i;
->> -       int nrcpus =3D perf_cpu_map__nr(cpu);
->> +       int nrcpus =3D cpu__max_cpu().cpu;
->>        size_t size;
+>> - struct ins_ops *ops =3D __ins__find(arch, name);
+>> + struct ins_ops *ops =3D __ins__find(arch, name, raw_insn);
 >>=20
->>        threads_starting =3D params.nthreads;
->> diff --git a/tools/perf/bench/futex-wake.c =
-b/tools/perf/bench/futex-wake.c
->> index 690fd6d3da13..49b3c89b0b35 100644
->> --- a/tools/perf/bench/futex-wake.c
->> +++ b/tools/perf/bench/futex-wake.c
->> @@ -100,7 +100,7 @@ static void block_threads(pthread_t *w, struct =
-perf_cpu_map *cpu)
->>        cpu_set_t *cpuset;
->>        unsigned int i;
->>        size_t size;
->> -       int nrcpus =3D perf_cpu_map__nr(cpu);
->> +       int nrcpus =3D cpu__max_cpu().cpu;
->>        threads_starting =3D params.nthreads;
+>> if (!ops && arch->associate_instruction_ops)
+>> ops =3D arch->associate_instruction_ops(arch, name);
+>> @@ -808,7 +862,7 @@ struct ins_ops *ins__find(struct arch *arch, =
+const char *name)
 >>=20
->>        cpuset =3D CPU_ALLOC(nrcpus);
->> --
+>> static void disasm_line__init_ins(struct disasm_line *dl, struct arch =
+*arch, struct map_symbol *ms)
+>> {
+>> - dl->ins.ops =3D ins__find(arch, dl->ins.name);
+>> + dl->ins.ops =3D ins__find(arch, dl->ins.name, dl->ops.raw_insn);
+>>=20
+>> if (!dl->ins.ops)
+>> return;
+>> diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
+>> index a391e1bb81f7..831ebcc329cd 100644
+>> --- a/tools/perf/util/disasm.h
+>> +++ b/tools/perf/util/disasm.h
+>> @@ -62,6 +62,7 @@ struct ins_operands {
+>> bool offset_avail;
+>> bool outside;
+>> bool multi_regs;
+>> + bool mem_ref;
+>> } target;
+>> union {
+>> struct {
+>> @@ -71,6 +72,7 @@ struct ins_operands {
+>> int raw_insn;
+>> u64 addr;
+>> bool multi_regs;
+>> + bool mem_ref;
+>> } source;
+>> struct {
+>> struct ins     ins;
+>> @@ -104,7 +106,7 @@ struct annotate_args {
+>> struct arch *arch__find(const char *name);
+>> bool arch__is(struct arch *arch, const char *name);
+>>=20
+>> -struct ins_ops *ins__find(struct arch *arch, const char *name);
+>> +struct ins_ops *ins__find(struct arch *arch, const char *name, int =
+raw_insn);
+>> int ins__scnprintf(struct ins *ins, char *bf, size_t size,
+>>    struct ins_operands *ops, int max_ins_name);
+>>=20
+>> diff --git a/tools/perf/util/include/dwarf-regs.h =
+b/tools/perf/util/include/dwarf-regs.h
+>> index 01fb25a1150a..7ea39362ecaf 100644
+>> --- a/tools/perf/util/include/dwarf-regs.h
+>> +++ b/tools/perf/util/include/dwarf-regs.h
+>> @@ -1,6 +1,7 @@
+>> /* SPDX-License-Identifier: GPL-2.0 */
+>> #ifndef _PERF_DWARF_REGS_H_
+>> #define _PERF_DWARF_REGS_H_
+>> +#include "annotate.h"
+>>=20
+>> #define DWARF_REG_PC  0xd3af9c /* random number */
+>> #define DWARF_REG_FB  0xd3affb /* random number */
+>> @@ -31,6 +32,8 @@ static inline int get_dwarf_regnum(const char *name =
+__maybe_unused,
+>> }
+>> #endif
+>>=20
+>> +void get_arch_regs(int raw_insn, int is_source, struct =
+annotated_op_loc *op_loc);
+>> +
+>> #ifdef HAVE_ARCH_REGS_QUERY_REGISTER_OFFSET
+>> /*
+>>  * Arch should support fetching the offset of a register in pt_regs
+>> --=20
 >> 2.43.0
 
 
