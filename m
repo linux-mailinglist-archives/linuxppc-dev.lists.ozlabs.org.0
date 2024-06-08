@@ -1,89 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC54900FC7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 09:07:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C065900FC8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 09:07:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BPiwB8yM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NyIO59+E;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vx8JV3VDhz3cX9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 17:07:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vx8KG6xg2z3cVS
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jun 2024 17:07:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BPiwB8yM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NyIO59+E;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vx8HS2FS2z3cX9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2024 17:06:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vx8Hm3Jccz3cXT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jun 2024 17:06:28 +1000 (AEST)
 Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4586sagK007783;
-	Sat, 8 Jun 2024 07:06:04 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4586pXkG002918;
+	Sat, 8 Jun 2024 07:06:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
 	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=H
-	RDLQSZdkkK3Z4B1ucPGx8HDpF++0JqgxubJlry9nZ4=; b=BPiwB8yMi3xd3EXnp
-	gSCMlvgMOSVfY5gILVEaIPyFSVTlJ8w6/LRJDMmyfwZN5c0YodxrN/c5D0BGY3Bm
-	vn8eppwfpSfRg8/zktM0sMxH8PcYFwQA2/VBFiBmtP95y8GbX5Y33jFwS2XRPp/c
-	hS2nkxkOGBVwUxOtu2PJGiFuFQr1tfGDLXQUnscCWAljFm/2Xc3tAo8ENDljF/jO
-	lUf2ozNoeDzvKJUXjEeKBTJHmciXOAxnw/uSx7Xt9fLnxqmKjxMBNovfmNVuSfqW
-	gmrlmAdM2AxHfZDKmxJlVPM7iYNCSoxpXVnl0eugV274vXr5UKKreKxf5SHPjAl6
-	tB7xA==
+	:content-transfer-encoding:message-id:references:to; s=pp1; bh=J
+	Wp15AgTYXOmkMihCN9uUDq/fJj8+NIpDaT4n3kTfjU=; b=NyIO59+E3RqYjCnu2
+	hsSlrkZegiXfjkxlKRg4c2ClRMVg+cR0m/wlHWmxz7os+qM/mOmkNmhOBkE+UdXs
+	panV8S8Q0YGoLk747Rixv3U0EMWUvt67l6frn816riHRdvjy4CJfbuv915duTcel
+	TQqqoxXnDYD2sAwu2f1UsS/yzIVQQ7eN2UBDe4+hlGBVK43V5fi1VWDEBa53+Bzn
+	C71npgjpAoXJVxuCKDT2xJc87RDASCMrHNofIeYIWxT1FcPAYtA5ePRgYqolgaTm
+	jxU1FXtjnWvp1Ru19c9pGnfW8ZR3fw7/auykA8Pqbh3Ssl/MR5xnDG8MjgTl8/GJ
+	1x2vQ==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhf8046b-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhf8046k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Jun 2024 07:06:03 +0000 (GMT)
+	Sat, 08 Jun 2024 07:06:25 +0000 (GMT)
 Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 458763uO005770;
-	Sat, 8 Jun 2024 07:06:03 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhf80468-1
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45876O4H005892;
+	Sat, 8 Jun 2024 07:06:24 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ymhf8046j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Jun 2024 07:06:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4583VZeq011504;
-	Sat, 8 Jun 2024 07:06:02 GMT
+	Sat, 08 Jun 2024 07:06:24 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4583gL9n025354;
+	Sat, 8 Jun 2024 07:06:23 GMT
 Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ymffnrtcd-1
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ymfmp8rh2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Jun 2024 07:06:01 +0000
+	Sat, 08 Jun 2024 07:06:23 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45875u0I52363716
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45876HGU50594054
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 8 Jun 2024 07:05:58 GMT
+	Sat, 8 Jun 2024 07:06:19 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10EB82004E;
-	Sat,  8 Jun 2024 07:05:56 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 79AA320043;
+	Sat,  8 Jun 2024 07:06:17 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58A7020040;
-	Sat,  8 Jun 2024 07:05:53 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 202D620040;
+	Sat,  8 Jun 2024 07:06:15 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.43.125.209])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sat,  8 Jun 2024 07:05:53 +0000 (GMT)
+	Sat,  8 Jun 2024 07:06:14 +0000 (GMT)
 Content-Type: text/plain;
 	charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH V3 10/14] tools/perf: Update instruction tracking for
- powerpc
+Subject: Re: [PATCH 1/3] tools/perf: Fix the nrcpus in perf bench futex to
+ enable the run when all CPU's are not online
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <ZmFc6kPnh-zIrIG1@google.com>
-Date: Sat, 8 Jun 2024 12:35:42 +0530
+In-Reply-To: <CAP-5=fVCXW1FEBra5aFLJm48f0-b4a+oTugTZt+VYEv1EySBKg@mail.gmail.com>
+Date: Sat, 8 Jun 2024 12:36:04 +0530
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <100DACC9-508E-4B09-97AA-A771267DF1E8@linux.vnet.ibm.com>
-References: <20240601060941.13692-1-atrajeev@linux.vnet.ibm.com>
- <20240601060941.13692-11-atrajeev@linux.vnet.ibm.com>
- <ZmFc6kPnh-zIrIG1@google.com>
-To: Namhyung Kim <namhyung@kernel.org>
+Message-Id: <8232BA2A-C7C5-4413-B174-6088EBF863C0@linux.vnet.ibm.com>
+References: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
+ <CAP-5=fVCXW1FEBra5aFLJm48f0-b4a+oTugTZt+VYEv1EySBKg@mail.gmail.com>
+To: Ian Rogers <irogers@google.com>
 X-Mailer: Apple Mail (2.3774.500.171.1.1)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: t3_7sXSsx47BnE8iROdaPgUHjbQbL04S
-X-Proofpoint-ORIG-GUID: 4kmrVUikZH3vEqzI3HDCA_LJoRPgyMEk
+X-Proofpoint-GUID: ZQeodHpPrKo6DiahG6RJkTnE8CjRzBdc
+X-Proofpoint-ORIG-GUID: UOGdbADrrMEHa15MF07ZCE0W2cSRDGZB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-08_01,2024-06-06_02,2024-05-17_01
@@ -103,184 +102,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On 6 Jun 2024, at 12:23=E2=80=AFPM, Namhyung Kim <namhyung@kernel.org> =
+> On 7 Jun 2024, at 10:53=E2=80=AFPM, Ian Rogers <irogers@google.com> =
 wrote:
 >=20
-> On Sat, Jun 01, 2024 at 11:39:37AM +0530, Athira Rajeev wrote:
->> Add instruction tracking function "update_insn_state_powerpc" for
->> powerpc. Example sequence in powerpc:
+> On Thu, Jun 6, 2024 at 9:44=E2=80=AFPM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
 >>=20
->> ld      r10,264(r3)
->> mr      r31,r3
->> <<after some sequence>
->> ld      r9,312(r31)
+>> Perf bench futex fails as below when attempted to run on
+>> on a powerpc system:
 >>=20
->> Consider ithe sample is pointing to: "ld r9,312(r31)".
->> Here the memory reference is hit at "312(r31)" where 312 is the =
-offset
->> and r31 is the source register. Previous instruction sequence shows =
-that
->> register state of r3 is moved to r31. So to identify the data type =
-for r31
->> access, the previous instruction ("mr") needs to be tracked and the
->> state type entry has to be updated. Current instruction tracking =
-support
->> in perf tools infrastructure is specific to x86. Patch adds this =
-support
->> for powerpc as well.
+>> ./perf bench futex all
+>> Running futex/hash benchmark...
+>> Run summary [PID 626307]: 80 threads, each operating on 1024 =
+[private] futexes for 10 secs.
+>>=20
+>> perf: pthread_create: No such file or directory
+>>=20
+>> In the setup where this perf bench was ran, difference was that
+>> partition had 640 CPU's, but not all CPUs were online. 80 CPUs
+>> were online. While blocking the threads with futex_wait, code
+>> sets the affinity using cpumask. The cpumask size used is 80
+>> which is picked from "nrcpus =3D perf_cpu_map__nr(cpu)". Here the
+>> benchmark reports fail while setting affinity for cpu number which
+>> is greater than 80 or higher, because it attempts to set a bit
+>> position which is not allocated on the cpumask. Fix this by changing
+>> the size of cpumask to number of possible cpus and not the number
+>> of online cpus.
 >>=20
 >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> .../perf/arch/powerpc/annotate/instructions.c | 65 =
-+++++++++++++++++++
->> tools/perf/util/annotate-data.c               |  9 ++-
->> tools/perf/util/disasm.c                      |  1 +
->> 3 files changed, 74 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/tools/perf/arch/powerpc/annotate/instructions.c =
-b/tools/perf/arch/powerpc/annotate/instructions.c
->> index db72148eb857..3ecf5a986037 100644
->> --- a/tools/perf/arch/powerpc/annotate/instructions.c
->> +++ b/tools/perf/arch/powerpc/annotate/instructions.c
->> @@ -231,6 +231,71 @@ static struct ins_ops *check_ppc_insn(int =
-raw_insn)
->> return NULL;
->> }
->>=20
->> +/*
->> + * Instruction tracking function to track register state moves.
->> + * Example sequence:
->> + *    ld      r10,264(r3)
->> + *    mr      r31,r3
->> + *    <<after some sequence>
->> + *    ld      r9,312(r31)
->> + *
->> + * Previous instruction sequence shows that register state of r3
->> + * is moved to r31. update_insn_state_powerpc tracks these state
->> + * changes
->> + */
->> +#ifdef HAVE_DWARF_SUPPORT
->> +static void update_insn_state_powerpc(struct type_state *state,
->> + struct data_loc_info *dloc, Dwarf_Die * cu_die __maybe_unused,
->> + struct disasm_line *dl)
->> +{
->> + struct annotated_insn_loc loc;
->> + struct annotated_op_loc *src =3D &loc.ops[INSN_OP_SOURCE];
->> + struct annotated_op_loc *dst =3D &loc.ops[INSN_OP_TARGET];
->> + struct type_state_reg *tsr;
->> + u32 insn_offset =3D dl->al.offset;
->> +
->> + if (annotate_get_insn_location(dloc->arch, dl, &loc) < 0)
->> + return;
->> +
->> + /*
->> +  * Value 444 for bits 21:30 is for "mr"
->> +  * instruction. "mr" is extended OR. So set the
->> +  * source and destination reg correctly
->> +  */
->> + if (PPC_21_30(dl->ops.raw_insn) =3D=3D 444) {
->> + int src_reg =3D src->reg1;
->> +
->> + src->reg1 =3D dst->reg1;
->> + dst->reg1 =3D src_reg;
->> + }
->> +
->> + if (!has_reg_type(state, dst->reg1))
->> + return;
->> +
->> + tsr =3D &state->regs[dst->reg1];
->> +
->> + if (!has_reg_type(state, src->reg1) ||
->> + !state->regs[src->reg1].ok) {
->> + tsr->ok =3D false;
->> + return;
->> + }
->> +
->> + tsr->type =3D state->regs[src->reg1].type;
->> + tsr->kind =3D state->regs[src->reg1].kind;
->> + tsr->ok =3D true;
->> +
->> + pr_debug("mov [%x] reg%d -> reg%d",
 >=20
-> pr_debug_dtp() ?
+> For the series:
+> Reviewed-by: Ian Rogers <irogers@google.com>
 
-Sure, will change this in V4
+Hi Ian
 
-Thanks
+Thanks for the review=20
+
 Athira
 >=20
 > Thanks,
-> Namhyung
+> Ian
 >=20
->=20
->> + insn_offset, src->reg1, dst->reg1);
->> + pr_debug_type_name(&tsr->type, tsr->kind);
->> +}
->> +#else /* HAVE_DWARF_SUPPORT */
->> +static void update_insn_state_powerpc(struct type_state *state =
-__maybe_unused, struct data_loc_info *dloc __maybe_unused,
->> + Dwarf_Die * cu_die __maybe_unused, struct disasm_line *dl =
-__maybe_unused)
->> +{
->> + return;
->> +}
->> +#endif /* HAVE_DWARF_SUPPORT */
->> +
->> static int powerpc__annotate_init(struct arch *arch, char *cpuid =
-__maybe_unused)
->> {
->> if (!arch->initialized) {
->> diff --git a/tools/perf/util/annotate-data.c =
-b/tools/perf/util/annotate-data.c
->> index 7a48c3d72b89..734acdd8c4b7 100644
->> --- a/tools/perf/util/annotate-data.c
->> +++ b/tools/perf/util/annotate-data.c
->> @@ -1080,6 +1080,13 @@ static int find_data_type_insn(struct =
-data_loc_info *dloc,
->> return ret;
->> }
+>> ---
+>> tools/perf/bench/futex-hash.c          | 2 +-
+>> tools/perf/bench/futex-lock-pi.c       | 2 +-
+>> tools/perf/bench/futex-requeue.c       | 2 +-
+>> tools/perf/bench/futex-wake-parallel.c | 2 +-
+>> tools/perf/bench/futex-wake.c          | 2 +-
+>> 5 files changed, 5 insertions(+), 5 deletions(-)
 >>=20
->> +static int arch_supports_insn_tracking(struct data_loc_info *dloc)
->> +{
->> + if ((arch__is(dloc->arch, "x86")) || (arch__is(dloc->arch, =
-"powerpc")))
->> + return 1;
->> + return 0;
->> +}
->> +
->> /*
->>  * Construct a list of basic blocks for each scope with variables and =
-try to find
->>  * the data type by updating a type state table through instructions.
->> @@ -1094,7 +1101,7 @@ static int find_data_type_block(struct =
-data_loc_info *dloc,
->> int ret =3D -1;
+>> diff --git a/tools/perf/bench/futex-hash.c =
+b/tools/perf/bench/futex-hash.c
+>> index 0c69d20efa32..b472eded521b 100644
+>> --- a/tools/perf/bench/futex-hash.c
+>> +++ b/tools/perf/bench/futex-hash.c
+>> @@ -174,7 +174,7 @@ int bench_futex_hash(int argc, const char **argv)
+>>        pthread_attr_init(&thread_attr);
+>>        gettimeofday(&bench__start, NULL);
 >>=20
->> /* TODO: other architecture support */
->> - if (!arch__is(dloc->arch, "x86"))
->> + if (!arch_supports_insn_tracking(dloc))
->> return -1;
+>> -       nrcpus =3D perf_cpu_map__nr(cpu);
+>> +       nrcpus =3D cpu__max_cpu().cpu;
+>>        cpuset =3D CPU_ALLOC(nrcpus);
+>>        BUG_ON(!cpuset);
+>>        size =3D CPU_ALLOC_SIZE(nrcpus);
+>> diff --git a/tools/perf/bench/futex-lock-pi.c =
+b/tools/perf/bench/futex-lock-pi.c
+>> index 7a4973346180..0416120c091b 100644
+>> --- a/tools/perf/bench/futex-lock-pi.c
+>> +++ b/tools/perf/bench/futex-lock-pi.c
+>> @@ -122,7 +122,7 @@ static void create_threads(struct worker *w, =
+struct perf_cpu_map *cpu)
+>> {
+>>        cpu_set_t *cpuset;
+>>        unsigned int i;
+>> -       int nrcpus =3D  perf_cpu_map__nr(cpu);
+>> +       int nrcpus =3D  cpu__max_cpu().cpu;
+>>        size_t size;
 >>=20
->> prev_dst_ip =3D dst_ip =3D dloc->ip;
->> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
->> index 57af4dc42a58..d8b357055302 100644
->> --- a/tools/perf/util/disasm.c
->> +++ b/tools/perf/util/disasm.c
->> @@ -155,6 +155,7 @@ static struct arch architectures[] =3D {
+>>        threads_starting =3D params.nthreads;
+>> diff --git a/tools/perf/bench/futex-requeue.c =
+b/tools/perf/bench/futex-requeue.c
+>> index d9ad736c1a3e..aad5bfc4fe18 100644
+>> --- a/tools/perf/bench/futex-requeue.c
+>> +++ b/tools/perf/bench/futex-requeue.c
+>> @@ -125,7 +125,7 @@ static void block_threads(pthread_t *w, struct =
+perf_cpu_map *cpu)
 >> {
->> .name =3D "powerpc",
->> .init =3D powerpc__annotate_init,
->> + .update_insn_state =3D update_insn_state_powerpc,
->> },
+>>        cpu_set_t *cpuset;
+>>        unsigned int i;
+>> -       int nrcpus =3D perf_cpu_map__nr(cpu);
+>> +       int nrcpus =3D cpu__max_cpu().cpu;
+>>        size_t size;
+>>=20
+>>        threads_starting =3D params.nthreads;
+>> diff --git a/tools/perf/bench/futex-wake-parallel.c =
+b/tools/perf/bench/futex-wake-parallel.c
+>> index b66df553e561..90a5b91bf139 100644
+>> --- a/tools/perf/bench/futex-wake-parallel.c
+>> +++ b/tools/perf/bench/futex-wake-parallel.c
+>> @@ -149,7 +149,7 @@ static void block_threads(pthread_t *w, struct =
+perf_cpu_map *cpu)
 >> {
->> .name =3D "riscv64",
->> --=20
+>>        cpu_set_t *cpuset;
+>>        unsigned int i;
+>> -       int nrcpus =3D perf_cpu_map__nr(cpu);
+>> +       int nrcpus =3D cpu__max_cpu().cpu;
+>>        size_t size;
+>>=20
+>>        threads_starting =3D params.nthreads;
+>> diff --git a/tools/perf/bench/futex-wake.c =
+b/tools/perf/bench/futex-wake.c
+>> index 690fd6d3da13..49b3c89b0b35 100644
+>> --- a/tools/perf/bench/futex-wake.c
+>> +++ b/tools/perf/bench/futex-wake.c
+>> @@ -100,7 +100,7 @@ static void block_threads(pthread_t *w, struct =
+perf_cpu_map *cpu)
+>>        cpu_set_t *cpuset;
+>>        unsigned int i;
+>>        size_t size;
+>> -       int nrcpus =3D perf_cpu_map__nr(cpu);
+>> +       int nrcpus =3D cpu__max_cpu().cpu;
+>>        threads_starting =3D params.nthreads;
+>>=20
+>>        cpuset =3D CPU_ALLOC(nrcpus);
+>> --
 >> 2.43.0
 
 
