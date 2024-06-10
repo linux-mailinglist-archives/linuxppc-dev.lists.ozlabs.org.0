@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C00901AA0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 07:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F099901AA3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 07:57:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VyLfp401Sz3fwQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 15:57:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VyLgM10rpz3g2C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 15:57:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
@@ -15,27 +15,27 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VyLcs62k4z3cVd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 15:55:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VyLcx1mHRz3cSK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 15:55:29 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4VyLcP0b69z9tZT;
-	Mon, 10 Jun 2024 07:55:01 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4VyLcQ5CXcz9v49;
+	Mon, 10 Jun 2024 07:55:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id gvdi5McakwQ4; Mon, 10 Jun 2024 07:55:01 +0200 (CEST)
+	with ESMTP id iqfAjQD7avPv; Mon, 10 Jun 2024 07:55:02 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4VyLcK6smkz9v49;
-	Mon, 10 Jun 2024 07:54:57 +0200 (CEST)
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4VyLcL0Zx7z9v4H;
+	Mon, 10 Jun 2024 07:54:58 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E7ABE8B764;
-	Mon, 10 Jun 2024 07:54:57 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FEE88B764;
+	Mon, 10 Jun 2024 07:54:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id sMhS6ZvxakMq; Mon, 10 Jun 2024 07:54:57 +0200 (CEST)
+	with ESMTP id SC-ApNoJwjO9; Mon, 10 Jun 2024 07:54:57 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BFD808B76C;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D3AB68B76E;
 	Mon, 10 Jun 2024 07:54:57 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -44,14 +44,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Oscar Salvador <osalvador@suse.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v5 04/18] powerpc/mm: Remove _PAGE_PSIZE
-Date: Mon, 10 Jun 2024 07:54:49 +0200
-Message-ID: <df02a8501db1291e8edd3babb183362524c7ac25.1717955558.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v5 05/18] powerpc/mm: Fix __find_linux_pte() on 32 bits with PMD leaf entries
+Date: Mon, 10 Jun 2024 07:54:50 +0200
+Message-ID: <3a87a60173171326096e9779399908a1ee158dde.1717955558.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1717955558.git.christophe.leroy@csgroup.eu>
 References: <cover.1717955558.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717998886; l=3781; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=ymAToQL34uMf8YFNIV4scdsUyseWbpqXywhQPbZn4dQ=; b=6HDxlF/kSkXGgvrRo9chcQJxcivCah2oFjGpkgFfg4BYd1jAae6mJij91p/veiaN3J/hhfVyz 3NE7JO2OjrdAdCm1w0A11CfmtPwwW+NKTcqF67ZtJ2ggmu4MxDTH+wF
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1717998887; l=5393; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=CWlk/wMDjpU6vF1ScRB8cosnmevy/J5Gz15W8u/6MPI=; b=Un+r2iQmI2Y1S/rVW9QsGLuXIKWohARWQ92NTopwZF1NuYv2CBYWbJHtrI0Ce1JGN8ZDLg0Hz h8tNwgah91PBIKWw7FrOe/23DN1WWtWcLAxirXOO0suuXzXE7HhrAl3
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,104 +69,157 @@ Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-_PAGE_PSIZE macro is never used outside the place it is defined
-and is used only on 8xx and e500.
+Building on 32 bits with pmd_leaf() not returning always false leads
+to the following error:
 
-Remove indirection, remove it and use its content directly.
+  CC      arch/powerpc/mm/pgtable.o
+arch/powerpc/mm/pgtable.c: In function '__find_linux_pte':
+arch/powerpc/mm/pgtable.c:506:1: error: function may return address of local variable [-Werror=return-local-addr]
+  506 | }
+      | ^
+arch/powerpc/mm/pgtable.c:394:15: note: declared here
+  394 |         pud_t pud, *pudp;
+      |               ^~~
+arch/powerpc/mm/pgtable.c:394:15: note: declared here
+
+This is due to pmd_offset() being a no-op in that case.
+
+So rework it for powerpc/32 so that pXd_offset() are used on real
+pointers and not on on-stack copies.
+
+Behind fixing the problem, it also has the advantage of simplifying
+__find_linux_pte() including the removal of stack frame:
+
+After this patch:
+
+	00000018 <__find_linux_pte>:
+	  18:	2c 06 00 00 	cmpwi   r6,0
+	  1c:	41 82 00 0c 	beq     28 <__find_linux_pte+0x10>
+	  20:	39 20 00 00 	li      r9,0
+	  24:	91 26 00 00 	stw     r9,0(r6)
+	  28:	2f 85 00 00 	cmpwi   cr7,r5,0
+	  2c:	41 9e 00 0c 	beq     cr7,38 <__find_linux_pte+0x20>
+	  30:	39 20 00 00 	li      r9,0
+	  34:	99 25 00 00 	stb     r9,0(r5)
+	  38:	54 89 65 3a 	rlwinm  r9,r4,12,20,29
+	  3c:	7c 63 48 2e 	lwzx    r3,r3,r9
+	  40:	2f 83 00 00 	cmpwi   cr7,r3,0
+	  44:	41 9e 00 30 	beq     cr7,74 <__find_linux_pte+0x5c>
+	  48:	54 69 07 3a 	rlwinm  r9,r3,0,28,29
+	  4c:	2f 89 00 0c 	cmpwi   cr7,r9,12
+	  50:	54 63 00 26 	clrrwi  r3,r3,12
+	  54:	54 84 b5 36 	rlwinm  r4,r4,22,20,27
+	  58:	3c 63 c0 00 	addis   r3,r3,-16384
+	  5c:	7c 63 22 14 	add     r3,r3,r4
+	  60:	4c be 00 20 	bnelr+  cr7
+	  64:	4d 82 00 20 	beqlr
+	  68:	39 20 00 17 	li      r9,23
+	  6c:	91 26 00 00 	stw     r9,0(r6)
+	  70:	4e 80 00 20 	blr
+	  74:	38 60 00 00 	li      r3,0
+	  78:	4e 80 00 20 	blr
+
+Before this patch:
+
+	00000018 <__find_linux_pte>:
+	  18:	2c 06 00 00 	cmpwi   r6,0
+	  1c:	94 21 ff e0 	stwu    r1,-32(r1)
+	  20:	41 82 00 0c 	beq     2c <__find_linux_pte+0x14>
+	  24:	39 20 00 00 	li      r9,0
+	  28:	91 26 00 00 	stw     r9,0(r6)
+	  2c:	2f 85 00 00 	cmpwi   cr7,r5,0
+	  30:	41 9e 00 0c 	beq     cr7,3c <__find_linux_pte+0x24>
+	  34:	39 20 00 00 	li      r9,0
+	  38:	99 25 00 00 	stb     r9,0(r5)
+	  3c:	54 89 65 3a 	rlwinm  r9,r4,12,20,29
+	  40:	7c 63 48 2e 	lwzx    r3,r3,r9
+	  44:	54 69 07 3a 	rlwinm  r9,r3,0,28,29
+	  48:	2f 89 00 0c 	cmpwi   cr7,r9,12
+	  4c:	90 61 00 0c 	stw     r3,12(r1)
+	  50:	41 9e 00 4c 	beq     cr7,9c <__find_linux_pte+0x84>
+	  54:	80 61 00 0c 	lwz     r3,12(r1)
+	  58:	54 69 07 3a 	rlwinm  r9,r3,0,28,29
+	  5c:	2f 89 00 0c 	cmpwi   cr7,r9,12
+	  60:	90 61 00 08 	stw     r3,8(r1)
+	  64:	41 9e 00 38 	beq     cr7,9c <__find_linux_pte+0x84>
+	  68:	80 61 00 08 	lwz     r3,8(r1)
+	  6c:	2f 83 00 00 	cmpwi   cr7,r3,0
+	  70:	41 9e 00 54 	beq     cr7,c4 <__find_linux_pte+0xac>
+	  74:	54 69 07 3a 	rlwinm  r9,r3,0,28,29
+	  78:	2f 89 00 0c 	cmpwi   cr7,r9,12
+	  7c:	54 69 00 26 	clrrwi  r9,r3,12
+	  80:	54 8a b5 36 	rlwinm  r10,r4,22,20,27
+	  84:	3c 69 c0 00 	addis   r3,r9,-16384
+	  88:	7c 63 52 14 	add     r3,r3,r10
+	  8c:	54 84 93 be 	srwi    r4,r4,14
+	  90:	41 9e 00 14 	beq     cr7,a4 <__find_linux_pte+0x8c>
+	  94:	38 21 00 20 	addi    r1,r1,32
+	  98:	4e 80 00 20 	blr
+	  9c:	54 69 00 26 	clrrwi  r9,r3,12
+	  a0:	54 84 93 be 	srwi    r4,r4,14
+	  a4:	3c 69 c0 00 	addis   r3,r9,-16384
+	  a8:	54 84 25 36 	rlwinm  r4,r4,4,20,27
+	  ac:	7c 63 22 14 	add     r3,r3,r4
+	  b0:	41 a2 ff e4 	beq     94 <__find_linux_pte+0x7c>
+	  b4:	39 20 00 17 	li      r9,23
+	  b8:	91 26 00 00 	stw     r9,0(r6)
+	  bc:	38 21 00 20 	addi    r1,r1,32
+	  c0:	4e 80 00 20 	blr
+	  c4:	38 60 00 00 	li      r3,0
+	  c8:	38 21 00 20 	addi    r1,r1,32
+	  cc:	4e 80 00 20 	blr
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Reviewed-by: Oscar Salvador <osalvador@suse.de>
 ---
- arch/powerpc/include/asm/nohash/32/pte-40x.h  | 3 ---
- arch/powerpc/include/asm/nohash/32/pte-44x.h  | 3 ---
- arch/powerpc/include/asm/nohash/32/pte-85xx.h | 3 ---
- arch/powerpc/include/asm/nohash/32/pte-8xx.h  | 5 ++---
- arch/powerpc/include/asm/nohash/pte-e500.h    | 4 +---
- 5 files changed, 3 insertions(+), 15 deletions(-)
+v3: Removed p4dp and pudp locals for PPC32 and add a comment.
+v4: Properly set pdshift on PPC32 case
+v5: Enhanced commit message
+---
+ arch/powerpc/mm/pgtable.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-40x.h b/arch/powerpc/include/asm/nohash/32/pte-40x.h
-index d759cfd74754..52ed58516fa4 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-40x.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-40x.h
-@@ -49,9 +49,6 @@
- #define _PAGE_EXEC	0x200	/* hardware: EX permission */
- #define _PAGE_ACCESSED	0x400	/* software: R: page referenced */
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index 9e7ba9c3851f..bce8a8619589 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -382,8 +382,10 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+ 			bool *is_thp, unsigned *hpage_shift)
+ {
+ 	pgd_t *pgdp;
++#ifdef CONFIG_PPC64
+ 	p4d_t p4d, *p4dp;
+ 	pud_t pud, *pudp;
++#endif
+ 	pmd_t pmd, *pmdp;
+ 	pte_t *ret_pte;
+ 	hugepd_t *hpdp = NULL;
+@@ -401,8 +403,12 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+ 	 * page fault or a page unmap. The return pte_t * is still not
+ 	 * stable. So should be checked there for above conditions.
+ 	 * Top level is an exception because it is folded into p4d.
++	 *
++	 * On PPC32, P4D/PUD/PMD are folded into PGD so go straight to
++	 * PMD level.
+ 	 */
+ 	pgdp = pgdir + pgd_index(ea);
++#ifdef CONFIG_PPC64
+ 	p4dp = p4d_offset(pgdp, ea);
+ 	p4d  = READ_ONCE(*p4dp);
+ 	pdshift = P4D_SHIFT;
+@@ -442,8 +448,11 @@ pte_t *__find_linux_pte(pgd_t *pgdir, unsigned long ea,
+ 		goto out_huge;
+ 	}
  
--/* No page size encoding in the linux PTE */
--#define _PAGE_PSIZE		0
--
- /* cache related flags non existing on 40x */
- #define _PAGE_COHERENT	0
+-	pdshift = PMD_SHIFT;
+ 	pmdp = pmd_offset(&pud, ea);
++#else
++	pmdp = pmd_offset(pud_offset(p4d_offset(pgdp, ea), ea), ea);
++#endif
++	pdshift = PMD_SHIFT;
+ 	pmd  = READ_ONCE(*pmdp);
  
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-44x.h b/arch/powerpc/include/asm/nohash/32/pte-44x.h
-index 851813725237..da0469928273 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-44x.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-44x.h
-@@ -75,9 +75,6 @@
- #define _PAGE_NO_CACHE	0x00000400		/* H: I bit */
- #define _PAGE_WRITETHRU	0x00000800		/* H: W bit */
- 
--/* No page size encoding in the linux PTE */
--#define _PAGE_PSIZE		0
--
- /* TODO: Add large page lowmem mapping support */
- #define _PMD_PRESENT	0
- #define _PMD_PRESENT_MASK (PAGE_MASK)
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-85xx.h b/arch/powerpc/include/asm/nohash/32/pte-85xx.h
-index 653a342d3b25..14d64b4f3f14 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-85xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-85xx.h
-@@ -31,9 +31,6 @@
- #define _PAGE_WRITETHRU	0x00400	/* H: W bit */
- #define _PAGE_SPECIAL	0x00800 /* S: Special page */
- 
--/* No page size encoding in the linux PTE */
--#define _PAGE_PSIZE		0
--
- #define _PMD_PRESENT	0
- #define _PMD_PRESENT_MASK (PAGE_MASK)
- #define _PMD_BAD	(~PAGE_MASK)
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index 137dc3c84e45..625c31d6ce5c 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -74,12 +74,11 @@
- #define _PTE_NONE_MASK	0
- 
- #ifdef CONFIG_PPC_16K_PAGES
--#define _PAGE_PSIZE	_PAGE_SPS
-+#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_SPS)
- #else
--#define _PAGE_PSIZE		0
-+#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED)
- #endif
- 
--#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_PSIZE)
- #define _PAGE_BASE	(_PAGE_BASE_NC)
- 
- #include <asm/pgtable-masks.h>
-diff --git a/arch/powerpc/include/asm/nohash/pte-e500.h b/arch/powerpc/include/asm/nohash/pte-e500.h
-index f516f0b5b7a8..975facc7e38e 100644
---- a/arch/powerpc/include/asm/nohash/pte-e500.h
-+++ b/arch/powerpc/include/asm/nohash/pte-e500.h
-@@ -65,8 +65,6 @@
- 
- #define _PAGE_SPECIAL	_PAGE_SW0
- 
--/* Base page size */
--#define _PAGE_PSIZE	_PAGE_PSIZE_4K
- #define	PTE_RPN_SHIFT	(24)
- 
- #define PTE_WIMGE_SHIFT (19)
-@@ -89,7 +87,7 @@
-  * pages. We always set _PAGE_COHERENT when SMP is enabled or
-  * the processor might need it for DMA coherency.
-  */
--#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_PSIZE)
-+#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_PSIZE_4K)
- #if defined(CONFIG_SMP)
- #define _PAGE_BASE	(_PAGE_BASE_NC | _PAGE_COHERENT)
- #else
+ 	/*
 -- 
 2.44.0
 
