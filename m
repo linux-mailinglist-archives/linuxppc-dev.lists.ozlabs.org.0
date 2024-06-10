@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D77901D24
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 10:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8889901D2C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 10:42:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aX+58zhk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c90CNq2f;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VyQJf6pDfz3cR3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 18:41:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VyQKY3m5Bz3cW1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 18:42:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aX+58zhk;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c90CNq2f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VyQGY200Tz3cPS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 18:39:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VyQGf1CkHz3cSn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 18:39:54 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4BEB860AB8;
-	Mon, 10 Jun 2024 08:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5ECC2BBFC;
-	Mon, 10 Jun 2024 08:39:47 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 834A9CE10D1;
+	Mon, 10 Jun 2024 08:39:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8C3C2BBFC;
+	Mon, 10 Jun 2024 08:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718008788;
-	bh=5DQ2kA5jDqt4ajp6bX5RZm3s4ER5PczlKjH8kyN/6q8=;
+	s=k20201202; t=1718008792;
+	bh=gy0DEacF9IVbj2ycNtWzyTb9pvGYzN2ome3vP/Gphqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aX+58zhk3nYSZCf8BnitbalgiFiSBwn2RS+/M3vRXlmvFqqNiArit0eUtxKHozBGM
-	 ZCvj7RGODSBJ155aKx5jGK3+QMetpd0kmgiWUK4CEvIKdCFdyP02GOr8f2etlV/BXH
-	 m8mCibdhBbv36sq2ZXlakBMmrGTHwj7z87+FVsAXwx3Hlkq5rXW8sa0IE31b8vUrIt
-	 HJQ2vy1yA5iUg6Ki9OLt+LVnUn4dOUemSFHrjP7Tq8obgq5/Og9bo3z5FEJk3S80Uj
-	 ViX3jfK6ESTND6EZp/Jn4dthX51HiwNmtIclIS7ZU3vcOhDEzNGTWQW1c4jbe2zH2L
-	 O4eGp90kduX0w==
+	b=c90CNq2f619MxAUrMko68DMQiKqUcpDRhvoY1uzcccsAKh5uUKjym/OQFZF6lQWpi
+	 a9PMVU+Cj1IaRB1+c/VqK1x0NyLmqNfI8rjF5lAm0tdDcLR6wzNDzVw6Bj7jw4F/Yk
+	 +Z47SgtIPf/+6bfXRRy2OMAEQtmShYEzKqiwHTnc4yonOkhhla3euuvxPeJdV+NAJJ
+	 aTCN5TVJlmm3PDILBYhvrpFJ593M4DU7bL1KiXVNDRV+Pm3rqG86d8cJAF8MvHNbj4
+	 XWZGVRsv2fpIv593Y+BqB+8bIdedqHz6wQy5vwG3PEgrX1vIGjsvVVEUUuua5JIzla
+	 ACjRiAZSjJPzg==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [RFC PATCH v2 3/5] powerpc/ftrace: Unify 32-bit and 64-bit ftrace entry code
-Date: Mon, 10 Jun 2024 14:08:16 +0530
-Message-ID: <dde8c1e55cfb4c878860f47308a52b273e96ae67.1718008093.git.naveen@kernel.org>
+Subject: [RFC PATCH v2 4/5] kbuild: Add generic hook for architectures to use before the final vmlinux link
+Date: Mon, 10 Jun 2024 14:08:17 +0530
+Message-ID: <a4f44ffeb6f0327639175f8aac61cd21bc23150b.1718008093.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1718008093.git.naveen@kernel.org>
 References: <cover.1718008093.git.naveen@kernel.org>
@@ -63,75 +63,88 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Masahiro Yamada <masahiroy@kernel.org>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 32-bit powerpc, gcc generates a three instruction sequence for
-function profiling:
-	mflr	r0
-	stw	r0, 4(r1)
-	bl	_mcount
-
-On kernel boot, the call to _mcount() is nop-ed out, to be patched back
-in when ftrace is actually enabled. The 'stw' instruction therefore is
-not necessary unless ftrace is enabled. Nop it out during ftrace init.
-
-When ftrace is enabled, we want the 'stw' so that stack unwinding works
-properly. Perform the same within the ftrace handler, similar to 64-bit
-powerpc.
-
-For 64-bit powerpc, early versions of gcc used to emit a three
-instruction sequence for function profiling (with -mprofile-kernel) with
-a 'std' instruction to mimic the 'stw' above. Address that scenario also
-by nop-ing out the 'std' instruction during ftrace init.
+On powerpc, we would like to be able to make a pass on vmlinux.o and
+generate a new object file to be linked into vmlinux. Add a generic pass
+in link-vmlinux.sh that architectures can use for this purpose.
+Architectures need to select CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX and must
+provide arch/<arch>/tools/vmlinux_o.sh, which will be invoked prior to
+the final vmlinux link step.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace.c       | 6 ++++--
- arch/powerpc/kernel/trace/ftrace_entry.S | 4 ++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/Kconfig            |  3 +++
+ scripts/link-vmlinux.sh | 18 +++++++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 041be965485e..2e1667a578ff 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -266,13 +266,15 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
- 		/* Expected sequence: 'mflr r0', 'stw r0,4(r1)', 'bl _mcount' */
- 		ret = ftrace_validate_inst(ip - 8, ppc_inst(PPC_RAW_MFLR(_R0)));
- 		if (!ret)
--			ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_STW(_R0, _R1, 4)));
-+			ret = ftrace_modify_code(ip - 4, ppc_inst(PPC_RAW_STW(_R0, _R1, 4)),
-+						 ppc_inst(PPC_RAW_NOP()));
- 	} else if (IS_ENABLED(CONFIG_MPROFILE_KERNEL)) {
- 		/* Expected sequence: 'mflr r0', ['std r0,16(r1)'], 'bl _mcount' */
- 		ret = ftrace_read_inst(ip - 4, &old);
- 		if (!ret && !ppc_inst_equal(old, ppc_inst(PPC_RAW_MFLR(_R0)))) {
- 			ret = ftrace_validate_inst(ip - 8, ppc_inst(PPC_RAW_MFLR(_R0)));
--			ret |= ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_STD(_R0, _R1, 16)));
-+			ret |= ftrace_modify_code(ip - 4, ppc_inst(PPC_RAW_STD(_R0, _R1, 16)),
-+						  ppc_inst(PPC_RAW_NOP()));
- 		}
- 	} else {
- 		return -EINVAL;
-diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index 76dbe9fd2c0f..244a1c7bb1e8 100644
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -33,6 +33,8 @@
-  * and then arrange for the ftrace function to be called.
-  */
- .macro	ftrace_regs_entry allregs
-+	/* Save the original return address in A's stack frame */
-+	PPC_STL		r0, LRSAVE(r1)
- 	/* Create a minimal stack frame for representing B */
- 	PPC_STLU	r1, -STACK_FRAME_MIN_SIZE(r1)
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 975dd22a2dbd..649f0903e7ef 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1643,4 +1643,7 @@ config CC_HAS_SANE_FUNCTION_ALIGNMENT
+ config ARCH_NEED_CMPXCHG_1_EMU
+ 	bool
  
-@@ -44,8 +46,6 @@
- 	SAVE_GPRS(3, 10, r1)
++config ARCH_WANTS_PRE_LINK_VMLINUX
++	def_bool n
++
+ endmenu
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 46ce5d04dbeb..07f70e105d82 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -122,7 +122,7 @@ gen_btf()
+ 		return 1
+ 	fi
  
- #ifdef CONFIG_PPC64
--	/* Save the original return address in A's stack frame */
--	std	r0, LRSAVE+SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE(r1)
- 	/* Ok to continue? */
- 	lbz	r3, PACA_FTRACE_ENABLED(r13)
- 	cmpdi	r3, 0
+-	vmlinux_link ${1}
++	vmlinux_link ${1} ${arch_vmlinux_o}
+ 
+ 	info "BTF" ${2}
+ 	LLVM_OBJCOPY="${OBJCOPY}" ${PAHOLE} -J ${PAHOLE_FLAGS} ${1}
+@@ -178,7 +178,7 @@ kallsyms_step()
+ 	kallsymso=${kallsyms_vmlinux}.o
+ 	kallsyms_S=${kallsyms_vmlinux}.S
+ 
+-	vmlinux_link ${kallsyms_vmlinux} "${kallsymso_prev}" ${btf_vmlinux_bin_o}
++	vmlinux_link ${kallsyms_vmlinux} "${kallsymso_prev}" ${btf_vmlinux_bin_o} ${arch_vmlinux_o}
+ 	mksysmap ${kallsyms_vmlinux} ${kallsyms_vmlinux}.syms
+ 	kallsyms ${kallsyms_vmlinux}.syms ${kallsyms_S}
+ 
+@@ -203,6 +203,7 @@ sorttable()
+ 
+ cleanup()
+ {
++	rm -f .arch.vmlinux.*
+ 	rm -f .btf.*
+ 	rm -f System.map
+ 	rm -f vmlinux
+@@ -223,6 +224,17 @@ fi
+ 
+ ${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init init/version-timestamp.o
+ 
++arch_vmlinux_o=""
++if is_enabled CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX; then
++	arch_vmlinux_o=.arch.vmlinux.o
++	info "ARCH" ${arch_vmlinux_o}
++	if ! ${srctree}/arch/${SRCARCH}/tools/vmlinux_o.sh ${arch_vmlinux_o} ; then
++		echo >&2 "Failed to generate ${arch_vmlinux_o}"
++		echo >&2 "Try to disable CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX"
++		exit 1
++	fi
++fi
++
+ btf_vmlinux_bin_o=""
+ if is_enabled CONFIG_DEBUG_INFO_BTF; then
+ 	btf_vmlinux_bin_o=.btf.vmlinux.bin.o
+@@ -273,7 +285,7 @@ if is_enabled CONFIG_KALLSYMS; then
+ 	fi
+ fi
+ 
+-vmlinux_link vmlinux "${kallsymso}" ${btf_vmlinux_bin_o}
++vmlinux_link vmlinux "${kallsymso}" ${btf_vmlinux_bin_o} ${arch_vmlinux_o}
+ 
+ # fill in BTF IDs
+ if is_enabled CONFIG_DEBUG_INFO_BTF && is_enabled CONFIG_BPF; then
 -- 
 2.45.2
 
