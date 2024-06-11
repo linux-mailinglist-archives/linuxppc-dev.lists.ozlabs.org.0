@@ -2,64 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0008902AF2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jun 2024 23:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82018902E96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 04:49:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d7UoyBUE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n5d2Rslb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vylsv4Gn0z3cGM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 07:53:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VytRt2n9cz3cGY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 12:49:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d7UoyBUE;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n5d2Rslb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VylsC23Ydz30VR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 07:52:31 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1F22860C2D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 21:52:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8931DC4AF50
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 21:52:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718056349;
-	bh=KwfkgeDlNv1zZzkoeeLT17qKczH27D/OOuSnpz5Uxjg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d7UoyBUEEZGy2FK4Ph6odRIYGqwZ/02syvCXQqoz4uWIHoSyfqLMe56oUC737qTXc
-	 jo31OtTDhrtTwd96vMSByasQEqMHfACABLmtgGtsox54LD6k+UbzPv2pNWXJlUsL/8
-	 CHTFn6y3PqJmN8BFcf/K5TES3CTjA9S82ZOuNrWOwEvoHUaVdS9CK9a071VAusLZpD
-	 4Rci34vIulObWFXrIZBNUiu08AzebCxxf7c9xVRqqhdFPqXSRko5Y/O4xNUohWM1bl
-	 uRuGdaZkvLEgBrrpR9D/w4ZgsjdAsMNdvAfg7FMOSJCSB5QXuuY35+XOkLAuGFMkLJ
-	 ku25Qq9GbqflQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52c82101407so3730563e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jun 2024 14:52:29 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwElRJdJH+KY2gcdYnfEtHcG0XHyqI3zdSEtRl9nAUN18bOUGWZ
-	8yJA94QO0LdGWbSQnoo0IYeZ83/9AtWC8DManA+GnpfOr7nrizaB0bGZdoC0kPnE17zPRlH3lm7
-	Kuh4sEQ/WbhM2k2F2I1apa+QCaUM=
-X-Google-Smtp-Source: AGHT+IE3uOvnEO1d2Pr2OacsiI4MpQePJaM/SDvHiVwn+MLUcfuCdyq6WKhsiSS+s1uBxScGXR0jFYq/3nBc80ijrH0=
-X-Received: by 2002:a05:6512:2211:b0:52b:bf92:bcd with SMTP id
- 2adb3069b0e04-52bbf920ca9mr9385299e87.22.1718056348177; Mon, 10 Jun 2024
- 14:52:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VytR924gGz2xWS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 12:48:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1718074133;
+	bh=iDuiwhB+pKUJIaO9+T/AdLMu71C/Az9pqj1QFlkz4Mc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=n5d2Rslba9yBwabDT8iSTrqM52wJpO+0wn1Ki7P4/7yWgp9kolhkBXb7IahJG+BfY
+	 VYSEnGTfEhyjtutmgZGdK/ZtrVne7NEn6nbEELtM1Yi0GqSM5Kk8xNI0UtlxJw0txW
+	 GhCv4zbM+OljZCTHVOZ8NRQileZqmE+uH4etvSzlXvLQ3JjmeTGw1tLl2YAhYxQavE
+	 UD1S/RZkYOy0YYD1tQ38BFP1Yu4+ukOAiahV2GaQVUkt5YaEtfoHarhP+O1VEfbF8s
+	 CBXdeZEUT1qWUtMX7+AXjRxeXdT5v5K0INovQBpR9l1GUcpBRuoD2gzFukHwJ2XRvg
+	 xhMaAim97o89A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VytR95zlxz4wc5;
+	Tue, 11 Jun 2024 12:48:53 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/eeh: avoid possible crash when edev->pdev changes
+In-Reply-To: <20240527075433.415693-1-ganeshgr@linux.ibm.com>
+References: <20240527075433.415693-1-ganeshgr@linux.ibm.com>
+Date: Tue, 11 Jun 2024 12:48:51 +1000
+Message-ID: <87cyoop52k.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <cover.1718008093.git.naveen@kernel.org> <a4f44ffeb6f0327639175f8aac61cd21bc23150b.1718008093.git.naveen@kernel.org>
- <CAK7LNARc2SYfNQjo78rYSc5ODmNcmBgxPjp2v6ceWju4QnxbKA@mail.gmail.com> <a3awlvqgr4quory52btf3zq7wyvgtttjjk5qjidumktcre6myw@geiennjv7pic>
-In-Reply-To: <a3awlvqgr4quory52btf3zq7wyvgtttjjk5qjidumktcre6myw@geiennjv7pic>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 11 Jun 2024 06:51:51 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASUiOq9otgZ4XC+9rc14S2hw+uBnToz=ig15ZH=kMRPpg@mail.gmail.com>
-Message-ID: <CAK7LNASUiOq9otgZ4XC+9rc14S2hw+uBnToz=ig15ZH=kMRPpg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 4/5] kbuild: Add generic hook for architectures to
- use before the final vmlinux link
-To: Naveen N Rao <naveen@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,124 +58,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com, wenxiong@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2024 at 2:20=E2=80=AFAM Naveen N Rao <naveen@kernel.org> wr=
-ote:
+Hi Ganesh,
+
+Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
+> If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
+> will change and can cause a crash, hold the PCI rescan/remove lock
+> while taking a copy of edev->pdev.
 >
-> On Mon, Jun 10, 2024 at 06:14:51PM GMT, Masahiro Yamada wrote:
-> > On Mon, Jun 10, 2024 at 5:39=E2=80=AFPM Naveen N Rao <naveen@kernel.org=
-> wrote:
-> > >
-> > > On powerpc, we would like to be able to make a pass on vmlinux.o and
-> > > generate a new object file to be linked into vmlinux. Add a generic p=
-ass
-> > > in link-vmlinux.sh that architectures can use for this purpose.
-> > > Architectures need to select CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX and m=
-ust
-> > > provide arch/<arch>/tools/vmlinux_o.sh, which will be invoked prior t=
-o
-> > > the final vmlinux link step.
-> > >
-> > > Signed-off-by: Naveen N Rao <naveen@kernel.org>
-> > > ---
-> > >  arch/Kconfig            |  3 +++
-> > >  scripts/link-vmlinux.sh | 18 +++++++++++++++---
-> > >  2 files changed, 18 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/arch/Kconfig b/arch/Kconfig
-> > > index 975dd22a2dbd..649f0903e7ef 100644
-> > > --- a/arch/Kconfig
-> > > +++ b/arch/Kconfig
-> > > @@ -1643,4 +1643,7 @@ config CC_HAS_SANE_FUNCTION_ALIGNMENT
-> > >  config ARCH_NEED_CMPXCHG_1_EMU
-> > >         bool
-> > >
-> > > +config ARCH_WANTS_PRE_LINK_VMLINUX
-> > > +       def_bool n
-> > > +
-> > >  endmenu
-> > > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-> > > index 46ce5d04dbeb..07f70e105d82 100755
-> > > --- a/scripts/link-vmlinux.sh
-> > > +++ b/scripts/link-vmlinux.sh
-> ...
-> > >
-> > > +arch_vmlinux_o=3D""
-> > > +if is_enabled CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX; then
-> > > +       arch_vmlinux_o=3D.arch.vmlinux.o
-> > > +       info "ARCH" ${arch_vmlinux_o}
-> > > +       if ! ${srctree}/arch/${SRCARCH}/tools/vmlinux_o.sh ${arch_vml=
-inux_o} ; then
-> > > +               echo >&2 "Failed to generate ${arch_vmlinux_o}"
-> > > +               echo >&2 "Try to disable CONFIG_ARCH_WANTS_PRE_LINK_V=
-MLINUX"
-> > > +               exit 1
-> > > +       fi
-> > > +fi
-> >
-> >
-> >
-> > This is wrong because scripts/link-vmlinux.sh is not triggered
-> > even when source files under arch/powerpc/tools/ are changed.
-> >
-> > Presumably, scripts/Makefile.vmlinux will be the right place.
+> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/eeh_pe.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> Ah, yes. Something like this?
->
-> diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-> index 49946cb96844..77d90b6ac53e 100644
-> --- a/scripts/Makefile.vmlinux
-> +++ b/scripts/Makefile.vmlinux
-> @@ -22,6 +22,10 @@ targets +=3D .vmlinux.export.o
->  vmlinux: .vmlinux.export.o
->  endif
->
-> +ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
-> +vmlinux: $(srctree)/arch/$(SRCARCH)/tools/vmlinux_o.sh
-> +endif
-> +
->  ARCH_POSTLINK :=3D $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postli=
-nk)
->
->  # Final link of vmlinux with optional arch pass after final link
->
->
-> Thanks,
-> Naveen
->
+> diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+> index d1030bc52564..49f968733912 100644
+> --- a/arch/powerpc/kernel/eeh_pe.c
+> +++ b/arch/powerpc/kernel/eeh_pe.c
+> @@ -859,7 +859,9 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
+>  
+>  	/* Retrieve the parent PCI bus of first (top) PCI device */
+>  	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
+> +	pci_lock_rescan_remove();
+>  	pdev = eeh_dev_to_pci_dev(edev);
+> +	pci_unlock_rescan_remove();
+>  	if (pdev)
+>  		return pdev->bus;
 
+What prevents pdev being freed/reused immediately after you drop the
+rescan/remove lock?
 
+AFAICS eeh_dev_to_pci_dev() doesn't take an additional reference to the
+pdev or anything.
 
-No.
-
-Something like below.
-
-Then, you can do everything in Makefile, not a shell script.
-
-
-
-ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
-vmlinux: .arch.vmlinux.o
-
-.arch.vmlinux.o: FORCE
-        $(Q)$(MAKE) $(build)=3Darch/$(SRCARCH)/tools .arch.vmlinux.o
-
-endif
-
-
-
-I did not test it, though.
-
-
-
-
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+cheers
