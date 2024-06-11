@@ -1,120 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41269037EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 11:35:56 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1h9kfKoU;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wyti0idM;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1h9kfKoU;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wyti0idM;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D61903841
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 11:58:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz3Sn5tcxz3dTw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 19:35:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz3z93C5Tz3cbw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 19:58:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1h9kfKoU;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wyti0idM;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1h9kfKoU;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wyti0idM;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz3R801f5z3cb4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 19:34:27 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz3ym3T2Sz30T7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 19:58:23 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2FB9133686;
-	Tue, 11 Jun 2024 09:34:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718098465; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bXl9G+kh6CJWJjfSYdY3mI/mE/xXvq102BbFQ15gmgk=;
-	b=1h9kfKoUjzUX7Pg0FYO4/Hn86ca25G+Dw0AJG6LeaEH4SJ+Pr27qT5mX6xNgxC6+O6nlft
-	br7k3/K0BFcSDett6c63kGZre4r1PJdSH5PsMsFXqyiITD7SPqMSS1uvPAn4oCFafdgeLW
-	Px/kUM1cWdNYU4YVxTTrQ2a7A0yPIFM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718098465;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bXl9G+kh6CJWJjfSYdY3mI/mE/xXvq102BbFQ15gmgk=;
-	b=Wyti0idMR4rKs3LoThTM+Y8V0nVad7j2jppVkPhnwFxzg/7HdB6YPRlKnU0DR4KISNMvTk
-	44kaEKvNEVIr0MBQ==
-Authentication-Results: smtp-out1.suse.de;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B119320601;
+	Tue, 11 Jun 2024 09:58:20 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
 	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718098465; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bXl9G+kh6CJWJjfSYdY3mI/mE/xXvq102BbFQ15gmgk=;
-	b=1h9kfKoUjzUX7Pg0FYO4/Hn86ca25G+Dw0AJG6LeaEH4SJ+Pr27qT5mX6xNgxC6+O6nlft
-	br7k3/K0BFcSDett6c63kGZre4r1PJdSH5PsMsFXqyiITD7SPqMSS1uvPAn4oCFafdgeLW
-	Px/kUM1cWdNYU4YVxTTrQ2a7A0yPIFM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718098465;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bXl9G+kh6CJWJjfSYdY3mI/mE/xXvq102BbFQ15gmgk=;
-	b=Wyti0idMR4rKs3LoThTM+Y8V0nVad7j2jppVkPhnwFxzg/7HdB6YPRlKnU0DR4KISNMvTk
-	44kaEKvNEVIr0MBQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A858413A55;
-	Tue, 11 Jun 2024 09:34:24 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 565AB13A55;
+	Tue, 11 Jun 2024 09:58:20 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Jbt2JiAaaGapdAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 11 Jun 2024 09:34:24 +0000
-Date: Tue, 11 Jun 2024 11:34:23 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v5 02/18] mm: Define __pte_leaf_size() to also take a PMD
- entry
-Message-ID: <ZmgaHyS0izhtKbx6@localhost.localdomain>
-References: <cover.1717955558.git.christophe.leroy@csgroup.eu>
- <172b11c93e0de7a84937af2da9f80bd17c56b8c9.1717955558.git.christophe.leroy@csgroup.eu>
+	id Igo1E7wfaGa8fAAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 09:58:20 +0000
+Message-ID: <34a7b2a4-b0cb-4580-85c9-b598fd70449e@suse.de>
+Date: Tue, 11 Jun 2024 11:58:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <172b11c93e0de7a84937af2da9f80bd17c56b8c9.1717955558.git.christophe.leroy@csgroup.eu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/26] block: move cache control settings out of
+ queue->flags
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+References: <20240611051929.513387-1-hch@lst.de>
+ <20240611051929.513387-14-hch@lst.de>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20240611051929.513387-14-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_TLS_ALL(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,nvidia.com,redhat.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
 X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: B119320601
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,102 +74,315 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, linux-nvme@lists.infradead.org, Song Liu <song@kernel.org>, linux-mtd@lists.infradead.org, Vineeth Vijayan <vneethv@linux.ibm.com>, Alasdair Kergon <agk@redhat.com>, drbd-dev@lists.linbit.com, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, Richard Weinberger <richard@nod.at>, Geert Uytterhoeven <geert@linux-m68k.org>, Yu Kuai <yukuai3@huawei.com>, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, Mike Snitzer <snitzer@kernel.org>, Josef Bacik <josef@toxicpanda.com>, nbd@other.debian.org, linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Mikulas Patocka <mpatocka@redhat.com>, xen-devel@lists.xenproject.org, ceph-devel@vger.kernel.org, Ming Lei <ming.lei@redhat.com>, linux-bcache@vger.kernel.org, linux-block@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mmc@vger.kernel.org, Philipp Reisner <philipp.reisner@linbit.com>, =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, virtualization@lists.linux.dev, Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 10, 2024 at 07:54:47AM +0200, Christophe Leroy wrote:
-> On powerpc 8xx, when a page is 8M size, the information is in the PMD
-> entry. So allow architectures to provide __pte_leaf_size() instead of
-> pte_leaf_size() and provide the PMD entry to that function.
+On 6/11/24 07:19, Christoph Hellwig wrote:
+> Move the cache control settings into the queue_limits so that they
+> can be set atomically and all I/O is frozen when changing the
+> flags.
 > 
-> When __pte_leaf_size() is not defined, define it as a pte_leaf_size()
-> so that architectures not interested in the PMD arguments are not
-> impacted.
+> Add new features and flags field for the driver set flags, and internal
+> (usually sysfs-controlled) flags in the block layer.  Note that we'll
+> eventually remove enough field from queue_limits to bring it back to the
+> previous size.
 > 
-> Only define a default pte_leaf_size() when __pte_leaf_size() is not
-> defined to make sure nobody adds new calls to pte_leaf_size() in the
-> core.
+> The disable flag is inverted compared to the previous meaning, which
+> means it now survives a rescan, similar to the max_sectors and
+> max_discard_sectors user limits.
+> 
+> The FLUSH and FUA flags are now inherited by blk_stack_limits, which
+> simplified the code in dm a lot, but also causes a slight behavior
+> change in that dm-switch and dm-unstripe now advertise a write cache
+> despite setting num_flush_bios to 0.  The I/O path will handle this
+> gracefully, but as far as I can tell the lack of num_flush_bios
+> and thus flush support is a pre-existing data integrity bug in those
+> targets that really needs fixing, after which a non-zero num_flush_bios
+> should be required in dm for targets that map to underlying devices.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   .../block/writeback_cache_control.rst         | 67 +++++++++++--------
+>   arch/um/drivers/ubd_kern.c                    |  2 +-
+>   block/blk-core.c                              |  2 +-
+>   block/blk-flush.c                             |  9 ++-
+>   block/blk-mq-debugfs.c                        |  2 -
+>   block/blk-settings.c                          | 29 ++------
+>   block/blk-sysfs.c                             | 29 +++++---
+>   block/blk-wbt.c                               |  4 +-
+>   drivers/block/drbd/drbd_main.c                |  2 +-
+>   drivers/block/loop.c                          |  9 +--
+>   drivers/block/nbd.c                           | 14 ++--
+>   drivers/block/null_blk/main.c                 | 12 ++--
+>   drivers/block/ps3disk.c                       |  7 +-
+>   drivers/block/rnbd/rnbd-clt.c                 | 10 +--
+>   drivers/block/ublk_drv.c                      |  8 ++-
+>   drivers/block/virtio_blk.c                    | 20 ++++--
+>   drivers/block/xen-blkfront.c                  |  9 ++-
+>   drivers/md/bcache/super.c                     |  7 +-
+>   drivers/md/dm-table.c                         | 39 +++--------
+>   drivers/md/md.c                               |  8 ++-
+>   drivers/mmc/core/block.c                      | 42 ++++++------
+>   drivers/mmc/core/queue.c                      | 12 ++--
+>   drivers/mmc/core/queue.h                      |  3 +-
+>   drivers/mtd/mtd_blkdevs.c                     |  5 +-
+>   drivers/nvdimm/pmem.c                         |  4 +-
+>   drivers/nvme/host/core.c                      |  7 +-
+>   drivers/nvme/host/multipath.c                 |  6 --
+>   drivers/scsi/sd.c                             | 28 +++++---
+>   include/linux/blkdev.h                        | 38 +++++++++--
+>   29 files changed, 227 insertions(+), 207 deletions(-)
+> 
+> diff --git a/Documentation/block/writeback_cache_control.rst b/Documentation/block/writeback_cache_control.rst
+> index b208488d0aae85..9cfe27f90253c7 100644
+> --- a/Documentation/block/writeback_cache_control.rst
+> +++ b/Documentation/block/writeback_cache_control.rst
+> @@ -46,41 +46,50 @@ worry if the underlying devices need any explicit cache flushing and how
+>   the Forced Unit Access is implemented.  The REQ_PREFLUSH and REQ_FUA flags
+>   may both be set on a single bio.
+>   
+> +Feature settings for block drivers
+> +----------------------------------
+>   
+> -Implementation details for bio based block drivers
+> ---------------------------------------------------------------
+> +For devices that do not support volatile write caches there is no driver
+> +support required, the block layer completes empty REQ_PREFLUSH requests before
+> +entering the driver and strips off the REQ_PREFLUSH and REQ_FUA bits from
+> +requests that have a payload.
+>   
+> -These drivers will always see the REQ_PREFLUSH and REQ_FUA bits as they sit
+> -directly below the submit_bio interface.  For remapping drivers the REQ_FUA
+> -bits need to be propagated to underlying devices, and a global flush needs
+> -to be implemented for bios with the REQ_PREFLUSH bit set.  For real device
+> -drivers that do not have a volatile cache the REQ_PREFLUSH and REQ_FUA bits
+> -on non-empty bios can simply be ignored, and REQ_PREFLUSH requests without
+> -data can be completed successfully without doing any work.  Drivers for
+> -devices with volatile caches need to implement the support for these
+> -flags themselves without any help from the block layer.
+> +For devices with volatile write caches the driver needs to tell the block layer
+> +that it supports flushing caches by setting the
+>   
+> +   BLK_FEAT_WRITE_CACHE
+>   
+> -Implementation details for request_fn based block drivers
+> ----------------------------------------------------------
+> +flag in the queue_limits feature field.  For devices that also support the FUA
+> +bit the block layer needs to be told to pass on the REQ_FUA bit by also setting
+> +the
+>   
+> -For devices that do not support volatile write caches there is no driver
+> -support required, the block layer completes empty REQ_PREFLUSH requests before
+> -entering the driver and strips off the REQ_PREFLUSH and REQ_FUA bits from
+> -requests that have a payload.  For devices with volatile write caches the
+> -driver needs to tell the block layer that it supports flushing caches by
+> -doing::
+> +   BLK_FEAT_FUA
+> +
+> +flag in the features field of the queue_limits structure.
+> +
+> +Implementation details for bio based block drivers
+> +--------------------------------------------------
+> +
+> +For bio based drivers the REQ_PREFLUSH and REQ_FUA bit are simplify passed on
+> +to the driver if the drivers sets the BLK_FEAT_WRITE_CACHE flag and the drivers
+> +needs to handle them.
+> +
+> +*NOTE*: The REQ_FUA bit also gets passed on when the BLK_FEAT_FUA flags is
+> +_not_ set.  Any bio based driver that sets BLK_FEAT_WRITE_CACHE also needs to
+> +handle REQ_FUA.
+>   
+> -	blk_queue_write_cache(sdkp->disk->queue, true, false);
+> +For remapping drivers the REQ_FUA bits need to be propagated to underlying
+> +devices, and a global flush needs to be implemented for bios with the
+> +REQ_PREFLUSH bit set.
+>   
+> -and handle empty REQ_OP_FLUSH requests in its prep_fn/request_fn.  Note that
+> -REQ_PREFLUSH requests with a payload are automatically turned into a sequence
+> -of an empty REQ_OP_FLUSH request followed by the actual write by the block
+> -layer.  For devices that also support the FUA bit the block layer needs
+> -to be told to pass through the REQ_FUA bit using::
+> +Implementation details for blk-mq drivers
+> +-----------------------------------------
+>   
+> -	blk_queue_write_cache(sdkp->disk->queue, true, true);
+> +When the BLK_FEAT_WRITE_CACHE flag is set, REQ_OP_WRITE | REQ_PREFLUSH requests
+> +with a payload are automatically turned into a sequence of a REQ_OP_FLUSH
+> +request followed by the actual write by the block layer.
+>   
+> -and the driver must handle write requests that have the REQ_FUA bit set
+> -in prep_fn/request_fn.  If the FUA bit is not natively supported the block
+> -layer turns it into an empty REQ_OP_FLUSH request after the actual write.
+> +When the BLK_FEA_FUA flags is set, the REQ_FUA bit simplify passed on for the
+> +REQ_OP_WRITE request, else a REQ_OP_FLUSH request is sent by the block layer
+> +after the completion of the write request for bio submissions with the REQ_FUA
+> +bit set.
+> diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+> index cdcb75a68989dd..19e01691ea0ea7 100644
+> --- a/arch/um/drivers/ubd_kern.c
+> +++ b/arch/um/drivers/ubd_kern.c
+> @@ -835,6 +835,7 @@ static int ubd_add(int n, char **error_out)
+>   	struct queue_limits lim = {
+>   		.max_segments		= MAX_SG,
+>   		.seg_boundary_mask	= PAGE_SIZE - 1,
+> +		.features		= BLK_FEAT_WRITE_CACHE,
+>   	};
+>   	struct gendisk *disk;
+>   	int err = 0;
+> @@ -882,7 +883,6 @@ static int ubd_add(int n, char **error_out)
+>   	}
+>   
+>   	blk_queue_flag_set(QUEUE_FLAG_NONROT, disk->queue);
+> -	blk_queue_write_cache(disk->queue, true, false);
+>   	disk->major = UBD_MAJOR;
+>   	disk->first_minor = n << UBD_SHIFT;
+>   	disk->minors = 1 << UBD_SHIFT;
+> diff --git a/block/blk-core.c b/block/blk-core.c
+> index 82c3ae22d76d88..2b45a4df9a1aa1 100644
+> --- a/block/blk-core.c
+> +++ b/block/blk-core.c
+> @@ -782,7 +782,7 @@ void submit_bio_noacct(struct bio *bio)
+>   		if (WARN_ON_ONCE(bio_op(bio) != REQ_OP_WRITE &&
+>   				 bio_op(bio) != REQ_OP_ZONE_APPEND))
+>   			goto end_io;
+> -		if (!test_bit(QUEUE_FLAG_WC, &q->queue_flags)) {
+> +		if (!bdev_write_cache(bdev)) {
+>   			bio->bi_opf &= ~(REQ_PREFLUSH | REQ_FUA);
+>   			if (!bio_sectors(bio)) {
+>   				status = BLK_STS_OK;
+> diff --git a/block/blk-flush.c b/block/blk-flush.c
+> index 2234f8b3fc05f2..30b9d5033a2b85 100644
+> --- a/block/blk-flush.c
+> +++ b/block/blk-flush.c
+> @@ -381,8 +381,8 @@ static void blk_rq_init_flush(struct request *rq)
+>   bool blk_insert_flush(struct request *rq)
+>   {
+>   	struct request_queue *q = rq->q;
+> -	unsigned long fflags = q->queue_flags;	/* may change, cache */
+>   	struct blk_flush_queue *fq = blk_get_flush_queue(q, rq->mq_ctx);
+> +	bool supports_fua = q->limits.features & BLK_FEAT_FUA;
 
-Hi Christophe,
+Shouldn't we have a helper like blk_feat_fua() here?
 
-Now I am going to give you a hard time, so sorry in advance.
-I should have raised this before, but I was not fully aware of it.
+>   	unsigned int policy = 0;
+>   
+>   	/* FLUSH/FUA request must never be merged */
+> @@ -394,11 +394,10 @@ bool blk_insert_flush(struct request *rq)
+>   	/*
+>   	 * Check which flushes we need to sequence for this operation.
+>   	 */
+> -	if (fflags & (1UL << QUEUE_FLAG_WC)) {
+> +	if (blk_queue_write_cache(q)) {
+>   		if (rq->cmd_flags & REQ_PREFLUSH)
+>   			policy |= REQ_FSEQ_PREFLUSH;
+> -		if (!(fflags & (1UL << QUEUE_FLAG_FUA)) &&
+> -		    (rq->cmd_flags & REQ_FUA))
+> +		if ((rq->cmd_flags & REQ_FUA) && !supports_fua)
+>   			policy |= REQ_FSEQ_POSTFLUSH;
+>   	}
+>   
+> @@ -407,7 +406,7 @@ bool blk_insert_flush(struct request *rq)
+>   	 * REQ_PREFLUSH and FUA for the driver.
+>   	 */
+>   	rq->cmd_flags &= ~REQ_PREFLUSH;
+> -	if (!(fflags & (1UL << QUEUE_FLAG_FUA)))
+> +	if (!supports_fua)
+>   		rq->cmd_flags &= ~REQ_FUA;
+>   
+>   	/*
+> diff --git a/block/blk-mq-debugfs.c b/block/blk-mq-debugfs.c
+> index 770c0c2b72faaa..e8b9db7c30c455 100644
+> --- a/block/blk-mq-debugfs.c
+> +++ b/block/blk-mq-debugfs.c
+> @@ -93,8 +93,6 @@ static const char *const blk_queue_flag_name[] = {
+>   	QUEUE_FLAG_NAME(INIT_DONE),
+>   	QUEUE_FLAG_NAME(STABLE_WRITES),
+>   	QUEUE_FLAG_NAME(POLL),
+> -	QUEUE_FLAG_NAME(WC),
+> -	QUEUE_FLAG_NAME(FUA),
+>   	QUEUE_FLAG_NAME(DAX),
+>   	QUEUE_FLAG_NAME(STATS),
+>   	QUEUE_FLAG_NAME(REGISTERED),
+> diff --git a/block/blk-settings.c b/block/blk-settings.c
+> index f11c8676eb4c67..536ee202fcdccb 100644
+> --- a/block/blk-settings.c
+> +++ b/block/blk-settings.c
+> @@ -261,6 +261,9 @@ static int blk_validate_limits(struct queue_limits *lim)
+>   		lim->misaligned = 0;
+>   	}
+>   
+> +	if (!(lim->features & BLK_FEAT_WRITE_CACHE))
+> +		lim->features &= ~BLK_FEAT_FUA;
+> +
+>   	err = blk_validate_integrity_limits(lim);
+>   	if (err)
+>   		return err;
+> @@ -454,6 +457,8 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+>   {
+>   	unsigned int top, bottom, alignment, ret = 0;
+>   
+> +	t->features |= (b->features & BLK_FEAT_INHERIT_MASK);
+> +
+>   	t->max_sectors = min_not_zero(t->max_sectors, b->max_sectors);
+>   	t->max_user_sectors = min_not_zero(t->max_user_sectors,
+>   			b->max_user_sectors);
+> @@ -711,30 +716,6 @@ void blk_set_queue_depth(struct request_queue *q, unsigned int depth)
+>   }
+>   EXPORT_SYMBOL(blk_set_queue_depth);
+>   
+> -/**
+> - * blk_queue_write_cache - configure queue's write cache
+> - * @q:		the request queue for the device
+> - * @wc:		write back cache on or off
+> - * @fua:	device supports FUA writes, if true
+> - *
+> - * Tell the block layer about the write cache of @q.
+> - */
+> -void blk_queue_write_cache(struct request_queue *q, bool wc, bool fua)
+> -{
+> -	if (wc) {
+> -		blk_queue_flag_set(QUEUE_FLAG_HW_WC, q);
+> -		blk_queue_flag_set(QUEUE_FLAG_WC, q);
+> -	} else {
+> -		blk_queue_flag_clear(QUEUE_FLAG_HW_WC, q);
+> -		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
+> -	}
+> -	if (fua)
+> -		blk_queue_flag_set(QUEUE_FLAG_FUA, q);
+> -	else
+> -		blk_queue_flag_clear(QUEUE_FLAG_FUA, q);
+> -}
+> -EXPORT_SYMBOL_GPL(blk_queue_write_cache);
+> -
+>   int bdev_alignment_offset(struct block_device *bdev)
+>   {
+>   	struct request_queue *q = bdev_get_queue(bdev);
+> diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+> index 5c787965b7d09e..4f524c1d5e08bd 100644
+> --- a/block/blk-sysfs.c
+> +++ b/block/blk-sysfs.c
+> @@ -423,32 +423,41 @@ static ssize_t queue_io_timeout_store(struct request_queue *q, const char *page,
+>   
+>   static ssize_t queue_wc_show(struct request_queue *q, char *page)
+>   {
+> -	if (test_bit(QUEUE_FLAG_WC, &q->queue_flags))
+> -		return sprintf(page, "write back\n");
+> -
+> -	return sprintf(page, "write through\n");
+> +	if (q->limits.features & BLK_FLAGS_WRITE_CACHE_DISABLED)
 
-There is an ongoing effort of unifying pagewalkers [1], so hugetlb does not have
-to be special-cased anymore, and the operations we do for THP on page-table basis
-work for hugetlb as well.
+Where is the difference between 'flags' and 'features'?
+Ie why is is named BLK_FEAT_FUA but BLK_FLAGS_WRITE_CACHE_DISABLED?
+And if the feature is the existence of a capability, and the flag is
+the setting of that capability, can you make it clear in the documentation?
 
-The most special bit about this is huge_ptep_get.
-huge_ptep_get() gets special handled on arm/arm64/riscv and s390.
+Cheers,
 
-arm64 and riscv is about cont-pmd/pte and propagate the dirty/young bits bits, so that
-is fine as walkers can already understand that.
-s390 is a funny one because it converts pud/pmd to pte and viceversa, because hugetlb
-*works* with ptes, so before returning the pte it has to transfer all
-bits from PUD/PMD level into a something that PTE level can understand.
-As you can imagine, this can be gone as we already have all the
-information in PUD/PMD and that is all pagewalkers need.
-
-But we are left with the one you will introduce in patch#8.
-
-8MB pages get mapped as cont-pte, but all the information is stored in
-the PMD entries (size, dirtiness, present etc).
-huge_ptep_get() will return the PMD for 8MB, and so all operations hugetlb
-code performs with what huge_ptep_get returns will be performed on those PMDs.
-
-Which brings me to this point:
-
-I do not think __pte_leaf_size is needed. AFAICS, it should be enough to define
-pmd_leaf on 8xx, and return 8MB if it is a 8MB hugepage.
-
-   #define pmd_leaf pmd_leaf
-   static inline bool pmd_leaf(pmd_t pmd)
-   {
-          return pmd_val(pmd) & _PMD_PAGE_8M);
-   }
-
-   and then pmd_leaf_size to return _PMD_PAGE_8M.
-   
-This will help because on the ongoing effort of unifying hugetlb and
-getting rid of huge_ptep_get() [1], pagewalkers will stumble upon the
-8mb-PMD as they do for regular PMDs.
-
-Which means that they would be caught in the following code:
-
-        ptl = pmd_huge_lock(pmd, vma);
-        if (ptl) {
-	        - 8MB hugepages will be handled here
-                smaps_pmd_entry(pmd, addr, walk);
-                spin_unlock(ptl);
-        }
-	/* pte stuff */
-	...
-
-where pmd_huge_lock is:
-
- static inline spinlock_t *pmd_huge_lock(pmd_t *pmd, struct vm_area_struct *vma)
- {
-        spinlock_t *ptl = pmd_lock(vma->vm_mm, pmd);
-
-        if (pmd_leaf(*pmd) || pmd_devmap(*pmd))
-                return ptl;
-        spin_unlock(ptl);
-        return NULL;
- }
-
-So, since pmd_leaf() will return true for 8MB hugepages, we are fine,
-because anyway we want to perform pagetable operations on *that* PMD and
-not the ptes that are cont-mapped, which is different for e.g: 512K
-hugepages, where we perform it on pte level.
-
-So I would suggest that instead of this patch, we have one implementing pmd_leaf
-and pmd_leaf_size for 8Mb hugepages on power8xx, as that takes us closer to our goal of
-unifying hugetlb.
-
-[1] https://github.com/leberus/linux/tree/hugetlb-pagewalk-v2
-
-
+Hannes
 -- 
-Oscar Salvador
-SUSE Labs
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+
