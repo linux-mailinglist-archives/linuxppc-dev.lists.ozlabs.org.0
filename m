@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E2B90358E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:18:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2639035B2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:20:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1ln6VZzz3cTF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:18:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1nX6WS3z3cb1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:20:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
@@ -15,54 +15,54 @@ Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1kt25PCz3cTt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:17:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1ll4s8xz3cbW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:18:43 +1000 (AEST)
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D69B422D35;
-	Tue, 11 Jun 2024 08:17:55 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 532A822151;
+	Tue, 11 Jun 2024 08:18:41 +0000 (UTC)
 Authentication-Results: smtp-out1.suse.de;
 	none
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1F239137DF;
-	Tue, 11 Jun 2024 08:17:55 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF5F2137DF;
+	Tue, 11 Jun 2024 08:18:40 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hDAwBzMIaGbQWwAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:17:55 +0000
-Message-ID: <fc162d48-de62-437e-b2a7-bbf56a507c4d@suse.de>
-Date: Tue, 11 Jun 2024 10:17:54 +0200
+	id VlsQJmAIaGYaXAAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:18:40 +0000
+Message-ID: <6a785fab-f2b4-4238-bb3b-c5bb54e38c59@suse.de>
+Date: Tue, 11 Jun 2024 10:18:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/26] loop: also use the default block size from an
- underlying block device
+Subject: Re: [PATCH 07/26] loop: fold loop_update_rotational into
+ loop_reconfigure_limits
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-7-hch@lst.de>
+ <20240611051929.513387-8-hch@lst.de>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20240611051929.513387-7-hch@lst.de>
+In-Reply-To: <20240611051929.513387-8-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
 X-Spamd-Result: default: False [-4.00 / 50.00];
 	REPLY(-4.00)[]
 X-Spam-Flag: NO
 X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: D69B422D35
+X-Rspamd-Queue-Id: 532A822151
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,15 +79,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 07:19, Christoph Hellwig wrote:
-> Fix the code in loop_reconfigure_limits to pick a default block size for
-> O_DIRECT file descriptors to also work when the loop device sits on top
-> of a block device and not just on a regular file on a block device based
-> file system.
+> This prepares for moving the rotational flag into the queue_limits and
+> also fixes it for the case where the loop device is backed by a block
+> device.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   drivers/block/loop.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+>   drivers/block/loop.c | 23 ++++-------------------
+>   1 file changed, 4 insertions(+), 19 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
