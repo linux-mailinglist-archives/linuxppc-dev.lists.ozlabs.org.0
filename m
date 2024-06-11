@@ -1,99 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577839035C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:20:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF219035D2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:21:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Mz5UZyRu;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=q1OceNt6;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Mz5UZyRu;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=q1OceNt6;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CeZPcfC1;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rbO1KscB;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ru97uNsY;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JCo1uwRL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1pH2JBqz3cYF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:20:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1q35mqBz3cYp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:21:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Mz5UZyRu;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=q1OceNt6;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Mz5UZyRu;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=q1OceNt6;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CeZPcfC1;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rbO1KscB;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ru97uNsY;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JCo1uwRL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1md66V7z3dHD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:19:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1nm3k2vz3cWr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:20:28 +1000 (AEST)
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4AADB22D13;
-	Tue, 11 Jun 2024 08:19:27 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E4DDB2056A;
+	Tue, 11 Jun 2024 08:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718093967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1718094026; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GGJw6dDkRs6k2mZvFIE+UpGETGYtBieUVHqbMn2Gy0w=;
-	b=Mz5UZyRupBOC5OyhaduIbHV4wlYjNn2j7sCWgFf6vyQPQnjkDPAfZ6Q/JsN5Cmj6BSiYUF
-	xwezQUEPyxhygG9mxrG/r7jSoy12gHEp2VD+DxfzLjw84R1R+ikRm3duxRjgQt2dRc+rR/
-	zySz8BDz3RCb9rOF3+/OqcxNzULWgh8=
+	bh=jGomuCAp2pz/1uNBu4SRDVlzjHuYKTuVW/cC7GVoJ+s=;
+	b=CeZPcfC1tei4Yoyik+tGn3KMUx0tYad+9QT86YWgmWIoMwD8SG6Olr8/OpQgGmSlpFOFrV
+	1QMhq17GV3KTHtbekRcFjW6L+u5akZQinRuMUbw96XHeekDnFkAcnzJHDSMFcVSc1JTgCf
+	PIvex34kEKn8lkXWIw8YlQLqvIZdM4k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718093967;
+	s=susede2_ed25519; t=1718094026;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GGJw6dDkRs6k2mZvFIE+UpGETGYtBieUVHqbMn2Gy0w=;
-	b=q1OceNt62q6MVmBZro11IIzTmhALV7YjKRa+RmhhyhFm32XqJpB3kE67x0ShtykE6k333v
-	IXaAxWMTn07ACfBQ==
-Authentication-Results: smtp-out1.suse.de;
+	bh=jGomuCAp2pz/1uNBu4SRDVlzjHuYKTuVW/cC7GVoJ+s=;
+	b=rbO1KscBBDGwI875BWEKNiUKvkGWpIHf7GXnAoTtDPKgnWXQVIXWhgCl2vWo6uzLSeZXs1
+	kBnIZBFi8VbrEHDg==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718093967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1718094025; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GGJw6dDkRs6k2mZvFIE+UpGETGYtBieUVHqbMn2Gy0w=;
-	b=Mz5UZyRupBOC5OyhaduIbHV4wlYjNn2j7sCWgFf6vyQPQnjkDPAfZ6Q/JsN5Cmj6BSiYUF
-	xwezQUEPyxhygG9mxrG/r7jSoy12gHEp2VD+DxfzLjw84R1R+ikRm3duxRjgQt2dRc+rR/
-	zySz8BDz3RCb9rOF3+/OqcxNzULWgh8=
+	bh=jGomuCAp2pz/1uNBu4SRDVlzjHuYKTuVW/cC7GVoJ+s=;
+	b=ru97uNsYchlahhQRdCUMGWhruNOUhzwEthEA7N1gdGL1zKHNbQZPYXDbsm29DX8BaibMfU
+	TpmRKmq6nzdpHbPVCOGOBsSVgCWvYVMacGcYa+dNJn5XRlpn58CiIVsix1vUeqAKLDkIDY
+	khUgAadqtH4P4RSYCuTBRHzcjnQ3m7o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718093967;
+	s=susede2_ed25519; t=1718094025;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GGJw6dDkRs6k2mZvFIE+UpGETGYtBieUVHqbMn2Gy0w=;
-	b=q1OceNt62q6MVmBZro11IIzTmhALV7YjKRa+RmhhyhFm32XqJpB3kE67x0ShtykE6k333v
-	IXaAxWMTn07ACfBQ==
+	bh=jGomuCAp2pz/1uNBu4SRDVlzjHuYKTuVW/cC7GVoJ+s=;
+	b=JCo1uwRLDQmHCULWVwq4uscwDUMV84vAByFfE7YcJRHJ+TMx+QhsTnZckChZRP2tohL5Do
+	JYyX/2Jy2/atV/DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20BA0137DF;
-	Tue, 11 Jun 2024 08:19:26 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 812E7137DF;
+	Tue, 11 Jun 2024 08:20:25 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8CuOB44IaGZWXAAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:19:26 +0000
-Message-ID: <1208a68f-bac4-4f10-8f67-58eabf5ba89e@suse.de>
-Date: Tue, 11 Jun 2024 10:19:25 +0200
+	id io/THskIaGa0XAAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:20:25 +0000
+Message-ID: <161db500-6d5e-4dcc-8e44-f75c0f777a0c@suse.de>
+Date: Tue, 11 Jun 2024 10:20:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/26] virtio_blk: remove virtblk_update_cache_mode
+Subject: Re: [PATCH 09/26] nbd: move setting the cache control flags to
+ __nbd_set_size
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-9-hch@lst.de>
+ <20240611051929.513387-10-hch@lst.de>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20240611051929.513387-9-hch@lst.de>
+In-Reply-To: <20240611051929.513387-10-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: 
@@ -137,14 +138,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 07:19, Christoph Hellwig wrote:
-> virtblk_update_cache_mode boils down to a single call to
-> blk_queue_write_cache.  Remove it in preparation for moving the cache
-> control flags into the queue_limits.
+> Move setting the cache control flags in nbd in preparation for moving
+> these flags into the queue_limits structure.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   drivers/block/virtio_blk.c | 13 +++----------
->   1 file changed, 3 insertions(+), 10 deletions(-)
+>   drivers/block/nbd.c | 17 +++++++----------
+>   1 file changed, 7 insertions(+), 10 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
