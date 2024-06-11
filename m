@@ -2,56 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E68590365F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:27:37 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ez17pQw3;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BDF9037DA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 11:32:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1xy1jZ2z3d24
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:27:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz3NR6G9Zz3ccX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 19:32:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ez17pQw3;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1xD5FKRz3clL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:26:56 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A868E60D2E;
-	Tue, 11 Jun 2024 08:26:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91B8C2BD10;
-	Tue, 11 Jun 2024 08:26:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718094415;
-	bh=zPCa8xPO5T29Ue6m/rGvsIVSedmfYpv71DR4OREdVBQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ez17pQw3y3AnnRAsbp/TeB/EKjEe7TyilW2EVLSJJrew7wwyol5eLtQF972oIfLpG
-	 oYcDa9ge7GLmbENS0nP9E6ta6tD7CQef1VnquDAuNjK/vmtFTMl8qc2CWkRZn6DFMS
-	 raKMjYT80FmXY5BCGp2iWYpN2mIcXyE1s1Z58hYCCGi8z4FHsqMGJz+kXo4P2Nk278
-	 r+zW/RpHA3mNDdc41rCNeksvCw0askxtETJGNAUBwkUPNPgC4kqE5kupqRA+Iycdzy
-	 jj5qMbPiZljguvK2fsauAxET3ATsJgfsyWMl0BAtw4WiWIzM56ISDOgnDaaVGyV3zf
-	 MkLh4tzLpuL/g==
-Message-ID: <b5db88d4-5639-47a9-9611-2628235f4244@kernel.org>
-Date: Tue, 11 Jun 2024 17:26:49 +0900
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alpha.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de; envelope-from=tsbogend@alpha.franken.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2457 seconds by postgrey-1.37 at boromir; Tue, 11 Jun 2024 19:31:45 AEST
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz3N14gjdz3cBG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 19:31:45 +1000 (AEST)
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1sGxBT-0000Ne-00; Tue, 11 Jun 2024 10:48:51 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 023C9C0120; Tue, 11 Jun 2024 10:41:16 +0200 (CEST)
+Date: Tue, 11 Jun 2024 10:41:16 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Celeste Liu <coelacanthushex@gmail.com>
+Subject: Re: [PATCH 3/6] mips: defconfig: drop RT_GROUP_SCHED=y from
+ generic/db1xxx/eyeq5
+Message-ID: <ZmgNrOr1nalSTeja@alpha.franken.de>
+References: <20240530111947.549474-8-CoelacanthusHex@gmail.com>
+ <20240530111947.549474-11-CoelacanthusHex@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 26/26] block: move the bounce flag into the feature field
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-27-hch@lst.de>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20240611051929.513387-27-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240530111947.549474-11-CoelacanthusHex@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,22 +42,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, linux-nvme@lists.infradead.org, Song Liu <song@kernel.org>, linux-mtd@lists.infradead.org, Vineeth Vijayan <vneethv@linux.ibm.com>, Alasdair Kergon <agk@redhat.com>, drbd-dev@lists.linbit.com, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, Richard Weinberger <richard@nod.at>, Geert Uytterhoeven <geert@linux-m68k.org>, Yu Kuai <yukuai3@huawei.com>, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, Mike Snitzer <snitzer@kernel.org>, Josef Bacik <josef@toxicpanda.com>, nbd@other.debian.org, linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Mikulas Patocka <mpatocka@redhat.com>, xen-devel@lists.xenproject.org, ceph-devel@vger.kernel.org, Ming Lei <ming.lei@redhat.com>, linux-bcache@vger.kernel.org, linux-block@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mmc@vger.kernel.org, Philipp Reisner <philipp.reisner@linbit.com>, =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, virtualization@lists.linux.dev, Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
+Cc: Rich Felker <dalias@libc.org>, Lennart Poettering <lennart@poettering.net>, linux-sh@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@rivosinc.com>, linux-kernel@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>, linux-kselftest@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Sven Joachim <svenjoac@gmx.de>, Mykola Lysenko <mykolal@fb.com>, =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory CLEMENT <gregory.clement@bootlin.com>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Ray Jui <rjui@broadcom.com>, Nicholas Piggin <npiggin@gmail.com>, linux-rpi-kernel@lists.infradead.org, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Icenowy Zheng <uwu@icenowy.me>, Florian Fainelli <florian.fainelli@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, Anup Patel <anup@brainfault.org>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/11/24 2:19 PM, Christoph Hellwig wrote:
-> Move the bounce field into the flags field to reclaim a little bit of
-
-s/flags/feature
-
-> space.
+On Thu, May 30, 2024 at 07:19:51PM +0800, Celeste Liu wrote:
+> For cgroup v1, if turned on, and there's any cgroup in the "cpu" hierarchy it
+> needs an RT budget assigned, otherwise the processes in it will not be able to
+> get RT at all. The problem with RT group scheduling is that it requires the
+> budget assigned but there's no way we could assign a default budget, since the
+> values to assign are both upper and lower time limits, are absolute, and need to
+> be sum up to < 1 for each individal cgroup. That means we cannot really come up
+> with values that would work by default in the general case.[1]
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> For cgroup v2, it's almost unusable as well. If it turned on, the cpu controller
+> can only be enabled when all RT processes are in the root cgroup. But it will
+> lose the benefits of cgroup v2 if all RT process were placed in the same cgroup.
+> 
+> Red Hat, Gentoo, Arch Linux and Debian all disable it. systemd also doesn't
+> support it.[2]
+> 
+> [1]: https://bugzilla.redhat.com/show_bug.cgi?id=1229700
+> [2]: https://github.com/systemd/systemd/issues/13781#issuecomment-549164383
+> 
+> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+> ---
+>  arch/mips/configs/db1xxx_defconfig  | 1 -
+>  arch/mips/configs/eyeq5_defconfig   | 1 -
+>  arch/mips/configs/generic_defconfig | 1 -
+>  3 files changed, 3 deletions(-)
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+applied to mips-next.
+
+Thomas.
 
 -- 
-Damien Le Moal
-Western Digital Research
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
