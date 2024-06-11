@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADEC9036F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:49:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6325903705
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:50:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KH3+LNx4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UYP6KTIU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz2Qy2j8Qz3cWS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:49:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz2SF5G81z3cTS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:50:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KH3+LNx4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UYP6KTIU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz2QG1t72z2xdh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:48:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz2RW1P43z2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:49:43 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F409660CF6;
-	Tue, 11 Jun 2024 08:48:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C51C2BD10;
-	Tue, 11 Jun 2024 08:48:33 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 47A1160D3C;
+	Tue, 11 Jun 2024 08:49:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4740BC2BD10;
+	Tue, 11 Jun 2024 08:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718095716;
-	bh=vw4F7rAYyNJsPgHNYwOaTOJCnWFIYhHkmubXp1Mluew=;
+	s=k20201202; t=1718095781;
+	bh=hjc0fCsVq9ydI0+KQ9TtQdj35XeVhSSbzEUpWWkiC7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KH3+LNx4AJ+dJ+NZbcMxlI2XBGenY674UIdHMA1K49I/0zghSQyMCPu1QegDfvOXv
-	 Phjg7m1YCs7/uAUeiaSLw1kWNELgQLJ/AEBK5Bzhcg9Ta7osNvzrCP0KpwlVIgAYmV
-	 w0bmlQkhPU4ZZF/ITciEZzVfhNnpPRRrjliF4njAqPDWEeeOqAZByOz5gVXiijHxRc
-	 OxVIxH8JyILHjEH6K4ZkhjOY+8EU35qAmkBbB2VrcstnzT4jHPDWgtgMl2P6iUx0Aa
-	 ly1vp3tLQrRj97/bUNO8sYod0k2Jfm04BAfnVqk1LXA9MU9PcxcIMKNBLgTNRFUAq/
-	 P7RkBW+lJHuvw==
-Message-ID: <7d6582f6-9f0d-4e5e-9a01-1da2c4acfa56@kernel.org>
-Date: Tue, 11 Jun 2024 10:48:31 +0200
+	b=UYP6KTIUnVGCkbSsq+S5husAJvuVZ3iZtJZTse+KeLfIPhc4EqQZPKWbNn+Evir7E
+	 c5gdwIp6LOGdApq/YqGmzpKztlV1GcCXv/dv0b6zRidw64xHvhGeyt/0WaV1Eve3nu
+	 JtiBfYVjClLe0+yGt1EuepKo5n9yTycljGzg0xH8HgGCnwSXsLOwk840x8rlsr5zUC
+	 hS6p0XDfeWWsXO4yb/4WczKh3/9bHX1raiM8KwLnrFEoI0G0RJ/XyVlu8SMkZtaev1
+	 wDEdWtw3vOODI7KTk7P9ZE0DjuD7puzzIGeducq6RbkglZemQYso99Rh10jJRm+Euc
+	 5P5C18WIwEIuA==
+Message-ID: <364dc212-71dc-4bc9-b4fa-97ba2f92d679@kernel.org>
+Date: Tue, 11 Jun 2024 10:49:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: Drop Li Yang as maintainer for all
- bindings
+Subject: Re: [RFC PATCH 2/2] dt-bindings: memory: fsl: replace maintainer
 To: Michael Walle <mwalle@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 References: <20240604142249.1957762-1-mwalle@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <20240604142249.1957762-2-mwalle@kernel.org>
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -93,7 +93,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240604142249.1957762-1-mwalle@kernel.org>
+In-Reply-To: <20240604142249.1957762-2-mwalle@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -112,16 +112,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 04/06/2024 16:22, Michael Walle wrote:
-> Remove Li Yang from all device tree bindings because mails to this
-> address are bouncing.
-> 
-> Commit fbdd90334a62 ("MAINTAINERS: Drop Li Yang as their email address
-> stopped working") already removed the entry from the MAINTAINERS but
-> didn't address all the in-file entries of the device tree bindings.
+> Li Yang's mail address is bouncing, replace it with Shawn Guo's one.
 > 
 > Signed-off-by: Michael Walle <mwalle@kernel.org>
+> ---
+> This is marked as an RFC because it is more of a question for Shawn if
+> he is willing to take over the maintainership.
+> ---
 
-
+I suppose this could go via IMX SoC tree, so:
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
