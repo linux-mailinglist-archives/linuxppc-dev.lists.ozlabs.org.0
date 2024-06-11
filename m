@@ -1,45 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B27290335D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 09:21:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB6B903379
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 09:26:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J9t/JghW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UCtiHiiw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz0Tz0DT0z3cSS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 17:21:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz0b26NnSz3cLL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 17:26:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J9t/JghW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UCtiHiiw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz0TD641fz3c2K
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 17:21:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz0ZJ3mpPz2xQL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 17:25:28 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5EAFE60C76;
-	Tue, 11 Jun 2024 07:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B857C2BD10;
-	Tue, 11 Jun 2024 07:20:55 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id B2D1CCE19E4;
+	Tue, 11 Jun 2024 07:25:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F46C2BD10;
+	Tue, 11 Jun 2024 07:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718090461;
-	bh=SxGiXC2eXjeuicvqjgmxBbbuRkQDAALVXqGltltCvpM=;
+	s=k20201202; t=1718090724;
+	bh=SKDzpdZjTAHkWp+zsEQwH6Ky8PVIUSEQggaioawXXkU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J9t/JghW0gR/ETwdzjpl7VD7KnwAlMW8rRhwZr9kxWhQ6tl8Phg9WjO76NiKxxgu8
-	 fLxeqF9M5t6BVVC5kK/sKL3zR1K2qLPoyVha6i0EJluUzp1kNJ5g2TNKh8g+EJPN33
-	 hrljcXVnUuN8Lr5KlIujiAJZzEJDuCsFcPLl3jPutPmhKf9R0GeNiPNem29bg2OBO7
-	 a1cFWzw0qNt9DSnc6yLqLEresNea8LBs8q7/++QEaUosyu+AjkSi/+C9VElPN9n7PP
-	 XlPsIxsXYvBqYod+WVUBRRvW1FiyVSTv+Mlz8E7DodnwczmTJdbU3tnt32fP5VZhAs
-	 3tDYxoJTsEL7w==
-Message-ID: <6bf90562-0ff9-46b6-8a58-7381332e3beb@kernel.org>
-Date: Tue, 11 Jun 2024 16:20:54 +0900
+	b=UCtiHiiw5QvJYmElyhHUIvI9qZN2kq7wHApTDMzEobrX5tFMllUF7QgwTYv0VDSQe
+	 4AvJZ9Xc1WQTZynkZ5eqZVN35p41xaFCgmlC7UMaLIvvCM36uO+T8E3D8B2kWkrwrw
+	 CxnQ5rfAOwcQk9F3stXF5NyYVqFnlDWOGrsxEQrWt2LCiqL+fvPkUXoNp9aPDrZKK/
+	 Jf1WpJR5Tfo8C4kN4+IDjAFgA3wv+/TYcPyqih/c85wJGX2v2SpjxCABdfzaKWUWw8
+	 mwFNFCAMG5oIrZT1WMKm7NaX1XpI2tHzzzRuvurRNs7Kd2xxeNWyHz9cxkpcbZ5fhc
+	 X7SraO1QML8XQ==
+Message-ID: <92df5033-5df7-4b2a-98ad-a27f8443ee6a@kernel.org>
+Date: Tue, 11 Jun 2024 16:25:18 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 02/26] sd: move zone limits setup out of
@@ -48,11 +48,11 @@ To: Christoph Hellwig <hch@lst.de>
 References: <20240611051929.513387-1-hch@lst.de>
  <20240611051929.513387-3-hch@lst.de>
  <40ca8052-6ac1-4c1b-8c39-b0a7948839f8@kernel.org>
- <20240611055239.GA3141@lst.de>
+ <20240611055239.GA3141@lst.de> <20240611055405.GA3256@lst.de>
 Content-Language: en-US
 From: Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20240611055239.GA3141@lst.de>
+In-Reply-To: <20240611055405.GA3256@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -70,26 +70,20 @@ Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <j
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/11/24 2:52 PM, Christoph Hellwig wrote:
-> On Tue, Jun 11, 2024 at 02:51:24PM +0900, Damien Le Moal wrote:
->>> -	if (lim->zoned)
->>> +	if (sdkp->device->type == TYPE_ZBC)
+On 6/11/24 2:54 PM, Christoph Hellwig wrote:
+> On Tue, Jun 11, 2024 at 07:52:39AM +0200, Christoph Hellwig wrote:
+>>> Maybe we should clear the other zone related limits here ? If the drive is
+>>> reformatted/converted from SMR to CMR (FORMAT WITH PRESET), the other zone
+>>> limits may be set already, no ?
 >>
->> Nit: use sd_is_zoned() here ?
+>> blk_validate_zoned_limits already takes care of that.
 > 
-> Yes.
-> 
->>> -	if (!sd_is_zoned(sdkp))
->>> +	if (!sd_is_zoned(sdkp)) {
->>> +		lim->zoned = false;
->>
->> Maybe we should clear the other zone related limits here ? If the drive is
->> reformatted/converted from SMR to CMR (FORMAT WITH PRESET), the other zone
->> limits may be set already, no ?
-> 
-> blk_validate_zoned_limits already takes care of that.
+> Sorry, brainfart.  The integrity code does that, but not the zoned
+> code.  I suspect the core code might be a better place for it,
+> though.
 
-I do not think it does:
+Yes. Just replied to your previous email before seeing this one.
+I think that:
 
 static int blk_validate_zoned_limits(struct queue_limits *lim)
 {
@@ -103,8 +97,23 @@ static int blk_validate_zoned_limits(struct queue_limits *lim)
         }
 	...
 
-So setting lim->zoned to false without clearing the other limits potentially
-will trigger warnings...
+could be changed into:
+
+static int blk_validate_zoned_limits(struct queue_limits *lim)
+{
+	if (!lim->zoned) {
+                lim->max_open_zones = 0;
+		lim->max_active_zones = 0;
+		lim->zone_write_granularity = 0;
+		lim->max_zone_append_sectors = 0
+		return 0;
+	}
+
+But then we would not see "bad" drivers. Could have a small
+
+blk_clear_zoned_limits(struct queue_limits *lim)
+
+helper too.
 
 -- 
 Damien Le Moal
