@@ -1,101 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B700090353B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:15:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A2F90354F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:16:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UAVg+dgY;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2OUCyC8g;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UAVg+dgY;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2OUCyC8g;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Msni/WWt;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=jzzrLP1Z;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Qr6H2Vmm;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9xNbjaTN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1hB4Q67z3cVl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:15:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1j83bPCz3cVS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:16:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UAVg+dgY;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2OUCyC8g;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UAVg+dgY;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2OUCyC8g;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Msni/WWt;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=jzzrLP1Z;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Qr6H2Vmm;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9xNbjaTN;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 201 seconds by postgrey-1.37 at boromir; Tue, 11 Jun 2024 18:14:59 AEST
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1gR4kWTz3cGM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:14:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1hR2Gpwz3cGM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:15:51 +1000 (AEST)
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A4D222D25;
-	Tue, 11 Jun 2024 08:14:57 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E567122D2B;
+	Tue, 11 Jun 2024 08:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718093697; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1718093749; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TvaIIm79eqqPbLminoznJSDrbLqw3mW5mHXwDZlXypc=;
-	b=UAVg+dgYJHfI7a6nZAEcbYAtWsk0klMOZYa2iy7C0rW5az0ssEDtiefWG3AdjIjXybWcmF
-	kOlJh4yiiUlDOqqkpdL3T6JLzA2oV66njCG0MhC2FVDPhA9gftHedq8olQocDeOTfFDu9K
-	2Xqf28MwCvKZCyx7CKXTGSS0ovR6/js=
+	bh=2r7MKAg6vOI9CQHj9QnmN2izcLv5sbG9WOrlm/Tmo8I=;
+	b=Msni/WWtQLJC7aiHZZiIPHdLoVyj8dvs0ywS03oXyJvZOgwHsNbEtMFNNO/rKPPwIVlOTY
+	c1E1VE43mVs+c82WXEHd5kGOw9r1nGpnTlv/8hcy40zaNCRaYIIWc1L4DQqC+daZ2ZJ4FO
+	MR9U/2yYW0xdzUkr2wVwGOmAbopiS+M=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718093697;
+	s=susede2_ed25519; t=1718093749;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TvaIIm79eqqPbLminoznJSDrbLqw3mW5mHXwDZlXypc=;
-	b=2OUCyC8guBhwEZpETd6z76Sh3cvmPC9h5I3QPoR5PyJO0aX1s3/L4DedyeoNADr+ncNmNZ
-	UJWfCWpPENXpODCQ==
+	bh=2r7MKAg6vOI9CQHj9QnmN2izcLv5sbG9WOrlm/Tmo8I=;
+	b=jzzrLP1ZySMJr/ZpnKFyGXiwELwFPv7+mdiJjZVwlAeIGClmXFhoxCoKqdvUasa9E9ZDL2
+	k/hSZ7RUw5WKZYDA==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718093697; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1718093748; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TvaIIm79eqqPbLminoznJSDrbLqw3mW5mHXwDZlXypc=;
-	b=UAVg+dgYJHfI7a6nZAEcbYAtWsk0klMOZYa2iy7C0rW5az0ssEDtiefWG3AdjIjXybWcmF
-	kOlJh4yiiUlDOqqkpdL3T6JLzA2oV66njCG0MhC2FVDPhA9gftHedq8olQocDeOTfFDu9K
-	2Xqf28MwCvKZCyx7CKXTGSS0ovR6/js=
+	bh=2r7MKAg6vOI9CQHj9QnmN2izcLv5sbG9WOrlm/Tmo8I=;
+	b=Qr6H2VmmwLwr7pMkTPc1IokvvR4M2YocGyeffhfCeL+fAvcnsb5fEvomUeoLAXoe+JGH4e
+	8M3jjuywd208xFOoLE6NVO6cmyBZFpxxulLERQX4AFhnF4GlsMoMZtCanQx148T9MG9Uqk
+	uPc16jDnqAa/RN/AE7ZGr8tZbqoW/Oo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718093697;
+	s=susede2_ed25519; t=1718093748;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TvaIIm79eqqPbLminoznJSDrbLqw3mW5mHXwDZlXypc=;
-	b=2OUCyC8guBhwEZpETd6z76Sh3cvmPC9h5I3QPoR5PyJO0aX1s3/L4DedyeoNADr+ncNmNZ
-	UJWfCWpPENXpODCQ==
+	bh=2r7MKAg6vOI9CQHj9QnmN2izcLv5sbG9WOrlm/Tmo8I=;
+	b=9xNbjaTNKIkHrIWVNAWqobr8/55RzaflSr0XLs4aXDQe/ZVLfdWVr681lzwfO99s/69NMi
+	1sxmXZD4BgTrA7Aw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BF8FC137DF;
-	Tue, 11 Jun 2024 08:14:56 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9054B137DF;
+	Tue, 11 Jun 2024 08:15:48 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /IkVLYAHaGaWWgAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:14:56 +0000
-Message-ID: <00f59eb6-f6fc-4d93-8d45-6ce6a2a200ed@suse.de>
-Date: Tue, 11 Jun 2024 10:14:56 +0200
+	id OPB/IbQHaGbxWgAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:15:48 +0000
+Message-ID: <b586980b-0a5a-4371-bcb7-e578633ed71c@suse.de>
+Date: Tue, 11 Jun 2024 10:15:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/26] loop: stop using loop_reconfigure_limits in
- __loop_clr_fd
+Subject: Re: [PATCH 04/26] loop: always update discard settings in
+ loop_reconfigure_limits
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-4-hch@lst.de>
+ <20240611051929.513387-5-hch@lst.de>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20240611051929.513387-4-hch@lst.de>
+In-Reply-To: <20240611051929.513387-5-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Level: 
@@ -139,14 +138,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 07:19, Christoph Hellwig wrote:
-> __loop_clr_fd wants to clear all settings on the device.  Prepare for
-> moving more settings into the block limits by open coding
-> loop_reconfigure_limits.
+> Simplify loop_reconfigure_limits by always updating the discard limits.
+> This adds a little more work to loop_set_block_size, but doesn't change
+> the outcome as the discard flag won't change.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   drivers/block/loop.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+>   drivers/block/loop.c | 10 ++++------
+>   1 file changed, 4 insertions(+), 6 deletions(-)
 > 
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 
