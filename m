@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DFB90389E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 12:16:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BE79038B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 12:19:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WCcERj+i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GszAPfMi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz4MQ281Mz3cTS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 20:16:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz4R84k3Nz3cSy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 20:19:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WCcERj+i;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GszAPfMi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz4Lk3wyQz3cLL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 20:15:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz4QS6Pthz30PD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 20:18:56 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A71576068D;
-	Tue, 11 Jun 2024 10:15:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAA0C2BD10;
-	Tue, 11 Jun 2024 10:15:34 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6B64460C71;
+	Tue, 11 Jun 2024 10:18:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F37C2BD10;
+	Tue, 11 Jun 2024 10:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718100940;
-	bh=lwtvF8TxyoK5ymJEUqL+Fdnx72KICz4bi8hcR1ZN2pk=;
+	s=k20201202; t=1718101134;
+	bh=nZYcxCQw0Vog3/Jgd9nlPsyVhRyTxGPKpWXmdnqLNZ4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WCcERj+iqpu+bZrTYQgOyGthvcZ/X2gu2+GqD1bh3N3awgteDMG9mU+ACV+3pLH4R
-	 XskRK+Cwj2BK6OmWFJ2prqWvoXbpWi/fv0AAcF5SCxPI5dvLkplU1gG5bF4BquXc48
-	 3FdozzoIzVNDlT4MU0bfZCi6cy9FWQp16bUJNxTf/CQs380s3QWDQw7ZXKShlr6mv1
-	 +roaCUeCOoUwe03l9bXJIY26YI51b0e/VuqHM45uIb/tLDkv4kJi9AVCWPUCkv24aG
-	 48WWBZQ34zOGhJhiuJ5Ot9doIBsmw89AEGSiNn1Mvbca22RkVbLntiBFZI4A/C/Evd
-	 oo0NoeTHwe1rQ==
-Message-ID: <6cd2897f-a61d-4351-abac-714bae2ab154@kernel.org>
-Date: Tue, 11 Jun 2024 12:15:31 +0200
+	b=GszAPfMi4c2zfqB9wJUCZxYc8YRtFSO5yUfh+wFKYpJRk+qrTcVmXai5lB+TgAJJR
+	 cS1Zdp7tdU1ZThwOMY1lB6R0KkkFzp8InHZaqFq+Io3aQ3m84YLen3wBKIOr9eoeai
+	 PB2DkbKR6Uom2EkOIpf3iHPcmKDBvuGJilw5tKvVRyxBHOA6bM4y1eVxrRKiawAoT+
+	 B61zyQd1a5pUguchcNsUcCmDbseyhTrNUUa4Ohi0kGbf8DAF8mZgELZS6amOQwv3/n
+	 Se8DfmJqE5M40lhMVT1RS4jnUzaohMEql0bBXPDLXwWrDvPmTKn2IDSERNU3tDlCNA
+	 +9fwfOBTmUhUg==
+Message-ID: <1ea92ff0-7e2d-4a9f-bef4-d50fc93b86e6@kernel.org>
+Date: Tue, 11 Jun 2024 12:18:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx
- CPUs
+Subject: Re: [Patch v2 2/2] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT
+ binding
 To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 References: <[PATCH] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs>
  <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
+ <20240611094810.27475-2-piotr.wojtaszczyk@timesys.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,7 +93,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
+In-Reply-To: <20240611094810.27475-2-piotr.wojtaszczyk@timesys.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -111,122 +112,78 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 11/06/2024 11:47, Piotr Wojtaszczyk wrote:
-> This driver was ported from an old version in linux 2.6.27 and adjusted
-> for the new ASoC framework and DMA API.
+> Add nxp,lpc3220-i2s DT binding documentation.
 > 
 > Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 > ---
-> Changes for v2:
-> - Coding Style cleanup
-> - Use dev_err_probe() for error handling in probe function
-> - Removed unneded err_clk_disable label
-> - Removed empty function
-> - Droped of_match_ptr in lpc32xx_i2s_match DT match table
-> - ASoC struct adjustmes for the latest 6.10-rc3 kernel
-> 
->  MAINTAINERS                            |   7 +
 
-1:
->  arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi |   4 +
-
-2:
->  arch/arm/mach-lpc32xx/phy3250.c        |  60 ++++
-
-3:
->  sound/soc/fsl/Kconfig                  |   7 +
->  sound/soc/fsl/Makefile                 |   2 +
->  sound/soc/fsl/lpc3xxx-i2s.c            | 383 +++++++++++++++++++++++++
->  sound/soc/fsl/lpc3xxx-i2s.h            |  94 ++++++
->  sound/soc/fsl/lpc3xxx-pcm.c            |  75 +++++
-
-Three separate subsystems, so three separate patches.
-
->  8 files changed, 632 insertions(+)
->  create mode 100644 sound/soc/fsl/lpc3xxx-i2s.c
->  create mode 100644 sound/soc/fsl/lpc3xxx-i2s.h
->  create mode 100644 sound/soc/fsl/lpc3xxx-pcm.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index aacccb376c28..7616f61d6327 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8909,6 +8909,13 @@ S:	Maintained
->  F:	sound/soc/fsl/fsl*
->  F:	sound/soc/fsl/imx*
->  
-> +FREESCALE SOC LPC32XX SOUND DRIVERS
-> +M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-> +L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-> +L:	linuxppc-dev@lists.ozlabs.org
-> +S:	Orphan
-
-Not sure if we want it in the first place. Why would we like to support
-orphaned drivers? Sorry, if there is no one to care about it, then it
-should not be merged.
-
-...
 
 > +
-> +static int lpc32xx_i2s_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct lpc3xxx_i2s_info *i2s_info_p;
-> +	struct resource *res;
-> +	void __iomem *iomem;
-> +	int ret;
+> +maintainers:
+> +  - Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 > +
-> +	i2s_info_p = devm_kzalloc(dev, sizeof(*i2s_info_p), GFP_KERNEL);
-> +	if (!i2s_info_p)
-> +		return -ENOMEM;
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,lpc3220-i2s
 > +
-> +	platform_set_drvdata(pdev, i2s_info_p);
-> +	i2s_info_p->dev = dev;
+> +  reg:
+> +    maxItems: 1
 > +
-> +	iomem = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-> +	if (IS_ERR(iomem))
-> +		return dev_err_probe(dev, PTR_ERR(iomem), "Can't map registers\n");
+> +  clocks:
+> +    items:
+> +      - description: input clock of the peripheral.
 > +
-> +	i2s_info_p->regs = devm_regmap_init_mmio(dev, iomem, &lpc32xx_i2s_regconfig);
-> +	if (IS_ERR(i2s_info_p->regs))
-> +		return dev_err_probe(dev, PTR_ERR(i2s_info_p->regs),
-> +				     "failed to init register map: %d\n", ret);
-> +
-> +	i2s_info_p->clk = devm_clk_get(dev, "i2s_clk");
-> +	if (IS_ERR(i2s_info_p->clk))
-> +		return dev_err_probe(dev, PTR_ERR(i2s_info_p->clk), "Can't get clock\n");
-> +
-> +	i2s_info_p->clkrate = clk_get_rate(i2s_info_p->clk);
-> +	if (i2s_info_p->clkrate == 0)
-> +		return dev_err_probe(dev, -EINVAL, "Invalid returned clock rate\n");
-> +
-> +	mutex_init(&i2s_info_p->lock);
-> +
-> +	ret = devm_snd_soc_register_component(dev, &lpc32xx_i2s_component,
-> +					      &lpc3xxx_i2s_dai_driver, 1);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Can't register cpu_dai component\n");
-> +
-> +	i2s_info_p->playback_dma_config.addr = (dma_addr_t)(res->start + I2S_TX_FIFO);
-> +	i2s_info_p->playback_dma_config.maxburst = 4;
-> +	i2s_info_p->playback_dma_config.filter_data = "i2s-tx";
-> +	i2s_info_p->capture_dma_config.addr = (dma_addr_t)(res->start + I2S_RX_FIFO);
-> +	i2s_info_p->capture_dma_config.maxburst = 4;
-> +	i2s_info_p->capture_dma_config.filter_data = "i2s-rx";
-> +
-> +	ret = lpc3xxx_pcm_register(pdev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Can't register pcm component\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int lpc32xx_i2s_remove(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
 
-You did not respond to comment about this. Drop.
+I do not see my comment about DAI being addressed.
 
+<form letter>
+This is a friendly reminder during the review process.
+
+It seems my or other reviewer's previous comments were not fully
+addressed. Maybe the feedback got lost between the quotes, maybe you
+just forgot to apply it. Please go back to the previous discussion and
+either implement all requested changes or keep discussing them.
+</<form letter>
+
+
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+
+Drop
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/lpc32xx-clock.h>
+> +
+> +    i2s0: i2s@20094000 {
+
+Drop label, not used.
+
+> +      compatible = "nxp,lpc3220-i2s";
+> +      reg = <0x20094000 0x1000>;
+> +      clocks = <&clk LPC32XX_CLK_I2S0>;
+> +      clock-names = "i2s_clk";
+
+Not tested. Drop.
+
+> +      status = "disabled";
+
+Then what is the point of example? Drop.
+
+Your DTS was also not tested.
+
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check W=1` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
 
 Best regards,
 Krzysztof
