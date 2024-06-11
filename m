@@ -2,100 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BE79038B9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 12:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D963903905
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 12:37:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GszAPfMi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gqnSTrD7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz4R84k3Nz3cSy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 20:19:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz4qY0TsWz3cTh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 20:37:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GszAPfMi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gqnSTrD7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz4QS6Pthz30PD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 20:18:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz4pq5q1pz30Sq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 20:36:35 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 6B64460C71;
-	Tue, 11 Jun 2024 10:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F37C2BD10;
-	Tue, 11 Jun 2024 10:18:47 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7243A60C71;
+	Tue, 11 Jun 2024 10:36:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985F7C2BD10;
+	Tue, 11 Jun 2024 10:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718101134;
-	bh=nZYcxCQw0Vog3/Jgd9nlPsyVhRyTxGPKpWXmdnqLNZ4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GszAPfMi4c2zfqB9wJUCZxYc8YRtFSO5yUfh+wFKYpJRk+qrTcVmXai5lB+TgAJJR
-	 cS1Zdp7tdU1ZThwOMY1lB6R0KkkFzp8InHZaqFq+Io3aQ3m84YLen3wBKIOr9eoeai
-	 PB2DkbKR6Uom2EkOIpf3iHPcmKDBvuGJilw5tKvVRyxBHOA6bM4y1eVxrRKiawAoT+
-	 B61zyQd1a5pUguchcNsUcCmDbseyhTrNUUa4Ohi0kGbf8DAF8mZgELZS6amOQwv3/n
-	 Se8DfmJqE5M40lhMVT1RS4jnUzaohMEql0bBXPDLXwWrDvPmTKn2IDSERNU3tDlCNA
-	 +9fwfOBTmUhUg==
-Message-ID: <1ea92ff0-7e2d-4a9f-bef4-d50fc93b86e6@kernel.org>
-Date: Tue, 11 Jun 2024 12:18:45 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 2/2] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT
- binding
+	s=k20201202; t=1718102194;
+	bh=GRiJHJeBxHjjSrVuUZQEjtAnkrsyVP3YUixQ0bIDogY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gqnSTrD70/+vXgJD/5znDSFJoVnc7K8K6uckcQ3lWeVRuhL/70lTfzEN+6ZMRR5lU
+	 QpQDparoIxqKCPK+ccn2ON/mf/aml+H+R07RM2rKDM74OfVrDpDvb32r1jk0nCddBM
+	 bEfy3OIM2u+OlkNS0DYGtBXRG4SSa3ywLYgv06ekYWDSRayaANzBun4myW4uzyDWYw
+	 4Mx+j0Y5GL1WQv//PFcyjnu7Mzd7jbs82fy0aK74PKm+R1B6eB+DKMasNzMylER/jO
+	 KnUJJ0KBuxv00TT2P5DjcpJSoOIepMikp0zRLYUGJ4KdtBh5MMNf+FY8B/l+0rbXFa
+	 E1M3eM9xJvUEw==
+Date: Tue, 11 Jun 2024 11:36:31 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-References: <[PATCH] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs>
+Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx
+ CPUs
+Message-ID: <Zmgor8accyAiUkUO@finisterre.sirena.org.uk>
+References: <[PATCH]ASoC:fsl:Addi2sandpcmdriversforLPC32xxCPUs>
  <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
- <20240611094810.27475-2-piotr.wojtaszczyk@timesys.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240611094810.27475-2-piotr.wojtaszczyk@timesys.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WW949k97zQLQvi69"
+Content-Disposition: inline
+In-Reply-To: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
+X-Cookie: Your love life will be... interesting.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,84 +63,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, Jaroslav Kysela <perex@perex.cz>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/06/2024 11:47, Piotr Wojtaszczyk wrote:
-> Add nxp,lpc3220-i2s DT binding documentation.
-> 
-> Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-> ---
 
+--WW949k97zQLQvi69
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +
-> +maintainers:
-> +  - Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,lpc3220-i2s
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: input clock of the peripheral.
+On Tue, Jun 11, 2024 at 11:47:51AM +0200, Piotr Wojtaszczyk wrote:
+
+>  arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi |   4 +
+>  arch/arm/mach-lpc32xx/phy3250.c        |  60 ++++
+
+These architecture changes are separate and should at least be separate
+commits, copied to the architecture maintainers.
+
+> +FREESCALE SOC LPC32XX SOUND DRIVERS
+> +M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+> +L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
+> +L:	linuxppc-dev@lists.ozlabs.org
+> +S:	Orphan
+> +F:	sound/soc/fsl/lpc3xxx-*
 > +
 
-I do not see my comment about DAI being addressed.
+It seems a bit odd to add yourself as a maintainer while also marking
+the driver as orphan?
 
-<form letter>
-This is a friendly reminder during the review process.
+> +config SND_SOC_FSL_LPC3XXX
+> +	tristate "SoC Audio for NXP LPC32XX CPUs"
+> +	depends on ARCH_LPC32XX && SND_SOC
 
-It seems my or other reviewer's previous comments were not fully
-addressed. Maybe the feedback got lost between the quotes, maybe you
-just forgot to apply it. Please go back to the previous discussion and
-either implement all requested changes or keep discussing them.
-</<form letter>
+On a quick scan I can't see any architecture dependency for build,
+please add an || COMPILE_TEST for improved coverage.  As for all the
+other things enabled in this Kconfig file there is no need to explicitly
+depend on SND_SOC.
 
+> @@ -42,6 +43,7 @@ obj-$(CONFIG_SND_SOC_FSL_XCVR) +=3D snd-soc-fsl-xcvr.o
+>  obj-$(CONFIG_SND_SOC_FSL_AUD2HTX) +=3D snd-soc-fsl-aud2htx.o
+>  obj-$(CONFIG_SND_SOC_FSL_RPMSG) +=3D snd-soc-fsl-rpmsg.o
+>  obj-$(CONFIG_SND_SOC_POWERPC_QMC_AUDIO) +=3D snd-soc-fsl-qmc-audio.o
+> +obj-$(CONFIG_SND_SOC_FSL_LPC3XXX) +=3D snd-soc-fsl-lpc3xxx.o
+> =20
+Please try to keep these files sorted alphabetically (it's not 100% at
+the minute but no need to make it worse).
 
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
+> --- /dev/null
+> +++ b/sound/soc/fsl/lpc3xxx-i2s.c
+> @@ -0,0 +1,383 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Author: Kevin Wells <kevin.wells@nxp.com>
+> + *
 
-Drop
+Please make the entire comment a C++ one so things look more
+intentional.
 
+> +static u32 absd32(u32 v1, u32 v2)
+> +{
+> +	if (v1 > v2)
+> +		return v1 - v2;
+> +	return v2 - v1;
+> +}
+
+Just use abs()?
+
+> +static int lpc3xxx_i2s_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned=
+ int fmt)
+> +{
+> +	struct lpc3xxx_i2s_info *i2s_info_p =3D snd_soc_dai_get_drvdata(cpu_dai=
+);
+> +	struct device *dev =3D i2s_info_p->dev;
 > +
-> +additionalProperties: false
+> +	if ((fmt & SND_SOC_DAIFMT_FORMAT_MASK) !=3D SND_SOC_DAIFMT_I2S) {
+> +		dev_warn(dev, "unsupported bus format %d\n", fmt);
+> +		return -EINVAL;
+> +	}
+> +	return 0;
+> +}
+
+If we're validating for I2S we should probably validate for clock
+provider too.  Or just remove the function, it's not really needed?
+
+> +	i2s_info_p->clk =3D devm_clk_get(dev, "i2s_clk");
+> +	if (IS_ERR(i2s_info_p->clk))
+> +		return dev_err_probe(dev, PTR_ERR(i2s_info_p->clk), "Can't get clock\n=
+");
 > +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/lpc32xx-clock.h>
-> +
-> +    i2s0: i2s@20094000 {
+> +	i2s_info_p->clkrate =3D clk_get_rate(i2s_info_p->clk);
+> +	if (i2s_info_p->clkrate =3D=3D 0)
+> +		return dev_err_probe(dev, -EINVAL, "Invalid returned clock rate\n");
 
-Drop label, not used.
+Nothing ever enables this clock.
 
-> +      compatible = "nxp,lpc3220-i2s";
-> +      reg = <0x20094000 0x1000>;
-> +      clocks = <&clk LPC32XX_CLK_I2S0>;
-> +      clock-names = "i2s_clk";
+> +static int lpc32xx_i2s_remove(struct platform_device *pdev)
+> +{
+> +	return 0;
+> +}
 
-Not tested. Drop.
+Remove empty functions, if they can legitimately be empty the framework
+will support them being absent.
 
-> +      status = "disabled";
+> +#define _SBF(f, v) ((v) << (f))
 
-Then what is the point of example? Drop.
+FIELD_PREP()
 
-Your DTS was also not tested.
+> +#define _BIT(n) _SBF(n, 1)
 
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
+BIT().
 
-Best regards,
-Krzysztof
+> +/* I2S controller register offsets */
+> +#define I2S_DAO		0x00
+> +#define I2S_DAI		0x04
+> +#define I2S_TX_FIFO	0x08
+> +#define I2S_RX_FIFO	0x0C
+> +#define I2S_STAT	0x10
+> +#define I2S_DMA0	0x14
+> +#define I2S_DMA1	0x18
+> +#define I2S_IRQ		0x1C
+> +#define I2S_TX_RATE	0x20
+> +#define I2S_RX_RATE	0x24
 
+Add a prefix to all these I2S_ names in case of collisions.
+
+--WW949k97zQLQvi69
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZoKKsACgkQJNaLcl1U
+h9DNgQf/bVmcCufP8jvhRnYGwhJ74PYfe8uGNqVDcvOPBqyxwbAHEcBkY4os9h6R
+GoQMz21Qh+ZtEks0KjHFDl3Lnd51Kac5YBeyl5s/WRciIBOxe+jSqmW0GpRYZwZ+
+YEMXUIyS6zA8Tik8onJLOtFrl4wLHXafkWOOPulK5v8+mZXYqPypwKq87c43IkrI
+MviOLdW4TB0CVCKvk590+1YPY+ZBBAELM6eO/D9du/AyvN+BkUnZLO/VOwQ4enRQ
+r2xnb2uSXMbDtKZKr4PbNw+9NbNaw9axfSzHbwXCu1Z0y+eOEKS1Vu2613VY9Al0
+VKMHNg0tTYcWMk0XTzihz60mgPSf0A==
+=srbB
+-----END PGP SIGNATURE-----
+
+--WW949k97zQLQvi69--
