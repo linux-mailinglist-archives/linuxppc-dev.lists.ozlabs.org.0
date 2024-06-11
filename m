@@ -1,97 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27AC903FDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 17:20:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CB19040E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:11:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QhCvkfww;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QhCvkfww;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ft5M4dBN;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kCckAyCp;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ft5M4dBN;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kCckAyCp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VzC6v48QBz3cZn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 01:20:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzDDv3vDfz3cW4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 02:11:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QhCvkfww;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QhCvkfww;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ft5M4dBN;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kCckAyCp;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ft5M4dBN;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kCckAyCp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzC694hpTz3cV5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 01:20:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718119213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzDD81KWbz3cT9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 02:10:31 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3D8EC33897;
+	Tue, 11 Jun 2024 16:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718122229; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T5mvQKuhxaeQQofAs6C4gb9DRnHzKICw8L5tE3p1+hQ=;
-	b=QhCvkfwwH38jyY/Vk+82Kvu/nOQLw+zQ9y6gHZPxDgJwgM+t2biH7Zi4HLGHJ2G/zpumdI
-	gIDlDQudSE8Bw31Sgtg+pHF7vzVm4mgEWTYlnyA1k2OXTCheRaoTmX5K1n4YCqI44Mlf5J
-	d4Zmn8Fm0mnv5PdwtofP2+MgjoB0E+c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718119213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=QcRqjLgpqIHGpe2PS9pcLZoBz6DCvNoiWXtXXWQ7gVc=;
+	b=Ft5M4dBNGECUCS9SOsUDt3DVWViAXB9GA9LLG4AosSdc4kaxThOanOro7PuC37JPxvCK8t
+	Rw2dFRct3U4RRcNpmgZJwZmaicHozSjvYQXBLk1X85hh6+SyRYj65sZ1mbW5XAQPSjnHN3
+	QVAK0hrdc/15sFYQO2XTJoZp00Xp+HU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718122229;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=T5mvQKuhxaeQQofAs6C4gb9DRnHzKICw8L5tE3p1+hQ=;
-	b=QhCvkfwwH38jyY/Vk+82Kvu/nOQLw+zQ9y6gHZPxDgJwgM+t2biH7Zi4HLGHJ2G/zpumdI
-	gIDlDQudSE8Bw31Sgtg+pHF7vzVm4mgEWTYlnyA1k2OXTCheRaoTmX5K1n4YCqI44Mlf5J
-	d4Zmn8Fm0mnv5PdwtofP2+MgjoB0E+c=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-1VE3SulgOU-_mRja8lVkBQ-1; Tue, 11 Jun 2024 11:20:11 -0400
-X-MC-Unique: 1VE3SulgOU-_mRja8lVkBQ-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6b068d0a398so7818126d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 08:20:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718119211; x=1718724011;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T5mvQKuhxaeQQofAs6C4gb9DRnHzKICw8L5tE3p1+hQ=;
-        b=T+w6Rj0rVQ/rT9PW11PzzgkuY9cVUU52oHZfYSbpET37DqMLv1NJ5JnkpXuQXNbkXD
-         +92be31e9gnu9FyooAP7q5vCZ6uGrgUCW3UlzKtu/7s3h3ZkQOY6Te2S70oFPljh3Tpm
-         e2tnznVh+AgK4X1W0fwULPYr6qBj5rUz6dgiIGzFTeWIW+TdwYl8Og5ymRRRAhW/Il6Y
-         y0MIVC8qubhbiI/VIFgJWbZIB/3iX5mPiTGobFvs0IeGDUkzM6gy9T+XUmwREn0/1vV/
-         qyJFIc2zlpNDAAgY0MjXX9osH3Ueqh3Y3o0oXS+oGxbDflWRjiSDVMz7DDOC4dr1Nhkc
-         HMRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlk0Uec9cSjDMnIV3jn1NNFpR7fSWpngy3SGypfnXggZrT7DlYaZrOemK5DzRnqR1I5OLBi8DNAGmVTm+KlBvWfii90JN4JNTUzwkiow==
-X-Gm-Message-State: AOJu0Yy7CbOxFIe8bhoTB+3QcmciewmhEjwUyYUifVmuyWGD3v2npgfN
-	Guk7tewYjcuz6+6U7c9f5Pbynxeu58bBApjB+Vr/kdHEgtShJC0wjI4po5oo7eAlrADiL5Eg0bu
-	Sb9COk6F0R8ULfSD7eYuXC3mf87AKTKMTWxhB4/CtaKi3APTFG1bFZ4UedeZmkm4=
-X-Received: by 2002:a0c:f2c4:0:b0:6b0:6a38:e01d with SMTP id 6a1803df08f44-6b06a38e41dmr101257506d6.0.1718119211074;
-        Tue, 11 Jun 2024 08:20:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGp29M2m3Z9CcVJeoqe5Y30dylVGZ7dKwW4YVbu6zPqN2ZAsi/IG1oHRYe8ljnYJ2xhhs21CQ==
-X-Received: by 2002:a0c:f2c4:0:b0:6b0:6a38:e01d with SMTP id 6a1803df08f44-6b06a38e41dmr101257016d6.0.1718119210384;
-        Tue, 11 Jun 2024 08:20:10 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4406203775bsm25557621cf.72.2024.06.11.08.20.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 08:20:09 -0700 (PDT)
-Date: Tue, 11 Jun 2024 11:20:01 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Oscar Salvador <osalvador@suse.de>
+	bh=QcRqjLgpqIHGpe2PS9pcLZoBz6DCvNoiWXtXXWQ7gVc=;
+	b=kCckAyCpA8jk9AGY+z9wTUUWVKs8HhQhD2HwhBJcK+pZu4yUc2obSnQK49ebWLynPv8p8E
+	uZj+vycl0JCCVIBw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718122229; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QcRqjLgpqIHGpe2PS9pcLZoBz6DCvNoiWXtXXWQ7gVc=;
+	b=Ft5M4dBNGECUCS9SOsUDt3DVWViAXB9GA9LLG4AosSdc4kaxThOanOro7PuC37JPxvCK8t
+	Rw2dFRct3U4RRcNpmgZJwZmaicHozSjvYQXBLk1X85hh6+SyRYj65sZ1mbW5XAQPSjnHN3
+	QVAK0hrdc/15sFYQO2XTJoZp00Xp+HU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718122229;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QcRqjLgpqIHGpe2PS9pcLZoBz6DCvNoiWXtXXWQ7gVc=;
+	b=kCckAyCpA8jk9AGY+z9wTUUWVKs8HhQhD2HwhBJcK+pZu4yUc2obSnQK49ebWLynPv8p8E
+	uZj+vycl0JCCVIBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B830B13A55;
+	Tue, 11 Jun 2024 16:10:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id O1RtKvR2aGZ3bgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 11 Jun 2024 16:10:28 +0000
+Date: Tue, 11 Jun 2024 18:10:27 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Peter Xu <peterx@redhat.com>
 Subject: Re: [PATCH v5 02/18] mm: Define __pte_leaf_size() to also take a PMD
  entry
-Message-ID: <ZmhrIdh3PLzvZU07@x1n>
+Message-ID: <Zmh282yJjxc7zqbL@localhost.localdomain>
 References: <cover.1717955558.git.christophe.leroy@csgroup.eu>
  <172b11c93e0de7a84937af2da9f80bd17c56b8c9.1717955558.git.christophe.leroy@csgroup.eu>
  <ZmgaHyS0izhtKbx6@localhost.localdomain>
  <ZmhcepJrkDpJ7mSC@x1n>
  <ZmhofWIiMC3I0aMF@localhost.localdomain>
+ <ZmhrIdh3PLzvZU07@x1n>
 MIME-Version: 1.0
-In-Reply-To: <ZmhofWIiMC3I0aMF@localhost.localdomain>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <ZmhrIdh3PLzvZU07@x1n>
+X-Spamd-Result: default: False [-8.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[csgroup.eu,linux-foundation.org,nvidia.com,ellerman.id.au,gmail.com,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	RCVD_TLS_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -8.30
+X-Spam-Level: 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,26 +135,33 @@ Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2024 at 05:08:45PM +0200, Oscar Salvador wrote:
-> The problem is that we do not have spare bits for 8xx to mark these ptes
-> as cont-ptes or mark them pte as 8MB, so I do not see a clear path on how
-> we could remove huge_ptep_get for 8xx.
-
-Right, I remember I thought about this too when I initially looked at one
-previous version of the series, I didn't come up yet with a good solution,
-but I guess we probably need to get rid of hugepd first anyway.  We may
-somehow still need to identify this is a 8M large leaf, and I guess this is
-again the only special case where contpte can go over >1 pmds.
-
+On Tue, Jun 11, 2024 at 11:20:01AM -0400, Peter Xu wrote:
+> On Tue, Jun 11, 2024 at 05:08:45PM +0200, Oscar Salvador wrote:
+> > The problem is that we do not have spare bits for 8xx to mark these ptes
+> > as cont-ptes or mark them pte as 8MB, so I do not see a clear path on how
+> > we could remove huge_ptep_get for 8xx.
 > 
-> I am really curious though how we handle that for THP? Or THP on 8xx
-> does not support that size?
+> Right, I remember I thought about this too when I initially looked at one
+> previous version of the series, I didn't come up yet with a good solution,
+> but I guess we probably need to get rid of hugepd first anyway.  We may
+> somehow still need to identify this is a 8M large leaf, and I guess this is
+> again the only special case where contpte can go over >1 pmds.
 
-I'll leave this to Christophe, but IIUC thp is only PMD_ORDER sized, so
-shouldn't apply to the 8MB pages.
+Yes, we definitely need first to get rid of hugepd, which is a huge
+step, and one step closer to our goal, but at some point we will have to
+see what can we do about 8MB cont-ptes for 8xx and how to mark them,
+so ptep_get can work the same way as e.g: arm64
+(ptep_get->contpte_ptep_get).
 
-Thanks,
+@Christophe: Can you think of a way to flag those ptes? (e.g: a
+combination of bits etc)
+
+> I'll leave this to Christophe, but IIUC thp is only PMD_ORDER sized, so
+> shouldn't apply to the 8MB pages.
+
+That might be it, yes.
+
 
 -- 
-Peter Xu
-
+Oscar Salvador
+SUSE Labs
