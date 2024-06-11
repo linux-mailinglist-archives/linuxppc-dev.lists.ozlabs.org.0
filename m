@@ -2,54 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5410890350D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DF7903528
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:14:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=efMUQjqz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rofJBX5J;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1db24nbz3cTl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:13:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1fx4zkyz3cXM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:14:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=efMUQjqz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rofJBX5J;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1cv06Hvz3c9r
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:12:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1fF5vW0z3cF6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:13:57 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 3E604CE0988;
-	Tue, 11 Jun 2024 08:12:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85352C2BD10;
-	Tue, 11 Jun 2024 08:12:41 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 69373CE193F;
+	Tue, 11 Jun 2024 08:13:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C1DC2BD10;
+	Tue, 11 Jun 2024 08:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718093565;
-	bh=zMBbLHWiI0o4/6MjscYA2/ULza201WjvhSMdL22ilmQ=;
+	s=k20201202; t=1718093636;
+	bh=Ts7aLdf8C9OWwGOUYNUO/M/a+9bfhQDB/UXt0XvRgP8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=efMUQjqzDR6/6LZgdCczIkMTU67PAqpDM0RBu6vBwxbRTCrqV/SLQPjysAgXVIH+u
-	 Gs7FwJjGTrCL01zQP92DMiL3AF1rQHaJ0EqlTORyNynpUYXTzsuY6sJ9mfoqPT1Tvg
-	 BSo7cvDW+fM7fvH1aN5LdfHWfYWXWuQSJiOAXVL+z2KUCiOWthz8XV9sMCo6FSpXv+
-	 2SHsDignO7grM22XDSxgAJ0znadsNiLDmWusigAzWpriOV5Y9jvSmQhMPwNSEb8Bvj
-	 SvInHsx54FSttIPvfIwG30ulL5P3X40mKZipSzOnWLUzNb0kOcJMR/irZgSdTd0fnE
-	 LJc4doaBwGC7g==
-Message-ID: <a10087ad-8b2c-4a6c-accb-fb1e8015e704@kernel.org>
-Date: Tue, 11 Jun 2024 17:12:40 +0900
+	b=rofJBX5JNUQ4+kum9tXFynL7EYsPL7Q0KpCGApK8UUywKKWzZFWf//NTc6ETwxvAj
+	 a8A/PpgedR3JFeoFFYagjhmZDCoIfcDwvtbjsSmqm4tUPrc5+/CNJBuJdjSU/gAghn
+	 gFAjLu8rDiAmvD+AGVC2HFwxhOJxaDRk0LEG637q0x+wWdh1qDqXecrioXhw/WgLq/
+	 z6eYyXSBzOA5E93r3CufKFnmCp0Rd06eblngnOUKkmVMJslwphJuJlwn0dieAbpnXx
+	 mIsJEpZRQysVLdUZy59Nxz+wB/+28rVZ5Fwtt4tdw0yLdp6mqNz/XQPlvKYsJFt70s
+	 9HDIcvYwKXcTA==
+Message-ID: <0d4a7361-f3f1-4014-af92-9abd45223fed@kernel.org>
+Date: Tue, 11 Jun 2024 17:13:50 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/26] block: move the stable_write flag to queue_limits
+Subject: Re: [PATCH 18/26] block: move the synchronous flag to queue_limits
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-18-hch@lst.de>
+ <20240611051929.513387-19-hch@lst.de>
 Content-Language: en-US
 From: Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20240611051929.513387-18-hch@lst.de>
+In-Reply-To: <20240611051929.513387-19-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,19 +68,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 2:19 PM, Christoph Hellwig wrote:
-> Move the io_stat flag into the queue_limits feature field so that it can
-
-s/io_stat/stable_write
-
-> be set atomically and all I/O is frozen when changing the flag.
-> 
-> The flag is now inherited by blk_stack_limits, which greatly simplifies
-> the code in dm, and fixed md which previously did not pass on the flag
-> set on lower devices.
+> Move the synchronous flag into the queue_limits feature field so that it
+> can be set atomically and all I/O is frozen when changing the flag.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Other than the nit above, looks OK to me.
+Looks good.
 
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
