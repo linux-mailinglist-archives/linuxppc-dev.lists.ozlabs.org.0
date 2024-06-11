@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DF3903F18
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 16:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D93E903F4E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 16:56:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G+qsavYh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cs8Xy1+R;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VzBLV5fjPz3cYt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 00:45:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzBZ50hDZz3fK3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 00:55:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G+qsavYh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cs8Xy1+R;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzBKp57t0z3cTd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 00:45:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzBYN6lYjz3cVX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 00:55:20 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7522260EDC;
-	Tue, 11 Jun 2024 14:45:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BAAC32789;
-	Tue, 11 Jun 2024 14:45:14 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id CC2FFCE1C44;
+	Tue, 11 Jun 2024 14:55:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B43C2BD10;
+	Tue, 11 Jun 2024 14:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718117115;
-	bh=mwoyy0g0DUrldvLmWop1lHm3otz8vMbEQGdLRAjtwFs=;
+	s=k20201202; t=1718117715;
+	bh=11/HiJoW5+6q8fDESDW/gk+g0OZZ9thvOcYhQN1VEx4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G+qsavYhVwIR7Vzp/U3Lp09kcq/zzQ+oIBSC7iAOF8BfSJgjS1yFd5g8kzvoGBTgI
-	 IQe+lM/Ewk8qm1EY/EC4YZO4yvLibSGmR7mHvxWmMtaBVBVerQVfEsJtgCEk1k6NZm
-	 f3LmXQI8E8FFvoKw7QZEtF5iHr59Iej5ZInhKPLB3nHaOgL/2KGFunvHyawcx5hfGo
-	 WEcEYc9hBtEiY9XWv2Oih1dX/99Ert+NZTNcAY4zckQ3lhJvEiKXTPoC3gKnLUydts
-	 FRSAQdi6vjPchLfiCP/N7phImRWzP4GjBIgmBDfUfTPvrBxry6/K7cSh0AufrRL6XX
-	 P71IYa52SF/ng==
-Date: Tue, 11 Jun 2024 20:15:10 +0530
+	b=cs8Xy1+R4/8R6h8s1mZ1BIgUEKuo7cGNONODGo3gF4OwLXdlOnTx3XfcqNAViBYex
+	 dghIO6lSUV43/KFGsJ+fJAkybiIWYK3QBwqvm6fOTI0n7gT2RyaW8/8awX3Ws2pyUG
+	 UBtsOjunXW09lE0oYVtfkJpsU4ptqgCrd5EpV5PoJXAOzN3sxK0/eU3b1p36cq3zzG
+	 ZvT0kA5WeEs36PLb5saaQGul/ICkBAoFC10lGZM6P7rFw0S8ZM5LV2VTB7g8GBqPNA
+	 7SA7woali8fyy8C9Ir8KKY2+NUAvn+vXi3YO+Xp8t+T+yDUqLMgIY3acF2ob6ASKn5
+	 kJP+k46fM+wAg==
+Date: Tue, 11 Jun 2024 20:17:19 +0530
 From: Naveen N Rao <naveen@kernel.org>
 To: Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [RFC PATCH v2 2/5] powerpc/ftrace: Remove pointer to struct
- module from dyn_arch_ftrace
-Message-ID: <f7wzwxnm7ersjlcagouzwbnutp4tijn6vlkyyb6htpepdyqmwn@g2txzphgj7a5>
+Subject: Re: [RFC PATCH v2 3/5] powerpc/ftrace: Unify 32-bit and 64-bit
+ ftrace entry code
+Message-ID: <dqnvoc7ntsd6dfg77je3d4wss5berq3fvcetviizr44zibefw5@26olqqpbciey>
 References: <cover.1718008093.git.naveen@kernel.org>
- <50b038f167f3fb94ed6074e029b6794bbe6e83a2.1718008093.git.naveen@kernel.org>
- <20240610160356.70e8f7ac@gandalf.local.home>
+ <dde8c1e55cfb4c878860f47308a52b273e96ae67.1718008093.git.naveen@kernel.org>
+ <20240610160632.089b6c04@gandalf.local.home>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240610160356.70e8f7ac@gandalf.local.home>
+In-Reply-To: <20240610160632.089b6c04@gandalf.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,145 +66,69 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Masahiro Yamada <masahiroy@kernel.org>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 10, 2024 at 04:03:56PM GMT, Steven Rostedt wrote:
-> On Mon, 10 Jun 2024 14:08:15 +0530
+On Mon, Jun 10, 2024 at 04:06:32PM GMT, Steven Rostedt wrote:
+> On Mon, 10 Jun 2024 14:08:16 +0530
 > Naveen N Rao <naveen@kernel.org> wrote:
 > 
-> > Pointer to struct module is only relevant for ftrace records belonging
-> > to kernel modules. Having this field in dyn_arch_ftrace wastes memory
-> > for all ftrace records belonging to the kernel. Remove the same in
-> > favour of looking up the module from the ftrace record address, similar
-> > to other architectures.
+> > On 32-bit powerpc, gcc generates a three instruction sequence for
+> > function profiling:
+> > 	mflr	r0
+> > 	stw	r0, 4(r1)
+> > 	bl	_mcount
+> > 
+> > On kernel boot, the call to _mcount() is nop-ed out, to be patched back
+> > in when ftrace is actually enabled. The 'stw' instruction therefore is
+> > not necessary unless ftrace is enabled. Nop it out during ftrace init.
+> > 
+> > When ftrace is enabled, we want the 'stw' so that stack unwinding works
+> > properly. Perform the same within the ftrace handler, similar to 64-bit
+> > powerpc.
+> > 
+> > For 64-bit powerpc, early versions of gcc used to emit a three
+> > instruction sequence for function profiling (with -mprofile-kernel) with
+> > a 'std' instruction to mimic the 'stw' above. Address that scenario also
+> > by nop-ing out the 'std' instruction during ftrace init.
 > > 
 > > Signed-off-by: Naveen N Rao <naveen@kernel.org>
-> > ---
-> >  arch/powerpc/include/asm/ftrace.h        |  1 -
-> >  arch/powerpc/kernel/trace/ftrace.c       | 47 ++++++++++-----
-> >  arch/powerpc/kernel/trace/ftrace_64_pg.c | 73 +++++++++++-------------
-> >  3 files changed, 64 insertions(+), 57 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> > index 107fc5a48456..201f9d15430a 100644
-> > --- a/arch/powerpc/include/asm/ftrace.h
-> > +++ b/arch/powerpc/include/asm/ftrace.h
-> > @@ -26,7 +26,6 @@ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
-> >  struct module;
-> >  struct dyn_ftrace;
-> >  struct dyn_arch_ftrace {
-> > -	struct module *mod;
-> >  };
 > 
-> Nice. I always hated that extra field.
+> Isn't there still the race that there's a preemption between the:
+> 
+> 	stw	r0, 4(r1)
+> and
+> 	bl	_mcount
+> 
+> And if this breaks stack unwinding, couldn't this cause an issue for live
+> kernel patching?
+> 
+> I know it's very unlikely, but in theory, I think the race exists.
 
-It was your complaint a while back that prompted this change :)
+I *think* you are assuming that we will be patching back the 'stw' 
+instruction here? So, there could be an issue if a cpu has executed the 
+nop instead of 'stw' and then sees the call to _mcount().
 
-Though I introduce a different pointer here in the next patch. /me 
-ducks.
+But, we don't patch back the 'stw' instruction. That is instead done as 
+part of ftrace_caller(), along with setting up an additional stack frame 
+to ensure reliable stack unwinding. Commit 41a506ef71eb 
+("powerpc/ftrace: Create a dummy stackframe to fix stack unwind") has 
+more details.
 
-> 
-> 
-> >  
-> >  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-> > diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-> > index d8d6b4fd9a14..041be965485e 100644
-> > --- a/arch/powerpc/kernel/trace/ftrace.c
-> > +++ b/arch/powerpc/kernel/trace/ftrace.c
-> > @@ -106,20 +106,36 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
-> >  	return 0;
-> >  }
-> >  
-> > +static struct module *ftrace_lookup_module(struct dyn_ftrace *rec)
-> > +{
-> > +	struct module *mod = NULL;
-> > +
-> > +#ifdef CONFIG_MODULES
-> > +	/*
-> > +	 * NOTE: __module_text_address() must be called with preemption
-> > +	 * disabled, but we can rely on ftrace_lock to ensure that 'mod'
-> > +	 * retains its validity throughout the remainder of this code.
-> > +	*/
-> > +	preempt_disable();
-> > +	mod = __module_text_address(rec->ip);
-> > +	preempt_enable();
-> > +
-> > +	if (!mod)
-> > +		pr_err("No module loaded at addr=%lx\n", rec->ip);
-> > +#endif
-> > +
-> > +	return mod;
-> > +}
-> 
-> It may look nicer to have:
-> 
-> #ifdef CONFIG_MODULES
-> static struct module *ftrace_lookup_module(struct dyn_ftrace *rec)
-> {
-> 	struct module *mod = NULL;
-> 
-> 	/*
-> 	 * NOTE: __module_text_address() must be called with preemption
-> 	 * disabled, but we can rely on ftrace_lock to ensure that 'mod'
-> 	 * retains its validity throughout the remainder of this code.
-> 	*/
-> 	preempt_disable();
-> 	mod = __module_text_address(rec->ip);
-> 	preempt_enable();
-> 
-> 	if (!mod)
-> 		pr_err("No module loaded at addr=%lx\n", rec->ip);
-> 
-> 	return mod;
-> }
-> #else
-> static inline struct module *ftrace_lookup_module(struct dyn_ftrace *rec)
-> {
-> 	return NULL;
-> }
-> #endif
+The primary motivation for this patch is to address differences in the 
+function profile sequence with various toolchains. Since commit 
+0f71dcfb4aef ("powerpc/ftrace: Add support for 
+-fpatchable-function-entry"), we use the same two-instruction profile 
+sequence across 32-bit and 64-bit powerpc:
+	mflr	r0
+	bl	ftrace_caller
 
-I wrote this, and then I thought it will be simpler to do the version I 
-posted. I will move back to this since it looks to be the preferred way.
+This has also been true on 64-bit powerpc with -mprofile-kernel, except 
+the very early versions of gcc that supported that option (gcc v5).
 
-> 
-> > +
-> >  static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_inst_t *call_inst)
-> >  {
-> >  	unsigned long ip = rec->ip;
-> >  	unsigned long stub;
-> > +	struct module *mod;
-> >  
-> >  	if (is_offset_in_branch_range(addr - ip)) {
-> >  		/* Within range */
-> >  		stub = addr;
-> > -#ifdef CONFIG_MODULES
-> > -	} else if (rec->arch.mod) {
-> > -		/* Module code would be going to one of the module stubs */
-> > -		stub = (addr == (unsigned long)ftrace_caller ? rec->arch.mod->arch.tramp :
-> > -							       rec->arch.mod->arch.tramp_regs);
-> > -#endif
-> >  	} else if (core_kernel_text(ip)) {
-> >  		/* We would be branching to one of our ftrace stubs */
-> >  		stub = find_ftrace_tramp(ip);
-> > @@ -128,7 +144,16 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_
-> >  			return -EINVAL;
-> >  		}
-> >  	} else {
-> > -		return -EINVAL;
-> > +		mod = ftrace_lookup_module(rec);
-> > +		if (mod) {
-> > +#ifdef CONFIG_MODULES
-> > +			/* Module code would be going to one of the module stubs */
-> > +			stub = (addr == (unsigned long)ftrace_caller ? mod->arch.tramp :
-> > +								       mod->arch.tramp_regs);
-> > +#endif
-> 
-> You have CONFIG_MODULES here and in ftrace_lookup_module() above, which
-> would always return NULL. Could you combine the above to be done in
-> ftrace_lookup_module() so that there's no #ifdef CONFIG_MODULES here?
+On 32-bit powerpc, we used to use the three instruction sequence before 
+support for -fpatchable-function-entry was introduced.
 
-Yes, indeed. That will look cleaner.
+In this patch, we move all toolchain variants to use the two-instruction 
+sequence for consistency.
 
 
 Thanks,
 Naveen
-
