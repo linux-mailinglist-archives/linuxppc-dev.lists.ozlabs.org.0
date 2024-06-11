@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9389034B1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:03:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB49034DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:07:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cVm1t8g2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d/4pmxeJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1Ps4Dr3z3cT9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:03:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1VS411Jz3cLL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:07:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cVm1t8g2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d/4pmxeJ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1P75YNpz2xQL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:02:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1Tm2Rqnz2yN3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:06:36 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 58DC4CE10F6;
-	Tue, 11 Jun 2024 08:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD55C2BD10;
-	Tue, 11 Jun 2024 08:02:29 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id A0AEDCE193F;
+	Tue, 11 Jun 2024 08:06:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A7BC2BD10;
+	Tue, 11 Jun 2024 08:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718092954;
-	bh=9448E2ZQUrvNp7ZURrtI3/D86m7bLK+HS2+4F3/kAbo=;
+	s=k20201202; t=1718093195;
+	bh=jCn0oX3HrJ6Qlcw/LuQoAhJRxhLaDvFIki6GqIikVDs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cVm1t8g2Dmo9pyaeFexP0cVZp2V9+zrzLaosx0fHWpCgyVMjhJafz/YjIRFcP6e/N
-	 JiQrRCWm2cXvKJW25gK4jKXdI9z1r5PiGAPnVoL3Jgi9iLA+RTBXO3LhS10/kQ9VJv
-	 S0HFEAZmlsLJdqInbsOGCHZ7lARtlpYV0wnusyawzuHxpb/RclmLX5rlq1DxBTsAuq
-	 DUc+w0vOa4IhkCXuAcAxPK35SsjdXOHX0tyGNoT44IBIj7FNuzH/TkqH47YX1TuM03
-	 t8bqET45kpSSPx+5HvwwYL7yfxY/bG8VgPBzRal4b99z62CNkY4oDCrnC6ah7dxmTJ
-	 PwVnGOKYPVpoA==
-Message-ID: <01366bae-699e-45dc-bad1-9541883a8b42@kernel.org>
-Date: Tue, 11 Jun 2024 17:02:28 +0900
+	b=d/4pmxeJzHoEeQ+g2h36PLWMNipYFVLUgldUlVqiJ/oHVrEeGGWvSVD8Qj0WOLs1h
+	 W+bfZgsci1Mj1j7xr+uUvjowbUTryqU8M7niWdxvm06YM2JVc8jmnbjYFRmHHcrBjc
+	 35EtrgT1CO5oyRbn/EfIn5kNPHJPwVOwHupvi057HyipWOQnDb4p6IBWsy9PJTe2z7
+	 aguwef6PSD/S3jnHhAFsQmA+8/MCfLVtbrqTe0OoYvK6gaKfrbg4IMTS8YbzdTrpnX
+	 ruwuQZ89i04k1WQRZE0wdLm48U3gwb4DUnNOpOrrhv3eKIrI6XQd7uuU3njn1J65js
+	 90POvgbQ696Tw==
+Message-ID: <0f01ed9c-6f85-427c-9690-1551e67e46a9@kernel.org>
+Date: Tue, 11 Jun 2024 17:06:29 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/26] block: move the nonrot flag to queue_limits
+Subject: Re: [PATCH 15/26] block: move the add_random flag to queue_limits
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-15-hch@lst.de>
+ <20240611051929.513387-16-hch@lst.de>
 Content-Language: en-US
 From: Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20240611051929.513387-15-hch@lst.de>
+In-Reply-To: <20240611051929.513387-16-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,32 +68,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 2:19 PM, Christoph Hellwig wrote:
-> Move the norot flag into the queue_limits feature field so that it can be
+> Move the add_random flag into the queue_limits feature field so that it
+> can be set atomically and all I/O is frozen when changing the flag.
 
-s/norot/nonrot
-
-> set atomically and all I/O is frozen when changing the flag.
-
-and... -> with the queue frozen when... ?
+Same remark as the previous patches for the end of this sentence.c
 
 > 
-> Use the chance to switch to defaulting to non-rotational and require
-> the driver to opt into rotational, which matches the polarity of the
-> sysfs interface.
-> 
-> For the z2ram, ps3vram, 2x memstick, ubiblock and dcssblk the new
-> rotational flag is not set as they clearly are not rotational despite
-> this being a behavior change.  There are some other drivers that
-> unconditionally set the rotational flag to keep the existing behavior
-> as they arguably can be used on rotational devices even if that is
-> probably not their main use today (e.g. virtio_blk and drbd).
-> 
-> The flag is automatically inherited in blk_stack_limits matching the
-> existing behavior in dm and md.
+> Note that this also removes code from dm to clear the flag based on
+> the underlying devices, which can't be reached as dm devices will
+> always start out without the flag set.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Other than that, looks good to me.
+Other than that, looks OK to me.
 
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
