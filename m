@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23950903025
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 07:22:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A90903010
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 07:21:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rUA9ZaXU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T7BSPgV/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vyxqr17jxz3cXs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 15:22:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vyxq42lrQz3cQm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 15:21:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rUA9ZaXU;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=T7BSPgV/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+2fedbe304aabaf399917+7597+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VyxnV5PfXz30Wd
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VyxnV6p9wz30Wj
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 15:19:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=lvXE5gTUk5P3TVKgX5q5Q8J1/DjEMwO75JeCg7ieY7s=; b=rUA9ZaXUx5MpyhS2j5LBHsyXxQ
-	KbTuAJUR1haH+9S1m8G4GZVBD1g7bx2ayPONElMYjcxYJ0QDJPl5o5zOp4k78Qgw0XyFdjZCPo5wp
-	vIgPX59oPcfHLDliRB8Y+Bi/vjpbtw2V1cwzkbepDA/QzMJIwAsmVAdMFC3UF8wgtmukkiprCLdOG
-	RnSyiCv+Mvh3ga6qyL+ash+wP6WvC9+JDwisvTf85QvcZuGjp66L5kSvkUkgxcMfJHjnZZ91k2qO0
-	ThG6qMn0y6iW42CQt05TqF0tEm3cI9aOk07AkgbKRZMt1CIdlg2QNDBGCgPEgHOzn7Iuc8T8ztdEX
-	0c6zkTmg==;
+	bh=LgTI+Mo1pVMP7QW3HpPljhgNIGtSuvGjjqfKNfk6Ue4=; b=T7BSPgV/QyrrcIKlwpgJzxhidX
+	awUsR5pwkW2Y+/MUO52qBbxgexFKnN5lOA2j2FyQhx+MMPXFJnlBRAC7Q73t7WcP8+sz5LnII/s8t
+	WjAaWbWnPNl4wwIf+gxy+iK9/rbGDSyhdks8mhXL++xpcrKaIympBw3/ZuRB6sO340tcY+E4rtfwn
+	TwEEHtQ3MRsu599usMYpH5vHlE7O6axb/guHQvsshFZgotq4wxafrcixMXnVqL150iG8TowKDlHNj
+	v336ivp7VUra5eU9XwMH15s+LohPlgy69vq7IBuXhmdR6+Ce7ImdHMsb7gj8BK/MgQUeBNe8bpumT
+	UBRUvVrQ==;
 Received: from 2a02-8389-2341-5b80-cdb4-8e7d-405d-6b77.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:cdb4:8e7d:405d:6b77] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGtux-00000007Qnu-0nLE;
-	Tue, 11 Jun 2024 05:19:35 +0000
+	id 1sGtuz-00000007Qo9-2Hoe;
+	Tue, 11 Jun 2024 05:19:37 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 01/26] sd: fix sd_is_zoned
-Date: Tue, 11 Jun 2024 07:19:01 +0200
-Message-ID: <20240611051929.513387-2-hch@lst.de>
+Subject: [PATCH 02/26] sd: move zone limits setup out of sd_read_block_characteristics
+Date: Tue, 11 Jun 2024 07:19:02 +0200
+Message-ID: <20240611051929.513387-3-hch@lst.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240611051929.513387-1-hch@lst.de>
 References: <20240611051929.513387-1-hch@lst.de>
@@ -63,53 +63,72 @@ Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <j
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 7437bb73f087 ("block: remove support for the host aware zone
-model"), only ZBC devices expose a zoned access model.  sd_is_zoned is
-used to check for that and thus return false for host aware devices.
+Move a bit of code that sets up the zone flag and the write granularity
+into sd_zbc_read_zones to be with the rest of the zoned limits.
 
-Fixes: 7437bb73f087 ("block: remove support for the host aware zone model")
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/scsi/sd.h     | 7 ++++++-
- drivers/scsi/sd_zbc.c | 7 +------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/scsi/sd.c     | 21 +--------------------
+ drivers/scsi/sd_zbc.c | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/scsi/sd.h b/drivers/scsi/sd.h
-index 726f1613f6cb56..65dff3c2108926 100644
---- a/drivers/scsi/sd.h
-+++ b/drivers/scsi/sd.h
-@@ -222,9 +222,14 @@ static inline sector_t sectors_to_logical(struct scsi_device *sdev, sector_t sec
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 85b45345a27739..5bfed61c70db8f 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3308,29 +3308,10 @@ static void sd_read_block_characteristics(struct scsi_disk *sdkp,
+ 		blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, q);
+ 	}
  
- void sd_dif_config_host(struct scsi_disk *sdkp, struct queue_limits *lim);
+-
+-#ifdef CONFIG_BLK_DEV_ZONED /* sd_probe rejects ZBD devices early otherwise */
+-	if (sdkp->device->type == TYPE_ZBC) {
+-		lim->zoned = true;
+-
+-		/*
+-		 * Per ZBC and ZAC specifications, writes in sequential write
+-		 * required zones of host-managed devices must be aligned to
+-		 * the device physical block size.
+-		 */
+-		lim->zone_write_granularity = sdkp->physical_block_size;
+-	} else {
+-		/*
+-		 * Host-aware devices are treated as conventional.
+-		 */
+-		lim->zoned = false;
+-	}
+-#endif /* CONFIG_BLK_DEV_ZONED */
+-
+ 	if (!sdkp->first_scan)
+ 		return;
  
-+/*
-+ * Check if we support a zoned model for this device.
-+ *
-+ * Note that host aware devices are treated as conventional by Linux.
-+ */
- static inline int sd_is_zoned(struct scsi_disk *sdkp)
- {
--	return sdkp->zoned == 1 || sdkp->device->type == TYPE_ZBC;
-+	return sdkp->device->type == TYPE_ZBC;
- }
- 
- #ifdef CONFIG_BLK_DEV_ZONED
+-	if (lim->zoned)
++	if (sdkp->device->type == TYPE_ZBC)
+ 		sd_printk(KERN_NOTICE, sdkp, "Host-managed zoned block device\n");
+ 	else if (sdkp->zoned == 1)
+ 		sd_printk(KERN_NOTICE, sdkp, "Host-aware SMR disk used as regular disk\n");
 diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
-index f685838d9ed214..422eaed8457227 100644
+index 422eaed8457227..e9501db0450be3 100644
 --- a/drivers/scsi/sd_zbc.c
 +++ b/drivers/scsi/sd_zbc.c
-@@ -598,13 +598,8 @@ int sd_zbc_read_zones(struct scsi_disk *sdkp, struct queue_limits *lim,
+@@ -598,8 +598,19 @@ int sd_zbc_read_zones(struct scsi_disk *sdkp, struct queue_limits *lim,
  	u32 zone_blocks = 0;
  	int ret;
  
--	if (!sd_is_zoned(sdkp)) {
--		/*
--		 * Device managed or normal SCSI disk, no special handling
--		 * required.
--		 */
-+	if (!sd_is_zoned(sdkp))
+-	if (!sd_is_zoned(sdkp))
++	if (!sd_is_zoned(sdkp)) {
++		lim->zoned = false;
  		return 0;
--	}
++	}
++
++	lim->zoned = true;
++
++	/*
++	 * Per ZBC and ZAC specifications, writes in sequential write required
++	 * zones of host-managed devices must be aligned to the device physical
++	 * block size.
++	 */
++	lim->zone_write_granularity = sdkp->physical_block_size;
  
  	/* READ16/WRITE16/SYNC16 is mandatory for ZBC devices */
  	sdkp->device->use_16_for_rw = 1;
