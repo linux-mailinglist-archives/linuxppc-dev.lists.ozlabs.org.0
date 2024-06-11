@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AB49034DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F18D9034EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:10:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d/4pmxeJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ASIoL/u9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1VS411Jz3cLL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:07:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1ZD5WCFz3cTF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:10:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d/4pmxeJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ASIoL/u9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1Tm2Rqnz2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:06:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1YY3tbWz2yvx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:09:53 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id A0AEDCE193F;
-	Tue, 11 Jun 2024 08:06:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A7BC2BD10;
-	Tue, 11 Jun 2024 08:06:30 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7900960D2E;
+	Tue, 11 Jun 2024 08:09:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F729C2BD10;
+	Tue, 11 Jun 2024 08:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718093195;
-	bh=jCn0oX3HrJ6Qlcw/LuQoAhJRxhLaDvFIki6GqIikVDs=;
+	s=k20201202; t=1718093392;
+	bh=q0QC/DwdDecsb+SsO2WPgUlAOrUNDUio/s56qnb48bM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d/4pmxeJzHoEeQ+g2h36PLWMNipYFVLUgldUlVqiJ/oHVrEeGGWvSVD8Qj0WOLs1h
-	 W+bfZgsci1Mj1j7xr+uUvjowbUTryqU8M7niWdxvm06YM2JVc8jmnbjYFRmHHcrBjc
-	 35EtrgT1CO5oyRbn/EfIn5kNPHJPwVOwHupvi057HyipWOQnDb4p6IBWsy9PJTe2z7
-	 aguwef6PSD/S3jnHhAFsQmA+8/MCfLVtbrqTe0OoYvK6gaKfrbg4IMTS8YbzdTrpnX
-	 ruwuQZ89i04k1WQRZE0wdLm48U3gwb4DUnNOpOrrhv3eKIrI6XQd7uuU3njn1J65js
-	 90POvgbQ696Tw==
-Message-ID: <0f01ed9c-6f85-427c-9690-1551e67e46a9@kernel.org>
-Date: Tue, 11 Jun 2024 17:06:29 +0900
+	b=ASIoL/u9H/6b4lUyYk5oEzSADY2SPITglYQKbn22RE2v5Zmv+Bdu4yXt2dx4LBuyj
+	 NVG1rUDMHnNTWyjPGwlGMS7q0dEKke4PAWQg/UzftKu/Ly2DNOhNfxEkKQj6EFDaHU
+	 gbMPLXlbaDGII4KmlbUUWCoStYYGCahBnCwU3sHyUUKQqZ1YdU0vcRocoxwls2ROg2
+	 gKF/wxkN6x65ww9rMbS9NJlQNYUg7Y5U2acfwFYdpXRWwDXOcSxo1CVQbqP3uooiqP
+	 0hvYmqaICGemmnL938SwljJXBPejQKyIB0+ALAtSSclYdQCRHYhtFi/CQNV4wF5aIA
+	 8HiTkYhUDl6Cg==
+Message-ID: <d51e4163-99e3-4435-870d-faef3887ab6a@kernel.org>
+Date: Tue, 11 Jun 2024 17:09:45 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/26] block: move the add_random flag to queue_limits
+Subject: Re: [PATCH 16/26] block: move the io_stat flag setting to
+ queue_limits
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-16-hch@lst.de>
+ <20240611051929.513387-17-hch@lst.de>
 Content-Language: en-US
 From: Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20240611051929.513387-16-hch@lst.de>
+In-Reply-To: <20240611051929.513387-17-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -68,21 +69,18 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 2:19 PM, Christoph Hellwig wrote:
-> Move the add_random flag into the queue_limits feature field so that it
+> Move the io_stat flag into the queue_limits feature field so that it
 > can be set atomically and all I/O is frozen when changing the flag.
 
-Same remark as the previous patches for the end of this sentence.c
+Why a feature ? It seems more appropriate for io_stat to be a flag rather than
+a feature as that is a block layer thing rather than a device characteristic, no ?
 
 > 
-> Note that this also removes code from dm to clear the flag based on
-> the underlying devices, which can't be reached as dm devices will
-> always start out without the flag set.
+> Simplify md and dm to set the flag unconditionally instead of avoiding
+> setting a simple flag for cases where it already is set by other means,
+> which is a bit pointless.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Other than that, looks OK to me.
-
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
 -- 
 Damien Le Moal
