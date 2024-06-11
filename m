@@ -1,126 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667949035A4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:19:48 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Xw7LckrV;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tY/SuqTu;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Xw7LckrV;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tY/SuqTu;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA34903599
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 10:19:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1mx2b7gz3cRY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:19:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vz1mC3fn7z3d9q
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jun 2024 18:19:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Xw7LckrV;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tY/SuqTu;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Xw7LckrV;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tY/SuqTu;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1lR5867z3cVS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:18:27 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vz1lM43N7z3cWG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 18:18:23 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9402920557;
-	Tue, 11 Jun 2024 08:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718093483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wnQIUpYdHgOL/hM9GsXN8B0Ts994fdsauoO8bl3CExk=;
-	b=Xw7LckrVyqrAakH7KSEDESVADg9MT2w/sOoFpkdH/KzwzUXrjoXFGlasjukRVjQpOXbqnR
-	VEDyTRo7qiPPyB7GBgictg+KZT62wfeU0rWkpx7ertnwVCjRX97V2ITAvcIuwzNOYZyJWm
-	R6IQoIRGoRGYPlreoXuIGgLHDGiR/+I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718093483;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wnQIUpYdHgOL/hM9GsXN8B0Ts994fdsauoO8bl3CExk=;
-	b=tY/SuqTuiamIUOCP9Gy6Edetjtr/Waqk3ZBvBpF4W/PGm0bmy0haYRoNg/wzfxeSc++Z+2
-	TUnVbKx5YmbhspBg==
-Authentication-Results: smtp-out2.suse.de;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F414222D0F;
+	Tue, 11 Jun 2024 08:12:14 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
 	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718093483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wnQIUpYdHgOL/hM9GsXN8B0Ts994fdsauoO8bl3CExk=;
-	b=Xw7LckrVyqrAakH7KSEDESVADg9MT2w/sOoFpkdH/KzwzUXrjoXFGlasjukRVjQpOXbqnR
-	VEDyTRo7qiPPyB7GBgictg+KZT62wfeU0rWkpx7ertnwVCjRX97V2ITAvcIuwzNOYZyJWm
-	R6IQoIRGoRGYPlreoXuIGgLHDGiR/+I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718093483;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wnQIUpYdHgOL/hM9GsXN8B0Ts994fdsauoO8bl3CExk=;
-	b=tY/SuqTuiamIUOCP9Gy6Edetjtr/Waqk3ZBvBpF4W/PGm0bmy0haYRoNg/wzfxeSc++Z+2
-	TUnVbKx5YmbhspBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBB04137DF;
-	Tue, 11 Jun 2024 08:11:22 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBB43137DF;
+	Tue, 11 Jun 2024 08:12:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DmIXOaoGaGZ8WQAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:11:22 +0000
-Message-ID: <f85620ad-a19b-400d-bae7-29a1815fc33d@suse.de>
-Date: Tue, 11 Jun 2024 10:11:22 +0200
+	id VT1AN90GaGbKWQAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 11 Jun 2024 08:12:13 +0000
+Message-ID: <4032635d-a17f-44e5-a547-b175fa271945@suse.de>
+Date: Tue, 11 Jun 2024 10:12:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/26] sd: fix sd_is_zoned
+Subject: Re: [PATCH 02/26] sd: move zone limits setup out of
+ sd_read_block_characteristics
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240611051929.513387-1-hch@lst.de>
- <20240611051929.513387-2-hch@lst.de>
+ <20240611051929.513387-3-hch@lst.de>
 Content-Language: en-US
 From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20240611051929.513387-2-hch@lst.de>
+In-Reply-To: <20240611051929.513387-3-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -8.29
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
 X-Spam-Level: 
-X-Spamd-Result: default: False [-8.29 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLex1noz7jcsrkfdtgx8bqesde)];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: F414222D0F
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,18 +79,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/11/24 07:19, Christoph Hellwig wrote:
-> Since commit 7437bb73f087 ("block: remove support for the host aware zone
-> model"), only ZBC devices expose a zoned access model.  sd_is_zoned is
-> used to check for that and thus return false for host aware devices.
+> Move a bit of code that sets up the zone flag and the write granularity
+> into sd_zbc_read_zones to be with the rest of the zoned limits.
 > 
-> Fixes: 7437bb73f087 ("block: remove support for the host aware zone model")
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->   drivers/scsi/sd.h     | 7 ++++++-
->   drivers/scsi/sd_zbc.c | 7 +------
->   2 files changed, 7 insertions(+), 7 deletions(-)
+>   drivers/scsi/sd.c     | 21 +--------------------
+>   drivers/scsi/sd_zbc.c | 13 ++++++++++++-
+>   2 files changed, 13 insertions(+), 21 deletions(-)
 > 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+> index 85b45345a27739..5bfed61c70db8f 100644
+> --- a/drivers/scsi/sd.c
+> +++ b/drivers/scsi/sd.c
+> @@ -3308,29 +3308,10 @@ static void sd_read_block_characteristics(struct scsi_disk *sdkp,
+>   		blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, q);
+>   	}
+>   
+> -
+> -#ifdef CONFIG_BLK_DEV_ZONED /* sd_probe rejects ZBD devices early otherwise */
+> -	if (sdkp->device->type == TYPE_ZBC) {
+> -		lim->zoned = true;
+> -
+> -		/*
+> -		 * Per ZBC and ZAC specifications, writes in sequential write
+> -		 * required zones of host-managed devices must be aligned to
+> -		 * the device physical block size.
+> -		 */
+> -		lim->zone_write_granularity = sdkp->physical_block_size;
+> -	} else {
+> -		/*
+> -		 * Host-aware devices are treated as conventional.
+> -		 */
+> -		lim->zoned = false;
+> -	}
+> -#endif /* CONFIG_BLK_DEV_ZONED */
+> -
+>   	if (!sdkp->first_scan)
+>   		return;
+>   
+> -	if (lim->zoned)
+> +	if (sdkp->device->type == TYPE_ZBC)
+
+Why not sd_is_zoned()?
 
 Cheers,
 
