@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244B2904D78
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 10:03:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEDB904D94
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 10:07:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=htNCgg2K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=2ao9zGAC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VzdMy32tnz3fmr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 18:03:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzdRq1fVqz3fpF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 18:07:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=htNCgg2K;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=2ao9zGAC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f2b; helo=mail-qv1-xf2b.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f30; helo=mail-qv1-xf30.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzdMF2jkzz3cT9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 18:03:05 +1000 (AEST)
-Received: by mail-qv1-xf2b.google.com with SMTP id 6a1803df08f44-6b081c675e7so14720726d6.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 01:03:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzdR75Y8Mz3bpN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 18:06:26 +1000 (AEST)
+Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-6b09072c9d9so6337316d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 01:06:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718179383; x=1718784183; darn=lists.ozlabs.org;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718179583; x=1718784383; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oZhvy6kkbKYCk5v6xkrBCIcY4DF51uW5QFIx01DmAzk=;
-        b=htNCgg2KCQHXAhgF7T0SHvpzwm02vjkTcusymf/c8k5KJZNTStBtyxL7LzvfRVa9H8
-         nrFod0O/r6bo2y+mZ4Ad+nKfCRQgjEXDe0V+X50pd5AaiDJF3/BI2emg/XscD1CmgQaO
-         t3SAdntePWNj9CevtMgKvom6AR11MuFhms8mBLcU/UXRKpf1m0UeFUbz1VkelD40R3C0
-         La5p+k91RFRwmk0aGgrIY+DFyICCO7m2JQHCvfGtOAF8khju3cgZGbkjc/M15hh2HHKs
-         ZxdunZ9+zTxQBrT1vKwCieeytITeM6R7wPfsG1EuZauRtQ+XsBHxGMQqakwPlm+IbpGN
-         qn0A==
+        bh=jU0s9gEKbGXmqfGEflzcwnbnMDxLuaH6EgnphUim8yM=;
+        b=2ao9zGACDLLr0ARwiDP4LpPzMsZMhKbaOwJFeoFyZHJarOR0w7xoON/Td4goBAkiTt
+         EzUHm7vFjOl6E+kUxOfd2q+9tPBSp5aeuCaRzfx4/F5hUDvsqfDgr0010mg6YFT5NulB
+         JJSwyInpPUAxnYqCKEHDQfd9aMZHeZU1wGR28pbZWJXURjlGQCCCwDDMIE8w6JJduyfy
+         HzpPJDm8Hlo+pQt88GmILnp8dSTlEPPR8Kh7Q23FHCFt0vfft+IahKa4e4WYw3ThCenm
+         CvYErTDJh4ibvt1POLNTEHUDAE8iw1gIBcTkdRe6QAzEN5WYN7SglLcwupAqUgXBo4Pz
+         8F4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718179383; x=1718784183;
+        d=1e100.net; s=20230601; t=1718179583; x=1718784383;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oZhvy6kkbKYCk5v6xkrBCIcY4DF51uW5QFIx01DmAzk=;
-        b=jTBSAq8OmJBu3ElOTZxEvJF5YYmj8U8+gUfWu2iovzxZ+XxIlLXJR1QKrC3OhrBcmh
-         n8NpVdLkXTMKnj8tsFuFhPWrV9mf/bADE36ivrOCCHbeKjiWo/fIGFhjgPTmxE5sSJw/
-         PPbz5I0pUMlIl+TflENnXA62rxws9AZ9zruVAMlQPzr5e7UXhf7ecAQJPY39y/VUSH2/
-         z2nEoVCYm142OCkZTpWAP7SOq7rLjBp6srpTf8YYmt2am+DCrLFpgyRvsJ8043Q5sDtI
-         QDEZNDNyezt8FHBfKkYYP4CnprND/VpFH/PQXTrdfujBnDtAqvrEVsr3HA1WQtGBJMHE
-         YI+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUKeHFvznULYJgadAch3v5p9IwDrCzFjeJHaORgcw0rEM70gxG27VrO1JPiBTjpAeIiIH2XzAKZ7PKCkE0KnAiF/Ae0IbowBUO7f+O/JQ==
-X-Gm-Message-State: AOJu0Yxps0lwBU5REGBsdx38ArHq+WphUIlO8ryNNxpv72H7xh/5K0wz
-	SfAuOf1HtqP20I6dpvPOOc/9OcxBlx1KUWmij2Spf/J/8TmSBxW65nKqtWMAwWXIeAWQpeMWdS/
-	VLfsTMI09w50OjV3xOXd7Q0NKugSX1AOAAgQrOw==
-X-Google-Smtp-Source: AGHT+IFBoGLGnRCfXUTT6MkmXv5tkb/vW4wlOs2DaIN1mKJ7KPlKywflPDae5tbSNQuiVC2G0raN2IzC+x3zhZJMYtQ=
-X-Received: by 2002:a05:6214:4606:b0:6b0:77fb:8f16 with SMTP id
- 6a1803df08f44-6b191778bdbmr10576316d6.21.1718179382867; Wed, 12 Jun 2024
- 01:03:02 -0700 (PDT)
+        bh=jU0s9gEKbGXmqfGEflzcwnbnMDxLuaH6EgnphUim8yM=;
+        b=o8h2+ftzdUy8XaNeXn3YBKt2D3rxWFeAqPcQJ2RLOrktl53nq58it44SkpIanEQKsj
+         sl9QWWywwbFG0SAgnAsVM6xSl2KS+K1aOZ0IZumGkGVMnxIXiRlVuOEnaLFNOpVP+4Zh
+         26RgGJc/o1Xfvg+XOtiiBqsciYzyT6lsX+OrWW1D0O216o+FnVvVAiAN/3Ou1tSicdbA
+         eLeDvo1Q/hpJV8HV2NixWMlfKALh8ABgpEHzaHTBbkk9iuCGUUIVIJXD3qi5U/h5AGUp
+         kE0DCmfOrHQHoL3dD+NBzw3OEccj9FoZ9ii5sFnDYa5Qy/ORbi2ndv/XitG8j6d2+6wi
+         JhRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVpEW94uKFCY/iBH6+6mZ2wm7frs2DJuejb/I3mzGEpoINhr8QHx1DEix4wV598v+Asd/4+VBUQjzeLG3L3xlgR++KplNQkGX0hYI2KPA==
+X-Gm-Message-State: AOJu0YzVcPyjF5sL6RkfnljqqESU5o4zLdCK3KdJ8DNOcPaC2W0NwIn+
+	AOAx18OwvtDH+YZMJ+Cstv60nvxw8IPaPLzpyozILodLQvAIEU7kYaUWRpmwE/Eprrs8p4rxTOu
+	SE6UXQTycPcfgb2b6hVjABH59iFG3Wxjaw9p/nA==
+X-Google-Smtp-Source: AGHT+IG1/F1xQpU9EkBs57YWAqg59A4uhPeAz2DU+7fqEukJUGW0HybNnc7pOII0nGwuizPlb618ysTlXm0ZvIeJ3Yo=
+X-Received: by 2002:ad4:5d4d:0:b0:6ad:752d:1530 with SMTP id
+ 6a1803df08f44-6b08a0780damr78312956d6.27.1718179582619; Wed, 12 Jun 2024
+ 01:06:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
- <20240611094810.27475-2-piotr.wojtaszczyk@timesys.com> <1ea92ff0-7e2d-4a9f-bef4-d50fc93b86e6@kernel.org>
-In-Reply-To: <1ea92ff0-7e2d-4a9f-bef4-d50fc93b86e6@kernel.org>
+ <20240611094810.27475-2-piotr.wojtaszczyk@timesys.com> <51eeec03-47da-44b5-a21e-f280d0c4b47c@kernel.org>
+In-Reply-To: <51eeec03-47da-44b5-a21e-f280d0c4b47c@kernel.org>
 From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Date: Wed, 12 Jun 2024 10:02:51 +0200
-Message-ID: <CAG+cZ07jpi0dobjf8JYt263qqy1tYWAvzsV9cgKaAW05mBoCeQ@mail.gmail.com>
+Date: Wed, 12 Jun 2024 10:06:11 +0200
+Message-ID: <CAG+cZ06EN4Uw7Cy+kwsiPzu16Kp7tsF19Oit6oN6GUcSe464JQ@mail.gmail.com>
 Subject: Re: [Patch v2 2/2] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -83,10 +83,19 @@ Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <co
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2024 at 12:18=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
+On Tue, Jun 11, 2024 at 12:45=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
 rg> wrote:
-> I do not see my comment about DAI being addressed.
-Were you asking if it's a DAI? yes it is.
+> > Changes for v2:
+> > - Added maintainers field
+> > - Dropped clock-names
+> > - Dropped unused unneded interrupts field
+>
+> Does the device has interrupts or not? This should justify decision, not
+> current usage by drivers.
+Yes the device has interrupts but feeding data FIFOs is handled by DMA
+(amba-pl08x.c).
+Should I declare interrupts despite they are not used in the compatible dri=
+ver?
 
 --=20
 Piotr Wojtaszczyk
