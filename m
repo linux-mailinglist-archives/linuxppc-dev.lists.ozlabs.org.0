@@ -1,56 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702FE904CC7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 09:27:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18751904D1F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 09:49:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OpBrqRxC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=SVlN5O4P;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VzcYg2pqjz3dXW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 17:27:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vzd4306Clz3fVm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 17:49:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OpBrqRxC;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=SVlN5O4P;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::af; helo=out-175.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [IPv6:2001:41d0:203:375::af])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f2a; helo=mail-qv1-xf2a.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzcXz1ylHz30Wg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 17:26:26 +1000 (AEST)
-X-Envelope-To: npiggin@gmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1718177166;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5YuQn5IrAUYtmbzCV9i0/B6NGjQuNoPZLzpKUN9oVV8=;
-	b=OpBrqRxCjpyZUNsoUlgKjxwgbMlJBuNrf3NFF8PCul+SMsRawTFcZk+2I0vXG57v0zICk8
-	tuy6MZMkTzEG8jLSsIe+flYk5u3XQ1keborCHXC7u1U+Gareizr2iGpagZkJR9ZnslyMBb
-	w6/vNH/pGyBLSbNSRc9OKpIzRpVUb7A=
-X-Envelope-To: thuth@redhat.com
-X-Envelope-To: lvivier@redhat.com
-X-Envelope-To: linuxppc-dev@lists.ozlabs.org
-X-Envelope-To: kvm@vger.kernel.org
-Date: Wed, 12 Jun 2024 09:26:04 +0200
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [kvm-unit-tests PATCH v10 12/15] scripts/arch-run.bash: Fix
- run_panic() success exit status
-Message-ID: <20240612-eef98a649a0764215ea0d91f@orel>
-References: <20240612052322.218726-1-npiggin@gmail.com>
- <20240612052322.218726-13-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzd3L3S0tz3dBH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 17:49:15 +1000 (AEST)
+Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-6b0652ece5dso9409646d6.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 00:49:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718178547; x=1718783347; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QLcH5YJaXuB/7MGBHEHfOlicw3pcEYZxxPQWbcZpzrg=;
+        b=SVlN5O4P02cO6ZqJNhWVtftwX4zX8jzo5tkDU80gjXS24GNH1fKn4rq+uZB4k7kBwF
+         XZXFu9417Vb0Vsbu1U4/preDpqibq8J+WZHhbm14WTbW94UrAxF6xudThk2sOz66qNwH
+         cBGWpDtN1vfm2UgPzPWeDCd6d/NqOnniP9XFNTTgztLYsKniXsFFvWD63lU7W7+ukGK6
+         F/ZGQYxaZyV5PwSszAqW1ejRedyQv4+0ujr4N3Hw+HOVvRJi7mIM0h9Hu9HbbiPv1AHg
+         xvHNQQ9Bgn4g/FKM7DIwsOm26hrJLib02IrOqN11UnYFCh45cWMuRvWXVz8yLw/MpuHV
+         jCxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718178547; x=1718783347;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QLcH5YJaXuB/7MGBHEHfOlicw3pcEYZxxPQWbcZpzrg=;
+        b=Dd54MGFBd8X8K+5ABo4IWEZWuEJygrCkU+HglXix5tSd0Oecg+tM2prEbd2M0IIaqd
+         DCVzwq8Bc7OArWGFQMkdZiU0xvh9+kEWDGJO+NBcU8z90Sm7PdY6cSlHlhThqHkD2sf4
+         SkHe/xsBkRYT6oUf95W/0Vldfu1D+s+djZtpvnKJgn6x3ojOHLjQRlcOHFK2UqAVy8fu
+         ip+Vi+6x6fFaUFOnPeKhazYb0P4wgjZVqyd52wUCYtC4F8eIC672kyrgTC4TyYRt57YB
+         Yj3tNLCXeaicR0fVFJK/E8pAf4DfdNY/H+f+9133/TVYT1HV5DBZ3qixdZSpBqbMLn6U
+         PksQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsG76UcHaiYFww3YCamSEfOpW4NEsC0e1A+J9heJunsTtY3Oo4LZJ47FoCDTGbEnPf4pZYQLyb7tQW/drLjFA6AEiAui62M1eFzBTMYA==
+X-Gm-Message-State: AOJu0Ywm5NdUP3u7z48Hf69rAQXeuvQuO1IZd//gKiuW2QSq9OIiuMRq
+	nyfzSeM+IfihW+waDfnmC+kaYqAv5CjgEH5b3AQVUDZoVN0uH+QggSjVzF0KrBcF9Zs+auYjMiT
+	3AhSsPcw22XvYGY8EhkyXD6GDLU8PGlL7ZQAAGA==
+X-Google-Smtp-Source: AGHT+IFeCV50FnVEaMqclrtqDNFKqc6xUL0MAu5JUv82YAmzpGH5pe7N5VXTefcxSlBdNwkvmPPJIXMcRjw3+tCTj+0=
+X-Received: by 2002:a05:6214:460e:b0:6b0:6b78:e608 with SMTP id
+ 6a1803df08f44-6b19230ddb2mr12311056d6.31.1718178546635; Wed, 12 Jun 2024
+ 00:49:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240612052322.218726-13-npiggin@gmail.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com> <6cd2897f-a61d-4351-abac-714bae2ab154@kernel.org>
+In-Reply-To: <6cd2897f-a61d-4351-abac-714bae2ab154@kernel.org>
+From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Date: Wed, 12 Jun 2024 09:48:55 +0200
+Message-ID: <CAG+cZ06kf-n339XHnOiOzSECNkxVLYVw5UvtiWZwkDx5VFHa8A@mail.gmail.com>
+Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,42 +78,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 12, 2024 at 03:23:17PM GMT, Nicholas Piggin wrote:
-> run_qemu_status() looks for "EXIT: STATUS=%d" if the harness command
-> returned 1, to determine the final status of the test. In the case of
-> panic tests, QEMU should terminate before successful exit status is
-> known, so the run_panic() command must produce the "EXIT: STATUS" line.
-> 
-> With this change, running a panic test returns 0 on success (panic),
-> and the run_test.sh unit test correctly displays it as PASS rather than
-> FAIL.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  scripts/arch-run.bash | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-> index 8643bab3b..9bf2f0bbd 100644
-> --- a/scripts/arch-run.bash
-> +++ b/scripts/arch-run.bash
-> @@ -378,6 +378,7 @@ run_panic ()
->  	else
->  		# some QEMU versions report multiple panic events
->  		echo "PASS: guest panicked"
-> +		echo "EXIT: STATUS=1"
->  		ret=1
->  	fi
->  
-> -- 
-> 2.45.1
+On Tue, Jun 11, 2024 at 12:15=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
+rg> wrote:
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index aacccb376c28..7616f61d6327 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -8909,6 +8909,13 @@ S:     Maintained
+> >  F:   sound/soc/fsl/fsl*
+> >  F:   sound/soc/fsl/imx*
+> >
+> > +FREESCALE SOC LPC32XX SOUND DRIVERS
+> > +M:   Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+> > +L:   alsa-devel@alsa-project.org (moderated for non-subscribers)
+> > +L:   linuxppc-dev@lists.ozlabs.org
+> > +S:   Orphan
 >
+> Not sure if we want it in the first place. Why would we like to support
+> orphaned drivers? Sorry, if there is no one to care about it, then it
+> should not be merged.
+>
+I contacted Nautel Ltd they agreed to maintain this driver so I will add
+J.M.B. Downing <jonathan.downing@nautel.com>
+as a maintainer.
 
-Do we also need an 'echo "EXIT: STATUS=3"' in the if-arm of this if-else?
+> > +static int lpc32xx_i2s_remove(struct platform_device *pdev)
+> > +{
+> > +     return 0;
+> > +}
+>
+> You did not respond to comment about this. Drop.
+I will remove empty functions
 
-Thanks,
-drew
+--
+Piotr Wojtaszczyk
+Timesys
