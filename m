@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18751904D1F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 09:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B976C904D37
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 09:55:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=SVlN5O4P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=1i0ALTK6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vzd4306Clz3fVm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 17:49:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzdBr53r1z3fmR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 17:55:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=SVlN5O4P;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=1i0ALTK6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f2a; helo=mail-qv1-xf2a.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::b32; helo=mail-yb1-xb32.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzd3L3S0tz3dBH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 17:49:15 +1000 (AEST)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-6b0652ece5dso9409646d6.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 00:49:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzdB81CmKz3dVK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 17:55:10 +1000 (AEST)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-dfb0ccbd401so3844746276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 00:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718178547; x=1718783347; darn=lists.ozlabs.org;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718178908; x=1718783708; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QLcH5YJaXuB/7MGBHEHfOlicw3pcEYZxxPQWbcZpzrg=;
-        b=SVlN5O4P02cO6ZqJNhWVtftwX4zX8jzo5tkDU80gjXS24GNH1fKn4rq+uZB4k7kBwF
-         XZXFu9417Vb0Vsbu1U4/preDpqibq8J+WZHhbm14WTbW94UrAxF6xudThk2sOz66qNwH
-         cBGWpDtN1vfm2UgPzPWeDCd6d/NqOnniP9XFNTTgztLYsKniXsFFvWD63lU7W7+ukGK6
-         F/ZGQYxaZyV5PwSszAqW1ejRedyQv4+0ujr4N3Hw+HOVvRJi7mIM0h9Hu9HbbiPv1AHg
-         xvHNQQ9Bgn4g/FKM7DIwsOm26hrJLib02IrOqN11UnYFCh45cWMuRvWXVz8yLw/MpuHV
-         jCxg==
+        bh=s8zvLumEmzHSVfDBX+K3KODMcTb3eNmXQ7W6gFdSMig=;
+        b=1i0ALTK65PIUzQ90DCf9SuqQyybF+aWQJcElQHrG6ikZvehYVWpUIQhVaUA1lRIyiq
+         lae4zCh9RcNJT4MvW/bzds53r/BKHe55pjjkh4J6F0BzFe6zyfJQ31PhjySYjaxLdHxG
+         vl76vZrCMC6AHw9+JO4sfZhOvVrpYtAPJHabxLYBOKelYJN/6l3zwVkz9NRFBBCnCsYy
+         tl8Szgxw/NvTSbnGvdFZdxb6PhtF5PvL5adaH9MRZpKBX/ImXFG4tZddSCBsTSCAmimw
+         0DoNbbvFRVR03Ez34TXBhHtfVWlior7cJEkGp78zGkJ81qeZNdWpaaXgAHWXMXXnSWfc
+         jolw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718178547; x=1718783347;
+        d=1e100.net; s=20230601; t=1718178908; x=1718783708;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QLcH5YJaXuB/7MGBHEHfOlicw3pcEYZxxPQWbcZpzrg=;
-        b=Dd54MGFBd8X8K+5ABo4IWEZWuEJygrCkU+HglXix5tSd0Oecg+tM2prEbd2M0IIaqd
-         DCVzwq8Bc7OArWGFQMkdZiU0xvh9+kEWDGJO+NBcU8z90Sm7PdY6cSlHlhThqHkD2sf4
-         SkHe/xsBkRYT6oUf95W/0Vldfu1D+s+djZtpvnKJgn6x3ojOHLjQRlcOHFK2UqAVy8fu
-         ip+Vi+6x6fFaUFOnPeKhazYb0P4wgjZVqyd52wUCYtC4F8eIC672kyrgTC4TyYRt57YB
-         Yj3tNLCXeaicR0fVFJK/E8pAf4DfdNY/H+f+9133/TVYT1HV5DBZ3qixdZSpBqbMLn6U
-         PksQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUsG76UcHaiYFww3YCamSEfOpW4NEsC0e1A+J9heJunsTtY3Oo4LZJ47FoCDTGbEnPf4pZYQLyb7tQW/drLjFA6AEiAui62M1eFzBTMYA==
-X-Gm-Message-State: AOJu0Ywm5NdUP3u7z48Hf69rAQXeuvQuO1IZd//gKiuW2QSq9OIiuMRq
-	nyfzSeM+IfihW+waDfnmC+kaYqAv5CjgEH5b3AQVUDZoVN0uH+QggSjVzF0KrBcF9Zs+auYjMiT
-	3AhSsPcw22XvYGY8EhkyXD6GDLU8PGlL7ZQAAGA==
-X-Google-Smtp-Source: AGHT+IFeCV50FnVEaMqclrtqDNFKqc6xUL0MAu5JUv82YAmzpGH5pe7N5VXTefcxSlBdNwkvmPPJIXMcRjw3+tCTj+0=
-X-Received: by 2002:a05:6214:460e:b0:6b0:6b78:e608 with SMTP id
- 6a1803df08f44-6b19230ddb2mr12311056d6.31.1718178546635; Wed, 12 Jun 2024
- 00:49:06 -0700 (PDT)
+        bh=s8zvLumEmzHSVfDBX+K3KODMcTb3eNmXQ7W6gFdSMig=;
+        b=B38uSXsUExkAYj2vA1WL7pfdUlrFAEe79jPvNLIbrIuUt7fZLdr6kaCDd/OXW/jw3f
+         kmrIj26OMnBdf5nVl+IUlnLU/2e21690yZty238XqoKZ0P/PqVrJKqFFDOPTStkcCRPR
+         rCSuYC8bJ9iDPT5VkyRpOtDl/1EbgRX18K8r+IGR/BtZQYLVsJ6tbtJU3+JKHY1GkjRE
+         BMtmCQzDQ1MBqpogx5tQfKxl4WhAit2AQV51L2LcSn4NZGxG1eK/SWrDVycULqHadEI/
+         y8YkFb5EnKs/GXmsW8xpuU3IKpVzGHEUH3sZ0fNQVSTeHts3OJK9+9RVjBzdTJQoSt9i
+         Mu/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVL7rMwCLIwVyOsbSZjIWcUc3KBVxbzo/VF6zv1vubqiuUrMyt8Xlw0WX55+/MDN+MFJ4z5S2CYAuAZWj8uJO5iJMUN3MKCOmba8OhYtg==
+X-Gm-Message-State: AOJu0YzR01abgUGbHZfrVupa0M/1a7VNT1bE/EGBnmBxzJX+1fA+TtHm
+	VFF3WK9/fC9oIHMWjL+B4vRBm4FPM/6qup+SeZCcUCDH/x1grxVvFQmPMhUujTE8+qHJVWjh38o
+	a033HMq8r5orG3l7NcE7IJkdEiRovLTej80sRdQ==
+X-Google-Smtp-Source: AGHT+IFPLy4bDjB26DeJ3OyETqud+YR8g7kmBRh3/NifyRwyRcvSuS2NJ859y2s2TX4hnMNdepvtl112sIycLjmhYjk=
+X-Received: by 2002:a25:918a:0:b0:dfe:ed7:84be with SMTP id
+ 3f1490d57ef6-dfe67064dedmr951615276.25.1718178907988; Wed, 12 Jun 2024
+ 00:55:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com> <6cd2897f-a61d-4351-abac-714bae2ab154@kernel.org>
-In-Reply-To: <6cd2897f-a61d-4351-abac-714bae2ab154@kernel.org>
+References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com> <Zmgor8accyAiUkUO@finisterre.sirena.org.uk>
+In-Reply-To: <Zmgor8accyAiUkUO@finisterre.sirena.org.uk>
 From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Date: Wed, 12 Jun 2024 09:48:55 +0200
-Message-ID: <CAG+cZ06kf-n339XHnOiOzSECNkxVLYVw5UvtiWZwkDx5VFHa8A@mail.gmail.com>
+Date: Wed, 12 Jun 2024 09:54:57 +0200
+Message-ID: <CAG+cZ05=w5KbxOOtpo99B=OHBaLNRKKJVrFT67CH1-6z1gP7ZA@mail.gmail.com>
 Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
-To: Krzysztof Kozlowski <krzk@kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,42 +78,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, Jaroslav Kysela <perex@perex.cz>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2024 at 12:15=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
-rg> wrote:
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index aacccb376c28..7616f61d6327 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -8909,6 +8909,13 @@ S:     Maintained
-> >  F:   sound/soc/fsl/fsl*
-> >  F:   sound/soc/fsl/imx*
-> >
+On Tue, Jun 11, 2024 at 12:36=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
+ote:
 > > +FREESCALE SOC LPC32XX SOUND DRIVERS
 > > +M:   Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 > > +L:   alsa-devel@alsa-project.org (moderated for non-subscribers)
 > > +L:   linuxppc-dev@lists.ozlabs.org
 > > +S:   Orphan
+> > +F:   sound/soc/fsl/lpc3xxx-*
+> > +
 >
-> Not sure if we want it in the first place. Why would we like to support
-> orphaned drivers? Sorry, if there is no one to care about it, then it
-> should not be merged.
->
-I contacted Nautel Ltd they agreed to maintain this driver so I will add
-J.M.B. Downing <jonathan.downing@nautel.com>
-as a maintainer.
+> It seems a bit odd to add yourself as a maintainer while also marking
+> the driver as orphan?
+Nautel Ltd agreed to maintain this driver, I will add them.
 
-> > +static int lpc32xx_i2s_remove(struct platform_device *pdev)
-> > +{
-> > +     return 0;
-> > +}
+> > +     i2s_info_p->clk =3D devm_clk_get(dev, "i2s_clk");
+> > +     if (IS_ERR(i2s_info_p->clk))
+> > +             return dev_err_probe(dev, PTR_ERR(i2s_info_p->clk), "Can'=
+t get clock\n");
+> > +
+> > +     i2s_info_p->clkrate =3D clk_get_rate(i2s_info_p->clk);
+> > +     if (i2s_info_p->clkrate =3D=3D 0)
+> > +             return dev_err_probe(dev, -EINVAL, "Invalid returned cloc=
+k rate\n");
 >
-> You did not respond to comment about this. Drop.
-I will remove empty functions
+> Nothing ever enables this clock.
+It's enabled in lpc3xxx_i2s_startup() and disabled in lpc3xxx_i2s_shutdown(=
+).
+When the clock is enabled the bit clock on I2S interface always runs.
+So this is to avoid active clock when the interface isn't used.
 
---
+--=20
 Piotr Wojtaszczyk
 Timesys
