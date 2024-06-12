@@ -2,101 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550B3904E59
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 10:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3664904ED7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 11:12:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T4AkrQui;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a2ukT/X4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VzfGX2bksz3fn7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 18:44:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzfvL4Fc2z3dXD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 19:12:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T4AkrQui;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a2ukT/X4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzfFp6XmYz3cTf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 18:43:26 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45C8Sb9e010462;
-	Wed, 12 Jun 2024 08:42:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=M
-	qGaSCUKPg55LXeHG2SWAZ7B76FuLCjmJRlJlDQGekw=; b=T4AkrQuic56t9mr+n
-	wER5BiGZSe/5A5ErT0h30fYXrYO/G7jsp36fkOCso6H2eYAp3LruN2KFPR7KBKRp
-	yrAZliyZkmDsm50C1uORFl95OFamcBeNp8yiX23OTCtk4JFOke2lV69xZY1IhwNi
-	IJkYOk0qHK0BgRwpL3kgoRM4MVzFHOWegkfsT9llYKnCLjEINiq0JQtC5qe/iwhi
-	AeyiyOmv0+zKNueHDYZqUEZwDRhuTD8iFPaHf3ddSWiepC6klPFEt/FHDH/Cp/V1
-	koljK0KdLZUsVHXcM631rwjCtWA/CdwA4gqKkpFV4B2iaMtti08tZ9gLwkC2vxSy
-	CFIzg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yq86mg11n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 08:42:57 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45C8guFY031521;
-	Wed, 12 Jun 2024 08:42:56 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yq86mg11h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 08:42:56 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45C7iKBr003878;
-	Wed, 12 Jun 2024 08:42:55 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yn2mpuvbn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 08:42:55 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45C8gnxO47841536
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Jun 2024 08:42:51 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19D4220043;
-	Wed, 12 Jun 2024 08:42:49 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8930F2004E;
-	Wed, 12 Jun 2024 08:42:46 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.110.188])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 12 Jun 2024 08:42:46 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH V3 05/14] tools/perf: Add disasm_line__parse to parse raw
- instruction for powerpc
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <39ef5cd5-9d39-4b9b-b6fd-418adcd74bea@csgroup.eu>
-Date: Wed, 12 Jun 2024 14:12:34 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <41BEC0D1-A857-4B6F-A67E-7C10DDD2CF2B@linux.vnet.ibm.com>
-References: <20240601060941.13692-1-atrajeev@linux.vnet.ibm.com>
- <20240601060941.13692-6-atrajeev@linux.vnet.ibm.com>
- <ZmFYLK3pK3Uov4pe@google.com>
- <39ef5cd5-9d39-4b9b-b6fd-418adcd74bea@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3TywObpgpQsM2vMRSdEuWO0mhYS7f0ZE
-X-Proofpoint-ORIG-GUID: _C2QvFa0whKasBWuZawSoIjvtlj-11Nq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-12_04,2024-06-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 suspectscore=0
- mlxscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406120059
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzftc4WVQz3cV9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 19:11:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718183514; x=1749719514;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uHHbRBCTiJ34kbeRIJM+Nw7RNe5FB8UcM4OyBaMx2Jk=;
+  b=a2ukT/X4CS/2FBbk96kmWWTMJ5fRkzD/D9XfjKV2iDt6ZnlV5++1dXni
+   8NKDv9MNkn5hVzx2RtURPsxryAXJ1918p0ZOIVhoZcKnsG4zBr418H88f
+   AsJLm6j8eZUF641RhmizGwS4QtDtZh3W3KPrjRyw2AbpSx7FeX5BvKNkL
+   vYXwyGX16Y+vgnSbP60YhHT9Dk2EUHfXme7oztAv94dZJCUE6a0QEq0q1
+   NssUrXSZ3x7dn33o0GNUmfuYI+ktVHUx2dpHPYkXBJ2gvQVcb2s/cY74I
+   Odcb/ds8xDGtaFy1BVHOPA1kijWPB2oe7kBT0HuE2CP/0pkEkg8JRABzw
+   g==;
+X-CSE-ConnectionGUID: rf2xYex0TPC4syIt9Q0ATQ==
+X-CSE-MsgGUID: xdmeKM64QnKh5Gpcynzn6w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="32471831"
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
+   d="scan'208";a="32471831"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 02:11:46 -0700
+X-CSE-ConnectionGUID: KJv0yy49TpKfXdtNEZCfqw==
+X-CSE-MsgGUID: BGIpTBxDQWG9p72u13GTVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
+   d="scan'208";a="40357291"
+Received: from lkp-server01.sh.intel.com (HELO 628d7d8b9fc6) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 12 Jun 2024 02:11:40 -0700
+Received: from kbuild by 628d7d8b9fc6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sHK14-0001Oc-16;
+	Wed, 12 Jun 2024 09:11:38 +0000
+Date: Wed, 12 Jun 2024 17:11:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>, mpe@ellerman.id.au,
+	tpearson@raptorengineering.com, alex.williamson@redhat.com,
+	linuxppc-dev@lists.ozlabs.org, aik@amd.com
+Subject: Re: [PATCH v3 6/6] powerpc/iommu: Reimplement the
+ iommu_table_group_ops for pSeries
+Message-ID: <202406121640.yr6LK5HJ-lkp@intel.com>
+References: <171810901192.1721.18057294492426295643.stgit@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <171810901192.1721.18057294492426295643.stgit@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,394 +77,252 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "kjain@linux.ibm.com" <kjain@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "akanksha@linux.ibm.com" <akanksha@linux.ibm.com>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "disgoel@linux.vnet.ibm.com" <disgoel@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: svaidy@linux.ibm.com, robh@kernel.org, jroedel@suse.de, sbhat@linux.ibm.com, gbatra@linux.vnet.ibm.com, jgg@ziepe.ca, aik@ozlabs.ru, ruscur@russell.cc, linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu, mahesh@linux.ibm.com, aneesh.kumar@kernel.org, brking@linux.vnet.ibm.com, oohall@gmail.com, npiggin@gmail.com, kvm@vger.kernel.org, oe-kbuild-all@lists.linux.dev, naveen.n.rao@linux.ibm.com, vaibhav@linux.ibm.com, msuchanek@suse.de, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Shivaprasad,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on powerpc/fixes]
+[also build test WARNING on awilliam-vfio/next awilliam-vfio/for-linus linus/master v6.10-rc3]
+[cannot apply to powerpc/next next-20240612]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Shivaprasad-G-Bhat/powerpc-iommu-Move-pSeries-specific-functions-to-pseries-iommu-c/20240611-203313
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
+patch link:    https://lore.kernel.org/r/171810901192.1721.18057294492426295643.stgit%40linux.ibm.com
+patch subject: [PATCH v3 6/6] powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries
+config: powerpc64-randconfig-001-20240612 (https://download.01.org/0day-ci/archive/20240612/202406121640.yr6LK5HJ-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240612/202406121640.yr6LK5HJ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406121640.yr6LK5HJ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   arch/powerpc/platforms/pseries/iommu.c: In function 'spapr_tce_create_table':
+>> arch/powerpc/platforms/pseries/iommu.c:1953:22: warning: variable 'entries_shift' set but not used [-Wunused-but-set-variable]
+    1953 |         unsigned int entries_shift;
+         |                      ^~~~~~~~~~~~~
+   arch/powerpc/platforms/pseries/iommu.c: In function 'spapr_tce_unset_window':
+>> arch/powerpc/platforms/pseries/iommu.c:2166:24: warning: variable 'pci' set but not used [-Wunused-but-set-variable]
+    2166 |         struct pci_dn *pci;
+         |                        ^~~
 
 
-> On 8 Jun 2024, at 2:28=E2=80=AFPM, Christophe Leroy =
-<christophe.leroy@csgroup.eu> wrote:
->=20
->=20
->=20
-> Le 06/06/2024 =C3=A0 08:33, Namhyung Kim a =C3=A9crit :
->> Hello,
->>=20
->> On Sat, Jun 01, 2024 at 11:39:32AM +0530, Athira Rajeev wrote:
->>> Currently, the perf tool infrastructure disasm_line__parse function =
-to
->>> parse disassembled line.
->>>=20
->>> Example snippet from objdump:
->>> objdump  --start-address=3D<address> --stop-address=3D<address>  -d =
---no-show-raw-insn -C <vmlinux>
->>>=20
->>> c0000000010224b4: lwz     r10,0(r9)
->>>=20
->>> This line "lwz r10,0(r9)" is parsed to extract instruction name,
->>> registers names and offset. In powerpc, the approach for data type
->>> profiling uses raw instruction instead of result from objdump to =
-identify
->>> the instruction category and extract the source/target registers.
->>>=20
->>> Example: 38 01 81 e8     ld      r4,312(r1)
->>>=20
->>> Here "38 01 81 e8" is the raw instruction representation. Add =
-function
->>> "disasm_line__parse_powerpc" to handle parsing of raw instruction. =
-Also
->>> update "struct ins" and "struct ins_operands" to save "opcode" and
->>> binary code. With the change, function captures:
->>>=20
->>> line -> "38 01 81 e8     ld      r4,312(r1)"
->>> opcode and raw instruction "38 01 81 e8"
->>>=20
->>> Raw instruction is used later to extract the reg/offset fields. =
-Macros
->>> are added to extract opcode and register fields. "struct =
-ins_operands"
->>> and "struct ins" is updated to carry opcode and raw instruction =
-binary
->>> code (raw_insn). Function "disasm_line__parse_powerpc fills the raw
->>> instruction hex value and opcode in newly added fields. There is no
->>> changes in existing code paths, which parses the disassembled code.
->>> The architecture using the instruction name and present approach is
->>> not altered. Since this approach targets powerpc, the macro
->>> implementation is added for powerpc as of now.
->>>=20
->>> Since the disasm_line__parse is used in other cases (perf annotate) =
-and
->>> not only data tye profiling, the powerpc callback includes changes =
-to
->>> work with binary code as well as mneumonic representation. Also in =
-case
->>> if the DSO read fails and libcapstone is not supported, the approach
->>> fallback to use objdump as option. Hence as option, patch has =
-changes to
->>> ensure objdump option also works well.
->>>=20
->>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>> ---
->>>  tools/include/linux/string.h                  |  2 +
->>>  tools/lib/string.c                            | 13 ++++
->>>  .../perf/arch/powerpc/annotate/instructions.c |  1 +
->>>  tools/perf/arch/powerpc/util/dwarf-regs.c     |  9 +++
->>>  tools/perf/util/disasm.c                      | 63 =
-++++++++++++++++++-
->>>  tools/perf/util/disasm.h                      |  7 +++
->>>  6 files changed, 94 insertions(+), 1 deletion(-)
->>>=20
->>> diff --git a/tools/include/linux/string.h =
-b/tools/include/linux/string.h
->>> index db5c99318c79..0acb1fc14e19 100644
->>> --- a/tools/include/linux/string.h
->>> +++ b/tools/include/linux/string.h
->>> @@ -46,5 +46,7 @@ extern char * __must_check skip_spaces(const char =
-*);
->>>=20
->>>  extern char *strim(char *);
->>>=20
->>> +extern void remove_spaces(char *s);
->>> +
->>>  extern void *memchr_inv(const void *start, int c, size_t bytes);
->>>  #endif /* _TOOLS_LINUX_STRING_H_ */
->>> diff --git a/tools/lib/string.c b/tools/lib/string.c
->>> index 8b6892f959ab..3126d2cff716 100644
->>> --- a/tools/lib/string.c
->>> +++ b/tools/lib/string.c
->>> @@ -153,6 +153,19 @@ char *strim(char *s)
->>>   return skip_spaces(s);
->>>  }
->>>=20
->>> +/*
->>> + * remove_spaces - Removes whitespaces from @s
->>> + */
->>> +void remove_spaces(char *s)
->>> +{
->>> + char *d =3D s;
->>> +
->>> + do {
->>> + while (*d =3D=3D ' ')
->>> + ++d;
->>> + } while ((*s++ =3D *d++));
->>> +}
->>> +
->>>  /**
->>>   * strreplace - Replace all occurrences of character in string.
->>>   * @s: The string to operate on.
->>> diff --git a/tools/perf/arch/powerpc/annotate/instructions.c =
-b/tools/perf/arch/powerpc/annotate/instructions.c
->>> index a3f423c27cae..d57fd023ef9c 100644
->>> --- a/tools/perf/arch/powerpc/annotate/instructions.c
->>> +++ b/tools/perf/arch/powerpc/annotate/instructions.c
->>> @@ -55,6 +55,7 @@ static int powerpc__annotate_init(struct arch =
-*arch, char *cpuid __maybe_unused)
->>>   arch->initialized =3D true;
->>>   arch->associate_instruction_ops =3D =
-powerpc__associate_instruction_ops;
->>>   arch->objdump.comment_char      =3D '#';
->>> + annotate_opts.show_asm_raw =3D true;
->>>   }
->>>=20
->>>   return 0;
->>> diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c =
-b/tools/perf/arch/powerpc/util/dwarf-regs.c
->>> index 0c4f4caf53ac..430623ca5612 100644
->>> --- a/tools/perf/arch/powerpc/util/dwarf-regs.c
->>> +++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
->>> @@ -98,3 +98,12 @@ int regs_query_register_offset(const char *name)
->>>   return roff->ptregs_offset;
->>>   return -EINVAL;
->>>  }
->>> +
->>> +#define PPC_OP(op) (((op) >> 26) & 0x3F)
->>> +#define PPC_RA(a) (((a) >> 16) & 0x1f)
->>> +#define PPC_RT(t) (((t) >> 21) & 0x1f)
->>> +#define PPC_RB(b) (((b) >> 11) & 0x1f)
->>> +#define PPC_D(D) ((D) & 0xfffe)
->>> +#define PPC_DS(DS) ((DS) & 0xfffc)
->>> +#define OP_LD 58
->>> +#define OP_STD 62
->>> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
->>> index 3cd187f08193..61f0f1656f82 100644
->>> --- a/tools/perf/util/disasm.c
->>> +++ b/tools/perf/util/disasm.c
->>> @@ -45,6 +45,7 @@ static int call__scnprintf(struct ins *ins, char =
-*bf, size_t size,
->>>=20
->>>  static void ins__sort(struct arch *arch);
->>>  static int disasm_line__parse(char *line, const char **namep, char =
-**rawp);
->>> +static int disasm_line__parse_powerpc(struct disasm_line *dl);
->>>=20
->>>  static __attribute__((constructor)) void symbol__init_regexpr(void)
->>>  {
->>> @@ -844,6 +845,63 @@ static int disasm_line__parse(char *line, const =
-char **namep, char **rawp)
->>>   return -1;
->>>  }
->>>=20
->>> +/*
->>> + * Parses the result captured from symbol__disassemble_*
->>> + * Example, line read from DSO file in powerpc:
->>> + * line:    38 01 81 e8
->>> + * opcode: fetched from arch specific get_opcode_insn
->>> + * rawp_insn: e8810138
->>> + *
->>> + * rawp_insn is used later to extract the reg/offset fields
->>> + */
->>> +#define PPC_OP(op) (((op) >> 26) & 0x3F)
->>> +
->>> +static int disasm_line__parse_powerpc(struct disasm_line *dl)
->>> +{
->>> + char *line =3D dl->al.line;
->>> + const char **namep =3D &dl->ins.name;
->>> + char **rawp =3D &dl->ops.raw;
->>> + char tmp, *tmp_opcode, *name_opcode =3D skip_spaces(line);
->>> + char *name =3D skip_spaces(name_opcode + 11);
->>> + int objdump =3D 0;
->>> +
->>> + if (strlen(line) > 11)
->>> + objdump =3D 1;
->>> +
->>> + if (name_opcode[0] =3D=3D '\0')
->>> + return -1;
->>> +
->>> + if (objdump) {
->>> + *rawp =3D name + 1;
->>> + while ((*rawp)[0] !=3D '\0' && !isspace((*rawp)[0]))
->>> + ++*rawp;
->>> + tmp =3D (*rawp)[0];
->>> + (*rawp)[0] =3D '\0';
->>> +
->>> + *namep =3D strdup(name);
->>> + if (*namep =3D=3D NULL)
->>> + return -1;
->>> +
->>> + (*rawp)[0] =3D tmp;
->>> + *rawp =3D strim(*rawp);
->>> + } else
->>> + *namep =3D "";
->>> +
->>> + tmp_opcode =3D strdup(name_opcode);
->>> + tmp_opcode[11] =3D '\0';
->>> + remove_spaces(tmp_opcode);
->>> +
->>> + dl->ins.opcode =3D PPC_OP(strtol(tmp_opcode, NULL, 16));
->>> + if (objdump)
->>> + dl->ins.opcode =3D PPC_OP(be32_to_cpu(strtol(tmp_opcode, NULL, =
-16)));
->>> + dl->ops.opcode =3D dl->ins.opcode;
->>> +
->>> + dl->ops.raw_insn =3D strtol(tmp_opcode, NULL, 16);
->>> + if (objdump)
->>> + dl->ops.raw_insn =3D be32_to_cpu(strtol(tmp_opcode, NULL, 16));
->>> + return 0;
->>> +}
->>> +
->>>  static void annotation_line__init(struct annotation_line *al,
->>>     struct annotate_args *args,
->>>     int nr)
->>> @@ -897,7 +955,10 @@ struct disasm_line *disasm_line__new(struct =
-annotate_args *args)
->>>   goto out_delete;
->>>=20
->>>   if (args->offset !=3D -1) {
->>> - if (disasm_line__parse(dl->al.line, &dl->ins.name, &dl->ops.raw) < =
-0)
->>> + if (arch__is(args->arch, "powerpc")) {
->>> + if (disasm_line__parse_powerpc(dl) < 0)
->>> + goto out_free_line;
->>> + } else if (disasm_line__parse(dl->al.line, &dl->ins.name, =
-&dl->ops.raw) < 0)
->>>   goto out_free_line;
->>>=20
->>>   disasm_line__init_ins(dl, args->arch, &args->ms);
->>> diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
->>> index 718177fa4775..a391e1bb81f7 100644
->>> --- a/tools/perf/util/disasm.h
->>> +++ b/tools/perf/util/disasm.h
->>> @@ -43,14 +43,19 @@ struct arch {
->>>=20
->>>  struct ins {
->>>   const char     *name;
->>> + int opcode;
->>=20
->> I don't think this is the right place as 'ins' can be shared for
->> different opcodes.  IIUC it's like a class and disasm_line should
->> have a pointer instead of a copy of the arch instructions.  So I'd
->> like to keep a single instance if they behave in the same way.  But
->> this is a separate change.
->>=20
->> I guess we can move it to struct disasm_line and use helper macros =
-when
->> we need to access the opcode.  This will be helpful for other arches.
->>=20
->>   struct disasm_line {
->>       struct ins *ins;
->>       struct ins_operands ops;
->>       union {
->>           u8 bytes[4];
->>           u32 opcode;
->>       } raw;
->>       struct annotation_line al;
->>   };
->>=20
->>   #define PPC_OP(dl)  (((dl)->raw.bytes[0] >> 2) & 0x3F)
->=20
-> We already have a definition for PPC_OP(), see =
-arch/powerpc/xmon/ppc.h:
->=20
-> /* A macro to extract the major opcode from an instruction.  */
-> #define PPC_OP(i) (((i) >> 26) & 0x3f)
->=20
-> By the way why do you want to split off instructions in bytes ? On=20
-> powerpc an instruction is one (sometimes two) u32, nothing else, and =
-if=20
-> you start breaking that into bytes you will likely unnecessarily=20
-> increase complexity when a param has bits on different bytes, and =
-maybe=20
-> also with the byte order depending whether you are running on a little=20=
+vim +/entries_shift +1953 arch/powerpc/platforms/pseries/iommu.c
 
-> or big endian PPC.
-> See for instance arch_decode_instruction() in=20
-> tools/objtool/arch/powerpc/decode.c
+  1940	
+  1941	static long spapr_tce_create_table(struct iommu_table_group *table_group, int num,
+  1942					   __u32 page_shift, __u64 window_size, __u32 levels,
+  1943					   struct iommu_table **ptbl)
+  1944	{
+  1945		struct pci_dev *pdev = iommu_group_get_first_pci_dev(table_group->group);
+  1946		u32 ddw_avail[DDW_APPLICABLE_SIZE];
+  1947		struct ddw_create_response create;
+  1948		unsigned long liobn, offset, size;
+  1949		unsigned long start = 0, end = 0;
+  1950		struct ddw_query_response query;
+  1951		const __be32 *default_prop;
+  1952		struct failed_ddw_pdn *fpdn;
+> 1953		unsigned int entries_shift;
+  1954		unsigned int window_shift;
+  1955		struct device_node *pdn;
+  1956		struct iommu_table *tbl;
+  1957		struct dma_win *window;
+  1958		struct property *win64;
+  1959		struct pci_dn *pci;
+  1960		u64 win_addr;
+  1961		int len, i;
+  1962		long ret;
+  1963	
+  1964		if (!is_power_of_2(window_size) || levels > 1)
+  1965			return -EINVAL;
+  1966	
+  1967		window_shift = order_base_2(window_size);
+  1968		entries_shift = window_shift - page_shift;
+  1969	
+  1970		mutex_lock(&dma_win_init_mutex);
+  1971	
+  1972		ret = -ENODEV;
+  1973	
+  1974		pdn = pci_dma_find_parent_node(pdev, table_group);
+  1975		if (!pdn || !PCI_DN(pdn)) { /* Niether of 32s|64-bit exist! */
+  1976			dev_warn(&pdev->dev, "No dma-windows exist for the node %pOF\n", pdn);
+  1977			goto out_failed;
+  1978		}
+  1979		pci = PCI_DN(pdn);
+  1980	
+  1981		/* If the enable DDW failed for the pdn, dont retry! */
+  1982		list_for_each_entry(fpdn, &failed_ddw_pdn_list, list) {
+  1983			if (fpdn->pdn == pdn) {
+  1984				dev_info(&pdev->dev, "%pOF in failed DDW device list\n", pdn);
+  1985				goto out_unlock;
+  1986			}
+  1987		}
+  1988	
+  1989		tbl = iommu_pseries_alloc_table(pci->phb->node);
+  1990		if (!tbl) {
+  1991			dev_dbg(&pdev->dev, "couldn't create new IOMMU table\n");
+  1992			goto out_unlock;
+  1993		}
+  1994	
+  1995		if (num == 0) {
+  1996			bool direct_mapping;
+  1997			/* The request is not for default window? Ensure there is no DDW window already */
+  1998			if (!is_default_window_request(table_group, page_shift, window_size)) {
+  1999				if (find_existing_ddw(pdn, &pdev->dev.archdata.dma_offset, &len,
+  2000						      &direct_mapping)) {
+  2001					dev_warn(&pdev->dev, "%pOF: 64-bit window already present.", pdn);
+  2002					ret = -EPERM;
+  2003					goto out_unlock;
+  2004				}
+  2005			} else {
+  2006				/* Request is for Default window, ensure there is no DDW if there is a
+  2007				 * need to reset. reset-pe otherwise removes the DDW also
+  2008				 */
+  2009				default_prop = of_get_property(pdn, "ibm,dma-window", NULL);
+  2010				if (!default_prop) {
+  2011					if (find_existing_ddw(pdn, &pdev->dev.archdata.dma_offset, &len,
+  2012							      &direct_mapping)) {
+  2013						dev_warn(&pdev->dev, "%pOF: Attempt to create window#0 when 64-bit window is present. Preventing the attempt as that would destroy the 64-bit window",
+  2014							 pdn);
+  2015						ret = -EPERM;
+  2016						goto out_unlock;
+  2017					}
+  2018	
+  2019					restore_default_dma_window(pdev, pdn);
+  2020	
+  2021					default_prop = of_get_property(pdn, "ibm,dma-window", NULL);
+  2022					of_parse_dma_window(pdn, default_prop, &liobn, &offset, &size);
+  2023					/* Limit the default window size to window_size */
+  2024					iommu_table_setparms_common(tbl, pci->phb->bus->number, liobn,
+  2025								    offset, 1UL << window_shift,
+  2026								    IOMMU_PAGE_SHIFT_4K, NULL,
+  2027								    &iommu_table_lpar_multi_ops);
+  2028					iommu_init_table(tbl, pci->phb->node, start, end);
+  2029	
+  2030					table_group->tables[0] = tbl;
+  2031	
+  2032					mutex_unlock(&dma_win_init_mutex);
+  2033	
+  2034					goto exit;
+  2035				}
+  2036			}
+  2037		}
+  2038	
+  2039		ret = of_property_read_u32_array(pdn, "ibm,ddw-applicable",
+  2040					&ddw_avail[0], DDW_APPLICABLE_SIZE);
+  2041		if (ret) {
+  2042			dev_info(&pdev->dev, "ibm,ddw-applicable not found\n");
+  2043			goto out_failed;
+  2044		}
+  2045		ret = -ENODEV;
+  2046	
+  2047		pr_err("%s: Calling query %pOF\n", __func__, pdn);
+  2048		ret = query_ddw(pdev, ddw_avail, &query, pdn);
+  2049		if (ret)
+  2050			goto out_failed;
+  2051		ret = -ENODEV;
+  2052	
+  2053		len = window_shift;
+  2054		if (query.largest_available_block < (1ULL << (len - page_shift))) {
+  2055			dev_dbg(&pdev->dev, "can't map window 0x%llx with %llu %llu-sized pages\n",
+  2056					1ULL << len, query.largest_available_block,
+  2057					1ULL << page_shift);
+  2058			ret = -EINVAL; /* Retry with smaller window size */
+  2059			goto out_unlock;
+  2060		}
+  2061	
+  2062		if (create_ddw(pdev, ddw_avail, &create, page_shift, len)) {
+  2063			pr_err("%s: Create ddw failed %pOF\n", __func__, pdn);
+  2064			goto out_failed;
+  2065		}
+  2066	
+  2067		win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
+  2068		win64 = ddw_property_create(DMA64_PROPNAME, create.liobn, win_addr, page_shift, len);
+  2069		if (!win64)
+  2070			goto remove_window;
+  2071	
+  2072		ret = of_add_property(pdn, win64);
+  2073		if (ret) {
+  2074			dev_err(&pdev->dev, "unable to add DMA window property for %pOF: %ld", pdn, ret);
+  2075			goto free_property;
+  2076		}
+  2077		ret = -ENODEV;
+  2078	
+  2079		window = ddw_list_new_entry(pdn, win64->value);
+  2080		if (!window)
+  2081			goto remove_property;
+  2082	
+  2083		window->direct = false;
+  2084	
+  2085		for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
+  2086			const unsigned long mask = IORESOURCE_MEM_64 | IORESOURCE_MEM;
+  2087	
+  2088			/* Look for MMIO32 */
+  2089			if ((pci->phb->mem_resources[i].flags & mask) == IORESOURCE_MEM) {
+  2090				start = pci->phb->mem_resources[i].start;
+  2091				end = pci->phb->mem_resources[i].end;
+  2092					break;
+  2093			}
+  2094		}
+  2095	
+  2096		/* New table for using DDW instead of the default DMA window */
+  2097		iommu_table_setparms_common(tbl, pci->phb->bus->number, create.liobn, win_addr,
+  2098					    1UL << len, page_shift, NULL, &iommu_table_lpar_multi_ops);
+  2099		iommu_init_table(tbl, pci->phb->node, start, end);
+  2100	
+  2101		pci->table_group->tables[num] = tbl;
+  2102		set_iommu_table_base(&pdev->dev, tbl);
+  2103		pdev->dev.archdata.dma_offset = win_addr;
+  2104	
+  2105		spin_lock(&dma_win_list_lock);
+  2106		list_add(&window->list, &dma_win_list);
+  2107		spin_unlock(&dma_win_list_lock);
+  2108	
+  2109		mutex_unlock(&dma_win_init_mutex);
+  2110	
+  2111		goto exit;
+  2112	
+  2113	remove_property:
+  2114		of_remove_property(pdn, win64);
+  2115	free_property:
+  2116		kfree(win64->name);
+  2117		kfree(win64->value);
+  2118		kfree(win64);
+  2119	remove_window:
+  2120		__remove_dma_window(pdn, ddw_avail, create.liobn);
+  2121	
+  2122	out_failed:
+  2123		fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
+  2124		if (!fpdn)
+  2125			goto out_unlock;
+  2126		fpdn->pdn = pdn;
+  2127		list_add(&fpdn->list, &failed_ddw_pdn_list);
+  2128	
+  2129	out_unlock:
+  2130		mutex_unlock(&dma_win_init_mutex);
+  2131	
+  2132		return ret;
+  2133	exit:
+  2134		/* Allocate the userspace view */
+  2135		pseries_tce_iommu_userspace_view_alloc(tbl);
+  2136		tbl->it_allocated_size = spapr_tce_get_table_size(page_shift, window_size, levels);
+  2137	
+  2138		*ptbl = iommu_tce_table_get(tbl);
+  2139	
+  2140		return 0;
+  2141	}
+  2142	
 
-
-Hi Namhyung, Christophe
-
-Thanks for the feedback.
-
-IIUC, Namhyung's main point here is to move the "opcode" related field =
-from "struct ins" to "structure disasm_line"
-In my V3, I had opcode and raw instruction both as part of "struct ins" =
-and "struct ins_operands".
-For V4, I am moving the raw instruction related field to "structure =
-disasm_line=E2=80=9D.  In this approach, "opcode"
-won't be saved as a separate field in the structure. Instead raw =
-instruction itself will be saved as part of the disasm_line.
-And helper macros will be used to extract opcode from raw instruction, =
-wherever needed. So the union will have "u8 bytes[4]" and "u32 =
-raw_insn". For powerpc, "raw_insn" will be used to carry the raw insn. =
-For other archs, depending on implementation, "u8 bytes[4]" could be =
-used
-
-Below saves the raw instruction (u32) itself in the union raw as part of =
-"structure disasm_line"
-
-struct disasm_line {
-     struct ins *ins;
-     struct ins_operands ops;
-     union {
-         u8 bytes[4];
-         u32 raw_insn;
-     } raw;
-     struct annotation_line al;
- };
-
-And to access opcode, use helper macro for powerpc as below:
-
-#define        PPC_OP(op)      (((op) >> 26) & 0x3F)
-
-
-In disasm_line__parse_powerpc which parses the line captured, initialise =
-"dl->raw.raw_insn"
-To access opcode, use "PPC_OP(dl->raw.raw_insn)"
-
-Does this approach looks good ?
-
-Athira
->=20
-> By the way, why are we spreading different decoding functions in=20
-> different tools ? Wouldn't it make sense to try and share decoding=20
-> functions between objtool and perf for instance ?
->=20
-> Christophe
->=20
-
-Hi Christophe,
-
-I think that's good idea to check. At this point, I am not aware of =
-existing decoding functions in objtool and which all can be made common =
-between perf. But after checking through, would be able to propose more =
-on this. Can we go with current approach by having helper macros in perf =
-now and then explore/understand the objtool side ?
-
-Thanks
-Athira
->=20
->=20
->>=20
->> Thanks,
->> Namhyung
->>=20
->>>=20
->>>   struct ins_ops *ops;
->>>  };
->>>=20
->>>  struct ins_operands {
->>>   char *raw;
->>> + int raw_insn;
->>> + int opcode;
->>>   struct {
->>>   char *raw;
->>>   char *name;
->>> + int opcode;
->>> + int raw_insn;
->>>   struct symbol *sym;
->>>   u64 addr;
->>>   s64 offset;
->>> @@ -62,6 +67,8 @@ struct ins_operands {
->>>   struct {
->>>   char *raw;
->>>   char *name;
->>> + int opcode;
->>> + int raw_insn;
->>>   u64 addr;
->>>   bool multi_regs;
->>>   } source;
->>> --=20
->>> 2.43.0
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
