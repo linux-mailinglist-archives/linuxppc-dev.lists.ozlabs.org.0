@@ -2,54 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A535D904C27
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 08:59:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C58904BEB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 08:49:29 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TvtXRuwV;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vzbxc54m1z3fxN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 16:59:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzbkG23Z0z3flw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 16:49:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TvtXRuwV;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mhartmay@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzbvz3zf8z3dPs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 16:57:51 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 884552018B5;
-	Wed, 12 Jun 2024 08:57:49 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EE47820079D;
-	Wed, 12 Jun 2024 08:57:48 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id ABEFB181D0FD;
-	Wed, 12 Jun 2024 14:57:46 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] ASoC: imx-audmix: Split capture device for audmix
-Date: Wed, 12 Jun 2024 14:40:52 +0800
-Message-Id: <1718174452-17596-4-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1718174452-17596-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1718174452-17596-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzbjY0K4Cz3dW1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 16:48:48 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45C5xPJd015403;
+	Wed, 12 Jun 2024 06:48:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:in-reply-to:references:date:message-id
+	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+	7U/aGo/SegEj8qcEL5oci96thwe+0ZYEfL1TiW6lAi8=; b=TvtXRuwVyf0rv9Xv
+	3EdzGNk5V5t7q97nijvmvC5wemqtR4pJHp8FJf8MSWlZf75JXZExYFbGRo1+cYLX
+	iFPSueyYM+OooiHjECfTGD4V/46CU0UC9vDGrNjgQtJT2YsO/FBDjjevtPifDVaO
+	LojcA5kilarCYm1jJX2dDKgShv5+boINScANkn1pbCXnWFAlS3KWSPIBqWNopcmB
+	nXVWV0DM2jaHF5lG8/NGt1nFy0ZMIeBXKWAdV7Ypw1KIQQ+eHKSm7y8hHKPZYbWg
+	sYnLmkSqoW0y0ftj3aM+jKAlJ10sWLeQwfdRj2C3mThpemyHaejsxGWH/TpQEUzP
+	mxtyNg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yq60dr3kk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 06:48:13 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45C6mCSx025480;
+	Wed, 12 Jun 2024 06:48:13 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yq60dr3kg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 06:48:12 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45C6622I023566;
+	Wed, 12 Jun 2024 06:48:12 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yn3umjues-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 06:48:12 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45C6m8G225821916
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Jun 2024 06:48:10 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5ED2120065;
+	Wed, 12 Jun 2024 06:48:08 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EFD5B2004D;
+	Wed, 12 Jun 2024 06:48:07 +0000 (GMT)
+Received: from li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com (unknown [9.171.76.207])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 12 Jun 2024 06:48:07 +0000 (GMT)
+From: "Marc Hartmayer" <mhartmay@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, Thomas Huth <thuth@redhat.com>,
+        kvm@vger.kernel.org
+Subject: Re: [kvm-unit-tests PATCH] build: retain intermediate .aux.o targets
+In-Reply-To: <20240612044234.212156-1-npiggin@gmail.com>
+References: <20240612044234.212156-1-npiggin@gmail.com>
+Date: Wed, 12 Jun 2024 08:48:07 +0200
+Message-ID: <87a5jqejx4.fsf@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _IynBDK5YLWOnJjcMpaLtlgb0ppN9llp
+X-Proofpoint-ORIG-GUID: 76CjRMsJNf39GEcQi1k4dJX1xNvcpOto
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_02,2024-06-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ phishscore=0 clxscore=1011 impostorscore=0 mlxscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406120044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,183 +99,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: viorel.suman@nxp.com
+Cc: kvmarm@lists.linux.dev, linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, Andrew Jones <andrew.jones@linux.dev>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There will be three devices for this sound card, hw:x,0 is
-the playback device for one SAI, hw:x,1 is the playback device
-for another SAI, hw:x,2 is the capture device for audmix
-output. then capture device and playback device can be configured
-with different master/slave mode.
+On Wed, Jun 12, 2024 at 02:42 PM +1000, Nicholas Piggin <npiggin@gmail.com>=
+ wrote:
+> arm, powerpc, riscv, build .aux.o targets with implicit pattern rules
+> in dependency chains that cause them to be made as intermediate files,
+> which get removed when make finishes. This results in unnecessary
+> partial rebuilds. If make is run again, this time the .aux.o targets
+> are not intermediate, possibly due to being made via different
+> dependencies.
+>
+> Adding .aux.o files to .PRECIOUS prevents them being removed and solves
+> the rebuild problem.
+>
+> s390x does not have the problem because .SECONDARY prevents dependancies
+> from being built as intermediate. However the same change is made for
+> s390x, for consistency.
+>
+> Suggested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/imx-audmix.c | 79 ++++++++++++++++++++++----------------
- 1 file changed, 45 insertions(+), 34 deletions(-)
+[=E2=80=A6snip=E2=80=A6]
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 2aeb18397bcb..6fbcf33fd0de 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -140,6 +140,13 @@ static const struct snd_soc_ops imx_audmix_be_ops = {
- 	.hw_params = imx_audmix_be_hw_params,
- };
- 
-+static const char *name[][3] = {
-+	{"HiFi-AUDMIX-FE-0", "HiFi-AUDMIX-FE-1", "HiFi-AUDMIX-FE-2"},
-+	{"sai-tx", "sai-tx", "sai-rx"},
-+	{"AUDMIX-Playback-0", "AUDMIX-Playback-1", "CPU-Capture"},
-+	{"CPU-Playback", "CPU-Playback", "AUDMIX-Capture-0"},
-+};
-+
- static int imx_audmix_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -150,7 +157,7 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 	struct imx_audmix *priv;
- 	int i, num_dai, ret;
- 	const char *fe_name_pref = "HiFi-AUDMIX-FE-";
--	char *be_name, *be_pb, *be_cp, *dai_name, *capture_dai_name;
-+	char *be_name, *dai_name;
- 
- 	if (pdev->dev.parent) {
- 		audmix_np = pdev->dev.parent->of_node;
-@@ -183,6 +190,7 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
- 
-+	num_dai += 1;
- 	priv->num_dai = 2 * num_dai;
- 	priv->dai = devm_kcalloc(&pdev->dev, priv->num_dai,
- 				 sizeof(struct snd_soc_dai_link), GFP_KERNEL);
-@@ -196,7 +204,7 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 	if (!priv->dai_conf)
- 		return -ENOMEM;
- 
--	priv->num_dapm_routes = 3 * num_dai;
-+	priv->num_dapm_routes = num_dai;
- 	priv->dapm_routes = devm_kcalloc(&pdev->dev, priv->num_dapm_routes,
- 					 sizeof(struct snd_soc_dapm_route),
- 					 GFP_KERNEL);
-@@ -211,8 +219,12 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		if (!dlc)
- 			return -ENOMEM;
- 
--		ret = of_parse_phandle_with_args(audmix_np, "dais", NULL, i,
--						 &args);
-+		if (i == num_dai - 1)
-+			ret = of_parse_phandle_with_args(audmix_np, "dais", NULL, 0,
-+							 &args);
-+		else
-+			ret = of_parse_phandle_with_args(audmix_np, "dais", NULL, i,
-+							 &args);
- 		if (ret < 0) {
- 			dev_err(&pdev->dev, "of_parse_phandle_with_args failed\n");
- 			return ret;
-@@ -226,20 +238,14 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		put_device(&cpu_pdev->dev);
- 
- 		dai_name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s%s",
--					  fe_name_pref, args.np->full_name + 1);
-+					  fe_name_pref, args.np->full_name);
- 		if (!dai_name)
- 			return -ENOMEM;
- 
- 		dev_info(pdev->dev.parent, "DAI FE name:%s\n", dai_name);
- 
--		if (i == 0) {
-+		if (i == num_dai - 1)
- 			out_cpu_np = args.np;
--			capture_dai_name =
--				devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
--					       dai_name, "CPU-Capture");
--			if (!capture_dai_name)
--				return -ENOMEM;
--		}
- 
- 		/*
- 		 * CPU == Platform
-@@ -252,27 +258,23 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		priv->dai[i].num_cpus = 1;
- 		priv->dai[i].num_codecs = 1;
- 		priv->dai[i].num_platforms = 1;
--
--		priv->dai[i].name = dai_name;
-+		priv->dai[i].name = name[0][i];
- 		priv->dai[i].stream_name = "HiFi-AUDMIX-FE";
- 		priv->dai[i].cpus->of_node = args.np;
--		priv->dai[i].cpus->dai_name = dev_name(&cpu_pdev->dev);
-+		priv->dai[i].cpus->dai_name = name[1][i];
-+
- 		priv->dai[i].dynamic = 1;
- 		priv->dai[i].dpcm_playback = 1;
--		priv->dai[i].dpcm_capture = (i == 0 ? 1 : 0);
-+		if (i == num_dai - 1) {
-+			priv->dai[i].dpcm_capture = 1;
-+			priv->dai[i].dpcm_playback = 0;
-+		}
- 		priv->dai[i].ignore_pmdown_time = 1;
- 		priv->dai[i].ops = &imx_audmix_fe_ops;
- 
- 		/* Add AUDMIX Backend */
- 		be_name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 					 "audmix-%d", i);
--		be_pb = devm_kasprintf(&pdev->dev, GFP_KERNEL,
--				       "AUDMIX-Playback-%d", i);
--		be_cp = devm_kasprintf(&pdev->dev, GFP_KERNEL,
--				       "AUDMIX-Capture-%d", i);
--		if (!be_name || !be_pb || !be_cp)
--			return -ENOMEM;
--
- 		priv->dai[num_dai + i].cpus	= &dlc[1];
- 		priv->dai[num_dai + i].codecs	= &snd_soc_dummy_dlc;
- 
-@@ -284,24 +286,33 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		priv->dai[num_dai + i].cpus->dai_name = be_name;
- 		priv->dai[num_dai + i].no_pcm = 1;
- 		priv->dai[num_dai + i].dpcm_playback = 1;
--		priv->dai[num_dai + i].dpcm_capture  = 1;
-+		if (i == num_dai - 1) {
-+			priv->dai[num_dai + i].dpcm_capture  = 1;
-+			priv->dai[num_dai + i].dpcm_playback  = 0;
-+		}
- 		priv->dai[num_dai + i].ignore_pmdown_time = 1;
- 		priv->dai[num_dai + i].ops = &imx_audmix_be_ops;
- 
- 		priv->dai_conf[i].dlc.of_node = args.np;
- 		priv->dai_conf[i].name_prefix = dai_name;
- 
--		priv->dapm_routes[i].source =
--			devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
--				       dai_name, "CPU-Playback");
--		if (!priv->dapm_routes[i].source)
--			return -ENOMEM;
-+		if (i == num_dai - 1) {
-+			priv->dapm_routes[i].sink =
-+				devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
-+					       dai_name, name[2][i]);
-+			if (!priv->dapm_routes[i].sink)
-+				return -ENOMEM;
- 
--		priv->dapm_routes[i].sink = be_pb;
--		priv->dapm_routes[num_dai + i].source   = be_pb;
--		priv->dapm_routes[num_dai + i].sink     = be_cp;
--		priv->dapm_routes[2 * num_dai + i].source = be_cp;
--		priv->dapm_routes[2 * num_dai + i].sink   = capture_dai_name;
-+			priv->dapm_routes[i].source = name[3][i];
-+		} else {
-+			priv->dapm_routes[i].source =
-+				devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
-+					       dai_name, name[3][i]);
-+			if (!priv->dapm_routes[i].source)
-+				return -ENOMEM;
-+
-+			priv->dapm_routes[i].sink = name[2][i];
-+		}
- 	}
- 
- 	cpu_pdev = of_find_device_by_node(out_cpu_np);
--- 
-2.34.1
+> @@ -85,7 +85,7 @@ CFLAGS +=3D -fno-delete-null-pointer-checks
+>  LDFLAGS +=3D -Wl,--build-id=3Dnone
+>=20=20
+>  # We want to keep intermediate files
+> -.PRECIOUS: %.o %.lds
+> +.PRECIOUS: %.o %.aux.o %.lds
+>=20=20
+>  asm-offsets =3D lib/$(ARCH)/asm-offsets.h
+>  include $(SRCDIR)/scripts/asm-offsets.mak
+> --=20
+> 2.45.1
+>
+>
 
+Thanks for fixing this!
+
+Reviewed-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+
+--=20
+Kind regards / Beste Gr=C3=BC=C3=9Fe
+   Marc Hartmayer
+
+IBM Deutschland Research & Development GmbH
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+Gesch=C3=A4ftsf=C3=BChrung: David Faller
+Sitz der Gesellschaft: B=C3=B6blingen
+Registergericht: Amtsgericht Stuttgart, HRB 243294
