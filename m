@@ -2,76 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44DA5904A16
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 06:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE89A904A23
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 06:43:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=My0OBM2/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YXHTi8Yo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4VzXnj2w8Dz3cb7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 14:37:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzXwz2fcHz3fqy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 14:43:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=My0OBM2/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YXHTi8Yo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::333; helo=mail-ot1-x333.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzXn12q1yz3cQs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 14:36:34 +1000 (AEST)
-Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6f95c2c1250so2595953a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 21:36:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4VzXwG2s57z3cTp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 14:42:52 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1f6fada63a6so28461565ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jun 2024 21:42:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718166987; x=1718771787; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vH+4iQ0Kxj/vMdKXd1GL4axukTJSkL87xzz/uOsZjd0=;
-        b=My0OBM2/tsRz89qwqAG2ODa96k0uEk71MF8u/nERnNNX3hL/SXHzPQiUEggghTX1PG
-         kSOb5WstVFJjkKikcHgXmpjB02nGLVARTPTutCI/FfEUxHFc/KsA41Je67h4Rn+lzXno
-         UNpwTHTnBgJRmtrZZHntjWInY0zoh87phVMfgvm1oG0HCMWMPcCR+Y85jbNKt20HhnTm
-         JXmjt+plOkX+gFJ4h+8e4Fz6ANxY2tPbFy6uHxRHA0FkaAD4zNZGXhVTQmyEf/TCRnvt
-         oYZjDVssef7ND0cpBnUS5YrWp1P/nnQ2OuYmtwPGaeLF0z2tYEY04A/+RZ7jVmmIiF1+
-         qdaQ==
+        d=gmail.com; s=20230601; t=1718167371; x=1718772171; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y8v3v+i8Ggw/AVGwDDCI9JHG5YYl3a/3EDerkme1e7c=;
+        b=YXHTi8YoKZoE+sNKhVsd2PKovhrYECgzMSrXzPwEy4zGZtnuhX5JaitslvvR3qShCM
+         VDorhH081t56j+pJEibS7C85QGn7YskEvt7JM9QxxToTXdu+tTFDymbR9bAf1J0uRRII
+         pahsuZh/Yj5hhSLOnD/5cC12Rx4IjMjKSjuCedDrwgQ70+nHg/w6z9DUbbe70BwXGxGt
+         x4AZpQVYtsN792r9PbQKhV2/zNczXDlA+4hr02DUzITCWL4dhFzjggYfndJ2My7yZYaL
+         8rwyRBhOXSEVToKkhWAZypox8MEg2KOg9xSpAhGbkDzDZFE+Op9MrGkaCEsDEWBxgjMZ
+         ZdHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718166987; x=1718771787;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vH+4iQ0Kxj/vMdKXd1GL4axukTJSkL87xzz/uOsZjd0=;
-        b=F/kmc7nQfqiNVjahAzDmqIIo5LuvfuyrakTIk3vBuUisl0Mo0sYTQD5G2AaR8UCCpT
-         +IJ7ZH/mQfonpODIA0WfGkDttL7vHm8uCrAEdY42bnrDw2ubfzizHTvUIRLMEf/OB/fY
-         3qL6dtbzRUwhtKqqlrIPlBrby9C1tkv/xCCb9LnnuO6dsD70VFe4nfkOewTUrHd713IT
-         Fi0S6sdJDN+Vgc9ehKPF9d+cUJfAiO2ivV219GkPWuGnlr8LlF9HwyVlgkLhaNNPM27F
-         zuK3pYkBDuOdwN2Kyvg/6LaGWnuSDzU1zBTHNmaQtj/nzLV9vPnjbYHzvfYNST/nqEER
-         n3/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVL2mOoVyIR1Ig9G7+x55tiTrFjqmkMGQz4eR1PgoJwqc+z7//PbH317TWOf01F4jR1sQjK9tOzFtPzfPjCSxaKhojcavJ5YGJWTQ9jDQ==
-X-Gm-Message-State: AOJu0Yyvrt0gtukEpgl0WnKcfKWoQTFRE0Pg7SaTn8O6sjSPfuBac1S5
-	4K1dTuVgeglYkj/FVqdAgYrxbTf0PzJxPe4JQZD3DbrjPeL6+BssM6kAeSEQnw==
-X-Google-Smtp-Source: AGHT+IF/i1Z4g1iXpug+xajahacKVwnIvfnsiSOznBlRwgjL1WHJ0xairr9brTYDWvv7YNpLZYuzDg==
-X-Received: by 2002:a05:6870:d186:b0:251:46d:d32a with SMTP id 586e51a60fabf-25514b4e021mr927373fac.8.1718166986969;
-        Tue, 11 Jun 2024 21:36:26 -0700 (PDT)
-Received: from thinkpad ([120.60.129.29])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6e9a52a3012sm5409033a12.30.2024.06.11.21.36.16
+        d=1e100.net; s=20230601; t=1718167371; x=1718772171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y8v3v+i8Ggw/AVGwDDCI9JHG5YYl3a/3EDerkme1e7c=;
+        b=A9oRPN1pVoj+7gzoMmzcU+iryzPjnc7XqsRBk5q7tMLwyCfCXHvJzyiDH9sI6rheRm
+         7uG2T9c1NM4jSMIBun6GcpYaHyyxYqFskFsqA3DAf0U6WT5oxQfLBnzdAmyjjwso4k7T
+         feJwrX3ChQ8DfrCjBDDmi2AbKsMZj74/Axb+2FRnp+1Kc523xNH8e/9c1/WfZSISPguU
+         En9xYjorIkba0SMTTgsHndyMmMqJGKRxZl8Ms7VwASA6T6W/mH93O+LD+v37prGRdsst
+         gALsUoazsRLnc6xGelzmlhJX6cIFKy4jyMmSNBowFFWc18qjn4ZBbAoUZ+bneQU7zGDI
+         MyCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVg6fggh/JatSvo+hUJdl/fREg02y85KuxS+1W9Y+OPTcAv4L0jasiAqJ9hnwaGx7eaqDNZ20HNpuhinq3wpXHf/tu3BrIhwIG/To2mIQ==
+X-Gm-Message-State: AOJu0YwceFkL++lAdzniYznLMR2IbHVLg4E4dQlz06bETilmk1SXLmGe
+	Y+DoUstyOeWcoVTJ8LYtNLky8EFe5gRBns7ey4RJ7YTpJlyY/Szb
+X-Google-Smtp-Source: AGHT+IHpwHlh4iJRWgbNKg9wzqjgXtSTZ/ZgvwJw6UxQFuG3nQAI47SaA434g24rShYkZX8sK7hePg==
+X-Received: by 2002:a17:903:234d:b0:1f7:3d0d:4c8 with SMTP id d9443c01a7336-1f83b569c9amr9508185ad.13.1718167370569;
+        Tue, 11 Jun 2024 21:42:50 -0700 (PDT)
+Received: from wheely.local0.net (220-235-199-47.tpgi.com.au. [220.235.199.47])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f71017b639sm52957535ad.21.2024.06.11.21.42.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 21:36:26 -0700 (PDT)
-Date: Wed, 12 Jun 2024 10:06:12 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH 2/5] PCI: endpoint: Introduce 'epc_deinit' event and
- notify the EPF drivers
-Message-ID: <20240612043612.GC2645@thinkpad>
-References: <20240606-pci-deinit-v1-2-4395534520dc@linaro.org>
- <20240611220640.GA1001976@bhelgaas>
+        Tue, 11 Jun 2024 21:42:49 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Thomas Huth <thuth@redhat.com>,
+	kvm@vger.kernel.org
+Subject: [kvm-unit-tests PATCH] build: retain intermediate .aux.o targets
+Date: Wed, 12 Jun 2024 14:42:32 +1000
+Message-ID: <20240612044234.212156-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240611220640.GA1001976@bhelgaas>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,44 +78,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, imx@lists.linux.dev, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, linux-arm-kernel@lists.infradead.org, Siddharth Vadapalli <s-vadapalli@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, mhi@lists.linux.dev, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: linux-s390@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andrew Jones <andrew.jones@linux.dev>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 11, 2024 at 05:06:40PM -0500, Bjorn Helgaas wrote:
-> On Thu, Jun 06, 2024 at 12:56:35PM +0530, Manivannan Sadhasivam wrote:
-> > As like the 'epc_init' event, that is used to signal the EPF drivers about
-> > the EPC initialization, let's introduce 'epc_deinit' event that is used to
-> > signal EPC deinitialization.
-> > 
-> > The EPC deinitialization applies only when any sort of fundamental reset
-> > is supported by the endpoint controller as per the PCIe spec.
-> > 
-> > Reference: PCIe Base spec v5.0, sections 4.2.4.9.1 and 6.6.1.
-> 
-> PCIe r6.0, sec 4.2.5.9.1 and 6.6.1.
-> 
-> (Not 4.2.4.9.1, which no longer exists in r6.x)
-> 
+arm, powerpc, riscv, build .aux.o targets with implicit pattern rules
+in dependency chains that cause them to be made as intermediate files,
+which get removed when make finishes. This results in unnecessary
+partial rebuilds. If make is run again, this time the .aux.o targets
+are not intermediate, possibly due to being made via different
+dependencies.
 
-Ammended the commit in pci/endpoint, thanks!
+Adding .aux.o files to .PRECIOUS prevents them being removed and solves
+the rebuild problem.
 
-- Mani
+s390x does not have the problem because .SECONDARY prevents dependancies
+from being built as intermediate. However the same change is made for
+s390x, for consistency.
 
-> > Currently, some EPC drivers like pcie-qcom-ep and pcie-tegra194 support
-> > PERST# as the fundamental reset. So the 'deinit' event will be notified to
-> > the EPF drivers when PERST# assert happens in the above mentioned EPC
-> > drivers.
-> > 
-> > The EPF drivers, on receiving the event through the epc_deinit() callback
-> > should reset the EPF state machine and also cleanup any configuration that
-> > got affected by the fundamental reset like BAR, DMA etc...
-> > 
-> > This change also warrants skipping the cleanups in unbind() if already done
-> > in epc_deinit().
-> > 
-> > Reviewed-by: Niklas Cassel <cassel@kernel.org>
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Suggested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arm/Makefile.common     | 2 +-
+ powerpc/Makefile.common | 2 +-
+ riscv/Makefile          | 2 +-
+ s390x/Makefile          | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/arm/Makefile.common b/arm/Makefile.common
+index f828dbe01..0b26a92a6 100644
+--- a/arm/Makefile.common
++++ b/arm/Makefile.common
+@@ -31,7 +31,7 @@ CFLAGS += -O2
+ CFLAGS += -I $(SRCDIR)/lib -I $(SRCDIR)/lib/libfdt -I lib
+ 
+ # We want to keep intermediate files
+-.PRECIOUS: %.elf %.o
++.PRECIOUS: %.elf %.o %.aux.o
+ 
+ asm-offsets = lib/$(ARCH)/asm-offsets.h
+ include $(SRCDIR)/scripts/asm-offsets.mak
+diff --git a/powerpc/Makefile.common b/powerpc/Makefile.common
+index b98f71c2f..16f14577e 100644
+--- a/powerpc/Makefile.common
++++ b/powerpc/Makefile.common
+@@ -30,7 +30,7 @@ CFLAGS += -I $(SRCDIR)/lib -I $(SRCDIR)/lib/libfdt -I lib
+ CFLAGS += -Wa,-mregnames
+ 
+ # We want to keep intermediate files
+-.PRECIOUS: %.o
++.PRECIOUS: %.o %.aux.o
+ 
+ asm-offsets = lib/$(ARCH)/asm-offsets.h
+ include $(SRCDIR)/scripts/asm-offsets.mak
+diff --git a/riscv/Makefile b/riscv/Makefile
+index 919a3ebb5..7207ff988 100644
+--- a/riscv/Makefile
++++ b/riscv/Makefile
+@@ -53,7 +53,7 @@ AUXFLAGS ?= 0x0
+ KEEP_FRAME_POINTER := y
+ 
+ # We want to keep intermediate files
+-.PRECIOUS: %.elf %.o
++.PRECIOUS: %.elf %.o %.aux.o
+ 
+ define arch_elf_check =
+ 	$(if $(shell ! $(READELF) -rW $(1) >&/dev/null && echo "nok"),
+diff --git a/s390x/Makefile b/s390x/Makefile
+index 23342bd64..d436c6e9a 100644
+--- a/s390x/Makefile
++++ b/s390x/Makefile
+@@ -85,7 +85,7 @@ CFLAGS += -fno-delete-null-pointer-checks
+ LDFLAGS += -Wl,--build-id=none
+ 
+ # We want to keep intermediate files
+-.PRECIOUS: %.o %.lds
++.PRECIOUS: %.o %.aux.o %.lds
+ 
+ asm-offsets = lib/$(ARCH)/asm-offsets.h
+ include $(SRCDIR)/scripts/asm-offsets.mak
 -- 
-மணிவண்ணன் சதாசிவம்
+2.45.1
+
