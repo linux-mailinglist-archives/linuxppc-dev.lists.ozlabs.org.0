@@ -1,74 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393C79056B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 17:23:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A4E9057AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 17:56:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=inU7cJVW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kYWVzenO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vzq7T159Mz3fmR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 01:23:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Vzqst4hT6z3dWb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 01:56:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=inU7cJVW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kYWVzenO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3s71pzgykdkyykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+f2fs@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzq6l2GL7z3cyg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 01:22:54 +1000 (AEST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-62834d556feso132643807b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 08:22:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718205771; x=1718810571; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0BqD6y0/VOUpbW8YRHgmGoMOpV6WFqVjQFCsKaKlao=;
-        b=inU7cJVWX/AB74sp57yc4GPCTopqq89u3IBTi180aMKYHcKTyvasgGQfXtXeM8fgAB
-         LcsnhG93+KfwVsqCwf9dYz8r4iqy//9HpC/l0Dc1Ry8FVgzOFOvAIrrnPEN+XxmphhyC
-         8SRhrtnt5ek86/yx259o4QYNFEdWNKtIxnhbW9XqH6p6BJh+/YGHn8QfRdo/ZpZpK+Bi
-         XVpt3mYdurkBL23c1EV8oAn3jBKM9fcndsQMNBrxEuxtehZ9T+5lvRW/IZG+9knJMxn5
-         p7wY2aZ7fQIGji6ATSQlgQoDThYpXlG+EA87q6AiQo8xhoXh5AHO6NvS7E04fHZOzGG0
-         IAXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718205771; x=1718810571;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0BqD6y0/VOUpbW8YRHgmGoMOpV6WFqVjQFCsKaKlao=;
-        b=tdXt3WSzG0cGE3w8llCl8uzQD8tRPiuL+AY8mKr/ghWxlC6iNKMcVuDviA7cirz0+C
-         WLDwz1OLXgKaBsrFwY8gXABHW29nRwXae+/VZCJHNh8okagwGf6I+XZGHHNjcs7qGLl5
-         S0lTZXtwiWgns7GlUJCqwSp7YsHzKgInq4jwMNH9GQyJn6UBnlVeXtFepX60U+K+lW9W
-         p938SL2k68ZwwMx+l4wbRiS8GDQI8LUmj8tVFjRQwcAiKxuZSUKqTtsMG2F7e1sAZemH
-         7wkbR9V8m9UMVxyBe4eymlQIoluhbe5etZtXop4ypJyCCepGdSgk2FcNgIqKQ5lv/mgr
-         cFJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgsGNcwGtQTx2QDHXn0SqJqYQb4k8nZZyEs7zkN42ahCIZ4g8m70KwWdpeLgH/dXvrS5VScWdyQZTwLMOuxa6JQUlVWbvlavmUTmYcqg==
-X-Gm-Message-State: AOJu0YwbNljEtT7GTTleTeauQGqCWbv/Q3Owh+HOoHiOxgbG0dmMYqOK
-	aifz6AgUTzCBPiAllw2CnSIWxryxo/s4Nn4d2DOp3TCWYUQj0SicBUtZxtcpVMPpXiLC1OPT7MV
-	6CQ==
-X-Google-Smtp-Source: AGHT+IGTqFQO1W9uWgNfx86uFJoJR25380gE+MX0EH8aoPTaRHgwGtgxURTOkAOuuR3wa2vaOk4BcpKiUBQ=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:660c:b0:62f:f535:f2c with SMTP id
- 00721157ae682-62ff53512f5mr5078687b3.2.1718205771477; Wed, 12 Jun 2024
- 08:22:51 -0700 (PDT)
-Date: Wed, 12 Jun 2024 08:22:49 -0700
-In-Reply-To: <20240419112432.GB2972@willie-the-truck>
-Mime-Version: 1.0
-References: <20240405115815.3226315-1-pbonzini@redhat.com> <20240405115815.3226315-2-pbonzini@redhat.com>
- <20240412104408.GA27645@willie-the-truck> <86jzl2sovz.wl-maz@kernel.org>
- <ZhlLHtfeSHk9gRRO@google.com> <86h6g5si0m.wl-maz@kernel.org>
- <Zh1d94Pl6gneVoDd@google.com> <20240418141932.GA1855@willie-the-truck>
- <ZiF6NgGYLSsPNEOg@google.com> <20240419112432.GB2972@willie-the-truck>
-Message-ID: <Zmm9SdVfg18RECT5@google.com>
-Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
-From: Sean Christopherson <seanjc@google.com>
-To: Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzqs10cqhz3cb7;
+	Thu, 13 Jun 2024 01:56:05 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id ADF7F614E9;
+	Wed, 12 Jun 2024 15:55:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AEC7C4DDE4;
+	Wed, 12 Jun 2024 15:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718207757;
+	bh=OGohKvk0MjWf9+Q8+mvrBX+1BAlKKRyUXLbfH75xyb4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=kYWVzenO6v46dav7m+6VeeBQvWtkfZ2ijSROLzZNF2xhVox8NT4g6D7nEQ7Yr1CvD
+	 QbMqbzoNwKvtHxN4oOUSJGsdzFSOiqxLCA02gKqMCQ7TCsZzzusBONx5M/RWdCVpV3
+	 EiLccKqgRHfAnZUsG10WiKCsIr5ffuOoIqg1qhcsU6IhDG8FGsX5pkowWNVMy10FlC
+	 cn2EJB/8N7UtSBq02dCqRuSQs3PZ1MDiLAg7XtxdpzyjShLg11I47hWenlonizyvmL
+	 MeVPPNyid+I2VhiIZBpPj5WbK56sRWz78MH6UY8PKtaaCMSFrdgOOixPo+5vEX+bSG
+	 8/iqEXeUVgsUQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 61107C43618;
+	Wed, 12 Jun 2024 15:55:57 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [f2fs-dev] [PATCH] tracing/treewide: Remove second parameter of
+ __assign_str()
+From: patchwork-bot+f2fs@kernel.org
+Message-Id:  <171820775738.32393.13116890369510221266.git-patchwork-notify@kernel.org>
+Date: Wed, 12 Jun 2024 15:55:57 +0000
+References: <20240516133454.681ba6a0@rorschach.local.home>
+In-Reply-To: <20240516133454.681ba6a0@rorschach.local.home>
+To: Steven Rostedt <rostedt@goodmis.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,85 +63,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Marc Zyngier <maz@kernel.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, linux-usb@vger.kernel.org, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, brcm80211@lists.linux.dev, ath10k@lists.infradead.org, linux-xfs@vger.kernel.org, dev@openvswitch.org, linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org, linux-pm@vger.kernel.org, amd-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, linux-bcachefs@vger.kernel.org, iommu@lists.linux.dev, ath11k@lists.infradead.org, linux-media@vger.kernel.org, freedreno@lists.freedesktop.org, linux-cifs@vger.kernel.org, selinux@vger.kernel.org, linux-arm-msm@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-erofs@lists.ozlabs.org, virtualization@lists.linux.dev, linux-sound@vger.kernel.org, linux-block@vger.kernel.org, ocfs2-devel@lists.linux.dev, mathieu.desnoyers@efficios.com, linux-cxl@vger.kernel.org, linux-tegra@vger.kernel.org, io-uring@vger.kernel.org, linux-edac@vger.kernel.org, linux-hwmon@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com, torvalds@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, Julia.Lawall@inria.fr, ath12k@lists.infradead.org, tipc-discussion@lists.sourceforge.net, mhiramat@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-wpan@vger.kernel.org, linux-nfs@vger.kernel.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 19, 2024, Will Deacon wrote:
-> On Thu, Apr 18, 2024 at 12:53:26PM -0700, Sean Christopherson wrote:
-> > On Thu, Apr 18, 2024, Will Deacon wrote:
-> > > > I assume the idea would be to let arch code do single-page invalidations of
-> > > > stage-2 entries for each gfn?
-> > > 
-> > > Right, as it's the only code which knows which ptes actually ended up
-> > > being aged.
-> > > 
-> > > > Unless I'm having a brain fart, x86 can't make use of that functionality.  Intel
-> > > > doesn't provide any way to do targeted invalidation of stage-2 mappings.  AMD
-> > > > provides an instruction to do broadcast invalidations, but it takes a virtual
-> > > > address, i.e. a stage-1 address.  I can't tell if it's a host virtual address or
-> > > > a guest virtual address, but it's a moot point because KVM doen't have the guest
-> > > > virtual address, and if it's a host virtual address, there would need to be valid
-> > > > mappings in the host page tables for it to work, which KVM can't guarantee.
-> > > 
-> > > Ah, so it sounds like it would need to be an arch opt-in then.
-> > 
-> > Even if x86 (or some other arch code) could use the precise tracking, I think it
-> > would make sense to have the behavior be arch specific.  Adding infrastructure
-> > to get information from arch code, only to turn around and give it back to arch
-> > code would be odd.
-> 
-> Sorry, yes, that's what I had in mind. Basically, a way for the arch code
-> to say "I've handled the TLBI, don't worry about it."
-> 
-> > Unless arm64 can't do the invalidation immediately after aging the stage-2 PTE,
-> > the best/easiest solution would be to let arm64 opt out of the common TLB flush
-> > when a SPTE is made young.
-> > 
-> > With the range-based flushing bundled in, this?
-> > 
-> > ---
-> >  include/linux/kvm_host.h |  2 ++
-> >  virt/kvm/kvm_main.c      | 40 +++++++++++++++++++++++++---------------
-> >  2 files changed, 27 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index afbc99264ffa..8fe5f5e16919 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -2010,6 +2010,8 @@ extern const struct kvm_stats_header kvm_vcpu_stats_header;
-> >  extern const struct _kvm_stats_desc kvm_vcpu_stats_desc[];
-> >  
-> >  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
-> > +int kvm_arch_flush_tlb_if_young(void);
-> > +
-> >  static inline int mmu_invalidate_retry(struct kvm *kvm, unsigned long mmu_seq)
-> >  {
-> >  	if (unlikely(kvm->mmu_invalidate_in_progress))
-> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > index 38b498669ef9..5ebef8ef239c 100644
-> > --- a/virt/kvm/kvm_main.c
-> > +++ b/virt/kvm/kvm_main.c
-> > @@ -595,6 +595,11 @@ static void kvm_null_fn(void)
-> >  }
-> >  #define IS_KVM_NULL_FN(fn) ((fn) == (void *)kvm_null_fn)
-> >  
-> > +int __weak kvm_arch_flush_tlb_if_young(void)
-> > +{
-> > +	return true;
-> > +}
-> 
-> I tend to find __weak functions a little ugly, but I think the gist of the
-> diff looks good to me. Thanks for putting it together!
+Hello:
 
-Circling back to this, I don't think we should pursue this specific tweak, at
-least not without hard data for a concrete use case.
+This patch was applied to jaegeuk/f2fs.git (dev)
+by Steven Rostedt (Google) <rostedt@goodmis.org>:
 
-The clear_flush_young() hook is the only callback that overloads the return value,
-e.g. for invalidate_range_start(), arch code can simply return false if the flush
-has already been performed.
+On Thu, 16 May 2024 13:34:54 -0400 you wrote:
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> 
+> [
+>    This is a treewide change. I will likely re-create this patch again in
+>    the second week of the merge window of v6.10 and submit it then. Hoping
+>    to keep the conflicts that it will cause to a minimum.
+> ]
+> 
+> [...]
 
-And clear_flush_young() _always_ operates on a single page, i.e. the range will
-only ever cover a single page in the primary MMU.  It's obviously possible that
-KVM's MMU has mapped a transparent hugepage using multiple smaller pages, but
-that should be relatively uncommon, and probably not worth optimizing for.
+Here is the summary with links:
+  - [f2fs-dev] tracing/treewide: Remove second parameter of __assign_str()
+    https://git.kernel.org/jaegeuk/f2fs/c/2c92ca849fcc
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
