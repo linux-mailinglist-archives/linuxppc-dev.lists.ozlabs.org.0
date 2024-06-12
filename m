@@ -2,73 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056E59059F9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 19:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6511905B87
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jun 2024 20:52:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=VWQtyiqO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AL1cUtHJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Vzszx0222z3cYV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 03:32:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4VzvmM54PXz3c13
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 04:52:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=VWQtyiqO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AL1cUtHJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3cdtpzgykdao2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzsz96fhlz3cRY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 03:31:32 +1000 (AEST)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-6e73d656bd0so53631a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jun 2024 10:31:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718213490; x=1718818290; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZttrWbEybPZrU6j9LIdJZge1/Pd2kmv/UPX9FdzbJ4o=;
-        b=VWQtyiqOtoP7BUQxG/zaxSCHZB8IKGUWnZiYnRL7b+s+tiin6qmVKHTz6cXurWssxd
-         rl4aVgGbXxjOXvH6VgIWRJ+UcStBb+rqfyFxQItaesUWkcBsZZxmgRBAZWqLbTOrokY0
-         hsIgW6B3bKM40oc2qEC5WeyrEDGfETZbc6jD8oQ85PAW0OV+W+na/juMbZ9oMeYbOdoD
-         HQdhQonQxjESEefj08z5m5DWS/O+z86URCknjlw6WC1UVY33f7lN+/PBRPv/KhTEIYw8
-         Vtl4qgF48evTNWJiP9gU/k5w5z/FFo1dqqkN+IbPbZhSqb1Z2i+0cIgimYP1CGPzvnSN
-         1PDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718213490; x=1718818290;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZttrWbEybPZrU6j9LIdJZge1/Pd2kmv/UPX9FdzbJ4o=;
-        b=WbPu56E3JTBEP2oFL3fOJj7PpzCVZ94aVPDMtW/BeWLu4XDSUJIErGjdcEbwiOd1Hg
-         QWoSJIbWixHsf+V5ahaLvzApKuXl9VLPQMSNpkhSgdlEqpnhlCFOQydf0bMxJf0bJL7Y
-         SeCTrix4xPIiIPz/MJCps9S4hj3pHQtMMZh9RswIT/1QKwhbxXt09n4pdyT8Jw/QW+Tf
-         mbeovUwuh5LooMMYqJjybcGIuU4BRYxLx7Ju6gvMBxtyUVViw1Q0G1PCgVDJcJ4+xOLt
-         RooxIsgEfGmG/VW8yhwIUDwIqYfFs0xtVkfal5l820dUlWr2WO6Dj8uQNx2Go28LARBF
-         onSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsWDzV8RaBecMMWlv+BqbQEUJjMqKCvCZOzQL8KYsUXhXBtYRhi1LDTcbPiuVjU6kHiIaBY0ZmtXlyJXfl4FxqAHeBUgScwr9Tx2noEg==
-X-Gm-Message-State: AOJu0Yy3YVLQHBbsdYaJ8KqxW/wpjG2c98Fk3AI88Cau8GOno2K+9EtG
-	5C0vXOC410/a49uzpmB4Hy4i5JGSMEmfFeW49IN7OdwS3ETbtZn8qyvZpBTyHCBbHPW0hvpgyaj
-	M3g==
-X-Google-Smtp-Source: AGHT+IEfEUqjAJd5HwtcI3SellD9wJyKICC45AOG2hDSPfUBXvAeRlQriWUGwdY0fjJOl8E1dOYOBVVBc8s=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:182:b0:1f3:4b2a:1acb with SMTP id
- d9443c01a7336-1f83b23ddb1mr79315ad.0.1718213489334; Wed, 12 Jun 2024 10:31:29
- -0700 (PDT)
-Date: Wed, 12 Jun 2024 10:31:27 -0700
-In-Reply-To: <Zmm9SdVfg18RECT5@google.com>
-Mime-Version: 1.0
-References: <20240405115815.3226315-2-pbonzini@redhat.com> <20240412104408.GA27645@willie-the-truck>
- <86jzl2sovz.wl-maz@kernel.org> <ZhlLHtfeSHk9gRRO@google.com>
- <86h6g5si0m.wl-maz@kernel.org> <Zh1d94Pl6gneVoDd@google.com>
- <20240418141932.GA1855@willie-the-truck> <ZiF6NgGYLSsPNEOg@google.com>
- <20240419112432.GB2972@willie-the-truck> <Zmm9SdVfg18RECT5@google.com>
-Message-ID: <Zmnbb-Xlyz4VXNHI@google.com>
-Subject: Re: [PATCH 1/4] KVM: delete .change_pte MMU notifier callback
-From: Sean Christopherson <seanjc@google.com>
-To: Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Vzvlc1DxSz30WC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 04:51:39 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45CI6I8i021160;
+	Wed, 12 Jun 2024 18:51:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:content-transfer-encoding
+	:mime-version; s=pp1; bh=9Ob/qXrjqJAceSoyxB449ZMXx3laWo8V/LAGxnO
+	iFvY=; b=AL1cUtHJFTKXNwbaBrGQdFBW6szx73qKo6wnarT3H7z7KT/Z47JxY0F
+	hzN5f7ECicPi2FuidPTsJ7t6S5TRVQugAxomrw+Rr6gG7zt633H1g7gQ3FjH9bx3
+	HjJKxTGx2DjvkCzok1ah5jSTu4z8j1KXsh/49HI6VofUmrVm5xNF7N1+Oe4+jiQT
+	oAAYrbQCaVI4hJ7+Uvh9plmoXO04vDSt4N4dTffWb8d61M7XCJOTkcqW3svHM8Wk
+	cQmNQ/hR0mqOf2t31MhXUOP6D3ueFBbm5Hs3m+3axeJBb7Dltv2J7N+7u3aAzPpq
+	2iKEqhkCer76jXI1s7SWttXmEfs8Akw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yqg490761-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 18:51:15 +0000 (GMT)
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45CIpFXU020173;
+	Wed, 12 Jun 2024 18:51:15 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yqg49075y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 18:51:15 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45CHfX85023575;
+	Wed, 12 Jun 2024 18:51:14 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yn3umreek-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 18:51:14 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45CIp8js49283424
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Jun 2024 18:51:10 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E1E020040;
+	Wed, 12 Jun 2024 18:51:08 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 62B3E2004E;
+	Wed, 12 Jun 2024 18:51:05 +0000 (GMT)
+Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.ibm.com (unknown [9.124.218.62])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Jun 2024 18:51:05 +0000 (GMT)
+From: "Nysal Jan K.A." <nysal@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 0/2] Skip offline cores when enabling SMT on PowerPC
+Date: Thu, 13 Jun 2024 00:20:36 +0530
+Message-ID: <20240612185046.1826891-1-nysal@linux.ibm.com>
+X-Mailer: git-send-email 2.45.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: A8EvnlEsFP_fq-jmA-CGzT_5k9TZM_oG
+X-Proofpoint-ORIG-GUID: 2qjCPoA-xRvzEyff9YZjmR_nt2ylZ3Ry
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_09,2024-06-12_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 mlxscore=0 mlxlogscore=901
+ impostorscore=0 suspectscore=0 spamscore=0 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406120131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,84 +97,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Marc Zyngier <maz@kernel.org>, linux-trace-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-perf-users@vger.kernel.org, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, "Nysal Jan K.A" <nysal@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 12, 2024, Sean Christopherson wrote:
-> On Fri, Apr 19, 2024, Will Deacon wrote:
-> > On Thu, Apr 18, 2024 at 12:53:26PM -0700, Sean Christopherson wrote:
-> > > On Thu, Apr 18, 2024, Will Deacon wrote:
-> > > > > I assume the idea would be to let arch code do single-page invalidations of
-> > > > > stage-2 entries for each gfn?
-> > > > 
-> > > > Right, as it's the only code which knows which ptes actually ended up
-> > > > being aged.
-> > > > 
-> > > > > Unless I'm having a brain fart, x86 can't make use of that functionality.  Intel
-> > > > > doesn't provide any way to do targeted invalidation of stage-2 mappings.  AMD
-> > > > > provides an instruction to do broadcast invalidations, but it takes a virtual
-> > > > > address, i.e. a stage-1 address.  I can't tell if it's a host virtual address or
-> > > > > a guest virtual address, but it's a moot point because KVM doen't have the guest
-> > > > > virtual address, and if it's a host virtual address, there would need to be valid
-> > > > > mappings in the host page tables for it to work, which KVM can't guarantee.
-> > > > 
-> > > > Ah, so it sounds like it would need to be an arch opt-in then.
-> > > 
-> > > Even if x86 (or some other arch code) could use the precise tracking, I think it
-> > > would make sense to have the behavior be arch specific.  Adding infrastructure
-> > > to get information from arch code, only to turn around and give it back to arch
-> > > code would be odd.
-> > 
-> > Sorry, yes, that's what I had in mind. Basically, a way for the arch code
-> > to say "I've handled the TLBI, don't worry about it."
-> > 
-> > > Unless arm64 can't do the invalidation immediately after aging the stage-2 PTE,
-> > > the best/easiest solution would be to let arm64 opt out of the common TLB flush
-> > > when a SPTE is made young.
-> > > 
-> > > With the range-based flushing bundled in, this?
-> > > 
-> > > ---
-> > >  include/linux/kvm_host.h |  2 ++
-> > >  virt/kvm/kvm_main.c      | 40 +++++++++++++++++++++++++---------------
-> > >  2 files changed, 27 insertions(+), 15 deletions(-)
-> > > 
-> > > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > > index afbc99264ffa..8fe5f5e16919 100644
-> > > --- a/include/linux/kvm_host.h
-> > > +++ b/include/linux/kvm_host.h
-> > > @@ -2010,6 +2010,8 @@ extern const struct kvm_stats_header kvm_vcpu_stats_header;
-> > >  extern const struct _kvm_stats_desc kvm_vcpu_stats_desc[];
-> > >  
-> > >  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
-> > > +int kvm_arch_flush_tlb_if_young(void);
-> > > +
-> > >  static inline int mmu_invalidate_retry(struct kvm *kvm, unsigned long mmu_seq)
-> > >  {
-> > >  	if (unlikely(kvm->mmu_invalidate_in_progress))
-> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > > index 38b498669ef9..5ebef8ef239c 100644
-> > > --- a/virt/kvm/kvm_main.c
-> > > +++ b/virt/kvm/kvm_main.c
-> > > @@ -595,6 +595,11 @@ static void kvm_null_fn(void)
-> > >  }
-> > >  #define IS_KVM_NULL_FN(fn) ((fn) == (void *)kvm_null_fn)
-> > >  
-> > > +int __weak kvm_arch_flush_tlb_if_young(void)
-> > > +{
-> > > +	return true;
-> > > +}
-> > 
-> > I tend to find __weak functions a little ugly, but I think the gist of the
-> > diff looks good to me. Thanks for putting it together!
-> 
-> Circling back to this, I don't think we should pursue this specific tweak, at
-> least not without hard data for a concrete use case.
+From: "Nysal Jan K.A" <nysal@linux.ibm.com>
 
-Ha, I spoke too soon.  Based on the learning from the KVM+MGLRU thread[*], it
-looks like KVM should omit the TLB flush when aging pages whenever possible.  If
-that's not doable on all architectures for whatever reason, then something like
-this is probably the way to go.
+After the addition of HOTPLUG_SMT support for PowerPC [1] there was a
+regression reported [2] when enabling SMT. On a system with at least
+one offline core, when enabling SMT, the expectation is that no CPUs
+of offline cores are made online.
 
-[*] https://lore.kernel.org/all/CAOUHufYCmYNngmS=rOSAQRB0N9ai+mA0aDrB9RopBvPHEK42Ng@mail.gmail.com
+On a POWER9 system with 4 cores in SMT4 mode:
+$ ppc64_cpu --info
+Core   0:    0*    1*    2*    3*
+Core   1:    4*    5*    6*    7*
+Core   2:    8*    9*   10*   11*
+Core   3:   12*   13*   14*   15*
+
+Turn only one core on:
+$ ppc64_cpu --cores-on=1
+$ ppc64_cpu --info
+Core   0:    0*    1*    2*    3*
+Core   1:    4     5     6     7
+Core   2:    8     9    10    11
+Core   3:   12    13    14    15
+
+Change the SMT level to 2:
+$ ppc64_cpu --smt=2
+$ ppc64_cpu --info
+Core   0:    0*    1*    2     3
+Core   1:    4     5     6     7
+Core   2:    8     9    10    11
+Core   3:   12    13    14    15
+
+As expected we see only two CPUs of core 0 are online
+
+Change the SMT level to 4:
+$ ppc64_cpu --smt=4
+$ ppc64_cpu --info
+Core   0:    0*    1*    2*    3*
+Core   1:    4*    5*    6*    7*
+Core   2:    8*    9*   10*   11*
+Core   3:   12*   13*   14*   15*
+
+The CPUs of offline cores are made online. If a core is offline then
+enabling SMT should not online CPUs of this core. An arch specific
+function topology_is_core_online() is proposed to address this.
+Another approach is to check the topology_sibling_cpumask() for any
+online siblings. This avoids the need for an arch specific function
+but is less efficient and more importantly this introduces a change
+in existing behaviour on other architectures.
+
+What is the expected behaviour on x86 when enabling SMT and certain cores
+are offline? 
+
+[1] https://lore.kernel.org/lkml/20230705145143.40545-1-ldufour@linux.ibm.com/
+[2] https://groups.google.com/g/powerpc-utils-devel/c/wrwVzAAnRlI/m/5KJSoqP4BAAJ
+
+Nysal Jan K.A (2):
+  cpu/SMT: Enable SMT only if a core is online
+  powerpc/topology: Check if a core is online
+
+ arch/powerpc/include/asm/topology.h | 13 +++++++++++++
+ kernel/cpu.c                        | 12 +++++++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
+
+
+base-commit: c760b3725e52403dc1b28644fb09c47a83cacea6
+-- 
+2.35.3
+
