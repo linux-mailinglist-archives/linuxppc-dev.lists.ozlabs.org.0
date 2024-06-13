@@ -1,63 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16A6907259
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 14:46:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F7490726C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 14:47:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bY9xcLBc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BuhuVSpb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0McD5sHQz3cXC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 22:46:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0MdG4WfXz3cWy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 22:47:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bY9xcLBc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BuhuVSpb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=qrwz=np=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=qrwz=np=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0MbT6nyLz30Vd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 22:46:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0McZ65LQz30Vd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 22:47:10 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A7A2561883;
-	Thu, 13 Jun 2024 12:46:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D00C4AF1A;
-	Thu, 13 Jun 2024 12:46:12 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4BBA461B24;
+	Thu, 13 Jun 2024 12:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E35C4AF1D;
+	Thu, 13 Jun 2024 12:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718282772;
-	bh=cfCIMolIL0z/9BdLp7c28KYqsd1e4cvIRocOkfmcZ08=;
+	s=k20201202; t=1718282829;
+	bh=Vzv0i5AjIrgsjm2KrIFQ5g0zkd8OKZuFz8J9hczkvVU=;
 	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=bY9xcLBchaDvzrtdUTNy9zOZJ0e7QkpI7+m9/3gM8hLADzknFSH4D6fBgxcOpcDpx
-	 GiqSZqbcWOYscQq8dCZT4gbD5MMWgwcwV9Bx19Z1oPyEFagYMVtQYkQeajrc0mKZvV
-	 Q1ma+nLS/ijqlrxMeuTvflAULxXhYBaNjFm625ScaqWChSiM0NXDBMfUl5vQC8XaHy
-	 zM85sb0bS2Td6Ytkyyh0gVc9idAM4KX3AjzI3NwRf1RoZh0MdxoDDUXVCz7wiSBnZQ
-	 xdXURGSPlYposntJNenfVKaabrc3cAGeKJVVoVKPfNndUFxHLpHuwR8u91TOcKAzmz
-	 I43fU844GD08A==
+	b=BuhuVSpbcTx/eXjea/TKS5UUyJyZDKgBNGNojdYjNvJlbKf8f0REK48qN1G00QK7t
+	 ZvvD3sCDrXWlChEjzvItORVcr37gzulSj0d0CfSPbA83U6r5VftQqojy80MOvG23a1
+	 hY4PfyCfuqcnSaALxQyZ/vHNn0szv9zgi06Lvy5Ymsf4b+QclQogfP1kyeQbjXsHNE
+	 KeoVUHKhGcgsG1cxPpec1vzYgQIEkfZMDItRc5n3MrVKB0vQ1/D9qXOZfEF84mWmDk
+	 L9JoHz+GitlIQlt2tEf+5mTalIBsiIhFOB/1V6xe9T/Fc0cNhX3rsh7C2TcMNBTHJf
+	 6oTzHy6k9vjnw==
 Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 0237CCE3F3B; Thu, 13 Jun 2024 05:46:11 -0700 (PDT)
-Date: Thu, 13 Jun 2024 05:46:11 -0700
+	id B3435CE3F3B; Thu, 13 Jun 2024 05:47:08 -0700 (PDT)
+Date: Thu, 13 Jun 2024 05:47:08 -0700
 From: "Paul E. McKenney" <paulmck@kernel.org>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
  kmem_cache_free callback
-Message-ID: <e06440e2-9121-4c92-8bf2-945977987052@paulmck-laptop>
+Message-ID: <80e03b02-7e24-4342-af0b-ba5117b19828@paulmck-laptop>
 References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
  <20240612143305.451abf58@kernel.org>
  <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
- <Zmov7ZaL-54T9GiM@zx2c4.com>
- <Zmo9-YGraiCj5-MI@zx2c4.com>
- <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
- <Zmrkkel0Fo4_g75a@zx2c4.com>
+ <ZmrfA1p2zSVIaYam@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zmrkkel0Fo4_g75a@zx2c4.com>
+In-Reply-To: <ZmrfA1p2zSVIaYam@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,96 +70,51 @@ Cc: kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 13, 2024 at 02:22:41PM +0200, Jason A. Donenfeld wrote:
-> On Wed, Jun 12, 2024 at 08:38:02PM -0700, Paul E. McKenney wrote:
-> > o	Make the current kmem_cache_destroy() asynchronously wait for
-> > 	all memory to be returned, then complete the destruction.
-> > 	(This gets rid of a valuable debugging technique because
-> > 	in normal use, it is a bug to attempt to destroy a kmem_cache
-> > 	that has objects still allocated.)
+On Thu, Jun 13, 2024 at 01:58:59PM +0200, Jason A. Donenfeld wrote:
+> On Wed, Jun 12, 2024 at 03:37:55PM -0700, Paul E. McKenney wrote:
+> > On Wed, Jun 12, 2024 at 02:33:05PM -0700, Jakub Kicinski wrote:
+> > > On Sun,  9 Jun 2024 10:27:12 +0200 Julia Lawall wrote:
+> > > > Since SLOB was removed, it is not necessary to use call_rcu
+> > > > when the callback only performs kmem_cache_free. Use
+> > > > kfree_rcu() directly.
+> > > > 
+> > > > The changes were done using the following Coccinelle semantic patch.
+> > > > This semantic patch is designed to ignore cases where the callback
+> > > > function is used in another way.
+> > > 
+> > > How does the discussion on:
+> > >   [PATCH] Revert "batman-adv: prefer kfree_rcu() over call_rcu() with free-only callbacks"
+> > >   https://lore.kernel.org/all/20240612133357.2596-1-linus.luessing@c0d3.blue/
+> > > reflect on this series? IIUC we should hold off..
 > > 
-> > o	Make a kmem_cache_destroy_rcu() that asynchronously waits for
-> > 	all memory to be returned, then completes the destruction.
-> > 	(This raises the question of what to is it takes a "long time"
-> > 	for the objects to be freed.)
+> > We do need to hold off for the ones in kernel modules (such as 07/14)
+> > where the kmem_cache is destroyed during module unload.
+> > 
+> > OK, I might as well go through them...
+> > 
+> > [PATCH 01/14] wireguard: allowedips: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+> > 	Needs to wait, see wg_allowedips_slab_uninit().
 > 
-> These seem like the best two options.
-
-I like them myself, but much depends on how much violence they do to
-the slab subsystem and to debuggability.
-
-> > o	Make a kmem_cache_free_barrier() that blocks until all
-> > 	objects in the specified kmem_cache have been freed.
-> > 
-> > o	Make a kmem_cache_destroy_wait() that waits for all memory to
-> > 	be returned, then does the destruction.  This is equivalent to:
-> > 
-> > 		kmem_cache_free_barrier(&mycache);
-> > 		kmem_cache_destroy(&mycache);
+> Also, notably, this patch needs additionally:
 > 
-> These also seem fine, but I'm less keen about blocking behavior.
+> diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
+> index e4e1638fce1b..c95f6937c3f1 100644
+> --- a/drivers/net/wireguard/allowedips.c
+> +++ b/drivers/net/wireguard/allowedips.c
+> @@ -377,7 +377,6 @@ int __init wg_allowedips_slab_init(void)
+> 
+>  void wg_allowedips_slab_uninit(void)
+>  {
+> -	rcu_barrier();
+>  	kmem_cache_destroy(node_cache);
+>  }
+> 
+> Once kmem_cache_destroy has been fixed to be deferrable.
+> 
+> I assume the other patches are similar -- an rcu_barrier() can be
+> removed. So some manual meddling of these might be in order.
 
-One advantage of the blocking behavior is that it pinpoints memory
-leaks from that slab.  On the other hand, one can argue that you want
-this to block during testing but to be asynchronous in production.
-Borrowing someone else's hand, there are probably lots of other arguments
-one can make.
-
-> Though, along the ideas of kmem_cache_destroy_rcu(), you might also
-> consider renaming this last one to kmem_cache_destroy_rcu_wait/barrier().
-> This way, it's RCU focused, and you can deal directly with the question
-> of, "how long is too long to block/to memleak?"
-
-Good point!
-
-> Specifically what I mean is that we can still claim a memory leak has
-> occurred if one batched kfree_rcu freeing grace period has elapsed since
-> the last call to kmem_cache_destroy_rcu_wait/barrier() or
-> kmem_cache_destroy_rcu(). In that case, you quit blocking, or you quit
-> asynchronously waiting, and then you splat about a memleak like we have
-> now.
-
-How about a kmem_cache_destroy_rcu() that marks that specified cache
-for destruction, and then a kmem_cache_destroy_barrier() that waits?
-
-I took the liberty of adding your name to the Google document [1] and
-adding this section:
-
-	kmem_cache_destroy_rcu/_barrier()
-
-	The idea here is to provide a asynchronous 
-	kmem_cache_destroy_rcu() as described above along with a
-	kmem_cache_destroy_barrier() that waits for the destruction
-	of all prior kmem_cache instances previously passed
-	to kmem_cache_destroy_rcu().  Alternatively,  could
-	return a cookie that could be passed into a later call to
-	kmem_cache_destroy_barrier().  This alternative has the
-	advantage of isolating which kmem_cache instance is suffering
-	the memory leak.
-
-Please let me know if either liberty is in any way problematic.
-
-> But then, if that mechanism generally works, we don't really need a new
-> function and we can just go with the first option of making
-> kmem_cache_destroy() asynchronously wait. It'll wait, as you described,
-> but then we adjust the tail of every kfree_rcu batch freeing cycle to
-> check if there are _still_ any old outstanding kmem_cache_destroy()
-> requests. If so, then we can splat and keep the old debugging info we
-> currently have for finding memleaks.
-
-The mechanism can always be sabotaged by memory-leak bugs on the part
-of the user of the kmem_cache structure in play, right?
-
-OK, but I see your point.  I added this to the existing
-"kmem_cache_destroy() Lingers for kfree_rcu()" section:
-
-	One way of preserving this debugging information is to splat if
-	all of the slab’s memory has not been freed within a reasonable
-	timeframe, perhaps the same 21 seconds that causes an RCU CPU
-	stall warning.
-
-Does that capture it?
+Assuming that the deferrable kmem_cache_destroy() is the option chosen,
+agreed.
 
 							Thanx, Paul
-
-[1] https://docs.google.com/document/d/1v0rcZLvvjVGejT3523W0rDy_sLFu2LWc_NR3fQItZaA/edit?usp=sharing
