@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C43907E7E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 00:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 269FE907E85
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 00:03:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0bwq08wqz3cYg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 08:02:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0by70cvCz3fmj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 08:03:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
@@ -14,13 +14,13 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0P4z3NFcz30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 23:53:23 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4W0Ncw5QKGzwTS8;
-	Thu, 13 Jun 2024 21:32:32 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0P536y2nz30T9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 23:53:27 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4W0Ncy4kpHzxSCx;
+	Thu, 13 Jun 2024 21:32:34 +0800 (CST)
 Received: from dggpeml500012.china.huawei.com (unknown [7.185.36.15])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0E8DA180069;
+	by mail.maildlp.com (Postfix) with ESMTPS id 5229B140258;
 	Thu, 13 Jun 2024 21:36:40 +0800 (CST)
 Received: from localhost.localdomain (10.67.175.61) by
  dggpeml500012.china.huawei.com (7.185.36.15) with Microsoft SMTP Server
@@ -35,10 +35,12 @@ To: <rostedt@goodmis.org>, <mhiramat@kernel.org>, <mark.rutland@arm.com>,
 	<masahiroy@kernel.org>, <nathan@kernel.org>, <nicolas@fjasle.eu>,
 	<kees@kernel.org>, <james.clark@arm.com>, <kent.overstreet@linux.dev>,
 	<yhs@fb.com>, <jpoimboe@kernel.org>, <peterz@infradead.org>
-Subject: [PATCH 0/6] kallsyms: Emit symbol for holes in text and fix weak function issue
-Date: Thu, 13 Jun 2024 21:37:05 +0800
-Message-ID: <20240613133711.2867745-1-zhengyejian1@huawei.com>
+Subject: [PATCH 1/6] kallsyms: Optimize multiple times of realloc() to one time of malloc()
+Date: Thu, 13 Jun 2024 21:37:06 +0800
+Message-ID: <20240613133711.2867745-2-zhengyejian1@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240613133711.2867745-1-zhengyejian1@huawei.com>
+References: <20240613133711.2867745-1-zhengyejian1@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -61,85 +63,86 @@ Cc: zhengyejian1@huawei.com, linux-kbuild@vger.kernel.org, linux-kernel@vger.ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ftrace_location() was changed to not only return the __fentry__ location
-when called for the __fentry__ location, but also when called for the
-sym+0 location after commit aebfd12521d9 ("x86/ibt,ftrace: Search for
-__fentry__ location"). That is, if sym+0 location is not __fentry__,
-ftrace_location() would find one over the entire size of the sym.
+Array 'table' is used to store pointers of symbols that read from in.map
+file, and its size depends on the number of symbols. Currently 'table'
+is expanded by calling realloc() every 10000 symbols read.
 
-However, there is case that more than one __fentry__ exist in the sym
-range (described below) and ftrace_location() would find wrong __fentry__
-location by binary searching, which would cause its users like livepatch/
-kprobe/bpf to not work properly on this sym!
+However, there generally are around 100000+ symbols, which means that
+the expansion is generally 10+ times.
 
-The case is that, based on current compiler behavior, suppose:
- - function A is followed by weak function B1 in same binary file;
- - weak function B1 is overridden by function B2;
-Then in the final binary file:
- - symbol B1 will be removed from symbol table while its instructions are
-   not removed;
- - __fentry__ of B1 will be still in __mcount_loc table;
- - function size of A is computed by substracting the symbol address of
-   A from its next symbol address (see kallsyms_lookup_size_offset()),
-   but because symbol info of B1 is removed, the next symbol of A is
-   originally the next symbol of B1. See following example, function
-   sizeof A will be (symbol_address_C - symbol_address_A):
+As an optimization, introduce linked list 'sym_list' to associate and
+count all symbols, then store them into 'table' at one time.
 
-     symbol_address_A
-     symbol_address_B1 (Not in symbol table)
-     symbol_address_C
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+---
+ scripts/kallsyms.c | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
 
-The weak function issue has been discovered in commit b39181f7c690
-("ftrace: Add FTRACE_MCOUNT_MAX_OFFSET to avoid adding weak function")
-but it didn't resolve the issue in ftrace_location().
-
-Peter suggested to use entry size for FUNC type objects to find holes in
-the text and fill them with a symbol, then check the mcount locations
-against the symbol table and for every one that falls in a hole [1] [2].
-
-What the patch set does is described as follows:
-
-- Patch 1: Do an optimization for scripts/kallsym.c about memory allocation
-  when read symbols from file. This patch has little to do with the above
-  issue, but since I changed this script, so it also can be reviewed here;
-
-- Patch 2: Change scripts/kallsyms.c to emit a symbol where there is a hole
-  in the text, the symbol name is temporarily named "__hole_symbol_XXXXX";
-
-- Patch 3: When lookup symbols in module, use entry size info to determine
-  the exact boundaries of a function symbol;
-
-- Patch 4: Holes in text have been found in previous patches, now check
-  __fentry__ in mcount table and skip those locate in the holes;
-
-- Patch 5: Accidentally found a out-of-bound issue when all __fentry__
-  are skipped, so fix it;
-
-- Patch 6: Revert Steve's patch about the FTRACE_MCOUNT_MAX_OFFSET
-  solution, also two related definition for powerpc.
-
-[1] https://lore.kernel.org/all/20240607150228.GR8774@noisy.programming.kicks-ass.net/
-[2] https://lore.kernel.org/all/20240611092157.GU40213@noisy.programming.kicks-ass.net/
-
-Zheng Yejian (6):
-  kallsyms: Optimize multiple times of realloc() to one time of malloc()
-  kallsyms: Emit symbol at the holes in the text
-  module: kallsyms: Determine exact function size
-  ftrace: Skip invalid __fentry__ in ftrace_process_locs()
-  ftrace: Fix possible out-of-bound issue in ftrace_process_locs()
-  ftrace: Revert the FTRACE_MCOUNT_MAX_OFFSET workaround
-
- arch/powerpc/include/asm/ftrace.h |   7 --
- arch/x86/include/asm/ftrace.h     |   7 --
- include/linux/kallsyms.h          |  13 +++
- include/linux/module.h            |  14 +++
- kernel/module/kallsyms.c          |  42 ++++++--
- kernel/trace/ftrace.c             | 174 ++++++------------------------
- scripts/kallsyms.c                | 134 ++++++++++++++++++++---
- scripts/link-vmlinux.sh           |   4 +-
- scripts/mksysmap                  |   2 +-
- 9 files changed, 216 insertions(+), 181 deletions(-)
-
+diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+index 47978efe4797..6559a9802f6e 100644
+--- a/scripts/kallsyms.c
++++ b/scripts/kallsyms.c
+@@ -33,6 +33,7 @@
+ #define KSYM_NAME_LEN		512
+ 
+ struct sym_entry {
++	struct sym_entry *next;
+ 	unsigned long long addr;
+ 	unsigned int len;
+ 	unsigned int seq;
+@@ -60,7 +61,8 @@ static struct addr_range percpu_range = {
+ };
+ 
+ static struct sym_entry **table;
+-static unsigned int table_size, table_cnt;
++static struct sym_entry *sym_list;
++static unsigned int table_cnt;
+ static int all_symbols;
+ static int absolute_percpu;
+ static int base_relative;
+@@ -273,6 +275,7 @@ static void read_map(const char *in)
+ 	struct sym_entry *sym;
+ 	char *buf = NULL;
+ 	size_t buflen = 0;
++	int i;
+ 
+ 	fp = fopen(in, "r");
+ 	if (!fp) {
+@@ -286,18 +289,22 @@ static void read_map(const char *in)
+ 			continue;
+ 
+ 		sym->start_pos = table_cnt;
+-
+-		if (table_cnt >= table_size) {
+-			table_size += 10000;
+-			table = realloc(table, sizeof(*table) * table_size);
+-			if (!table) {
+-				fprintf(stderr, "out of memory\n");
+-				fclose(fp);
+-				exit (1);
+-			}
+-		}
+-
+-		table[table_cnt++] = sym;
++		table_cnt++;
++		sym->next = sym_list;
++		sym_list = sym;
++	}
++	table = malloc(sizeof(*table) * table_cnt);
++	if (!table) {
++		fprintf(stderr, "unable to allocate memory for table\n");
++		free(buf);
++		fclose(fp);
++		exit(EXIT_FAILURE);
++	}
++	sym = sym_list;
++	i = table_cnt - 1;
++	while (sym) {
++		table[i--] = sym;
++		sym = sym->next;
+ 	}
+ 
+ 	free(buf);
 -- 
 2.25.1
 
