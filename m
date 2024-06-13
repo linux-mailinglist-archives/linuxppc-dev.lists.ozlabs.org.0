@@ -1,88 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0CA906983
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 11:59:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE92906A88
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 12:56:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Eaez8/Kh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CcTrZmH2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0HvC5l0dz3bt2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 19:59:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0K9B5N54z3cVs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 20:56:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Eaez8/Kh;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CcTrZmH2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=anjalik@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0HtV5ZSfz2yPq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 19:58:58 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45D6thG7032539;
-	Thu, 13 Jun 2024 09:58:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	NX5lqMzd73Wf/iScgdKHGy4thD9g/Th8Qnam2M7cSAY=; b=Eaez8/KhrBZy5dIC
-	X5oQXBnGT2QIqu6t9aieoimz8c8ARs8NkY2mbJr7pTd49VpFL/j1e0ooj4fL3pWX
-	Ek3C0I4d1F7zKNLXCeAqemJXdKFMrzUUKf9IiJjwRwAeGAA8W+WpCtwL9BAMayQ+
-	XXelbjgyOdjU10SymMwxtoW7vML3g7dR44fp5o6ilh9sxcgfBu35pVDewVzzM2uN
-	5PAw4g8EuIehwgCS+dHfMBD1uHAIoOA631UlgTHA/7TYYGJJ/E6ThozSPxBZp6hB
-	ul1LYaUapRh9W7CMCWwTlPUkXC+wv/JMa+H6Mm8JhEEDD0SO0/15XIQWpw5iCKDN
-	3vQ8Cg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yqppr14xq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Jun 2024 09:58:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45D9ZnaO003881;
-	Thu, 13 Jun 2024 09:58:51 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yn2mq651x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Jun 2024 09:58:51 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45D9wjNC42205444
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Jun 2024 09:58:48 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DFAC120067;
-	Thu, 13 Jun 2024 09:58:45 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2405320063;
-	Thu, 13 Jun 2024 09:58:44 +0000 (GMT)
-Received: from [9.43.110.171] (unknown [9.43.110.171])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Jun 2024 09:58:43 +0000 (GMT)
-Message-ID: <aacde694-d3fe-4667-a67a-0472b76d94c9@linux.ibm.com>
-Date: Thu, 13 Jun 2024 15:28:42 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] powerpc/perf: Set cpumode flags using sample address
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-References: <20240528040356.2722275-1-anjalik@linux.ibm.com>
-Content-Language: en-US
-From: Anjali K <anjalik@linux.ibm.com>
-In-Reply-To: <20240528040356.2722275-1-anjalik@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5OVoDIJwulQy_U8MT1Cga53Pnf_oQ7N-
-X-Proofpoint-GUID: 5OVoDIJwulQy_U8MT1Cga53Pnf_oQ7N-
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0K8R12jnz30TZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 20:56:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1718276167;
+	bh=aeaFWlKbMkYQWJHoJBHcj/gpPULZP3g/VUesCefZyL8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CcTrZmH2G4VorT9I1SUm21UKRDH2lB0KXeAK1y0H/yiEQAFuGwVNQAvQ4gW6h6neu
+	 qqEgq6E90iW/xTX3pX1XkfZTXrYIq+8+OobzCactVht7N6eYUZbRnudM0EsraHQNDA
+	 yOTzMIS+DapgJBkPUnukjl2zSucfbKv08jpgjuCO7jxqasekj7pZG4TbwN/NutZ6WR
+	 f3PFPtLNfnRXM8iyCiSnePU+uuEHcvi9a+WMYggr3Q6pPF9CAZsiy8/OAazlbrpC+2
+	 oI2Hf5HLHSS3FGztDx77VOrVIywoSDSBoY/8rzjHoVJdzmljaZd0E4W0OMFbG0pl0f
+	 6KSdZwLTo959Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0K8Q2XSRz4wbr;
+	Thu, 13 Jun 2024 20:56:06 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>, Al Viro
+ <viro@zeniv.linux.org.uk>
+Subject: Re: [RFC] potential UAF in kvm_spapr_tce_attach_iommu_group() (was
+ Re: [PATCH 11/19] switch simple users of fdget() to CLASS(fd, ...))
+In-Reply-To: <CAHk-=wgf4yN4gGsGQOTBR_xE0q-9fB04omufZk2gnBRZ0Ywbiw@mail.gmail.com>
+References: <20240607015656.GX1629371@ZenIV>
+ <20240607015957.2372428-1-viro@zeniv.linux.org.uk>
+ <20240607015957.2372428-11-viro@zeniv.linux.org.uk>
+ <20240607-gelacht-enkel-06a7c9b31d4e@brauner>
+ <20240607161043.GZ1629371@ZenIV> <20240607210814.GC1629371@ZenIV>
+ <20240610024437.GA1464458@ZenIV>
+ <CAHk-=wgf4yN4gGsGQOTBR_xE0q-9fB04omufZk2gnBRZ0Ywbiw@mail.gmail.com>
+Date: Thu, 13 Jun 2024 20:56:03 +1000
+Message-ID: <878qz9p0vw.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-13_02,2024-06-13_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406130070
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,161 +66,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Alexey Kardashevskiy <aik@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
-Can you please share your review comments on this patch when you get a chance?
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> On Sun, 9 Jun 2024 at 19:45, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>>
+>> Unless I'm misreading that code (entirely possible), this fdput() shouldn't
+>> be done until we are done with stt.
+>
+> Ack. That looks right to me.
+>
+> If I follow it right, the lifetime of stt is tied to the lifetime of
+> the file (plus RCU), so doing fdput early and then dropping the RCU
+> lock means that stt may not be valid any more later.
 
-On 28/05/24 09:33, Anjali K wrote:
-> Currently in some cases, when the sampled instruction address register
-> latches to a specific address during sampling, the privilege bits captured
-> in the sampled event register are incorrect.
-> For example, a snippet from the perf report on a power10 system is:
-> Overhead  Address             Command       Shared Object      Symbol
-> ........  ..................  ............  .................  .......................
->      2.41%  0x7fff9f94a02c      null_syscall  [unknown]          [k] 0x00007fff9f94a02c
->      2.20%  0x7fff9f94a02c      null_syscall  libc.so.6          [.] syscall
->
-> perf_get_misc_flags() function looks at the privilege bits to return the
-> corresponding flags to be used for the address symbol and these privilege
-> bit details are read from the sampled event register. In the above snippet,
-> address "0x00007fff9f94a02c" is shown as "k" (kernel) due to the incorrect
-> privilege bits captured in the sampled event register.
-> To address this case check whether the sampled address is in the kernel
-> area. Since this is specific to the latest platform, a new pmu flag is
-> added called "PPMU_P10" and is used to contain the proposed fix.
-> PPMU_P10_DD1 marked events are also included under PPMU_P10, hence
-> remove the code specific to PPMU_P10_DD1 marked events.
->
-> Signed-off-by: Anjali K <anjalik@linux.ibm.com>
-> ---
-> Changelog:
-> v2->v3:
-> Addressed review comments from Michael Ellerman to change the commit 
-> message and update the values of PPMU_P10 and PPMU_HAS_ATTR_CONFIG1 flags
-> to move the PPMU_P10 flag near the PPMU_P10_DD1 flag
-> Rebased on linux 6.10-rc1
-> v2 patch link:
-> https://lore.kernel.org/linuxppc-dev/20240517094607.422166-1-anjalik@linux.ibm.com/
->
-> v1->v2:
-> Fixed the build warning reported by the kernel test bot 
-> Added a new flag PPMU_P10 and used it instead of PPMU_ARCH_31 to restrict
-> the changes to the current platform (Power10)
-> v1 patch link:
-> https://lore.kernel.org/linuxppc-dev/20240511075344.1393631-1-anjalik@linux.ibm.com/
->
->  arch/powerpc/include/asm/perf_event_server.h |  3 +-
->  arch/powerpc/perf/core-book3s.c              | 45 +++++++++-----------
->  arch/powerpc/perf/power10-pmu.c              |  3 +-
->  3 files changed, 23 insertions(+), 28 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/perf_event_server.h b/arch/powerpc/include/asm/perf_event_server.h
-> index e2221d29fdf9..5995614e9062 100644
-> --- a/arch/powerpc/include/asm/perf_event_server.h
-> +++ b/arch/powerpc/include/asm/perf_event_server.h
-> @@ -89,7 +89,8 @@ struct power_pmu {
->  #define PPMU_NO_SIAR		0x00000100 /* Do not use SIAR */
->  #define PPMU_ARCH_31		0x00000200 /* Has MMCR3, SIER2 and SIER3 */
->  #define PPMU_P10_DD1		0x00000400 /* Is power10 DD1 processor version */
-> -#define PPMU_HAS_ATTR_CONFIG1	0x00000800 /* Using config1 attribute */
-> +#define PPMU_P10		0x00000800 /* For power10 pmu */
-> +#define PPMU_HAS_ATTR_CONFIG1	0x00001000 /* Using config1 attribute */
->  
->  /*
->   * Values for flags to get_alternatives()
-> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> index 6b5f8a94e7d8..42867469752d 100644
-> --- a/arch/powerpc/perf/core-book3s.c
-> +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -266,31 +266,12 @@ static inline u32 perf_flags_from_msr(struct pt_regs *regs)
->  static inline u32 perf_get_misc_flags(struct pt_regs *regs)
->  {
->  	bool use_siar = regs_use_siar(regs);
-> -	unsigned long mmcra = regs->dsisr;
-> -	int marked = mmcra & MMCRA_SAMPLE_ENABLE;
-> +	unsigned long siar;
-> +	unsigned long addr;
->  
->  	if (!use_siar)
->  		return perf_flags_from_msr(regs);
->  
-> -	/*
-> -	 * Check the address in SIAR to identify the
-> -	 * privilege levels since the SIER[MSR_HV, MSR_PR]
-> -	 * bits are not set for marked events in power10
-> -	 * DD1.
-> -	 */
-> -	if (marked && (ppmu->flags & PPMU_P10_DD1)) {
-> -		unsigned long siar = mfspr(SPRN_SIAR);
-> -		if (siar) {
-> -			if (is_kernel_addr(siar))
-> -				return PERF_RECORD_MISC_KERNEL;
-> -			return PERF_RECORD_MISC_USER;
-> -		} else {
-> -			if (is_kernel_addr(regs->nip))
-> -				return PERF_RECORD_MISC_KERNEL;
-> -			return PERF_RECORD_MISC_USER;
-> -		}
-> -	}
-> -
->  	/*
->  	 * If we don't have flags in MMCRA, rather than using
->  	 * the MSR, we intuit the flags from the address in
-> @@ -298,19 +279,31 @@ static inline u32 perf_get_misc_flags(struct pt_regs *regs)
->  	 * results
->  	 */
->  	if (ppmu->flags & PPMU_NO_SIPR) {
-> -		unsigned long siar = mfspr(SPRN_SIAR);
-> +		siar = mfspr(SPRN_SIAR);
->  		if (is_kernel_addr(siar))
->  			return PERF_RECORD_MISC_KERNEL;
->  		return PERF_RECORD_MISC_USER;
->  	}
->  
->  	/* PR has priority over HV, so order below is important */
-> -	if (regs_sipr(regs))
-> -		return PERF_RECORD_MISC_USER;
-> -
-> -	if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
-> +	if (regs_sipr(regs)) {
-> +		if (!(ppmu->flags & PPMU_P10))
-> +			return PERF_RECORD_MISC_USER;
-> +	} else if (regs_sihv(regs) && (freeze_events_kernel != MMCR0_FCHV))
->  		return PERF_RECORD_MISC_HYPERVISOR;
->  
-> +	/*
-> +	 * Check the address in SIAR to identify the
-> +	 * privilege levels since the SIER[MSR_HV, MSR_PR]
-> +	 * bits are not set correctly in power10 sometimes
-> +	 */
-> +	if (ppmu->flags & PPMU_P10) {
-> +		siar = mfspr(SPRN_SIAR);
-> +		addr = siar ? siar : regs->nip;
-> +		if (!is_kernel_addr(addr))
-> +			return PERF_RECORD_MISC_USER;
-> +	}
-> +
->  	return PERF_RECORD_MISC_KERNEL;
->  }
->  
-> diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-> index 62a68b6b2d4b..bb57b7cfe640 100644
-> --- a/arch/powerpc/perf/power10-pmu.c
-> +++ b/arch/powerpc/perf/power10-pmu.c
-> @@ -593,7 +593,8 @@ static struct power_pmu power10_pmu = {
->  	.get_mem_weight		= isa207_get_mem_weight,
->  	.disable_pmc		= isa207_disable_pmc,
->  	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S |
-> -				  PPMU_ARCH_31 | PPMU_HAS_ATTR_CONFIG1,
-> +				  PPMU_ARCH_31 | PPMU_HAS_ATTR_CONFIG1 |
-> +				  PPMU_P10,
->  	.n_generic		= ARRAY_SIZE(power10_generic_events),
->  	.generic_events		= power10_generic_events,
->  	.cache_events		= &power10_cache_events,
->
-> base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-Thank you,
-Anjali K
+Yep. I added a sleep after the fdput and was able to get KASAN to catch
+it (below).
+
+I'll send a fix patch tomorrow, just using fdput(), and then the CLASS
+conversion can go on top later.
+
+cheers
+
+
+==================================================================
+BUG: KASAN: slab-use-after-free in kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+Read of size 4 at addr c000200027552c30 by task kvm-vfio/2505
+
+CPU: 54 PID: 2505 Comm: kvm-vfio Not tainted 6.10.0-rc3-next-20240612-dirty #1
+Hardware name: 8335-GTH POWER9 0x4e1202 opal:skiboot-v6.5.3-35-g1851b2a06 PowerNV
+Call Trace:
+[c00020008c2a7860] [c0000000027d4d50] dump_stack_lvl+0xb4/0x108 (unreliable)
+[c00020008c2a78a0] [c00000000072dfa8] print_report+0x2b4/0x6ec
+[c00020008c2a7990] [c00000000072d898] kasan_report+0x118/0x2b0
+[c00020008c2a7aa0] [c00000000072ff38] __asan_load4+0xb8/0xd0
+[c00020008c2a7ac0] [c00800001b343140] kvm_spapr_tce_attach_iommu_group+0x298/0x720 [kvm]
+[c00020008c2a7b90] [c00800001b31d61c] kvm_vfio_set_attr+0x524/0xac0 [kvm]
+[c00020008c2a7c60] [c00800001b3083ec] kvm_device_ioctl+0x144/0x240 [kvm]
+[c00020008c2a7cd0] [c0000000007e052c] sys_ioctl+0x62c/0x1810
+[c00020008c2a7df0] [c000000000038d90] system_call_exception+0x190/0x440
+[c00020008c2a7e50] [c00000000000d15c] system_call_vectored_common+0x15c/0x2ec
+--- interrupt: 3000 at 0x7fff8af5bedc
+NIP:  00007fff8af5bedc LR: 00007fff8af5bedc CTR: 0000000000000000
+REGS: c00020008c2a7e80 TRAP: 3000   Not tainted  (6.10.0-rc3-next-20240612-dirty)
+MSR:  900000000280f033 <SF,HV,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44002482  XER: 00000000
+IRQMASK: 0 
+GPR00: 0000000000000036 00007fffda53b1f0 00007fff8b066d00 0000000000000006 
+GPR04: 000000008018aee1 00007fffda53b270 0000000000000008 00007fff8ac0e9e0 
+GPR08: 0000000000000006 0000000000000000 0000000000000000 0000000000000000 
+GPR12: 0000000000000000 00007fff8b2ca540 0000000000000000 0000000000000000 
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+GPR20: 0000000000000000 0000000000000000 0000000000000000 00000000100101c0 
+GPR24: 00007fff8b2bf840 00007fff8b2c0000 00007fffda53b728 0000000000000001 
+GPR28: 00007fffda53b838 0000000000000006 0000000000000001 0000000000000005 
+NIP [00007fff8af5bedc] 0x7fff8af5bedc
+LR [00007fff8af5bedc] 0x7fff8af5bedc
+--- interrupt: 3000
+
+Allocated by task 2505:
+ kasan_save_stack+0x48/0x80
+ kasan_save_track+0x2c/0x50
+ kasan_save_alloc_info+0x44/0x60
+ __kasan_kmalloc+0xd0/0x120
+ __kmalloc_noprof+0x214/0x670
+ kvm_vm_ioctl_create_spapr_tce+0x10c/0x420 [kvm]
+ kvm_arch_vm_ioctl+0x5fc/0x890 [kvm]
+ kvm_vm_ioctl+0xa54/0x13d0 [kvm]
+ sys_ioctl+0x62c/0x1810
+ system_call_exception+0x190/0x440
+ system_call_vectored_common+0x15c/0x2ec
+
+Freed by task 0:
+ kasan_save_stack+0x48/0x80
+ kasan_save_track+0x2c/0x50
+ kasan_save_free_info+0xac/0xd0
+ __kasan_slab_free+0x120/0x210
+ kfree+0xec/0x3e0
+ release_spapr_tce_table+0xd4/0x11c [kvm]
+ rcu_core+0x568/0x16a0
+ handle_softirqs+0x23c/0x920
+ do_softirq_own_stack+0x6c/0x90
+ do_softirq_own_stack+0x58/0x90
+ __irq_exit_rcu+0x218/0x2d0
+ irq_exit+0x30/0x80
+ arch_local_irq_restore+0x128/0x230
+ arch_local_irq_enable+0x1c/0x30
+ cpuidle_enter_state+0x134/0x5cc
+ cpuidle_enter+0x6c/0xb0
+ call_cpuidle+0x7c/0x100
+ do_idle+0x394/0x410
+ cpu_startup_entry+0x60/0x70
+ start_secondary+0x3fc/0x410
+ start_secondary_prolog+0x10/0x14
+
+Last potentially related work creation:
+ kasan_save_stack+0x48/0x80
+ __kasan_record_aux_stack+0xcc/0x130
+ __call_rcu_common.constprop.0+0x8c/0x8e0
+ kvm_spapr_tce_release+0x29c/0xbc10 [kvm]
+ __fput+0x22c/0x630
+ sys_close+0x70/0xe0
+ system_call_exception+0x190/0x440
+ system_call_vectored_common+0x15c/0x2ec
+
+The buggy address belongs to the object at c000200027552c00
+ which belongs to the cache kmalloc-256 of size 256
+The buggy address is located 48 bytes inside of
+ freed 256-byte region [c000200027552c00, c000200027552d00)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0xc000200027551800 pfn:0x20002755
+flags: 0x83ffff800000000(node=8|zone=0|lastcpupid=0x7ffff)
+page_type: 0xfdffffff(slab)
+raw: 083ffff800000000 c000000007010d80 5deadbeef0000122 0000000000000000
+raw: c000200027551800 0000000080800078 00000001fdffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ c000200027552b00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ c000200027552b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>c000200027552c00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                     ^
+ c000200027552c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ c000200027552d00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+Disabling lock debugging due to kernel taint
