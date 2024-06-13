@@ -2,35 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6282E90749D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 16:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D0D90749E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 16:06:38 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UhyzUxBI;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0PM53s2nz3cZ4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 00:05:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0PNC1R3gz3cWc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 00:06:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lst.de (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UhyzUxBI;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0PLg4lgnz2yvk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 00:05:14 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id C2B2968BEB; Thu, 13 Jun 2024 16:05:08 +0200 (CEST)
-Date: Thu, 13 Jun 2024 16:05:08 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>
-Subject: Re: [PATCH 10/26] xen-blkfront: don't disable cache flushes when
- they fail
-Message-ID: <20240613140508.GA16529@lst.de>
-References: <20240611051929.513387-1-hch@lst.de> <20240611051929.513387-11-hch@lst.de> <ZmlVziizbaboaBSn@macbook> <20240612150030.GA29188@lst.de> <ZmnFH17bTV2Ot_iR@macbook>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0PMV3f4mz3cSS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 00:05:58 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45DDv9Ng013898;
+	Thu, 13 Jun 2024 14:05:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=qFYgmcezB3cGcq+qyFYaciDopS
+	EcrviAejfLQAxeEwE=; b=UhyzUxBIX35AE/SWZXm60tXI109W511eoUdYsQEPjc
+	aHS7woyi17ILVqW4E5+AD+W66yYZrtIQAjkXx84HvcknStvA+U227KLMO5FYX8Wj
+	IeWvuuNUDyPM39OeU31Fj7/VtTJXYNS1AKJaFiD/C3/nm4xj8GkNSuRZrXgMnbst
+	uNC+upZlzC6ipCglA12qq6/Zpf17PcZZ767YQm0wjvEGfVLtLP2/fToDTleLMx3X
+	wYoBkxDnrWabD945CJHpMvmNfTMFywunhB31SA4YM2p6FDPKspBBiUnRio2t6p/s
+	IgkydZIs4qL+OVGH7WW6/yixvLRpJMC1xn2a13xjlu0w==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yqy258k1u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 14:05:53 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45DCN0Mr008701;
+	Thu, 13 Jun 2024 14:05:52 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yn4b3qnp8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 14:05:52 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45DE5lwB32572122
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Jun 2024 14:05:49 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C41420040;
+	Thu, 13 Jun 2024 14:05:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 243062004F;
+	Thu, 13 Jun 2024 14:05:45 +0000 (GMT)
+Received: from tp-ibm-com.ibmuc.com (unknown [9.171.40.104])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Jun 2024 14:05:44 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/eeh: avoid possible crash when edev->pdev changes
+Date: Thu, 13 Jun 2024 19:35:37 +0530
+Message-ID: <20240613140537.280159-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZmnFH17bTV2Ot_iR@macbook>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OhN9DU6XkGn4pq5EpDWqrALzVBVmsqJ4
+X-Proofpoint-GUID: OhN9DU6XkGn4pq5EpDWqrALzVBVmsqJ4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-13_07,2024-06-13_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ mlxlogscore=757 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406130101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,150 +88,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, linux-nvme@lists.infradead.org, Song Liu <song@kernel.org>, linux-mtd@lists.infradead.org, Vineeth Vijayan <vneethv@linux.ibm.com>, linux-bcache@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Alasdair Kergon <agk@redhat.com>, drbd-dev@lists.linbit.com, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, Richard Weinberger <richard@nod.at>, Geert Uytterhoeven <geert@linux-m68k.org>, Yu Kuai <yukuai3@huawei.com>, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, Mike Snitzer <snitzer@kernel.org>, Josef Bacik <josef@toxicpanda.com>, Ming Lei <ming.lei@redhat.com>, linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Mikulas Patocka <mpatocka@redhat.com>, xen-devel@lists.xenproject.org, ceph-devel@vger.kernel.org, nbd@other.debian.org, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mmc@vger.kernel.org, Philipp Reisner <philipp.reisner@linbit.com>, Christoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>, virtualization@lists.linux.dev, Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com, wenxiong@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 12, 2024 at 05:56:15PM +0200, Roger Pau Monné wrote:
-> Right.  AFAICT advertising "feature-barrier" and/or
-> "feature-flush-cache" could be done based on whether blkback
-> understand those commands, not on whether the underlying storage
-> supports the equivalent of them.
-> 
-> Worst case we can print a warning message once about the underlying
-> storage failing to complete flush/barrier requests, and that data
-> integrity might not be guaranteed going forward, and not propagate the
-> error to the upper layer?
-> 
-> What would be the consequence of propagating a flush error to the
-> upper layers?
+If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
+will change and can cause a crash, hold the PCI rescan/remove lock
+while taking a copy of edev->pdev.
 
-If you propage the error to the upper layer you will generate an
-I/O error there, which usually leads to a file system shutdown.
-
-> Given the description of the feature in the blkif header, I'm afraid
-> we cannot guarantee that seeing the feature exposed implies barrier or
-> flush support, since the request could fail at any time (or even from
-> the start of the disk attachment) and it would still sadly be a correct
-> implementation given the description of the options.
-
-Well, then we could do something like the patch below, which keeps
-the existing behavior, but insolates the block layer from it and
-removes the only user of blk_queue_write_cache from interrupt
-context:
-
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
 ---
-From e6e82c769ab209a77302994c3829cf6ff7a595b8 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Thu, 30 May 2024 08:58:52 +0200
-Subject: xen-blkfront: don't disable cache flushes when they fail
-
-blkfront always had a robust negotiation protocol for detecting a write
-cache.  Stop simply disabling cache flushes in the block layer as the
-flags handling is moving to the atomic queue limits API that needs
-user context to freeze the queue for that.  Instead handle the case
-of the feature flags cleared inside of blkfront.  This removes old
-debug code to check for such a mismatch which was previously impossible
-to hit, including the check for passthrough requests that blkfront
-never used to start with.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+v2: Hold rescan lock till we get the bus address.
 ---
- drivers/block/xen-blkfront.c | 44 +++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ arch/powerpc/kernel/eeh_pe.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/xen-blkfront.c b/drivers/block/xen-blkfront.c
-index 9b4ec3e4908cce..e2c92d5095ff17 100644
---- a/drivers/block/xen-blkfront.c
-+++ b/drivers/block/xen-blkfront.c
-@@ -788,6 +788,14 @@ static int blkif_queue_rw_req(struct request *req, struct blkfront_ring_info *ri
- 			 * A barrier request a superset of FUA, so we can
- 			 * implement it the same way.  (It's also a FLUSH+FUA,
- 			 * since it is guaranteed ordered WRT previous writes.)
-+			 *
-+			 * Note that can end up here with a FUA write and the
-+			 * flags cleared.  This happens when the flag was
-+			 * run-time disabled and raced with I/O submission in
-+			 * the block layer.  We submit it as a normal write
-+			 * here.  A pure flush should never end up here with
-+			 * the flags cleared as they are completed earlier for
-+			 * the !feature_flush case.
- 			 */
- 			if (info->feature_flush && info->feature_fua)
- 				ring_req->operation =
-@@ -795,8 +803,6 @@ static int blkif_queue_rw_req(struct request *req, struct blkfront_ring_info *ri
- 			else if (info->feature_flush)
- 				ring_req->operation =
- 					BLKIF_OP_FLUSH_DISKCACHE;
--			else
--				ring_req->operation = 0;
- 		}
- 		ring_req->u.rw.nr_segments = num_grant;
- 		if (unlikely(require_extra_req)) {
-@@ -887,16 +893,6 @@ static inline void flush_requests(struct blkfront_ring_info *rinfo)
- 		notify_remote_via_irq(rinfo->irq);
- }
- 
--static inline bool blkif_request_flush_invalid(struct request *req,
--					       struct blkfront_info *info)
--{
--	return (blk_rq_is_passthrough(req) ||
--		((req_op(req) == REQ_OP_FLUSH) &&
--		 !info->feature_flush) ||
--		((req->cmd_flags & REQ_FUA) &&
--		 !info->feature_fua));
--}
--
- static blk_status_t blkif_queue_rq(struct blk_mq_hw_ctx *hctx,
- 			  const struct blk_mq_queue_data *qd)
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index d1030bc52564..d283d281d28e 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -849,6 +849,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
  {
-@@ -908,23 +904,30 @@ static blk_status_t blkif_queue_rq(struct blk_mq_hw_ctx *hctx,
- 	rinfo = get_rinfo(info, qid);
- 	blk_mq_start_request(qd->rq);
- 	spin_lock_irqsave(&rinfo->ring_lock, flags);
--	if (RING_FULL(&rinfo->ring))
--		goto out_busy;
+ 	struct eeh_dev *edev;
+ 	struct pci_dev *pdev;
++	struct pci_bus *bus = NULL;
  
--	if (blkif_request_flush_invalid(qd->rq, rinfo->dev_info))
--		goto out_err;
-+	/*
-+	 * Check if the backend actually supports flushes.
-+	 *
-+	 * While the block layer won't send us flushes if we don't claim to
-+	 * support them, the Xen protocol allows the backend to revoke support
-+	 * at any time.  That is of course a really bad idea and dangerous, but
-+	 * has been allowed for 10+ years.  In that case we simply clear the
-+	 * flags, and directly return here for an empty flush and ignore the
-+	 * FUA flag later on.
-+	 */
-+	if (unlikely(req_op(qd->rq) == REQ_OP_FLUSH && !info->feature_flush))
-+		goto out;
+ 	if (pe->type & EEH_PE_PHB)
+ 		return pe->phb->bus;
+@@ -859,9 +860,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
  
-+	if (RING_FULL(&rinfo->ring))
-+		goto out_busy;
- 	if (blkif_queue_request(qd->rq, rinfo))
- 		goto out_busy;
+ 	/* Retrieve the parent PCI bus of first (top) PCI device */
+ 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
++	pci_lock_rescan_remove();
+ 	pdev = eeh_dev_to_pci_dev(edev);
+ 	if (pdev)
+-		return pdev->bus;
++		bus = pdev->bus;
++	pci_unlock_rescan_remove();
  
- 	flush_requests(rinfo);
-+out:
- 	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
- 	return BLK_STS_OK;
- 
--out_err:
--	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
--	return BLK_STS_IOERR;
--
- out_busy:
- 	blk_mq_stop_hw_queue(hctx);
- 	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
-@@ -1627,7 +1630,6 @@ static irqreturn_t blkif_interrupt(int irq, void *dev_id)
- 					blkif_req(req)->error = BLK_STS_OK;
- 				info->feature_fua = 0;
- 				info->feature_flush = 0;
--				xlvbd_flush(info);
- 			}
- 			fallthrough;
- 		case BLKIF_OP_READ:
+-	return NULL;
++	return bus;
+ }
 -- 
-2.43.0
+2.44.0
 
