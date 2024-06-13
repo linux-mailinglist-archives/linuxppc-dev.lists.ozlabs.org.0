@@ -1,82 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D0D90749E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 16:06:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A939074C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 16:12:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UhyzUxBI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=L2OdeEdD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0PNC1R3gz3cWc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 00:06:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0PWM65HYz3cVl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 00:12:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UhyzUxBI;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=L2OdeEdD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=zvo8=np=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0PMV3f4mz3cSS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 00:05:58 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45DDv9Ng013898;
-	Thu, 13 Jun 2024 14:05:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=qFYgmcezB3cGcq+qyFYaciDopS
-	EcrviAejfLQAxeEwE=; b=UhyzUxBIX35AE/SWZXm60tXI109W511eoUdYsQEPjc
-	aHS7woyi17ILVqW4E5+AD+W66yYZrtIQAjkXx84HvcknStvA+U227KLMO5FYX8Wj
-	IeWvuuNUDyPM39OeU31Fj7/VtTJXYNS1AKJaFiD/C3/nm4xj8GkNSuRZrXgMnbst
-	uNC+upZlzC6ipCglA12qq6/Zpf17PcZZ767YQm0wjvEGfVLtLP2/fToDTleLMx3X
-	wYoBkxDnrWabD945CJHpMvmNfTMFywunhB31SA4YM2p6FDPKspBBiUnRio2t6p/s
-	IgkydZIs4qL+OVGH7WW6/yixvLRpJMC1xn2a13xjlu0w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yqy258k1u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Jun 2024 14:05:53 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45DCN0Mr008701;
-	Thu, 13 Jun 2024 14:05:52 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yn4b3qnp8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Jun 2024 14:05:52 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45DE5lwB32572122
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Jun 2024 14:05:49 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C41420040;
-	Thu, 13 Jun 2024 14:05:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 243062004F;
-	Thu, 13 Jun 2024 14:05:45 +0000 (GMT)
-Received: from tp-ibm-com.ibmuc.com (unknown [9.171.40.104])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Jun 2024 14:05:44 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/eeh: avoid possible crash when edev->pdev changes
-Date: Thu, 13 Jun 2024 19:35:37 +0530
-Message-ID: <20240613140537.280159-1-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0PVd2Wppz3cSS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 00:12:09 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 49BAFCE2601;
+	Thu, 13 Jun 2024 14:12:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414C2C2BBFC;
+	Thu, 13 Jun 2024 14:12:02 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="L2OdeEdD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1718287920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fjz4ZCmXLkYKy1WwR1BKUB9SOdktn0OQ80YKkl5C07A=;
+	b=L2OdeEdDbAYwCCQIo0q3Y5svBHl6HUoVii7Ipx/YqW9msnW5nLiQCcmVhvT3d2aYbXekmX
+	6vGp/7RezmQfWwaVJxWqE0MwVUi9dk5ylrevWbLPzxAvc9yHIJFCNMr0XP5ij6Ppv2K3la
+	u18h46ekO5C4iutUHhucdp/z23ziWUY=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 9cf22b43 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 13 Jun 2024 14:11:58 +0000 (UTC)
+Date: Thu, 13 Jun 2024 16:11:52 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Message-ID: <Zmr-KPG9F6w-uzys@zx2c4.com>
+References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
+ <20240612143305.451abf58@kernel.org>
+ <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+ <Zmov7ZaL-54T9GiM@zx2c4.com>
+ <Zmo9-YGraiCj5-MI@zx2c4.com>
+ <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
+ <Zmrkkel0Fo4_g75a@zx2c4.com>
+ <e06440e2-9121-4c92-8bf2-945977987052@paulmck-laptop>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OhN9DU6XkGn4pq5EpDWqrALzVBVmsqJ4
-X-Proofpoint-GUID: OhN9DU6XkGn4pq5EpDWqrALzVBVmsqJ4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-13_07,2024-06-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0 impostorscore=0
- mlxlogscore=757 lowpriorityscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406130101
+In-Reply-To: <e06440e2-9121-4c92-8bf2-945977987052@paulmck-laptop>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,47 +72,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com, wenxiong@us.ibm.com
+Cc: kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Vlastimil Babka <vbabka@suse.cz>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a PCI device is removed during eeh_pe_report_edev(), edev->pdev
-will change and can cause a crash, hold the PCI rescan/remove lock
-while taking a copy of edev->pdev.
+On Thu, Jun 13, 2024 at 05:46:11AM -0700, Paul E. McKenney wrote:
+> How about a kmem_cache_destroy_rcu() that marks that specified cache
+> for destruction, and then a kmem_cache_destroy_barrier() that waits?
+> 
+> I took the liberty of adding your name to the Google document [1] and
+> adding this section:
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
-v2: Hold rescan lock till we get the bus address.
----
- arch/powerpc/kernel/eeh_pe.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Cool, though no need to make me yellow!
 
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index d1030bc52564..d283d281d28e 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -849,6 +849,7 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
- {
- 	struct eeh_dev *edev;
- 	struct pci_dev *pdev;
-+	struct pci_bus *bus = NULL;
- 
- 	if (pe->type & EEH_PE_PHB)
- 		return pe->phb->bus;
-@@ -859,9 +860,11 @@ struct pci_bus *eeh_pe_bus_get(struct eeh_pe *pe)
- 
- 	/* Retrieve the parent PCI bus of first (top) PCI device */
- 	edev = list_first_entry_or_null(&pe->edevs, struct eeh_dev, entry);
-+	pci_lock_rescan_remove();
- 	pdev = eeh_dev_to_pci_dev(edev);
- 	if (pdev)
--		return pdev->bus;
-+		bus = pdev->bus;
-+	pci_unlock_rescan_remove();
- 
--	return NULL;
-+	return bus;
- }
--- 
-2.44.0
+> > But then, if that mechanism generally works, we don't really need a new
+> > function and we can just go with the first option of making
+> > kmem_cache_destroy() asynchronously wait. It'll wait, as you described,
+> > but then we adjust the tail of every kfree_rcu batch freeing cycle to
+> > check if there are _still_ any old outstanding kmem_cache_destroy()
+> > requests. If so, then we can splat and keep the old debugging info we
+> > currently have for finding memleaks.
+> 
+> The mechanism can always be sabotaged by memory-leak bugs on the part
+> of the user of the kmem_cache structure in play, right?
+> 
+> OK, but I see your point.  I added this to the existing
+> "kmem_cache_destroy() Lingers for kfree_rcu()" section:
+> 
+> 	One way of preserving this debugging information is to splat if
+> 	all of the slab’s memory has not been freed within a reasonable
+> 	timeframe, perhaps the same 21 seconds that causes an RCU CPU
+> 	stall warning.
+> 
+> Does that capture it?
 
+Not quite what I was thinking. Your 21 seconds as a time-based thing I
+guess could be fine. But I was mostly thinking:
+
+1) kmem_cache_destroy() is called, but there are outstanding objects, so
+   it defers.
+
+2) Sometime later, a kfree_rcu_work batch freeing operation runs.
+
+3) At the end of this batch freeing, the kernel notices that the
+   kmem_cache whose destruction was previously deferred still has
+   outstanding objects and has not been destroyed. It can conclude that
+   there's thus been a memory leak.
+
+In other words, instead of having to do this based on timers, you can
+just have the batch freeing code ask, "did those pending kmem_cache
+destructions get completed as a result of this last operation?"
