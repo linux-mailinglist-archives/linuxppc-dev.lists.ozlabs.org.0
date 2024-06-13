@@ -2,58 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AB4906D47
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 13:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2271F906F0D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 14:16:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=MeI8MH8G;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=STzDZDTz;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=767Y7lEb;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y8avc0Ck;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Dokv8vaD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0LZ23ptkz3cWN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 21:59:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0Lwd64N1z3cW5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jun 2024 22:16:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=MeI8MH8G;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=STzDZDTz;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=767Y7lEb;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y8avc0Ck;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Dokv8vaD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=zvo8=np=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 491 seconds by postgrey-1.37 at boromir; Thu, 13 Jun 2024 22:15:23 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0LYH2tWJz30St
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 21:59:15 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AC00661A4D;
-	Thu, 13 Jun 2024 11:59:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEAAC4AF4D;
-	Thu, 13 Jun 2024 11:59:10 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="MeI8MH8G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1718279946;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0Lvv3N6bz30Tp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jun 2024 22:15:23 +1000 (AEST)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E3B9F3539F;
+	Thu, 13 Jun 2024 12:07:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718280426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2oQoeraeqQaQpCY62eMS55dJmmDU2cLnySqsO1DV0bg=;
-	b=MeI8MH8G9GaVwTubn3zbemt8iMGjhWu2xlRT5g6xh1L4MS9g8vj3/b4L5Io4CIm+PbC/28
-	K4kTBBhke2rM7bNZ2dv8VC/fK7/9r4oKXzXHf3Yt4ENzPLvg7XFBUp90WP45io3c2/cs6Q
-	JMbCSdFZKlgC96+RmMCLxV7PaJ3gRO0=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ebdb63be (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 13 Jun 2024 11:59:05 +0000 (UTC)
-Date: Thu, 13 Jun 2024 13:58:59 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-Message-ID: <ZmrfA1p2zSVIaYam@zx2c4.com>
-References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
- <20240612143305.451abf58@kernel.org>
- <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+	bh=4zAvrPhZhF6uatcsrntRNbw3qSSmpluUGwwNlU0hJc4=;
+	b=STzDZDTztcGnhBcI537899X64efXubsdtnkC2b8WMHTCpstKMnCsAKPc9tLfJo/dFWDT5r
+	utckXRJcPjYGvH3SvE1Qj8urvvZ1mk8sd2p1qV5TUMr09mYVj8IHDdetIONIM77wEbUtPS
+	FYe6bFBvQ9bISR8KKi/2bs5nmVl/2Sc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718280426;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4zAvrPhZhF6uatcsrntRNbw3qSSmpluUGwwNlU0hJc4=;
+	b=767Y7lEbmscSCVmr6ui8ujbNK8KhiYCKDbwiV56ppPlQLr8pYCfqYifwUB/e3p2tS3iv9Q
+	UNPpOKp1KRQOGcAw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718280425; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4zAvrPhZhF6uatcsrntRNbw3qSSmpluUGwwNlU0hJc4=;
+	b=y8avc0CkMfS3mDoV+kIh1D3eaqfVannwxLCn6BglYyuXaPzEKXZYM8RigHQOIUX4kEdwK5
+	2OgWyK/RBCKZwEi/Gztnj5h6HE9s4+HYDbBd1u17nYZUQ00QqMzQd3rWMvyhsKoeLNG6uM
+	5x7mgHLvam9yqsUgHhLeruvI1Kd08Gk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718280425;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4zAvrPhZhF6uatcsrntRNbw3qSSmpluUGwwNlU0hJc4=;
+	b=Dokv8vaDMACn9OruIAfqACroLQafUwYCiSelv8y1uJ8JpraEWbUWqP3Dl1VZm64EsOw6hs
+	B4nUdNoVH8nj/QDg==
+Date: Thu, 13 Jun 2024 14:07:04 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 0/2] Skip offline cores when enabling SMT on PowerPC
+Message-ID: <20240613120704.GI19642@kitsune.suse.cz>
+References: <20240612185046.1826891-1-nysal@linux.ibm.com>
+ <875xudoz4d.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+In-Reply-To: <875xudoz4d.fsf@mail.lhotse>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spamd-Result: default: False [-8.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linux.ibm.com,linutronix.de,gmail.com,csgroup.eu,infradead.org,lists.ozlabs.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -8.30
+X-Spam-Level: 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,51 +114,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Vlastimil Babka <vbabka@suse.cz>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, "Nysal Jan K.A." <nysal@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 12, 2024 at 03:37:55PM -0700, Paul E. McKenney wrote:
-> On Wed, Jun 12, 2024 at 02:33:05PM -0700, Jakub Kicinski wrote:
-> > On Sun,  9 Jun 2024 10:27:12 +0200 Julia Lawall wrote:
-> > > Since SLOB was removed, it is not necessary to use call_rcu
-> > > when the callback only performs kmem_cache_free. Use
-> > > kfree_rcu() directly.
-> > > 
-> > > The changes were done using the following Coccinelle semantic patch.
-> > > This semantic patch is designed to ignore cases where the callback
-> > > function is used in another way.
-> > 
-> > How does the discussion on:
-> >   [PATCH] Revert "batman-adv: prefer kfree_rcu() over call_rcu() with free-only callbacks"
-> >   https://lore.kernel.org/all/20240612133357.2596-1-linus.luessing@c0d3.blue/
-> > reflect on this series? IIUC we should hold off..
+On Thu, Jun 13, 2024 at 09:34:10PM +1000, Michael Ellerman wrote:
+> "Nysal Jan K.A." <nysal@linux.ibm.com> writes:
+> > From: "Nysal Jan K.A" <nysal@linux.ibm.com>
+> >
+> > After the addition of HOTPLUG_SMT support for PowerPC [1] there was a
+> > regression reported [2] when enabling SMT.
 > 
-> We do need to hold off for the ones in kernel modules (such as 07/14)
-> where the kmem_cache is destroyed during module unload.
+> This implies it was a kernel regression. But it can't be a kernel
+> regression because previously there was no support at all for the sysfs
+> interface on powerpc.
 > 
-> OK, I might as well go through them...
+> IIUIC the regression was in the ppc64_cpu userspace tool, which switched
+> to using the new kernel interface without taking into account the way it
+> behaves.
+
+The reported regression is in the ppc64_cpu tool behavior.
+
+> Or are you saying the kernel behaviour changed on x86 after the powerpc
+> HOTPLUG_SMT was added?
 > 
-> [PATCH 01/14] wireguard: allowedips: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
-> 	Needs to wait, see wg_allowedips_slab_uninit().
+> > On a system with at least
+> > one offline core, when enabling SMT, the expectation is that no CPUs
+> > of offline cores are made online.
+> >
+> > On a POWER9 system with 4 cores in SMT4 mode:
+> > $ ppc64_cpu --info
+> > Core   0:    0*    1*    2*    3*
+> > Core   1:    4*    5*    6*    7*
+> > Core   2:    8*    9*   10*   11*
+> > Core   3:   12*   13*   14*   15*
+> >
+> > Turn only one core on:
+> > $ ppc64_cpu --cores-on=1
+> > $ ppc64_cpu --info
+> > Core   0:    0*    1*    2*    3*
+> > Core   1:    4     5     6     7
+> > Core   2:    8     9    10    11
+> > Core   3:   12    13    14    15
+> >
+> > Change the SMT level to 2:
+> > $ ppc64_cpu --smt=2
+> > $ ppc64_cpu --info
+> > Core   0:    0*    1*    2     3
+> > Core   1:    4     5     6     7
+> > Core   2:    8     9    10    11
+> > Core   3:   12    13    14    15
+> >
+> > As expected we see only two CPUs of core 0 are online
+> >
+> > Change the SMT level to 4:
+> > $ ppc64_cpu --smt=4
+> > $ ppc64_cpu --info
+> > Core   0:    0*    1*    2*    3*
+> > Core   1:    4*    5*    6*    7*
+> > Core   2:    8*    9*   10*   11*
+> > Core   3:   12*   13*   14*   15*
+> >
+> > The CPUs of offline cores are made online. If a core is offline then
+> > enabling SMT should not online CPUs of this core.
+> 
+> That's the way the ppc64_cpu tool behaves, but it's not necessarily what
+> other arches want.
+> 
+> > An arch specific
+> > function topology_is_core_online() is proposed to address this.
+> > Another approach is to check the topology_sibling_cpumask() for any
+> > online siblings. This avoids the need for an arch specific function
+> > but is less efficient and more importantly this introduces a change
+> > in existing behaviour on other architectures.
+> 
+> It's only x86 and powerpc right?
+> 
+> Having different behaviour on the only two arches that support the
+> interface does not seem like a good result.
 
-Also, notably, this patch needs additionally:
+That's unfortunate. At the same time changing the x86 behavior would
+potentially lead to similar reports from people relying on the old
+behavior.
 
-diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
-index e4e1638fce1b..c95f6937c3f1 100644
---- a/drivers/net/wireguard/allowedips.c
-+++ b/drivers/net/wireguard/allowedips.c
-@@ -377,7 +377,6 @@ int __init wg_allowedips_slab_init(void)
+> > What is the expected behaviour on x86 when enabling SMT and certain cores
+> > are offline? 
+> 
+> AFAIK no one really touches SMT on x86 other than to turn it off for
+> security reasons.
 
- void wg_allowedips_slab_uninit(void)
- {
--	rcu_barrier();
- 	kmem_cache_destroy(node_cache);
- }
+In particular I am not aware of x86 suporting those middle partially
+enabled states. I don't have a x86 4+ way SMT cpu at hand to test, either.
 
-Once kmem_cache_destroy has been fixed to be deferrable.
+The more likely excuse is that there is little use case for enabling
+previously disabled CPUs (whole cores/thread groups) by changing the SMT
+state, even if the SMT code happened to do it in the past.
 
-I assume the other patches are similar -- an rcu_barrier() can be
-removed. So some manual meddling of these might be in order.
+That is, more technically, that the value of 'off' is 1 - 1 thread of
+each core is enabled, and another value representing 'core disabled'
+with no thread of the core running is to be treated specially, and not
+changed when setting the system-wide SMT value.
 
-Jason
+These are separate concerns, and should be addressed by separate
+interfaces.
+
+Thanks
+
+Michal
