@@ -1,56 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FE89090B4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 18:44:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5021D9090BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 18:47:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hL+l8FUI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gkexV6rB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W14qt56cJz3cbB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 02:44:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W14vY0tBYz3ccQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 02:47:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hL+l8FUI;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gkexV6rB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f2e; helo=mail-qv1-xf2e.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W14qC5BR8z3cXF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 02:43:51 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 1F429CE2BE4;
-	Fri, 14 Jun 2024 16:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56300C2BD10;
-	Fri, 14 Jun 2024 16:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718383428;
-	bh=OGecIESkxQlGPPHFvJKS/1V4WaNGOExMXfaeDU81YVM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hL+l8FUIXR9ASHQf9xeEPHt7CfdJYNX0X2a16Kb6dXovnPp+k2I7dQZVJz+bHAS+w
-	 /Akw4bgdYCbPoCYPoxyXVhpR07QLakzGw+lOuLOCEcwc4m6XbzkVwX996ca3rr7kcm
-	 ZekEHG9V5TCkNvXESp+C05L37+ynL56sBerph8iI/t5rhWxp+D44Fo5+P42u35Gl0K
-	 7dhB+rmHkWPUfnZ28d9jgrO3szh5oJ5ZQY2ImBXkHINHxIt+m8b3G8wRkGcMlTbQL6
-	 yUuCucQDUEkjvZjxu10iU71nkcLMlqu5oTEbzmsM1vD1k2Y6LXTCZz2aWqsZ/1SvcG
-	 l+KTBfQzjR8yQ==
-Date: Fri, 14 Jun 2024 17:43:44 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Subject: Re: [PATCH v3 0/4] Add audio support for LPC32XX CPUs
-Message-ID: <ZmxzQLbzuEupDkiJ@finisterre.sirena.org.uk>
-References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
- <20240614163500.386747-1-piotr.wojtaszczyk@timesys.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W14ts5DzKz3cXg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 02:47:00 +1000 (AEST)
+Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-6b09072c9d9so18851766d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 09:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718383617; x=1718988417; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yqs2Bs766IBEpVDwqnHittM7JULZRUAPIPpoZOOswLI=;
+        b=gkexV6rBV23Ju59i6jO2tPy5cp7isK4RGMl6fjiJQ3w4S2J3S+G7YEb6KaekqUjoSS
+         txX8lDNv8H2J47b30X2S+OIEfW8T7qP15h/AjIdyWrxeFndzOLRB8WNm9vzJXHVmmdoL
+         JMb7elH53IYsPe1hGJK0jveS0v13ZfW5lf3VhsaMEktZsROJ1U6JvFwcCoBOwotUVD2z
+         RScxmnbdo9GJeQk0N7URdOEfzNW6hxQrkA4QOPhPEZrrI1V0/F1Ao3eg0TjjOhZfgOqE
+         Xk5Z6+0HsyTjIwZdpS4LD+N+F5OeKAeBnHVKz+JBcbxnhDRvTyhEsSDXB/cY4FfXUpBG
+         WDHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718383617; x=1718988417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Yqs2Bs766IBEpVDwqnHittM7JULZRUAPIPpoZOOswLI=;
+        b=AJPm3bHZVWi0RV95pU7EPQ1Ob/Zyqk+ukXwe87KHNPiVoZ6PfYcYjsTNz91bzbSsdW
+         cuMLVQLDgWiKCx2eWCqTN7nh5enTSAPQh6++a3vZYH8NRdfrlyU2SSLvGm4Ujy5u5Sna
+         pAgbNND1oY8RUeuN4/ltgdabO0SZPglu+STixsesKLtIm/1zl92SMjUoBl362jXziAG8
+         ulyKbTlT4NEmL1WQFp3JjYaSRQZXQ/TpaZjT6ZTZpQ550ZiHyXZWycQhmGWS5h+zCCQu
+         x08fRMInT3ZaTDTuMF3TTNHMiMhn+DpZTQTGoZh8jtmHZQ/QzfkWi5L0ryjsoUBkk+jq
+         i5Fw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfiAs0dED+tQQKMke7qWsMcuF75fLtzT8cD7wszIYYn2jrBQ2Lb77hWJQ29gzxtWRylz4t8WWiQrGWe3yuqQz69Ori+szqkRe45sEnuA==
+X-Gm-Message-State: AOJu0YzVo8jUgVf4UQ6wlWnH0SG9QEPxZbBB/agQ7bXBYrawCB9i+39W
+	BME4soZvcLTRgqTvCJm7CHzZtQkIVXnhcXjxOV3yJoq88s38c4MscxKx3lF75vAy+ywdHu5RurI
+	Wlvmf8URp4ZJpGVqrwegYkG+fXgMzPDD5dRN0OA==
+X-Google-Smtp-Source: AGHT+IG0IJ7dklCKXgFvzQnpQNQ7ndgkvwrYf/nZPEe1c+OWwBjZSeclPr61zSJ2azVgXqhXLF4vvSLpkv+cY1EpiAk=
+X-Received: by 2002:a0c:c486:0:b0:6af:33ed:87de with SMTP id
+ 6a1803df08f44-6b2af2eef89mr48619646d6.20.1718383617492; Fri, 14 Jun 2024
+ 09:46:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4uEH+YoQX+igcbHZ"
-Content-Disposition: inline
-In-Reply-To: <20240614163500.386747-1-piotr.wojtaszczyk@timesys.com>
-X-Cookie: Your love life will be... interesting.
+References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
+ <Zmgor8accyAiUkUO@finisterre.sirena.org.uk> <CAG+cZ06B+AexqvwZtNP5FX50AmghAFLa=1ebxmKLvMoyVJ529w@mail.gmail.com>
+ <Zmxy-xA3YDU06Eht@finisterre.sirena.org.uk>
+In-Reply-To: <Zmxy-xA3YDU06Eht@finisterre.sirena.org.uk>
+From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Date: Fri, 14 Jun 2024 18:46:46 +0200
+Message-ID: <CAG+cZ05KomezPn0bAuZWrfO=rbyLdCU8_Xx11oEihUaD97gF8w@mail.gmail.com>
+Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
+To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,38 +80,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, "J.M.B. Downing" <jonathan.downing@nautel.com>, Russell King <linux@armlinux.org.uk>, alsa-devel@alsa-project.org, Chancel Liu <chancel.liu@nxp.com>, linux-sound@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Chancel Liu <chancel.liu@nxp.com>, linux-arm-kernel@lists.infradead.org, Jaroslav Kysela <perex@perex.cz>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Jun 14, 2024 at 6:42=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Fri, Jun 14, 2024 at 06:24:50PM +0200, Piotr Wojtaszczyk wrote:
+> > On Tue, Jun 11, 2024 at 12:36=E2=80=AFPM Mark Brown <broonie@kernel.org=
+> wrote:
+>
+> > > On a quick scan I can't see any architecture dependency for build,
+> > > please add an || COMPILE_TEST for improved coverage.  As for all the
+> > > other things enabled in this Kconfig file there is no need to explici=
+tly
+> > > depend on SND_SOC.
+>
+> > Ok. Later I will add a sound card driver to phytec3250 board which uses
+> > arch/arm/configs/lpc32xx_defconfig config file so that the COMPILE_TEST
+> > won't be needed.
+>
+> Why would a defconfig affect the Kconfig?
+I guess when lpc32xx_defconfig enables the SND_SOC_FSL_LPC3XXX then the
+COMPILE_TEST won't be needed or does it?
 
---4uEH+YoQX+igcbHZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Fri, Jun 14, 2024 at 06:34:48PM +0200, Piotr Wojtaszczyk wrote:
-> This pach set is to bring back audio to machines with a LPC32XX CPU.
-> The legacy LPC32XX SoC used to have audio spport in linux 2.6.27.
-> The support was dropped due to lack of interest from mainaeners.
-
-Please don't send new patches in reply to old patches or serieses, this
-makes it harder for both people and tools to understand what is going
-on - it can bury things in mailboxes and make it difficult to keep track
-of what current patches are, both for the new patches and the old ones.
-
---4uEH+YoQX+igcbHZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZscz8ACgkQJNaLcl1U
-h9BWvgf/f+S9NLVWH8/lPOJWNtq9tQndYQy8OK5iMAQJm7mKL0A4ttTTMYMYnh9h
-tL3EW+ywS15IBWgG89JDmI9AuB9nWQKgmQIqjVuGW+54g1EYmViI28IteOGUZnv4
-xSF8N2Ak+ag00veuwAnYp3oMDUbtZ/VpEcoBj6Na+QDI5ok19cDT4Vqo0lWSMTn8
-9liaCr84fAjnbULZLuudLqd4wrhxbBtaYwCQ+iH2tW/N4j04iuTdop7ogfilTi/0
-ZsZOYX4xC1lJ1EbS7qpQSTsA5aDQQ7BwwzOE43HOhzTLoOcVVEl2a5dmZkSHNNDc
-2R617vs7FjbtGTrFUOVMTAzD01F8lQ==
-=TUpG
------END PGP SIGNATURE-----
-
---4uEH+YoQX+igcbHZ--
+--=20
+Piotr Wojtaszczyk
+Timesys
