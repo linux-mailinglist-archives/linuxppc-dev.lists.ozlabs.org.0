@@ -1,58 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6D6908CAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 15:46:17 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q7NaJSl8;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B96908D1D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 16:15:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W10tG3hq4z3cYM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 23:46:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W11X85j1Xz3cyc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 00:15:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q7NaJSl8;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W10sY36T1z3cSH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 23:45:37 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 9A098CE2B02;
-	Fri, 14 Jun 2024 13:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9B0C2BD10;
-	Fri, 14 Jun 2024 13:45:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718372731;
-	bh=mTPEu9ErEKUobSFT0GvxeIBO45KVS7yjsH7xAf+di1k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7NaJSl8RUVx4k4okd0OK+YPBnvoBcBTYQ7ANwO/ZUbhxiEO2ico06v36O7tDKTn5
-	 5bQAMtg9WZ0btOgWdt7kcgoJTsYQKwp5lylHmNTtQKV3xSfc31KXPP8VZRBuKVzw2i
-	 ekQtfp8epdKJCj5eH5bqKuacE3DsgI7xfo5C9KrDC2zYGcyXNtuFXuesEqzN9+nbkT
-	 pdTXHe0nAHKgoUqM+ORTwj7qfchvXImR4KkA6828+3ZTjXS6DmGXYxw6WAa+Wrv665
-	 C7hrTBed0n8fLN0Py/ep+cWWZQYoIZi+NVl9g7RDSp3n/MmL7WFxMeX0osXhYuWMad
-	 gJrx6ODIj4hlw==
-From: Namhyung Kim <namhyung@kernel.org>
-To: acme@kernel.org,
-	jolsa@kernel.org,
-	adrian.hunter@intel.com,
-	irogers@google.com,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] tools/perf: Fix the nrcpus in perf bench futex to enable the run when all CPU's are not online
-Date: Fri, 14 Jun 2024 06:45:26 -0700
-Message-ID: <171837188463.3043419.6370900156954067374.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
-In-Reply-To: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
-References: <20240607044354.82225-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W11Wl4MnBz3c1w
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 00:15:14 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5270720599;
+	Fri, 14 Jun 2024 14:15:03 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CBC3213AAF;
+	Fri, 14 Jun 2024 14:15:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7r8vL2ZQbGYhTAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Fri, 14 Jun 2024 14:15:02 +0000
+Date: Fri, 14 Jun 2024 16:14:57 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Subject: Re: [PATCH v5 02/18] mm: Define __pte_leaf_size() to also take a PMD
+ entry
+Message-ID: <ZmxQYTEOqtxuEthT@localhost.localdomain>
+References: <cover.1717955558.git.christophe.leroy@csgroup.eu>
+ <172b11c93e0de7a84937af2da9f80bd17c56b8c9.1717955558.git.christophe.leroy@csgroup.eu>
+ <ZmgaHyS0izhtKbx6@localhost.localdomain>
+ <ZmhcepJrkDpJ7mSC@x1n>
+ <ZmhofWIiMC3I0aMF@localhost.localdomain>
+ <ZmhrIdh3PLzvZU07@x1n>
+ <Zmh282yJjxc7zqbL@localhost.localdomain>
+ <e9583aa5-4ad7-4bcf-b3ff-f42b983231f5@cs-soprasteria.com>
+ <Zmqdl1aqmU9BgYzo@localhost.localdomain>
+ <0b52260d-28b2-4b33-b73e-88c5e5bfce66@cs-soprasteria.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b52260d-28b2-4b33-b73e-88c5e5bfce66@cs-soprasteria.com>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Rspamd-Queue-Id: 5270720599
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,22 +80,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Peter Xu <peterx@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 07 Jun 2024 10:13:52 +0530, Athira Rajeev wrote:
-
-> Perf bench futex fails as below when attempted to run on
-> on a powerpc system:
+On Thu, Jun 13, 2024 at 04:43:57PM +0000, LEROY Christophe wrote:
+> I can test whatever you want on my 8xx boards.
 > 
->  ./perf bench futex all
->  Running futex/hash benchmark...
-> Run summary [PID 626307]: 80 threads, each operating on 1024 [private] futexes for 10 secs.
-> 
-> [...]
+> I have two types of board:
+> - One with MPC866 microcontroller and 32Mbytes memory
+> - One with MPC885 microcontroller and 128Mbytes memory
 
-Applied to perf-tools-next after updating the commit log a bit, thanks!
+That is great.
+I will code up some tests, and once you have the pmd_* stuff on 8xx we
+can give it a shot.
 
-Best regards,
-Namhyung
+Thanks!
+
+
+-- 
+Oscar Salvador
+SUSE Labs
