@@ -1,74 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5021D9090BE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 18:47:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DB49090C8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 18:52:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gkexV6rB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CpFq6UCC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W14vY0tBYz3ccQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 02:47:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W151502zVz3cc7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 02:52:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gkexV6rB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CpFq6UCC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f2e; helo=mail-qv1-xf2e.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W14ts5DzKz3cXg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 02:47:00 +1000 (AEST)
-Received: by mail-qv1-xf2e.google.com with SMTP id 6a1803df08f44-6b09072c9d9so18851766d6.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 09:47:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718383617; x=1718988417; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yqs2Bs766IBEpVDwqnHittM7JULZRUAPIPpoZOOswLI=;
-        b=gkexV6rBV23Ju59i6jO2tPy5cp7isK4RGMl6fjiJQ3w4S2J3S+G7YEb6KaekqUjoSS
-         txX8lDNv8H2J47b30X2S+OIEfW8T7qP15h/AjIdyWrxeFndzOLRB8WNm9vzJXHVmmdoL
-         JMb7elH53IYsPe1hGJK0jveS0v13ZfW5lf3VhsaMEktZsROJ1U6JvFwcCoBOwotUVD2z
-         RScxmnbdo9GJeQk0N7URdOEfzNW6hxQrkA4QOPhPEZrrI1V0/F1Ao3eg0TjjOhZfgOqE
-         Xk5Z6+0HsyTjIwZdpS4LD+N+F5OeKAeBnHVKz+JBcbxnhDRvTyhEsSDXB/cY4FfXUpBG
-         WDHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718383617; x=1718988417;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yqs2Bs766IBEpVDwqnHittM7JULZRUAPIPpoZOOswLI=;
-        b=AJPm3bHZVWi0RV95pU7EPQ1Ob/Zyqk+ukXwe87KHNPiVoZ6PfYcYjsTNz91bzbSsdW
-         cuMLVQLDgWiKCx2eWCqTN7nh5enTSAPQh6++a3vZYH8NRdfrlyU2SSLvGm4Ujy5u5Sna
-         pAgbNND1oY8RUeuN4/ltgdabO0SZPglu+STixsesKLtIm/1zl92SMjUoBl362jXziAG8
-         ulyKbTlT4NEmL1WQFp3JjYaSRQZXQ/TpaZjT6ZTZpQ550ZiHyXZWycQhmGWS5h+zCCQu
-         x08fRMInT3ZaTDTuMF3TTNHMiMhn+DpZTQTGoZh8jtmHZQ/QzfkWi5L0ryjsoUBkk+jq
-         i5Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfiAs0dED+tQQKMke7qWsMcuF75fLtzT8cD7wszIYYn2jrBQ2Lb77hWJQ29gzxtWRylz4t8WWiQrGWe3yuqQz69Ori+szqkRe45sEnuA==
-X-Gm-Message-State: AOJu0YzVo8jUgVf4UQ6wlWnH0SG9QEPxZbBB/agQ7bXBYrawCB9i+39W
-	BME4soZvcLTRgqTvCJm7CHzZtQkIVXnhcXjxOV3yJoq88s38c4MscxKx3lF75vAy+ywdHu5RurI
-	Wlvmf8URp4ZJpGVqrwegYkG+fXgMzPDD5dRN0OA==
-X-Google-Smtp-Source: AGHT+IG0IJ7dklCKXgFvzQnpQNQ7ndgkvwrYf/nZPEe1c+OWwBjZSeclPr61zSJ2azVgXqhXLF4vvSLpkv+cY1EpiAk=
-X-Received: by 2002:a0c:c486:0:b0:6af:33ed:87de with SMTP id
- 6a1803df08f44-6b2af2eef89mr48619646d6.20.1718383617492; Fri, 14 Jun 2024
- 09:46:57 -0700 (PDT)
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W150N50l4z3cY3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 02:51:48 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id D46D1CE2C46;
+	Fri, 14 Jun 2024 16:51:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29068C2BD10;
+	Fri, 14 Jun 2024 16:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718383907;
+	bh=fPlz7/O4CHKldDLCxbpg3ui9wtblMgB3TXnLBn0vSI8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CpFq6UCC7cqq4TL2Q4voaO/eWCDtFrzYqrhpIB1METf7ygd32ZxG5reEb08aI2/2l
+	 EOxJV0ZJspzfFvIBXYmPTqrYT27w3rTiKkm+0qK4iCpyuG7O8YAUweHKhCa8wqWvjd
+	 cjod0053tLA2spwX/oQuoY0BJCQ8ikbCbbKxI3lw3enf1LhXAA6RU9YT5281LMbTRV
+	 BM47sjqNEhDV2l7quJAsEP4p/QiQyrdWTMeDPgyTL6Vqsm+ScmxescTGkW2jxGxXvb
+	 /Uf4o81uIhzqasU0dnRZVZ0nFTzxCL9yCWfUrzi+KZa3C2Rw0AIU1tMb3tNPV6KEG3
+	 lW5zitAlFmhCw==
+Date: Fri, 14 Jun 2024 17:51:43 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx
+ CPUs
+Message-ID: <Zmx1H5MyjWvoRdwz@finisterre.sirena.org.uk>
 References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
- <Zmgor8accyAiUkUO@finisterre.sirena.org.uk> <CAG+cZ06B+AexqvwZtNP5FX50AmghAFLa=1ebxmKLvMoyVJ529w@mail.gmail.com>
+ <Zmgor8accyAiUkUO@finisterre.sirena.org.uk>
+ <CAG+cZ06B+AexqvwZtNP5FX50AmghAFLa=1ebxmKLvMoyVJ529w@mail.gmail.com>
  <Zmxy-xA3YDU06Eht@finisterre.sirena.org.uk>
-In-Reply-To: <Zmxy-xA3YDU06Eht@finisterre.sirena.org.uk>
-From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Date: Fri, 14 Jun 2024 18:46:46 +0200
-Message-ID: <CAG+cZ05KomezPn0bAuZWrfO=rbyLdCU8_Xx11oEihUaD97gF8w@mail.gmail.com>
-Subject: Re: [Patch v2 1/2] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
-To: Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAG+cZ05KomezPn0bAuZWrfO=rbyLdCU8_Xx11oEihUaD97gF8w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7aeyEfJwNjSnCeXl"
+Content-Disposition: inline
+In-Reply-To: <CAG+cZ05KomezPn0bAuZWrfO=rbyLdCU8_Xx11oEihUaD97gF8w@mail.gmail.com>
+X-Cookie: Your love life will be... interesting.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,28 +70,45 @@ Cc: alsa-devel@alsa-project.org, Rob Herring <robh@kernel.org>, Conor Dooley <co
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 14, 2024 at 6:42=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Fri, Jun 14, 2024 at 06:24:50PM +0200, Piotr Wojtaszczyk wrote:
-> > On Tue, Jun 11, 2024 at 12:36=E2=80=AFPM Mark Brown <broonie@kernel.org=
-> wrote:
->
-> > > On a quick scan I can't see any architecture dependency for build,
-> > > please add an || COMPILE_TEST for improved coverage.  As for all the
-> > > other things enabled in this Kconfig file there is no need to explici=
-tly
-> > > depend on SND_SOC.
->
-> > Ok. Later I will add a sound card driver to phytec3250 board which uses
-> > arch/arm/configs/lpc32xx_defconfig config file so that the COMPILE_TEST
-> > won't be needed.
->
-> Why would a defconfig affect the Kconfig?
-I guess when lpc32xx_defconfig enables the SND_SOC_FSL_LPC3XXX then the
-COMPILE_TEST won't be needed or does it?
 
+--7aeyEfJwNjSnCeXl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
---=20
-Piotr Wojtaszczyk
-Timesys
+On Fri, Jun 14, 2024 at 06:46:46PM +0200, Piotr Wojtaszczyk wrote:
+> On Fri, Jun 14, 2024 at 6:42=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
+rote:
+> > On Fri, Jun 14, 2024 at 06:24:50PM +0200, Piotr Wojtaszczyk wrote:
+
+> > > Ok. Later I will add a sound card driver to phytec3250 board which us=
+es
+> > > arch/arm/configs/lpc32xx_defconfig config file so that the COMPILE_TE=
+ST
+> > > won't be needed.
+
+> > Why would a defconfig affect the Kconfig?
+
+> I guess when lpc32xx_defconfig enables the SND_SOC_FSL_LPC3XXX then the
+> COMPILE_TEST won't be needed or does it?
+
+The whole point of COMPILE_TEST is to allow the driver to be covered
+when people aren't building for whatever specific platform would
+actually use it.
+
+--7aeyEfJwNjSnCeXl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZsdR4ACgkQJNaLcl1U
+h9CNrQf/QOGnPQlIqhyNGJmHt+OTyAKxvU02FdwW1IOOW6yQBj4UO9d4k7nblhEn
+F7Vtbh6YUxU664IKdVLn2n6JwvOzBu2sPuLmm0JQgsZnlOB23KNWgw7yoZdgPL9m
+tKbUe6KCBHoMU/LJe+m2nm9qhAlTXlL4Uf1xgJQ3TK9c2neuko0efOtWy97OE8Oc
+PxHGfc5fFxAjEtnOQq47Nj0/fKCzXF3HLOseOx+KibzpUMgVZJTdVilroWPHOGXa
+u9aMHOWsdypZIO6rRaAjhslOpENc0zW4+v4gaWtRD8mmsiKzvQuZTB6zo/vMTTfA
+GUx5oQKpFeCMxaFkBGj6dCVLbitmgQ==
+=r/9i
+-----END PGP SIGNATURE-----
+
+--7aeyEfJwNjSnCeXl--
