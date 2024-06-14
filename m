@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61FD908ACD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 13:28:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D503908ACE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 13:29:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HDRqOyt2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PilTGbc7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0xqb4Hjcz3cXQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 21:28:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0xrM6Tfjz3cVY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 21:29:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HDRqOyt2;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PilTGbc7;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0xpY72MDz3cXT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 21:27:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0xpl4tTFz3cYt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 21:27:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1718364463;
-	bh=7gppcvHTZmlspy/+NJ1PKqP/0pbXM0SdZyYHmhfIhbs=;
+	s=201909; t=1718364480;
+	bh=7QvapBUZMia0j8j9NgqwjdVQPcasgkaRydVGXAQi2zQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HDRqOyt2f0/NjZKYa+A6N6ydYNbQyF4m2Jz+vx4ubWyiYPHmIzXuPxENs41+8OPaK
-	 aqP3BBZeu4XkutieWyyfF3JUPML4HoxjEcFxiADaFA9ot/bZLOSBrCkFXliiELIgKh
-	 bgzmHaP2JQcTS4OL2l1uKTuw3JOhj/aVfv8/TjdQiUiXYo9CvqRp3xG8DvOYxl9KnS
-	 BYBbT/H1Yvtk55Ypl7DoTJwgGcheDWm/BIMN+v2AhzYxu0Ki+oREOklFaTmLxDrZBy
-	 VvdRd2Ubw+26Zbluow66DwZc2ZIXC0h56JWB34LbixJGRNc4OmwVWIN8Za/j/FcaUT
-	 Ul8VOd76XECUQ==
+	b=PilTGbc7A9QGyO6tlyCrOXj4aXtQP3U3SRmXW5ZFpnV9O1Ru/Ouiu9g8AIAGv5jrN
+	 PW9hQUGz4hcepQZLFyy1XtLk0vyaNDClu1zU/gw93BD5us/RtbaziJLYJQyLFmf1F2
+	 Q2iTdNy1CLWPD0H6/FS7ntOgkk4iqjmMd/+fowVdw9vX9cJcqObbiNdwunicK4jmHu
+	 gLdQaWIbX8Fkxe5ElLv2LIqWuIcPvsmUezPOg7R812PGqa6+RBdKUG50X2As+wvNEo
+	 /8xTUZm6zv0n1++nFBzKuvpvT6z9MHHuz9RxMbap2UpDX5cw1k5KkYCSR4GRQVt4f+
+	 IKmE8cqXl6A3Q==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xpR1Lx0z4wyw;
-	Fri, 14 Jun 2024 21:27:43 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xpm2KN7z4wcC;
+	Fri, 14 Jun 2024 21:28:00 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <stable@vger.kernel.org>
-Subject: [PATCH v5.15] powerpc/uaccess: Fix build errors seen with GCC 13/14
-Date: Fri, 14 Jun 2024 21:27:34 +1000
-Message-ID: <20240614112734.3482854-1-mpe@ellerman.id.au>
+Subject: [PATCH v6.1] powerpc/uaccess: Fix build errors seen with GCC 13/14
+Date: Fri, 14 Jun 2024 21:27:49 +1000
+Message-ID: <20240614112749.3482975-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -111,10 +111,10 @@ Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index b2680070d65d..6013a7fc74ba 100644
+index 45d4c9cf3f3a..661046150e49 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -90,9 +90,20 @@ __pu_failed:							\
+@@ -80,9 +80,20 @@ __pu_failed:							\
  		:						\
  		: label)
  
@@ -136,7 +136,7 @@ index b2680070d65d..6013a7fc74ba 100644
 +		: label)
  #else /* __powerpc64__ */
  #define __put_user_asm2_goto(x, addr, label)			\
- 	asm_volatile_goto(					\
+ 	asm goto(					\
 -- 
 2.45.1
 
