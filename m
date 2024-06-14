@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47217908AC9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 13:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D61FD908ACD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 13:28:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i2j9CZ80;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HDRqOyt2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0xpq0p14z3cWy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 21:28:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0xqb4Hjcz3cXQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 21:28:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i2j9CZ80;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HDRqOyt2;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0xp425whz30fp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 21:27:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0xpY72MDz3cXT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 21:27:49 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1718364444;
-	bh=qGmaDJkZonmemqZvfycxiwL9FznM+gJCaK6L2qMzoS0=;
+	s=201909; t=1718364463;
+	bh=7gppcvHTZmlspy/+NJ1PKqP/0pbXM0SdZyYHmhfIhbs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=i2j9CZ80Eb8wsmiHKI5Q4r0snEkatwbzvWdW7T2pCUgGT2avYB68ECVq9AzG7Wd4x
-	 dl4Scjt4flHyF0mivrUT0oXXJzU4AkWgUfH31NU1YfXoOiG1a6r70WCwdOVZWpTa2r
-	 +XQQEiwDCJeL7zeQyCxpv1SSmBJI7ukqu0o3wXelnk3+qiN7nCk+vhrEV+OonJO24b
-	 SQ0GZQhjwuJAamUeK/xJhj5wmy2psUgi6aJ/aOMTYFn1kh7gNlOzciAmi6QOaZePpv
-	 Woouic+qZr0OvCFMPsBYATCQHqXxjcrc5s41RU5yaVdrbC5MlKtmKtLpf1JE/8Kn2H
-	 0hJ5l2HZ6K3cg==
+	b=HDRqOyt2f0/NjZKYa+A6N6ydYNbQyF4m2Jz+vx4ubWyiYPHmIzXuPxENs41+8OPaK
+	 aqP3BBZeu4XkutieWyyfF3JUPML4HoxjEcFxiADaFA9ot/bZLOSBrCkFXliiELIgKh
+	 bgzmHaP2JQcTS4OL2l1uKTuw3JOhj/aVfv8/TjdQiUiXYo9CvqRp3xG8DvOYxl9KnS
+	 BYBbT/H1Yvtk55Ypl7DoTJwgGcheDWm/BIMN+v2AhzYxu0Ki+oREOklFaTmLxDrZBy
+	 VvdRd2Ubw+26Zbluow66DwZc2ZIXC0h56JWB34LbixJGRNc4OmwVWIN8Za/j/FcaUT
+	 Ul8VOd76XECUQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xp444xyz4wcC;
-	Fri, 14 Jun 2024 21:27:24 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xpR1Lx0z4wyw;
+	Fri, 14 Jun 2024 21:27:43 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <stable@vger.kernel.org>
-Subject: [PATCH v5.10] powerpc/uaccess: Fix build errors seen with GCC 13/14
-Date: Fri, 14 Jun 2024 21:27:14 +1000
-Message-ID: <20240614112714.3482739-1-mpe@ellerman.id.au>
+Subject: [PATCH v5.15] powerpc/uaccess: Fix build errors seen with GCC 13/14
+Date: Fri, 14 Jun 2024 21:27:34 +1000
+Message-ID: <20240614112734.3482854-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -111,10 +111,10 @@ Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 6b808bcdecd5..6df110c1254e 100644
+index b2680070d65d..6013a7fc74ba 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -186,9 +186,20 @@ do {								\
+@@ -90,9 +90,20 @@ __pu_failed:							\
  		:						\
  		: label)
  
