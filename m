@@ -1,52 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49025908777
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 11:31:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47217908AC9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 13:28:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=u/iXU3Cu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i2j9CZ80;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W0vDW1SVRz3cSN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 19:31:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W0xpq0p14z3cWy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jun 2024 21:28:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=90.155.50.34; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i2j9CZ80;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0v9f4kBYz2yvp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 19:29:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=k5Jozg+gaCeSQ8tXyXAfQ8zvUH35mGnejlLYGUNU73c=; b=u/iXU3CuapkrBpGgNpXL7oKWw2
-	akDjIAg46tPSfA09potIFN7iNNRLBOcOWOruqnNqrpF1A3vztyYK1CNKi+YApQjX3TSGtWpbWvyjk
-	2QqPlMXSDtQKcOldgtX8kcSD5J30dKJYqKq6+Uz9Dpx2rr4E2LSxU/hTB06ppUtiMhmkFRH1tWGFL
-	SfzhC+xbBy+GIFrMIMF6R5HPq1V6egCAlbsXOj1XPxLUL9MBd97xrATfvTJKkPgIW/99fc5N3cCoO
-	8Ohm27l1SS86ljlIsb/2oqUYH2Fu/E6Ki2TnRAQh7OggP52Coo4MDKT6lhmrwNRr9/Jrmz4YKJWVc
-	W386n8dQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sI3E1-0000000GowR-3iYH;
-	Fri, 14 Jun 2024 09:28:02 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2A6ED300886; Fri, 14 Jun 2024 11:28:01 +0200 (CEST)
-Date: Fri, 14 Jun 2024 11:28:01 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH v2 00/14] Introducing TIF_NOTIFY_IPI flag
-Message-ID: <20240614092801.GL8774@noisy.programming.kicks-ass.net>
-References: <20240613181613.4329-1-kprateek.nayak@amd.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W0xp425whz30fp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jun 2024 21:27:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1718364444;
+	bh=qGmaDJkZonmemqZvfycxiwL9FznM+gJCaK6L2qMzoS0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i2j9CZ80Eb8wsmiHKI5Q4r0snEkatwbzvWdW7T2pCUgGT2avYB68ECVq9AzG7Wd4x
+	 dl4Scjt4flHyF0mivrUT0oXXJzU4AkWgUfH31NU1YfXoOiG1a6r70WCwdOVZWpTa2r
+	 +XQQEiwDCJeL7zeQyCxpv1SSmBJI7ukqu0o3wXelnk3+qiN7nCk+vhrEV+OonJO24b
+	 SQ0GZQhjwuJAamUeK/xJhj5wmy2psUgi6aJ/aOMTYFn1kh7gNlOzciAmi6QOaZePpv
+	 Woouic+qZr0OvCFMPsBYATCQHqXxjcrc5s41RU5yaVdrbC5MlKtmKtLpf1JE/8Kn2H
+	 0hJ5l2HZ6K3cg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xp444xyz4wcC;
+	Fri, 14 Jun 2024 21:27:24 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <stable@vger.kernel.org>
+Subject: [PATCH v5.10] powerpc/uaccess: Fix build errors seen with GCC 13/14
+Date: Fri, 14 Jun 2024 21:27:14 +1000
+Message-ID: <20240614112714.3482739-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240613181613.4329-1-kprateek.nayak@amd.com>
-X-Mailman-Approved-At: Fri, 14 Jun 2024 19:31:04 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,138 +57,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, linux-openrisc@vger.kernel.org, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, David Vernet <void@manifault.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Kees Cook <keescook@chromium.org>, Jonas Bonn <jonas@southpole.se>, Valentin Schneider <vschneid@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, "Rafael J. Wysocki" <rafael@kernel.org>, Russell King <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>, Tony Battersby <tonyb@cybernetics.com>, Ingo Molnar <mingo@redhat.com>, Mel Gorman <mgorman@suse.de>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, "Paul E. McKenney" <paulmck@kernel.org>, Rik van Riel <riel@surriel.com>, Brian Gerst <brgerst@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, Xin Li <xin3.li@intel.com>, Richard Henderson <richard.henderson@linaro.org>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Steven Rostedt <rostedt@goodmis.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Bjorn Helgaas <bhelgaas@google.com>, Stafford Horne <shorne@gmail.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, linux-arm-kernel@lists.infradead.org, Ben Segall <bsegall@google.com>, Michal Simek <monstr@monstr.eu>, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-parisc@vger.kernel.org, Tim Chen <tim.c.chen@linux.intel.com>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@inria.fr>, Dinh Nguyen <dinguyen@kernel.org>, Leonardo Bras <leobras@redhat.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, linux-alpha@vger.kernel.org, Imran Khan <imran.f.khan@oracle.com>, Borislav Petkov <bp@alien8.de>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Daniel Bristot de Oliveira <bristot@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 13, 2024 at 06:15:59PM +0000, K Prateek Nayak wrote:
-> Effects of call_function_single_prep_ipi()
-> ==========================================
-> 
-> To pull a TIF_POLLING thread out of idle to process an IPI, the sender
-> sets the TIF_NEED_RESCHED bit in the idle task's thread info in
-> call_function_single_prep_ipi() and avoids sending an actual IPI to the
-> target. As a result, the scheduler expects a task to be enqueued when
-> exiting the idle path. This is not the case with non-polling idle states
-> where the idle CPU exits the non-polling idle state to process the
-> interrupt, and since need_resched() returns false, soon goes back to
-> idle again.
-> 
-> When TIF_NEED_RESCHED flag is set, do_idle() will call schedule_idle(),
-> a large part of which runs with local IRQ disabled. In case of ipistorm,
-> when measuring IPI throughput, this large IRQ disabled section delays
-> processing of IPIs. Further auditing revealed that in absence of any
-> runnable tasks, pick_next_task_fair(), which is called from the
-> pick_next_task() fast path, will always call newidle_balance() in this
-> scenario, further increasing the time spent in the IRQ disabled section.
-> 
-> Following is the crude visualization of the problem with relevant
-> functions expanded:
-> --
-> CPU0							CPU1
-> ====							====
-> 							do_idle() {
-> 								__current_set_polling();
-> 								...
-> 								monitor(addr);
-> 								if (!need_resched())
-> 									mwait() {
-> 									/* Waiting */
-> smp_call_function_single(CPU1, func, wait = 1) {				...
-> 	...									...
-> 	set_nr_if_polling(CPU1) {						...
-> 		/* Realizes CPU1 is polling */					...
-> 		try_cmpxchg(addr,						...
-> 			    &val,						...
-> 			    val | _TIF_NEED_RESCHED);				...
-> 	} /* Does not send an IPI */						...
-> 	...								} /* mwait exit due to write at addr */
-> 	csd_lock_wait() {					} 
-> 	/* Waiting */						preempt_set_need_resched();
-> 		...						__current_clr_polling();
-> 		...						flush_smp_call_function_queue() {
-> 		...							func();
-> 	} /* End of wait */					}
-> }								schedule_idle() {
-> 									...
-> 									local_irq_disable();
-> smp_call_function_single(CPU1, func, wait = 1) {			...
-> 	...								...
-> 	arch_send_call_function_single_ipi(CPU1);			...
-> 						\			...
-> 						 \			newidle_balance() {
-> 						  \				...
-> 					      /* Delay */			...
-> 						    \			}
-> 					     	     \			...
-> 						      \-------------->	local_irq_enable();
-> 									/* Processes the IPI */
-> --
-> 
-> 
-> Skipping newidle_balance()
-> ==========================
-> 
-> In an earlier attempt to solve the challenge of the long IRQ disabled
-> section, newidle_balance() was skipped when a CPU waking up from idle
-> was found to have no runnable tasks, and was transitioning back to
-> idle [2]. Tim [3] and David [4] had pointed out that newidle_balance()
-> may be viable for CPUs that are idling with tick enabled, where the
-> newidle_balance() has the opportunity to pull tasks onto the idle CPU.
+commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
 
-I don't think we should be relying on this in any way shape or form.
-NOHZ can kill that tick at any time.
+Building ppc64le_defconfig with GCC 14 fails with assembler errors:
 
-Also, semantically, calling newidle from the idle thread is just daft.
-You're really not newly idle in that case.
+    CC      fs/readdir.o
+  /tmp/ccdQn0mD.s: Assembler messages:
+  /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multiple of 4)
+  /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multiple of 4)
+  ... [6 lines]
+  /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multiple of 4)
 
-> Vincent [5] pointed out a case where the idle load kick will fail to
-> run on an idle CPU since the IPI handler launching the ILB will check
-> for need_resched(). In such cases, the idle CPU relies on
-> newidle_balance() to pull tasks towards itself.
+A snippet of the asm shows:
 
-Is this the need_resched() in _nohz_idle_balance() ? Should we change
-this to 'need_resched() && (rq->nr_running || rq->ttwu_pending)' or
-something long those lines?
+  # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+         ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *)name_38(D) + _88 * 1]
+  # 210 "../fs/readdir.c" 1
+         1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[(u64 *)name_38(D) + _88 * 1]
 
-I mean, it's fairly trivial to figure out if there really is going to be
-work there.
+The 'std' instruction requires a 4-byte aligned displacement because
+it is a DS-form instruction, and as the assembler says, 18 is not a
+multiple of 4.
 
-> Using an alternate flag instead of NEED_RESCHED to indicate a pending
-> IPI was suggested as the correct approach to solve this problem on the
-> same thread.
+A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
 
-So adding per-arch changes for this seems like something we shouldn't
-unless there really is no other sane options.
+The fix is to change the constraint on the memory operand to put_user(),
+from "m" which is a general memory reference to "YZ".
 
-That is, I really think we should start with something like the below
-and then fix any fallout from that.
+The "Z" constraint is documented in the GCC manual PowerPC machine
+constraints, and specifies a "memory operand accessed with indexed or
+indirect addressing". "Y" is not documented in the manual but specifies
+a "memory operand for a DS-form instruction". Using both allows the
+compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 0935f9d4bb7b..cfa45338ae97 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5799,7 +5800,7 @@ static inline struct task_struct *
- __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- {
- 	const struct sched_class *class;
--	struct task_struct *p;
-+	struct task_struct *p = NULL;
+Unfortunately clang doesn't support the "Y" constraint so that has to be
+behind an ifdef.
+
+Although the build error is only seen with GCC 13/14, that appears
+to just be luck. The constraint has been incorrect since it was first
+added.
+
+Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
+Suggested-by: Kewen Lin <linkw@gcc.gnu.org>
+[mpe: Drop CONFIG_PPC_KERNEL_PREFIXED ifdef for backport]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
+---
+ arch/powerpc/include/asm/uaccess.h | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 6b808bcdecd5..6df110c1254e 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -186,9 +186,20 @@ do {								\
+ 		:						\
+ 		: label)
  
- 	/*
- 	 * Optimization: we know that if all tasks are in the fair class we can
-@@ -5810,9 +5811,11 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
- 	if (likely(!sched_class_above(prev->sched_class, &fair_sched_class) &&
- 		   rq->nr_running == rq->cfs.h_nr_running)) {
- 
--		p = pick_next_task_fair(rq, prev, rf);
--		if (unlikely(p == RETRY_TASK))
--			goto restart;
-+		if (rq->nr_running) {
-+			p = pick_next_task_fair(rq, prev, rf);
-+			if (unlikely(p == RETRY_TASK))
-+				goto restart;
-+		}
- 
- 		/* Assume the next prioritized class is idle_sched_class */
- 		if (!p) {
++#ifdef CONFIG_CC_IS_CLANG
++#define DS_FORM_CONSTRAINT "Z<>"
++#else
++#define DS_FORM_CONSTRAINT "YZ<>"
++#endif
++
+ #ifdef __powerpc64__
+-#define __put_user_asm2_goto(x, ptr, label)			\
+-	__put_user_asm_goto(x, ptr, label, "std")
++#define __put_user_asm2_goto(x, addr, label)			\
++	asm goto ("1: std%U1%X1 %0,%1	# put_user\n"		\
++		EX_TABLE(1b, %l2)				\
++		:						\
++		: "r" (x), DS_FORM_CONSTRAINT (*addr)		\
++		:						\
++		: label)
+ #else /* __powerpc64__ */
+ #define __put_user_asm2_goto(x, addr, label)			\
+ 	asm_volatile_goto(					\
+-- 
+2.45.1
+
