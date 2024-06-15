@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6931B909726
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 10:58:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A7C909727
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 10:59:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=BG9EAzL4;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=PYbWvkuc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W1VSB4n5Lz3c4r
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 18:58:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W1VSy6R0Kz3cfB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jun 2024 18:59:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=BG9EAzL4;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=PYbWvkuc;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W1Jnm1qWjz3cX7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 11:43:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W1JrP3Tvhz3c4r
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jun 2024 11:45:41 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JLTvDV1lNU9XfbpR4Y9KnupD1/9SE9kaeQL+4/ORc5U=; b=BG9EAzL4aNe5yXJ8hUlpJr41e2
-	JLmkcwHOSWQpGdf0kCw978PqipCPe5wQqcQYPoTGj5qdH2BjLO25E0I5Xbmuxh7ras6sH5320jBTm
-	3ccSVJvWPlOy+8vvwHxDkulKaq+0SdGAZWJst1q9monnCJS8aZ28oGoMDGTo9Tl+bgTbuHmTvuO2P
-	TI+IYMfifnbJQlH8/a2+n/YaYq26qvQgQ17tUfDlS6sfPw6xtPsBDwmIN9QHzpgcZspjz1TcJpyVh
-	OniE5Iu5C4JJkjb2MKxFjs0W+59zRyHx0N5qBEUaRjm0PVow6X91bGKmnKok4GdGkxX44dC78EvW0
-	vYM65rEw==;
+	bh=Cmiivs9+4WenC6OP/1ZCnI/gkKg1dnHA0OIU4ZJ3byg=; b=PYbWvkucSg2aBQezLwmo+Qcd5e
+	buXI3jXr9trafbVS5gAryDT/g51ZN2ZBHJAxUbhpaC2hB7zEs07wi7VegkBqFt449VYmSdHx7elSe
+	WogNyhroF0DK54iaxAW50jWdlZDahTiZV5+Ls5WFRE8mrzX+a1Gce1UfgRgk+LFUxWnqraMHJ82U+
+	fjuNuq9GYv6VpVV9TPpSg4O/DlYpC/xa6zQU7QS5onXdbc6AjTRUO7+Q+u9isTmIEj0KMnjFgqrDf
+	ebusEVDAofzzEFgSzUfwc/6aFrS74znvLxdtqTdMPASh9jObHTMaQX2D8eISlHn4iq1vMo6HzZ/MT
+	vTtCcWSw==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sIIRV-0000000HUXb-1PVI;
-	Sat, 15 Jun 2024 01:43:00 +0000
+	id 1sIITp-0000000HUbB-2pKJ;
+	Sat, 15 Jun 2024 01:45:21 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E4982300886; Sat, 15 Jun 2024 03:42:56 +0200 (CEST)
-Date: Sat, 15 Jun 2024 03:42:56 +0200
+	id 38AF1300886; Sat, 15 Jun 2024 03:45:21 +0200 (CEST)
+Date: Sat, 15 Jun 2024 03:45:21 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Vincent Guittot <vincent.guittot@linaro.org>
 Subject: Re: [PATCH v2 00/14] Introducing TIF_NOTIFY_IPI flag
-Message-ID: <20240615014256.GQ8774@noisy.programming.kicks-ass.net>
+Message-ID: <20240615014521.GR8774@noisy.programming.kicks-ass.net>
 References: <20240613181613.4329-1-kprateek.nayak@amd.com>
  <20240614092801.GL8774@noisy.programming.kicks-ass.net>
  <CAKfTPtBTxhbmh=605TJ9sRw-nFu6w-KY7QpAxRUh5AjhQWa2ig@mail.gmail.com>
+ <20240615012814.GP8774@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKfTPtBTxhbmh=605TJ9sRw-nFu6w-KY7QpAxRUh5AjhQWa2ig@mail.gmail.com>
+In-Reply-To: <20240615012814.GP8774@noisy.programming.kicks-ass.net>
 X-Mailman-Approved-At: Sat, 15 Jun 2024 18:57:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,15 +68,20 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, Rich Felker <dalias@libc.org>, Andreas L
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 14, 2024 at 12:48:37PM +0200, Vincent Guittot wrote:
+On Sat, Jun 15, 2024 at 03:28:14AM +0200, Peter Zijlstra wrote:
+> On Fri, Jun 14, 2024 at 12:48:37PM +0200, Vincent Guittot wrote:
 
-> The main problem is that need_resched becomes somewhat meaningless
-> because it doesn't  only mean "I need to resched a task" and we have
-> to add more tests around even for those not using polling
+> > The main problem is that need_resched becomes somewhat meaningless
+> > because it doesn't  only mean "I need to resched a task" and we have
+> > to add more tests around even for those not using polling
+> 
+> True, however we already had some of that by having the wakeup list,
+> that made nr_running less 'reliable'.
 
-The converse problem is that you're adding a bunch of atomic ops that
-might be avoided.
+Doesn't using !idle_cpu() instead of need_resched() in those balance
+paths already do the right thing?
 
-It might now need to set both the RESCHED and IPI flags -- and clear
-them again.
+Checking need_resched() as an indicator of it getting work is already a
+bit an assumption.
 
+Also, Ingo, idle_cpu() and friends don't really belong in syscalls.c...
