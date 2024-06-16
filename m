@@ -1,64 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744DB909D95
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2024 15:02:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A05B909E0A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2024 17:05:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=RZExeNms;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ioXX9/Vm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2CpX0fTHz3cJl
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jun 2024 23:02:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2GXf237lz30W1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 01:05:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=RZExeNms;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ioXX9/Vm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=193.252.23.215; helo=msa.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
-X-Greylist: delayed 20763 seconds by postgrey-1.37 at boromir; Sun, 16 Jun 2024 23:01:33 AEST
-Received: from msa.smtpout.orange.fr (msa-215.smtpout.orange.fr [193.252.23.215])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Mon, 17 Jun 2024 01:04:43 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2Cnn3NJZz30V3
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2024 23:01:30 +1000 (AEST)
-Received: from [192.168.1.37] ([86.243.222.230])
-	by smtp.orange.fr with ESMTPA
-	id Ik5as8CMcevLqIk5bsMq50; Sun, 16 Jun 2024 09:14:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1718522060;
-	bh=YP7PkSksy9wMazSXjGajDue5tMT2K7r8fSa1XkSOCMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=RZExeNmsKlRnZQBILU4YjwXErTuEql+SaccL2uFBjA6xwDM4IK1gZWon0XfW41Rqm
-	 u5MS1+gNoKQaor66VozQF1NM+QzzgBYrfVf64wPAlE46LIdXavKTwO2yd6BRghSbMV
-	 eOa/MT3OuABzxJ4Sv0OxMrda82F8Sl2RQFQMe0HO8TtZMCo0azizFdYtlYG0Au1tc6
-	 2hIpD3IL6C3lhz5ZqV9hPwUHK8B0tIk470L/qO6oLW703+W09Zwce5vl5sALEf76uE
-	 2qKjo4YMTV1HmnLgyTc8EylS+rQG2AEtQrfQeaT1JZvs9QQ+dMjV2ZzFqqEXuC8+S/
-	 0O4zOexyhTUqA==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 16 Jun 2024 09:14:20 +0200
-X-ME-IP: 86.243.222.230
-Message-ID: <de75c710-044a-45ff-9477-cf4d57f55ab1@wanadoo.fr>
-Date: Sun, 16 Jun 2024 09:14:10 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2GWv6N0yz30Tp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 01:04:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718550285; x=1750086285;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RWheu7VAcDlHrib9HA+6p1vteQzNNj1dxDCy688RrHk=;
+  b=ioXX9/Vm10ukBYApoz3K1/nhokWNNk+iLH3rYx4ISx26aZLUTN856gIX
+   jHAwCFvA2xb6oG3gnNvygZ+YbG8jJX4ISxNLh0u5MhtD+42xR3E6C35Yf
+   nlDzqBiPX3sLVox7EtvPkFD+I0xqWLTSTbpxbtBjeml2cBlYxiOd6rLWy
+   KEgxMCrexVVhmTY/DcBKStbsnTHtJJ2xhcyzaSkFEGnza952uBZsDsGFn
+   7xmWjk4VG2T4B7bNHPvDV9/5R+oFd8J0FplVDGiEHx3zZtSD7bJjfmvuv
+   Sh8gWtWBU2ATcAlULkMTy5NpDa5c3AdDL+U6yWW8aXU133+ORKVzyr+8n
+   g==;
+X-CSE-ConnectionGUID: TJL8ppMJS3CKKWorJAM6uQ==
+X-CSE-MsgGUID: YZA6YHi/RXO7K/Stt3iC1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="26502455"
+X-IronPort-AV: E=Sophos;i="6.08,242,1712646000"; 
+   d="scan'208";a="26502455"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2024 08:03:33 -0700
+X-CSE-ConnectionGUID: M4u5m4CsTUadu4ql+ZHPdg==
+X-CSE-MsgGUID: VWZ21rksQNyma9+/+fwpIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,242,1712646000"; 
+   d="scan'208";a="46083612"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.94.249.84])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2024 08:03:30 -0700
+Message-ID: <802a5260-8d74-4a5e-85fc-c9b86460d4c5@intel.com>
+Date: Sun, 16 Jun 2024 18:03:28 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: fsl: imx-pcm-fiq: add missing MODULE_DESCRIPTION()
- macro
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20240615-md-arm-sound-soc-fsl-v1-1-8ed731c2f073@quicinc.com>
-Content-Language: en-MW
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240615-md-arm-sound-soc-fsl-v1-1-8ed731c2f073@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 2/2] tools/perf: Fix parallel-perf python script to
+ replace new python syntax ":=" usage
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
+References: <20240614172742.56976-1-atrajeev@linux.vnet.ibm.com>
+ <20240614172742.56976-2-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20240614172742.56976-2-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,41 +78,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 16/06/2024 à 08:42, Jeff Johnson a écrit :
-> With ARCH=arm, make allmodconfig && make W=1 C=1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in sound/soc/fsl/imx-pcm-fiq.o
+On 14/06/24 20:27, Athira Rajeev wrote:
+> perf test "perf script tests" fails as below in systems
+> with python 3.6
 > 
-> Add the missing invocation of the MODULE_DESCRIPTION() macro.
+> 	File "/home/athira/linux/tools/perf/tests/shell/../../scripts/python/parallel-perf.py", line 442
+> 	if line := p.stdout.readline():
+>              ^
+> 	SyntaxError: invalid syntax
+> 	--- Cleaning up ---
+> 	---- end(-1) ----
+> 	92: perf script tests: FAILED!
 > 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> This happens because ":=" is a new syntax that assigns values
+> to variables as part of a larger expression. This is introduced
+> from python 3.8 and hence fails in setup with python 3.6
+
+According to below python 3.6 is end-of-life
+
+	https://devguide.python.org/versions/
+
+What was still using python 3.6?
+
+> Address this by splitting the large expression and check the
+> value in two steps:
+> Previous line: if line := p.stdout.readline():
+> Current change:
+> 	line = p.stdout.readline()
+> 	if line:
+> 
+> With patch
+> 
+> 	./perf test "perf script tests"
+> 	 93: perf script tests:  Ok
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
 > ---
->   sound/soc/fsl/imx-pcm-fiq.c | 1 +
->   1 file changed, 1 insertion(+)
+>  tools/perf/scripts/python/parallel-perf.py | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/sound/soc/fsl/imx-pcm-fiq.c b/sound/soc/fsl/imx-pcm-fiq.c
-> index 0d124002678e..5ea6dd4c89a1 100644
-> --- a/sound/soc/fsl/imx-pcm-fiq.c
-> +++ b/sound/soc/fsl/imx-pcm-fiq.c
-> @@ -319,4 +319,5 @@ void imx_pcm_fiq_exit(struct platform_device *pdev)
->   }
->   EXPORT_SYMBOL_GPL(imx_pcm_fiq_exit);
->   
-> +MODULE_DESCRIPTION("Freescle i.MX PCM FIQ handler");
-
-Freescale? (missing 'a')
-
-CJ
-
->   MODULE_LICENSE("GPL");
-> 
-> ---
-> base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
-> change-id: 20240615-md-arm-sound-soc-fsl-c598fb353e69
-> 
-> 
-> 
+> diff --git a/tools/perf/scripts/python/parallel-perf.py b/tools/perf/scripts/python/parallel-perf.py
+> index 21f32ec5ed46..be85fd7f6632 100755
+> --- a/tools/perf/scripts/python/parallel-perf.py
+> +++ b/tools/perf/scripts/python/parallel-perf.py
+> @@ -439,7 +439,8 @@ def ProcessCommandOutputLines(cmd, per_cpu, fn, *x):
+>  	pat = re.compile(r"\s*\[[0-9]+\]")
+>  	p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+>  	while True:
+> -		if line := p.stdout.readline():
+> +		line = p.stdout.readline()
+> +		if line:
+>  			line = line.decode("utf-8")
+>  			if pat.match(line):
+>  				line = line.split()
 
