@@ -1,84 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314F790B0A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 15:59:48 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=anNLahWR;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D0E90B0A9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:00:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2s2S63VNz3g2R
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 23:59:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2s3C1jT9z3g9r
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 00:00:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=anNLahWR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2s1m0kvhz3fq3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 23:59:06 +1000 (AEST)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-42189d3c7efso45544965e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 06:59:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718632743; x=1719237543; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7cjNgaPzx0K8Q2oE0VGfsHosS8QVWGPVVkZ0XS7HEDg=;
-        b=anNLahWRaUno/WJ7s5QgPts5q9rrteW28E9NsKMliH/CkVyptzNnmLkp7DUyMFwBUA
-         fABjzaNhxrn5Uc/+OgW2Q19KICH3tBatwe/zkOMZhTY3UMkxPcUtYyR0AxFeSHnfcIm9
-         IA+h/SVuEo3aIGj2a6+RwfdvcMpvyDv5+obBJODeM1MTN26n12Xl6vIGh/3v+9k3YVTt
-         vFbBMOYszHrZvvPvKk9GxjfhVosqLk41lxbYHa/9S5q+COf70RGNZk+rPa+Obfu5eshl
-         Zyaf+UzUj6GqOtI3CoabSLW5czX5FT4UZhfe/OB2rjOTY3AB+33SCQvkRP2n/OhcaNIE
-         KM3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632743; x=1719237543;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7cjNgaPzx0K8Q2oE0VGfsHosS8QVWGPVVkZ0XS7HEDg=;
-        b=hBGfe02E2KdRvMEjcV2C476rsIN45LlGAWLHEAEBzCyiPvrYf/CW3nyiajiZb5O2iM
-         SHPhG5oZHuxHv6Os2yBKFSSZucdOSP0P0ZEypz2j24KTyz5LtGIbsZBSFTmlVLaYQPqk
-         2pWe09LEzywkF+TBVDqDbDZKHCaX5rhQT0PvYf46K+RHLFQ8WTo7AdmINCSekiJMUeOE
-         x6SqEenWGcIrNdgWf1xTzWE/kIW4qF0/ahBOxqXIVLJ65CLCbSmnyZF4p13wzZ0dUly1
-         yull0aB/jRRtAkGZetcmkC6tSpaQD4Mi0Hg7nXSBX273o1LTtlCyO8gjatHbricraHXi
-         8jRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUo7xwGFg377F20m2I99hl+hIPNVRB0DgvPJzIxqyhbUuD6nwS5pO/m22JvdEyfhPB1nL43F5AtWi1zjLLl0WlZTsrlmQfKbDNvOGg+1A==
-X-Gm-Message-State: AOJu0Yy0SUNy1rY84SR7FC/dx6bGJdpuRil3B/KbbWSk+o2z/BbjF3d7
-	H0wNNNdon3uOcIKS5y4/7Gfn2essT6E3FLIfDoHg25Oy6EXCUFP+/o6lDU7d
-X-Google-Smtp-Source: AGHT+IHJ0CsNfqdOT8NJ8/aEvcd12bZPn1WcmZOT2dLARsLKNTs8V+RbkzjWhHb4g1pZvloY+oCxkw==
-X-Received: by 2002:a19:5e15:0:b0:51d:9f10:71b7 with SMTP id 2adb3069b0e04-52ca6e6812fmr7404820e87.28.1718632260306;
-        Mon, 17 Jun 2024 06:51:00 -0700 (PDT)
-Received: from pc636 (host-90-233-216-238.mobileonline.telia.com. [90.233.216.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2887d56sm1239456e87.263.2024.06.17.06.50.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:59 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 17 Jun 2024 15:50:56 +0200
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-Message-ID: <ZnA_QFvuyABnD3ZA@pc636>
-References: <ZmrfA1p2zSVIaYam@zx2c4.com>
- <80e03b02-7e24-4342-af0b-ba5117b19828@paulmck-laptop>
- <Zmru7hhz8kPDPsyz@pc636>
- <7efde25f-6af5-4a67-abea-b26732a8aca1@paulmck-laptop>
- <Zmsuswo8OPIhY5KJ@pc636>
- <cb51bc57-47b8-456a-9ac0-f8aa0931b144@paulmck-laptop>
- <ZmszOd5idhf2Cb-v@pc636>
- <b03b007f-3afa-4ad4-b76b-dea7b3aa2bc3@paulmck-laptop>
- <Zmw5FTX752g0vtlD@pc638.lan>
- <ZmybGZDbXkw7JTjc@zx2c4.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=james.clark@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2s2m4vsNz3fq3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 23:59:58 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 76244DA7;
+	Mon, 17 Jun 2024 06:59:50 -0700 (PDT)
+Received: from [192.168.1.100] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 284DA3F6A8;
+	Mon, 17 Jun 2024 06:59:24 -0700 (PDT)
+Message-ID: <30cdabb5-4c36-40c6-a2c0-8059e4afb371@arm.com>
+Date: Mon, 17 Jun 2024 14:59:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZmybGZDbXkw7JTjc@zx2c4.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 2/3] tools/perf: Use is_perf_pid_map_name helper
+ function to check dso's of pattern /tmp/perf-%d.map
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+References: <20240617130332.13427-1-atrajeev@linux.vnet.ibm.com>
+ <20240617130332.13427-2-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: James Clark <james.clark@arm.com>
+In-Reply-To: <20240617130332.13427-2-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,38 +45,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Vlastimil Babka <vbabka@suse.cz>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Uladzislau Rezki <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: irogers@google.com, maddy@linux.ibm.com, adrian.hunter@intel.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, acme@kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 14, 2024 at 09:33:45PM +0200, Jason A. Donenfeld wrote:
-> On Fri, Jun 14, 2024 at 02:35:33PM +0200, Uladzislau Rezki wrote:
-> > +	/* Should a destroy process be deferred? */
-> > +	if (s->flags & SLAB_DEFER_DESTROY) {
-> > +		list_move_tail(&s->list, &slab_caches_defer_destroy);
-> > +		schedule_delayed_work(&slab_caches_defer_destroy_work, HZ);
-> > +		goto out_unlock;
-> > +	}
-> 
-> Wouldn't it be smoother to have the actual kmem_cache_free() function
-> check to see if it's been marked for destruction and the refcount is
-> zero, rather than polling every one second? I mentioned this approach
-> in: https://lore.kernel.org/all/Zmo9-YGraiCj5-MI@zx2c4.com/ -
-> 
->     I wonder if the right fix to this would be adding a `should_destroy`
->     boolean to kmem_cache, which kmem_cache_destroy() sets to true. And
->     then right after it checks `if (number_of_allocations == 0)
->     actually_destroy()`, and likewise on each kmem_cache_free(), it
->     could check `if (should_destroy && number_of_allocations == 0)
->     actually_destroy()`. 
-> 
-I do not find pooling as bad way we can go with. But your proposal
-sounds reasonable to me also. We can combine both "prototypes" to
-one and offer.
 
-Can you post a prototype here?
 
-Thanks!
+On 17/06/2024 14:03, Athira Rajeev wrote:
+> commit 80d496be89ed ("perf report: Add support for profiling JIT
+> generated code") added support for profiling JIT generated code.
+> This patch handles dso's of form "/tmp/perf-$PID.map".
+> 
+> Some of the references doesn't check exactly for same pattern.
+> some uses "if (!strncmp(dso_name, "/tmp/perf-", 10))". Fix
+> this by using helper function is_perf_pid_map_name which looks
+> for proper pattern of form: "/tmp/perf-$PID.map" for these checks.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/util/dsos.c    | 2 +-
+>  tools/perf/util/srcline.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/perf/util/dsos.c b/tools/perf/util/dsos.c
+> index ab3d0c01dd63..23cd02aa701d 100644
+> --- a/tools/perf/util/dsos.c
+> +++ b/tools/perf/util/dsos.c
+> @@ -275,7 +275,7 @@ static void dso__set_basename(struct dso *dso)
+>  	char *base, *lname;
+>  	int tid;
+>  
+> -	if (sscanf(dso__long_name(dso), "/tmp/perf-%d.map", &tid) == 1) {
+> +	if (is_perf_pid_map_name(dso__long_name(dso))) {
+>  		if (asprintf(&base, "[JIT] tid %d", tid) < 0)
+>  			return;
+>  	} else {
+> diff --git a/tools/perf/util/srcline.c b/tools/perf/util/srcline.c
+> index 9d670d8c1c08..51eb78993fe2 100644
+> --- a/tools/perf/util/srcline.c
+> +++ b/tools/perf/util/srcline.c
+> @@ -39,7 +39,7 @@ static const char *srcline_dso_name(struct dso *dso)
+>  	if (dso_name[0] == '[')
+>  		return NULL;
+>  
+> -	if (!strncmp(dso_name, "/tmp/perf-", 10))
+> +	if (is_perf_pid_map_name(dso_name))
+>  		return NULL;
+>  
+>  	return dso_name;
 
---
-Uladzislau Rezki
+Duplicate of [1] but the latest version of the other one looks like it
+might have a mistake in it.
+
+For this one I get this compilation error:
+
+util/dsos.c: In function ‘dso__set_basename’:
+util/dsos.c:279:21: error: ‘tid’ may be used uninitialized
+[-Werror=maybe-uninitialized]
+  279 |                 if (asprintf(&base, "[JIT] tid %d", tid) < 0)
+
+
+
+[1]:
+https://lore.kernel.org/linux-perf-users/20240601125946.1741414-10-ChaitanyaS.Prakash@arm.com/
