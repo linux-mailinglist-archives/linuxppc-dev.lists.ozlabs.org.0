@@ -1,54 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDECD90B8BD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 20:00:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CBC90B9F0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 20:43:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ir10U5iH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KgXttsZ4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2yNQ5FtLz3gBX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 04:00:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2zKK1rXLz3gDV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 04:43:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ir10U5iH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KgXttsZ4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::136; helo=mail-lf1-x136.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2yMj6Kr8z3g4s
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 04:00:01 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0EC2661328;
-	Mon, 17 Jun 2024 18:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3765C2BD10;
-	Mon, 17 Jun 2024 17:59:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718647199;
-	bh=Fl8N33BSDXmjPLYlGtTOYOXsRe7b1h7E4wgQlsyNPsU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ir10U5iH00YM4E6DJFSawBRv11YAMt1t616rq8exNErIilitiQl2KAK4GChDaCGFs
-	 jF9Q9wklZJC41Vs5s7JJF2n9wSLuKdj7/cgn8GgLX7SeHUtKYVgqS3kT2fwl7dDjLd
-	 y0LTJiv+bN1vQODvMX71qHjRxTekJHk7Y/12fMJOMPIdV/BUMpbXV3GWDneFgi2Z2R
-	 V474KXPLWPZWaiA2pZj0Lz6CiztVsJLE78j5hjCCR98ZggbDkCvfSiw1lKO5bZjq/S
-	 bmGqfXFEez2PEislZhX2dvoYAf4jNvqtCzzuWlHBuLVGzH20MGWjko54QW0BJh9+we
-	 TbfsNj5u+qWCg==
-Date: Mon, 17 Jun 2024 10:59:59 -0700
-From: Kees Cook <kees@kernel.org>
-To: Anjali K <anjalik@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: Whitelist dtl slub object for copying
- to userspace
-Message-ID: <202406171053.F72BF013@keescook>
-References: <20240614173844.746818-1-anjalik@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2zJc5q9gz3g6K
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 04:42:23 +1000 (AEST)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-52bc29c79fdso6411090e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 11:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718649733; x=1719254533; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+jO2FlPNmcOLf+hC3upZKg3SDI4/5kwrnW8GkxW5YVg=;
+        b=KgXttsZ4lIyTmYM6yUHmDkHY7Gy9QpcvJAdc6xhd1HMJITGO6s5RypYAe9VbYuBoJS
+         5NT36CvCGKoXxJ+qzKcPKLKgvcryZyyzfsjzCPG+fBe6nkLgsVkXsObTBCMVyqjH1Ng1
+         /X9a4UzEF2depLw+U00z7r65U6nj0jO9VOZGJ2VGiRmkvdsNdGOtu4Qr5bGrnO2/v7tM
+         xERhEW7SBHi/tIwE0tItulEZe/WTrivirFX0Tka09dDpGOUiZFxQx+53fgGUra8hBVlF
+         uS3uxZWJH+MlTRJgxtCBX0/xaeq7YHVKVocR2/mnViNnMZzqz9Q6Z5BEh8I3J7ayusRq
+         xiOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718649733; x=1719254533;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+jO2FlPNmcOLf+hC3upZKg3SDI4/5kwrnW8GkxW5YVg=;
+        b=vJerauJA4h6oHTjTqJ2zdnRTJmud7ucWVTeN8ER0gHJy2LSpx3mfFw1esVGfD7r63r
+         TxyM+iDxuW2M2ynQDxiNA/glV4EuGMNyWYvc6xq1y2PTQI50y6Y1b1S4XnJyIYHq2KEt
+         WnMvPsqJ6YAR81uhLHXdUUzGQFn7kKIpGP+UHaUJxBGTS9dZSfOhVwrSBKCw9njDC1rN
+         dfsaJWKCQP5zpGMjTpTHqZdD/VJH6EU9Dj9mGvkT4QHd3StqPe3l4WyKcvRyhvqV6A4N
+         VyrKCOyX9J5WtK+qlCPPdSmZdkLlBSDxHdmbGF1JqUSYRagKtEZinslpveNp01rbbqnA
+         P32g==
+X-Forwarded-Encrypted: i=1; AJvYcCVIiB9AWUTHhfspYv/0Gd72645TCFtQy+uUasmPMRkwirFZKTyN72mTpURTHK1mG8OI4j7tQsxS7iqk7u8G3bQlsQ4F+GEtZLWuxJbOoQ==
+X-Gm-Message-State: AOJu0YyVgvvQo/pFt+Nqic596Zz4cXmNYSJcv0v6nDu6rYggjO2GGxPW
+	botjQKTee1YpGSyHliwS0ipFk+2p1ujRgZVUacedwO1V/M2elyfc
+X-Google-Smtp-Source: AGHT+IG+He9esutTE4DcK6Uo+MkQ9CT1wI+N+kkdrm92KSfS1cK189MGjfkb18QFb85ZwtxeC6GLJw==
+X-Received: by 2002:a05:6512:549:b0:521:cc8a:46dd with SMTP id 2adb3069b0e04-52ca6e56e2dmr7855127e87.11.1718649732281;
+        Mon, 17 Jun 2024 11:42:12 -0700 (PDT)
+Received: from pc636 (host-185-121-47-193.sydskane.nu. [185.121.47.193])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56db6182sm540019666b.51.2024.06.17.11.42.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jun 2024 11:42:11 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 17 Jun 2024 20:42:09 +0200
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Message-ID: <ZnCDgdg1EH6V7w5d@pc636>
+References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
+ <20240612143305.451abf58@kernel.org>
+ <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+ <Zmov7ZaL-54T9GiM@zx2c4.com>
+ <Zmo9-YGraiCj5-MI@zx2c4.com>
+ <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
+ <Zmrkkel0Fo4_g75a@zx2c4.com>
+ <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
+ <3b6fe525-626c-41fb-8625-3925ca820d8e@paulmck-laptop>
+ <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240614173844.746818-1-anjalik@linux.ibm.com>
+In-Reply-To: <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,123 +90,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen@kernel.org, christophe.leroy@csgroup.eu, gustavoars@kernel.org, npiggin@gmail.com, vishalc@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, paulmck@kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, "Uladzislau Rezki \(Sony\)" <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 14, 2024 at 11:08:44PM +0530, Anjali K wrote:
-> Reading the dispatch trace log from /sys/kernel/debug/powerpc/dtl/cpu-*
-> results in a BUG() when the config CONFIG_HARDENED_USERCOPY is enabled as
-> shown below.
+On Mon, Jun 17, 2024 at 07:23:36PM +0200, Vlastimil Babka wrote:
+> On 6/17/24 6:12 PM, Paul E. McKenney wrote:
+> > On Mon, Jun 17, 2024 at 05:10:50PM +0200, Vlastimil Babka wrote:
+> >> On 6/13/24 2:22 PM, Jason A. Donenfeld wrote:
+> >> > On Wed, Jun 12, 2024 at 08:38:02PM -0700, Paul E. McKenney wrote:
+> >> >> o	Make the current kmem_cache_destroy() asynchronously wait for
+> >> >> 	all memory to be returned, then complete the destruction.
+> >> >> 	(This gets rid of a valuable debugging technique because
+> >> >> 	in normal use, it is a bug to attempt to destroy a kmem_cache
+> >> >> 	that has objects still allocated.)
+> >> 
+> >> This seems like the best option to me. As Jason already said, the debugging
+> >> technique is not affected significantly, if the warning just occurs
+> >> asynchronously later. The module can be already unloaded at that point, as
+> >> the leak is never checked programatically anyway to control further
+> >> execution, it's just a splat in dmesg.
+> > 
+> > Works for me!
 > 
->     kernel BUG at mm/usercopy.c:102!
->     Oops: Exception in kernel mode, sig: 5 [#1]
->     LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
->     Modules linked in: xfs libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc
->     scsi_transport_fc ibmveth pseries_wdt dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
->     CPU: 27 PID: 1815 Comm: python3 Not tainted 6.10.0-rc3 #85
->     Hardware name: IBM,9040-MRX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NM1060_042) hv:phyp pSeries
->     NIP:  c0000000005d23d4 LR: c0000000005d23d0 CTR: 00000000006ee6f8
->     REGS: c000000120c078c0 TRAP: 0700   Not tainted  (6.10.0-rc3)
->     MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2828220f  XER: 0000000e
->     CFAR: c0000000001fdc80 IRQMASK: 0
->     [ ... GPRs omitted ... ]
->     NIP [c0000000005d23d4] usercopy_abort+0x78/0xb0
->     LR [c0000000005d23d0] usercopy_abort+0x74/0xb0
->     Call Trace:
->      usercopy_abort+0x74/0xb0 (unreliable)
->      __check_heap_object+0xf8/0x120
->      check_heap_object+0x218/0x240
->      __check_object_size+0x84/0x1a4
->      dtl_file_read+0x17c/0x2c4
->      full_proxy_read+0x8c/0x110
->      vfs_read+0xdc/0x3a0
->      ksys_read+0x84/0x144
->      system_call_exception+0x124/0x330
->      system_call_vectored_common+0x15c/0x2ec
->     --- interrupt: 3000 at 0x7fff81f3ab34
+> Great. So this is how a prototype could look like, hopefully? The kunit test
+> does generate the splat for me, which should be because the rcu_barrier() in
+> the implementation (marked to be replaced with the real thing) is really
+> insufficient. Note the test itself passes as this kind of error isn't wired
+> up properly.
 > 
-> Commit 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-> requires that only whitelisted areas in slab/slub objects can be copied to
-> userspace when usercopy hardening is enabled using CONFIG_HARDENED_USERCOPY.
-> Dtl contains hypervisor dispatch events which are expected to be read by
-> privileged users. Hence mark this safe for user access.
-> Specify useroffset=0 and usersize=DISPATCH_LOG_BYTES to whitelist the
-> entire object.
+> Another thing to resolve is the marked comment about kasan_shutdown() with
+> potential kfree_rcu()'s in flight.
 > 
-> Co-developed-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> Signed-off-by: Anjali K <anjalik@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/setup.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> Also you need CONFIG_SLUB_DEBUG enabled otherwise node_nr_slabs() is a no-op
+> and it might fail to notice the pending slabs. This will need to change.
 > 
-> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-> index 284a6fa04b0c..cba40d9d1284 100644
-> --- a/arch/powerpc/platforms/pseries/setup.c
-> +++ b/arch/powerpc/platforms/pseries/setup.c
-> @@ -343,8 +343,8 @@ static int alloc_dispatch_log_kmem_cache(void)
->  {
->  	void (*ctor)(void *) = get_dtl_cache_ctor();
+> ----8<----
+> diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
+> index e6667a28c014..e3e4d0ca40b7 100644
+> --- a/lib/slub_kunit.c
+> +++ b/lib/slub_kunit.c
+> @@ -5,6 +5,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/module.h>
+>  #include <linux/kernel.h>
+> +#include <linux/rcupdate.h>
+>  #include "../mm/slab.h"
 >  
-> -	dtl_cache = kmem_cache_create("dtl", DISPATCH_LOG_BYTES,
-> -						DISPATCH_LOG_BYTES, 0, ctor);
-> +	dtl_cache = kmem_cache_create_usercopy("dtl", DISPATCH_LOG_BYTES,
-> +						DISPATCH_LOG_BYTES, 0, 0, DISPATCH_LOG_BYTES, ctor);
->  	if (!dtl_cache) {
->  		pr_warn("Failed to create dispatch trace log buffer cache\n");
->  		pr_warn("Stolen time statistics will be unreliable\n");
+>  static struct kunit_resource resource;
+> @@ -157,6 +158,26 @@ static void test_kmalloc_redzone_access(struct kunit *test)
+>  	kmem_cache_destroy(s);
+>  }
+>  
+> +struct test_kfree_rcu_struct {
+> +	struct rcu_head rcu;
+> +};
+> +
+> +static void test_kfree_rcu(struct kunit *test)
+> +{
+> +	struct kmem_cache *s = test_kmem_cache_create("TestSlub_kfree_rcu",
+> +				sizeof(struct test_kfree_rcu_struct),
+> +				SLAB_NO_MERGE);
+> +	struct test_kfree_rcu_struct *p = kmem_cache_alloc(s, GFP_KERNEL);
+> +
+> +	kasan_disable_current();
+> +
+> +	KUNIT_EXPECT_EQ(test, 0, slab_errors);
+> +
+> +	kasan_enable_current();
+> +	kfree_rcu(p, rcu);
+> +	kmem_cache_destroy(s);
+> +}
+> +
+>  static int test_init(struct kunit *test)
+>  {
+>  	slab_errors = 0;
+> @@ -177,6 +198,7 @@ static struct kunit_case test_cases[] = {
+>  
+>  	KUNIT_CASE(test_clobber_redzone_free),
+>  	KUNIT_CASE(test_kmalloc_redzone_access),
+> +	KUNIT_CASE(test_kfree_rcu),
+>  	{}
+>  };
+>  
+> diff --git a/mm/slab.h b/mm/slab.h
+> index b16e63191578..a0295600af92 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -277,6 +277,8 @@ struct kmem_cache {
+>  	unsigned int red_left_pad;	/* Left redzone padding size */
+>  	const char *name;		/* Name (only for display!) */
+>  	struct list_head list;		/* List of slab caches */
+> +	struct work_struct async_destroy_work;
+> +
+>  #ifdef CONFIG_SYSFS
+>  	struct kobject kobj;		/* For sysfs */
+>  #endif
+> @@ -474,7 +476,7 @@ static inline bool is_kmalloc_cache(struct kmem_cache *s)
+>  			      SLAB_NO_USER_FLAGS)
+>  
+>  bool __kmem_cache_empty(struct kmem_cache *);
+> -int __kmem_cache_shutdown(struct kmem_cache *);
+> +int __kmem_cache_shutdown(struct kmem_cache *, bool);
+>  void __kmem_cache_release(struct kmem_cache *);
+>  int __kmem_cache_shrink(struct kmem_cache *);
+>  void slab_kmem_cache_release(struct kmem_cache *);
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 5b1f996bed06..c5c356d0235d 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -44,6 +44,8 @@ static LIST_HEAD(slab_caches_to_rcu_destroy);
+>  static void slab_caches_to_rcu_destroy_workfn(struct work_struct *work);
+>  static DECLARE_WORK(slab_caches_to_rcu_destroy_work,
+>  		    slab_caches_to_rcu_destroy_workfn);
+> +static void kmem_cache_kfree_rcu_destroy_workfn(struct work_struct *work);
+> +
+>  
+>  /*
+>   * Set of flags that will prevent slab merging
+> @@ -234,6 +236,7 @@ static struct kmem_cache *create_cache(const char *name,
+>  
+>  	s->refcount = 1;
+>  	list_add(&s->list, &slab_caches);
+> +	INIT_WORK(&s->async_destroy_work, kmem_cache_kfree_rcu_destroy_workfn);
+>  	return s;
+>  
+>  out_free_cache:
+> @@ -449,12 +452,16 @@ static void slab_caches_to_rcu_destroy_workfn(struct work_struct *work)
+>  	}
+>  }
+>  
+> -static int shutdown_cache(struct kmem_cache *s)
+> +static int shutdown_cache(struct kmem_cache *s, bool warn_inuse)
+>  {
+>  	/* free asan quarantined objects */
+> +	/*
+> +	 * XXX: is it ok to call this multiple times? and what happens with a
+> +	 * kfree_rcu() in flight that finishes after or in parallel with this?
+> +	 */
+>  	kasan_cache_shutdown(s);
+>  
+> -	if (__kmem_cache_shutdown(s) != 0)
+> +	if (__kmem_cache_shutdown(s, warn_inuse) != 0)
+>  		return -EBUSY;
+>  
+>  	list_del(&s->list);
+> @@ -477,6 +484,32 @@ void slab_kmem_cache_release(struct kmem_cache *s)
+>  	kmem_cache_free(kmem_cache, s);
+>  }
+>  
+> +static void kmem_cache_kfree_rcu_destroy_workfn(struct work_struct *work)
+> +{
+> +	struct kmem_cache *s;
+> +	int err = -EBUSY;
+> +	bool rcu_set;
+> +
+> +	s = container_of(work, struct kmem_cache, async_destroy_work);
+> +
+> +	// XXX use the real kmem_cache_free_barrier() or similar thing here
+It implies that we need to introduce kfree_rcu_barrier(), a new API, which i
+wanted to avoid initially. Since you do it asynchronous can we just repeat
+and wait until it a cache is furry freed?
 
-Are you sure you want to universally expose this memory region? It
-sounds like it's only exposed via a debug interface. Maybe it'd be
-better to use a bounce buffer in the debug interface instead?
+I am asking because inventing a new kfree_rcu_barrier() might not be so
+straight forward.
 
-
-diff --git a/arch/powerpc/platforms/pseries/dtl.c b/arch/powerpc/platforms/pseries/dtl.c
-index 3f1cdccebc9c..3adcff5cc4b2 100644
---- a/arch/powerpc/platforms/pseries/dtl.c
-+++ b/arch/powerpc/platforms/pseries/dtl.c
-@@ -257,6 +257,22 @@ static int dtl_file_release(struct inode *inode, struct file *filp)
- 	return 0;
- }
- 
-+static inline int bounce_copy(char __user *buf, void *src, size_t size)
-+{
-+	u8 *bounce;
-+	int rc;
-+
-+	bounce = kmalloc(size, GFP_KERNEL);
-+	if (!bounce)
-+		return -ENOMEM;
-+
-+	memcpy(bounce, src, size);
-+	rc = copy_to_user(buf, bounce, size);
-+
-+	kfree(bounce);
-+	return rc;
-+}
-+
- static ssize_t dtl_file_read(struct file *filp, char __user *buf, size_t len,
- 		loff_t *pos)
- {
-@@ -300,7 +316,7 @@ static ssize_t dtl_file_read(struct file *filp, char __user *buf, size_t len,
- 	if (i + n_req > dtl->buf_entries) {
- 		read_size = dtl->buf_entries - i;
- 
--		rc = copy_to_user(buf, &dtl->buf[i],
-+		rc = bounce_copy(buf, &dtl->buf[i],
- 				read_size * sizeof(struct dtl_entry));
- 		if (rc)
- 			return -EFAULT;
-@@ -312,7 +328,7 @@ static ssize_t dtl_file_read(struct file *filp, char __user *buf, size_t len,
- 	}
- 
- 	/* .. and now the head */
--	rc = copy_to_user(buf, &dtl->buf[i], n_req * sizeof(struct dtl_entry));
-+	rc = bounce_copy(buf, &dtl->buf[i], n_req * sizeof(struct dtl_entry));
- 	if (rc)
- 		return -EFAULT;
- 
-
--- 
-Kees Cook
+--
+Uladzislau Rezki
