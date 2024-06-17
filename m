@@ -2,104 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0319990B515
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 17:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC8190B5F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 18:13:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ODTYBWUY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tGMxqYUW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2vT35KL8z3gBn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 01:49:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2w0R4F0pz3g6F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 02:13:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ODTYBWUY;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tGMxqYUW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=fwn3=nt=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2vSM3kSKz3cQM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 01:48:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2vzh5M8Pz3fsX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 02:12:32 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9BD9961328;
-	Mon, 17 Jun 2024 15:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D6FC2BD10;
-	Mon, 17 Jun 2024 15:48:44 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id A32676135B;
+	Mon, 17 Jun 2024 16:12:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45957C3277B;
+	Mon, 17 Jun 2024 16:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718639329;
-	bh=fDi6yPRqLiM+HLfGb+FlpnVc+ukGfMsFd2U9nCeH7kE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ODTYBWUYbq4jF+ultQNT00YqzCbp79CdB5JGWTpbMaN4MV6cyVY2+6SUYKyDBvw6m
-	 cO/UAzhRG43/2vgV17BosUoUj09EgcV+lvj7SP+ExfPOsle0N+1ka4sh6T86JU3GdD
-	 oYnOX4nbNHTVqAdV9z+wsyc9fx44DJZBU4COrh1kPX9CKiE8mXuYnrRM6P6tqBhlBo
-	 ptB5VS7vR3kgZou+8AngXp0OK6RbpTODj5X2DqDZ1A7YapKT7Mf4e8QcFO9yrzdQLK
-	 3Iyk+al0Ii/i/Nfdb4qkgcPlndwgnsX1JxHQM7Tx93Iy4FoCDRD+YnX1lKEfEY2c78
-	 m29L86quDoZOw==
-Message-ID: <2fe7ba36-05b9-42c7-8726-ea891cfc7afc@kernel.org>
-Date: Mon, 17 Jun 2024 17:48:42 +0200
+	s=k20201202; t=1718640749;
+	bh=+gtWCVLAIwVN9QYLGAITeupOhR87qFGefwq+Ci8vsv0=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=tGMxqYUWUZidJOkTYRC4FVvYBSBOWSgclx4qkkf2YhB76G0qNpmpl3h3ZG/PV3BOy
+	 xlZXdbbOvZ6jW6KZZoE8jW1tSsMXb9BTJYiUY+4BFP1x4DLKJ88c59xgouIGwbGnfH
+	 pzOLAUlBJvqVtt/nGes5ftIvMNsA0KW74j39YxI7CsKwDMIstY8QCTis+Vm1d09ssf
+	 Brg/opMBq5bCqKivChkp0axZbqIBv6L47ipGD98z9wwNolXOn9myeZNXKM1TRS3DUb
+	 bJJ9eMBF03SfToJMq6gfQl4IveoZO6GqEFk38XBSPXCG+yBO8oun6MjojXjI6saj96
+	 ETfYabYghHfAQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id C3424CE09F5; Mon, 17 Jun 2024 09:12:28 -0700 (PDT)
+Date: Mon, 17 Jun 2024 09:12:28 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Message-ID: <3b6fe525-626c-41fb-8625-3925ca820d8e@paulmck-laptop>
+References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
+ <20240612143305.451abf58@kernel.org>
+ <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+ <Zmov7ZaL-54T9GiM@zx2c4.com>
+ <Zmo9-YGraiCj5-MI@zx2c4.com>
+ <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
+ <Zmrkkel0Fo4_g75a@zx2c4.com>
+ <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT
- binding
-To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
- <20240614163500.386747-1-piotr.wojtaszczyk@timesys.com>
- <20240614163500.386747-2-piotr.wojtaszczyk@timesys.com>
- <83cbf43e-c927-449f-8b7e-5c8d3ee8cece@kernel.org>
- <CAG+cZ06EeXUDiLsDXkz+6EHqJwpvv2MWwfpvB8AYw0=ZhUkTfQ@mail.gmail.com>
- <83a45f7c-d90b-44d3-b57e-9dad21045e27@kernel.org>
- <CAG+cZ06kzikieaD_JCBybwWk8XKZQjJxa34Cg4QHxrxpT+j0eA@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <CAG+cZ06kzikieaD_JCBybwWk8XKZQjJxa34Cg4QHxrxpT+j0eA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,79 +69,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, "J.M.B. Downing" <jonathan.downing@nautel.com>, Vladimir Zapolskiy <vz@mleia.com>, alsa-devel@alsa-project.org, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, linux-sound@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Reply-To: paulmck@kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, "Uladzislau Rezki \(Sony\)" <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17/06/2024 16:04, Piotr Wojtaszczyk wrote:
->>
->>> It's used by snd_soc_dai_init_dma_data() in [PATCH v3 4/4] to give the
->>> dmaengine a
->>> hint which dma config to use. The LPC32xx doesn't have yet a dmamux driver like
->>
->> and if I change driver platform data to foo and bar, does the DTS work? No.
+On Mon, Jun 17, 2024 at 05:10:50PM +0200, Vlastimil Babka wrote:
+> On 6/13/24 2:22 PM, Jason A. Donenfeld wrote:
+> > On Wed, Jun 12, 2024 at 08:38:02PM -0700, Paul E. McKenney wrote:
+> >> o	Make the current kmem_cache_destroy() asynchronously wait for
+> >> 	all memory to be returned, then complete the destruction.
+> >> 	(This gets rid of a valuable debugging technique because
+> >> 	in normal use, it is a bug to attempt to destroy a kmem_cache
+> >> 	that has objects still allocated.)
 > 
-> They shouldn't change the same way as expected dma-names shouldn't change.
-> Lots of drivers expect the dma-names to be "rx", "tx"
+> This seems like the best option to me. As Jason already said, the debugging
+> technique is not affected significantly, if the warning just occurs
+> asynchronously later. The module can be already unloaded at that point, as
+> the leak is never checked programatically anyway to control further
+> execution, it's just a splat in dmesg.
+
+Works for me!
+
+> > Specifically what I mean is that we can still claim a memory leak has
+> > occurred if one batched kfree_rcu freeing grace period has elapsed since
+> > the last call to kmem_cache_destroy_rcu_wait/barrier() or
+> > kmem_cache_destroy_rcu(). In that case, you quit blocking, or you quit
+> > asynchronously waiting, and then you splat about a memleak like we have
+> > now.
 > 
->>
->>> lpc18xx-dmamux.c therefore it still uses platform data entries for
->>> pl08x dma channels
->>> and 'SND_DMAENGINE_PCM_FLAG_NO_DT | SND_DMAENGINE_PCM_FLAG_COMPAT'
->>> flags in the devm_snd_dmaengine_pcm_register().
->>> Typically instead of this platform data you would use regular 'dma'
->>> and 'dma-names' if it had
->>> proper dmamux driver like lpc18xx-dmamux.c
->>
->> Exactly. Use these.
+> Yes so we'd need the kmem_cache_free_barrier() for a slab kunit test (or the
+> pessimistic variant waiting for the 21 seconds), and a polling variant of
+> the same thing for the asynchronous destruction. Or we don't need a polling
+> variant if it's ok to invoke such a barrier in a schedule_work() workfn.
 > 
-> Then I need to write a lpc32xx dma mux driver, device tree binding for
-> it and adjust the
-> LPC32xx I2S driver for it. Is this a hard requirement to accept this
-> patch set for the
-> legacy LPC32xx SoC?
+> We should not need any new kmem_cache flag nor kmem_cache_destroy() flag to
+> burden the users of kfree_rcu() with. We have __kmem_cache_shutdown() that
+> will try to flush everything immediately and if it doesn't succeed, we can
+> assume kfree_rcu() might be in flight and try to wait for it asynchronously,
+> without any flags.
 
-I do not see at all analogy with dma-names. dma-names are used ONLY by
-the consumer to pick up proper property "dmas" from DT. They are not
-passed to DMA code. They are not used to configure DMA provider at all.
+That does sound like a very attractive approach.
 
-You parse string from DT and pass it further as DMA filtering code. This
-is abuse of hardware description for programming your driver and their
-dependencies.
-
-Why you cannot hard-code them?
-
-Sorry, to be clear: NAK
-
+> SLAB_TYPESAFE_BY_RCU is still handled specially because it has special
+> semantics as well.
 > 
->>
->>>
->>>>
->>>> Drop.
->>>>
->>>>
->>>>> +
->>>>> +  "#sound-dai-cells":
->>>>> +    const: 0
->>>>> +
->>>
->>> The "dai-common.yam" doesn't declare a default value for this so
->>
->> Where is my comment to which you refer to? Please do not drop context
->> from replies. I have no clue what you want to discuss here.
-> Well I didn't remove the context, you said:
-> "
-> Drop.
-> (...)
-> +  "#sound-dai-cells":
-> +    const: 0
-> "
-> So I'm confused whether the "#sound-dai-cells" should be in the dt
-> binding or not.
+> As for users of call_rcu() with arbitrary callbacks that might be functions
+> from the module that is about to unload, these should not return from
+> kmem_cache_destroy() with objects in flight. But those should be using
+> rcu_barrier() before calling kmem_cache_destroy() already, and probably we
+> should not try to handle this automagically? Maybe one potential change with
+> the described approach is that today they would get the "cache not empty"
+> warning immediately. But that wouldn't stop the module unload so later the
+> callbacks would try to execute unmapped code anyway. With the new approach
+> the asynchronous handling might delay the "cache not empty" warnings (or
+> not, if kmem_cache_free_barrier() would finish before a rcu_barrier() would)
+> so the unmapped code execution would come first. I don't think that would be
+> a regression.
 
-??? Drop is above the text so why do you refer to dai cells? We use here
-text-based mailing list style of discussions, not corporate MS Office.
+Agreed.
 
-Best regards,
-Krzysztof
+There are some use cases where a call_rcu() from a module without an
+rcu_barrier() would be OK, for example, if the callback function was
+defined in the core kernel and either: (1) The memory was from kmalloc()
+or (2) The memory was from kmem_cache_alloc() and your suggested
+changes above have been applied.  My current belief is that these are
+too special of cases to be worth optimizing for, so that the rule should
+remain "If you use call_rcu() in a module, you must call rcu_barrier()
+within the module-unload code."
 
+There have been discussions of having module-unload automatically invoke
+rcu_barrier() if needed, but thus far we have not come up with a good
+way to do this.  Challenges include things like static inline functions
+from the core kernel invoking call_rcu(), in which case how to figure
+out that the rcu_barrier() is not needed?
+
+							Thanx, Paul
