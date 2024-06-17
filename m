@@ -2,66 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DAA90AB4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 12:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B08590AB4E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 12:38:04 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ScnLjkns;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2mXt5tFPz3fvm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 20:37:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2mYj14sdz3frS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 20:38:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=hare@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ScnLjkns;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2mXV0THmz3dXW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 20:36:58 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CE20A38037;
-	Mon, 17 Jun 2024 10:36:47 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34E77139AB;
-	Mon, 17 Jun 2024 10:36:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oblHDL8RcGZPDAAAD6G6ig
-	(envelope-from <hare@suse.de>); Mon, 17 Jun 2024 10:36:47 +0000
-Message-ID: <0f819ed5-9549-4edf-98b3-19eed8558dfe@suse.de>
-Date: Mon, 17 Jun 2024 12:36:46 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2mY12dgDz3fmS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 20:37:25 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HASfpu032530;
+	Mon, 17 Jun 2024 10:37:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:reply-to:references:mime-version
+	:content-type:in-reply-to; s=pp1; bh=MWMaoAiqmft/zbpMeNg9ld9SQyl
+	youiRTRBzEcBaGUw=; b=ScnLjknsQUHJDsifjY6o/iTpCSbY8qY7WYDQFr4V+/V
+	XUFuI70ebPuVivWFTTKxDQTDJ6R8yGX3Ups86SMC3SWPaptWBGgMnDc7KJv/Z/F7
+	BzIFkVhc3htPz+xau225j9t2Fg9p4LUP+ZTkSsokuQMC4I4bUFGlRkdcl4gEzHRp
+	nH0j8o7n5uQPH+fqm7f6X26zYZ/nlZFr31i2Gs/kcvOxPN7E6OzeNkc0XiAPAGwu
+	FEYCmHvxIY3YbkyYMCZC0o7XNxADtzyqe9/I+26D0nBC7LV9BOvnvB2FdUnRs0p0
+	o9KCSD+n5J6sKyX1/AB7oNG6Gxr2AIkh8jmeFFA38cw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ytkdy80j2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 10:37:14 +0000 (GMT)
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45HAZD3D011113;
+	Mon, 17 Jun 2024 10:37:14 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ytkdy80j0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 10:37:14 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45H8p4ik013397;
+	Mon, 17 Jun 2024 10:37:13 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ysr038psy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 10:37:12 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45HAb7ZH22085972
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Jun 2024 10:37:09 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 78A902004B;
+	Mon, 17 Jun 2024 10:37:07 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8EA9320040;
+	Mon, 17 Jun 2024 10:37:05 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.126.150.29])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 17 Jun 2024 10:37:05 +0000 (GMT)
+Date: Mon, 17 Jun 2024 16:07:04 +0530
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: Anjali K <anjalik@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: Whitelist dtl slub object for copying
+ to userspace
+Message-ID: <20240617103704.GA767455@linux.ibm.com>
+References: <20240614173844.746818-1-anjalik@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/26] block: move the nonrot flag to queue_limits
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-References: <20240617060532.127975-1-hch@lst.de>
- <20240617060532.127975-15-hch@lst.de>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20240617060532.127975-15-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Queue-Id: CE20A38037
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20240614173844.746818-1-anjalik@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: PQ3ZEPsMTNkTddVrX4AEIY9QeeyvaTbg
+X-Proofpoint-GUID: -0XmxuUa3SKWm0q_aWvTa5xWDBbMr97v
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-17_08,2024-06-17_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
+ phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0 mlxlogscore=941
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406170080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,40 +98,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, linux-nvme@lists.infradead.org, Song Liu <song@kernel.org>, linux-mtd@lists.infradead.org, Vineeth Vijayan <vneethv@linux.ibm.com>, Alasdair Kergon <agk@redhat.com>, drbd-dev@lists.linbit.com, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, Richard Weinberger <richard@nod.at>, Geert Uytterhoeven <geert@linux-m68k.org>, Yu Kuai <yukuai3@huawei.com>, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, Mike Snitzer <snitzer@kernel.org>, Josef Bacik <josef@toxicpanda.com>, nbd@other.debian.org, linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Damien Le Moal <dlemoal@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, xen-devel@lists.xenproject.org, ceph-devel@vger.kernel.org, Ming Lei <ming.lei@redhat.com>, linux-bcache@vger.kernel.org, linux-block@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mmc@vger.kernel.org, Philipp Reisner <philipp.reisner@linbit.com>, =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, virtualization@lists.linux.dev, Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
+Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
+Cc: kees@kernel.org, naveen@kernel.org, christophe.leroy@csgroup.eu, gustavoars@kernel.org, npiggin@gmail.com, vishalc@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/17/24 08:04, Christoph Hellwig wrote:
-> Move the nonrot flag into the queue_limits feature field so that it can
-> be set atomically with the queue frozen.
+> Commit 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+> requires that only whitelisted areas in slab/slub objects can be copied to
+> userspace when usercopy hardening is enabled using CONFIG_HARDENED_USERCOPY.
+> Dtl contains hypervisor dispatch events which are expected to be read by
+> privileged users. Hence mark this safe for user access.
+> Specify useroffset=0 and usersize=DISPATCH_LOG_BYTES to whitelist the
+> entire object.
 > 
-> Use the chance to switch to defaulting to non-rotational and require
-> the driver to opt into rotational, which matches the polarity of the
-> sysfs interface.
-> 
-> For the z2ram, ps3vram, 2x memstick, ubiblock and dcssblk the new
-> rotational flag is not set as they clearly are not rotational despite
-> this being a behavior change.  There are some other drivers that
-> unconditionally set the rotational flag to keep the existing behavior
-> as they arguably can be used on rotational devices even if that is
-> probably not their main use today (e.g. virtio_blk and drbd).
-> 
-> The flag is automatically inherited in blk_stack_limits matching the
-> existing behavior in dm and md.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+> Co-developed-by: Vishal Chourasia <vishalc@linux.ibm.com>
+> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+> Signed-off-by: Anjali K <anjalik@linux.ibm.com>
 > ---
+>  arch/powerpc/platforms/pseries/setup.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+Looks good to me.
 
-Cheers,
+Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
 
-Hannes
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
-
+Thanks and Regards
+Srikar Dronamraju
