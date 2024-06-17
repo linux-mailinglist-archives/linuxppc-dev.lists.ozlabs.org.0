@@ -1,76 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4F290B65B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 18:31:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935FC90B667
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 18:31:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=dKb65ekr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eL1SBMk1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2wP00XZCz3fwL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 02:31:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2wPv2R0hz3g6G
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 02:31:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=dKb65ekr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eL1SBMk1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::330; helo=mail-ot1-x330.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2wNH2DS2z3ftq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 02:30:20 +1000 (AEST)
-Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6fc36865561so996490a34.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 09:30:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2wP818m2z3g4V
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 02:31:07 +1000 (AEST)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2eabd22d3f4so54600251fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 09:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718641812; x=1719246612; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c4CGIueJgo3FyF0lUSOsJIiD5YkmHOWg5+dfrNt3KDo=;
-        b=dKb65ekrYh3X+PmA2Vh7VhWeZ15HjMoq452VCvJ4RZ6WPoNE3rzZK2RE/6YNtyDkAx
-         1PPIMoE22gOllDke0pV0xqwpHhH3WHBINRQAzakoh3B7UHFKwRUXpuC0R27GcOPWu+UL
-         z0ZeaAnzGZDRx+jz4oyUiT8/4d4wSxFcCtXFjRQR5CdNYprmkOJ3pFnpA5hIupEjg9H9
-         jh/NnHLxT5T9ts2xs97dJV4EwUjmT9nl0frj2ao4HNFw61nTL9hj2Vf9bHrM0BGaQrOR
-         gx41vgiVihix2OIm7h4wQ7jRc6qQIf4AGSOdE7PD5SL+cUaeNoQ6qWW5ajvNNw3XD/C4
-         di7A==
+        d=gmail.com; s=20230601; t=1718641858; x=1719246658; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=P18NXjBrMly2kaNOMkzQiyWW0KiEt9TV5gbmtLRhdnE=;
+        b=eL1SBMk1765b8XX4mGkMzJPUv/N0ZpzZvqE1gVS6gg0r3Kb4FEbTInCawsH9btn8cp
+         ED+dC0+df2J9NBRuQkW8rczzU/tY8k0r0ymDe0ng6c5D+P6kwV1IR1av3f1ElzexBRLd
+         zaJnBKKAnMHs6WZKggJUWztHaAjSuus3Kd4B/Z2QsDUA0kEKroXlNHgJqMCG2JHEDvqx
+         B2ZOF4xYNSgukW41gz9gbhFCBbnMdSnOFCz/CwL7JLWJntqBuSFqhGG0Czm8NCSfknZF
+         IEZK065HlEF2fDmlyIRgn7oHDcCrNrOQ5MFcCY934v54BgUKDrrNJtOgZ9SLej0OiFyj
+         FngA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718641812; x=1719246612;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c4CGIueJgo3FyF0lUSOsJIiD5YkmHOWg5+dfrNt3KDo=;
-        b=WIrRFbTXsDlC4fEdVRFJiBeYy57XAdkataZrZV96sfWMjHObtNCcSjh9B6DMFKswnA
-         9GGjx2Kocls2/XAmPGX1rR+6AgJE0Yzzmd7JDe4vDM8dbzii/NUXObqXw1Zp/ywIdd6o
-         6m72xwVZ45NozCNr8E1k1CEfIA4ZXRbDNADD0b2Ak0DNjyQsV/52WZAw3z3lwxZR6hOu
-         Gbmvryb9OtT2OIYJbU37jgjAraT38O/RjuzJiCM+YkCYsR0RuomeE3a+7b8Wmek/dA/B
-         qrnAxJlRgr6pCsZBmF27dmAK64P42tY1AoCKdOMBJhUOeG5XSGLGosygdey39Ey90ki6
-         KIjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUvMiOWZiUTbJLJVs7wOT2HTRmFu5tyAoBJJC9gmIvflwmF+kUTTNsdlaO564h8cv7e/gISG14/BwTQEG7ewlSaWwFc2V132lfW1kWB1A==
-X-Gm-Message-State: AOJu0YzMb6zQlM6HkiGvDwJrT502JNwKYp9/hf4N+S25oLbW06xhRSns
-	Y0qbgUpuFLn3nfXPcHooJ/ySpojKRpwci2hhueRSFMsUHOhSCjBCG7qNCBbETB6v7yeHalu7owm
-	SUvsYz9brUZObywA18R6GrcNMbvxJO14+D+bu2w==
-X-Google-Smtp-Source: AGHT+IHjzvlrr838N1DpEkEeLzzIsELYsb2zHrhaAqxCRJTNhyRbdCIQiZBSmvhFuWqlSzeRBTrPNi1jOBSJAcQmjjA=
-X-Received: by 2002:a9d:62ca:0:b0:6fd:5445:c6cc with SMTP id
- 46e09a7af769-6fd5445c914mr6508564a34.23.1718641811875; Mon, 17 Jun 2024
- 09:30:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718641858; x=1719246658;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P18NXjBrMly2kaNOMkzQiyWW0KiEt9TV5gbmtLRhdnE=;
+        b=p+yk2iqXloUkdlFzVY/WoaK390Yl7TgYbqTLabJCPrPUG7HkvE0IelVB8ZQwu2dM4j
+         ZvZLDngFg/6YsyT37FXEsp5EII6VKsqvx9mt6dhMKugdtQ5QXNju3Chni3eiPTSeZ2Rn
+         RuINUZUcRaGJWfWFcU+TIxXSf4+XD33T45xFefZ6JdcrUmI6Ig+NvDlk5USz4sFd3QUk
+         PqYBMz/Bg4zSTUm9EUzg3Usgn0R2ZN/8A+6P10q/6GMRuz6/b1LyuJeG8IlU/pYhGZ28
+         NrIIMmIEbHt3bXoQ8x+Qk1M4YcwbNX9m4Nsw0x4iwMlQKhGsqcyg9k+qHbRct6zw1H+I
+         f3ew==
+X-Forwarded-Encrypted: i=1; AJvYcCX0vUzwLwDIIhnijZzk4++f9TBHMI7EHqPV/jhIjyPIUxmBCYDXBOXeOUPd66WunSx/zIt56Zs0sNnWyZxjPVO5Q15XPuczO5cxZ7dHuw==
+X-Gm-Message-State: AOJu0YwWYXXHnX8ll60/w9irl2hZvoSwkQtmbSPmUwHnQCIZJfLd6dJb
+	rGvpIK42w97pUKFBj7uzVBwfla1s0ZH7gHoJgnav4TULDhhztRu+
+X-Google-Smtp-Source: AGHT+IEPhqe0DMj4rMlaXsMOCbhrl4lbGG1gPjCGb7ivFIirSumn2PP7mfmxsW/9BAzDd49k/bprGA==
+X-Received: by 2002:a2e:9cd6:0:b0:2eb:fdd3:8fa2 with SMTP id 38308e7fff4ca-2ec0e5c5816mr68620871fa.13.1718641857513;
+        Mon, 17 Jun 2024 09:30:57 -0700 (PDT)
+Received: from pc636 (host-90-233-216-238.mobileonline.telia.com. [90.233.216.238])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec05c78400sm14106751fa.84.2024.06.17.09.30.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jun 2024 09:30:57 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 17 Jun 2024 18:30:53 +0200
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Message-ID: <ZnBkvYdbAWILs7qx@pc636>
+References: <Zmru7hhz8kPDPsyz@pc636>
+ <7efde25f-6af5-4a67-abea-b26732a8aca1@paulmck-laptop>
+ <Zmsuswo8OPIhY5KJ@pc636>
+ <cb51bc57-47b8-456a-9ac0-f8aa0931b144@paulmck-laptop>
+ <ZmszOd5idhf2Cb-v@pc636>
+ <b03b007f-3afa-4ad4-b76b-dea7b3aa2bc3@paulmck-laptop>
+ <Zmw5FTX752g0vtlD@pc638.lan>
+ <ZmybGZDbXkw7JTjc@zx2c4.com>
+ <ZnA_QFvuyABnD3ZA@pc636>
+ <ZnBOkZClsvAUa_5X@zx2c4.com>
 MIME-Version: 1.0
-References: <20240611094810.27475-1-piotr.wojtaszczyk@timesys.com>
- <20240614163500.386747-1-piotr.wojtaszczyk@timesys.com> <20240614163500.386747-2-piotr.wojtaszczyk@timesys.com>
- <83cbf43e-c927-449f-8b7e-5c8d3ee8cece@kernel.org> <CAG+cZ06EeXUDiLsDXkz+6EHqJwpvv2MWwfpvB8AYw0=ZhUkTfQ@mail.gmail.com>
- <83a45f7c-d90b-44d3-b57e-9dad21045e27@kernel.org> <CAG+cZ06kzikieaD_JCBybwWk8XKZQjJxa34Cg4QHxrxpT+j0eA@mail.gmail.com>
- <2fe7ba36-05b9-42c7-8726-ea891cfc7afc@kernel.org>
-In-Reply-To: <2fe7ba36-05b9-42c7-8726-ea891cfc7afc@kernel.org>
-From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Date: Mon, 17 Jun 2024 18:30:00 +0200
-Message-ID: <CAG+cZ06XNV=ZZ8Ag00kaz1xWitXDN-yezUoc7M9JwQ5MUu7hTA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnBOkZClsvAUa_5X@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,65 +90,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, devicetree@vger.kernel.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, "J.M.B. Downing" <jonathan.downing@nautel.com>, Vladimir Zapolskiy <vz@mleia.com>, alsa-devel@alsa-project.org, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, linux-sound@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Vlastimil Babka <vbabka@suse.cz>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Uladzislau Rezki <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 17, 2024 at 5:48=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
+On Mon, Jun 17, 2024 at 04:56:17PM +0200, Jason A. Donenfeld wrote:
+> On Mon, Jun 17, 2024 at 03:50:56PM +0200, Uladzislau Rezki wrote:
+> > On Fri, Jun 14, 2024 at 09:33:45PM +0200, Jason A. Donenfeld wrote:
+> > > On Fri, Jun 14, 2024 at 02:35:33PM +0200, Uladzislau Rezki wrote:
+> > > > +	/* Should a destroy process be deferred? */
+> > > > +	if (s->flags & SLAB_DEFER_DESTROY) {
+> > > > +		list_move_tail(&s->list, &slab_caches_defer_destroy);
+> > > > +		schedule_delayed_work(&slab_caches_defer_destroy_work, HZ);
+> > > > +		goto out_unlock;
+> > > > +	}
+> > > 
+> > > Wouldn't it be smoother to have the actual kmem_cache_free() function
+> > > check to see if it's been marked for destruction and the refcount is
+> > > zero, rather than polling every one second? I mentioned this approach
+> > > in: https://lore.kernel.org/all/Zmo9-YGraiCj5-MI@zx2c4.com/ -
+> > > 
+> > >     I wonder if the right fix to this would be adding a `should_destroy`
+> > >     boolean to kmem_cache, which kmem_cache_destroy() sets to true. And
+> > >     then right after it checks `if (number_of_allocations == 0)
+> > >     actually_destroy()`, and likewise on each kmem_cache_free(), it
+> > >     could check `if (should_destroy && number_of_allocations == 0)
+> > >     actually_destroy()`. 
+> > > 
+> > I do not find pooling as bad way we can go with. But your proposal
+> > sounds reasonable to me also. We can combine both "prototypes" to
+> > one and offer.
+> > 
+> > Can you post a prototype here?
+> 
+> This is untested, but the simplest, shortest possible version would be:
+> 
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 5f8f47c5bee0..907c0ea56c01 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -275,6 +275,7 @@ struct kmem_cache {
+>  	unsigned int inuse;		/* Offset to metadata */
+>  	unsigned int align;		/* Alignment */
+>  	unsigned int red_left_pad;	/* Left redzone padding size */
+> +	bool is_destroyed;		/* Destruction happens when no objects */
+>  	const char *name;		/* Name (only for display!) */
+>  	struct list_head list;		/* List of slab caches */
+>  #ifdef CONFIG_SYSFS
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 1560a1546bb1..f700bed066d9 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -494,8 +494,8 @@ void kmem_cache_destroy(struct kmem_cache *s)
+>  		goto out_unlock;
+> 
+>  	err = shutdown_cache(s);
+> -	WARN(err, "%s %s: Slab cache still has objects when called from %pS",
+> -	     __func__, s->name, (void *)_RET_IP_);
+> +	if (err)
+> +		s->is_destroyed = true;
 >
-> On 17/06/2024 16:04, Piotr Wojtaszczyk wrote:
-> >>
-> >>> It's used by snd_soc_dai_init_dma_data() in [PATCH v3 4/4] to give th=
-e
-> >>> dmaengine a
-> >>> hint which dma config to use. The LPC32xx doesn't have yet a dmamux d=
-river like
-> >>
-> >> and if I change driver platform data to foo and bar, does the DTS work=
-? No.
-> >
-> > They shouldn't change the same way as expected dma-names shouldn't chan=
-ge.
-> > Lots of drivers expect the dma-names to be "rx", "tx"
-> >
-> >>
-> >>> lpc18xx-dmamux.c therefore it still uses platform data entries for
-> >>> pl08x dma channels
-> >>> and 'SND_DMAENGINE_PCM_FLAG_NO_DT | SND_DMAENGINE_PCM_FLAG_COMPAT'
-> >>> flags in the devm_snd_dmaengine_pcm_register().
-> >>> Typically instead of this platform data you would use regular 'dma'
-> >>> and 'dma-names' if it had
-> >>> proper dmamux driver like lpc18xx-dmamux.c
-> >>
-> >> Exactly. Use these.
-> >
-> > Then I need to write a lpc32xx dma mux driver, device tree binding for
-> > it and adjust the
-> > LPC32xx I2S driver for it. Is this a hard requirement to accept this
-> > patch set for the
-> > legacy LPC32xx SoC?
->
-> I do not see at all analogy with dma-names. dma-names are used ONLY by
-> the consumer to pick up proper property "dmas" from DT. They are not
-> passed to DMA code. They are not used to configure DMA provider at all.
->
-> You parse string from DT and pass it further as DMA filtering code. This
-> is abuse of hardware description for programming your driver and their
-> dependencies.
->
-> Why you cannot hard-code them?
->
-> Sorry, to be clear: NAK
+Here if an "err" is less then "0" means there are still objects
+whereas "is_destroyed" is set to "true" which is not correlated
+with a comment:
 
-That's fine, clear answers are always good.
-I considered to hardcode this as it was in the first version of the patch s=
-et
-but LPC32XX has two I2S interfaces which use different DMA signals
-and mux settings and I really didn't want to pick the virtual DMA channel
-name based on hardcoded I2S node name therefore I thought having a DT
-property to select proper dma channel is a better solution.
+"Destruction happens when no objects"
 
---=20
-Piotr Wojtaszczyk
-Timesys
+>  out_unlock:
+>  	mutex_unlock(&slab_mutex);
+>  	cpus_read_unlock();
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 1373ac365a46..7db8fe90a323 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4510,6 +4510,8 @@ void kmem_cache_free(struct kmem_cache *s, void *x)
+>  		return;
+>  	trace_kmem_cache_free(_RET_IP_, x, s);
+>  	slab_free(s, virt_to_slab(x), x, _RET_IP_);
+> +	if (s->is_destroyed)
+> +		kmem_cache_destroy(s);
+>  }
+>  EXPORT_SYMBOL(kmem_cache_free);
+> 
+> @@ -5342,9 +5344,6 @@ static void free_partial(struct kmem_cache *s, struct kmem_cache_node *n)
+>  		if (!slab->inuse) {
+>  			remove_partial(n, slab);
+>  			list_add(&slab->slab_list, &discard);
+> -		} else {
+> -			list_slab_objects(s, slab,
+> -			  "Objects remaining in %s on __kmem_cache_shutdown()");
+>  		}
+>  	}
+>  	spin_unlock_irq(&n->list_lock);
+> 
+Anyway it looks like it was not welcome to do it in the kmem_cache_free()
+function due to performance reason.
+
+--
+Uladzislau Rezki
