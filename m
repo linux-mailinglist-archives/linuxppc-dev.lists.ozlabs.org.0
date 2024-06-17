@@ -1,66 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3073690B308
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:57:15 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=clhRAdt9;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A9190B32E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 17:01:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2tJl6sJkz3g59
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 00:57:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2tPF6mFcz3g4p
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 01:01:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=clhRAdt9;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=srhl=nt=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2tJ15YR8z3g1j
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 00:56:33 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id CBF18611A6;
-	Mon, 17 Jun 2024 14:56:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F573C2BD10;
-	Mon, 17 Jun 2024 14:56:26 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="clhRAdt9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1718636183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6bcwrvbIl7+eEjyyGJoXxh1mehCsgFRYWHRM/zwpUAQ=;
-	b=clhRAdt9QmHzMaEEzVai+8NS5mBwqdWC/f0sKn8iKNRjAYqBW9N3E2L8sbjmiy2SQkZGk0
-	hK8NYQAMg8k+eCY6yhiOMg3Eok18XjHMRfrN68QDTwANHVK37YKOUoOk4GYwZc7KCjnUD+
-	5Jm/fDnndt2OgFIS0O5m9q1UI47PGCA=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 071c720a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Mon, 17 Jun 2024 14:56:22 +0000 (UTC)
-Date: Mon, 17 Jun 2024 16:56:17 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-Message-ID: <ZnBOkZClsvAUa_5X@zx2c4.com>
-References: <80e03b02-7e24-4342-af0b-ba5117b19828@paulmck-laptop>
- <Zmru7hhz8kPDPsyz@pc636>
- <7efde25f-6af5-4a67-abea-b26732a8aca1@paulmck-laptop>
- <Zmsuswo8OPIhY5KJ@pc636>
- <cb51bc57-47b8-456a-9ac0-f8aa0931b144@paulmck-laptop>
- <ZmszOd5idhf2Cb-v@pc636>
- <b03b007f-3afa-4ad4-b76b-dea7b3aa2bc3@paulmck-laptop>
- <Zmw5FTX752g0vtlD@pc638.lan>
- <ZmybGZDbXkw7JTjc@zx2c4.com>
- <ZnA_QFvuyABnD3ZA@pc636>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=james.clark@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2tNs0Fbxz3g1j
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 01:00:42 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F7CEDA7;
+	Mon, 17 Jun 2024 08:00:35 -0700 (PDT)
+Received: from [192.168.1.100] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A9E03F6A8;
+	Mon, 17 Jun 2024 08:00:08 -0700 (PDT)
+Message-ID: <588beeaf-2015-40f4-a34b-e36556e20707@arm.com>
+Date: Mon, 17 Jun 2024 16:00:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZnA_QFvuyABnD3ZA@pc636>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/perf: Handle perftool-testsuite_probe testcases
+ fail when kernel debuginfo is not present
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+References: <20240617122121.7484-1-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: James Clark <james.clark@arm.com>
+In-Reply-To: <20240617122121.7484-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,88 +44,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Vlastimil Babka <vbabka@suse.cz>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: irogers@google.com, maddy@linux.ibm.com, adrian.hunter@intel.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, acme@kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 17, 2024 at 03:50:56PM +0200, Uladzislau Rezki wrote:
-> On Fri, Jun 14, 2024 at 09:33:45PM +0200, Jason A. Donenfeld wrote:
-> > On Fri, Jun 14, 2024 at 02:35:33PM +0200, Uladzislau Rezki wrote:
-> > > +	/* Should a destroy process be deferred? */
-> > > +	if (s->flags & SLAB_DEFER_DESTROY) {
-> > > +		list_move_tail(&s->list, &slab_caches_defer_destroy);
-> > > +		schedule_delayed_work(&slab_caches_defer_destroy_work, HZ);
-> > > +		goto out_unlock;
-> > > +	}
-> > 
-> > Wouldn't it be smoother to have the actual kmem_cache_free() function
-> > check to see if it's been marked for destruction and the refcount is
-> > zero, rather than polling every one second? I mentioned this approach
-> > in: https://lore.kernel.org/all/Zmo9-YGraiCj5-MI@zx2c4.com/ -
-> > 
-> >     I wonder if the right fix to this would be adding a `should_destroy`
-> >     boolean to kmem_cache, which kmem_cache_destroy() sets to true. And
-> >     then right after it checks `if (number_of_allocations == 0)
-> >     actually_destroy()`, and likewise on each kmem_cache_free(), it
-> >     could check `if (should_destroy && number_of_allocations == 0)
-> >     actually_destroy()`. 
-> > 
-> I do not find pooling as bad way we can go with. But your proposal
-> sounds reasonable to me also. We can combine both "prototypes" to
-> one and offer.
+
+
+On 17/06/2024 13:21, Athira Rajeev wrote:
+> Running "perftool-testsuite_probe" fails as below:
 > 
-> Can you post a prototype here?
+> 	./perf test -v "perftool-testsuite_probe"
+> 	83: perftool-testsuite_probe  : FAILED
+> 
+> There are three fails:
+> 
+> 1. Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
+>    -- [ FAIL ] -- perf_probe :: test_adding_kernel :: listing added probe :: perf probe -l (output regexp parsing)
+> 
 
-This is untested, but the simplest, shortest possible version would be:
+On a machine where NO_DEBUGINFO gets set, this one skips for me. But on
+a machine where there _is_ debug info this test still fails.
 
-diff --git a/mm/slab.h b/mm/slab.h
-index 5f8f47c5bee0..907c0ea56c01 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -275,6 +275,7 @@ struct kmem_cache {
- 	unsigned int inuse;		/* Offset to metadata */
- 	unsigned int align;		/* Alignment */
- 	unsigned int red_left_pad;	/* Left redzone padding size */
-+	bool is_destroyed;		/* Destruction happens when no objects */
- 	const char *name;		/* Name (only for display!) */
- 	struct list_head list;		/* List of slab caches */
- #ifdef CONFIG_SYSFS
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 1560a1546bb1..f700bed066d9 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -494,8 +494,8 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 		goto out_unlock;
+But in both cases the probe looks like it was added successfully. So I'm
+wondering if this one does need to be skipped, or it's just always
+failing? Do you have this test passing anywhere where there is debug info?
 
- 	err = shutdown_cache(s);
--	WARN(err, "%s %s: Slab cache still has objects when called from %pS",
--	     __func__, s->name, (void *)_RET_IP_);
-+	if (err)
-+		s->is_destroyed = true;
- out_unlock:
- 	mutex_unlock(&slab_mutex);
- 	cpus_read_unlock();
-diff --git a/mm/slub.c b/mm/slub.c
-index 1373ac365a46..7db8fe90a323 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4510,6 +4510,8 @@ void kmem_cache_free(struct kmem_cache *s, void *x)
- 		return;
- 	trace_kmem_cache_free(_RET_IP_, x, s);
- 	slab_free(s, virt_to_slab(x), x, _RET_IP_);
-+	if (s->is_destroyed)
-+		kmem_cache_destroy(s);
- }
- EXPORT_SYMBOL(kmem_cache_free);
+The list command looks like it successfully lists the probe for me in
+both cases, it just doesn't have an address on the end:
 
-@@ -5342,9 +5344,6 @@ static void free_partial(struct kmem_cache *s, struct kmem_cache_node *n)
- 		if (!slab->inuse) {
- 			remove_partial(n, slab);
- 			list_add(&slab->slab_list, &discard);
--		} else {
--			list_slab_objects(s, slab,
--			  "Objects remaining in %s on __kmem_cache_shutdown()");
- 		}
- 	}
- 	spin_unlock_irq(&n->list_lock);
+ perf list 'probe:*'
 
+   probe:inode_permission (on inode_permission)
+
+Does the missing address mean anything or is it just not handled
+properly by the test?
+
+Ironically the machine that _does_ pass the debug info test also prints
+this, but it looks like it still adds and lists the probe correctly:
+
+  perf probe -l probe:*
+
+  Failed to find debug information for address 0xffff80008047ac30
+    probe:inode_permission (on inode_permission)
+
+
+> 2. Regexp not found: "probe:vfs_mknod"
+>    Regexp not found: "probe:vfs_create"
+>    Regexp not found: "probe:vfs_rmdir"
+>    Regexp not found: "probe:vfs_link"
+>    Regexp not found: "probe:vfs_write"
+>    -- [ FAIL ] -- perf_probe :: test_adding_kernel :: wildcard adding support (command exitcode + output regexp parsing)
+> 
+> 3. Regexp not found: "Failed to find"
+>    Regexp not found: "somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64"
+>    Regexp not found: "in this function|at this address"
+>    Line did not match any pattern: "The /boot/vmlinux file has no debug information."
+>    Line did not match any pattern: "Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo package."
+> 
+> These three tests depends on kernel debug info.
+> 1. Fail 1 expects file name along with probe which needs debuginfo
+> 2. Fail 2 :
+>     perf probe -nf --max-probes=512 -a 'vfs_* $params'
+>     Debuginfo-analysis is not supported.
+>      Error: Failed to add events.
+> 
+> 3. Fail 3 :
+>    perf probe 'vfs_read somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64'
+>    Debuginfo-analysis is not supported.
+>    Error: Failed to add events.
+> 
+> There is already helper function skip_if_no_debuginfo in
+> lib/probe_vfs_getname.sh which does perf probe and returns
+> "2" if debug info is not present. Use the skip_if_no_debuginfo
+> function and skip only the three tests which needs debuginfo
+> based on the result.
+> 
+> With the patch:
+> 
+>     83: perftool-testsuite_probe:
+>    --- start ---
+>    test child forked, pid 3927
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission ::
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: -a
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: --add
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing added probe :: perf list
+>    Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
+>    -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped due to missing debuginfo :: testcase skipped
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: using added probe
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: deleting added probe
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing removed probe (should NOT be listed)
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: dry run :: adding probe
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: first probe adding
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: second probe adding (without force)
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: second probe adding (with force)
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: using doubled probe
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: removing multiple probes
+>    Regexp not found: "probe:vfs_mknod"
+>    Regexp not found: "probe:vfs_create"
+>    Regexp not found: "probe:vfs_rmdir"
+>    Regexp not found: "probe:vfs_link"
+>    Regexp not found: "probe:vfs_write"
+>    -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped due to missing debuginfo :: testcase skipped
+>    Regexp not found: "Failed to find"
+>    Regexp not found: "somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64"
+>    Regexp not found: "in this function|at this address"
+>    Line did not match any pattern: "The /boot/vmlinux file has no debug information."
+>    Line did not match any pattern: "Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo package."
+>    -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped due to missing debuginfo :: testcase skipped
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with retval :: add
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with retval :: record
+>    -- [ PASS ] -- perf_probe :: test_adding_kernel :: function argument probing :: script
+>    ## [ PASS ] ## perf_probe :: test_adding_kernel SUMMARY
+>    ---- end(0) ----
+>    83: perftool-testsuite_probe                                        : Ok
+> 
+> Only the three specific tests are skipped and remaining
+> ran successfully.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  .../shell/base_probe/test_adding_kernel.sh    | 31 +++++++++++++++++--
+>  1 file changed, 28 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
+> index 63bb8974b38e..187dc8d4b163 100755
+> --- a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
+> +++ b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
+> @@ -21,8 +21,18 @@
+>  THIS_TEST_NAME=`basename $0 .sh`
+>  TEST_RESULT=0
+>  
+> +# shellcheck source=lib/probe_vfs_getname.sh
+> +. "$(dirname "$0")/../lib/probe_vfs_getname.sh"
+> +
+>  TEST_PROBE=${TEST_PROBE:-"inode_permission"}
+>  
+> +# set NO_DEBUGINFO to skip testcase if debuginfo is not present
+> +# skip_if_no_debuginfo returns 2 if debuginfo is not present
+> +skip_if_no_debuginfo
+> +if [ $? -eq 2 ]; then
+> +	NO_DEBUGINFO=1
+> +fi
+> +
+>  check_kprobes_available
+>  if [ $? -ne 0 ]; then
+>  	print_overall_skipped
+> @@ -67,7 +77,12 @@ PERF_EXIT_CODE=$?
+>  ../common/check_all_patterns_found.pl "\s*probe:${TEST_PROBE}(?:_\d+)?\s+\(on ${TEST_PROBE}(?:[:\+]$RE_NUMBER_HEX)?@.+\)" < $LOGS_DIR/adding_kernel_list-l.log
+>  CHECK_EXIT_CODE=$?
+>  
+> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "listing added probe :: perf probe -l"
+> +if [ $NO_DEBUGINFO ] ; then
+> +	print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due to missing debuginfo"
+> +else
+> +	print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "listing added probe :: perf probe -l"
+> +fi
+> +
+>  (( TEST_RESULT += $? ))
+>  
+>  
+> @@ -208,7 +223,12 @@ PERF_EXIT_CODE=$?
+>  ../common/check_all_patterns_found.pl "probe:vfs_mknod" "probe:vfs_create" "probe:vfs_rmdir" "probe:vfs_link" "probe:vfs_write" < $LOGS_DIR/adding_kernel_adding_wildcard.err
+>  CHECK_EXIT_CODE=$?
+>  
+> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "wildcard adding support"
+> +if [ $NO_DEBUGINFO ] ; then
+> +	print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due to missing debuginfo"
+> +else
+> +	print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "wildcard adding support"
+> +fi
+> +
+>  (( TEST_RESULT += $? ))
+>  
+>  
+> @@ -232,7 +252,12 @@ CHECK_EXIT_CODE=$?
+>  ../common/check_no_patterns_found.pl "$RE_SEGFAULT" < $LOGS_DIR/adding_kernel_nonexisting.err
+>  (( CHECK_EXIT_CODE += $? ))
+>  
+> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "non-existing variable"
+> +if [ $NO_DEBUGINFO ]; then
+> +	print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due to missing debuginfo"
+> +else
+> +	print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "non-existing variable"
+> +fi
+> +
+>  (( TEST_RESULT += $? ))
+>  
+>  
