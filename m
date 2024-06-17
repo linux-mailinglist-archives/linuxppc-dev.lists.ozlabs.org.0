@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD0090A3E2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 08:07:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F9790A3CC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 08:06:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=xHDYpaff;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=H7sPQj5u;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2fYM0QhZz3cbC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:07:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2fXZ1bn6z3cWN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:06:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
@@ -18,28 +18,30 @@ Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2fWg4QsHz2xQH
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2fWg4WW1z30TF
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 16:05:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=w5I58mRKj5AU6Yqi3NMuzFTOUn3zWDih3UgJBo1+OXs=; b=xHDYpaffUakf5PuOWBpPooKbf/
-	9TfbzNtEmDZrZ632SAc4SRfUuVJxNjnIE5gNHB7SDcAJ13WXLVDplEzCkwbhxr8th8FA1AGmh61+R
-	g24j1QTav3xOiX0eITNyRi5Mz2E8AK3xQKNReoItBJuLvJZGhaoHXPsRavxTQyGXej16tbWpW9fkb
-	MiE3u8l6QDmidGewrW4mjUWDPWBwBicf+CUbBFJdBIXJq2Vt/dKLWmd1vyB4Oh0xvZA38NfBT/pij
-	A+DvQuobhBHBxhKADMh8M+nXHtE0Qh4gwc7U1XvGwmsXXCd4Sd1vVhVl6cw/4+q61JkWAXyCyIYQD
-	kLWvV1DA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=qPBJslfqWjz6ccntprxT8r9b8bc2Nh8I2X0y5YXiLrY=; b=H7sPQj5uSpQ8xoiZtGJBid1xZu
+	if6mAqA0Jfn3igEw6WdszQJfz5gH3lyZMnstvAzV3P6serQmkAQyiADHD9wWOOPOF9HP4DBW1GR2g
+	jgbtirHJj+0wShDJc2fQyh1RCasnfNjxJOqpGUt9TfDBEEIsM7YbcF1ehsywJSRiXEtWqa5IAPivq
+	Whnv97Fge0UeW/m//VhN8O0fP1mMPRjqdJRnrVxH4yr4HWBwZjknPZIFb7Mpe61CRsUHpOZfdP1no
+	4LhjEos8Iy6NCRKQSI8NlGYeodCulXCzsT3f2+L1F9TfNW2bq7y/erGTZtNK0CymRxBgerAU8FCd5
+	7vMi+W6Q==;
 Received: from [91.187.204.140] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sJ5Uk-00000009IBH-3zsu;
-	Mon, 17 Jun 2024 06:05:35 +0000
+	id 1sJ5Un-00000009IBT-13tu;
+	Mon, 17 Jun 2024 06:05:37 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: move features flags into queue_limits v2
-Date: Mon, 17 Jun 2024 08:04:27 +0200
-Message-ID: <20240617060532.127975-1-hch@lst.de>
+Subject: [PATCH 01/26] xen-blkfront: don't disable cache flushes when they fail
+Date: Mon, 17 Jun 2024 08:04:28 +0200
+Message-ID: <20240617060532.127975-2-hch@lst.de>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240617060532.127975-1-hch@lst.de>
+References: <20240617060532.127975-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
@@ -58,97 +60,116 @@ Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <j
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+blkfront always had a robust negotiation protocol for detecting a write
+cache.  Stop simply disabling cache flushes in the block layer as the
+flags handling is moving to the atomic queue limits API that needs
+user context to freeze the queue for that.  Instead handle the case
+of the feature flags cleared inside of blkfront.  This removes old
+debug code to check for such a mismatch which was previously impossible
+to hit, including the check for passthrough requests that blkfront
+never used to start with.
 
-this is the third and last major series to convert settings to
-queue_limits for this merge window.  After a bunch of prep patches to
-get various drivers in shape, it moves all the queue_flags that specify
-driver controlled features into the queue limits so that they can be
-set atomically and are separated from the blk-mq internal flags.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/block/xen-blkfront.c | 44 +++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-Note that I've only Cc'ed the maintainers for drivers with non-mechanical
-changes as the Cc list is already huge.
+diff --git a/drivers/block/xen-blkfront.c b/drivers/block/xen-blkfront.c
+index 9b4ec3e4908cce..851b03844edd13 100644
+--- a/drivers/block/xen-blkfront.c
++++ b/drivers/block/xen-blkfront.c
+@@ -788,6 +788,11 @@ static int blkif_queue_rw_req(struct request *req, struct blkfront_ring_info *ri
+ 			 * A barrier request a superset of FUA, so we can
+ 			 * implement it the same way.  (It's also a FLUSH+FUA,
+ 			 * since it is guaranteed ordered WRT previous writes.)
++			 *
++			 * Note that can end up here with a FUA write and the
++			 * flags cleared.  This happens when the flag was
++			 * run-time disabled after a failing I/O, and we'll
++			 * simplify submit it as a normal write.
+ 			 */
+ 			if (info->feature_flush && info->feature_fua)
+ 				ring_req->operation =
+@@ -795,8 +800,6 @@ static int blkif_queue_rw_req(struct request *req, struct blkfront_ring_info *ri
+ 			else if (info->feature_flush)
+ 				ring_req->operation =
+ 					BLKIF_OP_FLUSH_DISKCACHE;
+-			else
+-				ring_req->operation = 0;
+ 		}
+ 		ring_req->u.rw.nr_segments = num_grant;
+ 		if (unlikely(require_extra_req)) {
+@@ -887,16 +890,6 @@ static inline void flush_requests(struct blkfront_ring_info *rinfo)
+ 		notify_remote_via_irq(rinfo->irq);
+ }
+ 
+-static inline bool blkif_request_flush_invalid(struct request *req,
+-					       struct blkfront_info *info)
+-{
+-	return (blk_rq_is_passthrough(req) ||
+-		((req_op(req) == REQ_OP_FLUSH) &&
+-		 !info->feature_flush) ||
+-		((req->cmd_flags & REQ_FUA) &&
+-		 !info->feature_fua));
+-}
+-
+ static blk_status_t blkif_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 			  const struct blk_mq_queue_data *qd)
+ {
+@@ -908,12 +901,22 @@ static blk_status_t blkif_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	rinfo = get_rinfo(info, qid);
+ 	blk_mq_start_request(qd->rq);
+ 	spin_lock_irqsave(&rinfo->ring_lock, flags);
+-	if (RING_FULL(&rinfo->ring))
+-		goto out_busy;
+ 
+-	if (blkif_request_flush_invalid(qd->rq, rinfo->dev_info))
+-		goto out_err;
++	/*
++	 * Check if the backend actually supports flushes.
++	 *
++	 * While the block layer won't send us flushes if we don't claim to
++	 * support them, the Xen protocol allows the backend to revoke support
++	 * at any time.  That is of course a really bad idea and dangerous, but
++	 * has been allowed for 10+ years.  In that case we simply clear the
++	 * flags, and directly return here for an empty flush and ignore the
++	 * FUA flag later on.
++	 */
++	if (unlikely(req_op(qd->rq) == REQ_OP_FLUSH && !info->feature_flush))
++		goto complete;
+ 
++	if (RING_FULL(&rinfo->ring))
++		goto out_busy;
+ 	if (blkif_queue_request(qd->rq, rinfo))
+ 		goto out_busy;
+ 
+@@ -921,14 +924,14 @@ static blk_status_t blkif_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
+ 	return BLK_STS_OK;
+ 
+-out_err:
+-	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
+-	return BLK_STS_IOERR;
+-
+ out_busy:
+ 	blk_mq_stop_hw_queue(hctx);
+ 	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
+ 	return BLK_STS_DEV_RESOURCE;
++complete:
++	spin_unlock_irqrestore(&rinfo->ring_lock, flags);
++	blk_mq_end_request(qd->rq, BLK_STS_OK);
++	return BLK_STS_OK;
+ }
+ 
+ static void blkif_complete_rq(struct request *rq)
+@@ -1627,7 +1630,6 @@ static irqreturn_t blkif_interrupt(int irq, void *dev_id)
+ 					blkif_req(req)->error = BLK_STS_OK;
+ 				info->feature_fua = 0;
+ 				info->feature_flush = 0;
+-				xlvbd_flush(info);
+ 			}
+ 			fallthrough;
+ 		case BLKIF_OP_READ:
+-- 
+2.43.0
 
-This series sits on top of the for-6.11/block-limits branch.
-
-A git tree is available here:
-
-    git://git.infradead.org/users/hch/block.git block-limit-flags
-
-Gitweb:
-
-    http://git.infradead.org/?p=users/hch/block.git;a=shortlog;h=refs/heads/block-limit-flags
-
-
-Changes since v1:
- - fix an inverted condition
- - fix the runtime flush disable in xen-blkfront
- - remove sd_is_zoned entirely
- - use SECTOR_SIZE in a few more places
- - fix REQ_NOWAIT disabling for dm targets that don't support it
- - fix typos
- - reword various commit logs
-
-Diffstat:
- Documentation/block/writeback_cache_control.rst |   67 ++++----
- arch/m68k/emu/nfblock.c                         |    1 
- arch/um/drivers/ubd_kern.c                      |    3 
- arch/xtensa/platforms/iss/simdisk.c             |    5 
- block/blk-core.c                                |    7 
- block/blk-flush.c                               |   36 ++--
- block/blk-mq-debugfs.c                          |   13 -
- block/blk-mq.c                                  |   42 +++--
- block/blk-settings.c                            |   46 ++----
- block/blk-sysfs.c                               |  118 ++++++++-------
- block/blk-wbt.c                                 |    4 
- block/blk.h                                     |    2 
- drivers/block/amiflop.c                         |    5 
- drivers/block/aoe/aoeblk.c                      |    1 
- drivers/block/ataflop.c                         |    5 
- drivers/block/brd.c                             |    6 
- drivers/block/drbd/drbd_main.c                  |    6 
- drivers/block/floppy.c                          |    3 
- drivers/block/loop.c                            |   79 ++++------
- drivers/block/mtip32xx/mtip32xx.c               |    2 
- drivers/block/n64cart.c                         |    2 
- drivers/block/nbd.c                             |   24 +--
- drivers/block/null_blk/main.c                   |   13 -
- drivers/block/null_blk/zoned.c                  |    3 
- drivers/block/pktcdvd.c                         |    1 
- drivers/block/ps3disk.c                         |    8 -
- drivers/block/rbd.c                             |   12 -
- drivers/block/rnbd/rnbd-clt.c                   |   14 -
- drivers/block/sunvdc.c                          |    1 
- drivers/block/swim.c                            |    5 
- drivers/block/swim3.c                           |    5 
- drivers/block/ublk_drv.c                        |   21 +-
- drivers/block/virtio_blk.c                      |   37 ++--
- drivers/block/xen-blkfront.c                    |   53 +++---
- drivers/block/zram/zram_drv.c                   |    6 
- drivers/cdrom/gdrom.c                           |    1 
- drivers/md/bcache/super.c                       |    9 -
- drivers/md/dm-table.c                           |  183 +++++-------------------
- drivers/md/dm-zone.c                            |    2 
- drivers/md/dm-zoned-target.c                    |    2 
- drivers/md/dm.c                                 |   13 -
- drivers/md/md.c                                 |   40 -----
- drivers/md/raid5.c                              |    6 
- drivers/mmc/core/block.c                        |   42 ++---
- drivers/mmc/core/queue.c                        |   20 +-
- drivers/mmc/core/queue.h                        |    3 
- drivers/mtd/mtd_blkdevs.c                       |    9 -
- drivers/nvdimm/btt.c                            |    4 
- drivers/nvdimm/pmem.c                           |   14 -
- drivers/nvme/host/core.c                        |   33 ++--
- drivers/nvme/host/multipath.c                   |   24 ---
- drivers/nvme/host/zns.c                         |    3 
- drivers/s390/block/dasd_genhd.c                 |    1 
- drivers/s390/block/dcssblk.c                    |    2 
- drivers/s390/block/scm_blk.c                    |    5 
- drivers/scsi/iscsi_tcp.c                        |    8 -
- drivers/scsi/scsi_lib.c                         |    5 
- drivers/scsi/sd.c                               |   66 +++-----
- drivers/scsi/sd.h                               |    5 
- drivers/scsi/sd_zbc.c                           |   25 +--
- include/linux/blkdev.h                          |  119 ++++++++++-----
- 61 files changed, 572 insertions(+), 728 deletions(-)
