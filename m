@@ -2,82 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C678290BB30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 21:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2ADB90BB60
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 21:49:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nteoDU7f;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=mnZWjMMH;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=JxNXz4hM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W30TP3nMhz3gD2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 05:35:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W30nc42PRz3g3v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 05:49:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nteoDU7f;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=mnZWjMMH;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=JxNXz4hM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=96.44.175.130; helo=bedivere.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 343 seconds by postgrey-1.37 at boromir; Tue, 18 Jun 2024 05:48:31 AEST
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W30Sj17s3z3g70
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 05:34:28 +1000 (AEST)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HIxq1U007157;
-	Mon, 17 Jun 2024 19:34:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=1rtWCLDVD5hMYMANqkF4sbcV8H
-	woHlf6NHGpbmCphXc=; b=nteoDU7fBPxBhbI2g1oZx7O9k1RSPdTAuFKQMiZ4w5
-	/sc/xg5ZxACM9s5aUiOJ1dsoRN3Gwn1bqrrPGLH9dcNPLyLdpRHW3fUkigxsjIL7
-	XB7e6TP+vXjALKiRJLzQBn2Nt+hE1y1Z7OTfOvG+5MK6+ExPiAg5HcW9lJE0OoV0
-	zv2p8K3M92SQI8UfnD/ioq5TuRwSpkYvqIUOhb1FdvymaxejSY+HNnnv3OPufNAZ
-	JpLHggvrSJVSQeXEW4/dOyvMN5p91bjMAin/PNB2sGSLcU61WmryS2AWSguBNHN3
-	COSgaYWcGY26DiR9r2vDdf6De/P0CJpstRuE/+hh2NJA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yttwc828x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 19:34:19 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45HIhUj4009941;
-	Mon, 17 Jun 2024 19:34:19 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ysqgmcj9f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 19:34:19 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45HJYFsa26804904
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jun 2024 19:34:17 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1301558065;
-	Mon, 17 Jun 2024 19:34:15 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 993C558052;
-	Mon, 17 Jun 2024 19:34:14 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Jun 2024 19:34:14 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        jarkko@kernel.org
-Subject: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support
-Date: Mon, 17 Jun 2024 15:34:08 -0400
-Message-ID: <20240617193408.1234365-1-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W30mv0Hv5z3gBn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 05:48:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718653355;
+	bh=1vcmeQncdRyeP1TvaAAoOSNuO5Z2zRz6JdZWHlyc5wU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=mnZWjMMH2Pf/d/viFToDHlEEbQ8HapspA6ZtZT+kGzj2dfKsXkB+8bEXLYrITguK+
+	 NhnGQoYWNqSqgNEmKjM8VNJzH1iRqRhtR5gprRK1Wzl90YRWaic93Er+4w4p4KtU1W
+	 kqGa+OmkXJDMWZtsWDI83weBETvlGLVnmvHpVieo=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 23FA71287250;
+	Mon, 17 Jun 2024 15:42:35 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id 6AnscMlQ7NK4; Mon, 17 Jun 2024 15:42:35 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1718653354;
+	bh=1vcmeQncdRyeP1TvaAAoOSNuO5Z2zRz6JdZWHlyc5wU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=JxNXz4hMIJNuIaS2NAP/VmIBIqhBMsY90IEZCeCGJOh67Z+KbLhKYCyMbh5iyytP9
+	 fn7ydQPacHeEFBG6cB+WnQaQitcP3DESIbyxtYuw5Hz5w948hQI8qpy4KM8souBzmc
+	 NDgDGVPY1QydIfxAFzf/3sTMQuIUtrGMorgI1SWI=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 510EE12870A6;
+	Mon, 17 Jun 2024 15:42:34 -0400 (EDT)
+Message-ID: <dfc4feaef0d63d616bab8cdec5d409369f9dacf1.camel@HansenPartnership.com>
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, linux-integrity@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, jarkko@kernel.org
+Date: Mon, 17 Jun 2024 15:42:32 -0400
+In-Reply-To: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -09hiv8-DnkBLNg901VJl7ge-fi8Djmw
-X-Proofpoint-GUID: -09hiv8-DnkBLNg901VJl7ge-fi8Djmw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-17_14,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 suspectscore=0 phishscore=0 spamscore=0 priorityscore=1501
- adultscore=0 mlxscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406170150
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,37 +76,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, linux-kernel@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>
+Cc: naveen.n.rao@linux.ibm.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the following type of error message caused by a missing call to
-tpm2_sessions_init() in the IBM vTPM driver:
+On Mon, 2024-06-17 at 15:34 -0400, Stefan Berger wrote:
+> Fix the following type of error message caused by a missing call to
+> tpm2_sessions_init() in the IBM vTPM driver:
+> 
+> [    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error
+> 0x01C4
+> [    2.987140] ima: Error Communicating to TPM chip, result: -14
+> 
+> Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c
+> b/drivers/char/tpm/tpm_ibmvtpm.c
+> index d3989b257f42..1e5b107d1f3b 100644
+> --- a/drivers/char/tpm/tpm_ibmvtpm.c
+> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
+> @@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev
+> *vio_dev,
+>                 rc = tpm2_get_cc_attrs_tbl(chip);
+>                 if (rc)
+>                         goto init_irq_cleanup;
+> +
+> +               rc = tpm2_sessions_init(chip);
+> +               if (rc)
+> +                       goto init_irq_cleanup;
 
-[    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error 0x01C4
-[    2.987140] ima: Error Communicating to TPM chip, result: -14
+This looks wrong: the whole thing is designed to occur in the bootstrap
+phase from tpm_chip_register() (which tpm_ibmvtpm.c definitely calls),
+so why isn't it happening?
 
-Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
-index d3989b257f42..1e5b107d1f3b 100644
---- a/drivers/char/tpm/tpm_ibmvtpm.c
-+++ b/drivers/char/tpm/tpm_ibmvtpm.c
-@@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
- 		rc = tpm2_get_cc_attrs_tbl(chip);
- 		if (rc)
- 			goto init_irq_cleanup;
-+
-+		rc = tpm2_sessions_init(chip);
-+		if (rc)
-+			goto init_irq_cleanup;
- 	}
- 
- 	return tpm_chip_register(chip);
--- 
-2.45.2
+James
 
