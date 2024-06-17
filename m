@@ -1,93 +1,135 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886CC90BBE3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 22:18:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FAA90BCA0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 23:08:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ItABGs4l;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=j8DR5IyT;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kBTrNAKz;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ExLPViHA;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WLqXyqYV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W31Rx2mP2z3gGD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 06:18:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W32YP1tJlz3gFQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 07:08:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ItABGs4l;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=j8DR5IyT;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kBTrNAKz;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ExLPViHA;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WLqXyqYV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W31RD5SF3z3gDK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 06:18:16 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HJ01c7024582;
-	Mon, 17 Jun 2024 20:18:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=4
-	BfO0A59aeS+EuUXkTmQ/GMv6VbFKK1FWKlArNStJBg=; b=ItABGs4lJF8StiMZq
-	J03TJRm5nzALh24wV6g2ruRK/VxkH6lvOM8sRL19pOIQGPX5MWwbeTkjh+Xlm+eX
-	cYwx7NFUk9JVqNea3PkjYlTYU+OptSjVWN7SCx8ODufVWsyoW9+RH819SWXmRUQ8
-	iN2mLtBMCo5naNq9ZZnHpMMRl8PoZXXX28jv+K/cj3nX/GeL4y/I3QsCzt7pcjJl
-	qH42MfpnqldrLxJ2IROrv6+PnZZbHcc55bfCxH0BdMtdJtzBQ+OYQ86/sN0wOdSt
-	g3mNsnEb2juOPJpWAB+eImChxqhlJ4Th//OYsSLwVzLNv1xsQJcOf/3Y3C0q98GS
-	zFCdA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yttwc85hs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 20:18:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45HHvRLG023889;
-	Mon, 17 Jun 2024 20:18:03 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ysp9pw577-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 20:18:03 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45HKI0YU63832458
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jun 2024 20:18:02 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 63FBB5805E;
-	Mon, 17 Jun 2024 20:18:00 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC4FE58055;
-	Mon, 17 Jun 2024 20:17:59 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Jun 2024 20:17:59 +0000 (GMT)
-Message-ID: <5427fe09-199b-4b4b-a451-044e8e352595@linux.ibm.com>
-Date: Mon, 17 Jun 2024 16:17:59 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W32Xf5nsQz3gDs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 07:08:01 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E56CA1F395;
+	Mon, 17 Jun 2024 21:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1718658477; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GhqD1JZCa8h9LMBNO3ezSkJWmrAJo6LNKwZwWzpwW1M=;
+	b=j8DR5IyTlZofLM3Hvz795hVPWecqlsAUGRjaVX6rGmVl4s8wFxQjMCcsQeMN74lbbXwaaV
+	hTN4M7Abcua5OS9vlrq6S6k1bjXyNwXWZn96drMcZpBy6IsfS0RnVhSQAk37i7IstTDUWp
+	rpF3KkC5gtwzGDnovQkL5uqT0kkOzfE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1718658477;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GhqD1JZCa8h9LMBNO3ezSkJWmrAJo6LNKwZwWzpwW1M=;
+	b=kBTrNAKzCrUTsHKBNNdHM9fIefNunqMk9H0V2GRXVjqhJsp4yMpNQugUxDzwpIso8wl3sd
+	3X3+6JzZgyYXBTDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1718658476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GhqD1JZCa8h9LMBNO3ezSkJWmrAJo6LNKwZwWzpwW1M=;
+	b=ExLPViHAvbM4j+i3e8gYnQrDA6vIdKvLTIxoCpcpkWQE2ZLqW4rwPiOg9UK5Wq/2VtWuYE
+	4sQygQz4l2h2KSa2NL3yNM/h8QwPSPSgJSY+nSqXRmCM222DXJCtB+sJBz+r3s6hc7e0Sc
+	3w6Tit18RpeR0sEumZnX+0dTL8N8c4k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1718658476;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GhqD1JZCa8h9LMBNO3ezSkJWmrAJo6LNKwZwWzpwW1M=;
+	b=WLqXyqYVgXmVxEHMGDdUcfDT4nZ30EJhWlenIyGCKj3KY+2QIEZ0Hm3PDge/OK6kv6R0Xe
+	BryspmBkQnZmAQAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D268B13AAA;
+	Mon, 17 Jun 2024 21:07:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MnYzMqulcGZ9SwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 17 Jun 2024 21:07:55 +0000
+Message-ID: <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
+Date: Mon, 17 Jun 2024 23:08:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
- session support
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        jarkko@kernel.org
-References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
- <dfc4feaef0d63d616bab8cdec5d409369f9dacf1.camel@HansenPartnership.com>
- <5bd68636-ece6-4ba5-a4c0-c0535afc33c8@linux.ibm.com>
- <1302b413a2d7bf3b275133e7fdb04b44bfe2d5e3.camel@HansenPartnership.com>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+To: Uladzislau Rezki <urezki@gmail.com>
+References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
+ <20240612143305.451abf58@kernel.org>
+ <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+ <Zmov7ZaL-54T9GiM@zx2c4.com> <Zmo9-YGraiCj5-MI@zx2c4.com>
+ <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
+ <Zmrkkel0Fo4_g75a@zx2c4.com> <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
+ <3b6fe525-626c-41fb-8625-3925ca820d8e@paulmck-laptop>
+ <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz> <ZnCDgdg1EH6V7w5d@pc636>
+From: Vlastimil Babka <vbabka@suse.cz>
 Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <1302b413a2d7bf3b275133e7fdb04b44bfe2d5e3.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RQxNUYf2DBrWStycNDpehfHgqmo8xgeN
-X-Proofpoint-GUID: RQxNUYf2DBrWStycNDpehfHgqmo8xgeN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-17_14,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 mlxscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
- phishscore=0 clxscore=1015 bulkscore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2406170153
+In-Reply-To: <ZnCDgdg1EH6V7w5d@pc636>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-8.29 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,zx2c4.com,inria.fr,vger.kernel.org,lists.linux.dev,efficios.com,lists.ozlabs.org,linux.ibm.com,csgroup.eu,gmail.com,lists.zx2c4.com,suse.de,netapp.com,oracle.com,talpey.com,netfilter.org,googlegroups.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	R_RATELIMIT(0.00)[to_ip_from(RLr583pch5u74edj9dsne3chzi)]
+X-Spam-Flag: NO
+X-Spam-Score: -8.29
+X-Spam-Level: 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,160 +141,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, linux-kernel@vger.kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, paulmck@kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 6/17/24 8:42 PM, Uladzislau Rezki wrote:
+>> +
+>> +	s = container_of(work, struct kmem_cache, async_destroy_work);
+>> +
+>> +	// XXX use the real kmem_cache_free_barrier() or similar thing here
+> It implies that we need to introduce kfree_rcu_barrier(), a new API, which i
+> wanted to avoid initially.
 
+I wanted to avoid new API or flags for kfree_rcu() users and this would
+be achieved. The barrier is used internally so I don't consider that an
+API to avoid. How difficult is the implementation is another question,
+depending on how the current batching works. Once (if) we have sheaves
+proven to work and move kfree_rcu() fully into SLUB, the barrier might
+also look different and hopefully easier. So maybe it's not worth to
+invest too much into that barrier and just go for the potentially
+longer, but easier to implement?
 
-On 6/17/24 16:05, James Bottomley wrote:
-> On Mon, 2024-06-17 at 15:56 -0400, Stefan Berger wrote:
->>
->>
->> On 6/17/24 15:42, James Bottomley wrote:
->>> On Mon, 2024-06-17 at 15:34 -0400, Stefan Berger wrote:
->>>> Fix the following type of error message caused by a missing call
->>>> to
->>>> tpm2_sessions_init() in the IBM vTPM driver:
->>>>
->>>> [    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM
->>>> error
->>>> 0x01C4
->>>> [    2.987140] ima: Error Communicating to TPM chip, result: -14
->>>>
->>>> Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
->>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>>> ---
->>>>    drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
->>>>    1 file changed, 4 insertions(+)
->>>>
->>>> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c
->>>> b/drivers/char/tpm/tpm_ibmvtpm.c
->>>> index d3989b257f42..1e5b107d1f3b 100644
->>>> --- a/drivers/char/tpm/tpm_ibmvtpm.c
->>>> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
->>>> @@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev
->>>> *vio_dev,
->>>>                   rc = tpm2_get_cc_attrs_tbl(chip);
->>>>                   if (rc)
->>>>                           goto init_irq_cleanup;
->>>> +
->>>> +               rc = tpm2_sessions_init(chip);
->>>> +               if (rc)
->>>> +                       goto init_irq_cleanup;
->>>
->>> This looks wrong: the whole thing is designed to occur in the
->>> bootstrap
->>> phase from tpm_chip_register() (which tpm_ibmvtpm.c definitely
->>> calls),
->>> so why isn't it happening?
->>
->> Because flags = TPM_OPS_AUTO_STARTUP has not been set for this
->> driver.
->>
-> 
-> In that case, wouldn't the fix be to move tpm_sessions_init() to
-> somewhere in tpm_chip_register() that would then be called by this
-> driver?  Having to special case it for every driver that doesn't set
-> this flag is going to be a huge pain.
+> Since you do it asynchronous can we just repeat
+> and wait until it a cache is furry freed?
 
-I think the 2nd fix is to set TPM_OPS_AUTO_STARTUP also for the ibmvtpm 
-driver like the following patch on top of this one, but after more testing:
+The problem is we want to detect the cases when it's not fully freed
+because there was an actual read. So at some point we'd need to stop the
+repeats because we know there can no longer be any kfree_rcu()'s in
+flight since the kmem_cache_destroy() was called.
 
- From c6bcd3890f1bdc43d9549fbb39fe388adf756358 Mon Sep 17 00:00:00 2001
-From: Stefan Berger <stefanb@linux.ibm.com>
-Date: Mon, 17 Jun 2024 16:05:54 -0400
-Subject: [PATCH] tpm: ibmvtpm: Set TPM_OPS_AUTO_STARTUP flag for
-  initialization
+> I am asking because inventing a new kfree_rcu_barrier() might not be so
+> straight forward.
 
-Set the TPM_OPS_AUTO_STARTUP flag for using common initialization code.
-The difference between the old initialization and the new one is that
-for TPM 1.2 tpm1_do_selftest and for TPM 2 tpm2_do_selftest will be called.
-
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
-  drivers/char/tpm/tpm_ibmvtpm.c | 15 +--------------
-  1 file changed, 1 insertion(+), 14 deletions(-)
-
-diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
-index 1e5b107d1f3b..76d048f63d55 100644
---- a/drivers/char/tpm/tpm_ibmvtpm.c
-+++ b/drivers/char/tpm/tpm_ibmvtpm.c
-@@ -450,6 +450,7 @@ static bool tpm_ibmvtpm_req_canceled(struct tpm_chip 
-*chip, u8 status)
-  }
-
-  static const struct tpm_class_ops tpm_ibmvtpm = {
-+       .flags = TPM_OPS_AUTO_STARTUP,
-         .recv = tpm_ibmvtpm_recv,
-         .send = tpm_ibmvtpm_send,
-         .cancel = tpm_ibmvtpm_cancel,
-@@ -690,20 +691,6 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
-         if (!strcmp(id->compat, "IBM,vtpm20"))
-                 chip->flags |= TPM_CHIP_FLAG_TPM2;
-
--       rc = tpm_get_timeouts(chip);
--       if (rc)
--               goto init_irq_cleanup;
--
--       if (chip->flags & TPM_CHIP_FLAG_TPM2) {
--               rc = tpm2_get_cc_attrs_tbl(chip);
--               if (rc)
--                       goto init_irq_cleanup;
--
--               rc = tpm2_sessions_init(chip);
--               if (rc)
--                       goto init_irq_cleanup;
--       }
--
-         return tpm_chip_register(chip);
-  init_irq_cleanup:
-         do {
---
-2.45.2
-
-Regards,
-    Stefan
+Agreed.
 
 > 
-> I think the only reason it's down that far is that it should only be
-> called for TPM2 code so it was avoiding doing the check twice, so
-> something like this >
-> James
-> 
-> ---
-> 
-> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-> index 5da134f12c9a..4280cbb0f0b1 100644
-> --- a/drivers/char/tpm/tpm-interface.c
-> +++ b/drivers/char/tpm/tpm-interface.c
-> @@ -347,6 +347,12 @@ int tpm_auto_startup(struct tpm_chip *chip)
->   {
->   	int rc;
->   
-> +	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> +		rc = tpm2_sessions_init(chip);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
->   	if (!(chip->ops->flags & TPM_OPS_AUTO_STARTUP))
->   		return 0;
->   
-> diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-> index 1e856259219e..b4f85c8cdbb6 100644
-> --- a/drivers/char/tpm/tpm2-cmd.c
-> +++ b/drivers/char/tpm/tpm2-cmd.c
-> @@ -773,11 +773,6 @@ int tpm2_auto_startup(struct tpm_chip *chip)
->   		rc = 0;
->   	}
->   
-> -	if (rc)
-> -		goto out;
-> -
-> -	rc = tpm2_sessions_init(chip);
-> -
->   out:
->   	/*
->   	 * Infineon TPM in field upgrade mode will return no data for the number
-> 
+> --
+> Uladzislau Rezki
