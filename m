@@ -2,79 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0425790BB3E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 21:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C678290BB30
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 21:35:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=qFy9OqZ+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nteoDU7f;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W30Xc4txbz3gCL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 05:37:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W30TP3nMhz3gD2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 05:35:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=qFy9OqZ+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nteoDU7f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.15.14; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 349 seconds by postgrey-1.37 at boromir; Tue, 18 Jun 2024 05:37:12 AEST
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W30Wr4Vqvz3g7P
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 05:37:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1718653019; x=1719257819; i=markus.elfring@web.de;
-	bh=3SqP/MMqLPtLI6/aIyy4H8OAKdv545+Ewr3toVxYkx8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=qFy9OqZ+61yp2Rr2rTlaNNqY3iWEj82Su6VHQlqnYJfawxb2t3p84wmz+i+lfa2a
-	 9VnvM09uvYl9MKAqtmm06clNbE0mXeOptfJtNazwkRbYbLdx8iws9V0/LhlvliNI5
-	 Zunk4uoQn8GX45NhaXBaSkvTj4fBYA+bRALZinkLVvb/ybcKgFdqdqHOxyzw7BBGJ
-	 5AFU2r3iE51ZRTjdJpMPmEvyEybEsdQjASm3ns0kVH3L+30XktQui8AYQYDZHErpi
-	 RnfL8ZUP7qX2GyMVAhRfcsfj2iVcLLqdzbOaR1xWUtilfclR1Nn3Ss/Gt9CJKi4RU
-	 g6rZ9obCMXGeqxd17w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N3Gkg-1sSbPm0CNW-00tTYm; Mon, 17
- Jun 2024 21:30:24 +0200
-Message-ID: <3fb7f6db-6822-413e-9aa3-953a5e3cd566@web.de>
-Date: Mon, 17 Jun 2024 21:30:11 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W30Sj17s3z3g70
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 05:34:28 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HIxq1U007157;
+	Mon, 17 Jun 2024 19:34:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=1rtWCLDVD5hMYMANqkF4sbcV8H
+	woHlf6NHGpbmCphXc=; b=nteoDU7fBPxBhbI2g1oZx7O9k1RSPdTAuFKQMiZ4w5
+	/sc/xg5ZxACM9s5aUiOJ1dsoRN3Gwn1bqrrPGLH9dcNPLyLdpRHW3fUkigxsjIL7
+	XB7e6TP+vXjALKiRJLzQBn2Nt+hE1y1Z7OTfOvG+5MK6+ExPiAg5HcW9lJE0OoV0
+	zv2p8K3M92SQI8UfnD/ioq5TuRwSpkYvqIUOhb1FdvymaxejSY+HNnnv3OPufNAZ
+	JpLHggvrSJVSQeXEW4/dOyvMN5p91bjMAin/PNB2sGSLcU61WmryS2AWSguBNHN3
+	COSgaYWcGY26DiR9r2vDdf6De/P0CJpstRuE/+hh2NJA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yttwc828x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 19:34:19 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45HIhUj4009941;
+	Mon, 17 Jun 2024 19:34:19 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ysqgmcj9f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jun 2024 19:34:19 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45HJYFsa26804904
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Jun 2024 19:34:17 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1301558065;
+	Mon, 17 Jun 2024 19:34:15 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 993C558052;
+	Mon, 17 Jun 2024 19:34:14 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 17 Jun 2024 19:34:14 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        jarkko@kernel.org
+Subject: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support
+Date: Mon, 17 Jun 2024 15:34:08 -0400
+Message-ID: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20240614163500.386747-5-piotr.wojtaszczyk@timesys.com>
-Subject: Re: [PATCH v3 4/4] ASoC: fsl: Add i2s and pcm drivers for LPC32xx
- CPUs
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240614163500.386747-5-piotr.wojtaszczyk@timesys.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5WMvwVJ2f6aoUtr+Iz89hHXdsaVQ1zgvfdIEvfLMhBHDYIBbpe8
- kWz8j5Flzg276xCuQhuOfkGfjJ1JGGY3ujMyZc1pPd3x6QKmrtdsQqX0puZR60X7t0lHxCa
- yn6PJPgg+aEg447/N0AipP2n+YrYMaefQ7ZzL7N5WylGgwQ1/vOzILgz7mqlOpdJg0hrWyK
- EoJrGwmfCJ2IviYQn3jgw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:289MEY1k7K8=;iOOAW6vyjkidRXUo1txuUPephTd
- Lu1fLFFQ6OiCdw7XqOVx+w2a20k6HujWOHtSQ8ZBlGo/WuwY98D89FpuXLguWAWGVOl0qUIhe
- jc0zM6Y/szMGY+/WlykVXOVhOrLwVuova8HBzv7uV1hrETD7wvDm2z5WgXmqJQxbD0oy6g1n4
- 96zeP7oB9vXE5vRN8plGOvQoTt7SSUequ7lc+YSbYRC563Eg2wHsMUVtXddeBQtIwH+K5e2fL
- FK/5gEqssQlX1EcTxtUDtMj59u8f3/tfig1/7zuXaemfMmKMToZZ4sPidUNjPJFfNENxhD+FZ
- sFEnxnYTxIhbJ3GTw70uWGJpy1FCI80Xz/49TVeQStMHl6rku0TMl0JSmMUoTqibbRB4kJc0e
- 7VB3CB8pMhET7dINxpOTEavR1IjfgXauixR6RgI/klq8k5HxjD7R4s2CoTkyfo5j4gczHHyea
- uLQhNNkNl9dcJEMLqgeT9TbU1OAZHzgQ3p1BlYa8qjorYW5kfp+ffxczoT+vi/IUMxXJyNiIG
- RYZ1HTj6oy3q+dTkHv7WvPJxCk1gQDxvloh9NK+9bruoEk/uzlpDpAyF642GPqGqw+z2LdBcV
- UO6maK85XEM0es5DTY3E9O9oj0JX0iFlTLMn4+phGIuzTzEkmsAxwrixRsE537NT7nn5JkMLV
- 1RdVvS8UeTGPMjpyGaEKa+2F5vxG19XllG9vBQk4KBooBPqzV+MoCky4+nIq1nA2scdl30sD9
- BXSDEwLRSTDA7GIgwW57s28eF/GWnmh5al7DlTHI/7o9P3KtlTaywCCpXvs+w/LHJPw7I8ik5
- 3znkE+XmhoI8DG2/24UILJqI3JkvyvehkDbfd4qGA6mug=
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -09hiv8-DnkBLNg901VJl7ge-fi8Djmw
+X-Proofpoint-GUID: -09hiv8-DnkBLNg901VJl7ge-fi8Djmw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-17_14,2024-06-17_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ adultscore=0 mlxscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406170150
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,36 +89,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Liam Girdwood <lgirdwood@gmail.com>, Takashi Iwai <tiwai@suse.com>, LKML <linux-kernel@vger.kernel.org>, Jonathan Downing <jonathan.downing@nautel.com>, Jaroslav Kysela <perex@perex.cz>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, Russell King <linux@armlinux.org.uk>, Vladimir Zapolskiy <vz@mleia.com>
+Cc: naveen.n.rao@linux.ibm.com, linux-kernel@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I suggest to specify email addresses for message recipients not only
-in the header field =E2=80=9CCc=E2=80=9D.
+Fix the following type of error message caused by a missing call to
+tpm2_sessions_init() in the IBM vTPM driver:
 
+[    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error 0x01C4
+[    2.987140] ima: Error Communicating to TPM chip, result: -14
 
-=E2=80=A6
-> +++ b/sound/soc/fsl/lpc3xxx-i2s.c
-> @@ -0,0 +1,393 @@
-=E2=80=A6
-> +static int lpc3xxx_i2s_startup(struct snd_pcm_substream *substream, str=
-uct snd_soc_dai *cpu_dai)
-> +{
-=E2=80=A6
-> +	int ret =3D 0;
-> +
-> +	mutex_lock(&i2s_info_p->lock);
-=E2=80=A6
-> +lpc32xx_unlock:
-> +	mutex_unlock(&i2s_info_p->lock);
-> +	return ret;
-> +}
-=E2=80=A6
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+---
+ drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Would you become interested to apply a statement like =E2=80=9Cguard(mutex=
-)(&i2s_info_p->lock);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.10-rc4/source/include/linux/mutex.h#L1=
-96
+diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
+index d3989b257f42..1e5b107d1f3b 100644
+--- a/drivers/char/tpm/tpm_ibmvtpm.c
++++ b/drivers/char/tpm/tpm_ibmvtpm.c
+@@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
+ 		rc = tpm2_get_cc_attrs_tbl(chip);
+ 		if (rc)
+ 			goto init_irq_cleanup;
++
++		rc = tpm2_sessions_init(chip);
++		if (rc)
++			goto init_irq_cleanup;
+ 	}
+ 
+ 	return tpm_chip_register(chip);
+-- 
+2.45.2
 
-Regards,
-Markus
