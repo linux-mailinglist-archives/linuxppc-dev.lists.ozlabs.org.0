@@ -2,69 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CBC90B9F0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 20:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 778A290BA34
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 20:55:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KgXttsZ4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=htDly1vi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2zKK1rXLz3gDV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 04:43:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2zbV1ZBtz3gBg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 04:55:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KgXttsZ4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=htDly1vi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::136; helo=mail-lf1-x136.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=fwn3=nt=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2zJc5q9gz3g6K
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 04:42:23 +1000 (AEST)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-52bc29c79fdso6411090e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 11:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718649733; x=1719254533; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+jO2FlPNmcOLf+hC3upZKg3SDI4/5kwrnW8GkxW5YVg=;
-        b=KgXttsZ4lIyTmYM6yUHmDkHY7Gy9QpcvJAdc6xhd1HMJITGO6s5RypYAe9VbYuBoJS
-         5NT36CvCGKoXxJ+qzKcPKLKgvcryZyyzfsjzCPG+fBe6nkLgsVkXsObTBCMVyqjH1Ng1
-         /X9a4UzEF2depLw+U00z7r65U6nj0jO9VOZGJ2VGiRmkvdsNdGOtu4Qr5bGrnO2/v7tM
-         xERhEW7SBHi/tIwE0tItulEZe/WTrivirFX0Tka09dDpGOUiZFxQx+53fgGUra8hBVlF
-         uS3uxZWJH+MlTRJgxtCBX0/xaeq7YHVKVocR2/mnViNnMZzqz9Q6Z5BEh8I3J7ayusRq
-         xiOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718649733; x=1719254533;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+jO2FlPNmcOLf+hC3upZKg3SDI4/5kwrnW8GkxW5YVg=;
-        b=vJerauJA4h6oHTjTqJ2zdnRTJmud7ucWVTeN8ER0gHJy2LSpx3mfFw1esVGfD7r63r
-         TxyM+iDxuW2M2ynQDxiNA/glV4EuGMNyWYvc6xq1y2PTQI50y6Y1b1S4XnJyIYHq2KEt
-         WnMvPsqJ6YAR81uhLHXdUUzGQFn7kKIpGP+UHaUJxBGTS9dZSfOhVwrSBKCw9njDC1rN
-         dfsaJWKCQP5zpGMjTpTHqZdD/VJH6EU9Dj9mGvkT4QHd3StqPe3l4WyKcvRyhvqV6A4N
-         VyrKCOyX9J5WtK+qlCPPdSmZdkLlBSDxHdmbGF1JqUSYRagKtEZinslpveNp01rbbqnA
-         P32g==
-X-Forwarded-Encrypted: i=1; AJvYcCVIiB9AWUTHhfspYv/0Gd72645TCFtQy+uUasmPMRkwirFZKTyN72mTpURTHK1mG8OI4j7tQsxS7iqk7u8G3bQlsQ4F+GEtZLWuxJbOoQ==
-X-Gm-Message-State: AOJu0YyVgvvQo/pFt+Nqic596Zz4cXmNYSJcv0v6nDu6rYggjO2GGxPW
-	botjQKTee1YpGSyHliwS0ipFk+2p1ujRgZVUacedwO1V/M2elyfc
-X-Google-Smtp-Source: AGHT+IG+He9esutTE4DcK6Uo+MkQ9CT1wI+N+kkdrm92KSfS1cK189MGjfkb18QFb85ZwtxeC6GLJw==
-X-Received: by 2002:a05:6512:549:b0:521:cc8a:46dd with SMTP id 2adb3069b0e04-52ca6e56e2dmr7855127e87.11.1718649732281;
-        Mon, 17 Jun 2024 11:42:12 -0700 (PDT)
-Received: from pc636 (host-185-121-47-193.sydskane.nu. [185.121.47.193])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56db6182sm540019666b.51.2024.06.17.11.42.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 11:42:11 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 17 Jun 2024 20:42:09 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2zZn3822z3g9c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 04:54:41 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3602661257;
+	Mon, 17 Jun 2024 18:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D7BC2BD10;
+	Mon, 17 Jun 2024 18:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718650479;
+	bh=cmmYnDR5G/CPH+g8BcpN1MFkYmgodk2x412Uh4pRCDw=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=htDly1viSXXYYDN2fKeKx2wmcWA279kRnzVgaC5yXX9rrUYI8hRNqQiZfGupG+pr8
+	 fyvcrTaan+ehboyUpbKcuvFKbNCjyCKyP/e4RExGTWrX4Ajy4h4DpwAHm8KwpKdG8f
+	 26DRExUZipco75yWMjxicdv9Nl2afaU5pTmkMQ49C4dWem15hPJGRkh37jNjcciSwu
+	 KdhAzh1W3DjA1v4yvoUAm8deglvz0XhATfntWZgp4lETgOpWqILAB065yj7IdLIRh4
+	 3ROzkDdsgzhVhI7mza08G5DAiCBpqSpMnSH5w5EUT/ZVIl1eNBKgWzLLeWzVvnHOI2
+	 s5ULjvLFAuy0g==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 80EC9CE09DB; Mon, 17 Jun 2024 11:54:39 -0700 (PDT)
+Date: Mon, 17 Jun 2024 11:54:39 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
 To: Vlastimil Babka <vbabka@suse.cz>
 Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
  kmem_cache_free callback
-Message-ID: <ZnCDgdg1EH6V7w5d@pc636>
+Message-ID: <1755282b-e3f5-4d18-9eab-fc6a29ca5886@paulmck-laptop>
 References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
  <20240612143305.451abf58@kernel.org>
  <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
@@ -90,7 +71,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, paulmck@kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, "Uladzislau Rezki \(Sony\)" <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Reply-To: paulmck@kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, "Uladzislau Rezki \(Sony\)" <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -118,13 +100,27 @@ On Mon, Jun 17, 2024 at 07:23:36PM +0200, Vlastimil Babka wrote:
 > the implementation (marked to be replaced with the real thing) is really
 > insufficient. Note the test itself passes as this kind of error isn't wired
 > up properly.
-> 
+
+;-) ;-) ;-)
+
+Some might want confirmation that their cleanup efforts succeeded,
+but if so, I will let them make that known.
+
 > Another thing to resolve is the marked comment about kasan_shutdown() with
 > potential kfree_rcu()'s in flight.
-> 
+
+Could that simply move to the worker function?  (Hey, had to ask!)
+
 > Also you need CONFIG_SLUB_DEBUG enabled otherwise node_nr_slabs() is a no-op
 > and it might fail to notice the pending slabs. This will need to change.
-> 
+
+Agreed.
+
+Looks generally good.  A few questions below, to be taken with a
+grain of salt.
+
+							Thanx, Paul
+
 > ----8<----
 > diff --git a/lib/slub_kunit.c b/lib/slub_kunit.c
 > index e6667a28c014..e3e4d0ca40b7 100644
@@ -160,6 +156,9 @@ On Mon, Jun 17, 2024 at 07:23:36PM +0200, Vlastimil Babka wrote:
 > +	kasan_enable_current();
 > +	kfree_rcu(p, rcu);
 > +	kmem_cache_destroy(s);
+
+Looks like the type of test for this!
+
 > +}
 > +
 >  static int test_init(struct kunit *test)
@@ -248,12 +247,85 @@ On Mon, Jun 17, 2024 at 07:23:36PM +0200, Vlastimil Babka wrote:
 > +	s = container_of(work, struct kmem_cache, async_destroy_work);
 > +
 > +	// XXX use the real kmem_cache_free_barrier() or similar thing here
-It implies that we need to introduce kfree_rcu_barrier(), a new API, which i
-wanted to avoid initially. Since you do it asynchronous can we just repeat
-and wait until it a cache is furry freed?
+> +	rcu_barrier();
+> +
+> +	cpus_read_lock();
+> +	mutex_lock(&slab_mutex);
+> +
+> +	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
+> +
+> +	err = shutdown_cache(s, true);
 
-I am asking because inventing a new kfree_rcu_barrier() might not be so
-straight forward.
+This is currently the only call to shutdown_cache()?  So there is to be
+a way for the caller to have some influence over the value of that bool?
 
---
-Uladzislau Rezki
+> +	WARN(err, "kmem_cache_destroy %s: Slab cache still has objects",
+> +	     s->name);
+
+Don't we want to have some sort of delay here?  Or is this the
+21-second delay and/or kfree_rcu_barrier() mentioned before?
+
+> +	mutex_unlock(&slab_mutex);
+> +	cpus_read_unlock();
+> +	if (!err && !rcu_set)
+> +		kmem_cache_release(s);
+> +}
+> +
+>  void kmem_cache_destroy(struct kmem_cache *s)
+>  {
+>  	int err = -EBUSY;
+> @@ -494,9 +527,9 @@ void kmem_cache_destroy(struct kmem_cache *s)
+>  	if (s->refcount)
+>  		goto out_unlock;
+>  
+> -	err = shutdown_cache(s);
+> -	WARN(err, "%s %s: Slab cache still has objects when called from %pS",
+> -	     __func__, s->name, (void *)_RET_IP_);
+> +	err = shutdown_cache(s, false);
+> +	if (err)
+> +		schedule_work(&s->async_destroy_work);
+>  out_unlock:
+>  	mutex_unlock(&slab_mutex);
+>  	cpus_read_unlock();
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 1617d8014ecd..4d435b3d2b5f 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -5342,7 +5342,8 @@ static void list_slab_objects(struct kmem_cache *s, struct slab *slab,
+>   * This is called from __kmem_cache_shutdown(). We must take list_lock
+>   * because sysfs file might still access partial list after the shutdowning.
+>   */
+> -static void free_partial(struct kmem_cache *s, struct kmem_cache_node *n)
+> +static void free_partial(struct kmem_cache *s, struct kmem_cache_node *n,
+> +			 bool warn_inuse)
+>  {
+>  	LIST_HEAD(discard);
+>  	struct slab *slab, *h;
+> @@ -5353,7 +5354,7 @@ static void free_partial(struct kmem_cache *s, struct kmem_cache_node *n)
+>  		if (!slab->inuse) {
+>  			remove_partial(n, slab);
+>  			list_add(&slab->slab_list, &discard);
+> -		} else {
+> +		} else if (warn_inuse) {
+>  			list_slab_objects(s, slab,
+>  			  "Objects remaining in %s on __kmem_cache_shutdown()");
+>  		}
+> @@ -5378,7 +5379,7 @@ bool __kmem_cache_empty(struct kmem_cache *s)
+>  /*
+>   * Release all resources used by a slab cache.
+>   */
+> -int __kmem_cache_shutdown(struct kmem_cache *s)
+> +int __kmem_cache_shutdown(struct kmem_cache *s, bool warn_inuse)
+>  {
+>  	int node;
+>  	struct kmem_cache_node *n;
+> @@ -5386,7 +5387,7 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
+>  	flush_all_cpus_locked(s);
+>  	/* Attempt to free all objects */
+>  	for_each_kmem_cache_node(s, node, n) {
+> -		free_partial(s, n);
+> +		free_partial(s, n, warn_inuse);
+>  		if (n->nr_partial || node_nr_slabs(n))
+>  			return 1;
+>  	}
+> 
