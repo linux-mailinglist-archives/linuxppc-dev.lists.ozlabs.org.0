@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB0490A5DA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 08:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5B990A5E2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 08:31:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LEnK17zF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OVa4VXa4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2g4Y0W98z3fqN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:30:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2g5K4jwFz3fqt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:31:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LEnK17zF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OVa4VXa4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2fyC1hr8z3dJn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 16:25:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2fzV3cbZz3fnM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 16:26:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3B2916114E;
-	Mon, 17 Jun 2024 06:25:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B3DC2BD10;
-	Mon, 17 Jun 2024 06:25:17 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id D5232CE0E70;
+	Mon, 17 Jun 2024 06:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897D7C2BD10;
+	Mon, 17 Jun 2024 06:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718605521;
-	bh=b4C7oWXm6AiByOywGcEEC3GnqcHjFi/qcKpmuC4GSl4=;
+	s=k20201202; t=1718605589;
+	bh=5ukl1My1jMqhSyTqZEFqdGlI+72qAecy5V2ti5Kc46U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LEnK17zFqe+hZOSDUj/tOYJPTbrEr/iyN4UNL0SmIILaSKuqTSJ4sjLsh83tbNp98
-	 xMaGs3z4bHthSiIVUGgn6p6k1Hp4OFwjqTvBViQ5r26ZmMaTUT3kdJYmUDeoTb8K+4
-	 jT0vLs8Spfa7yPWU+yf5YKwUzdEIRo48lJNdqGhIlmZTb6k7761bMjs2rcyd0Hfqhj
-	 Vpk+ileeXJ565Q23YPjftwlXpdj9Xgx1bQhDcK36W/6YmID+8NvWJsHJ8cIkaSJCt0
-	 a65W2bmG0g0iV3m+rrO4imip0sJi5o8S5QSdLa4VJ1pKGoVgY8bkQ22MoITZxj7f6K
-	 IsTYJ2fK4dlcQ==
-Message-ID: <dd4ca62c-fc36-4439-a1ad-c55250f8d1a8@kernel.org>
-Date: Mon, 17 Jun 2024 15:25:16 +0900
+	b=OVa4VXa4gPyN4KTWboLud3pwf0TJbbk/rQ5BM4+Ufc5q6edplugfrWWUEhonGkfMR
+	 QHtsT5neG8mJ3vHyVK4COzgFtMwuBSA3Ltr1Kmgg0P9h/SDaPK/4D4vixnSs7AOdoo
+	 HP6agM24471d/vJb4Hh8SFe0zewqIqWCGc3aXNawn13hq27CQJOtkzwEi0TWYKBp4l
+	 c0TLeE0D0RKiKV3rNJyqOIzjVOG/87Bt7edT59MQLl5UfWjsDRSx6vZMzrYnvW4QJA
+	 /RoDuAqhbb/WQma0tOFHLAJHwURkZ+Z0rxy3rGxoovWXWM4rnyYIVDHULrocVjTDvQ
+	 k66Zct4kG1uEw==
+Message-ID: <c9871979-de72-49ca-879b-5f2bd773d517@kernel.org>
+Date: Mon, 17 Jun 2024 15:26:23 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/26] block: move the io_stat flag setting to
- queue_limits
+Subject: Re: [PATCH 19/26] block: move the nowait flag to queue_limits
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
 References: <20240617060532.127975-1-hch@lst.de>
- <20240617060532.127975-17-hch@lst.de>
+ <20240617060532.127975-20-hch@lst.de>
 From: Damien Le Moal <dlemoal@kernel.org>
 Content-Language: en-US
 Organization: Western Digital Research
-In-Reply-To: <20240617060532.127975-17-hch@lst.de>
+In-Reply-To: <20240617060532.127975-20-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,12 +68,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 6/17/24 15:04, Christoph Hellwig wrote:
-> Move the io_stat flag into the queue_limits feature field so that it can
+> Move the nowait flag into the queue_limits feature field so that it can
 > be set atomically with the queue frozen.
 > 
-> Simplify md and dm to set the flag unconditionally instead of avoiding
-> setting a simple flag for cases where it already is set by other means,
-> which is a bit pointless.
+> Stacking drivers are simplified in that they now can simply set the
+> flag, and blk_stack_limits will clear it when the features is not
+> supported by any of the underlying devices.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
