@@ -2,78 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD3790A5AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 08:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F47D90A5B0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 08:27:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=OT+SArpF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C755fACi;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C755fACi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W2fzh3x7rz3fnh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:26:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W2g0T1QpWz3fp7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jun 2024 16:27:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=OT+SArpF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C755fACi;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C755fACi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2fZW251Lz3cRd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 16:08:18 +1000 (AEST)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-57cbc2a2496so3872847a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jun 2024 23:08:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718604491; x=1719209291; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UKO8P5Czfx1WnhafBBluB8wH3SA6wYMPe7gjBVA/Pmc=;
-        b=OT+SArpFZreW74TycGSq6FnpA0+kw+55Z1LYg7GU+C7SjiDcSkgSx6IcjNliTpHPvj
-         9OdlbVcfRN/ynIV9YV/OAmN6LemLf2qZqJvCJglM0tQxZWl36N/+X1jlGslTrGWnIW6B
-         qIMo3ix93e1T+RQkA2NWysGE6C3whjlijgMJtjiZIY0qyfsb09HxqZ3p5OEL9G/q7xzR
-         i+o2BVd3krO1o3qZ/bE0Lg5/sHe/AZU5RcfxKhJac7zZ2D4xnxHtbsSHs7XzBzaT7RUh
-         aYkM5JDIw/UAWBUnaYofwf2Q1Dp2FphRcomkNYOcpSMxO4I9yQWX3rh6oHTpB8HRLtOx
-         K7Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718604491; x=1719209291;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UKO8P5Czfx1WnhafBBluB8wH3SA6wYMPe7gjBVA/Pmc=;
-        b=Q3OExnTBokx4IRDtqwPWkdK0Tz01wqiTqUgtHReb58lJMy4glerGuc0pIFE6mfH5A5
-         ljzdlXJ5Ua0Cm14lxbtf53xe+fbZsjtdPIeXvoBs0cS08hKOHYyS+yTP7AB3VsKX+r2+
-         FmQfu9NTAERDR/gttXMMogpIpbdjPWIorHLcvAjPjnSXu2ZzN0kvHLVytjZULirkoS4v
-         H96ONK9Igf2u0JtxH7vJ19P7l1KgILKbBWrbbTPzqn7z9nG3gYGq91eoOvOI+wG0T0RD
-         vsYMdj9rDCQ/iCQ+PIAv1Oub3VNEjbwu5QkNkZfi9xGqeEauo5eNDgPa9opIQb+rimMw
-         arUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVF0Edji2T8y84wbjbHVeRctkShd6Axkg1CLSZPv1B5tRGvynk3UTcX62Jk+2LmpHt43shuv2aULdQ8ZoVUEuWCU5swZkHmwJe04BRXbw==
-X-Gm-Message-State: AOJu0YzfKVg4f70p09pDPCyifg4nySohd2OUiz+5F43dDTUtP8UqsQjH
-	p/c55hjBsvdUb1W72P6aAYxwdgOD5qvvGi/hynYKIen2cmF1yeNaDDa0LQCUjpQ=
-X-Google-Smtp-Source: AGHT+IHRI8/tCYc6BnuV/uya/p/psKWyF0ePa5AAATsxGYnpRVPJ3Wrjsh2wX3DrkHiS5SaLt/GHeQ==
-X-Received: by 2002:a50:d6d3:0:b0:57c:6d9a:914e with SMTP id 4fb4d7f45d1cf-57cbd69e7abmr7621408a12.30.1718604491461;
-        Sun, 16 Jun 2024 23:08:11 -0700 (PDT)
-Received: from [127.0.1.1] ([78.10.207.147])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb743ade6sm5937491a12.95.2024.06.16.23.08.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Jun 2024 23:08:10 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Michael Walle <mwalle@kernel.org>
-In-Reply-To: <20240604142249.1957762-2-mwalle@kernel.org>
-References: <20240604142249.1957762-1-mwalle@kernel.org>
- <20240604142249.1957762-2-mwalle@kernel.org>
-Subject: Re: (subset) [RFC PATCH 2/2] dt-bindings: memory: fsl: replace
- maintainer
-Message-Id: <171860449047.4724.10770903267718231915.b4-ty@linaro.org>
-Date: Mon, 17 Jun 2024 08:08:10 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W2fbR2nhqz3cp1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jun 2024 16:09:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718604541;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SJWLUmdGlAVRxpPGtNzAhFQ8b0B895zkZS1r5Cdi/us=;
+	b=C755fACi5uG9xZkMspUzsgATx7UbeT+LgRg+8GtV5oEIsy8E8B+sTFe1f0SUiikw0iC2WU
+	0uu4y4gx8vB9DCVN0oF4GRkjMfzAqJQDyLnY7axIJWLFG3QIt1MfG4Xdo2AExFlDsKHfEa
+	8JlSlT/IEjyxtqB2ic+peWqSNyuwndA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718604541;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SJWLUmdGlAVRxpPGtNzAhFQ8b0B895zkZS1r5Cdi/us=;
+	b=C755fACi5uG9xZkMspUzsgATx7UbeT+LgRg+8GtV5oEIsy8E8B+sTFe1f0SUiikw0iC2WU
+	0uu4y4gx8vB9DCVN0oF4GRkjMfzAqJQDyLnY7axIJWLFG3QIt1MfG4Xdo2AExFlDsKHfEa
+	8JlSlT/IEjyxtqB2ic+peWqSNyuwndA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-113-j0aGtohiNXCPdVwPt9CADA-1; Mon,
+ 17 Jun 2024 02:08:58 -0400
+X-MC-Unique: j0aGtohiNXCPdVwPt9CADA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2232419560AA;
+	Mon, 17 Jun 2024 06:08:56 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.120])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7DA9919560B2;
+	Mon, 17 Jun 2024 06:08:50 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: linux-doc@vger.kernel.org,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] Documentation: Remove the unused "topology_updates" from kernel-parameters.txt
+Date: Mon, 17 Jun 2024 08:08:48 +0200
+Message-ID: <20240617060848.38937-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,22 +79,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The "topology_updates" switch has been removed four years ago in commit
+c30f931e891e ("powerpc/numa: remove ability to enable topology updates"),
+so let's remove this from the documentation, too.
 
-On Tue, 04 Jun 2024 16:22:49 +0200, Michael Walle wrote:
-> Li Yang's mail address is bouncing, replace it with Shawn Guo's one.
-> 
-> 
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ Documentation/admin-guide/kernel-parameters.txt | 6 ------
+ 1 file changed, 6 deletions(-)
 
-Applied, thanks!
-
-[2/2] dt-bindings: memory: fsl: replace maintainer
-      https://git.kernel.org/krzk/linux-mem-ctrl/c/815cc7715ab183701de42b570a28b4e3d877ef6c
-
-Best regards,
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index f58001338860..b75852f1a789 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6600,12 +6600,6 @@
+ 			e.g. base its process migration decisions on it.
+ 			Default is on.
+ 
+-	topology_updates= [KNL, PPC, NUMA]
+-			Format: {off}
+-			Specify if the kernel should ignore (off)
+-			topology updates sent by the hypervisor to this
+-			LPAR.
+-
+ 	torture.disable_onoff_at_boot= [KNL]
+ 			Prevent the CPU-hotplug component of torturing
+ 			until after init has spawned.
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.45.2
 
