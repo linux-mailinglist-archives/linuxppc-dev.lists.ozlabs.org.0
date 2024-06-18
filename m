@@ -2,52 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD6390DDCA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 22:52:00 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AFOC9i5u;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD5490DE8C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 23:39:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3f7d3GPGz2ysf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 06:51:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3g9x3yjMz3cVX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 07:39:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AFOC9i5u;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3f5L60jkz3cPh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 06:49:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3g9V3FpQz3bTt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 07:38:38 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5CDE661B4D;
-	Tue, 18 Jun 2024 20:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC5FC3277B;
-	Tue, 18 Jun 2024 20:49:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718743797;
-	bh=nWvu4xD/ZWqP07Vpa00QmystiTTKLULzlnACslOaj5g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFOC9i5uzOEc+h06SkTXVzqBL+SY1r2NhEjiQV1lCcVhfWMQXtOM6EsBH67FIPFov
-	 5ixgjGT9ViA8g1ZGcjWs31USZ+BF2D8sSguljJLOJ8im8co8W1BVbtLcyIlJgzHLAf
-	 PLsLIMCnMNcdiTs/kAhA0w/KC0xPKlkcgvbpaaJt0Kj8Cp30vl760uj6zSjK4odXGm
-	 tVpbER2+vqq+m6rp40iusBzTPEQULlBjCAf98+vqbJZCCVCz9KHFjWlYJeLjWfz0Mr
-	 8Pq+BSjpyZi4VfV2OT1n4K0WHB/uNmx6eTYffgMpGqy1WbaBtK4HGLp5y+HxnNkCsF
-	 bUxlk3Vhf9ZKQ==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: [PATCH v9 2/2] PCI/DPC: Disable DPC service on suspend
-Date: Tue, 18 Jun 2024 15:49:46 -0500
-Message-Id: <20240618204946.1271042-3-helgaas@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240618204946.1271042-1-helgaas@kernel.org>
-References: <20240618204946.1271042-1-helgaas@kernel.org>
+	by sin.source.kernel.org (Postfix) with ESMTP id 742EACE1C9D;
+	Tue, 18 Jun 2024 21:38:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1613BC3277B;
+	Tue, 18 Jun 2024 21:38:31 +0000 (UTC)
+Date: Tue, 18 Jun 2024 22:38:29 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: [PATCH RFC v2 2/5] of: get dma area lower limit
+Message-ID: <ZnH-VU2iz9Q2KLbr@arm.com>
+References: <cover.1712642324.git.baruch@tkos.co.il>
+ <230ea13ef8e9f576df849e1b03406184ca890ba8.1712642324.git.baruch@tkos.co.il>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <230ea13ef8e9f576df849e1b03406184ca890ba8.1712642324.git.baruch@tkos.co.il>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,132 +44,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hannes Reinecke <hare@suse.com>, Chaitanya Kulkarni <kch@nvidia.com>, Sagi Grimberg <sagi@grimberg.me>, "Rafael J . Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Oliver O'Halloran <oohall@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Keith Busch <kbusch@kernel.org>, Thomas Crider <gloriouseggroll@gmail.com>, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, regressions@lists.linux.dev
+Cc: Rob Herring <robh@kernel.org>, linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+On Tue, Apr 09, 2024 at 09:17:55AM +0300, Baruch Siach wrote:
+> of_dma_get_max_cpu_address() returns the highest CPU address that
+> devices can use for DMA. The implicit assumption is that all CPU
+> addresses below that limit are suitable for DMA. However the
+> 'dma-ranges' property this code uses also encodes a lower limit for DMA
+> that is potentially non zero.
+> 
+> Rename to of_dma_get_cpu_limits(), and extend to retrieve also the lower
+> limit for the same 'dma-ranges' property describing the high limit.
 
-If the link is powered off during suspend, electrical noise may cause
-errors that trigger DPC.  If the DPC interrupt is enabled and shares an IRQ
-with PME, that causes a spurious wakeup during suspend.
+I don't understand the reason for the lower limit. The way the Linux
+zones work is that ZONE_DMA always starts from the start of the RAM. It
+doesn't matter whether it's 0 or not, you'd not allocate below the start
+of RAM anyway. If you have a device that cannot use the bottom of the
+RAM, it is pretty broken and not supported by Linux.
 
-Disable DPC triggering and the DPC interrupt during suspend to prevent
-this.  Clear DPC interrupt status before re-enabling DPC interrupts during
-resume so we don't get an interrupt for errors that occurred during the
-suspend/resume process.
+I think you added this limit before we tried to move away from
+zone_dma_bits to a non-power-of-two limit (zone_dma_limit). With the
+latter, we no longer need tricks with the lower limit,
+of_dma_get_max_cpu_address() should capture the smallest upper CPU
+address limit supported by all devices (and that's where ZONE_DMA should
+end).
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
-Link: https://lore.kernel.org/r/20240416043225.1462548-3-kai.heng.feng@canonical.com
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-[bhelgaas: clear status on resume, add comments, commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 48 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index a668820696dc..2b6ef7efa3c1 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -412,13 +412,44 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	}
- }
- 
-+static void dpc_enable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	int dpc = pdev->dpc_cap;
-+	u16 ctl;
-+
-+	/*
-+	 * Clear DPC Interrupt Status so we don't get an interrupt for an
-+	 * old event when setting DPC Interrupt Enable.
-+	 */
-+	pci_write_config_word(pdev, dpc + PCI_EXP_DPC_STATUS,
-+			      PCI_EXP_DPC_STATUS_INTERRUPT);
-+
-+	pci_read_config_word(pdev, dpc + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~PCI_EXP_DPC_CTL_EN_MASK;
-+	ctl |= PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, dpc + PCI_EXP_DPC_CTL, ctl);
-+}
-+
-+static void dpc_disable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	int dpc = pdev->dpc_cap;
-+	u16 ctl;
-+
-+	/* Disable DPC triggering and DPC interrupts */
-+	pci_read_config_word(pdev, dpc + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-+	pci_write_config_word(pdev, dpc + PCI_EXP_DPC_CTL, ctl);
-+}
-+
- #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
- static int dpc_probe(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
- 	struct device *device = &dev->device;
- 	int status;
--	u16 ctl, cap;
-+	u16 cap;
- 
- 	if (!pcie_aer_is_native(pdev) && !pcie_ports_dpc_native)
- 		return -ENOTSUPP;
-@@ -433,11 +464,7 @@ static int dpc_probe(struct pcie_device *dev)
- 	}
- 
- 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
--
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~PCI_EXP_DPC_CTL_EN_MASK;
--	ctl |= PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_enable(dev);
- 
- 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
- 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
-@@ -450,14 +477,21 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
-+static int dpc_suspend(struct pcie_device *dev)
-+{
-+	dpc_disable(dev);
-+	return 0;
-+}
-+
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	dpc_enable(dev);
-+	return 0;
-+}
-+
- static void dpc_remove(struct pcie_device *dev)
- {
--	struct pci_dev *pdev = dev->port;
--	u16 ctl;
--
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_disable(dev);
- }
- 
- static struct pcie_port_service_driver dpcdriver = {
-@@ -465,6 +499,8 @@ static struct pcie_port_service_driver dpcdriver = {
- 	.port_type	= PCIE_ANY_PORT,
- 	.service	= PCIE_PORT_SERVICE_DPC,
- 	.probe		= dpc_probe,
-+	.suspend	= dpc_suspend,
-+	.resume		= dpc_resume,
- 	.remove		= dpc_remove,
- };
- 
 -- 
-2.34.1
-
+Catalin
