@@ -2,54 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E08590C507
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 10:50:37 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MUIKiWDk;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C1F90C544
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 11:24:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3L7F60hNz3cF4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 18:50:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3Lt05ytdz3cPK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 19:24:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MUIKiWDk;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: lists.ozlabs.org; spf=neutral (access neither permitted nor denied) smtp.mailfrom=denx.de (client-ip=46.255.230.98; helo=jabberwock.ucw.cz; envelope-from=pavel@denx.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 472 seconds by postgrey-1.37 at boromir; Tue, 18 Jun 2024 19:23:47 AEST
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3L6T5pq6z30Vh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 18:49:53 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 71F546010F;
-	Tue, 18 Jun 2024 08:49:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F54C3277B;
-	Tue, 18 Jun 2024 08:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718700587;
-	bh=r2/tWxOWo7MEUie8q7G5hUhcJwWDhzPM1cpZZRjLQ28=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MUIKiWDkDtIDcsBziDd7SXEauKakOYPi9yB8cV57/jn/hwN6zxfg76kUfjtpiqFsB
-	 U1tZ0HNdyDkn6ulg9Um4A3y5GuImryf4KeACqmsvWs47EZfqkaKm41Da72oEoqGYeO
-	 ypcBkBXTVd1zBa4ORZXlr3JEpKiWvUVX/WSGvnUk0+JH2GeANZlm/tSeP8fpS4XNvv
-	 2PTQ0G1uwpCvXb0U0Sq5aolSPuM6gsHBIt04bv/9oK6vleU5Ypn7heSnM1S6fWNdvp
-	 wEERKUIdDdS6y7kLrvvzsz8qkHLvZZ0NxQCDioDVHZkzVIwfRz/UtcVGYdunNGTwsJ
-	 lBULEpfCgvO6g==
-Date: Tue, 18 Jun 2024 14:15:40 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH v2] PowerPC: Replace kretprobe with rethook
-Message-ID: <vpbuzldssnj4pz5nkprbcerqu74cl6cxhsfsyfo45nlojsvjrh@llue52h5np4m>
-References: <20240610154509.446807-1-adubey@linux.ibm.com>
- <otk7igwnrzfbjfeoikswr7p2kh6wgz6bsqnaejv57kkt4euse4@d57z7me2ajqr>
- <20240618064306.14c2d3c601b0ca91d99839f0@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3Lsb14Hqz3bc2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 19:23:46 +1000 (AEST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 60CED1C009A; Tue, 18 Jun 2024 11:15:45 +0200 (CEST)
+Date: Tue, 18 Jun 2024 11:15:44 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: Re: [PATCH AUTOSEL 6.9 18/23] powerpc: make fadump resilient with
+ memory add/remove events
+Message-ID: <ZnFQQEBeFfO8vOnl@duo.ucw.cz>
+References: <20240527155123.3863983-1-sashal@kernel.org>
+ <20240527155123.3863983-18-sashal@kernel.org>
+ <944f47df-96f0-40e8-a8e2-750fb9fa358e@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="TzzIxnkKCl22NOl6"
 Content-Disposition: inline
-In-Reply-To: <20240618064306.14c2d3c601b0ca91d99839f0@kernel.org>
+In-Reply-To: <944f47df-96f0-40e8-a8e2-750fb9fa358e@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,63 +45,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, Abhishek Dubey <adubey@linux.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, bhe@redhat.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, aneesh.kumar@kernel.org, Naveen N Rao <naveen@kernel.org>, bhelgaas@google.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 18, 2024 at 06:43:06AM GMT, Masami Hiramatsu wrote:
-> On Mon, 17 Jun 2024 18:28:07 +0530
-> Naveen N Rao <naveen@kernel.org> wrote:
-> 
-> > Hi Abhishek,
-> > 
-> > On Mon, Jun 10, 2024 at 11:45:09AM GMT, Abhishek Dubey wrote:
-> > > This is an adaptation of commit f3a112c0c40d ("x86,rethook,kprobes:
-> > > Replace kretprobe with rethook on x86") to PowerPC.
-> > > 
-> > > Replaces the kretprobe code with rethook on Power. With this patch,
-> > > kretprobe on Power uses the rethook instead of kretprobe specific
-> > > trampoline code.
-> > > 
-> > > Reference to other archs:
-> > > commit b57c2f124098 ("riscv: add riscv rethook implementation")
-> > > commit 7b0a096436c2 ("LoongArch: Replace kretprobe with rethook")
-> > > 
-> > > Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
-> > > ---
-> > >  arch/powerpc/Kconfig             |  1 +
-> > >  arch/powerpc/kernel/Makefile     |  1 +
-> > >  arch/powerpc/kernel/kprobes.c    | 65 +----------------------------
-> > >  arch/powerpc/kernel/optprobes.c  |  2 +-
-> > >  arch/powerpc/kernel/rethook.c    | 71 ++++++++++++++++++++++++++++++++
-> > >  arch/powerpc/kernel/stacktrace.c | 10 +++--
-> > >  6 files changed, 81 insertions(+), 69 deletions(-)
-> > >  create mode 100644 arch/powerpc/kernel/rethook.c
-...
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +NOKPROBE_SYMBOL(trampoline_rethook_handler);
-> > > +
-> > > +void arch_rethook_prepare(struct rethook_node *rh, struct pt_regs *regs, bool mcount)
-> > > +{
-> > > +	rh->ret_addr = regs->link;
-> > > +	rh->frame = 0;
-> > 
-> > There is additional code to validate our assumption with a frame pointer 
-> > set, so I think we should set this to regs->gpr[1].
-> 
-> Additonal note: If this sets regs->gpr[1], pass it to rethook_trampoline_handler()
-> too, so that it can find correct frame.
-> 
-> BTW, it seems powerpc does not use kretprobe/rethook shadow stack for
-> stack unwinding yet, is that right?
 
-Yes, you are right. That would be a good addition. I suppose we could 
-add something in show_stack() to show the actual function name rather 
-than the rethook trampoline. It can be a separate patch though.
+--TzzIxnkKCl22NOl6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi!
 
-Thanks,
-Naveen
+> Hello Sasha,
+>=20
+> Thank you for considering this patch for the stable tree 6.9, 6.8, 6.6, a=
+nd
+> 6.1.
+>=20
+> This patch does two things:
+> 1. Fixes a potential memory corruption issue mentioned as the third point=
+ in
+> the commit message
+> 2. Enables the kernel to avoid unnecessary fadump re-registration on memo=
+ry
+> add/remove events
 
+Actually, I'd suggest dropping this one, as it fixes two things and is
+over 200 lines long, as per stable kernel rules.
+
+(If those are outdated, update them).
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--TzzIxnkKCl22NOl6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZnFQQAAKCRAw5/Bqldv6
+8iXnAKCSkZNG/q44rY4Pt+FmeDt77CBpPgCfeMR7jMzrKnZIcmrU7qCTdt0H+Us=
+=WgYp
+-----END PGP SIGNATURE-----
+
+--TzzIxnkKCl22NOl6--
