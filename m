@@ -1,49 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9595190DDC4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 22:50:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2663890DDC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 22:51:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NtTtFPkW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V1HaqRJP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3f5y2RwFz3bxZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 06:50:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3f6k6gvFz30Sq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 06:51:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NtTtFPkW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V1HaqRJP;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3f5G21NBz2ysf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 06:49:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3f5H406dz2ysf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 06:49:55 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7427161B4D;
-	Tue, 18 Jun 2024 20:49:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B61C3277B;
-	Tue, 18 Jun 2024 20:49:51 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8D51061B6F;
+	Tue, 18 Jun 2024 20:49:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049C7C32786;
+	Tue, 18 Jun 2024 20:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718743792;
-	bh=CkxYcZq8lMhZtQeh+gh2bGRvtFYZZWl5V5Oif5kfgr0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NtTtFPkWR9PN9rl/hh7cLp2Bgo45qAe0Nd1YSQPZdlmWSzsqsruf3WYzecSPgbeqI
-	 zO32c+un6WskSZ75Lo9tW8AaOVmXwSyBux6basDs2x51R+Q4mYbUmptS7JUkmeyx51
-	 V/71Fc8GI5+izP9hWVpUWwSzyhcVtGJruI0Z/klP/E4tKetTkIZv5YzbKUXv5y75X3
-	 M01MhSGJzQVrN1hxlCo0rh+RcgdyF6Q4n+1VLscMPXjlP03CJ/hA7CS47b/319r4QF
-	 frOM8AR10Zd467TmvaoLrn1BgM83WMvLeb1Z2L63H0W9CVcH+VmeFEjzzYETHlNGUV
-	 9oqrc8q+QMIvg==
+	s=k20201202; t=1718743794;
+	bh=JHzSKxuAUt5sskKJDUz7UVvUr/rjQm56XYg7g79WgHw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V1HaqRJPzz0zJSG/rrBID1OFWnkvPyXQUHG+2hFSO5FynGak2I85FGd3Iw+wsZPTK
+	 rTgSR9XE2n4Uft8hL0UMAfhPVKYDZkcaVAIcBRM0W1sEzYD8FZ3Bo+lZF2RRGn4L4F
+	 /xC2B7x5WEaF22/wfFgIhMXWxjiRWxCfjH7iVJDFiENoWSRCrMbkshsxk1QBnJHq8u
+	 1Gt+UxrkNlyAulGCl0fTJ1BL+L+bPpzfNrO0xq8iJC3hEP1Z1ddHLUukq9IrXB+G8c
+	 2YiEdaYr1dvxeaLJIVU1fUXSicM3+dJ1o/084SxMmFybN3tLXBfvV2ae5tSRfq7Axn
+	 9FcmsnYLNW7Xg==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: [PATCH v9 0/2] PCI: Disable AER & DPC on suspend
-Date: Tue, 18 Jun 2024 15:49:44 -0500
-Message-Id: <20240618204946.1271042-1-helgaas@kernel.org>
+Subject: [PATCH v9 1/2] PCI/AER: Disable AER service on suspend
+Date: Tue, 18 Jun 2024 15:49:45 -0500
+Message-Id: <20240618204946.1271042-2-helgaas@kernel.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240618204946.1271042-1-helgaas@kernel.org>
+References: <20240618204946.1271042-1-helgaas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,78 +63,63 @@ Cc: Hannes Reinecke <hare@suse.com>, Chaitanya Kulkarni <kch@nvidia.com>, Sagi G
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-This is an old series from Kai-Heng that I didn't handle soon enough.  The
-intent is to fix several suspend/resume issues:
+If the link is powered off during suspend, electrical noise may cause
+errors that are logged via AER.  If the AER interrupt is enabled and shares
+an IRQ with PME, that causes a spurious wakeup during suspend.
 
-  - Spurious wakeup from s2idle
-    (https://bugzilla.kernel.org/show_bug.cgi?id=216295)
+Disable the AER interrupt during suspend to prevent this.  Clear error
+status before re-enabling IRQ interrupts during resume so we don't get an
+interrupt for errors that occurred during the suspend/resume process.
 
-  - Steam Deck doesn't resume after suspend
-    (https://bugzilla.kernel.org/show_bug.cgi?id=218090)
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218090
+Link: https://lore.kernel.org/r/20240416043225.1462548-2-kai.heng.feng@canonical.com
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+[bhelgaas: drop pci_ancestor_pr3_present() etc, commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+ drivers/pci/pcie/aer.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-  - Unexpected ACS error and DPC event when resuming after suspend
-    (https://bugzilla.kernel.org/show_bug.cgi?id=209149)
-
-It seems that a glitch when the link is powered down during suspend causes
-errors to be logged by AER.  When AER is enabled, this causes an AER
-interrupt, and if that IRQ is shared with PME, it may cause a spurious
-wakeup.
-
-Also, errors logged during link power-down and power-up seem to cause
-unwanted error reporting during resume.
-
-This series disables AER interrupts, DPC triggering, and DPC interrupts
-during suspend.  On resume, it clears AER and DPC error status before
-re-enabling their interrupts.
-
-I added a couple cosmetic changes for the v9, but this is essentially all
-Kai-Heng's work.  I'm just posting it as a v9 because I failed to act on
-this earlier.
-
-Bjorn
-
-v9:
- - Drop pci_ancestor_pr3_present() and pm_suspend_via_firmware; do it
-   unconditionally
- - Clear DPC status before re-enabling DPC interrupt
-
-v8: https://lore.kernel.org/r/20240416043225.1462548-1-kai.heng.feng@canonical.com
- - Wording.
- - Add more bug reports.
-
-v7:
- - Wording.
- - Disable AER completely (again) if power will be turned off
- - Disable DPC completely (again) if power will be turned off
-
-v6: https://lore.kernel.org/r/20230512000014.118942-1-kai.heng.feng@canonical.com
-
-v5: https://lore.kernel.org/r/20230511133610.99759-1-kai.heng.feng@canonical.com
- - Wording.
-
-v4: https://lore.kernel.org/r/20230424055249.460381-1-kai.heng.feng@canonical.com
-v3: https://lore.kernel.org/r/20230420125941.333675-1-kai.heng.feng@canonical.com
- - Correct subject.
-
-v2: https://lore.kernel.org/r/20230420015830.309845-1-kai.heng.feng@canonical.com
- - Only disable AER IRQ.
- - No more AER check on PME IRQ#.
- - Use AER helper.
- - Only disable DPC IRQ.
- - No more DPC check on PME IRQ#.
-
-v1: https://lore.kernel.org/r/20220727013255.269815-1-kai.heng.feng@canonical.com
-
-Kai-Heng Feng (2):
-  PCI/AER: Disable AER service on suspend
-  PCI/DPC: Disable DPC service on suspend
-
- drivers/pci/pcie/aer.c | 18 +++++++++++++
- drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++++---------
- 2 files changed, 66 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index ac6293c24976..13b8586924ea 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1497,6 +1497,22 @@ static int aer_probe(struct pcie_device *dev)
+ 	return 0;
+ }
+ 
++static int aer_suspend(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_disable_rootport(rpc);
++	return 0;
++}
++
++static int aer_resume(struct pcie_device *dev)
++{
++	struct aer_rpc *rpc = get_service_data(dev);
++
++	aer_enable_rootport(rpc);
++	return 0;
++}
++
+ /**
+  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+  * @dev: pointer to Root Port, RCEC, or RCiEP
+@@ -1561,6 +1577,8 @@ static struct pcie_port_service_driver aerdriver = {
+ 	.service	= PCIE_PORT_SERVICE_AER,
+ 
+ 	.probe		= aer_probe,
++	.suspend	= aer_suspend,
++	.resume		= aer_resume,
+ 	.remove		= aer_remove,
+ };
+ 
 -- 
 2.34.1
 
