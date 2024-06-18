@@ -2,96 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C510D90C54D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 11:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D546A90C559
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 11:31:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=anC5IXNK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Fy0nqvoG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3Ly04H8sz3c05
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 19:27:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3M2t4gQpz3cYJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 19:31:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=anC5IXNK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Fy0nqvoG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3LxH47dYz2y70
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 19:26:59 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45I9Qo12016215;
-	Tue, 18 Jun 2024 09:26:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=W
-	HPf+VF+DDwlyBlNY4mXd16OByOTb4uw2IrfouiXYKo=; b=anC5IXNKNLQzPJOgi
-	I+wul+ETRTUkHzQPv9qzLkXBJgrMnUwdrILremB5kKEnVj8kG8XrsP5k5297DTz2
-	Ya9A6ad+Yxv7SBaZPHwObaNWl5xUWj/1GB2I+EsoTOS1NITgC8T32vIIoql3uw1s
-	pgkQqPpZzxaQmGQB+KsLeXzXUohfCcuW3CgiisX9mAFzJULHTk7n9juKvI5agcSR
-	4o4Q44sO1l5fvcb4DeNdhukCJv5X2cAoUGa+mXnGuRK4Gcv0nFg//o6pr9pis5Gh
-	bN4jC2KMTfDyl4LXzfJvfrEHAKv2KoZpJq5OIqNItIdwtp9qWIs1FZ8vQwlLLuxW
-	IdJAA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yu4ja8f6q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 09:26:54 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45I9QrDb016334;
-	Tue, 18 Jun 2024 09:26:53 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yu4ja8f6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 09:26:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45I7Qc5G011031;
-	Tue, 18 Jun 2024 09:26:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yspsn1e7u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 09:26:52 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45I9Qks433620620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Jun 2024 09:26:48 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5FFA420043;
-	Tue, 18 Jun 2024 09:26:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4B52320040;
-	Tue, 18 Jun 2024 09:26:44 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.109.215.84])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 18 Jun 2024 09:26:44 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH V2 2/3] tools/perf: Use is_perf_pid_map_name helper
- function to check dso's of pattern /tmp/perf-%d.map
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <223d1e96-223f-4bda-8133-806a3aa61730@intel.com>
-Date: Tue, 18 Jun 2024 14:56:32 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B5A7F119-DC65-4439-B856-F7D1DE9E3F97@linux.vnet.ibm.com>
-References: <20240617130332.13427-1-atrajeev@linux.vnet.ibm.com>
- <20240617130332.13427-2-atrajeev@linux.vnet.ibm.com>
- <223d1e96-223f-4bda-8133-806a3aa61730@intel.com>
-To: Adrian Hunter <adrian.hunter@intel.com>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: l-ab5PnGqrq_VEqlZKtCu1kn4mjUgglb
-X-Proofpoint-ORIG-GUID: oc8RMytrds2jta0hyO5Y27ghPQKnae6C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 malwarescore=0 bulkscore=0 clxscore=1015
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405170001 definitions=main-2406180069
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3M296W87z2yvk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 19:31:12 +1000 (AEST)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-52c815e8e9eso5211852e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 02:31:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718703065; x=1719307865; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gd0sb+wrja9GmMiLQT0DMWUWixEF5baH+EtRGLOjO0I=;
+        b=Fy0nqvoGGpMFniuMnWAa2I8YrqD7pIOnIUqCRJbM4X0GO7m6H8mTqG81Cs2kcuOJkl
+         bNmymClY7m8LTjb9mXSRkIBiRVWzTcs4nfK6my3h6IGrw2hmCqDqiFaR9EYZsKdE2OW3
+         ZyyM1SJ5WBaqWIXZ13M34Rwjy4jg96NctfUjB8066rJENI8W2aerj54yiipA/v61TRKu
+         OhGl3B8SZypdreM5fSriOijRlNhE/H+dNU86F4bqcZTYLHA0UGQC4rR9Ar/K+8il2FYB
+         Bwko1a8AHoQ7tysLGpl7VX5JckHBUBKojLqHrEjDntMbY34+qu6u2VKk/fKIsFWvX1VX
+         MDUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718703065; x=1719307865;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gd0sb+wrja9GmMiLQT0DMWUWixEF5baH+EtRGLOjO0I=;
+        b=jfN0SYsMaaWZtZFzHSI/bfcBr3U/0ODcpw0JRKtWcNYQzsCp7E54TET6hVNEOsOBTP
+         7eDbNwgvCF7E9O5Rk+Kegu2zEUPpbwK2bn+nTuvDR2mxCBHGjy6AAm51hACz4vLQXr+Y
+         z03U2FlBdyEuY44F5UutSOCTtWbLXu3lqfaOOe1k/ZGSzpcS6ZwKTQ0YoQgtwwF8m2lV
+         c/OvC+qoHJP+82Vy448dtE+ZP5m7EQcYnuJwEQuB1w7yJS3yRDjh0HgUnk14VvNaP/B6
+         6sLSM3m5F/LokHzVwt+0OJZCGOM2NnDDj++6Ly3hTw0SJkknADgx4EUJ77ZS15IT4Wkw
+         XzYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVRXsznZrBQLIzI9vM24YCIc7ws2hOXVlz70KLV51VC1XZftvieGo/H0ITV2jjdzkqjzRieDO9w8eVzsfAKcRZQYZ/WFCbxbftcxpRvQ==
+X-Gm-Message-State: AOJu0YzFagvcWGiSMwW8AFwQF/itNMexSUgKyQnPw6GWVw0JivM0xDVk
+	s4Zv7j7dC5PX4XnNPFLLRY9HpD5DeyHX8vIjVtN8wLAewr/OnJXR
+X-Google-Smtp-Source: AGHT+IEirA7ZfcWMvk+A5QKOFGiN5irQ5RBB6sZAAJ03RtbeHM09p7vDGOoZf2DqBzAK5fdSSuz/pQ==
+X-Received: by 2002:a19:9141:0:b0:52c:81d5:cf96 with SMTP id 2adb3069b0e04-52ca6e659demr6468892e87.28.1718703065080;
+        Tue, 18 Jun 2024 02:31:05 -0700 (PDT)
+Received: from pc636 (host-90-233-216-238.mobileonline.telia.com. [90.233.216.238])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2825b38sm1445362e87.24.2024.06.18.02.31.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 02:31:04 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 18 Jun 2024 11:31:00 +0200
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Message-ID: <ZnFT1Czb8oRb0SE7@pc636>
+References: <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
+ <Zmov7ZaL-54T9GiM@zx2c4.com>
+ <Zmo9-YGraiCj5-MI@zx2c4.com>
+ <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
+ <Zmrkkel0Fo4_g75a@zx2c4.com>
+ <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
+ <3b6fe525-626c-41fb-8625-3925ca820d8e@paulmck-laptop>
+ <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz>
+ <ZnCDgdg1EH6V7w5d@pc636>
+ <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,85 +90,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, akanksha@linux.ibm.com, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, paulmck@kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Uladzislau Rezki <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+> On 6/17/24 8:42 PM, Uladzislau Rezki wrote:
+> >> +
+> >> +	s = container_of(work, struct kmem_cache, async_destroy_work);
+> >> +
+> >> +	// XXX use the real kmem_cache_free_barrier() or similar thing here
+> > It implies that we need to introduce kfree_rcu_barrier(), a new API, which i
+> > wanted to avoid initially.
+> 
+> I wanted to avoid new API or flags for kfree_rcu() users and this would
+> be achieved. The barrier is used internally so I don't consider that an
+> API to avoid. How difficult is the implementation is another question,
+> depending on how the current batching works. Once (if) we have sheaves
+> proven to work and move kfree_rcu() fully into SLUB, the barrier might
+> also look different and hopefully easier. So maybe it's not worth to
+> invest too much into that barrier and just go for the potentially
+> longer, but easier to implement?
+> 
+Right. I agree here. If the cache is not empty, OK, we just defer the
+work, even we can use a big 21 seconds delay, after that we just "warn"
+if it is still not empty and leave it as it is, i.e. emit a warning and
+we are done.
 
+Destroying the cache is not something that must happen right away. 
 
-> On 18 Jun 2024, at 12:41=E2=80=AFPM, Adrian Hunter =
-<adrian.hunter@intel.com> wrote:
->=20
-> On 17/06/24 16:03, Athira Rajeev wrote:
->> commit 80d496be89ed ("perf report: Add support for profiling JIT
->> generated code") added support for profiling JIT generated code.
->> This patch handles dso's of form "/tmp/perf-$PID.map".
->>=20
->> Some of the references doesn't check exactly for same pattern.
->> some uses "if (!strncmp(dso_name, "/tmp/perf-", 10))". Fix
->> this by using helper function is_perf_pid_map_name which looks
->> for proper pattern of form: "/tmp/perf-$PID.map" for these checks.
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/perf/util/dsos.c    | 2 +-
->> tools/perf/util/srcline.c | 2 +-
->> 2 files changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/tools/perf/util/dsos.c b/tools/perf/util/dsos.c
->> index ab3d0c01dd63..23cd02aa701d 100644
->> --- a/tools/perf/util/dsos.c
->> +++ b/tools/perf/util/dsos.c
->> @@ -275,7 +275,7 @@ static void dso__set_basename(struct dso *dso)
->> char *base, *lname;
->> int tid;
->>=20
->> - if (sscanf(dso__long_name(dso), "/tmp/perf-%d.map", &tid) =3D=3D 1) =
-{
->> + if (is_perf_pid_map_name(dso__long_name(dso))) {
->=20
-> Perhaps add another helper for this case:
->=20
-> bool perf_pid_map_tid(const char *dso_name, int *tid)
-> {
-> return sscanf(dso_name, "/tmp/perf-%d.map", &tid) =3D=3D 1;
-> }
->=20
-> bool is_perf_pid_map_name(const char *dso_name)
-> {
-> int tid;
->=20
-> return perf_pid_map_tid(dso_name, &tid);
-> }
->=20
-> And then:
->=20
-> if (perf_pid_map_tid(dso__long_name(dso), &tid)) {
->=20
->=20
+> > Since you do it asynchronous can we just repeat
+> > and wait until it a cache is furry freed?
+> 
+> The problem is we want to detect the cases when it's not fully freed
+> because there was an actual read. So at some point we'd need to stop the
+> repeats because we know there can no longer be any kfree_rcu()'s in
+> flight since the kmem_cache_destroy() was called.
+> 
+Agree. As noted above, we can go with 21 seconds(as an example) interval
+and just perform destroy(without repeating).
 
-Hi Adrian
-
-Thanks for suggestions. I will be posting V3 soon.
-
-Athira
->=20
->> if (asprintf(&base, "[JIT] tid %d", tid) < 0)
->> return;
->> } else {
->> diff --git a/tools/perf/util/srcline.c b/tools/perf/util/srcline.c
->> index 9d670d8c1c08..51eb78993fe2 100644
->> --- a/tools/perf/util/srcline.c
->> +++ b/tools/perf/util/srcline.c
->> @@ -39,7 +39,7 @@ static const char *srcline_dso_name(struct dso =
-*dso)
->> if (dso_name[0] =3D=3D '[')
->> return NULL;
->>=20
->> - if (!strncmp(dso_name, "/tmp/perf-", 10))
->> + if (is_perf_pid_map_name(dso_name))
->> return NULL;
->>=20
->> return dso_name;
->=20
-
+--
+Uladzislau Rezki
