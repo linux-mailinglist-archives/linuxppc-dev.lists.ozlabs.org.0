@@ -2,83 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D546A90C559
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 11:31:53 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Fy0nqvoG;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B88C90C565
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 11:37:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3M2t4gQpz3cYJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 19:31:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3M9C5vl8z3clp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jun 2024 19:37:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Fy0nqvoG;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=jinglin.wen@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 111213 seconds by postgrey-1.37 at boromir; Tue, 18 Jun 2024 19:36:59 AEST
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3M296W87z2yvk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 19:31:12 +1000 (AEST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-52c815e8e9eso5211852e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 02:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718703065; x=1719307865; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gd0sb+wrja9GmMiLQT0DMWUWixEF5baH+EtRGLOjO0I=;
-        b=Fy0nqvoGGpMFniuMnWAa2I8YrqD7pIOnIUqCRJbM4X0GO7m6H8mTqG81Cs2kcuOJkl
-         bNmymClY7m8LTjb9mXSRkIBiRVWzTcs4nfK6my3h6IGrw2hmCqDqiFaR9EYZsKdE2OW3
-         ZyyM1SJ5WBaqWIXZ13M34Rwjy4jg96NctfUjB8066rJENI8W2aerj54yiipA/v61TRKu
-         OhGl3B8SZypdreM5fSriOijRlNhE/H+dNU86F4bqcZTYLHA0UGQC4rR9Ar/K+8il2FYB
-         Bwko1a8AHoQ7tysLGpl7VX5JckHBUBKojLqHrEjDntMbY34+qu6u2VKk/fKIsFWvX1VX
-         MDUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718703065; x=1719307865;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gd0sb+wrja9GmMiLQT0DMWUWixEF5baH+EtRGLOjO0I=;
-        b=jfN0SYsMaaWZtZFzHSI/bfcBr3U/0ODcpw0JRKtWcNYQzsCp7E54TET6hVNEOsOBTP
-         7eDbNwgvCF7E9O5Rk+Kegu2zEUPpbwK2bn+nTuvDR2mxCBHGjy6AAm51hACz4vLQXr+Y
-         z03U2FlBdyEuY44F5UutSOCTtWbLXu3lqfaOOe1k/ZGSzpcS6ZwKTQ0YoQgtwwF8m2lV
-         c/OvC+qoHJP+82Vy448dtE+ZP5m7EQcYnuJwEQuB1w7yJS3yRDjh0HgUnk14VvNaP/B6
-         6sLSM3m5F/LokHzVwt+0OJZCGOM2NnDDj++6Ly3hTw0SJkknADgx4EUJ77ZS15IT4Wkw
-         XzYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVRXsznZrBQLIzI9vM24YCIc7ws2hOXVlz70KLV51VC1XZftvieGo/H0ITV2jjdzkqjzRieDO9w8eVzsfAKcRZQYZ/WFCbxbftcxpRvQ==
-X-Gm-Message-State: AOJu0YzFagvcWGiSMwW8AFwQF/itNMexSUgKyQnPw6GWVw0JivM0xDVk
-	s4Zv7j7dC5PX4XnNPFLLRY9HpD5DeyHX8vIjVtN8wLAewr/OnJXR
-X-Google-Smtp-Source: AGHT+IEirA7ZfcWMvk+A5QKOFGiN5irQ5RBB6sZAAJ03RtbeHM09p7vDGOoZf2DqBzAK5fdSSuz/pQ==
-X-Received: by 2002:a19:9141:0:b0:52c:81d5:cf96 with SMTP id 2adb3069b0e04-52ca6e659demr6468892e87.28.1718703065080;
-        Tue, 18 Jun 2024 02:31:05 -0700 (PDT)
-Received: from pc636 (host-90-233-216-238.mobileonline.telia.com. [90.233.216.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2825b38sm1445362e87.24.2024.06.18.02.31.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 02:31:04 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 18 Jun 2024 11:31:00 +0200
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-Message-ID: <ZnFT1Czb8oRb0SE7@pc636>
-References: <baee4d58-17b4-4918-8e45-4d8068a23e8c@paulmck-laptop>
- <Zmov7ZaL-54T9GiM@zx2c4.com>
- <Zmo9-YGraiCj5-MI@zx2c4.com>
- <08ee7eb2-8d08-4f1f-9c46-495a544b8c0e@paulmck-laptop>
- <Zmrkkel0Fo4_g75a@zx2c4.com>
- <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
- <3b6fe525-626c-41fb-8625-3925ca820d8e@paulmck-laptop>
- <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz>
- <ZnCDgdg1EH6V7w5d@pc636>
- <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3M8q0f2Jz3c5q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 19:36:58 +1000 (AEST)
+X-QQ-mid: bizesmtpsz10t1718703288tudiii
+X-QQ-Originating-IP: 24/5geplR+rievJGK0OhwNv2ND6azFg7OpJbguRyHhU=
+Received: from HX01040082.powercore.com.cn ( [14.19.157.182])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 18 Jun 2024 17:34:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14723788730099599002
+From: Jinglin Wen <jinglin.wen@shingroup.cn>
+To: mpe@ellerman.id.au
+Subject: Re: [PATCH] powerpc: Fixed duplicate copying in the early boot.
+Date: Tue, 18 Jun 2024 17:34:39 +0800
+Message-Id: <20240618093439.16982-1-jinglin.wen@shingroup.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <87le336c6k.fsf@mail.lhotse>
+References: <87le336c6k.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
+Content-Transfer-Encoding: quoted-printable
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,44 +48,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, paulmck@kernel.org, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Uladzislau Rezki <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: masahiroy@kernel.org, linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu, npiggin@gmail.com, naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> On 6/17/24 8:42 PM, Uladzislau Rezki wrote:
-> >> +
-> >> +	s = container_of(work, struct kmem_cache, async_destroy_work);
-> >> +
-> >> +	// XXX use the real kmem_cache_free_barrier() or similar thing here
-> > It implies that we need to introduce kfree_rcu_barrier(), a new API, which i
-> > wanted to avoid initially.
-> 
-> I wanted to avoid new API or flags for kfree_rcu() users and this would
-> be achieved. The barrier is used internally so I don't consider that an
-> API to avoid. How difficult is the implementation is another question,
-> depending on how the current batching works. Once (if) we have sheaves
-> proven to work and move kfree_rcu() fully into SLUB, the barrier might
-> also look different and hopefully easier. So maybe it's not worth to
-> invest too much into that barrier and just go for the potentially
-> longer, but easier to implement?
-> 
-Right. I agree here. If the cache is not empty, OK, we just defer the
-work, even we can use a big 21 seconds delay, after that we just "warn"
-if it is still not empty and leave it as it is, i.e. emit a warning and
-we are done.
-
-Destroying the cache is not something that must happen right away. 
-
-> > Since you do it asynchronous can we just repeat
-> > and wait until it a cache is furry freed?
-> 
-> The problem is we want to detect the cases when it's not fully freed
-> because there was an actual read. So at some point we'd need to stop the
-> repeats because we know there can no longer be any kfree_rcu()'s in
-> flight since the kmem_cache_destroy() was called.
-> 
-Agree. As noted above, we can go with 21 seconds(as an example) interval
-and just perform destroy(without repeating).
-
---
-Uladzislau Rezki
+Hi Michael Ellerman,=0D
+=0D
+Michael Ellerman <mpe@ellerman.id.au> writes:=0D
+> Jinglin Wen <jinglin.wen@shingroup.cn> writes:=0D
+> > According to the code logic, when the kernel is loaded to address 0,=0D
+> > no copying operation should be performed, but it is currently being=0D
+> > done.=0D
+> >=0D
+> > This patch fixes the issue where the kernel code was incorrectly=0D
+> > duplicated to address 0 when booting from address 0.=0D
+> >=0D
+> > Signed-off-by: Jinglin Wen <jinglin.wen@shingroup.cn>=0D
+> > ---=0D
+> >  arch/powerpc/kernel/head_64.S | 4 +++-=0D
+> >  1 file changed, 3 insertions(+), 1 deletion(-)=0D
+> =0D
+> Thanks for the improved change log.=0D
+> =0D
+> The subject could probably still be clearer, maybe:=0D
+>   Fix unnecessary copy to 0 when kernel is booted at address 0=0D
+=0D
+Thanks for your feedback, I will revise my subject.=0D
+=0D
+> =0D
+> Looks like this was introduced by:=0D
+> =0D
+>   Fixes: b270bebd34e3 ("powerpc/64s: Run at the kernel virtual address ea=
+rlier in boot")=0D
+>   Cc: stable@vger.kernel.org # v6.4+=0D
+> =0D
+> Let me know if you think otherwise.=0D
+> =0D
+> Just out of interest, how are you hitting this bug? AFAIK none of our=0D
+> "normal" boot loaders will load the kernel at 0. =0D
+> =0D
+> > diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_6=
+4.S=0D
+> > index 4690c219bfa4..6c73551bdc50 100644=0D
+> > --- a/arch/powerpc/kernel/head_64.S=0D
+> > +++ b/arch/powerpc/kernel/head_64.S=0D
+> > @@ -647,7 +647,9 @@ __after_prom_start:=0D
+> >   * Note: This process overwrites the OF exception vectors.=0D
+> >   */=0D
+> >  	LOAD_REG_IMMEDIATE(r3, PAGE_OFFSET)=0D
+> > -	mr.	r4,r26			/* In some cases the loader may  */=0D
+> > +	tophys(r4,r26)=0D
+> > +	cmplwi	cr0,r4,0	/* runtime base addr is zero */=0D
+> > +	mr	r4,r26			/* In some cases the loader may */=0D
+> >  	beq	9f			/* have already put us at zero */=0D
+> 	=0D
+> That is a pretty minimal fix, but I think the code would be clearer if=0D
+> we just compared the source and destination addresses.=0D
+> =0D
+> Something like the diff below. Can you confirm that works for you.=0D
+> =0D
+> cheers=0D
+> =0D
+=0D
+As for how I discovered this bug, we use zImage.epapr for emulation, which =
+=0D
+loads vmlinux.bin at address 0. When vmlinux.bin is relatively large, I =0D
+found that the boot time of Linux 6.6 is much slower compared to Linux 5.10=
+.108. =0D
+I discovered this issue while comparing the code between the two versions.=
+=0D
+=0D
+> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.=
+S=0D
+> index 4690c219bfa4..6ad1435303f9 100644=0D
+> --- a/arch/powerpc/kernel/head_64.S=0D
+> +++ b/arch/powerpc/kernel/head_64.S=0D
+> @@ -647,8 +647,9 @@ __after_prom_start:=0D
+>   * Note: This process overwrites the OF exception vectors.=0D
+>   */=0D
+>  	LOAD_REG_IMMEDIATE(r3, PAGE_OFFSET)=0D
+> -	mr.	r4,r26			/* In some cases the loader may  */=0D
+> -	beq	9f			/* have already put us at zero */=0D
+> +	mr	r4, r26			// Load the source address into r4=0D
+> +	cmpld	cr0, r3, r4		// Check if source =3D=3D dest=0D
+> +	beq	9f			// If so skip the copy=0D
+>  	li	r6,0x100		/* Start offset, the first 0x100 */=0D
+>  					/* bytes were copied earlier.	 */=0D
+=0D
+Indeed, your code looks much clearer. I will make the following modificatio=
+ns =0D
+based on your code:=0D
+=0D
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S=
+=0D
+index 4690c219bfa4..751181dfb897 100644=0D
+--- a/arch/powerpc/kernel/head_64.S=0D
++++ b/arch/powerpc/kernel/head_64.S=0D
+@@ -647,8 +647,9 @@ __after_prom_start:=0D
+  * Note: This process overwrites the OF exception vectors.=0D
+  */=0D
+        LOAD_REG_IMMEDIATE(r3, PAGE_OFFSET)=0D
+-       mr.     r4,r26                  /* In some cases the loader may  */=
+=0D
+-       beq     9f                      /* have already put us at zero */=0D
++       mr      r4,r26                  /* Load the virtual source address =
+into r4 */=0D
++       cmpd    r3,r4           /* Check if source =3D=3D dest */=0D
++       beq     9f                      /* If so skip the copy  */=0D
+        li      r6,0x100                /* Start offset, the first 0x100 */=
+=0D
+                                        /* bytes were copied earlier.    */=
+ =0D
+=0D
+Thanks,=0D
+=0D
+Jinglin Wen=0D
