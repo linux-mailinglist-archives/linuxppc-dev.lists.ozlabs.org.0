@@ -1,91 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCAE90E4C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 09:43:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F392F90E4CB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 09:45:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UkTFh0FQ;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IGorjunm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XBEw5Ms2;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XBEw5Ms2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3wbY5lcPz30T0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 17:43:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3wdv4qw0z3cY0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 17:45:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UkTFh0FQ;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IGorjunm;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XBEw5Ms2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XBEw5Ms2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3wZr3gNFz30T0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 17:42:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3wdB22Tjz3cVS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 17:45:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718782977;
+	s=mimecast20190719; t=1718783100;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=d0PCuJaFh0BeKQ6THbuGU38LurLYWx1XyWy+pWtBlow=;
-	b=UkTFh0FQmhcd3LFxg+SsIqTNTC1aBq3zbs91ULxhm30YWSYh0ILpW7FrUe/K4OaGUXDTW3
-	Ap5LCq3gmFNkFt2q00KWgr1c+KIUTnoR/BW8M4UzJQJ2jTk8t5TLx9QfJkJINmxx3ypQ81
-	SokeKP5QAOxX9Y/vAPcz/8BiwWW9fTQ=
+	bh=cux+7kpeF5VekvynNts7C8PD9JNm/gwxEni9kpJP52o=;
+	b=XBEw5Ms2rnEan5gKuDLtV8jefsHAQFy08LP4NQa/+MwzlTuOrCUdevKOcCNOFLlmyjiUia
+	caMIQdtcCd5AAAu5npxuiBJqYx7yZ1Ernd9iQ6IWhO6f6a/00jrgbKJHx2OwRciTN8A5zl
+	5VNxb4AI6IHe/WceRkkgOH2yU+sq2TE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718782978;
+	s=mimecast20190719; t=1718783100;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=d0PCuJaFh0BeKQ6THbuGU38LurLYWx1XyWy+pWtBlow=;
-	b=IGorjunm/2PEQwk+bTUpveag8sA0e5M4OgOUNt9G4MrDUiFYLruv96EdPhgv7lyMLyIlT8
-	ahfwv4EK/3z8Z1guUo59ItNIetT0H2W0lS29Da32Hr6Z3yH6v2hF4FphFzQar7krAqg+cR
-	rW1/z4uHLsGprYaF2sL71O5fJppc88M=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cux+7kpeF5VekvynNts7C8PD9JNm/gwxEni9kpJP52o=;
+	b=XBEw5Ms2rnEan5gKuDLtV8jefsHAQFy08LP4NQa/+MwzlTuOrCUdevKOcCNOFLlmyjiUia
+	caMIQdtcCd5AAAu5npxuiBJqYx7yZ1Ernd9iQ6IWhO6f6a/00jrgbKJHx2OwRciTN8A5zl
+	5VNxb4AI6IHe/WceRkkgOH2yU+sq2TE=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-9KVP1RpBNDGYdJarbZbVBg-1; Wed, 19 Jun 2024 03:42:56 -0400
-X-MC-Unique: 9KVP1RpBNDGYdJarbZbVBg-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6b50a228363so1441576d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 00:42:56 -0700 (PDT)
+ us-mta-433-_-NYthdPNwmbfWiaHnS76Q-1; Wed, 19 Jun 2024 03:44:56 -0400
+X-MC-Unique: _-NYthdPNwmbfWiaHnS76Q-1
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4405de838abso75354571cf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 00:44:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718782975; x=1719387775;
+        d=1e100.net; s=20230601; t=1718783096; x=1719387896;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=d0PCuJaFh0BeKQ6THbuGU38LurLYWx1XyWy+pWtBlow=;
-        b=t0ppxjH2a7beIUpEC5Si0lIuI/PwCVFziRyluYVkwKCQgtO3oyoIbe5Gm/KtPf4D3G
-         K4ZweTZc9zjmpLwj2wU5DQK+XFPiRU9aETMQWwyIkRCr7s0VOg2EUVLF14TXt1iID7w4
-         IJbg94i1kcGu/RTAJSdR2ZbajjFPc0TyGu+iAeKqBDJowF6L2WdqoJabFczIjXJOJ+y6
-         sEUqh6EKaMfaqQks2FqKOojy3Sy3s1c8LifkUMXcb1JZ1MxflgiwROF5QveKv+E4pUWq
-         I5rwkKR5oaHMGvwxy6dr4G9Q8C1w2jazX/J0beodcq9LHrEmHktCVHodZbM7WSfOiPCR
-         wvEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyU/2jun605or8fAqqnex5cJUaxe+PKwRQhqum6ssh4WxA4pjo8k20YtlB0bktMXMjLNNV8QjCOIq4EsC4hgxQZLO52b36TG4hKMzdXA==
-X-Gm-Message-State: AOJu0YwSX2ih5DEwN9ttyTJ16SwyFBAZLv4X2P5jqWTLczj/HTgWx7kK
-	zFgYlOm2PQFdWvEVYdGMuAwQRGrp9ivMEtZaoMHgVULWmFRGK/YtvKJ7sYkVjBayWAVJLj15uRz
-	VCYVvwFH1MfPjZjxkeCmcw1blbZmq9TXFjfgfL9VWfmy7gSfwPk68G1/2hRYEocM=
-X-Received: by 2002:a05:6214:4a42:b0:6b0:825e:ab71 with SMTP id 6a1803df08f44-6b501e0298fmr19273096d6.1.1718782975709;
-        Wed, 19 Jun 2024 00:42:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF57ewfsPjs9BM8HjCA0hXanIA7oYoR9WJdGRtThTNDMmLI/93qudwYeANIvuzEti/6UVRCww==
-X-Received: by 2002:a05:6214:4a42:b0:6b0:825e:ab71 with SMTP id 6a1803df08f44-6b501e0298fmr19273026d6.1.1718782975424;
-        Wed, 19 Jun 2024 00:42:55 -0700 (PDT)
+        bh=cux+7kpeF5VekvynNts7C8PD9JNm/gwxEni9kpJP52o=;
+        b=ZI0vL2gTSvt3jN0ni22lpC2jzpLiXAZoxH8uZN6ovM7zqR4CvfKOhr8QZlQHx2eO5y
+         KJdWv8l6AlVvMYumhezgdScpX9wfNBhkWQDcsf2uOWW+hCgaGFEQFxsmS97aMf/RNPP4
+         jJdP4Q5hawU5qF1agfHsEwPyNcEtcXWChM/yFQPyDZ9hlYYhSNHB9RCuy2rWn4f0mPrd
+         W9eOiqtsjJAfEjIdAfCme3B8W1i+bdFQurdBvoQrDu378co/wIGrXl7+sx43rYtxKX2D
+         68coWp85DXiAaC1Yt1TIpuZ0n+IiZJByTVaIf3Fr16xMRyBSaRtOPiqycZhtlJN6Mk84
+         2BTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvlWvBLG/OnOUUg/HBv1wAXx9M984kjeJxhzOmEWHvDG/LwQFl9xjNRax2ryjHS3tYUjIfzTzuGPkUKRrqGZHmsRaIIfAxK+m6r3uiQQ==
+X-Gm-Message-State: AOJu0YxAgzOLPmH+B7WG//QlpxFUg3taZICE8pnWqVlRI6meQPt60e2x
+	eBoCksHtKASR7S7zuNPAPmxfDmydOb4WMYWG5gHCw/b4zlsNoh7HwoVqpbtwE4zoKJoQp4WpXEU
+	5W+n/ZmsFgI0cMgWbdRyuNAyPZMPcLL9BkMsSVfZCqxDo/e5TfXVMLr7/fRd2keQ=
+X-Received: by 2002:ac8:57d3:0:b0:440:6115:ad4e with SMTP id d75a77b69052e-444a79a3f7bmr21193091cf.2.1718783096199;
+        Wed, 19 Jun 2024 00:44:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcxqq0o8C85U9HuQX4IFUydnWTkzgMyKM6sXiKxNpXRMrzfTIduQgbllbt8qse8+Y24u4jfQ==
+X-Received: by 2002:ac8:57d3:0:b0:440:6115:ad4e with SMTP id d75a77b69052e-444a79a3f7bmr21192981cf.2.1718783095894;
+        Wed, 19 Jun 2024 00:44:55 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-178-117.web.vodafone.de. [109.43.178.117])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5c2fbbasm73667146d6.60.2024.06.19.00.42.53
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-441ef50497dsm63345601cf.36.2024.06.19.00.44.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jun 2024 00:42:55 -0700 (PDT)
-Message-ID: <ce7a12f2-9067-4f1a-8449-a943ebd50667@redhat.com>
-Date: Wed, 19 Jun 2024 09:42:52 +0200
+        Wed, 19 Jun 2024 00:44:55 -0700 (PDT)
+Message-ID: <a0b16c1f-2cb1-4899-aa49-50e9e0001818@redhat.com>
+Date: Wed, 19 Jun 2024 09:44:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v10 13/15] powerpc: Add a panic test
+Subject: Re: [kvm-unit-tests PATCH v10 15/15] powerpc/gitlab-ci: Enable more
+ tests with Fedora 40
 To: Nicholas Piggin <npiggin@gmail.com>
 References: <20240612052322.218726-1-npiggin@gmail.com>
- <20240612052322.218726-14-npiggin@gmail.com>
+ <20240612052322.218726-16-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -129,7 +130,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240612052322.218726-14-npiggin@gmail.com>
+In-Reply-To: <20240612052322.218726-16-npiggin@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -151,18 +152,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 12/06/2024 07.23, Nicholas Piggin wrote:
-> This adds a simple panic test for pseries and powernv that works with
-> TCG (unlike the s390x panic tests), making it easier to test this part
-> of the harness code.
+> With Fedora 40 (QEMU 8.2), more tests can be enabled.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   lib/powerpc/asm/rtas.h |  1 +
->   lib/powerpc/rtas.c     | 16 ++++++++++++++++
->   powerpc/run            |  2 +-
->   powerpc/selftest.c     | 18 ++++++++++++++++--
->   powerpc/unittests.cfg  |  5 +++++
->   5 files changed, 39 insertions(+), 3 deletions(-)
+>   .gitlab-ci.yml        |  2 +-
+>   powerpc/unittests.cfg | 17 ++++++++---------
+>   2 files changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+> index ffb3767ec..ee14330a3 100644
+> --- a/.gitlab-ci.yml
+> +++ b/.gitlab-ci.yml
+> @@ -110,7 +110,7 @@ build-ppc64le:
+>    extends: .intree_template
+>    image: fedora:40
+>    script:
+> - - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat
+> + - dnf install -y qemu-system-ppc gcc-powerpc64-linux-gnu nmap-ncat jq
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Please mention the addition of jq in the patch description (why it is needed).
+
+  Thanks,
+   Thomas
+
+
 
