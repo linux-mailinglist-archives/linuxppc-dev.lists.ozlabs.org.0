@@ -2,63 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6B590E8B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 12:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D4E90E941
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 13:23:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u3uSaA84;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YhimLnzK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W40pg74wQz3cf8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 20:53:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W41Sl2KYzz3dJX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 21:23:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u3uSaA84;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YhimLnzK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W40nz4Y2mz3cXC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 20:52:55 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F3D9861D44
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 10:52:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE91C4AF54
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 10:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718794372;
-	bh=x6rRWvFLspQevsB2WpDwXMeeTixJq93OzwM4BU6/jhU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=u3uSaA84l5gVLsWmwxrOtJWM7MF0Vu51G0CMA1IUhuxDqK7DR2yRzGOKrg5XZfJyp
-	 gc1uZ0BFFh/wA26oymxl7R1SluIcT5SJ5t1Ag6XbCE5Xkm7ygActqF/NpHFUki9mlL
-	 JbLwuS31tzqYMGiroNPmsUu+jF8Vggo/jU2YswgPzfH0OUyJKD3lw6P18dgkFZl/0Y
-	 n5dvVHipC+NvVTsEaLa4yR6Z2kvQMtMEiStK1cuhhGDOlvFIk45u6nd3IWZNz0xwwZ
-	 4TMCjh7s4W1TjzGlDdladzFqHv7/kFYAVMXWKntAeSqEk/WhLSN/siYOf+znixzC+C
-	 tKhqZbYVCrBQQ==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5bad112b623so156820eaf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 03:52:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVk7Thv7K+e6ROiDuCNfShfNMn0agFe1DPH4GmTZ3e8dP1GgCXfxrQTnqR8rYs/Lc8fuVYl09yC83ZFBE+FxWpK0mAmYIVgqLGZw89R2A==
-X-Gm-Message-State: AOJu0Yx4WMSHLAIw1lLfjZYEn9SGIy83DndLbAVLAFxeM3V/ItiNUGGB
-	HsdlLhWdlefmlGkomgGD0kXnHxI+2hrxF3xDker+ZW36O/NigeMt41GhcUx3E2tIgQH7PbOgLjh
-	FLIJ0fKvtd0TT4cM7kOPypAF9hOM=
-X-Google-Smtp-Source: AGHT+IHkfbPpplMOo0+AZF3Oi/SLUmBNejk3LQsh8tt80LEVbwbJ0RTdOmOkrR69Re/mAWO5+pPtyJBD56qHP10v7uQ=
-X-Received: by 2002:a05:6820:2210:b0:5ba:ead2:c742 with SMTP id
- 006d021491bc7-5c1ad8a198cmr2995209eaf.0.1718794371598; Wed, 19 Jun 2024
- 03:52:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W41S24QsCz3cXt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 21:22:24 +1000 (AEST)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2ebeefb9a6eso68488531fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 04:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718796136; x=1719400936; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1We8+J1M8/iGwbEuKq9QLdgleuBIYYNVC3Jie6+7WKQ=;
+        b=YhimLnzKFV2uYu+r7rS/wYC01M4RZOGPQ/hSrYci85uuqeJNAbhRgtIQnEhQ/rgf3R
+         /lVMolKxlSvicvrxY3JHILuryzK7PoodjAZVhA7Izt0cwtNnv89T/OOASAKasCrG2gc8
+         1QVRPAJVnHYXEHumxOmAaNY1T/NMGSGMGMr7O8Qr6DMKFtWN2FSbF+4XNbYDiaRm5cWS
+         wGHGkBXFl2W2+jBk0h7kbRuccjtaxZwLRJKubLr8OZcmtq8ArcQkZ4kspdF0NyCEiECE
+         CRfAWihZ1X5cCiOr+7vzxjzslf/UZSs4Ab7EoqNuSIxDLWP2qmOg9noXx2WBcWFteP3P
+         TTBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718796136; x=1719400936;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1We8+J1M8/iGwbEuKq9QLdgleuBIYYNVC3Jie6+7WKQ=;
+        b=HbHJOfkP1/T0smA0N/BrSGhohYYTHh4/sX5r2f9X10GqCJ6crPYbVCmOLyrHl2ZPPW
+         TUudmW7h5RFfpjXL01+nWWF4mhmQqv2+SeK4mCr/hkaz0w8BK8roazI8Peb3MZvKQetQ
+         rZtiMC6ACNz6EK7NKr0XR6/sMRhATQemiesarPPYK5JPX1iufKHUs3146VmAUSPQocSm
+         xVqvuWFlPW5u1IjsjM654CUwvfHrdEHrzAL9MxeVg8VG7vw4iE3cG04rBCgOpioz2JfI
+         P5+RR/dUGxCzXe5WZEMY5M/J1NeMMhOMNho13qrYZpS+y6TLzQXGzA8iPJzDrrNTFIDS
+         1HhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkIgPEvQVME7r3D3OPpSCvuEKS1BLJ38wbo/jW3z4Wa9nsunqAR58pXtbuT0VvBM2RLedvOzu30fRn1fcP3X5gHWlWI6PnfCUIZa0Y8A==
+X-Gm-Message-State: AOJu0YwC6O7oA1Y9eqFE5XhAVIMkvq5fQrtF42UHqkRoUTLLlsCv5TL5
+	hqj4Dyc5i0ZUA9OMsexIpELboR/ahcw2TuYwgd4M5Pc+uvz14kfc
+X-Google-Smtp-Source: AGHT+IHY6I+1wjnfCL5bVO3aTBj0asX2DB6+TLCQy1IxnGK2EyJpAdTHcDYhDhl1lF4pI5isZiqATw==
+X-Received: by 2002:a2e:7818:0:b0:2ec:3bc4:3e36 with SMTP id 38308e7fff4ca-2ec3ceb6a56mr15076241fa.14.1718796136224;
+        Wed, 19 Jun 2024 04:22:16 -0700 (PDT)
+Received: from pc636 (host-90-233-216-238.mobileonline.telia.com. [90.233.216.238])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec05c78126sm19577951fa.81.2024.06.19.04.22.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jun 2024 04:22:15 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Wed, 19 Jun 2024 13:22:12 +0200
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+Message-ID: <ZnK_ZLlFM6MrdEah@pc636>
+References: <Zmrkkel0Fo4_g75a@zx2c4.com>
+ <e926e3c6-05ce-4ba6-9e2e-e5f3b37bcc23@suse.cz>
+ <3b6fe525-626c-41fb-8625-3925ca820d8e@paulmck-laptop>
+ <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz>
+ <ZnCDgdg1EH6V7w5d@pc636>
+ <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
+ <ZnFT1Czb8oRb0SE7@pc636>
+ <5c8b2883-962f-431f-b2d3-3632755de3b0@paulmck-laptop>
+ <ZnKqPqlPD3Rl04DZ@pc636>
+ <c208e95d-9aa9-476f-9dee-0242a2d6a24f@suse.cz>
 MIME-Version: 1.0
-References: <20240618204946.1271042-1-helgaas@kernel.org>
-In-Reply-To: <20240618204946.1271042-1-helgaas@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 19 Jun 2024 12:52:39 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hZHnMbTLs3KK3ORQey=-u8SEm5H4X-eDSVzdk8s9Rn5A@mail.gmail.com>
-Message-ID: <CAJZ5v0hZHnMbTLs3KK3ORQey=-u8SEm5H4X-eDSVzdk8s9Rn5A@mail.gmail.com>
-Subject: Re: [PATCH v9 0/2] PCI: Disable AER & DPC on suspend
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c208e95d-9aa9-476f-9dee-0242a2d6a24f@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,100 +90,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hannes Reinecke <hare@suse.com>, Chaitanya Kulkarni <kch@nvidia.com>, Sagi Grimberg <sagi@grimberg.me>, "Rafael J . Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Keith Busch <kbusch@kernel.org>, Thomas Crider <gloriouseggroll@gmail.com>, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, regressions@lists.linux.dev
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, kvm@vger.kernel.org, Neil Brown <neilb@suse.de>, kernel-janitors@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, kasan-dev <kasan-dev@googlegroups.com>, Dai Ngo <Dai.Ngo@oracle.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, coreteam@netfilter.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>, bridge@lists.linux.dev, ecryptfs@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, linux-block@vger.kernel.org, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>, Uladzislau Rezki <urezki@gmail.com>, netfilter-devel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 18, 2024 at 10:49=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org>=
- wrote:
->
-> From: Bjorn Helgaas <bhelgaas@google.com>
->
-> This is an old series from Kai-Heng that I didn't handle soon enough.  Th=
-e
-> intent is to fix several suspend/resume issues:
->
->   - Spurious wakeup from s2idle
->     (https://bugzilla.kernel.org/show_bug.cgi?id=3D216295)
->
->   - Steam Deck doesn't resume after suspend
->     (https://bugzilla.kernel.org/show_bug.cgi?id=3D218090)
->
->   - Unexpected ACS error and DPC event when resuming after suspend
->     (https://bugzilla.kernel.org/show_bug.cgi?id=3D209149)
->
-> It seems that a glitch when the link is powered down during suspend cause=
-s
-> errors to be logged by AER.  When AER is enabled, this causes an AER
-> interrupt, and if that IRQ is shared with PME, it may cause a spurious
-> wakeup.
->
-> Also, errors logged during link power-down and power-up seem to cause
-> unwanted error reporting during resume.
->
-> This series disables AER interrupts, DPC triggering, and DPC interrupts
-> during suspend.  On resume, it clears AER and DPC error status before
-> re-enabling their interrupts.
->
-> I added a couple cosmetic changes for the v9, but this is essentially all
-> Kai-Heng's work.  I'm just posting it as a v9 because I failed to act on
-> this earlier.
->
-> Bjorn
->
-> v9:
->  - Drop pci_ancestor_pr3_present() and pm_suspend_via_firmware; do it
->    unconditionally
->  - Clear DPC status before re-enabling DPC interrupt
->
-> v8: https://lore.kernel.org/r/20240416043225.1462548-1-kai.heng.feng@cano=
-nical.com
->  - Wording.
->  - Add more bug reports.
->
-> v7:
->  - Wording.
->  - Disable AER completely (again) if power will be turned off
->  - Disable DPC completely (again) if power will be turned off
->
-> v6: https://lore.kernel.org/r/20230512000014.118942-1-kai.heng.feng@canon=
-ical.com
->
-> v5: https://lore.kernel.org/r/20230511133610.99759-1-kai.heng.feng@canoni=
-cal.com
->  - Wording.
->
-> v4: https://lore.kernel.org/r/20230424055249.460381-1-kai.heng.feng@canon=
-ical.com
-> v3: https://lore.kernel.org/r/20230420125941.333675-1-kai.heng.feng@canon=
-ical.com
->  - Correct subject.
->
-> v2: https://lore.kernel.org/r/20230420015830.309845-1-kai.heng.feng@canon=
-ical.com
->  - Only disable AER IRQ.
->  - No more AER check on PME IRQ#.
->  - Use AER helper.
->  - Only disable DPC IRQ.
->  - No more DPC check on PME IRQ#.
->
-> v1: https://lore.kernel.org/r/20220727013255.269815-1-kai.heng.feng@canon=
-ical.com
->
-> Kai-Heng Feng (2):
->   PCI/AER: Disable AER service on suspend
->   PCI/DPC: Disable DPC service on suspend
->
->  drivers/pci/pcie/aer.c | 18 +++++++++++++
->  drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++++---------
->  2 files changed, 66 insertions(+), 12 deletions(-)
->
-> --
-
-Please feel free to add
-
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-
-to both patches in the series.
+On Wed, Jun 19, 2024 at 11:56:44AM +0200, Vlastimil Babka wrote:
+> On 6/19/24 11:51 AM, Uladzislau Rezki wrote:
+> > On Tue, Jun 18, 2024 at 09:48:49AM -0700, Paul E. McKenney wrote:
+> >> On Tue, Jun 18, 2024 at 11:31:00AM +0200, Uladzislau Rezki wrote:
+> >> > > On 6/17/24 8:42 PM, Uladzislau Rezki wrote:
+> >> > > >> +
+> >> > > >> +	s = container_of(work, struct kmem_cache, async_destroy_work);
+> >> > > >> +
+> >> > > >> +	// XXX use the real kmem_cache_free_barrier() or similar thing here
+> >> > > > It implies that we need to introduce kfree_rcu_barrier(), a new API, which i
+> >> > > > wanted to avoid initially.
+> >> > > 
+> >> > > I wanted to avoid new API or flags for kfree_rcu() users and this would
+> >> > > be achieved. The barrier is used internally so I don't consider that an
+> >> > > API to avoid. How difficult is the implementation is another question,
+> >> > > depending on how the current batching works. Once (if) we have sheaves
+> >> > > proven to work and move kfree_rcu() fully into SLUB, the barrier might
+> >> > > also look different and hopefully easier. So maybe it's not worth to
+> >> > > invest too much into that barrier and just go for the potentially
+> >> > > longer, but easier to implement?
+> >> > > 
+> >> > Right. I agree here. If the cache is not empty, OK, we just defer the
+> >> > work, even we can use a big 21 seconds delay, after that we just "warn"
+> >> > if it is still not empty and leave it as it is, i.e. emit a warning and
+> >> > we are done.
+> >> > 
+> >> > Destroying the cache is not something that must happen right away. 
+> >> 
+> >> OK, I have to ask...
+> >> 
+> >> Suppose that the cache is created and destroyed by a module and
+> >> init/cleanup time, respectively.  Suppose that this module is rmmod'ed
+> >> then very quickly insmod'ed.
+> >> 
+> >> Do we need to fail the insmod if the kmem_cache has not yet been fully
+> >> cleaned up?  If not, do we have two versions of the same kmem_cache in
+> >> /proc during the overlap time?
+> >> 
+> > No fail :) If same cache is created several times, its s->refcount gets
+> > increased, so, it does not create two entries in the "slabinfo". But i
+> > agree that your point is good! We need to be carefully with removing and
+> > simultaneous creating.
+> 
+> Note that this merging may be disabled or not happen due to various flags on
+> the cache being incompatible with it. And I want to actually make sure it
+> never happens for caches being already destroyed as that would lead to
+> use-after-free (the workfn doesn't recheck the refcount in case a merge
+> would happen during the grace period)
+> 
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -150,9 +150,10 @@ int slab_unmergeable(struct kmem_cache *s)
+>  #endif
+> 
+>         /*
+> -        * We may have set a slab to be unmergeable during bootstrap.
+> +        * We may have set a cache to be unmergeable during bootstrap.
+> +        * 0 is for cache being destroyed asynchronously
+>          */
+> -       if (s->refcount < 0)
+> +       if (s->refcount <= 0)
+>                 return 1;
+> 
+>         return 0;
+> 
+OK, i see such flags, SLAB_NO_MERGE. Then i was wrong, it can create two
+different slabs.
 
 Thanks!
+
+--
+Uladzislau Rezki
