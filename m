@@ -2,90 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621F790E8A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 12:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6B590E8B1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 12:53:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tdar1DOF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u3uSaA84;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W40kv63tWz3cbQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 20:50:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W40pg74wQz3cf8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 20:53:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tdar1DOF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u3uSaA84;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W40kB4yjBz3cSy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 20:49:38 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45J9Q0Gr027623;
-	Wed, 19 Jun 2024 10:49:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:content-transfer-encoding
-	:mime-version; s=pp1; bh=BvLfdd4mR0gZp5pCsqop5ufMyk6Ypmh74Cst0AM
-	vu3g=; b=Tdar1DOFEXhZtjVvLJbzIeU7C0H8v1MAMbYHH6vpVgFRXOGs5WNP1mE
-	c7jZIAXU1MfQejjU0D3n0OlPgtnMHh7H4kfpL+/HZpth5Rm9mTiBwcSbDd/F2bC6
-	/HygmY9W3FRwm3BviRtmjq/qQ7eSnlpzvEApmIra0B3ZjsocJuG4PSt+NYFS8KIF
-	dhpOpvSJZa3frl1cL5T6Zv6oQoeglCU1VXrJdVZ1Wb8JjewueXmXSjLG4vFBfZyn
-	5fImO0M/4ahT+W9kpJ4JkVPA6qdWnWf0M6bY2GO1qRs2IpX88wME58WaJfs47jzk
-	vqeUVPhSxJuofO6AgoQpuYoyCSUzoxw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yusnarn6b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 10:49:28 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45JAnR3F027269;
-	Wed, 19 Jun 2024 10:49:27 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yusnarn68-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 10:49:27 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45JAaKO2011052;
-	Wed, 19 Jun 2024 10:49:26 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yspsnbc9e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 10:49:26 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45JAnMCN51184096
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Jun 2024 10:49:24 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E3022004B;
-	Wed, 19 Jun 2024 10:49:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 41A9F2005A;
-	Wed, 19 Jun 2024 10:49:20 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.195])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Jun 2024 10:49:20 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] radix/kfence: map __kfence_pool at page granularity
-Date: Wed, 19 Jun 2024 16:19:19 +0530
-Message-ID: <20240619104919.20772-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.45.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: D7fJCl3thuJucY4RvBxk4027s49wyQxp
-X-Proofpoint-GUID: vySMH3z2m1sggXuhsD7qz3LcNcZ8KYo3
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W40nz4Y2mz3cXC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 20:52:55 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id F3D9861D44
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 10:52:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE91C4AF54
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 10:52:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718794372;
+	bh=x6rRWvFLspQevsB2WpDwXMeeTixJq93OzwM4BU6/jhU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u3uSaA84l5gVLsWmwxrOtJWM7MF0Vu51G0CMA1IUhuxDqK7DR2yRzGOKrg5XZfJyp
+	 gc1uZ0BFFh/wA26oymxl7R1SluIcT5SJ5t1Ag6XbCE5Xkm7ygActqF/NpHFUki9mlL
+	 JbLwuS31tzqYMGiroNPmsUu+jF8Vggo/jU2YswgPzfH0OUyJKD3lw6P18dgkFZl/0Y
+	 n5dvVHipC+NvVTsEaLa4yR6Z2kvQMtMEiStK1cuhhGDOlvFIk45u6nd3IWZNz0xwwZ
+	 4TMCjh7s4W1TjzGlDdladzFqHv7/kFYAVMXWKntAeSqEk/WhLSN/siYOf+znixzC+C
+	 tKhqZbYVCrBQQ==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5bad112b623so156820eaf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 03:52:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVk7Thv7K+e6ROiDuCNfShfNMn0agFe1DPH4GmTZ3e8dP1GgCXfxrQTnqR8rYs/Lc8fuVYl09yC83ZFBE+FxWpK0mAmYIVgqLGZw89R2A==
+X-Gm-Message-State: AOJu0Yx4WMSHLAIw1lLfjZYEn9SGIy83DndLbAVLAFxeM3V/ItiNUGGB
+	HsdlLhWdlefmlGkomgGD0kXnHxI+2hrxF3xDker+ZW36O/NigeMt41GhcUx3E2tIgQH7PbOgLjh
+	FLIJ0fKvtd0TT4cM7kOPypAF9hOM=
+X-Google-Smtp-Source: AGHT+IHkfbPpplMOo0+AZF3Oi/SLUmBNejk3LQsh8tt80LEVbwbJ0RTdOmOkrR69Re/mAWO5+pPtyJBD56qHP10v7uQ=
+X-Received: by 2002:a05:6820:2210:b0:5ba:ead2:c742 with SMTP id
+ 006d021491bc7-5c1ad8a198cmr2995209eaf.0.1718794371598; Wed, 19 Jun 2024
+ 03:52:51 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-19_02,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 clxscore=1011
- suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406190077
+References: <20240618204946.1271042-1-helgaas@kernel.org>
+In-Reply-To: <20240618204946.1271042-1-helgaas@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 19 Jun 2024 12:52:39 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hZHnMbTLs3KK3ORQey=-u8SEm5H4X-eDSVzdk8s9Rn5A@mail.gmail.com>
+Message-ID: <CAJZ5v0hZHnMbTLs3KK3ORQey=-u8SEm5H4X-eDSVzdk8s9Rn5A@mail.gmail.com>
+Subject: Re: [PATCH v9 0/2] PCI: Disable AER & DPC on suspend
+To: Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,243 +70,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ritesh Harjani \(IBM\)" <ritesh.list@gmail.com>, Marco Elver <elver@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Alexander Potapenko <glider@google.com>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dmitry Vyukov <dvyukov@google.com>
+Cc: Hannes Reinecke <hare@suse.com>, Chaitanya Kulkarni <kch@nvidia.com>, Sagi Grimberg <sagi@grimberg.me>, "Rafael J . Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Keith Busch <kbusch@kernel.org>, Thomas Crider <gloriouseggroll@gmail.com>, linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>, regressions@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When KFENCE is enabled, total system memory is mapped at page level
-granularity. But in radix MMU mode, ~3GB additional memory is needed
-to map 100GB of system memory at page level granularity when compared
-to using 2MB direct mapping. This is not desired considering KFENCE is
-designed to be enabled in production kernels [1]. Also, mapping memory
-allocated for KFENCE pool at page granularity seems sufficient enough
-to enable KFENCE support. So, allocate __kfence_pool during bootup and
-map it at page granularity instead of mapping all system memory at
-page granularity.
+On Tue, Jun 18, 2024 at 10:49=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org>=
+ wrote:
+>
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>
+> This is an old series from Kai-Heng that I didn't handle soon enough.  Th=
+e
+> intent is to fix several suspend/resume issues:
+>
+>   - Spurious wakeup from s2idle
+>     (https://bugzilla.kernel.org/show_bug.cgi?id=3D216295)
+>
+>   - Steam Deck doesn't resume after suspend
+>     (https://bugzilla.kernel.org/show_bug.cgi?id=3D218090)
+>
+>   - Unexpected ACS error and DPC event when resuming after suspend
+>     (https://bugzilla.kernel.org/show_bug.cgi?id=3D209149)
+>
+> It seems that a glitch when the link is powered down during suspend cause=
+s
+> errors to be logged by AER.  When AER is enabled, this causes an AER
+> interrupt, and if that IRQ is shared with PME, it may cause a spurious
+> wakeup.
+>
+> Also, errors logged during link power-down and power-up seem to cause
+> unwanted error reporting during resume.
+>
+> This series disables AER interrupts, DPC triggering, and DPC interrupts
+> during suspend.  On resume, it clears AER and DPC error status before
+> re-enabling their interrupts.
+>
+> I added a couple cosmetic changes for the v9, but this is essentially all
+> Kai-Heng's work.  I'm just posting it as a v9 because I failed to act on
+> this earlier.
+>
+> Bjorn
+>
+> v9:
+>  - Drop pci_ancestor_pr3_present() and pm_suspend_via_firmware; do it
+>    unconditionally
+>  - Clear DPC status before re-enabling DPC interrupt
+>
+> v8: https://lore.kernel.org/r/20240416043225.1462548-1-kai.heng.feng@cano=
+nical.com
+>  - Wording.
+>  - Add more bug reports.
+>
+> v7:
+>  - Wording.
+>  - Disable AER completely (again) if power will be turned off
+>  - Disable DPC completely (again) if power will be turned off
+>
+> v6: https://lore.kernel.org/r/20230512000014.118942-1-kai.heng.feng@canon=
+ical.com
+>
+> v5: https://lore.kernel.org/r/20230511133610.99759-1-kai.heng.feng@canoni=
+cal.com
+>  - Wording.
+>
+> v4: https://lore.kernel.org/r/20230424055249.460381-1-kai.heng.feng@canon=
+ical.com
+> v3: https://lore.kernel.org/r/20230420125941.333675-1-kai.heng.feng@canon=
+ical.com
+>  - Correct subject.
+>
+> v2: https://lore.kernel.org/r/20230420015830.309845-1-kai.heng.feng@canon=
+ical.com
+>  - Only disable AER IRQ.
+>  - No more AER check on PME IRQ#.
+>  - Use AER helper.
+>  - Only disable DPC IRQ.
+>  - No more DPC check on PME IRQ#.
+>
+> v1: https://lore.kernel.org/r/20220727013255.269815-1-kai.heng.feng@canon=
+ical.com
+>
+> Kai-Heng Feng (2):
+>   PCI/AER: Disable AER service on suspend
+>   PCI/DPC: Disable DPC service on suspend
+>
+>  drivers/pci/pcie/aer.c | 18 +++++++++++++
+>  drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++++---------
+>  2 files changed, 66 insertions(+), 12 deletions(-)
+>
+> --
 
-Without patch:
-    # cat /proc/meminfo
-    MemTotal:       101201920 kB
+Please feel free to add
 
-With patch:
-    # cat /proc/meminfo
-    MemTotal:       104483904 kB
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
-Note that enabling KFENCE at runtime is disabled for radix MMU for now,
-as it depends on the ability to split page table mappings and such APIs
-are not currently implemented for radix MMU.
+to both patches in the series.
 
-All kfence_test.c testcases passed with this patch.
-
-[1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
-
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
-
-Changes in v2:
-* Dropped the patch that adds support to enable KFENCE after startup.
-* Added changes to avoid KFENCE enablement after system startup.
-* Also, added a TODO explaining why KFENCE enablement after startup
-  is not supported for now.
-* Functions to alloc/map __kfence_pool as suggested by Ritesh.
-* Moved changes that apply to ppc32 as well to common file as suggested
-  by Christophe.
-
-
- arch/powerpc/include/asm/kfence.h        | 12 +++-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 74 ++++++++++++++++++++++--
- arch/powerpc/mm/init-common.c            | 14 +++++
- 3 files changed, 95 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
-index 424ceef82ae6..78590288ee80 100644
---- a/arch/powerpc/include/asm/kfence.h
-+++ b/arch/powerpc/include/asm/kfence.h
-@@ -15,10 +15,20 @@
- #define ARCH_FUNC_PREFIX "."
- #endif
- 
-+#ifdef CONFIG_KFENCE
-+extern bool kfence_early_init;
-+extern bool kfence_disabled;
-+
-+static inline void disable_kfence(void)
-+{
-+	kfence_disabled = true;
-+}
-+
- static inline bool arch_kfence_init_pool(void)
- {
--	return true;
-+	return !kfence_disabled;
- }
-+#endif
- 
- #ifdef CONFIG_PPC64
- static inline bool kfence_protect_page(unsigned long addr, bool protect)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 15e88f1439ec..a74912e0fd99 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -17,6 +17,7 @@
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
- #include <linux/memory.h>
-+#include <linux/kfence.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/mmu_context.h>
-@@ -31,6 +32,7 @@
- #include <asm/uaccess.h>
- #include <asm/ultravisor.h>
- #include <asm/set_memory.h>
-+#include <asm/kfence.h>
- 
- #include <trace/events/thp.h>
- 
-@@ -293,7 +295,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
- 
- static int __meminit create_physical_mapping(unsigned long start,
- 					     unsigned long end,
--					     int nid, pgprot_t _prot)
-+					     int nid, pgprot_t _prot,
-+					     unsigned long mapping_sz_limit)
- {
- 	unsigned long vaddr, addr, mapping_size = 0;
- 	bool prev_exec, exec = false;
-@@ -301,7 +304,10 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	int psize;
- 	unsigned long max_mapping_size = memory_block_size;
- 
--	if (debug_pagealloc_enabled_or_kfence())
-+	if (mapping_sz_limit < max_mapping_size)
-+		max_mapping_size = mapping_sz_limit;
-+
-+	if (debug_pagealloc_enabled())
- 		max_mapping_size = PAGE_SIZE;
- 
- 	start = ALIGN(start, PAGE_SIZE);
-@@ -356,8 +362,64 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	return 0;
- }
- 
-+#ifdef CONFIG_KFENCE
-+static inline phys_addr_t radix_alloc_kfence_pool_early(void)
-+{
-+	phys_addr_t kfence_pool;
-+
-+	/*
-+	 * TODO: Support to enable KFENCE after bootup depends on the ability to
-+	 *       split page table mappings. As such support is not currently
-+	 *       implemented for radix pagetables, support enabling KFENCE
-+	 *       only at system startup for now.
-+	 *
-+	 *       After support for splitting mappings is available on radix,
-+	 *       radix_alloc_kfence_pool_early() & radix_map_kfence_pool_early()
-+	 *       can be dropped and mapping for __kfence_pool memory can be
-+	 *       split during arch_kfence_init_pool().
-+	 */
-+	if (!kfence_early_init)
-+		goto no_kfence;
-+
-+	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-+	if (!kfence_pool)
-+		goto no_kfence;
-+
-+	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	return kfence_pool;
-+
-+no_kfence:
-+	disable_kfence();
-+	return 0;
-+}
-+
-+static inline void radix_map_kfence_pool_early(phys_addr_t kfence_pool)
-+{
-+	int ret;
-+
-+	if (!kfence_pool)
-+		return;
-+
-+	if (create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
-+				    -1, PAGE_KERNEL, PAGE_SIZE))
-+		goto err;
-+
-+	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	__kfence_pool = __va(kfence_pool);
-+	return;
-+
-+err:
-+	memblock_phys_free(kfence_pool, KFENCE_POOL_SIZE);
-+	disable_kfence();
-+}
-+#else
-+static inline phys_addr_t radix_alloc_kfence_pool_early(void) { return 0; }
-+static inline void radix_map_kfence_pool_early(phys_addr_t kfence_pool) { }
-+#endif
-+
- static void __init radix_init_pgtable(void)
- {
-+	phys_addr_t kfence_pool;
- 	unsigned long rts_field;
- 	phys_addr_t start, end;
- 	u64 i;
-@@ -365,6 +427,8 @@ static void __init radix_init_pgtable(void)
- 	/* We don't support slb for radix */
- 	slb_set_size(0);
- 
-+	kfence_pool = radix_alloc_kfence_pool_early();
-+
- 	/*
- 	 * Create the linear mapping
- 	 */
-@@ -381,9 +445,11 @@ static void __init radix_init_pgtable(void)
- 		}
- 
- 		WARN_ON(create_physical_mapping(start, end,
--						-1, PAGE_KERNEL));
-+						-1, PAGE_KERNEL, ~0UL));
- 	}
- 
-+	radix_map_kfence_pool_early(kfence_pool);
-+
- 	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
- 			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
- 		/*
-@@ -875,7 +941,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
- 	}
- 
- 	return create_physical_mapping(__pa(start), __pa(end),
--				       nid, prot);
-+				       nid, prot, ~0UL);
- }
- 
- int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index d3a7726ecf51..f881ab5107aa 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -31,6 +31,20 @@ EXPORT_SYMBOL_GPL(kernstart_virt_addr);
- 
- bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
- bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
-+#ifdef CONFIG_KFENCE
-+bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-+bool __ro_after_init kfence_disabled;
-+
-+static int __init parse_kfence_early_init(char *arg)
-+{
-+	int val;
-+
-+	if (get_option(&arg, &val))
-+		kfence_early_init = !!val;
-+	return 0;
-+}
-+early_param("kfence.sample_interval", parse_kfence_early_init);
-+#endif
- 
- static int __init parse_nosmep(char *p)
- {
--- 
-2.45.1
-
+Thanks!
