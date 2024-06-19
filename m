@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7203E90F08B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 16:31:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC1190F0A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 16:32:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CiyQRlp9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BFrTmS1n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W45dp18tBz3cyY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 00:31:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W45gd1JKjz3cgP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 00:32:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CiyQRlp9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BFrTmS1n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W45d52K8Hz3cYS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 00:30:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W45fw278Hz3cXH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 00:32:08 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id AD86ACE1E81;
-	Wed, 19 Jun 2024 14:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9479EC2BBFC;
-	Wed, 19 Jun 2024 14:30:27 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 01B50CE1EFE;
+	Wed, 19 Jun 2024 14:32:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE1BC2BBFC;
+	Wed, 19 Jun 2024 14:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718807427;
+	s=k20201202; t=1718807525;
 	bh=5P4+U94Sj+hrx7FTYMGgX4hD00hQheT4KmraZdUEYZw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CiyQRlp9GSAIxk7ym3Xfl08V9zmLHG9z9EicTuHhXcckzp4MxAB/Vjqs5Jyq59MJi
-	 jkk5XZzmEZEWMpQABr6UjiQuHmWAlahX8ch3QJacJi9vpLkZ18NdBv+MUHfGmK0wEQ
-	 h+irmSwp3MA/fiG8VDUMzci2gh0bsGk3RtMAj21zPxOEsBHZ1pu3I6xWyioQkIyuku
-	 hv40ls0BfUgw7oYiRvbJO7aayLt6Kt+a3AT/yRuxDkkLecs1seXObPB8MTn7wtS94+
-	 5hUDuYYbfPODY0eGMuRMlLghxl7c4JCx3fpE+JVZZ6HFpW4QjeIZ86iMMVUOJdjGYd
-	 uehKS7xw1tt5Q==
-Date: Wed, 19 Jun 2024 10:30:25 -0400
+	b=BFrTmS1nAs54AIbQRFZWX6lLQQAx8iDngpm6hPCbqM/x2FF0WG8GEifv6OBwWMy63
+	 QLX8gIuxc4F8/AU2zqq+8lzI+csN2fj+rExfrSaQHK0Thz7r2G9rP5EhglR4a4LIgN
+	 GICcPGSZlt6gXYBe5uUZSaY0XCDFRbE581EkN8dytKB4p8c106gwdijV3OrZq3vFHD
+	 bLfpJyZHsZN8XqgAFkZpyBmQV0TCNPbTTRPCKjXP0J2lgso5AF/PVbWVPfVVKItnnx
+	 WXCH97MarRhZvHnHtNODnhxQBFoYbPN4RqrARkKyvsVdn84Z6qNBPl58dO2gLlSMqC
+	 2vynCwPOKRd1A==
+Date: Wed, 19 Jun 2024 10:32:03 -0400
 From: Sasha Levin <sashal@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [PATCH AUTOSEL 6.9 18/23] powerpc: make fadump resilient with
  memory add/remove events
-Message-ID: <ZnLrgSFIdWAcTQp3@sashalap>
+Message-ID: <ZnLr4_0RX-c7m7Zo@sashalap>
 References: <20240527155123.3863983-1-sashal@kernel.org>
  <20240527155123.3863983-18-sashal@kernel.org>
  <944f47df-96f0-40e8-a8e2-750fb9fa358e@linux.ibm.com>
