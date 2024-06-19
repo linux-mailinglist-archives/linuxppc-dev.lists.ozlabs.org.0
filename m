@@ -2,137 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785B990E046
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 01:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E48390E308
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 08:06:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=lrzMnMf+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=mvTpYTDg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W3kFl10L5z3cTm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 09:57:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W3tRQ6mVCz3cT2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jun 2024 16:06:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=lrzMnMf+;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=mvTpYTDg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7e88::629; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on20629.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e88::629])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.122; helo=smtp-relay-internal-0.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=lists.ozlabs.org)
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3b4s0Kpdz2yvv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 04:34:17 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j9u56sykacbDtnLKqqIjOdK9VWEQiY7gCKucOZyYEiVKfPJ69IFGMd4RXiMKv+qYL/K7wU1rUtHjuywiaLaoJUYR1ThBT/S89+gJrrDtLsms8RNAalJtFotWkUgiOO7T63wrnStAu8RvenJ8W0ReYVACGGqExHOrDTspW+6J/NvPml5irQm3js1f2Q3cJh+ZG7udatzUwo/YAbTUzGTDPxUviCa0IjxNriQ82wrG8NF2QVMyWoXQCFffT+9n2SnXFlidW/hh+Gr8Ca5e9XHsVxwU27eQK+htpQQqORAy+q0Zn8Ah1YCSf4XaR1eWSMwvAQ5kH2bNYH23C7oa+o+Q9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K57Ck2EoACRkJcvW6iE8gT1MkTr1IgjlB4UgSKx7JTE=;
- b=mvp6uu2++rP+gV0DTL87oaL+w80FGY5rqD9h7v3i0wXUEnBa18xQGB/m7AyYXoh5WvZsIs3fqeWlg0/8TGNg0nsO4mVmMgKTyFM0dU3xKzHTTp03SvdmTV6CxIHF+McodYzrLPesXA3bzcN+NTN8mzizwd3vy4S7j/invwC6r+SZeiuhDgRC1JWpnukamEwxefvyYksC6+nQs0x/B4yacwcPFHe01hkzrjDyqhHvvarnmsLM+fzORAleHn5mFKZB8aWQ47oXyhTt9sSGLp8HqMkCtgCGUiXhvK843mYEuloJIzZ9CG7Yu9A5hbVQR4UKSbd2dmRjUfJTOP+1QzH8iA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K57Ck2EoACRkJcvW6iE8gT1MkTr1IgjlB4UgSKx7JTE=;
- b=lrzMnMf+ifIEFT7stxYRaqHxJEj/N67N1P/2HyXdVXCnhd596nfY0mmR+lNSwIG/22n9zJ1Pgu4zgrQFVyq2xJd3eUkbon5TY2DNEBfzV4vk2xDJz64nftMj9krnWuOoh56j6QFt1syDZtPKbt/+OzyES1tcX0NXEYYPpftgo8U=
-Received: from MW4PR03CA0318.namprd03.prod.outlook.com (2603:10b6:303:dd::23)
- by MN0PR12MB5979.namprd12.prod.outlook.com (2603:10b6:208:37e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Tue, 18 Jun
- 2024 18:33:49 +0000
-Received: from CO1PEPF000075EF.namprd03.prod.outlook.com
- (2603:10b6:303:dd:cafe::b2) by MW4PR03CA0318.outlook.office365.com
- (2603:10b6:303:dd::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31 via Frontend
- Transport; Tue, 18 Jun 2024 18:33:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000075EF.mail.protection.outlook.com (10.167.249.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Tue, 18 Jun 2024 18:33:48 +0000
-Received: from [10.252.216.179] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 18 Jun
- 2024 13:33:32 -0500
-Message-ID: <1035ec64-b3d3-c398-d6e7-99745a14c294@amd.com>
-Date: Wed, 19 Jun 2024 00:03:30 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W3tQh25m6z30Vg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 16:05:46 +1000 (AEST)
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 378B03F5EA
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jun 2024 06:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1718777141;
+	bh=6Nv2YnUXwNhwZtcnR0l2iX9oZx8TMUNIK8n7g+2X8A0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=mvTpYTDgC9ykaSSC6UCMwHN3dpTK8vabqzqR9HG9Ru0xSCL/FBHbD9KRgbFmMe8GB
+	 Al9FW7rTMUKH0t/WbRhotVquhcKchIOOaH1M6yysbyIuKXiQLHxAQeWrXkJTv28fB+
+	 YQgNQECgoQAwhDjabaOPhuqoIkE0rjP2bmUYqWZxNGGXGP16F/pTJhuaktXotrjwIR
+	 Kk9RuTSvkn4ImLfOjmPJqwMEHsAbf6m551HSIPd+HkxFvKK3Z5Y/Qtse6JxM14/dR4
+	 Spj6jNKuDneJs10LXtrcLdy+JNYPzL+G/u9psVKO7k9IoOPUMTc2v7gztSR2VUF7q6
+	 tApn8HfDIqArg==
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-70d8b7924e7so1912220a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jun 2024 23:05:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718777138; x=1719381938;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6Nv2YnUXwNhwZtcnR0l2iX9oZx8TMUNIK8n7g+2X8A0=;
+        b=TBS8mreyTWwYW6aSYMfBknevLecm2cleH4pDAsH9SIGLN7Sj6Ro+nbIDDS2X57ok46
+         ShNuHB1jAB/CFaERRwvwqX4kFJbhCTAk+XWWJo6yT5yQR4GVM00yG43QLjtYoXCVJebN
+         25uKCuhU64Z+WMyHzG/JsQXKf0lAtIN3nGMNhszOML+9Xbo1MHCSkgckStSYPmgVkr70
+         2dQ+1Fr3bOW0H1aYtZs2sd6oRNMFPAnXGi5knB6xnuxq/zpz373FP80tOkznPMrXQkao
+         SbNiHp/gB0qGojAcX7VILTDcli6XmHoUNhEhEc2epotI0TjGtxmJcY8N10oj0qda5K8O
+         iFkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNjC45pUEyuqWVXR7lWg68I6gC7pY7IYm4aZ+8DUfH3pnr2Z0kSxtP6kD/i6M/zICexWf/UVAOAw4+Hp5kybPgehZnFY+xDTBkNm80fw==
+X-Gm-Message-State: AOJu0YzEEZkRZQdps180N0KKS0amfD69r/RUOuUGoQCDbnC8sJmc1o2V
+	uLY5BKMt1jGs29GvRBzQ82ArXiJ2YQc58nT/h29RPRvtT1pWhBGJusu7fzWLclYfnCFtSQP88/R
+	xrDY7McEcYwd3zoExSechDIxZ9iYgywpVrFewqJFMd8RPnAP6lB4XEURlcEC8yDVd/kGWEdzMw2
+	mh+APHeWInWcyveydL+E8V52jbapmUWO4S+oY6WIN+nksSCl2/k89DLA==
+X-Received: by 2002:a05:6a20:a8a5:b0:1b2:a94d:4eca with SMTP id adf61e73a8af0-1bcbb5f705dmr1512761637.41.1718777138514;
+        Tue, 18 Jun 2024 23:05:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFmoBDk3wuIfStUvPkgN/DsQ3AqL87wGvMpH6BdkD1tmYIyQo/0+ajiApdNg790feEKy+jeMAf9CLNezX3NDog=
+X-Received: by 2002:a05:6a20:a8a5:b0:1b2:a94d:4eca with SMTP id
+ adf61e73a8af0-1bcbb5f705dmr1512734637.41.1718777138116; Tue, 18 Jun 2024
+ 23:05:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH v2 00/14] Introducing TIF_NOTIFY_IPI flag
-Content-Language: en-US
-To: Chen Yu <yu.c.chen@intel.com>, Peter Zijlstra <peterz@infradead.org>
-References: <20240613181613.4329-1-kprateek.nayak@amd.com>
- <20240614092801.GL8774@noisy.programming.kicks-ass.net>
- <CAKfTPtBTxhbmh=605TJ9sRw-nFu6w-KY7QpAxRUh5AjhQWa2ig@mail.gmail.com>
- <ZmxwWdW78hjNuxWU@chenyu5-mobl2>
- <4748fabf-c359-9199-16aa-469840201540@amd.com>
- <ZnE77ons3lb/JAxP@chenyu5-mobl2>
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <ZnE77ons3lb/JAxP@chenyu5-mobl2>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075EF:EE_|MN0PR12MB5979:EE_
-X-MS-Office365-Filtering-Correlation-Id: 325485c3-40ee-4043-14a7-08dc8fc53210
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 	BCL:0;ARA:13230037|36860700010|1800799021|7416011|376011|82310400023;
-X-Microsoft-Antispam-Message-Info: 	=?utf-8?B?NTArVUU0K09aZzM4Q2t5NTJBaGs5U0t0bXY0NVJXMmcvakdqSmp3T2lVaUJn?=
- =?utf-8?B?c2V6WU5JVko5KzFjK3p3UHMvQnlJZmQybVM1ZWRqeHRFUGdpZ3hoNEovU0c0?=
- =?utf-8?B?cHBEb3FFdy9kbnM4L0dpNTJqNDBMWW1SZ3lhNnFoTm83VWFFby9sOTcvcm1N?=
- =?utf-8?B?NTYvcDczTkYwRVZOcU54VVJPNDdEQVR3Sm5sS0JlM1RlcTUxY01TUEFLZ3Nw?=
- =?utf-8?B?bmxQai9HU01TUEdzdWJudzUwNTBmM2FMVy9xOTU2eHhDVG9NQ29MUXkyQUhZ?=
- =?utf-8?B?dU9VY2JvUlZ3UWFURVV4WDZNUkpTUm1pSUpMaytBNlNQRlJFNzExMnZXQyt6?=
- =?utf-8?B?SHQ1QW1DUTRFMExmS3hHOUJZS1hXdElVVm84bW9ZYlc4eHFrcEU2OU1Pckp6?=
- =?utf-8?B?OXgrL1dEaXVoZlNPWFV4TnlsR0ZRZXI1WVV5VE14Sk92MkV2ank0ZWdYL0Fj?=
- =?utf-8?B?b29YUVdsNEZoOTNwcEZXbmREcjVneW1OR25sQmc1VTBDU1FPRmpjS1ZyaEVu?=
- =?utf-8?B?ODYzaE5ocU9EVGpLSlJmY0djcEJDMFhsMU5SQ2RDaW4vcXRoRjJMRWZ3NWdv?=
- =?utf-8?B?SFloekQrVllmdllGQk8xRklhaW5nZE5zMWVoQ3BidVRTOThWOHRlUDA0WWRC?=
- =?utf-8?B?SldsNFJzbHFtaFZQc0U2ckFlZE9qS21EVUhjWGN4T1FyYlhPL1R3Z2VUck5P?=
- =?utf-8?B?d2VXcnlJRFg2dnE2NzduMm50MGxwV0pPRWo2aTFwb3kreWxOTHBQUTBkMjVM?=
- =?utf-8?B?WFBoc0crODNjRkROWURsc25Fa3R0ZVRFQUl3dVVIUFRqejI4bjhBQm5xY1oz?=
- =?utf-8?B?VHZ4SnBkZTQwYUJjdmZxekp4RnZSSG5MZmk5cmlHY2VmK3NHMDBOYnc0OHNi?=
- =?utf-8?B?dG9iRkFSVDhrQXQ4aUFtays4am5ZaDJkRkIxNkxjeTVSdEUxR0Jrd2VBUlhY?=
- =?utf-8?B?NVJJNkdhTG50bHZKQ0Rlc3BraE1udWZYMjVKdjFkbnQzTHJjMjMxbGJGeFR1?=
- =?utf-8?B?ZnJGWmU3VFJZQWl0bDBPUHl6eHVMNUpHcDBxNGZOdFcxK1EyRVFUL0xramZv?=
- =?utf-8?B?bDFQQk9ZRTE0WlN4c21NZlJhZk04UWNLaVNlSWNEaFZvVGhoNC9LTm5sbjEz?=
- =?utf-8?B?d2k5a1FSR3JpUHJBRlJHZWJVMzFlVHNlUVhLdFB2TDdkaWRTZEhqM041aTVp?=
- =?utf-8?B?d0ZMdGgwS1pmM3NGU25tbWtldkNGdkZyK3QrdWtsNElQcUtkZVo1SDYzRW41?=
- =?utf-8?B?Z2gwdFVjMG85MDEyTVA4Y3MzWDBRVHdpTXRTa3ZrU3FvWFJFWkFsWEFyKy8y?=
- =?utf-8?B?ZUhIckZwRkczbmQzRlMxMUJaVkxDVDZqZ1V0NUxpcjZ1cGszSC90ZkRwRS9i?=
- =?utf-8?B?TDYvamFCaGVQZjNsS3ZjUXNNN2lCczMwL0NuYXN5TG9aSS9aY0ZoMTk2Qk5o?=
- =?utf-8?B?WElXcnlSVHFQMDcrUndvNitmQnlRWUtmdHdGbGx6dGNUS2cvUXdHcWFmeTFv?=
- =?utf-8?B?QkUwWFc5R3VhelpYd3hGVjBRc0N5c0F1aXhKb3FaeUlFQkhGSnZFUTg4QWRa?=
- =?utf-8?B?Ujd0ZjBOUFFHczAxcW1rSWtOYUZqUERZLzRxZ2dBUUJHVTBYQUprVWJaL0FM?=
- =?utf-8?B?cUlyWnd6OEM2V0x6WVFvZnJKMlMzWFpUOXgreGFsa0lsRk9YajBWejVnbng2?=
- =?utf-8?B?K21KUTlTTS9tOWJpNFhDVkpiWTNlM3dvY0dDUmlDNWFPNlV1Slh4aC9KTSt1?=
- =?utf-8?B?SzJEZWtWNUxYKzQvcURsRExyUVVlKy9VQU9UVk8vK0ZyVmFBZ2xTaXV0cGJx?=
- =?utf-8?B?emQ0VjhzUytMQUhOTEpJRW5ZRHR3NDFxRW9DUGFGb2RSZnI5YnVzTFB4VTAr?=
- =?utf-8?B?N1JJN2d4aDE1dUoxNjdOVW0rbTU0cU04QkxURlUvcE9rV0E9PQ==?=
-X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230037)(36860700010)(1800799021)(7416011)(376011)(82310400023);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2024 18:33:48.9136
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 325485c3-40ee-4043-14a7-08dc8fc53210
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	CO1PEPF000075EF.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5979
-X-Mailman-Approved-At: Wed, 19 Jun 2024 09:56:52 +1000
+References: <CAAd53p7O51mG7LMrEobEgGrD8tsDFO3ZFSPAu02Dk-R0W3mkvg@mail.gmail.com>
+ <20240618204837.GA1262769@bhelgaas>
+In-Reply-To: <20240618204837.GA1262769@bhelgaas>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date: Wed, 19 Jun 2024 14:05:26 +0800
+Message-ID: <CAAd53p4gHQeyDkusDW7rkjVKjTnyi+RjHZLbPU5CqfsuVRtodQ@mail.gmail.com>
+Subject: Re: [PATCH v8 2/3] PCI/AER: Disable AER service on suspend
+To: Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,158 +87,185 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, linux-openrisc@vger.kernel.org, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, David Vernet <void@manifault.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Kees Cook <keescook@chromium.org>, Jonas Bonn <jonas@southpole.se>, Valentin Schneider <vschneid@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, "Rafael J. Wysocki" <rafael@kernel.org>, Russell King <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>, Tony Battersby <tonyb@cybernetics.com>, Ingo Molnar <mingo@redhat.com>, Mel Gorman <mgorman@suse.de>, "Naveen
- N. Rao" <naveen.n.rao@linux.ibm.com>, Matt Turner <mattst88@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, "Paul E.
- McKenney" <paulmck@kernel.org>, Rik van Riel <riel@surriel.com>, Brian Gerst <brgerst@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, Xin Li <xin3.li@intel.com>, Richard Henderson <richard.henderson@linaro.org>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Steven Rostedt <rostedt@goodmis.org>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Bjorn Helgaas <bhelgaas@google.com>, Stafford Horne <shorne@gmail.com>, Dietmar
- Eggemann <dietmar.eggemann@arm.com>, linux-arm-kernel@lists.infradead.org, Ben Segall <bsegall@google.com>, Michal Simek <monstr@monstr.eu>, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-parisc@vger.kernel.org, Tim Chen <tim.c.chen@linux.intel.com>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Julia Lawall <julia.lawall@inria.fr>, Dinh Nguyen <dinguyen@kernel.org>, Leonardo Bras <leobras@redhat.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, linux-alpha@vger.kernel.org, Imran Khan <imran.f.khan@oracle.com>, Borislav Petkov <bp@alien8.de>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Daniel
- Bristot de Oliveira <bristot@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Cc: kch@nvidia.com, regressions@lists.linux.dev, linux-pci@vger.kernel.org, mahesh@linux.ibm.com, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, kbusch@kernel.org, oohall@gmail.com, hare@suse.de, bagasdotme@gmail.com, bhelgaas@google.com, gloriouseggroll@gmail.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, sagi@grimberg.me
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Chenyu,
+On Wed, Jun 19, 2024 at 4:48=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org> =
+wrote:
+>
+> On Thu, Apr 25, 2024 at 03:33:01PM +0800, Kai-Heng Feng wrote:
+> > On Fri, Apr 19, 2024 at 4:35=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.o=
+rg> wrote:
+> > >
+> > > On Tue, Apr 16, 2024 at 12:32:24PM +0800, Kai-Heng Feng wrote:
+> > > > When the power rail gets cut off, the hardware can create some elec=
+tric
+> > > > noise on the link that triggers AER. If IRQ is shared between AER w=
+ith
+> > > > PME, such AER noise will cause a spurious wakeup on system suspend.
+> > > >
+> > > > When the power rail gets back, the firmware of the device resets it=
+self
+> > > > and can create unexpected behavior like sending PTM messages. For t=
+his
+> > > > case, the driver will always be too late to toggle off features sho=
+uld
+> > > > be disabled.
+> > > >
+> > > > As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power
+> > > > Management", TLP and DLLP transmission are disabled for a Link in L=
+2/L3
+> > > > Ready (D3hot), L2 (D3cold with aux power) and L3 (D3cold) states. S=
+o if
+> > > > the power will be turned off during suspend process, disable AER se=
+rvice
+> > > > and re-enable it during the resume process. This should not affect =
+the
+> > > > basic functionality.
+> > > >
+> > > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D209149
+> > > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216295
+> > > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218090
+> > > > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > >
+> > > Thanks for reviving this series.  I tried follow the history about
+> > > this, but there are at least two series that were very similar and I
+> > > can't put it all together.
+> > >
+> > > > ---
+> > > > v8:
+> > > >  - Add more bug reports.
+> > > >
+> > > > v7:
+> > > >  - Wording
+> > > >  - Disable AER completely (again) if power will be turned off
+> > > >
+> > > > v6:
+> > > > v5:
+> > > >  - Wording.
+> > > >
+> > > > v4:
+> > > > v3:
+> > > >  - No change.
+> > > >
+> > > > v2:
+> > > >  - Only disable AER IRQ.
+> > > >  - No more check on PME IRQ#.
+> > > >  - Use helper.
+> > > >
+> > > >  drivers/pci/pcie/aer.c | 25 +++++++++++++++++++++++++
+> > > >  1 file changed, 25 insertions(+)
+> > > >
+> > > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > > > index ac6293c24976..bea7818c2d1b 100644
+> > > > --- a/drivers/pci/pcie/aer.c
+> > > > +++ b/drivers/pci/pcie/aer.c
+> > > > @@ -28,6 +28,7 @@
+> > > >  #include <linux/delay.h>
+> > > >  #include <linux/kfifo.h>
+> > > >  #include <linux/slab.h>
+> > > > +#include <linux/suspend.h>
+> > > >  #include <acpi/apei.h>
+> > > >  #include <acpi/ghes.h>
+> > > >  #include <ras/ras_event.h>
+> > > > @@ -1497,6 +1498,28 @@ static int aer_probe(struct pcie_device *dev=
+)
+> > > >       return 0;
+> > > >  }
+> > > >
+> > > > +static int aer_suspend(struct pcie_device *dev)
+> > > > +{
+> > > > +     struct aer_rpc *rpc =3D get_service_data(dev);
+> > > > +     struct pci_dev *pdev =3D rpc->rpd;
+> > > > +
+> > > > +     if (pci_ancestor_pr3_present(pdev) || pm_suspend_via_firmware=
+())
+> > > > +             aer_disable_rootport(rpc);
+> > >
+> > > Why do we check pci_ancestor_pr3_present(pdev) and
+> > > pm_suspend_via_firmware()?  I'm getting pretty convinced that we need
+> > > to disable AER interrupts on suspend in general.  I think it will be
+> > > better if we do that consistently on all platforms, not special cases
+> > > based on details of how we suspend.
+> >
+> > Sure. Will change in next revision.
+> >
+> > > Also, why do we use aer_disable_rootport() instead of just
+> > > aer_disable_irq()?  I think it's the interrupt that causes issues on
+> > > suspend.  I see that there *were* some versions that used
+> > > aer_disable_irq(), but I can't find the reason it changed.
+> >
+> > Interrupt can cause system wakeup, if it's shared with PME.
+> >
+> > The reason why aer_disable_rootport() is used over aer_disable_irq()
+> > is that when the latter is used the error still gets logged during
+> > sleep cycle. Once the pcieport driver resumes, it invokes
+> > aer_root_reset() to reset the hierarchy, while the hierarchy hasn't
+> > resumed yet.
+> >
+> > So use aer_disable_rootport() to prevent such issue from happening.
+>
+> I think the issue is more likely on the resume side.
+>
+> aer_disable_rootport() disables AER interrupts, then clears
+> PCI_ERR_ROOT_STATUS, so the path looks like this:
+>
+>   aer_suspend
+>     aer_disable_rootport
+>       aer_disable_irq()
+>       pci_write_config_dword(PCI_ERR_ROOT_STATUS)    # clear
+>
+> This happens during suspend, so at this point I think the link is
+> still active and the spurious AER errors haven't happened yet and it
+> probably doesn't matter that we clear PCI_ERR_ROOT_STATUS *here*.
+>
+> My guess is that what really matters is that we disable the AER
+> interrupt so it doesn't happen during suspend, and then when we
+> resume, we probably want to clear out the status registers before
+> re-enabling the AER interrupt.
 
-On 6/18/2024 1:19 PM, Chen Yu wrote:
-> [..snip..]
->>>>>
->>>>>> Vincent [5] pointed out a case where the idle load kick will fail to
->>>>>> run on an idle CPU since the IPI handler launching the ILB will check
->>>>>> for need_resched(). In such cases, the idle CPU relies on
->>>>>> newidle_balance() to pull tasks towards itself.
->>>>>
->>>>> Is this the need_resched() in _nohz_idle_balance() ? Should we change
->>>>> this to 'need_resched() && (rq->nr_running || rq->ttwu_pending)' or
->>>>> something long those lines?
->>>>
->>>> It's not only this but also in do_idle() as well which exits the loop
->>>> to look for tasks to schedule
->>>>
->>>>>
->>>>> I mean, it's fairly trivial to figure out if there really is going to be
->>>>> work there.
->>>>>
->>>>>> Using an alternate flag instead of NEED_RESCHED to indicate a pending
->>>>>> IPI was suggested as the correct approach to solve this problem on the
->>>>>> same thread.
->>>>>
->>>>> So adding per-arch changes for this seems like something we shouldn't
->>>>> unless there really is no other sane options.
->>>>>
->>>>> That is, I really think we should start with something like the below
->>>>> and then fix any fallout from that.
->>>>
->>>> The main problem is that need_resched becomes somewhat meaningless
->>>> because it doesn't  only mean "I need to resched a task" and we have
->>>> to add more tests around even for those not using polling
->>>>
->>>>>
->>>>> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
->>>>> index 0935f9d4bb7b..cfa45338ae97 100644
->>>>> --- a/kernel/sched/core.c
->>>>> +++ b/kernel/sched/core.c
->>>>> @@ -5799,7 +5800,7 @@ static inline struct task_struct *
->>>>>    __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
->>>>>    {
->>>>>           const struct sched_class *class;
->>>>> -       struct task_struct *p;
->>>>> +       struct task_struct *p = NULL;
->>>>>
->>>>>           /*
->>>>>            * Optimization: we know that if all tasks are in the fair class we can
->>>>> @@ -5810,9 +5811,11 @@ __pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
->>>>>           if (likely(!sched_class_above(prev->sched_class, &fair_sched_class) &&
->>>>>                      rq->nr_running == rq->cfs.h_nr_running)) {
->>>>>
->>>>> -               p = pick_next_task_fair(rq, prev, rf);
->>>>> -               if (unlikely(p == RETRY_TASK))
->>>>> -                       goto restart;
->>>>> +               if (rq->nr_running) {
->>>>
->>>> How do you make the diff between a spurious need_resched() because of
->>>> polling and a cpu becoming idle ? isn't rq->nr_running null in both
->>>> cases ?
->>>> In the later case, we need to call sched_balance_newidle() but not in the former
->>>>
->>>
->>> Not sure if I understand correctly, if the goal of smp_call_function_single() is to
->>> kick the idle CPU and do not force it to launch the schedule()->sched_balance_newidle(),
->>> can we set the _TIF_POLLING_NRFLAG rather than _TIF_NEED_RESCHED in set_nr_if_polling()?
->>> I think writing any value to the monitor address would wakeup the idle CPU. And _TIF_POLLING_NRFLAG
->>> will be cleared once that idle CPU exit the idle loop, so we don't introduce arch-wide flag.
->> Although this might work for MWAIT, there is no way for the generic idle
->> path to know if there is a pending interrupt within a TIF_POLLING_NRFLAG
->> section. do_idle() sets TIF_POLLING_NRFLAG and relies on a bunch of
->> need_resched() checks along the way to bail early until finally doing a
->> current_clr_polling_and_test() before handing off to the cpuidle driver
->> in call_cpuidle(). I believe this section will necessarily need the sender
->> to indicate a pending interrupt via TIF_NEED_RESCHED flag to enable the
->> early bail out before going into the cpuidle driver since this case cannot
->> be considered the same as a break from MWAIT.
->>
-> 
-> I see, this is a good point. So you mean with only TIF_POLLING_NRFLAG there is
-> possibility that the 'ipi kick CPU out of idle' is lost after the CPU enters
-> do_idle() and before finally entering the idle state. While setting _TIF_NEED_RESCHED
-> could help the do_idle() loop to detect pending request easier.
+Thanks for catching this. Clearing status registers does the trick for
+my cases here.
 
-Yup, that is correct.
+>
+> In any event, I think we need to push this forward.  I'll post a v9
+> based on this but dropping the pci_ancestor_pr3_present(pdev) and
+> pm_suspend_via_firmware() tests so we do this unconditionally.
 
-> BTW, before the
-> commit b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()"), the
-> lost of ipi after entering do_idle() and before entering driver idle state
-> is also possible, right(the local irq is disabled)?
+Thanks for the v9.
 
- From what I understand, the IPI remains pending until the interrupts
-are enabled again. Before the optimization, the interrupts would be
-disabled all the way until the instruction that is used to put the CPU
-to sleep which is what __sti_mwait() and native_safe_halt() does. The
-CPU would have received the IPI then and broke out of idle before
-Peter's optimization went in. There is an elaborate comment on this in
-do_idle() function above the call to local_irq_disable(). In  commit
-edc8fc01f608 ("x86: Fix CPUIDLE_FLAG_IRQ_ENABLE leaking timer
-reprogram") Peter describes a case of actually missing the break from
-an interrupt as the driver enabled interrupts much earlier than
-executing the sleep instruction.
+Kai-Heng
 
-Since the CPU was in TIF_POLLING_NRFLAG state, one could simply get away
-by setting TIF_NEED_RESCHED and not sending an actual IPI which the
-need_resched() checks in the idle path would catch and the
-flush_smp_call_function_queue() on the exit path would have serviced the
-call function.
-
-MWAIT with Interrupt Break extension (CPUID 0x5 ECX[IBE]) can break out
-on pending interrupts even if interrupts are disabled  which is why
-"mwait_idle_with_hints()" now checks "ecx" to choose between "__mwait()"
-and "__mwait_sti()". The APM describes the extension to "allows
-interrupts to wake MWAIT, even when eFLAGS.IF = 0". (Vol. 3.
-"General-Purpose and System Instructions", Chapter 4. "System Instruction
-Reference", Section "MWAIT")
-
-I do hope someone corrects me if I'm wrong :)
-
->   
->> On x86, there seems to be a possibility of missing an interrupt if
->> someone writes _TIF_POLLING_NRFLAG to thread info between the target
->> executing MONTOR and MWAIT. AMD64 Architecture Programmer’s Manual
->> Volume 3: "General-Purpose and System Instructions", Chapter 4. "System
->> Instruction Reference", section "MWAIT" carries the following note in
->> the coding requirements:
->>
->> "MWAIT must be conditionally executed only if the awaited store has not
->> already occurred. (This prevents a race condition between the MONITOR
->> instruction arming the monitoring hardware and the store intended to
->> trigger the monitoring hardware.)"
->>
->> There exists a similar note in the "Example" section for "MWAIT" in
->> Intel 64 and IA-32 Architectures Software Developer’s Manual, Vol 2B
->> Chapter 4.3 "Instructions (M-U)"
->>
-> 
-> Thanks for the explaination of this race condition in detail.
-> 
-> thanks,
-> Chenyu
-
--- 
-Thanks and Regards,
-Prateek
+>
+> > > > +     return 0;
+> > > > +}
+> > > > +
+> > > > +static int aer_resume(struct pcie_device *dev)
+> > > > +{
+> > > > +     struct aer_rpc *rpc =3D get_service_data(dev);
+> > > > +     struct pci_dev *pdev =3D rpc->rpd;
+> > > > +
+> > > > +     if (pci_ancestor_pr3_present(pdev) || pm_resume_via_firmware(=
+))
+> > > > +             aer_enable_rootport(rpc);
+> > > > +
+> > > > +     return 0;
+> > > > +}
+> > > > +
+> > > >  /**
+> > > >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+> > > >   * @dev: pointer to Root Port, RCEC, or RCiEP
+> > > > @@ -1561,6 +1584,8 @@ static struct pcie_port_service_driver aerdri=
+ver =3D {
+> > > >       .service        =3D PCIE_PORT_SERVICE_AER,
+> > > >
+> > > >       .probe          =3D aer_probe,
+> > > > +     .suspend        =3D aer_suspend,
+> > > > +     .resume         =3D aer_resume,
+> > > >       .remove         =3D aer_remove,
+> > > >  };
+> > > >
+> > > > --
+> > > > 2.34.1
+> > > >
