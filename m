@@ -1,100 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C2D9109DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 17:30:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCB29109E9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 17:32:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HH5TKejO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TwH6T96V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4kvG0kngz3cXM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 01:30:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4kxn6Ffgz3cVn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 01:32:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HH5TKejO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TwH6T96V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4ktX3phrz2xQL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 01:29:23 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45KDudAK008194;
-	Thu, 20 Jun 2024 15:29:10 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4kx42vR8z2xQL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 01:31:36 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45KFRBHV002970;
+	Thu, 20 Jun 2024 15:31:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=c
-	IoH/OsYGxOQvmP3g/Ut2izvYfVOckotGHITVUdL2bA=; b=HH5TKejOGhtOK26St
-	Xp374fNhKGzRjoJFbF8weJL2flQwHphGg+XD9RWBidmr77jhR4oYbW7UFudoLFkH
-	ClaCsIR/F+u9bYocZ+haXL5peXEJD64Za5hmeyTio4uuCC3QXYH+U57ANlrEUQ32
-	QwnsSezywpNMs837eNAc+wxL83/vEVkkNW45L4+aK+zP2QW4UaPgdjR8fNFQGWRh
-	ehg2w9GpKrsauBS+oe5o4jO9vSmV5+LIi3NX8HmGrG85FXPpPgqEteiqfddGEHEe
-	gkja+rvhwK/gCOUdDpp2HzL/QP2sDLdRIuFZ6sYChvRleNiII25GECcibTDoaUQt
-	2Z3LQ==
+	content-type:subject:from:in-reply-to:date:cc:message-id
+	:references:to:content-transfer-encoding:mime-version; s=pp1;
+	 bh=G2fcrFsjszXukt1Qo8WC47/LJWqPVx7WH4Pi3VvdyAY=; b=TwH6T96VKTOJ
+	wc1KCOCheOvPruieO5U1DIi4EYymou+k5F0gFJA9W54aTWuC/HfwJ37RnvFpNyyu
+	+/6kkG90r2RTSMVann24bw78TtmYgNhdhKuxdhO9B8cb4FtlNZcoT2IhMO7xWN+C
+	9LmpZh9c+89caTmtolvIimi+RnNP7FLVaJJR8dIKeGiIuLJbIYvLxN1aFIkHL5vz
+	Wpsfz3HTKZ/pKFn2VAK6EsM9Dk7Ze+Lg1DdIBhQFDaNsxhDFj2U6i2JQNBJma1YW
+	zknuG3/6/6Cevf1lUzqHkBj403a51JcSHee2eOBbmLHJsw6i4wOsy62OTB7wx753
+	rsPrDiSe+A==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yvndu8aj4-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yvnbhrd77-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Jun 2024 15:29:10 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45KFT9pW004042;
-	Thu, 20 Jun 2024 15:29:09 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yvndu8aj0-1
+	Thu, 20 Jun 2024 15:31:23 +0000 (GMT)
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45KFVMXI010617;
+	Thu, 20 Jun 2024 15:31:22 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yvnbhrd74-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Jun 2024 15:29:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45KENP7P011037;
-	Thu, 20 Jun 2024 15:29:08 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yspsnq9c8-1
+	Thu, 20 Jun 2024 15:31:22 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45KF7ZjI006136;
+	Thu, 20 Jun 2024 15:31:21 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ysn9v7rqp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Jun 2024 15:29:08 +0000
+	Thu, 20 Jun 2024 15:31:21 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45KFT28450331980
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45KFVGYU21496428
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Jun 2024 15:29:04 GMT
+	Thu, 20 Jun 2024 15:31:18 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6679320043;
-	Thu, 20 Jun 2024 15:29:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 06CEF20040;
+	Thu, 20 Jun 2024 15:31:16 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B91192004B;
-	Thu, 20 Jun 2024 15:28:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 78AEF2004B;
+	Thu, 20 Jun 2024 15:31:13 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.43.81.239])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 20 Jun 2024 15:28:59 +0000 (GMT)
+	Thu, 20 Jun 2024 15:31:13 +0000 (GMT)
 Content-Type: text/plain;
 	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH] tools/perf: Handle perftool-testsuite_probe testcases
- fail when kernel debuginfo is not present
+Subject: Re: [V4 00/16] Add data type profiling support for powerpc
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <b31a73f6-b5fe-4ea8-8259-652b344a4cff@arm.com>
-Date: Thu, 20 Jun 2024 20:58:47 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F017F40F-28CC-47A6-8FC5-A537B7899EC7@linux.vnet.ibm.com>
-References: <20240617122121.7484-1-atrajeev@linux.vnet.ibm.com>
- <588beeaf-2015-40f4-a34b-e36556e20707@arm.com>
- <DA51C986-34EE-4849-B9C4-DB69E2ECF75C@linux.vnet.ibm.com>
- <5a0edf86-fe42-41d6-aa9a-8e88c1ad3f4c@arm.com>
- <b31a73f6-b5fe-4ea8-8259-652b344a4cff@arm.com>
-To: James Clark <james.clark@arm.com>, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
+In-Reply-To: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
+Date: Thu, 20 Jun 2024 21:01:01 +0530
+Message-Id: <C84A4D8E-3BCD-47A7-B41E-1B39744AECDF@linux.vnet.ibm.com>
+References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+        segher@kernel.crashing.org, christophe.leroy@csgroup.eu
 X-Mailer: Apple Mail (2.3774.600.62)
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yOlzRgoR9B6iPrNqJzb9M37UyesT7-YH
-X-Proofpoint-ORIG-GUID: jq0JTcsHktJaQmTZbOb1ca1gVZaOC5jC
+X-Proofpoint-GUID: cO7Q_0Dd4PT1l5mnLtgNk0eChvA0fd7W
+X-Proofpoint-ORIG-GUID: Fykoc5H7noHd9DPyKny9b_M4EX0P9Kby
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-20_07,2024-06-20_04,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- mlxscore=0 lowpriorityscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0
- impostorscore=0 priorityscore=1501 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406200111
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 priorityscore=1501 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2405170001 definitions=main-2406200111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,460 +104,268 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Kajol Jain <kjain@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, akanksha@linux.ibm.com, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>, akanksha@linux.ibm.com, linux-perf-users <linux-perf-users@vger.kernel.org>, disgoel@linux.vnet.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On 20 Jun 2024, at 2:03=E2=80=AFPM, James Clark <james.clark@arm.com> =
-wrote:
+> On 14 Jun 2024, at 10:56=E2=80=AFPM, Athira Rajeev <atrajeev@linux.vnet.i=
+bm.com> wrote:
 >=20
+> The patchset from Namhyung added support for data type profiling
+> in perf tool. This enabled support to associate PMU samples to data
+> types they refer using DWARF debug information. With the upstream
+> perf, currently it possible to run perf report or perf annotate to
+> view the data type information on x86.
 >=20
+> Initial patchset posted here had changes need to enable data type
+> profiling support for powerpc.
 >=20
-> On 18/06/2024 11:44, James Clark wrote:
->>=20
->>=20
->> On 17/06/2024 17:47, Athira Rajeev wrote:
->>>=20
->>>=20
->>>> On 17 Jun 2024, at 8:30=E2=80=AFPM, James Clark =
-<james.clark@arm.com> wrote:
->>>>=20
->>>>=20
->>>>=20
->>>> On 17/06/2024 13:21, Athira Rajeev wrote:
->>>>> Running "perftool-testsuite_probe" fails as below:
->>>>>=20
->>>>> ./perf test -v "perftool-testsuite_probe"
->>>>> 83: perftool-testsuite_probe  : FAILED
->>>>>=20
->>>>> There are three fails:
->>>>>=20
->>>>> 1. Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on =
-inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
->>>>>  -- [ FAIL ] -- perf_probe :: test_adding_kernel :: listing added =
-probe :: perf probe -l (output regexp parsing)
->>>>>=20
->>>>=20
->>>> On a machine where NO_DEBUGINFO gets set, this one skips for me. =
-But on
->>>> a machine where there _is_ debug info this test still fails.
->>>>=20
->>>> But in both cases the probe looks like it was added successfully. =
-So I'm
->>>> wondering if this one does need to be skipped, or it's just always
->>>> failing? Do you have this test passing anywhere where there is =
-debug info?
->>>>=20
->>>> The list command looks like it successfully lists the probe for me =
-in
->>>> both cases, it just doesn't have an address on the end:
->>>>=20
->>>> perf list 'probe:*'
->>>>=20
->>>>  probe:inode_permission (on inode_permission)
->>>>=20
->>>> Does the missing address mean anything or is it just not handled
->>>> properly by the test?
->>>>=20
->>>> Ironically the machine that _does_ pass the debug info test also =
-prints
->>>> this, but it looks like it still adds and lists the probe =
-correctly:
->>>>=20
->>>> perf probe -l probe:*
->>>>=20
->>>> Failed to find debug information for address 0xffff80008047ac30
->>>>   probe:inode_permission (on inode_permission)
->>>=20
->>> Hi James,
->>>=20
->>> Thanks for checking this patch.
->>>=20
->>> In environment where kernel is compiled with debuginfo:
->>>=20
->>> 1) Add probe point
->>>=20
->>> # ./perf probe --add inode_permission
->>> Added new event:
->>>  probe:inode_permission (on inode_permission)
->>>=20
->>> You can now use it in all perf tools, such as:
->>>=20
->>> perf record -e probe:inode_permission -aR sleep 1
->>>=20
->>>=20
->>> 2) Check using perf probe -l
->>>=20
->>> # ./perf probe -l
->>> probe:inode_permission (on inode_permission:2@fs/namei.c)
->>>=20
->>> With debuginfo, the result has additional info.
->>> The test looks for matching pattern =
-"\s*probe:inode_permission(?:_\d+)?\s+\(on =
-inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)=E2=80=9D in result
->>> where it is expecting "inode_permission:2@fs/namei.c=E2=80=9D . The =
-=E2=80=9C@fs/namei.c=E2=80=9D info needs debuginfo here.
->>>=20
->>=20
->> Hi Athira,
->>=20
->> Maybe there is a real bug and this patch is ok to go in and we should =
-leave
->> it as failing. Probe -L shows there is debug info available for =
-inode_permission:
->>=20
->>   $ ./perf probe -L inode_permission
->>=20
->>  <inode_permission@linux/fs/namei.c:0>
->>      0  int inode_permission(struct mnt_idmap *idmap,
->>                             struct inode *inode, int mask)
->>  ... more source code ...
->>=20
->> But probe -l has an error which could be related to the following
->> line not showing the filename details:
->>=20
->>  $ ./perf probe -l
->>=20
->>  Failed to find debug information for address 0xffff80008047ac30
->>    probe:inode_permission (on inode_permission)
->>=20
->> I'm running a clang kernel and sometimes I see issues with debug
->> info or toolchain stuff, that could be the reason.
->>=20
->>> The function I am using in patch to check for debuginfo =
-(skip_if_no_debuginfo) is from "tests/shell/lib/probe_vfs_getname.sh"
->>>=20
->>> skip_if_no_debuginfo() {
->>>        add_probe_vfs_getname -v 2>&1 | grep -E -q "^(Failed to find =
-the path for the kernel|Debuginfo-analysis is not supported)|(file has =
-no debug information)" && return 2
->>>        return 1
->>> }
->>>=20
->>> So the debuginfo test passes in your case since the log has "Failed =
-to find debug information=E2=80=9D which is not present in above grep =
-string.=20
->>>=20
->>=20
->> It passes because there is debug info for getname_flags() which is =
-what the
->> debug info check looks for. After some greps and seds it ultimately =
-does this
->> which succeeds:
->>=20
->> $ perf probe "vfs_getname=3Dgetname_flags:72 =
-pathname=3Dresult->name:string"
->>=20
->> Added new event:
->>    probe:vfs_getname    (on getname_flags:72 with =
-pathname=3Dresult->name:string)
->>=20
->> "Failed to find debug information for address" is only ever printed
->> with "perf probe -l" when there are probes added. The stderr
->> of that command is never piped into any grep anyway, which is why I
->> see it on the test output.
->>=20
->> So "probe -L" is working but "probe -l" isn't. Ultimately it looks =
-like a real
->> issue and we should leave the failure in.
->>=20
+> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgroup.=
+eu/T/
 >=20
-> To avoid confusion, by leave it in I mean this debuginfo patch is ok =
-and
-> the failure I'm seeing is caused by something else.
+> Main change were:
+> 1. powerpc instruction nmemonic table to associate load/store
+> instructions with move_ops which is use to identify if instruction
+> is a memory access one.
+> 2. To get register number and access offset from the given
+> instruction, code uses fields from "struct arch" -> objump.
+> Added entry for powerpc here.
+> 3. A get_arch_regnum to return register number from the
+> register name string.
 >=20
-> Reviewed-by: James Clark <james.clark@arm.com>
+> But the apporach used in the initial patchset used parsing of
+> disassembled code which the current perf tool implementation does.
+>=20
+> Example: lwz     r10,0(r9)
+>=20
+> This line "lwz r10,0(r9)" is parsed to extract instruction name,
+> registers names and offset. Also to find whether there is a memory
+> reference in the operands, "memory_ref_char" field of objdump is used.
+> For x86, "(" is used as memory_ref_char to tackle instructions of the
+> form "mov  (%rax), %rcx".
+>=20
+> In case of powerpc, not all instructions using "(" are the only memory
+> instructions. Example, above instruction can also be of extended form (X
+> form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
+> and extract the source/target registers, second patchset added support to=
+ use
+> raw instruction. With raw instruction, macros are added to extract opcode
+> and register fields.
+> Link to second patchset:
+> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.ib=
+m.com/
+>=20
+> Example representation using --show-raw-insn in objdump gives result:
+>=20
+> 38 01 81 e8     ld      r4,312(r1)
+>=20
+> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
+> this translates to instruction form: "ld RT,DS(RA)" and binary code
+> as:
+>  _____________________________________
+>  | 58 |  RT  |  RA |      DS       | |
+>  -------------------------------------
+> 0    6     11    16              30 31
+>=20
+> Second patchset used "objdump" again to read the raw instruction.
+> But since there is no need to disassemble and binary code can be read
+> directly from the DSO, third patchset (ie this patchset) uses below
+> apporach. The apporach preferred in powerpc to parse sample for data
+> type profiling in V3 patchset is:
+> - Read directly from DSO using dso__data_read_offset
+> - If that fails for any case, fallback to using libcapstone
+> - If libcapstone is not supported, approach will use objdump
+>=20
+> Patchset adds support to pick the opcode and reg fields from this
+> raw/binary instruction code. This approach came in from review comment
+> by Segher Boessenkool and Christophe for the initial patchset.
+>=20
+> Apart from that, instruction tracking is enabled for powerpc and
+> support function is added to find variables defined as registers
+> Example, in powerpc, below two registers are
+> defined to represent variable:
+> 1. r13: represents local_paca
+> register struct paca_struct *local_paca asm("r13");
+>=20
+> 2. r1: represents stack_pointer
+> register void *__stack_pointer asm("r1");
+>=20
+> These are handled in this patchset.
+>=20
+> - Patch 1 is to rearrange register state type structures to header file
+> so that it can referred from other arch specific files
+> - Patch 2 is to make instruction tracking as a callback to"struct arch"
+> so that it can be implemented by other archs easily and defined in arch
+> specific files
+> - Patch 3 adds support to capture and parse raw instruction in powerpc
+> using dso__data_read_offset utility
+> - Patch 4 adds logic to support using objdump when doing default "perf
+> report" or "perf annotate" since it that needs disassembled instruction.
+> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
+> - Patch 6 update parameters for reg extract functions to use raw
+> instruction on powerpc
+> - Patch 7 add support to identify memory instructions of opcode 31 in
+> powerpc
+> - Patch 8 adds more instructions to support instruction tracking in power=
+pc
+> - Patch 9 and 10 handles instruction tracking for powerpc.
+> - Patch 11, 12 and 13 add support to use libcapstone in powerpc
+> - Patch 14 and patch 15 handles support to find global register variables
+> - Patch 16 handles insn-stat option for perf annotate
+>=20
+> Note:
+> - There are remaining unknowns (25%) as seen in annotate Instruction stats
+> below.
+> - This patchset is not tested on powerpc32. In next step of enhancements
+> along with handling remaining unknowns, plan to cover powerpc32 changes
+> based on how testing goes.
+>=20
+> With the current patchset:
+>=20
+> ./perf record -a -e mem-loads sleep 1
+> ./perf report -s type,typeoff --hierarchy --group --stdio
+> ./perf annotate --data-type --insn-stat
+>=20
+> perf annotate logs:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> Annotate Instruction stats
+> total 609, ok 446 (73.2%), bad 163 (26.8%)
+>=20
+>  Name/opcode:  Good   Bad
+>  -----------------------------------------------------------
+>  58                  :   323    80
+>  32                  :    49    43
+>  34                  :    33    11
+>  OP_31_XOP_LDX       :     8    20
+>  40                  :    23     0
+>  OP_31_XOP_LWARX     :     5     1
+>  OP_31_XOP_LWZX      :     2     3
+>  OP_31_XOP_LDARX     :     3     0
+>  33                  :     0     2
+>  OP_31_XOP_LBZX      :     0     1
+>  OP_31_XOP_LWAX      :     0     1
+>  OP_31_XOP_LHZX      :     0     1
+>=20
+> perf report logs:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+>  Total Lost Samples: 0
+>=20
+>  Samples: 1K of event 'mem-loads'
+>  Event count (approx.): 937238
+>=20
+>  Overhead  Data Type  Data Type Offset
+> ........  .........  ................
+>=20
+>    48.60%  (unknown)  (unknown) +0 (no field)
+>    12.85%  long unsigned int  long unsigned int +0 (current_stack_pointer)
+>     4.68%  struct paca_struct  struct paca_struct +2312 (__current)
+>     4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
+>     2.69%  struct paca_struct  struct paca_struct +2808 (canary)
+>     2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
+>     2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
+>     1.41%  struct vm_fault  struct vm_fault +0 (vma)
+>     1.29%  struct task_struct  struct task_struct +276 (flags)
+>     1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
+>     0.90%  struct security_hook_list  struct security_hook_list +0 (list.=
+next)
+>     0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
+>     0.76%  struct rq  struct rq +2856 (cpu)
+>=20
+> Thanks
+> Athira Rajeev
 
-Thanks James for the Reviewed-by,
+Hi All
 
+Requesting for review comments for this patchset
+
+Thanks
 Athira
 >=20
->>> James,
->>>=20
->>> Only =E2=80=9Cperf probe -l=E2=80=9D subtest fails with debuginfo =
-enabled or other two subtests as well? Can you also share result on how =
-other two subtests behaves ?=20
->>>=20
->>> 1. Fail 2 :
->>>   perf probe -nf --max-probes=3D512 -a 'vfs_* $params=E2=80=99
->>>=20
->>>=20
->>> 2. Fail 3 :
->>>  perf probe 'vfs_read =
-somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64'
->>>=20
->>=20
->> Here's the full output:
->>=20
->> $ sudo ./perf test -vvv "testsuite_probe"
->> 84: perftool-testsuite_probe:
->> --- start ---
->> test child forked, pid 4872
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe =
-inode_permission ::=20
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe =
-inode_permission :: -a
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe =
-inode_permission :: --add
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing added =
-probe :: perf list
->> Failed to find debug information for address 0xffff80008047ac30
->> Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on =
-inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
->> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: listing added =
-probe :: perf probe -l (output regexp parsing)
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: using added probe
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: deleting added =
-probe
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing removed =
-probe (should NOT be listed)
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: dry run :: adding =
-probe
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding =
-probes :: first probe adding
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding =
-probes :: second probe adding (without force)
->> Failed to find debug information for address 0xffff80008047ac30
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding =
-probes :: second probe adding (with force)
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: using doubled =
-probe
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: removing multiple =
-probes
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: wildcard adding =
-support
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: non-existing =
-variable
->> -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with =
-retval :: add
->> Regexp not found: "^\[\s+perf\s+record:\s+Woken up [0-9\.]+ times? to =
-write data\s+\].*$"
->> Regexp not found: "^\[\s+perf\s+record:\s+Captured and wrote =
-[0-9\.]+\s*MB\s+(?:[\w\+\.-]*(?:(?:[\w\+\.-]+)?(?:\/[\w\+\.-]+)+)?\/)?perf=
-\.data(?:\.\d+)?\s*\(~?[0-9\.]+ samples\)\s+\].*$"
->> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: function with =
-retval :: record (command exitcode + output regexp parsing)
->> zero-sized data =
-(/tmp/perftool-testsuite_probe.VMU/perf_probe/perf.data), nothing to do!
->> Regexp not found: =
-"\s*cat\s+[0-9\.]+\s+\[[0-9\.]+\]\s+[0-9\.]+:\s+probe:inode_permission\w*:=
-\s+\([0-9A-Fa-f]+\s+<\-\s+[0-9A-Fa-f]+\)\s+arg1=3D[0-9A-Fa-f]+"
->> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: function argument =
-probing :: script (command exitcode + output regexp parsing)
->> ## [ FAIL ] ## perf_probe :: test_adding_kernel SUMMARY :: 3 failures =
-found
->> ---- end(-1) ----
->> 84: perftool-testsuite_probe                                        : =
-FAILED!
->>=20
->>=20
->>>=20
->>> Also since you mentioned this gets skipped when debuginfo is not =
-enabled, curious to know what is debuginfo message from your setup with =
-debuginfo disabled.
->>>=20
->>=20
->>  $ sudo ./perf probe -L getname_flags
->>  Failed to find the path for the kernel: Invalid ELF file
->>    Error: Failed to show lines.
->>=20
->>> Thanks again for checking.
->>>=20
->>> Athira
->>>=20
->>>>=20
->>>=20
->>>=20
->>>>=20
->>>>> 2. Regexp not found: "probe:vfs_mknod"
->>>>>  Regexp not found: "probe:vfs_create"
->>>>>  Regexp not found: "probe:vfs_rmdir"
->>>>>  Regexp not found: "probe:vfs_link"
->>>>>  Regexp not found: "probe:vfs_write"
->>>>>  -- [ FAIL ] -- perf_probe :: test_adding_kernel :: wildcard =
-adding support (command exitcode + output regexp parsing)
->>>>>=20
->>>>> 3. Regexp not found: "Failed to find"
->>>>>  Regexp not found: =
-"somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64"
->>>>>  Regexp not found: "in this function|at this address"
->>>>>  Line did not match any pattern: "The /boot/vmlinux file has no =
-debug information."
->>>>>  Line did not match any pattern: "Rebuild with =
-CONFIG_DEBUG_INFO=3Dy, or install an appropriate debuginfo package."
->>>>>=20
->>>>> These three tests depends on kernel debug info.
->>>>> 1. Fail 1 expects file name along with probe which needs debuginfo
->>>>> 2. Fail 2 :
->>>>>   perf probe -nf --max-probes=3D512 -a 'vfs_* $params'
->>>>>   Debuginfo-analysis is not supported.
->>>>>    Error: Failed to add events.
->>>>>=20
->>>>> 3. Fail 3 :
->>>>>  perf probe 'vfs_read =
-somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64'
->>>>>  Debuginfo-analysis is not supported.
->>>>>  Error: Failed to add events.
->>>>>=20
->>>>> There is already helper function skip_if_no_debuginfo in
->>>>> lib/probe_vfs_getname.sh which does perf probe and returns
->>>>> "2" if debug info is not present. Use the skip_if_no_debuginfo
->>>>> function and skip only the three tests which needs debuginfo
->>>>> based on the result.
->>>>>=20
->>>>> With the patch:
->>>>>=20
->>>>>   83: perftool-testsuite_probe:
->>>>>  --- start ---
->>>>>  test child forked, pid 3927
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe =
-inode_permission ::
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe =
-inode_permission :: -a
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe =
-inode_permission :: --add
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing added =
-probe :: perf list
->>>>>  Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on =
-inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
->>>>>  -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped =
-due to missing debuginfo :: testcase skipped
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: using added =
-probe
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: deleting added =
-probe
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing =
-removed probe (should NOT be listed)
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: dry run :: =
-adding probe
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding =
-probes :: first probe adding
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding =
-probes :: second probe adding (without force)
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding =
-probes :: second probe adding (with force)
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: using doubled =
-probe
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: removing =
-multiple probes
->>>>>  Regexp not found: "probe:vfs_mknod"
->>>>>  Regexp not found: "probe:vfs_create"
->>>>>  Regexp not found: "probe:vfs_rmdir"
->>>>>  Regexp not found: "probe:vfs_link"
->>>>>  Regexp not found: "probe:vfs_write"
->>>>>  -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped =
-due to missing debuginfo :: testcase skipped
->>>>>  Regexp not found: "Failed to find"
->>>>>  Regexp not found: =
-"somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64"
->>>>>  Regexp not found: "in this function|at this address"
->>>>>  Line did not match any pattern: "The /boot/vmlinux file has no =
-debug information."
->>>>>  Line did not match any pattern: "Rebuild with =
-CONFIG_DEBUG_INFO=3Dy, or install an appropriate debuginfo package."
->>>>>  -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped =
-due to missing debuginfo :: testcase skipped
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with =
-retval :: add
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with =
-retval :: record
->>>>>  -- [ PASS ] -- perf_probe :: test_adding_kernel :: function =
-argument probing :: script
->>>>>  ## [ PASS ] ## perf_probe :: test_adding_kernel SUMMARY
->>>>>  ---- end(0) ----
->>>>>  83: perftool-testsuite_probe                                      =
-  : Ok
->>>>>=20
->>>>> Only the three specific tests are skipped and remaining
->>>>> ran successfully.
->>>>>=20
->>>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>>>> ---
->>>>> .../shell/base_probe/test_adding_kernel.sh    | 31 =
-+++++++++++++++++--
->>>>> 1 file changed, 28 insertions(+), 3 deletions(-)
->>>>>=20
->>>>> diff --git =
-a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh =
-b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
->>>>> index 63bb8974b38e..187dc8d4b163 100755
->>>>> --- a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
->>>>> +++ b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
->>>>> @@ -21,8 +21,18 @@
->>>>> THIS_TEST_NAME=3D`basename $0 .sh`
->>>>> TEST_RESULT=3D0
->>>>>=20
->>>>> +# shellcheck source=3Dlib/probe_vfs_getname.sh
->>>>> +. "$(dirname "$0")/../lib/probe_vfs_getname.sh"
->>>>> +
->>>>> TEST_PROBE=3D${TEST_PROBE:-"inode_permission"}
->>>>>=20
->>>>> +# set NO_DEBUGINFO to skip testcase if debuginfo is not present
->>>>> +# skip_if_no_debuginfo returns 2 if debuginfo is not present
->>>>> +skip_if_no_debuginfo
->>>>> +if [ $? -eq 2 ]; then
->>>>> + NO_DEBUGINFO=3D1
->>>>> +fi
->>>>> +
->>>>> check_kprobes_available
->>>>> if [ $? -ne 0 ]; then
->>>>> print_overall_skipped
->>>>> @@ -67,7 +77,12 @@ PERF_EXIT_CODE=3D$?
->>>>> ../common/check_all_patterns_found.pl =
-"\s*probe:${TEST_PROBE}(?:_\d+)?\s+\(on =
-${TEST_PROBE}(?:[:\+]$RE_NUMBER_HEX)?@.+\)" < =
-$LOGS_DIR/adding_kernel_list-l.log
->>>>> CHECK_EXIT_CODE=3D$?
->>>>>=20
->>>>> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "listing added =
-probe :: perf probe -l"
->>>>> +if [ $NO_DEBUGINFO ] ; then
->>>>> + print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due =
-to missing debuginfo"
->>>>> +else
->>>>> + print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "listing added =
-probe :: perf probe -l"
->>>>> +fi
->>>>> +
->>>>> (( TEST_RESULT +=3D $? ))
->>>>>=20
->>>>>=20
->>>>> @@ -208,7 +223,12 @@ PERF_EXIT_CODE=3D$?
->>>>> ../common/check_all_patterns_found.pl "probe:vfs_mknod" =
-"probe:vfs_create" "probe:vfs_rmdir" "probe:vfs_link" "probe:vfs_write" =
-< $LOGS_DIR/adding_kernel_adding_wildcard.err
->>>>> CHECK_EXIT_CODE=3D$?
->>>>>=20
->>>>> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "wildcard adding =
-support"
->>>>> +if [ $NO_DEBUGINFO ] ; then
->>>>> + print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due =
-to missing debuginfo"
->>>>> +else
->>>>> + print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "wildcard adding =
-support"
->>>>> +fi
->>>>> +
->>>>> (( TEST_RESULT +=3D $? ))
->>>>>=20
->>>>>=20
->>>>> @@ -232,7 +252,12 @@ CHECK_EXIT_CODE=3D$?
->>>>> ../common/check_no_patterns_found.pl "$RE_SEGFAULT" < =
-$LOGS_DIR/adding_kernel_nonexisting.err
->>>>> (( CHECK_EXIT_CODE +=3D $? ))
->>>>>=20
->>>>> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "non-existing =
-variable"
->>>>> +if [ $NO_DEBUGINFO ]; then
->>>>> + print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due =
-to missing debuginfo"
->>>>> +else
->>>>> + print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "non-existing =
-variable"
->>>>> +fi
->>>>> +
->>>>> (( TEST_RESULT +=3D $? ))
-
+> Changelog:
+> From v3->v4:
+> - Addressed review comments from Ian by using capston_init from
+>  "util/print_insn.c" instead of "open_capston_handle".
+> - Addressed review comment from Namhyung by moving "opcode"
+>  field from "struct ins" to "struct disasm_line"
+>=20
+> From v2->v3:
+> - Addressed review comments from Christophe and Namhyung for V2
+> - Changed the apporach in powerpc to parse sample for data
+>  type profiling as:
+>  Read directly from DSO using dso__data_read_offset
+>  If that fails for any case, fallback to using libcapstone
+>  If libcapstone is not supported, approach will use objdump
+> - Include instructions with opcode as 31 and correctly categorize
+>  them as memory or arithmetic instructions.
+> - Include more instructions for instruction tracking in powerpc
+>=20
+> From v1->v2:
+> - Addressed suggestion from Christophe Leroy and Segher Boessenkool
+>  to use the binary code (raw insn) to fetch opcode, register and
+>  offset fields.
+> - Added support for instruction tracking in powerpc
+> - Find the register defined variables (r13 and r1 which points to
+>  local_paca and current_stack_pointer in powerpc)
+>=20
+> Athira Rajeev (16):
+>  tools/perf: Move the data structures related to register type to
+>    header file
+>  tools/perf: Add "update_insn_state" callback function to handle arch
+>    specific instruction tracking
+>  tools/perf: Add support to capture and parse raw instruction in
+>    powerpc using dso__data_read_offset utility
+>  tools/perf: Use sort keys to determine whether to pick objdump to
+>    disassemble
+>  tools/perf: Add disasm_line__parse to parse raw instruction for
+>    powerpc
+>  tools/perf: Update parameters for reg extract functions to use raw
+>    instruction on powerpc
+>  tools/perf: Add support to identify memory instructions of opcode 31
+>    in powerpc
+>  tools/perf: Add some of the arithmetic instructions to support
+>    instruction tracking in powerpc
+>  tools/perf: Add more instructions for instruction tracking
+>  tools/perf: Update instruction tracking for powerpc
+>  tools/perf: Make capstone_init non-static so that it can be used
+>    during symbol disassemble
+>  tools/perf: Use capstone_init and remove open_capstone_handle from
+>    disasm.c
+>  tools/perf: Add support to use libcapstone in powerpc
+>  tools/perf: Add support to find global register variables using
+>    find_data_type_global_reg
+>  tools/perf: Add support for global_die to capture name of variable in
+>    case of register defined variable
+>  tools/perf: Set instruction name to be used with insn-stat when using
+>    raw instruction
+>=20
+> tools/include/linux/string.h                  |   2 +
+> tools/lib/string.c                            |  13 +
+> tools/perf/arch/arm64/annotate/instructions.c |   3 +-
+> .../arch/loongarch/annotate/instructions.c    |   6 +-
+> .../perf/arch/powerpc/annotate/instructions.c | 260 +++++++++
+> tools/perf/arch/powerpc/util/dwarf-regs.c     |  53 ++
+> tools/perf/arch/s390/annotate/instructions.c  |   5 +-
+> tools/perf/arch/x86/annotate/instructions.c   | 383 +++++++++++++
+> tools/perf/builtin-annotate.c                 |   4 +-
+> tools/perf/util/annotate-data.c               | 519 +++---------------
+> tools/perf/util/annotate-data.h               |  78 +++
+> tools/perf/util/annotate.c                    |  35 +-
+> tools/perf/util/annotate.h                    |   6 +-
+> tools/perf/util/disasm.c                      | 475 ++++++++++++++--
+> tools/perf/util/disasm.h                      |  13 +-
+> tools/perf/util/dwarf-aux.c                   |   1 +
+> tools/perf/util/dwarf-aux.h                   |   1 +
+> tools/perf/util/include/dwarf-regs.h          |   4 +
+> tools/perf/util/print_insn.c                  |  15 +-
+> tools/perf/util/print_insn.h                  |   5 +
+> tools/perf/util/sort.c                        |   7 +-
+> 21 files changed, 1386 insertions(+), 502 deletions(-)
+>=20
+> --=20
+> 2.43.0
+>=20
 
