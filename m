@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F421A910FDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 20:01:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373A6910FE1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 20:02:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UpZ7Ybfi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AE5StWle;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4pFy4g01z3dBy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 04:01:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4pGl6jVtz3fpg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 04:02:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UpZ7Ybfi;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AE5StWle;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4pC16kmSz3cRY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 03:58:53 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1f4a5344ec7so8743795ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 10:58:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4pCC3Frfz3d9B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 03:59:03 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-7046211e455so847576b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 10:59:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718906333; x=1719511133; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1718906342; x=1719511142; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hj1QfKPBw8fFwUqArOqXUFjt0dwMTc6OO+45pzeQpo8=;
-        b=UpZ7YbfiPyxokhCZUzBtjDnvleKLpqSlisybI9sanku4rGNCWGxliEQW+t3wd+u9NS
-         5AXJRgXx+e7/Hrq6v/WRjmkRTX1cER7Al69BaO2R8YpYVO+/rRiYSIyy2nJTsDLlmCtJ
-         kQnldpBp8qtaOGYAIrMRHKrALwbnLFfuHm9qnr5GwCF7T608O1TK9Jcvd5dnS8Zvz97Y
-         kGx7NPMpjmODiqUidOSwTlJhZs0jHTWqQqk3TA/bha8j4Sx+9+69s+MdVXRDgp99yefr
-         WeQsGFQtzTt9Ae9SflpLx1cgqZH6j8VmqZwOkcHIstllOP4QhYZakq448nRzkbeteAwZ
-         TsyA==
+        bh=Q+W8qrsNzjA5KvK9XemaQbK3hnneV0OURa4QuE2WY6E=;
+        b=AE5StWleTuECpSppnUffcNh5QZzzWuVQ6NrP3WA2YzvDkIKrhREMlqgawfKh+gFzAW
+         QBkhZUssun/YcRYvKdTc6IwhRLyapNftrYlRsXtngUKUaaRJWupb82a3RLBqUDSP60ub
+         v9Cfuob/ixWp6kHdTwNu4l6ydN1j2UBt7jmhjdHwdxdT/omtQxBOMdZ5t8DAvcDHLvIw
+         lseLp/M8jeO2YQrHOCOA0/PfXSYDkKqegx4sH3PtlXz87tAWq5Rdz9eN787ulEAs1AaS
+         Nv51p/ZJuvUU9cnwlGIUlJwumchh560JCBlCOj44DBKhpnJ4K8F9qp90X449MnycG12B
+         pvxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718906333; x=1719511133;
+        d=1e100.net; s=20230601; t=1718906342; x=1719511142;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hj1QfKPBw8fFwUqArOqXUFjt0dwMTc6OO+45pzeQpo8=;
-        b=N12bQqeuNZAkxK2uNDZlx8kedyoxcmiEDFThLoVZ2MwVacBs3Getil0GJ2Kv4FuQqG
-         a+XmVFLhXRm5nyF8wmZwXKt0xmFUrbpY0cnYmr0LqgPrPk8Y7cBgL7yu4XCGEMa2RtUg
-         DbpxfXEoTmHlKgb5dIESfWLYHjJ83McWxjHtVaLeFDgf5P40XJMOoL4z0hHIjQR5zzk6
-         rOqj1/qnMFErszyfvneIjJwRItf/fKpZUhy3IqhuWWlvsrI8sQCKzYSOF0l4H+I3wjDE
-         Vv3oVsBx+V4xYs8Q7r9ReerqS2tz/7W0socrAaKU/GMCCDQ7t6xABsbKr36mLvNUlGTe
-         pyLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXW0I2IK5hs6JRXQdoWDw4NyjQWit4D/YiAvt/OixnTl4NyjKQ4tQa6F4bB9MjAsMtjPJ+sodxTl+8PlI51LjEWsuSPA2trGhcIVLxZrA==
-X-Gm-Message-State: AOJu0Yw7Up2JArfhNANdvcBZzbb/LHx5tu+faBUgceEJEIWX+V5b8u4h
-	58Y4u+kMAcaGbnoIFxXdJ/B8erxkuxGaPDQOt8fr9bYx7KLoJMUd
-X-Google-Smtp-Source: AGHT+IHv7hZ0hu3tHqs8vQg7dykPKbTq19sg2MZwzPshyGp9XYLFVMvIGQ9OcLfhnMnfvSTxeFX6Ow==
-X-Received: by 2002:a17:902:d510:b0:1f6:ee7b:6ecf with SMTP id d9443c01a7336-1f98b28f021mr132320805ad.34.1718906333014;
-        Thu, 20 Jun 2024 10:58:53 -0700 (PDT)
+        bh=Q+W8qrsNzjA5KvK9XemaQbK3hnneV0OURa4QuE2WY6E=;
+        b=fKnuD8Iringlijoy7X3WQIgCTeV8iOLvK29vK/QZRVkxu9DCrndueZI47nS8F1MNY3
+         xeaKMYTWpYNt8Eg8W88oFfsstGNL91UBA8xzZCVyt9DbQCpKl6MnfLxs0L2tfCCpSC6F
+         DYSjmLBDxW/sFHIE8jI/o12jWxmWdiogrW9qh9IWDehtaSEmY8wLjXFh+0BI9EtXbhdb
+         tbNwb2FKrce5+1aauhItVQ/3fx2YPJXdgMUZKPIimbrQeyMZyZ3iv+gyxBhCDjL0fptw
+         hTLxL9r9howFeQPxg/paT2EtPESnDAh4tn1drSWbGLm5XNi0Y0ihHi5Q+tdwuIwRq+8P
+         FAOg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvpfZr9X7k4sF80isNNCk/WeXVSanOpVlU0mx1SZkmHSZRI8v8qR549AamzplTXSirDQZFzX0dqI+X9nRWsAZtsQBmbRus7tKjaHc0aA==
+X-Gm-Message-State: AOJu0Yx22gK0D7Jc9AhvL2dWR4cMjVbLaAODqUFyBZiT1Fr515vw6X//
+	zTVi3nVsPavjzBJMLtlH+8QFKdihadwUvp7on84EW45aVDdmw07K
+X-Google-Smtp-Source: AGHT+IEbaEr10aoZqMNXkMGuZ5af7kUmWBhANe7UmWWwHg5OCvBD+k/5bSXXGBLZOHAs+1L/wt8fOA==
+X-Received: by 2002:aa7:820d:0:b0:704:3491:d74e with SMTP id d2e1a72fcca58-70629cce5b3mr5236265b3a.22.1718906341930;
+        Thu, 20 Jun 2024 10:59:01 -0700 (PDT)
 Received: from localhost ([216.228.127.128])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9c92ac748sm19063135ad.187.2024.06.20.10.58.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb4c621sm12637684b3a.115.2024.06.20.10.59.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 10:58:52 -0700 (PDT)
+        Thu, 20 Jun 2024 10:59:01 -0700 (PDT)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org
-Subject: [PATCH v4 37/40] KVM: PPC: Book3s HV: drop locking around kvmppc_uvmem_bitmap
-Date: Thu, 20 Jun 2024 10:57:00 -0700
-Message-ID: <20240620175703.605111-38-yury.norov@gmail.com>
+	Yury Norov <yury.norov@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 40/40] powerpc/xive: drop locking around IRQ map
+Date: Thu, 20 Jun 2024 10:57:03 -0700
+Message-ID: <20240620175703.605111-41-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240620175703.605111-1-yury.norov@gmail.com>
 References: <20240620175703.605111-1-yury.norov@gmail.com>
@@ -86,96 +86,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sergey Shtylyov <s.shtylyov@omp.ru>, Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>, Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Matthew Wilcox <willy@infradead.org>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, Linus Torvalds <torvalds@linux-foundation.org>, Alexey Klimov <alexey.klimov@linaro.org>
+Cc: Sergey Shtylyov <s.shtylyov@omp.ru>, Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Matthew Wilcox <willy@infradead.org>, Alexey Klimov <alexey.klimov@linaro.org>, Linus Torvalds <torvalds@linux-foundation.org>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The driver operates on individual bits of the kvmppc_uvmem_bitmap.
-Now that we have an atomic search API for bitmaps, we can rely on
-it and drop locking around the bitmap entirely.
+The code operates on individual bits of the bitmap, and leveraging
+atomic find ops we can drop locking scheme around the map.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 33 ++++++++++--------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ arch/powerpc/sysdev/xive/spapr.c | 34 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 28 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 92f33115144b..93d09137cb23 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -86,6 +86,7 @@
-  * page-sizes, we need to break this assumption.
-  */
- 
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index e45419264391..2b3b8ad75b42 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -17,6 +17,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/bitmap.h>
+ #include <linux/cpumask.h>
 +#include <linux/find_atomic.h>
- #include <linux/pagemap.h>
- #include <linux/migrate.h>
- #include <linux/kvm_host.h>
-@@ -99,7 +100,6 @@
+ #include <linux/mm.h>
+ #include <linux/delay.h>
+ #include <linux/libfdt.h>
+@@ -41,7 +42,6 @@ struct xive_irq_bitmap {
+ 	unsigned long		*bitmap;
+ 	unsigned int		base;
+ 	unsigned int		count;
+-	spinlock_t		lock;
+ 	struct list_head	list;
+ };
  
- static struct dev_pagemap kvmppc_uvmem_pgmap;
- static unsigned long *kvmppc_uvmem_bitmap;
--static DEFINE_SPINLOCK(kvmppc_uvmem_bitmap_lock);
+@@ -55,7 +55,6 @@ static int __init xive_irq_bitmap_add(int base, int count)
+ 	if (!xibm)
+ 		return -ENOMEM;
  
- /*
-  * States of a GFN
-@@ -697,23 +697,20 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- 	struct page *dpage = NULL;
- 	unsigned long bit, uvmem_pfn;
- 	struct kvmppc_uvmem_page_pvt *pvt;
--	unsigned long pfn_last, pfn_first;
-+	unsigned long num_pfns, pfn_first;
- 
- 	pfn_first = kvmppc_uvmem_pgmap.range.start >> PAGE_SHIFT;
--	pfn_last = pfn_first +
--		   (range_len(&kvmppc_uvmem_pgmap.range) >> PAGE_SHIFT);
-+	num_pfns = range_len(&kvmppc_uvmem_pgmap.range) >> PAGE_SHIFT;
- 
--	spin_lock(&kvmppc_uvmem_bitmap_lock);
--	bit = find_first_zero_bit(kvmppc_uvmem_bitmap,
--				  pfn_last - pfn_first);
--	if (bit >= (pfn_last - pfn_first))
--		goto out;
--	bitmap_set(kvmppc_uvmem_bitmap, bit, 1);
--	spin_unlock(&kvmppc_uvmem_bitmap_lock);
-+	bit = find_and_set_bit(kvmppc_uvmem_bitmap, num_pfns);
-+	if (bit >= num_pfns)
-+		return NULL;
- 
- 	pvt = kzalloc(sizeof(*pvt), GFP_KERNEL);
--	if (!pvt)
--		goto out_clear;
-+	if (!pvt) {
-+		clear_bit(bit, kvmppc_uvmem_bitmap);
-+		return NULL;
-+	}
- 
- 	uvmem_pfn = bit + pfn_first;
- 	kvmppc_gfn_secure_uvmem_pfn(gpa >> PAGE_SHIFT, uvmem_pfn, kvm);
-@@ -725,12 +722,6 @@ static struct page *kvmppc_uvmem_get_page(unsigned long gpa, struct kvm *kvm)
- 	dpage->zone_device_data = pvt;
- 	zone_device_page_init(dpage);
- 	return dpage;
--out_clear:
--	spin_lock(&kvmppc_uvmem_bitmap_lock);
--	bitmap_clear(kvmppc_uvmem_bitmap, bit, 1);
--out:
--	spin_unlock(&kvmppc_uvmem_bitmap_lock);
--	return NULL;
+-	spin_lock_init(&xibm->lock);
+ 	xibm->base = base;
+ 	xibm->count = count;
+ 	xibm->bitmap = bitmap_zalloc(xibm->count, GFP_KERNEL);
+@@ -81,47 +80,26 @@ static void xive_irq_bitmap_remove_all(void)
+ 	}
  }
  
- /*
-@@ -1021,9 +1012,7 @@ static void kvmppc_uvmem_page_free(struct page *page)
- 			(kvmppc_uvmem_pgmap.range.start >> PAGE_SHIFT);
- 	struct kvmppc_uvmem_page_pvt *pvt;
+-static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
+-{
+-	int irq;
+-
+-	irq = find_first_zero_bit(xibm->bitmap, xibm->count);
+-	if (irq != xibm->count) {
+-		set_bit(irq, xibm->bitmap);
+-		irq += xibm->base;
+-	} else {
+-		irq = -ENOMEM;
+-	}
+-
+-	return irq;
+-}
+-
+ static int xive_irq_bitmap_alloc(void)
+ {
+ 	struct xive_irq_bitmap *xibm;
+-	unsigned long flags;
+-	int irq = -ENOENT;
  
--	spin_lock(&kvmppc_uvmem_bitmap_lock);
--	bitmap_clear(kvmppc_uvmem_bitmap, pfn, 1);
--	spin_unlock(&kvmppc_uvmem_bitmap_lock);
-+	clear_bit(pfn, kvmppc_uvmem_bitmap);
+ 	list_for_each_entry(xibm, &xive_irq_bitmaps, list) {
+-		spin_lock_irqsave(&xibm->lock, flags);
+-		irq = __xive_irq_bitmap_alloc(xibm);
+-		spin_unlock_irqrestore(&xibm->lock, flags);
+-		if (irq >= 0)
+-			break;
++		int irq = find_and_set_bit(xibm->bitmap, xibm->count);
++
++		if (irq < xibm->count)
++			return irq + xibm->base;
+ 	}
+-	return irq;
++	return -ENOENT;
+ }
  
- 	pvt = page->zone_device_data;
- 	page->zone_device_data = NULL;
+ static void xive_irq_bitmap_free(int irq)
+ {
+-	unsigned long flags;
+ 	struct xive_irq_bitmap *xibm;
+ 
+ 	list_for_each_entry(xibm, &xive_irq_bitmaps, list) {
+ 		if ((irq >= xibm->base) && (irq < xibm->base + xibm->count)) {
+-			spin_lock_irqsave(&xibm->lock, flags);
+ 			clear_bit(irq - xibm->base, xibm->bitmap);
+-			spin_unlock_irqrestore(&xibm->lock, flags);
+ 			break;
+ 		}
+ 	}
 -- 
 2.43.0
 
