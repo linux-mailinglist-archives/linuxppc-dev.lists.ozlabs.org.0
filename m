@@ -2,40 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629CE90FEF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 10:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A88A90FFEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 11:07:49 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=FFr+/Gbn;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4Ygj12pgz3cWn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 18:34:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4ZQB0pThz3cSd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 19:07:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=james.clark@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4YgH0jQ2z2y3b
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 18:33:59 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BBDBDA7;
-	Thu, 20 Jun 2024 01:33:51 -0700 (PDT)
-Received: from [192.168.1.100] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C169B3F64C;
-	Thu, 20 Jun 2024 01:33:24 -0700 (PDT)
-Message-ID: <b31a73f6-b5fe-4ea8-8259-652b344a4cff@arm.com>
-Date: Thu, 20 Jun 2024 09:33:24 +0100
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=FFr+/Gbn;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4ZNd10xBz3bZ3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 19:06:24 +1000 (AEST)
+Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id E1336C2B2B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 08:43:24 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 330E420002;
+	Thu, 20 Jun 2024 08:43:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1718872990;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bcqP/4Bzw72Fti9Nz8gpJCdKx5nEIN7PgHfX5LT8OWo=;
+	b=FFr+/GbnH9ugA6vdC2XhsIiie53JB2O3yt0rQvNGeMUg6zk4l5chVUH9dQD0HK7vVqVyQW
+	CJuKRnK1foti8pk66vu8/eMEweBo6Mfg7aFpaPg6Q7UNAoFLWYcXJJrPIy6KGZoiQ13O0C
+	Ch/jW7WE6LMqOi+rGfas7LsauYvJIu9U4otaSfL+GR7UOi4jFDFySQlOzVHZuVODUSxQrr
+	/DrAYd/jVD45bHbi+5InmQs1QYLxBU4EpbHUxCQkLD0nnlXdgsDFyZ1R95XQCDS2jRXRjA
+	a7IdT/cUeRjXFX1TKmYiEO9MXrbI2P0i4maX4vQKgIJiLdJcuUTR3tM5Z6GYTQ==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 00/10] Add support for non-interleaved mode in qmc_audio
+Date: Thu, 20 Jun 2024 10:42:47 +0200
+Message-ID: <20240620084300.397853-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/perf: Handle perftool-testsuite_probe testcases
- fail when kernel debuginfo is not present
-From: James Clark <james.clark@arm.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-References: <20240617122121.7484-1-atrajeev@linux.vnet.ibm.com>
- <588beeaf-2015-40f4-a34b-e36556e20707@arm.com>
- <DA51C986-34EE-4849-B9C4-DB69E2ECF75C@linux.vnet.ibm.com>
- <5a0edf86-fe42-41d6-aa9a-8e88c1ad3f4c@arm.com>
-Content-Language: en-US
-In-Reply-To: <5a0edf86-fe42-41d6-aa9a-8e88c1ad3f4c@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,349 +72,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Kajol Jain <kjain@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, akanksha@linux.ibm.com, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The qmc_audio driver supports only audio in interleaved mode.
+Non-interleaved mode can be easily supported using several QMC channel
+per DAI. In that case, data related to ch0 are sent to (received from)
+the first QMC channel, data related to ch1 use the next QMC channel and
+so on up to the last channel.
 
+In terms of constraints and settings, the interleaved and
+non-interleaved modes are slightly different.
 
-On 18/06/2024 11:44, James Clark wrote:
-> 
-> 
-> On 17/06/2024 17:47, Athira Rajeev wrote:
->>
->>
->>> On 17 Jun 2024, at 8:30 PM, James Clark <james.clark@arm.com> wrote:
->>>
->>>
->>>
->>> On 17/06/2024 13:21, Athira Rajeev wrote:
->>>> Running "perftool-testsuite_probe" fails as below:
->>>>
->>>> ./perf test -v "perftool-testsuite_probe"
->>>> 83: perftool-testsuite_probe  : FAILED
->>>>
->>>> There are three fails:
->>>>
->>>> 1. Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
->>>>   -- [ FAIL ] -- perf_probe :: test_adding_kernel :: listing added probe :: perf probe -l (output regexp parsing)
->>>>
->>>
->>> On a machine where NO_DEBUGINFO gets set, this one skips for me. But on
->>> a machine where there _is_ debug info this test still fails.
->>>
->>> But in both cases the probe looks like it was added successfully. So I'm
->>> wondering if this one does need to be skipped, or it's just always
->>> failing? Do you have this test passing anywhere where there is debug info?
->>>
->>> The list command looks like it successfully lists the probe for me in
->>> both cases, it just doesn't have an address on the end:
->>>
->>> perf list 'probe:*'
->>>
->>>   probe:inode_permission (on inode_permission)
->>>
->>> Does the missing address mean anything or is it just not handled
->>> properly by the test?
->>>
->>> Ironically the machine that _does_ pass the debug info test also prints
->>> this, but it looks like it still adds and lists the probe correctly:
->>>
->>>  perf probe -l probe:*
->>>
->>>  Failed to find debug information for address 0xffff80008047ac30
->>>    probe:inode_permission (on inode_permission)
->>
->> Hi James,
->>
->> Thanks for checking this patch.
->>
->> In environment where kernel is compiled with debuginfo:
->>
->> 1) Add probe point
->>
->> # ./perf probe --add inode_permission
->> Added new event:
->>   probe:inode_permission (on inode_permission)
->>
->> You can now use it in all perf tools, such as:
->>
->> perf record -e probe:inode_permission -aR sleep 1
->>
->>
->> 2) Check using perf probe -l
->>
->> # ./perf probe -l
->> probe:inode_permission (on inode_permission:2@fs/namei.c)
->>
->> With debuginfo, the result has additional info.
->>  The test looks for matching pattern "\s*probe:inode_permission(?:_\d+)?\s+\(on inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)” in result
->> where it is expecting "inode_permission:2@fs/namei.c” . The “@fs/namei.c” info needs debuginfo here.
->>
-> 
-> Hi Athira,
-> 
-> Maybe there is a real bug and this patch is ok to go in and we should leave
-> it as failing. Probe -L shows there is debug info available for inode_permission:
-> 
->    $ ./perf probe -L inode_permission
-> 
->   <inode_permission@linux/fs/namei.c:0>
->       0  int inode_permission(struct mnt_idmap *idmap,
->                              struct inode *inode, int mask)
->   ... more source code ...
-> 
-> But probe -l has an error which could be related to the following
-> line not showing the filename details:
-> 
->   $ ./perf probe -l
->   
->   Failed to find debug information for address 0xffff80008047ac30
->     probe:inode_permission (on inode_permission)
-> 
-> I'm running a clang kernel and sometimes I see issues with debug
-> info or toolchain stuff, that could be the reason.
-> 
->> The function I am using in patch to check for debuginfo (skip_if_no_debuginfo) is from "tests/shell/lib/probe_vfs_getname.sh"
->>
->> skip_if_no_debuginfo() {
->>         add_probe_vfs_getname -v 2>&1 | grep -E -q "^(Failed to find the path for the kernel|Debuginfo-analysis is not supported)|(file has no debug information)" && return 2
->>         return 1
->> }
->>
->> So the debuginfo test passes in your case since the log has "Failed to find debug information” which is not present in above grep string. 
->>
-> 
-> It passes because there is debug info for getname_flags() which is what the
-> debug info check looks for. After some greps and seds it ultimately does this
-> which succeeds:
-> 
->  $ perf probe "vfs_getname=getname_flags:72 pathname=result->name:string"
-> 
->  Added new event:
->     probe:vfs_getname    (on getname_flags:72 with pathname=result->name:string)
-> 
-> "Failed to find debug information for address" is only ever printed
-> with "perf probe -l" when there are probes added. The stderr
-> of that command is never piped into any grep anyway, which is why I
-> see it on the test output.
-> 
-> So "probe -L" is working but "probe -l" isn't. Ultimately it looks like a real
-> issue and we should leave the failure in.
-> 
+In interleaved mode:
+  - The sample size should fit in the number of time-slots available for
+    the QMC channel.
+  - The number of audio channels should fit in the number of time-slots
+    (taking into account the sample size) available for the QMC channel.
 
-To avoid confusion, by leave it in I mean this debuginfo patch is ok and
-the failure I'm seeing is caused by something else.
+In non-interleaved mode:
+  - The number of audio channels is the number of available QMC
+    channels.
+  - Each QMC channel should have the same number of time-slots.
+  - The sample size equals the number of time-slots of one QMC channel.
 
-Reviewed-by: James Clark <james.clark@arm.com>
+This series add support for the non-interleaved mode in the qmc_audio
+driver and is composed of the following parts:
+  - Patches 1 and 2: Fix some issues in the qmc_audio
+  - Patches 3 to 6: Prepare qmc_audio for the non-interleaved mode
+  - Patches 7 and 8: Extend the QMC driver API
+  - Patches 9 and 10: The support for non-interleaved mode itself
 
->> James,
->>
->> Only “perf probe -l” subtest fails with debuginfo enabled or other two subtests as well? Can you also share result on how other two subtests behaves ? 
->>
->> 1. Fail 2 :
->>    perf probe -nf --max-probes=512 -a 'vfs_* $params’
->>   
->>
->> 2. Fail 3 :
->>   perf probe 'vfs_read somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64'
->>
-> 
-> Here's the full output:
-> 
-> $ sudo ./perf test -vvv "testsuite_probe"
->  84: perftool-testsuite_probe:
-> --- start ---
-> test child forked, pid 4872
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: 
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: -a
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: --add
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing added probe :: perf list
-> Failed to find debug information for address 0xffff80008047ac30
-> Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
-> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: listing added probe :: perf probe -l (output regexp parsing)
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: using added probe
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: deleting added probe
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing removed probe (should NOT be listed)
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: dry run :: adding probe
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: first probe adding
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: second probe adding (without force)
-> Failed to find debug information for address 0xffff80008047ac30
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: second probe adding (with force)
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: using doubled probe
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: removing multiple probes
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: wildcard adding support
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: non-existing variable
-> -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with retval :: add
-> Regexp not found: "^\[\s+perf\s+record:\s+Woken up [0-9\.]+ times? to write data\s+\].*$"
-> Regexp not found: "^\[\s+perf\s+record:\s+Captured and wrote [0-9\.]+\s*MB\s+(?:[\w\+\.-]*(?:(?:[\w\+\.-]+)?(?:\/[\w\+\.-]+)+)?\/)?perf\.data(?:\.\d+)?\s*\(~?[0-9\.]+ samples\)\s+\].*$"
-> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: function with retval :: record (command exitcode + output regexp parsing)
-> zero-sized data (/tmp/perftool-testsuite_probe.VMU/perf_probe/perf.data), nothing to do!
-> Regexp not found: "\s*cat\s+[0-9\.]+\s+\[[0-9\.]+\]\s+[0-9\.]+:\s+probe:inode_permission\w*:\s+\([0-9A-Fa-f]+\s+<\-\s+[0-9A-Fa-f]+\)\s+arg1=[0-9A-Fa-f]+"
-> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: function argument probing :: script (command exitcode + output regexp parsing)
-> ## [ FAIL ] ## perf_probe :: test_adding_kernel SUMMARY :: 3 failures found
-> ---- end(-1) ----
->  84: perftool-testsuite_probe                                        : FAILED!
-> 
-> 
->>
->> Also since you mentioned this gets skipped when debuginfo is not enabled, curious to know what is debuginfo message from your setup with debuginfo disabled.
->>
-> 
->   $ sudo ./perf probe -L getname_flags
->   Failed to find the path for the kernel: Invalid ELF file
->     Error: Failed to show lines.
-> 
->> Thanks again for checking.
->>
->> Athira
->>
->>>
->>
->>
->>>
->>>> 2. Regexp not found: "probe:vfs_mknod"
->>>>   Regexp not found: "probe:vfs_create"
->>>>   Regexp not found: "probe:vfs_rmdir"
->>>>   Regexp not found: "probe:vfs_link"
->>>>   Regexp not found: "probe:vfs_write"
->>>>   -- [ FAIL ] -- perf_probe :: test_adding_kernel :: wildcard adding support (command exitcode + output regexp parsing)
->>>>
->>>> 3. Regexp not found: "Failed to find"
->>>>   Regexp not found: "somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64"
->>>>   Regexp not found: "in this function|at this address"
->>>>   Line did not match any pattern: "The /boot/vmlinux file has no debug information."
->>>>   Line did not match any pattern: "Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo package."
->>>>
->>>> These three tests depends on kernel debug info.
->>>> 1. Fail 1 expects file name along with probe which needs debuginfo
->>>> 2. Fail 2 :
->>>>    perf probe -nf --max-probes=512 -a 'vfs_* $params'
->>>>    Debuginfo-analysis is not supported.
->>>>     Error: Failed to add events.
->>>>
->>>> 3. Fail 3 :
->>>>   perf probe 'vfs_read somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64'
->>>>   Debuginfo-analysis is not supported.
->>>>   Error: Failed to add events.
->>>>
->>>> There is already helper function skip_if_no_debuginfo in
->>>> lib/probe_vfs_getname.sh which does perf probe and returns
->>>> "2" if debug info is not present. Use the skip_if_no_debuginfo
->>>> function and skip only the three tests which needs debuginfo
->>>> based on the result.
->>>>
->>>> With the patch:
->>>>
->>>>    83: perftool-testsuite_probe:
->>>>   --- start ---
->>>>   test child forked, pid 3927
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission ::
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: -a
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: adding probe inode_permission :: --add
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing added probe :: perf list
->>>>   Regexp not found: "\s*probe:inode_permission(?:_\d+)?\s+\(on inode_permission(?:[:\+][0-9A-Fa-f]+)?@.+\)"
->>>>   -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped due to missing debuginfo :: testcase skipped
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: using added probe
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: deleting added probe
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: listing removed probe (should NOT be listed)
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: dry run :: adding probe
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: first probe adding
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: second probe adding (without force)
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: force-adding probes :: second probe adding (with force)
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: using doubled probe
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: removing multiple probes
->>>>   Regexp not found: "probe:vfs_mknod"
->>>>   Regexp not found: "probe:vfs_create"
->>>>   Regexp not found: "probe:vfs_rmdir"
->>>>   Regexp not found: "probe:vfs_link"
->>>>   Regexp not found: "probe:vfs_write"
->>>>   -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped due to missing debuginfo :: testcase skipped
->>>>   Regexp not found: "Failed to find"
->>>>   Regexp not found: "somenonexistingrandomstuffwhichisalsoprettylongorevenlongertoexceed64"
->>>>   Regexp not found: "in this function|at this address"
->>>>   Line did not match any pattern: "The /boot/vmlinux file has no debug information."
->>>>   Line did not match any pattern: "Rebuild with CONFIG_DEBUG_INFO=y, or install an appropriate debuginfo package."
->>>>   -- [ SKIP ] -- perf_probe :: test_adding_kernel :: 2 2 Skipped due to missing debuginfo :: testcase skipped
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with retval :: add
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: function with retval :: record
->>>>   -- [ PASS ] -- perf_probe :: test_adding_kernel :: function argument probing :: script
->>>>   ## [ PASS ] ## perf_probe :: test_adding_kernel SUMMARY
->>>>   ---- end(0) ----
->>>>   83: perftool-testsuite_probe                                        : Ok
->>>>
->>>> Only the three specific tests are skipped and remaining
->>>> ran successfully.
->>>>
->>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>>> ---
->>>> .../shell/base_probe/test_adding_kernel.sh    | 31 +++++++++++++++++--
->>>> 1 file changed, 28 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
->>>> index 63bb8974b38e..187dc8d4b163 100755
->>>> --- a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
->>>> +++ b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
->>>> @@ -21,8 +21,18 @@
->>>> THIS_TEST_NAME=`basename $0 .sh`
->>>> TEST_RESULT=0
->>>>
->>>> +# shellcheck source=lib/probe_vfs_getname.sh
->>>> +. "$(dirname "$0")/../lib/probe_vfs_getname.sh"
->>>> +
->>>> TEST_PROBE=${TEST_PROBE:-"inode_permission"}
->>>>
->>>> +# set NO_DEBUGINFO to skip testcase if debuginfo is not present
->>>> +# skip_if_no_debuginfo returns 2 if debuginfo is not present
->>>> +skip_if_no_debuginfo
->>>> +if [ $? -eq 2 ]; then
->>>> + NO_DEBUGINFO=1
->>>> +fi
->>>> +
->>>> check_kprobes_available
->>>> if [ $? -ne 0 ]; then
->>>> print_overall_skipped
->>>> @@ -67,7 +77,12 @@ PERF_EXIT_CODE=$?
->>>> ../common/check_all_patterns_found.pl "\s*probe:${TEST_PROBE}(?:_\d+)?\s+\(on ${TEST_PROBE}(?:[:\+]$RE_NUMBER_HEX)?@.+\)" < $LOGS_DIR/adding_kernel_list-l.log
->>>> CHECK_EXIT_CODE=$?
->>>>
->>>> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "listing added probe :: perf probe -l"
->>>> +if [ $NO_DEBUGINFO ] ; then
->>>> + print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due to missing debuginfo"
->>>> +else
->>>> + print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "listing added probe :: perf probe -l"
->>>> +fi
->>>> +
->>>> (( TEST_RESULT += $? ))
->>>>
->>>>
->>>> @@ -208,7 +223,12 @@ PERF_EXIT_CODE=$?
->>>> ../common/check_all_patterns_found.pl "probe:vfs_mknod" "probe:vfs_create" "probe:vfs_rmdir" "probe:vfs_link" "probe:vfs_write" < $LOGS_DIR/adding_kernel_adding_wildcard.err
->>>> CHECK_EXIT_CODE=$?
->>>>
->>>> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "wildcard adding support"
->>>> +if [ $NO_DEBUGINFO ] ; then
->>>> + print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due to missing debuginfo"
->>>> +else
->>>> + print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "wildcard adding support"
->>>> +fi
->>>> +
->>>> (( TEST_RESULT += $? ))
->>>>
->>>>
->>>> @@ -232,7 +252,12 @@ CHECK_EXIT_CODE=$?
->>>> ../common/check_no_patterns_found.pl "$RE_SEGFAULT" < $LOGS_DIR/adding_kernel_nonexisting.err
->>>> (( CHECK_EXIT_CODE += $? ))
->>>>
->>>> -print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "non-existing variable"
->>>> +if [ $NO_DEBUGINFO ]; then
->>>> + print_testcase_skipped $NO_DEBUGINFO $NO_DEBUGINFO "Skipped due to missing debuginfo"
->>>> +else
->>>> + print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "non-existing variable"
->>>> +fi
->>>> +
->>>> (( TEST_RESULT += $? ))
->>>>
->>>>
->>
-> 
+Best regards,
+Hervé
+
+Herve Codina (10):
+  ASoC: fsl: fsl_qmc_audio: Check devm_kasprintf() returned value
+  ASoC: fsl: fsl_qmc_audio: Fix issues detected by checkpatch
+  ASoC: fsl: fsl_qmc_audio: Split channel buffer and PCM pointer
+    handling
+  ASoC: fsl: fsl_qmc_audio: Identify the QMC channel involved in
+    completion routines
+  ASoC: fsl: fsl_qmc_audio: Introduce
+    qmc_audio_pcm_{read,write}_submit()
+  ASoC: fsl: fsl_qmc_audio: Introduce qmc_dai_constraints_interleaved()
+  soc: fsl: cpm1: qmc: Introduce functions to get a channel from a
+    phandle list
+  soc: fsl: cpm1: qmc: Introduce qmc_chan_count_phandles()
+  dt-bindings: sound: fsl,qmc-audio: Add support for multiple QMC
+    channels per DAI
+  ASoC: fsl: fsl_qmc_audio: Add support for non-interleaved mode.
+
+ .../bindings/sound/fsl,qmc-audio.yaml         |  41 +-
+ drivers/soc/fsl/qe/qmc.c                      |  32 +-
+ include/soc/fsl/qe/qmc.h                      |  27 +-
+ sound/soc/fsl/fsl_qmc_audio.c                 | 590 +++++++++++++-----
+ 4 files changed, 505 insertions(+), 185 deletions(-)
+
+-- 
+2.45.0
+
