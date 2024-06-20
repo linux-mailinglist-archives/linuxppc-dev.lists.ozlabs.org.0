@@ -2,77 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77008911AD1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A295A911ADA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:02:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bP/JWKqt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IXhdyg7M;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W56FR15rdz3ftJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:02:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W56GC3kCwz3fxD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:02:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bP/JWKqt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IXhdyg7M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::533; helo=mail-ed1-x533.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4pFq3BG2z3d8R
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 04:01:19 +1000 (AEST)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-57ccd1111b0so671306a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 11:01:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4pxm6FmJz3cQs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 04:32:27 +1000 (AEST)
+Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-6e40d54e4a3so920618a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 11:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1718906476; x=1719511276; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fuatl8An2r1cXJScFESolD1f90VPFvdc9a3mKIi/oro=;
-        b=bP/JWKqtibyezEQ1CTFgCe/lyBLldLKo6IAF+NdO3EENDNBb0bDW+Ut8C/K+6n6E9n
-         ypi8h/LAM7yTWAdKppnrAL+p3t+HhQqWj7zlW2LsOgqJXka6A6ShxGnifLAkq9ZJnMWk
-         oMrXRd3ozqgCQH4FdKSe8Vg/ITKaVRG6WO0+8=
+        d=gmail.com; s=20230601; t=1718908345; x=1719513145; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8iVi8v7MOsNpmY/+YQC9/JqsYXXSSMQtfI1oW5IIrXg=;
+        b=IXhdyg7MVgBxDF2O+F2Yex0w1Bi8vyr8rTOFqfQ16It/R2H6yvDtke5DfXKRwPmnjU
+         AOL6R8q49gATRcBF5UN04RL7oPz4m+bKBY/86tG/dZDc7nuFy9z2Vwnxt3yTOEa7wtGr
+         jLWXeTlcwEc2E91Iz+9qMFKYgXUJaiNnsHoxXeGMaB/f9jcvamMJPGbdUjy+5KbRdPsh
+         oNfhXsu180mHOYms1swEHe9awPyvkFXarjHGCnIIJ66TDfhd8zjc0QCgL6A4PaSVs/gW
+         nPan6WeyVxO3XISYsrM2eVtFssH3plVRxwI5QRCcTAENlCVcVKMPU/Nj9vY3tNT+GoRG
+         ttVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718906476; x=1719511276;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fuatl8An2r1cXJScFESolD1f90VPFvdc9a3mKIi/oro=;
-        b=pvPS0eJSCId3umw3nIh/CVZinNYCe2Ibc2a3Wn285CF/jbKhS6fbGg5CrmwvNXYPmX
-         ExgTLtYW9kqsSUTlhlvhMI3eZmrUCB49kt9fXxzYInr/JDsAmvcsACc23dtl2xIxrOnx
-         fCfDCCEQnHJNdBA5v2ZDfxhBdJN5agUs2WJ+A8qzasZuOt01TSZ7LGfqz8SF81mQ1ZfT
-         fmCGFSnJbMzHCkD14v1Ftmj/mI/rda1vAe/iMHpx7oVqqQWk2n+VZ4XhAXzpYr7ZyfU3
-         u0LlqMUNqw6Q7kKfF8/7dSNNoSXDmQ+yWouueHtZxC/OcCKe1U37geJ+dQ2/r/n6HWtw
-         yRNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVX/C4hn2akKea8oJT9ApUlRDQp8c6U7mx+cgFKqWKZ8ay6BYfAb8/ZWHPS7DOyBXz/+KZIH50jLW+Gu5nEyEv858yqoJqUZ19f6xCkZA==
-X-Gm-Message-State: AOJu0YzZnqDAlm7Q0yOXKW4aDShTycGOBRyo2Husmq3p5Y6tGp7/XmAt
-	iuAcIF+cx+AQOdbE0qxO0KTPtjDksrbQOhAS9D/lNl7W7NOe7PBBornGtmm22bDXwyGtP5NAFUM
-	fxz7sLQ==
-X-Google-Smtp-Source: AGHT+IG0MNqPEU/yAchcbTlbsKZwKiLiSdIhTqIIwjFJ1xadf2KszeGLYKeSbXzEiQG7croxkMIlyQ==
-X-Received: by 2002:a50:f69b:0:b0:57d:3b8:85e6 with SMTP id 4fb4d7f45d1cf-57d07ebc187mr5337934a12.39.1718906476385;
-        Thu, 20 Jun 2024 11:01:16 -0700 (PDT)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com. [209.85.128.44])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d2e642d22sm47574a12.19.2024.06.20.11.01.16
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jun 2024 11:01:16 -0700 (PDT)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42189d3c7efso13832365e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 11:01:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWpFAb+bJXglIsSKcankvU2k27poKTnENmVT5TsARMgSIaRrdlvol1cwTFLpBaF+5SM1OmKggrfUUr/RRcrDhwQoTHQDQ3PsdPC1/Maig==
-X-Received: by 2002:a50:96cf:0:b0:57c:5874:4f5c with SMTP id
- 4fb4d7f45d1cf-57d07ea857fmr5124279a12.32.1718906455555; Thu, 20 Jun 2024
- 11:00:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240620175703.605111-1-yury.norov@gmail.com>
-In-Reply-To: <20240620175703.605111-1-yury.norov@gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Jun 2024 11:00:38 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
-Message-ID: <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1718908345; x=1719513145;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8iVi8v7MOsNpmY/+YQC9/JqsYXXSSMQtfI1oW5IIrXg=;
+        b=IUpG8iTQCvk7dIVL33txbCYY57KR9PTDW6HczZw8sUjJ0qVYu4uTsl1QUEEvmdtDld
+         qd3Ft0VY0tytvNy8jLOOtd5RmlovYyNwSFN9x/Z7waPtGms4ulSRHFsvD5z8baY9GVF/
+         OnW6m5uhs8MTA1vyD9ukrT6O0FslJ2P3LUyisvaW1GkNinjnFE8hatdyeuGwsrB5+ETB
+         g7soyK4qkX3gSfo7bbpjtvXOZIRUY0HaTA5cDsRDPVeUQOsOzaU52LZDmphl8CWgwzHI
+         aI4LqRZ7bA7TtrVd8twlMbLO+6/tq7s5F2of8gjt8yoHtSQ0UIf8lG1EPz8MVM/qV13Y
+         l7cA==
+X-Forwarded-Encrypted: i=1; AJvYcCX178xP/P+Zh1HJHfC4wFTzIJLMA7V5174t8CVevY+7JCZrp9Hkab1JxqFYXbhbF6PJL2xuyD0XFYsn+wZBk8HCuUHSO9AF9AYmg9KxTQ==
+X-Gm-Message-State: AOJu0Yzf1P/cIJX1YafW2yHGoLRa97CrEyVNVHPvU0on98TCrHOaYeKK
+	0mepzTBINEj/ZX4skUuVFw4RWBTnvx70cqtcd1jb/MfDQh7h/k+O
+X-Google-Smtp-Source: AGHT+IGwYt1/AWmTgUMNjVMcs2dgiLwPkNhT8ZohuoeI/pLSbMfw85UksxqJbsocMe0+kY+O1HneTA==
+X-Received: by 2002:a17:903:230c:b0:1f9:bb35:f313 with SMTP id d9443c01a7336-1f9bb35f5b7mr46779535ad.30.1718908344747;
+        Thu, 20 Jun 2024 11:32:24 -0700 (PDT)
+Received: from localhost ([216.228.127.128])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e80ef6sm140498555ad.115.2024.06.20.11.32.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 11:32:23 -0700 (PDT)
+Date: Thu, 20 Jun 2024 11:32:21 -0700
+From: Yury Norov <yury.norov@gmail.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Subject: Re: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
-To: Yury Norov <yury.norov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <ZnR1tQN01kN97G_F@yury-ThinkPad>
+References: <20240620175703.605111-1-yury.norov@gmail.com>
+ <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
 X-Mailman-Approved-At: Fri, 21 Jun 2024 15:58:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -89,26 +85,48 @@ Cc: linux-sh@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Hans Verkuil <hv
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 20 Jun 2024 at 10:57, Yury Norov <yury.norov@gmail.com> wrote:
->
->
-> The typical lock-protected bit allocation may look like this:
+On Thu, Jun 20, 2024 at 11:00:38AM -0700, Linus Torvalds wrote:
+> On Thu, 20 Jun 2024 at 10:57, Yury Norov <yury.norov@gmail.com> wrote:
+> >
+> >
+> > The typical lock-protected bit allocation may look like this:
+> 
+> If it looks like this, then nobody cares. Clearly the user in question
+> never actually cared about performance, and you SHOULD NOT then say
+> "let's optimize this that nobody cares about":.
+> 
+> Yury, I spend an inordinate amount of time just double-checking your
+> patches. I ended up having to basically undo one of them just days
+> ago.
 
-If it looks like this, then nobody cares. Clearly the user in question
-never actually cared about performance, and you SHOULD NOT then say
-"let's optimize this that nobody cares about":.
+Is that in master already? I didn't get any email, and I can't find
+anything related in the master branch.
 
-Yury, I spend an inordinate amount of time just double-checking your
-patches. I ended up having to basically undo one of them just days
-ago.
+> New rule: before you send some optimization, you need to have NUMBERS.
 
-New rule: before you send some optimization, you need to have NUMBERS.
+I tried to underline that it's not a performance optimization at my
+best. People notice some performance differences, but it's ~3%, no
+more.
 
-Some kind of "look, this code is visible in profiles, so we actually care".
+> Some kind of "look, this code is visible in profiles, so we actually care".
 
-Because without numbers, I'm just not going to pull anything from you.
-These insane inlines for things that don't matter need to stop.
+The original motivation comes from a KCSAN report, so it's already
+visible in profiles. See [1] in cover letter. This series doesn't fix
+that particular issue, but it adds tooling that allow people to search
+and acquire bits in bitmaps without firing KCSAN warnings.
 
-And if they *DO* matter, you need to show that they matter.
+This series fixes one real bug in the codebase - see #33, and
+simplifies bitmaps usage in many other places. Many people like
+it, and acked the patches.
 
-               Linus
+Again, this is NOT a performance series.
+
+Thanks,
+Yury
+
+> Because without numbers, I'm just not going to pull anything from you.
+> These insane inlines for things that don't matter need to stop.
+> 
+> And if they *DO* matter, you need to show that they matter.
+> 
+>                Linus
