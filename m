@@ -2,75 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC1A911AE0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F37F911AE1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:04:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Zhbv5QgJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=e+7RhTmF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W56Hm1L64z3dFy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:04:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W56JX4tw9z3g6X
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:04:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Zhbv5QgJ;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=e+7RhTmF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4sLL37Cmz3cX5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 06:20:24 +1000 (AEST)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-6e57506bb2dso985619a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 13:20:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4skZ6fPHz3cW1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 06:37:56 +1000 (AEST)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-a6f21ff4e6dso190086966b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 13:37:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718914823; x=1719519623; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xyF3zFimLRvnxw2fNLWvvt4TaZ4/tRThw/CSNxiuI4k=;
-        b=Zhbv5QgJfRFAiKUlEm+nP2qfOoO/HVe/hnHkaiDq3papBuwOWz8Loem/6Fc4NYpMTX
-         Drbiedcl/eWAoj5PiItFiAcja4VF15swfVR36ip+jvTyG30OIckfC6042shVyMZPFWRh
-         TivK107ldOdh2v5yRhbgYGVt/PFO/ZG4NinV3F2l7a0cHvIGWYmM86LzkteBQGibc8/Y
-         I0AYT70BiLPkcYSF0K+8dSHTbmxF4u8WTqbCl9oDLmaFyc2t979+s0DvQr1Wu3CWht9a
-         qgi9dPnAzx8VK1DMTIrtobqyeIyQczJ9g7tzjQnm9JkFuFHNkqAwbRKfsHcMEVVUhWAo
-         w2XA==
+        d=linux-foundation.org; s=google; t=1718915870; x=1719520670; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=w6VZWpwlG7GhpGptpxtkhZuBw3s+vrw3bJ0KsbwAf6c=;
+        b=e+7RhTmFBPaZuSGxr+MlJLtqKa1GuN47zdBw6H0tBkUH7Z3advnc9MGh9R3iUFE/OO
+         ORr4JN7wv9DcSgP9BMtIn+cJB5HnbewY2bEqjI78h2b0U9tGXX3YLKVcCyJlbs9p82Tv
+         9ud06CqryimIZF0UidbS8yXjCcVgnAdj9AhOg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718914823; x=1719519623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xyF3zFimLRvnxw2fNLWvvt4TaZ4/tRThw/CSNxiuI4k=;
-        b=AQAT+HDlgdSiRQSOWJthtq2Q4mM2speZ1/hr5L6H1iZ8D1NNSe2r4F7jrCymlkXwJZ
-         Ms+SnBDsq1OCTFiLZ/fzptMj47HJ1inDaupyHKMdj1xRNYGm68wlIafcHtfUqu1JZp/z
-         WVa/ukWrMBCrNYeu2N98ZgC+W8WP/rjNFTVbqC0F8IQD/0s2LBQNfa16dENb+dXsfBTG
-         qT/KbzN3HJJyuG/MqWHtAton96P2wh3G3EH9VW8n5WGo/JNg+kbXkf9vwnVYJCRVzKak
-         E8Jl26CeN+mIkGaer8EIJF6+W20O0SVq8w6MyY034lrDBnxe/Yo/WdBoTQe0xavzL/Y4
-         TrlA==
-X-Forwarded-Encrypted: i=1; AJvYcCXR+y+Bn9+Usu2Z6ohr7soUO3ZYAmdoNZI4TyzK/m/xW1qDWqy9XITDCIzqEiNdCW0POQPpEJpwVG4FSyUELs8SQSNr61oGp9cdG8H1Ow==
-X-Gm-Message-State: AOJu0Yxx61XEZD02B6samdWduEgjiff8oC5EX3v7SGXJwpons2rc59wF
-	8O0QP+gxUL/w6UoHFELxVIhIUtW2dhQZPDIt+2BCWblfpTPHN/zu
-X-Google-Smtp-Source: AGHT+IHgTaUdNjnFlceuqDZQb86IcFDSmpZVDJyq9iZqJozpl3uONt9e5qvEXl/03kBUwqlpGmD+xQ==
-X-Received: by 2002:a17:90b:3ec6:b0:2c7:e420:a0ec with SMTP id 98e67ed59e1d1-2c7e420a3f5mr3603638a91.0.1718914823251;
-        Thu, 20 Jun 2024 13:20:23 -0700 (PDT)
-Received: from localhost ([216.228.127.128])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c819dcc704sm81988a91.47.2024.06.20.13.20.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 13:20:22 -0700 (PDT)
-Date: Thu, 20 Jun 2024 13:20:20 -0700
-From: Yury Norov <yury.norov@gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
-Message-ID: <ZnSPBFW5wL0D0b86@yury-ThinkPad>
-References: <20240620175703.605111-1-yury.norov@gmail.com>
- <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
- <ZnR1tQN01kN97G_F@yury-ThinkPad>
- <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1718915870; x=1719520670;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w6VZWpwlG7GhpGptpxtkhZuBw3s+vrw3bJ0KsbwAf6c=;
+        b=IHf1aETe+bCSdiFtUioZzfuxqZw0ow5UR8g6tcFGIi1mDxAOO0caAoAcSfm4N6HeCP
+         Ou+Tg5IJipSorna3VLPvKwfcdSr9eU+uC2I5OOzka8SHDSrSksnA8+pHFxkBkxiwGBeP
+         aZ+ktFl47oaRsOAIrG0ufalNJoB0u8ZSV8VxqTPrdEnB8GVWMyGZ0tW5TwO6a5qfGT0h
+         Up5QLVONDUGYtrwMCRywBBL2yUm9ZpPcc8fbHry5LvEIoxwgTXvDHSAq7tLWq790lym8
+         RKRTnCXsNA//Ik/nmwoOyhdBRpxCBgsjn9J53hYGNDnodDBuNApjUKVUi45q73UMyQ1T
+         FPjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUtROg6E3dgBLDAks/8AmTS8lXEHurnVinmmv6KsmS7EnMoYdGCQTu8bJmm/cxLXuPJnNET6xjICwtj3tk9t29QMRqL88fZ7H+jSyVMEg==
+X-Gm-Message-State: AOJu0Yy1VmNZyJtGvRjMXLuAH6tXz4QFhqkyMAMYdK3ad+ZuJU4JXq9N
+	73XZK4Dr4mQoj47XeilItU9ZG+isTlCHYPJOz+Wco6FyeGrotGwwXu3XULgy47N8x3f84l9IHjN
+	kzuPskYxV
+X-Google-Smtp-Source: AGHT+IHfvsUXMzbyrXAc4nlSnMIzsrVB/BrVquhGzttKeWawfNCfZhK2ouw903ay8M6wHas95HbxvQ==
+X-Received: by 2002:a17:907:cbc3:b0:a6e:a97c:fc93 with SMTP id a640c23a62f3a-a6fab602da1mr424197566b.16.1718915870041;
+        Thu, 20 Jun 2024 13:37:50 -0700 (PDT)
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com. [209.85.128.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf433f7dsm8264666b.39.2024.06.20.13.37.49
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jun 2024 13:37:49 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-424720e73e0so13302605e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 13:37:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWsFdSRx5GB6RjJuX2UU+VnTDIMO6wqnfAA2PoujMIM6N+kvXLN0ZYIwhhxaq0MtAYDaXqOAfvdJBRPiXhzdWWo/ploBcv6m5B069NUeQ==
+X-Received: by 2002:a17:906:1348:b0:a6e:2a67:7899 with SMTP id
+ a640c23a62f3a-a6fab63aaabmr312193466b.35.1718915542284; Thu, 20 Jun 2024
+ 13:32:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
+References: <20240620175703.605111-1-yury.norov@gmail.com> <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
+ <ZnR1tQN01kN97G_F@yury-ThinkPad> <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
+ <ZnSPBFW5wL0D0b86@yury-ThinkPad>
+In-Reply-To: <ZnSPBFW5wL0D0b86@yury-ThinkPad>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 Jun 2024 13:32:05 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi2R7-jyoOw27Svf1PmfDFQgBWVAH3DP5CXO+JF-BeFZA@mail.gmail.com>
+Message-ID: <CAHk-=wi2R7-jyoOw27Svf1PmfDFQgBWVAH3DP5CXO+JF-BeFZA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
+To: Yury Norov <yury.norov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Fri, 21 Jun 2024 15:58:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -87,56 +91,23 @@ Cc: linux-sh@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Hans Verkuil <hv
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 20, 2024 at 12:26:18PM -0700, Linus Torvalds wrote:
-> On Thu, 20 Jun 2024 at 11:32, Yury Norov <yury.norov@gmail.com> wrote:
-> >
-> > Is that in master already? I didn't get any email, and I can't find
-> > anything related in the master branch.
-> 
-> It's 5d272dd1b343 ("cpumask: limit FORCE_NR_CPUS to just the UP case").
+On Thu, 20 Jun 2024 at 13:20, Yury Norov <yury.norov@gmail.com> wrote:
+>
+> FORCE_NR_CPUS helped to generate a better code for me back then. I'll
+> check again against the current kernel.
 
-FORCE_NR_CPUS helped to generate a better code for me back then. I'll
-check again against the current kernel.
+Of _course_ it generates better code.
 
-The 5d272dd1b343 is wrong. Limiting FORCE_NR_CPUS to UP case makes no
-sense because in UP case nr_cpu_ids is already a compile-time macro:
+But when "better code" is a source of bugs, and isn't actually useful
+in general, it's not better, is it.
 
-#if (NR_CPUS == 1) || defined(CONFIG_FORCE_NR_CPUS)
-#define nr_cpu_ids ((unsigned int)NR_CPUS)
-#else
-extern unsigned int nr_cpu_ids;
-#endif
+> The 5d272dd1b343 is wrong. Limiting FORCE_NR_CPUS to UP case makes no
+> sense because in UP case nr_cpu_ids is already a compile-time macro:
 
-I use FORCE_NR_CPUS for my Rpi. (used, until I burnt it)
+Yury, I'm very aware. That was obviously intentional. the whole point
+of the commit is to just disable the the whole thing as useless and
+problematic.
 
-> > > New rule: before you send some optimization, you need to have NUMBERS.
-> >
-> > I tried to underline that it's not a performance optimization at my
-> > best.
-> 
-> If it's not about performance, then it damn well shouldn't be 90%
-> inline functions in a header file.
-> 
-> If it's a helper function, it needs to be a real function elsewhere. Not this:
-> 
->  include/linux/find_atomic.h                  | 324 +++++++++++++++++++
-> 
-> because either performance really matters, in which case you need to
-> show profiles, or performance doesn't matter, in which case it damn
-> well shouldn't have special cases for small bitsets that double the
-> size of the code.
+I could have just ripped it out entirely. I ended up doing a one-liner instead.
 
-This small_const_nbits() thing is a compile-time optimization for a
-single-word bitmap with a compile-time length.
-
-If the bitmap is longer, or nbits is not known at compile time, the
-inline part goes away entirely at compile time.
-
-In the other case, outline part goes away. So those converting from
-find_bit() + test_and_set_bit() will see no new outline function
-calls.
-
-This inline + outline implementation is traditional for bitmaps, and
-for some people it's important. For example, Sean Christopherson
-explicitly asked to add a notice that converting to the new API will
-still generate inline code. See patch #13.
+                Linus
