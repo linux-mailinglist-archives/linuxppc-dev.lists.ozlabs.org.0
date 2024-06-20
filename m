@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3DE910FE7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 20:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B6910FEE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 20:03:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=NQXUI8iO;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=3IiptRQY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4pHW5G5jz3ftM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 04:02:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4pJJ5zByz3fyy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 04:03:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=NQXUI8iO;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=3IiptRQY;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
 Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4pCC5DF9z3d9T
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 03:59:03 +1000 (AEST)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-57d1d45ba34so1299535a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 10:59:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4pCY2MB7z3dSG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 03:59:21 +1000 (AEST)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-57cbc2a2496so1463909a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 10:59:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718906340; x=1719511140; darn=lists.ozlabs.org;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1718906359; x=1719511159; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IJI26duvfMm0hH2VM1fi6stFJmPonSLGaDj169i8hcM=;
-        b=NQXUI8iOuzuJLEKPXuLgAljFAJ4vCSjPdesXGWuKvAjZYZKW3j5n7JHecN7F5KHK2q
-         KRoI5wY2FciwiADt+fisffY0ZcdtvFK/WeeJr9wxN99Ru3w7CH6CZ8w9Uz9YiFJVPkUf
-         4ZbQ2Kn+brAQVSiHppLCUzZhixl1vzgK/nXIrFqFbOvJIEQQOXBZDuBSq7vGvIxtU7tG
-         Jwe91MD+rA5GvhmEE0z3doMKA4ZBSAJx4389k0gN+0XWeaIlxtnbv3OgHeQKKZM2rB/M
-         eiE0zxkt/9nURNn3Tt+rDV70C9Vwd5m5/E1OeB/9HdjiScBdDwdW8piwL7hTdXp7HTvB
-         hjvw==
+        bh=R+nbkylU75B66T8IPhGtcEUJs01o0nAAuyIYHNhQRcE=;
+        b=3IiptRQY6I7wPFNxC/Rqqd1cYHDPfNh4CklbZMTFMsWOWXD9FgHam4jnoivvOrm3Ip
+         UDuodzrE16B55H4WtuWLHjm34avzXQVp0LkpWjC+Qy9JnflLpl041D20Vn97gRV04Yop
+         Yurbk8/w3ijz6dWpe7TpEbmoA4Or7eNEqDzGuqus2R7/u5HUs8tKhSfrPCm3y/Bdsv4f
+         U3yX0MmpE621UOCecEVPPIxPhgk6q/p2+amprE5Q7raFwtzho6KNkrbQ6azbAI7rN1JZ
+         PP1kbGygDIQSZCIaNp1ZJGwpJW82woaxFZGuhmGcjsM9VhCvUZ0gkW8LuuuU9BlPtMLs
+         oyCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718906340; x=1719511140;
+        d=1e100.net; s=20230601; t=1718906359; x=1719511159;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IJI26duvfMm0hH2VM1fi6stFJmPonSLGaDj169i8hcM=;
-        b=aLXoHzuLuNGKo5VpDA6uTZNeFmcux8KhlUiHooWEqT+vPqYoEfAlN6Beq6bAV7tlKl
-         53VKkbv7+OugfheM3Qz4l/TdNO4tNrOBFXScIyRkhf49CR7HE9uWlaiz0CDRQpo+rtO2
-         nKuClnZT4z7Fs9HWvUrL7OX95FK98Onw6WyZcWtjNWdJ4J4fwxHQCDNN7BiO+dJ0PsI7
-         SO1QIh/ZCID4EW0DvMwoVFjiaGt8ovPbvD5qQeKyhO0hW/U+0wRD2YCWilSG0uXwN1Vj
-         /ti7dwp/ZNfIx9s3MlyAbPD0/7KHkvS76lncc3q72YmT21iogqP8ZpX9EnGP/OAGaJlw
-         VSEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWkQxLhfM7AVUWIybnTy2vn02tOek8y2UJpjpVXQLWjH9PK6iwlUfQQ7FR7Q/4L/n4/FrStu5GXd2JaARo3sdBMw3OV1/1Kfx/BFp96LA==
-X-Gm-Message-State: AOJu0YyoqXATPSnev8z8ZV8C4vfcf+MUA85uPdCV5qo+SnSn4DgkUeFD
-	oJmQT/eOBIxcb+dV6yFzJupJ6s3Z2uBXZQMCigF4qgfq7y1DKysYLMNVhoODrhw=
-X-Google-Smtp-Source: AGHT+IFE99yiH6KlSLSijoysmvGidn2b7gOkfW49nNmYq3cUnll4tztljhinaCegKpYiciiy0oFs8g==
-X-Received: by 2002:a17:907:1606:b0:a6f:b19d:90ac with SMTP id a640c23a62f3a-a6fb19d9667mr375299966b.69.1718906340595;
-        Thu, 20 Jun 2024 10:59:00 -0700 (PDT)
+        bh=R+nbkylU75B66T8IPhGtcEUJs01o0nAAuyIYHNhQRcE=;
+        b=eKj2LE+442mZn++Vb4PlLiUR1g5xXN97OpAl7M2jeTrpY2BfifdQh61KLvDR+fhsZd
+         gK85hP/gyQPYQqPdwQgmiVQEU8AeW+5u1YMDEL1MrubpNFazKXzkmPPH1cUCtaJtaUgi
+         +lFIkxI0UmXTLVvUT+SRlNrn56qhnMzwcAYpJDMxDsUt5RiLz1+qcq0P+4k3Mwi13WLJ
+         5+jCzqWFBv2yFtcW3Mej7BOYpqC8RV0CBx0u/WkEEGDrnRyz3AoPT4QSYP33jaqEp/lx
+         WTLFOevtB0pmzK4dSrNUgQ3VOfmo1ZXpBkShdp+tTKMxZbmC0BMptH11PNQAU0Qr+XRa
+         8Dkw==
+X-Forwarded-Encrypted: i=1; AJvYcCWn2RXaFnWF/gJws6hCr2qMm/fwrSL9l+K/PhI23UVItVS1bi+AtWs47KA4tBVEx38of2goNF9XFELaQaAl1Y2jTeEYPyZU7KsXFfAMag==
+X-Gm-Message-State: AOJu0Yzjz7LqHJFkPnuxSlSRVoVuKQt8Jun1YTHVdQZI7yEN1H3LFpsl
+	U8qGm0SdJfIymLGA++pQaf5+L/4qhCwec8nbNiTsxvGUND7v7OoCcUucJqaXHUM=
+X-Google-Smtp-Source: AGHT+IGwiD3L95St/ehfaodQi7lOhfrdpQHGauU5aloxC0usOuACZecYTLoGty75spYidqSIKDxV5Q==
+X-Received: by 2002:a17:907:7293:b0:a6f:6f4a:b25c with SMTP id a640c23a62f3a-a6fab60a2acmr584690566b.14.1718906359615;
+        Thu, 20 Jun 2024 10:59:19 -0700 (PDT)
 Received: from localhost.localdomain ([91.216.213.152])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56f42e80sm781370766b.186.2024.06.20.10.58.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56f42e80sm781370766b.186.2024.06.20.10.59.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 10:59:00 -0700 (PDT)
+        Thu, 20 Jun 2024 10:59:19 -0700 (PDT)
 From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 To: Vinod Koul <vkoul@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -93,9 +93,9 @@ To: Vinod Koul <vkoul@kernel.org>,
 	linux-clk@vger.kernel.org,
 	linux-i2c@vger.kernel.org,
 	linux-mtd@lists.infradead.org
-Subject: [Patch v4 04/10] ARM: dts: lpc32xx: Add missing dma and i2s properties
-Date: Thu, 20 Jun 2024 19:56:35 +0200
-Message-Id: <20240620175657.358273-5-piotr.wojtaszczyk@timesys.com>
+Subject: [Patch v4 05/10] clk: lpc32xx: initialize regmap using parent syscon
+Date: Thu, 20 Jun 2024 19:56:36 +0200
+Message-Id: <20240620175657.358273-6-piotr.wojtaszczyk@timesys.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240620175657.358273-1-piotr.wojtaszczyk@timesys.com>
 References: <20240620175657.358273-1-piotr.wojtaszczyk@timesys.com>
@@ -116,190 +116,60 @@ Cc: Markus Elfring <Markus.Elfring@web.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Adds properties declared in the new DT bindings:
- - nxp,lpc3220-i2s.yaml
- - nxp,lpc3220-dmamux.yaml
-for dma router/mux and I2S interface.
+This allows to share the regmap with other simple-mfd devices like
+nxp,lpc32xx-dmamux
 
 Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 ---
 Changes for v4:
-- This patch is renamed from
-  "ARM: dts: lpc32xx: Add missing properties for the i2s interfaces"
-  to describe dma changes as well
-- Added dmas and dma-names properties in to all node which have dma request signals
-- Add bus properties to pl08x dma node since they are removed from platform data in phy3250.c
-- Put clock-controller@0 and dma-router@7c under the same syscon, simple-mfd device
+- This patch is new in v4
 
-Changes for v3:
-- Split previous commit for separate subsystems
-- Add properties to match dt binding
+ drivers/clk/Kconfig           |  1 +
+ drivers/clk/nxp/clk-lpc32xx.c | 10 ++--------
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
- arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi | 53 +++++++++++++++++++++++---
- 1 file changed, 48 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi b/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-index 974410918f35..c58dc127e59f 100644
---- a/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-+++ b/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-@@ -67,6 +67,8 @@ slc: flash@20020000 {
- 			reg = <0x20020000 0x1000>;
- 			clocks = <&clk LPC32XX_CLK_SLC>;
- 			status = "disabled";
-+			dmas = <&dma 1 1>;
-+			dma-names = "rx-tx";
- 		};
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 3e9099504fad..85ef57d5cccf 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -346,6 +346,7 @@ config COMMON_CLK_LOONGSON2
+ config COMMON_CLK_NXP
+ 	def_bool COMMON_CLK && (ARCH_LPC18XX || ARCH_LPC32XX)
+ 	select REGMAP_MMIO if ARCH_LPC32XX
++	select MFD_SYSCON if ARCH_LPC32XX
+ 	select MFD_SYSCON if ARCH_LPC18XX
+ 	help
+ 	  Support for clock providers on NXP platforms.
+diff --git a/drivers/clk/nxp/clk-lpc32xx.c b/drivers/clk/nxp/clk-lpc32xx.c
+index d0f870eff0d6..2a183a9ded93 100644
+--- a/drivers/clk/nxp/clk-lpc32xx.c
++++ b/drivers/clk/nxp/clk-lpc32xx.c
+@@ -7,6 +7,7 @@
+ #include <linux/clk-provider.h>
+ #include <linux/io.h>
+ #include <linux/of_address.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/regmap.h>
  
- 		mlc: flash@200a8000 {
-@@ -75,6 +77,8 @@ mlc: flash@200a8000 {
- 			interrupts = <11 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clk LPC32XX_CLK_MLC>;
- 			status = "disabled";
-+			dmas = <&dma 12 1>;
-+			dma-names = "rx-tx";
- 		};
+ #include <dt-bindings/clock/lpc32xx-clock.h>
+@@ -1511,17 +1512,10 @@ static void __init lpc32xx_clk_init(struct device_node *np)
+ 		return;
+ 	}
  
- 		dma: dma@31000000 {
-@@ -83,6 +87,13 @@ dma: dma@31000000 {
- 			interrupts = <28 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clk LPC32XX_CLK_DMA>;
- 			clock-names = "apb_pclk";
-+			#dma-cells = <2>;
-+			dma-channels = <8>;
-+			dma-requests = <16>;
-+			lli-bus-interface-ahb1;
-+			mem-bus-interface-ahb1;
-+			memcpy-burst-size = <256>;
-+			memcpy-bus-width = <32>;
- 		};
- 
- 		usb {
-@@ -182,6 +193,8 @@ ssp0: spi@20084000 {
- 				clock-names = "apb_pclk";
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-+				dmas = <&dmamux 14 1 1>, <&dmamux 15 1 1>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -191,6 +204,8 @@ spi1: spi@20088000 {
- 				clocks = <&clk LPC32XX_CLK_SPI1>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-+				dmas = <&dmamux 11 1 0>;
-+				dma-names = "rx-tx";
- 				status = "disabled";
- 			};
- 
-@@ -206,6 +221,8 @@ ssp1: spi@2008c000 {
- 				clock-names = "apb_pclk";
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-+				dmas = <&dmamux 3 1 1>, <&dmamux 11 1 1>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -215,12 +232,19 @@ spi2: spi@20090000 {
- 				clocks = <&clk LPC32XX_CLK_SPI2>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
-+				dmas = <&dmamux 3 1 0>;
-+				dma-names = "rx-tx";
- 				status = "disabled";
- 			};
- 
- 			i2s0: i2s@20094000 {
- 				compatible = "nxp,lpc3220-i2s";
- 				reg = <0x20094000 0x1000>;
-+				interrupts = <22 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk LPC32XX_CLK_I2S0>;
-+				dmas = <&dma 0 1>, <&dma 13 1>;
-+				dma-names = "rx", "tx";
-+				#sound-dai-cells = <0>;
- 				status = "disabled";
- 			};
- 
-@@ -231,12 +255,19 @@ sd: sd@20098000 {
- 					     <13 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clk LPC32XX_CLK_SD>;
- 				clock-names = "apb_pclk";
-+				dmas = <&dma 4 1>;
-+				dma-names = "rx";
- 				status = "disabled";
- 			};
- 
- 			i2s1: i2s@2009c000 {
- 				compatible = "nxp,lpc3220-i2s";
- 				reg = <0x2009c000 0x1000>;
-+				interrupts = <23 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk LPC32XX_CLK_I2S1>;
-+				dmas = <&dma 2 1>, <&dmamux 10 1 1>;
-+				dma-names = "rx", "tx";
-+				#sound-dai-cells = <0>;
- 				status = "disabled";
- 			};
- 
-@@ -312,21 +343,27 @@ fab {
- 			compatible = "simple-bus";
- 			ranges = <0x20000000 0x20000000 0x30000000>;
- 
--			/* System Control Block */
--			scb {
--				compatible = "simple-bus";
--				ranges = <0x0 0x40004000 0x00001000>;
-+			syscon@40004000 {
-+				compatible = "nxp,lpc3220-creg", "syscon", "simple-mfd";
-+				reg = <0x40004000 0x114>;
- 				#address-cells = <1>;
- 				#size-cells = <1>;
-+				ranges = <0 0x40004000 0x114>;
- 
- 				clk: clock-controller@0 {
- 					compatible = "nxp,lpc3220-clk";
- 					reg = <0x00 0x114>;
- 					#clock-cells = <1>;
+-	base = of_iomap(np, 0);
+-	if (!base) {
+-		pr_err("failed to map system control block registers\n");
+-		return;
+-	}
 -
- 					clocks = <&xtal_32k>, <&xtal>;
- 					clock-names = "xtal_32k", "xtal";
- 				};
-+
-+				dmamux: dma-router@7c {
-+					compatible = "nxp,lpc3220-dmamux";
-+					reg = <0x7c 0x8>;
-+					#dma-cells = <3>;
-+					dma-masters = <&dma>;
-+				};
- 			};
- 
- 			mic: interrupt-controller@40008000 {
-@@ -362,6 +399,8 @@ uart1: serial@40014000 {
- 				compatible = "nxp,lpc3220-hsuart";
- 				reg = <0x40014000 0x1000>;
- 				interrupts = <26 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma 6 1>, <&dma 5 1>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -369,6 +408,8 @@ uart2: serial@40018000 {
- 				compatible = "nxp,lpc3220-hsuart";
- 				reg = <0x40018000 0x1000>;
- 				interrupts = <25 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dma 8 1>, <&dma 7 1>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
- 
-@@ -376,6 +417,8 @@ uart7: serial@4001c000 {
- 				compatible = "nxp,lpc3220-hsuart";
- 				reg = <0x4001c000 0x1000>;
- 				interrupts = <24 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&dmamux 10 1 0>, <&dma 9 1>;
-+				dma-names = "rx", "tx";
- 				status = "disabled";
- 			};
+-	clk_regmap = regmap_init_mmio(NULL, base, &lpc32xx_scb_regmap_config);
++	clk_regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(clk_regmap)) {
+ 		pr_err("failed to regmap system control block: %ld\n",
+ 			PTR_ERR(clk_regmap));
+-		iounmap(base);
+ 		return;
+ 	}
  
 -- 
 2.25.1
