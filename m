@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22AB910CDB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 18:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD690910CE7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 18:31:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEQH6j2t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=liP+clW/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4mFd3FfQz3cHH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 02:31:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4mGP3hjHz3clw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 02:31:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEQH6j2t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=liP+clW/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4m6P6JWMz3cWN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 02:24:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4m6X4STvz3cWW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 02:24:52 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 7E5E3CE2741;
-	Thu, 20 Jun 2024 16:24:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10432C4AF0B;
-	Thu, 20 Jun 2024 16:24:37 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id D4CB9621EF;
+	Thu, 20 Jun 2024 16:24:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEAEC2BD10;
+	Thu, 20 Jun 2024 16:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718900684;
-	bh=+a57zGsAJyEAahaUfY2ckDfX8ym58urOnfoM/RSmrcE=;
+	s=k20201202; t=1718900691;
+	bh=CTMiij8diPtp23L47nQHWXQrj3MX4OJNEzgig287ZPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEQH6j2tUvEM6XSIIbcvx0uQwAkrexBIykSIcZUTXPBXVhMpT0EluDNW8uUheYzrr
-	 KlLrppZbU7TbVxxzLqfrVqrt1AySyxMJyhjJF9eFP9M1aRYDkW/CChJzE0kYE1G2Af
-	 WKAYgwz90Kr0xbqTg53P6Ul1lSqWkBCpFf7jigslVb33ET8939RpRBRdLl9Ew9XvS1
-	 XuGHy2PyH14F7akZ3UPCVznpDjLJJRAGk2n17J/gSUWOGFRs2cJt4tPb0rKEmHl8eB
-	 RewUq0kiVkPfTVoLoT3itzbuHuTe4ukcWKAlAXdkC0jsRRMg/Y6t+sVXafud3or+7v
-	 1S7NlICwmq5Ew==
+	b=liP+clW/FYJDMFwHv7e2XTi4LYa5eTnDyL47NLmiZ3cdTxaeJVM6WiqLSOvjZXten
+	 pE6JYMMTtK2vXsP1OXrG0X/wzRuupXj07RgRMay50dms6iT69PyESvm8MZAALUCwW6
+	 ScElgo7HBzd1he0cQvkNBktxqXYA3+ZQp+4j7Eyi0zUX6iTS+26CH6314rMnHOCsxp
+	 2GZ0MxgqvDjTVnlva8n8/w9P6j9/14JsdOE3xslLC/hd1U15iSxzjY7Gdw5OPMjGTi
+	 FxE0zxbrXL4hhuRiBxV9AFKTmJuqA88W9aUdlZqe/hk7lAm9X+hHNtXkp5bF7KXdDP
+	 LnYwGSfr5+nRQ==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 10/15] csky, hexagon: fix broken sys_sync_file_range
-Date: Thu, 20 Jun 2024 18:23:11 +0200
-Message-Id: <20240620162316.3674955-11-arnd@kernel.org>
+Subject: [PATCH 11/15] hexagon: fix fadvise64_64 calling conventions
+Date: Thu, 20 Jun 2024 18:23:12 +0200
+Message-Id: <20240620162316.3674955-12-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240620162316.3674955-1-arnd@kernel.org>
 References: <20240620162316.3674955-1-arnd@kernel.org>
@@ -66,48 +66,53 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Both of these architectures require u64 function arguments to be
-passed in even/odd pairs of registers or stack slots, which in case of
-sync_file_range would result in a seven-argument system call that is
-not currently possible. The system call is therefore incompatible with
-all existing binaries.
+fadvise64_64() has two 64-bit arguments at the wrong alignment
+for hexagon, which turns them into a 7-argument syscall that is
+not supported by Linux.
 
-While it would be possible to implement support for seven arguments
-like on mips, it seems better to use a six-argument version, either
-with the normal argument order but misaligned as on most architectures
-or with the reordered sync_file_range2() calling conventions as on
-arm and powerpc.
+The downstream musl port for hexagon actually asks for a 6-argument
+version the same way we do it on arm, csky, powerpc, so make the
+kernel do it the same way to avoid having to change both.
 
+Link: https://github.com/quic/musl/blob/hexagon/arch/hexagon/syscall_arch.h#L78
 Cc: stable@vger.kernel.org
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/csky/include/uapi/asm/unistd.h    | 1 +
- arch/hexagon/include/uapi/asm/unistd.h | 1 +
- 2 files changed, 2 insertions(+)
+ arch/hexagon/include/asm/syscalls.h | 6 ++++++
+ arch/hexagon/kernel/syscalltab.c    | 7 +++++++
+ 2 files changed, 13 insertions(+)
+ create mode 100644 arch/hexagon/include/asm/syscalls.h
 
-diff --git a/arch/csky/include/uapi/asm/unistd.h b/arch/csky/include/uapi/asm/unistd.h
-index 7ff6a2466af1..e0594b6370a6 100644
---- a/arch/csky/include/uapi/asm/unistd.h
-+++ b/arch/csky/include/uapi/asm/unistd.h
-@@ -6,6 +6,7 @@
- #define __ARCH_WANT_SYS_CLONE3
- #define __ARCH_WANT_SET_GET_RLIMIT
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYNC_FILE_RANGE2
- #include <asm-generic/unistd.h>
+diff --git a/arch/hexagon/include/asm/syscalls.h b/arch/hexagon/include/asm/syscalls.h
+new file mode 100644
+index 000000000000..40f2d08bec92
+--- /dev/null
++++ b/arch/hexagon/include/asm/syscalls.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#include <asm-generic/syscalls.h>
++
++asmlinkage long sys_hexagon_fadvise64_64(int fd, int advice,
++	                                  u32 a2, u32 a3, u32 a4, u32 a5);
+diff --git a/arch/hexagon/kernel/syscalltab.c b/arch/hexagon/kernel/syscalltab.c
+index 0fadd582cfc7..5d98bdc494ec 100644
+--- a/arch/hexagon/kernel/syscalltab.c
++++ b/arch/hexagon/kernel/syscalltab.c
+@@ -14,6 +14,13 @@
+ #undef __SYSCALL
+ #define __SYSCALL(nr, call) [nr] = (call),
  
- #define __NR_set_thread_area	(__NR_arch_specific_syscall + 0)
-diff --git a/arch/hexagon/include/uapi/asm/unistd.h b/arch/hexagon/include/uapi/asm/unistd.h
-index 432c4db1b623..21ae22306b5d 100644
---- a/arch/hexagon/include/uapi/asm/unistd.h
-+++ b/arch/hexagon/include/uapi/asm/unistd.h
-@@ -36,5 +36,6 @@
- #define __ARCH_WANT_SYS_VFORK
- #define __ARCH_WANT_SYS_FORK
- #define __ARCH_WANT_TIME32_SYSCALLS
-+#define __ARCH_WANT_SYNC_FILE_RANGE2
- 
- #include <asm-generic/unistd.h>
++SYSCALL_DEFINE6(hexagon_fadvise64_64, int, fd, int, advice,
++		SC_ARG64(offset), SC_ARG64(len))
++{
++	return ksys_fadvise64_64(fd, SC_VAL64(loff_t, offset), SC_VAL64(loff_t, len), advice);
++}
++#define sys_fadvise64_64 sys_hexagon_fadvise64_64
++
+ void *sys_call_table[__NR_syscalls] = {
+ #include <asm/unistd.h>
+ };
 -- 
 2.39.2
 
