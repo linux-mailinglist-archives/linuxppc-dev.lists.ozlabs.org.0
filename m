@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937B0910CC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 18:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22AB910CDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 18:31:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RQ6euKiK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEQH6j2t;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4mDs1PMYz3cXW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 02:30:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4mFd3FfQz3cHH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 02:31:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RQ6euKiK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEQH6j2t;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4m6G4PhGz3cZJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 02:24:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4m6P6JWMz3cWN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 02:24:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D9CFC621C5;
+	by sin.source.kernel.org (Postfix) with ESMTP id 7E5E3CE2741;
+	Thu, 20 Jun 2024 16:24:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10432C4AF0B;
 	Thu, 20 Jun 2024 16:24:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1EEC4AF07;
-	Thu, 20 Jun 2024 16:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718900677;
-	bh=xqTHXBiOiQ4J4f1sokB8ZtOD8QdaqRy5yeb7o2jjiqA=;
+	s=k20201202; t=1718900684;
+	bh=+a57zGsAJyEAahaUfY2ckDfX8ym58urOnfoM/RSmrcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQ6euKiK6VwJDxRKXDYXKkMxwqA9niEIEbzdfAQwitBbSpJdGv45x6KaIQuMDG4bV
-	 kwbXvrBf8QrSE5d30scR0+5bbzMw9uHigxaxVLi6uPpj4Wg4PNJsysp3vr3oEQW8BR
-	 ub66lfagcFK6JB/7wBvTbSTD9mXLYE0/FZ8A6pQmsu2V0i07+pv7D50QprJCKwG2Jd
-	 KOyYM0IDo1Y+GFVBlpz0+pnklNWjIUgVB5MXwc/c7ELXo3x/qgau81tHvAiJE2pmvu
-	 AZh3B0fhn3iyeuhMXaEkwLVifgpTrpmYF0iwoRQqsVYYQ3pVoqyR2S++1ru65GiGD7
-	 Lh2JFlkaIi1UQ==
+	b=dEQH6j2tUvEM6XSIIbcvx0uQwAkrexBIykSIcZUTXPBXVhMpT0EluDNW8uUheYzrr
+	 KlLrppZbU7TbVxxzLqfrVqrt1AySyxMJyhjJF9eFP9M1aRYDkW/CChJzE0kYE1G2Af
+	 WKAYgwz90Kr0xbqTg53P6Ul1lSqWkBCpFf7jigslVb33ET8939RpRBRdLl9Ew9XvS1
+	 XuGHy2PyH14F7akZ3UPCVznpDjLJJRAGk2n17J/gSUWOGFRs2cJt4tPb0rKEmHl8eB
+	 RewUq0kiVkPfTVoLoT3itzbuHuTe4ukcWKAlAXdkC0jsRRMg/Y6t+sVXafud3or+7v
+	 1S7NlICwmq5Ew==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 09/15] sh: rework sync_file_range ABI
-Date: Thu, 20 Jun 2024 18:23:10 +0200
-Message-Id: <20240620162316.3674955-10-arnd@kernel.org>
+Subject: [PATCH 10/15] csky, hexagon: fix broken sys_sync_file_range
+Date: Thu, 20 Jun 2024 18:23:11 +0200
+Message-Id: <20240620162316.3674955-11-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240620162316.3674955-1-arnd@kernel.org>
 References: <20240620162316.3674955-1-arnd@kernel.org>
@@ -66,71 +66,48 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The unusual function calling conventions on superh ended up causing
-sync_file_range to have the wrong argument order, with the 'flags'
-argument getting sorted before 'nbytes' by the compiler.
+Both of these architectures require u64 function arguments to be
+passed in even/odd pairs of registers or stack slots, which in case of
+sync_file_range would result in a seven-argument system call that is
+not currently possible. The system call is therefore incompatible with
+all existing binaries.
 
-In userspace, I found that musl, glibc, uclibc and strace all expect the
-normal calling conventions with 'nbytes' last, so changing the kernel
-to match them should make all of those work.
-
-In order to be able to also fix libc implementations to work with existing
-kernels, they need to be able to tell which ABI is used. An easy way
-to do this is to add yet another system call using the sync_file_range2
-ABI that works the same on all architectures.
-
-Old user binaries can now work on new kernels, and new binaries can
-try the new sync_file_range2() to work with new kernels or fall back
-to the old sync_file_range() version if that doesn't exist.
+While it would be possible to implement support for seven arguments
+like on mips, it seems better to use a six-argument version, either
+with the normal argument order but misaligned as on most architectures
+or with the reordered sync_file_range2() calling conventions as on
+arm and powerpc.
 
 Cc: stable@vger.kernel.org
-Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/sh/kernel/sys_sh32.c           | 11 +++++++++++
- arch/sh/kernel/syscalls/syscall.tbl |  3 ++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ arch/csky/include/uapi/asm/unistd.h    | 1 +
+ arch/hexagon/include/uapi/asm/unistd.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
-index 9dca568509a5..d5a4f7c697d8 100644
---- a/arch/sh/kernel/sys_sh32.c
-+++ b/arch/sh/kernel/sys_sh32.c
-@@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u32 offset0, u32 offset1,
- 				 (u64)len0 << 32 | len1, advice);
- #endif
- }
-+
-+/*
-+ * swap the arguments the way that libc wants it instead of
-+ * moving flags ahead of the 64-bit nbytes argument
-+ */
-+SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
-+                SC_ARG64(nbytes), unsigned int, flags)
-+{
-+        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
-+                                    SC_VAL64(loff_t, nbytes), flags);
-+}
-diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-index bbf83a2db986..c55fd7696d40 100644
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -321,7 +321,7 @@
- 311	common	set_robust_list			sys_set_robust_list
- 312	common	get_robust_list			sys_get_robust_list
- 313	common	splice				sys_splice
--314	common	sync_file_range			sys_sync_file_range
-+314	common	sync_file_range			sys_sh_sync_file_range6
- 315	common	tee				sys_tee
- 316	common	vmsplice			sys_vmsplice
- 317	common	move_pages			sys_move_pages
-@@ -395,6 +395,7 @@
- 385	common	pkey_alloc			sys_pkey_alloc
- 386	common	pkey_free			sys_pkey_free
- 387	common	rseq				sys_rseq
-+388	common	sync_file_range2		sys_sync_file_range2
- # room for arch specific syscalls
- 393	common	semget				sys_semget
- 394	common	semctl				sys_semctl
+diff --git a/arch/csky/include/uapi/asm/unistd.h b/arch/csky/include/uapi/asm/unistd.h
+index 7ff6a2466af1..e0594b6370a6 100644
+--- a/arch/csky/include/uapi/asm/unistd.h
++++ b/arch/csky/include/uapi/asm/unistd.h
+@@ -6,6 +6,7 @@
+ #define __ARCH_WANT_SYS_CLONE3
+ #define __ARCH_WANT_SET_GET_RLIMIT
+ #define __ARCH_WANT_TIME32_SYSCALLS
++#define __ARCH_WANT_SYNC_FILE_RANGE2
+ #include <asm-generic/unistd.h>
+ 
+ #define __NR_set_thread_area	(__NR_arch_specific_syscall + 0)
+diff --git a/arch/hexagon/include/uapi/asm/unistd.h b/arch/hexagon/include/uapi/asm/unistd.h
+index 432c4db1b623..21ae22306b5d 100644
+--- a/arch/hexagon/include/uapi/asm/unistd.h
++++ b/arch/hexagon/include/uapi/asm/unistd.h
+@@ -36,5 +36,6 @@
+ #define __ARCH_WANT_SYS_VFORK
+ #define __ARCH_WANT_SYS_FORK
+ #define __ARCH_WANT_TIME32_SYSCALLS
++#define __ARCH_WANT_SYNC_FILE_RANGE2
+ 
+ #include <asm-generic/unistd.h>
 -- 
 2.39.2
 
