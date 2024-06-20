@@ -1,44 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D1890FFDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 11:05:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAEE90FFFC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 11:10:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=BYraRfk7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ew1lZeu1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W4ZM721cfz3cGb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 19:05:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W4ZTR4gXKz3bbW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jun 2024 19:10:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=BYraRfk7;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ew1lZeu1;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
 Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4ZLR0d1Bz30TZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 19:04:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4ZQ0179cz3bZN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 19:07:34 +1000 (AEST)
 Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 65747C452C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 08:43:26 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 5E33D20012;
-	Thu, 20 Jun 2024 08:43:18 +0000 (UTC)
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id AB955C12F6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 08:43:27 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 806CD20016;
+	Thu, 20 Jun 2024 08:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1718872999;
+	t=1718873000;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YDLRcTY0BkTaFAdlLFjztJqIMTmDai9TLYinXM16row=;
-	b=BYraRfk7fEz5L1838NbMQUtgasaGC3yafWba1AA59mzifxKYEytwkNwf8SyIWpTY3kgf6B
-	XVylMtJ5iP8zPd51l9KZueVKs9oinG3sl6rbBmqPv7N/6EmTdGrluo/VNLTg6qjw1NVJ5K
-	FxI9ONYG7CI54wUSXtP8pOp/P6Q7OuDTS/4XCYA8fJ3iZ5xX/HN37b9QFIO0OqRZskePlB
-	L91Bt6v+i5rN5HUE8T5+kkQFZ0M0AKz8O/Spdg6uN9XAhBPsCZbP6cwciBfrvrhyDFvpEf
-	ggReD1B+0vtfuCPOfKDWeEOU4Tr4aTq27ArjK8IYP4XQs5WublUbr+biTu74ig==
+	bh=LQir0ryB/8aPBX/LEL6U1QothG+zRSSIaipi9sCzLmY=;
+	b=ew1lZeu1oYh7noJ/c69BVNsPhRCTgkWHP3qwLlXxKKhYbGmkbHKPiXHyqURBfmqSYorKIm
+	ScesK+S0610KGyeAzFMxdNifl136+7dKBnmCpdCAx8UtdDbqgk4Q+K/Fu8MmcJRUnXyEco
+	aI8lxmr++LgOF8ZbFK5gZ80NcQ9Srn7oGRytUndRQtMbXrE1E9D2/NzYn3JAciPjbe/nV0
+	fbWdYz4bqFuodE7bo8he2o4vth9amo92zSTDN+52ISW+898gFDU65YN4FIhuQ+i1cfnnOz
+	LNJdsvWx4mTDJytFSARmGafznmz15swgkXh4wv7MOz2vBe4XOfKuwD+RIbgu2w==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Liam Girdwood <lgirdwood@gmail.com>,
@@ -54,9 +54,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 08/10] soc: fsl: cpm1: qmc: Introduce qmc_chan_count_phandles()
-Date: Thu, 20 Jun 2024 10:42:55 +0200
-Message-ID: <20240620084300.397853-9-herve.codina@bootlin.com>
+Subject: [PATCH 09/10] dt-bindings: sound: fsl,qmc-audio: Add support for multiple QMC channels per DAI
+Date: Thu, 20 Jun 2024 10:42:56 +0200
+Message-ID: <20240620084300.397853-10-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240620084300.397853-1-herve.codina@bootlin.com>
 References: <20240620084300.397853-1-herve.codina@bootlin.com>
@@ -78,54 +78,92 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No function in the QMC API is available to get the number of phandles
-present in a phandle list.
+The QMC audio uses one QMC channel per DAI and uses this QMC channel to
+transmit interleaved audio channel samples.
 
-Fill this lack introducing qmc_chan_count_phandles().
+In order to work in non-interleave mode, a QMC audio DAI needs to use
+multiple QMC channels. In that case, the DAI maps each QMC channel to
+exactly one audio channel.
+
+Allow QMC audio DAIs with multiple QMC channels attached.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/soc/fsl/qe/qmc.c | 13 +++++++++++++
- include/soc/fsl/qe/qmc.h |  2 ++
- 2 files changed, 15 insertions(+)
+ .../bindings/sound/fsl,qmc-audio.yaml         | 41 ++++++++++++++++---
+ 1 file changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index e23d60018400..76bb496305a0 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1777,6 +1777,19 @@ static struct qmc_chan *qmc_chan_get_from_qmc(struct device_node *qmc_np, unsign
- 	return qmc_chan;
- }
+diff --git a/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml b/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+index b522ed7dcc51..a23e49198c37 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+@@ -12,7 +12,9 @@ maintainers:
+ description: |
+   The QMC audio is an ASoC component which uses QMC (QUICC Multichannel
+   Controller) channels to transfer the audio data.
+-  It provides as many DAI as the number of QMC channel used.
++  It provides several DAIs. For each DAI, the DAI is working in interleaved mode
++  if only one QMC channel is used by the DAI or it is working in non-interleaved
++  mode if several QMC channels are used by the DAI.
  
-+int qmc_chan_count_phandles(struct device_node *np, const char *phandles_name)
-+{
-+	int count;
-+
-+	/* phandles are fixed args phandles with one arg */
-+	count = of_count_phandle_with_args(np, phandles_name, NULL);
-+	if (count < 0)
-+		return count;
-+
-+	return count / 2;
-+}
-+EXPORT_SYMBOL(qmc_chan_count_phandles);
-+
- struct qmc_chan *qmc_chan_get_byphandles_index(struct device_node *np,
- 					       const char *phandles_name,
- 					       int index)
-diff --git a/include/soc/fsl/qe/qmc.h b/include/soc/fsl/qe/qmc.h
-index 0fa7205145ce..294e42ea8d4c 100644
---- a/include/soc/fsl/qe/qmc.h
-+++ b/include/soc/fsl/qe/qmc.h
-@@ -16,6 +16,8 @@ struct device_node;
- struct device;
- struct qmc_chan;
+ allOf:
+   - $ref: dai-common.yaml#
+@@ -45,12 +47,19 @@ patternProperties:
+       fsl,qmc-chan:
+         $ref: /schemas/types.yaml#/definitions/phandle-array
+         items:
+-          - items:
+-              - description: phandle to QMC node
+-              - description: Channel number
++          items:
++            - description: phandle to QMC node
++            - description: Channel number
++        minItems: 1
+         description:
+-          Should be a phandle/number pair. The phandle to QMC node and the QMC
+-          channel to use for this DAI.
++          Should be a phandle/number pair list. The list of phandle to QMC node
++          and the QMC channel pair to use for this DAI.
++          If only one phandle/number pair is provided, this DAI works in
++          interleaved mode, i.e. audio channels for this DAI are interleaved in
++          the QMC channel. If more than one pair is provided, this DAI works
++          in non-interleave mode. In that case the first audio channel uses the
++          the first QMC channel, the second audio channel uses the second QMC
++          channel, etc...
  
-+int qmc_chan_count_phandles(struct device_node *np, const char *phandles_name);
-+
- struct qmc_chan *qmc_chan_get_byphandles_index(struct device_node *np,
- 					       const char *phandles_name,
- 					       int index);
+     required:
+       - reg
+@@ -79,6 +88,11 @@ examples:
+             reg = <17>;
+             fsl,qmc-chan = <&qmc 17>;
+         };
++        dai@18 {
++            reg = <18>;
++            /* Non-interleaved mode */
++            fsl,qmc-chan = <&qmc 18>, <&qmc 19>;
++        };
+     };
+ 
+     sound {
+@@ -115,4 +129,19 @@ examples:
+                 dai-tdm-slot-rx-mask = <0 0 1 0 1 0 1 0 1>;
+             };
+         };
++        simple-audio-card,dai-link@2 {
++            reg = <2>;
++            format = "dsp_b";
++            cpu {
++                sound-dai = <&audio_controller 18>;
++            };
++            codec {
++                sound-dai = <&codec3>;
++                dai-tdm-slot-num = <2>;
++                dai-tdm-slot-width = <8>;
++                /* TS 9, 10 */
++                dai-tdm-slot-tx-mask = <0 0 0 0 0 0 0 0 0 1 1>;
++                dai-tdm-slot-rx-mask = <0 0 0 0 0 0 0 0 0 1 1>;
++            };
++        };
+     };
 -- 
 2.45.0
 
