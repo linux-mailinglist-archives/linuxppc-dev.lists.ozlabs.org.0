@@ -1,35 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393A0912E52
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 22:12:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36F2912E79
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 22:28:35 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SATzZSo4;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SATzZSo4;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W5T6v6Bp5z3cyL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 06:12:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W5TTD3BPvz30Wd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 06:28:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=libc.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aerifal.cx (client-ip=2001:19f0:5:42::1; helo=brightrain.aerifal.cx; envelope-from=dalias@aerifal.cx; receiver=lists.ozlabs.org)
-X-Greylist: delayed 907 seconds by postgrey-1.37 at boromir; Sat, 22 Jun 2024 06:12:16 AEST
-Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [IPv6:2001:19f0:5:42::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SATzZSo4;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SATzZSo4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5T6S3Rkcz3cbQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 06:12:15 +1000 (AEST)
-Date: Fri, 21 Jun 2024 15:57:23 -0400
-From: Rich Felker <dalias@libc.org>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Re: [musl] Re: [PATCH 09/15] sh: rework sync_file_range ABI
-Message-ID: <20240621195723.GB10433@brightrain.aerifal.cx>
-References: <20240620162316.3674955-1-arnd@kernel.org>
- <20240620162316.3674955-10-arnd@kernel.org>
- <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5TSX6fdCz3cYb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 06:27:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719001671;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=22pIrWQAypdIZ5Rg6Bb3sV1iFixhfYe7whIUT2M8qwY=;
+	b=SATzZSo4Ulx43WLhJTtW7D+xLIpdNQgJSpcNzlwEwTelE8m30T9mRP1/KoIMWDn6LaDlsj
+	hMmtlF5ngc6vdBgq5+h8dVwIcM7tS9vgmsuYW/Pc2bpGdCsB9FWyxwhOsqS3DEH/LWTmXK
+	mZtvIDLNsxaU/jaokIQ6BTOVqyt5o98=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719001671;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=22pIrWQAypdIZ5Rg6Bb3sV1iFixhfYe7whIUT2M8qwY=;
+	b=SATzZSo4Ulx43WLhJTtW7D+xLIpdNQgJSpcNzlwEwTelE8m30T9mRP1/KoIMWDn6LaDlsj
+	hMmtlF5ngc6vdBgq5+h8dVwIcM7tS9vgmsuYW/Pc2bpGdCsB9FWyxwhOsqS3DEH/LWTmXK
+	mZtvIDLNsxaU/jaokIQ6BTOVqyt5o98=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-JZAp9RUcNvqgNyIxPlksag-1; Fri, 21 Jun 2024 16:27:49 -0400
+X-MC-Unique: JZAp9RUcNvqgNyIxPlksag-1
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-5bda84e2c81so163214eaf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 13:27:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719001669; x=1719606469;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=22pIrWQAypdIZ5Rg6Bb3sV1iFixhfYe7whIUT2M8qwY=;
+        b=WREMe2bBh8Gpe8BB9MZa9Tv52f2UcBsXPopJkWKfiQWQS8btjjAXuhxveE2ac8/OGH
+         QxROtQTQvwLEkzwB8eH0hyk580lpgvIK7mjGNcaMew8B2tTua+pYzTIKB6h9FPRa+ItL
+         LGVWlPE1YkAvVTUAmCFBJn1n+qBuleLK7M2CNteVKNeO+bb6xcB/78PBCz73j1MUkU44
+         wLzJaPzgfONFFY3SsUWHv2eRDCqgfxyMjI5McirtER2W/xXHeibo/d3VteMB3D9/S2jK
+         5cTMaiGFfXBFaiubUlWd7JbALR9xDaiKNLanEHC55vE34ukHRxLxDCJSXNwTDLyAVbwA
+         K+UA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCO2w3O5HpzhoiYIFGLyYE5xRu0Q+6UQXIoysxVGKaNjTMa0d4ABvDVZx4Hy0mqYwkO/5UzTgDq5Y4WIm5rFmxaAaeonGILGrU18hPXQ==
+X-Gm-Message-State: AOJu0YyGXER7fj0z0su4Hy8IrWX2iwGhwE/HLfoBrWr4xslIEfuOT04Y
+	Hr4j5hF7Da2Ixww1ugo/NGC1u8USz40Qx54Yg811uXpY+7kjwq/ZX93t+YnDd0z40GJN0f747jr
+	ndWnJymk0ONaXTyDNlylHbBon1y52jEp06HgJzBG8O4grrIKQ6qs1NOlt3O4Z0VA=
+X-Received: by 2002:a05:6358:5905:b0:1a1:fdee:fb5d with SMTP id e5c5f4694b2df-1a2310ec6f4mr36972055d.1.1719001668846;
+        Fri, 21 Jun 2024 13:27:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnQONlRBQfB2WimAlD7suCOv/AMwePZpfZM1R4sEwSWsu+GFC5PQy+iV7t7DTH9Ud/XUjInA==
+X-Received: by 2002:a05:6358:5905:b0:1a1:fdee:fb5d with SMTP id e5c5f4694b2df-1a2310ec6f4mr36967655d.1.1719001668167;
+        Fri, 21 Jun 2024 13:27:48 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-79bce92e6b4sm113770785a.100.2024.06.21.13.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jun 2024 13:27:47 -0700 (PDT)
+Date: Fri, 21 Jun 2024 16:27:44 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH 6/7] mm/x86: Add missing pud helpers
+Message-ID: <ZnXiQAJsKPBAKa6b@x1n>
+References: <20240621142504.1940209-1-peterx@redhat.com>
+ <20240621142504.1940209-7-peterx@redhat.com>
+ <4fb4b087-cae2-4516-a34e-cb4c72be13eb@intel.com>
+ <db95c7abea9cd252a791d15359a4d940d91524e3.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <db95c7abea9cd252a791d15359a4d940d91524e3.camel@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,111 +104,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andreas Larsson <andreas@gaisler.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, linux-csky@vger.kernel.org, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Heiko Carstens <hca@linux.ibm.com>, musl@lists.openwall.com, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, ltp@lists.linux.it, Arnd Bergmann <arnd@kernel.org>, Christian Brauner <brauner@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, libc-alpha@sourceware.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>, "Williams, Dan J" <dan.j.williams@intel.com>, "Jiang, Dave" <dave.jiang@intel.com>, "x86@kernel.org" <x86@kernel.org>, "hughd@google.com" <hughd@google.com>, "willy@infradead.org" <willy@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "Huang, Ying" <ying.huang@intel.com>, "riel@surriel.com" <riel@surriel.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "bp@alien8.de" <bp@alien8.de>, "kirill@shutemov.name" <kirill@shutemov.name>, "tglx@linutronix.de" <tglx@linutronix.de>, "vbabka@suse.cz" <vbabka@suse.cz>, "osalvador@suse.de" <osalvador@suse.de>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "mgorman@techsingularity.net" <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 21, 2024 at 10:44:39AM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Arnd,
-> 
-> thanks for your patch!
-> 
-> On Thu, 2024-06-20 at 18:23 +0200, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
+On Fri, Jun 21, 2024 at 07:36:30PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2024-06-21 at 07:51 -0700, Dave Hansen wrote:
 > > 
-> > The unusual function calling conventions on superh ended up causing
->                                               ^^^^^^
->                                        It's spelled SuperH
+> > But, still, what if you take a Dirty=1,Write=1 pud and pud_modify() it
+> > to make it Dirty=1,Write=0?  What prevents that from being
+> > misinterpreted by the hardware as being a valid 1G shadow stack mapping?
 > 
-> > sync_file_range to have the wrong argument order, with the 'flags'
-> > argument getting sorted before 'nbytes' by the compiler.
-> > 
-> > In userspace, I found that musl, glibc, uclibc and strace all expect the
-> > normal calling conventions with 'nbytes' last, so changing the kernel
-> > to match them should make all of those work.
-> > 
-> > In order to be able to also fix libc implementations to work with existing
-> > kernels, they need to be able to tell which ABI is used. An easy way
-> > to do this is to add yet another system call using the sync_file_range2
-> > ABI that works the same on all architectures.
-> > 
-> > Old user binaries can now work on new kernels, and new binaries can
-> > try the new sync_file_range2() to work with new kernels or fall back
-> > to the old sync_file_range() version if that doesn't exist.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  arch/sh/kernel/sys_sh32.c           | 11 +++++++++++
-> >  arch/sh/kernel/syscalls/syscall.tbl |  3 ++-
-> >  2 files changed, 13 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
-> > index 9dca568509a5..d5a4f7c697d8 100644
-> > --- a/arch/sh/kernel/sys_sh32.c
-> > +++ b/arch/sh/kernel/sys_sh32.c
-> > @@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u32 offset0, u32 offset1,
-> >  				 (u64)len0 << 32 | len1, advice);
-> >  #endif
-> >  }
-> > +
-> > +/*
-> > + * swap the arguments the way that libc wants it instead of
-> 
-> I think "swap the arguments to the order that libc wants them" would
-> be easier to understand here.
-> 
-> > + * moving flags ahead of the 64-bit nbytes argument
-> > + */
-> > +SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
-> > +                SC_ARG64(nbytes), unsigned int, flags)
-> > +{
-> > +        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
-> > +                                    SC_VAL64(loff_t, nbytes), flags);
-> > +}
-> > diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-> > index bbf83a2db986..c55fd7696d40 100644
-> > --- a/arch/sh/kernel/syscalls/syscall.tbl
-> > +++ b/arch/sh/kernel/syscalls/syscall.tbl
-> > @@ -321,7 +321,7 @@
-> >  311	common	set_robust_list			sys_set_robust_list
-> >  312	common	get_robust_list			sys_get_robust_list
-> >  313	common	splice				sys_splice
-> > -314	common	sync_file_range			sys_sync_file_range
-> > +314	common	sync_file_range			sys_sh_sync_file_range6
->                                                                  ^^^^^^ Why the suffix 6 here?
-> 
-> >  315	common	tee				sys_tee
-> >  316	common	vmsplice			sys_vmsplice
-> >  317	common	move_pages			sys_move_pages
-> > @@ -395,6 +395,7 @@
-> >  385	common	pkey_alloc			sys_pkey_alloc
-> >  386	common	pkey_free			sys_pkey_free
-> >  387	common	rseq				sys_rseq
-> > +388	common	sync_file_range2		sys_sync_file_range2
-> >  # room for arch specific syscalls
-> >  393	common	semget				sys_semget
-> >  394	common	semctl				sys_semctl
-> 
-> I wonder how you discovered this bug. Did you look up the calling convention on SuperH
-> and compare the argument order for the sys_sync_file_range system call documented there
-> with the order in the kernel?
-> 
-> Did you also check what order libc uses? I would expect libc on SuperH misordering the
-> arguments as well unless I am missing something. Or do we know that the code is actually
-> currently broken?
+> Hmm, it looks like we could use an arch_check_zapped_pud() that does a warning
+> like arch_check_zapped_pte/pmd() too. Not that we had no use for one before
+> this.
 
-No, there's no reason libc would misorder them because syscalls aren't
-function calls, and aren't subject to function call ABI. We have to
-explicitly bind the arguments to registers and make a syscall
-instruction.
+I can definitely look into that, but this check only happens when zapping,
+and IIUC it means there can still be outliers floating around.  I wonder
+whether it should rely on page_table_check_pxx_set() from that regard.
 
-The only reason this bug happened on the kernel side is that someone
-thought it would be a smart idea to save maybe 10 instructions by
-treating the register state on entry as directly suitable to jump from
-asm to a C function rather than explicitly marshalling the arguments
-out of the user-kernel syscall ABI positions into actual arguments to
-a C function call.
+Thanks,
 
-Rich
+-- 
+Peter Xu
+
