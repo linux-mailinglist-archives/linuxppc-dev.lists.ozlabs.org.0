@@ -2,80 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F37F911AE1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6440A911A03
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 07:06:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=e+7RhTmF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Pbdyw/2C;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W56JX4tw9z3g6X
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:04:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W551f4pVcz3cZJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 15:06:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=e+7RhTmF;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Pbdyw/2C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::336; helo=mail-ot1-x336.google.com; envelope-from=allen.lkml@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W4skZ6fPHz3cW1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 06:37:56 +1000 (AEST)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-a6f21ff4e6dso190086966b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 13:37:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W550x0fk7z3cQf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 15:06:07 +1000 (AEST)
+Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6f96445cfaeso927532a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 22:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1718915870; x=1719520670; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=w6VZWpwlG7GhpGptpxtkhZuBw3s+vrw3bJ0KsbwAf6c=;
-        b=e+7RhTmFBPaZuSGxr+MlJLtqKa1GuN47zdBw6H0tBkUH7Z3advnc9MGh9R3iUFE/OO
-         ORr4JN7wv9DcSgP9BMtIn+cJB5HnbewY2bEqjI78h2b0U9tGXX3YLKVcCyJlbs9p82Tv
-         9ud06CqryimIZF0UidbS8yXjCcVgnAdj9AhOg=
+        d=gmail.com; s=20230601; t=1718946362; x=1719551162; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K7Qm0uXfQVJ0pL26mcNJNw6zIMxofNWokQ38AnTAGFg=;
+        b=Pbdyw/2CAwo/uWI4q+WvI6aPHGI18ooN3+v3Xs6a6POQlMCvmssIkzn2fyBFmdQmmK
+         2fpurEaBOV5kwgwTCsxh4rhyb345K6OKnmYz2imHAjUYOLx/Y1HH1kOiEtg8XaQQcUKS
+         HQ4tLia8uFlEdIAUH07D5NmMvbssUh+gk+0EYA9GO7IA3fi0fSWYd3k8M97CHZYQHfwj
+         Lc1HabGNkkqnccnOYhxpZ7t2QqoiKMnsSGcHdw09ywYMA6sxwN6CVY+QO7zriIHWaRUw
+         BgNNspEkvTc3eMsEc2lOzulQo+bhu6v0d6DgWh4j3WUnLflS24HEKMVQXfhJ+MHVmam6
+         Kopw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718915870; x=1719520670;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w6VZWpwlG7GhpGptpxtkhZuBw3s+vrw3bJ0KsbwAf6c=;
-        b=IHf1aETe+bCSdiFtUioZzfuxqZw0ow5UR8g6tcFGIi1mDxAOO0caAoAcSfm4N6HeCP
-         Ou+Tg5IJipSorna3VLPvKwfcdSr9eU+uC2I5OOzka8SHDSrSksnA8+pHFxkBkxiwGBeP
-         aZ+ktFl47oaRsOAIrG0ufalNJoB0u8ZSV8VxqTPrdEnB8GVWMyGZ0tW5TwO6a5qfGT0h
-         Up5QLVONDUGYtrwMCRywBBL2yUm9ZpPcc8fbHry5LvEIoxwgTXvDHSAq7tLWq790lym8
-         RKRTnCXsNA//Ik/nmwoOyhdBRpxCBgsjn9J53hYGNDnodDBuNApjUKVUi45q73UMyQ1T
-         FPjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtROg6E3dgBLDAks/8AmTS8lXEHurnVinmmv6KsmS7EnMoYdGCQTu8bJmm/cxLXuPJnNET6xjICwtj3tk9t29QMRqL88fZ7H+jSyVMEg==
-X-Gm-Message-State: AOJu0Yy1VmNZyJtGvRjMXLuAH6tXz4QFhqkyMAMYdK3ad+ZuJU4JXq9N
-	73XZK4Dr4mQoj47XeilItU9ZG+isTlCHYPJOz+Wco6FyeGrotGwwXu3XULgy47N8x3f84l9IHjN
-	kzuPskYxV
-X-Google-Smtp-Source: AGHT+IHfvsUXMzbyrXAc4nlSnMIzsrVB/BrVquhGzttKeWawfNCfZhK2ouw903ay8M6wHas95HbxvQ==
-X-Received: by 2002:a17:907:cbc3:b0:a6e:a97c:fc93 with SMTP id a640c23a62f3a-a6fab602da1mr424197566b.16.1718915870041;
-        Thu, 20 Jun 2024 13:37:50 -0700 (PDT)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com. [209.85.128.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf433f7dsm8264666b.39.2024.06.20.13.37.49
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jun 2024 13:37:49 -0700 (PDT)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-424720e73e0so13302605e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jun 2024 13:37:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWsFdSRx5GB6RjJuX2UU+VnTDIMO6wqnfAA2PoujMIM6N+kvXLN0ZYIwhhxaq0MtAYDaXqOAfvdJBRPiXhzdWWo/ploBcv6m5B069NUeQ==
-X-Received: by 2002:a17:906:1348:b0:a6e:2a67:7899 with SMTP id
- a640c23a62f3a-a6fab63aaabmr312193466b.35.1718915542284; Thu, 20 Jun 2024
- 13:32:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718946362; x=1719551162;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K7Qm0uXfQVJ0pL26mcNJNw6zIMxofNWokQ38AnTAGFg=;
+        b=whjZaPjaRiGAIlsjw8mKWxkzY/Ou1BeKaefhcLN/Jj36+phvM2C6Vv4ny50l9MYkoz
+         sgu0rP5vbFDDXMl+8q/CJ6pSs+cvfFY9DwrMT5VdiLNavPCGt/PhBYb6OkHLtMT5FzNk
+         90T9R7znx3T2zWEPRj5LGj87bHHRawD47jLmQxlU+UYTlMVQjiIceg/cwOZbUIgi1Lnb
+         HpFja8NaSmugdSKCK+udpj78UKK0YzsyTuBnqWSC8APZ9LVbaOqdUp8wj1FJ9rzcDO34
+         8xZij7Q8yaIbf4EQgIDjc8C59Xbw1S8mYNSLWJHNPgRAkGyw9fPGIrn7sDGGFSqZBF8i
+         /Uig==
+X-Forwarded-Encrypted: i=1; AJvYcCXxOlScxeJm+kOTlcexmbeuyGakLMz6/SDrz/MjiZisZeeNGC0kvMRQKTH3qsGYUFp0njc7ajEGbsEIOSgWrc15rBMScnsp4rw5Y0MX3g==
+X-Gm-Message-State: AOJu0YwrnF3liYF931jtm2Sk4UQg6Y43Wp8JaA2Ag9GUr9M5HN5NjZeK
+	2lw4wOL88CoL/238sRI1OkKPOzVgIY1h9AAQ4sQOIIqTC0FHL0go
+X-Google-Smtp-Source: AGHT+IEl8AUL32RskP9KGXc80Es0L2iMivKVGf7869FhG8wMEglB481MAH7e/tfcS1tKjlee8zzZuw==
+X-Received: by 2002:a05:6830:18ea:b0:6f9:9540:76a8 with SMTP id 46e09a7af769-70073b35f82mr7986503a34.13.1718946361927;
+        Thu, 20 Jun 2024 22:06:01 -0700 (PDT)
+Received: from apais-devbox.. ([2001:569:766d:6500:fb4e:6cf3:3ec6:9292])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-716c950d71asm371308a12.62.2024.06.20.22.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 22:06:01 -0700 (PDT)
+From: Allen Pais <allen.lkml@gmail.com>
+To: kuba@kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Thomas Falcon <tlfalcon@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 12/15] net: ibmvnic: Convert tasklet API to new bottom half workqueue mechanism
+Date: Thu, 20 Jun 2024 22:05:22 -0700
+Message-Id: <20240621050525.3720069-13-allen.lkml@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240621050525.3720069-1-allen.lkml@gmail.com>
+References: <20240621050525.3720069-1-allen.lkml@gmail.com>
 MIME-Version: 1.0
-References: <20240620175703.605111-1-yury.norov@gmail.com> <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
- <ZnR1tQN01kN97G_F@yury-ThinkPad> <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
- <ZnSPBFW5wL0D0b86@yury-ThinkPad>
-In-Reply-To: <ZnSPBFW5wL0D0b86@yury-ThinkPad>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Jun 2024 13:32:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wi2R7-jyoOw27Svf1PmfDFQgBWVAH3DP5CXO+JF-BeFZA@mail.gmail.com>
-Message-ID: <CAHk-=wi2R7-jyoOw27Svf1PmfDFQgBWVAH3DP5CXO+JF-BeFZA@mail.gmail.com>
-Subject: Re: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
-To: Yury Norov <yury.norov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Fri, 21 Jun 2024 15:58:23 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,27 +91,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Hans Verkuil <hverkuil@xs4all.nl>, "Md. Haris Iqbal" <haris.iqbal@ionos.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Bart Van Assche <bvanassche@acm.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Jiri Pirko <jiri@resnulli.us>, Christian Brauner <brauner@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Sergey Shtylyov <s.shtylyov@omp.ru>, Thomas Gleixner <tglx@linutronix.de>, Karsten Keil <isdn@linux-pingi.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, GR-QLogic-Storage-Upstream@marvell.com, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, alsa-devel@alsa-project.org, Dave Hansen <dave.hansen@linux.intel.com>, Eric Dumazet <edumazet@google.com>, Gregory Greenman <gregory.greenman@intel.com>, linux-s390@vger.kernel.org, Valentin Schneider <vschneid@redhat.com>, Leon Romanovsky <leon@kernel.org>, Will Deacon <will@kernel.org>, mpi3mr-linuxdrv.pdl@broadcom.com, Hugh Dickins <hughd@google.com>, iommu@lists.linux.dev, Martin Habets <habetsm.xilinx@gmail.com>, linux-media@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>, linux-arm-msm@vger.kernel.org, Wenjia Zhang <wenjia@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, linux-arm-kernel@lists.infradead.org, Sean Christopherson <seanjc@google.com>, Oliver Neukum <oneukum@suse.com>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, linux-pci@vger.kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-hyperv@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>, linux-rdma@vger.kernel.org, Damien Le Moal <damien.lemoal@opensource.wdc.com>, ath10k@lists.infradead.org, David Disseldorp <ddiss@suse.de>, Paolo Abeni <pabeni@redhat.com>, Fenghua Yu <fenghua.yu@intel.com>, Kees Cook <keescook@chromium.org>, "James E.J. Bottomley" <jejb@linux.ibm.com>, Akinobu Mita <akinobu.mita@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Borislav Petkov <bp@alien8.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Edward Cree <ecree.xilinx@gmail.com>, Shuai Xue <xueshuai@linux.alibaba.com>, netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Jan Kara <jack@suse.cz>, kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexey Klimov <alexey.klimov@linaro.org>, Ping-Ke Shih <pkshih@realtek.com>, linux-scsi@vger.kernel.org, linux-net-drivers@amd.com, x86@kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Chaitanya Kulkarni <kch@nvidia.com>, Kalle Valo <kvalo@kernel.org>, linux-block@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>, linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, Michal Simek <monstr@monstr.eu>, Yoshinori Sato <ysato@users.sourceforge.jp>, Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, linux-mips@vger.kernel.org, linux-bluetooth@vger.kernel.org, dmaengine@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org, Karsten Graul <kgraul@linux.ibm.com>
+Cc: marcin.s.wojtas@gmail.com, kda@linux-powerpc.org, Allen Pais <allen.lkml@gmail.com>, linux-acenic@sunsite.dk, louis.peens@corigine.com, borisp@nvidia.com, cooldavid@cooldavid.org, aneesh.kumar@kernel.org, mlindner@marvell.com, lorenzo@kernel.org, Mark-MC.Lee@mediatek.com, jes@trained-monkey.org, richardcochran@gmail.com, sean.wang@mediatek.com, linux-net-drivers@amd.com, cai.huoqing@linux.dev, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, bryan.whitehead@microchip.com, dougmill@linux.ibm.com, linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com, stephen@networkplumber.org, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, nbd@nbd.name
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 20 Jun 2024 at 13:20, Yury Norov <yury.norov@gmail.com> wrote:
->
-> FORCE_NR_CPUS helped to generate a better code for me back then. I'll
-> check again against the current kernel.
+Migrate tasklet APIs to the new bottom half workqueue mechanism. It
+replaces all occurrences of tasklet usage with the appropriate workqueue
+APIs throughout the ibmvnic driver. This transition ensures compatibility
+with the latest design and enhances performance.
 
-Of _course_ it generates better code.
+Signed-off-by: Allen Pais <allen.lkml@gmail.com>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 24 ++++++++++++------------
+ drivers/net/ethernet/ibm/ibmvnic.h |  2 +-
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-But when "better code" is a source of bugs, and isn't actually useful
-in general, it's not better, is it.
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 5e9a93bdb518..2e817a560c3a 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2725,7 +2725,7 @@ static const char *reset_reason_to_string(enum ibmvnic_reset_reason reason)
+ /*
+  * Initialize the init_done completion and return code values. We
+  * can get a transport event just after registering the CRQ and the
+- * tasklet will use this to communicate the transport event. To ensure
++ * bh work will use this to communicate the transport event. To ensure
+  * we don't miss the notification/error, initialize these _before_
+  * regisering the CRQ.
+  */
+@@ -4429,7 +4429,7 @@ static void send_request_cap(struct ibmvnic_adapter *adapter, int retry)
+ 	int cap_reqs;
+ 
+ 	/* We send out 6 or 7 REQUEST_CAPABILITY CRQs below (depending on
+-	 * the PROMISC flag). Initialize this count upfront. When the tasklet
++	 * the PROMISC flag). Initialize this count upfront. When the bh work
+ 	 * receives a response to all of these, it will send the next protocol
+ 	 * message (QUERY_IP_OFFLOAD).
+ 	 */
+@@ -4965,7 +4965,7 @@ static void send_query_cap(struct ibmvnic_adapter *adapter)
+ 	int cap_reqs;
+ 
+ 	/* We send out 25 QUERY_CAPABILITY CRQs below.  Initialize this count
+-	 * upfront. When the tasklet receives a response to all of these, it
++	 * upfront. When the bh work receives a response to all of these, it
+ 	 * can send out the next protocol messaage (REQUEST_CAPABILITY).
+ 	 */
+ 	cap_reqs = 25;
+@@ -5477,7 +5477,7 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
+ 	int i;
+ 
+ 	/* CHECK: Test/set of login_pending does not need to be atomic
+-	 * because only ibmvnic_tasklet tests/clears this.
++	 * because only ibmvnic_bh_work tests/clears this.
+ 	 */
+ 	if (!adapter->login_pending) {
+ 		netdev_warn(netdev, "Ignoring unexpected login response\n");
+@@ -6063,13 +6063,13 @@ static irqreturn_t ibmvnic_interrupt(int irq, void *instance)
+ {
+ 	struct ibmvnic_adapter *adapter = instance;
+ 
+-	tasklet_schedule(&adapter->tasklet);
++	queue_work(system_bh_wq, &adapter->bh_work);
+ 	return IRQ_HANDLED;
+ }
+ 
+-static void ibmvnic_tasklet(struct tasklet_struct *t)
++static void ibmvnic_bh_work(struct work_struct *work)
+ {
+-	struct ibmvnic_adapter *adapter = from_tasklet(adapter, t, tasklet);
++	struct ibmvnic_adapter *adapter = from_work(adapter, work, bh_work);
+ 	struct ibmvnic_crq_queue *queue = &adapter->crq;
+ 	union ibmvnic_crq *crq;
+ 	unsigned long flags;
+@@ -6150,7 +6150,7 @@ static void release_crq_queue(struct ibmvnic_adapter *adapter)
+ 
+ 	netdev_dbg(adapter->netdev, "Releasing CRQ\n");
+ 	free_irq(vdev->irq, adapter);
+-	tasklet_kill(&adapter->tasklet);
++	cancel_work_sync(&adapter->bh_work);
+ 	do {
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+@@ -6201,7 +6201,7 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
+ 
+ 	retrc = 0;
+ 
+-	tasklet_setup(&adapter->tasklet, (void *)ibmvnic_tasklet);
++	INIT_WORK(&adapter->bh_work, (void *)ibmvnic_bh_work);
+ 
+ 	netdev_dbg(adapter->netdev, "registering irq 0x%x\n", vdev->irq);
+ 	snprintf(crq->name, sizeof(crq->name), "ibmvnic-%x",
+@@ -6223,12 +6223,12 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
+ 	spin_lock_init(&crq->lock);
+ 
+ 	/* process any CRQs that were queued before we enabled interrupts */
+-	tasklet_schedule(&adapter->tasklet);
++	queue_work(system_bh_wq, &adapter->bh_work);
+ 
+ 	return retrc;
+ 
+ req_irq_failed:
+-	tasklet_kill(&adapter->tasklet);
++	cancel_work_sync(&adapter->bh_work);
+ 	do {
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+@@ -6621,7 +6621,7 @@ static int ibmvnic_resume(struct device *dev)
+ 	if (adapter->state != VNIC_OPEN)
+ 		return 0;
+ 
+-	tasklet_schedule(&adapter->tasklet);
++	queue_work(system_bh_wq, &adapter->bh_work);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+index 94ac36b1408b..b65b210a8059 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.h
++++ b/drivers/net/ethernet/ibm/ibmvnic.h
+@@ -1036,7 +1036,7 @@ struct ibmvnic_adapter {
+ 	u32 cur_rx_buf_sz;
+ 	u32 prev_rx_buf_sz;
+ 
+-	struct tasklet_struct tasklet;
++	struct work_struct bh_work;
+ 	enum vnic_state state;
+ 	/* Used for serialization of state field. When taking both state
+ 	 * and rwi locks, take state lock first.
+-- 
+2.34.1
 
-> The 5d272dd1b343 is wrong. Limiting FORCE_NR_CPUS to UP case makes no
-> sense because in UP case nr_cpu_ids is already a compile-time macro:
-
-Yury, I'm very aware. That was obviously intentional. the whole point
-of the commit is to just disable the the whole thing as useless and
-problematic.
-
-I could have just ripped it out entirely. I ended up doing a one-liner instead.
-
-                Linus
