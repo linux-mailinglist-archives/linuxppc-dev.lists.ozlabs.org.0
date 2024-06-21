@@ -2,95 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F0D9127C1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 716B89127EA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:33:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QVWUmQ6T;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KjnuXtjJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T/m6eyfw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W5KWS0x9cz3cfn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 00:29:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W5Kc30tGlz3cfy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 00:33:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QVWUmQ6T;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KjnuXtjJ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T/m6eyfw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Sat, 22 Jun 2024 00:33:17 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5KQG60Mdz3cgd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 00:25:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718979924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FloNdHDAMCUmgBKRbs+OcXuVLR4NlkKUkgqw/Oorwhs=;
-	b=QVWUmQ6T8TaNWXh3yWLlHusFLh8kQb8ok2JfubmGOQ0pdjNwe9KhJazbJAV8tbgeC0EIpl
-	zzvq0s4e7eE0gelirtHZxJhfrZQQFA50e9Pc8EYXpIJiZcpJF8Q7Knbsqr9BPQuEIniyVL
-	d3hLUKW7wCGHTL/rvLdoDcurbuEuu6E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718979925;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FloNdHDAMCUmgBKRbs+OcXuVLR4NlkKUkgqw/Oorwhs=;
-	b=KjnuXtjJUVBoQn2huJfoCZO+kSYma3oAsjaUkc1HYGv2Phqti4O2LEAL6obODYoSo+AK9e
-	Y56tiZ+RgpPlqxxInUyAP5gh5QpPcxe3arnt91LPH6cTvUxCACM+Uqx/iw+7jbeL9HInW5
-	0m1KU5Uk4HZp4kLvPUNKzxej4CNArRU=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-59-62_YMUZ6NqaM3RcnJ5TaIQ-1; Fri, 21 Jun 2024 10:25:23 -0400
-X-MC-Unique: 62_YMUZ6NqaM3RcnJ5TaIQ-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4401522c6bdso4133391cf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 07:25:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718979922; x=1719584722;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FloNdHDAMCUmgBKRbs+OcXuVLR4NlkKUkgqw/Oorwhs=;
-        b=hMDXEMJx36JMUYDXi0WeaN98XFFUzMyUVqXPZqCKxzIczPD1mW3HcvfYV3ZJoNku9w
-         i6vMgU1jreUjrHsXafEr92oQ/3dvjETgZXM/09ONsu4b6A7gkLrYOFhL7QVmPC0pDE44
-         FRCSlHptvVbUF+NIfMvwEIzpb+Gj0zoQhfR5uqbN0E9W6gUXmEdpZakage7JbabQmB+c
-         dy0jRa5nVEZFYBKvn996l5zjr3E9e1OmXQLGGaCoxeHBdXeQiPx7DjSRrwPsGEJg0Aox
-         xlKfxh6EBvJKrvMNbtJb94JoPSqzf6kCa2UaGHK9TMd41X8E2XgGsYomQI7YUyn/Jn24
-         EeoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCWCcbN7N8xbHynBmz+Pt5I3lbEOfHYL+i57pbebU7W8pg7hY21sXqvSqReEx+vvMqKA3H9YeCnJQAHWQAmQhxT1C5y//AB3JYyGkncw==
-X-Gm-Message-State: AOJu0YwNhmseFJTUrmf6Vh0aDCbZQJrsDQK43eDFCvy2GXH8XviANxLK
-	bbT2feVNuIBaLPbYjDsViSTqCNjyvRn3+b7MIjh5Mfk/qPGgbs1vmmo46m+cZG1TDK1dePxwFbO
-	XIYXDWL1AmosrfG9NDZp5IdPWWZFYPFolyzwbk185ulSxJkrJcIUQ2G6MdWSLe7s=
-X-Received: by 2002:a05:620a:4725:b0:79b:b8ef:160f with SMTP id af79cd13be357-79bb8ef1a25mr832756485a.0.1718979922069;
-        Fri, 21 Jun 2024 07:25:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKznxYW2FLJ0xJwWKaEtD8Tk/BHH+OIQZWLkXgxtzT/k39w+HZ9hDMrU5i6fKaXRUQoupH+Q==
-X-Received: by 2002:a05:620a:4725:b0:79b:b8ef:160f with SMTP id af79cd13be357-79bb8ef1a25mr832752985a.0.1718979921429;
-        Fri, 21 Jun 2024 07:25:21 -0700 (PDT)
-Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-79bce944cb2sm90564785a.125.2024.06.21.07.25.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 07:25:21 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 7/7] mm/mprotect: fix dax pud handlings
-Date: Fri, 21 Jun 2024 10:25:04 -0400
-Message-ID: <20240621142504.1940209-8-peterx@redhat.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240621142504.1940209-1-peterx@redhat.com>
-References: <20240621142504.1940209-1-peterx@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5KbK64Bmz30T0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 00:33:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718980399; x=1750516399;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SCV4XnLDPwX4vm7ZchPPteJullsBv/S+vDAJVlZdLhA=;
+  b=T/m6eyfwD78MAGoBPjmJudZ40XOANMQ+syzLFgc9H380BXHFYzcUXUVI
+   yXc6qbfvmhdt2J3FYG3KosjfawV1aozP+7DqF5zKRSDDZUAwhpP9/r5Hf
+   +CMJKu7emU1LkNeytYAYEzXWaEERXTztFoq9XsuK0z7cVr0ZDWefjlYeI
+   s9Gd2rcT9DYQSYc/W61tzlw1w4mH4PveTVODIJhV1I/rl24Pc9i+Eti4Z
+   OUwVkkGI9G32LkZOwvfK8wrMUCSbpGJ0fTD0237Ohbc57nr7SDsaITTqY
+   XIdnGXzBCi/EJB4Fn5r9GGHZBK6yXe6Rqex5CvxhGbmGIywHGZZRFAe7h
+   A==;
+X-CSE-ConnectionGUID: fhCwFS5aQVG75MeplrNQVg==
+X-CSE-MsgGUID: zDrvbHFkSZ2dabcIZNk/ig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="41420526"
+X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; 
+   d="scan'208";a="41420526"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2024 07:32:10 -0700
+X-CSE-ConnectionGUID: qwXb30wBQOKcJIT2kbiqwA==
+X-CSE-MsgGUID: NYXjrJQvTViS1Ij6Y5vCtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; 
+   d="scan'208";a="42706810"
+Received: from bmurrell-mobl.amr.corp.intel.com (HELO [10.124.221.70]) ([10.124.221.70])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2024 07:32:08 -0700
+Message-ID: <afffce60-f03d-4f0f-ab03-410b4571d52b@intel.com>
+Date: Fri, 21 Jun 2024 07:32:09 -0700
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] mm/x86: Make pud_leaf() only cares about PSE bit
+To: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20240621142504.1940209-1-peterx@redhat.com>
+ <20240621142504.1940209-6-peterx@redhat.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240621142504.1940209-6-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,242 +118,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, peterx@redhat.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>
+Cc: Huang Ying <ying.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, Dave Jiang <dave.jiang@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Rik van Riel <riel@surriel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Mel Gorman <mgorman@techsingularity.net>, Matthew Wilcox <willy@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, "Kirill A . Shutemov" <kirill@shutemov.name>, Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is only relevant to the two archs that support PUD dax, aka, x86_64
-and ppc64.  PUD THPs do not yet exist elsewhere, and hugetlb PUDs do not
-count in this case.
+On 6/21/24 07:25, Peter Xu wrote:
+> An entry should be reported as PUD leaf even if it's PROT_NONE, in which
+> case PRESENT bit isn't there. I hit bad pud without this when testing dax
+> 1G on zapping a PROT_NONE PUD.
 
-DAX have had PUD mappings for years, but change protection path never
-worked.  When the path is triggered in any form (a simple test program
-would be: call mprotect() on a 1G dev_dax mapping), the kernel will report
-"bad pud".  This patch should fix that.
+Yeah, looks like pmd_leaf() got fixed up because of its involvement in
+THP, but PUDs got missed.  This patch also realigns pmd_leaf() and
+pud_leaf() behavior, which is important.
 
-The new change_huge_pud() tries to keep everything simple.  For example, it
-doesn't optimize write bit as that will need even more PUD helpers.  It's
-not too bad anyway to have one more write fault in the worst case once for
-1G range; may be a bigger thing for each PAGE_SIZE, though.  Neither does
-it support userfault-wp bits, as there isn't such PUD mappings that is
-supported; file mappings always need a split there.
-
-The same to TLB shootdown: the pmd path (which was for x86 only) has the
-trick of using _ad() version of pmdp_invalidate*() which can avoid one
-redundant TLB, but let's also leave that for later.  Again, the larger the
-mapping, the smaller of such effect.
-
-Another thing worth mention is this path needs to be careful on handling
-"retry" event for change_huge_pud() (where it can return 0): it isn't like
-change_huge_pmd(), as the pmd version is safe with all conditions handled
-in change_pte_range() later, thanks to Hugh's new pte_offset_map_lock().
-In short, change_pte_range() is simply smarter than change_pmd_range() now
-after the shmem thp collapse rework.  For that reason, change_pud_range()
-will need proper retry if it races with something else when a huge PUD
-changed from under us.
-
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: x86@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-Fixes: 27af67f35631 ("powerpc/book3s64/mm: enable transparent pud hugepage")
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- include/linux/huge_mm.h | 24 +++++++++++++++++++
- mm/huge_memory.c        | 52 +++++++++++++++++++++++++++++++++++++++++
- mm/mprotect.c           | 40 ++++++++++++++++++++++++-------
- 3 files changed, 108 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 212cca384d7e..b46673689f19 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -345,6 +345,17 @@ void split_huge_pmd_address(struct vm_area_struct *vma, unsigned long address,
- void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
- 		unsigned long address);
- 
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		    pud_t *pudp, unsigned long addr, pgprot_t newprot,
-+		    unsigned long cp_flags);
-+#else
-+static inline int
-+change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		pud_t *pudp, unsigned long addr, pgprot_t newprot,
-+		unsigned long cp_flags) { return 0; }
-+#endif
-+
- #define split_huge_pud(__vma, __pud, __address)				\
- 	do {								\
- 		pud_t *____pud = (__pud);				\
-@@ -588,6 +599,19 @@ static inline int next_order(unsigned long *orders, int prev)
- {
- 	return 0;
- }
-+
-+static inline void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
-+				    unsigned long address)
-+{
-+}
-+
-+static inline int change_huge_pud(struct mmu_gather *tlb,
-+				  struct vm_area_struct *vma, pud_t *pudp,
-+				  unsigned long addr, pgprot_t newprot,
-+				  unsigned long cp_flags)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- static inline int split_folio_to_list_to_order(struct folio *folio,
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 0fffaa58a47a..af8d83f4ce02 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2091,6 +2091,53 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	return ret;
- }
- 
-+/*
-+ * Returns:
-+ *
-+ * - 0: if pud leaf changed from under us
-+ * - 1: if pud can be skipped
-+ * - HPAGE_PUD_NR: if pud was successfully processed
-+ */
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+		    pud_t *pudp, unsigned long addr, pgprot_t newprot,
-+		    unsigned long cp_flags)
-+{
-+	struct mm_struct *mm = vma->vm_mm;
-+	pud_t oldpud, entry;
-+	spinlock_t *ptl;
-+
-+	tlb_change_page_size(tlb, HPAGE_PUD_SIZE);
-+
-+	/* NUMA balancing doesn't apply to dax */
-+	if (cp_flags & MM_CP_PROT_NUMA)
-+		return 1;
-+
-+	/*
-+	 * Huge entries on userfault-wp only works with anonymous, while we
-+	 * don't have anonymous PUDs yet.
-+	 */
-+	if (WARN_ON_ONCE(cp_flags & MM_CP_UFFD_WP_ALL))
-+		return 1;
-+
-+	ptl = __pud_trans_huge_lock(pudp, vma);
-+	if (!ptl)
-+		return 0;
-+
-+	/*
-+	 * Can't clear PUD or it can race with concurrent zapping.  See
-+	 * change_huge_pmd().
-+	 */
-+	oldpud = pudp_invalidate(vma, addr, pudp);
-+	entry = pud_modify(oldpud, newprot);
-+	set_pud_at(mm, addr, pudp, entry);
-+	tlb_flush_pud_range(tlb, addr, HPAGE_PUD_SIZE);
-+
-+	spin_unlock(ptl);
-+	return HPAGE_PUD_NR;
-+}
-+#endif
-+
- #ifdef CONFIG_USERFAULTFD
- /*
-  * The PT lock for src_pmd and dst_vma/src_vma (for reading) are locked by
-@@ -2319,6 +2366,11 @@ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
- 	spin_unlock(ptl);
- 	mmu_notifier_invalidate_range_end(&range);
- }
-+#else
-+void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
-+		unsigned long address)
-+{
-+}
- #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
- 
- static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index fb8bf3ff7cd9..694f13b83864 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -425,29 +425,53 @@ static inline long change_pud_range(struct mmu_gather *tlb,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
- 	struct mmu_notifier_range range;
--	pud_t *pud;
-+	pud_t *pudp, pud;
- 	unsigned long next;
- 	long pages = 0, ret;
- 
- 	range.start = 0;
- 
--	pud = pud_offset(p4d, addr);
-+	pudp = pud_offset(p4d, addr);
- 	do {
-+again:
- 		next = pud_addr_end(addr, end);
--		ret = change_prepare(vma, pud, pmd, addr, cp_flags);
--		if (ret)
--			return ret;
--		if (pud_none_or_clear_bad(pud))
-+		ret = change_prepare(vma, pudp, pmd, addr, cp_flags);
-+		if (ret) {
-+			pages = ret;
-+			break;
-+		}
-+
-+		pud = READ_ONCE(*pudp);
-+		if (pud_none(pud))
- 			continue;
-+
- 		if (!range.start) {
- 			mmu_notifier_range_init(&range,
- 						MMU_NOTIFY_PROTECTION_VMA, 0,
- 						vma->vm_mm, addr, end);
- 			mmu_notifier_invalidate_range_start(&range);
- 		}
--		pages += change_pmd_range(tlb, vma, pud, addr, next, newprot,
-+
-+		if (pud_leaf(pud)) {
-+			if ((next - addr != PUD_SIZE) ||
-+			    pgtable_split_needed(vma, cp_flags)) {
-+				__split_huge_pud(vma, pudp, addr);
-+				goto again;
-+			} else {
-+				ret = change_huge_pud(tlb, vma, pudp,
-+						      addr, newprot, cp_flags);
-+				if (ret == 0)
-+					goto again;
-+				/* huge pud was handled */
-+				if (ret == HPAGE_PUD_NR)
-+					pages += HPAGE_PUD_NR;
-+				continue;
-+			}
-+		}
-+
-+		pages += change_pmd_range(tlb, vma, pudp, addr, next, newprot,
- 					  cp_flags);
--	} while (pud++, addr = next, addr != end);
-+	} while (pudp++, addr = next, addr != end);
- 
- 	if (range.start)
- 		mmu_notifier_invalidate_range_end(&range);
--- 
-2.45.0
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
