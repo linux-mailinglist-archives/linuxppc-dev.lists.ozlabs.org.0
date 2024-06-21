@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEC4911B61
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:19:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBFD911B7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:21:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CQ5+RO+e;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OhtXpZpL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W56df432xz3cb8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:19:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W56gy6SGYz3cCt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:21:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CQ5+RO+e;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OhtXpZpL;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W56cy2CQMz2xcw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 16:18:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W56gG6vTLz2xcw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 16:20:58 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id E4DD8CE2B38;
-	Fri, 21 Jun 2024 06:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22111C2BBFC;
-	Fri, 21 Jun 2024 06:18:43 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 9868ACE2B4D;
+	Fri, 21 Jun 2024 06:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AB4C2BBFC;
+	Fri, 21 Jun 2024 06:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718950735;
-	bh=iOKs0kuwYeauur49traV6Ei5QgiBo+V6ci2r2oGoz5Y=;
+	s=k20201202; t=1718950857;
+	bh=IiCPd22GUUG2UxULkuTSSyyTZ/pmI4F7nyOYPBord1k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CQ5+RO+eixfOSNiyNe6mYshUgJvT0bBT4RbBHfzXKwWoWUVDdMTdin7bNvMeociBa
-	 nsxe1skVxv8y216/k3GjD97zpMhRmVcHnKNoQQjUEIDFLDXLOx3HazsbPRQpp8Wgtd
-	 URk3Blz7BFahR8cKNcyHmn2uxfK86Y/OqF9sI1Q245ew1hsIEgxFDimmiZ9+leoFKN
-	 bFTDPzHrfjIDkH0vL43WSNL6GWH6QcG//xXqawpgJXcVrGqP+6n8pqSHSc0LN28WsZ
-	 IWtKNkMhQE4HAfPFsV1PtgcWsaTID0wJ9ME+tjwO5TMqWlHdX4Miz81t8+Qz01ZGXY
-	 CxmBFLYjgBjFg==
-Message-ID: <f49c5ee8-6bdb-481b-a131-a6478526f1e1@kernel.org>
-Date: Fri, 21 Jun 2024 08:18:41 +0200
+	b=OhtXpZpLrdBOpdBtgNAUDtgMaVbFjc/ppNy+deGKwuXAwkwbRJ1Q7kpX96yURiGPY
+	 Q+dS4zFpn9mijqwy+WF/PZQ/03NZquYSWhFf19qDH0Luyyw82dLwx8dKv1b9KcLbaE
+	 9+aUalJ2KoxVeOXUo35FcrpjXarIeQU0DgKVv4nvLyNc7eRiH/lP7r3c3+pbZlgFk+
+	 7lpve1YzSqsiXwzhIpGbYBzxGhzgtpUXU9bG7w8uHxLTXUC04cAgC49mQwYt5r9n0x
+	 BuhgXKvau/UMRX6lN0ZzKsdUufBNeCR6S/URsPykjbdQ+V12JoV8wx9m4LufStkpzU
+	 dwN+w1x/CopKQ==
+Message-ID: <23a12b79-b3ac-47a1-9bc3-73a62f96e60f@kernel.org>
+Date: Fri, 21 Jun 2024 08:20:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v4 03/10] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT
- binding
+Subject: Re: [Patch v4 04/10] ARM: dts: lpc32xx: Add missing dma and i2s
+ properties
 To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
  Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -55,7 +55,7 @@ To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
  Miquel Raynal <miquel.raynal@bootlin.com>,
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Yangtao Li <frank.li@vivo.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnd Bergmann <arnd@arndb.de>, Yangtao Li <frank.li@vivo.com>,
  Li Zetao <lizetao1@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
  Chancel Liu <chancel.liu@nxp.com>, dmaengine@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -64,7 +64,7 @@ To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
  linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
  linux-mtd@lists.infradead.org
 References: <20240620175657.358273-1-piotr.wojtaszczyk@timesys.com>
- <20240620175657.358273-4-piotr.wojtaszczyk@timesys.com>
+ <20240620175657.358273-5-piotr.wojtaszczyk@timesys.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,7 +110,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240620175657.358273-4-piotr.wojtaszczyk@timesys.com>
+In-Reply-To: <20240620175657.358273-5-piotr.wojtaszczyk@timesys.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -129,26 +129,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 20/06/2024 19:56, Piotr Wojtaszczyk wrote:
-> Add nxp,lpc3220-i2s DT binding documentation.
+> Adds properties declared in the new DT bindings:
+>  - nxp,lpc3220-i2s.yaml
+>  - nxp,lpc3220-dmamux.yaml
+> for dma router/mux and I2S interface.
 > 
 > Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 
-Thanks for doing this. Appreciated.
+You are doing here multiple things at once. This should be
+
+One patch is dma properties.
 
 >  
-> +FREESCALE SOC LPC32XX SOUND DRIVERS
-> +M:	J.M.B. Downing <jonathan.downing@nautel.com>
-> +M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-> +R:	Vladimir Zapolskiy <vz@mleia.com>
-> +L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-> +L:	linuxppc-dev@lists.ozlabs.org
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
-> +N:	lpc32xx
+>  			i2s0: i2s@20094000 {
+>  				compatible = "nxp,lpc3220-i2s";
+>  				reg = <0x20094000 0x1000>;
+> +				interrupts = <22 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks = <&clk LPC32XX_CLK_I2S0>;
+> +				dmas = <&dma 0 1>, <&dma 13 1>;
+> +				dma-names = "rx", "tx";
+> +				#sound-dai-cells = <0>;
 
-Drop the last "N:".
+Sound dai cells is another patch (or entire node is separate patch).
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>  				status = "disabled";
+>  			};
+>  
+> @@ -231,12 +255,19 @@ sd: sd@20098000 {
+>  					     <13 IRQ_TYPE_LEVEL_HIGH>;
+>  				clocks = <&clk LPC32XX_CLK_SD>;
+>  				clock-names = "apb_pclk";
+> +				dmas = <&dma 4 1>;
+> +				dma-names = "rx";
+>  				status = "disabled";
+>  			};
+>  
+>  			i2s1: i2s@2009c000 {
+>  				compatible = "nxp,lpc3220-i2s";
+>  				reg = <0x2009c000 0x1000>;
+> +				interrupts = <23 IRQ_TYPE_LEVEL_HIGH>;
+> +				clocks = <&clk LPC32XX_CLK_I2S1>;
+> +				dmas = <&dma 2 1>, <&dmamux 10 1 1>;
+> +				dma-names = "rx", "tx";
+> +				#sound-dai-cells = <0>;
+>  				status = "disabled";
+>  			};
+>  
+> @@ -312,21 +343,27 @@ fab {
+>  			compatible = "simple-bus";
+>  			ranges = <0x20000000 0x20000000 0x30000000>;
+>  
+> -			/* System Control Block */
+> -			scb {
+> -				compatible = "simple-bus";
+> -				ranges = <0x0 0x40004000 0x00001000>;
+> +			syscon@40004000 {
+> +				compatible = "nxp,lpc3220-creg", "syscon", "simple-mfd";
+> +				reg = <0x40004000 0x114>;
+
+This hunk is also separate patch.
+
+
 
 Best regards,
 Krzysztof
