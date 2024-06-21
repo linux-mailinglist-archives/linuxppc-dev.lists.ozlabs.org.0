@@ -2,118 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDF8911BAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97809911BCD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 08:31:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R7D9hrya;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=YUfcwoBS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=TsA19tge;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W56nX364Mz3cYv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:26:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W56tn1nZDz3cVh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 16:30:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R7D9hrya;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=YUfcwoBS;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=TsA19tge;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.145; helo=fout2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W56mc2sxbz2yvs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 16:25:36 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 0A102CE2B5C;
-	Fri, 21 Jun 2024 06:25:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D565C4AF08;
-	Fri, 21 Jun 2024 06:25:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718951135;
-	bh=oPW1WUMpeUlBXgaCkD1FCmz7P1PMeZKHjbupeBiDffo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R7D9hrya9zYx6knzHuSfzQlpsZKb8kU0bwbSvU2xuqPKeNuw2N0IZtk/B/ML9YyxZ
-	 lVaI0gjQxdQSjaIL5KE5fwAev9T+PD77RAGoWt0BVZ1yqFMY/X4F2tz7UJNtS2RdA3
-	 cuXOHQ2q1WHjqt4aTcNkARNwY83Azzp1hMeMd3h7RrCZy4DE+fRKbnDcpprU6HwzxS
-	 qcR1SsGlpPfYBR9P8aQXoS2yyvCf2yeBEs/3Tc2P2yb/G7YRgax3ESQSPatl/P811o
-	 SBH/oUce3T+7ltZ4YqTTQUeh0OEqvbKZXyVDaPjMaxBUL9hoX1GYNSljFqqTHKgdEy
-	 3cUWNkOeyL5Mg==
-Message-ID: <f52bc36a-0b82-4def-bb11-ed7e2ca55016@kernel.org>
-Date: Fri, 21 Jun 2024 08:25:23 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W56t1491wz30Vb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 16:30:16 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 84F2B138026C;
+	Fri, 21 Jun 2024 02:30:14 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Fri, 21 Jun 2024 02:30:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1718951414;
+	 x=1719037814; bh=0NAp6YpmQQzb+XaqCHOddozx1CwlQxt9qQHhSQdm/eM=; b=
+	YUfcwoBSCsdr4lbdFToY1N/Zs4J4ckS/QAFHkFhDVLoMlvGNE9DG/Up12YB02Xt2
+	EvdhpTEPC4jKy9ytn/wkuqfYy4S1cppgeD4oj7WA+/5sqCNg/z+lPwlRbPyO/Flv
+	86iciY4yavDos8ifYZIvOfII9G79cFp+BbP22J8pM9RrD+d18AtMZbn8j9nT03bV
+	c7xQT06XqtjmkNTJ3loldGGvKZUIHFOFW5y31AIvhjBqlktBLCcT2CdKqNOYzmSV
+	sMmQF4/bSVH0PEqvVO/XPs0/1B6SgKYgXBpAog/xndEaqaywJvgFOBJuhrryZ4PT
+	p2/5cEIyG3XclTxM5zIk6Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718951414; x=
+	1719037814; bh=0NAp6YpmQQzb+XaqCHOddozx1CwlQxt9qQHhSQdm/eM=; b=T
+	sA19tgeRrtyO5cROFsAr3JW3gCmvjTkfGvoIFyTvlgeMHOUsPYhUf63dPMHGumOG
+	SIVUOPVMYqUiSDU81ctnvLlpO9PEmKT5nYGuN8Yk6mi2deAmhqwvD8T8lcVqcfB1
+	GPqL5qicjYl82FohTt6bsxJU60LE/Hsa42KrOIywf7lBtaIPivddS4cPuSL9Zm6B
+	LHiJJ7dQip90rRSAu8Rm0KDbhCZ/X7xYsJbH8aqLdEew+kE5apOFPvumBP+Yp5Fz
+	Rr5E19oZ7V3IGyh5IXREy5PC+msQ9aq0CnRgKaDNrD+E/iA5xot89u78VGuhZWhK
+	zW007umSQsVkCbMOwZN5A==
+X-ME-Sender: <xms:9B11ZuBxjRBAW0tNynq8H1-YRQjdkmL-JPoLIbLq-orE5Mdjc1QF6A>
+    <xme:9B11ZojY_qLmvoF_ar3eB4_lK44-YnS7iEik2csxzA9Ys1vKqB1JAHCw16DZLb5Ul
+    cdeR1H2mE3zhLekbAU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeffedgudduudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepueelffeiudevhfettedvhfevkeekveevffehveehhefftdeiheduledu
+    iedtvdffnecuffhomhgrihhnpegrkhgrrdhmshenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:9B11Zhm6zOHfU1WuWgDdoSU71qsQzLDsjAJ7Nhxw117RxV0KzM2GHQ>
+    <xmx:9B11ZsweTZURJjYSmpSNhPg_buY1pvgdHiULQsyQVa-AcYIqIMlFBA>
+    <xmx:9B11ZjQp1WOoJc2XCjVhKQs5UkDHi7Xc0oSg1RRu1sY5kpyhJuIyfA>
+    <xmx:9B11ZnbfnZmS9DMt_cIsivY9q90FCfqmpn7bFXeT3Vnm0PLjcHHdDQ>
+    <xmx:9h11Zm92tL5faK9ZKeseMNCfbg9AEZegZt4gth5vlZ0KCBBhZQ4GEtV8>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 60EDBB6008D; Fri, 21 Jun 2024 02:30:12 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v4 07/10] ARM: lpc32xx: Remove pl08x platform data in
- favor for device tree
-To: Markus Elfring <Markus.Elfring@web.de>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "J.M.B. Downing" <jonathan.downing@nautel.com>,
- Vladimir Zapolskiy <vz@mleia.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Yangtao Li <frank.li@vivo.com>, Arnd Bergmann <arnd@arndb.de>,
- Li Zetao <lizetao1@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Chancel Liu <chancel.liu@nxp.com>, dmaengine@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-sound@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-mtd@lists.infradead.org
-References: <20240620175657.358273-1-piotr.wojtaszczyk@timesys.com>
- <20240620175657.358273-8-piotr.wojtaszczyk@timesys.com>
- <bc3d018e-5a60-46b0-8e84-7158d231d2cc@web.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <bc3d018e-5a60-46b0-8e84-7158d231d2cc@web.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-Id: <1308b23a-d7c0-449e-becd-53c42114661e@app.fastmail.com>
+In-Reply-To: <e22d7cd7-d247-4426-9506-a3a644ae03c4@cs-soprasteria.com>
+References: <20240620162316.3674955-1-arnd@kernel.org>
+ <20240620162316.3674955-8-arnd@kernel.org>
+ <e80809ba-ee81-47a5-9b08-54b11f118a78@gmx.de>
+ <e22d7cd7-d247-4426-9506-a3a644ae03c4@cs-soprasteria.com>
+Date: Fri, 21 Jun 2024 08:28:40 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "LEROY Christophe" <christophe.leroy2@cs-soprasteria.com>,
+ "Helge Deller" <deller@gmx.de>, "Arnd Bergmann" <arnd@kernel.org>,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 07/15] parisc: use generic sys_fanotify_mark implementation
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -125,25 +102,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>
+Cc: Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, "musl@lists.openwall.com" <musl@lists.openwall.com>, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, LTP List <ltp@lists.linux.it>, Brian Cain <bcain@quicinc.com>, Christian Brauner <brauner@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Xi Ruoyao <libc-alpha@sourceware.org>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21/06/2024 07:56, Markus Elfring wrote:
->> With the driver for nxp,lpc3220-dmamux we can remove the pl08x platform
->> data and let pl08x driver to create peripheral channels from the DT
->> properties.
-> 
-> Do you see opportunities to improve such a change description?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.10-rc4#n94
+On Fri, Jun 21, 2024, at 07:26, LEROY Christophe wrote:
+> Le 20/06/2024 =C3=A0 23:21, Helge Deller a =C3=A9crit :
+>> [Vous ne recevez pas souvent de courriers de deller@gmx.de. D=C3=A9co=
+uvrez
+>> pourquoi ceci est important =C3=A0
+>> https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> On 6/20/24 18:23, Arnd Bergmann wrote:
+>>> From: Arnd Bergmann <arnd@arndb.de>
+>>>
+>>> The sys_fanotify_mark() syscall on parisc uses the reverse word order
+>>> for the two halves of the 64-bit argument compared to all syscalls on
+>>> all 32-bit architectures. As far as I can tell, the problem is that
+>>> the function arguments on parisc are sorted backwards (26, 25, 24, 2=
+3,
+>>> ...) compared to everyone else,
+>>
+>> r26 is arg0, r25 is arg1, and so on.
+>> I'm not sure I would call this "sorted backwards".
+>> I think the reason is simply that hppa is the only 32-bit big-endian
+>> arch left...
+>
+> powerpc/32 is big-endian: r3 is arg0, r4 is arg1, ... r10 is arg7.
 
-<form letter>
-Feel free to ignore all comments from Markus, regardless whether the
-suggestion is reasonable or not. This person is banned from LKML and
-several maintainers ignore Markus' feedback, because it is just a waste
-of time.
-</form letter>
+Right, I'm pretty sure the ordering is the same on arm, mips,
+s390, m68k, openrisc, sh and sparc when running 32-bit big-endian
+code.
 
-Best regards,
-Krzysztof
+It's more likely to be related to the upward growing stack.
+I checked the gcc sources and found that out of the 50 supported
+architectures, ARGS_GROW_DOWNWARD is set on everything except
+for gcn, stormy16 and  32-bit parisc. The other two are
+little-endian though. STACK_GROWS_DOWNWARD in turn is set on
+everything other than parisc (both 32-bit and 64-bit).
 
+      Arnd
