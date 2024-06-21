@@ -2,53 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A935911D45
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 09:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDA1911E3B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 10:13:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VfFN+Huq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RXX1h3br;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W58bp6tSVz3cZF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 17:48:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W599L0tTMz3cVB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 18:13:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VfFN+Huq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RXX1h3br;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=anjalik@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W58b805Nzz3cGb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 17:47:31 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E1CF662345;
-	Fri, 21 Jun 2024 07:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED54C2BBFC;
-	Fri, 21 Jun 2024 07:47:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718956049;
-	bh=+n1uE1MrLQMFhNN+7jwAvQajIquhPpIK6hC9WogIb1Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VfFN+HuqInMOioum3nOUUAxrTdtVdjbZPYztVw5rmIyxcrJKkfr//GPMMvssZ97mF
-	 bc16USxoEeLnXgt2+ZWBhKfJaZxF6h94UXw/6wVZmRCosK7MzmOV/zy0hFkL9oAOTY
-	 pLA96PVGw92edy7QBoumKi8/eHn/jpPrkZVF8iciR02xYit0fMKT5AKfFI28z2S/Xo
-	 7cTGqzDyXh0801wUzYZXCV5iG5ibGw7x8NUtpfJaovfGEj4d4xgd71H8ZAoG1ltp5R
-	 DaYwRoRG9BedSojyfpOn0Rc1oP+3UrPp/XDKQIT4MVW7tJ4oBBcq8vXMRLFcoNlAPv
-	 I1hJb8yogM0Jw==
-Date: Fri, 21 Jun 2024 09:47:19 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 01/15] ftruncate: pass a signed offset
-Message-ID: <20240621-jeden-hinab-e265b0d0807a@brauner>
-References: <20240620162316.3674955-1-arnd@kernel.org>
- <20240620162316.3674955-2-arnd@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W598c348pz3bpN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 18:13:03 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45L5xLu9012669;
+	Fri, 21 Jun 2024 08:12:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:from:subject:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=/
+	vbnCchyql67f25u4XOkStNtVtFpGi8RbqjNGblWcME=; b=RXX1h3brjv5on6Wm0
+	Ta4GVZprDTPePQaOmvkpUW5hBduGz+dTIdRtDbuCPoUDKHRr0/tif1ZiynL9P8Fq
+	PV6iFZtYjGOw3H4eWQg8z4FwwQZG/nzDpaf+na27hsUzW10arwR4X605KBq3zRlX
+	llrt0zqUWWZHTw4EIAFE7cy19h7g54PSDr6+5T+lfnMwznpxey3mKgkMQNnQGlam
+	w+di21Y2SAvOuV6QOYY5A3mMoHD7ccWAqBdMZT9VCyXYsLLvtcR6HJAbxCY0LD6n
+	ajahmGeg+2ciK5AO1oByjbfOwTZmZX+nf/FjT6DLX4m829kuNY4TMSLmbV1O4h2o
+	8+fVw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yw3ungb03-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 08:12:51 +0000 (GMT)
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45L8CpPM029964;
+	Fri, 21 Jun 2024 08:12:51 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yw3ungayy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 08:12:51 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45L7MDJi030888;
+	Fri, 21 Jun 2024 08:12:50 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yvrsswr7a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 08:12:50 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45L8CklF57541026
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Jun 2024 08:12:48 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3C17920040;
+	Fri, 21 Jun 2024 08:12:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ED9FC20043;
+	Fri, 21 Jun 2024 08:12:43 +0000 (GMT)
+Received: from [9.43.93.55] (unknown [9.43.93.55])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 21 Jun 2024 08:12:43 +0000 (GMT)
+Message-ID: <45c38d92-8d7c-466c-833d-0c2aa389eeda@linux.ibm.com>
+Date: Fri, 21 Jun 2024 13:42:42 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240620162316.3674955-2-arnd@kernel.org>
+User-Agent: Mozilla Thunderbird
+From: Anjali K <anjalik@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: Whitelist dtl slub object for copying to
+ userspace
+To: Michael Ellerman <mpe@ellerman.id.au>, Kees Cook <kees@kernel.org>
+References: <20240614173844.746818-1-anjalik@linux.ibm.com>
+ <202406171053.F72BF013@keescook> <87cyoe67zg.fsf@mail.lhotse>
+Content-Language: en-US
+In-Reply-To: <87cyoe67zg.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wP1kKg1TvwOi1Uj2GnB9_HzSX-0Wu5hY
+X-Proofpoint-GUID: 5B84yCCjDt4JNbSfv_WsQfFI5P_6w1E-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-21_02,2024-06-20_04,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ spamscore=0 impostorscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=913 clxscore=1015 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406210058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,29 +102,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, linux-csky@vger.kernel.org, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, musl@lists.openwall.com, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, ltp@lists.linux.it, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, libc-alpha@sourceware.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: npiggin@gmail.com, naveen@kernel.org, christophe.leroy@csgroup.eu, gustavoars@kernel.org, linux-hardening@vger.kernel.org, vishalc@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 20, 2024 at 06:23:02PM GMT, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The old ftruncate() syscall, using the 32-bit off_t misses a sign
-> extension when called in compat mode on 64-bit architectures.  As a
-> result, passing a negative length accidentally succeeds in truncating
-> to file size between 2GiB and 4GiB.
-> 
-> Changing the type of the compat syscall to the signed compat_off_t
-> changes the behavior so it instead returns -EINVAL.
-> 
-> The native entry point, the truncate() syscall and the corresponding
-> loff_t based variants are all correct already and do not suffer
-> from this mistake.
-> 
-> Fixes: 3f6d078d4acc ("fix compat truncate/ftruncate")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
+Hi Michael
 
-Looks good to me,
-Reviewed-by: Christian Brauner <brauner@kernel.org>
+On 18/06/24 12:41, Michael Ellerman wrote:
+> I guess there isn't a kmem_cache_create_user_readonly() ?
+Thank you for your review.                                                    
+My understanding of the question is whether there's a way to whitelist a   
+region such that it can be copied to userspace, but not written to using   
+copy_from_user().                                                             
+No, we don't have a function to whitelist only for copy_to_user() and not  
+copy_from_user().
+
+Thank you
+Anjali K
+
+
+
