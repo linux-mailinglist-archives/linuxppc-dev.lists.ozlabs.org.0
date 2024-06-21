@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD242912C00
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 18:59:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42E8912C28
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 19:02:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W5NqT3D1Sz3cyL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 02:59:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W5NvK3m9hz3dDp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 03:02:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5Nq44XYLz3cY8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 02:58:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5Ntw2xYYz3blb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 03:02:00 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 44DF86279F;
-	Fri, 21 Jun 2024 16:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1D4C2BBFC;
-	Fri, 21 Jun 2024 16:58:29 +0000 (UTC)
-Date: Fri, 21 Jun 2024 17:58:27 +0100
+	by dfw.source.kernel.org (Postfix) with ESMTP id B1E6062320;
+	Fri, 21 Jun 2024 17:01:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E56C2BBFC;
+	Fri, 21 Jun 2024 17:01:54 +0000 (UTC)
+Date: Fri, 21 Jun 2024 18:01:52 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Joey Gouly <joey.gouly@arm.com>
 Subject: Re: [PATCH v4 05/29] arm64: cpufeature: add Permission Overlay
  Extension cpucap
-Message-ID: <ZnWxM1tNITYyyXS_@arm.com>
+Message-ID: <ZnWyAJb63XjZiEqf@arm.com>
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
  <20240503130147.1154804-6-joey.gouly@arm.com>
 MIME-Version: 1.0
@@ -57,7 +57,5 @@ On Fri, May 03, 2024 at 02:01:23PM +0100, Joey Gouly wrote:
 > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 > Cc: Catalin Marinas <catalin.marinas@arm.com>
 > Cc: Will Deacon <will@kernel.org>
-
-Adding some acks otherwise I'll forget what I reviewed.
 
 Acked-by: Catalin Marinas <catalin.marinas@arm.com>
