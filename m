@@ -2,57 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63726912DFF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 21:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 393A0912E52
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jun 2024 22:12:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W5SMw0s4Sz3d39
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 05:38:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W5T6v6Bp5z3cyL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 06:12:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.170; helo=mail-il1-f170.google.com; envelope-from=kswilczynski@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=libc.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aerifal.cx (client-ip=2001:19f0:5:42::1; helo=brightrain.aerifal.cx; envelope-from=dalias@aerifal.cx; receiver=lists.ozlabs.org)
+X-Greylist: delayed 907 seconds by postgrey-1.37 at boromir; Sat, 22 Jun 2024 06:12:16 AEST
+Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [IPv6:2001:19f0:5:42::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5SLj3PBMz3cWD
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 05:37:48 +1000 (AEST)
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-375e0e258b7so9409865ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jun 2024 12:37:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718998666; x=1719603466;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sXQhvL9a6CYV2VK3wKh6O5gxH2nHkFbrE11g//vArPo=;
-        b=HZHgW7n/UnDMojBItjWqSHZpzGv7mADiiJ6oUoa7JA5NGJy0nfVpV0/M69NYb3Byql
-         zXKPlUGaY5SlSms16Z2kbJgk9k3rCEh2+aTP51UpzrRwQWBXdjbeSiT/blp6h6E83/vx
-         sNTEpsVoXBXiH5PiPC3U/FQIit+Ppk0rn98SZj/iIEk+J9Sl/IoWp3rUbPN1c6mwelLM
-         sMa9VH9kvVOaiutBF4Oaw7hr2xRIeHHKLdPj71fD2PTHwVSJuRKKEP03G7q1nP5hmq9D
-         Oi5Op+UJQVd0TSezboB9H7bB5DKTbKffOd3rkn+iUYRLxOXyqh2gP76ew54340zzli1U
-         PiRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSMkc3HLHrtKeEBNrvFyx3DKNibEgHUEoyC0XiTPDoN+HJLLjON4VqPNfn0ucKOjrt5RtUbVEq3Rgf5Z+Abt4/Px5axY7GjLSspFB0fA==
-X-Gm-Message-State: AOJu0YwW0LG3jaJTShKIN8oOdL/b2dxcBiq1zZwutJJ9OzYevSNMwu9N
-	rDWbBOYoznhDY2wQ3zZEnOb/0v9Tib//6tRCO3LHlQHD3Bj6M/RG
-X-Google-Smtp-Source: AGHT+IGlUL9QwPxUHX7nV3tXeYRMDnq/je2PsJ3NCGAtSFvVXOze8EobQXpZtTE4zHujIy0ctpA41A==
-X-Received: by 2002:a05:6e02:1c85:b0:375:a185:f00f with SMTP id e9e14a558f8ab-3761d709758mr109157335ab.22.1718998666403;
-        Fri, 21 Jun 2024 12:37:46 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-716b3ee8c95sm1492640a12.31.2024.06.21.12.37.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 12:37:45 -0700 (PDT)
-Date: Sat, 22 Jun 2024 04:37:44 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH 0/5] PCI: endpoint: Add EPC 'deinit' event and
- dw_pcie_ep_linkdown() API
-Message-ID: <20240621193744.GA3008482@rocinante>
-References: <20240606-pci-deinit-v1-0-4395534520dc@linaro.org>
- <20240610065324.GA7660@thinkpad>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5T6S3Rkcz3cbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 06:12:15 +1000 (AEST)
+Date: Fri, 21 Jun 2024 15:57:23 -0400
+From: Rich Felker <dalias@libc.org>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Re: [musl] Re: [PATCH 09/15] sh: rework sync_file_range ABI
+Message-ID: <20240621195723.GB10433@brightrain.aerifal.cx>
+References: <20240620162316.3674955-1-arnd@kernel.org>
+ <20240620162316.3674955-10-arnd@kernel.org>
+ <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240610065324.GA7660@thinkpad>
+In-Reply-To: <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,21 +41,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, Vignesh Raghavendra <vigneshr@ti.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, linux-pci@vger.kernel.org, Lorenzo Pieralisi <lpieralisi@kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Fabio Estevam <festevam@gmail.com>, Marek Vasut <marek.vasut+renesas@gmail.com>, Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, Jesper Nilsson <jesper.nilsson@axis.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.com, Jonathan Hunter <jonathanh@nvidia.com>, Bjorn Helgaas <helgaas@kernel.org>, linux-arm-kernel@lists.infradead.org, Siddharth Vadapalli <s-vadapalli@ti.com>, Richard Zhu <hongxing.zhu@nxp.com>, Srikanth Thokala <srikanth.thokala@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>, linux-omap@vger.kernel.org, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, linux-kernel@vger.kernel.org, mhi@lists.linux.dev, linux-renesas-soc@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: Andreas Larsson <andreas@gaisler.com>, linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, linux-csky@vger.kernel.org, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Heiko Carstens <hca@linux.ibm.com>, musl@lists.openwall.com, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, ltp@lists.linux.it, Arnd Bergmann <arnd@kernel.org>, Christian Brauner <brauner@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, libc-alpha@sourceware.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Fri, Jun 21, 2024 at 10:44:39AM +0200, John Paul Adrian Glaubitz wrote:
+> Hi Arnd,
+> 
+> thanks for your patch!
+> 
+> On Thu, 2024-06-20 at 18:23 +0200, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > The unusual function calling conventions on superh ended up causing
+>                                               ^^^^^^
+>                                        It's spelled SuperH
+> 
+> > sync_file_range to have the wrong argument order, with the 'flags'
+> > argument getting sorted before 'nbytes' by the compiler.
+> > 
+> > In userspace, I found that musl, glibc, uclibc and strace all expect the
+> > normal calling conventions with 'nbytes' last, so changing the kernel
+> > to match them should make all of those work.
+> > 
+> > In order to be able to also fix libc implementations to work with existing
+> > kernels, they need to be able to tell which ABI is used. An easy way
+> > to do this is to add yet another system call using the sync_file_range2
+> > ABI that works the same on all architectures.
+> > 
+> > Old user binaries can now work on new kernels, and new binaries can
+> > try the new sync_file_range2() to work with new kernels or fall back
+> > to the old sync_file_range() version if that doesn't exist.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  arch/sh/kernel/sys_sh32.c           | 11 +++++++++++
+> >  arch/sh/kernel/syscalls/syscall.tbl |  3 ++-
+> >  2 files changed, 13 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
+> > index 9dca568509a5..d5a4f7c697d8 100644
+> > --- a/arch/sh/kernel/sys_sh32.c
+> > +++ b/arch/sh/kernel/sys_sh32.c
+> > @@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u32 offset0, u32 offset1,
+> >  				 (u64)len0 << 32 | len1, advice);
+> >  #endif
+> >  }
+> > +
+> > +/*
+> > + * swap the arguments the way that libc wants it instead of
+> 
+> I think "swap the arguments to the order that libc wants them" would
+> be easier to understand here.
+> 
+> > + * moving flags ahead of the 64-bit nbytes argument
+> > + */
+> > +SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
+> > +                SC_ARG64(nbytes), unsigned int, flags)
+> > +{
+> > +        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
+> > +                                    SC_VAL64(loff_t, nbytes), flags);
+> > +}
+> > diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+> > index bbf83a2db986..c55fd7696d40 100644
+> > --- a/arch/sh/kernel/syscalls/syscall.tbl
+> > +++ b/arch/sh/kernel/syscalls/syscall.tbl
+> > @@ -321,7 +321,7 @@
+> >  311	common	set_robust_list			sys_set_robust_list
+> >  312	common	get_robust_list			sys_get_robust_list
+> >  313	common	splice				sys_splice
+> > -314	common	sync_file_range			sys_sync_file_range
+> > +314	common	sync_file_range			sys_sh_sync_file_range6
+>                                                                  ^^^^^^ Why the suffix 6 here?
+> 
+> >  315	common	tee				sys_tee
+> >  316	common	vmsplice			sys_vmsplice
+> >  317	common	move_pages			sys_move_pages
+> > @@ -395,6 +395,7 @@
+> >  385	common	pkey_alloc			sys_pkey_alloc
+> >  386	common	pkey_free			sys_pkey_free
+> >  387	common	rseq				sys_rseq
+> > +388	common	sync_file_range2		sys_sync_file_range2
+> >  # room for arch specific syscalls
+> >  393	common	semget				sys_semget
+> >  394	common	semctl				sys_semctl
+> 
+> I wonder how you discovered this bug. Did you look up the calling convention on SuperH
+> and compare the argument order for the sys_sync_file_range system call documented there
+> with the order in the kernel?
+> 
+> Did you also check what order libc uses? I would expect libc on SuperH misordering the
+> arguments as well unless I am missing something. Or do we know that the code is actually
+> currently broken?
 
-> Applied patch 2/5 to pci/endpoint! Krzysztof, please apply patches 1/5 and 5/5
-> to controller/dwc (patches 3/5 and 4/5 are already applied by you).
+No, there's no reason libc would misorder them because syscalls aren't
+function calls, and aren't subject to function call ABI. We have to
+explicitly bind the arguments to registers and make a syscall
+instruction.
 
-Applied to controller/dwc, thank you!
+The only reason this bug happened on the kernel side is that someone
+thought it would be a smart idea to save maybe 10 instructions by
+treating the register state on entry as directly suitable to jump from
+asm to a C function rather than explicitly marshalling the arguments
+out of the user-kernel syscall ABI positions into actual arguments to
+a C function call.
 
-[01/02] PCI: dwc: ep: Remove dw_pcie_ep_init_notify() wrapper
-        https://git.kernel.org/pci/pci/c/9eba2f70362f
-
-[02/02] PCI: layerscape-ep: Use the generic dw_pcie_ep_linkdown() API to handle Link Down event
-        https://git.kernel.org/pci/pci/c/14638af66309
-
-	Krzysztof
+Rich
