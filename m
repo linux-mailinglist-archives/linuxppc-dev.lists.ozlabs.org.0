@@ -1,55 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F57E913117
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 02:07:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6BD9132BE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 10:28:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tXODp2mk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EczKiqnu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W5ZKf6KZxz3cfx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 10:07:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W5nRP0PcDz3dFH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jun 2024 18:28:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tXODp2mk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EczKiqnu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5ZJx0gzkz3cY8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 10:06:41 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 817D2620A8;
-	Sat, 22 Jun 2024 00:06:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1E0C2BBFC;
-	Sat, 22 Jun 2024 00:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719014796;
-	bh=WiVqt52hzMLAeBX8UtUgQuCV4HjtrANjoiU7an0ykWE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tXODp2mk+szphHJvZuIflFYNpzNivWHTSyZlSJfakOaEo/Ah8Lz0Mbyqi3XIFvz3+
-	 IVYFco8aCNBe2SDKRsM8XOUi/Zo0hi5/PZ2ilsaEfTNbxtyTfJPTqM8ldL4rjVkK2Q
-	 GyJDsYW1YGHtbLBLmxSp1BDSRkfvE+PPO/IpeDjerJ9IyIYNuKVft5gQu+yjd3z/EY
-	 6kI5wTLf9SvUm2eoZu7X4ND4PBxcONEH1EhCUOdNV8//8E1UxZMadtJz4bFWQZkZPf
-	 nRjkDDyke6yetM3Kp6+yxiT9yX4lCg4fZjgZMrHQCi/ZNpLmYKBnIVTyi6+y/s9r4Q
-	 8Btx13c7Hcjqg==
-Date: Fri, 21 Jun 2024 17:06:34 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [V4 00/16] Add data type profiling support for powerpc
-Message-ID: <ZnYVitG1tffUNTn6@google.com>
-References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
- <C84A4D8E-3BCD-47A7-B41E-1B39744AECDF@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <C84A4D8E-3BCD-47A7-B41E-1B39744AECDF@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W5nQg0YF1z3bmQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 18:27:21 +1000 (AEST)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-709423bc2e5so2113876a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jun 2024 01:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719044832; x=1719649632; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=f6TQTs/BZEjkv+SKgsGZVItEdwKpdKQEpShA+ZJRLwo=;
+        b=EczKiqnupFhOUaVqcAVk6j8opLt6x5/2s3hkvlrBqLUtkMFwPWeAKme6n0o+YIBGhO
+         llxsDzitdU1q4oq9aWqpDfCPZfBtmFAU9gXwOb8pI3l5KZqzF+EUxb0/aXcdzukX2gLJ
+         G0hwaw6qHlaaTejxm2aNGmudIv+aMbyzUcW+4oc/SCTg0sZ2qz+nI7MsG00ASryVulnn
+         cBfXXhzn14KSdZXo861MSm2TmpaQ08uM0eJt4WvepC0eGHlb0h9GaVKvbq0jVZv2hh0b
+         EMCVrPra3n7nZOMYaqOryF879B8S5m/tohLJVKDqg6TKQ3pPhr3XCkxPyccE+HZNjP5C
+         PlZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719044832; x=1719649632;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f6TQTs/BZEjkv+SKgsGZVItEdwKpdKQEpShA+ZJRLwo=;
+        b=HVnFT5Q6tt8OsS4i5RXTKULd2/RvIZgtYjhTOKwPKZcD/ztU9ZOF143+iISNfXQdWK
+         VZdaiDS3A6HODQuwhCOLSmoLrM/Cau+/9DNUIpvT4iBeR/JhU/LSfuhSya8muxtGr8sW
+         m+qKGex8xOycrGqC/lnMV5LSwy035fDFx/+NkvoNDmevA2Dr1eR++d6IKdVzk3AzAYus
+         jVrVguMch0IRgUblAJZA0lWWvK3x4zQN00JcIvYyD+LfzKvYiFt4eR9P8ydr/CCAf8rp
+         /omF+WPp5aCcuaNlKKwEfQZe0KJa2f5qFQi1dul9a4COB7PDe1zFFQqThAlmAxpdh9ID
+         OapQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/C14QEVqz9J0cYrkmfm46RD1/QwmC/Whkm34zoBq5hheIu7XEX0tKw9o+wwvsLzO36LSuwpOv2mg+cARCvto4LBF1LkMUbuvA+cRX0g==
+X-Gm-Message-State: AOJu0YwqPVMInPfTft5ltMUbli6CYFzG4LPIlfszobZp4UIwbrBUXCMP
+	Hu1bWg0OIfwNsFEpTDhjszQbm7dEYE7bjGM86o9mgdf0oj6tsao8adODTw==
+X-Google-Smtp-Source: AGHT+IFonVvWAEDPZmEBMw6RGjOLTxMVryM6/C0H7pP6cZx7X97oiPzJ+9DKgZ0p9SQzgS502U13SA==
+X-Received: by 2002:a05:6a20:3d8b:b0:1ad:6c36:ee82 with SMTP id adf61e73a8af0-1bcbb3b7b6amr14259781637.13.1719044831494;
+        Sat, 22 Jun 2024 01:27:11 -0700 (PDT)
+Received: from dw-tp ([171.76.84.215])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c819db94ddsm2852254a91.43.2024.06.22.01.27.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Jun 2024 01:27:10 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
+Subject: Re: [PATCH 2/3] powerpc/pseries: Export hardware trace macro dump via debugfs
+In-Reply-To: <20240620174614.53751-2-maddy@linux.ibm.com>
+Date: Sat, 22 Jun 2024 13:10:18 +0530
+Message-ID: <87msnd5st9.fsf@gmail.com>
+References: <20240620174614.53751-1-maddy@linux.ibm.com> <20240620174614.53751-2-maddy@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,183 +75,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, christophe.leroy@csgroup.eu, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, npiggin@gmail.com, Madhavan Srinivasan <maddy@linux.ibm.com>, christophe.leroy@csgroup.eu, naveen.n.rao@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
 
-On Thu, Jun 20, 2024 at 09:01:01PM +0530, Athira Rajeev wrote:
-> 
-> 
-> > On 14 Jun 2024, at 10:56 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com> wrote:
-> > 
-> > The patchset from Namhyung added support for data type profiling
-> > in perf tool. This enabled support to associate PMU samples to data
-> > types they refer using DWARF debug information. With the upstream
-> > perf, currently it possible to run perf report or perf annotate to
-> > view the data type information on x86.
-> > 
-> > Initial patchset posted here had changes need to enable data type
-> > profiling support for powerpc.
-> > 
-> > https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgroup.eu/T/
-> > 
-> > Main change were:
-> > 1. powerpc instruction nmemonic table to associate load/store
-> > instructions with move_ops which is use to identify if instruction
-> > is a memory access one.
-> > 2. To get register number and access offset from the given
-> > instruction, code uses fields from "struct arch" -> objump.
-> > Added entry for powerpc here.
-> > 3. A get_arch_regnum to return register number from the
-> > register name string.
-> > 
-> > But the apporach used in the initial patchset used parsing of
-> > disassembled code which the current perf tool implementation does.
-> > 
-> > Example: lwz     r10,0(r9)
-> > 
-> > This line "lwz r10,0(r9)" is parsed to extract instruction name,
-> > registers names and offset. Also to find whether there is a memory
-> > reference in the operands, "memory_ref_char" field of objdump is used.
-> > For x86, "(" is used as memory_ref_char to tackle instructions of the
-> > form "mov  (%rax), %rcx".
-> > 
-> > In case of powerpc, not all instructions using "(" are the only memory
-> > instructions. Example, above instruction can also be of extended form (X
-> > form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
-> > and extract the source/target registers, second patchset added support to use
-> > raw instruction. With raw instruction, macros are added to extract opcode
-> > and register fields.
-> > Link to second patchset:
-> > https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.ibm.com/
-> > 
-> > Example representation using --show-raw-insn in objdump gives result:
-> > 
-> > 38 01 81 e8     ld      r4,312(r1)
-> > 
-> > Here "38 01 81 e8" is the raw instruction representation. In powerpc,
-> > this translates to instruction form: "ld RT,DS(RA)" and binary code
-> > as:
-> >  _____________________________________
-> >  | 58 |  RT  |  RA |      DS       | |
-> >  -------------------------------------
-> > 0    6     11    16              30 31
-> > 
-> > Second patchset used "objdump" again to read the raw instruction.
-> > But since there is no need to disassemble and binary code can be read
-> > directly from the DSO, third patchset (ie this patchset) uses below
-> > apporach. The apporach preferred in powerpc to parse sample for data
-> > type profiling in V3 patchset is:
-> > - Read directly from DSO using dso__data_read_offset
-> > - If that fails for any case, fallback to using libcapstone
-> > - If libcapstone is not supported, approach will use objdump
-> > 
-> > Patchset adds support to pick the opcode and reg fields from this
-> > raw/binary instruction code. This approach came in from review comment
-> > by Segher Boessenkool and Christophe for the initial patchset.
-> > 
-> > Apart from that, instruction tracking is enabled for powerpc and
-> > support function is added to find variables defined as registers
-> > Example, in powerpc, below two registers are
-> > defined to represent variable:
-> > 1. r13: represents local_paca
-> > register struct paca_struct *local_paca asm("r13");
-> > 
-> > 2. r1: represents stack_pointer
-> > register void *__stack_pointer asm("r1");
-> > 
-> > These are handled in this patchset.
-> > 
-> > - Patch 1 is to rearrange register state type structures to header file
-> > so that it can referred from other arch specific files
-> > - Patch 2 is to make instruction tracking as a callback to"struct arch"
-> > so that it can be implemented by other archs easily and defined in arch
-> > specific files
-> > - Patch 3 adds support to capture and parse raw instruction in powerpc
-> > using dso__data_read_offset utility
-> > - Patch 4 adds logic to support using objdump when doing default "perf
-> > report" or "perf annotate" since it that needs disassembled instruction.
-> > - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
-> > - Patch 6 update parameters for reg extract functions to use raw
-> > instruction on powerpc
-> > - Patch 7 add support to identify memory instructions of opcode 31 in
-> > powerpc
-> > - Patch 8 adds more instructions to support instruction tracking in powerpc
-> > - Patch 9 and 10 handles instruction tracking for powerpc.
-> > - Patch 11, 12 and 13 add support to use libcapstone in powerpc
-> > - Patch 14 and patch 15 handles support to find global register variables
-> > - Patch 16 handles insn-stat option for perf annotate
-> > 
-> > Note:
-> > - There are remaining unknowns (25%) as seen in annotate Instruction stats
-> > below.
-> > - This patchset is not tested on powerpc32. In next step of enhancements
-> > along with handling remaining unknowns, plan to cover powerpc32 changes
-> > based on how testing goes.
-> > 
-> > With the current patchset:
-> > 
-> > ./perf record -a -e mem-loads sleep 1
-> > ./perf report -s type,typeoff --hierarchy --group --stdio
-> > ./perf annotate --data-type --insn-stat
-> > 
-> > perf annotate logs:
-> > ==================
-> > 
-> > Annotate Instruction stats
-> > total 609, ok 446 (73.2%), bad 163 (26.8%)
-> > 
-> >  Name/opcode:  Good   Bad
-> >  -----------------------------------------------------------
-> >  58                  :   323    80
-> >  32                  :    49    43
-> >  34                  :    33    11
-> >  OP_31_XOP_LDX       :     8    20
-> >  40                  :    23     0
-> >  OP_31_XOP_LWARX     :     5     1
-> >  OP_31_XOP_LWZX      :     2     3
-> >  OP_31_XOP_LDARX     :     3     0
-> >  33                  :     0     2
-> >  OP_31_XOP_LBZX      :     0     1
-> >  OP_31_XOP_LWAX      :     0     1
-> >  OP_31_XOP_LHZX      :     0     1
-> > 
-> > perf report logs:
-> > =================
-> > 
-> >  Total Lost Samples: 0
-> > 
-> >  Samples: 1K of event 'mem-loads'
-> >  Event count (approx.): 937238
-> > 
-> >  Overhead  Data Type  Data Type Offset
-> > ........  .........  ................
-> > 
-> >    48.60%  (unknown)  (unknown) +0 (no field)
-> >    12.85%  long unsigned int  long unsigned int +0 (current_stack_pointer)
-> >     4.68%  struct paca_struct  struct paca_struct +2312 (__current)
-> >     4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
-> >     2.69%  struct paca_struct  struct paca_struct +2808 (canary)
-> >     2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
-> >     2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
-> >     1.41%  struct vm_fault  struct vm_fault +0 (vma)
-> >     1.29%  struct task_struct  struct task_struct +276 (flags)
-> >     1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
-> >     0.90%  struct security_hook_list  struct security_hook_list +0 (list.next)
-> >     0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
-> >     0.76%  struct rq  struct rq +2856 (cpu)
-> > 
-> > Thanks
-> > Athira Rajeev
-> 
-> Hi All
-> 
-> Requesting for review comments for this patchset
+This is a generic review and I haven't looked into the PAPR spec for
+htmdump hcall and it's interface.
 
-Sorry about the delay, I was traveling and busy with other things.
-I'll review this next week!
+Madhavan Srinivasan <maddy@linux.ibm.com> writes:
 
-Thanks,
-Namhyung
+> This patch adds debugfs interface to export Hardware Trace Macro (HTM)
+> function data in a LPAR. New hypervisor call "H_HTM" has been
+> defined to setup, configure, control and dump the HTM data.
+> This patch supports only dumping of HTM data in a LPAR.
+> New debugfs folder called "htmdump" has been added under
+> /sys/kernel/debug/arch path which contains files need to
+> pass required parameters for the H_HTM dump function. New Kconfig
+> option called "CONFIG_HTMDUMP" has been in platform/pseries for the same.
+>
+> With patch series applied and booted, list of files in debugfs path
+>
+> # pwd
+> /sys/kernel/debug/powerpc/htmdump
+> # ls
+> coreindexonchip  htmtype  nodalchipindex  nodeindex  trace
+>
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/Kconfig   |   8 ++
+>  arch/powerpc/platforms/pseries/Makefile  |   1 +
+>  arch/powerpc/platforms/pseries/htmdump.c | 130 +++++++++++++++++++++++
+>  3 files changed, 139 insertions(+)
+>  create mode 100644 arch/powerpc/platforms/pseries/htmdump.c
+>
+> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+> index afc0f6a61337..46c0ea605e33 100644
+> --- a/arch/powerpc/platforms/pseries/Kconfig
+> +++ b/arch/powerpc/platforms/pseries/Kconfig
+> @@ -128,6 +128,14 @@ config CMM
+>  	  will be reused for other LPARs. The interface allows firmware to
+>  	  balance memory across many LPARs.
+>
+> +config HTMDUMP
+> +	tristate "PHYP HTM data dumper"
+
+Not sure if we can make machine_device_initcall() as a tristate?
+Did we try compiling it as a module?
+
+It we would like to keep this as a module - then why not use module_init
+call and then make it depend upon...
+
+depends on PPC_PSERIES && DEBUG_FS (??)
+
+> +	default y
+
+and then since this is mostly a debug trace facility, then we need not enable
+it by default right?
+
+> +	help
+> +	  Select this option, if you want to enable the kernel debugfs
+> +	  interface to dump the Hardware Trace Macro (HTM) function data
+> +	  in the LPAR.
+> +
+>  config HV_PERF_CTRS
+>  	bool "Hypervisor supplied PMU events (24x7 & GPCI)"
+>  	default y
+> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+> index 7bf506f6b8c8..3f3e3492e436 100644
+> --- a/arch/powerpc/platforms/pseries/Makefile
+> +++ b/arch/powerpc/platforms/pseries/Makefile
+> @@ -19,6 +19,7 @@ obj-$(CONFIG_HVC_CONSOLE)	+= hvconsole.o
+>  obj-$(CONFIG_HVCS)		+= hvcserver.o
+>  obj-$(CONFIG_HCALL_STATS)	+= hvCall_inst.o
+>  obj-$(CONFIG_CMM)		+= cmm.o
+> +obj-$(CONFIG_HTMDUMP)		+= htmdump.o
+>  obj-$(CONFIG_IO_EVENT_IRQ)	+= io_event_irq.o
+>  obj-$(CONFIG_LPARCFG)		+= lparcfg.o
+>  obj-$(CONFIG_IBMVIO)		+= vio.o
+> diff --git a/arch/powerpc/platforms/pseries/htmdump.c b/arch/powerpc/platforms/pseries/htmdump.c
+> new file mode 100644
+> index 000000000000..540cdb7e069c
+> --- /dev/null
+> +++ b/arch/powerpc/platforms/pseries/htmdump.c
+> @@ -0,0 +1,130 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) IBM Corporation, 2024
+> + */
+> +
+> +#define pr_fmt(fmt) "htmdump: " fmt
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/string.h>
+> +#include <linux/init.h>
+> +#include <linux/moduleparam.h>
+> +#include <linux/fs.h>
+> +#include <linux/debugfs.h>
+> +#include <linux/slab.h>
+> +#include <linux/memory.h>
+> +#include <linux/memory_hotplug.h>
+> +#include <linux/numa.h>
+> +#include <linux/memblock.h>
+> +#include <asm/machdep.h>
+> +#include <asm/plpar_wrappers.h>
+
+Do we need all of the above?
+e.g. slab, memory_hotplug etc are not needed IMO.
+
+Maybe only?
+
+#include <asm/hvcall.h>
+#include <asm/io.h>
+#include <asm/machdep.h>
+#include <asm/plpar_wrappers.h>
+
+#include <linux/debugfs.h>
+#include <linux/module.h>
+
+(module.h depending upon if we make it module_init())
+
+
+> +
+> +/* This enables us to keep track of the memory removed from each node. */
+> +struct htmdump_entry {
+> +	void *buf;
+> +	struct dentry *dir;
+> +	char name[16];
+> +};
+> +
+> +static u32 nodeindex = 0;
+> +static u32 nodalchipindex = 0;
+> +static u32 coreindexonchip = 0;
+> +static u32 htmtype = 0;
+> +
+> +#define BUFFER_SIZE PAGE_SIZE
+> +
+> +static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
+> +			     size_t count, loff_t *ppos)
+> +{
+> +	struct htmdump_entry *ent = filp->private_data;
+> +	unsigned long page, read_size, available;
+> +	loff_t offset;
+> +	long rc;
+> +
+> +	page = ALIGN_DOWN(*ppos, BUFFER_SIZE);
+> +	offset = (*ppos) % BUFFER_SIZE;
+> +
+> +	rc = htm_get_dump_hardware(nodeindex, nodalchipindex, coreindexonchip,
+> +				   htmtype, virt_to_phys(ent->buf), BUFFER_SIZE, page);
+> +
+> +	switch(rc) {
+> +	case H_SUCCESS:
+> +	case H_PARTIAL:
+> +		break;
+> +	case H_NOT_AVAILABLE:
+> +		return 0;
+> +	case H_BUSY:
+> +	case H_LONG_BUSY_ORDER_1_MSEC:
+> +	case H_LONG_BUSY_ORDER_10_MSEC:
+> +	case H_LONG_BUSY_ORDER_100_MSEC:
+> +	case H_LONG_BUSY_ORDER_1_SEC:
+> +	case H_LONG_BUSY_ORDER_10_SEC:
+> +	case H_LONG_BUSY_ORDER_100_SEC:
+> +	case H_PARAMETER:
+> +	case H_P2:
+> +	case H_P3:
+> +	case H_P4:
+> +	case H_P5:
+> +	case H_P6:
+> +	case H_STATE:
+> +	case H_AUTHORITY:
+> +		return -EINVAL;
+> +	}
+> +
+> +	available = BUFFER_SIZE - offset;
+> +	read_size = min(count, available);
+> +	*ppos += read_size;
+> +	return simple_read_from_buffer(ubuf, count, &offset, ent->buf, available);
+> +}
+> +
+> +static const struct file_operations htmdump_fops = {
+> +	.llseek = default_llseek,
+> +	.read	= htmdump_read,
+> +	.open	= simple_open,
+> +};
+> +
+> +static struct dentry *htmdump_debugfs_dir;
+> +
+> +static int htmdump_init_debugfs(void)
+> +{
+> +	struct htmdump_entry *ent;
+> +
+> +	ent = kcalloc(1, sizeof(struct htmdump_entry), GFP_KERNEL);
+> +	if (!ent) {
+> +		pr_err("Failed to allocate ent\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ent->buf = kmalloc(BUFFER_SIZE, GFP_KERNEL);
+> +	if (!ent->buf) {
+> +		pr_err("Failed to allocate htmdump buf\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	pr_debug("%s: ent:%lx buf:%lx\n",
+> +			__func__, (long unsigned int)ent, (long unsigned int)ent->buf);
+> +
+> +	htmdump_debugfs_dir = debugfs_create_dir("htmdump",
+> +						  arch_debugfs_dir);
+> +
+> +	debugfs_create_u32("nodeindex", 0600,
+> +			htmdump_debugfs_dir, &nodeindex);
+> +	debugfs_create_u32("nodalchipindex", 0600,
+> +			htmdump_debugfs_dir, &nodalchipindex);
+> +	debugfs_create_u32("coreindexonchip", 0600,
+> +			htmdump_debugfs_dir, &coreindexonchip);
+> +	debugfs_create_u32("htmtype", 0600,
+> +			htmdump_debugfs_dir, &htmtype);
+
+minor nit: For all of the above. S_IRUSR | S_IWUSR instead of 0600.
+
+> +	debugfs_create_file("trace", 0400, htmdump_debugfs_dir, ent, &htmdump_fops);
+
+maybe S_IRUSR instead of 0400.
+
+(makes it more readable).
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int htmdump_init(void)
+
+maybe put it into __init section?
+
+> +{
+> +	if (htmdump_init_debugfs())
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +machine_device_initcall(pseries, htmdump_init);
+> --
+> 2.45.2
