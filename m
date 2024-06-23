@@ -1,49 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D603D9139BD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2024 13:08:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C709139D7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2024 13:10:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aj7KS6CL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tNimWF2Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W6SyJ3Rh1z3cXk
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2024 21:08:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W6T0G6n5sz3cPS
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jun 2024 21:10:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aj7KS6CL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tNimWF2Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W6Sxc2mhlz30VP
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2024 21:08:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W6SzZ74ZBz30VP
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jun 2024 21:09:46 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 47025CE01F9;
-	Sun, 23 Jun 2024 11:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B726DC2BD10;
-	Sun, 23 Jun 2024 11:07:48 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id ADCB3CE0E26;
+	Sun, 23 Jun 2024 11:09:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858FCC2BD10;
+	Sun, 23 Jun 2024 11:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719140876;
-	bh=+M4chnujTGXjSxADVGgYQyDo0ZhysUpMH08sqJDaoIA=;
+	s=k20201202; t=1719140984;
+	bh=X1N5KktZMxFxNzUuXrv3gjBkIdpW53T6s/AuXDJL9Lc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aj7KS6CLYgjKAVhpExivrjQ98PXJ8c4eFVrJQ0JRTTnW5AnN9PfbPjqYAp3I3szV8
-	 gLeuBUMMTNQqUMqdgM7r+DClmt02oGIWbfzOIE0TNzPYujhQfqHM63IriO142XKuLx
-	 79hf8O22EoKcJAonpkW7VD5ZTZ8GJ2lm+AJr27bpMG+GwnfBHTv5L3K7t4SClRR6wO
-	 A2kwqWdXl815dH/x5LGqz0aH15Nkgll4/ECCbywslTtKt9yH5eGYIXojqhlJA4HBFH
-	 PrgKNQzr0Oy8KIN4J6dJ2MoZm4+fsPHv5bNZGimj5a/YzLdSuS43+pFqKAskLOkCAd
-	 M4G6y6ZfBc43w==
-Message-ID: <6fcbd97b-4172-48a9-bcdb-3bdf35aba8f7@kernel.org>
-Date: Sun, 23 Jun 2024 13:07:46 +0200
+	b=tNimWF2Z2UyMXLPSz33qU80q5yWMjhwAtm5dOatydFTvpLKbkCi2bbTI51j3LLSY3
+	 m3QZAPzDYnIkhIiDCdL1JACpUHG7dho6JQSrBdamUJmxq59+JTkjgJzkEVD4GitpXK
+	 IqL0BaTo0TyEbC2FESE2Al6IyzzphzRAnjTLyJTbPTRlR2urNfO5kRRdO576AE/XEm
+	 DMLyZ7Z4sxrAlrRgRBIeNapaztIdI5YwYTKX7mkZ7PkdkLLftWopMGcYvpM2JfUdcs
+	 LlfXKvPH9J/k2Tar9jRS/QeiA80PUQJYSrrj/DhysFTuqDBeHjrelVDSrbB36iZ5/7
+	 2vo92aOvMZaeg==
+Message-ID: <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
+Date: Sun, 23 Jun 2024 13:09:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 6/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
- string for spdif
+Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove binding
 To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -55,7 +54,7 @@ To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
  Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
  Nicolin Chen <nicoleotsuka@gmail.com>
 References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
+ <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,7 +100,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
+In-Reply-To: <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -120,119 +119,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 20/06/2024 15:25, Elinor Montmasson wrote:
-> The S/PDIF audio card support was merged from imx-spdif into the
-> fsl-asoc-card driver, making it possible to use an S/PDIF with an ASRC.
-> Add the new compatible and update properties.
+> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
+> removed.
 
-Please use standard email subjects, so with the PATCH keyword in the
-title. `git format-patch -v5` helps here to create proper versioned
-patches. Another useful tool is b4.
+So what happens with all existing users (e.g. DTS)? They become
+invalid/not supported?
 
-> 
-> Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-> ---
->  .../bindings/sound/fsl-asoc-card.yaml         | 30 ++++++++++++++++---
->  1 file changed, 26 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> index 9922664d5ccc..f2e28b32808e 100644
-> --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.yaml
-> @@ -33,6 +33,7 @@ properties:
->        - items:
->            - enum:
->                - fsl,imx-sgtl5000
-> +              - fsl,imx-sabreauto-spdif
->                - fsl,imx25-pdk-sgtl5000
->                - fsl,imx53-cpuvo-sgtl5000
->                - fsl,imx51-babbage-sgtl5000
-> @@ -54,6 +55,7 @@ properties:
->                - fsl,imx6q-ventana-sgtl5000
->                - fsl,imx6sl-evk-wm8962
->                - fsl,imx6sx-sdb-mqs
-> +              - fsl,imx6sx-sdb-spdif
->                - fsl,imx6sx-sdb-wm8962
->                - fsl,imx7d-evk-wm8960
->                - karo,tx53-audio-sgtl5000
-> @@ -65,6 +67,7 @@ properties:
->                - fsl,imx-audio-sgtl5000
->                - fsl,imx-audio-wm8960
->                - fsl,imx-audio-wm8962
-> +              - fsl,imx-audio-spdif
-
-This does not look right. It's quite generic, so now you allow any
-variant to be used with this fallback.
-
-Please do not grow more this list of all possible combinations and
-instead add specific lists. Otherwise, please explain why this is valid
-hardware:
-"fsl,imx7d-evk-wm8960", "fsl,imx-audio-spdif"
-
-
->        - items:
->            - enum:
->                - fsl,imx-audio-ac97
-> @@ -81,6 +84,7 @@ properties:
->                - fsl,imx-audio-wm8960
->                - fsl,imx-audio-wm8962
->                - fsl,imx-audio-wm8958
-> +              - fsl,imx-audio-spdif
-
-Fallbacks should not be used alone. Why this is needed? The compatible
-is already documented, so now you create duplicated binding.
-
-This is very confusing.
-
->  
->    model:
->      $ref: /schemas/types.yaml#/definitions/string
-> @@ -93,8 +97,15 @@ properties:
->        need to add ASRC support via DPCM.
->  
->    audio-codec:
-> -    $ref: /schemas/types.yaml#/definitions/phandle
-> -    description: The phandle of an audio codec
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description: |
-> +      The phandle of an audio codec.
-> +      With "fsl,imx-audio-spdif", either SPDIF audio codec spdif_transmitter,
-> +      spdif_receiver or both.
-> +    minItems: 1
-> +    maxItems: 2
-> +    items:
-> +      maxItems: 1
->  
->    audio-cpu:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> @@ -150,8 +161,10 @@ properties:
->      description: dai-link uses bit clock inversion.
->  
->    mclk-id:
-> -    $ref: /schemas/types.yaml#/definitions/uint32
-> -    description: main clock id, specific for each card configuration.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    description: Main clock id for each codec, specific for each card configuration.
-> +    minItems: 1
-> +    maxItems: 2
->  
->    mux-int-port:
->      $ref: /schemas/types.yaml#/definitions/uint32
-> @@ -195,3 +208,12 @@ examples:
->               "AIN2L", "Line In Jack",
->               "AIN2R", "Line In Jack";
->      };
-> +
-> +  - |
-> +    sound-spdif-asrc {
-> +      compatible = "fsl,imx-audio-spdif";
-> +      model = "spdif-asrc-audio";
-> +      audio-cpu = <&spdif>;
-> +      audio-asrc = <&easrc>;
-> +      audio-codec = <&spdifdit>, <&spdifdir>;
-> +    };
-
-Do not introduce another indentation style. Look what is above.
-
+After quick look, I do not see backwards compatibility in the driver and
+above commit msg tells me nothing about ABI break.
 
 Best regards,
 Krzysztof
