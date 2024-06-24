@@ -2,58 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740499150FB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 16:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830EC915152
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 17:04:45 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hX6lgAhz;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W79wt0K81z7B5n
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 00:54:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7B8B0bYrz3gKT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 01:04:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hX6lgAhz;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W79mc2bzLz3g0V
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 00:47:44 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4W79lC0NDpz9vGT;
-	Mon, 24 Jun 2024 16:46:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id g2dHISHThZS9; Mon, 24 Jun 2024 16:46:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4W79ks0HZ6z9vFn;
-	Mon, 24 Jun 2024 16:46:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id EDE1B8B766;
-	Mon, 24 Jun 2024 16:46:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id y73lp4be_T7m; Mon, 24 Jun 2024 16:46:12 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.33])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 293D38B763;
-	Mon, 24 Jun 2024 16:46:12 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v6 23/23] mm: Remove CONFIG_ARCH_HAS_HUGEPD
-Date: Mon, 24 Jun 2024 16:45:49 +0200
-Message-ID: <66892aed25ad48d40cf712a4bc9ef6adf66a3df3.1719240269.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1719240269.git.christophe.leroy@csgroup.eu>
-References: <cover.1719240269.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7B7T5FqTz2ysf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 01:04:05 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id A19C7CE12C8;
+	Mon, 24 Jun 2024 15:04:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB4DC2BBFC;
+	Mon, 24 Jun 2024 15:04:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719241441;
+	bh=pL5pT4yOWULjdyQiY7Dx0OcaqM/qghZcDutXrpJKO3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hX6lgAhzRO27sRmolRzsH954/mdFR1FqaRnz0OGHONScSiz6EswsWDR233AyCkblQ
+	 3btOnKfpxWy1NGBzg/E8H8xdGUxG2CG1VE/RsE0ZJROhK9T4+69S13jyVdtyBVo7vZ
+	 TgEHH3MyaK4QKCIBpdrRKfR8yxeQg5A6wQK0mKhCewNvFopTDZA7vKmzhM1iTShJ6v
+	 xtj8obOJ3EyChAhq/3GBpMpPguvsLqejgNRZgYzaCWUQKTl3x9bDz6dNuhS5biujuo
+	 kOk9ClGk+0ejrbMIBmYQAqGeQSLv99zSdDKDzqSdQ/D2h6A4UdR9cKfR5yddMVx54o
+	 jmBXVOv/5i0TA==
+Date: Mon, 24 Jun 2024 09:04:00 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dt-bindings: soc: fsl: Convert q(b)man-* to yaml
+ format
+Message-ID: <20240624150400.GA3624893-robh@kernel.org>
+References: <20240621213031.2759046-1-Frank.Li@nxp.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1719240335; l=13586; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Y1XVRHwCVZ8xeJIn07qpa+DttHLbfiXuhJi5QGHmEdM=; b=g6ECU2ZsSRru8kwNAW+iMOee6Ocm4qSkGI2dQql6xdE22XtQEDIS/D3vqu3z/IflThCNh4aFW 1YGM6sFNdaeCtuw5w+DR6jPXDxUELRGMLB79bIUoRfdP6Svhzq+Tncb
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240621213031.2759046-1-Frank.Li@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,415 +60,519 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev, open list <linux-kernel@vger.kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>, "moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc was the only user of CONFIG_ARCH_HAS_HUGEPD and doesn't
-use it anymore, so remove all related code.
+On Fri, Jun 21, 2024 at 05:30:14PM -0400, Frank Li wrote:
+> Convert qman, bman, qman-portals, bman-portals to yaml format.
+> 
+> Additional Chang for fsl,q(b)man-portal:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Oscar Salvador <osalvador@suse.de>
----
-v4: Rebased on v6.10-rc1
----
- include/linux/hugetlb.h |   6 --
- mm/Kconfig              |  10 ---
- mm/gup.c                | 183 ++--------------------------------------
- mm/pagewalk.c           |  57 +------------
- 4 files changed, 9 insertions(+), 247 deletions(-)
+typo
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2b3c3a404769..58daf7d14bf4 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -20,12 +20,6 @@ struct user_struct;
- struct mmu_gather;
- struct node;
- 
--#ifndef CONFIG_ARCH_HAS_HUGEPD
--typedef struct { unsigned long pd; } hugepd_t;
--#define is_hugepd(hugepd) (0)
--#define __hugepd(x) ((hugepd_t) { (x) })
--#endif
--
- void free_huge_folio(struct folio *folio);
- 
- #ifdef CONFIG_HUGETLB_PAGE
-diff --git a/mm/Kconfig b/mm/Kconfig
-index b4cb45255a54..049d29ec6e20 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1119,16 +1119,6 @@ config DMAPOOL_TEST
- config ARCH_HAS_PTE_SPECIAL
- 	bool
- 
--#
--# Some architectures require a special hugepage directory format that is
--# required to support multiple hugepage sizes. For example a4fe3ce76
--# "powerpc/mm: Allow more flexible layouts for hugepage pagetables"
--# introduced it on powerpc.  This allows for a more flexible hugepage
--# pagetable layouts.
--#
--config ARCH_HAS_HUGEPD
--	bool
--
- config MAPPING_DIRTY_HELPERS
-         bool
- 
-diff --git a/mm/gup.c b/mm/gup.c
-index 43491246f39d..f8e982a42bba 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -501,7 +501,7 @@ static inline void mm_set_has_pinned_flag(unsigned long *mm_flags)
- 
- #ifdef CONFIG_MMU
- 
--#if defined(CONFIG_ARCH_HAS_HUGEPD) || defined(CONFIG_HAVE_GUP_FAST)
-+#ifdef CONFIG_HAVE_GUP_FAST
- static int record_subpages(struct page *page, unsigned long sz,
- 			   unsigned long addr, unsigned long end,
- 			   struct page **pages)
-@@ -515,147 +515,7 @@ static int record_subpages(struct page *page, unsigned long sz,
- 
- 	return nr;
- }
--#endif	/* CONFIG_ARCH_HAS_HUGEPD || CONFIG_HAVE_GUP_FAST */
--
--#ifdef CONFIG_ARCH_HAS_HUGEPD
--static unsigned long hugepte_addr_end(unsigned long addr, unsigned long end,
--				      unsigned long sz)
--{
--	unsigned long __boundary = (addr + sz) & ~(sz-1);
--	return (__boundary - 1 < end - 1) ? __boundary : end;
--}
--
--/*
-- * Returns 1 if succeeded, 0 if failed, -EMLINK if unshare needed.
-- *
-- * NOTE: for the same entry, gup-fast and gup-slow can return different
-- * results (0 v.s. -EMLINK) depending on whether vma is available.  This is
-- * the expected behavior, where we simply want gup-fast to fallback to
-- * gup-slow to take the vma reference first.
-- */
--static int gup_hugepte(struct vm_area_struct *vma, pte_t *ptep, unsigned long sz,
--		       unsigned long addr, unsigned long end, unsigned int flags,
--		       struct page **pages, int *nr)
--{
--	unsigned long pte_end;
--	struct page *page;
--	struct folio *folio;
--	pte_t pte;
--	int refs;
--
--	pte_end = (addr + sz) & ~(sz-1);
--	if (pte_end < end)
--		end = pte_end;
--
--	pte = huge_ptep_get(vma->vm_mm, addr, ptep);
--
--	if (!pte_access_permitted(pte, flags & FOLL_WRITE))
--		return 0;
--
--	/* hugepages are never "special" */
--	VM_BUG_ON(!pfn_valid(pte_pfn(pte)));
--
--	page = pte_page(pte);
--	refs = record_subpages(page, sz, addr, end, pages + *nr);
--
--	folio = try_grab_folio(page, refs, flags);
--	if (!folio)
--		return 0;
--
--	if (unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
--		gup_put_folio(folio, refs, flags);
--		return 0;
--	}
--
--	if (!pte_write(pte) && gup_must_unshare(vma, flags, &folio->page)) {
--		gup_put_folio(folio, refs, flags);
--		return -EMLINK;
--	}
--
--	*nr += refs;
--	folio_set_referenced(folio);
--	return 1;
--}
--
--/*
-- * NOTE: currently GUP for a hugepd is only possible on hugetlbfs file
-- * systems on Power, which does not have issue with folio writeback against
-- * GUP updates.  When hugepd will be extended to support non-hugetlbfs or
-- * even anonymous memory, we need to do extra check as what we do with most
-- * of the other folios. See writable_file_mapping_allowed() and
-- * gup_fast_folio_allowed() for more information.
-- */
--static int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
--		      unsigned long addr, unsigned int pdshift,
--		      unsigned long end, unsigned int flags,
--		      struct page **pages, int *nr)
--{
--	pte_t *ptep;
--	unsigned long sz = 1UL << hugepd_shift(hugepd);
--	unsigned long next;
--	int ret;
--
--	ptep = hugepte_offset(hugepd, addr, pdshift);
--	do {
--		next = hugepte_addr_end(addr, end, sz);
--		ret = gup_hugepte(vma, ptep, sz, addr, end, flags, pages, nr);
--		if (ret != 1)
--			return ret;
--	} while (ptep++, addr = next, addr != end);
--
--	return 1;
--}
--
--static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
--				  unsigned long addr, unsigned int pdshift,
--				  unsigned int flags,
--				  struct follow_page_context *ctx)
--{
--	struct page *page;
--	struct hstate *h;
--	spinlock_t *ptl;
--	int nr = 0, ret;
--	pte_t *ptep;
--
--	/* Only hugetlb supports hugepd */
--	if (WARN_ON_ONCE(!is_vm_hugetlb_page(vma)))
--		return ERR_PTR(-EFAULT);
--
--	h = hstate_vma(vma);
--	ptep = hugepte_offset(hugepd, addr, pdshift);
--	ptl = huge_pte_lock(h, vma->vm_mm, ptep);
--	ret = gup_hugepd(vma, hugepd, addr, pdshift, addr + PAGE_SIZE,
--			 flags, &page, &nr);
--	spin_unlock(ptl);
--
--	if (ret == 1) {
--		/* GUP succeeded */
--		WARN_ON_ONCE(nr != 1);
--		ctx->page_mask = (1U << huge_page_order(h)) - 1;
--		return page;
--	}
--
--	/* ret can be either 0 (translates to NULL) or negative */
--	return ERR_PTR(ret);
--}
--#else /* CONFIG_ARCH_HAS_HUGEPD */
--static inline int gup_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
--			     unsigned long addr, unsigned int pdshift,
--			     unsigned long end, unsigned int flags,
--			     struct page **pages, int *nr)
--{
--	return 0;
--}
--
--static struct page *follow_hugepd(struct vm_area_struct *vma, hugepd_t hugepd,
--				  unsigned long addr, unsigned int pdshift,
--				  unsigned int flags,
--				  struct follow_page_context *ctx)
--{
--	return NULL;
--}
--#endif /* CONFIG_ARCH_HAS_HUGEPD */
--
-+#endif	/* CONFIG_HAVE_GUP_FAST */
- 
- static struct page *no_page_table(struct vm_area_struct *vma,
- 				  unsigned int flags, unsigned long address)
-@@ -1025,9 +885,6 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
- 		return no_page_table(vma, flags, address);
- 	if (!pmd_present(pmdval))
- 		return no_page_table(vma, flags, address);
--	if (unlikely(is_hugepd(__hugepd(pmd_val(pmdval)))))
--		return follow_hugepd(vma, __hugepd(pmd_val(pmdval)),
--				     address, PMD_SHIFT, flags, ctx);
- 	if (pmd_devmap(pmdval)) {
- 		ptl = pmd_lock(mm, pmd);
- 		page = follow_devmap_pmd(vma, address, pmd, flags, &ctx->pgmap);
-@@ -1078,9 +935,6 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
- 	pud = READ_ONCE(*pudp);
- 	if (!pud_present(pud))
- 		return no_page_table(vma, flags, address);
--	if (unlikely(is_hugepd(__hugepd(pud_val(pud)))))
--		return follow_hugepd(vma, __hugepd(pud_val(pud)),
--				     address, PUD_SHIFT, flags, ctx);
- 	if (pud_leaf(pud)) {
- 		ptl = pud_lock(mm, pudp);
- 		page = follow_huge_pud(vma, address, pudp, flags, ctx);
-@@ -1106,10 +960,6 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
- 	p4d = READ_ONCE(*p4dp);
- 	BUILD_BUG_ON(p4d_leaf(p4d));
- 
--	if (unlikely(is_hugepd(__hugepd(p4d_val(p4d)))))
--		return follow_hugepd(vma, __hugepd(p4d_val(p4d)),
--				     address, P4D_SHIFT, flags, ctx);
--
- 	if (!p4d_present(p4d) || p4d_bad(p4d))
- 		return no_page_table(vma, flags, address);
- 
-@@ -1153,10 +1003,7 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
- 	ctx->page_mask = 0;
- 	pgd = pgd_offset(mm, address);
- 
--	if (unlikely(is_hugepd(__hugepd(pgd_val(*pgd)))))
--		page = follow_hugepd(vma, __hugepd(pgd_val(*pgd)),
--				     address, PGDIR_SHIFT, flags, ctx);
--	else if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
-+	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
- 		page = no_page_table(vma, flags, address);
- 	else
- 		page = follow_p4d_mask(vma, address, pgd, flags, ctx);
-@@ -3270,14 +3117,6 @@ static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
- 				pages, nr))
- 				return 0;
- 
--		} else if (unlikely(is_hugepd(__hugepd(pmd_val(pmd))))) {
--			/*
--			 * architecture have different format for hugetlbfs
--			 * pmd format and THP pmd format
--			 */
--			if (gup_hugepd(NULL, __hugepd(pmd_val(pmd)), addr,
--				       PMD_SHIFT, next, flags, pages, nr) != 1)
--				return 0;
- 		} else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
- 					       pages, nr))
- 			return 0;
-@@ -3304,10 +3143,6 @@ static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
- 			if (!gup_fast_pud_leaf(pud, pudp, addr, next, flags,
- 					       pages, nr))
- 				return 0;
--		} else if (unlikely(is_hugepd(__hugepd(pud_val(pud))))) {
--			if (gup_hugepd(NULL, __hugepd(pud_val(pud)), addr,
--				       PUD_SHIFT, next, flags, pages, nr) != 1)
--				return 0;
- 		} else if (!gup_fast_pmd_range(pudp, pud, addr, next, flags,
- 					       pages, nr))
- 			return 0;
-@@ -3331,12 +3166,8 @@ static int gup_fast_p4d_range(pgd_t *pgdp, pgd_t pgd, unsigned long addr,
- 		if (!p4d_present(p4d))
- 			return 0;
- 		BUILD_BUG_ON(p4d_leaf(p4d));
--		if (unlikely(is_hugepd(__hugepd(p4d_val(p4d))))) {
--			if (gup_hugepd(NULL, __hugepd(p4d_val(p4d)), addr,
--				       P4D_SHIFT, next, flags, pages, nr) != 1)
--				return 0;
--		} else if (!gup_fast_pud_range(p4dp, p4d, addr, next, flags,
--					       pages, nr))
-+		if (!gup_fast_pud_range(p4dp, p4d, addr, next, flags,
-+					pages, nr))
- 			return 0;
- 	} while (p4dp++, addr = next, addr != end);
- 
-@@ -3360,10 +3191,6 @@ static void gup_fast_pgd_range(unsigned long addr, unsigned long end,
- 			if (!gup_fast_pgd_leaf(pgd, pgdp, addr, next, flags,
- 					       pages, nr))
- 				return;
--		} else if (unlikely(is_hugepd(__hugepd(pgd_val(pgd))))) {
--			if (gup_hugepd(NULL, __hugepd(pgd_val(pgd)), addr,
--				       PGDIR_SHIFT, next, flags, pages, nr) != 1)
--				return;
- 		} else if (!gup_fast_p4d_range(pgdp, pgd, addr, next, flags,
- 					       pages, nr))
- 			return;
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index f46c80b18ce4..ae2f08ce991b 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -73,45 +73,6 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	return err;
- }
- 
--#ifdef CONFIG_ARCH_HAS_HUGEPD
--static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
--			     unsigned long end, struct mm_walk *walk, int pdshift)
--{
--	int err = 0;
--	const struct mm_walk_ops *ops = walk->ops;
--	int shift = hugepd_shift(*phpd);
--	int page_size = 1 << shift;
--
--	if (!ops->pte_entry)
--		return 0;
--
--	if (addr & (page_size - 1))
--		return 0;
--
--	for (;;) {
--		pte_t *pte;
--
--		spin_lock(&walk->mm->page_table_lock);
--		pte = hugepte_offset(*phpd, addr, pdshift);
--		err = ops->pte_entry(pte, addr, addr + page_size, walk);
--		spin_unlock(&walk->mm->page_table_lock);
--
--		if (err)
--			break;
--		if (addr >= end - page_size)
--			break;
--		addr += page_size;
--	}
--	return err;
--}
--#else
--static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
--			     unsigned long end, struct mm_walk *walk, int pdshift)
--{
--	return 0;
--}
--#endif
--
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
- {
-@@ -159,10 +120,7 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 		if (walk->vma)
- 			split_huge_pmd(walk->vma, pmd, addr);
- 
--		if (is_hugepd(__hugepd(pmd_val(*pmd))))
--			err = walk_hugepd_range((hugepd_t *)pmd, addr, next, walk, PMD_SHIFT);
--		else
--			err = walk_pte_range(pmd, addr, next, walk);
-+		err = walk_pte_range(pmd, addr, next, walk);
- 		if (err)
- 			break;
- 
-@@ -215,10 +173,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
- 		if (pud_none(*pud))
- 			goto again;
- 
--		if (is_hugepd(__hugepd(pud_val(*pud))))
--			err = walk_hugepd_range((hugepd_t *)pud, addr, next, walk, PUD_SHIFT);
--		else
--			err = walk_pmd_range(pud, addr, next, walk);
-+		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
- 	} while (pud++, addr = next, addr != end);
-@@ -250,9 +205,7 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
- 			if (err)
- 				break;
- 		}
--		if (is_hugepd(__hugepd(p4d_val(*p4d))))
--			err = walk_hugepd_range((hugepd_t *)p4d, addr, next, walk, P4D_SHIFT);
--		else if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
-+		if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
- 			err = walk_pud_range(p4d, addr, next, walk);
- 		if (err)
- 			break;
-@@ -287,9 +240,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
- 			if (err)
- 				break;
- 		}
--		if (is_hugepd(__hugepd(pgd_val(*pgd))))
--			err = walk_hugepd_range((hugepd_t *)pgd, addr, next, walk, PGDIR_SHIFT);
--		else if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
-+		if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
- 			err = walk_p4d_range(pgd, addr, next, walk);
- 		if (err)
- 			break;
--- 
-2.44.0
+> - Only keep one example.
+> - Add fsl,qman-channel-id property.
+> - Use interrupt type macro.
+> - Remove top level qman-portals@ff4200000 at example.
+> 
+> Additional change for fsl,q(b)man:
+> - Fixed example error.
+> - Remove redundent part, only keep fsl,qman node.
+> - Change memory-regions to memory-region.
+> - fsl,q(b)man-portals is not required property
+> 
+> Additional change for fsl,qman-fqd.yaml:
+> - Fixed example error.
+> - Only keep one example.
+> - Ref to reserve-memory.yaml
+> - Merge fsl,bman reserver memory part
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/soc/fsl/bman-portals.txt         |  56 ------
+>  .../devicetree/bindings/soc/fsl/bman.txt      | 137 -------------
+>  .../bindings/soc/fsl/fsl,bman-portal.yaml     |  51 +++++
+>  .../devicetree/bindings/soc/fsl/fsl,bman.yaml |  83 ++++++++
+>  .../bindings/soc/fsl/fsl,qman-fqd.yaml        |  68 +++++++
+>  .../bindings/soc/fsl/fsl,qman-portal.yaml     | 110 +++++++++++
+>  .../devicetree/bindings/soc/fsl/fsl,qman.yaml |  97 +++++++++
+>  .../bindings/soc/fsl/qman-portals.txt         | 134 -------------
+>  .../devicetree/bindings/soc/fsl/qman.txt      | 187 ------------------
+>  9 files changed, 409 insertions(+), 514 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman-portals.txt
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/bman.txt
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman-portals.txt
+>  delete mode 100644 Documentation/devicetree/bindings/soc/fsl/qman.txt
 
+
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
+> new file mode 100644
+> index 0000000000000..06b51f049098f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,bman-portal.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/fsl,bman-portal.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: QorIQ DPAA Queue Manager Portals
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  QorIQ DPAA Buffer Manager Portal
+> +
+> +  Portals are memory mapped interfaces to BMan that allow low-latency, lock-less
+> +  interaction by software running on processor cores, accelerators and network
+> +  interfaces with the BMan
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: fsl,bman-portal
+> +      - items:
+> +          - enum:
+> +              - fsl,ls1043a-bmap-portal
+> +              - fsl,ls1046a-bmap-portal
+> +          - const: fsl,bman-portal
+> +  reg:
+> +    items:
+> +      - description: the cache-enabled region of the portal
+> +      - description: the cache-inhibited region of the porta
+
+typo
+
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    bman-portal@0 {
+> +        compatible = "fsl,bman-portal-1.0.0", "fsl,bman-portal";
+> +        reg = <0x0 0x4000>, <0x100000 0x1000>;
+> +        interrupts = <105 IRQ_TYPE_EDGE_FALLING 0 0>;
+> +    };
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
+> new file mode 100644
+> index 0000000000000..e6b3d489ce5cc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,bman.yaml
+> @@ -0,0 +1,83 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/fsl,bman.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: QorIQ DPAA Buffer Manager
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  The Buffer Manager is part of the Data-Path Acceleration Architecture (DPAA).
+> +  BMan supports hardware allocation and deallocation of buffers belonging to pools
+> +  originally created by software with configurable depletion thresholds. This
+> +  binding covers the CCSR space programming model
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: fsl,bman
+> +      - items:
+> +          - enum:
+> +              - fsl,ls1043a-bman
+> +              - fsl,ls1046a-bman
+> +          - const: fsl,bman
+> +
+> +  reg:
+> +    items:
+> +      - description:
+
+Needs '|' if you want formatting preserved.
+
+> +          Registers region within the CCSR address space
+> +
+> +          The BMan revision information is located in the BMAN_IP_REV_1/2 registers which
+> +          are located at offsets 0xbf8 and 0xbfc
+
+Wrap lines at 80 unless there's a good reason to go to 100. There isn't 
+here.
+
+> +
+> +  interrupts:
+> +    items:
+> +      - description: The error interrupt
+> +
+> +  memory-region:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+
+memory-region already has a type. Need to define how many entries and 
+what they are.
+
+> +    description:
+> +      List of phandles referencing the BMan private memory
+> +      nodes (described below). The bman-fqd node must be
+> +      first followed by bman-pfdr node. Only used on ARM
+> +
+> +      Devices connected to a BMan instance via Direct Connect Portals (DCP) must link
+> +      to the respective BMan instance
+> +
+> +  fsl,bman-portals:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: ref fsl,bman-port.yaml
+> +
+> +  fsl,liodn:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      See pamu.txt, PAMU property used for static LIODN assignment
+> +
+> +  fsl,iommu-parent:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      See pamu.txt, PAMU property used for dynamic LIODN assignment
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - fsl,bman-portals
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    bman@31a000 {
+> +        compatible = "fsl,bman";
+> +        reg = <0x31a000 0x1000>;
+> +        interrupts = <16 IRQ_TYPE_EDGE_FALLING 1 2>;
+> +        fsl,liodn = <0x17>;
+> +        fsl,bman-portals = <&bportals>;
+> +        memory-region = <&bman_fbpr>;
+> +    };
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+> new file mode 100644
+> index 0000000000000..f7af14dc7deb6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+> @@ -0,0 +1,68 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/fsl,qman-fqd.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: QMan Private Memory Nodes
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description: |
+> +  QMan requires two contiguous range of physical memory used for the backing store
+> +  for QMan Frame Queue Descriptor (FQD) and Packed Frame Descriptor Record (PFDR).
+> +  This memory is reserved/allocated as a node under the /reserved-memory node.
+> +
+> +  BMan requires a contiguous range of physical memory used for the backing store
+> +  for BMan Free Buffer Proxy Records (FBPR). This memory is reserved/allocated as
+> +  a node under the /reserved-memory node.
+> +
+> +  The QMan FQD memory node must be named "qman-fqd"
+> +  The QMan PFDR memory node must be named "qman-pfdr"
+> +  The BMan FBPR memory node must be named "bman-fbpr"
+> +
+> +  The following constraints are relevant to the FQD and PFDR private memory:
+> +    - The size must be 2^(size + 1), with size = 11..29. That is 4 KiB to
+> +      1 GiB
+> +    - The alignment must be a muliptle of the memory size
+> +
+> +  The size of the FQD and PFDP must be chosen by observing the hardware features
+> +  configured via the Reset Configuration Word (RCW) and that are relevant to a
+> +  specific board (e.g. number of MAC(s) pinned-out, number of offline/host command
+> +  FMan ports, etc.). The size configured in the DT must reflect the hardware
+> +  capabilities and not the specific needs of an application
+> +
+> +  For additional details about reserved memory regions see reserved-memory.txt
+
+Please read what that document says.
+
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: '^(qman-fqd|qman-pfdr|bman-fbpr|)+$'
+
+Don't need the last '|' or the '+'.
+
+> +
+> +  compatible:
+> +    enum:
+> +      - fsl,qman-fqd
+> +      - fsl,qman-pfdr
+> +      - fsl,bman-fbpr
+> +
+> +required:
+> +  - compatible
+> +
+> +allOf:
+> +  - $ref: reserved-memory.yaml
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    reserved-memory {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        qman-fqd {
+> +            compatible = "shared-dma-pool";
+> +            size = <0 0x400000>;
+> +            alignment = <0 0x400000>;
+> +            no-map;
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
+> new file mode 100644
+> index 0000000000000..6c81e0d66f4d5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-portal.yaml
+> @@ -0,0 +1,110 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/fsl,qman-portal.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: QorIQ DPAA Queue Manager Portals
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  Portals are memory mapped interfaces to QMan that allow low-latency, lock-less
+> +  interaction by software running on processor cores, accelerators and network
+> +  interfaces with the QMan
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: fsl,qman-portal
+> +      - items:
+> +          - enum:
+> +              - fsl,ls1043-qman-portal
+> +              - fsl,ls1046-qman-portal
+> +              - fsl,qman-portal-1.2.0
+> +          - const: fsl,qman-portal
+> +
+> +  reg:
+> +    items:
+> +      - description: the cache-enabled region of the portal
+> +      - description: the cache-inhibited region of the portal
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  fsl,liodn:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description: See pamu.txt. Two LIODN(s). DQRR LIODN (DLIODN) and Frame LIODN
+> +      (FLIODN)
+> +
+> +  fsl,iommu-parent:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: See pamu.txt.
+> +
+> +  fsl,qman-channel-id:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: qman channel id.
+> +
+> +  cell-index:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      The hardware index of the channel. This can also be
+> +      determined by dividing any of the channel's 8 work queue
+> +      IDs by 8
+> +
+> +      In addition to these properties the qman-portals should have sub-nodes to
+> +      represent the HW devices/portals that are connected to the software portal
+> +      described here
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +patternProperties:
+> +  '^(fman0|fman1|pme|crypto|)+$':
+
+Same regex problems here.
+
+> +    type: object
+> +    properties:
+> +      fsl,liodn:
+> +        description: See pamu.txt, PAMU property used for static LIODN assignment
+> +
+> +      fsl,iommu-parent:
+> +        description: See pamu.txt, PAMU property used for dynamic LIODN assignment
+> +
+> +      dev-handle:
+> +        $ref: /schemas/types.yaml#/definitions/phandle
+> +        description:
+> +          The phandle to the particular hardware device that this
+> +          portal is connected to.
+> +
+> +    additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    qman-portal@0 {
+> +        compatible = "fsl,qman-portal-1.2.0", "fsl,qman-portal";
+> +        reg = <0 0x4000>, <0x100000 0x1000>;
+> +        interrupts = <104 IRQ_TYPE_EDGE_FALLING 0 0>;
+> +        fsl,liodn = <1 2>;
+> +        fsl,qman-channel-id = <0>;
+> +
+> +        fman0 {
+> +            fsl,liodn = <0x21>;
+> +            dev-handle = <&fman0>;
+> +        };
+> +
+> +        fman1 {
+> +            fsl,liodn = <0xa1>;
+> +            dev-handle = <&fman1>;
+> +        };
+> +
+> +        crypto {
+> +            fsl,liodn = <0x41 0x66>;
+> +            dev-handle = <&crypto>;
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
+> new file mode 100644
+> index 0000000000000..341c3d2cfd6c7
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman.yaml
+> @@ -0,0 +1,97 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/soc/fsl/fsl,qman.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: QorIQ DPAA Queue Manager
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +description:
+> +  The Queue Manager is part of the Data-Path Acceleration Architecture (DPAA). QMan
+> +  supports queuing and QoS scheduling of frames to CPUs, network interfaces and
+> +  DPAA logic modules, maintains packet ordering within flows. Besides providing
+> +  flow-level queuing, is also responsible for congestion management functions such
+> +  as RED/WRED, congestion notifications and tail discards. This binding covers the
+> +  CCSR space programming model
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: fsl,qman
+> +      - items:
+> +          - enum:
+> +              - fsl,ls1043a-qman
+> +              - fsl,ls1046a-qman
+> +          - const: fsl,qman
+> +  reg:
+> +    items:
+> +      - description:
+> +          Registers region within the CCSR address space
+> +
+> +          The QMan revision information is located in the QMAN_IP_REV_1/2 registers which
+> +          are located at offsets 0xbf8 and 0xbfc
+> +
+> +  interrupts:
+> +    items:
+> +      - description: The error interrupt
+> +
+> +  fsl,qman-portals:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: ref fsl,qman-port.yaml
+> +
+> +  fsl,liodn:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      See pamu.txt, PAMU property used for static LIODN assignment
+> +
+> +  fsl,iommu-parent:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      See pamu.txt, PAMU property used for dynamic LIODN assignment
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description:
+> +      See clock-bindings.txt and qoriq-clock.txt
+
+Drop.
+
+> +      Reference input clock. Its frequency is half of the platform clock
+> +
+> +  memory-region:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      List of phandles referencing the QMan private memory
+> +      nodes (described below). The qman-fqd node must be
+> +      first followed by qman-pfdr node. Only used on ARM
+> +
+> +      Devices connected to a QMan instance via Direct Connect Portals (DCP) must link
+> +      to the respective QMan instance
+> +
+> +  fsl,qman:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    description:
+> +      List of phandle and DCP index pairs, to the QMan instance
+> +      to which this device is connected via the DCP
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - fsl,qman-portals
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    qman: qman@318000 {
+> +        compatible = "fsl,qman";
+> +        reg = <0x318000 0x1000>;
+> +        interrupts = <16 IRQ_TYPE_EDGE_FALLING 1 3>;
+> +        fsl,liodn = <0x16>;
+> +        fsl,qman-portals = <&qportals>;
+> +        memory-region = <&qman_fqd &qman_pfdr>;
+> +        clocks = <&platform_pll 1>;
+> +    };
