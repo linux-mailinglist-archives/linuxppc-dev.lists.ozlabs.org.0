@@ -1,73 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B20D91459E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 11:00:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3D6914611
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 11:19:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=L1RpbCRf;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=dQMmv2nS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W723W0PbPz3cYB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 19:00:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W72Th6rQvz30PD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 19:19:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=L1RpbCRf;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=dQMmv2nS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f30; helo=mail-qv1-xf30.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W722p22ZWz3cQL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 18:59:27 +1000 (AEST)
-Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-6ad8243dba8so19737676d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 01:59:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W72Sz0Hgtz3bnt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 19:18:41 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id B63739C3240;
+	Mon, 24 Jun 2024 05:18:39 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id HR5yBegFxqJ5; Mon, 24 Jun 2024 05:18:38 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 492A09C5B61;
+	Mon, 24 Jun 2024 05:18:38 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 492A09C5B61
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719219563; x=1719824363; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hdsmDqmNgGZQgfRkYZ6dfoEvN0ahnTXGnc7hhzCQrmg=;
-        b=L1RpbCRfMz4smhXE7wGxD3c/3cia13jYOHTncmccCAnxkFRGTpSyKthJh7w9yt7Gj0
-         ziyAQiN+Mo4Q1N+gNjI0RgyZqqxhX1uQsrxiSKpcCTaeXQB0KDMFZj4jrU0yqDuwXLrL
-         FC4p5s/WUEPdMbG/RRp5/w8+Xhi54DubJ+Kj2NHnUr8qGi2aziH4EnGIYpJLsO9TatCD
-         +0LUMJhJMwzGtNhk19l9p1j0QImjEsywSVyBOHd92BP4LbqDABA5DmJQ5trIzvktiSxQ
-         mp5O/87AUeXWeH5OvAIrQISwUbRoqp+9gBpOgNQVuSrkX0tujc0XsnM4VkL+XvTzl20I
-         j/YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719219563; x=1719824363;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hdsmDqmNgGZQgfRkYZ6dfoEvN0ahnTXGnc7hhzCQrmg=;
-        b=fWOZ0ZgLTEEui/Py+6wLAvdmWR1vWWoKADEejHd+ZamRjH0qHV3czT1xA1R0vrqcDz
-         ybfHMV8pmSG9eE58wM2k78nAuwd0mf+Fd0EuGoppHsIto6PTZSDJav7vEyqOlSRWjCut
-         WawPiajKh2Tci2Fd/VXfSDzFWtaWG/jJYVRV62X/g4CBex0bckPt2mmBgGLcXhA7nZZp
-         MNHv6dUwT9khqNw/VOJUKb31geLx2TF3BIE1Lv0frVicioJ4Mh+c22XjnDAkA5mJgTJ1
-         7GVrNiUSqo50dwQAqKvB3vIqe/7repI6X70Cs8nnbtqN72aoUkPSyzRUPl2SMpIIewtk
-         JgBg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqYh0AIUMfH7XaUCxbhmYmeP7b3eJQW1bd+vqHfMxJz503mjI7QO4ts8qpnp9JX+Ery8GIGlNPp76DJ+0nqu0MOEgfjrsP7pQF3CMQIA==
-X-Gm-Message-State: AOJu0YyComCmj2pNW7nXX65v5vg39kdGnmhx4tC3KCGVSOoVglkJj5JV
-	7h6ASZ+DXYz6OPUoHBC3tnoMwoouPgNPbG+BHKEloqY/EJS2Y+e+R3LGelniM1U1nyqLHt4POFV
-	znsa29xQsku2QWTc547yhT/4UOAt8gWEnvyh9iw==
-X-Google-Smtp-Source: AGHT+IHJdukmHTX31XZGqN8Ya5O7xqbZeOSn9ad1olNhKCpFsHEHdPHP6m4H5tAF93YKuWVFl5Mnqdf3Ba8kIeeVBLc=
-X-Received: by 2002:a05:6214:4a45:b0:6b4:ff32:8287 with SMTP id
- 6a1803df08f44-6b5409be0b9mr37950676d6.22.1719219562855; Mon, 24 Jun 2024
- 01:59:22 -0700 (PDT)
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1719220718; bh=4JOrFwNYAzMjJc3yCOi7qIx5d2JoABbFOVFqt1WuodE=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=dQMmv2nSrtJBDMOLXfbnYdr0xEsQ+JPCN2ISsqaHfK0rFiK0iVxB7g3L69NRikKSF
+	 tFs9D3pn8s8IrJT0B8gBXrghZesBG0biCOcu54hq0wciU5P0mB0DqJzghiLCD4GHdP
+	 AMp+VJD/fXUB64TKqeZowTL1e2NWWAuHvxalaXKz4yMRxBqj6XRpaaeL019JzRMbrc
+	 Xt8NUIaDhSAFLqFQU9ufuJqullhXIzBF96BK6f0WwRh5+a+5XdxVEesD20tbVhIBld
+	 Lafq1lysngw69xaWD5/bUlPMWd5pYLunOPrmkZ7Vg8a9GBKgukkSz1IH2wvpn6Cm74
+	 c6Y3zVSYLCvIA==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id VquOXrQmnN-2; Mon, 24 Jun 2024 05:18:38 -0400 (EDT)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [192.168.48.237])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id E46679C3240;
+	Mon, 24 Jun 2024 05:18:37 -0400 (EDT)
+Date: Mon, 24 Jun 2024 05:18:37 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Message-ID: <1048207382.1714780.1719220717882.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
+References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com> <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com> <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org> <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com> <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
+Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove
+ binding
 MIME-Version: 1.0
-References: <20240620175657.358273-1-piotr.wojtaszczyk@timesys.com>
- <20240620175657.358273-7-piotr.wojtaszczyk@timesys.com> <ZnkGcwd8M1QFfmxl@matsya>
-In-Reply-To: <ZnkGcwd8M1QFfmxl@matsya>
-From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Date: Mon, 24 Jun 2024 10:59:11 +0200
-Message-ID: <CAG+cZ06R5P1g+1Pk3gbQ6Yod0mBM41dFTgvnBWg61HZFUtmx-w@mail.gmail.com>
-Subject: Re: [Patch v4 06/10] dmaengine: Add dma router for pl08x in LPC32XX SoC
-To: Vinod Koul <vkoul@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_4581 (ZimbraWebClient - GC112 (Linux)/8.8.15_GA_4581)
+Thread-Topic: ASoC: dt-bindings: imx-audio-spdif: remove binding
+Thread-Index: ewOgNpthlCv+G0hUX/mmtwgvLix7HA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,31 +75,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Vignesh Raghavendra <vigneshr@ti.com>, Michael Turquette <mturquette@baylibre.com>, Li Zetao <lizetao1@huawei.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, linux-clk@vger.kernel.org, Rob Herring <robh@kernel.org>, Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, "J.M.B. Downing" <jonathan.downing@nautel.com>, Markus Elfring <Markus.Elfring@web.de>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Yangtao Li <frank.li@vivo.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org, Chancel Liu <chancel.liu@nxp.com>, dmaengine@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: imx <imx@lists.linux.dev>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-kernel <linux-kernel@vger.kernel.org>, Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>, shengjiu wang <shengjiu.wang@gmail.com>, Rob Herring <robh@kernel.org>, Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>, devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-sound <linux-sound@vger.kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 24, 2024 at 7:39=E2=80=AFAM Vinod Koul <vkoul@kernel.org> wrote=
-:
-> Any reason why dmaengine parts cant be sent separately, why are they
-> clubbed together, I dont see any obvious dependencies...
+From: "Krzysztof Kozlowski" <krzk@kernel.org>
+Sent: Monday, 24 June, 2024 10:55:31
+> On 24/06/2024 10:51, Elinor Montmasson wrote:
+>> From: "Krzysztof Kozlowski" <krzk@kernel.org>
+>> Sent: Sunday, 23 June, 2024 13:09:33
+>>> On 20/06/2024 15:25, Elinor Montmasson wrote:
+>>>> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
+>>>> removed.
+>>>
+>>> So what happens with all existing users (e.g. DTS)? They become
+>>> invalid/not supported?
+>> 
+>> 
+>> Next commits, 8/9 and 9/9, update all DTS files that currently use
+>> the "fsl,imx-audio-spdif" compatible.
+> 
+> You mean in-tree. I mean all users, in- and out-of-tree. Other projects.
 
-The I2S driver depends on the dmaengine parts
+Oh you're right
 
-> On 20-06-24, 19:56, Piotr Wojtaszczyk wrote:
-> > LPC32XX connects few of its peripherals to pl08x DMA thru a multiplexer=
-,
-> > this driver allows to route a signal request line thru the multiplexer =
-for
-> > given peripheral.
->
-> What is the difference b/w this and lpc18xx driver, why not reuse that
-> one?
+>> From the users point of view, currently configured spdif audio cards
+>> will behave just the same.
+>> 
+>> 
+>>> After quick look, I do not see backwards compatibility in the driver and
+>>> above commit msg tells me nothing about ABI break.
+>> 
+>> 
+>> For the next version I will state in this commit message the upcoming
+>> modifications to DTS
+>> and compatibility, why it will be done, and that support for existing DTS is not
+>> dropped.
+>> 
+>> Previous `imx-spdif` driver used the dummy codec instead of
+>> using declared spdif codecs. It was discussed in previous version of this
+>> contribution
+>> that using the dummy codec isn't good practice. So one to one backward
+>> compatibility
+>> isn't really possible.
+> 
+> Heh, that's not good. This is improvement, cleanup. While it is
+> important and useful, it should also not break existing users.
 
-The lpc18xx used the same dma peripheral (pl08x) but the request signal
-multiplexer around pl08x is completely different - there are no common part=
-s.
 
---=20
-Piotr Wojtaszczyk
-Timesys
+Should I introduce then the use of the dummy codec in `fsl-asoc-card` to
+assure backward compatibility at least for a time ?
+With maybe warning messages in code to indicate that spdif codecs drivers
+should be declared and used in the future ?
+
+
+Best regards,
+Elinor Montmasson
