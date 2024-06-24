@@ -1,53 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673E091457A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 10:56:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7BB914583
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 10:57:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Trj3GrNK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S6yjuY5p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W71z66cyvz3cP3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 18:56:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W72083YZgz3cRK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 18:57:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Trj3GrNK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S6yjuY5p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W71yQ4gJZz3cG6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 18:55:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W71zS1Pktz3cF1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 18:56:36 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id EE51660917;
-	Mon, 24 Jun 2024 08:55:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AB2C32782;
-	Mon, 24 Jun 2024 08:55:32 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id DB51760AFB;
+	Mon, 24 Jun 2024 08:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B42BC2BBFC;
+	Mon, 24 Jun 2024 08:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719219339;
-	bh=GZdM7RgAiulGjt8VwbxLG+6rinyzS20ZKJ2DX8G/7DA=;
+	s=k20201202; t=1719219389;
+	bh=t2YWtMH4dwKBdEs5nOu9MRpraIm82fTgm6sPhyy/Qyg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Trj3GrNKUfHKTAjwPPQW79NqukdD4xt/4ta/5b0rD6NUqDz+ZiT898NL5vostu/ug
-	 yZuBQsoaSZI8FNDvmJCMLmCpGwlCng/ZzollweZwlCP0OpuTT8kk0k177VZxOxRwke
-	 rHC4HnCDBdT140Eplr/JH654xdjrTX5h/m5gt9oB6JgsEkZ5IxvBQcharKmho45Rmf
-	 2GBzqIPmFOsIE2T88V/3w54m6GBDJcsd7gAWw9TmZSRbQ+RQo7KAkkrUR76Vr3N12B
-	 J2Q1SulPaP/GB4xN+6iutsEV0G38xwq6LxfJb8Pyulxe2Zj+NSJNLoGL1yKJ7mYI3X
-	 aSLB2Kfeh54Kw==
-Message-ID: <42b32958-89ee-43b6-96d1-f3e18c7d8955@kernel.org>
-Date: Mon, 24 Jun 2024 10:55:31 +0200
+	b=S6yjuY5pSfSJgA4DtVRffaI1YXRafUPvRWxGRuBVwWvfKnWVs1X5lRkz+WfSfZk7b
+	 BLYhlA3nbQGn0wEyktsy2M9TUG4+ORu0nOfwsbD8MxKaNZbvtFSAPruiKQIP64dHGb
+	 Ce+YlnRvJmesMjvZYG04/AtVgHMHjy6ImKBk84g7tjDXFvFf3qqeketZ1GlAcXHPli
+	 Izt6NL5k7hzBiRPWFUXb44THoHuLB/E6Iu78dPsuS09VuDkBQTOkScTm2I5lmfvH0N
+	 xO4Ce7fdGcIJUt7cam/TMI0KpssMZVSxNc5avB5q24pCdS/uPYQVD9dAACIHZsskeN
+	 Nq58zhTQ+pHbg==
+Message-ID: <343b1610-e10b-46e5-9026-370b4b675940@kernel.org>
+Date: Mon, 24 Jun 2024 10:56:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv5 7/9] ASoC: dt-bindings: imx-audio-spdif: remove binding
+Subject: Re: [PATCHv5 6/9] ASoC: dt-bindings: fsl-asoc-card: add compatible
+ string for spdif
 To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
 References: <20240620132511.4291-1-elinor.montmasson@savoirfairelinux.com>
- <20240620132511.4291-8-elinor.montmasson@savoirfairelinux.com>
- <17a0efe3-72fa-4d13-b3b0-90e6640308f3@kernel.org>
- <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
+ <20240620132511.4291-7-elinor.montmasson@savoirfairelinux.com>
+ <6fcbd97b-4172-48a9-bcdb-3bdf35aba8f7@kernel.org>
+ <1327841247.1714446.1719219099909.JavaMail.zimbra@savoirfairelinux.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -93,7 +94,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <1566099232.1714447.1719219107779.JavaMail.zimbra@savoirfairelinux.com>
+In-Reply-To: <1327841247.1714446.1719219099909.JavaMail.zimbra@savoirfairelinux.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -107,44 +108,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx <imx@lists.linux.dev>, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-kernel <linux-kernel@vger.kernel.org>, Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>, shengjiu wang <shengjiu.wang@gmail.com>, Rob Herring <robh@kernel.org>, Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>, devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-sound <linux-sound@vger.kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: imx@lists.linux.dev, alsa-devel <alsa-devel@alsa-project.org>, Xiubo Lee <Xiubo.Lee@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-kernel <linux-kernel@vger.kernel.org>, Philip-Dylan Gleonec <philip-dylan.gleonec@savoirfairelinux.com>, shengjiu wang <shengjiu.wang@gmail.com>, Rob Herring <robh@kernel.org>, Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>, devicetree <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-sound <linux-sound@vger.kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 24/06/2024 10:51, Elinor Montmasson wrote:
-> From: "Krzysztof Kozlowski" <krzk@kernel.org>
-> Sent: Sunday, 23 June, 2024 13:09:33
->> On 20/06/2024 15:25, Elinor Montmasson wrote:
->>> imx-audio-spdif was merged into the fsl-asoc-card driver, and therefore
->>> removed.
+> 
+>> The compatible is already documented, so now you create duplicated binding.
 >>
->> So what happens with all existing users (e.g. DTS)? They become
->> invalid/not supported?
+>> This is very confusing.
 > 
 > 
-> Next commits, 8/9 and 9/9, update all DTS files that currently use
-> the "fsl,imx-audio-spdif" compatible.
+> The double compatible documentation is only temporary, next commit (7/9)
+> removes the previous binding in "fsl,imx-audio-spdif.yaml".
+> I separated these changes in multiple commit to ease git history searching
+> by subject/file.
+> If required, I can merge commits 6/9 and 7/9.
 
-You mean in-tree. I mean all users, in- and out-of-tree. Other projects.
+Yeah, squash them so it will be obvious.
 
-> From the users point of view, currently configured spdif audio cards
-> will behave just the same.
-> 
-> 
->> After quick look, I do not see backwards compatibility in the driver and
->> above commit msg tells me nothing about ABI break.
-> 
-> 
-> For the next version I will state in this commit message the upcoming modifications to DTS
-> and compatibility, why it will be done, and that support for existing DTS is not dropped.
-> 
-> Previous `imx-spdif` driver used the dummy codec instead of
-> using declared spdif codecs. It was discussed in previous version of this contribution
-> that using the dummy codec isn't good practice. So one to one backward compatibility
-> isn't really possible.
-
-Heh, that's not good. This is improvement, cleanup. While it is
-important and useful, it should also not break existing users.
 
 Best regards,
 Krzysztof
