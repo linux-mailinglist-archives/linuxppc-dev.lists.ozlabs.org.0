@@ -1,95 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFF5915703
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 21:12:32 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q1Y36HA3;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDE8915712
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 21:22:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7Hf443xNz3cYB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 05:12:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7Hs81WBRz3dDt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 05:22:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q1Y36HA3;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=shameerali.kolothum.thodi@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7HdN1Mj0z3cXw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 05:11:51 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45OIULO3016060;
-	Mon, 24 Jun 2024 19:11:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=n
-	ehmikWmdM/kJtb5KX//x+xdyw1dPk//cLoVAZPSe2w=; b=q1Y36HA3RW5h/eW7Y
-	ZCxpAB3jeZCroqn1RZZ2rKq/rZSxJXc7ipfmCy4dDAGgB8jxpT4MMC1zW8pNxDEN
-	uSTGF3NNnhnvzo4djRAdBxGB1hlwH8Y6JdScgGHjqffV9HekGvama6nONDIWn0ki
-	E7x6CCiSrXsUzEsD5WpxH+IDgCinJNNTCpMFs8neqQUNlVRAHuw2+upYEmxrHPD6
-	IsF8iDyfst+6ZZ8kh1ZutIFNj/8S5MqNHPsyZxdAVab00gYeIABcwdhydR4OsVvr
-	6EW1/Ki84r8KwqdJg2kfSggTp8OVQDZiwSS8A3TIHVDApiIbIUEwicpv4fRzuuFZ
-	H20JA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yye4402qd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 19:11:41 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45OJBeBI011860;
-	Mon, 24 Jun 2024 19:11:40 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yye4402qb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 19:11:40 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45OIUMNQ018115;
-	Mon, 24 Jun 2024 19:11:40 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yx8xu2ncn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 19:11:40 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45OJBZNj26936000
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Jun 2024 19:11:38 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BAA6658055;
-	Mon, 24 Jun 2024 19:11:35 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 96D4858059;
-	Mon, 24 Jun 2024 19:11:32 +0000 (GMT)
-Received: from [9.124.215.163] (unknown [9.124.215.163])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Jun 2024 19:11:32 +0000 (GMT)
-Message-ID: <11f9cc04-91eb-4a70-9ff0-5c6f24483cd3@linux.ibm.com>
-Date: Tue, 25 Jun 2024 00:41:31 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Skip offline cores when enabling SMT on PowerPC
-To: Thomas Gleixner <tglx@linutronix.de>
-References: <20240612185046.1826891-1-nysal@linux.ibm.com>
- <875xudoz4d.fsf@mail.lhotse> <87ikxza01w.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7Hrk0kcyz3cXw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 05:21:39 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W7Hpd4xrHz6K9g7;
+	Tue, 25 Jun 2024 03:19:53 +0800 (CST)
+Received: from lhrpeml100004.china.huawei.com (unknown [7.191.162.219])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1AD10140A70;
+	Tue, 25 Jun 2024 03:21:33 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ lhrpeml100004.china.huawei.com (7.191.162.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Jun 2024 20:21:32 +0100
+Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
+ lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
+ Mon, 24 Jun 2024 20:21:32 +0100
+From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: RE: [PATCH 00/26] KVM: vfio: Hide KVM internals from others
+Thread-Topic: [PATCH 00/26] KVM: vfio: Hide KVM internals from others
+Thread-Index: AQHZ6DUkZqOCX4TQLUabDzpapjtX9LHSHHZQgAaZwQCAAFBCQA==
+Date: Mon, 24 Jun 2024 19:21:32 +0000
+Message-ID: <ec1e168193ed45dea22117606cabacc5@huawei.com>
+References: <20230916003118.2540661-1-seanjc@google.com>
+ <504fa0a7264d4762afda2f13c3525ce5@huawei.com> <ZnmRgqD6FmXNNzzI@google.com>
+In-Reply-To: <ZnmRgqD6FmXNNzzI@google.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <87ikxza01w.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5Wn1QeCSWkHb9lQ2k2z3gmkExtQTKTLo
-X-Proofpoint-ORIG-GUID: fwa8IBLDVE_kaukpVhZqEagT37MAZ4-R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-24_15,2024-06-24_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=800 clxscore=1015
- adultscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0
- phishscore=0 spamscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406240150
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.195.246.162]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,51 +58,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org, "Nysal Jan K.A." <nysal@linux.ibm.com>
+Cc: "x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio
+ Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai
+ Chen <chenhuacai@kernel.org>, Halil Pasic <pasic@linux.ibm.com>, Andrew Thornton <andrewth@google.com>, Ingo Molnar <mingo@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Venkatesh Srinivas <venkateshs@chromium.org>, Heiko Carstens <hca@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, Thomas Gleixner <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Tony Krowiak <akrowiak@linux.ibm.com>, Anish
+ Ghulati <aghulati@google.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Oliver Upton <oliver.upton@linux.dev>, "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Anup
+ Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 6/24/24 1:44 AM, Thomas Gleixner wrote:
-> Michael!
-> 
-> On Thu, Jun 13 2024 at 21:34, Michael Ellerman wrote:
->> IIUIC the regression was in the ppc64_cpu userspace tool, which switched
->> to using the new kernel interface without taking into account the way it
->> behaves.
->>
->> Or are you saying the kernel behaviour changed on x86 after the powerpc
->> HOTPLUG_SMT was added?
-> 
-> No. The mechanism was always this way. Only offline nodes have been
-> skipped. x86 never checked for the core being online.
-> 
->> It's only x86 and powerpc right?
->>
->> Having different behaviour on the only two arches that support the
->> interface does not seem like a good result.
->>
->>> What is the expected behaviour on x86 when enabling SMT and certain cores
->>> are offline? 
->>
->> AFAIK no one really touches SMT on x86 other than to turn it off for
->> security reasons.
-> 
-> Right. So changing it not to online a thread when the full core is
-> offline should not really break stuff.
-> 
-> OTH, the mechanism to figure that out on x86 is definitely different and
-> more complicated than on power because the sibling threads are not
-> having consecutive CPU numbers.
-
-wouldn't topology_sibling_cpumask have this info? 
-If the mask is empty does it mean the core is offline? 
-
-> 
-> So I'm not sure whether it's worth to make this consistent and I
-> definitely can live with the proposed patches.
-> 
-> Thanks,
-> 
->         tglx
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2VhbiBDaHJpc3RvcGhl
+cnNvbiA8c2VhbmpjQGdvb2dsZS5jb20+DQo+IFNlbnQ6IE1vbmRheSwgSnVuZSAyNCwgMjAyNCA0
+OjMyIFBNDQo+IFRvOiBTaGFtZWVyYWxpIEtvbG90aHVtIFRob2RpIDxzaGFtZWVyYWxpLmtvbG90
+aHVtLnRob2RpQGh1YXdlaS5jb20+DQo+IENjOiBDYXRhbGluIE1hcmluYXMgPGNhdGFsaW4ubWFy
+aW5hc0Bhcm0uY29tPjsgV2lsbCBEZWFjb24NCj4gPHdpbGxAa2VybmVsLm9yZz47IE1hcmMgWnlu
+Z2llciA8bWF6QGtlcm5lbC5vcmc+OyBPbGl2ZXIgVXB0b24NCj4gPG9saXZlci51cHRvbkBsaW51
+eC5kZXY+OyBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNhaUBrZXJuZWwub3JnPjsgTWljaGFlbA0KPiBF
+bGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PjsgQW51cCBQYXRlbCA8YW51cEBicmFpbmZhdWx0
+Lm9yZz47IFBhdWwNCj4gV2FsbXNsZXkgPHBhdWwud2FsbXNsZXlAc2lmaXZlLmNvbT47IFBhbG1l
+ciBEYWJiZWx0DQo+IDxwYWxtZXJAZGFiYmVsdC5jb20+OyBBbGJlcnQgT3UgPGFvdUBlZWNzLmJl
+cmtlbGV5LmVkdT47IEhlaWtvDQo+IENhcnN0ZW5zIDxoY2FAbGludXguaWJtLmNvbT47IFZhc2ls
+eSBHb3JiaWsgPGdvckBsaW51eC5pYm0uY29tPjsNCj4gQWxleGFuZGVyIEdvcmRlZXYgPGFnb3Jk
+ZWV2QGxpbnV4LmlibS5jb20+OyBDaHJpc3RpYW4gQm9ybnRyYWVnZXINCj4gPGJvcm50cmFlZ2Vy
+QGxpbnV4LmlibS5jb20+OyBKYW5vc2NoIEZyYW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+Ow0K
+PiBDbGF1ZGlvIEltYnJlbmRhIDxpbWJyZW5kYUBsaW51eC5pYm0uY29tPjsgVGhvbWFzIEdsZWl4
+bmVyDQo+IDx0Z2x4QGxpbnV0cm9uaXguZGU+OyBJbmdvIE1vbG5hciA8bWluZ29AcmVkaGF0LmNv
+bT47IEJvcmlzbGF2IFBldGtvdg0KPiA8YnBAYWxpZW44LmRlPjsgRGF2ZSBIYW5zZW4gPGRhdmUu
+aGFuc2VuQGxpbnV4LmludGVsLmNvbT47DQo+IHg4NkBrZXJuZWwub3JnOyBQZXRlciBaaWpsc3Ry
+YSA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+OyBBcm5hbGRvIENhcnZhbGhvIGRlDQo+IE1lbG8gPGFj
+bWVAa2VybmVsLm9yZz47IFBhb2xvIEJvbnppbmkgPHBib256aW5pQHJlZGhhdC5jb20+OyBUb255
+DQo+IEtyb3dpYWsgPGFrcm93aWFrQGxpbnV4LmlibS5jb20+OyBIYWxpbCBQYXNpYyA8cGFzaWNA
+bGludXguaWJtLmNvbT47DQo+IEphc29uIEhlcm5lIDxqamhlcm5lQGxpbnV4LmlibS5jb20+OyBI
+YXJhbGQgRnJldWRlbmJlcmdlcg0KPiA8ZnJldWRlQGxpbnV4LmlibS5jb20+OyBBbGV4IFdpbGxp
+YW1zb24gPGFsZXgud2lsbGlhbXNvbkByZWRoYXQuY29tPjsNCj4gQW5keSBMdXRvbWlyc2tpIDxs
+dXRvQGtlcm5lbC5vcmc+OyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+
+IGt2bWFybUBsaXN0cy5saW51eC5kZXY7IGxpbnV4LW1pcHNAdmdlci5rZXJuZWwub3JnOyBrdm1A
+dmdlci5rZXJuZWwub3JnOw0KPiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZzsga3ZtLXJp
+c2N2QGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4LQ0KPiByaXNjdkBsaXN0cy5pbmZyYWRlYWQu
+b3JnOyBsaW51eC1zMzkwQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+IGtlcm5lbEB2Z2VyLmtl
+cm5lbC5vcmc7IGxpbnV4LXBlcmYtdXNlcnNAdmdlci5rZXJuZWwub3JnOyBBbmlzaCBHaHVsYXRp
+DQo+IDxhZ2h1bGF0aUBnb29nbGUuY29tPjsgVmVua2F0ZXNoIFNyaW5pdmFzIDx2ZW5rYXRlc2hz
+QGNocm9taXVtLm9yZz47DQo+IEFuZHJldyBUaG9ybnRvbiA8YW5kcmV3dGhAZ29vZ2xlLmNvbT4N
+Cj4gU3ViamVjdDogUmU6IFtQQVRDSCAwMC8yNl0gS1ZNOiB2ZmlvOiBIaWRlIEtWTSBpbnRlcm5h
+bHMgZnJvbSBvdGhlcnMNCj4gDQo+IE9uIFRodSwgSnVuIDIwLCAyMDI0LCBTaGFtZWVyYWxpIEtv
+bG90aHVtIFRob2RpIHdyb3RlOg0KPiA+ID4gVGhpcyBpcyBhIGJvcmRlcmxpbmUgUkZDIHNlcmll
+cyB0byBoaWRlIEtWTSdzIGludGVybmFscyBmcm9tIHRoZSByZXN0IG9mDQo+ID4gPiB0aGUga2Vy
+bmVsLCB3aGVyZSAiaW50ZXJuYWxzIiBtZWFucyBkYXRhIHN0cnVjdHVyZXMsIGVudW1zLCAjZGVm
+aW5lcywNCj4gPiA+IEFQSXMsIGV0Yy4gdGhhdCBhcmUgaW50ZW5kZWQgdG8gYmUgS1ZNLW9ubHks
+IGJ1dCBhcmUgZXhwb3NlZA0KPiBldmVyeXdoZXJlDQo+ID4gPiBkdWUgdG8ga3ZtX2hvc3QuaCAo
+YW5kIG90aGVyIGhlYWRlcnMpIGxpdmluZyBpbiB0aGUgZ2xvYmFsIGluY2x1ZGUgcGF0aHMuDQo+
+ID4NCj4gPiBIaSBTZWFuLA0KPiA+DQo+ID4gSnVzdCB0aG91Z2h0IG9mIGNoZWNraW5nIHdpdGgg
+eW91IG9uIHRoaXMgc2VyaWVzLiBEbyB5b3UgaGF2ZSBwbGFucyB0bw0KPiByZXZpdmUgdGhpcw0K
+PiA+IHNlcmllcz8NCj4gDQo+IFllcCENCj4gDQo+ID4gVGhlIHJlYXNvbiBJIGFtIGFza2luZyBp
+cywgb24gQVJNNjQvS1ZNIHNpZGUgd2UgZG8gaGF2ZSBhIHJlcXVpcmVtZW50DQo+ID4gdG8gc2hh
+cmUgdGhlIEtWTSBWTUlEIHdpdGggU01NVVYzLiBQbGVhc2Ugc2VlIHRoZSBSRkMgSSBzZW50IG91
+dA0KPiBlYXJsaWVyIHRoaXMNCj4gPiB5ZWFyWzFdLiBUaGUgc2VyaWVzIGJhc2ljYWxseSBwcm92
+aWRlcyBhIHdheSBmb3IgS1ZNIHRvIHBpbiBhIFZNSUQgYW5kIGFsc28NCj4gPiBhc3NvY2lhdGVz
+IGFuIGlvbW11ZmQgY3R4IHdpdGggYSBzdHJ1Y3Qga3ZtICogdG8gcmV0cmlldmUgdGhhdCBWTUlE
+Lg0KPiA+DQo+ID4gQXMgbWVudGlvbmVkIGFib3ZlLCBzb21lIG9mIHRoZSBwYXRjaGVzIGluIHRo
+aXMgc2VyaWVzKGVzcGVjaWFsbHkgMS00ICYgNikNCj4gdGhhdA0KPiA+IGRvZXMgdGhlIFZGSU8g
+Y2xlYW51cHMgYW5kIGRyb3BwaW5nIENPTkZJR19LVk1fVkZJTyBsb29rcyB2ZXJ5DQo+IHN0cmFp
+Z2h0Zm9yd2FyZA0KPiA+IGFuZCB1c2VmdWwuIEkgYW0gdGhpbmtpbmcgb2YgaW5jbHVkaW5nIHRo
+b3NlIHdoZW4gSSByZS1zcGluIG15IFJGQyBzZXJpZXMsIGlmDQo+ID4gdGhhdOKAmXMgb2suDQo+
+IA0KPiBQbGVhc2UgZG9uJ3QgaW5jbHVkZSB0aGVtLCBhcyB0aGUgcGF0Y2ggdGhleSBidWlsZCB0
+b3dhcmRzIChwYXRjaCA1KSBpcw0KPiBidWdneVsqXSwNCj4gYW5kIEkgYW0gZmFpcmx5IGNlcnRh
+aW4gdGhhdCBhdCBsZWFzdCBzb21lIG9mIHRoZSBwYXRjaGVzIHdpbGwgY2hhbmdlDQo+IHNpZ25p
+ZmljYW50bHkuDQoNCk9rLiBHb3QgaXQuIFRoYW5rcyBmb3IgdGFraW5nIGEgbG9vayBhdCB0aGUg
+S1ZNIHBpbm5lZCBWTUlEIHNlcmllcyBhbmQgY29tbWVudHMNCnRoZXJlLg0KDQpTaGFtZWVyDQo=
