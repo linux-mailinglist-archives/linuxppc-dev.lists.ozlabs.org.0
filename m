@@ -1,58 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0E69150FE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 16:55:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF0F915075
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 16:46:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W79xH6B5yz7BBj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 00:55:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W79l940Bnz3dWW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 00:46:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1190 seconds by postgrey-1.37 at boromir; Tue, 25 Jun 2024 00:50:49 AEST
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W79r921M0z794X
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 00:50:48 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4W79ML6fkQzddS9;
-	Mon, 24 Jun 2024 22:29:18 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id F0305140156;
-	Mon, 24 Jun 2024 22:30:51 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 24 Jun 2024 22:30:50 +0800
-Message-ID: <1285eb59-fcc3-4db8-9dd9-e7c4d82b1be0@huawei.com>
-Date: Mon, 24 Jun 2024 22:30:50 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W79kj3wf2z3clT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 00:46:03 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4W79kb2FSxz9vDx;
+	Mon, 24 Jun 2024 16:45:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id m2udosfbk2yq; Mon, 24 Jun 2024 16:45:59 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4W79kZ4lPfz9vDm;
+	Mon, 24 Jun 2024 16:45:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9E4548B768;
+	Mon, 24 Jun 2024 16:45:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id fnU3c4Xf2sBs; Mon, 24 Jun 2024 16:45:58 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.33])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 15BF18B763;
+	Mon, 24 Jun 2024 16:45:58 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH v6 00/23] Reimplement huge pages without hugepd on powerpc (8xx, e500, book3s/64)
+Date: Mon, 24 Jun 2024 16:45:26 +0200
+Message-ID: <cover.1719240269.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 18/18] arm64/mm: Automatically fold contpte mappings
-Content-Language: en-US
-To: Ryan Roberts <ryan.roberts@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel
-	<ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, James Morse
-	<james.morse@arm.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, Barry Song
-	<21cnbao@gmail.com>, Alistair Popple <apopple@nvidia.com>, Yang Shi
-	<shy828301@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20240215103205.2607016-1-ryan.roberts@arm.com>
- <20240215103205.2607016-19-ryan.roberts@arm.com>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20240215103205.2607016-19-ryan.roberts@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719240333; l=7873; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=QIMGW3Czl6iHAH1ANq6V/clUDRWq+XFSereqXmjr+lU=; b=UIQjYhF89V/VysiPbG2gfmWjr6bgYFNGBuTVw16/aCBuF1Wfqrx5UojYe0Elp0kYZDuUt7zQK EJwrM6BDnZWDOMwKfcp7+lzHnLUITykKXSBD5jrUV1qWX9QsSwnBrUW
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,195 +63,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ryan,
+This series should have reached maturity for linux-next.
 
-A big regression on page-fault3("Separate file shared mapping page
-fault") testcase from will-it-scale on arm64, no issue on x86,
+Also see https://github.com/linuxppc/issues/issues/483
 
-./page_fault3_processes -t 128 -s 5
+Unlike most architectures, powerpc 8xx HW requires a two-level
+pagetable topology for all page sizes. So a leaf PMD-contig approach
+is not feasible as such.
 
-1) large folio disabled on ext4:
-    92378735
-2) large folio  enabled on ext4 +  CONTPTE enabled
-    16164943
-3) large folio  enabled on ext4 +  CONTPTE disabled
-    80364074
-4) large folio  enabled on ext4 +  CONTPTE enabled + large folio mapping 
-enabled in finish_fault()[2]
-    299656874
+Possible sizes on 8xx are 4k, 16k, 512k and 8M.
 
-We found *contpte_convert* consume lots of CPU(76%) in case 2), and 
-disparaged by following change[2], it is easy to understood the 
-different between case 2) and case 4) since case 2) always map one page
-size, but always try to fold contpte mappings, which spend a lot of
-time. Case 4) is a workaround, any other better suggestion?
+First level (PGD/PMD) covers 4M per entry. For 8M pages, two PMD entries
+must point to a single entry level-2 page table. Until now that was
+done using hugepd. This series changes it to use standard page tables
+where the entry is replicated 1024 times on each of the two pagetables
+refered by the two associated PMD entries for that 8M page.
 
-Thanks.
+For e500 and book3s/64 there are less constraints because it is not
+tied to the HW assisted tablewalk like on 8xx, so it is easier to use
+leaf PMDs (and PUDs).
 
-[1] https://github.com/antonblanchard/will-it-scale
-[2] enable large folio mapping in finish_fault()
+On e500 the supported page sizes are 4M, 16M, 64M, 256M and 1G. All at
+PMD level on e500/32 (mpc85xx) and mix of PMD and PUD for e500/64. We
+encode page size with 4 available bits in PTE entries. On e300/32 PGD
+entries size is increases to 64 bits in order to allow leaf-PMD entries
+because PTE are 64 bits on e500.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 00728ea95583..5623a8ce3a1e 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4880,7 +4880,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
-          * approach also applies to non-anonymous-shmem faults to avoid
-          * inflating the RSS of the process.
-          */
--       if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) {
-+       if (unlikely(userfaultfd_armed(vma))) {
-                 nr_pages = 1;
-         } else if (nr_pages > 1) {
-                 pgoff_t idx = folio_page_idx(folio, page);
+On book3s/64 only the hash-4k mode is concerned. It supports 16M pages
+as cont-PMD and 16G pages as cont-PUD. In other modes (radix-4k, radix-6k
+and hash-64k) the sizes match with PMD and PUD sizes so that's just leaf
+entries. The hash processing make things a bit more complex. To ease
+things, __hash_page_huge() is modified to bail out when DIRTY or ACCESSED
+bits are missing, leaving it to mm core to fix it.
 
+Global changes in v6:
+- Unsquashed preliminary series from Michael so that everything gets merged together through mm
+- In patch 3, removed the modification of pte-40x.h, because 40x is going away completely in another series. This has no impact.
+- Added a WARN_ON_ONCE() in patch 21 as commented by Oscar.
 
-On 2024/2/15 18:32, Ryan Roberts wrote:
-> There are situations where a change to a single PTE could cause the
-> contpte block in which it resides to become foldable (i.e. could be
-> repainted with the contiguous bit). Such situations arise, for example,
-> when user space temporarily changes protections, via mprotect, for
-> individual pages, such can be the case for certain garbage collectors.
-> 
-> We would like to detect when such a PTE change occurs. However this can
-> be expensive due to the amount of checking required. Therefore only
-> perform the checks when an indiviual PTE is modified via mprotect
-> (ptep_modify_prot_commit() -> set_pte_at() -> set_ptes(nr=1)) and only
-> when we are setting the final PTE in a contpte-aligned block.
-> 
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> ---
->   arch/arm64/include/asm/pgtable.h | 26 +++++++++++++
->   arch/arm64/mm/contpte.c          | 64 ++++++++++++++++++++++++++++++++
->   2 files changed, 90 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 8310875133ff..401087e8a43d 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1185,6 +1185,8 @@ extern void ptep_modify_prot_commit(struct vm_area_struct *vma,
->    * where it is possible and makes sense to do so. The PTE_CONT bit is considered
->    * a private implementation detail of the public ptep API (see below).
->    */
-> +extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
-> +				pte_t *ptep, pte_t pte);
->   extern void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
->   				pte_t *ptep, pte_t pte);
->   extern pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte);
-> @@ -1206,6 +1208,29 @@ extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->   				unsigned long addr, pte_t *ptep,
->   				pte_t entry, int dirty);
->   
-> +static __always_inline void contpte_try_fold(struct mm_struct *mm,
-> +				unsigned long addr, pte_t *ptep, pte_t pte)
-> +{
-> +	/*
-> +	 * Only bother trying if both the virtual and physical addresses are
-> +	 * aligned and correspond to the last entry in a contig range. The core
-> +	 * code mostly modifies ranges from low to high, so this is the likely
-> +	 * the last modification in the contig range, so a good time to fold.
-> +	 * We can't fold special mappings, because there is no associated folio.
-> +	 */
-> +
-> +	const unsigned long contmask = CONT_PTES - 1;
-> +	bool valign = ((addr >> PAGE_SHIFT) & contmask) == contmask;
-> +
-> +	if (unlikely(valign)) {
-> +		bool palign = (pte_pfn(pte) & contmask) == contmask;
-> +
-> +		if (unlikely(palign &&
-> +		    pte_valid(pte) && !pte_cont(pte) && !pte_special(pte)))
-> +			__contpte_try_fold(mm, addr, ptep, pte);
-> +	}
-> +}
-> +
->   static __always_inline void contpte_try_unfold(struct mm_struct *mm,
->   				unsigned long addr, pte_t *ptep, pte_t pte)
->   {
-> @@ -1286,6 +1311,7 @@ static __always_inline void set_ptes(struct mm_struct *mm, unsigned long addr,
->   	if (likely(nr == 1)) {
->   		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
->   		__set_ptes(mm, addr, ptep, pte, 1);
-> +		contpte_try_fold(mm, addr, ptep, pte);
->   	} else {
->   		contpte_set_ptes(mm, addr, ptep, pte, nr);
->   	}
-> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-> index 50e0173dc5ee..16788f07716d 100644
-> --- a/arch/arm64/mm/contpte.c
-> +++ b/arch/arm64/mm/contpte.c
-> @@ -73,6 +73,70 @@ static void contpte_convert(struct mm_struct *mm, unsigned long addr,
->   	__set_ptes(mm, start_addr, start_ptep, pte, CONT_PTES);
->   }
->   
-> +void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
-> +			pte_t *ptep, pte_t pte)
-> +{
-> +	/*
-> +	 * We have already checked that the virtual and pysical addresses are
-> +	 * correctly aligned for a contpte mapping in contpte_try_fold() so the
-> +	 * remaining checks are to ensure that the contpte range is fully
-> +	 * covered by a single folio, and ensure that all the ptes are valid
-> +	 * with contiguous PFNs and matching prots. We ignore the state of the
-> +	 * access and dirty bits for the purpose of deciding if its a contiguous
-> +	 * range; the folding process will generate a single contpte entry which
-> +	 * has a single access and dirty bit. Those 2 bits are the logical OR of
-> +	 * their respective bits in the constituent pte entries. In order to
-> +	 * ensure the contpte range is covered by a single folio, we must
-> +	 * recover the folio from the pfn, but special mappings don't have a
-> +	 * folio backing them. Fortunately contpte_try_fold() already checked
-> +	 * that the pte is not special - we never try to fold special mappings.
-> +	 * Note we can't use vm_normal_page() for this since we don't have the
-> +	 * vma.
-> +	 */
-> +
-> +	unsigned long folio_start, folio_end;
-> +	unsigned long cont_start, cont_end;
-> +	pte_t expected_pte, subpte;
-> +	struct folio *folio;
-> +	struct page *page;
-> +	unsigned long pfn;
-> +	pte_t *orig_ptep;
-> +	pgprot_t prot;
-> +
-> +	int i;
-> +
-> +	if (!mm_is_user(mm))
-> +		return;
-> +
-> +	page = pte_page(pte);
-> +	folio = page_folio(page);
-> +	folio_start = addr - (page - &folio->page) * PAGE_SIZE;
-> +	folio_end = folio_start + folio_nr_pages(folio) * PAGE_SIZE;
-> +	cont_start = ALIGN_DOWN(addr, CONT_PTE_SIZE);
-> +	cont_end = cont_start + CONT_PTE_SIZE;
-> +
-> +	if (folio_start > cont_start || folio_end < cont_end)
-> +		return;
-> +
-> +	pfn = ALIGN_DOWN(pte_pfn(pte), CONT_PTES);
-> +	prot = pte_pgprot(pte_mkold(pte_mkclean(pte)));
-> +	expected_pte = pfn_pte(pfn, prot);
-> +	orig_ptep = ptep;
-> +	ptep = contpte_align_down(ptep);
-> +
-> +	for (i = 0; i < CONT_PTES; i++) {
-> +		subpte = pte_mkold(pte_mkclean(__ptep_get(ptep)));
-> +		if (!pte_same(subpte, expected_pte))
-> +			return;
-> +		expected_pte = pte_advance_pfn(expected_pte, 1);
-> +		ptep++;
-> +	}
-> +
-> +	pte = pte_mkcont(pte);
-> +	contpte_convert(mm, addr, orig_ptep, pte);
-> +}
-> +EXPORT_SYMBOL(__contpte_try_fold);
-> +
->   void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
->   			pte_t *ptep, pte_t pte)
->   {
+Global changes in v5:
+- Now use PAGE SIZE field in e500's PTE to store TSIZE instead of using U0-U3
+- On e500/64, use highest bit to discriminate leaf entries because PUD entries are not garantied to be 4k aligned so PAGE SIZE field is not garantied to be 0 on a non-leaf entry.
+
+Global changes in v4:
+- Fixed a few issues reported privately by robots
+- Rebased on top of v6.10-rc1
+
+Global changes in v3:
+- Removed patches 1 and 2
+- Squashed patch 11 into patch 5
+- Replaced patches 12 and 13 with a series from Michael
+- Reordered patches a bit to have more general patches up front
+
+For more details on changes, see in each patch.
+
+Christophe Leroy (17):
+  mm: Define __pte_leaf_size() to also take a PMD entry
+  mm: Provide mm_struct and address to huge_ptep_get()
+  powerpc/mm: Remove _PAGE_PSIZE
+  powerpc/mm: Fix __find_linux_pte() on 32 bits with PMD leaf entries
+  powerpc/mm: Allow hugepages without hugepd
+  powerpc/8xx: Fix size given to set_huge_pte_at()
+  powerpc/8xx: Rework support for 8M pages using contiguous PTE entries
+  powerpc/8xx: Simplify struct mmu_psize_def
+  powerpc/e500: Remove enc and ind fields from struct mmu_psize_def
+  powerpc/e500: Switch to 64 bits PGD on 85xx (32 bits)
+  powerpc/e500: Encode hugepage size in PTE bits
+  powerpc/e500: Don't pre-check write access on data TLB error
+  powerpc/e500: Free r10 for FIND_PTE
+  powerpc/e500: Use contiguous PMD instead of hugepd
+  powerpc/64s: Use contiguous PMD/PUD instead of HUGEPD
+  powerpc/mm: Remove hugepd leftovers
+  mm: Remove CONFIG_ARCH_HAS_HUGEPD
+
+Michael Ellerman (6):
+  powerpc/64e: Remove unused IBM HTW code
+  powerpc/64e: Split out nohash Book3E 64-bit code
+  powerpc/64e: Drop E500 ifdefs in 64-bit code
+  powerpc/64e: Drop MMU_FTR_TYPE_FSL_E checks in 64-bit code
+  powerpc/64e: Consolidate TLB miss handler patching
+  powerpc/64e: Drop unused TLB miss handlers
+
+ arch/arm/include/asm/hugetlb-3level.h         |   4 +-
+ arch/arm64/include/asm/hugetlb.h              |   2 +-
+ arch/arm64/mm/hugetlbpage.c                   |   2 +-
+ arch/powerpc/Kconfig                          |   1 -
+ arch/powerpc/include/asm/book3s/32/pgalloc.h  |   2 -
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |  15 -
+ arch/powerpc/include/asm/book3s/64/hash.h     |  40 +-
+ arch/powerpc/include/asm/book3s/64/hugetlb.h  |  38 --
+ .../include/asm/book3s/64/pgtable-4k.h        |  47 --
+ .../include/asm/book3s/64/pgtable-64k.h       |  20 -
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  22 +-
+ arch/powerpc/include/asm/hugetlb.h            |  15 +-
+ .../include/asm/nohash/32/hugetlb-8xx.h       |  38 +-
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h  |   9 +-
+ arch/powerpc/include/asm/nohash/32/pte-44x.h  |   3 -
+ arch/powerpc/include/asm/nohash/32/pte-85xx.h |   3 -
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h  |  58 ++-
+ .../powerpc/include/asm/nohash/hugetlb-e500.h |  39 +-
+ arch/powerpc/include/asm/nohash/mmu-e500.h    |   6 +-
+ arch/powerpc/include/asm/nohash/pgalloc.h     |   2 -
+ arch/powerpc/include/asm/nohash/pgtable.h     |  46 +-
+ arch/powerpc/include/asm/nohash/pte-e500.h    |  63 ++-
+ arch/powerpc/include/asm/page.h               |  32 --
+ arch/powerpc/include/asm/pgtable-be-types.h   |  10 -
+ arch/powerpc/include/asm/pgtable-types.h      |  13 +-
+ arch/powerpc/include/asm/pgtable.h            |   3 +
+ arch/powerpc/kernel/exceptions-64e.S          |   4 +-
+ arch/powerpc/kernel/head_85xx.S               |  70 +--
+ arch/powerpc/kernel/head_8xx.S                |  10 +-
+ arch/powerpc/kernel/setup_64.c                |   6 +-
+ arch/powerpc/mm/book3s64/hash_utils.c         |  11 +-
+ arch/powerpc/mm/book3s64/hugetlbpage.c        |  10 +
+ arch/powerpc/mm/book3s64/pgtable.c            |  12 -
+ arch/powerpc/mm/hugetlbpage.c                 | 455 +-----------------
+ arch/powerpc/mm/init-common.c                 |   8 +-
+ arch/powerpc/mm/kasan/8xx.c                   |  21 +-
+ arch/powerpc/mm/nohash/8xx.c                  |  43 +-
+ arch/powerpc/mm/nohash/Makefile               |   2 +-
+ arch/powerpc/mm/nohash/book3e_pgtable.c       |   4 +-
+ arch/powerpc/mm/nohash/tlb.c                  | 407 +---------------
+ arch/powerpc/mm/nohash/tlb_64e.c              | 314 ++++++++++++
+ arch/powerpc/mm/nohash/tlb_low_64e.S          | 428 +---------------
+ arch/powerpc/mm/pgtable.c                     |  94 ++--
+ arch/powerpc/mm/pgtable_32.c                  |   2 +-
+ arch/riscv/include/asm/hugetlb.h              |   2 +-
+ arch/riscv/mm/hugetlbpage.c                   |   2 +-
+ arch/s390/include/asm/hugetlb.h               |   4 +-
+ arch/s390/mm/hugetlbpage.c                    |   4 +-
+ fs/hugetlbfs/inode.c                          |   2 +-
+ fs/proc/task_mmu.c                            |  10 +-
+ fs/userfaultfd.c                              |   2 +-
+ include/asm-generic/hugetlb.h                 |   2 +-
+ include/linux/hugetlb.h                       |   6 -
+ include/linux/pgtable.h                       |   3 +
+ include/linux/swapops.h                       |   4 +-
+ kernel/events/core.c                          |   2 +-
+ mm/Kconfig                                    |  10 -
+ mm/damon/vaddr.c                              |   6 +-
+ mm/gup.c                                      | 183 +------
+ mm/hmm.c                                      |   2 +-
+ mm/hugetlb.c                                  |  44 +-
+ mm/memory-failure.c                           |   2 +-
+ mm/mempolicy.c                                |   2 +-
+ mm/migrate.c                                  |   4 +-
+ mm/mincore.c                                  |   2 +-
+ mm/pagewalk.c                                 |  57 +--
+ mm/userfaultfd.c                              |   2 +-
+ 67 files changed, 751 insertions(+), 2040 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/book3s/64/pgtable-4k.h
+ create mode 100644 arch/powerpc/mm/nohash/tlb_64e.c
+
+-- 
+2.44.0
+
