@@ -1,41 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3B0913F40
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 01:37:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE43F91407F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 04:24:37 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KX8RM+U5;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W6nZl2XVWz3cTL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 09:37:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W6sH63wjpz3bdV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jun 2024 12:24:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=chaitanyas.prakash@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W6Zhz31gjz3cDt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 01:27:29 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 48645DA7;
-	Sun, 23 Jun 2024 08:27:21 -0700 (PDT)
-Received: from [10.163.46.232] (unknown [10.163.46.232])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 633E53F766;
-	Sun, 23 Jun 2024 08:26:52 -0700 (PDT)
-Message-ID: <adc971c5-f2a7-4f2d-97d8-40ed0cfe03c0@arm.com>
-Date: Sun, 23 Jun 2024 20:56:41 +0530
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KX8RM+U5;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W6sGP64yhz30Tk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 12:23:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1719195836;
+	bh=BKlnKRhf6nOKvpU2yiC5wPra7+gk0fCQGmL8XKcMn0U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KX8RM+U5NabS/m3sC+tWRHbeSjKdVCYygRWRhGcNZfuATg8lPbu11OtJuslFGBGAC
+	 Wz/fHPAOgow+LyxR89oZOXJd0a3f4dU9OFnc9eDWIjgE79UH+hrSeMYPjAAzI/IuFW
+	 NuU2PXZTUObRBcXVLvLq9fW/iHCjn9gTJ/D/BDT26gm+5spRewoRqZDHnknbA28Ozg
+	 G+STsT+QNuUpt0Ic340jHnh8m6iMF/pftiNpSUXevcqIiFEVW3/7qYFZEsrvdkpx2y
+	 gsAsX1el1xuveLygKU26SOCWitwndKbI71vrgTKYRAdZkRGPPV6fF7EhY6RmMITXEm
+	 8GV31u4x5U7mw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W6sGC1H48z4w2N;
+	Mon, 24 Jun 2024 12:23:47 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 08/15] powerpc: restore some missing spu syscalls
+In-Reply-To: <20240620162316.3674955-9-arnd@kernel.org>
+References: <20240620162316.3674955-1-arnd@kernel.org>
+ <20240620162316.3674955-9-arnd@kernel.org>
+Date: Mon, 24 Jun 2024 12:23:46 +1000
+Message-ID: <874j9jqdsd.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 1/3] tools/perf: Fix the string match for
- "/tmp/perf-$PID.map" files in dso__load
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
- namhyung@kernel.org
-References: <20240618140354.5765-1-atrajeev@linux.vnet.ibm.com>
-Content-Language: en-US
-From: Chaitanya S Prakash <ChaitanyaS.Prakash@arm.com>
-In-Reply-To: <20240618140354.5765-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Mon, 24 Jun 2024 09:37:30 +1000
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,148 +60,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, Guo Ren <guoren@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, linux-csky@vger.kernel.org, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, musl@lists.openwall.com, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, ltp@lists.linux.it, Brian Cain <bcain@quicinc.com>, Christian Brauner <brauner@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, libc-alpha@sourceware.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 6/18/24 19:33, Athira Rajeev wrote:
-> Perf test for perf probe of function from different CU fails
-> as below:
+Arnd Bergmann <arnd@kernel.org> writes:
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> 	./perf test -vv "test perf probe of function from different CU"
-> 	116: test perf probe of function from different CU:
-> 	--- start ---
-> 	test child forked, pid 2679
-> 	Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.Msa7iy89bx/testfile
-> 	  Error: Failed to add events.
-> 	--- Cleaning up ---
-> 	"foo" does not hit any event.
-> 	  Error: Failed to delete events.
-> 	---- end(-1) ----
-> 	116: test perf probe of function from different CU                   : FAILED!
+> A couple of system calls were inadventently removed from the table during
+> a bugfix for 32-bit powerpc entry. Restore the original behavior.
 >
-> The test does below to probe function "foo" :
->
-> 	# gcc -g -Og -flto -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.c
-> 	-o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
-> 	# gcc -g -Og -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.c
-> 	-o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
-> 	# gcc -g -Og -o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile
-> 	/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
-> 	/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
->
-> 	# ./perf probe -x /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile foo
-> 	Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile
-> 	   Error: Failed to add events.
->
-> Perf probe fails to find symbol foo in the executable placed in
-> /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7
->
-> Simple reproduce:
->
->   # mktemp -d /tmp/perf-checkXXXXXXXXXX
->     /tmp/perf-checkcWpuLRQI8j
->
->   # gcc -g -o test test.c
->   # cp test /tmp/perf-checkcWpuLRQI8j/
->   # nm /tmp/perf-checkcWpuLRQI8j/test | grep foo
->     00000000100006bc T foo
->
->   # ./perf probe -x /tmp/perf-checkcWpuLRQI8j/test foo
->     Failed to find symbol foo in /tmp/perf-checkcWpuLRQI8j/test
->        Error: Failed to add events.
->
-> But it works with any files like /tmp/perf/test. Only for
-> patterns with "/tmp/perf-", this fails.
->
-> Further debugging, commit 80d496be89ed ("perf report: Add support
-> for profiling JIT generated code") added support for profiling JIT
-> generated code. This patch handles dso's of form
-> "/tmp/perf-$PID.map" .
->
-> The check used "if (strncmp(self->name, "/tmp/perf-", 10) == 0)"
-> to match "/tmp/perf-$PID.map". With this commit, any dso in
-> /tmp/perf- folder will be considered separately for processing
-> (not only JIT created map files ). Fix this by changing the
-> string pattern to check for "/tmp/perf-%d.map". Add a helper
-> function is_perf_pid_map_name to do this check.
->
-> With the fix,
-> 	# ./perf test "test perf probe of function from different CU"
-> 	117: test perf probe of function from different CU                   : Ok
->
-> Signed-off-by: Athira Rajeev<atrajeev@linux.vnet.ibm.com>
+> Fixes: e23750623835 ("powerpc/32: fix syscall wrappers with 64-bit arguments of unaligned register-pairs")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> Changelog:
-> v2 -> v3:
-> Addressed review comment from Adrian and James.
-> Added perf_pid_map_tid to save the tid and modified
-> is_perf_pid_map_name to use this internally.
->
-> v1 -> v2:
-> Addressed review comments from Adrian.
-> Added helper function is_perf_pid_map_name to check
-> dso name of form "/tmp/perf-%d.map". Used sscanf
-> instead of regex comparison.
->
->   tools/perf/util/dso.c    | 12 ++++++++++++
->   tools/perf/util/dso.h    |  4 ++++
->   tools/perf/util/symbol.c |  3 ++-
->   3 files changed, 18 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/perf/util/dso.c b/tools/perf/util/dso.c
-> index dde706b71da7..2340c4f6d0c2 100644
-> --- a/tools/perf/util/dso.c
-> +++ b/tools/perf/util/dso.c
-> @@ -1652,3 +1652,15 @@ int dso__strerror_load(struct dso *dso, char *buf, size_t buflen)
->   	scnprintf(buf, buflen, "%s", dso_load__error_str[idx]);
->   	return 0;
->   }
-> +
-> +bool perf_pid_map_tid(const char *dso_name, int *tid)
-> +{
-> +	return sscanf(dso_name, "/tmp/perf-%d.map", tid) == 1;
-> +}
-> +
-> +bool is_perf_pid_map_name(const char *dso_name)
-> +{
-> +	int tid;
-> +
-> +	return perf_pid_map_tid(dso_name, &tid);
-> +}
-> diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
-> index df2c98402af3..d72f3b8c37f6 100644
-> --- a/tools/perf/util/dso.h
-> +++ b/tools/perf/util/dso.h
-> @@ -809,4 +809,8 @@ void reset_fd_limit(void);
->   u64 dso__find_global_type(struct dso *dso, u64 addr);
->   u64 dso__findnew_global_type(struct dso *dso, u64 addr, u64 offset);
->   
-> +/* Check if dso name is of format "/tmp/perf-%d.map" */
-> +bool perf_pid_map_tid(const char *dso_name, int *tid);
-> +bool is_perf_pid_map_name(const char *dso_name);
-> +
->   #endif /* __PERF_DSO */
-> diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-> index 9e5940b5bc59..aee0a4cfb383 100644
-> --- a/tools/perf/util/symbol.c
-> +++ b/tools/perf/util/symbol.c
-> @@ -1799,7 +1799,8 @@ int dso__load(struct dso *dso, struct map *map)
->   	const char *map_path = dso__long_name(dso);
->   
->   	mutex_lock(dso__lock(dso));
-> -	perfmap = strncmp(dso__name(dso), "/tmp/perf-", 10) == 0;
-> +	perfmap = is_perf_pid_map_name(map_path);
-> +
->   	if (perfmap) {
->   		if (dso__nsinfo(dso) &&
->   		    (dso__find_perf_map(newmapname, sizeof(newmapname),
+>  arch/powerpc/kernel/syscalls/syscall.tbl | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Reviewed-by: Chaitanya S Prakash<chaitanyas.prakash@arm.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-I will drop my fix for the same.
-https://lore.kernel.org/all/20240601125946.1741414-10-ChaitanyaS.Prakash@arm.com/
-
-The rest of my series can be reviewed as a string function tidy up.
-
+cheers
