@@ -2,79 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D02915DC9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 06:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6940A915E15
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 07:16:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bT6uW6rv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SyJ7bffH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7XTC6JyLz3dHC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 14:50:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7Y336Pt4z3cfQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 15:16:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bT6uW6rv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SyJ7bffH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7XST4Sbvz3cP3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 14:49:59 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-6bce380eb9bso3056165a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 21:50:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719290993; x=1719895793; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZuqG7biAOqgDgQrrsZ67iRk9Ad3cri9ERlzvBniIlQU=;
-        b=bT6uW6rvcEmuWl39TtfYzig3Z7Hpgi65rX0i9E/OcWtn0gvENeku1jy0JY0tbA4Xwr
-         p5xPSJeYXfr/W9dCwDs77P2CmpgLnlTPJYS7DOYCRxVxmv4iqKhGsWLCimHcgKJb5wn9
-         QO6lFNXx7H1epm8cigJ3GPsIzAna3+USJOF0k2AV0f7jPqJKrRhQlsfQT9BmdoNBMLHN
-         ykalXeEDB2tFc1PNAf2km+GN7CyoitnSI0QM2O5nDA4UQkq008TqT1erowmFfV33bVX1
-         YE0KGasCtQDMjTc/yUBtuAvn4a3HFAVL26VpmCfapTBc0WB1VFQKg14S1JZv4IEwIm0Q
-         4ojg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719290993; x=1719895793;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZuqG7biAOqgDgQrrsZ67iRk9Ad3cri9ERlzvBniIlQU=;
-        b=pvayxlDKDiBR0x3IaKgI5lRZhjcUgdPqdD9FBhVjOiB54KNyqOUStiIOd1mtMBXnGu
-         hOUHnAOfmWZt7Gw9mwBe7nggPhnsT/x0Cr2KTWrBlK2PLonz83ZIL6QrRzHcdzmqHhD6
-         h45wc6yJqid5PGBzqHiKaOK+E1igvdlDrq628GQV1ql1NaIn2hDYEZb8kiH0HmebeEHf
-         bDsOtMoj/vaYj4XiZbhiOFUL2BhLxpTnN7SBsW7bu+kfqYu1izPYrWMo5U6CuSbQvsAz
-         ldp41HpAn52Krm78vnCqNPlAFdstHyH68CFcvzV0+v84G++S6iY4abJLiK9PcqaeOabH
-         NNTg==
-X-Forwarded-Encrypted: i=1; AJvYcCURaD92HcAQ+graSOMpehIsEwXvdZUJgALziPvje1QagbLLY97M17S+2f+D3nc7WBEwIMf6pDy62FE1ejSAzLHr+pTy3XhIWtS1iSOK/A==
-X-Gm-Message-State: AOJu0YwaZJlHQIn66sNH6lAz+tTWSeNlyuEt60JQ9ZmZIzZZ3XCz1gQ4
-	UKozZrwEV76U0EhFJdDCyOec5ipJZ8SvBZ4GPngPoDPPKhhCOkPe
-X-Google-Smtp-Source: AGHT+IEMY8o/252qBDFEIJQKQoJP+4B/vRW3iANS8a4tWuh2eFp5ixvi1C+Zofa9uCivrKn8XtAURA==
-X-Received: by 2002:a05:6a20:be13:b0:1bd:2292:e592 with SMTP id adf61e73a8af0-1bd2292e5efmr233523637.22.1719290992767;
-        Mon, 24 Jun 2024 21:49:52 -0700 (PDT)
-Received: from localhost (118-211-5-80.tpgi.com.au. [118.211.5.80])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c8b832639bsm275497a91.1.2024.06.24.21.49.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 21:49:52 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Jun 2024 14:49:45 +1000
-Message-Id: <D28TSEV6QV38.2NWPFRY8KCQK7@gmail.com>
-Subject: Re: [PATCH v6 21/23] powerpc/64s: Use contiguous PMD/PUD instead of
- HUGEPD
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Jason Gunthorpe" <jgg@nvidia.com>, "Peter Xu"
- <peterx@redhat.com>, "Oscar Salvador" <osalvador@suse.de>, "Michael
- Ellerman" <mpe@ellerman.id.au>
-X-Mailer: aerc 0.17.0
-References: <cover.1719240269.git.christophe.leroy@csgroup.eu>
- <23f3fe9e8fe37cb164a369850d4569dddf359fdf.1719240269.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <23f3fe9e8fe37cb164a369850d4569dddf359fdf.1719240269.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7Y2M1lBwz30Ty
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 15:15:55 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id B777CCE17D4;
+	Tue, 25 Jun 2024 05:15:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972B7C32782;
+	Tue, 25 Jun 2024 05:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719292551;
+	bh=OsYRJd0mzx38fP7IO/+BLKZK+fyo5KZ7vxvkr6QdFYQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SyJ7bffHFjF0pg7enO0XmALW6yes20XyqJ5tG/IAr8Fo091xIFVqhX5RYFm56xXj3
+	 OF0Ed4lAIw5jHYSMkJ177gcGQzt0xGLhR9OGUAHp0EnDBkUQcMqMVrLbc1k50qhkeB
+	 3VrEW+hOFOq8KzswEdXWGWaqeA59OZOcWYCjQIP3JPtMktRv5D6DF3rmTDAhniKG53
+	 +M6T7AWvrZGApb7YCDGght9Q4+6o+GtPlYnercTYnq6NmqCTtQU5mfhunhXvxo1dBW
+	 lvQLIT5ANbfV5hj0XRjPAxL9qFNAtKomb0M0F2w8TkajwbLYcwa6mfyI2519rV2smS
+	 hK0fB1F1xnIpQ==
+Date: Mon, 24 Jun 2024 22:15:49 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [V4 01/16] tools/perf: Move the data structures related to
+ register type to header file
+Message-ID: <ZnpShR7zd9cVdxSj@google.com>
+References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
+ <20240614172631.56803-2-atrajeev@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240614172631.56803-2-atrajeev@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,104 +61,194 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, acme@kernel.org, jolsa@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Jun 25, 2024 at 12:45 AM AEST, Christophe Leroy wrote:
-> On book3s/64, the only user of hugepd is hash in 4k mode.
->
-> All other setups (hash-64, radix-4, radix-64) use leaf PMD/PUD.
->
-> Rework hash-4k to use contiguous PMD and PUD instead.
->
-> In that setup there are only two huge page sizes: 16M and 16G.
->
-> 16M sits at PMD level and 16G at PUD level.
->
-> pte_update doesn't know page size, lets use the same trick as
-> hpte_need_flush() to get page size from segment properties. That's
-> not the most efficient way but let's do that until callers of
-> pte_update() provide page size instead of just a huge flag.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Hello,
 
-[snip]
-
-> +static inline unsigned long hash__pte_update(struct mm_struct *mm,
-> +					 unsigned long addr,
-> +					 pte_t *ptep, unsigned long clr,
-> +					 unsigned long set,
-> +					 int huge)
-> +{
-> +	unsigned long old;
+On Fri, Jun 14, 2024 at 10:56:16PM +0530, Athira Rajeev wrote:
+> Data type profiling uses instruction tracking by checking each
+> instruction and updating the register type state in some data
+> structures. This is useful to find the data type in cases when the
+> register state gets transferred from one reg to another. Example, in
+> x86, "mov" instruction and in powerpc, "mr" instruction. Currently these
+> structures are defined in annotate-data.c and instruction tracking is
+> implemented only for x86. Move these data structures to
+> "annotate-data.h" header file so that other arch implementations can use
+> it in arch specific files as well.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/util/annotate-data.c | 53 +------------------------------
+>  tools/perf/util/annotate-data.h | 55 +++++++++++++++++++++++++++++++++
+>  2 files changed, 56 insertions(+), 52 deletions(-)
+> 
+> diff --git a/tools/perf/util/annotate-data.c b/tools/perf/util/annotate-data.c
+> index 965da6c0b542..a4c7f98a75e3 100644
+> --- a/tools/perf/util/annotate-data.c
+> +++ b/tools/perf/util/annotate-data.c
+> @@ -31,15 +31,6 @@
+>  
+>  static void delete_var_types(struct die_var_type *var_types);
+>  
+> -enum type_state_kind {
+> -	TSR_KIND_INVALID = 0,
+> -	TSR_KIND_TYPE,
+> -	TSR_KIND_PERCPU_BASE,
+> -	TSR_KIND_CONST,
+> -	TSR_KIND_POINTER,
+> -	TSR_KIND_CANARY,
+> -};
+> -
+>  #define pr_debug_dtp(fmt, ...)					\
+>  do {								\
+>  	if (debug_type_profile)					\
+> @@ -140,49 +131,7 @@ static void pr_debug_location(Dwarf_Die *die, u64 pc, int reg)
+>  	}
+>  }
+>  
+> -/*
+> - * Type information in a register, valid when @ok is true.
+> - * The @caller_saved registers are invalidated after a function call.
+> - */
+> -struct type_state_reg {
+> -	Dwarf_Die type;
+> -	u32 imm_value;
+> -	bool ok;
+> -	bool caller_saved;
+> -	u8 kind;
+> -};
+> -
+> -/* Type information in a stack location, dynamically allocated */
+> -struct type_state_stack {
+> -	struct list_head list;
+> -	Dwarf_Die type;
+> -	int offset;
+> -	int size;
+> -	bool compound;
+> -	u8 kind;
+> -};
+> -
+> -/* FIXME: This should be arch-dependent */
+> -#define TYPE_STATE_MAX_REGS  16
+> -
+> -/*
+> - * State table to maintain type info in each register and stack location.
+> - * It'll be updated when new variable is allocated or type info is moved
+> - * to a new location (register or stack).  As it'd be used with the
+> - * shortest path of basic blocks, it only maintains a single table.
+> - */
+> -struct type_state {
+> -	/* state of general purpose registers */
+> -	struct type_state_reg regs[TYPE_STATE_MAX_REGS];
+> -	/* state of stack location */
+> -	struct list_head stack_vars;
+> -	/* return value register */
+> -	int ret_reg;
+> -	/* stack pointer register */
+> -	int stack_reg;
+> -};
+> -
+> -static bool has_reg_type(struct type_state *state, int reg)
+> +bool has_reg_type(struct type_state *state, int reg)
+>  {
+>  	return (unsigned)reg < ARRAY_SIZE(state->regs);
+>  }
+> diff --git a/tools/perf/util/annotate-data.h b/tools/perf/util/annotate-data.h
+> index 0a57d9f5ee78..ef235b1b15e1 100644
+> --- a/tools/perf/util/annotate-data.h
+> +++ b/tools/perf/util/annotate-data.h
+> @@ -6,6 +6,9 @@
+>  #include <linux/compiler.h>
+>  #include <linux/rbtree.h>
+>  #include <linux/types.h>
+> +#include "dwarf-aux.h"
+> +#include "annotate.h"
+> +#include "debuginfo.h"
+>  
+>  struct annotated_op_loc;
+>  struct debuginfo;
+> @@ -15,6 +18,15 @@ struct hist_entry;
+>  struct map_symbol;
+>  struct thread;
+>  
+> +enum type_state_kind {
+> +	TSR_KIND_INVALID = 0,
+> +	TSR_KIND_TYPE,
+> +	TSR_KIND_PERCPU_BASE,
+> +	TSR_KIND_CONST,
+> +	TSR_KIND_POINTER,
+> +	TSR_KIND_CANARY,
+> +};
 > +
-> +	old =3D hash__pte_update_one(ptep, clr, set);
+>  /**
+>   * struct annotated_member - Type of member field
+>   * @node: List entry in the parent list
+> @@ -142,6 +154,48 @@ struct annotated_data_stat {
+>  };
+>  extern struct annotated_data_stat ann_data_stat;
+>  
+> +/*
+> + * Type information in a register, valid when @ok is true.
+> + * The @caller_saved registers are invalidated after a function call.
+> + */
+> +struct type_state_reg {
+> +	Dwarf_Die type;
+> +	u32 imm_value;
+> +	bool ok;
+> +	bool caller_saved;
+> +	u8 kind;
+> +};
 > +
-> +	if (IS_ENABLED(CONFIG_PPC_4K_PAGES) && huge) {
-> +		unsigned int psize =3D get_slice_psize(mm, addr);
-> +		int nb, i;
+> +/* Type information in a stack location, dynamically allocated */
+> +struct type_state_stack {
+> +	struct list_head list;
+> +	Dwarf_Die type;
+> +	int offset;
+> +	int size;
+> +	bool compound;
+> +	u8 kind;
+> +};
 > +
-> +		if (psize =3D=3D MMU_PAGE_16M)
-> +			nb =3D SZ_16M / PMD_SIZE;
-> +		else if (psize =3D=3D MMU_PAGE_16G)
-> +			nb =3D SZ_16G / PUD_SIZE;
-> +		else
-> +			nb =3D 1;
-> +
-> +		WARN_ON_ONCE(nb =3D=3D 1);	/* Should never happen */
-> +
-> +		for (i =3D 1; i < nb; i++)
-> +			hash__pte_update_one(ptep + i, clr, set);
-> +	}
->  	/* huge pages use the old page table lock */
->  	if (!huge)
->  		assert_pte_locked(mm, addr);
-> =20
-> -	old =3D be64_to_cpu(old_be);
->  	if (old & H_PAGE_HASHPTE)
->  		hpte_need_flush(mm, addr, ptep, old, huge);
-> =20
+> +/* FIXME: This should be arch-dependent */
+> +#define TYPE_STATE_MAX_REGS  32
 
-We definitely need a bit more comment and changelog about the atomicity
-issues here. I think the plan should be all hash-side access just
-operates on PTE[0], which should avoid that whole race. There could be
-some cases that don't follow that. Adding some warnings to catch such
-things could be good too.
-
-I'd been meaning to do more on this sooner, sorry. I've started
-tinkering with adding a bit of debug code. I'll see if I can help with
-adding a bit of comments.
-
-[snip]
-
-> diff --git a/arch/powerpc/mm/book3s64/hugetlbpage.c b/arch/powerpc/mm/boo=
-k3s64/hugetlbpage.c
-> index 5a2e512e96db..83c3361b358b 100644
-> --- a/arch/powerpc/mm/book3s64/hugetlbpage.c
-> +++ b/arch/powerpc/mm/book3s64/hugetlbpage.c
-> @@ -53,6 +53,16 @@ int __hash_page_huge(unsigned long ea, unsigned long a=
-ccess, unsigned long vsid,
->  		/* If PTE permissions don't match, take page fault */
->  		if (unlikely(!check_pte_access(access, old_pte)))
->  			return 1;
-> +		/*
-> +		 * If hash-4k, hugepages use seeral contiguous PxD entries
-> +		 * so bail out and let mm make the page young or dirty
-> +		 */
-> +		if (IS_ENABLED(CONFIG_PPC_4K_PAGES)) {
-> +			if (!(old_pte & _PAGE_ACCESSED))
-> +				return 1;
-> +			if ((access & _PAGE_WRITE) && !(old_pte & _PAGE_DIRTY))
-> +				return 1;
-> +		}
-> =20
->  		/*
->  		 * Try to lock the PTE, add ACCESSED and DIRTY if it was
-
-I'm hoping we wouldn't have to do this, if we follow the PTE[0] rule.
-
-I think is minor enough that should not prevent testing in -mm.
+Can you please define this for powerpc separately?  I think x86 should
+remain in 16.
 
 Thanks,
-Nick
+Namhyung
+
+> +
+> +/*
+> + * State table to maintain type info in each register and stack location.
+> + * It'll be updated when new variable is allocated or type info is moved
+> + * to a new location (register or stack).  As it'd be used with the
+> + * shortest path of basic blocks, it only maintains a single table.
+> + */
+> +struct type_state {
+> +	/* state of general purpose registers */
+> +	struct type_state_reg regs[TYPE_STATE_MAX_REGS];
+> +	/* state of stack location */
+> +	struct list_head stack_vars;
+> +	/* return value register */
+> +	int ret_reg;
+> +	/* stack pointer register */
+> +	int stack_reg;
+> +};
+> +
+>  #ifdef HAVE_DWARF_SUPPORT
+>  
+>  /* Returns data type at the location (ip, reg, offset) */
+> @@ -160,6 +214,7 @@ void global_var_type__tree_delete(struct rb_root *root);
+>  
+>  int hist_entry__annotate_data_tty(struct hist_entry *he, struct evsel *evsel);
+>  
+> +bool has_reg_type(struct type_state *state, int reg);
+>  #else /* HAVE_DWARF_SUPPORT */
+>  
+>  static inline struct annotated_data_type *
+> -- 
+> 2.43.0
+> 
