@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224669169D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 16:07:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1C6916AB0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 16:40:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=b3anXdf6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oK1oA7w2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7mqv52SCz3fq0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 00:07:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7nYK2Fr9z3fq0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 00:40:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=b3anXdf6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oK1oA7w2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7mq83PtMz3dvs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 00:07:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=hGiPM6C5L/nRqsdu3jq0C7CbnwzvLeffETFeFxTX0+E=; b=b3anXdf6y1JVACdaTmYa87Qdwz
-	IXn7N2bJIfzk9KNwWXeg8tumh7lqXZTBdx3GEINGv9BNJyMrvBKM/tmlyIK+vjWWO7lMBqI2/gW4N
-	XQP8c9u0eYpqkmTL11wjuLbSi2rQCqK2/qoiw2rq7DlGfa9/ApwsOpqEbj3j0JZ+Uy58IC72wpm44
-	RVUjYWXi/WdkaINNa8n4X8Kgwq91tskrXsMl9afIlOrW59G3xNzWOCh56uVJUJram+C2/i0JjGNRT
-	VvpU11sKddLUsxQfVklfujUBPT4Ny+My7k0dM+8H17DBjtzWVsKSKnjwEbtWus2udI+8mjTe8+C63
-	EkRPsf+A==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sM6oT-0000000BCMT-2TZf;
-	Tue, 25 Jun 2024 14:06:25 +0000
-Date: Tue, 25 Jun 2024 15:06:25 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v6 18/18] arm64/mm: Automatically fold contpte mappings
-Message-ID: <ZnrO4clYoEH_67Ur@casper.infradead.org>
-References: <20240215103205.2607016-19-ryan.roberts@arm.com>
- <1285eb59-fcc3-4db8-9dd9-e7c4d82b1be0@huawei.com>
- <8d57ed0d-fdd0-4fc6-b9f1-a6ac11ce93ce@arm.com>
- <018b5e83-789e-480f-82c8-a64515cdd14a@huawei.com>
- <b75aa60d-e058-4b5c-877a-9c0cd295e96f@linux.alibaba.com>
- <b6b485ee-7af0-42b8-b0ca-5a75f76a69e2@arm.com>
- <43a5986a-52ea-4090-9333-90af137a4735@linux.alibaba.com>
- <306874fe-9bc1-4dec-a856-0125e4541971@arm.com>
- <ZnrAzjm5Fqg0d1CL@casper.infradead.org>
- <dbeb71ca-8aba-4aed-9123-c4d07c3da004@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7nXd3mWbz3bsj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 00:39:29 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id DF8F061491;
+	Tue, 25 Jun 2024 14:39:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AB2C32781;
+	Tue, 25 Jun 2024 14:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719326367;
+	bh=LyB86D3k1vBzWqSbP53281A2OWOSd8SaUo1kRPk9I8A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oK1oA7w2L4+qOb1hhZC+cUiVIQH5UemsLT3orNl2Xe7zTjApMTptv0Ugu83Y+GFfZ
+	 lXx9HFddmRZG4j4mB4pi6rpOKEtIDe9IY45uOhyeQ9SGbjRpbDDOZsDCwkPruEXa+w
+	 yAfW2a1klXD7gKpKIgB7YafR4rX2jzLnLy5pBH8b8fWRk0hI/zVb9VkIVeDe7uDbLc
+	 rnE+uIVRh/z35hyz8KLao0dgq1MoAxQxbONe1AtmRyAJs5xoNnb0xVsORSGshrzw54
+	 o8Ymto7TJ7g8eBIvK4k6fo7D/V14FfRWZfSnYXtIZhc943Xjn1+TJL9MD/4pOaLSBQ
+	 haeZv6CaJPm9g==
+Date: Tue, 25 Jun 2024 07:39:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH 1/4] soc: fsl: qbman: FSL_DPAA depends on COMPILE_TEST
+Message-ID: <20240625073926.15591595@kernel.org>
+In-Reply-To: <20240624162128.1665620-1-leitao@debian.org>
+References: <20240624162128.1665620-1-leitao@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dbeb71ca-8aba-4aed-9123-c4d07c3da004@arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,65 +59,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, David Hildenbrand <david@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Alistair Popple <apopple@nvidia.com>, Barry Song <21cnbao@gmail.com>, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, Borislav Petkov <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, "Yin, Fengwei" <fengwei.yin@intel.com>, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, Horia =?UTF-8?B?R2VhbnTEgw==?= <horia.geanta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>, netdev@vger.kernel.org, Roy.Pledge@nxp.com, open list <linux-kernel@vger.kernel.org>, Pankaj Gupta <pankaj.gupta@nxp.com>, horms@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 25, 2024 at 02:41:18PM +0100, Ryan Roberts wrote:
-> On 25/06/2024 14:06, Matthew Wilcox wrote:
-> > On Tue, Jun 25, 2024 at 01:41:02PM +0100, Ryan Roberts wrote:
-> >> On 25/06/2024 13:37, Baolin Wang wrote:
-> >>
-> >> [...]
-> >>
-> >>>>> For other filesystems, like ext4, I did not found the logic to determin what
-> >>>>> size of folio to allocate in writable mmap() path
-> >>>>
-> >>>> Yes I'd be keen to understand this to. When I was doing contpte, page cache
-> >>>> would only allocate large folios for readahead. So that's why I wouldn't have
-> >>>
-> >>> You mean non-large folios, right?
-> >>
-> >> No I mean that at the time I wrote contpte, the policy was to allocate an
-> >> order-0 folio for any writes that missed in the page cache, and allocate large
-> >> folios only when doing readahead from storage into page cache. The test that is
-> >> regressing is doing writes.
-> > 
-> > mmap() faults also use readahead.
-> > 
-> > filemap_fault():
-> > 
-> >         folio = filemap_get_folio(mapping, index);
-> >         if (likely(!IS_ERR(folio))) {
-> >                 if (!(vmf->flags & FAULT_FLAG_TRIED))
-> >                         fpin = do_async_mmap_readahead(vmf, folio);
-> > which does:
-> >         if (folio_test_readahead(folio)) {
-> >                 fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> >                 page_cache_async_ra(&ractl, folio, ra->ra_pages);
-> > 
-> > which has been there in one form or another since 2007 (3ea89ee86a82).
+On Mon, 24 Jun 2024 09:21:19 -0700 Breno Leitao wrote:
+> As most of the drivers that depend on ARCH_LAYERSCAPE, make FSL_DPAA
+> depend on COMPILE_TEST for compilation and testing.
 > 
-> OK sounds like I'm probably misremembering something I read on LWN... You're
-> saying that its been the case for a while that if we take a write fault for a
-> portion of a file, then we will still end up taking the readahead path and
-> allocating a large folio (filesystem permitting)? Does that apply in the case
-> where the file has never been touched but only ftruncate'd, as is happening in
-> this test? There is obviously no need for IO in that case, but have we always
-> taken a path where a large folio may be allocated for it? I thought that bit was
-> newer for some reason.
+> 	# grep -r depends.\*ARCH_LAYERSCAPE.\*COMPILE_TEST | wc -l
+> 	29
 
-The pagecache doesn't know whether the file contains data or holes.
-It allocates folios and then invites the filesystem to fill them; the
-filesystem checks its data structures and then either issues reads if
-there's data on media or calls memset if the records indicate there's
-a hole.
+Cover letter would be good..
 
-Whether it chooses to allocate large folios or not is going to depend
-on the access pattern; a sequential write pattern will use large folios
-and a random write pattern won't.
-
-Now, I've oversimplified things a bit by talking about filemap_fault.
-Before we call filemap_fault, we call filemap_map_pages() which looks
-for any suitable folios in the page cache between start and end, and
-maps those.
+Herbert, (Pankaj | Gaurav | Horia) - no rush but once reviewed can we
+take this via netdev (or a shared branch)? As Breno linked we want to
+change the netdev allocation API, this is the last chunk of drivers
+we need to convert.
