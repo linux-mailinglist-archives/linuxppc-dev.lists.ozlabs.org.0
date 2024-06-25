@@ -1,97 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619AB916698
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 13:50:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8D69166B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 13:58:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LVjeXkbR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Cc3hFAVB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7jn56r1nz3d88
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 21:50:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7jyf3V34z3dFm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 21:58:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LVjeXkbR;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Cc3hFAVB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7jm05b5tz3clw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 21:49:04 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PBeYGp025112;
-	Tue, 25 Jun 2024 11:48:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:subject:from:in-reply-to:date:cc:message-id
-	:references:to:content-transfer-encoding:mime-version; s=pp1;
-	 bh=Y2hhtNXdnOP2URjK6F8cNvjZytpeeXwrjcm6KAj53Bw=; b=LVjeXkbRiSVb
-	PNnpqhI/AQS/E1x+ZdTYg6RTMisFfB6qZDeUAnbCiU2jErwV48kcKbwdkrdHHgJZ
-	4wZ0iyh7CMK9bnkmqQBP9tWmf+DogKDoAyHuUJELnW9rn94kOaTB8sATbgSWP6cW
-	LoB6YeM4IVW66Nr26nua/sxhQWIwlMwamLa6ATMv043JP914A7oMwEHDzM2nLlVd
-	bojtg8m541dwOn6TAxt8LvF8ibaMbYFnlZV7+EMrYpsBQ8OUuEzZPECMU/omGBO4
-	ELGvflxvJdETmw+sTWHY4+oucYt+U3Se1t7dZONcAd1NFuqWqSQXEqPRTvgz2VLg
-	KI022QQH5A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yyw21819n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 11:48:56 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45PBmtc9005441;
-	Tue, 25 Jun 2024 11:48:55 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yyw21819h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 11:48:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45PBGRKf019602;
-	Tue, 25 Jun 2024 11:48:54 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yx9xpx5kw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 11:48:54 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45PBmmCI45875550
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Jun 2024 11:48:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 746CF20043;
-	Tue, 25 Jun 2024 11:48:48 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8233B20040;
-	Tue, 25 Jun 2024 11:48:45 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.30.249])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 25 Jun 2024 11:48:45 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [V4 00/16] Add data type profiling support for powerpc
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <ZnYVitG1tffUNTn6@google.com>
-Date: Tue, 25 Jun 2024 17:18:34 +0530
-Message-Id: <B34AF03E-FD05-4600-9548-ADDB33A534EF@linux.vnet.ibm.com>
-References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
- <C84A4D8E-3BCD-47A7-B41E-1B39744AECDF@linux.vnet.ibm.com>
- <ZnYVitG1tffUNTn6@google.com>
-To: Namhyung Kim <namhyung@kernel.org>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _z5g5GnrlNUwrrJan91ypYAkkS5LQD5T
-X-Proofpoint-GUID: vMLeO6i0WB3tQse4eVMru0MJLMYVJ24F
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7jxw6lStz3cDT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 21:57:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719316662; x=1750852662;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=jKW9BLNUQnfwbfWacy1aVQxluFCOuOGEj2zQf5otgCA=;
+  b=Cc3hFAVBe6xy3sc97ReBsMW+XxvrQ86YAN9A6kzlkCM3GeeDVxGMd8aR
+   d+RyGtfM8PdMwO0+87SeHkBk3rUybYKIbugTdIsnkExrbydVo67nrcq39
+   jetDc+ln7n1X2saoi5FbOAOK9BGkhl+cjwfiZbBqPrrNrxv1Pw77lWqSu
+   AvLU7jCVw13NUGfH+x6XJY06+w1yOw7ZH0jSd5gt3OUcKc208ggE7CxXZ
+   vA8l50N1OQpZ3fTQdIT+m7KRCqP99dLw7+eey2iVxQ3gBV+nVQQ7szloW
+   Rd++lvl+J5qAPr69GNZgOkI79vKzrXXXuJ4qPWTgIJbfAMkvvYtfY503r
+   A==;
+X-CSE-ConnectionGUID: DZ8foiqLRWiMAvmutsEwwQ==
+X-CSE-MsgGUID: LMGtQkDwStqPWR9wW1iwtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="26918357"
+X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; 
+   d="scan'208";a="26918357"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 04:57:33 -0700
+X-CSE-ConnectionGUID: HdcFkiyvTsKeE4i+TV3s4w==
+X-CSE-MsgGUID: 0zxKiv0RThWkccTTHa1pCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; 
+   d="scan'208";a="44335321"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.246.48.191])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 04:57:30 -0700
+Message-ID: <722cb4bc-89d4-4e03-a80d-ffe05be52c05@intel.com>
+Date: Tue, 25 Jun 2024 14:57:25 +0300
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-25_06,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- adultscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxscore=0 suspectscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406250084
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 1/3] tools/perf: Fix the string match for
+ "/tmp/perf-$PID.map" files in dso__load
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
+References: <20240623064850.83720-1-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20240623064850.83720-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,202 +76,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 23/06/24 09:48, Athira Rajeev wrote:
+> Perf test for perf probe of function from different CU fails
+> as below:
+> 
+> 	./perf test -vv "test perf probe of function from different CU"
+> 	116: test perf probe of function from different CU:
+> 	--- start ---
+> 	test child forked, pid 2679
+> 	Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.Msa7iy89bx/testfile
+> 	  Error: Failed to add events.
+> 	--- Cleaning up ---
+> 	"foo" does not hit any event.
+> 	  Error: Failed to delete events.
+> 	---- end(-1) ----
+> 	116: test perf probe of function from different CU                   : FAILED!
+> 
+> The test does below to probe function "foo" :
+> 
+> 	# gcc -g -Og -flto -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.c
+> 	-o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
+> 	# gcc -g -Og -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.c
+> 	-o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
+> 	# gcc -g -Og -o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile
+> 	/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
+> 	/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
+> 
+> 	# ./perf probe -x /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile foo
+> 	Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile
+> 	   Error: Failed to add events.
+> 
+> Perf probe fails to find symbol foo in the executable placed in
+> /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7
+> 
+> Simple reproduce:
+> 
+>  # mktemp -d /tmp/perf-checkXXXXXXXXXX
+>    /tmp/perf-checkcWpuLRQI8j
+> 
+>  # gcc -g -o test test.c
+>  # cp test /tmp/perf-checkcWpuLRQI8j/
+>  # nm /tmp/perf-checkcWpuLRQI8j/test | grep foo
+>    00000000100006bc T foo
+> 
+>  # ./perf probe -x /tmp/perf-checkcWpuLRQI8j/test foo
+>    Failed to find symbol foo in /tmp/perf-checkcWpuLRQI8j/test
+>       Error: Failed to add events.
+> 
+> But it works with any files like /tmp/perf/test. Only for
+> patterns with "/tmp/perf-", this fails.
+> 
+> Further debugging, commit 80d496be89ed ("perf report: Add support
+> for profiling JIT generated code") added support for profiling JIT
+> generated code. This patch handles dso's of form
+> "/tmp/perf-$PID.map" .
+> 
+> The check used "if (strncmp(self->name, "/tmp/perf-", 10) == 0)"
+> to match "/tmp/perf-$PID.map". With this commit, any dso in
+> /tmp/perf- folder will be considered separately for processing
+> (not only JIT created map files ). Fix this by changing the
+> string pattern to check for "/tmp/perf-%d.map". Add a helper
+> function is_perf_pid_map_name to do this check. In "struct dso",
+> dso->long_name holds the long name of the dso file. Since the
+> /tmp/perf-$PID.map check uses the complete name, use dso___long_name for
+> the string name.
+> 
+> With the fix,
+> 	# ./perf test "test perf probe of function from different CU"
+> 	117: test perf probe of function from different CU                   : Ok
+> 
+> Signed-off-by: Athira Rajeev<atrajeev@linux.vnet.ibm.com>
 
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 
-> On 22 Jun 2024, at 5:36=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> wr=
-ote:
->=20
-> Hello,
->=20
-> On Thu, Jun 20, 2024 at 09:01:01PM +0530, Athira Rajeev wrote:
->>=20
->>=20
->>> On 14 Jun 2024, at 10:56=E2=80=AFPM, Athira Rajeev <atrajeev@linux.vnet=
-.ibm.com> wrote:
->>>=20
->>> The patchset from Namhyung added support for data type profiling
->>> in perf tool. This enabled support to associate PMU samples to data
->>> types they refer using DWARF debug information. With the upstream
->>> perf, currently it possible to run perf report or perf annotate to
->>> view the data type information on x86.
->>>=20
->>> Initial patchset posted here had changes need to enable data type
->>> profiling support for powerpc.
->>>=20
->>> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgrou=
-p.eu/T/
->>>=20
->>> Main change were:
->>> 1. powerpc instruction nmemonic table to associate load/store
->>> instructions with move_ops which is use to identify if instruction
->>> is a memory access one.
->>> 2. To get register number and access offset from the given
->>> instruction, code uses fields from "struct arch" -> objump.
->>> Added entry for powerpc here.
->>> 3. A get_arch_regnum to return register number from the
->>> register name string.
->>>=20
->>> But the apporach used in the initial patchset used parsing of
->>> disassembled code which the current perf tool implementation does.
->>>=20
->>> Example: lwz     r10,0(r9)
->>>=20
->>> This line "lwz r10,0(r9)" is parsed to extract instruction name,
->>> registers names and offset. Also to find whether there is a memory
->>> reference in the operands, "memory_ref_char" field of objdump is used.
->>> For x86, "(" is used as memory_ref_char to tackle instructions of the
->>> form "mov  (%rax), %rcx".
->>>=20
->>> In case of powerpc, not all instructions using "(" are the only memory
->>> instructions. Example, above instruction can also be of extended form (X
->>> form) "lwzx r10,0,r19". Inorder to easy identify the instruction catego=
-ry
->>> and extract the source/target registers, second patchset added support =
-to use
->>> raw instruction. With raw instruction, macros are added to extract opco=
-de
->>> and register fields.
->>> Link to second patchset:
->>> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.=
-ibm.com/
->>>=20
->>> Example representation using --show-raw-insn in objdump gives result:
->>>=20
->>> 38 01 81 e8     ld      r4,312(r1)
->>>=20
->>> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
->>> this translates to instruction form: "ld RT,DS(RA)" and binary code
->>> as:
->>> _____________________________________
->>> | 58 |  RT  |  RA |      DS       | |
->>> -------------------------------------
->>> 0    6     11    16              30 31
->>>=20
->>> Second patchset used "objdump" again to read the raw instruction.
->>> But since there is no need to disassemble and binary code can be read
->>> directly from the DSO, third patchset (ie this patchset) uses below
->>> apporach. The apporach preferred in powerpc to parse sample for data
->>> type profiling in V3 patchset is:
->>> - Read directly from DSO using dso__data_read_offset
->>> - If that fails for any case, fallback to using libcapstone
->>> - If libcapstone is not supported, approach will use objdump
->>>=20
->>> Patchset adds support to pick the opcode and reg fields from this
->>> raw/binary instruction code. This approach came in from review comment
->>> by Segher Boessenkool and Christophe for the initial patchset.
->>>=20
->>> Apart from that, instruction tracking is enabled for powerpc and
->>> support function is added to find variables defined as registers
->>> Example, in powerpc, below two registers are
->>> defined to represent variable:
->>> 1. r13: represents local_paca
->>> register struct paca_struct *local_paca asm("r13");
->>>=20
->>> 2. r1: represents stack_pointer
->>> register void *__stack_pointer asm("r1");
->>>=20
->>> These are handled in this patchset.
->>>=20
->>> - Patch 1 is to rearrange register state type structures to header file
->>> so that it can referred from other arch specific files
->>> - Patch 2 is to make instruction tracking as a callback to"struct arch"
->>> so that it can be implemented by other archs easily and defined in arch
->>> specific files
->>> - Patch 3 adds support to capture and parse raw instruction in powerpc
->>> using dso__data_read_offset utility
->>> - Patch 4 adds logic to support using objdump when doing default "perf
->>> report" or "perf annotate" since it that needs disassembled instruction.
->>> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
->>> - Patch 6 update parameters for reg extract functions to use raw
->>> instruction on powerpc
->>> - Patch 7 add support to identify memory instructions of opcode 31 in
->>> powerpc
->>> - Patch 8 adds more instructions to support instruction tracking in pow=
-erpc
->>> - Patch 9 and 10 handles instruction tracking for powerpc.
->>> - Patch 11, 12 and 13 add support to use libcapstone in powerpc
->>> - Patch 14 and patch 15 handles support to find global register variabl=
-es
->>> - Patch 16 handles insn-stat option for perf annotate
->>>=20
->>> Note:
->>> - There are remaining unknowns (25%) as seen in annotate Instruction st=
-ats
->>> below.
->>> - This patchset is not tested on powerpc32. In next step of enhancements
->>> along with handling remaining unknowns, plan to cover powerpc32 changes
->>> based on how testing goes.
->>>=20
->>> With the current patchset:
->>>=20
->>> ./perf record -a -e mem-loads sleep 1
->>> ./perf report -s type,typeoff --hierarchy --group --stdio
->>> ./perf annotate --data-type --insn-stat
->>>=20
->>> perf annotate logs:
->>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>=20
->>> Annotate Instruction stats
->>> total 609, ok 446 (73.2%), bad 163 (26.8%)
->>>=20
->>> Name/opcode:  Good   Bad
->>> -----------------------------------------------------------
->>> 58                  :   323    80
->>> 32                  :    49    43
->>> 34                  :    33    11
->>> OP_31_XOP_LDX       :     8    20
->>> 40                  :    23     0
->>> OP_31_XOP_LWARX     :     5     1
->>> OP_31_XOP_LWZX      :     2     3
->>> OP_31_XOP_LDARX     :     3     0
->>> 33                  :     0     2
->>> OP_31_XOP_LBZX      :     0     1
->>> OP_31_XOP_LWAX      :     0     1
->>> OP_31_XOP_LHZX      :     0     1
->>>=20
->>> perf report logs:
->>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>=20
->>> Total Lost Samples: 0
->>>=20
->>> Samples: 1K of event 'mem-loads'
->>> Event count (approx.): 937238
->>>=20
->>> Overhead  Data Type  Data Type Offset
->>> ........  .........  ................
->>>=20
->>> 48.60%  (unknown)  (unknown) +0 (no field)
->>> 12.85%  long unsigned int  long unsigned int +0 (current_stack_pointer)
->>>  4.68%  struct paca_struct  struct paca_struct +2312 (__current)
->>>  4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
->>>  2.69%  struct paca_struct  struct paca_struct +2808 (canary)
->>>  2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
->>>  2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
->>>  1.41%  struct vm_fault  struct vm_fault +0 (vma)
->>>  1.29%  struct task_struct  struct task_struct +276 (flags)
->>>  1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
->>>  0.90%  struct security_hook_list  struct security_hook_list +0 (list.n=
-ext)
->>>  0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
->>>  0.76%  struct rq  struct rq +2856 (cpu)
->>>=20
->>> Thanks
->>> Athira Rajeev
->>=20
->> Hi All
->>=20
->> Requesting for review comments for this patchset
->=20
-> Sorry about the delay, I was traveling and busy with other things.
-> I'll review this next week!
-
-Thanks Namhyung
->=20
-> Thanks,
-> Namhyung
-
+> ---
+> Changelog:
+> v3 -> v4:
+> Added commit message with usage of dso__long_name
+> 
+> v2 -> v3:
+> Addressed review comment from Adrian and James.
+> Added perf_pid_map_tid to save the tid and modified
+> is_perf_pid_map_name to use this internally.
+> 
+> v1 -> v2:
+> Addressed review comments from Adrian.
+> Added helper function is_perf_pid_map_name to check
+> dso name of form "/tmp/perf-%d.map". Used sscanf
+> instead of regex comparison.
+> 
+>  tools/perf/util/dso.c    | 12 ++++++++++++
+>  tools/perf/util/dso.h    |  4 ++++
+>  tools/perf/util/symbol.c |  3 ++-
+>  3 files changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/util/dso.c b/tools/perf/util/dso.c
+> index dde706b71da7..2340c4f6d0c2 100644
+> --- a/tools/perf/util/dso.c
+> +++ b/tools/perf/util/dso.c
+> @@ -1652,3 +1652,15 @@ int dso__strerror_load(struct dso *dso, char *buf, size_t buflen)
+>  	scnprintf(buf, buflen, "%s", dso_load__error_str[idx]);
+>  	return 0;
+>  }
+> +
+> +bool perf_pid_map_tid(const char *dso_name, int *tid)
+> +{
+> +	return sscanf(dso_name, "/tmp/perf-%d.map", tid) == 1;
+> +}
+> +
+> +bool is_perf_pid_map_name(const char *dso_name)
+> +{
+> +	int tid;
+> +
+> +	return perf_pid_map_tid(dso_name, &tid);
+> +}
+> diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+> index df2c98402af3..d72f3b8c37f6 100644
+> --- a/tools/perf/util/dso.h
+> +++ b/tools/perf/util/dso.h
+> @@ -809,4 +809,8 @@ void reset_fd_limit(void);
+>  u64 dso__find_global_type(struct dso *dso, u64 addr);
+>  u64 dso__findnew_global_type(struct dso *dso, u64 addr, u64 offset);
+>  
+> +/* Check if dso name is of format "/tmp/perf-%d.map" */
+> +bool perf_pid_map_tid(const char *dso_name, int *tid);
+> +bool is_perf_pid_map_name(const char *dso_name);
+> +
+>  #endif /* __PERF_DSO */
+> diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+> index 9e5940b5bc59..aee0a4cfb383 100644
+> --- a/tools/perf/util/symbol.c
+> +++ b/tools/perf/util/symbol.c
+> @@ -1799,7 +1799,8 @@ int dso__load(struct dso *dso, struct map *map)
+>  	const char *map_path = dso__long_name(dso);
+>  
+>  	mutex_lock(dso__lock(dso));
+> -	perfmap = strncmp(dso__name(dso), "/tmp/perf-", 10) == 0;
+> +	perfmap = is_perf_pid_map_name(map_path);
+> +
+>  	if (perfmap) {
+>  		if (dso__nsinfo(dso) &&
+>  		    (dso__find_perf_map(newmapname, sizeof(newmapname),
 
