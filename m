@@ -1,64 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9148D915D88
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 06:00:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D02915DC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 06:50:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dcTyGCtn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bT6uW6rv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7WMf0grRz3cyd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 14:00:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7XTC6JyLz3dHC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 14:50:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dcTyGCtn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bT6uW6rv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7WLw2dkNz30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 14:00:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719288010; x=1750824010;
-  h=date:from:to:cc:subject:message-id;
-  bh=9K1BRRPcY4+yCc+pDbnu2dyCzNY3NVtMPuhCmnHaG2Q=;
-  b=dcTyGCtnVOsvMtQ9lQur7XKtVxMI+hN04yAotX9vTfNGp55v8yuFzGCs
-   riMjrKBLrb/VgyJ8GPqs90Xre7+UXlYiwAFTpOKyoxgi2dKMaawq0z+Wh
-   zbmNcU5fqcN8gSlajDCWsJBhklun6DEISA9h5oZnxHCiIkdT51lltPdNr
-   44dGI9pUcbBVUmKsk2gC4SepFTBADnrfm77egLs4OaMi/cPcRBGi2FJZ6
-   c4wg71CBthmWGRIlPb3HvBQJJ6lMzL/jJTzqgQ0PWt9O4qULRl29R7Ac5
-   7tGAv6cADMu5gWp4ZeH3dCfehLm6bhBmGB4jdJxtjXtenO5HG8SwZyYfn
-   Q==;
-X-CSE-ConnectionGUID: aV7c+gZjTZaUgE6VodeNTw==
-X-CSE-MsgGUID: yuDJUr17R5aBMHMftobYxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="16430027"
-X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
-   d="scan'208";a="16430027"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 21:00:05 -0700
-X-CSE-ConnectionGUID: Qa0hK1JGTlimxoqCygnofA==
-X-CSE-MsgGUID: 2B5Kcq91TTusff6fm2SMag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
-   d="scan'208";a="81046956"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 24 Jun 2024 21:00:04 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sLxLc-000E1R-3D;
-	Tue, 25 Jun 2024 04:00:01 +0000
-Date: Tue, 25 Jun 2024 11:59:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 18bc7f1d505a55667d4dd495d82af9acead61e27
-Message-ID: <202406251138.CUK51Gbs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7XST4Sbvz3cP3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 14:49:59 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-6bce380eb9bso3056165a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jun 2024 21:50:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719290993; x=1719895793; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZuqG7biAOqgDgQrrsZ67iRk9Ad3cri9ERlzvBniIlQU=;
+        b=bT6uW6rvcEmuWl39TtfYzig3Z7Hpgi65rX0i9E/OcWtn0gvENeku1jy0JY0tbA4Xwr
+         p5xPSJeYXfr/W9dCwDs77P2CmpgLnlTPJYS7DOYCRxVxmv4iqKhGsWLCimHcgKJb5wn9
+         QO6lFNXx7H1epm8cigJ3GPsIzAna3+USJOF0k2AV0f7jPqJKrRhQlsfQT9BmdoNBMLHN
+         ykalXeEDB2tFc1PNAf2km+GN7CyoitnSI0QM2O5nDA4UQkq008TqT1erowmFfV33bVX1
+         YE0KGasCtQDMjTc/yUBtuAvn4a3HFAVL26VpmCfapTBc0WB1VFQKg14S1JZv4IEwIm0Q
+         4ojg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719290993; x=1719895793;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZuqG7biAOqgDgQrrsZ67iRk9Ad3cri9ERlzvBniIlQU=;
+        b=pvayxlDKDiBR0x3IaKgI5lRZhjcUgdPqdD9FBhVjOiB54KNyqOUStiIOd1mtMBXnGu
+         hOUHnAOfmWZt7Gw9mwBe7nggPhnsT/x0Cr2KTWrBlK2PLonz83ZIL6QrRzHcdzmqHhD6
+         h45wc6yJqid5PGBzqHiKaOK+E1igvdlDrq628GQV1ql1NaIn2hDYEZb8kiH0HmebeEHf
+         bDsOtMoj/vaYj4XiZbhiOFUL2BhLxpTnN7SBsW7bu+kfqYu1izPYrWMo5U6CuSbQvsAz
+         ldp41HpAn52Krm78vnCqNPlAFdstHyH68CFcvzV0+v84G++S6iY4abJLiK9PcqaeOabH
+         NNTg==
+X-Forwarded-Encrypted: i=1; AJvYcCURaD92HcAQ+graSOMpehIsEwXvdZUJgALziPvje1QagbLLY97M17S+2f+D3nc7WBEwIMf6pDy62FE1ejSAzLHr+pTy3XhIWtS1iSOK/A==
+X-Gm-Message-State: AOJu0YwaZJlHQIn66sNH6lAz+tTWSeNlyuEt60JQ9ZmZIzZZ3XCz1gQ4
+	UKozZrwEV76U0EhFJdDCyOec5ipJZ8SvBZ4GPngPoDPPKhhCOkPe
+X-Google-Smtp-Source: AGHT+IEMY8o/252qBDFEIJQKQoJP+4B/vRW3iANS8a4tWuh2eFp5ixvi1C+Zofa9uCivrKn8XtAURA==
+X-Received: by 2002:a05:6a20:be13:b0:1bd:2292:e592 with SMTP id adf61e73a8af0-1bd2292e5efmr233523637.22.1719290992767;
+        Mon, 24 Jun 2024 21:49:52 -0700 (PDT)
+Received: from localhost (118-211-5-80.tpgi.com.au. [118.211.5.80])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c8b832639bsm275497a91.1.2024.06.24.21.49.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jun 2024 21:49:52 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Jun 2024 14:49:45 +1000
+Message-Id: <D28TSEV6QV38.2NWPFRY8KCQK7@gmail.com>
+Subject: Re: [PATCH v6 21/23] powerpc/64s: Use contiguous PMD/PUD instead of
+ HUGEPD
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Jason Gunthorpe" <jgg@nvidia.com>, "Peter Xu"
+ <peterx@redhat.com>, "Oscar Salvador" <osalvador@suse.de>, "Michael
+ Ellerman" <mpe@ellerman.id.au>
+X-Mailer: aerc 0.17.0
+References: <cover.1719240269.git.christophe.leroy@csgroup.eu>
+ <23f3fe9e8fe37cb164a369850d4569dddf359fdf.1719240269.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <23f3fe9e8fe37cb164a369850d4569dddf359fdf.1719240269.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,131 +86,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 18bc7f1d505a55667d4dd495d82af9acead61e27  Automatic merge of 'next' into merge (2024-06-24 12:09)
+On Tue Jun 25, 2024 at 12:45 AM AEST, Christophe Leroy wrote:
+> On book3s/64, the only user of hugepd is hash in 4k mode.
+>
+> All other setups (hash-64, radix-4, radix-64) use leaf PMD/PUD.
+>
+> Rework hash-4k to use contiguous PMD and PUD instead.
+>
+> In that setup there are only two huge page sizes: 16M and 16G.
+>
+> 16M sits at PMD level and 16G at PUD level.
+>
+> pte_update doesn't know page size, lets use the same trick as
+> hpte_need_flush() to get page size from segment properties. That's
+> not the most efficient way but let's do that until callers of
+> pte_update() provide page size instead of just a huge flag.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-elapsed time: 1458m
+[snip]
 
-configs tested: 108
-configs skipped: 1
+> +static inline unsigned long hash__pte_update(struct mm_struct *mm,
+> +					 unsigned long addr,
+> +					 pte_t *ptep, unsigned long clr,
+> +					 unsigned long set,
+> +					 int huge)
+> +{
+> +	unsigned long old;
+> +
+> +	old =3D hash__pte_update_one(ptep, clr, set);
+> +
+> +	if (IS_ENABLED(CONFIG_PPC_4K_PAGES) && huge) {
+> +		unsigned int psize =3D get_slice_psize(mm, addr);
+> +		int nb, i;
+> +
+> +		if (psize =3D=3D MMU_PAGE_16M)
+> +			nb =3D SZ_16M / PMD_SIZE;
+> +		else if (psize =3D=3D MMU_PAGE_16G)
+> +			nb =3D SZ_16G / PUD_SIZE;
+> +		else
+> +			nb =3D 1;
+> +
+> +		WARN_ON_ONCE(nb =3D=3D 1);	/* Should never happen */
+> +
+> +		for (i =3D 1; i < nb; i++)
+> +			hash__pte_update_one(ptep + i, clr, set);
+> +	}
+>  	/* huge pages use the old page table lock */
+>  	if (!huge)
+>  		assert_pte_locked(mm, addr);
+> =20
+> -	old =3D be64_to_cpu(old_be);
+>  	if (old & H_PAGE_HASHPTE)
+>  		hpte_need_flush(mm, addr, ptep, old, huge);
+> =20
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+We definitely need a bit more comment and changelog about the atomicity
+issues here. I think the plan should be all hash-side access just
+operates on PTE[0], which should avoid that whole race. There could be
+some cases that don't follow that. Adding some warnings to catch such
+things could be good too.
 
-tested configs:
-alpha                             allnoconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                   randconfig-001-20240625   gcc-13.2.0
-arc                   randconfig-002-20240625   gcc-13.2.0
-arm                               allnoconfig   clang-19
-arm                   randconfig-001-20240625   clang-15
-arm                   randconfig-002-20240625   clang-19
-arm                   randconfig-003-20240625   gcc-13.2.0
-arm                   randconfig-004-20240625   gcc-13.2.0
-arm64                             allnoconfig   gcc-13.2.0
-arm64                 randconfig-001-20240625   gcc-13.2.0
-arm64                 randconfig-002-20240625   gcc-13.2.0
-arm64                 randconfig-003-20240625   clang-19
-arm64                 randconfig-004-20240625   gcc-13.2.0
-csky                              allnoconfig   gcc-13.2.0
-csky                  randconfig-001-20240625   gcc-13.2.0
-csky                  randconfig-002-20240625   gcc-13.2.0
-hexagon                           allnoconfig   clang-19
-hexagon               randconfig-001-20240625   clang-14
-hexagon               randconfig-002-20240625   clang-19
-i386         buildonly-randconfig-001-20240624   gcc-8
-i386         buildonly-randconfig-002-20240624   gcc-13
-i386         buildonly-randconfig-003-20240624   clang-18
-i386         buildonly-randconfig-004-20240624   gcc-10
-i386         buildonly-randconfig-005-20240624   clang-18
-i386         buildonly-randconfig-006-20240624   clang-18
-i386                  randconfig-001-20240624   clang-18
-i386                  randconfig-002-20240624   clang-18
-i386                  randconfig-003-20240624   gcc-13
-i386                  randconfig-004-20240624   gcc-13
-i386                  randconfig-005-20240624   gcc-13
-i386                  randconfig-006-20240624   clang-18
-i386                  randconfig-011-20240624   clang-18
-i386                  randconfig-012-20240624   clang-18
-i386                  randconfig-013-20240624   gcc-9
-i386                  randconfig-014-20240624   clang-18
-i386                  randconfig-015-20240624   clang-18
-i386                  randconfig-016-20240624   gcc-9
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch             randconfig-001-20240625   gcc-13.2.0
-loongarch             randconfig-002-20240625   gcc-13.2.0
-m68k                              allnoconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-13.2.0
-nios2                 randconfig-001-20240625   gcc-13.2.0
-nios2                 randconfig-002-20240625   gcc-13.2.0
-openrisc                          allnoconfig   gcc-13.2.0
-openrisc                            defconfig   gcc-13.2.0
-parisc                            allnoconfig   gcc-13.2.0
-parisc                              defconfig   gcc-13.2.0
-parisc                randconfig-001-20240625   gcc-13.2.0
-parisc                randconfig-002-20240625   gcc-13.2.0
-powerpc                           allnoconfig   gcc-13.2.0
-powerpc               randconfig-001-20240625   clang-19
-powerpc               randconfig-002-20240625   gcc-13.2.0
-powerpc               randconfig-003-20240625   gcc-13.2.0
-powerpc64             randconfig-001-20240625   gcc-13.2.0
-powerpc64             randconfig-002-20240625   clang-19
-powerpc64             randconfig-003-20240625   clang-17
-riscv                             allnoconfig   gcc-13.2.0
-riscv                               defconfig   clang-19
-riscv                 randconfig-001-20240625   gcc-13.2.0
-riscv                 randconfig-002-20240625   clang-19
-s390                              allnoconfig   clang-19
-s390                                defconfig   clang-19
-s390                  randconfig-001-20240625   clang-19
-s390                  randconfig-002-20240625   clang-19
-sh                                allnoconfig   gcc-13.2.0
-sh                                  defconfig   gcc-13.2.0
-sh                    randconfig-001-20240625   gcc-13.2.0
-sh                    randconfig-002-20240625   gcc-13.2.0
-sparc64                             defconfig   gcc-13.2.0
-sparc64               randconfig-001-20240625   gcc-13.2.0
-sparc64               randconfig-002-20240625   gcc-13.2.0
-um                                allnoconfig   clang-17
-um                                  defconfig   clang-19
-um                             i386_defconfig   gcc-13
-um                    randconfig-001-20240625   clang-19
-um                    randconfig-002-20240625   clang-19
-um                           x86_64_defconfig   clang-15
-x86_64       buildonly-randconfig-001-20240625   gcc-13
-x86_64       buildonly-randconfig-002-20240625   clang-18
-x86_64       buildonly-randconfig-003-20240625   clang-18
-x86_64       buildonly-randconfig-004-20240625   clang-18
-x86_64       buildonly-randconfig-005-20240625   clang-18
-x86_64       buildonly-randconfig-006-20240625   clang-18
-x86_64                randconfig-001-20240625   clang-18
-x86_64                randconfig-002-20240625   gcc-13
-x86_64                randconfig-003-20240625   gcc-13
-x86_64                randconfig-004-20240625   clang-18
-x86_64                randconfig-005-20240625   clang-18
-x86_64                randconfig-006-20240625   gcc-13
-x86_64                randconfig-011-20240625   clang-18
-x86_64                randconfig-012-20240625   gcc-13
-x86_64                randconfig-013-20240625   clang-18
-x86_64                randconfig-014-20240625   clang-18
-x86_64                randconfig-015-20240625   gcc-13
-x86_64                randconfig-016-20240625   gcc-11
-x86_64                randconfig-071-20240625   gcc-13
-x86_64                randconfig-072-20240625   clang-18
-x86_64                randconfig-073-20240625   clang-18
-x86_64                randconfig-074-20240625   gcc-13
-x86_64                randconfig-075-20240625   clang-18
-x86_64                randconfig-076-20240625   clang-18
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                randconfig-001-20240625   gcc-13.2.0
-xtensa                randconfig-002-20240625   gcc-13.2.0
+I'd been meaning to do more on this sooner, sorry. I've started
+tinkering with adding a bit of debug code. I'll see if I can help with
+adding a bit of comments.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[snip]
+
+> diff --git a/arch/powerpc/mm/book3s64/hugetlbpage.c b/arch/powerpc/mm/boo=
+k3s64/hugetlbpage.c
+> index 5a2e512e96db..83c3361b358b 100644
+> --- a/arch/powerpc/mm/book3s64/hugetlbpage.c
+> +++ b/arch/powerpc/mm/book3s64/hugetlbpage.c
+> @@ -53,6 +53,16 @@ int __hash_page_huge(unsigned long ea, unsigned long a=
+ccess, unsigned long vsid,
+>  		/* If PTE permissions don't match, take page fault */
+>  		if (unlikely(!check_pte_access(access, old_pte)))
+>  			return 1;
+> +		/*
+> +		 * If hash-4k, hugepages use seeral contiguous PxD entries
+> +		 * so bail out and let mm make the page young or dirty
+> +		 */
+> +		if (IS_ENABLED(CONFIG_PPC_4K_PAGES)) {
+> +			if (!(old_pte & _PAGE_ACCESSED))
+> +				return 1;
+> +			if ((access & _PAGE_WRITE) && !(old_pte & _PAGE_DIRTY))
+> +				return 1;
+> +		}
+> =20
+>  		/*
+>  		 * Try to lock the PTE, add ACCESSED and DIRTY if it was
+
+I'm hoping we wouldn't have to do this, if we follow the PTE[0] rule.
+
+I think is minor enough that should not prevent testing in -mm.
+
+Thanks,
+Nick
