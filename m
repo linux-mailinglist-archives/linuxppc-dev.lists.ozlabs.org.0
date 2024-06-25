@@ -1,50 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6F09161CB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 10:58:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E213916696
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 13:49:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=iT2Kf8Ts;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LfQ9I13T;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7dzJ3cDLz3flZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 18:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7jmK0P9jz3d28
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 21:49:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+ee3bcc3f6418456cddbd+7611+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LfQ9I13T;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7dyQ27nPz30VY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 18:57:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=THcdDm0A+7qsrmlgD/s5mbaI1bo21sJBUVFRJUuckjU=; b=iT2Kf8Ts7SV0ZMpN1tnhXxPtMH
-	Ffv8ZJFKB4PVB/IdNXjk7V0C/EqzT+g2n4rI1ZqlvQji9lJIwZfjHfG1Y7Cb5TXIeVGCM4nTH9crp
-	4zyWvlsKZ4WoJ7XDaIrgLwNl3YRoXD5zh+VKywveOkw7i38S3zZmoxTmQHKWk7riwSg6VmFiReOf7
-	0vMD17gabcLDjQNIftPl8VaQ0ZrC/qk7EH/0G/IiWcIA8u56veyp3C42DoJVrtu8OAb3RerYCYvx8
-	kxEfDPsLLm6uiPifVX8Lcu0WzNjdMGJQI+mys12zLdW5z+VY7pu7ChDIbK8PMhXWCu88C5Voy7C5+
-	gU8eTZWA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sM1zb-00000002Btq-1pcn;
-	Tue, 25 Jun 2024 08:57:35 +0000
-Date: Tue, 25 Jun 2024 01:57:35 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: kernel test robot <oliver.sang@intel.com>
-Subject: Re: [axboe-block:for-next] [block]  1122c0c1cc:  aim7.jobs-per-min
- 22.6% improvement
-Message-ID: <ZnqGf49cvy6W-xWf@infradead.org>
-References: <202406250948.e0044f1d-oliver.sang@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202406250948.e0044f1d-oliver.sang@intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7jlc0RT3z30Vb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 21:48:43 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PBaHn4000691;
+	Tue, 25 Jun 2024 11:48:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-type:mime-version:subject:from:in-reply-to:date:cc
+	:content-transfer-encoding:message-id:references:to; s=pp1; bh=W
+	ICUOPn6G8vaIEnI5sjdZgE7qeNqV5Cn8Hfz1bsE0NU=; b=LfQ9I13T3l0ZpsRrX
+	3Yf13itfYwyPr0MwnJK+JFnWz7iQ2C1HbZkNlMpGBoN9WmarIqrGPboQddClUyFE
+	tpoJEg8ShxUB1V5VoBKO109UOKMVbp4e2V1rnH9aAWnTSHDGLIpuuLTvDdtbor6I
+	akEtRToF5iROjzj9dxzKAjGFm5d8Y03Sm7yMit2JwwfOu8lKlnGcGFDFiXxb7E2q
+	2kSbF+udQD3pscvaebgjxNXaKMsMR+bnAgnn9okjrbduGurKF3KlBb0+0/C5zSd4
+	xuCOZZBXnXOqDExekPmHefJCc9KmbbyBTZ1WmfYao0zYDhAhW9X78kJDOomIvCYL
+	4cXvA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yyw22016v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:48:32 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45PBmVj3017340;
+	Tue, 25 Jun 2024 11:48:31 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yyw22016r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:48:31 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45PAWAdv018093;
+	Tue, 25 Jun 2024 11:48:31 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yx8xu6c73-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:48:30 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45PBmP2M46465520
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Jun 2024 11:48:27 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 68B1B2004B;
+	Tue, 25 Jun 2024 11:48:25 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA48420040;
+	Tue, 25 Jun 2024 11:48:22 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.30.249])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 25 Jun 2024 11:48:22 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [V4 01/16] tools/perf: Move the data structures related to
+ register type to header file
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <ZnpShR7zd9cVdxSj@google.com>
+Date: Tue, 25 Jun 2024 16:24:58 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0AF30B3F-AD13-4398-AC0F-AA6B5425D4AA@linux.vnet.ibm.com>
+References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
+ <20240614172631.56803-2-atrajeev@linux.vnet.ibm.com>
+ <ZnpShR7zd9cVdxSj@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Wx4xQ1HC-ykBn5uzAbPblL6G-qjztymv
+X-Proofpoint-ORIG-GUID: JwmN6Qul-YFYonxRwifTiBMGpHnaCfmb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-25_06,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 spamscore=0 adultscore=0 mlxscore=0 clxscore=1015 phishscore=0
+ mlxlogscore=999 impostorscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406250084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,145 +103,216 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>, feng.tang@intel.com, linux-nvme@lists.infradead.org, linux-mtd@lists.infradead.org, Christoph Hellwig <hch@lst.de>, drbd-dev@lists.linbit.com, lkp@intel.com, linux-scsi@vger.kernel.org, ying.huang@intel.com, xen-devel@lists.xenproject.org, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, virtualization@lists.linux.dev, nbd@other.debian.org, linux-raid@vger.kernel.org, linux-bcache@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, linux-mmc@vger.kernel.org, fengwei.yin@intel.com, oe-lkp@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Oliver,
 
-can you test the patch below?  It restores the previous behavior if
-the device did not have a volatile write cache.  I think at least
-for raid0 and raid1 without bitmap the new behavior actually is correct
-and better, but it will need fixes for other modes.  If the underlying
-devices did have a volatile write cache I'm a bit lost what the problem
-was and this probably won't fix the issue.
 
----
-From 81c816827197f811e14add7a79220ed9eef6af02 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Tue, 25 Jun 2024 08:48:18 +0200
-Subject: md: set md-specific flags for all queue limits
+> On 25 Jun 2024, at 10:45=E2=80=AFAM, Namhyung Kim =
+<namhyung@kernel.org> wrote:
+>=20
+> Hello,
+>=20
+> On Fri, Jun 14, 2024 at 10:56:16PM +0530, Athira Rajeev wrote:
+>> Data type profiling uses instruction tracking by checking each
+>> instruction and updating the register type state in some data
+>> structures. This is useful to find the data type in cases when the
+>> register state gets transferred from one reg to another. Example, in
+>> x86, "mov" instruction and in powerpc, "mr" instruction. Currently =
+these
+>> structures are defined in annotate-data.c and instruction tracking is
+>> implemented only for x86. Move these data structures to
+>> "annotate-data.h" header file so that other arch implementations can =
+use
+>> it in arch specific files as well.
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> tools/perf/util/annotate-data.c | 53 +------------------------------
+>> tools/perf/util/annotate-data.h | 55 =
++++++++++++++++++++++++++++++++++
+>> 2 files changed, 56 insertions(+), 52 deletions(-)
+>>=20
+>> diff --git a/tools/perf/util/annotate-data.c =
+b/tools/perf/util/annotate-data.c
+>> index 965da6c0b542..a4c7f98a75e3 100644
+>> --- a/tools/perf/util/annotate-data.c
+>> +++ b/tools/perf/util/annotate-data.c
+>> @@ -31,15 +31,6 @@
+>>=20
+>> static void delete_var_types(struct die_var_type *var_types);
+>>=20
+>> -enum type_state_kind {
+>> - TSR_KIND_INVALID =3D 0,
+>> - TSR_KIND_TYPE,
+>> - TSR_KIND_PERCPU_BASE,
+>> - TSR_KIND_CONST,
+>> - TSR_KIND_POINTER,
+>> - TSR_KIND_CANARY,
+>> -};
+>> -
+>> #define pr_debug_dtp(fmt, ...) \
+>> do { \
+>> if (debug_type_profile) \
+>> @@ -140,49 +131,7 @@ static void pr_debug_location(Dwarf_Die *die, =
+u64 pc, int reg)
+>> }
+>> }
+>>=20
+>> -/*
+>> - * Type information in a register, valid when @ok is true.
+>> - * The @caller_saved registers are invalidated after a function =
+call.
+>> - */
+>> -struct type_state_reg {
+>> - Dwarf_Die type;
+>> - u32 imm_value;
+>> - bool ok;
+>> - bool caller_saved;
+>> - u8 kind;
+>> -};
+>> -
+>> -/* Type information in a stack location, dynamically allocated */
+>> -struct type_state_stack {
+>> - struct list_head list;
+>> - Dwarf_Die type;
+>> - int offset;
+>> - int size;
+>> - bool compound;
+>> - u8 kind;
+>> -};
+>> -
+>> -/* FIXME: This should be arch-dependent */
+>> -#define TYPE_STATE_MAX_REGS  16
+>> -
+>> -/*
+>> - * State table to maintain type info in each register and stack =
+location.
+>> - * It'll be updated when new variable is allocated or type info is =
+moved
+>> - * to a new location (register or stack).  As it'd be used with the
+>> - * shortest path of basic blocks, it only maintains a single table.
+>> - */
+>> -struct type_state {
+>> - /* state of general purpose registers */
+>> - struct type_state_reg regs[TYPE_STATE_MAX_REGS];
+>> - /* state of stack location */
+>> - struct list_head stack_vars;
+>> - /* return value register */
+>> - int ret_reg;
+>> - /* stack pointer register */
+>> - int stack_reg;
+>> -};
+>> -
+>> -static bool has_reg_type(struct type_state *state, int reg)
+>> +bool has_reg_type(struct type_state *state, int reg)
+>> {
+>> return (unsigned)reg < ARRAY_SIZE(state->regs);
+>> }
+>> diff --git a/tools/perf/util/annotate-data.h =
+b/tools/perf/util/annotate-data.h
+>> index 0a57d9f5ee78..ef235b1b15e1 100644
+>> --- a/tools/perf/util/annotate-data.h
+>> +++ b/tools/perf/util/annotate-data.h
+>> @@ -6,6 +6,9 @@
+>> #include <linux/compiler.h>
+>> #include <linux/rbtree.h>
+>> #include <linux/types.h>
+>> +#include "dwarf-aux.h"
+>> +#include "annotate.h"
+>> +#include "debuginfo.h"
+>>=20
+>> struct annotated_op_loc;
+>> struct debuginfo;
+>> @@ -15,6 +18,15 @@ struct hist_entry;
+>> struct map_symbol;
+>> struct thread;
+>>=20
+>> +enum type_state_kind {
+>> + TSR_KIND_INVALID =3D 0,
+>> + TSR_KIND_TYPE,
+>> + TSR_KIND_PERCPU_BASE,
+>> + TSR_KIND_CONST,
+>> + TSR_KIND_POINTER,
+>> + TSR_KIND_CANARY,
+>> +};
+>> +
+>> /**
+>> * struct annotated_member - Type of member field
+>> * @node: List entry in the parent list
+>> @@ -142,6 +154,48 @@ struct annotated_data_stat {
+>> };
+>> extern struct annotated_data_stat ann_data_stat;
+>>=20
+>> +/*
+>> + * Type information in a register, valid when @ok is true.
+>> + * The @caller_saved registers are invalidated after a function =
+call.
+>> + */
+>> +struct type_state_reg {
+>> + Dwarf_Die type;
+>> + u32 imm_value;
+>> + bool ok;
+>> + bool caller_saved;
+>> + u8 kind;
+>> +};
+>> +
+>> +/* Type information in a stack location, dynamically allocated */
+>> +struct type_state_stack {
+>> + struct list_head list;
+>> + Dwarf_Die type;
+>> + int offset;
+>> + int size;
+>> + bool compound;
+>> + u8 kind;
+>> +};
+>> +
+>> +/* FIXME: This should be arch-dependent */
+>> +#define TYPE_STATE_MAX_REGS  32
+>=20
+> Can you please define this for powerpc separately?  I think x86 should
+> remain in 16.
+>=20
+> Thanks,
+> Namhyung
 
-The md driver wants to enforce a number of flags to an all devices, even
-when not inheriting them from the underlying devices.  To make sure these
-flags survive the queue_limits_set calls that md uses to update the
-queue limits without deriving them form the previous limits add a new
-md_init_stacking_limits helper that calls blk_set_stacking_limits and sets
-these flags.
+Sure, I will have this change in V5
+>=20
+>> +
+>> +/*
+>> + * State table to maintain type info in each register and stack =
+location.
+>> + * It'll be updated when new variable is allocated or type info is =
+moved
+>> + * to a new location (register or stack).  As it'd be used with the
+>> + * shortest path of basic blocks, it only maintains a single table.
+>> + */
+>> +struct type_state {
+>> + /* state of general purpose registers */
+>> + struct type_state_reg regs[TYPE_STATE_MAX_REGS];
+>> + /* state of stack location */
+>> + struct list_head stack_vars;
+>> + /* return value register */
+>> + int ret_reg;
+>> + /* stack pointer register */
+>> + int stack_reg;
+>> +};
+>> +
+>> #ifdef HAVE_DWARF_SUPPORT
+>>=20
+>> /* Returns data type at the location (ip, reg, offset) */
+>> @@ -160,6 +214,7 @@ void global_var_type__tree_delete(struct rb_root =
+*root);
+>>=20
+>> int hist_entry__annotate_data_tty(struct hist_entry *he, struct evsel =
+*evsel);
+>>=20
+>> +bool has_reg_type(struct type_state *state, int reg);
+>> #else /* HAVE_DWARF_SUPPORT */
+>>=20
+>> static inline struct annotated_data_type *
+>> --=20
+>> 2.43.0
 
-Fixes: 1122c0c1cc71 ("block: move cache control settings out of queue->flags")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/md/md.c     | 13 ++++++++-----
- drivers/md/md.h     |  1 +
- drivers/md/raid0.c  |  2 +-
- drivers/md/raid1.c  |  2 +-
- drivers/md/raid10.c |  2 +-
- drivers/md/raid5.c  |  2 +-
- 6 files changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 69ea54aedd99a1..8368438e58e989 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -5853,6 +5853,13 @@ static void mddev_delayed_delete(struct work_struct *ws)
- 	kobject_put(&mddev->kobj);
- }
- 
-+void md_init_stacking_limits(struct queue_limits *lim)
-+{
-+	blk_set_stacking_limits(lim);
-+	lim->features = BLK_FEAT_WRITE_CACHE | BLK_FEAT_FUA |
-+			BLK_FEAT_IO_STAT | BLK_FEAT_NOWAIT;
-+}
-+
- struct mddev *md_alloc(dev_t dev, char *name)
- {
- 	/*
-@@ -5871,10 +5878,6 @@ struct mddev *md_alloc(dev_t dev, char *name)
- 	int shift;
- 	int unit;
- 	int error;
--	struct queue_limits lim = {
--		.features		= BLK_FEAT_WRITE_CACHE | BLK_FEAT_FUA |
--					  BLK_FEAT_IO_STAT | BLK_FEAT_NOWAIT,
--	};
- 
- 	/*
- 	 * Wait for any previous instance of this device to be completely
-@@ -5914,7 +5917,7 @@ struct mddev *md_alloc(dev_t dev, char *name)
- 		 */
- 		mddev->hold_active = UNTIL_STOP;
- 
--	disk = blk_alloc_disk(&lim, NUMA_NO_NODE);
-+	disk = blk_alloc_disk(NULL, NUMA_NO_NODE);
- 	if (IS_ERR(disk)) {
- 		error = PTR_ERR(disk);
- 		goto out_free_mddev;
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index c4d7ebf9587d07..28cb4b0b6c1740 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -893,6 +893,7 @@ extern int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale);
- 
- extern int mddev_init(struct mddev *mddev);
- extern void mddev_destroy(struct mddev *mddev);
-+void md_init_stacking_limits(struct queue_limits *lim);
- struct mddev *md_alloc(dev_t dev, char *name);
- void mddev_put(struct mddev *mddev);
- extern int md_run(struct mddev *mddev);
-diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
-index 62634e2a33bd0f..32d58752477847 100644
---- a/drivers/md/raid0.c
-+++ b/drivers/md/raid0.c
-@@ -379,7 +379,7 @@ static int raid0_set_limits(struct mddev *mddev)
- 	struct queue_limits lim;
- 	int err;
- 
--	blk_set_stacking_limits(&lim);
-+	md_init_stacking_limits(&lim);
- 	lim.max_hw_sectors = mddev->chunk_sectors;
- 	lim.max_write_zeroes_sectors = mddev->chunk_sectors;
- 	lim.io_min = mddev->chunk_sectors << 9;
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 1a0eba65b8a92b..04a0c2ca173245 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -3194,7 +3194,7 @@ static int raid1_set_limits(struct mddev *mddev)
- 	struct queue_limits lim;
- 	int err;
- 
--	blk_set_stacking_limits(&lim);
-+	md_init_stacking_limits(&lim);
- 	lim.max_write_zeroes_sectors = 0;
- 	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
- 	if (err) {
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 3334aa803c8380..2a9c4ee982e023 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3974,7 +3974,7 @@ static int raid10_set_queue_limits(struct mddev *mddev)
- 	struct queue_limits lim;
- 	int err;
- 
--	blk_set_stacking_limits(&lim);
-+	md_init_stacking_limits(&lim);
- 	lim.max_write_zeroes_sectors = 0;
- 	lim.io_min = mddev->chunk_sectors << 9;
- 	lim.io_opt = lim.io_min * raid10_nr_stripes(conf);
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 0192a6323f09ba..10219205160bbf 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -7708,7 +7708,7 @@ static int raid5_set_limits(struct mddev *mddev)
- 	 */
- 	stripe = roundup_pow_of_two(data_disks * (mddev->chunk_sectors << 9));
- 
--	blk_set_stacking_limits(&lim);
-+	md_init_stacking_limits(&lim);
- 	lim.io_min = mddev->chunk_sectors << 9;
- 	lim.io_opt = lim.io_min * (conf->raid_disks - conf->max_degraded);
- 	lim.features |= BLK_FEAT_RAID_PARTIAL_STRIPES_EXPENSIVE;
--- 
-2.43.0
 
