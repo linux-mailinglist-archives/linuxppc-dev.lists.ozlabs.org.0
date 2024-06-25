@@ -2,53 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E066D91665E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 13:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 619AB916698
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 13:50:05 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LVjeXkbR;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7jbH3yVKz3dJn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 21:41:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7jn56r1nz3d88
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 21:50:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7jZr5C8bz3blb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 21:41:06 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FB97339;
-	Tue, 25 Jun 2024 04:40:54 -0700 (PDT)
-Received: from [10.1.39.170] (XHFQ2J9959.cambridge.arm.com [10.1.39.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB9883F73B;
-	Tue, 25 Jun 2024 04:40:25 -0700 (PDT)
-Message-ID: <b6b485ee-7af0-42b8-b0ca-5a75f76a69e2@arm.com>
-Date: Tue, 25 Jun 2024 12:40:24 +0100
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LVjeXkbR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7jm05b5tz3clw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 21:49:04 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PBeYGp025112;
+	Tue, 25 Jun 2024 11:48:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-type:subject:from:in-reply-to:date:cc:message-id
+	:references:to:content-transfer-encoding:mime-version; s=pp1;
+	 bh=Y2hhtNXdnOP2URjK6F8cNvjZytpeeXwrjcm6KAj53Bw=; b=LVjeXkbRiSVb
+	PNnpqhI/AQS/E1x+ZdTYg6RTMisFfB6qZDeUAnbCiU2jErwV48kcKbwdkrdHHgJZ
+	4wZ0iyh7CMK9bnkmqQBP9tWmf+DogKDoAyHuUJELnW9rn94kOaTB8sATbgSWP6cW
+	LoB6YeM4IVW66Nr26nua/sxhQWIwlMwamLa6ATMv043JP914A7oMwEHDzM2nLlVd
+	bojtg8m541dwOn6TAxt8LvF8ibaMbYFnlZV7+EMrYpsBQ8OUuEzZPECMU/omGBO4
+	ELGvflxvJdETmw+sTWHY4+oucYt+U3Se1t7dZONcAd1NFuqWqSQXEqPRTvgz2VLg
+	KI022QQH5A==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yyw21819n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:48:56 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45PBmtc9005441;
+	Tue, 25 Jun 2024 11:48:55 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yyw21819h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:48:55 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45PBGRKf019602;
+	Tue, 25 Jun 2024 11:48:54 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yx9xpx5kw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:48:54 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45PBmmCI45875550
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Jun 2024 11:48:50 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 746CF20043;
+	Tue, 25 Jun 2024 11:48:48 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8233B20040;
+	Tue, 25 Jun 2024 11:48:45 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.30.249])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 25 Jun 2024 11:48:45 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Subject: Re: [V4 00/16] Add data type profiling support for powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <ZnYVitG1tffUNTn6@google.com>
+Date: Tue, 25 Jun 2024 17:18:34 +0530
+Message-Id: <B34AF03E-FD05-4600-9548-ADDB33A534EF@linux.vnet.ibm.com>
+References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
+ <C84A4D8E-3BCD-47A7-B41E-1B39744AECDF@linux.vnet.ibm.com>
+ <ZnYVitG1tffUNTn6@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _z5g5GnrlNUwrrJan91ypYAkkS5LQD5T
+X-Proofpoint-GUID: vMLeO6i0WB3tQse4eVMru0MJLMYVJ24F
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 18/18] arm64/mm: Automatically fold contpte mappings
-Content-Language: en-GB
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
- James Morse <james.morse@arm.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@redhat.com>, John Hubbard <jhubbard@nvidia.com>,
- Zi Yan <ziy@nvidia.com>, Barry Song <21cnbao@gmail.com>,
- Alistair Popple <apopple@nvidia.com>, Yang Shi <shy828301@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "Yin, Fengwei" <fengwei.yin@intel.com>
-References: <20240215103205.2607016-1-ryan.roberts@arm.com>
- <20240215103205.2607016-19-ryan.roberts@arm.com>
- <1285eb59-fcc3-4db8-9dd9-e7c4d82b1be0@huawei.com>
- <8d57ed0d-fdd0-4fc6-b9f1-a6ac11ce93ce@arm.com>
- <018b5e83-789e-480f-82c8-a64515cdd14a@huawei.com>
- <b75aa60d-e058-4b5c-877a-9c0cd295e96f@linux.alibaba.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <b75aa60d-e058-4b5c-877a-9c0cd295e96f@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-25_06,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
+ adultscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 phishscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406250084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,311 +103,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Ian Rogers <irogers@google.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/06/2024 08:23, Baolin Wang wrote:
-> 
-> 
-> On 2024/6/25 11:16, Kefeng Wang wrote:
->>
->>
->> On 2024/6/24 23:56, Ryan Roberts wrote:
->>> + Baolin Wang and Yin Fengwei, who maybe able to help with this.
->>>
->>>
->>> Hi Kefeng,
->>>
->>> Thanks for the report!
->>>
->>>
->>> On 24/06/2024 15:30, Kefeng Wang wrote:
->>>> Hi Ryan,
->>>>
->>>> A big regression on page-fault3("Separate file shared mapping page
->>>> fault") testcase from will-it-scale on arm64, no issue on x86,
->>>>
->>>> ./page_fault3_processes -t 128 -s 5
->>>
->>> I see that this program is mkstmp'ing a file at "/tmp/willitscale.XXXXXX". Based
->>> on your description, I'm inferring that /tmp is backed by ext4 with your large
->>> folio patches enabled?
->>
->> Yes, mount /tmp by ext4, sorry to forget to mention that.
->>
->>>
->>>>
->>>> 1) large folio disabled on ext4:
->>>>     92378735
->>>> 2) large folio  enabled on ext4 +  CONTPTE enabled
->>>>     16164943
->>>> 3) large folio  enabled on ext4 +  CONTPTE disabled
->>>>     80364074
->>>> 4) large folio  enabled on ext4 +  CONTPTE enabled + large folio mapping
->>>> enabled
->>>> in finish_fault()[2]
->>>>     299656874
->>>>
->>>> We found *contpte_convert* consume lots of CPU(76%) in case 2),
->>>
->>> contpte_convert() is expensive and to be avoided; In this case I expect it is
->>> repainting the PTEs with the PTE_CONT bit added in, and to do that it needs to
->>> invalidate the tlb for the virtual range. The code is there to mop up user space
->>> patterns where each page in a range is temporarily made RO, then later changed
->>> back. In this case, we want to re-fold the contpte range once all pages have
->>> been serviced in RO mode.
->>>
->>> Of course this path is only intended as a fallback, and the more optimium
->>> approach is to set_ptes() the whole folio in one go where possible - kind of
->>> what you are doing below.
->>>
->>>> and disappeared
->>>> by following change[2], it is easy to understood the different between case 2)
->>>> and case 4) since case 2) always map one page
->>>> size, but always try to fold contpte mappings, which spend a lot of
->>>> time. Case 4) is a workaround, any other better suggestion?
->>>
->>> See below.
->>>
->>>>
->>>> Thanks.
->>>>
->>>> [1] https://github.com/antonblanchard/will-it-scale
->>>> [2] enable large folio mapping in finish_fault()
->>>>
->>>> diff --git a/mm/memory.c b/mm/memory.c
->>>> index 00728ea95583..5623a8ce3a1e 100644
->>>> --- a/mm/memory.c
->>>> +++ b/mm/memory.c
->>>> @@ -4880,7 +4880,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
->>>>           * approach also applies to non-anonymous-shmem faults to avoid
->>>>           * inflating the RSS of the process.
->>>>           */
->>>> -       if (!vma_is_anon_shmem(vma) || unlikely(userfaultfd_armed(vma))) {
->>>> +       if (unlikely(userfaultfd_armed(vma))) {
->>>
->>> The change to make finish_fault() handle multiple pages in one go are new; added
->>> by Baolin Wang at [1]. That extra conditional that you have removed is there to
->>> prevent RSS reporting bloat. See discussion that starts at [2].
->>>
->>> Anyway, it was my vague understanding that the fault around mechanism
->>> (do_fault_around()) would ensure that (by default) 64K worth of pages get mapped
->>> together in a single set_ptes() call, via filemap_map_pages() ->
->>> filemap_map_folio_range(). Looking at the code, I guess fault around only
->>> applies to read faults. This test is doing a write fault.
->>>
->>> I guess we need to do a change a bit like what you have done, but also taking
->>> into account fault_around configuration?
-> 
-> For the writable mmap() of tmpfs, we will use mTHP interface to control the size
-> of folio to allocate, as discussed in previous meeting [1], so I don't think
-> fault_around configuration will be helpful for tmpfs.
 
-Yes agreed. But we are talking about ext4 here.
 
-> 
-> For other filesystems, like ext4, I did not found the logic to determin what
-> size of folio to allocate in writable mmap() path 
+> On 22 Jun 2024, at 5:36=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> wr=
+ote:
+>=20
+> Hello,
+>=20
+> On Thu, Jun 20, 2024 at 09:01:01PM +0530, Athira Rajeev wrote:
+>>=20
+>>=20
+>>> On 14 Jun 2024, at 10:56=E2=80=AFPM, Athira Rajeev <atrajeev@linux.vnet=
+.ibm.com> wrote:
+>>>=20
+>>> The patchset from Namhyung added support for data type profiling
+>>> in perf tool. This enabled support to associate PMU samples to data
+>>> types they refer using DWARF debug information. With the upstream
+>>> perf, currently it possible to run perf report or perf annotate to
+>>> view the data type information on x86.
+>>>=20
+>>> Initial patchset posted here had changes need to enable data type
+>>> profiling support for powerpc.
+>>>=20
+>>> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgrou=
+p.eu/T/
+>>>=20
+>>> Main change were:
+>>> 1. powerpc instruction nmemonic table to associate load/store
+>>> instructions with move_ops which is use to identify if instruction
+>>> is a memory access one.
+>>> 2. To get register number and access offset from the given
+>>> instruction, code uses fields from "struct arch" -> objump.
+>>> Added entry for powerpc here.
+>>> 3. A get_arch_regnum to return register number from the
+>>> register name string.
+>>>=20
+>>> But the apporach used in the initial patchset used parsing of
+>>> disassembled code which the current perf tool implementation does.
+>>>=20
+>>> Example: lwz     r10,0(r9)
+>>>=20
+>>> This line "lwz r10,0(r9)" is parsed to extract instruction name,
+>>> registers names and offset. Also to find whether there is a memory
+>>> reference in the operands, "memory_ref_char" field of objdump is used.
+>>> For x86, "(" is used as memory_ref_char to tackle instructions of the
+>>> form "mov  (%rax), %rcx".
+>>>=20
+>>> In case of powerpc, not all instructions using "(" are the only memory
+>>> instructions. Example, above instruction can also be of extended form (X
+>>> form) "lwzx r10,0,r19". Inorder to easy identify the instruction catego=
+ry
+>>> and extract the source/target registers, second patchset added support =
+to use
+>>> raw instruction. With raw instruction, macros are added to extract opco=
+de
+>>> and register fields.
+>>> Link to second patchset:
+>>> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.=
+ibm.com/
+>>>=20
+>>> Example representation using --show-raw-insn in objdump gives result:
+>>>=20
+>>> 38 01 81 e8     ld      r4,312(r1)
+>>>=20
+>>> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
+>>> this translates to instruction form: "ld RT,DS(RA)" and binary code
+>>> as:
+>>> _____________________________________
+>>> | 58 |  RT  |  RA |      DS       | |
+>>> -------------------------------------
+>>> 0    6     11    16              30 31
+>>>=20
+>>> Second patchset used "objdump" again to read the raw instruction.
+>>> But since there is no need to disassemble and binary code can be read
+>>> directly from the DSO, third patchset (ie this patchset) uses below
+>>> apporach. The apporach preferred in powerpc to parse sample for data
+>>> type profiling in V3 patchset is:
+>>> - Read directly from DSO using dso__data_read_offset
+>>> - If that fails for any case, fallback to using libcapstone
+>>> - If libcapstone is not supported, approach will use objdump
+>>>=20
+>>> Patchset adds support to pick the opcode and reg fields from this
+>>> raw/binary instruction code. This approach came in from review comment
+>>> by Segher Boessenkool and Christophe for the initial patchset.
+>>>=20
+>>> Apart from that, instruction tracking is enabled for powerpc and
+>>> support function is added to find variables defined as registers
+>>> Example, in powerpc, below two registers are
+>>> defined to represent variable:
+>>> 1. r13: represents local_paca
+>>> register struct paca_struct *local_paca asm("r13");
+>>>=20
+>>> 2. r1: represents stack_pointer
+>>> register void *__stack_pointer asm("r1");
+>>>=20
+>>> These are handled in this patchset.
+>>>=20
+>>> - Patch 1 is to rearrange register state type structures to header file
+>>> so that it can referred from other arch specific files
+>>> - Patch 2 is to make instruction tracking as a callback to"struct arch"
+>>> so that it can be implemented by other archs easily and defined in arch
+>>> specific files
+>>> - Patch 3 adds support to capture and parse raw instruction in powerpc
+>>> using dso__data_read_offset utility
+>>> - Patch 4 adds logic to support using objdump when doing default "perf
+>>> report" or "perf annotate" since it that needs disassembled instruction.
+>>> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
+>>> - Patch 6 update parameters for reg extract functions to use raw
+>>> instruction on powerpc
+>>> - Patch 7 add support to identify memory instructions of opcode 31 in
+>>> powerpc
+>>> - Patch 8 adds more instructions to support instruction tracking in pow=
+erpc
+>>> - Patch 9 and 10 handles instruction tracking for powerpc.
+>>> - Patch 11, 12 and 13 add support to use libcapstone in powerpc
+>>> - Patch 14 and patch 15 handles support to find global register variabl=
+es
+>>> - Patch 16 handles insn-stat option for perf annotate
+>>>=20
+>>> Note:
+>>> - There are remaining unknowns (25%) as seen in annotate Instruction st=
+ats
+>>> below.
+>>> - This patchset is not tested on powerpc32. In next step of enhancements
+>>> along with handling remaining unknowns, plan to cover powerpc32 changes
+>>> based on how testing goes.
+>>>=20
+>>> With the current patchset:
+>>>=20
+>>> ./perf record -a -e mem-loads sleep 1
+>>> ./perf report -s type,typeoff --hierarchy --group --stdio
+>>> ./perf annotate --data-type --insn-stat
+>>>=20
+>>> perf annotate logs:
+>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>=20
+>>> Annotate Instruction stats
+>>> total 609, ok 446 (73.2%), bad 163 (26.8%)
+>>>=20
+>>> Name/opcode:  Good   Bad
+>>> -----------------------------------------------------------
+>>> 58                  :   323    80
+>>> 32                  :    49    43
+>>> 34                  :    33    11
+>>> OP_31_XOP_LDX       :     8    20
+>>> 40                  :    23     0
+>>> OP_31_XOP_LWARX     :     5     1
+>>> OP_31_XOP_LWZX      :     2     3
+>>> OP_31_XOP_LDARX     :     3     0
+>>> 33                  :     0     2
+>>> OP_31_XOP_LBZX      :     0     1
+>>> OP_31_XOP_LWAX      :     0     1
+>>> OP_31_XOP_LHZX      :     0     1
+>>>=20
+>>> perf report logs:
+>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>=20
+>>> Total Lost Samples: 0
+>>>=20
+>>> Samples: 1K of event 'mem-loads'
+>>> Event count (approx.): 937238
+>>>=20
+>>> Overhead  Data Type  Data Type Offset
+>>> ........  .........  ................
+>>>=20
+>>> 48.60%  (unknown)  (unknown) +0 (no field)
+>>> 12.85%  long unsigned int  long unsigned int +0 (current_stack_pointer)
+>>>  4.68%  struct paca_struct  struct paca_struct +2312 (__current)
+>>>  4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
+>>>  2.69%  struct paca_struct  struct paca_struct +2808 (canary)
+>>>  2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
+>>>  2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
+>>>  1.41%  struct vm_fault  struct vm_fault +0 (vma)
+>>>  1.29%  struct task_struct  struct task_struct +276 (flags)
+>>>  1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
+>>>  0.90%  struct security_hook_list  struct security_hook_list +0 (list.n=
+ext)
+>>>  0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
+>>>  0.76%  struct rq  struct rq +2856 (cpu)
+>>>=20
+>>> Thanks
+>>> Athira Rajeev
+>>=20
+>> Hi All
+>>=20
+>> Requesting for review comments for this patchset
+>=20
+> Sorry about the delay, I was traveling and busy with other things.
+> I'll review this next week!
 
-Yes I'd be keen to understand this to. When I was doing contpte, page cache
-would only allocate large folios for readahead. So that's why I wouldn't have
-seen this.
+Thanks Namhyung
+>=20
+> Thanks,
+> Namhyung
 
-> (Kefeng, please correct me if
-> I missed something). If there is a control like mTHP, we can rely on that
-> instead of 'fault_around'?
-
-Page cache doesn't currently expose any controls for folio allocation size.
-Personally, I'd like to see some in future becaudse I suspect it will be
-neccessary to limit physical fragmentation. But that is another conversation...
-
-> 
-> [1] https://lore.kernel.org/all/f1783ff0-65bd-4b2b-8952-52b6822a0835@redhat.com/
-> 
->> Yes, the current changes is not enough, I hint some issue and still debugging,
->> so our direction is trying to map large folio for do_shared_fault(), right?
-
-We just need to make sure that if finish_fault() has a (non-shmem) large folio,
-it never maps more than fault_around_pages, and it does it in a way that is
-naturally aligned in virtual space (like do_fault_around() does).
-do_fault_around() actually tries to get other folios from the page cache to map.
-We don't want to do that; we just want to make sure that we don't inflate a
-process's RSS by mapping unbounded large folios.
-
-Another (orthogonal, longer term) strategy would be to optimize
-contpte_convert(). arm64 has a feature called "BBM level 2"; we could
-potentially elide the TLBIs for systems that support this. But ultimately its
-best to avoid the need for folding in the first place.
-
-Thanks,
-Ryan
-
-> 
-> I think this is the right direction to do. I add this '!vma_is_anon_shmem(vma)'
-> conditon to gradually implement support for large folio mapping buidling,
-> especially for writable mmap() support in tmpfs.
-> 
->>> [1]
->>> https://lore.kernel.org/all/3a190892355989d42f59cf9f2f98b94694b0d24d.1718090413.git.baolin.wang@linux.alibaba.com/
->>> [2]
->>> https://lore.kernel.org/linux-mm/13939ade-a99a-4075-8a26-9be7576b7e03@arm.com/
->>>
->>>
->>>>                  nr_pages = 1;
->>>>          } else if (nr_pages > 1) {
->>>>                  pgoff_t idx = folio_page_idx(folio, page);
->>>>
->>>>
->>>> On 2024/2/15 18:32, Ryan Roberts wrote:
->>>>> There are situations where a change to a single PTE could cause the
->>>>> contpte block in which it resides to become foldable (i.e. could be
->>>>> repainted with the contiguous bit). Such situations arise, for example,
->>>>> when user space temporarily changes protections, via mprotect, for
->>>>> individual pages, such can be the case for certain garbage collectors.
->>>>>
->>>>> We would like to detect when such a PTE change occurs. However this can
->>>>> be expensive due to the amount of checking required. Therefore only
->>>>> perform the checks when an indiviual PTE is modified via mprotect
->>>>> (ptep_modify_prot_commit() -> set_pte_at() -> set_ptes(nr=1)) and only
->>>>> when we are setting the final PTE in a contpte-aligned block.
->>>>>
->>>>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
->>>>> ---
->>>>>    arch/arm64/include/asm/pgtable.h | 26 +++++++++++++
->>>>>    arch/arm64/mm/contpte.c          | 64 ++++++++++++++++++++++++++++++++
->>>>>    2 files changed, 90 insertions(+)
->>>>>
->>>>> diff --git a/arch/arm64/include/asm/pgtable.h
->>>>> b/arch/arm64/include/asm/pgtable.h
->>>>> index 8310875133ff..401087e8a43d 100644
->>>>> --- a/arch/arm64/include/asm/pgtable.h
->>>>> +++ b/arch/arm64/include/asm/pgtable.h
->>>>> @@ -1185,6 +1185,8 @@ extern void ptep_modify_prot_commit(struct
->>>>> vm_area_struct *vma,
->>>>>     * where it is possible and makes sense to do so. The PTE_CONT bit is
->>>>> considered
->>>>>     * a private implementation detail of the public ptep API (see below).
->>>>>     */
->>>>> +extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
->>>>> +                pte_t *ptep, pte_t pte);
->>>>>    extern void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
->>>>>                    pte_t *ptep, pte_t pte);
->>>>>    extern pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte);
->>>>> @@ -1206,6 +1208,29 @@ extern int contpte_ptep_set_access_flags(struct
->>>>> vm_area_struct *vma,
->>>>>                    unsigned long addr, pte_t *ptep,
->>>>>                    pte_t entry, int dirty);
->>>>>    +static __always_inline void contpte_try_fold(struct mm_struct *mm,
->>>>> +                unsigned long addr, pte_t *ptep, pte_t pte)
->>>>> +{
->>>>> +    /*
->>>>> +     * Only bother trying if both the virtual and physical addresses are
->>>>> +     * aligned and correspond to the last entry in a contig range. The core
->>>>> +     * code mostly modifies ranges from low to high, so this is the likely
->>>>> +     * the last modification in the contig range, so a good time to fold.
->>>>> +     * We can't fold special mappings, because there is no associated folio.
->>>>> +     */
->>>>> +
->>>>> +    const unsigned long contmask = CONT_PTES - 1;
->>>>> +    bool valign = ((addr >> PAGE_SHIFT) & contmask) == contmask;
->>>>> +
->>>>> +    if (unlikely(valign)) {
->>>>> +        bool palign = (pte_pfn(pte) & contmask) == contmask;
->>>>> +
->>>>> +        if (unlikely(palign &&
->>>>> +            pte_valid(pte) && !pte_cont(pte) && !pte_special(pte)))
->>>>> +            __contpte_try_fold(mm, addr, ptep, pte);
->>>>> +    }
->>>>> +}
->>>>> +
->>>>>    static __always_inline void contpte_try_unfold(struct mm_struct *mm,
->>>>>                    unsigned long addr, pte_t *ptep, pte_t pte)
->>>>>    {
->>>>> @@ -1286,6 +1311,7 @@ static __always_inline void set_ptes(struct mm_struct
->>>>> *mm, unsigned long addr,
->>>>>        if (likely(nr == 1)) {
->>>>>            contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
->>>>>            __set_ptes(mm, addr, ptep, pte, 1);
->>>>> +        contpte_try_fold(mm, addr, ptep, pte);
->>>>>        } else {
->>>>>            contpte_set_ptes(mm, addr, ptep, pte, nr);
->>>>>        }
->>>>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->>>>> index 50e0173dc5ee..16788f07716d 100644
->>>>> --- a/arch/arm64/mm/contpte.c
->>>>> +++ b/arch/arm64/mm/contpte.c
->>>>> @@ -73,6 +73,70 @@ static void contpte_convert(struct mm_struct *mm, unsigned
->>>>> long addr,
->>>>>        __set_ptes(mm, start_addr, start_ptep, pte, CONT_PTES);
->>>>>    }
->>>>>    +void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
->>>>> +            pte_t *ptep, pte_t pte)
->>>>> +{
->>>>> +    /*
->>>>> +     * We have already checked that the virtual and pysical addresses are
->>>>> +     * correctly aligned for a contpte mapping in contpte_try_fold() so the
->>>>> +     * remaining checks are to ensure that the contpte range is fully
->>>>> +     * covered by a single folio, and ensure that all the ptes are valid
->>>>> +     * with contiguous PFNs and matching prots. We ignore the state of the
->>>>> +     * access and dirty bits for the purpose of deciding if its a contiguous
->>>>> +     * range; the folding process will generate a single contpte entry which
->>>>> +     * has a single access and dirty bit. Those 2 bits are the logical OR of
->>>>> +     * their respective bits in the constituent pte entries. In order to
->>>>> +     * ensure the contpte range is covered by a single folio, we must
->>>>> +     * recover the folio from the pfn, but special mappings don't have a
->>>>> +     * folio backing them. Fortunately contpte_try_fold() already checked
->>>>> +     * that the pte is not special - we never try to fold special mappings.
->>>>> +     * Note we can't use vm_normal_page() for this since we don't have the
->>>>> +     * vma.
->>>>> +     */
->>>>> +
->>>>> +    unsigned long folio_start, folio_end;
->>>>> +    unsigned long cont_start, cont_end;
->>>>> +    pte_t expected_pte, subpte;
->>>>> +    struct folio *folio;
->>>>> +    struct page *page;
->>>>> +    unsigned long pfn;
->>>>> +    pte_t *orig_ptep;
->>>>> +    pgprot_t prot;
->>>>> +
->>>>> +    int i;
->>>>> +
->>>>> +    if (!mm_is_user(mm))
->>>>> +        return;
->>>>> +
->>>>> +    page = pte_page(pte);
->>>>> +    folio = page_folio(page);
->>>>> +    folio_start = addr - (page - &folio->page) * PAGE_SIZE;
->>>>> +    folio_end = folio_start + folio_nr_pages(folio) * PAGE_SIZE;
->>>>> +    cont_start = ALIGN_DOWN(addr, CONT_PTE_SIZE);
->>>>> +    cont_end = cont_start + CONT_PTE_SIZE;
->>>>> +
->>>>> +    if (folio_start > cont_start || folio_end < cont_end)
->>>>> +        return;
->>>>> +
->>>>> +    pfn = ALIGN_DOWN(pte_pfn(pte), CONT_PTES);
->>>>> +    prot = pte_pgprot(pte_mkold(pte_mkclean(pte)));
->>>>> +    expected_pte = pfn_pte(pfn, prot);
->>>>> +    orig_ptep = ptep;
->>>>> +    ptep = contpte_align_down(ptep);
->>>>> +
->>>>> +    for (i = 0; i < CONT_PTES; i++) {
->>>>> +        subpte = pte_mkold(pte_mkclean(__ptep_get(ptep)));
->>>>> +        if (!pte_same(subpte, expected_pte))
->>>>> +            return;
->>>>> +        expected_pte = pte_advance_pfn(expected_pte, 1);
->>>>> +        ptep++;
->>>>> +    }
->>>>> +
->>>>> +    pte = pte_mkcont(pte);
->>>>> +    contpte_convert(mm, addr, orig_ptep, pte);
->>>>> +}
->>>>> +EXPORT_SYMBOL(__contpte_try_fold);
->>>>> +
->>>>>    void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
->>>>>                pte_t *ptep, pte_t pte)
->>>>>    {
->>>
->>>
 
