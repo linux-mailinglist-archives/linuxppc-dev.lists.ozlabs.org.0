@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335CF916FAF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 20:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF36916FD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 20:06:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7t0P5hgNz3fnP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 04:00:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7t7m1RMTz3dVv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 04:06:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.175; helo=mail-pf1-f175.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.216.46; helo=mail-pj1-f46.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7szz22SNz3d2n
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 03:59:58 +1000 (AEST)
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7066cba4ebbso2251628b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 10:59:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7t7M5jhlz3cNc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 04:06:22 +1000 (AEST)
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2c825f0b381so3213183a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 11:06:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719338395; x=1719943195;
+        d=1e100.net; s=20230601; t=1719338781; x=1719943581;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f5PoShk9ER6oKuETO3bdJUevSzjYujmcfx3i8qQ0MKo=;
-        b=Gu4muWJwQogvOqvYKqgZGWqiBsFLYrIrkdAoRr1eR9ZCrkebewiiWNGFaG4yfveaDH
-         bFPKxF3ezORkhI+3oyEbuPtFpqKHIxK1qRQaz6URpkamcF6e2NAMxLGyrYm2nfFkJZ0Z
-         e27m64wu1a/l+HFiFqVsf0w5G5CDNuZ8ZFhL+i63JI/H6T/+uxzNQyyAsanRXIi2lyao
-         c0Kt1UxXr7OAUnqp+K/QzlrihbZBX/azK/86w0pobEqm+bduorWU1ZjwnBEFvek2a/DS
-         kdhXk/l62mOYD3mjBwnA+/d8sjDwx+08C49y0xpU8PdWbmSE+yrX0VAdQSSMouTemvn0
-         QFHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUP+7ySF/uhubsbfUgFxK/gD3tHUObkwf746LpC9eiOtxRbZCJAR66f18RrZ25iGMMXRm7dL2blQ3s7aXo/8X7WiFfSU0328J8v5yWzhg==
-X-Gm-Message-State: AOJu0YySpDc4NjyutWqpkMMqKkWC+bV6eJL3MwQ1Wd8PvnkRpk0qmB7J
-	elLgkvfPgiprCHbA86JtOYsIdPBGhF0cMqkaj9lUw0F20m3aMyMuacSukSpmaknmiNH4XF3ACKQ
-	bUR27REZIJPx0dffTk7YsMbxWqLk=
-X-Google-Smtp-Source: AGHT+IGG+13e+IM6YaHCDjgHhxzZwK9iqPFhSJtEBdaJ14Pj4FVkbJjvKOBZjXrBtApOOtBEaVA2FM1ujUiSxA6mseE=
-X-Received: by 2002:a05:6a20:7b1b:b0:1b5:5ee0:378a with SMTP id
- adf61e73a8af0-1bcee771ca1mr7839615637.36.1719338395163; Tue, 25 Jun 2024
- 10:59:55 -0700 (PDT)
+        bh=kYRoSYBMyUfFW3qOTYX0mms4VCXUWC1J1GTwb+UHwcs=;
+        b=e86MZJaGruascwh6yyWUH9KruSXkt5ymSjejekK7jEVYvGok8mamVXnC5uVVNkQKZe
+         ni+g8YZLGW+WVtj4G8jASY+NMOP7mlDHphvtgaA2HJp6DF7nJyp35yDmjy4dGWTGn4Fv
+         nAa47jcyCqhwZwq4lVbPFk2bTmvnXXNBrrRBM5DZjEKIbEpPhsmSPtXsKr1G1rWEY6Cb
+         Cqs/v7X3CyZuOGNlOMd/Pe6WSev7TOgfli8YmvW/0yaajm3PuxST5aTobBA0Cx/50oAO
+         cs3laBLTs02Ce9y9Z0jSVCtILr+mO4ZZvBFcI2ckKdLywfflAqtfjB4myF9hmMRFSRRi
+         Ewpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvQedSQbj5wAmajszRufLkXtzT8MJ0IKwkqgRKSVFa2VDRjAbyFDkED/mX/37D4UWoI88n3Dy6b3w3NnT1x6/gOaSSFy+/gvN4udQgHQ==
+X-Gm-Message-State: AOJu0YxwJvS8b0CZlbhhQJsmETZrAlhiP9IEBX+tbsnLj6Y62e6FJkhu
+	U9gD/7wEewaFaNL+0UhXSVsMVjrgaC4DSp/upGlOYU0IvgQhmK5mMQteqN2rGxC/ruqYXj9LlaK
+	O8LglJX1aKdZlG2N/HPwrLN8XTcc=
+X-Google-Smtp-Source: AGHT+IEnjRNws1Iz7snCymBOJS0N0HgLeEPogsPgzYspdRnnmFsVh0OjNbMFg0qf1poVQ28TQR5WihNyX3Us7XRjSXE=
+X-Received: by 2002:a17:90b:3616:b0:2c8:3f5:28ae with SMTP id
+ 98e67ed59e1d1-2c8504c7bdbmr7030880a91.4.1719338781055; Tue, 25 Jun 2024
+ 11:06:21 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240623064850.83720-1-atrajeev@linux.vnet.ibm.com>
- <722cb4bc-89d4-4e03-a80d-ffe05be52c05@intel.com> <f65ff3cf-1724-45a1-ad88-200d72251042@intel.com>
-In-Reply-To: <f65ff3cf-1724-45a1-ad88-200d72251042@intel.com>
+ <20240623064850.83720-2-atrajeev@linux.vnet.ibm.com> <536ccca7-278c-4d50-9c24-bf4409cd75dc@intel.com>
+In-Reply-To: <536ccca7-278c-4d50-9c24-bf4409cd75dc@intel.com>
 From: Namhyung Kim <namhyung@kernel.org>
-Date: Tue, 25 Jun 2024 10:59:44 -0700
-Message-ID: <CAM9d7ci2raJmUjb7X2m6O1mCJm5xYLEWS8g_gC7tTjvshm1XFQ@mail.gmail.com>
-Subject: Re: [PATCH V4 1/3] tools/perf: Fix the string match for
- "/tmp/perf-$PID.map" files in dso__load
+Date: Tue, 25 Jun 2024 11:06:10 -0700
+Message-ID: <CAM9d7chzgJXNDObXW2KVD7JALOh6C5ZbHw7cjuvfbaSNCtqqEw@mail.gmail.com>
+Subject: Re: [PATCH V4 2/3] tools/perf: Use is_perf_pid_map_name helper
+ function to check dso's of pattern /tmp/perf-%d.map
 To: Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -66,101 +66,64 @@ Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, kjain@linux
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
-
-On Tue, Jun 25, 2024 at 5:02=E2=80=AFAM Adrian Hunter <adrian.hunter@intel.=
+On Tue, Jun 25, 2024 at 5:03=E2=80=AFAM Adrian Hunter <adrian.hunter@intel.=
 com> wrote:
 >
-> On 25/06/24 14:57, Adrian Hunter wrote:
-> > On 23/06/24 09:48, Athira Rajeev wrote:
-> >> Perf test for perf probe of function from different CU fails
-> >> as below:
-> >>
-> >>      ./perf test -vv "test perf probe of function from different CU"
-> >>      116: test perf probe of function from different CU:
-> >>      --- start ---
-> >>      test child forked, pid 2679
-> >>      Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.Msa=
-7iy89bx/testfile
-> >>        Error: Failed to add events.
-> >>      --- Cleaning up ---
-> >>      "foo" does not hit any event.
-> >>        Error: Failed to delete events.
-> >>      ---- end(-1) ----
-> >>      116: test perf probe of function from different CU               =
-    : FAILED!
-> >>
-> >> The test does below to probe function "foo" :
-> >>
-> >>      # gcc -g -Og -flto -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7=
-/testfile-foo.c
-> >>      -o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
-> >>      # gcc -g -Og -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testf=
-ile-main.c
-> >>      -o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
-> >>      # gcc -g -Og -o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testf=
-ile
-> >>      /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
-> >>      /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
-> >>
-> >>      # ./perf probe -x /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/tes=
-tfile foo
-> >>      Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.Xni=
-NxNEVT7/testfile
-> >>         Error: Failed to add events.
-> >>
-> >> Perf probe fails to find symbol foo in the executable placed in
-> >> /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7
-> >>
-> >> Simple reproduce:
-> >>
-> >>  # mktemp -d /tmp/perf-checkXXXXXXXXXX
-> >>    /tmp/perf-checkcWpuLRQI8j
-> >>
-> >>  # gcc -g -o test test.c
-> >>  # cp test /tmp/perf-checkcWpuLRQI8j/
-> >>  # nm /tmp/perf-checkcWpuLRQI8j/test | grep foo
-> >>    00000000100006bc T foo
-> >>
-> >>  # ./perf probe -x /tmp/perf-checkcWpuLRQI8j/test foo
-> >>    Failed to find symbol foo in /tmp/perf-checkcWpuLRQI8j/test
-> >>       Error: Failed to add events.
-> >>
-> >> But it works with any files like /tmp/perf/test. Only for
-> >> patterns with "/tmp/perf-", this fails.
-> >>
-> >> Further debugging, commit 80d496be89ed ("perf report: Add support
-> >> for profiling JIT generated code") added support for profiling JIT
-> >> generated code. This patch handles dso's of form
-> >> "/tmp/perf-$PID.map" .
-> >>
-> >> The check used "if (strncmp(self->name, "/tmp/perf-", 10) =3D=3D 0)"
-> >> to match "/tmp/perf-$PID.map". With this commit, any dso in
-> >> /tmp/perf- folder will be considered separately for processing
-> >> (not only JIT created map files ). Fix this by changing the
-> >> string pattern to check for "/tmp/perf-%d.map". Add a helper
-> >> function is_perf_pid_map_name to do this check. In "struct dso",
-> >> dso->long_name holds the long name of the dso file. Since the
-> >> /tmp/perf-$PID.map check uses the complete name, use dso___long_name f=
-or
-> >> the string name.
-> >>
-> >> With the fix,
-> >>      # ./perf test "test perf probe of function from different CU"
-> >>      117: test perf probe of function from different CU               =
-    : Ok
-> >>
-> >> Signed-off-by: Athira Rajeev<atrajeev@linux.vnet.ibm.com>
+> On 23/06/24 09:48, Athira Rajeev wrote:
+> > commit 80d496be89ed ("perf report: Add support for profiling JIT
+> > generated code") added support for profiling JIT generated code.
+> > This patch handles dso's of form "/tmp/perf-$PID.map".
 > >
-> > Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+> > Some of the references doesn't check exactly for same pattern.
+> > some uses "if (!strncmp(dso_name, "/tmp/perf-", 10))". Fix
+> > this by using helper function perf_pid_map_tid and
+> > is_perf_pid_map_name which looks for proper pattern of
+> > form: "/tmp/perf-$PID.map" for these checks.
 > >
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 >
-> Although it could use a Fixes tag
+> Add a Fixes tag, then
 >
+> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Thanks, I will add
-
-Fixes: 56cbeacf1435 ("perf probe: Add test for regression introduced
-by switch to die_get_decl_file()")
+Thanks, but I'm not sure which commit I can add the Fixes tag because
+the original commit 80d496be89ed is too old and I'm sure we added a
+lot of changes after that.
 
 Namhyung
+
+
+>
+> > ---
+> >  tools/perf/util/dsos.c    | 2 +-
+> >  tools/perf/util/srcline.c | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/tools/perf/util/dsos.c b/tools/perf/util/dsos.c
+> > index ab3d0c01dd63..846828ea1f00 100644
+> > --- a/tools/perf/util/dsos.c
+> > +++ b/tools/perf/util/dsos.c
+> > @@ -275,7 +275,7 @@ static void dso__set_basename(struct dso *dso)
+> >       char *base, *lname;
+> >       int tid;
+> >
+> > -     if (sscanf(dso__long_name(dso), "/tmp/perf-%d.map", &tid) =3D=3D =
+1) {
+> > +     if (perf_pid_map_tid(dso__long_name(dso), &tid)) {
+> >               if (asprintf(&base, "[JIT] tid %d", tid) < 0)
+> >                       return;
+> >       } else {
+> > diff --git a/tools/perf/util/srcline.c b/tools/perf/util/srcline.c
+> > index 9d670d8c1c08..51eb78993fe2 100644
+> > --- a/tools/perf/util/srcline.c
+> > +++ b/tools/perf/util/srcline.c
+> > @@ -39,7 +39,7 @@ static const char *srcline_dso_name(struct dso *dso)
+> >       if (dso_name[0] =3D=3D '[')
+> >               return NULL;
+> >
+> > -     if (!strncmp(dso_name, "/tmp/perf-", 10))
+> > +     if (is_perf_pid_map_name(dso_name))
+> >               return NULL;
+> >
+> >       return dso_name;
+>
