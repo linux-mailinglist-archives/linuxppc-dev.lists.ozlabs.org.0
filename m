@@ -1,34 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD35916930
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 15:42:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224669169D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 16:07:43 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=b3anXdf6;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7mGf6ZcFz3g1Z
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 23:42:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7mqv52SCz3fq0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 00:07:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7mGG0jy9z3fr4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 23:41:55 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FE35339;
-	Tue, 25 Jun 2024 06:41:48 -0700 (PDT)
-Received: from [10.1.39.170] (XHFQ2J9959.cambridge.arm.com [10.1.39.170])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 367FF3F73B;
-	Tue, 25 Jun 2024 06:41:20 -0700 (PDT)
-Message-ID: <dbeb71ca-8aba-4aed-9123-c4d07c3da004@arm.com>
-Date: Tue, 25 Jun 2024 14:41:18 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=b3anXdf6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7mq83PtMz3dvs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 00:07:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=hGiPM6C5L/nRqsdu3jq0C7CbnwzvLeffETFeFxTX0+E=; b=b3anXdf6y1JVACdaTmYa87Qdwz
+	IXn7N2bJIfzk9KNwWXeg8tumh7lqXZTBdx3GEINGv9BNJyMrvBKM/tmlyIK+vjWWO7lMBqI2/gW4N
+	XQP8c9u0eYpqkmTL11wjuLbSi2rQCqK2/qoiw2rq7DlGfa9/ApwsOpqEbj3j0JZ+Uy58IC72wpm44
+	RVUjYWXi/WdkaINNa8n4X8Kgwq91tskrXsMl9afIlOrW59G3xNzWOCh56uVJUJram+C2/i0JjGNRT
+	VvpU11sKddLUsxQfVklfujUBPT4Ny+My7k0dM+8H17DBjtzWVsKSKnjwEbtWus2udI+8mjTe8+C63
+	EkRPsf+A==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sM6oT-0000000BCMT-2TZf;
+	Tue, 25 Jun 2024 14:06:25 +0000
+Date: Tue, 25 Jun 2024 15:06:25 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
 Subject: Re: [PATCH v6 18/18] arm64/mm: Automatically fold contpte mappings
-Content-Language: en-GB
-To: Matthew Wilcox <willy@infradead.org>
-References: <20240215103205.2607016-1-ryan.roberts@arm.com>
- <20240215103205.2607016-19-ryan.roberts@arm.com>
+Message-ID: <ZnrO4clYoEH_67Ur@casper.infradead.org>
+References: <20240215103205.2607016-19-ryan.roberts@arm.com>
  <1285eb59-fcc3-4db8-9dd9-e7c4d82b1be0@huawei.com>
  <8d57ed0d-fdd0-4fc6-b9f1-a6ac11ce93ce@arm.com>
  <018b5e83-789e-480f-82c8-a64515cdd14a@huawei.com>
@@ -37,10 +50,11 @@ References: <20240215103205.2607016-1-ryan.roberts@arm.com>
  <43a5986a-52ea-4090-9333-90af137a4735@linux.alibaba.com>
  <306874fe-9bc1-4dec-a856-0125e4541971@arm.com>
  <ZnrAzjm5Fqg0d1CL@casper.infradead.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <ZnrAzjm5Fqg0d1CL@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <dbeb71ca-8aba-4aed-9123-c4d07c3da004@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbeb71ca-8aba-4aed-9123-c4d07c3da004@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,46 +70,61 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/06/2024 14:06, Matthew Wilcox wrote:
-> On Tue, Jun 25, 2024 at 01:41:02PM +0100, Ryan Roberts wrote:
->> On 25/06/2024 13:37, Baolin Wang wrote:
->>
->> [...]
->>
->>>>> For other filesystems, like ext4, I did not found the logic to determin what
->>>>> size of folio to allocate in writable mmap() path
->>>>
->>>> Yes I'd be keen to understand this to. When I was doing contpte, page cache
->>>> would only allocate large folios for readahead. So that's why I wouldn't have
->>>
->>> You mean non-large folios, right?
->>
->> No I mean that at the time I wrote contpte, the policy was to allocate an
->> order-0 folio for any writes that missed in the page cache, and allocate large
->> folios only when doing readahead from storage into page cache. The test that is
->> regressing is doing writes.
+On Tue, Jun 25, 2024 at 02:41:18PM +0100, Ryan Roberts wrote:
+> On 25/06/2024 14:06, Matthew Wilcox wrote:
+> > On Tue, Jun 25, 2024 at 01:41:02PM +0100, Ryan Roberts wrote:
+> >> On 25/06/2024 13:37, Baolin Wang wrote:
+> >>
+> >> [...]
+> >>
+> >>>>> For other filesystems, like ext4, I did not found the logic to determin what
+> >>>>> size of folio to allocate in writable mmap() path
+> >>>>
+> >>>> Yes I'd be keen to understand this to. When I was doing contpte, page cache
+> >>>> would only allocate large folios for readahead. So that's why I wouldn't have
+> >>>
+> >>> You mean non-large folios, right?
+> >>
+> >> No I mean that at the time I wrote contpte, the policy was to allocate an
+> >> order-0 folio for any writes that missed in the page cache, and allocate large
+> >> folios only when doing readahead from storage into page cache. The test that is
+> >> regressing is doing writes.
+> > 
+> > mmap() faults also use readahead.
+> > 
+> > filemap_fault():
+> > 
+> >         folio = filemap_get_folio(mapping, index);
+> >         if (likely(!IS_ERR(folio))) {
+> >                 if (!(vmf->flags & FAULT_FLAG_TRIED))
+> >                         fpin = do_async_mmap_readahead(vmf, folio);
+> > which does:
+> >         if (folio_test_readahead(folio)) {
+> >                 fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> >                 page_cache_async_ra(&ractl, folio, ra->ra_pages);
+> > 
+> > which has been there in one form or another since 2007 (3ea89ee86a82).
 > 
-> mmap() faults also use readahead.
-> 
-> filemap_fault():
-> 
->         folio = filemap_get_folio(mapping, index);
->         if (likely(!IS_ERR(folio))) {
->                 if (!(vmf->flags & FAULT_FLAG_TRIED))
->                         fpin = do_async_mmap_readahead(vmf, folio);
-> which does:
->         if (folio_test_readahead(folio)) {
->                 fpin = maybe_unlock_mmap_for_io(vmf, fpin);
->                 page_cache_async_ra(&ractl, folio, ra->ra_pages);
-> 
-> which has been there in one form or another since 2007 (3ea89ee86a82).
+> OK sounds like I'm probably misremembering something I read on LWN... You're
+> saying that its been the case for a while that if we take a write fault for a
+> portion of a file, then we will still end up taking the readahead path and
+> allocating a large folio (filesystem permitting)? Does that apply in the case
+> where the file has never been touched but only ftruncate'd, as is happening in
+> this test? There is obviously no need for IO in that case, but have we always
+> taken a path where a large folio may be allocated for it? I thought that bit was
+> newer for some reason.
 
-OK sounds like I'm probably misremembering something I read on LWN... You're
-saying that its been the case for a while that if we take a write fault for a
-portion of a file, then we will still end up taking the readahead path and
-allocating a large folio (filesystem permitting)? Does that apply in the case
-where the file has never been touched but only ftruncate'd, as is happening in
-this test? There is obviously no need for IO in that case, but have we always
-taken a path where a large folio may be allocated for it? I thought that bit was
-newer for some reason.
+The pagecache doesn't know whether the file contains data or holes.
+It allocates folios and then invites the filesystem to fill them; the
+filesystem checks its data structures and then either issues reads if
+there's data on media or calls memset if the records indicate there's
+a hole.
 
+Whether it chooses to allocate large folios or not is going to depend
+on the access pattern; a sequential write pattern will use large folios
+and a random write pattern won't.
+
+Now, I've oversimplified things a bit by talking about filemap_fault.
+Before we call filemap_fault, we call filemap_map_pages() which looks
+for any suitable folios in the page cache between start and end, and
+maps those.
