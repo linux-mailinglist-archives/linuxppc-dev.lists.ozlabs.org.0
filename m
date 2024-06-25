@@ -2,53 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50868915E9C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 08:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3351915EB9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 08:12:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AsFFYSSc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=jN5YAsBX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W7ZCg6SmKz3cB7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 16:09:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W7ZJ23BLNz3dKS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jun 2024 16:12:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AsFFYSSc;
+	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=jN5YAsBX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7ZBz6Hstz3clw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 16:08:27 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id CCBA860B3E;
-	Tue, 25 Jun 2024 06:08:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4FAC32781;
-	Tue, 25 Jun 2024 06:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719295706;
-	bh=YheT6XJSWxvWrGdd5p4tPW/TvajXMH7U/RKaMngpCVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AsFFYSSciGejWlKLPd4AbBx3lCvglTbstX2jHmJvXGFivhXGcJYCY3RPuuCf+N4yb
-	 T/KuXzTpZqiNZc74T/1uxVledlF7yjUeBhY5dSjJc62oHf8T8HsM1IuRgknTc8UPY6
-	 YQoWIVysu4caN2Qp0otVDGZY5MU3lP0Wxk0qoVI8Q5yqnmHEGuOKXkB6aaMDpbaNJa
-	 NFjR6X9HlWkYIPF0VjeC/NoOU7WM9J9M7gPAPYmiqVaTApB0cDa+/fmNhJ+UTuSSOD
-	 BNQBrXPfMtHLk+aICWaV7AHEvD86PIPq4plDvYtq4N/9YD7ZBl9DxJzTP8ei9L5GLI
-	 37en2YdMNKbQg==
-Date: Mon, 24 Jun 2024 23:08:24 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [V4 13/16] tools/perf: Add support to use libcapstone in powerpc
-Message-ID: <Znpe2BHCUXvfR5Bk@google.com>
-References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
- <20240614172631.56803-14-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W7ZHK1Qbhz2xPZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 16:12:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QR3y2Y/czPDzz8uhrOTX+qZKGKnv9qtlOLRYnVuIPwY=; t=1719295934; x=1719900734; 
+	b=jN5YAsBXLOCmolEWO5Dol85XOTukS9SqItT6JiSmBH4sVOZxHVFjOlWVO2NKe733/xGNNTCEjP+
+	gfZiQFhKy6emvLnqLFTWST0A4C7qirxScufUqM2zvl9J+9bByIYeX0nrZ8ka3mHBWINZeipI4TP/A
+	gjJM4oPJ7HyAFilPANkO5NQ548EaCpe5Gtkc8JKXxzKzIY5g5epJGVc7DaNk4H6kTknhMeV/PFmVX
+	SkQ+7PPSu5GRvd1a/qiRDIcKlrjFNRnienoYJ9Dfi0HfQgu+KqBnJ1MHf91/Ad1zqfnZtQWLE3JOd
+	igxOM5RzD2tSSG8x/eWPYkXK8CiYTB1Q9AEQ==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.97)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1sLzPJ-00000002pcY-2WGY; Tue, 25 Jun 2024 08:11:58 +0200
+Received: from p5b13a475.dip0.t-ipconnect.de ([91.19.164.117] helo=[192.168.178.20])
+          by inpost2.zedat.fu-berlin.de (Exim 4.97)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1sLzPJ-00000001jTk-3HF5; Tue, 25 Jun 2024 08:11:57 +0200
+Message-ID: <b7e20a2dbf5bad8cae0227644b2f78531dd6ef5a.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v2 08/13] sh: rework sync_file_range ABI
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Tue, 25 Jun 2024 08:11:56 +0200
+In-Reply-To: <20240624163707.299494-9-arnd@kernel.org>
+References: <20240624163707.299494-1-arnd@kernel.org>
+	 <20240624163707.299494-9-arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240614172631.56803-14-atrajeev@linux.vnet.ibm.com>
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.164.117
+X-ZEDAT-Hint: PO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,197 +74,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, acme@kernel.org, jolsa@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, Guo Ren <guoren@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, linux-csky@vger.kernel.org, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, musl@lists.openwall.com, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Brian Cain <bcain@quicinc.com>, Christian Brauner <brauner@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, libc-alpha@sourceware.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, stable@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 14, 2024 at 10:56:28PM +0530, Athira Rajeev wrote:
-> Now perf uses the capstone library to disassemble the instructions in
-> x86. capstone is used (if available) for perf annotate to speed up.
-> Currently it only supports x86 architecture. Patch includes changes to
-> enable this in powerpc. For now, only for data type sort keys, this
-> method is used and only binary code (raw instruction) is read. This is
-> because powerpc approach to understand instructions and reg fields uses
-> raw instruction. The "cs_disasm" is currently not enabled. While
-> attempting to do cs_disasm, observation is that some of the instructions
-> were not identified (ex: extswsli, maddld) and it had to fallback to use
-> objdump. Hence enabling "cs_disasm" is added in comment section as a
-> TODO for powerpc.
-
-Well.. I'm not sure if I understand it correctly but it seems this
-function effectively does nothing more than the raw disassemble.
-Can we simply drop this patch for now?  Or did I miss something?
-
-Thanks,
-Namhyung
-
-> 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+On Mon, 2024-06-24 at 18:37 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> The unusual function calling conventions on SuperH ended up causing
+> sync_file_range to have the wrong argument order, with the 'flags'
+> argument getting sorted before 'nbytes' by the compiler.
+>=20
+> In userspace, I found that musl, glibc, uclibc and strace all expect the
+> normal calling conventions with 'nbytes' last, so changing the kernel
+> to match them should make all of those work.
+>=20
+> In order to be able to also fix libc implementations to work with existin=
+g
+> kernels, they need to be able to tell which ABI is used. An easy way
+> to do this is to add yet another system call using the sync_file_range2
+> ABI that works the same on all architectures.
+>=20
+> Old user binaries can now work on new kernels, and new binaries can
+> try the new sync_file_range2() to work with new kernels or fall back
+> to the old sync_file_range() version if that doesn't exist.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
->  tools/perf/util/disasm.c | 143 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 143 insertions(+)
-> 
-> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-> index 43743ca4bdc9..987bff9f71c3 100644
-> --- a/tools/perf/util/disasm.c
-> +++ b/tools/perf/util/disasm.c
-> @@ -1592,6 +1592,144 @@ static void print_capstone_detail(cs_insn *insn, char *buf, size_t len,
->  	}
+>  arch/sh/kernel/sys_sh32.c           | 11 +++++++++++
+>  arch/sh/kernel/syscalls/syscall.tbl |  3 ++-
+>  2 files changed, 13 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
+> index 9dca568509a5..d6f4afcb0e87 100644
+> --- a/arch/sh/kernel/sys_sh32.c
+> +++ b/arch/sh/kernel/sys_sh32.c
+> @@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u32 of=
+fset0, u32 offset1,
+>  				 (u64)len0 << 32 | len1, advice);
+>  #endif
 >  }
->  
-> +static int symbol__disassemble_capstone_powerpc(char *filename, struct symbol *sym,
-> +					struct annotate_args *args)
+> +
+> +/*
+> + * swap the arguments the way that libc wants them instead of
+> + * moving flags ahead of the 64-bit nbytes argument
+> + */
+> +SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
+> +                SC_ARG64(nbytes), unsigned int, flags)
 > +{
-> +	struct annotation *notes = symbol__annotation(sym);
-> +	struct map *map = args->ms.map;
-> +	struct dso *dso = map__dso(map);
-> +	struct nscookie nsc;
-> +	u64 start = map__rip_2objdump(map, sym->start);
-> +	u64 end = map__rip_2objdump(map, sym->end);
-> +	u64 len = end - start;
-> +	u64 offset;
-> +	int i, fd, count;
-> +	bool is_64bit = false;
-> +	bool needs_cs_close = false;
-> +	u8 *buf = NULL;
-> +	struct find_file_offset_data data = {
-> +		.ip = start,
-> +	};
-> +	csh handle;
-> +	char disasm_buf[512];
-> +	struct disasm_line *dl;
-> +	u32 *line;
-> +	bool disassembler_style = false;
-> +
-> +	if (args->options->objdump_path)
-> +		return -1;
-> +
-> +	nsinfo__mountns_enter(dso->nsinfo, &nsc);
-> +	fd = open(filename, O_RDONLY);
-> +	nsinfo__mountns_exit(&nsc);
-> +	if (fd < 0)
-> +		return -1;
-> +
-> +	if (file__read_maps(fd, /*exe=*/true, find_file_offset, &data,
-> +			    &is_64bit) == 0)
-> +		goto err;
-> +
-> +	if (!args->options->disassembler_style ||
-> +			!strcmp(args->options->disassembler_style, "att"))
-> +		disassembler_style = true;
-> +
-> +	if (capstone_init(maps__machine(args->ms.maps), &handle, is_64bit, disassembler_style) < 0)
-> +		goto err;
-> +
-> +	needs_cs_close = true;
-> +
-> +	buf = malloc(len);
-> +	if (buf == NULL)
-> +		goto err;
-> +
-> +	count = pread(fd, buf, len, data.offset);
-> +	close(fd);
-> +	fd = -1;
-> +
-> +	if ((u64)count != len)
-> +		goto err;
-> +
-> +	line = (u32 *)buf;
-> +
-> +	/* add the function address and name */
-> +	scnprintf(disasm_buf, sizeof(disasm_buf), "%#"PRIx64" <%s>:",
-> +		  start, sym->name);
-> +
-> +	args->offset = -1;
-> +	args->line = disasm_buf;
-> +	args->line_nr = 0;
-> +	args->fileloc = NULL;
-> +	args->ms.sym = sym;
-> +
-> +	dl = disasm_line__new(args);
-> +	if (dl == NULL)
-> +		goto err;
-> +
-> +	annotation_line__add(&dl->al, &notes->src->source);
-> +
-> +	/*
-> +	 * TODO: enable disassm for powerpc
-> +	 * count = cs_disasm(handle, buf, len, start, len, &insn);
-> +	 *
-> +	 * For now, only binary code is saved in disassembled line
-> +	 * to be used in "type" and "typeoff" sort keys. Each raw code
-> +	 * is 32 bit instruction. So use "len/4" to get the number of
-> +	 * entries.
-> +	 */
-> +	count = len/4;
-> +
-> +	for (i = 0, offset = 0; i < count; i++) {
-> +		args->offset = offset;
-> +		sprintf(args->line, "%x", line[i]);
-> +
-> +		dl = disasm_line__new(args);
-> +		if (dl == NULL)
-> +			goto err;
-> +
-> +		annotation_line__add(&dl->al, &notes->src->source);
-> +
-> +		offset += 4;
-> +	}
-> +
-> +	/* It failed in the middle */
-> +	if (offset != len) {
-> +		struct list_head *list = &notes->src->source;
-> +
-> +		/* Discard all lines and fallback to objdump */
-> +		while (!list_empty(list)) {
-> +			dl = list_first_entry(list, struct disasm_line, al.node);
-> +
-> +			list_del_init(&dl->al.node);
-> +			disasm_line__free(dl);
-> +		}
-> +		count = -1;
-> +	}
-> +
-> +out:
-> +	if (needs_cs_close)
-> +		cs_close(&handle);
-> +	free(buf);
-> +	return count < 0 ? count : 0;
-> +
-> +err:
-> +	if (fd >= 0)
-> +		close(fd);
-> +	if (needs_cs_close) {
-> +		struct disasm_line *tmp;
-> +
-> +		/*
-> +		 * It probably failed in the middle of the above loop.
-> +		 * Release any resources it might add.
-> +		 */
-> +		list_for_each_entry_safe(dl, tmp, &notes->src->source, al.node) {
-> +			list_del(&dl->al.node);
-> +			free(dl);
-> +		}
-> +	}
-> +	count = -1;
-> +	goto out;
+> +        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
+> +                                    SC_VAL64(loff_t, nbytes), flags);
 > +}
-> +
->  static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
->  					struct annotate_args *args)
->  {
-> @@ -1949,6 +2087,11 @@ int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
->  			err = symbol__disassemble_dso(symfs_filename, sym, args);
->  			if (err == 0)
->  				goto out_remove_tmp;
-> +#ifdef HAVE_LIBCAPSTONE_SUPPORT
-> +			err = symbol__disassemble_capstone_powerpc(symfs_filename, sym, args);
-> +			if (err == 0)
-> +				goto out_remove_tmp;
-> +#endif
->  		}
->  	}
->  
-> -- 
-> 2.43.0
-> 
+> diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscall=
+s/syscall.tbl
+> index bbf83a2db986..c55fd7696d40 100644
+> --- a/arch/sh/kernel/syscalls/syscall.tbl
+> +++ b/arch/sh/kernel/syscalls/syscall.tbl
+> @@ -321,7 +321,7 @@
+>  311	common	set_robust_list			sys_set_robust_list
+>  312	common	get_robust_list			sys_get_robust_list
+>  313	common	splice				sys_splice
+> -314	common	sync_file_range			sys_sync_file_range
+> +314	common	sync_file_range			sys_sh_sync_file_range6
+>  315	common	tee				sys_tee
+>  316	common	vmsplice			sys_vmsplice
+>  317	common	move_pages			sys_move_pages
+> @@ -395,6 +395,7 @@
+>  385	common	pkey_alloc			sys_pkey_alloc
+>  386	common	pkey_free			sys_pkey_free
+>  387	common	rseq				sys_rseq
+> +388	common	sync_file_range2		sys_sync_file_range2
+>  # room for arch specific syscalls
+>  393	common	semget				sys_semget
+>  394	common	semctl				sys_semctl
+
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
