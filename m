@@ -2,68 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8709991755F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 03:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD39917589
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 03:24:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hzUY8zK2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Yrxq8kvf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W83Jj0dDjz3fmg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 11:00:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W83rM1X9xz3dvs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 11:24:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hzUY8zK2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Yrxq8kvf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W83Hz49Lsz3cXW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 10:59:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719363570; x=1750899570;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=s/ibK2QeJ7oTz48E59DL71I9DousxuEFFP4DyX5K61s=;
-  b=hzUY8zK2v+4Sjv7bNoac3HddUiNQp4YOWFph0BaafK1sozFEkXMFainj
-   cVfnHpgNQLjzw82lGIsV5yAaE9gVZGS8oLAS0JffZMSY8kXZx9GigZtWj
-   yEecEsyYRPkown4RP8t0PaBjqipXAZRz54B17uC1Xiag1gXyQfGslP5OF
-   kN0g2iOW8XCfxbQDrbGi6EBLGZitBtrQK1B5DtDLWTVa1GQEzA3L6q3Cg
-   LRg3rV5WtMacMOLZEMrpF4/M1hQ0YVSkN2qwpzdrGgem3QPRZNZ/IQwxr
-   nx/nZdoFwkCOBEFowH4vjO6oAqnpdErBuS+3jQPwFnVm2r2ufhf8ODpBm
-   w==;
-X-CSE-ConnectionGUID: VvvNv2nLSBm670g5Cu13dQ==
-X-CSE-MsgGUID: 1wFC9qPhQBut1cxELCQjBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="16240160"
-X-IronPort-AV: E=Sophos;i="6.08,265,1712646000"; 
-   d="scan'208";a="16240160"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 17:59:09 -0700
-X-CSE-ConnectionGUID: PwJXSTC/QWeIjaN3/nr85w==
-X-CSE-MsgGUID: qwQ463bzQZuhnMHlZyujTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,265,1712646000"; 
-   d="scan'208";a="81366230"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 25 Jun 2024 17:59:06 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sMH02-000ErM-38;
-	Wed, 26 Jun 2024 00:59:02 +0000
-Date: Wed, 26 Jun 2024 08:58:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
-Subject: Re: [PATCH 2/3] powerpc/pseries: Export hardware trace macro dump
- via debugfs
-Message-ID: <202406260849.z8VoytFS-lkp@intel.com>
-References: <20240620174614.53751-2-maddy@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240620174614.53751-2-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W83qf26PRz3ck2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 11:23:24 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1f9b523a15cso531405ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 18:23:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719364998; x=1719969798; darn=lists.ozlabs.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G4B0rJOt+TwGvnGU5npNqzbhof2wF8oGmpu7vqDya1w=;
+        b=Yrxq8kvf8IQD8rqZvDM1nnrfAFDg9oaC9tM2OKcgEfT5RpTLv4A4UkpzfyxZSsXQzP
+         WrgQD7HkG/cyjaW9plOjJTn7F3AM3m9QFCFlpvwOljlArafzVwQ4sP4Wy8lHT3fKK2ps
+         BPqdT6M4+ojnksI8oyM4uaUu1Iw4P8iuUv/wFPtGrC3B/n1TwR8RXGQgZRW00JU1Pj+K
+         oWUpZwbK66jSb9m5saDjIRNGSO5O1v6Pkl1y1/T+G3qvmykSYJJatjcojb26GJKP18zi
+         dEf6VGbfRGVKMYkBTxIpFc7eSrlM1mLRoNEiXGa2y/4OmiGUtBYnht8/M/IyYal8V4nJ
+         mNjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719364998; x=1719969798;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=G4B0rJOt+TwGvnGU5npNqzbhof2wF8oGmpu7vqDya1w=;
+        b=d31+7ZfHPzJQrMEQqOWwPY32KfM89tU1HbZgfvN94El72Qm5iaxXwHW9aCXq2L8lvT
+         w6JIET0wSnWbPgzX4W69hNebe0IjLThHUc5wA4The3eyTRL0Z35qKTUkSyaJBnO11+J8
+         XjaRX3uzu5G+sav/noAWZMfZiap3fqws84um6bXtGdukNTfRTogh0Z9+EbxITE3bjokv
+         LdS92EUk3NqtOw9yg4C7bp/p17up6YoFHcTPqbyWcsYt1oCWpXMhGIjQzqZx27q+TUkF
+         h3pp1htO0MisXlYtvtQ2C/+WGUj4W/masjxcCoQDbn+NscHpM4hjPA5Zq8pGpj+7gBTl
+         /07g==
+X-Forwarded-Encrypted: i=1; AJvYcCVyTHOK/tLgfkVUy7nM53za2JuQsssSeV0MxOiX1KPVbG9aOPzqVYa0Z+HHaWGWdJVL1L1Mm5cEFCrZL0sxXRx5xLniSbCTgCi8V80M5w==
+X-Gm-Message-State: AOJu0YxKpBvWabd6xa2zKBSfErLsoO/8J9a0D2WbRxBWoqAT+5S9iDZo
+	xw2vFBqTt9JWw7NbRAbGnjvCxV10r+jrbexlNb1PblimxQos6woK
+X-Google-Smtp-Source: AGHT+IEqVqDw1A2NGO/alG4xT0pZfiNKGUIkmcWKhLu+8DBykPZWCX+p598Z0xCi0cvGZzLtolmp2Q==
+X-Received: by 2002:a17:902:7441:b0:1f4:a04e:8713 with SMTP id d9443c01a7336-1fa5e6bde38mr60633605ad.28.1719364997855;
+        Tue, 25 Jun 2024 18:23:17 -0700 (PDT)
+Received: from localhost (118-211-5-80.tpgi.com.au. [118.211.5.80])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb3c5d29sm87734655ad.154.2024.06.25.18.23.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jun 2024 18:23:17 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Jun 2024 11:23:11 +1000
+Message-Id: <D29K0SVIUJDR.2HQTLIJG4R7VG@gmail.com>
+To: "LEROY Christophe" <christophe.leroy2@cs-soprasteria.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Peter Xu" <peterx@redhat.com>, "Oscar Salvador" <osalvador@suse.de>,
+ "Michael Ellerman" <mpe@ellerman.id.au>
+Subject: Re: [PATCH v6 21/23] powerpc/64s: Use contiguous PMD/PUD instead of
+ HUGEPD
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.17.0
+References: <cover.1719240269.git.christophe.leroy@csgroup.eu>
+ <23f3fe9e8fe37cb164a369850d4569dddf359fdf.1719240269.git.christophe.leroy@csgroup.eu> <D28TSEV6QV38.2NWPFRY8KCQK7@gmail.com> <a8f76535-2d5a-4f25-83be-31aab1cd38c4@cs-soprasteria.com>
+In-Reply-To: <a8f76535-2d5a-4f25-83be-31aab1cd38c4@cs-soprasteria.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,84 +86,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, npiggin@gmail.com, Madhavan Srinivasan <maddy@linux.ibm.com>, christophe.leroy@csgroup.eu, oe-kbuild-all@lists.linux.dev, naveen.n.rao@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Madhavan,
+On Tue Jun 25, 2024 at 3:20 PM AEST, LEROY Christophe wrote:
+>
+>
+> Le 25/06/2024 =C3=A0 06:49, Nicholas Piggin a =C3=A9crit=C2=A0:
+> > On Tue Jun 25, 2024 at 12:45 AM AEST, Christophe Leroy wrote:
+> >> On book3s/64, the only user of hugepd is hash in 4k mode.
+> >>
+> >> All other setups (hash-64, radix-4, radix-64) use leaf PMD/PUD.
+> >>
+> >> Rework hash-4k to use contiguous PMD and PUD instead.
+> >>
+> >> In that setup there are only two huge page sizes: 16M and 16G.
+> >>
+> >> 16M sits at PMD level and 16G at PUD level.
+> >>
+> >> pte_update doesn't know page size, lets use the same trick as
+> >> hpte_need_flush() to get page size from segment properties. That's
+> >> not the most efficient way but let's do that until callers of
+> >> pte_update() provide page size instead of just a huge flag.
+> >>
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >=20
+> > [snip]
+> >=20
+> >> +static inline unsigned long hash__pte_update(struct mm_struct *mm,
+> >> +					 unsigned long addr,
+> >> +					 pte_t *ptep, unsigned long clr,
+> >> +					 unsigned long set,
+> >> +					 int huge)
+> >> +{
+> >> +	unsigned long old;
+> >> +
+> >> +	old =3D hash__pte_update_one(ptep, clr, set);
+> >> +
+> >> +	if (IS_ENABLED(CONFIG_PPC_4K_PAGES) && huge) {
+> >> +		unsigned int psize =3D get_slice_psize(mm, addr);
+> >> +		int nb, i;
+> >> +
+> >> +		if (psize =3D=3D MMU_PAGE_16M)
+> >> +			nb =3D SZ_16M / PMD_SIZE;
+> >> +		else if (psize =3D=3D MMU_PAGE_16G)
+> >> +			nb =3D SZ_16G / PUD_SIZE;
+> >> +		else
+> >> +			nb =3D 1;
+> >> +
+> >> +		WARN_ON_ONCE(nb =3D=3D 1);	/* Should never happen */
+> >> +
+> >> +		for (i =3D 1; i < nb; i++)
+> >> +			hash__pte_update_one(ptep + i, clr, set);
+> >> +	}
+> >>   	/* huge pages use the old page table lock */
+> >>   	if (!huge)
+> >>   		assert_pte_locked(mm, addr);
+> >>  =20
+> >> -	old =3D be64_to_cpu(old_be);
+> >>   	if (old & H_PAGE_HASHPTE)
+> >>   		hpte_need_flush(mm, addr, ptep, old, huge);
+> >>  =20
+> >=20
+> > We definitely need a bit more comment and changelog about the atomicity
+> > issues here. I think the plan should be all hash-side access just
+> > operates on PTE[0], which should avoid that whole race. There could be
+> > some cases that don't follow that. Adding some warnings to catch such
+> > things could be good too.
+>
+> That seems to be the case indeed, as we have the following in=20
+> hash_page_mm():
+>
+> #ifndef CONFIG_PPC_64K_PAGES
+> 	/*
+> 	 * If we use 4K pages and our psize is not 4K, then we might
+> 	 * be hitting a special driver mapping, and need to align the
+> 	 * address before we fetch the PTE.
+> 	 *
+> 	 * It could also be a hugepage mapping, in which case this is
+> 	 * not necessary, but it's not harmful, either.
+> 	 */
+> 	if (psize !=3D MMU_PAGE_4K)
+> 		ea &=3D ~((1ul << mmu_psize_defs[psize].shift) - 1);
+> #endif /* CONFIG_PPC_64K_PAGES */
 
-kernel test robot noticed the following build errors:
+Yeah, for that one it works (comment needs updating to say that it
+*is* necessary). I think that's the main thing but there's other
+possible places where it might not hold -- KVM too, not just the
+hash refill.
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on powerpc/fixes linus/master v6.10-rc5 next-20240625]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >=20
+> > I'd been meaning to do more on this sooner, sorry. I've started
+> > tinkering with adding a bit of debug code. I'll see if I can help with
+> > adding a bit of comments.
+>
+> Yes would we very welcome, I guess you'll send it as followup/fixup=20
+> patch to the series ?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Madhavan-Srinivasan/powerpc-pseries-Export-hardware-trace-macro-dump-via-debugfs/20240625-144003
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20240620174614.53751-2-maddy%40linux.ibm.com
-patch subject: [PATCH 2/3] powerpc/pseries: Export hardware trace macro dump via debugfs
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240626/202406260849.z8VoytFS-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240626/202406260849.z8VoytFS-lkp@intel.com/reproduce)
+Yeah, the basic approach I think is good, so it wouldn't be a
+big rework.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406260849.z8VoytFS-lkp@intel.com/
+>
+> >=20
+> > [snip]
+> >=20
+> >> diff --git a/arch/powerpc/mm/book3s64/hugetlbpage.c b/arch/powerpc/mm/=
+book3s64/hugetlbpage.c
+> >> index 5a2e512e96db..83c3361b358b 100644
+> >> --- a/arch/powerpc/mm/book3s64/hugetlbpage.c
+> >> +++ b/arch/powerpc/mm/book3s64/hugetlbpage.c
+> >> @@ -53,6 +53,16 @@ int __hash_page_huge(unsigned long ea, unsigned lon=
+g access, unsigned long vsid,
+> >>   		/* If PTE permissions don't match, take page fault */
+> >>   		if (unlikely(!check_pte_access(access, old_pte)))
+> >>   			return 1;
+> >> +		/*
+> >> +		 * If hash-4k, hugepages use seeral contiguous PxD entries
+> >> +		 * so bail out and let mm make the page young or dirty
+> >> +		 */
+> >> +		if (IS_ENABLED(CONFIG_PPC_4K_PAGES)) {
+> >> +			if (!(old_pte & _PAGE_ACCESSED))
+> >> +				return 1;
+> >> +			if ((access & _PAGE_WRITE) && !(old_pte & _PAGE_DIRTY))
+> >> +				return 1;
+> >> +		}
+> >>  =20
+> >>   		/*
+> >>   		 * Try to lock the PTE, add ACCESSED and DIRTY if it was
+> >=20
+> > I'm hoping we wouldn't have to do this, if we follow the PTE[0] rule.
+>
+> But we still need all entries to be updated so that page walker which=20
+> don't know they must use PTE[0] get the right information ?
 
-All error/warnings (new ones prefixed by >>):
+Ah yeah. Maybe for ACCESSED|DIRTY we can slightly adjust that rule
+and apply it to all PTEs. If we can do that then it takes care of
+a few other cases too.
 
-   In file included from arch/powerpc/platforms/pseries/htmdump.c:19:
->> arch/powerpc/include/asm/machdep.h:262:85: error: expected ')' before numeric constant
-     262 | #define machine_device_initcall(mach, fn)       __define_machine_initcall(mach, fn, 6)
-         |                                                                                     ^
-   arch/powerpc/include/asm/machdep.h:248:61: note: in definition of macro '__define_machine_initcall'
-     248 |         __define_initcall(__machine_initcall_##mach##_##fn, id);
-         |                                                             ^~
-   arch/powerpc/platforms/pseries/htmdump.c:130:1: note: in expansion of macro 'machine_device_initcall'
-     130 | machine_device_initcall(pseries, htmdump_init);
-         | ^~~~~~~~~~~~~~~~~~~~~~~
->> arch/powerpc/include/asm/machdep.h:244:27: warning: '__machine_initcall_pseries_htmdump_init' defined but not used [-Wunused-function]
-     244 |         static int __init __machine_initcall_##mach##_##fn(void) { \
-         |                           ^~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/machdep.h:262:49: note: in expansion of macro '__define_machine_initcall'
-     262 | #define machine_device_initcall(mach, fn)       __define_machine_initcall(mach, fn, 6)
-         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/platforms/pseries/htmdump.c:130:1: note: in expansion of macro 'machine_device_initcall'
-     130 | machine_device_initcall(pseries, htmdump_init);
-         | ^~~~~~~~~~~~~~~~~~~~~~~
+Bug what is the consequence of two pte_update racing? Let's say
+page_vma_mkclean_one vs setting dirty. Can you end up with some
+PTEs dirty and some not?
 
-
-vim +262 arch/powerpc/include/asm/machdep.h
-
-^1da177e4c3f41 include/asm-ppc64/machdep.h        Linus Torvalds   2005-04-16  242  
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  243  #define __define_machine_initcall(mach, fn, id) \
-800d68c3aa0dc3 include/asm-powerpc/machdep.h      Grant Likely     2007-12-02 @244  	static int __init __machine_initcall_##mach##_##fn(void) { \
-800d68c3aa0dc3 include/asm-powerpc/machdep.h      Grant Likely     2007-12-02  245  		if (machine_is(mach)) return fn(); \
-800d68c3aa0dc3 include/asm-powerpc/machdep.h      Grant Likely     2007-12-02  246  		return 0; \
-800d68c3aa0dc3 include/asm-powerpc/machdep.h      Grant Likely     2007-12-02  247  	} \
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  248  	__define_initcall(__machine_initcall_##mach##_##fn, id);
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  249  
-8d3c941e240ba2 arch/powerpc/include/asm/machdep.h Michael Ellerman 2014-07-15  250  #define machine_early_initcall(mach, fn)	__define_machine_initcall(mach, fn, early)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  251  #define machine_core_initcall(mach, fn)		__define_machine_initcall(mach, fn, 1)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  252  #define machine_core_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 1s)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  253  #define machine_postcore_initcall(mach, fn)	__define_machine_initcall(mach, fn, 2)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  254  #define machine_postcore_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 2s)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  255  #define machine_arch_initcall(mach, fn)		__define_machine_initcall(mach, fn, 3)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  256  #define machine_arch_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 3s)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  257  #define machine_subsys_initcall(mach, fn)	__define_machine_initcall(mach, fn, 4)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  258  #define machine_subsys_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 4s)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  259  #define machine_fs_initcall(mach, fn)		__define_machine_initcall(mach, fn, 5)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  260  #define machine_fs_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 5s)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  261  #define machine_rootfs_initcall(mach, fn)	__define_machine_initcall(mach, fn, rootfs)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17 @262  #define machine_device_initcall(mach, fn)	__define_machine_initcall(mach, fn, 6)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  263  #define machine_device_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 6s)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  264  #define machine_late_initcall(mach, fn)		__define_machine_initcall(mach, fn, 7)
-7929d407e47fbf arch/powerpc/include/asm/machdep.h Matthew Leach    2012-12-17  265  #define machine_late_initcall_sync(mach, fn)	__define_machine_initcall(mach, fn, 7s)
-800d68c3aa0dc3 include/asm-powerpc/machdep.h      Grant Likely     2007-12-02  266  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Nick
