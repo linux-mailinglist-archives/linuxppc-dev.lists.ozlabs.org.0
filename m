@@ -2,79 +2,172 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD39917589
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 03:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BCB917611
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 04:12:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Yrxq8kvf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nqzmAxVh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W83rM1X9xz3dvs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 11:24:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W84vl2PVFz3cYl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 12:12:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Yrxq8kvf;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nqzmAxVh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=oliver.sang@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W83qf26PRz3ck2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 11:23:24 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1f9b523a15cso531405ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jun 2024 18:23:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719364998; x=1719969798; darn=lists.ozlabs.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G4B0rJOt+TwGvnGU5npNqzbhof2wF8oGmpu7vqDya1w=;
-        b=Yrxq8kvf8IQD8rqZvDM1nnrfAFDg9oaC9tM2OKcgEfT5RpTLv4A4UkpzfyxZSsXQzP
-         WrgQD7HkG/cyjaW9plOjJTn7F3AM3m9QFCFlpvwOljlArafzVwQ4sP4Wy8lHT3fKK2ps
-         BPqdT6M4+ojnksI8oyM4uaUu1Iw4P8iuUv/wFPtGrC3B/n1TwR8RXGQgZRW00JU1Pj+K
-         oWUpZwbK66jSb9m5saDjIRNGSO5O1v6Pkl1y1/T+G3qvmykSYJJatjcojb26GJKP18zi
-         dEf6VGbfRGVKMYkBTxIpFc7eSrlM1mLRoNEiXGa2y/4OmiGUtBYnht8/M/IyYal8V4nJ
-         mNjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719364998; x=1719969798;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=G4B0rJOt+TwGvnGU5npNqzbhof2wF8oGmpu7vqDya1w=;
-        b=d31+7ZfHPzJQrMEQqOWwPY32KfM89tU1HbZgfvN94El72Qm5iaxXwHW9aCXq2L8lvT
-         w6JIET0wSnWbPgzX4W69hNebe0IjLThHUc5wA4The3eyTRL0Z35qKTUkSyaJBnO11+J8
-         XjaRX3uzu5G+sav/noAWZMfZiap3fqws84um6bXtGdukNTfRTogh0Z9+EbxITE3bjokv
-         LdS92EUk3NqtOw9yg4C7bp/p17up6YoFHcTPqbyWcsYt1oCWpXMhGIjQzqZx27q+TUkF
-         h3pp1htO0MisXlYtvtQ2C/+WGUj4W/masjxcCoQDbn+NscHpM4hjPA5Zq8pGpj+7gBTl
-         /07g==
-X-Forwarded-Encrypted: i=1; AJvYcCVyTHOK/tLgfkVUy7nM53za2JuQsssSeV0MxOiX1KPVbG9aOPzqVYa0Z+HHaWGWdJVL1L1Mm5cEFCrZL0sxXRx5xLniSbCTgCi8V80M5w==
-X-Gm-Message-State: AOJu0YxKpBvWabd6xa2zKBSfErLsoO/8J9a0D2WbRxBWoqAT+5S9iDZo
-	xw2vFBqTt9JWw7NbRAbGnjvCxV10r+jrbexlNb1PblimxQos6woK
-X-Google-Smtp-Source: AGHT+IEqVqDw1A2NGO/alG4xT0pZfiNKGUIkmcWKhLu+8DBykPZWCX+p598Z0xCi0cvGZzLtolmp2Q==
-X-Received: by 2002:a17:902:7441:b0:1f4:a04e:8713 with SMTP id d9443c01a7336-1fa5e6bde38mr60633605ad.28.1719364997855;
-        Tue, 25 Jun 2024 18:23:17 -0700 (PDT)
-Received: from localhost (118-211-5-80.tpgi.com.au. [118.211.5.80])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb3c5d29sm87734655ad.154.2024.06.25.18.23.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jun 2024 18:23:17 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Jun 2024 11:23:11 +1000
-Message-Id: <D29K0SVIUJDR.2HQTLIJG4R7VG@gmail.com>
-To: "LEROY Christophe" <christophe.leroy2@cs-soprasteria.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Jason Gunthorpe" <jgg@nvidia.com>,
- "Peter Xu" <peterx@redhat.com>, "Oscar Salvador" <osalvador@suse.de>,
- "Michael Ellerman" <mpe@ellerman.id.au>
-Subject: Re: [PATCH v6 21/23] powerpc/64s: Use contiguous PMD/PUD instead of
- HUGEPD
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.17.0
-References: <cover.1719240269.git.christophe.leroy@csgroup.eu>
- <23f3fe9e8fe37cb164a369850d4569dddf359fdf.1719240269.git.christophe.leroy@csgroup.eu> <D28TSEV6QV38.2NWPFRY8KCQK7@gmail.com> <a8f76535-2d5a-4f25-83be-31aab1cd38c4@cs-soprasteria.com>
-In-Reply-To: <a8f76535-2d5a-4f25-83be-31aab1cd38c4@cs-soprasteria.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W84v03gPcz3cPh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 12:11:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719367886; x=1750903886;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=50WaMEwBZ3dy1a2cRL2cbHgRtrZFdVspwOeyKGn5+hY=;
+  b=nqzmAxVhsB7AZ7kct3fMacwrua3GgVfNsiIj3YbNzoDjI9x2xXTLYOYX
+   5qR8NIr3cCmz/oN3+TKDtX9cZq1bZBiqQfeqai3/cgy/Aom3sIpiPay1b
+   7gXcGWqczal8fCkRd7BgpBoj/BqhG6xto0/BWwizWY/5E3Ec+UooBwGv2
+   f4LzgxZyyYvAydYwONAMyfs8OFA/V0YGBxxnhF7bmMFLXkYz9X9AovG8F
+   +ZLDHvZsqf0E7mGOHpGw8NlAGNOe2+osmiIXqwk0pQi4lCEvQ1AxeS7Zb
+   NYGURJFyjf+fZEK8SPNtGp7tMoLgvsIkceA4LMMy2d1ngc13Ejrxkw7Dj
+   w==;
+X-CSE-ConnectionGUID: cXGPJsjUQdKSEJjnFx4HZw==
+X-CSE-MsgGUID: B7+yBWIdSsaB3l9sMmxKCw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="27560690"
+X-IronPort-AV: E=Sophos;i="6.08,265,1712646000"; 
+   d="scan'208";a="27560690"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 19:11:19 -0700
+X-CSE-ConnectionGUID: ECe2zXpSRc6+sE2LvGdEPA==
+X-CSE-MsgGUID: WD13XVggQ7yATXYZq7bnJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,265,1712646000"; 
+   d="scan'208";a="67057432"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 25 Jun 2024 19:11:13 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 25 Jun 2024 19:11:12 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 25 Jun 2024 19:11:12 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.40) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 25 Jun 2024 19:11:11 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QwqI9Of0yA3VJ34gMAwe+VTMsEJOHi8/a4c8uNF29+OWI8ZOWaodtZW3pyEwn9g9MPFwTzYfzqsbxkOOy4PyVTQ1zO8V10STVHJbITjbZjZPOkJ4PXJrRDgAKwK6btTXRBiUU+VyrcTKuRyt6A3XGOsREUak7LYAYPhUAz9gT37uQ1gbQCozpa4N0ZJkdIcqxunJaIf8x0mEWLP1QVo5vvd2nSznxjz2g86w6j5HPw5jFrJVx7SpRrcetL7KVQUFN9MUqOfuAogkZxDrU4EaLlLnpkBMKh+8l2bOiHy7slt913tKtWAf5MIGQ148gGkLOMMJi7oY/8aWVXLXz9Kn6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Oscf9f3Z0/GNVRKSzzvOfl2dekrQjhT3kW11lZyZWfg=;
+ b=BwJFdGdYd/JyYX3UouusvVjg51gONKT3sUqjwhazVcD1q0mCxW0Z0rPz3DLDkNhMN9rbTWIiO6aHts5xbeLlHmarYvSsaeTiSQV6uSwPBUHIG2gbBZtrt30HJXudfTbhMH4ax842VwOpe8ZSJhT3UqRL+kkKPugqECzemGeZd8LgtM6Y58mrHs/yLBlyN+07kTRyuK688QApi8nz5P/7gDEzlmcKj371Gk4J/u/sPyz8kw/mz5/jNwqrCz7vRELvIxJfpm6r0FpvuuYNDEoz1mOdLUPnSYf/2Vn2gq/7qxCr14koI3uiktv0yCNqL4TJePeLvERUozdNXR93O8Lo8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.31; Wed, 26 Jun
+ 2024 02:11:04 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%2]) with mapi id 15.20.7698.025; Wed, 26 Jun 2024
+ 02:11:04 +0000
+Date: Wed, 26 Jun 2024 10:10:49 +0800
+From: Oliver Sang <oliver.sang@intel.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [axboe-block:for-next] [block]  1122c0c1cc:  aim7.jobs-per-min
+ 22.6% improvement
+Message-ID: <Znt4qTr/NdeIPyNp@xsang-OptiPlex-9020>
+References: <202406250948.e0044f1d-oliver.sang@intel.com>
+ <ZnqGf49cvy6W-xWf@infradead.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZnqGf49cvy6W-xWf@infradead.org>
+X-ClientProxiedBy: SI1PR02CA0059.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::19) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|DM3PR11MB8735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53969801-6740-480e-603d-08dc95853ba0
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230038|366014|376012|7416012|1800799022;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?jH3y+3Pg9FbsmGD6XbEaM8bVW1QpjH/Mh71CH1kEonnHhpP2n+cPYrnelyAT?=
+ =?us-ascii?Q?QRb1Mw46G9+qdY11hgN9Xhh4lzgi2f5f6TbmIx2HZwcaLEDvRxWS13wNr3HR?=
+ =?us-ascii?Q?W3nUwanwKLelU1PjrTHe/p9nEvgv8YN7wcSoW+kL7pSX/0tqWxm+QMcRvKCn?=
+ =?us-ascii?Q?x5vrxf+uX6czt2yI7J2CxvIQPAegcvppYtox6C3Gq55gUtvzVMwf1tIk+wgE?=
+ =?us-ascii?Q?ej6TGxn3OqMUoNZ9s1cobMNyJhEbaLEKYJqqrg7QtMaHj+se+8uQV6A2Dyq0?=
+ =?us-ascii?Q?23v2c4oz/rJXqOGtPueSLozDC/ti3jT2Ip5tVgPZ7MfkgWk0TkOPWilhpFec?=
+ =?us-ascii?Q?eYCThOdX89idTcPmgiTYH4Pcgy5iPZzsqXMVrsJgFzbi2IZVJEbx7yZOROUJ?=
+ =?us-ascii?Q?hRRFHevEGKC7XRkThAQBNF9VWAWY12cOphom4+XMa9cgHmKcBsMvDkUVSPQO?=
+ =?us-ascii?Q?KJ/jI5Hk6aNOtNupDlrtkqbd7MqHfQCpR4u7/ciLJAsrVA2F4KJi7JLBtg+I?=
+ =?us-ascii?Q?3ZFIY8++5orGT0hJktOFGKf8VVgkXBOJvs35Cx/3wjV2qjNVyUPlIgBb9Jdb?=
+ =?us-ascii?Q?zyNvEJYIJ0qfFhrro/Q4sDCBObtFa20tZwEdNci9ADC3MiXkSDV57YzEF7m0?=
+ =?us-ascii?Q?p6Qvpe1ChDQMto2LZ5WHhevnmq+ItSFu031rrakdIpDjTg29mAWSpzEHkdwy?=
+ =?us-ascii?Q?SLxQg2SwAedMZxxjvtZFJSvyYWDILI7TNDWW1igpVj65J/0Iu6laU2yAloUL?=
+ =?us-ascii?Q?cQn77b1TdQ9bWnQzXXR4gLT/kRcXok1gosUuuRacsHJcF9XXhU7NmpLBtTv3?=
+ =?us-ascii?Q?TxQojaCcb7cWvgCsYoBbTVQ+016Gkk5f7nxrk18MGcUiJFJx5fVKUAoXdJeB?=
+ =?us-ascii?Q?0Tw8xoR6GbjbwkyjUA0a6XpgXR/saESRByuO3dttFJ0k2tC7zTzHDDW5SSpT?=
+ =?us-ascii?Q?OneodMFjnZ59Up+3anZw+Mo9wOibmWMmjNg4VtcolBQO261eRM5cNMGVVo2+?=
+ =?us-ascii?Q?DE8bezQbQSaK2FO90WKUV5b8O9IcAGlZWKXh63K5uKsHM1RXSAO/A8Htc8eN?=
+ =?us-ascii?Q?U1TVXfTY+VQ8GqRAPfk7TeI8V7EO+AMWWD+FlG4Dwx4tZZhCoWyXEjRlMTyi?=
+ =?us-ascii?Q?q8bOKa9LZ1L6ck5ejKC8RJFcbUgSgRvIO7b+Y4TQxqY2vPdcXxfe18eNLOhT?=
+ =?us-ascii?Q?1SyKhmhI+pSH/n6LZg2h3UlkNHb47DDT60q0lItJa5erG8pL08rUU6IwhX2a?=
+ =?us-ascii?Q?MBuPgYIaqlDfFk3DhslicMdqxCQBfiJLqSnrwCd2xwK/vAI7qrbddhg5Tt64?=
+ =?us-ascii?Q?NJDpeRDK7KXEiGX6yH+57Gjj?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230038)(366014)(376012)(7416012)(1800799022);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sn0+CWWVLMkBlc+RT5HVtdeEGBu2DKgZ902iQEwkqv8fsg8k77S5f68x5gsZ?=
+ =?us-ascii?Q?oMZK+a14C+q64wfteolkcDyfz7ov0zscW1SdsEdKTf/gl6ePcLGIEUhIF4FE?=
+ =?us-ascii?Q?IxBkjpUg1vA32uoGAgeaGOlgXRWUL4d19LYSQNpZXubFspsJlsjcVeMmqiob?=
+ =?us-ascii?Q?fE3xIt+j6FW08lL5pl9gk9vBuNC0F/eB4a34r+/JoAXYHfi1QXIsvIgJcgfQ?=
+ =?us-ascii?Q?1BmhPK5jF7fDXfi4dT8hMHcId0AIwUwo9PpdgT1xXyYjIcJkSC9yFgMZZKQs?=
+ =?us-ascii?Q?ufIsWiUbQfpd21FN4yBQ92gqONMWVJ3ZEK5SUPgJHzLezdcQNtv2mxaKpGL3?=
+ =?us-ascii?Q?Es0iGISlXYxg2vsJOSYAe/2VePWrMXkAxzbRxQnYqzy68kJ4wq6RwtdzD4i2?=
+ =?us-ascii?Q?ZAqqzTsMuKtTCoD4VjR6SHKRHcp/XCNmjNLJ/PYvjCoUqxPvcOG7S0F7lUDB?=
+ =?us-ascii?Q?xCihn+FjoAOR+f/cqQUmOPGukg3kuO7DS7lCZVowUq9W76eagBhSXDuGpS9W?=
+ =?us-ascii?Q?gtm0FXoA37P38M2GMBgY45Rzbndm1+j+toqgajR3lgKPyoQgs4r96bKWuB3b?=
+ =?us-ascii?Q?BHbSlJTSENwrnSrqyyhZBb+vBAwnMWrM2U6ClhfXpHvF0aX+Qf1L9i0RcJKd?=
+ =?us-ascii?Q?ZtHdUX4q5Ax+LjUcjdZtDQmUNGmKY3Ld13n3x7xcmhKa682bV0UBqAn/GGoL?=
+ =?us-ascii?Q?yxm7/AkHsSjWwpWAS2dtMS4oERBqIIfu1rOB2nvOBEPwTK1se2sFIlUUZ+FE?=
+ =?us-ascii?Q?zlJC3MLh5bomYLAAhPZYdZuE/dI0MIvsxw4rKHYmgJQqi18iDE8Lnj31zJV8?=
+ =?us-ascii?Q?l4/AJDN+m3hcOcINlfWc+YfMLk4wsb1HaT2uwyHRO/pLzFFIpnzmA+RiBcWy?=
+ =?us-ascii?Q?J/ZWrHfg9sPlSVC65qbbPy7su6OyqX22YmzC3PLOpdbOKJedvxt/SbVQtYg+?=
+ =?us-ascii?Q?sUjJchqZMLZXo11zzIBGR79NBQlQUJ2hleAzbJYJEiGIX03zuWgGqebm2hyh?=
+ =?us-ascii?Q?5NetMgFNDpjLEvoBLQgFQnOcc63ShX+H0bLgYZ3RT1GGi9T4/8UPp6E4LHhf?=
+ =?us-ascii?Q?k0739mz3MuIp3WwiBfaops2sPP58Bik3LmnRVhDNM7RFU9Klrh3W2p9out//?=
+ =?us-ascii?Q?LrZ831O3oFKL/IF0o7wOcJfHkRh8Go9B80zDzsNjMiOSUxQuapPxiAggxyK1?=
+ =?us-ascii?Q?DUSyTZxZAL/TkiWiA8Z/UifXkjrcLx/cjAUG1e5VmehwOtZaQMCoNd+VJlnh?=
+ =?us-ascii?Q?ST4hFZlvRxZb+pIj/hy0Z6jLLFUEMgY9VUkroinSZRnku75Y3HWtQoQ+FAPe?=
+ =?us-ascii?Q?QZxxDT6RpKUGxNNSHILtKjKuAFYsu4HA0DjmQoD3QxpcRxtTBAmlBIoCCViO?=
+ =?us-ascii?Q?ilMMzqLsenAY+2bOliucCuXHSUKuyFNcBgHFyG/6JTYpEjHET4tVxkwyEKmw?=
+ =?us-ascii?Q?OrEofpenx7QtV074qlyzWD6hjzXDTLFR8cPb7Hy3lIIC90ofNTxKDfWo6wSf?=
+ =?us-ascii?Q?+RMS8OVYZnBtNhPTjM70XDsd6NMiHPeoGcp+2EKnEky50+BHJNz8x+V2am0d?=
+ =?us-ascii?Q?dBpKmwP6UCz2KBOV9HRSfBs4SSXgDN1HTjelC2AE2tCriXcLTCV8PC+ch8EL?=
+ =?us-ascii?Q?AQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53969801-6740-480e-603d-08dc95853ba0
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2024 02:11:04.7215
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: k652aKh7WsrhahrW3ZgOpKvWkmIcgrVckMgb6d37h7foNeuiIn+oYNTTUrMoEWkRrIDvtHioU9Omt6SfbcxKog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR11MB8735
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,147 +179,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: nvdimm@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>, feng.tang@intel.com, linux-nvme@lists.infradead.org, linux-mtd@lists.infradead.org, Christoph Hellwig <hch@lst.de>, drbd-dev@lists.linbit.com, lkp@intel.com, linux-scsi@vger.kernel.org, ying.huang@intel.com, xen-devel@lists.xenproject.org, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, virtualization@lists.linux.dev, nbd@other.debian.org, linux-raid@vger.kernel.org, linux-bcache@vger.kernel.org, Damien
+ Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, linux-mmc@vger.kernel.org, fengwei.yin@intel.com, oliver.sang@intel.com, oe-lkp@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Jun 25, 2024 at 3:20 PM AEST, LEROY Christophe wrote:
->
->
-> Le 25/06/2024 =C3=A0 06:49, Nicholas Piggin a =C3=A9crit=C2=A0:
-> > On Tue Jun 25, 2024 at 12:45 AM AEST, Christophe Leroy wrote:
-> >> On book3s/64, the only user of hugepd is hash in 4k mode.
-> >>
-> >> All other setups (hash-64, radix-4, radix-64) use leaf PMD/PUD.
-> >>
-> >> Rework hash-4k to use contiguous PMD and PUD instead.
-> >>
-> >> In that setup there are only two huge page sizes: 16M and 16G.
-> >>
-> >> 16M sits at PMD level and 16G at PUD level.
-> >>
-> >> pte_update doesn't know page size, lets use the same trick as
-> >> hpte_need_flush() to get page size from segment properties. That's
-> >> not the most efficient way but let's do that until callers of
-> >> pte_update() provide page size instead of just a huge flag.
-> >>
-> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >=20
-> > [snip]
-> >=20
-> >> +static inline unsigned long hash__pte_update(struct mm_struct *mm,
-> >> +					 unsigned long addr,
-> >> +					 pte_t *ptep, unsigned long clr,
-> >> +					 unsigned long set,
-> >> +					 int huge)
-> >> +{
-> >> +	unsigned long old;
-> >> +
-> >> +	old =3D hash__pte_update_one(ptep, clr, set);
-> >> +
-> >> +	if (IS_ENABLED(CONFIG_PPC_4K_PAGES) && huge) {
-> >> +		unsigned int psize =3D get_slice_psize(mm, addr);
-> >> +		int nb, i;
-> >> +
-> >> +		if (psize =3D=3D MMU_PAGE_16M)
-> >> +			nb =3D SZ_16M / PMD_SIZE;
-> >> +		else if (psize =3D=3D MMU_PAGE_16G)
-> >> +			nb =3D SZ_16G / PUD_SIZE;
-> >> +		else
-> >> +			nb =3D 1;
-> >> +
-> >> +		WARN_ON_ONCE(nb =3D=3D 1);	/* Should never happen */
-> >> +
-> >> +		for (i =3D 1; i < nb; i++)
-> >> +			hash__pte_update_one(ptep + i, clr, set);
-> >> +	}
-> >>   	/* huge pages use the old page table lock */
-> >>   	if (!huge)
-> >>   		assert_pte_locked(mm, addr);
-> >>  =20
-> >> -	old =3D be64_to_cpu(old_be);
-> >>   	if (old & H_PAGE_HASHPTE)
-> >>   		hpte_need_flush(mm, addr, ptep, old, huge);
-> >>  =20
-> >=20
-> > We definitely need a bit more comment and changelog about the atomicity
-> > issues here. I think the plan should be all hash-side access just
-> > operates on PTE[0], which should avoid that whole race. There could be
-> > some cases that don't follow that. Adding some warnings to catch such
-> > things could be good too.
->
-> That seems to be the case indeed, as we have the following in=20
-> hash_page_mm():
->
-> #ifndef CONFIG_PPC_64K_PAGES
-> 	/*
-> 	 * If we use 4K pages and our psize is not 4K, then we might
-> 	 * be hitting a special driver mapping, and need to align the
-> 	 * address before we fetch the PTE.
-> 	 *
-> 	 * It could also be a hugepage mapping, in which case this is
-> 	 * not necessary, but it's not harmful, either.
-> 	 */
-> 	if (psize !=3D MMU_PAGE_4K)
-> 		ea &=3D ~((1ul << mmu_psize_defs[psize].shift) - 1);
-> #endif /* CONFIG_PPC_64K_PAGES */
+hi, Christoph Hellwig,
 
-Yeah, for that one it works (comment needs updating to say that it
-*is* necessary). I think that's the main thing but there's other
-possible places where it might not hold -- KVM too, not just the
-hash refill.
+On Tue, Jun 25, 2024 at 01:57:35AM -0700, Christoph Hellwig wrote:
+> Hi Oliver,
+> 
+> can you test the patch below?  It restores the previous behavior if
+> the device did not have a volatile write cache.  I think at least
+> for raid0 and raid1 without bitmap the new behavior actually is correct
+> and better, but it will need fixes for other modes.  If the underlying
+> devices did have a volatile write cache I'm a bit lost what the problem
+> was and this probably won't fix the issue.
 
-> >=20
-> > I'd been meaning to do more on this sooner, sorry. I've started
-> > tinkering with adding a bit of debug code. I'll see if I can help with
-> > adding a bit of comments.
->
-> Yes would we very welcome, I guess you'll send it as followup/fixup=20
-> patch to the series ?
+I'm not sure I understand this test request. as in title, we see a good
+improvement of aim7 for 1122c0c1cc, and we didn't observe other issues for
+this commit.
 
-Yeah, the basic approach I think is good, so it wouldn't be a
-big rework.
+do you mean this improvement is not expected or exposes some problems instead?
+then by below patch, should the performance back to the level of parent of
+1122c0c1cc?
 
->
-> >=20
-> > [snip]
-> >=20
-> >> diff --git a/arch/powerpc/mm/book3s64/hugetlbpage.c b/arch/powerpc/mm/=
-book3s64/hugetlbpage.c
-> >> index 5a2e512e96db..83c3361b358b 100644
-> >> --- a/arch/powerpc/mm/book3s64/hugetlbpage.c
-> >> +++ b/arch/powerpc/mm/book3s64/hugetlbpage.c
-> >> @@ -53,6 +53,16 @@ int __hash_page_huge(unsigned long ea, unsigned lon=
-g access, unsigned long vsid,
-> >>   		/* If PTE permissions don't match, take page fault */
-> >>   		if (unlikely(!check_pte_access(access, old_pte)))
-> >>   			return 1;
-> >> +		/*
-> >> +		 * If hash-4k, hugepages use seeral contiguous PxD entries
-> >> +		 * so bail out and let mm make the page young or dirty
-> >> +		 */
-> >> +		if (IS_ENABLED(CONFIG_PPC_4K_PAGES)) {
-> >> +			if (!(old_pte & _PAGE_ACCESSED))
-> >> +				return 1;
-> >> +			if ((access & _PAGE_WRITE) && !(old_pte & _PAGE_DIRTY))
-> >> +				return 1;
-> >> +		}
-> >>  =20
-> >>   		/*
-> >>   		 * Try to lock the PTE, add ACCESSED and DIRTY if it was
-> >=20
-> > I'm hoping we wouldn't have to do this, if we follow the PTE[0] rule.
->
-> But we still need all entries to be updated so that page walker which=20
-> don't know they must use PTE[0] get the right information ?
+sure! it's our great pleasure to test your patches. I noticed there are
+[1]
+https://lore.kernel.org/all/20240625110603.50885-2-hch@lst.de/
+which includes "[PATCH 1/7] md: set md-specific flags for all queue limits"
+[2]
+https://lore.kernel.org/all/20240625145955.115252-2-hch@lst.de/
+which includes "[PATCH 1/8] md: set md-specific flags for all queue limits"
 
-Ah yeah. Maybe for ACCESSED|DIRTY we can slightly adjust that rule
-and apply it to all PTEs. If we can do that then it takes care of
-a few other cases too.
+which one you suggest us to test?
+do we only need to apply the first patch "md: set md-specific flags for all queue limits"
+upon 1122c0c1cc?
+then is the expectation the performance back to parent of 1122c0c1cc?
 
-Bug what is the consequence of two pte_update racing? Let's say
-page_vma_mkclean_one vs setting dirty. Can you end up with some
-PTEs dirty and some not?
+thanks
 
-Thanks,
-Nick
+> 
+> ---
+> From 81c816827197f811e14add7a79220ed9eef6af02 Mon Sep 17 00:00:00 2001
+> From: Christoph Hellwig <hch@lst.de>
+> Date: Tue, 25 Jun 2024 08:48:18 +0200
+> Subject: md: set md-specific flags for all queue limits
+> 
+> The md driver wants to enforce a number of flags to an all devices, even
+> when not inheriting them from the underlying devices.  To make sure these
+> flags survive the queue_limits_set calls that md uses to update the
+> queue limits without deriving them form the previous limits add a new
+> md_init_stacking_limits helper that calls blk_set_stacking_limits and sets
+> these flags.
+> 
+> Fixes: 1122c0c1cc71 ("block: move cache control settings out of queue->flags")
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/md/md.c     | 13 ++++++++-----
+>  drivers/md/md.h     |  1 +
+>  drivers/md/raid0.c  |  2 +-
+>  drivers/md/raid1.c  |  2 +-
+>  drivers/md/raid10.c |  2 +-
+>  drivers/md/raid5.c  |  2 +-
+>  6 files changed, 13 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 69ea54aedd99a1..8368438e58e989 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+> @@ -5853,6 +5853,13 @@ static void mddev_delayed_delete(struct work_struct *ws)
+>  	kobject_put(&mddev->kobj);
+>  }
+>  
+> +void md_init_stacking_limits(struct queue_limits *lim)
+> +{
+> +	blk_set_stacking_limits(lim);
+> +	lim->features = BLK_FEAT_WRITE_CACHE | BLK_FEAT_FUA |
+> +			BLK_FEAT_IO_STAT | BLK_FEAT_NOWAIT;
+> +}
+> +
+>  struct mddev *md_alloc(dev_t dev, char *name)
+>  {
+>  	/*
+> @@ -5871,10 +5878,6 @@ struct mddev *md_alloc(dev_t dev, char *name)
+>  	int shift;
+>  	int unit;
+>  	int error;
+> -	struct queue_limits lim = {
+> -		.features		= BLK_FEAT_WRITE_CACHE | BLK_FEAT_FUA |
+> -					  BLK_FEAT_IO_STAT | BLK_FEAT_NOWAIT,
+> -	};
+>  
+>  	/*
+>  	 * Wait for any previous instance of this device to be completely
+> @@ -5914,7 +5917,7 @@ struct mddev *md_alloc(dev_t dev, char *name)
+>  		 */
+>  		mddev->hold_active = UNTIL_STOP;
+>  
+> -	disk = blk_alloc_disk(&lim, NUMA_NO_NODE);
+> +	disk = blk_alloc_disk(NULL, NUMA_NO_NODE);
+>  	if (IS_ERR(disk)) {
+>  		error = PTR_ERR(disk);
+>  		goto out_free_mddev;
+> diff --git a/drivers/md/md.h b/drivers/md/md.h
+> index c4d7ebf9587d07..28cb4b0b6c1740 100644
+> --- a/drivers/md/md.h
+> +++ b/drivers/md/md.h
+> @@ -893,6 +893,7 @@ extern int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale);
+>  
+>  extern int mddev_init(struct mddev *mddev);
+>  extern void mddev_destroy(struct mddev *mddev);
+> +void md_init_stacking_limits(struct queue_limits *lim);
+>  struct mddev *md_alloc(dev_t dev, char *name);
+>  void mddev_put(struct mddev *mddev);
+>  extern int md_run(struct mddev *mddev);
+> diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
+> index 62634e2a33bd0f..32d58752477847 100644
+> --- a/drivers/md/raid0.c
+> +++ b/drivers/md/raid0.c
+> @@ -379,7 +379,7 @@ static int raid0_set_limits(struct mddev *mddev)
+>  	struct queue_limits lim;
+>  	int err;
+>  
+> -	blk_set_stacking_limits(&lim);
+> +	md_init_stacking_limits(&lim);
+>  	lim.max_hw_sectors = mddev->chunk_sectors;
+>  	lim.max_write_zeroes_sectors = mddev->chunk_sectors;
+>  	lim.io_min = mddev->chunk_sectors << 9;
+> diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+> index 1a0eba65b8a92b..04a0c2ca173245 100644
+> --- a/drivers/md/raid1.c
+> +++ b/drivers/md/raid1.c
+> @@ -3194,7 +3194,7 @@ static int raid1_set_limits(struct mddev *mddev)
+>  	struct queue_limits lim;
+>  	int err;
+>  
+> -	blk_set_stacking_limits(&lim);
+> +	md_init_stacking_limits(&lim);
+>  	lim.max_write_zeroes_sectors = 0;
+>  	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
+>  	if (err) {
+> diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+> index 3334aa803c8380..2a9c4ee982e023 100644
+> --- a/drivers/md/raid10.c
+> +++ b/drivers/md/raid10.c
+> @@ -3974,7 +3974,7 @@ static int raid10_set_queue_limits(struct mddev *mddev)
+>  	struct queue_limits lim;
+>  	int err;
+>  
+> -	blk_set_stacking_limits(&lim);
+> +	md_init_stacking_limits(&lim);
+>  	lim.max_write_zeroes_sectors = 0;
+>  	lim.io_min = mddev->chunk_sectors << 9;
+>  	lim.io_opt = lim.io_min * raid10_nr_stripes(conf);
+> diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+> index 0192a6323f09ba..10219205160bbf 100644
+> --- a/drivers/md/raid5.c
+> +++ b/drivers/md/raid5.c
+> @@ -7708,7 +7708,7 @@ static int raid5_set_limits(struct mddev *mddev)
+>  	 */
+>  	stripe = roundup_pow_of_two(data_disks * (mddev->chunk_sectors << 9));
+>  
+> -	blk_set_stacking_limits(&lim);
+> +	md_init_stacking_limits(&lim);
+>  	lim.io_min = mddev->chunk_sectors << 9;
+>  	lim.io_opt = lim.io_min * (conf->raid_disks - conf->max_degraded);
+>  	lim.features |= BLK_FEAT_RAID_PARTIAL_STRIPES_EXPENSIVE;
+> -- 
+> 2.43.0
+> 
