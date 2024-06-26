@@ -1,73 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821E9917A5A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 10:01:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A20917A95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 10:12:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ag8ok4Yf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=p2zqrLQJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W8Dg26nxdz3cXK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 18:01:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W8Dw710K5z3cFw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jun 2024 18:12:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=ag8ok4Yf;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=p2zqrLQJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Too many DNS lookups) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8DfL03Fyz30fM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 18:00:54 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2ec0f3b9cfeso76152061fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 01:00:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1719388846; x=1719993646; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=whiJiQULxxjVU5JYMGY4dR9TuAgnrWcS7amyjh3Lhhk=;
-        b=ag8ok4YfDavjQMlNmKRTS+sBpQ/qrkTH+eO5UIlYsfM2bnM8w+A5x7XHPTsVDVeAGh
-         H5QDSY7QOXapD0c88dSze7PQwDhGXhCO063+L0+aPeXlyNpOw48KpFeAiQYbtpoUbSEl
-         JeubkqZs09e3tm/dUAn21wsSX4fv0f1x8HJjbX+BP+HSZV094dGqMe9mggHQKCBv1g/E
-         BvC0kbCM/T/O6aDUiwe1qNDoVpGd26M2S4btk4TUVSFhfRpMonv5lTStYa4mA4uplnnV
-         W0wKmjNg5joLRex27A6tT5jAnHxl2Fb1NxrrEwjQ5FBHE1u14wpdogNoVvklhT1BhPXD
-         pwPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719388846; x=1719993646;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=whiJiQULxxjVU5JYMGY4dR9TuAgnrWcS7amyjh3Lhhk=;
-        b=cajtJRqbm1lpjd7QPUxy50zc806tuZqUQ0uTHxszqFlA0i0LqFhbbRid6EYU5s56D0
-         5a4euwDI1Dj/xLTkVyJ7uG6Ubw/gQly5WCx/sVnx2yhcIJ5k+JFs5W787FI2Y1sP6f6a
-         XzTRkLz3pETOIZ3JkI9h8hjuoTp7//hYU3HYz6DX1lTWfY0sxc0llJ4TsTBWqXBWeT0r
-         K0Jn3u0GQlBOzO+HVzrykvAHTk/uWUspQdEmL7iUgo21QhPvnWJwjsGdnOdDksa6yhmY
-         zBsi6ysLvuSerUiyCH31xy6/uE8ODl2xUglg92bR6/yzCqjEIlwGY/3A1Hnw+IWL8wWg
-         5jxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnHoetOfbq60dMgi3aPpKIpo7ULYea9+xVgyaI1IEmnMlMFzI5PE2wnNS57NiIcS/Cr8MfLO+oO7ISXPatPEUTslZnYNRUmdqLJm/+xw==
-X-Gm-Message-State: AOJu0YwYB6hmqEoR9hAuJ7eU3EiH7yyjGy4EK5+haIx+OFBZcChwIxw6
-	/vzMuMCSapC0A/2j8VKhQsQAvymenyecZ6RDmU1Trhq5dzvXrx0R5mTPa5Ld2U0=
-X-Google-Smtp-Source: AGHT+IFNePKBHG9JpceEuNMrhp5ms+q4nwziDYVudYAAE2EIYWBHCuZo7vzBBRTi5aESxDL6rd8szA==
-X-Received: by 2002:a2e:3a13:0:b0:2ec:5019:bec3 with SMTP id 38308e7fff4ca-2ec593e0cd9mr61741411fa.21.1719388846249;
-        Wed, 26 Jun 2024 01:00:46 -0700 (PDT)
-Received: from pathway.suse.cz ([176.114.240.50])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70676a2113csm6032019b3a.214.2024.06.26.01.00.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jun 2024 01:00:45 -0700 (PDT)
-Date: Wed, 26 Jun 2024 10:00:23 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Jocelyn Falempe <jfalempe@redhat.com>
-Subject: Re: [PATCH] printk: Add a short description string to kmsg_dump()
-Message-ID: <ZnvKcnC9ruaIHYij@pathway.suse.cz>
-References: <20240625123954.211184-1-jfalempe@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8DvQ2Qv8z30VT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jun 2024 18:12:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1719389539;
+	bh=r5GZ/pj9X/ZHyF8H3UlvCNeqEgkIup+IGxBA0hbV6Vw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=p2zqrLQJcuuLebAMxSHJdYmJVFVODMKmjqdCQWKRHFFG90Vdly1OzxttB0eIRxfTt
+	 l7mRr9cO15o9zK061+wQZTDt7tqsxga4aii5ty9x/xX4fpzQB4EM18rNaSytDE0NsN
+	 oenHzziOY4nPqBddlbHEF8iMrvqEW2KcTfXjyfHcKbmbQaQ9zz9dleplz4eSrigVmI
+	 YOQ/XQOFukSJmDGa9MVqN2egDowwpdFTeok9M+Bg9eFiPWbmR+g77yUvQPc8zii428
+	 jL3cc1U3AWtvFfvbN4WXjXo6EA8bYtVW8pudLP/zD4kzkFVvgP+bmYsc3O5Ii/bCte
+	 r0FVdKJAaGBtA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W8DvQ5YPhz4w2D;
+	Wed, 26 Jun 2024 18:12:18 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ritesh Harjani <ritesh.list@gmail.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>
+Subject: Re: [PATCH 2/3] powerpc/pseries: Export hardware trace macro dump
+ via debugfs
+In-Reply-To: <87msnd5st9.fsf@gmail.com>
+References: <20240620174614.53751-1-maddy@linux.ibm.com>
+ <20240620174614.53751-2-maddy@linux.ibm.com> <87msnd5st9.fsf@gmail.com>
+Date: Wed, 26 Jun 2024 18:12:17 +1000
+Message-ID: <87v81wp1ge.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240625123954.211184-1-jfalempe@redhat.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,44 +61,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kees Cook <kees@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, "K. Y. Srinivasan" <kys@microsoft.com>, David Airlie <airlied@gmail.com>, Wei Liu <wei.liu@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Dexuan Cui <decui@microsoft.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Zimmermann <tzimmermann@suse.de>, John Ogness <john.ogness@linutronix.de>, Jani Nikula <jani.nikula@intel.com>, Haiyang Zhang <haiyangz@microsoft.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Daniel Vetter <daniel@ffwll.ch>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, npiggin@gmail.com, Madhavan Srinivasan <maddy@linux.ibm.com>, christophe.leroy@csgroup.eu, naveen.n.rao@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 2024-06-25 14:39:29, Jocelyn Falempe wrote:
-> kmsg_dump doesn't forward the panic reason string to the kmsg_dumper
-> callback.
-> This patch adds a new parameter "const char *desc" to the kmsg_dumper
-> dump() callback, and update all drivers that are using it.
-> 
-> To avoid updating all kmsg_dump() call, it adds a kmsg_dump_desc()
-> function and a macro for backward compatibility.
-> 
-> I've written this for drm_panic, but it can be useful for other
-> kmsg_dumper.
-> It allows to see the panic reason, like "sysrq triggered crash"
-> or "VFS: Unable to mount root fs on xxxx" on the drm panic screen.
+Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+> This is a generic review and I haven't looked into the PAPR spec for
+> htmdump hcall and it's interface.
 >
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-> ---
->  arch/powerpc/kernel/nvram_64.c             |  3 ++-
->  arch/powerpc/platforms/powernv/opal-kmsg.c |  3 ++-
->  drivers/gpu/drm/drm_panic.c                |  3 ++-
->  drivers/hv/hv_common.c                     |  3 ++-
->  drivers/mtd/mtdoops.c                      |  3 ++-
->  fs/pstore/platform.c                       |  3 ++-
->  include/linux/kmsg_dump.h                  | 13 ++++++++++---
->  kernel/panic.c                             |  2 +-
->  kernel/printk/printk.c                     |  8 +++++---
->  9 files changed, 28 insertions(+), 13 deletions(-)
+> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
+...
+>> +
+>> +	debugfs_create_u32("nodeindex", 0600,
+>> +			htmdump_debugfs_dir, &nodeindex);
+>> +	debugfs_create_u32("nodalchipindex", 0600,
+>> +			htmdump_debugfs_dir, &nodalchipindex);
+>> +	debugfs_create_u32("coreindexonchip", 0600,
+>> +			htmdump_debugfs_dir, &coreindexonchip);
+>> +	debugfs_create_u32("htmtype", 0600,
+>> +			htmdump_debugfs_dir, &htmtype);
+>
+> minor nit: For all of the above. S_IRUSR | S_IWUSR instead of 0600.
+>
+>> +	debugfs_create_file("trace", 0400, htmdump_debugfs_dir, ent, &htmdump_fops);
+>
+> maybe S_IRUSR instead of 0400.
 
-The parameter is added into all dumpers. I guess that it would be
-used only drm_panic() because it is graphics and might be "fancy".
-The others simply dump the log buffer and the reason is in
-the dumped log as well.
+Actually we prefer the octal values, see:
+  https://git.kernel.org/torvalds/c/57ad583f2086d55ada284c54bfc440123cf73964
 
-Anyway, the passed buffer is static. Alternative solution would
-be to make it global and export it like, for example, panic_cpu.
-
-Best Regards,
-Petr
+cheers
