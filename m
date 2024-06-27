@@ -2,73 +2,131 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3630C91A48F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 13:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EBB91A592
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 13:44:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=lvrbwJng;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=luN+Tp9s;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FU/ogiTf;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=luN+Tp9s;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FU/ogiTf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W8wkP1G54z3cVv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 21:06:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W8xYL6PCHz3cXB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 21:44:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=lvrbwJng;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=luN+Tp9s;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FU/ogiTf;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=luN+Tp9s;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FU/ogiTf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::f2b; helo=mail-qv1-xf2b.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 585 seconds by postgrey-1.37 at boromir; Thu, 27 Jun 2024 21:43:29 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8wjg0bYWz30V7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 21:06:12 +1000 (AEST)
-Received: by mail-qv1-xf2b.google.com with SMTP id 6a1803df08f44-6b2c6291038so12687806d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 04:06:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719486365; x=1720091165; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q8pm1cQ32txw1WRPKTanNTmvRox3c7g4AlMuHhl+D20=;
-        b=lvrbwJngWkJAaOz+HeE7WMF9lx2c8rYctJ0LuR3Dg9XmV45zpklLNYZpndYaxsxeqj
-         Nc8uOF8DVQ6kxl7DyHkMeyVFRRkGy7Sj20TIWplNnm71MWEIyv4nnG/jZ5ntWYugcoaA
-         wRpYeXnJrZaSFlCPIVVxrdDnywe281IUxUTR89m+ObmWW1PfAi0fPEteII/4nL+efoZF
-         0irkTIewnR3oOkt/QeTibrPfLAaj61+hPn3BdKue347A50hedPm+ogTDG62rbzbwBo+X
-         8NDbZj4Qxn6siH4UGYAlsqjFZuIHiiVcCqAIACiyxVCPFawhWcbuk4nbrYoBAdT3SjvF
-         7nmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719486365; x=1720091165;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q8pm1cQ32txw1WRPKTanNTmvRox3c7g4AlMuHhl+D20=;
-        b=k+GFcYaxVAsOwA0zH9AtfzSIQH0e5J3RPsMtJ3VG/1oyQmQZnHNCTXbEL10K0oEzuR
-         AIcms4TqehYuLtXEp0m01xM9frNpx6H+91aL0SC+BbrfUuhluy4RaHE4Ouqr9Pvl3J3u
-         Pmu0tQNT4LDM0rUqB5q0nw342O/dPksXxY+UEjRvBQ9Jn1jaha/xTGQ8dcyc6ukTMOxw
-         T+uSzb0h1NbOta6SL+X0QNGha8NAGne5ALwA76rGpFITOolcIky1o+fiDTkwqNrNAYUp
-         L6+13LqfPdbW2Q40rcByEOjxWVzztRUWFzgvCgTAWYOpSHmAFtb6ZZBdxfJRXFIpo97F
-         1PJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVzVnfD7BZZjEqt8OEUY6ftLtkujG9RE1m98ARSeYBi34km799tbHn/9bR2Gjbp8X9/6wXLSX8n525uC7Gduw/lc/utFLf1qKi/U56mLQ==
-X-Gm-Message-State: AOJu0Yz6ij8uJ7BSO7+5tbgl0c5zHC2fINh03jOz0fhr5Ja5omwdFYl7
-	enFv7XwZn+QomDSZnGKmAf9uTAj6ToetvkTOsQQjHrkotcHIyJxu7zfx4ZBFsjqL0QTjy362Sm8
-	43SxiEBJdDA+gMmyQ+qWjNJAsoQjsg6Ang1L2Rw==
-X-Google-Smtp-Source: AGHT+IG2MNKNNOGC761uBwvpqX9lGsPO6rQNPCNWhEy1V6ZqnINWb303gmPma/KMWKNSmIVuRVUQ+Leug+4DoYkVHJE=
-X-Received: by 2002:a0c:f2cd:0:b0:6b4:f7bb:6d69 with SMTP id
- 6a1803df08f44-6b56380939dmr109313566d6.32.1719486364821; Thu, 27 Jun 2024
- 04:06:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8xXd1rPvz3cVh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 21:43:27 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 63CBB210E4;
+	Thu, 27 Jun 2024 11:33:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1719488010; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t01R90XdldGO7anUbxHaqX31mDL54qz2uJ5POgVrV3w=;
+	b=luN+Tp9sneSe5aIFXVa7+ZSq0Oicz+3+MOwfHde/chD8438+KoisRUxzvb8D1z4WP3bOQz
+	VxJXxQobcBj2OgTk3kz6J+e5QHxwgaxsWTIxJyPUOxJrU9S0zo664JUIdm1g2C1oMaT2Eo
+	5OG+LDM1yT8dr4qZJCGZuc9F2nevJak=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1719488010;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t01R90XdldGO7anUbxHaqX31mDL54qz2uJ5POgVrV3w=;
+	b=FU/ogiTfDgFmO7Vi9yS/KUQgM4cVEziltRx8Qob1nx8hoAQ2muOpZewJqlBhXE0NAdErzT
+	HKrH1hm28QpHz1Bg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=luN+Tp9s;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="FU/ogiTf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1719488010; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t01R90XdldGO7anUbxHaqX31mDL54qz2uJ5POgVrV3w=;
+	b=luN+Tp9sneSe5aIFXVa7+ZSq0Oicz+3+MOwfHde/chD8438+KoisRUxzvb8D1z4WP3bOQz
+	VxJXxQobcBj2OgTk3kz6J+e5QHxwgaxsWTIxJyPUOxJrU9S0zo664JUIdm1g2C1oMaT2Eo
+	5OG+LDM1yT8dr4qZJCGZuc9F2nevJak=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1719488010;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t01R90XdldGO7anUbxHaqX31mDL54qz2uJ5POgVrV3w=;
+	b=FU/ogiTfDgFmO7Vi9yS/KUQgM4cVEziltRx8Qob1nx8hoAQ2muOpZewJqlBhXE0NAdErzT
+	HKrH1hm28QpHz1Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4A5F81384C;
+	Thu, 27 Jun 2024 11:33:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AmAgEgpOfWYhPwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 27 Jun 2024 11:33:30 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 988C8A08A2; Thu, 27 Jun 2024 13:33:28 +0200 (CEST)
+Date: Thu, 27 Jun 2024 13:33:28 +0200
+From: Jan Kara <jack@suse.cz>
+To: Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH 06/13] mm/memory: Add dax_insert_pfn
+Message-ID: <20240627113328.ozqkzhloufrpsdcr@quack3>
+References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
+ <50013c1ee52b5bb1213571bff66780568455f54c.1719386613.git-series.apopple@nvidia.com>
 MIME-Version: 1.0
-References: <20240620175657.358273-1-piotr.wojtaszczyk@timesys.com>
- <20240620175657.358273-11-piotr.wojtaszczyk@timesys.com> <jgqhlnysuwajlfxjwetas53jzdk6nnmewead2xzyt3xngwpcvl@xbooed6cwlq4>
- <CAG+cZ04suU53wR5f0PhudgNmkxTRtwEXTS1cWH1o9_rTNM94Cg@mail.gmail.com> <73yvglxha45d5ft74m3y5fdmkgatm2yftvhza2msg4ombjz42f@wz43pubhbpdz>
-In-Reply-To: <73yvglxha45d5ft74m3y5fdmkgatm2yftvhza2msg4ombjz42f@wz43pubhbpdz>
-From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Date: Thu, 27 Jun 2024 13:05:53 +0200
-Message-ID: <CAG+cZ05uam3LkvLXG3xAc8FY_p6jx4p=zinNeWbkKUbcLxSTrg@mail.gmail.com>
-Subject: Re: [Patch v4 10/10] i2x: pnx: Use threaded irq to fix warning from del_timer_sync()
-To: Andi Shyti <andi.shyti@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <50013c1ee52b5bb1213571bff66780568455f54c.1719386613.git-series.apopple@nvidia.com>
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_COUNT_THREE(0.00)[3];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[33];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RL7pfqg7h1m44jupjp7nguhfec)];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,deltatee.com,google.com,suse.cz,ziepe.ca,arm.com,kernel.org,ellerman.id.au,gmail.com,linux.intel.com,infradead.org,mit.edu,huawei.com,redhat.com,vger.kernel.org,lists.infradead.org,lists.ozlabs.org,lists.linux.dev,kvack.org,nvidia.com,lst.de,fromorbit.com];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 63CBB210E4
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Spam-Level: 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,68 +138,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Vignesh Raghavendra <vigneshr@ti.com>, Michael Turquette <mturquette@baylibre.com>, Li Zetao <lizetao1@huawei.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, linux-clk@vger.kernel.org, Rob Herring <robh@kernel.org>, Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, "J.M.B. Downing" <jonathan.downing@nautel.com>, Markus Elfring <Markus.Elfring@web.de>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Yangtao Li <frank.li@vivo.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, dmaengine@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, david@fromorbit.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, bhelgaas@google.com, dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, logang@deltatee.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 25, 2024 at 11:12=E2=80=AFPM Andi Shyti <andi.shyti@kernel.org>=
- wrote:
->
-> Hi Piotr,
->
-> On Fri, Jun 21, 2024 at 02:08:03PM GMT, Piotr Wojtaszczyk wrote:
-> > On Fri, Jun 21, 2024 at 12:57=E2=80=AFAM Andi Shyti <andi.shyti@kernel.=
-org> wrote:
-> > > On Thu, Jun 20, 2024 at 07:56:41PM GMT, Piotr Wojtaszczyk wrote:
-> > > > When del_timer_sync() is called in an interrupt context it throws a=
- warning
-> > > > because of potential deadlock. Threaded irq handler fixes the poten=
-tial
-> > > > problem.
-> > > >
-> > > > Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-> > >
-> > > did you run into a lockdep splat?
-> > >
-> > > Anything against using del_timer(), instead? Have you tried?
-> >
-> > I didn't get a lockdep splat but console was flooded with warnings from
-> > https://github.com/torvalds/linux/blob/v6.10-rc4/kernel/time/timer.c#L1=
-655
-> > In the linux kernel v5.15 I didn't see these warnings.
-> >
-> > I'm not a maintainer of the driver and I didn't do any research on
-> > what kind of impact
-> > would have using del_timer() instad. Maybe Vladimir Zapolskiy will know=
- that.
->
-> Your patch is definitely correct, no doubt about that.
->
-> And I don't have anything aginast changing irq handlers to
-> threaded handlers. But I would be careful at doing that depending
-> on the use of the controller and for accepting such change I
-> would need an ack from someone who knows the device. Vladimir,
-> perhaps?
->
-> There are cases where using threaded handlers are not totally
-> right, for example when the controller is used at early boot for
-> power management handling. I don't think it's the case for this
-> driver, but I can't be 100% sure.
->
-> If you were able to see the flood of WARN_ON's, would be
-> interesting to know how it behaves with del_timer(). Mind
-> giving it a test?
->
-> Thanks,
-> Andi
+On Thu 27-06-24 10:54:21, Alistair Popple wrote:
+> Currently to map a DAX page the DAX driver calls vmf_insert_pfn. This
+> creates a special devmap PTE entry for the pfn but does not take a
+> reference on the underlying struct page for the mapping. This is
+> because DAX page refcounts are treated specially, as indicated by the
+> presence of a devmap entry.
+> 
+> To allow DAX page refcounts to be managed the same as normal page
+> refcounts introduce dax_insert_pfn. This will take a reference on the
+> underlying page much the same as vmf_insert_page, except it also
+> permits upgrading an existing mapping to be writable if
+> requested/possible.
+> 
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
-I took some time to take a closer look at this and it turns out that the
-timer is used only to exit from the wait_for_completion(), after each
-del_timer_sync() there is a complete() call. So I will remove the timer
-all together and replace wait_for_completion() with
-wait_for_completion_timeout()
+Overall this looks good to me. Some comments below.
 
+> ---
+>  include/linux/mm.h |  4 ++-
+>  mm/memory.c        | 79 ++++++++++++++++++++++++++++++++++++++++++-----
+>  2 files changed, 76 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 9a5652c..b84368b 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1080,6 +1080,8 @@ int vma_is_stack_for_current(struct vm_area_struct *vma);
+>  struct mmu_gather;
+>  struct inode;
+>  
+> +extern void prep_compound_page(struct page *page, unsigned int order);
+> +
 
---=20
-Piotr Wojtaszczyk
-Timesys
+You don't seem to use this function in this patch?
+
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ce48a05..4f26a1f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1989,14 +1989,42 @@ static int validate_page_before_insert(struct page *page)
+>  }
+>  
+>  static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+> -			unsigned long addr, struct page *page, pgprot_t prot)
+> +			unsigned long addr, struct page *page, pgprot_t prot, bool mkwrite)
+>  {
+>  	struct folio *folio = page_folio(page);
+> +	pte_t entry = ptep_get(pte);
+>  
+> -	if (!pte_none(ptep_get(pte)))
+> +	if (!pte_none(entry)) {
+> +		if (mkwrite) {
+> +			/*
+> +			 * For read faults on private mappings the PFN passed
+> +			 * in may not match the PFN we have mapped if the
+> +			 * mapped PFN is a writeable COW page.  In the mkwrite
+> +			 * case we are creating a writable PTE for a shared
+> +			 * mapping and we expect the PFNs to match. If they
+> +			 * don't match, we are likely racing with block
+> +			 * allocation and mapping invalidation so just skip the
+> +			 * update.
+> +			 */
+> +			if (pte_pfn(entry) != page_to_pfn(page)) {
+> +				WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
+> +				return -EFAULT;
+> +			}
+> +			entry = maybe_mkwrite(entry, vma);
+> +			entry = pte_mkyoung(entry);
+> +			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
+> +				update_mmu_cache(vma, addr, pte);
+> +			return 0;
+> +		}
+>  		return -EBUSY;
+
+If you do this like:
+
+		if (!mkwrite)
+			return -EBUSY;
+
+You can reduce indentation of the big block and also making the flow more
+obvious...
+
+> +	}
+> +
+>  	/* Ok, finally just insert the thing.. */
+>  	folio_get(folio);
+> +	if (mkwrite)
+> +		entry = maybe_mkwrite(mk_pte(page, prot), vma);
+> +	else
+> +		entry = mk_pte(page, prot);
+
+I'd prefer:
+
+	entry = mk_pte(page, prot);
+	if (mkwrite)
+		entry = maybe_mkwrite(entry, vma);
+
+but I don't insist. Also insert_pfn() additionally has pte_mkyoung() and
+pte_mkdirty(). Why was it left out here?
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
