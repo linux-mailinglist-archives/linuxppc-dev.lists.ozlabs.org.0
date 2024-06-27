@@ -2,64 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080A491AD9E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 19:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8637C91ADD3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 19:18:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=bZbZIRvu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=g47fC2Rp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W94rF2WnTz3cft
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 03:12:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W94zD752qz3dC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 03:18:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=bZbZIRvu;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=g47fC2Rp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=sanastasio@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::12a; helo=mail-il1-x12a.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W94pw2dY0z3cfB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 03:11:20 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 9A9808284676;
-	Thu, 27 Jun 2024 12:11:19 -0500 (CDT)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id 8M9sTC8IiM0Q; Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id D1C748287291;
-	Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com D1C748287291
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W94yX31Czz3cTw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 03:17:55 +1000 (AEST)
+Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-375bb80e5b8so3485ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 10:17:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1719508278; bh=w0cEudny5PU8YvBvvlFhixxtK4IKtgz3lssxEp5pCGw=;
-	h=Message-ID:Date:MIME-Version:To:From;
-	b=bZbZIRvuEntX4eYzCC3cMaso2r9eE/hUjToEQvGXbLDmgNP7Rm8yAZqFYBbUkXuop
-	 JG68k6rTbQx7SI0fHE9Al/g4Qb7vdRaAmtzppTw6y2BZvQ9BGbh/LMqPmVmzL0ya4b
-	 B3HXKoZR60vOefzlalffebwbI0HgqFinHoiEoHjc=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 1p0pndOz2WXs; Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
-Received: from [10.11.0.2] (5.edge.rptsys.com [23.155.224.38])
-	by mail.rptsys.com (Postfix) with ESMTPSA id 3864A8284676;
-	Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
-Message-ID: <36276ba1-fc2c-418d-a80e-388e1f7988ed@raptorengineering.com>
-Date: Thu, 27 Jun 2024 12:11:17 -0500
+        d=google.com; s=20230601; t=1719508668; x=1720113468; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BsuX0TwL2xAavumghQ/V7F80KHhaFw7bJmljx1r1XKg=;
+        b=g47fC2RpgvlfRDk6RY5es3RXpnCdXnX/E9NMPaXDaCK1TvseyMZ/oXqe2aTPldFcze
+         7V6rX3y6WpcR8tem+b1sMqJzEaoN408uo06qEPxtE4CgvQqMXt6hwS3yZv4vRL0Tky8Q
+         CdW23n4BqDJ0lcVn0yfITWJYpCv3L1+QNR401m5AmttD4fl90LTOW1n8X8K8wNCv9e2H
+         AL1WRhImg+4yZevrQLkKOkT8tS4c5JN48R9V7ggdx4TXhGJ8nTy/yWGges5OgJe3P2Jt
+         vEmQJlaD/T/RuVGh9F595dRvUb4poj1/IcVS+INyMdFXnhZaKRH8fF4nRPWWXK2v3vK0
+         EpSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719508668; x=1720113468;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BsuX0TwL2xAavumghQ/V7F80KHhaFw7bJmljx1r1XKg=;
+        b=DYT4nHwcjIISSJWKqxt/YFc8wbFQMXRoameGusvXkeGcYik1vWTgfjWAlomhREmmMc
+         001Nxqk7cZEYh3vsY6ZrkaHGwLonwzE7jg0I71a/S4JkPxenNQyyF5EbhEPQgZ6wXrsA
+         OE+PMXrpgT290ZJNyRM3fAb/ylgvGsteVmtGM8YxIkvhumhldrYntHCNboJ8sQVdIUK2
+         qulK+EenD0Rz6kv3zKdochZ290qDO/Ktec/SOVs8cGQVukxrrq1mTSXJoAqxEnHPUGeZ
+         31TJODvQYLGs79IKQwwfIHFoaSEch8x5G9QOZuVK4vNch1DaPx5sHAcmEJpJAvNd4VzT
+         c4SQ==
+X-Gm-Message-State: AOJu0YwEHASd1bkthcT666wkJV9FOO1DobIxIYzL51mZQcelzv/YZez3
+	bNTg2zJmCENFOyBImSjkcJQIRnd7Ao4dQCRIOJFwla7DM1egJe0lKD6vTQX0hy6jIQ7upFrvNS3
+	ZKxCWUdVv79cftguyJlJZhUKNAftNebufg6Gr
+X-Google-Smtp-Source: AGHT+IGvAgYSYBE307LmnsDUtRzN58DFq1f8GNu4AQnc3KQ2F0CVbN+2P2lh1gtRMhbEOkJmZIB8Y5W99gnsBV9ZJwc=
+X-Received: by 2002:a05:6e02:1b05:b0:376:38e3:634b with SMTP id
+ e9e14a558f8ab-3795cb30446mr3980715ab.12.1719508667569; Thu, 27 Jun 2024
+ 10:17:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] powerpc: hotplug driver bridge support
-To: Krishna Kumar <krishnak@linux.ibm.com>, mpe@ellerman.id.au,
- npiggin@gmail.com
-References: <20240624121052.233232-1-krishnak@linux.ibm.com>
- <20240624121052.233232-3-krishnak@linux.ibm.com>
-Content-Language: en-US
-From: Shawn Anastasio <sanastasio@raptorengineering.com>
-In-Reply-To: <20240624121052.233232-3-krishnak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240627133743.407048-1-adubey@linux.ibm.com>
+In-Reply-To: <20240627133743.407048-1-adubey@linux.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Thu, 27 Jun 2024 10:17:36 -0700
+Message-ID: <CAP-5=fWyDXFPi4Jn1PYTbVCRO_f_8gcp6aaB10=6CfqDdXgkLQ@mail.gmail.com>
+Subject: Re: [PATCH] Perf: Calling available function for stats printing
+To: Abhishek Dubey <adubey@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,50 +77,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, gbatra@linux.ibm.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, brking@linux.vnet.ibm.com, tpearson@raptorengineering.com, oohall@gmail.com, bhelgaas@google.com, mahesh.salgaonkar@in.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, peterz@infradead.org, adrian.hunter@intel.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, alexander.shishkin@linux.intel.com, mingo@redhat.com, jolsa@kernel.org, namhyung@kernel.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, chu howard <howardchu95@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Krishna,
+On Thu, Jun 27, 2024 at 6:37=E2=80=AFAM Abhishek Dubey <adubey@linux.ibm.co=
+m> wrote:
+>
+> For printing dump_trace, just use existing stats_print()
+> function.
+>
+> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
 
-On 6/24/24 7:09 AM, Krishna Kumar wrote:
-> There is an issue with the hotplug operation when it's done on the
-> bridge/switch slot. The bridge-port and devices behind the bridge, which
-> become offline by hot-unplug operation, don't get hot-plugged/enabled by
-> doing hot-plug operation on that slot. Only the first port of the bridge
-> gets enabled and the remaining port/devices remain unplugged. The hot
-> plug/unplug operation is done by the hotplug driver
-> (drivers/pci/hotplug/pnv_php.c).
-> 
-> Root Cause Analysis: This behavior is due to missing code for the
-> switch/bridge. The existing driver depends on pci_hp_add_devices()
-> function for device enablement. This function calls pci_scan_slot() on
-> only one device-node/port of the bridge, not on all the siblings'
-> device-node/port.
-> 
-> The missing code needs to be added which will find all the sibling
-> device-nodes/bridge-ports and will run explicit pci_scan_slot() on
-> those.  A new function has been added for this purpose which gets
-> invoked from pci_hp_add_devices(). This new function
-> pci_traverse_sibling_nodes_and_scan_slot() gets all the sibling
-> bridge-ports by traversal and explicitly invokes pci_scan_slot on them.
-> 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Gaurav Batra <gbatra@linux.ibm.com>
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Brian King <brking@linux.vnet.ibm.com>
-> 
-> Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
+Thanks Abishek, the change looks good but it needs to be rebased on
+top of Commit 411ee13598ef ("perf hist: Add symbol_conf.skip_empty") -
+https://lore.kernel.org/r/20240607202918.2357459-4-namhyung@kernel.org
+. Recently Howard Chu wrote a guide on this:
+https://sberm.cn/blog/how-to-contrib-perf
 
-Other than the case with NVMe devices failing that we discussed in v1's
-thread, I can confirm that this patch resolves many of the issues we've
-encountered with PCIe hotplug on POWER9.
-
-Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Another small issue is the commit message should be "perf report: ..."
+rather than "Perf: ...".
 
 Thanks,
-Shawn
+Ian
