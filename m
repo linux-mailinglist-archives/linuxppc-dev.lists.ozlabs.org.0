@@ -1,97 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF7891A06C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 09:30:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1964391A17F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 10:32:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A+JkRA2c;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A+JkRA2c;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=wRIwt8ID;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W8qwS2C96z3fmp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 17:30:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W8sJ84nNMz3dKd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 18:32:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A+JkRA2c;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A+JkRA2c;
+	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=wRIwt8ID;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jfalempe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8qvj6rvBz3cfB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 17:29:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719473373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArljJjB0JyJS00KNOlxMunWxUs1/GD1Wf4W99edQFdU=;
-	b=A+JkRA2c6hGai46RC92hnqighdL165ICWakllLKX8cgvzbtTss0ZvJXr7AVNmYVwaX1jLi
-	uAX3/z19M+YWmGatfRQcYl9eGKioCin9jUQWLmNZBH8+FTpgmvTGoojbF37eLm5WLKROTQ
-	4i+DGcxYOQVTfIuAA+O0dIcoUJ2k0kI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719473373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ArljJjB0JyJS00KNOlxMunWxUs1/GD1Wf4W99edQFdU=;
-	b=A+JkRA2c6hGai46RC92hnqighdL165ICWakllLKX8cgvzbtTss0ZvJXr7AVNmYVwaX1jLi
-	uAX3/z19M+YWmGatfRQcYl9eGKioCin9jUQWLmNZBH8+FTpgmvTGoojbF37eLm5WLKROTQ
-	4i+DGcxYOQVTfIuAA+O0dIcoUJ2k0kI=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-eIUqbt9LMTKTZICjOam2DQ-1; Thu, 27 Jun 2024 03:29:30 -0400
-X-MC-Unique: eIUqbt9LMTKTZICjOam2DQ-1
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-52ce3a9a2daso4229608e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 00:29:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719473369; x=1720078169;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ArljJjB0JyJS00KNOlxMunWxUs1/GD1Wf4W99edQFdU=;
-        b=hdiqHayBxUQyaBzOR3MohMa6xY4p8Z0AqnqgNgsUoC7YbVRnOWFd5yj0qt2ptFHHqs
-         gUjI6aj8w+CMOmRrV5ml+y0oXslbmYOwz4yGTTEaH7iWFmTr6KcfBlG88nPU4lWhUOcy
-         13l6ZX/Dyb4QiWcbTslwAIoC2Lek91nFQKgCjUQ7sVqVnEJHUtK2lM3MHEQHsDLyknse
-         OPR7kEVftnmLHFRt5uyPQUmT647NHGwFxVrxGRG0M2+nOjJsNO1KWcRr5nnogyxscr6x
-         z4M+/ExJvT9VXWGqFOmQPswLZH/CUnlaZF3N6l+Ivb3R4++Z/jfYJcYaX/QcKLnhIdma
-         atpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYHnsXQOFoJ67wXUvL+WKw56zgHirZzb3cdl9Oas+mB5bs5inA0j91ieBJOJdVngY7xxGoyZ3Di1uZUvKaMbH5jeW37LqJoLxlDKnpBQ==
-X-Gm-Message-State: AOJu0YwEa6JgmFZF8AYQeUW/i1ycUgXoHNXOPVksZ10lJYCPNFPDoAhn
-	Z5AshTTD8zzWZlgiuV0Kg5abU12SEhW6dQrSB9LHjtMO3qm7oQiuf8xm8URcA0OWJUVKc1s2k9r
-	R1nK9I9YCXPzaYMKyhej+h1ENJ5n5ECsBKJBixGjkXCAqx/qjebJWEHtJa3OwFnk=
-X-Received: by 2002:a05:6512:688:b0:52c:8837:718a with SMTP id 2adb3069b0e04-52ce185cffdmr9405309e87.43.1719473369051;
-        Thu, 27 Jun 2024 00:29:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbOO3gAiuM5teegTvAjdpAZYISeHz2jPAZuVwH5HNKIpTCZBH+tcy4/G9Q3EUr6abmm1rODg==
-X-Received: by 2002:a05:6512:688:b0:52c:8837:718a with SMTP id 2adb3069b0e04-52ce185cffdmr9405275e87.43.1719473368602;
-        Thu, 27 Jun 2024 00:29:28 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:38da:a7d9:7cc9:db3e? ([2a01:e0a:c:37e0:38da:a7d9:7cc9:db3e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424c8245e7csm52601955e9.3.2024.06.27.00.29.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jun 2024 00:29:28 -0700 (PDT)
-Message-ID: <4aa3a028-04e5-4658-9879-df60dab06c54@redhat.com>
-Date: Thu, 27 Jun 2024 09:29:25 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8sHN1lX9z3cTL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 18:31:42 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 478C69C4232;
+	Thu, 27 Jun 2024 04:31:37 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id UVveuKWVRExp; Thu, 27 Jun 2024 04:31:35 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 2C34E9C5704;
+	Thu, 27 Jun 2024 04:31:35 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 2C34E9C5704
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1719477095; bh=NILLEYMuf5ya6yxHJeCsZ7WE1bY5G5zWYOd3TKCd0iM=;
+	h=From:To:Date:Message-Id:MIME-Version;
+	b=wRIwt8IDqVFMA45sQRQvXq8bUe7cYQbEtIN/p/RJPM9zp77opXxtOWE42jMJC0OJz
+	 UvW+4z2f51jOhiFdGRulvZqSM9pepNn+d1uIHXQIuYuoHesPT9fRn64V0C+k/KCXGM
+	 hByRxaA/t/Ff5NlVg3YhTV+/eCXVmQ8SOAJF1PaQQWtvKrbZz1qtyJSebNTmX7mqqZ
+	 O+jwKjWX3g2rpyVdm5TSkbfT6Q2GbOLhJWfbnRNspZXrNVe0vwStZRZV8LlhRJ77gb
+	 N1Y/DvjscaUac0ugq5NiA+ougW2Hgk/aB7qadnCpwbJT0OsZajELFugkJXYSgn+bOL
+	 Nz+DyOrxq3OGQ==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 5NfSTpLf_Lja; Thu, 27 Jun 2024 04:31:35 -0400 (EDT)
+Received: from gerard.rennes.sfl (80-15-101-118.ftth.fr.orangecustomers.net [80.15.101.118])
+	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id 284559C4232;
+	Thu, 27 Jun 2024 04:31:32 -0400 (EDT)
+From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>
+Subject: [PATCH v6 0/7] ASoC: fsl-asoc-card: add S/PDIF controller support
+Date: Thu, 27 Jun 2024 10:30:57 +0200
+Message-Id: <20240627083104.123357-1-elinor.montmasson@savoirfairelinux.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] printk: Add a short description string to kmsg_dump()
-To: Petr Mladek <pmladek@suse.com>
-References: <20240625123954.211184-1-jfalempe@redhat.com>
- <ZnvKcnC9ruaIHYij@pathway.suse.cz>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <ZnvKcnC9ruaIHYij@pathway.suse.cz>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=quoted-printable
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,59 +85,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Vignesh Raghavendra <vigneshr@ti.com>, Kees Cook <kees@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, "K. Y. Srinivasan" <kys@microsoft.com>, David Airlie <airlied@gmail.com>, Wei Liu <wei.liu@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Dexuan Cui <decui@microsoft.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Zimmermann <tzimmermann@suse.de>, John Ogness <john.ogness@linutronix.de>, Jani Nikula <jani.nikula@intel.com>, Haiyang Zhang <haiyangz@microsoft.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Daniel Vetter <daniel@ffwll.ch>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>, Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
+
+This is the v6 of the series of patches aiming to make the machine
+driver `fsl-asoc-card` compatible with S/PDIF controllers on imx boards.
+The main goal is to allow the use of S/PDIF controllers with ASRC
+modules.
+
+The `imx-spdif` machine driver already has specific support for S/PDIF
+controllers but doesn't support using an ASRC with it. However, the
+`fsl-asoc-card` machine driver has the necessary code to create a sound
+card which can use an ASRC module.
+It is then possible to extend the support for S/PDIF audio cards by
+merging the `imx-spdif` driver into `fsl-asoc-card`.
+
+The first three patches adapt the `fsl-asoc-card` driver to support
+multiple codec use cases.
+The driver can get 2 codec phandles from the device tree, and
+codec-related variables are doubled.
+`for_each_codecs` macros are also used when possible to ease adding
+other multi-codec use cases in the future.
+It makes possible to use the two S/PDIF dummy codec drivers
+`spdif_receiver` and `spdif_transmitter` instead of `snd-soc-dummy`,
+which was used in `imx-spdif`.
+
+The fourth patch merges the S/PDIF support from `imx-spdif` to
+`fsl-asoc-card`.
+`fsl-asoc-card` offers the same functionalities as `imx-spdif` did, but
+this merge also extends the S/PDIF support with the possibility of using
+an ASRC.
+Compatible "fsl,imx-audio-spdif" is kept, but `fsl-asoc-card` uses
+different DT properties compared to `imx-spdif`:
+* The "spdif-controller" property from `imx-spdif` is named "audio-cpu"
+  in `fsl-asoc-card`.
+* `fsl-asoc-card` uses codecs explicitly declared in DT with
+  "audio-codec". With an S/PDIF, codec drivers `spdif_transmitter` and
+  `spdif_receiver` should be used. Driver `imx-spdif` used instead the
+  dummy codec and a pair of boolean properties, "spdif-in" and
+  "spdif-out".
+Backward compatibility is therefore implemented in `fsl-asoc-card`.
+However, it is recommended to use the new properties when needed.
+Especially, declaring and using S/PDIF transmitter and/or receiver nodes
+is better than using the dummy codec.
+
+The last three patches update the device tree bindings of
+`fsl-asoc-card` and update all in-tree device trees to use the
+`fsl-asoc-card` properties.
+Note that as the old properties are still supported:
+* previous versions of in-tree device trees are still supported.
+* out-of-tree device trees are still supported.
+
+This series of patches was successfully built for arm64 and x86 on top
+of the latest=C2=A0"for-next" branch of the ASoC git tree on the 26th of Ju=
+ne
+2024.
+These modifications have also been tested on an i.MX8MN evaluation board
+with a linux kernel RT v6.1.26-rt8.
+
+If you have any questions or remarks about these commits, don't hesitate
+to reply to this message.
+
+Best regards,
+Elinor Montmasson
 
 
-On 26/06/2024 10:00, Petr Mladek wrote:
-> On Tue 2024-06-25 14:39:29, Jocelyn Falempe wrote:
->> kmsg_dump doesn't forward the panic reason string to the kmsg_dumper
->> callback.
->> This patch adds a new parameter "const char *desc" to the kmsg_dumper
->> dump() callback, and update all drivers that are using it.
->>
->> To avoid updating all kmsg_dump() call, it adds a kmsg_dump_desc()
->> function and a macro for backward compatibility.
->>
->> I've written this for drm_panic, but it can be useful for other
->> kmsg_dumper.
->> It allows to see the panic reason, like "sysrq triggered crash"
->> or "VFS: Unable to mount root fs on xxxx" on the drm panic screen.
->>
->> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
->> ---
->>   arch/powerpc/kernel/nvram_64.c             |  3 ++-
->>   arch/powerpc/platforms/powernv/opal-kmsg.c |  3 ++-
->>   drivers/gpu/drm/drm_panic.c                |  3 ++-
->>   drivers/hv/hv_common.c                     |  3 ++-
->>   drivers/mtd/mtdoops.c                      |  3 ++-
->>   fs/pstore/platform.c                       |  3 ++-
->>   include/linux/kmsg_dump.h                  | 13 ++++++++++---
->>   kernel/panic.c                             |  2 +-
->>   kernel/printk/printk.c                     |  8 +++++---
->>   9 files changed, 28 insertions(+), 13 deletions(-)
-> 
-> The parameter is added into all dumpers. I guess that it would be
-> used only drm_panic() because it is graphics and might be "fancy".
-> The others simply dump the log buffer and the reason is in
-> the dumped log as well.
+Changelog:
+v5 -> v6:
+* Remove applied patch "ASoC: fsl-asoc-card: set priv->pdev before using
+  it".
+* Add backward compatibility with `imx-spdif` DT properties.
+* Squash removal of `imx-spdif.yaml` into patch updating
+  `fsl-asoc-card.yaml`.
+* `fsl-asoc-card.yaml`: fix indentation, document use of compatible
+  "fsl,imx-audio-spdif" only with "fsl,imx-sabreauto-spdif" or
+  "fsl,imx6sx-sdb-spdif".
+* Explain better in commit messages why there are new DT properties that
+  can be used with "fsl,imx-audio-spdif" and what are the benefits to
+  use them.=20
+* v5 patch series at :
+https://lore.kernel.org/all/20240620132511.4291-1-elinor.montmasson@savoirf=
+airelinux.com/
 
-Ok, I also tried to retrieve the reason from the dumped log, but that's 
-really fragile.
+v4 -> v5:
+* Focus the contribution to bringing S/PDIF / ASRC support.
+* Instead of creating a new compatible for the S/PDIF `fsl-asoc-card`
+  support, merge the driver `imx-spdif` into `fsl-asoc-card`, and keep
+  the compatible. It preserves the base S/PDIF audio card support but also
+  extends it with the possibility to use an ASRC. It also reduces code and
+  driver duplication.
+* Following driver merge, adapt device trees using "fsl,imx-audio-spdif"
+  compatible.=20
+* Use more `for_each_codecs` macros in `fsl-asoc-card` when adding
+  multi-codec support.
+* Remove patches about new device-tree bindings that were not relevant
+  for an S/PDIF specific support.
+* Improve DT schema changes.
+* Move `priv->pdev` assignment earlier in "fsl_asoc_card_probe()" to fix
+  a NULL pointer dereference in "fsl_asoc_card_audmux_init()".
+* v4 patch series at :
+https://lore.kernel.org/all/20240515135411.343333-1-elinor.montmasson@savoi=
+rfairelinux.com/
 
-> 
-> Anyway, the passed buffer is static. Alternative solution would
-> be to make it global and export it like, for example, panic_cpu.
+v3 -> v4:
+* Use the standard TDM bidings, as defined in "tdm-slot.txt", for the
+  new optional DT bindings setting the TDM slots number and width.
+* Use the clock DT bindings to optionally specify the CPU DAI system
+  clock frequency, instead of a dedicated new binding.
+* Rename the new DT binding "cpu-sysclk-dir-out" to
+  "cpu-system-clock-direction-out" to better follow the style of the
+  simple-card driver.
+* Merge TX an RX bindings for CPU DAI system-clock, to better follow the
+  style of the simple-card driver, and also as there was no use case in
+  fsl-asoc-card where TX and RX settings had to be different.
+* Add the documentation for the new bindings in the new DT schema
+  bindings documentation. Also add an example with the generic codec.
+* v3 patch series at :
+https://lore.kernel.org/alsa-devel/20231218124058.2047167-1-elinor.montmass=
+on@savoirfairelinux.com/
 
-It's not a static buffer, because the string is generated at runtime.
-eg: https://elixir.bootlin.com/linux/latest/source/arch/arm/mm/init.c#L158
+v2 -> v3:
+* When the bitmaster or framemaster are retrieved from the device tree,
+  the driver will now compare them with the two codecs possibly given in
+  device tree, and not just the first codec.
+* Improve driver modifications to use multiple codecs for better
+  integration of future multi-codec use cases:
+  * Use `for_each_codec` macros when possible.
+  * `fsl_asoc_card_priv` struct now has 2 `codec_priv` as the driver
+    can currently retrieve 2 codec phandles from the device tree.
+* Fix subject of patch 10/10 to follow the style of the subsystem
+* v2 patch series at:
+https://lore.kernel.org/alsa-devel/20231027144734.3654829-1-elinor.montmass=
+on@savoirfairelinux.com/
 
-So it will be hard to avoid race conditions.
+v1 -> v2:
+* Replace use of the dummy codec by the pair of codecs spdif_receiver /
+  spdif_transmitter.
+* Adapt how dai links codecs are used to take into account the
+  possibility for multiple codecs per link.
+* Change compatible name.
+* Adapt driver to be able to register two codecs given in the device
+  tree.
+* v1 patch series at:
+https://lore.kernel.org/alsa-devel/20230901144550.520072-1-elinor.montmasso=
+n@savoirfairelinux.com/
 
-> 
-> Best Regards,
-> Petr
-> 
+
+Elinor Montmasson (7):
+  ASoC: fsl-asoc-card: add support for dai links with multiple codecs
+  ASoC: fsl-asoc-card: add second dai link component for codecs
+  ASoC: fsl-asoc-card: add compatibility to use 2 codecs in dai-links
+  ASoC: fsl-asoc-card: merge spdif support from imx-spdif.c
+  ASoC: dt-bindings: update fsl-asoc-card bindings after imx-spdif merge
+  arm64: dts: imx8m: update spdif sound card node properties
+  ARM: dts: imx6: update spdif sound card node properties
+
+ .../bindings/sound/fsl,imx-audio-spdif.yaml   |  66 ---
+ .../bindings/sound/fsl-asoc-card.yaml         |  53 ++-
+ arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts    |  15 +-
+ arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts    |  15 +-
+ arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts   |   9 +-
+ arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi |  15 +-
+ .../arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi |   9 +-
+ .../arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi |  15 +-
+ .../arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi |   9 +-
+ .../dts/nxp/imx/imx6qdl-hummingboard.dtsi     |   9 +-
+ .../boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi   |   9 +-
+ .../boot/dts/nxp/imx/imx6qdl-wandboard.dtsi   |   9 +-
+ .../arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts |   9 +-
+ arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi     |   9 +-
+ arch/arm/configs/imx_v6_v7_defconfig          |   1 -
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi |  15 +-
+ arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi |  15 +-
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  |  24 +-
+ arch/arm64/configs/defconfig                  |   1 -
+ sound/soc/fsl/Kconfig                         |  10 +-
+ sound/soc/fsl/Makefile                        |   2 -
+ sound/soc/fsl/fsl-asoc-card.c                 | 383 ++++++++++++------
+ sound/soc/fsl/imx-spdif.c                     | 103 -----
+ 23 files changed, 453 insertions(+), 352 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/sound/fsl,imx-audio-s=
+pdif.yaml
+ delete mode 100644 sound/soc/fsl/imx-spdif.c
+
+--=20
+2.34.1
 
