@@ -1,89 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DA191A80A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 15:38:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD13E91AA24
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 17:02:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gcOuoApZ;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ZZq4t0fC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W905q08VWz3cW5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 23:38:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W91xd1MTVz3cgk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 01:01:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gcOuoApZ;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ZZq4t0fC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W90551bLtz3cSX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 23:38:16 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45RDQu3M028935;
-	Thu, 27 Jun 2024 13:37:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=EexzgJBj+tt6+l2+7cxvFAJb/k
-	4mJCbDy4YUYm3EaMQ=; b=gcOuoApZuwcjzFaPJjnKzH1qsGVTK+efOHkjlI3Lro
-	AwWI4v/o9+J42IqllmJtZv4n+OWXxjdHgT0z8g3gSgC/jLuAF43FrdqkwGoVVZ3v
-	yEFSh6WDBKBQtBfPaEgcDDPI7NMMcdZNB/Ka//AOsBMaGoLJOufEABKni4yVI24S
-	fKruT1SWXX1YF6o5o8lF4xSl0BxnESsl2hyRId1bnBriR7a1qrt4qqYTmtsvmqux
-	Ce7+nV7hVqsqenWSuku1xs9l5udXyl8tzZoxDOpaRwfpRyrZAwsDZ3I1q/Xqxnmy
-	fSGo6i+jSYYQqmt67OzFWPARub6orJVWOuc1CyyBingQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4018jhr2vj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Jun 2024 13:37:54 +0000 (GMT)
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45RDUG8N003475;
-	Thu, 27 Jun 2024 13:37:53 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4018jhr2vd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Jun 2024 13:37:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45RBJQn3000564;
-	Thu, 27 Jun 2024 13:37:52 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yxaenaue2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Jun 2024 13:37:52 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45RDbmjT55116164
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Jun 2024 13:37:50 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 69A4D20043;
-	Thu, 27 Jun 2024 13:37:48 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19E8320040;
-	Thu, 27 Jun 2024 13:37:46 +0000 (GMT)
-Received: from ltcden3-lp14.aus.stglabs.ibm.com (unknown [9.53.174.165])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 27 Jun 2024 13:37:45 +0000 (GMT)
-From: Abhishek Dubey <adubey@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] Perf: Calling available function for stats printing
-Date: Thu, 27 Jun 2024 09:37:43 -0400
-Message-ID: <20240627133743.407048-1-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W91wr59V4z3cVw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 01:01:13 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-57d2fc03740so2004944a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 08:01:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719500464; x=1720105264; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Y7Vm7BbdgByjIx2Tu22DX4H6N9MAc4rl5R9/LnNe7E=;
+        b=ZZq4t0fCQcGcNywiLMGBNzIVzcAMnFA0GNAzIl8s9c0pZJ73+hLDkiSxH3t8v+rbvv
+         s66J++P57FzfbBUZBX1aUMZh/vCWPvq9mIsKQPupBYz+Hd2ZZkir3k7v5FV2XXcUMMva
+         rHICweKeJ87/K092Fm3idXGBCuk9vicpVqg5UyLchTFJvq0qSfoJ05OA6x1+h9173Ihq
+         yd4l+bQzQWSmKJ3314BIH6G/5uk02fRPsrCSwflar7A1kHNHHhnHqbDJ8DKo6N1r3QyB
+         0JLwI1pZuvRTgol2TdR3vwCQOWvuSlGY8WeedQe9ppKtq5+0ejUkb6otHg4kv0kk9cs7
+         dRvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719500464; x=1720105264;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Y7Vm7BbdgByjIx2Tu22DX4H6N9MAc4rl5R9/LnNe7E=;
+        b=CI6cirBAiKjeMoQ3R2tZMpk97UOuIC0kiBVwSTIoOHpOZofH3XX/nkdsccud71Rchg
+         +wJm5y84HWpoLzkqZptUyhSsAdXDnPPzzWolCxCJQz2WbdeSU5MFWjK792fRqqYLHHJU
+         ZGh5wSxeKWF3WB/LVMZJNczNfgYe63nOnCecYvIH67ukkPfZPiQvhugA8jgTuJVB4dwk
+         jv7+vDrwIKXz0cT54sL2w33ceXtw5xJKdFkru0sjBWI3YNZl2UyXPiSTqF8PvN8pz6iU
+         hp1YInaO2tgdlTikubvcyVnQ63C/7VaFb9R+pMXZ0pdPwd0ooK6GDepEYIw5A6kZV2nL
+         Kvmw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpZUlmw3NQ/07zqvmJsdhbZBx4D90ApfFQa2R8m0sZ+HTgvzzeMyzsXIwck/pUQSU3tubAsfx7SQG566NX9k3r9nm7GH60WqKKLG0AbA==
+X-Gm-Message-State: AOJu0Yy0H762ucAPAhjlfdq9hR8y+hrmlR+050Kk+ma2m15lK0FROtEF
+	soSJZhWGk/tXlzmgxcszf81y1QwgVjpBEuyZ87tEAYYW6tJfmzmIxfDdhjHFraw=
+X-Google-Smtp-Source: AGHT+IFg9G5Qjr/NcWh7E3bulgGsi4BkD4axF+tIY1ZpcMPEHOlYWD36DNqKEQ2BHT5YOG2H3Pk0zw==
+X-Received: by 2002:a17:906:c2d5:b0:a6f:b9d3:343a with SMTP id a640c23a62f3a-a7245df6b0dmr710793766b.71.1719500464181;
+        Thu, 27 Jun 2024 08:01:04 -0700 (PDT)
+Received: from localhost.localdomain ([91.216.213.152])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a729d7ca289sm67189066b.222.2024.06.27.08.01.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jun 2024 08:01:03 -0700 (PDT)
+From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+To: Vinod Koul <vkoul@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"J.M.B. Downing" <jonathan.downing@nautel.com>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Corentin Labbe <clabbe@baylibre.com>,
+	dmaengine@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: [Patch v5 00/12] Add audio support for LPC32XX CPUs
+Date: Thu, 27 Jun 2024 17:00:18 +0200
+Message-Id: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: T10gs8bLWGzO1eEpJxWH5rJm_0T4n-kz
-X-Proofpoint-ORIG-GUID: UiLTGOdyY01ZP8Y-FWMaq8WXAY4Bg9cg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-27_08,2024-06-27_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 impostorscore=0
- bulkscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406270101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,34 +109,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, irogers@google.com, peterz@infradead.org, adrian.hunter@intel.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, alexander.shishkin@linux.intel.com, mingo@redhat.com, jolsa@kernel.org, namhyung@kernel.org, naveen.n.rao@linux.vnet.ibm.com, Abhishek Dubey <adubey@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For printing dump_trace, just use existing stats_print()
-function.
+This pach set is to bring back audio to machines with a LPC32XX CPU.
+The legacy LPC32XX SoC used to have audio spport in linux 2.6.27.
+The support was dropped due to lack of interest from mainaeners.
 
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
----
- tools/perf/builtin-report.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Piotr Wojtaszczyk (12):
+  dt-bindings: dma: pl08x: Add dma-cells description
+  dt-bindings: dma: Add lpc32xx DMA mux binding
+  ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
+  ARM: dts: lpc32xx: Use simple-mfd for clock control block
+  ARM: dts: lpc32xx: Add missing dma properties
+  ARM: dts: lpc32xx: Add missing i2s properties
+  clk: lpc32xx: initialize regmap using parent syscon
+  dmaengine: Add dma router for pl08x in LPC32XX SoC
+  ARM: lpc32xx: Remove pl08x platform data in favor for device tree
+  mtd: rawnand: lpx32xx: Request DMA channels using DT entries
+  ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
+  i2x: pnx: Fix potential deadlock warning from del_timer_sync() call in
+    isr
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 69618fb0110b..8678eebc49e6 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -1089,10 +1089,7 @@ static int __cmd_report(struct report *rep)
- 			perf_session__fprintf_dsos(session, stdout);
- 
- 		if (dump_trace) {
--			perf_session__fprintf_nr_events(session, stdout,
--							rep->skip_empty);
--			evlist__fprintf_nr_events(session->evlist, stdout,
--						  rep->skip_empty);
-+			stats_print(rep);
- 			return 0;
- 		}
- 	}
+ .../devicetree/bindings/dma/arm-pl08x.yaml    |   7 +
+ .../bindings/dma/nxp,lpc3220-dmamux.yaml      |  49 +++
+ .../bindings/sound/nxp,lpc3220-i2s.yaml       |  73 ++++
+ MAINTAINERS                                   |  20 +
+ arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi        |  53 ++-
+ arch/arm/mach-lpc32xx/phy3250.c               |  54 ---
+ drivers/clk/Kconfig                           |   1 +
+ drivers/clk/nxp/clk-lpc32xx.c                 |  26 +-
+ drivers/dma/Kconfig                           |   9 +
+ drivers/dma/Makefile                          |   1 +
+ drivers/dma/lpc32xx-dmamux.c                  | 195 +++++++++
+ drivers/i2c/busses/i2c-pnx.c                  |  48 +--
+ drivers/mtd/nand/raw/lpc32xx_mlc.c            |  26 +-
+ drivers/mtd/nand/raw/lpc32xx_slc.c            |  26 +-
+ sound/soc/fsl/Kconfig                         |   7 +
+ sound/soc/fsl/Makefile                        |   2 +
+ sound/soc/fsl/lpc3xxx-i2s.c                   | 375 ++++++++++++++++++
+ sound/soc/fsl/lpc3xxx-i2s.h                   |  79 ++++
+ sound/soc/fsl/lpc3xxx-pcm.c                   |  72 ++++
+ 19 files changed, 993 insertions(+), 130 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/dma/nxp,lpc3220-dmamux.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
+ create mode 100644 drivers/dma/lpc32xx-dmamux.c
+ create mode 100644 sound/soc/fsl/lpc3xxx-i2s.c
+ create mode 100644 sound/soc/fsl/lpc3xxx-i2s.h
+ create mode 100644 sound/soc/fsl/lpc3xxx-pcm.c
+
 -- 
-2.44.0
+2.25.1
 
