@@ -1,80 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E50A91A1A1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 10:37:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E5A91A2A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 11:29:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=npd7vSd3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HcbNhu5l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W8sPb0S3Zz3d8x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 18:37:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W8tYs5x0Zz3cgW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 19:29:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.a=rsa-sha256 header.s=DFC430D2-D198-11EC-948E-34200CB392D2 header.b=npd7vSd3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HcbNhu5l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=savoirfairelinux.com (client-ip=208.88.110.44; helo=mail.savoirfairelinux.com; envelope-from=elinor.montmasson@savoirfairelinux.com; receiver=lists.ozlabs.org)
-Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8sHs0rJdz3d8B
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 18:32:09 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 396639C5C62;
-	Thu, 27 Jun 2024 04:32:08 -0400 (EDT)
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
- with ESMTP id Uw-mgDOsMtnL; Thu, 27 Jun 2024 04:32:05 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 94AF89C595F;
-	Thu, 27 Jun 2024 04:32:05 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 94AF89C595F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-	t=1719477125; bh=in6IlZSz4u1A6Sdo+5vdYe+Hej/Bf0/2z5MF/7fUtI8=;
-	h=From:To:Date:Message-Id:MIME-Version;
-	b=npd7vSd3aPZO0zjIEEt0c/y2QbwHjMu5Z6IwfyKV1oSmbjtDKLelKapCxns99VKsl
-	 jRfoxhQV8Ehqldk+w/1yUznoInrSrSJrK4ZsNohtZNuPSUSEAOVmaT4vWdRAK8fIPQ
-	 fLA4jgOME9yVNPOO5pYLtveAp97pxwdo9jmcb9eJwajj8lhMTgNyjzgYMfadHLEJtp
-	 yUBuDCHHyfNcjU43FILvdjqEOf/UMkG+bQIU1YKn63qVyZ2/Pl4ywbPirDE60ClIW3
-	 5/Ki5l4loPth7Ic1SHFsVapD5b13jgyUeVEvYYlvt2ifYexbyMlRpPjJ9kAlHyKr5e
-	 oD1j6HNAymcig==
-X-Virus-Scanned: amavis at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
- with ESMTP id n7lck1uqRWV0; Thu, 27 Jun 2024 04:32:05 -0400 (EDT)
-Received: from gerard.rennes.sfl (80-15-101-118.ftth.fr.orangecustomers.net [80.15.101.118])
-	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id B1E369C5B16;
-	Thu, 27 Jun 2024 04:32:02 -0400 (EDT)
-From: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>
-Subject: [PATCH v6 7/7] ARM: dts: imx6: update spdif sound card node properties
-Date: Thu, 27 Jun 2024 10:31:04 +0200
-Message-Id: <20240627083104.123357-8-elinor.montmasson@savoirfairelinux.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240627083104.123357-1-elinor.montmasson@savoirfairelinux.com>
-References: <20240627083104.123357-1-elinor.montmasson@savoirfairelinux.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8tY86q47z3cXW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 19:28:43 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45R9Qg2V018757;
+	Thu, 27 Jun 2024 09:28:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-type:subject:from:in-reply-to:date:cc:message-id
+	:references:to:content-transfer-encoding:mime-version; s=pp1;
+	 bh=6nXA0GyEk0ZZ5CUgQYPVwiV9IxfrcSBBRlug2qCH6XU=; b=HcbNhu5lx9Yl
+	GSfXz++RHKELXGXRKvnGQsdcysbYULSezHg7WCaiBcufqxdgBvv0wXhCGwmYDN6v
+	eVFN0XW45Ju9YqL0Pao02XlfLqgC2koTf/FXTHw3uhlEPIiDBffHYABgO87pCsym
+	2TlTWBQdpRP+fKfKXas858uuhjygoLww2tjVlAHy826e2WcjXefhMpMJrn56VlEw
+	nqSt9B1cVTKzXJigb3deMQGof2gaVPbzRfU18I/TVQkldPT9cMLsfhlIf/k8YM4d
+	JTS2LBdKpE8vG517eHih0lnzmZT/ezIpYAj0srbuQHpeIu83gfImTdd28XsCOMeA
+	k1FIyGPVlQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4010718ra0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 09:28:32 +0000 (GMT)
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45R9SVEh021997;
+	Thu, 27 Jun 2024 09:28:31 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4010718r9u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 09:28:31 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45R8ACbI019602;
+	Thu, 27 Jun 2024 09:28:31 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yx9xqa0b8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 09:28:30 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45R9SPat57934122
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Jun 2024 09:28:27 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0C55A20040;
+	Thu, 27 Jun 2024 09:28:25 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C927020043;
+	Thu, 27 Jun 2024 09:28:22 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.215.84])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 27 Jun 2024 09:28:22 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Subject: Re: [V4 05/16] tools/perf: Add disasm_line__parse to parse raw
+ instruction for powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <ZnyFVE22bcdilUyL@google.com>
+Date: Thu, 27 Jun 2024 14:58:11 +0530
+Message-Id: <C46D922C-E83C-45F7-A526-EBC9D448A2B1@linux.vnet.ibm.com>
+References: <20240614172631.56803-1-atrajeev@linux.vnet.ibm.com>
+ <20240614172631.56803-6-atrajeev@linux.vnet.ibm.com>
+ <ZnpYBvXLhyAqZzvh@google.com>
+ <E2A1A4AA-E344-4B42-86CE-E0EDD82A398F@linux.vnet.ibm.com>
+ <ZnsQOD3arkR0qoPJ@google.com>
+ <40DB645D-BFA7-44EA-B937-ADE81EEC1316@linux.vnet.ibm.com>
+ <ZnyFVE22bcdilUyL@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: gdn_tyDKtPNOoh3q3Qn5EqjcZRmGejMj
+X-Proofpoint-GUID: 1b_93eSuEa8KBJFI6yqpVJ2ldkjM8AJS
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-27_05,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
+ definitions=main-2406270070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,377 +108,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>, Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Ian Rogers <irogers@google.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The merge of imx-spdif driver into fsl-asoc-card brought
-new DT properties that can be used with the "fsl,imx-audio-spdif"
-compatible:
-* The "spdif-controller" property from imx-spdif is named "audio-cpu"
-  in fsl-asoc-card.
-* fsl-asoc-card uses codecs explicitly declared in DT
-  with "audio-codec".
-  With an S/PDIF, codec drivers spdif_transmitter and
-  spdif_receiver should be used.
-  Driver imx-spdif used instead the dummy codec and a pair of
-  boolean properties, "spdif-in" and "spdif-out".
 
-While backward compatibility is kept to support properties
-"spdif-controller", "spdif-in" and "spdif-out", using new properties has
-several benefits:
-* "audio-cpu" and "audio-codec" are more generic names reflecting
-  that the fsl-asoc-card driver supports multiple hardware.
-  They are properties already used by devices using the
-  fsl-asoc-card driver.
-  They are also similar to properties of simple-card: "cpu" and "codec".
-* "spdif-in" and "spdif-out" imply the use of the dummy codec in the
-  driver. However, there are already two codec drivers for the S/PDIF,
-  spdif_transmitter and spdif_receiver.
-  It is better to declare S/PDIF Tx and Rx devices in a DT, and then
-  reference them with "audio-codec" than using the dummy codec.
 
-For those reasons, this commit updates in-tree DTs to use the new
-properties:
-* Rename "spdif-controller" property to "audio-cpu".
-* Declare S/PDIF transmitter and/or receiver devices, and use them with
-  the "audio-codec" property instead of "spdif-out" and/or "spdif-in".
+> On 27 Jun 2024, at 2:47=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> wr=
+ote:
+>=20
+> Hello,
+>=20
+> On Wed, Jun 26, 2024 at 09:38:28AM +0530, Athira Rajeev wrote:
+>>=20
+>>=20
+>>> On 26 Jun 2024, at 12:15=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org>=
+ wrote:
+>>>=20
+>>> On Tue, Jun 25, 2024 at 06:12:51PM +0530, Athira Rajeev wrote:
+>>>>=20
+>>>>=20
+>>>>> On 25 Jun 2024, at 11:09=E2=80=AFAM, Namhyung Kim <namhyung@kernel.or=
+g> wrote:
+>>>>>=20
+>>>>> On Fri, Jun 14, 2024 at 10:56:20PM +0530, Athira Rajeev wrote:
+>>>>>> Currently, the perf tool infrastructure disasm_line__parse function =
+to
+>>>>>> parse disassembled line.
+>>>>>>=20
+>>>>>> Example snippet from objdump:
+>>>>>> objdump  --start-address=3D<address> --stop-address=3D<address>  -d =
+--no-show-raw-insn -C <vmlinux>
+>>>>>>=20
+>>>>>> c0000000010224b4: lwz     r10,0(r9)
+>>>>>>=20
+>>>>>> This line "lwz r10,0(r9)" is parsed to extract instruction name,
+>>>>>> registers names and offset. In powerpc, the approach for data type
+>>>>>> profiling uses raw instruction instead of result from objdump to ide=
+ntify
+>>>>>> the instruction category and extract the source/target registers.
+>>>>>>=20
+>>>>>> Example: 38 01 81 e8     ld      r4,312(r1)
+>>>>>>=20
+>>>>>> Here "38 01 81 e8" is the raw instruction representation. Add functi=
+on
+>>>>>> "disasm_line__parse_powerpc" to handle parsing of raw instruction.
+>>>>>> Also update "struct disasm_line" to save the binary code/
+>>>>>> With the change, function captures:
+>>>>>>=20
+>>>>>> line -> "38 01 81 e8     ld      r4,312(r1)"
+>>>>>> raw instruction "38 01 81 e8"
+>>>>>>=20
+>>>>>> Raw instruction is used later to extract the reg/offset fields. Macr=
+os
+>>>>>> are added to extract opcode and register fields. "struct disasm_line"
+>>>>>> is updated to carry union of "bytes" and "raw_insn" of 32 bit to car=
+ry raw
+>>>>>> code (raw). Function "disasm_line__parse_powerpc fills the raw
+>>>>>> instruction hex value and can use macros to get opcode. There is no
+>>>>>> changes in existing code paths, which parses the disassembled code.
+>>>>>> The architecture using the instruction name and present approach is
+>>>>>> not altered. Since this approach targets powerpc, the macro
+>>>>>> implementation is added for powerpc as of now.
+>>>>>>=20
+>>>>>> Since the disasm_line__parse is used in other cases (perf annotate) =
+and
+>>>>>> not only data tye profiling, the powerpc callback includes changes to
+>>>>>> work with binary code as well as mneumonic representation. Also in c=
+ase
+>>>>>> if the DSO read fails and libcapstone is not supported, the approach
+>>>>>> fallback to use objdump as option. Hence as option, patch has change=
+s to
+>>>>>> ensure objdump option also works well.
+>>>>>>=20
+>>>>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>>>>> ---
+> [SNIP]
+>>>>>> +/*
+>>>>>> + * Parses the result captured from symbol__disassemble_*
+>>>>>> + * Example, line read from DSO file in powerpc:
+>>>>>> + * line:    38 01 81 e8
+>>>>>> + * opcode: fetched from arch specific get_opcode_insn
+>>>>>> + * rawp_insn: e8810138
+>>>>>> + *
+>>>>>> + * rawp_insn is used later to extract the reg/offset fields
+>>>>>> + */
+>>>>>> +#define PPC_OP(op) (((op) >> 26) & 0x3F)
+>>>>>> +
+>>>>>> +static int disasm_line__parse_powerpc(struct disasm_line *dl)
+>>>>>> +{
+>>>>>> + char *line =3D dl->al.line;
+>>>>>> + const char **namep =3D &dl->ins.name;
+>>>>>> + char **rawp =3D &dl->ops.raw;
+>>>>>> + char tmp, *tmp_raw_insn, *name_raw_insn =3D skip_spaces(line);
+>>>>>> + char *name =3D skip_spaces(name_raw_insn + 11);
+>>>>>> + int objdump =3D 0;
+>>>>>> +
+>>>>>> + if (strlen(line) > 11)
+>>>>>> + objdump =3D 1;
+>>>>>> +
+>>>>>> + if (name_raw_insn[0] =3D=3D '\0')
+>>>>>> + return -1;
+>>>>>> +
+>>>>>> + if (objdump) {
+>>>>>> + *rawp =3D name + 1;
+>>>>>> + while ((*rawp)[0] !=3D '\0' && !isspace((*rawp)[0]))
+>>>>>> + ++*rawp;
+>>>>>> + tmp =3D (*rawp)[0];
+>>>>>> + (*rawp)[0] =3D '\0';
+>>>>>> +
+>>>>>> + *namep =3D strdup(name);
+>>>>>> + if (*namep =3D=3D NULL)
+>>>>>> + return -1;
+>>>>>> +
+>>>>>> + (*rawp)[0] =3D tmp;
+>>>>>> + *rawp =3D strim(*rawp);
+>>>>>> + } else
+>>>>>> + *namep =3D "";
+>>>=20
+>>> Then can you handle this logic under if (annotate_opts.show_raw_insn)
+>>> in disasm_line__parse() instead of adding a new function?
+>>>=20
+>>> Thanks,
+>>> Namhyung
+>>=20
+>> Hi Namhyung,
+>>=20
+>> We discussed to have a per-arch disasm_line_parse() here:
+>> https://lore.kernel.org/all/CAM9d7ci1LDa7moT2qDr2qK+DTNLU6ZBkmROnbdozAju=
+QLQfNog@mail.gmail.com/#t
+>>=20
+>> So I added it as a new function : disasm_line__parse_powerpc
+>> Since it is not used by other archs, we can go with having new function ?
+>=20
+> Ok, I thought it'd be quite different from disasm_line__parse() but it
+> seems that it's mostly similar except for the raw insn.  So I think it's
+> better to add the logic to the generic disasm_line__parse().  Sorry for
+> the inconvenience.
+>=20
+> Thanks,
+> Namhyung
 
-These modifications were tested only on an imx8mn-evk board.
+Sure
 
-Note that out-of-tree and old DTs are still supported.
+Thanks
+Athira
+>=20
+>>>>>> +
+>>>>>> + tmp_raw_insn =3D strdup(name_raw_insn);
+>>>>>> + tmp_raw_insn[11] =3D '\0';
+>>>>>> + remove_spaces(tmp_raw_insn);
+>>>>>> +
+>>>>>> + dl->raw.raw_insn =3D strtol(tmp_raw_insn, NULL, 16);
+>>>>>> + if (objdump)
+>>>>>> + dl->raw.raw_insn =3D be32_to_cpu(strtol(tmp_raw_insn, NULL, 16));
+>>>>>=20
+>>>>> Hmm.. can you use a sscanf() instead?
+>>>>>=20
+>>>>> sscanf(line, "%x %x %x %x", &dl->raw.bytes[0], &dl->raw.bytes[1], ...)
+>>>>>=20
+>>>>> Thanks,
+>>>>> Namhyung
+>>>>>=20
+>>>> Sure will address in V5
+>>>>=20
+>>>> Thanks
+>>>> Athira
+>>>>>> +
+>>>>>> + return 0;
+>>>>>> +}
 
-Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
----
- arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts        | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts        | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts       |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi     | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi    |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi    | 15 ++++++++++++---
- arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi    |  9 +++++++--
- .../boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi    |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi  |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi  |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts    |  9 +++++++--
- arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi         |  9 +++++++--
- 12 files changed, 104 insertions(+), 28 deletions(-)
-
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts b/arch/arm/boot/dts=
-/nxp/imx/imx6q-cm-fx6.dts
-index 95b49fc83f7b..5c664c0f2169 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-cm-fx6.dts
-@@ -127,12 +127,21 @@ simple-audio-card,codec {
- 		};
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
-+	spdif_in: spdif-in {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dir";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-out;
--		spdif-in;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>, <&spdif_in>;
- 	};
- };
-=20
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts b/arch/arm/boot/dts=
-/nxp/imx/imx6q-prti6q.dts
-index a7d5693c5ab7..8491d656ef17 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-prti6q.dts
-@@ -111,12 +111,21 @@ simple-audio-card,codec {
- 		};
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
-+	spdif_in: spdif-in {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dir";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-in;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>, <&spdif_in>;
- 	};
- };
-=20
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts b/arch/arm/boot/dt=
-s/nxp/imx/imx6q-tbs2910.dts
-index 7c298d9aa21e..ea9a98887c7b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-@@ -90,11 +90,16 @@ sound-sgtl5000 {
- 		ssi-controller =3D <&ssi1>;
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "On-board SPDIF";
--		spdif-controller =3D <&spdif>;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>;
- 	};
- };
-=20
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi b/arch/arm/boot/=
-dts/nxp/imx/imx6qdl-apalis.dtsi
-index ea40623d12e5..6f4546c59d38 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apalis.dtsi
-@@ -197,11 +197,20 @@ sound {
- 		ssi-controller =3D <&ssi1>;
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
-+	spdif_in: spdif-in {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dir";
-+	};
-+
- 	sound_spdif: sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-in;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>, <&spdif_in>;
- 		model =3D "imx-spdif";
- 		status =3D "disabled";
- 	};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi b/arch/arm/boot=
-/dts/nxp/imx/imx6qdl-apf6dev.dtsi
-index 3a46ade3b6bd..6aa6b152c3ae 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-apf6dev.dtsi
-@@ -121,11 +121,16 @@ sound {
- 		mux-ext-port =3D <3>;
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>;
- 	};
- };
-=20
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi b/arch/arm/boot=
-/dts/nxp/imx/imx6qdl-colibri.dtsi
-index d3a7a6eeb8e0..07f15726f203 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-colibri.dtsi
-@@ -142,12 +142,21 @@ sound {
- 		ssi-controller =3D <&ssi1>;
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
-+	spdif_in: spdif-in {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dir";
-+	};
-+
- 	/* Optional S/PDIF in on SODIMM 88 and out on SODIMM 90, 137 or 168 */
- 	sound_spdif: sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-in;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>, <&spdif_in>;
- 		model =3D "imx-spdif";
- 		status =3D "disabled";
- 	};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi b/arch/arm/boot=
-/dts/nxp/imx/imx6qdl-cubox-i.dtsi
-index 761566ae3cf5..28afa8a0188b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-cubox-i.dtsi
-@@ -100,12 +100,17 @@ v_usb1: regulator-v-usb1 {
- 		vin-supply =3D <&v_5v0>;
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "Integrated SPDIF";
- 		/* IMX6 doesn't implement this yet */
--		spdif-controller =3D <&spdif>;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>;
- 	};
-=20
- 	gpio-keys {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi b/arch/arm=
-/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi
-index a955c77cd499..67f2a007a592 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi
-@@ -140,12 +140,17 @@ sound_codec: simple-audio-card,codec {
- 		};
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "On-board SPDIF";
- 		/* IMX6 doesn't implement this yet */
--		spdif-controller =3D <&spdif>;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>;
- 	};
- };
-=20
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi b/arch/arm/bo=
-ot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-index 6656e2e762a1..48dfd8151150 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabreauto.dtsi
-@@ -143,12 +143,17 @@ sound-cs42888 {
- 			"AIN2R", "Line In Jack";
- 	};
-=20
-+	spdif_in: spdif-in {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dir";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-sabreauto-spdif",
- 			     "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-in;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_in>;
- 	};
-=20
- 	backlight {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi b/arch/arm/bo=
-ot/dts/nxp/imx/imx6qdl-wandboard.dtsi
-index 38abb6b50f6c..5a4b9ced297a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi
-@@ -26,11 +26,16 @@ sound {
- 		mux-ext-port =3D <3>;
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>;
- 	};
-=20
- 	reg_1p5v: regulator-1p5v {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts b/arch/arm/boot=
-/dts/nxp/imx/imx6sx-sabreauto.dts
-index b0c27b9b0244..d2cc8b4e8b00 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sabreauto.dts
-@@ -97,11 +97,16 @@ sound-cs42888 {
- 			"AIN2R", "Line In Jack";
- 	};
-=20
-+	spdif_in: spdif-in {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dir";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-in;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_in>;
- 	};
- };
-=20
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi b/arch/arm/boot/dts/=
-nxp/imx/imx6sx-sdb.dtsi
-index 7d4170c27732..a8c1fc02eddb 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi
-@@ -183,12 +183,17 @@ panel_in: endpoint {
- 		};
- 	};
-=20
-+	spdif_out: spdif-out {
-+		#sound-dai-cells =3D <0>;
-+		compatible =3D "linux,spdif-dit";
-+	};
-+
- 	sound-spdif {
- 		compatible =3D "fsl,imx6sx-sdb-spdif",
- 			     "fsl,imx-audio-spdif";
- 		model =3D "imx-spdif";
--		spdif-controller =3D <&spdif>;
--		spdif-out;
-+		audio-cpu =3D <&spdif>;
-+		audio-codec =3D <&spdif_out>;
- 	};
-=20
- };
---=20
-2.34.1
 
