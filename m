@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644D291AA4A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 17:04:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9538691AA53
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 17:04:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=VZj+MZgn;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=s+4aoLi8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W92021fBNz3cgk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 01:04:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W920p0BxLz3dW6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 01:04:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=VZj+MZgn;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=s+4aoLi8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W91y34S0nz3cdD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 01:02:19 +1000 (AEST)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-a729d9d7086so133137366b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 08:02:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W91yS4jgsz3cfT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 01:02:40 +1000 (AEST)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-a72585032f1so618988066b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 08:02:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719500538; x=1720105338; darn=lists.ozlabs.org;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719500558; x=1720105358; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ILtq9+4c141AHxBgbXMa+RP0emWEvg+/fmgpWsAX5kw=;
-        b=VZj+MZgnAC6FM8ZjUavDdI6v/2LxZw1Z0zWhZFHi9EZ4hOtj9mKlrXIBaWpLqFJzhL
-         KOiLWfL8bVDwepILPUut+YWBOLuAbyJSQsoZ0rh2q+bkbo+wib6wzUNeroAM9XvKH8oR
-         4Su+HQaZt77HK4ztbkaUaefAEKXkp5duZPHV8jCfDa0s/P5TLmxUfnnnAl8fT7xZdWI3
-         10AE3YkF+eEy/0qIWbT/xMVg7Eb4XL6v0GRpAduj29EW5wPQKGxTJ3pk6wRSOYWPNbtJ
-         LGdB9DnAcyuds++40/6Peiu3OR7ii/3Oy6uN7UzvFqsJfSTDMklMjWre4rgs9yf/G+ei
-         gVrw==
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f9ppopi9ppNssy3Y6kMvZbEvjKhcjUNqGrL0dAUL4ao=;
+        b=s+4aoLi8si5Ed9evIl1OVIUYT99oYi2kuZPq+XzPR6/lHA5xJVBU9b06CCnWZ++rhz
+         0qhks4VfuuDxYAt5YFHjPlF5SqarWBW0frBlRVwDYNvnGeStGJ803J17bJR5hoiyKWRY
+         MLNxcf9lujy45kxYF7LhNAL20zQDh9doUNQkK3VwhHe5AyssWS/UlKyA+hW14PDHN2cu
+         dWdliQmn5cYEP/da8/gr0Q3CToMRpGNFVdvdc6fK5SoTjRRUDdknX/nID5+ThZlvBwKC
+         Il2rmAB2RB2wFUi3A3d0oMe2JYYsQWcGh+tAyi4sdLVFgyA/diaWHWXkRfxfsUt/b0mk
+         gS0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719500538; x=1720105338;
+        d=1e100.net; s=20230601; t=1719500558; x=1720105358;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ILtq9+4c141AHxBgbXMa+RP0emWEvg+/fmgpWsAX5kw=;
-        b=OANHZFdxBzhnFY6n20WbcznpnvWFfqps/YHyqPB+4KLeT62d/9qhjwb8q3DUYXvfhA
-         RSImHR6YYdCNG+gsbDO+ZwmgNkjpZhPrEKykWV67qgNh6nt/IBHXnZpt8sA/T7aVUTVr
-         uN87n+D6M2S3Ofp5uI4npPurbyQS/4gfhpuD3xmU3COEpCAEqC3yUrQkvMvcw1GQ7Lhp
-         YoZSrQgcsc4t2AOzIV2HuGHHcViP2wlRUgaWypDZI+i9ADDFJuo2x9TAr9NS97gUnUvV
-         5MZ4JQMv0aAjad0o3E3JcrLfuIuvfZ2C0hNQ3KFDRd2mtXGi55iJvD6U0aw2Xso4o9/M
-         eACw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQrdivG5SJJmXDN1MGcGvFQBW5yoyXE8x723v8bK5mtAA4i+dH4wX7f5vFj7K7l3BJ2CBWhrkLIMADc2WfrtjbuYiSSmANW2+NrWm/1A==
-X-Gm-Message-State: AOJu0YyMaMzohKVtumB0M8IPF8J3G1bnjacGCngsdFaxZxzHpj0vPqWe
-	KmbjrituUgKE7yG3L/Y9HGZWQfdmMBRSLkkdou6qto0XOY2fnsHf3V4G55S+APo=
-X-Google-Smtp-Source: AGHT+IGhzRCqP2RV73RAfCGRkGAsHtE5znhuHD+qNGBvgcJ+PHUmpdeZlb/WN59v+vhaTirBRQcRFg==
-X-Received: by 2002:a17:906:dfc7:b0:a6e:f869:d718 with SMTP id a640c23a62f3a-a7296f808e2mr189909566b.21.1719500537821;
-        Thu, 27 Jun 2024 08:02:17 -0700 (PDT)
+        bh=f9ppopi9ppNssy3Y6kMvZbEvjKhcjUNqGrL0dAUL4ao=;
+        b=Ih5dThImoQmXnWUW+OGZpmU5w+GuC+m60ML5hrvt+MRF82hYqR9v/xygVMd5uOyfaW
+         AncQH9oqFMvH7UnvfwJXnNq33kTAsc27e1qpie6FYAv36e9BM7cG/RsCxvlPOBQA5zpc
+         SaRSHrXplu7tBDfabm0TDNeJzNnhJMSOmRam64vPh2v4n3JGJJ6O5DgiwuBJ2Fv84nuj
+         1v37304u8tEN+uNXzxiATw2nVgvI8WPlrYQ8KcO7bZnnhsOY0IL+DpuU35ZsZAiCDHW8
+         G8P23q9+Yf/VbbcESq73IEvp9CC2CzeHJP91rZqZIapXHYXAlK4qUF4KDr7ht8kp91i+
+         gUnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUf6sYxxE1kq8m2jJD57Zx3yh2yi35kry5qYBg2n3CidcayPPOzlDqxa+aFjYb32QuXz5NOlLw+ZxrwBx6KHhrZXvJMpIrIigjBH4kaFw==
+X-Gm-Message-State: AOJu0YxZ2g0TtRilwW04VYpDv0wLcwkeqAFmUFroWmaHyu1xkidRpXs3
+	sBakgN2AufVjTdza1pbnC8p6QWDXHQIGtoYzrRYwOST7xv4CwMfYBs2mSxefo9k=
+X-Google-Smtp-Source: AGHT+IHNxN4PmRPFk0RxdcCHSntPRfVHwfmOqM6zTS7G+/s/UPca4WGfngbQvLyYCR5O6HreQqUr+w==
+X-Received: by 2002:a17:907:6a0e:b0:a72:8296:ca42 with SMTP id a640c23a62f3a-a728296d1cfmr421637966b.49.1719500557261;
+        Thu, 27 Jun 2024 08:02:37 -0700 (PDT)
 Received: from localhost.localdomain ([91.216.213.152])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a729d7ca289sm67189066b.222.2024.06.27.08.02.16
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a729d7ca289sm67189066b.222.2024.06.27.08.02.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 08:02:17 -0700 (PDT)
+        Thu, 27 Jun 2024 08:02:36 -0700 (PDT)
 From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 To: Vinod Koul <vkoul@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -78,11 +78,11 @@ To: Vinod Koul <vkoul@kernel.org>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
-	Arnd Bergmann <arnd@arndb.de>,
 	Yangtao Li <frank.li@vivo.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Li Zetao <lizetao1@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
 	Chancel Liu <chancel.liu@nxp.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Corentin Labbe <clabbe@baylibre.com>,
 	dmaengine@vger.kernel.org,
 	devicetree@vger.kernel.org,
@@ -94,9 +94,9 @@ To: Vinod Koul <vkoul@kernel.org>,
 	linux-clk@vger.kernel.org,
 	linux-i2c@vger.kernel.org,
 	linux-mtd@lists.infradead.org
-Subject: [Patch v5 03/12] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
-Date: Thu, 27 Jun 2024 17:00:21 +0200
-Message-Id: <20240627150046.258795-4-piotr.wojtaszczyk@timesys.com>
+Subject: [Patch v5 04/12] ARM: dts: lpc32xx: Use simple-mfd for clock control block
+Date: Thu, 27 Jun 2024 17:00:22 +0200
+Message-Id: <20240627150046.258795-5-piotr.wojtaszczyk@timesys.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
 References: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
@@ -113,138 +113,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add nxp,lpc3220-i2s DT binding documentation.
+The clock control block shares registers with other Soc components
 
 Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
 Changes for v5:
-- Removed "N:" from the MAINTAINERS entry
+- This patch is new in v5
+- Split previous patch for lpc32xx.dtsi in to 3 patches
 
-Changes for v4:
-- Custom dma-vc-names property with standard dmas and dma-names
-- Added to MAINTAINERS
+ arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Changes for v3:
-- Added '$ref: dai-common.yaml#' and '#sound-dai-cells'
-- Dropped all clock-names, references
-- Dropped status property from the example
-- Added interrupts property
-- 'make dt_binding_check' pass
-
-Changes for v2:
-- Added maintainers field
-- Dropped clock-names
-- Dropped unused unneded interrupts field
-
- .../bindings/sound/nxp,lpc3220-i2s.yaml       | 73 +++++++++++++++++++
- MAINTAINERS                                   |  9 +++
- 2 files changed, 82 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
-
-diff --git a/Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml b/Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
-new file mode 100644
-index 000000000000..40a0877a8aba
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
-@@ -0,0 +1,73 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/nxp,lpc3220-i2s.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: NXP LPC32XX I2S Controller
-+
-+description:
-+  The I2S controller in LPC32XX SoCs, ASoC DAI.
-+
-+maintainers:
-+  - J.M.B. Downing <jonathan.downing@nautel.com>
-+  - Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-+
-+allOf:
-+  - $ref: dai-common.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - nxp,lpc3220-i2s
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: input clock of the peripheral.
-+
-+  dmas:
-+    items:
-+      - description: RX DMA Channel
-+      - description: TX DMA Channel
-+
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
-+
-+  "#sound-dai-cells":
-+    const: 0
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - dmas
-+  - dma-names
-+  - '#sound-dai-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/lpc32xx-clock.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    i2s@20094000 {
-+      compatible = "nxp,lpc3220-i2s";
-+      reg = <0x20094000 0x1000>;
-+      interrupts = <22 IRQ_TYPE_LEVEL_HIGH>;
-+      clocks = <&clk LPC32XX_CLK_I2S0>;
-+      dmas = <&dma 0 1>, <&dma 13 1>;
-+      dma-names = "rx", "tx";
-+      #sound-dai-cells = <0>;
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 79b44addc139..ceec359c68fc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8918,6 +8918,15 @@ S:	Maintained
- F:	sound/soc/fsl/fsl*
- F:	sound/soc/fsl/imx*
+diff --git a/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi b/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
+index 974410918f35..8bf88d141e5b 100644
+--- a/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
++++ b/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
+@@ -312,18 +312,17 @@ fab {
+ 			compatible = "simple-bus";
+ 			ranges = <0x20000000 0x20000000 0x30000000>;
  
-+FREESCALE SOC LPC32XX SOUND DRIVERS
-+M:	J.M.B. Downing <jonathan.downing@nautel.com>
-+M:	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-+R:	Vladimir Zapolskiy <vz@mleia.com>
-+L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-+L:	linuxppc-dev@lists.ozlabs.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/sound/nxp,lpc3220-i2s.yaml
-+
- FREESCALE SOC SOUND QMC DRIVER
- M:	Herve Codina <herve.codina@bootlin.com>
- L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
+-			/* System Control Block */
+-			scb {
+-				compatible = "simple-bus";
+-				ranges = <0x0 0x40004000 0x00001000>;
++			syscon@40004000 {
++				compatible = "nxp,lpc3220-creg", "syscon", "simple-mfd";
++				reg = <0x40004000 0x114>;
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
++				ranges = <0 0x40004000 0x114>;
+ 
+ 				clk: clock-controller@0 {
+ 					compatible = "nxp,lpc3220-clk";
+ 					reg = <0x00 0x114>;
+ 					#clock-cells = <1>;
+-
+ 					clocks = <&xtal_32k>, <&xtal>;
+ 					clock-names = "xtal_32k", "xtal";
+ 				};
 -- 
 2.25.1
 
