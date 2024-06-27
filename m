@@ -1,86 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452C791AE1C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 19:34:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A2191AEBF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 20:05:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FAjbaRRz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RV3ccAhz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W95KD4wXSz3dLl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 03:34:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W961c4QQtz3cdZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 04:05:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FAjbaRRz;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RV3ccAhz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=fancer.lancer@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W95JV5nKFz3cW5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 03:33:30 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2ec3f875e68so90655961fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 10:33:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719509607; x=1720114407; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0nAXuUIOjmGqCty40Smyp4CQdr7UcxvXuJwOvkK+QNc=;
-        b=FAjbaRRzHEfhygHt8A8UU+vXFb0BhygePUgfOC7u3dkfx3paeh7vu/FpxduvwqJs2t
-         Yl5VIXjVBclVaMOp9DO7ALXGLDIfDtcgWTT60fN20HCOxdcPO9wvQ170sL1h1DDhXMwJ
-         yiuZj+iu/1gF0fH5TLOUSalin0Pz7G7UDY66S7leXB0jZ6GJr9j3OVoqd70thL7o0JM4
-         CwVV8G3qcOGFS6PDqynEDoWvw/QUnJN+QrXqlp/cMV2r8hErBTijOpPdJ2nJygNa2pD3
-         LPyyxhzOv7NVb+lkv60wyK3L2gX8Q0vz7KDPgEBZXwWGJGHPcQktMrMUh0xycV1Ekbkr
-         cEnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719509607; x=1720114407;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0nAXuUIOjmGqCty40Smyp4CQdr7UcxvXuJwOvkK+QNc=;
-        b=mGMgb67SDGaxjKh4tqgzFA26l7/GYgUK4yaPf2Ap/E76GlaJLXL5FAMAsOEqLTiuFH
-         10eUjSw87ZT4eyCPfNXKpfXk9wjS5LPHpE+jNajfbA9D8Rt7bQJBgqzjJI9LovukoNDr
-         UV7fN+mzy7VVdG+GiQySaPA08Y/uca2Y7wQL9/EhaG/oh5GsKOUeyAl55rW6CH4DBlDG
-         RYd4j+jOeNqTsVfIGdJfsqUCVbmgh2JnP4/5+sg/6hFrxkUMq6/KpepfDAOt2Yu9x6Dw
-         O6bNMzGuIcmBv5W0KXMUEhTe7PxOJdNYVTEnGEL66ECQ71q25bcSHdeGz24bpDUwr3fC
-         DmfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIYmWsEZE6LNuMLyv6ZOiGCeI5pQ/hda852FNEOslAZkuI2QVhuJJ2kKG7Y3QO03m8TrmovZ4/PeztTHLJ29a8ttwkQqI29VmPYek0bA==
-X-Gm-Message-State: AOJu0Yxof6NEnxlkBUlu6zpmFJzRBMmFCirT2OSXuZDCcjMIZ89jLXK6
-	WeqjEI6dqowcDUpzAO5H2RKc/sgX/yg/Xu0F9mrGRtPKrZb87BVz
-X-Google-Smtp-Source: AGHT+IHGoGY2n1QfAG6JTwUNGhhCZzy4UmpenhlHuzy1RroDnkwx5LnD4lEgqD3Y8VeOD4uJVKvTsQ==
-X-Received: by 2002:a2e:9907:0:b0:2eb:dabb:f2b2 with SMTP id 38308e7fff4ca-2ec5b38b74amr84977561fa.30.1719509607182;
-        Thu, 27 Jun 2024 10:33:27 -0700 (PDT)
-Received: from localhost ([213.79.110.82])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ee4a4bef32sm3213471fa.120.2024.06.27.10.33.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 10:33:26 -0700 (PDT)
-From: Serge Semin <fancer.lancer@gmail.com>
-To: Michal Simek <michal.simek@amd.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	James Morse <james.morse@arm.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Robert Richter <rric@kernel.org>,
-	Lei Wang <lewan@microsoft.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Egor Martovetsky <egor@pasemi.com>
-Subject: [PATCH RESEND v6 13/18] EDAC/mc: Re-use generic unique MC index allocation procedure
-Date: Thu, 27 Jun 2024 20:32:20 +0300
-Message-ID: <20240627173251.25718-14-fancer.lancer@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240627173251.25718-1-fancer.lancer@gmail.com>
-References: <20240627173251.25718-1-fancer.lancer@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W95zk6S1dz3cYq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 04:04:02 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45RHkMol009023;
+	Thu, 27 Jun 2024 18:03:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=v+WEvBRLas2ArOOC4enxr7YC3w
+	vbzqILQqAiQmn1e4Y=; b=RV3ccAhzMlYN36wxot9wd3njnj3kqvN3jdvnNz8fjs
+	133ndvgLfWVXBOReofYVrbK70Xax2FItZy5UKFbGHBu+8tvETUfEAtnEyGr40ZV6
+	3znZjqk0Ua2Ijr9qzsvmDd4rFBC0ScHOAbFjdWVqnnck/89vyMh4z60kXcI83YSC
+	IhxjPhzwYGD//o32zxu9WDisi6NHB/g3G0Kp1y2W5XksvlZ/F/wQAHeT9aWndK59
+	7WUssI3+8+KPrCW7olWNAvB36T+dyjPc3LZvAI7V1cR1zBnfGQ6F+p8XHFGeJeQ4
+	9EMIfNHvE+f2BHGWs+hy2UG//0KykHFgNSimU0Jk7YTg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 401aaf0f4a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 18:03:54 +0000 (GMT)
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45RI3sXY002995;
+	Thu, 27 Jun 2024 18:03:54 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 401aaf0f46-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 18:03:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45RHaiJv018115;
+	Thu, 27 Jun 2024 18:03:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yx8xumakq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 18:03:53 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45RI3ldK41287952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Jun 2024 18:03:49 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A63172004B;
+	Thu, 27 Jun 2024 18:03:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B33E120040;
+	Thu, 27 Jun 2024 18:03:45 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com.com (unknown [9.43.107.18])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 27 Jun 2024 18:03:45 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        naveen.n.rao@linux.ibm.com
+Subject: [RFC PATCH 0/2] Fix doorbell emulation for nested KVM guests in V1 API
+Date: Thu, 27 Jun 2024 23:33:34 +0530
+Message-ID: <20240627180342.110238-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rpiGQc0FhiqDD1tr2Kn0MpPZqea5JeBC
+X-Proofpoint-GUID: IwfwpZLI6IeHGF2MaR_GGO7hf8sJMYKt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-27_13,2024-06-27_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=536 clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0
+ adultscore=0 mlxscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406270132
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,103 +96,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, Punnaiah Choudary Kalluri <punnaiah.choudary.kalluri@xilinx.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The EDAC drivers locally maintaining a statically defined
-memory-controllers counter don't care much about the MC index assigned as
-long as it's unique so the EDAC core perceives it. Convert these drivers
-to be using the generic MC index allocation procedure recently added to
-the EDAC core.
+Doorbell emulation for nested KVM guests in V1 API is broken because of
+2 reasons:
+1. L0 presenting H_EMUL_ASSIST to L1 instead of H_FAC_UNAVAIL
+2. Broken plumbing for passing around doorbell state.
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Fix the trap passed to L1 and the plumbing for maintaining doorbell
+state.
 
----
+Gautam Menghani (2):
+  Revert "KVM: PPC: Book3S HV Nested: Stop forwarding all HFUs to L1"
+  arch/powerpc/kvm: Fix doorbells for nested KVM guests on PowerNV
 
-Changelog v4:
-- Initial patch introduction.
----
- drivers/edac/dmc520_edac.c | 4 +---
- drivers/edac/pasemi_edac.c | 5 +----
- drivers/edac/ppc4xx_edac.c | 5 +----
- 3 files changed, 3 insertions(+), 11 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c        | 40 ++++++++---------------------
+ arch/powerpc/kvm/book3s_hv_nested.c | 20 ++++++++++++---
+ 2 files changed, 26 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/edac/dmc520_edac.c b/drivers/edac/dmc520_edac.c
-index 4e30b989a1a4..93734a97a67b 100644
---- a/drivers/edac/dmc520_edac.c
-+++ b/drivers/edac/dmc520_edac.c
-@@ -173,8 +173,6 @@ struct dmc520_edac {
- 	int masks[NUMBER_OF_IRQS];
- };
- 
--static int dmc520_mc_idx;
--
- static u32 dmc520_read_reg(struct dmc520_edac *pvt, u32 offset)
- {
- 	return readl(pvt->reg_base + offset);
-@@ -517,7 +515,7 @@ static int dmc520_edac_probe(struct platform_device *pdev)
- 	layers[0].size = dmc520_get_rank_count(reg_base);
- 	layers[0].is_virt_csrow = true;
- 
--	mci = edac_mc_alloc(dmc520_mc_idx++, ARRAY_SIZE(layers), layers, sizeof(*pvt));
-+	mci = edac_mc_alloc(EDAC_AUTO_MC_NUM, ARRAY_SIZE(layers), layers, sizeof(*pvt));
- 	if (!mci) {
- 		edac_printk(KERN_ERR, EDAC_MOD_NAME,
- 			    "Failed to allocate memory for mc instance\n");
-diff --git a/drivers/edac/pasemi_edac.c b/drivers/edac/pasemi_edac.c
-index 1a1c3296ccc8..afebfbda1ea0 100644
---- a/drivers/edac/pasemi_edac.c
-+++ b/drivers/edac/pasemi_edac.c
-@@ -57,8 +57,6 @@
- #define PASEMI_EDAC_ERROR_GRAIN			64
- 
- static int last_page_in_mmc;
--static int system_mmc_id;
--
- 
- static u32 pasemi_edac_get_error_info(struct mem_ctl_info *mci)
- {
-@@ -203,8 +201,7 @@ static int pasemi_edac_probe(struct pci_dev *pdev,
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = PASEMI_EDAC_NR_CHANS;
- 	layers[1].is_virt_csrow = false;
--	mci = edac_mc_alloc(system_mmc_id++, ARRAY_SIZE(layers), layers,
--			    0);
-+	mci = edac_mc_alloc(EDAC_AUTO_MC_NUM, ARRAY_SIZE(layers), layers, 0);
- 	if (mci == NULL)
- 		return -ENOMEM;
- 
-diff --git a/drivers/edac/ppc4xx_edac.c b/drivers/edac/ppc4xx_edac.c
-index 1eea3341a916..06d267d40a6a 100644
---- a/drivers/edac/ppc4xx_edac.c
-+++ b/drivers/edac/ppc4xx_edac.c
-@@ -1214,7 +1214,6 @@ static int ppc4xx_edac_probe(struct platform_device *op)
- 	const struct device_node *np = op->dev.of_node;
- 	struct mem_ctl_info *mci = NULL;
- 	struct edac_mc_layer layers[2];
--	static int ppc4xx_edac_instance;
- 
- 	/*
- 	 * At this point, we only support the controller realized on
-@@ -1265,7 +1264,7 @@ static int ppc4xx_edac_probe(struct platform_device *op)
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = ppc4xx_edac_nr_chans;
- 	layers[1].is_virt_csrow = false;
--	mci = edac_mc_alloc(ppc4xx_edac_instance, ARRAY_SIZE(layers), layers,
-+	mci = edac_mc_alloc(EDAC_AUTO_MC_NUM, ARRAY_SIZE(layers), layers,
- 			    sizeof(struct ppc4xx_edac_pdata));
- 	if (mci == NULL) {
- 		ppc4xx_edac_printk(KERN_ERR, "%pOF: "
-@@ -1303,8 +1302,6 @@ static int ppc4xx_edac_probe(struct platform_device *op)
- 			goto fail1;
- 	}
- 
--	ppc4xx_edac_instance++;
--
- 	return 0;
- 
-  fail1:
 -- 
-2.43.0
+2.45.1
 
