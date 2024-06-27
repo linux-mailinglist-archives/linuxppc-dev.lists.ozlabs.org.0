@@ -2,64 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EB591AD7C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 19:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080A491AD9E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 19:12:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=tm27XbhM;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=bZbZIRvu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W94mP5WPYz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 03:09:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W94rF2WnTz3cft
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 03:12:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=tm27XbhM;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=bZbZIRvu;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=sanastasio@raptorengineering.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 261 seconds by postgrey-1.37 at boromir; Fri, 28 Jun 2024 03:08:31 AEST
 Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W94lg09jSz3cCM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 03:08:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W94pw2dY0z3cfB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 03:11:20 +1000 (AEST)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 3DAFB8284676;
-	Thu, 27 Jun 2024 12:08:30 -0500 (CDT)
+	by mail.rptsys.com (Postfix) with ESMTP id 9A9808284676;
+	Thu, 27 Jun 2024 12:11:19 -0500 (CDT)
 Received: from mail.rptsys.com ([127.0.0.1])
 	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id XdB8CVZdFTUe; Thu, 27 Jun 2024 12:08:28 -0500 (CDT)
+	with ESMTP id 8M9sTC8IiM0Q; Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id BEE9D8286EE7;
-	Thu, 27 Jun 2024 12:08:28 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com BEE9D8286EE7
+	by mail.rptsys.com (Postfix) with ESMTP id D1C748287291;
+	Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com D1C748287291
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1719508108; bh=7vozx5pnO3XeEM4yE1MwWuRfVdToNevzVg4mxSfCvKs=;
+	t=1719508278; bh=w0cEudny5PU8YvBvvlFhixxtK4IKtgz3lssxEp5pCGw=;
 	h=Message-ID:Date:MIME-Version:To:From;
-	b=tm27XbhMcN3WAhiovueooUXESqDRJygPFvjey0yPzTGBNLnBlvOAaQQZNRgtfqHhj
-	 vybHcwIWpDcvpBSdZAXa92+dyH8B10GyrcT3FSBaytfWcap2Z69m67d8Wbj7Ig9Z61
-	 PvObo0h12TozzbGaSm+u0ledIX8Ng7XYHgt5wOZs=
+	b=bZbZIRvuEntX4eYzCC3cMaso2r9eE/hUjToEQvGXbLDmgNP7Rm8yAZqFYBbUkXuop
+	 JG68k6rTbQx7SI0fHE9Al/g4Qb7vdRaAmtzppTw6y2BZvQ9BGbh/LMqPmVmzL0ya4b
+	 B3HXKoZR60vOefzlalffebwbI0HgqFinHoiEoHjc=
 X-Virus-Scanned: amavisd-new at rptsys.com
 Received: from mail.rptsys.com ([127.0.0.1])
 	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jX-fwQJ2VSlB; Thu, 27 Jun 2024 12:08:28 -0500 (CDT)
+	with ESMTP id 1p0pndOz2WXs; Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
 Received: from [10.11.0.2] (5.edge.rptsys.com [23.155.224.38])
-	by mail.rptsys.com (Postfix) with ESMTPSA id EF00F8284676;
-	Thu, 27 Jun 2024 12:08:27 -0500 (CDT)
-Message-ID: <888d3984-d00e-4148-a1ca-f7887c0af413@raptorengineering.com>
-Date: Thu, 27 Jun 2024 12:08:27 -0500
+	by mail.rptsys.com (Postfix) with ESMTPSA id 3864A8284676;
+	Thu, 27 Jun 2024 12:11:18 -0500 (CDT)
+Message-ID: <36276ba1-fc2c-418d-a80e-388e1f7988ed@raptorengineering.com>
+Date: Thu, 27 Jun 2024 12:11:17 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] pci/hotplug/pnv_php: Fix hotplug driver crash on
- Powernv
+Subject: Re: [PATCH v3 2/2] powerpc: hotplug driver bridge support
 To: Krishna Kumar <krishnak@linux.ibm.com>, mpe@ellerman.id.au,
  npiggin@gmail.com
 References: <20240624121052.233232-1-krishnak@linux.ibm.com>
- <20240624121052.233232-2-krishnak@linux.ibm.com>
+ <20240624121052.233232-3-krishnak@linux.ibm.com>
 Content-Language: en-US
 From: Shawn Anastasio <sanastasio@raptorengineering.com>
-In-Reply-To: <20240624121052.233232-2-krishnak@linux.ibm.com>
+In-Reply-To: <20240624121052.233232-3-krishnak@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,19 +78,26 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 Hi Krishna,
 
 On 6/24/24 7:09 AM, Krishna Kumar wrote:
-> Description of the problem: The hotplug driver for powerpc
-> (pci/hotplug/pnv_php.c) gives kernel crash when we try to
-> hot-unplug/disable the PCIe switch/bridge from the PHB.
+> There is an issue with the hotplug operation when it's done on the
+> bridge/switch slot. The bridge-port and devices behind the bridge, which
+> become offline by hot-unplug operation, don't get hot-plugged/enabled by
+> doing hot-plug operation on that slot. Only the first port of the bridge
+> gets enabled and the remaining port/devices remain unplugged. The hot
+> plug/unplug operation is done by the hotplug driver
+> (drivers/pci/hotplug/pnv_php.c).
 > 
-> Root Cause of Crash: The crash is due to the reason that, though the msi
-> data structure has been released during disable/hot-unplug path and it
-> has been assigned with NULL, still during unregistartion the code was
-> again trying to explicitly disable the msi which causes the Null pointer
-> dereference and kernel crash.
+> Root Cause Analysis: This behavior is due to missing code for the
+> switch/bridge. The existing driver depends on pci_hp_add_devices()
+> function for device enablement. This function calls pci_scan_slot() on
+> only one device-node/port of the bridge, not on all the siblings'
+> device-node/port.
 > 
-> Proposed Fix : The fix is to correct the check during unregistration path
-> so that the code should not  try to invoke pci_disable_msi/msix() if its
-> data structure is already freed.
+> The missing code needs to be added which will find all the sibling
+> device-nodes/bridge-ports and will run explicit pci_scan_slot() on
+> those.  A new function has been added for this purpose which gets
+> invoked from pci_hp_add_devices(). This new function
+> pci_traverse_sibling_nodes_and_scan_slot() gets all the sibling
+> bridge-ports by traversal and explicitly invokes pci_scan_slot on them.
 > 
 > Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Nicholas Piggin <npiggin@gmail.com>
@@ -105,8 +110,9 @@ On 6/24/24 7:09 AM, Krishna Kumar wrote:
 > 
 > Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
 
-As with v1, I can confirm that this patch solves the panic encountered
-when hotplugging PCIe bridges on POWER9.
+Other than the case with NVMe devices failing that we discussed in v1's
+thread, I can confirm that this patch resolves many of the issues we've
+encountered with PCIe hotplug on POWER9.
 
 Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
 
