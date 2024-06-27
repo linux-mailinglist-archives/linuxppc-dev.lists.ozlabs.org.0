@@ -2,33 +2,177 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705DB919EE3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 07:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E24EE919F62
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 08:37:29 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CDihZ0fU;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W8nbY2T9Dz3dSk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 15:45:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W8plR20B6z3cXg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 16:37:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lst.de (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CDihZ0fU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8nb769jGz3cWS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 15:45:02 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 70CDD68AFE; Thu, 27 Jun 2024 07:44:55 +0200 (CEST)
-Date: Thu, 27 Jun 2024 07:44:55 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH 10/13] fs/dax: Properly refcount fs dax pages
-Message-ID: <20240627054455.GF14837@lst.de>
-References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com> <afcfa4f164e5642c4f629c75acf794838c2ac9aa.1719386613.git-series.apopple@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W8pkj4f53z30Vh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jun 2024 16:36:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719470207; x=1751006207;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=AJ3rt3gGjaRJd9Aj7L41vzbXdPO5Cpq9d86iEsNuNh4=;
+  b=CDihZ0fUIQIUFOP1ah5tSdxx1aZkfXXiSY//RsRBrvwgH0q5SmfAR9YN
+   8DPpZhzaL7b9todwZyqTbkuXtvurSSNXZ8p6rqv18zm7dStJx8DCQiyaK
+   dpfRzOVpwfWHoUecr7Xvp99bpnxu3Ji87h+tbWg9x+Tlnl1eWopd0mMtA
+   UhshAFARog/uKLVg8Fzcled+Apw4pwKxjvFJ5HTOEptuwSiVRkqUQvq9a
+   mkc4L7rB+dYspesROVws+d7UO5YEudW6LJ10tPciS73nF81bkYkJf3h5e
+   lVRFwcRJLTViKzXDYL35IHIoecK7bZN2HTCmZw1YplXn/5lLpevToi7LH
+   w==;
+X-CSE-ConnectionGUID: 7B25mF8OQ3mbVZGyUCvutw==
+X-CSE-MsgGUID: sMuIanW8SuGompgCbIAmuQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27974776"
+X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; 
+   d="scan'208";a="27974776"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2024 23:36:41 -0700
+X-CSE-ConnectionGUID: tMsXaOTkQTqOj5bi7peMIA==
+X-CSE-MsgGUID: H3WHlpeSTguNTSSeTynlng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; 
+   d="scan'208";a="44688386"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Jun 2024 23:36:41 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 26 Jun 2024 23:36:40 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 26 Jun 2024 23:36:40 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 26 Jun 2024 23:36:40 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 26 Jun 2024 23:36:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k0hG2U7m76pUjXSNkJ8BiyMY4WvJ9zAjAW46FOWrGLfz34Pivf1UiQ5J5qfP4Y/EZamncFOpmA9OTxT1aXp2nnc8e5XYZkrgy4fPfICeY1WZnCuC92beTPllMMvqeMqZcDMRoZTDYCtttlO8qo5ufnB8Nxi7DI7lTi76TrZnV8Byvw9ArOv7bejC1KAIYvTWNQZE1PtqqJWVXnb2GAMFlUvflZr9VJo48B3AuUbaGETDLRqvaul70AhEO8/EQBixUXynwhKgqATMJ3fyE5FpyGStmJppzO+AS1IqxjTE215Iz6u1g65TAxrP+AkC3+mrvskv72M/IYf5l03jzEpmSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+VP6ODylPkQpTLXcZEpgB7ClQJxb3PiaHvnMLAdooLY=;
+ b=MqczREiFPmqIvWZWSZAkiWQpUseiU390GLj++TmAy8TdpIZ8gZSyR+orlu82hNbJaJ6IBq0gCrqf4Va1DOKaUtR80ddBhOFtQj4Aqb+KbHNj3Gc4UR9nGlWdsyq6T4y20nmhokion9jUXzj+lcPsn1pp+BGqv0+pbf+j1b3IdbDYb14NKUamRh9tAjJGqD1WHpVD0/x7odDIXnpnUQO1eK+1w+/IWBCjIDAZBA+A8cqPDobaIzi2gYudErATFxuO5eenpQuzY5R8I+XS2885kHjcCxwrx7fpgNeAXZV17RJWWMdgXKBTl1385CM6qsFecyJXLL/RDx3yG7WS0vgCpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BY1PR11MB8127.namprd11.prod.outlook.com (2603:10b6:a03:531::20)
+ by CY8PR11MB6817.namprd11.prod.outlook.com (2603:10b6:930:63::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.28; Thu, 27 Jun
+ 2024 06:36:32 +0000
+Received: from BY1PR11MB8127.namprd11.prod.outlook.com
+ ([fe80::6f9b:50de:e910:9aaa]) by BY1PR11MB8127.namprd11.prod.outlook.com
+ ([fe80::6f9b:50de:e910:9aaa%4]) with mapi id 15.20.7698.025; Thu, 27 Jun 2024
+ 06:36:32 +0000
+Date: Wed, 26 Jun 2024 23:36:17 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alistair Popple <apopple@nvidia.com>, <dan.j.williams@intel.com>,
+	<vishal.l.verma@intel.com>, <dave.jiang@intel.com>, <logang@deltatee.com>,
+	<bhelgaas@google.com>, <jack@suse.cz>, <jgg@ziepe.ca>
+Subject: Re: [PATCH 01/13] mm/gup.c: Remove redundant check for PCI P2PDMA
+ page
+Message-ID: <667d0861a0e2_5ff42946d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
+ <e24726e36a7b8cb39b0d85ebbbbc9ba564dd3a74.1719386613.git-series.apopple@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <afcfa4f164e5642c4f629c75acf794838c2ac9aa.1719386613.git-series.apopple@nvidia.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <e24726e36a7b8cb39b0d85ebbbbc9ba564dd3a74.1719386613.git-series.apopple@nvidia.com>
+X-ClientProxiedBy: MW4PR03CA0175.namprd03.prod.outlook.com
+ (2603:10b6:303:8d::30) To LV3SPRMB0083.namprd11.prod.outlook.com
+ (2603:10b6:408:291::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PR11MB8127:EE_|CY8PR11MB6817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21c5f59f-5e86-4a11-453c-08dc96737ada
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?C4cB2Oq0bJtwXHyLLyWoSLCBD3x33mfsBiBy3MepPMn0Y0oNZjbM93PeaS/+?=
+ =?us-ascii?Q?WyKYFYzOXj9dlX0TATfcS/wYZji2eABEjpNy5hpP9fQLMI+r5ZQOhHAmRSa4?=
+ =?us-ascii?Q?2wHXbzU3qDKZuWcK9rAaPTq3yYlQgt9SZ/vvxMoQXArNNxwz5n+stk5xHyZI?=
+ =?us-ascii?Q?ah6XuJxlQwopEhj5NaEuGFzV78K12wHAQZj9mYdagus8+lgHwY8Nlm+kKCEC?=
+ =?us-ascii?Q?PYt7cGeFh9BWcF7SP6Xwgkb7DOaDIBbet7lobpMfKduX5KqCgOU4oR9K+P5j?=
+ =?us-ascii?Q?t+9ooa6nBrh/JN9HD8SzEfwT7Vgnr7XUrg3fG+hon56Q8N1Jfh5k48RP/aAA?=
+ =?us-ascii?Q?KfmYOLtAmpbxi0zNQRkvzyv6j7UI1kbhlCer0rnCZE8H5YWMxe3EWllAzB0B?=
+ =?us-ascii?Q?UZcV/2ExBxINOFMEW87nAww3Kayr1/jdLcmCTLiAQ2SmVsu+Ah6g2NlZQ/d6?=
+ =?us-ascii?Q?L9RnSQMh64HVXK6ACcNM38fFv5Fz5RcdkjXSpHk/iJSRaDBJDGZwyWNDi/zR?=
+ =?us-ascii?Q?wXCrYonVvwKvYzs6NfPruc+Iq6UIrk9Xjka7iGW+lc2Cv0fbsz053m/Muq3g?=
+ =?us-ascii?Q?w8IsZRuMXlMBRi6kTcmuulCo5iiY/BtVa8z2nCsja7KhULWmf74StukB1oI/?=
+ =?us-ascii?Q?JFg3jTgrgHNJ5HaP/O2bc61aOrgjSHSJo3cA0MlgRQun9lqteTmRf/JYvhSa?=
+ =?us-ascii?Q?/FPtoXX+b6EnkRu8jkgfQheI0+zcNu+xbsyRJKr5XiEKuHDEoDwP8LTDy9vp?=
+ =?us-ascii?Q?VfLZT4xyasU1cyKVv82JdDtLH6GX8G9XLyWABS9viLLT5aY+TA24b5N57kUF?=
+ =?us-ascii?Q?/hPnCw/a5MsT8SPmYf83cAidSNKBrECytY4BR8/AC7LsBNT61fLr15aJKqBe?=
+ =?us-ascii?Q?6hjErh+LcVvScC+BBHGu3iTItntK6HaJ3NFB7nidoUuoGtzYNYDXHulo9JUf?=
+ =?us-ascii?Q?aCKA2jC/+Bh3gEVlamBr2qxGqR3l8in0qGUbqrj5KAHdpOZoyGk4JH4N20nz?=
+ =?us-ascii?Q?3fjXoKCGvbiTmIx4zYtXsqjHZ3pkz7UKnlH4npgI3VhzvEvxYIL1jCtn+tms?=
+ =?us-ascii?Q?kmzjIURTSFszLCqyHNX1GMeNK5I4a6dVfqcsQSXYTqiLKzt5BpsFYw8/+w4+?=
+ =?us-ascii?Q?UhPIqhmOaQ05VPGrYkiFfmS9b7oMwfva5OVwrSNnuLxJq8kG43RipBJAlnu9?=
+ =?us-ascii?Q?7uXjLfCme7TfCm2gLVNtL3fYX9ajAR6rZkCiwuBWsfYe2Z1BemEp7ufpxmxh?=
+ =?us-ascii?Q?fPuh6pYz/YUwo2mEltvGj538LdAwGJCED+aMHhL6CD2NV/OfRm2DNCl+jZc1?=
+ =?us-ascii?Q?oNN6q7/O4ZSi0zifa4hrsCDAIwlw5sEIASTGxM2lw5I6Tg=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY1PR11MB8127.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LsPP8y4B8W/Wb6RQbv5/2OsTApXbknlwHqUbNZeJpt2JWoCF+Vt60V5wRWSm?=
+ =?us-ascii?Q?kZBRgro/SaGoMvcSF9wWo1m3LnMHWxARJ3XIOLqwrM2Am2C+VO5H8GrzX3Lt?=
+ =?us-ascii?Q?y8N+RQF/n4U5zTx0VZkguIAz9nMNHqPw1KMNEf4zli+TmivR0VyBXqdC09ib?=
+ =?us-ascii?Q?M0F2Zvc9vSncezn2wwOe8PLB+j4ZLSJMTo3BPIEgN/SVNEI6ZwKfbUtK5w0G?=
+ =?us-ascii?Q?e6uqjsa+91LNw0EXdKLuzGRzRxqdP0LC+FhiwxO/yv0bK5IiTH+xzk29ZVjn?=
+ =?us-ascii?Q?BC/ixF8NTi5VDVmZEgh62n5IkGY6WIr0WtLwTIftyMmASoKFkVxqfHwbyLP2?=
+ =?us-ascii?Q?cMoe5AadUvWuiFXEO+3bYQDyw3hpPvNwODmyOL80tk1Y7UzMTv7QQ09jwMBz?=
+ =?us-ascii?Q?eF+O5sm8PnY4CdnG1jBkzNk6JC9RFCdt/2E8Z6i+wUur8I/GFU7TSlADkCjy?=
+ =?us-ascii?Q?yr1KiMDipXIO8UQWoyeO+kSSAq3GZTB+sqyn83+eI3S5RsyBi/DlmwZZtQZL?=
+ =?us-ascii?Q?YIBCHSyyZEM4KcfOtBewAFR8sVTzxFcoxiUzFlY+okhnFK4PD3bVZFY61xmU?=
+ =?us-ascii?Q?Z37VWnY/K9rDeVdpFpyINe84OH0NNfvZcxma0So/uWLiPR2eSv/IesOvKQ0A?=
+ =?us-ascii?Q?Iuw6k/4zH10NAG38DI1DfQ9Km7MSqdMx7wP+vSyy4G1hcZuMS7HaO51Ja06f?=
+ =?us-ascii?Q?mvDQXS+IEF5mMFb1lUXgkAvAEGY72DrOVgTAJ3alc8od5pYR9JX5ZbYtVEqG?=
+ =?us-ascii?Q?BfOKKd1d9wv40In3/UFhx3A2yl2LREtIxFK7O4fxxZBvQTbV4RTTKdSL7n9W?=
+ =?us-ascii?Q?VoGPTctByjOEWPuiofDZpuMcuaOHEdbLLUwvgShgbpDqj5aG9DmDMLQnzJwp?=
+ =?us-ascii?Q?1AY2HrRfhNGnrZvRq50wq+CGiBBEGqDu4U9PHeaYpoa9yJuObJFQ52vF1Mn1?=
+ =?us-ascii?Q?YXDGo7xHkg707ee+/VwYOMjsTil3JMJUJzgO/KXQsnzl/euNsHJUsYsOWYEC?=
+ =?us-ascii?Q?VrvoMaNIRTnKyN55ssFKhiG5IX3JRMofSVXlyvUWr9D+xSPd4kJYpJyh4YW/?=
+ =?us-ascii?Q?7teeQfB4nnC+9p+4UfvebmGc9sTBaZ+PtLKl5oNLKm7FAHHMTbi0scydzGH4?=
+ =?us-ascii?Q?bBMa5CAJuB3TdwkRWtZ7poypmcKOlKCvZdnLcQ1yuzu9apHAkxxo3t96pZvc?=
+ =?us-ascii?Q?H7Z1wO1EfR53cMN0oCELptCAf1SCwuX9aw7E4jXk9Ikf+mcqPzJymZG2GQgZ?=
+ =?us-ascii?Q?EqTkgwM+EJx0U3Hazq/fElGp5pUmbk/aY6VPpPzZBnj/AkXrvWlBoXSdra24?=
+ =?us-ascii?Q?2gwJQhywzuh72GQhi70Uk+2gQxborn2dYeZgRmHyp17McCD3Bw2Y6oy24qTt?=
+ =?us-ascii?Q?ILwHoFSDndqTIT0XVIVVSLz4ILmF4tHSNoVE+QMQlfUY+0iBH3M+4GwiSegB?=
+ =?us-ascii?Q?wO0YgHdiHNePG52Y8H7GSoxbRZc+pdYabax4zfr5CccJoEdMtZQ9QbhpjQoC?=
+ =?us-ascii?Q?tsGbK7jFgbpmUX1ttJ9ORXmCZWaWt0EZd4byAVFbdK4ML0/freztuskjsKfy?=
+ =?us-ascii?Q?qObGLmiNmF7Ck4CuGaTWHnbc6LFr8umKeF8syLWplO4vN2VEdeYk16ZSOyER?=
+ =?us-ascii?Q?Pw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21c5f59f-5e86-4a11-453c-08dc96737ada
+X-MS-Exchange-CrossTenant-AuthSource: LV3SPRMB0083.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2024 06:36:32.6515
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q+Snq8UBkVji/PW1UcPGRnVJAoj3i+EwWDFDDwQ8AFXm42t3Wuyn7TWVMlfq6Rcc/75svXI2G9JUfQ4s8GnLU+jaOQrITChPLJXLsV/cppI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6817
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,84 +184,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, david@fromorbit.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, bhelgaas@google.com, dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, logang@deltatee.com
+Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, Alistair Popple <apopple@nvidia.com>, david@redhat.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, david@fromorbit.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, linux-doc@vger.kernel.org, willy@infradead.org, Jason Gunthorpe <jgg@nvidia.com>, djwong@kernel.org, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-> index eb61598..b7a31ae 100644
-> --- a/drivers/dax/device.c
-> +++ b/drivers/dax/device.c
-> @@ -126,11 +126,11 @@ static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
->  		return VM_FAULT_SIGBUS;
->  	}
->  
-> -	pfn = phys_to_pfn_t(phys, PFN_DEV|PFN_MAP);
-> +	pfn = phys_to_pfn_t(phys, 0);
->  
->  	dax_set_mapping(vmf, pfn, fault_size);
->  
-> -	return vmf_insert_mixed(vmf->vma, vmf->address, pfn);
-> +	return dax_insert_pfn(vmf->vma, vmf->address, pfn, vmf->flags & FAULT_FLAG_WRITE);
+Alistair Popple wrote:
+> PCI P2PDMA pages are not mapped with pXX_devmap PTEs therefore the
+> check in __gup_device_huge() is redundant. Remove it
+> 
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-Plenty overly long lines here and later.
-
-Q: hould dax_insert_pfn take a vm_fault structure instead of the vma?
-Or are the potential use cases that aren't from the fault path?
-similar instead of the bool write passing the fault flags might actually
-make things more readable than the bool.
-
-Also at least currently it seems like there are no modular users despite
-the export, or am I missing something?
-
-> +		blk_queue_flag_set(QUEUE_FLAG_DAX, q);
-
-Just as a heads up, setting of these flags has changed a lot in
-linux-next.
-
->  {
-> +	/*
-> +	 * Make sure we flush any cached data to the page now that it's free.
-> +	 */
-> +	if (PageDirty(page))
-> +		dax_flush(NULL, page_address(page), page_size(page));
-> +
-
-Adding the magic dax_dev == NULL case to dax_flush and going through it
-vs just calling arch_wb_cache_pmem directly here seems odd.
-
-But I also don't quite understand how it is related to the rest
-of the patch anyway.
-
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -373,6 +373,8 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
->  	unsigned long start = addr;
->  
->  	ptl = pmd_trans_huge_lock(pmd, vma);
-> +	if (vma_is_dax(vma))
-> +		ptl = NULL;
->  	if (ptl) {
-
-This feels sufficiently magic to warrant a comment.
-
->  		if (!pmd_present(*pmd))
->  			goto out;
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index b7e1599..f11ee0d 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1016,7 +1016,8 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
->  	 */
->  	if (pgmap->type == MEMORY_DEVICE_PRIVATE ||
->  	    pgmap->type == MEMORY_DEVICE_COHERENT ||
-> -	    pgmap->type == MEMORY_DEVICE_PCI_P2PDMA)
-> +	    pgmap->type == MEMORY_DEVICE_PCI_P2PDMA ||
-> +	    pgmap->type == MEMORY_DEVICE_FS_DAX)
->  		set_page_count(page, 0);
->  }
-
-So we'll skip this for MEMORY_DEVICE_GENERIC only.  Does anyone remember
-if that's actively harmful or just not needed?  If the latter it might
-be simpler to just set the page count unconditionally here.
-
+Acked-by: Dan Williams <dan.j.williams@intel.com>
