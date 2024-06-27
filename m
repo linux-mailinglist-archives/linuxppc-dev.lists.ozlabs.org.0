@@ -1,173 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4496391B055
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 22:24:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A9D91B186
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jun 2024 23:26:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhppJjp4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mqrAhONa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W996F543sz3cZx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 06:24:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9BSj6rtWz3cWr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 07:25:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhppJjp4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mqrAhONa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W995V6L89z3cCM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 06:24:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719519856; x=1751055856;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ujPBEfxzAdLtCL5AEYUnQkt1XfMgJQK8RMByLLYBPFc=;
-  b=HhppJjp4BCO9QygnjIrpnxup7AKHsaoPIAOD92W7blXWpojM9NcAMUh4
-   Ab77rNa8dm4TvLK7Its+9K4uPHhnfubSwreLcX7NWxVh9uk7FSPBjrJf0
-   BA19rrgBHw7N4CRkK8DQMKcp9fVTFLt1CUJpeS6fn/CyIn70uij0h+ZwA
-   /A3oCTLcEZHj+HGFmjM0ewvmJAZqDOOVc27iboyTSDvlncq/4VL196vNN
-   lvwgfoA79S4dJUjP/wOcsKH6eky0BsFO9SFooe6thm1rMNym+Wj4oTrPx
-   GWBKONrRoHubIWojqp14Ko5fssqvbMtyaKidvGdK/SflVABK/rjR898St
-   w==;
-X-CSE-ConnectionGUID: VRSUiMT1Qdehx5dmAaOk2Q==
-X-CSE-MsgGUID: sd+WXmrBS4KsEX5R8/JAIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="12288483"
-X-IronPort-AV: E=Sophos;i="6.09,167,1716274800"; 
-   d="scan'208";a="12288483"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2024 13:24:10 -0700
-X-CSE-ConnectionGUID: T7WWb5LwRYaROFdY5wTSnQ==
-X-CSE-MsgGUID: 9zQcIHh+RTiDkyKHMPsUrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,167,1716274800"; 
-   d="scan'208";a="44570892"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 27 Jun 2024 13:24:10 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 27 Jun 2024 13:24:10 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 27 Jun 2024 13:24:10 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 27 Jun 2024 13:24:08 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Xe6VI6yQi/se06pujXXFoVoiSdcFhMb3PVjbmDeIqpQ/MxG43gULKIvHyNR993k3w0gPZ/yDXRdpzXuywnR+9QsM2vgfJB0m5xqDpRbkX+4VBWKFVRItJwW1MVnWsEblgOWNj+v/gjG2Hvnh9V5IjfaU20NycSTLRRYvMY+eMRz4BMdAsSHxPuCOeNrGEE7ub3gl1KS/LFa+4PtO9nR+WqQQEDtd2yRqbE6dRRacKU16En8eecTipBPURFTq57sY1esEov1B0q1bDsHQxuLe7dPe7VH3HQWW7nnMnZHhgZMj4SbIg1WSHWUqSNhnf+DuOOQvHoFOylkZOUF96kR8yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wD7/ZeYBRDgY8CYXPE2jgQjbDufqOwpetlCBLRRL9yE=;
- b=IDiToqaWyrODDHGEIOgIh6rP9PIRYup05E3qbAnBQRjJjO62kKWZOrYiFzcZ8rQQRn2PWJq1fqtOw3h4pbPKUQ9gjvLc4fAE8lj2o6l7RVkC1T0p5neTSQplqfAnq54rJ1zO4CACxO1to2eljF74qO54eMqGQk+P6SCkFmjaDzA9jYMClurYZx4XKxDkMdof5hnAHbcEKbDFDSM+O28ECiPVKBQeIVX5t6O8eo2/ATh44iG12N5WluVtILFvmlznrJ1meVYRYO4MNHYVnPxQzmtNyY8lK2xuhJIV+1VW4gAkAaO6jViab1pYe8Ya9qpU7IDxWJjAOW6uOxM9khIg/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH0PR11MB5127.namprd11.prod.outlook.com (2603:10b6:510:3c::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.26; Thu, 27 Jun
- 2024 20:24:06 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.7719.022; Thu, 27 Jun 2024
- 20:24:06 +0000
-Date: Thu, 27 Jun 2024 13:24:02 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Alistair Popple <apopple@nvidia.com>, Dan Williams
-	<dan.j.williams@intel.com>
-Subject: Re: [PATCH 00/13] fs/dax: Fix FS DAX page reference counts
-Message-ID: <667dca6259bc8_57ac2946e@dwillia2-xfh.jf.intel.com.notmuch>
-References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
- <667d0da3572c_5be92947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <87a5j67szs.fsf@nvdebian.thelocal>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <87a5j67szs.fsf@nvdebian.thelocal>
-X-ClientProxiedBy: MW4PR03CA0359.namprd03.prod.outlook.com
- (2603:10b6:303:dc::34) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9BS14kv2z3c5q
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 07:25:21 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 2289DCE1B5F;
+	Thu, 27 Jun 2024 21:25:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D25C2BBFC;
+	Thu, 27 Jun 2024 21:25:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719523520;
+	bh=sw6QJkUOx6dnvHnOUYkmwDviR+5bis7nK5kklIGe8B4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mqrAhONa3b8WIQ5LFtilKlUEIBKRc58ZejXGCuDCIhhNavv15R6ocbrxAtJdukAq3
+	 FaqCGgq5D79cWs7DpsS+7Dt9z+vMkhEkIv9NTJ1tc7U3z/LVPxmwONgM+sqOEZP+Se
+	 IrGOAiEUFtUcGpGg/2u5TXujcynjDQc3mJ2yY2PXRd3vTKnuSXgSGlu5HXcPWpNpwC
+	 gCU+kumkVWCX/RNvlXnBhnDwiszNVrbQaBPuZCAxxpFSqAoO275PVFEzqXvv/NdqfX
+	 Tt17cLoclyJ5KHzaBcD6uGse95ob/oOeubV3ic+nWUAhu6H2Dy0oTXl87QuTF5COsB
+	 KQeM8DU5j5zGg==
+Date: Thu, 27 Jun 2024 15:25:18 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH 09/10] dt-bindings: sound: fsl,qmc-audio: Add support for
+ multiple QMC channels per DAI
+Message-ID: <171952351643.593434.7474652355291518276.robh@kernel.org>
+References: <20240620084300.397853-1-herve.codina@bootlin.com>
+ <20240620084300.397853-10-herve.codina@bootlin.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH0PR11MB5127:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d05c744-cf49-4733-1730-08dc96e717c6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?2bs77Jw8YryZhi07QFcWe+G2B70sHjUwfUxocD/aRLvRJq74s89uhkWF6RVW?=
- =?us-ascii?Q?ztE+DdUtQz+HEmu4w+V/7F0y0RTiSRh7LCw/UBRG4HLrCBj34sKtuAHVf//k?=
- =?us-ascii?Q?ITv5TNVvyyBOFtnpqreD2DKnOX1TvD9cTWu8wjvXxhfhSlaItCcacpMLa0L1?=
- =?us-ascii?Q?g1EpTUxQB5zlTjYYvasQkXBbroNXy/KwqLAJlZOAuz3ViSDbsU1hgeklMQqX?=
- =?us-ascii?Q?UXurR2Xhg+D6NAeeDzWqGCGuSJMCnTnoP07+L4X/ZffocU/AMbjLFiWvNi3x?=
- =?us-ascii?Q?BkqjCRM9zk5+4jNvVLY/AbCVCYyuNJEQ2D/fK9RdATbdyq256NelhpFGrWkR?=
- =?us-ascii?Q?2S6zW+adIDuxgUYBwBf7KvuL4cc/uZ4yw778MC/YxGdTegIMidZD9eszJQ8S?=
- =?us-ascii?Q?541Z61TPnRNCsYlKhDjC5GJbGiZCqMIcMRnOrHK/24osTKwfWdiSfGWnj20J?=
- =?us-ascii?Q?InUU2dEEtDgrPihCVfteK8p/fx97W0f/tJqEY4umVvg0t3MtSZn+e7oThEW/?=
- =?us-ascii?Q?0zN3eydyVa7UYWCpR8Otjm3wNwCPUKnZ8nZSgoJl5gHjiqAoJmI5+bvfggKA?=
- =?us-ascii?Q?/CkyLo4H08c2NXU5fdhR1XIZo7hebcfqRvk31T1U+K89cPJoo3EvyV+1sDoH?=
- =?us-ascii?Q?zJNUveOibo/zFUxKa6nfFTZ+L6cBWejC2hdjQ/p/AvrK6Oz5egJAOmj/Dmmb?=
- =?us-ascii?Q?kSscSSjw98BnqF1+5hAfZst+3mdjhamwVFcks5eL1p/5dUUwNzroImNNlpfx?=
- =?us-ascii?Q?J2eKHp8+SYdXTlFI2Y3dTPbsIHMGf3NMiiA9DeXms7D0VHeLIT3ha3WPCqrh?=
- =?us-ascii?Q?n1ZCteNtJDlJ3OhNIepeQSeyyyeS8EBHn2HpaBGG8lhli9wr7vq/lXMBB3pY?=
- =?us-ascii?Q?1/nSv2TD53ba4/JagE1OH+eSMOIQ2WZ+Jr8JWHkCbj1yhNtLSnEmwcnAYd/z?=
- =?us-ascii?Q?yxgNqOkhPMTrEKD0t4VCttqEPTi3eJEqjLCvxwZKsiUvcjTcoJTYJHfrB17X?=
- =?us-ascii?Q?gTTJMwNMru0vXktq4q69f1MNIKRgIaxCXkhQNSA3Vf+drYct7/+qc+q74I/E?=
- =?us-ascii?Q?BZ9srmkhYivacSi0nOFPxgu6MCWQLvinDkP5d5jduD47nOLNlhrVvU81BRWq?=
- =?us-ascii?Q?r9pcLOl0zz/a7cLqrHGQIfQRGwNpOJNEayvOzBN3PH7IwN+lIiA0q13IFIkK?=
- =?us-ascii?Q?BH/YrJMbhwOpipnFxzNN162mpWWSIdGacFr4UyMRmqtFoXc7Htd65sku+kYG?=
- =?us-ascii?Q?HqdZ+SbvR7PvSzwFqdGUFZRGGY1ZrP2a8dqt3hoV7WXbIum5z3ynkP2S8fQM?=
- =?us-ascii?Q?T40=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gDP5ySHXrRjE8RSdnT/EFvS0PjcwmqgxeA/Nk2Y+zM6rOdp/ThaJJybPrVbf?=
- =?us-ascii?Q?l2btv0ZiBGmn3WfWbUbl3rvmfR2unss/5cV3v9vMwb26O3Xax5O0udIEuwJ9?=
- =?us-ascii?Q?Ke0OAB7M7g/p4BPmfkGehr0jmaE6ylGCLng0JzWLmnlEAOKNGPJF25m3ToAO?=
- =?us-ascii?Q?qR6CnOqBiivDaezPIYQZ6na8CxF/PoSPTtKuMKGy7jsbfwYKeujAP0OcuuZj?=
- =?us-ascii?Q?47GjBxuLksDiJ6ojssd9otaQ/BHYhXCFoVjz7VpjOIkAMY44TdCN2Zsm63rn?=
- =?us-ascii?Q?WbRAOBXHLNt8s2ICCFc5hhlGlz9ADcjZxzeg5O47Q2h4FjRM5eH22bdBNJ6Z?=
- =?us-ascii?Q?w8sIPx41kvKv0uaiD2fQOInVTwFb+/WfXs+GHoJgE6EU1eTKLUhKpVSM1pqp?=
- =?us-ascii?Q?VF747NrPTtYdjxuLZ0NRFdkd6yIHNhtw3OfrZjAgXf8MsDkqEprpbuwiUa35?=
- =?us-ascii?Q?c/KfPrzf4/CGRKEVKwH+pus2GRqSiMl6IQpPD/N4qE2e3RdgYlhF3pBxJbbb?=
- =?us-ascii?Q?ogdlkaJANtu0+QOXw99U+PvA4RYfwxPgwHgqgjaCoFsocQlv5M00v6pIJYbf?=
- =?us-ascii?Q?d8VoZ5fESGRR4yKFl8dHc4tIMLmk4D4B2OwfDjUVzTlZZeeGuLCHHtO4D5Wu?=
- =?us-ascii?Q?BTvlaC1mnfLTQ1h9ZyvMSnZl72wuLOPnICqsEMRPVTIZa0W30mkMQgq9QEs3?=
- =?us-ascii?Q?9EeD00xb0OT4Oa7o3BGxbB3vcBri5czYO8nW/KFc0IbWl+/LPtFUhS9PcISJ?=
- =?us-ascii?Q?7AWgsCuxO5RJAqQE8Rp5BPkxu1iL81Zm+nIIi1L/L6FE7YhdyMghiyW7gwMG?=
- =?us-ascii?Q?VfQTGvi/vc8PPd1dOQgUML2ym2DrNK2aRetc9nrPoLYdx73wGWEWZy1MsJV0?=
- =?us-ascii?Q?bgRM72j7lY9LvRr3mX7Um0/bRIo5JaBHREF+wx4V1TBz1H6ad2+6qntw4oDg?=
- =?us-ascii?Q?vVzativMqrCOBv9pXLCssE8rq4M9p9zS/49o1mZ/p92b69zxNslEbTkKhYW8?=
- =?us-ascii?Q?mpxca7eHI5QTCPq4krkxH5CzF9K7bhTp8p3LfUC9Gixg9/CVci+nIcR2ysZg?=
- =?us-ascii?Q?i2f8WwiwjSg2YUuuQTIUpMYysecuO5ufAF1hyQHlZI5uAUknENtgGpXvtrw3?=
- =?us-ascii?Q?q+xJRpgQ1/KsL9J1OufldMippM4Czt/26rE7dbuikvzK6737OM0L/HHLGbeo?=
- =?us-ascii?Q?MFto9M3wy8OqYHGRNXpoit9QV3LL3wsC0IkjXDBrCnqAv732xnrXlfEviMIg?=
- =?us-ascii?Q?CNP8D9DoXgrTXGbJd9+IT+tYfT5IOuVD6XEloqoisbjvWlnVLsNgjSmpA0Mk?=
- =?us-ascii?Q?D2ea0JJB0iU/PePZZo3mkYi8/GpOh48aCHlwqPMK0A20sNGPhpaEPXJwEbY3?=
- =?us-ascii?Q?B4hYrXi+pR53F0m1AIw/fV07GJkCUOzIEWaVQo38c8+Sls1R387xvgdKUKJA?=
- =?us-ascii?Q?PEUhMyeu2yNEYczYEgZy+3EVPwoSf4pFHDpZSWPN4wUaYNhTsWQW5K6OAzpK?=
- =?us-ascii?Q?5TCtdjrN6DGQJ58Gg6NNGX4thiYIq4MxBKQaMgnJldXgf4gE6mCW92BxO/+p?=
- =?us-ascii?Q?8T5Q3nCy2fJwBYRIcYRGhDkf2j/dYjrEhWYuDirrddyiWFsWVmghn45Ms0UM?=
- =?us-ascii?Q?hQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d05c744-cf49-4733-1730-08dc96e717c6
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2024 20:24:06.1490
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Zk5DTxLr4IqWNLruzISG7oJJfm2DtYREwTqgqm3S+zDJPmUdvsXpDhD4EGfqfHhRHwuN6PimJWJrSx67zkyaBoKxMlXFqIJDVO1eJX2thbc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5127
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240620084300.397853-10-herve.codina@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -179,86 +61,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, david@fromorbit.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, bhelgaas@google.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, logang@deltatee.com, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Alistair Popple wrote:
-> 
-> Dan Williams <dan.j.williams@intel.com> writes:
-> 
-> > Alistair Popple wrote:
-> >> FS DAX pages have always maintained their own page reference counts
-> >> without following the normal rules for page reference counting. In
-> >> particular pages are considered free when the refcount hits one rather
-> >> than zero and refcounts are not added when mapping the page.
-> >> 
-> >> Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
-> >> mechanism for allowing GUP to hold references on the page (see
-> >> get_dev_pagemap). However there doesn't seem to be any reason why FS
-> >> DAX pages need their own reference counting scheme.
-> >> 
-> >> By treating the refcounts on these pages the same way as normal pages
-> >> we can remove a lot of special checks. In particular pXd_trans_huge()
-> >> becomes the same as pXd_leaf(), although I haven't made that change
-> >> here. It also frees up a valuable SW define PTE bit on architectures
-> >> that have devmap PTE bits defined.
-> >> 
-> >> It also almost certainly allows further clean-up of the devmap managed
-> >> functions, but I have left that as a future improvment.
-> >> 
-> >> This is an update to the original RFC rebased onto v6.10-rc5. Unlike
-> >> the original RFC it passes the same number of ndctl test suite
-> >> (https://github.com/pmem/ndctl) tests as my current development
-> >> environment does without these patches.
-> >
-> > Are you seeing the 'mmap.sh' test fail even without these patches?
-> 
-> No. But I also don't see it failing with these patches :)
-> 
-> For reference this is what I see on my test machine with or without:
-> 
-> [1/70] Generating version.h with a custom command
->  1/13 ndctl:dax / daxdev-errors.sh          SKIP             0.06s   exit status 77
->  2/13 ndctl:dax / multi-dax.sh              SKIP             0.05s   exit status 77
->  3/13 ndctl:dax / sub-section.sh            SKIP             0.14s   exit status 77
 
-I really need to get this test built as a service as this shows a
-pre-req is missing, and it's not quite fair to expect submitters to put
-it all together.
-
->  4/13 ndctl:dax / dax-dev                   OK               0.02s
->  5/13 ndctl:dax / dax-ext4.sh               OK              12.97s
->  6/13 ndctl:dax / dax-xfs.sh                OK              12.44s
->  7/13 ndctl:dax / device-dax                OK              13.40s
->  8/13 ndctl:dax / revoke-devmem             FAIL             0.31s   (exit status 250 or signal 122 SIGinvalid)
-> >>> TEST_PATH=/home/apopple/ndctl/build/test LD_LIBRARY_PATH=/home/apopple/ndctl/build/cxl/lib:/home/apopple/ndctl/build/daxctl/lib:/home/apopple/ndctl/build/ndctl/lib NDCTL=/home/apopple/ndctl/build/ndctl/ndctl MALLOC_PERTURB_=227 DATA_PATH=/home/apopple/ndctl/test DAXCTL=/home/apopple/ndctl/build/daxctl/daxctl /home/apopple/ndctl/build/test/revoke_devmem
+On Thu, 20 Jun 2024 10:42:56 +0200, Herve Codina wrote:
+> The QMC audio uses one QMC channel per DAI and uses this QMC channel to
+> transmit interleaved audio channel samples.
 > 
->  9/13 ndctl:dax / device-dax-fio.sh         OK              32.43s
-> 10/13 ndctl:dax / daxctl-devices.sh         SKIP             0.07s   exit status 77
-> 11/13 ndctl:dax / daxctl-create.sh          SKIP             0.04s   exit status 77
-> 12/13 ndctl:dax / dm.sh                     FAIL             0.08s   exit status 1
-> >>> MALLOC_PERTURB_=209 TEST_PATH=/home/apopple/ndctl/build/test LD_LIBRARY_PATH=/home/apopple/ndctl/build/cxl/lib:/home/apopple/ndctl/build/daxctl/lib:/home/apopple/ndctl/build/ndctl/lib NDCTL=/home/apopple/ndctl/build/ndctl/ndctl DATA_PATH=/home/apopple/ndctl/test DAXCTL=/home/apopple/ndctl/build/daxctl/daxctl /home/apopple/ndctl/test/dm.sh
+> In order to work in non-interleave mode, a QMC audio DAI needs to use
+> multiple QMC channels. In that case, the DAI maps each QMC channel to
+> exactly one audio channel.
 > 
-> 13/13 ndctl:dax / mmap.sh                   OK             107.57s
-
-I need to think through why this one might false succeed, but that can
-wait until we get this series reviewed. For now my failure is stable
-which allows it to be bisected.
-
+> Allow QMC audio DAIs with multiple QMC channels attached.
 > 
-> Ok:                 6   
-> Expected Fail:      0   
-> Fail:               2   
-> Unexpected Pass:    0   
-> Skipped:            5   
-> Timeout:            0   
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  .../bindings/sound/fsl,qmc-audio.yaml         | 41 ++++++++++++++++---
+>  1 file changed, 35 insertions(+), 6 deletions(-)
 > 
-> I have been using QEMU for my testing. Maybe I missed some condition in
-> the unmap path though so will take another look.
 
-I was able to bisect to:
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-[PATCH 10/13] fs/dax: Properly refcount fs dax pages
-
-...I will prioritize that one in my review queue.
