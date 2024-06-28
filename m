@@ -1,118 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FB791B8E8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 09:49:30 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y6RiG23z;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E8191B9BD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 10:24:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9SJ63jTpz2xQL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 17:49:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9T4116Qkz3clb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 18:24:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y6RiG23z;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.58.6; helo=bg1.exmail.qq.com; envelope-from=jialong.yang@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.58.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9SHP6Xznz2yvp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 17:48:49 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 61564618FE;
-	Fri, 28 Jun 2024 07:48:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386D8C2BD10;
-	Fri, 28 Jun 2024 07:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719560923;
-	bh=Med/e/5poH47sw+X9ut1CH7guRvVlCNxLW8j4nDVLsk=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=Y6RiG23z69aCffJy0NTLVKqSETo/QxSs1fcdyqXXZiDFikz81WLMMGSrZ8fpX2Xgs
-	 UrFrYHnFJp/x5hxoWuPRKpveFjZwJdEBRLsakz4VKTJS0nwReePrv5EPrifL+UTrKM
-	 ItWXec9mMmFLpcgb2r8w3JaP8gc2W4FKVhnWpwJS+5b3LIKggNTUPlwXlD/FX2RTaF
-	 0Bny5YFR3Tc6gV0IGjnPxS6imOUUb0XCfRMePJQ8AgAi3lg2Xp02u3qDH6zq4HO3qr
-	 RLbRySEO/+jFRA1BByRnPbR6TBap24tsrx1qrleN8F18zR3uLtTUFGE3qiiuToQg8A
-	 Sjp3BAR5UXmNg==
-Message-ID: <819cda69-8502-4a1d-94ed-742cb7e2b50c@kernel.org>
-Date: Fri, 28 Jun 2024 09:48:29 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9T3c0C3wz30W2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 18:23:39 +1000 (AEST)
+X-QQ-mid: bizesmtp77t1719562896t2sg8m4v
+X-QQ-Originating-IP: wW6Te52tLfIZhGbAIwW7ZTTx5j6Cem2c75vdERYyR2A=
+Received: from [198.18.0.1] ( [223.112.234.130])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 28 Jun 2024 16:21:34 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16955004016337450842
+Message-ID: <2CCFA0BD64E5F2E0+e4c7fc43-47b1-4788-a7d2-44f6a33cff66@shingroup.cn>
+Date: Fri, 28 Jun 2024 16:21:34 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v5 12/12] i2x: pnx: Fix potential deadlock warning from
- del_timer_sync() call in isr
-To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "J.M.B. Downing" <jonathan.downing@nautel.com>,
- Vladimir Zapolskiy <vz@mleia.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Yangtao Li <frank.li@vivo.com>, Arnd Bergmann <arnd@arndb.de>,
- Li Zetao <lizetao1@huawei.com>, Chancel Liu <chancel.liu@nxp.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Corentin Labbe <clabbe@baylibre.com>,
- dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-sound@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-mtd@lists.infradead.org
-References: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
- <20240627150046.258795-13-piotr.wojtaszczyk@timesys.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240627150046.258795-13-piotr.wojtaszczyk@timesys.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v1 1/2] powerpc/mmiotrace: Add MMIO Tracing tool for
+ PowerPC
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+References: <2bf90acf7d29641ba6643934ff8dbba897dbd2d9.1718873074.git.jialong.yang@shingroup.cn>
+ <87h6ddlfc7.fsf@mail.lhotse>
+From: =?UTF-8?B?WWFuZyBKaWFsb25nIOadqOS9s+m+mQ==?= <jialong.yang@shingroup.cn>
+In-Reply-To: <87h6ddlfc7.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,19 +52,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: luming.yu@shingroup.cn, nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Karol Herbst <karolherbst@gmail.com>, shenghui.qu@shingroup.cn, Pekka Paalanen <ppaalanen@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/06/2024 17:00, Piotr Wojtaszczyk wrote:
-> When del_timer_sync() is called in an interrupt context it throws a warning
-> because of potential deadlock. The timer is used only to exit from
-> wait_for_completion() after a timeout so replacing the call with
-> wait_for_completion_timeout() allows to remove the problematic timer and
-> its related functions altogether.
 
-Subject typo: i2c
+在 2024/6/28 15:02, Michael Ellerman 写道:
+> Jialong Yang <jialong.yang@shingroup.cn> writes:
+>> mmiotrace is a useful tool to trace MMIO accesses. Nowadays, it only
+>> supported on x86 and x86_64 platforms.
+> I've never used mmiotrace, and don't know it well.
+>
+> I'm not necessarily opposed to merging it, but AFAIK it was mostly used
+> for reverse engineering proprietary drivers, where the driver itself
+> couldn't be easily instrumented. Is that what you're using it for?
+
+Yes. Just like you think. We have used it for network stack debug in 
+ppc64le.
 
 
-Best regards,
-Krzysztof
+>
+> For drivers where we have the source wouldn't it be easier to just use
+> tracepoints in the MMIO accessors?
+
+
+Tracepoints need pre-defined. And in some big driver, it's not easy to 
+overwrite
+
+all points where access registers in io area. And tracepoint is C 
+function level filter.
+
+mmiotrace is similar to set tracepoints in writel/readl... But it can do 
+deeperly.
+
+mmiotrace is a asm level filter tool. It doesn't care what have done in 
+C level. It will
+
+only find what have done by asm, such as stw(store word)/lw(load word),  
+just like standing
+
+in the view of device.
+
+
+>
+> Is it still in-use/maintained on the x86 side?
+
+
+Here is some core file patches number in x86:
+
+|      | mmio_mod.c | kmmio.c | pf_in.* | testmmiotrace.c |
+|------+------------+---------+---------+-----------------|
+| 2022 |               1 |            3 | |                  |
+| 2021 |               2 |            1 |               |         |
+| 2020 |               4 |            4 | |               1 |
+| 2019 |               2 |            1 |            1 |               4 |
+| 2018 |                  |            2 |               |          |
+| 2017 |               2 |            2 | |               1 |
+| 2016 |               1 |            2 |            1 |        |
+| 2014 |                  |            1 |               |          |
+| 2013 |               1 |               |               |          |
+| 2012 |               1 |               | |                  |
+| 2011 |               3 |               |            1 |         |
+| 2010 |               1 |            3 |            2 |               1 |
+| 2009 |               4 |          19 | |               3 |
+| 2008 |             13 |            5 |            2 |               3 |
+
+>
+>> Here is a support for powerpc.
+>> The manual is located at Documentation/trace/mmiotrace.rst which means
+>> I have not changed user API. People will be easy to use it.
+>> Almost all files are copied from x86/mm, there are only some
+>> differences from hardware and architectures software.
+>>
+>> LINK: https://lore.kernel.org/lkml/20080127195536.50809974@daedalus.pq.iki.fi/
+>>
+>> Signed-off-by: Jialong Yang <jialong.yang@shingroup.cn>
+>> ---
+>>   arch/powerpc/Kconfig.debug       |   3 +
+>>   arch/powerpc/mm/Makefile         |   1 +
+>>   arch/powerpc/mm/kmmio.c          | 649 +++++++++++++++++++++++++++++++
+>>   arch/powerpc/mm/mmio-mod.c       | 414 ++++++++++++++++++++
+>>   arch/powerpc/mm/mmiotrace_arch.c | 149 +++++++
+>>   arch/powerpc/mm/mmiotrace_arch.h |  25 ++
+>>   arch/powerpc/mm/pf_in.c          | 185 +++++++++
+>>   arch/powerpc/mm/pf_in.h          |  33 ++
+>>   8 files changed, 1459 insertions(+)
+>    
+> At a glance most of that code could be shared between arches. I don't
+> think I can merge that as-is, without some attempt to split the generic
+> parts out.
+
+
+Right.
+
+I just copy them from arch/x86/mm. There are many code not arch specific.
+
+
+> cheers
+>
 
