@@ -1,89 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB12291C5BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 20:33:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9918591C5E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 20:36:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QGQOnwF3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zw7LnwPa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9kbB2Ghhz3cYt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 04:33:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9kfg0nlDz3cYg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 04:36:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QGQOnwF3;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zw7LnwPa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9kZT5BtDz30TZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 04:32:49 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45SITjmB019024;
-	Fri, 28 Jun 2024 18:32:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=uWEtcjQkVsXYP7zz5baR3/Agzt
-	ubsT255FVG3/FAg/g=; b=QGQOnwF3F16H25E6l1YBEkHE9TLX65GCu31rHhI3hI
-	9nC5yj+dYrFVTXzweTZ+G8Jnt0sn/w2m3RLyOsaDzAcMA3jYBeS72sA6jK4AGLUV
-	XG7RyiRNc/3xH0B3tG/UdmXlZWIdEYQCLbNBMO9Wyb5FzhoMKAexKw0yUjqAjVSZ
-	7qbVfOskkmF8zhUXdROJTGKsdEmAiOZmgr66aPzv5fh+Ecykbvk/Ci7fL4vegPFD
-	njZxXxUV8C8BJv4iTPeQuQ3Dv/2Jy4JhB5xsPFTBONR1awM5nZh/B6ZN1mIQjJ0M
-	mLYz5BGS2bo7dog+kLeWA9t7mDQUdhorSvJw5muNayLw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4022fvg094-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 18:32:35 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45SIWYgj023524;
-	Fri, 28 Jun 2024 18:32:34 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4022fvg08u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 18:32:34 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45SFMfHH000411;
-	Fri, 28 Jun 2024 18:32:33 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yxbn3scsr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 18:32:33 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45SIWUa656361282
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Jun 2024 18:32:32 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F23DA20043;
-	Fri, 28 Jun 2024 18:32:29 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9F0220040;
-	Fri, 28 Jun 2024 18:32:27 +0000 (GMT)
-Received: from ltcden3-lp14.aus.stglabs.ibm.com (unknown [9.53.174.165])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 28 Jun 2024 18:32:27 +0000 (GMT)
-From: Abhishek Dubey <adubey@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] perf report: Calling available function for stats printing
-Date: Fri, 28 Jun 2024 14:32:24 -0400
-Message-ID: <20240628183224.452055-1-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9kdy2dG8z30Ty
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 04:35:49 +1000 (AEST)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-3762775e9ebso21675ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 11:35:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719599743; x=1720204543; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RErrAs0DK8wPplxpianYaV5QcD/2TCRDQ9qb3zaOQoo=;
+        b=zw7LnwPaMiFxBh/gmCkDy3htKHhbHVefxXpVSlKnEA9JEwhEdKw5nsSUSnLfzuPJQc
+         PUFrnA4YB7Fd33uGSpNyyxV/yI9xpP7EIFsPgrLuQxgGLz+qnbfejcDYth8JRYkxoZ6x
+         vuuMgi60oC5f1ZxdCve9rmrVyM3VJJ5s+xFyFu7EbXOwdeOSA6594qsG83/S0WCLjHK3
+         +lCQwDyTbPMCcZXFqy1zwb2cXe2ZCJmX0jgBTV1YpIKONofpG1AyAOaONGp9SLmlCvPQ
+         5vFfyyTfISqaV5MRlu/RMiqieZmLQ1kaYFNXzI08oqQaa/B6d+b7s23gI/NYxTvFxfxT
+         WrKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719599743; x=1720204543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RErrAs0DK8wPplxpianYaV5QcD/2TCRDQ9qb3zaOQoo=;
+        b=a8F39G5fS0IkygUaHCIGp5brryawKzHSSTdT2CmcU0Y1ALX1l7Wx5ZVSGvfCFz6d2k
+         JstNY1I/4kF/pXf8DSyWv6RnWiJ/KE+zV6zoqTeU9OHMCH17GFdqpEbJ2UGEPr2fSt9w
+         c4ks5gz9k3Cq8gl/O3txRy/wpuIAw7RhmBjKJnnC7vE91UNITeHB3qwkbgnXUiKN6Ofh
+         oBonkhoqKtUhU1c/rgQEhW1800dsR4p/fYWb+Spa07qyar5+k1A6ejDtW4lxa1ZcG5Lx
+         12fZMjvZh7CwEoy61jcunDysftbti1Cs3aS6QkHPkm5aAanOlFfCKhDWoFrBe9azjCxK
+         p+DA==
+X-Gm-Message-State: AOJu0Yyv9DvOYM+FvBtAaiG2ldC41TJUvGZTsZt/tDyd9gPsEhbBlO7p
+	ddOVDk3SWs4RJDTpYDegsWTzo9+kBShhNKpOa+kHilnfJ1QsvVdoQTOk7HJxs07PJiC6t64cTJH
+	wFivXYXb0H8lZfFlA4XX3G9XGYXKfAVwvXFku
+X-Google-Smtp-Source: AGHT+IEIdTlPMI5QX/9NDYi/RpkgzP+Z+ZzXVhld5+h7yexSsH86cZjoenbpLMSq/Lli4Dab5ND8vBPfg/LmAoRXHrM=
+X-Received: by 2002:a05:6e02:156b:b0:375:eeb4:78fd with SMTP id
+ e9e14a558f8ab-37c42e1f27emr210045ab.25.1719599743167; Fri, 28 Jun 2024
+ 11:35:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5VwGW74Y-WPaUyKou2ABU2nyy_sv7MlL
-X-Proofpoint-ORIG-GUID: _9a9l5m5VVUfykp2eAShrtnLgRYzVwRS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-28_13,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 adultscore=0 clxscore=1015
- bulkscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406280137
+References: <20240628183224.452055-1-adubey@linux.ibm.com>
+In-Reply-To: <20240628183224.452055-1-adubey@linux.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Fri, 28 Jun 2024 11:35:32 -0700
+Message-ID: <CAP-5=fWT81saq2m+zaXrCsa_V-aqyZvNXDbQ28_wNSBo=-nByw@mail.gmail.com>
+Subject: Re: [PATCH] perf report: Calling available function for stats printing
+To: Abhishek Dubey <adubey@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,32 +77,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, irogers@google.com, peterz@infradead.org, adrian.hunter@intel.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, alexander.shishkin@linux.intel.com, mingo@redhat.com, jolsa@kernel.org, namhyung@kernel.org, naveen.n.rao@linux.vnet.ibm.com, Abhishek Dubey <adubey@linux.ibm.com>
+Cc: mark.rutland@arm.com, peterz@infradead.org, adrian.hunter@intel.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, alexander.shishkin@linux.intel.com, mingo@redhat.com, jolsa@kernel.org, namhyung@kernel.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For printing dump_trace, just use existing stats_print()
-function.
+On Fri, Jun 28, 2024 at 11:32=E2=80=AFAM Abhishek Dubey <adubey@linux.ibm.c=
+om> wrote:
+>
+> For printing dump_trace, just use existing stats_print()
+> function.
+>
+> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
 
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
----
- tools/perf/builtin-report.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Reviewed-by: Ian Rogers <irogers@google.com>
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 9718770facb5..6edc0d4ce6fb 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -1089,8 +1089,7 @@ static int __cmd_report(struct report *rep)
- 			perf_session__fprintf_dsos(session, stdout);
- 
- 		if (dump_trace) {
--			perf_session__fprintf_nr_events(session, stdout);
--			evlist__fprintf_nr_events(session->evlist, stdout);
-+			stats_print(rep);
- 			return 0;
- 		}
- 	}
--- 
-2.44.0
+Thanks,
+Ian
 
+> ---
+>  tools/perf/builtin-report.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+> index 9718770facb5..6edc0d4ce6fb 100644
+> --- a/tools/perf/builtin-report.c
+> +++ b/tools/perf/builtin-report.c
+> @@ -1089,8 +1089,7 @@ static int __cmd_report(struct report *rep)
+>                         perf_session__fprintf_dsos(session, stdout);
+>
+>                 if (dump_trace) {
+> -                       perf_session__fprintf_nr_events(session, stdout);
+> -                       evlist__fprintf_nr_events(session->evlist, stdout=
+);
+> +                       stats_print(rep);
+>                         return 0;
+>                 }
+>         }
+> --
+> 2.44.0
+>
