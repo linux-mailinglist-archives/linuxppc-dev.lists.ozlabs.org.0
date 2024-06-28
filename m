@@ -2,52 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCBF91BE8E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 14:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCD291C1F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 17:01:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=T+o2fpEN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=Efo/JhDi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9ZVF3RYhz3cYt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 22:28:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9dt81Bccz3clL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 01:01:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=T+o2fpEN;
+	dkim=pass (2048-bit key; unprotected) header.d=leemhuis.info header.i=@leemhuis.info header.a=rsa-sha256 header.s=he214686 header.b=Efo/JhDi;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
+Received: from wp530.webpack.hosteurope.de (unknown [80.237.130.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9ZTZ23Zbz3c2t
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 22:28:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1719577683;
-	bh=f1Ax4HaCi4KMe2mVa2crrvjdvABKKIX41TNNtKzKpXY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=T+o2fpENOeW5XInyDaLP3twhKqIXtc/fH0JmQol7N0SWpo3lQOy1B3VfyTTagwwC9
-	 fVWiqyHiya+rAM92/aUOKBsqMuus9UFuGvVIIbpGHyCF7d9iTcz3rkEKhJa8R5Vomc
-	 tqtd3yBxRLavI/TksHeaxfV1eYdBEbTB/11DCngQt++NR+gR/KsmmrLcAHClALVi/D
-	 VzPpll9ibEHqUk6qjpqGLioYbrknCuca0u5JkyaLIZkkcLYoD9yZ8k49woc53Wb8eL
-	 4KZeE8mS6i2iTjwdjx2QryUgiAk2NewAEJOrX8P3RzxX2kT8UNSBOoeBJyejODdSSy
-	 N5GJlZvr4a8aw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9ZTb06sXz4wb7;
-	Fri, 28 Jun 2024 22:28:02 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v2] radix/kfence: map __kfence_pool at page granularity
-In-Reply-To: <20240619104919.20772-1-hbathini@linux.ibm.com>
-References: <20240619104919.20772-1-hbathini@linux.ibm.com>
-Date: Fri, 28 Jun 2024 22:28:02 +1000
-Message-ID: <878qypl0a5.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9dsQ03Nmz3cVH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 01:00:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=c7Mw7OUBjwuJgW7MMo0ZIBNrqurcj/pKhW/s7eLGHTw=;
+	t=1719586827; x=1720018827; b=Efo/JhDitV6O8m01okgvRMY/HI6I/p5riEXNsJnnhIjNLV4
+	4FVfAEjTvjQOmtAt1w/3FMwTospoHJddXE9WbXkvXG0bjPvVYy/iOerr7wE4w6RLs1Cp86DjyvQIX
+	jZu3kNuXICDiWHGI+O0HAIZG5k7lbXO33uDabZX8MXLqhiZqsjZFRV2uJlTBsYMhQ7DIoJxe4i3sA
+	/j27w7aJMXBeZNgYXdx+NkJvU8JJzXFEmPlG6R7jGzf77FrZl/IU0Awz7nZ8QqhbQSojdXlpO6+2I
+	L5Ic22XtGeKHLuBtBJRracL9BnxjytkUwvxIDRgs8Hm4FYKVPSXhd7a7ytsPQvRA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sND59-00082p-6W; Fri, 28 Jun 2024 17:00:11 +0200
+Message-ID: <55e8331d-4682-40df-9a1b-8a08dc5f6409@leemhuis.info>
+Date: Fri, 28 Jun 2024 17:00:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+To: jarkko@kernel.org
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+ <9e167f3e-cd81-45ab-bd34-939f516b05a4@linux.ibm.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <9e167f3e-cd81-45ab-bd34-939f516b05a4@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1719586827;e51fa58c;
+X-HE-SMSGID: 1sND59-00082p-6W
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,149 +65,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ritesh Harjani \(IBM\)" <ritesh.list@gmail.com>, Marco Elver <elver@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Alexander Potapenko <glider@google.com>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dmitry Vyukov <dvyukov@google.com>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Linux kernel regressions list <regressions@lists.linux.dev>, linux-kernel@vger.kernel.org, naveen.n.rao@linux.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Hari,
+[CCing the regression list]
 
-Just a few little things ...
+On 20.06.24 00:34, Stefan Berger wrote:
+> Jarkko,
+>   are you ok with this patch?
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> When KFENCE is enabled, total system memory is mapped at page level
-> granularity. But in radix MMU mode, ~3GB additional memory is needed
-> to map 100GB of system memory at page level granularity when compared
-> to using 2MB direct mapping. This is not desired considering KFENCE is
-> designed to be enabled in production kernels [1].
-> Also, mapping memory
-> allocated for KFENCE pool at page granularity seems sufficient enough
-> to enable KFENCE support.
+Hmmm, hope I did not miss anythng, but looks like nothing happened for
+about 10 days here. Hence:
 
-This should be firmer, eg:
-  Mapping only the memory allocated for KFENCE pool at page granularity is sufficient to enable KFENCE support.
+Jarkko, looks like some feedback from your side really would help to
+find a path to get this regression resolved before 6.10 is released.
 
-> So, allocate __kfence_pool during bootup and
-> map it at page granularity instead of mapping all system memory at
-> page granularity.
->
-> Without patch:
->     # cat /proc/meminfo
->     MemTotal:       101201920 kB
->
-> With patch:
->     # cat /proc/meminfo
->     MemTotal:       104483904 kB
->
-> Note that enabling KFENCE at runtime is disabled for radix MMU for now,
-> as it depends on the ability to split page table mappings and such APIs
-> are not currently implemented for radix MMU.
->
-> All kfence_test.c testcases passed with this patch.
->
-> [1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
->
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->
-> Changes in v2:
-> * Dropped the patch that adds support to enable KFENCE after startup.
-> * Added changes to avoid KFENCE enablement after system startup.
-> * Also, added a TODO explaining why KFENCE enablement after startup
->   is not supported for now.
-> * Functions to alloc/map __kfence_pool as suggested by Ritesh.
-> * Moved changes that apply to ppc32 as well to common file as suggested
->   by Christophe.
->
->
->  arch/powerpc/include/asm/kfence.h        | 12 +++-
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 74 ++++++++++++++++++++++--
->  arch/powerpc/mm/init-common.c            | 14 +++++
->  3 files changed, 95 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
-> index 424ceef82ae6..78590288ee80 100644
-> --- a/arch/powerpc/include/asm/kfence.h
-> +++ b/arch/powerpc/include/asm/kfence.h
-> @@ -15,10 +15,20 @@
->  #define ARCH_FUNC_PREFIX "."
->  #endif
->  
-> +#ifdef CONFIG_KFENCE
-> +extern bool kfence_early_init;
- 
-This is only read in radix_pgtable.c, so it needed be global.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-> +extern bool kfence_disabled;
-> +
-> +static inline void disable_kfence(void)
-> +{
-> +	kfence_disabled = true;
-> +}
-> +
->  static inline bool arch_kfence_init_pool(void)
->  {
-> -	return true;
-> +	return !kfence_disabled;
->  }
-> +#endif
->  
->  #ifdef CONFIG_PPC64
->  static inline bool kfence_protect_page(unsigned long addr, bool protect)
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index 15e88f1439ec..a74912e0fd99 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -301,7 +304,10 @@ static int __meminit create_physical_mapping(unsigned long start,
->  	int psize;
->  	unsigned long max_mapping_size = memory_block_size;
->  
-> -	if (debug_pagealloc_enabled_or_kfence())
-> +	if (mapping_sz_limit < max_mapping_size)
-> +		max_mapping_size = mapping_sz_limit;
-> +
-> +	if (debug_pagealloc_enabled())
->  		max_mapping_size = PAGE_SIZE;
->  
->  	start = ALIGN(start, PAGE_SIZE);
-> @@ -356,8 +362,64 @@ static int __meminit create_physical_mapping(unsigned long start,
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_KFENCE
-> +static inline phys_addr_t radix_alloc_kfence_pool_early(void)
- 
-This is internal to radix_pgtable.c, so I think we can drop the radix
-prefix. There's also no alloc_kfence_pool(), so early is not really
-required IMHO. So it could just be alloc_kfence_pool(). Similar for map.
+#regzbot poke
 
-...
-> diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-> index d3a7726ecf51..f881ab5107aa 100644
-> --- a/arch/powerpc/mm/init-common.c
-> +++ b/arch/powerpc/mm/init-common.c
-> @@ -31,6 +31,20 @@ EXPORT_SYMBOL_GPL(kernstart_virt_addr);
->  
->  bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
->  bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
-> +#ifdef CONFIG_KFENCE
-> +bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-> +bool __ro_after_init kfence_disabled;
-> +
-> +static int __init parse_kfence_early_init(char *arg)
-> +{
-> +	int val;
-> +
-> +	if (get_option(&arg, &val))
-> +		kfence_early_init = !!val;
-> +	return 0;
-> +}
-> +early_param("kfence.sample_interval", parse_kfence_early_init);
-> +#endif
-
-AFAICS except for kfence_disabled, this can all go in radix_pgtable.c.
-
-That would make it unambiguous that kfence_early_init is only used by
-the radix kfence code, and avoid any bad interactions with the other
-subarches - which was my original concern about adding the code here.
-
-cheers
+> On 6/17/24 15:34, Stefan Berger wrote:
+>> Fix the following type of error message caused by a missing call to
+>> tpm2_sessions_init() in the IBM vTPM driver:
+>>
+>> [    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error
+>> 0x01C4
+>> [    2.987140] ima: Error Communicating to TPM chip, result: -14
+>>
+>> Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>> ---
+>>   drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c
+>> b/drivers/char/tpm/tpm_ibmvtpm.c
+>> index d3989b257f42..1e5b107d1f3b 100644
+>> --- a/drivers/char/tpm/tpm_ibmvtpm.c
+>> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
+>> @@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev
+>> *vio_dev,
+>>           rc = tpm2_get_cc_attrs_tbl(chip);
+>>           if (rc)
+>>               goto init_irq_cleanup;
+>> +
+>> +        rc = tpm2_sessions_init(chip);
+>> +        if (rc)
+>> +            goto init_irq_cleanup;
+>>       }
+>>         return tpm_chip_register(chip);
