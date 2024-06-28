@@ -2,72 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F3391C59A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 20:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB12291C5BD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 20:33:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZdyI0W+n;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QGQOnwF3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9kNk3wWqz3cyc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 04:24:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9kbB2Ghhz3cYt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 04:33:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZdyI0W+n;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QGQOnwF3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9kN16vHfz3cYb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 04:23:45 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 52FDCCE4250;
-	Fri, 28 Jun 2024 18:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72894C116B1;
-	Fri, 28 Jun 2024 18:23:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719599023;
-	bh=PSU3tdTo76FLPP7xiWLKc41rwOiwu52i+9dzvpqpwII=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=ZdyI0W+nmqUJCWipPdNf4cmBtY+rypYDwx+itWdMspkZMxFXGqTXLiqwqj+P/L2HW
-	 ayxR9qnJXpys3ydRLPfokVQx98MOeqM03nKa/ytsBexikuA9liqDpHV1OfVVALU+tE
-	 f7Fj4nqi4PEUTPns+yPNM8egQuCOh0Ovv/wpOD+UZ/8SlcGE22Ghaiomf6798XikSx
-	 0fgHRjbt7tZT77y95s6ou8xunrmc2rYTHBH4XJGA+fSkOoEi4YpexqWOIht15+aPX7
-	 D00T9WThNkC2oKuTUBzvB83od0XpV7aqlLaIS7DCv64svIp/Io9uTUPLn1flWW5vhe
-	 Y1c3dtBmP4QfA==
-From: Mark Brown <broonie@kernel.org>
-To: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- "J.M.B. Downing" <jonathan.downing@nautel.com>, 
- Vladimir Zapolskiy <vz@mleia.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Arnd Bergmann <arnd@arndb.de>, Yangtao Li <frank.li@vivo.com>, 
- Li Zetao <lizetao1@huawei.com>, Chancel Liu <chancel.liu@nxp.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Corentin Labbe <clabbe@baylibre.com>, 
- dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-i2c@vger.kernel.org, linux-mtd@lists.infradead.org, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-In-Reply-To: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
-References: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
-Subject: Re: (subset) [Patch v5 00/12] Add audio support for LPC32XX CPUs
-Message-Id: <171959901719.141669.17001815513243855671.b4-ty@kernel.org>
-Date: Fri, 28 Jun 2024 19:23:37 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9kZT5BtDz30TZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 04:32:49 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45SITjmB019024;
+	Fri, 28 Jun 2024 18:32:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=uWEtcjQkVsXYP7zz5baR3/Agzt
+	ubsT255FVG3/FAg/g=; b=QGQOnwF3F16H25E6l1YBEkHE9TLX65GCu31rHhI3hI
+	9nC5yj+dYrFVTXzweTZ+G8Jnt0sn/w2m3RLyOsaDzAcMA3jYBeS72sA6jK4AGLUV
+	XG7RyiRNc/3xH0B3tG/UdmXlZWIdEYQCLbNBMO9Wyb5FzhoMKAexKw0yUjqAjVSZ
+	7qbVfOskkmF8zhUXdROJTGKsdEmAiOZmgr66aPzv5fh+Ecykbvk/Ci7fL4vegPFD
+	njZxXxUV8C8BJv4iTPeQuQ3Dv/2Jy4JhB5xsPFTBONR1awM5nZh/B6ZN1mIQjJ0M
+	mLYz5BGS2bo7dog+kLeWA9t7mDQUdhorSvJw5muNayLw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4022fvg094-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Jun 2024 18:32:35 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45SIWYgj023524;
+	Fri, 28 Jun 2024 18:32:34 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4022fvg08u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Jun 2024 18:32:34 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45SFMfHH000411;
+	Fri, 28 Jun 2024 18:32:33 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yxbn3scsr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Jun 2024 18:32:33 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45SIWUa656361282
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Jun 2024 18:32:32 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F23DA20043;
+	Fri, 28 Jun 2024 18:32:29 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9F0220040;
+	Fri, 28 Jun 2024 18:32:27 +0000 (GMT)
+Received: from ltcden3-lp14.aus.stglabs.ibm.com (unknown [9.53.174.165])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 28 Jun 2024 18:32:27 +0000 (GMT)
+From: Abhishek Dubey <adubey@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] perf report: Calling available function for stats printing
+Date: Fri, 28 Jun 2024 14:32:24 -0400
+Message-ID: <20240628183224.452055-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev-d4707
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5VwGW74Y-WPaUyKou2ABU2nyy_sv7MlL
+X-Proofpoint-ORIG-GUID: _9a9l5m5VVUfykp2eAShrtnLgRYzVwRS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-28_13,2024-06-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 adultscore=0 clxscore=1015
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406280137
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,58 +95,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: mark.rutland@arm.com, irogers@google.com, peterz@infradead.org, adrian.hunter@intel.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, alexander.shishkin@linux.intel.com, mingo@redhat.com, jolsa@kernel.org, namhyung@kernel.org, naveen.n.rao@linux.vnet.ibm.com, Abhishek Dubey <adubey@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Jun 2024 17:00:18 +0200, Piotr Wojtaszczyk wrote:
-> This pach set is to bring back audio to machines with a LPC32XX CPU.
-> The legacy LPC32XX SoC used to have audio spport in linux 2.6.27.
-> The support was dropped due to lack of interest from mainaeners.
-> 
-> Piotr Wojtaszczyk (12):
->   dt-bindings: dma: pl08x: Add dma-cells description
->   dt-bindings: dma: Add lpc32xx DMA mux binding
->   ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
->   ARM: dts: lpc32xx: Use simple-mfd for clock control block
->   ARM: dts: lpc32xx: Add missing dma properties
->   ARM: dts: lpc32xx: Add missing i2s properties
->   clk: lpc32xx: initialize regmap using parent syscon
->   dmaengine: Add dma router for pl08x in LPC32XX SoC
->   ARM: lpc32xx: Remove pl08x platform data in favor for device tree
->   mtd: rawnand: lpx32xx: Request DMA channels using DT entries
->   ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
->   i2x: pnx: Fix potential deadlock warning from del_timer_sync() call in
->     isr
-> 
-> [...]
+For printing dump_trace, just use existing stats_print()
+function.
 
-Applied to
+Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+---
+ tools/perf/builtin-report.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[03/12] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
-        commit: 752fea92d9b3e4255a2f75e7efa6fe148562ccbf
-[11/12] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
-        commit: 0959de657a10cc40b2cc41cff9169ab0e0fd4456
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 9718770facb5..6edc0d4ce6fb 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1089,8 +1089,7 @@ static int __cmd_report(struct report *rep)
+ 			perf_session__fprintf_dsos(session, stdout);
+ 
+ 		if (dump_trace) {
+-			perf_session__fprintf_nr_events(session, stdout);
+-			evlist__fprintf_nr_events(session->evlist, stdout);
++			stats_print(rep);
+ 			return 0;
+ 		}
+ 	}
+-- 
+2.44.0
 
