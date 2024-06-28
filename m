@@ -1,92 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B0591C4D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 19:27:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F3391C59A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 20:24:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P0zxScd2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZdyI0W+n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9j735fmpz3ccS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 03:27:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9kNk3wWqz3cyc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 04:24:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P0zxScd2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZdyI0W+n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9j6M6d2vz3cYt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 03:26:51 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45SHQd9t019168;
-	Fri, 28 Jun 2024 17:26:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	VcN3kePM+arjTHsJ0UoPdxnh68JcoVepbhSSbj5f1OM=; b=P0zxScd2ixgpyV1/
-	u1p7vZSwalbCpvcj4uoNRzTnN/MZAe1d3dVKggksobdpYGKmdjeOhmVDR/pP1evb
-	+NmGfQtbZI54v156L4i0pHXFBuB6WiSmOKnze7IbNwpHWy0LV0qTdV68pxmgzr0b
-	g9gTgUu6cLhroaf54X2a6TL2PdMNEHjR3dBHCJO9he0xfQN2hmlzH9pg4JZUj+kH
-	gvqCEhR9xf3MICVnSr9GDyliegtNivP0myFHkePzh7lZkU3HRYxSW6Ky9ErTc7ND
-	xSGN9wVzlkU66JUZK9C5+2vlE/BDeGGAu1HZpCZOltURKq+zCgxXBjMR2D9cYIiL
-	jQHZWQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 401yuhg99u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 17:26:38 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45SF5GsM032606;
-	Fri, 28 Jun 2024 17:21:57 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3yxbn3s3b7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 17:21:57 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45SHLtaa37618356
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Jun 2024 17:21:57 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17B3758060;
-	Fri, 28 Jun 2024 17:21:55 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7ACD358043;
-	Fri, 28 Jun 2024 17:21:54 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 28 Jun 2024 17:21:54 +0000 (GMT)
-Message-ID: <1bca15c7-1e76-49bc-aa6c-368d2bbf2e5c@linux.ibm.com>
-Date: Fri, 28 Jun 2024 13:21:54 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
- session support
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, regressions@lists.linux.dev
-References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
- <87pls1lwe0.fsf@mail.lhotse>
- <4108938158d888cc6ec371bb151e7ac35d3b4cb0.camel@HansenPartnership.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <4108938158d888cc6ec371bb151e7ac35d3b4cb0.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VY9C5Bla9sDiFnRhJOGu09GsMOggn9mh
-X-Proofpoint-GUID: VY9C5Bla9sDiFnRhJOGu09GsMOggn9mh
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9kN16vHfz3cYb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 04:23:45 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 52FDCCE4250;
+	Fri, 28 Jun 2024 18:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72894C116B1;
+	Fri, 28 Jun 2024 18:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719599023;
+	bh=PSU3tdTo76FLPP7xiWLKc41rwOiwu52i+9dzvpqpwII=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=ZdyI0W+nmqUJCWipPdNf4cmBtY+rypYDwx+itWdMspkZMxFXGqTXLiqwqj+P/L2HW
+	 ayxR9qnJXpys3ydRLPfokVQx98MOeqM03nKa/ytsBexikuA9liqDpHV1OfVVALU+tE
+	 f7Fj4nqi4PEUTPns+yPNM8egQuCOh0Ovv/wpOD+UZ/8SlcGE22Ghaiomf6798XikSx
+	 0fgHRjbt7tZT77y95s6ou8xunrmc2rYTHBH4XJGA+fSkOoEi4YpexqWOIht15+aPX7
+	 D00T9WThNkC2oKuTUBzvB83od0XpV7aqlLaIS7DCv64svIp/Io9uTUPLn1flWW5vhe
+	 Y1c3dtBmP4QfA==
+From: Mark Brown <broonie@kernel.org>
+To: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ "J.M.B. Downing" <jonathan.downing@nautel.com>, 
+ Vladimir Zapolskiy <vz@mleia.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Yangtao Li <frank.li@vivo.com>, 
+ Li Zetao <lizetao1@huawei.com>, Chancel Liu <chancel.liu@nxp.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Corentin Labbe <clabbe@baylibre.com>, 
+ dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-sound@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+In-Reply-To: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
+References: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
+Subject: Re: (subset) [Patch v5 00/12] Add audio support for LPC32XX CPUs
+Message-Id: <171959901719.141669.17001815513243855671.b4-ty@kernel.org>
+Date: Fri, 28 Jun 2024 19:23:37 +0100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-28_12,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0 clxscore=1011
- impostorscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406280129
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,104 +79,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.ibm.com, jarkko@kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 6/28/24 12:39, James Bottomley wrote:
-> On Fri, 2024-06-28 at 10:54 +1000, Michael Ellerman wrote:
->> Stefan Berger <stefanb@linux.ibm.com> writes:
->>> Fix the following type of error message caused by a missing call to
->>> tpm2_sessions_init() in the IBM vTPM driver:
->>>
->>> [    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error
->>> 0x01C4
->>> [    2.987140] ima: Error Communicating to TPM chip, result: -14
->>>
->>> Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
->>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
->>> ---
->>>   drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
->>>   1 file changed, 4 insertions(+)
->>>
->>> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c
->>> b/drivers/char/tpm/tpm_ibmvtpm.c
->>> index d3989b257f42..1e5b107d1f3b 100644
->>> --- a/drivers/char/tpm/tpm_ibmvtpm.c
->>> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
->>> @@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev
->>> *vio_dev,
->>>                  rc = tpm2_get_cc_attrs_tbl(chip);
->>>                  if (rc)
->>>                          goto init_irq_cleanup;
->>> +
->>> +               rc = tpm2_sessions_init(chip);
->>> +               if (rc)
->>> +                       goto init_irq_cleanup;
->>>          }
->>>   
->>>          return tpm_chip_register(chip);
->>
->> #regzbot ^introduced: d2add27cf2b8
+On Thu, 27 Jun 2024 17:00:18 +0200, Piotr Wojtaszczyk wrote:
+> This pach set is to bring back audio to machines with a LPC32XX CPU.
+> The legacy LPC32XX SoC used to have audio spport in linux 2.6.27.
+> The support was dropped due to lack of interest from mainaeners.
 > 
-> Could you please test out the patch I proposed for this:
+> Piotr Wojtaszczyk (12):
+>   dt-bindings: dma: pl08x: Add dma-cells description
+>   dt-bindings: dma: Add lpc32xx DMA mux binding
+>   ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
+>   ARM: dts: lpc32xx: Use simple-mfd for clock control block
+>   ARM: dts: lpc32xx: Add missing dma properties
+>   ARM: dts: lpc32xx: Add missing i2s properties
+>   clk: lpc32xx: initialize regmap using parent syscon
+>   dmaengine: Add dma router for pl08x in LPC32XX SoC
+>   ARM: lpc32xx: Remove pl08x platform data in favor for device tree
+>   mtd: rawnand: lpx32xx: Request DMA channels using DT entries
+>   ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
+>   i2x: pnx: Fix potential deadlock warning from del_timer_sync() call in
+>     isr
 > 
-> https://lore.kernel.org/linux-integrity/1302b413a2d7bf3b275133e7fdb04b44bfe2d5e3.camel@HansenPartnership.com/
-> 
-> Because it's not just tmp_ibmvtpm that doesn't call autostart.  From
-> inspection xen-tpmfront, tmp_nsc, tpm_infineon and tpm_atmel also
+> [...]
 
-afaik tpm_infineon is a TPM 1.2 driver; same holds for tpm_atmel and 
-tpm_ns. Neither needs this new call from what I understand. The new TPM2 
-drivers have the TPM_OPS_AUTO_STARTUP flag set.
+Applied to
 
-$ grep -r AUTO drivers/char/tpm/*.c | grep =
-drivers/char/tpm/tpm_crb.c:     .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_ftpm_tee.c:        .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_i2c_atmel.c:       .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_i2c_infineon.c:    .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_i2c_nuvoton.c:     .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_ibmvtpm.c: .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_tis_core.c:        .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_tis_i2c_cr50.c:    .flags = TPM_OPS_AUTO_STARTUP,
-drivers/char/tpm/tpm_vtpm_proxy.c:      .flags = TPM_OPS_AUTO_STARTUP,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-With xen-tpmfront I am not sure where something like chip->flags |= 
-TPM_CHIP_FLAG_TPM2 is done -- tpm2-cmd.c::tpm2_probe is not called from 
-this driver but only from tpm_tis_core.c::tpm_tis_core_init and 
-otherwise driver set it themselves.
+Thanks!
 
-$ grep -r TPM_CHIP_FLAG_TPM2 drivers/char/tpm/*.c | grep =
-drivers/char/tpm/tpm2-cmd.c:                    chip->flags |= 
-TPM_CHIP_FLAG_TPM2;
-drivers/char/tpm/tpm-chip.c:    rc = (chip->flags & TPM_CHIP_FLAG_TPM2) ?
-drivers/char/tpm/tpm_crb.c:     chip->flags = TPM_CHIP_FLAG_TPM2;
-drivers/char/tpm/tpm_ftpm_tee.c:        pvt_data->chip->flags |= 
-TPM_CHIP_FLAG_TPM2;
-drivers/char/tpm/tpm_i2c_nuvoton.c:             chip->flags |= 
-TPM_CHIP_FLAG_TPM2;
-drivers/char/tpm/tpm_ibmvtpm.c:         chip->flags |= TPM_CHIP_FLAG_TPM2;
-drivers/char/tpm/tpm-interface.c:       rc = (chip->flags & 
-TPM_CHIP_FLAG_TPM2) != 0;
-drivers/char/tpm/tpm_tis_i2c_cr50.c:    chip->flags |= TPM_CHIP_FLAG_TPM2;
-drivers/char/tpm/tpm_vtpm_proxy.c:              proxy_dev->chip->flags 
-|= TPM_CHIP_FLAG_TPM2;
+[03/12] ASoC: dt-bindings: lpc32xx: Add lpc32xx i2s DT binding
+        commit: 752fea92d9b3e4255a2f75e7efa6fe148562ccbf
+[11/12] ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs
+        commit: 0959de657a10cc40b2cc41cff9169ab0e0fd4456
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> don't, so it would be better to fix this for everyone rather than just
-> for you and have to do a separate fix for each of them.
+Thanks,
+Mark
 
-I am not sure whether any one of the mentioned drivers actually need 
-this call and if they need it they should probably move towards setting 
-TPM_OPS_AUTO_STARTUP.
-
-   Stefan
-> 
-> James
-> 
-> 
