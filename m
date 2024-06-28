@@ -2,135 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757B291B34F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 02:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B56591B44A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 02:55:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FK/21Njq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dw3FWGCl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9GMr6DWTz3fnn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 10:22:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9H660qM9z3frc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 10:55:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FK/21Njq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dw3FWGCl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:200a::613; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20613.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::613])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9GM80HMFz3dDp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 10:21:20 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k5k7E0ZYJnMun/7DvdP5HHb8pQfEGOvSAzKN5T9GGNmh3veKvT9VobvTIMl4YZSfdsPGRISxuEzwhWiiIt+mADjTM0BqkIF7jkRsrJTIxdG4wTyn6p7ehF/zIO7gHEeDIoCRJMs/HYkl+pKXm3yD4aRPiUVwKA+ZoZEhSlot1QTolxX1ei0sVuh3H0NwA5hWTbLUkD/6WpK8i/C3X1gQEot7L5FYGkNUCFPeV7vgw6PJbP7iIeUkDzpin3zNgHq+sVxMDAvlFNNRZpp12CPId7qrdXw8XMdHPhioA0TmsmEVqfonsYURcP1/UdQ1BP98ihAMGHHdTBhgi5a1nX6JCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7D8pN258ZLVxKASTLXddLCuitWvqg6KDBo7AcedGpes=;
- b=R9X8E3my3l9avSTDSNdzathKSweqvQHpqF7tfYz+oMTtwjPK0Uqcc53ilvcvIdlWVjEyIbwyI3N4V1rt5Xgce4oLgtQh/xgTG3MM5zN9d0EKYZfb2Oa2eXT16UjaOQxu0fJHDEwdwI3x3emdM8viGmooFEW1gun6iGM+2AODDPCjdWmC8reIo2nvTj+Qr6oBx08kswZsV0ACrbgilsl+WT2p9oXngQ0+ipUZAvhhVD9CsA+tQYS35hyZCt86ecqX+Gs+qNtrx/YTHH9BGilBvDkzGf8HtFoqjgJ7pgz6fBHWBswfd+NWZk03vHkGEdFyX5suef+1CAUvucVR5jrCnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7D8pN258ZLVxKASTLXddLCuitWvqg6KDBo7AcedGpes=;
- b=FK/21Njq0wpB+s5vHF3MkPpvGKcAULPoY4DBsAw/OJ4JxsT8QdAWOlIQhNFCmKRoafiDW7HCf1zanPHXNSCkQKW4fZ3vROteP7ZpwAqRAowBP6sRNr8Im2A4GBNgJEeDZBIglAV63YOAT5amrqN10KuQdbhqFeaT1p6Dxm49JAakyA0X7iM5k8BbtpWqUE7/d9Djh0Jrb7zVITUBs72yZbvFGYyq2ElAKod0d+PyuLYCWTeG7QR/feObHRwakfGb9SoIs+cC3cGMpxvvv37u2Uu1JX5+7MHGWEsg32dueTPKO/u7ggZJ3M+HWUVJuVqlMeT7YFNIfgRZMqKFmv8CsA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- MN0PR12MB5932.namprd12.prod.outlook.com (2603:10b6:208:37f::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7698.32; Fri, 28 Jun 2024 00:20:58 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%6]) with mapi id 15.20.7698.025; Fri, 28 Jun 2024
- 00:20:58 +0000
-References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
- <667d0da3572c_5be92947f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <87a5j67szs.fsf@nvdebian.thelocal>
- <667dca6259bc8_57ac2946e@dwillia2-xfh.jf.intel.com.notmuch>
-User-agent: mu4e 1.10.8; emacs 29.1
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 00/13] fs/dax: Fix FS DAX page reference counts
-Date: Fri, 28 Jun 2024 10:06:42 +1000
-In-reply-to: <667dca6259bc8_57ac2946e@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <87a5j56hp6.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SYBPR01CA0017.ausprd01.prod.outlook.com (2603:10c6:10::29)
- To DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9H5N3nP4z3bYR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 10:54:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1719536073;
+	bh=nK6ECkNoWWUSbgwv/8Nj8pwVUjgeZlZeQEQ65DI3FjQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dw3FWGCl3P1VHFi8yriJUkoxa2i6gMD7vyIVjlRNnE+dSEi+QCTwW0ti6cCo5P4Bs
+	 Zp3+N4QjGAhAIo8fSBG3V7is3heKklaJWPI9TaBUyK4mKGrSlcM3YdU88fBX3+PUO0
+	 Ov86/kuCrhKKMq/OGTA7/A72/hTPsZeOIaTAcxQ+sxc1670631sByC0lgYD/+XZbTu
+	 WjPM68tNBEq7AepAepoqZwDLK0CxECqLpBQxNeKkHmeeTOGzKx9F07F2ovZr1f2oLK
+	 1rBKnDY5fQZu705WcZ0eE65kSe4wuCMr9VUjixPNpprQQAkCa2r/iCpo92AVDTJFQW
+	 FHBUTpnaglwjQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W9H5N6hF0z4w2N;
+	Fri, 28 Jun 2024 10:54:32 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: regressions@lists.linux.dev
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+In-Reply-To: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+Date: Fri, 28 Jun 2024 10:54:31 +1000
+Message-ID: <87pls1lwe0.fsf@mail.lhotse>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MN0PR12MB5932:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71a55ce1-2d6c-4f94-ebd8-08dc97082ee0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?aQb3YROYeca27SMruaogKEscX4iC7ri3shD2JM6X3VlE7PvaDYEGCddyEDGq?=
- =?us-ascii?Q?iJ/UixCAK2GSbYE9wI7SNeQghf1DdtqjadmEJzu6qnUD3yVNomfFXoeT3yMm?=
- =?us-ascii?Q?LhkRD+9gQn3VD7dA0RRFLyaCKst2QzA2SJ2Dxcd3U0jblZo7K2HxJvuQlbDQ?=
- =?us-ascii?Q?56mIAOR/HugDJMHUEjkFxLzdhJQxPOZYQ+YjGHiPNsFpAVm7Zv4y07bss+d7?=
- =?us-ascii?Q?GsgPyjIDQy/i8EI5QZMGaBVKVlXCsO//6B5u/MbDKEeYNPvcWWPc3ijfxxw/?=
- =?us-ascii?Q?fexelLCjHh5hX9jyC4X7CQS5xzq2ma/L46E5TTjpcDTVHAVi5YYiXjpH+grF?=
- =?us-ascii?Q?sXsWHpObpYoT90shF/HXuJE0qZGkYSAjzF8s6JwD7dpez/Ec4T7Fga1mEVOq?=
- =?us-ascii?Q?H6rh2IExnnU5lLTcGowxFIT9E8YWsYZdXV1L9zczrX/Rywyr7EojNU0+ILPP?=
- =?us-ascii?Q?WagVgI6bY7uk/M+j+z/XHXOZYu33uFNqXf+BqPYAZJOwuwPBD7wzVU19XVpM?=
- =?us-ascii?Q?TLvcVYCaHnBYb2IAiH9ZP7mUx7+SCB94eTmoeW1NL5LY+GjAWl+OI31eYkEo?=
- =?us-ascii?Q?1e3KhZtSNHTvEM5yoLi9m6qQsGHfhPKEpZWTUe+ogUO7+YcopRjy2xVThPof?=
- =?us-ascii?Q?QIbxm7cjJlda9HgxoDitMF4BGNyLNmezs6jDud64zvgpovSeVRkTHv/GbOG0?=
- =?us-ascii?Q?0YaWdIDVw+PxEkLhEoRaRjVc4rAaCxInKHFu+Dvafv7CAe6uCZLcn07F2MeF?=
- =?us-ascii?Q?Q+dwL/z62C8DSZO7nviQnu7P+G8OduUJbOOigGc5FMbl6Z/xOUn1JY1UYjkX?=
- =?us-ascii?Q?0ortLZXHaOQTEtCE4vQUJVw0fF22GKHTIuEspZoQa0KSzuGe/i0pmBaXiqNt?=
- =?us-ascii?Q?fHAPjptPKfPP5593N1y/8cmB58kVrXq0F/qa33LnVt9ZiNygxRzs+ZNcAu2J?=
- =?us-ascii?Q?xkjPagjBnZvFxsDZcdi5BNUrVUPHSUxT4FuXNNvA21ZK0ySuLeAk9F1qUk4q?=
- =?us-ascii?Q?Y88RG1MyjTN2FY5eIZlAg7XiA33fFhW1yQp/eqyCwrmuO8Oozkif9Mhb0+pR?=
- =?us-ascii?Q?Jm/MOwsYew1iWynSCtn+K4PaRZb5+wVPOO/SuPB0AqpB1EohspBUgZEPz/HF?=
- =?us-ascii?Q?Ab4IGOTBf298Emxb43hqUdwc+qZZF+ulpfpueHLJX0CuGFahPlLrAS73TYqD?=
- =?us-ascii?Q?JK9XcOLBUl0tkHaKOqYFuQN09V58Db7ZN9/vmY578v5qIdlU6Il8SwuqBpbV?=
- =?us-ascii?Q?pC7xbbIu91Us1BnU9ngEWSgEbTeXRHaSYvuvT5fV3M+ligVsSTvyiw+oHmP+?=
- =?us-ascii?Q?bV6gGlrilDKfR1pBzmDsTqr60zLAyH46LkN29jwSAowM4A=3D=3D?=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?tlUDzpDl6zXbBYLIwSzA+MaPgcq3TGVBiVyK1S40YqpgrjyrirOa/8ffV1i7?=
- =?us-ascii?Q?RlXvR+5VP7iGPoI6m9i0FkNlEToJvlhIghlHroA2U+eWZt8gPI49VuxdZrFn?=
- =?us-ascii?Q?OjWsL8+IKv70qLPXxjZrG12Hn3qtHKMyZXL+Ra5UQPrEMufXwMs4gsZOLAUT?=
- =?us-ascii?Q?KTWwtzwry5vVGfU2vkcNETfQePmm+tofl6jkICbnc+mWqbOhXIFH+uwGePRt?=
- =?us-ascii?Q?cctGDdjjOT+n6kuhlI3nlCW/RP8+YtPOjTmu08L3FuL0wiSogCT01ljYsBU6?=
- =?us-ascii?Q?4KihXay08VkfwcXlFAOQCQvTJ3eS0n4mDOIKfqC7DFlEobt5yabK9zmJ89W0?=
- =?us-ascii?Q?Mv5xsgY+iiPv/wj+oOCoRKy4QL57wt9zSpTDU4cfP4MavPgpmIW8O/Jp+mSA?=
- =?us-ascii?Q?56VXhsfz1xbhJXD8fwimw7DqAkZw5PHWw5eBpX5XbM18tzJ3y1yn8TwRCMR5?=
- =?us-ascii?Q?kcGbNYD/rgY8LOohMewgdTJ/VilcXWB8MFb2/3nP5tCNAEjp9BiNh9Ab1MAf?=
- =?us-ascii?Q?aaY97YCWsXF6kuT+dv3Qn+QymLo6lcik4nXayl4l4d1/4zY9ouGP61IiWjm9?=
- =?us-ascii?Q?y8980IE+hLAJAOM5FVUqH3a8icN884zKDCwwVcO8LKmuLPbxwpHS85IqlUZK?=
- =?us-ascii?Q?8V8KIb+8ei/1ZkVFXWJzpYh1X7NMm+UjuJsazJfMp2b1Og3JhLci7oPKueLO?=
- =?us-ascii?Q?szu+p/8mD9Stg86zbS/bLX33QDolNXUvs6P2IIgIyywGz1IGh1zngzFcUMng?=
- =?us-ascii?Q?vYtzIbg4pRzMIsggexF+k5NVC7k32x+x+ypYEFEReZGbboU5vjDwdygFzMKR?=
- =?us-ascii?Q?kHESvrE7JuBib8Z34hv8f6dFNmrp591/T1vsBVgGjUxxCq2CCS0Gnkvd75K2?=
- =?us-ascii?Q?ZZmUj+QnHJiloMp6niyGJo44z4XchGpb5xbtdEvrQLUqtDwgySgDZonLg/e3?=
- =?us-ascii?Q?h45a7nC4mcntxayNIX9F1111RY0571GWqM+ethp+aS0WitnLIWj2/Jd6s38d?=
- =?us-ascii?Q?A0U2aYUexTZc//0W/gwE/q15PX0LE8eAw41JxmDBJHyrsWg8xZeuyW6/HsEW?=
- =?us-ascii?Q?wJKXH775dMBHRO/klax5KY63pGhtoQJUL/IzXAk+GXdqTe3odc0Tigv0GZxl?=
- =?us-ascii?Q?6iHrxRe+KzDyvpaIgn5seIGgUGPj/qemnz3XTHI5Xndi7ZBwZbd0ge0MkpSr?=
- =?us-ascii?Q?oqt1rIDHFdFubj4rYid3gmi9NSoVXRbySyNA0MVcDza36dOHwuAaVJFmKRfd?=
- =?us-ascii?Q?Ai9lrN+wm8Sk+vsBuxozdLknzmJCMVTQbdF1fjqFGk1C5kv/jg1jvEIhfo0b?=
- =?us-ascii?Q?iBHSFd+tFrouNAH76kDgIR5BNtT8487nMdBnd3rvRI7xF58gLnLbu3+CtjUq?=
- =?us-ascii?Q?ZO0VMfOcFkiLmguaGHo5GM5gomhrmbYEwC1NQ0dLi4FDDz5UBWWc+JyHm9k/?=
- =?us-ascii?Q?mvyT0ovXNshBlHjGhPTwppRxAtsqkzUQrnXtui5bBHyYaAGoy/Hmlzblq8Nl?=
- =?us-ascii?Q?sQZx1MFqJQFqIpShPjpYa/TSt2JbGqR+CHRc2roZDpGMG7+FYK2IBOl5xsy8?=
- =?us-ascii?Q?2/rEpocDiYOKLd/zMBAZp2lbIDZpjKuKYa4EX1Ns?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71a55ce1-2d6c-4f94-ebd8-08dc97082ee0
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2024 00:20:58.4534
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I0C/XCDJ4lCGoNMOS9y+QOYQnDdkW7EscDx1XdqOMWurdCQJh3CsyuYTm9K6IYA7G7J3ZxS4RhNpAHRgYuiRYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5932
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,110 +59,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, david@fromorbit.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, bhelgaas@google.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, logang@deltatee.com, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, jarkko@kernel.org, naveen.n.rao@linux.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> Alistair Popple wrote:
->> 
->> Dan Williams <dan.j.williams@intel.com> writes:
->> 
->> > Alistair Popple wrote:
->> >> FS DAX pages have always maintained their own page reference counts
->> >> without following the normal rules for page reference counting. In
->> >> particular pages are considered free when the refcount hits one rather
->> >> than zero and refcounts are not added when mapping the page.
->> >> 
->> >> Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
->> >> mechanism for allowing GUP to hold references on the page (see
->> >> get_dev_pagemap). However there doesn't seem to be any reason why FS
->> >> DAX pages need their own reference counting scheme.
->> >> 
->> >> By treating the refcounts on these pages the same way as normal pages
->> >> we can remove a lot of special checks. In particular pXd_trans_huge()
->> >> becomes the same as pXd_leaf(), although I haven't made that change
->> >> here. It also frees up a valuable SW define PTE bit on architectures
->> >> that have devmap PTE bits defined.
->> >> 
->> >> It also almost certainly allows further clean-up of the devmap managed
->> >> functions, but I have left that as a future improvment.
->> >> 
->> >> This is an update to the original RFC rebased onto v6.10-rc5. Unlike
->> >> the original RFC it passes the same number of ndctl test suite
->> >> (https://github.com/pmem/ndctl) tests as my current development
->> >> environment does without these patches.
->> >
->> > Are you seeing the 'mmap.sh' test fail even without these patches?
->> 
->> No. But I also don't see it failing with these patches :)
->> 
->> For reference this is what I see on my test machine with or without:
->> 
->> [1/70] Generating version.h with a custom command
->>  1/13 ndctl:dax / daxdev-errors.sh          SKIP             0.06s   exit status 77
->>  2/13 ndctl:dax / multi-dax.sh              SKIP             0.05s   exit status 77
->>  3/13 ndctl:dax / sub-section.sh            SKIP             0.14s   exit status 77
+Stefan Berger <stefanb@linux.ibm.com> writes:
+> Fix the following type of error message caused by a missing call to
+> tpm2_sessions_init() in the IBM vTPM driver:
 >
-> I really need to get this test built as a service as this shows a
-> pre-req is missing, and it's not quite fair to expect submitters to put
-> it all together.
-
-Ok. I didn't dig into why this was being skipped but I might if I find
-some time. The rest of the tests seemed more relevant anyway and turned
-up enough bugs with my initial implementation to keep me busy which gave
-me some confidence.
-
-If I'm being honest though I found the whole test setup a bit of a
-pain. In particular remembering you have to manually (re)build the
-special test versions of the modules tripped me up a few times until I
-updated my build scripts. But I got there in the end.
-
->>  4/13 ndctl:dax / dax-dev                   OK               0.02s
->>  5/13 ndctl:dax / dax-ext4.sh               OK              12.97s
->>  6/13 ndctl:dax / dax-xfs.sh                OK              12.44s
->>  7/13 ndctl:dax / device-dax                OK              13.40s
->>  8/13 ndctl:dax / revoke-devmem             FAIL             0.31s   (exit status 250 or signal 122 SIGinvalid)
->> >>> TEST_PATH=/home/apopple/ndctl/build/test LD_LIBRARY_PATH=/home/apopple/ndctl/build/cxl/lib:/home/apopple/ndctl/build/daxctl/lib:/home/apopple/ndctl/build/ndctl/lib NDCTL=/home/apopple/ndctl/build/ndctl/ndctl MALLOC_PERTURB_=227 DATA_PATH=/home/apopple/ndctl/test DAXCTL=/home/apopple/ndctl/build/daxctl/daxctl /home/apopple/ndctl/build/test/revoke_devmem
->> 
->>  9/13 ndctl:dax / device-dax-fio.sh         OK              32.43s
->> 10/13 ndctl:dax / daxctl-devices.sh         SKIP             0.07s   exit status 77
->> 11/13 ndctl:dax / daxctl-create.sh          SKIP             0.04s   exit status 77
->> 12/13 ndctl:dax / dm.sh                     FAIL             0.08s   exit status 1
->> >>> MALLOC_PERTURB_=209 TEST_PATH=/home/apopple/ndctl/build/test LD_LIBRARY_PATH=/home/apopple/ndctl/build/cxl/lib:/home/apopple/ndctl/build/daxctl/lib:/home/apopple/ndctl/build/ndctl/lib NDCTL=/home/apopple/ndctl/build/ndctl/ndctl DATA_PATH=/home/apopple/ndctl/test DAXCTL=/home/apopple/ndctl/build/daxctl/daxctl /home/apopple/ndctl/test/dm.sh
->> 
->> 13/13 ndctl:dax / mmap.sh                   OK             107.57s
+> [    2.987131] tpm tpm0: tpm2_load_context: failed with a TPM error 0x01C4
+> [    2.987140] ima: Error Communicating to TPM chip, result: -14
 >
-> I need to think through why this one might false succeed, but that can
-> wait until we get this series reviewed. For now my failure is stable
-> which allows it to be bisected.
+> Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
->> 
->> Ok:                 6   
->> Expected Fail:      0   
->> Fail:               2   
->> Unexpected Pass:    0   
->> Skipped:            5   
->> Timeout:            0   
->> 
->> I have been using QEMU for my testing. Maybe I missed some condition in
->> the unmap path though so will take another look.
->
-> I was able to bisect to:
+> diff --git a/drivers/char/tpm/tpm_ibmvtpm.c b/drivers/char/tpm/tpm_ibmvtpm.c
+> index d3989b257f42..1e5b107d1f3b 100644
+> --- a/drivers/char/tpm/tpm_ibmvtpm.c
+> +++ b/drivers/char/tpm/tpm_ibmvtpm.c
+> @@ -698,6 +698,10 @@ static int tpm_ibmvtpm_probe(struct vio_dev *vio_dev,
+>  		rc = tpm2_get_cc_attrs_tbl(chip);
+>  		if (rc)
+>  			goto init_irq_cleanup;
+> +
+> +		rc = tpm2_sessions_init(chip);
+> +		if (rc)
+> +			goto init_irq_cleanup;
+>  	}
+>  
+>  	return tpm_chip_register(chip);
 
-I could have guessed that one, as it's pretty much the crux of this
-series given it's the one that switches everything away from
-pXX_devmap. That means pXX_leaf/_trans_huge will start returning true
-for DAX pages.
-
-Based on your dump I'm guessing I missed some case in the
-zap_pXX_range() path. It could be helpful to narrow down which of the
-pXX paths is crashing but I will take another look there.
-
-> [PATCH 10/13] fs/dax: Properly refcount fs dax pages
->
-> ...I will prioritize that one in my review queue.
-
-Thanks!
+#regzbot ^introduced: d2add27cf2b8 
