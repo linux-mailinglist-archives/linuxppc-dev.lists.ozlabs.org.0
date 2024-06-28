@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A85091C2BA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 17:38:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FD791C2A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 17:30:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ANF6RJDw;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=kgL4S+/f;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9fhs5QxQz3cZv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 01:38:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9fXP6lZVz3cYf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 01:30:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ANF6RJDw;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=kgL4S+/f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9fh9686Tz3cW3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 01:37:28 +1000 (AEST)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-a72510ebc3fso113688866b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 08:37:29 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9fWh005Dz3cW3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jun 2024 01:30:07 +1000 (AEST)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-57d1782679fso1075634a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 08:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719589045; x=1720193845; darn=lists.ozlabs.org;
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1719588604; x=1720193404; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gHBE7mwuQO9e/aITRwb/kuqsDFFvGrXFRIcMKimPMbw=;
-        b=ANF6RJDwW1WHNLAcPSSSdOxWMqUxeUKMZY2aYjiRJ0qE4TaVScehCxNdvtMTZlU+Nv
-         gNAP3GVHvCd8nirBT6qmiy0HQj3IKywx1HWby97zMNpLAX7AIp6uFNyXXQqJlDzaqwyf
-         F5v1jU9eejbr/nyxnpf6SlW4B6NYqOynFPG8jeqEpYLIj9fTUvU1QpdZ6IxfJh27AI7I
-         T95yfFNDQahrH1wyxzbKb4T27Cas/8hOUVwV5G+8QRJ7FOfgzqV8KNb7DRh4FFIh9+Xu
-         IHdmIuInsX07xtgh7j8zxsLw9hj9oidJCLlTe81Ad68n7+gc22UW5QmoSwgCfof7j+cU
-         2aKg==
+        bh=X+DJpOm4RfaDE2zD0n6roADp/UbGD++A0Jdm0qwsA/0=;
+        b=kgL4S+/fqRjek9ocaik7o0Duc6cfSDS3ldu/Jrs/l/vZI2JZ4bDfb6fLw/WkliFOpD
+         /iTzZYbHOyFA2N4tZMW/Y+xlhld2oBnFx9EPz00r9UPg5L4Al45BUvE1gWUQIdzhTzS/
+         c1cCRPZpPjIwsMSnp3JhaUCQ48mRsD4WldExgXElt29N5iQC3EozNPQ7/E4iooJN65gz
+         hndpwjHyJ16+lHvDU1EQhz84WlIloqrHFFgQdqltidrpvRka529ZFYMP0HvjHAcHIj8J
+         80yeEl30iCCjegHOwG/Paxa0xTNzmUMDqz/9DJiEDAYBQGP5uNDs5MlqRfAtrSviM1Qh
+         rhQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719589045; x=1720193845;
+        d=1e100.net; s=20230601; t=1719588604; x=1720193404;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gHBE7mwuQO9e/aITRwb/kuqsDFFvGrXFRIcMKimPMbw=;
-        b=p/jBvzmgfDZD6cwGtWw+kUK0GLSaT5+rknxX32vx8v1QNPZnLxlarxkXgp6UBe75tD
-         7V5bgWvrjyo+fRxZlIgngw5W8MepFJTd6I4RxmFdI6ENBbHIPtIGNVnoTo4GzFfgoFC7
-         SJOb7ysw8vnzLtByPzg/7r88jqSCTdtUwlQxdWKrPJ8mQXlOtGfRAQhcLXrTJ6u3HdSC
-         oUBL2o2TdPqztyd92/cN0eJ8+jTLDh5+d9R3y32a1y/x8zlX7ZXRjO2nz7zs1ssobjai
-         jbjqifwYhYPTgh5HRWHKjagyOqEuiH7KzLUqnjFOPXgRM4mjR9IAzOiRhSRGBs4Nb/Tg
-         sGRg==
-X-Gm-Message-State: AOJu0Yyliau3rXcYy1cMnnSwjo53tpA0j83vmtqigGQv9ABhs1M3JE1A
-	rIrE1s1+yDm8SaewX4P7aGcQIn2h8qBsgosG4kDUp4YPtgiSDqyG5lk4t45J15zuyW9Ucti4rkt
-	Yc08=
-X-Google-Smtp-Source: AGHT+IHnM+4OyVK9UBGO0Z8lzgql+LKmtImEjJvjBTwDr3QU1E5COwfejtrvDfgVZUmgjuEAiA8Yog==
-X-Received: by 2002:a17:907:a18d:b0:a72:4281:bc72 with SMTP id a640c23a62f3a-a7242d2970cmr1012896766b.63.1719588590458;
-        Fri, 28 Jun 2024 08:29:50 -0700 (PDT)
+        bh=X+DJpOm4RfaDE2zD0n6roADp/UbGD++A0Jdm0qwsA/0=;
+        b=fvvAmnWfbDysk2ppkqcGCeI717JNDPNeu+lIGH/71HL6GscLb3YmpdfAuQaT0JLT7T
+         5tHDi3jEn37tYYHM5cqJXU/N6AmPnvgYHbb01uYCisqY2LQeoPNxIoT/DqJUXBWoymSB
+         3uG9l9mVMOwLjnEE1dmn/KmXFgI55gWLb40eRILJx8hADpi4yoUtQTtUH7+UyZs9jumA
+         4z0tbQ6dqGQyfnbKSNi8xkhXnDmf3UeuBRhqfnB2oEprWr8/5rLRDuoqVt8jY8KUYZDp
+         6vvVk2+uto4UVTUPNzRw7St1ZRqFb6y7I/NBsQf2m5Kguvk+nQnHFQPSsXpTwRjYblfW
+         71Sg==
+X-Gm-Message-State: AOJu0YyCbG/lfcviuYB96oiYn7rCZKV0f6mH/pAyt4eEBltsLIW7bZPM
+	AcrsyJL+wl+EfBPPZIp5eDvokhICqEWJ6ghJf9UG2pH3ODzsh9vbGpezw5MYKQwGQe2/ausYyv/
+	qgUY=
+X-Google-Smtp-Source: AGHT+IE02jPMfZBw2KBQVkPX8O/q1a3hp+zvqEEFONML0yPpOp4ob5bSwIrIvw8xLDFlj1pBG1JMRA==
+X-Received: by 2002:a50:d69d:0:b0:57d:768:cdfb with SMTP id 4fb4d7f45d1cf-57d4bd6a19emr11036745a12.6.1719588604580;
+        Fri, 28 Jun 2024 08:30:04 -0700 (PDT)
 Received: from localhost.localdomain ([91.216.213.152])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab0651dfsm90116666b.142.2024.06.28.08.29.49
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58614f3d51asm1160852a12.81.2024.06.28.08.30.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 08:29:49 -0700 (PDT)
+        Fri, 28 Jun 2024 08:30:04 -0700 (PDT)
 From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Patch v6] dmaengine: Add dma router for pl08x in LPC32XX SoC
-Date: Fri, 28 Jun 2024 17:29:46 +0200
-Message-Id: <20240628152946.282698-1-piotr.wojtaszczyk@timesys.com>
+Subject: [Patch v6] i2c: pnx: Fix potential deadlock warning from del_timer_sync() call in isr
+Date: Fri, 28 Jun 2024 17:30:01 +0200
+Message-Id: <20240628153001.282816-1-piotr.wojtaszczyk@timesys.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -81,287 +81,188 @@ Cc: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-LPC32XX connects few of its peripherals to pl08x DMA thru a multiplexer,
-this driver allows to route a signal request line thru the multiplexer for
-given peripheral.
+When del_timer_sync() is called in an interrupt context it throws a warning
+because of potential deadlock. The timer is used only to exit from
+wait_for_completion() after a timeout so replacing the call with
+wait_for_completion_timeout() allows to remove the problematic timer and
+its related functions altogether.
 
 Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
 ---
 Changes for v6:
-- Select LPC32XX_DMAMUX config when AMBA_PL08X is selected
+- Fixed typo in the patch subject
 
 Changes for v5:
-- Fix struct declaration order
-- Removed unused variables
-- Break search loop if expected lpc32xx_muxes[i].signal is found
+- Replaced wait_for_completion() with wait_for_completion_timeout().
+- Removed unneded "alg_data->mif.timer" and its functions
+- Request irq with devm_request_irq() as before the patch
+- Renamed the patch and reword description for the new way to fix
+  the warning
 
 Changes for v4:
-- This patch is new in v4
+- Request irq with devm_request_threaded_irq() to prevent the warning
 
- MAINTAINERS                   |   1 +
- arch/arm/mach-lpc32xx/Kconfig |   1 +
- drivers/dma/Kconfig           |   9 ++
- drivers/dma/Makefile          |   1 +
- drivers/dma/lpc32xx-dmamux.c  | 195 ++++++++++++++++++++++++++++++++++
- 5 files changed, 207 insertions(+)
- create mode 100644 drivers/dma/lpc32xx-dmamux.c
+ drivers/i2c/busses/i2c-pnx.c | 48 ++++++++----------------------------
+ 1 file changed, 10 insertions(+), 38 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ceec359c68fc..118d48747641 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2404,6 +2404,7 @@ R:	Vladimir Zapolskiy <vz@mleia.com>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
- F:	Documentation/devicetree/bindings/dma/nxp,lpc3220-dmamux.yaml
-+F:	drivers/dma/lpc32xx-dmamux.c
+diff --git a/drivers/i2c/busses/i2c-pnx.c b/drivers/i2c/busses/i2c-pnx.c
+index a12525b3186b..f448505d5468 100644
+--- a/drivers/i2c/busses/i2c-pnx.c
++++ b/drivers/i2c/busses/i2c-pnx.c
+@@ -15,7 +15,6 @@
+ #include <linux/ioport.h>
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+-#include <linux/timer.h>
+ #include <linux/completion.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+@@ -32,7 +31,6 @@ struct i2c_pnx_mif {
+ 	int			ret;		/* Return value */
+ 	int			mode;		/* Interface mode */
+ 	struct completion	complete;	/* I/O completion */
+-	struct timer_list	timer;		/* Timeout */
+ 	u8 *			buf;		/* Data buffer */
+ 	int			len;		/* Length of data buffer */
+ 	int			order;		/* RX Bytes to order via TX */
+@@ -117,24 +115,6 @@ static inline int wait_reset(struct i2c_pnx_algo_data *data)
+ 	return (timeout <= 0);
+ }
  
- ARM/Marvell Dove/MV78xx0/Orion SOC support
- M:	Andrew Lunn <andrew@lunn.ch>
-diff --git a/arch/arm/mach-lpc32xx/Kconfig b/arch/arm/mach-lpc32xx/Kconfig
-index 35730d3696d0..138599545c24 100644
---- a/arch/arm/mach-lpc32xx/Kconfig
-+++ b/arch/arm/mach-lpc32xx/Kconfig
-@@ -8,5 +8,6 @@ config ARCH_LPC32XX
- 	select CLKSRC_LPC32XX
- 	select CPU_ARM926T
- 	select GPIOLIB
-+	select LPC32XX_DMAMUX if AMBA_PL08X
- 	help
- 	  Support for the NXP LPC32XX family of processors
-diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
-index 002a5ec80620..aeace3d7e066 100644
---- a/drivers/dma/Kconfig
-+++ b/drivers/dma/Kconfig
-@@ -378,6 +378,15 @@ config LPC18XX_DMAMUX
- 	  Enable support for DMA on NXP LPC18xx/43xx platforms
- 	  with PL080 and multiplexed DMA request lines.
+-static inline void i2c_pnx_arm_timer(struct i2c_pnx_algo_data *alg_data)
+-{
+-	struct timer_list *timer = &alg_data->mif.timer;
+-	unsigned long expires = msecs_to_jiffies(alg_data->timeout);
+-
+-	if (expires <= 1)
+-		expires = 2;
+-
+-	del_timer_sync(timer);
+-
+-	dev_dbg(&alg_data->adapter.dev, "Timer armed at %lu plus %lu jiffies.\n",
+-		jiffies, expires);
+-
+-	timer->expires = jiffies + expires;
+-
+-	add_timer(timer);
+-}
+-
+ /**
+  * i2c_pnx_start - start a device
+  * @slave_addr:		slave address
+@@ -259,8 +239,6 @@ static int i2c_pnx_master_xmit(struct i2c_pnx_algo_data *alg_data)
+ 				~(mcntrl_afie | mcntrl_naie | mcntrl_drmie),
+ 				  I2C_REG_CTL(alg_data));
  
-+config LPC32XX_DMAMUX
-+	bool "NXP LPC32xx DMA MUX for PL080"
-+	depends on ARCH_LPC32XX || COMPILE_TEST
-+	depends on OF && AMBA_PL08X
-+	select MFD_SYSCON
-+	help
-+	  Support for PL080 multiplexed DMA request lines on
-+	  LPC32XX platrofm.
+-			del_timer_sync(&alg_data->mif.timer);
+-
+ 			dev_dbg(&alg_data->adapter.dev,
+ 				"%s(): Waking up xfer routine.\n",
+ 				__func__);
+@@ -276,8 +254,6 @@ static int i2c_pnx_master_xmit(struct i2c_pnx_algo_data *alg_data)
+ 			~(mcntrl_afie | mcntrl_naie | mcntrl_drmie),
+ 			  I2C_REG_CTL(alg_data));
+ 
+-		/* Stop timer. */
+-		del_timer_sync(&alg_data->mif.timer);
+ 		dev_dbg(&alg_data->adapter.dev,
+ 			"%s(): Waking up xfer routine after zero-xfer.\n",
+ 			__func__);
+@@ -364,8 +340,6 @@ static int i2c_pnx_master_rcv(struct i2c_pnx_algo_data *alg_data)
+ 				 mcntrl_drmie | mcntrl_daie);
+ 			iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 
+-			/* Kill timer. */
+-			del_timer_sync(&alg_data->mif.timer);
+ 			complete(&alg_data->mif.complete);
+ 		}
+ 	}
+@@ -400,8 +374,6 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
+ 			 mcntrl_drmie);
+ 		iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 
+-		/* Stop timer, to prevent timeout. */
+-		del_timer_sync(&alg_data->mif.timer);
+ 		complete(&alg_data->mif.complete);
+ 	} else if (stat & mstatus_nai) {
+ 		/* Slave did not acknowledge, generate a STOP */
+@@ -419,8 +391,6 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
+ 		/* Our return value. */
+ 		alg_data->mif.ret = -EIO;
+ 
+-		/* Stop timer, to prevent timeout. */
+-		del_timer_sync(&alg_data->mif.timer);
+ 		complete(&alg_data->mif.complete);
+ 	} else {
+ 		/*
+@@ -453,9 +423,8 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static void i2c_pnx_timeout(struct timer_list *t)
++static void i2c_pnx_timeout(struct i2c_pnx_algo_data *alg_data)
+ {
+-	struct i2c_pnx_algo_data *alg_data = from_timer(alg_data, t, mif.timer);
+ 	u32 ctl;
+ 
+ 	dev_err(&alg_data->adapter.dev,
+@@ -472,7 +441,6 @@ static void i2c_pnx_timeout(struct timer_list *t)
+ 	iowrite32(ctl, I2C_REG_CTL(alg_data));
+ 	wait_reset(alg_data);
+ 	alg_data->mif.ret = -EIO;
+-	complete(&alg_data->mif.complete);
+ }
+ 
+ static inline void bus_reset_if_active(struct i2c_pnx_algo_data *alg_data)
+@@ -514,6 +482,7 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 	struct i2c_msg *pmsg;
+ 	int rc = 0, completed = 0, i;
+ 	struct i2c_pnx_algo_data *alg_data = adap->algo_data;
++	unsigned long time_left;
+ 	u32 stat;
+ 
+ 	dev_dbg(&alg_data->adapter.dev,
+@@ -548,7 +517,6 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 		dev_dbg(&alg_data->adapter.dev, "%s(): mode %d, %d bytes\n",
+ 			__func__, alg_data->mif.mode, alg_data->mif.len);
+ 
+-		i2c_pnx_arm_timer(alg_data);
+ 
+ 		/* initialize the completion var */
+ 		init_completion(&alg_data->mif.complete);
+@@ -564,7 +532,10 @@ i2c_pnx_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 			break;
+ 
+ 		/* Wait for completion */
+-		wait_for_completion(&alg_data->mif.complete);
++		time_left = wait_for_completion_timeout(&alg_data->mif.complete,
++							alg_data->timeout);
++		if (time_left == 0)
++			i2c_pnx_timeout(alg_data);
+ 
+ 		if (!(rc = alg_data->mif.ret))
+ 			completed++;
+@@ -653,7 +624,10 @@ static int i2c_pnx_probe(struct platform_device *pdev)
+ 	alg_data->adapter.algo_data = alg_data;
+ 	alg_data->adapter.nr = pdev->id;
+ 
+-	alg_data->timeout = I2C_PNX_TIMEOUT_DEFAULT;
++	alg_data->timeout = msecs_to_jiffies(I2C_PNX_TIMEOUT_DEFAULT);
++	if (alg_data->timeout <= 1)
++		alg_data->timeout = 2;
 +
- config LS2X_APB_DMA
- 	tristate "Loongson LS2X APB DMA support"
- 	depends on LOONGARCH || COMPILE_TEST
-diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
-index 802ca916f05f..6f1350b62e7f 100644
---- a/drivers/dma/Makefile
-+++ b/drivers/dma/Makefile
-@@ -50,6 +50,7 @@ obj-$(CONFIG_INTEL_IOATDMA) += ioat/
- obj-y += idxd/
- obj-$(CONFIG_K3_DMA) += k3dma.o
- obj-$(CONFIG_LPC18XX_DMAMUX) += lpc18xx-dmamux.o
-+obj-$(CONFIG_LPC32XX_DMAMUX) += lpc32xx-dmamux.o
- obj-$(CONFIG_LS2X_APB_DMA) += ls2x-apb-dma.o
- obj-$(CONFIG_MILBEAUT_HDMAC) += milbeaut-hdmac.o
- obj-$(CONFIG_MILBEAUT_XDMAC) += milbeaut-xdmac.o
-diff --git a/drivers/dma/lpc32xx-dmamux.c b/drivers/dma/lpc32xx-dmamux.c
-new file mode 100644
-index 000000000000..351d7e23e615
---- /dev/null
-+++ b/drivers/dma/lpc32xx-dmamux.c
-@@ -0,0 +1,195 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+//
-+// Copyright 2024 Timesys Corporation <piotr.wojtaszczyk@timesys.com>
-+//
-+// Based on TI DMA Crossbar driver by:
-+//   Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
-+//   Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
-+
-+#include <linux/err.h>
-+#include <linux/init.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/of.h>
-+#include <linux/of_dma.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/spinlock.h>
-+
-+#define LPC32XX_SSP_CLK_CTRL 0x78
-+#define LPC32XX_I2S_CLK_CTRL 0x7c
-+
-+struct lpc32xx_dmamux {
-+	int signal;
-+	char *name_sel0;
-+	char *name_sel1;
-+	int muxval;
-+	int muxreg;
-+	int bit;
-+	bool busy;
-+};
-+
-+struct lpc32xx_dmamux_data {
-+	struct dma_router dmarouter;
-+	struct regmap *reg;
-+	spinlock_t lock; /* protects busy status flag */
-+};
-+
-+/* From LPC32x0 User manual "3.2.1 DMA request signals" */
-+static struct lpc32xx_dmamux lpc32xx_muxes[] = {
-+	{
-+		.signal = 3,
-+		.name_sel0 = "spi2-rx-tx",
-+		.name_sel1 = "ssp1-rx",
-+		.muxreg = LPC32XX_SSP_CLK_CTRL,
-+		.bit = 5,
-+	},
-+	{
-+		.signal = 10,
-+		.name_sel0 = "uart7-rx",
-+		.name_sel1 = "i2s1-dma1",
-+		.muxreg = LPC32XX_I2S_CLK_CTRL,
-+		.bit = 4,
-+	},
-+	{
-+		.signal = 11,
-+		.name_sel0 = "spi1-rx-tx",
-+		.name_sel1 = "ssp1-tx",
-+		.muxreg = LPC32XX_SSP_CLK_CTRL,
-+		.bit = 4,
-+	},
-+	{
-+		.signal = 14,
-+		.name_sel0 = "none",
-+		.name_sel1 = "ssp0-rx",
-+		.muxreg = LPC32XX_SSP_CLK_CTRL,
-+		.bit = 3,
-+	},
-+	{
-+		.signal = 15,
-+		.name_sel0 = "none",
-+		.name_sel1 = "ssp0-tx",
-+		.muxreg = LPC32XX_SSP_CLK_CTRL,
-+		.bit = 2,
-+	},
-+};
-+
-+static void lpc32xx_dmamux_release(struct device *dev, void *route_data)
-+{
-+	struct lpc32xx_dmamux_data *dmamux = dev_get_drvdata(dev);
-+	struct lpc32xx_dmamux *mux = route_data;
-+
-+	dev_dbg(dev, "releasing dma request signal %d routed to %s\n",
-+		mux->signal, mux->muxval ? mux->name_sel1 : mux->name_sel1);
-+
-+	guard(spinlock)(&dmamux->lock);
-+
-+	mux->busy = false;
-+}
-+
-+static void *lpc32xx_dmamux_reserve(struct of_phandle_args *dma_spec,
-+				    struct of_dma *ofdma)
-+{
-+	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
-+	struct device *dev = &pdev->dev;
-+	struct lpc32xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
-+	unsigned long flags;
-+	struct lpc32xx_dmamux *mux = NULL;
-+	int i;
-+
-+	if (dma_spec->args_count != 3) {
-+		dev_err(&pdev->dev, "invalid number of dma mux args\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(lpc32xx_muxes); i++) {
-+		if (lpc32xx_muxes[i].signal == dma_spec->args[0]) {
-+			mux = &lpc32xx_muxes[i];
-+			break;
-+		}
-+	}
-+	if (!mux) {
-+		dev_err(&pdev->dev, "invalid mux request number: %d\n",
-+			dma_spec->args[0]);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	if (dma_spec->args[2] > 1) {
-+		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
-+			dma_spec->args[1]);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	/* The of_node_put() will be done in the core for the node */
-+	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
-+	if (!dma_spec->np) {
-+		dev_err(&pdev->dev, "can't get dma master\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	spin_lock_irqsave(&dmamux->lock, flags);
-+	if (mux->busy) {
-+		spin_unlock_irqrestore(&dmamux->lock, flags);
-+		dev_err(dev, "dma request signal %d busy, routed to %s\n",
-+			mux->signal, mux->muxval ? mux->name_sel1 : mux->name_sel1);
-+		of_node_put(dma_spec->np);
-+		return ERR_PTR(-EBUSY);
-+	}
-+
-+	mux->busy = true;
-+	mux->muxval = dma_spec->args[2] ? BIT(mux->bit) : 0;
-+
-+	regmap_update_bits(dmamux->reg, mux->muxreg, BIT(mux->bit), mux->muxval);
-+	spin_unlock_irqrestore(&dmamux->lock, flags);
-+
-+	dma_spec->args[2] = 0;
-+	dma_spec->args_count = 2;
-+
-+	dev_dbg(dev, "dma request signal %d routed to %s\n",
-+		mux->signal, mux->muxval ? mux->name_sel1 : mux->name_sel1);
-+
-+	return mux;
-+}
-+
-+static int lpc32xx_dmamux_probe(struct platform_device *pdev)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+	struct lpc32xx_dmamux_data *dmamux;
-+
-+	dmamux = devm_kzalloc(&pdev->dev, sizeof(*dmamux), GFP_KERNEL);
-+	if (!dmamux)
-+		return -ENOMEM;
-+
-+	dmamux->reg = syscon_node_to_regmap(np->parent);
-+	if (IS_ERR(dmamux->reg)) {
-+		dev_err(&pdev->dev, "syscon lookup failed\n");
-+		return PTR_ERR(dmamux->reg);
-+	}
-+
-+	spin_lock_init(&dmamux->lock);
-+	platform_set_drvdata(pdev, dmamux);
-+	dmamux->dmarouter.dev = &pdev->dev;
-+	dmamux->dmarouter.route_free = lpc32xx_dmamux_release;
-+
-+	return of_dma_router_register(np, lpc32xx_dmamux_reserve,
-+				      &dmamux->dmarouter);
-+}
-+
-+static const struct of_device_id lpc32xx_dmamux_match[] = {
-+	{ .compatible = "nxp,lpc3220-dmamux" },
-+	{},
-+};
-+
-+static struct platform_driver lpc32xx_dmamux_driver = {
-+	.probe	= lpc32xx_dmamux_probe,
-+	.driver = {
-+		.name = "lpc32xx-dmamux",
-+		.of_match_table = lpc32xx_dmamux_match,
-+	},
-+};
-+
-+static int __init lpc32xx_dmamux_init(void)
-+{
-+	return platform_driver_register(&lpc32xx_dmamux_driver);
-+}
-+arch_initcall(lpc32xx_dmamux_init);
+ #ifdef CONFIG_OF
+ 	alg_data->adapter.dev.of_node = of_node_get(pdev->dev.of_node);
+ 	if (pdev->dev.of_node) {
+@@ -673,8 +647,6 @@ static int i2c_pnx_probe(struct platform_device *pdev)
+ 	if (IS_ERR(alg_data->clk))
+ 		return PTR_ERR(alg_data->clk);
+ 
+-	timer_setup(&alg_data->mif.timer, i2c_pnx_timeout, 0);
+-
+ 	snprintf(alg_data->adapter.name, sizeof(alg_data->adapter.name),
+ 		 "%s", pdev->name);
+ 
 -- 
 2.25.1
 
