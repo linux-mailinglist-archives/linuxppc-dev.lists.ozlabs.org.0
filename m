@@ -1,48 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF7091B8DB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 09:48:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FB791B8E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 09:49:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rw85o+ri;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y6RiG23z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4W9SGy4Ncdz3cWW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 17:48:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4W9SJ63jTpz2xQL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jun 2024 17:49:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rw85o+ri;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y6RiG23z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9SGF4wjdz2yvp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 17:47:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4W9SHP6Xznz2yvp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jun 2024 17:48:49 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id D7B1FCE1FEC;
-	Fri, 28 Jun 2024 07:47:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B71C116B1;
-	Fri, 28 Jun 2024 07:47:31 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 61564618FE;
+	Fri, 28 Jun 2024 07:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386D8C2BD10;
+	Fri, 28 Jun 2024 07:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719560863;
-	bh=uCD5TGiepGiYZ3McqKERrGy9PD1OaIIbz3xxYakKfFw=;
+	s=k20201202; t=1719560923;
+	bh=Med/e/5poH47sw+X9ut1CH7guRvVlCNxLW8j4nDVLsk=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=rw85o+rim2AaTbsryjVXocCSTIlky1QApL8M2f6EISMpuQnbVCy6DKELhPL2Y+ves
-	 ic0hueZT0Vhjw5W/WMP8ScUwtmWgYe5ddFkp0WSMnfwkKyOIaPm8g72GAP4a9oRYIh
-	 eczRGNHi2x+9ZbEtaBPBCMAIRUWwewUQq0n+9WN/mn+H0p/41j6p7w9R7UUftUP2wp
-	 p5aDOhdD69kHxVxNI4gy4WJqN98J5POMN/Lrn6XJI0YFiO5MZcM4CjWCO4LKStdKd5
-	 zLwOMKhLv6NWw5ozJgMSKa7zNwOjxzyqTMkrfFOmbmAxHjZrQPoRrM9g8di5jQbsrx
-	 llS6jAQ+ZH/pA==
-Message-ID: <c99dbf5e-9396-44bc-973f-cb7edaf6c0dc@kernel.org>
-Date: Fri, 28 Jun 2024 09:47:29 +0200
+	b=Y6RiG23z69aCffJy0NTLVKqSETo/QxSs1fcdyqXXZiDFikz81WLMMGSrZ8fpX2Xgs
+	 UrFrYHnFJp/x5hxoWuPRKpveFjZwJdEBRLsakz4VKTJS0nwReePrv5EPrifL+UTrKM
+	 ItWXec9mMmFLpcgb2r8w3JaP8gc2W4FKVhnWpwJS+5b3LIKggNTUPlwXlD/FX2RTaF
+	 0Bny5YFR3Tc6gV0IGjnPxS6imOUUb0XCfRMePJQ8AgAi3lg2Xp02u3qDH6zq4HO3qr
+	 RLbRySEO/+jFRA1BByRnPbR6TBap24tsrx1qrleN8F18zR3uLtTUFGE3qiiuToQg8A
+	 Sjp3BAR5UXmNg==
+Message-ID: <819cda69-8502-4a1d-94ed-742cb7e2b50c@kernel.org>
+Date: Fri, 28 Jun 2024 09:48:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v5 02/12] dt-bindings: dma: Add lpc32xx DMA mux binding
+Subject: Re: [Patch v5 12/12] i2x: pnx: Fix potential deadlock warning from
+ del_timer_sync() call in isr
 To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
  Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -55,15 +56,15 @@ To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
  Yangtao Li <frank.li@vivo.com>, Arnd Bergmann <arnd@arndb.de>,
- Li Zetao <lizetao1@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Chancel Liu <chancel.liu@nxp.com>, Corentin Labbe <clabbe@baylibre.com>,
+ Li Zetao <lizetao1@huawei.com>, Chancel Liu <chancel.liu@nxp.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Corentin Labbe <clabbe@baylibre.com>,
  dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
  linux-sound@vger.kernel.org, linux-clk@vger.kernel.org,
  linux-i2c@vger.kernel.org, linux-mtd@lists.infradead.org
 References: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
- <20240627150046.258795-3-piotr.wojtaszczyk@timesys.com>
+ <20240627150046.258795-13-piotr.wojtaszczyk@timesys.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -109,7 +110,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240627150046.258795-3-piotr.wojtaszczyk@timesys.com>
+In-Reply-To: <20240627150046.258795-13-piotr.wojtaszczyk@timesys.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -127,13 +128,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 27/06/2024 17:00, Piotr Wojtaszczyk wrote:
-> LPC32XX SoCs use pl080 dma controller which have few request signals
-> multiplexed between peripherals. This binding describes how devices can
-> use the multiplexed request signals.
-> 
-> Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+> When del_timer_sync() is called in an interrupt context it throws a warning
+> because of potential deadlock. The timer is used only to exit from
+> wait_for_completion() after a timeout so replacing the call with
+> wait_for_completion_timeout() allows to remove the problematic timer and
+> its related functions altogether.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject typo: i2c
+
 
 Best regards,
 Krzysztof
