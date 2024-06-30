@@ -2,51 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4DF91CF33
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jun 2024 23:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A8891D113
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2024 12:23:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VnqFJx5g;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rrNyYJtj;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=Fx7TSSIK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WBQRy615fz3cTf
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2024 07:29:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WBlcY2QnWz3dBd
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jun 2024 20:23:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VnqFJx5g;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rrNyYJtj;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=Fx7TSSIK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WBQRG6gHpz30TK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2024 07:28:58 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id D148ECE10B9;
-	Sat, 29 Jun 2024 21:28:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CE9C2BBFC;
-	Sat, 29 Jun 2024 21:28:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719696533;
-	bh=HtXt70x632jQVkvZVa5+viDAiEo/vLpbpyG46HWBjMw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=VnqFJx5ghuBk4Ih3CVJjWYCN0/ZeQE4bA9dgueRtqlOBnEj9bpHIblRRQS9pvQOq9
-	 e1eHFjHr5+rNv2dGIMrkk3IAZlqwsKX7p+rD1r1vmjoqPl5r2aEZGCjwsQpiy3/x6B
-	 ysyxPdOQzeo0ZX9VEzv6T9NJsfU8dcWOxpkFNYAWzY/LBU0zuLZ2xf3++9jGcptCb1
-	 Xp8Voz7uHR8O3pq3w/ncYUPGbyyGG5MBfyicJ+oqDiGO1BzaG9nKTI9pT87K9/QPad
-	 WGmS2gB4YANsUc/hqolrWiMuZCznLg98Ov/R1hZ8gbO540njo89EbUIDosTqYlZeua
-	 vy2FDJBTYP9+A==
-Date: Sat, 29 Jun 2024 16:28:51 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH 02/13] pci/p2pdma: Don't initialise page refcount to one
-Message-ID: <20240629212851.GA1484889@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WBlbn0GyBz30Ty
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jun 2024 20:22:26 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1719742917; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=DM7U0nYhlpqhcR7998gBwwIeNC4vzlyVQxbMCYAxIgLpE18CE7BOFt7dN5u64JPmuk
+    0da9wlnU3NtkQZSzDT/8OtKBo+mXyHQ8NCWrAWg7mHHvwr76AuU5WAekWaLq2A4sRopt
+    BRHuqy8zAXGxq6SqSTCeA9eEUguNFkkwmBLwtT0n716VehnHmpoI/3utoFHmr/wepAun
+    fUvjBYP9SHUNyX+HD2MT8h57vbYsxoFnsoLNinFB97z031a6qbe6Mk55fdNMxHU2ds0i
+    X6ymRjaHETIEZVzIF/jOXRaMkWGmI4Y5eYNSb6tTjKluNo7Df7GMAq6BQX9hAqi4fGon
+    Aobg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1719742917;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:Subject:From:Date:Message-ID:Cc:Date:From:Subject:Sender;
+    bh=koImhGjb7REMlZ/XmgRbFgMfDWJDeMGzhBpOSppcQCg=;
+    b=Kyq5TvX6BUoJ+sS67S5L4oCBtwxb6qdAAlNGZDb3gNYWT0ScvEPStFU6Na+xZ5WBSc
+    RfRMlC6ALkkUZw1W2NGXe6uBhj/0Q80EJC8Fv/A5FpL3+rpUckiB2MzhlRg5FwZ07+7V
+    MocptiXQD9sngtWwVkMrFlR8ElsfIem/tyVLL3Ef97UAQ0nxaOobgAPPG+P1U9fdMGCe
+    hk3N6/BID/u+xXf6HKryCDZApEIjzFRT/jDtRlVbLLMp3oTv6Xa4ViZ4ZJqnWZ8QLexy
+    8WjV/delbr2TtGKtS0bWqKA1+NqgxM147ek1fuftuLIPpfmSFfBKuFbtAEtbK0lVzSBm
+    JatQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1719742917;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:Subject:From:Date:Message-ID:Cc:Date:From:Subject:Sender;
+    bh=koImhGjb7REMlZ/XmgRbFgMfDWJDeMGzhBpOSppcQCg=;
+    b=rrNyYJtjpkKmA0QcxDXpASOq7JUYgYpK8eqvuabSrMY/XKau9q0jf+L3f/to4GshVo
+    PWOFU9qtStMYJocl73DgMLrfJDeoYah/I47xyL83JIbZIRE0hPVr7j9hiiKiDedT7LpN
+    DV54Ozm0w+GtdsHZhVYwbZ2rfEUPn7DqvOgD4PAyRywdPnnqvXQRyt2hmzz1Xo9wMUO4
+    0pPT0nU8PpmIGwRgwUZii7y1bksB+l3Hn7RjWitQp5UBgOV9KUwYk/nTcECZAoc5udIW
+    FINdRvAm9wsQhvVi7HbhIUDhZp6zoP+Ge7mDFdFs05lg4HIfmpS4I60HEIAiLLq5Z1RG
+    NyUg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1719742917;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:Subject:From:Date:Message-ID:Cc:Date:From:Subject:Sender;
+    bh=koImhGjb7REMlZ/XmgRbFgMfDWJDeMGzhBpOSppcQCg=;
+    b=Fx7TSSIKx2lKyTwirMmbPOP29OkpoRezklgZkMUFwV5mrLnJQRHNxIxnD5Ya6KyCyY
+    aSGF+2gGrFWywueMpqCw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfi4XXBswJY17nMJxMU7SicerhpVThcASu2X0Ag=="
+Received: from [IPV6:2a02:8109:8984:5d00:8535:f3a7:32a7:65f9]
+    by smtp.strato.de (RZmta 50.5.0 AUTH)
+    with ESMTPSA id e0838905UALuCbd
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sun, 30 Jun 2024 12:21:56 +0200 (CEST)
+Message-ID: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+Date: Sun, 30 Jun 2024 12:21:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c66cc5c5142813049ffdf9af75302f5064048241.1719386613.git-series.apopple@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: [PowerPC] [PASEMI] Issue with the identification of ATA drives after
+ the of/irq updates 2024-05-29
+To: Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ apatel@ventanamicro.com, DTML <devicetree@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Matthew Leaman <matthew@a-eon.biz>, Darren Stevens
+ <darren@stevens-zone.net>, Christian Zigotzky <info@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,92 +98,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, david@fromorbit.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, bhelgaas@google.com, dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, logang@deltatee.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 27, 2024 at 10:54:17AM +1000, Alistair Popple wrote:
-> The reference counts for ZONE_DEVICE private pages should be
-> initialised by the driver when the page is actually allocated by the
-> driver allocator, not when they are first created. This is currently
-> the case for MEMORY_DEVICE_PRIVATE and MEMORY_DEVICE_COHERENT pages
-> but not MEMORY_DEVICE_PCI_P2PDMA pages so fix that up.
+Hello,
 
-If you tag the subject line with PCI, please run "git log --oneline
-drivers/pci/p2pdma.c" and make yours look like previous ones
-("PCI/P2PDMA").
+There is an issue with the identification of ATA drives with our P.A. 
+Semi Nemo boards [1] after the
+commit "of/irq: Factor out parsing of interrupt-map parent phandle+args 
+from of_irq_parse_raw()" [2].
 
-Also recast it to say something semantically useful about what it
-*does*, not what it *doesn't* do.  Maybe something about initializing
-the refcount where the page is allocated?  Especially since the only
-p2pdma.c change here is to "set_page_count(..., 1)", which looks like
-exactly the opposite of "don't initialize refcount to one".
+Error messages:
 
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> ---
->  drivers/pci/p2pdma.c | 2 ++
->  mm/memremap.c        | 8 ++++----
->  mm/mm_init.c         | 4 +++-
->  3 files changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> index 4f47a13..1e9ea32 100644
-> --- a/drivers/pci/p2pdma.c
-> +++ b/drivers/pci/p2pdma.c
-> @@ -128,6 +128,8 @@ static int p2pmem_alloc_mmap(struct file *filp, struct kobject *kobj,
->  		goto out;
->  	}
->  
-> +	set_page_count(virt_to_page(kaddr), 1);
-> +
->  	/*
->  	 * vm_insert_page() can sleep, so a reference is taken to mapping
->  	 * such that rcu_read_unlock() can be done before inserting the
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 40d4547..caccbd8 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -488,15 +488,15 @@ void free_zone_device_folio(struct folio *folio)
->  	folio->mapping = NULL;
->  	folio->page.pgmap->ops->page_free(folio_page(folio, 0));
->  
-> -	if (folio->page.pgmap->type != MEMORY_DEVICE_PRIVATE &&
-> -	    folio->page.pgmap->type != MEMORY_DEVICE_COHERENT)
-> +	if (folio->page.pgmap->type == MEMORY_DEVICE_PRIVATE ||
-> +	    folio->page.pgmap->type == MEMORY_DEVICE_COHERENT)
-> +		put_dev_pagemap(folio->page.pgmap);
-> +	else if (folio->page.pgmap->type != MEMORY_DEVICE_PCI_P2PDMA)
->  		/*
->  		 * Reset the refcount to 1 to prepare for handing out the page
->  		 * again.
->  		 */
->  		folio_set_count(folio, 1);
-> -	else
-> -		put_dev_pagemap(folio->page.pgmap);
->  }
->  
->  void zone_device_page_init(struct page *page)
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 3ec0493..b7e1599 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -6,6 +6,7 @@
->   * Author Mel Gorman <mel@csn.ul.ie>
->   *
->   */
-> +#include "linux/memremap.h"
->  #include <linux/kernel.h>
->  #include <linux/init.h>
->  #include <linux/kobject.h>
-> @@ -1014,7 +1015,8 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
->  	 * which will set the page count to 1 when allocating the page.
->  	 */
->  	if (pgmap->type == MEMORY_DEVICE_PRIVATE ||
-> -	    pgmap->type == MEMORY_DEVICE_COHERENT)
-> +	    pgmap->type == MEMORY_DEVICE_COHERENT ||
-> +	    pgmap->type == MEMORY_DEVICE_PCI_P2PDMA)
->  		set_page_count(page, 0);
->  }
->  
-> -- 
-> git-series 0.9.1
+ata2.00: failed to IDENTIFY (I/O error, err_mask=0x4)
+ata2.00: qc timeout after 10000 mssecs (cmd 0xec)
+
+Screenshots [3]
+
+I bisected yesterday [4] and "of/irq: Factor out parsing of 
+interrupt-map parent phandle+args from of_irq_parse_raw()" [2] is the 
+first bad commit.
+
+Then I created a patch for reverting this first bad commit. I also 
+reverted the changes in drivers/of/property.c. [5]
+
+The patched kernel boots with successful detection of the ATA devices.
+
+Please check the of/irq updates.
+
+Thanks,
+Christian
+
+
+[1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+[2] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v6.10-rc5&id=935df1bd40d43c4ee91838c42a20e9af751885cc
+[3]
+- https://i.ibb.co/WcH8g4K/20240626-095132.jpg
+- https://i.ibb.co/K7KnDxx/panic2.jpg
+- https://i.ibb.co/frnbJfb/panic3.jpg
+
+[4] https://forum.hyperion-entertainment.com/viewtopic.php?p=58585#p58585
+[5] 
+https://github.com/chzigotzky/kernels/blob/main/patches/X1000/of_irq_v2.patch
