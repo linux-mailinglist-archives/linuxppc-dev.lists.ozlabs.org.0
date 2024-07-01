@@ -2,35 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3C391E22E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5182491E212
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:15:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSnP2hwhz3fn2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:18:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSjm1Nfdz3fS7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:15:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=m.felsch@pengutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1249 seconds by postgrey-1.37 at boromir; Tue, 02 Jul 2024 00:14:47 AEST
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSkL1RLMz3fnY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:15:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSjM4G7cz3c5Y
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:14:47 +1000 (AEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sOHTW-0001LY-Vb; Mon, 01 Jul 2024 15:53:46 +0200
+	id 1sOHTX-0001LY-37; Mon, 01 Jul 2024 15:53:47 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Subject: [PATCH 0/9] AT24 EEPROM MTD Support
-Date: Mon, 01 Jul 2024 15:53:39 +0200
-Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+Date: Mon, 01 Jul 2024 15:53:40 +0200
+Subject: [PATCH 1/9] mtd: core: add nvmem_write support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOO0gmYC/x3MQQqEMAxG4atI1hNIpTjoVcTF9DeO2WhpVQTx7
- haX3+K9i7Im00xddVHSw7KtS4H7VIT5t/yVbSymWmovX3EcPB8NO+FtjQbecwBviDCGD2gDoI1
- 4Kn1MOtn5vvvhvh826v1ZawAAAA==
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-1-3fd5f4a193cc@pengutronix.de>
+References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
+In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
  Arnd Bergmann <arnd@arndb.de>, 
@@ -76,86 +76,54 @@ Cc: Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev, linux-aspeed@li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series adds the intial support to handle EEPROMs via the MTD layer
-as well. This allow the user-space to have separate paritions since
-EEPROMs can become quite large nowadays.
-
-With this patchset applied EEPROMs can be accessed via:
-  - legacy 'eeprom' device
-  - nvmem device
-  - mtd device(s)
-
-The patchset targets only the AT24 (I2C) EEPROMs since I have no access
-to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
-
-Note: I'm not familiar with Kconfig symbol migration so I don't know if
-the last patch is required at the moment. Please be notified that the
-list of recipients is quite large due to the defconfig changes.
-
-Regards,
-  Marco
+The MTD framework does support the NVMEM framework already but only the
+read support was implemented. This commit adds the write support if the
+MTD device supports writing (MTD_WRITEABLE is set).
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Marco Felsch (9):
-      mtd: core: add nvmem_write support
-      mtd: add mtd_is_master helper
-      mtd: add support to handle EEPROM devices
-      mtd: devices: add AT24 eeprom support
-      ARM: defconfig: convert to MTD_EEPROM_AT24
-      powerpc: convert to MTD_EEPROM_AT24
-      MIPS: configs: convert to MTD_EEPROM_AT24
-      LoongArch: convert to MTD_EEPROM_AT24
-      eeprom: at24: remove deprecated Kconfig symbol
+ drivers/mtd/mtdcore.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
- MAINTAINERS                                 |   2 +-
- arch/arm/configs/aspeed_g4_defconfig        |   2 +-
- arch/arm/configs/aspeed_g5_defconfig        |   2 +-
- arch/arm/configs/at91_dt_defconfig          |   2 +-
- arch/arm/configs/axm55xx_defconfig          |   2 +-
- arch/arm/configs/davinci_all_defconfig      |   2 +-
- arch/arm/configs/imx_v4_v5_defconfig        |   2 +-
- arch/arm/configs/imx_v6_v7_defconfig        |   2 +-
- arch/arm/configs/ixp4xx_defconfig           |   2 +-
- arch/arm/configs/keystone_defconfig         |   2 +-
- arch/arm/configs/lpc18xx_defconfig          |   2 +-
- arch/arm/configs/lpc32xx_defconfig          |   2 +-
- arch/arm/configs/multi_v5_defconfig         |   2 +-
- arch/arm/configs/multi_v7_defconfig         |   2 +-
- arch/arm/configs/mvebu_v5_defconfig         |   2 +-
- arch/arm/configs/mvebu_v7_defconfig         |   2 +-
- arch/arm/configs/mxs_defconfig              |   2 +-
- arch/arm/configs/omap2plus_defconfig        |   2 +-
- arch/arm/configs/pxa_defconfig              |   2 +-
- arch/arm/configs/s3c6400_defconfig          |   2 +-
- arch/arm/configs/sama5_defconfig            |   2 +-
- arch/arm/configs/sama7_defconfig            |   2 +-
- arch/arm/configs/shmobile_defconfig         |   2 +-
- arch/arm/configs/socfpga_defconfig          |   2 +-
- arch/arm/configs/tegra_defconfig            |   2 +-
- arch/arm/configs/wpcm450_defconfig          |   2 +-
- arch/loongarch/configs/loongson3_defconfig  |   2 +-
- arch/mips/configs/cavium_octeon_defconfig   |   2 +-
- arch/mips/configs/db1xxx_defconfig          |   2 +-
- arch/powerpc/configs/44x/warp_defconfig     |   2 +-
- arch/powerpc/configs/mpc512x_defconfig      |   2 +-
- arch/powerpc/configs/mpc5200_defconfig      |   2 +-
- arch/powerpc/configs/ppc6xx_defconfig       |   2 +-
- arch/powerpc/configs/skiroot_defconfig      |   2 +-
- drivers/misc/eeprom/Kconfig                 |  31 -------
- drivers/misc/eeprom/Makefile                |   1 -
- drivers/mtd/devices/Kconfig                 |  31 +++++++
- drivers/mtd/devices/Makefile                |   1 +
- drivers/{misc/eeprom => mtd/devices}/at24.c | 122 +++++++++++++++-------------
- drivers/mtd/mtdcore.c                       |  49 ++++++++++-
- include/linux/mtd/mtd.h                     |   5 ++
- include/uapi/mtd/mtd-abi.h                  |   2 +
- 42 files changed, 187 insertions(+), 123 deletions(-)
----
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-change-id: 20240701-b4-v6-10-topic-usbc-tcpci-c4bc9bcce604
+diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
+index 724f917f91ba..dcd97e59425e 100644
+--- a/drivers/mtd/mtdcore.c
++++ b/drivers/mtd/mtdcore.c
+@@ -544,6 +544,20 @@ static int mtd_nvmem_reg_read(void *priv, unsigned int offset,
+ 	return retlen == bytes ? 0 : -EIO;
+ }
+ 
++static int mtd_nvmem_reg_write(void *priv, unsigned int offset,
++			       void *val, size_t bytes)
++{
++	struct mtd_info *mtd = priv;
++	size_t retlen;
++	int err;
++
++	err = mtd_write(mtd, offset, bytes, &retlen, val);
++	if (err && err != -EUCLEAN)
++		return err;
++
++	return retlen == bytes ? 0 : -EIO;
++}
++
+ static int mtd_nvmem_add(struct mtd_info *mtd)
+ {
+ 	struct device_node *node = mtd_get_of_node(mtd);
+@@ -555,10 +569,11 @@ static int mtd_nvmem_add(struct mtd_info *mtd)
+ 	config.owner = THIS_MODULE;
+ 	config.add_legacy_fixed_of_cells = of_device_is_compatible(node, "nvmem-cells");
+ 	config.reg_read = mtd_nvmem_reg_read;
++	config.reg_write = mtd_nvmem_reg_write;
+ 	config.size = mtd->size;
+ 	config.word_size = 1;
+ 	config.stride = 1;
+-	config.read_only = true;
++	config.read_only = !(mtd->flags & MTD_WRITEABLE);
+ 	config.root_only = true;
+ 	config.ignore_wp = true;
+ 	config.priv = mtd;
 
-Best regards,
 -- 
-Marco Felsch <m.felsch@pengutronix.de>
+2.39.2
 
