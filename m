@@ -1,56 +1,137 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3846F91E8E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 21:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07F491E8D7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 21:48:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OBp+HX/y;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=LBlBcGYM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCc9D0NPDz3cR1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 05:50:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCc6P3bcGz3dTL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 05:48:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OBp+HX/y;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=LBlBcGYM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::600; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::600])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCc8W4wZ0z3c05
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 05:50:19 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1D36761786;
-	Mon,  1 Jul 2024 19:50:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73418C116B1;
-	Mon,  1 Jul 2024 19:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719863416;
-	bh=75FCaF+2TXrWEbGwZq1W+uvM5cpS2E+grl9/TRtiU2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OBp+HX/y45F/mtsCFcNE97O0e8xgw+wU7nCj+j+I1NESgfFGq+FJsz5yKxCSifx0F
-	 RqfbL3yiGtgLpYukwwDIO3yogsPkOvv6TkFEA6IPnZvlf0CztGGHsisqFebqOzYPra
-	 0JVU2P3irwZ7cp+YvpUwpuRJP2NYQMHR7JXx0EQzOnN7U1llEyVWlWAFS/l251LaHg
-	 bEhJrHCfvUW6ORvLDpwMtZqtmgLcyxNBQTWGxhN0o8u9Fcn6NbGpiWkKIKZKdRYImO
-	 YAJ+bU1pXQaz53ctzc/AswIytJFDgoqhs/AlmEOf+r92DoeF+e5D/Hz88IebKv1Cnx
-	 S1JHB8CJjPJfQ==
-Date: Tue, 2 Jul 2024 01:14:13 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH v3 06/11] powerpc64/ftrace: Move ftrace sequence out
- of line
-Message-ID: <u4o2qipkzzmefi6z6sp37m3ozg5zdpqvu4hxa6hb7fbwgu75k5@of7ih6towa3f>
-References: <cover.1718908016.git.naveen@kernel.org>
- <63664d3bf825ca83656f84d23393ea486afb2f46.1718908016.git.naveen@kernel.org>
- <D2E4Z4J6KJUH.1NWWV6ZAW17VI@gmail.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCc5h54Rbz3dTL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 05:47:50 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SXFeCAQcHwV/+goQF941rAm2aab2l3J3WW9VZSmlAcu1x+jI28DFlU+x1QCyBrqKO6c8Km/70lHwBJlldv2KME3z78+PeE5WiddB014Z0HhuIV6zfxWQnl9d0Z3/B+jY5nRmaFg/iFwEenUR9HJCPgjUZr609x80B4RoyYepViCm+abEbAYUNpaEkW7A4SKn92g3mZQdNjOHL4h9zdBPN+/xuCUG48QMvwlB4JL/nsE+M2TsOtzOec9vTOOeHRDmaAclp/SQF4nZ6BEy9CDLZBYTUsImU5W4PCyJc9hVfDSd9/RrDZYcI2vPGDrGB4fekxPoHei4y6V+niWIIicH3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hICCXKtcOQDqUtuANseh1x25+W6S4EmgP9u30nRj+AU=;
+ b=DZRu1jU1GO60D/cDlHlunYTBiuGuRp84ZleNHDCloWdc8nAUtzbyQtrxQqyB7AO832Z/QsD8Col1tu7/Q59bMzmxelh/W/B8Q1UqukoHH3aO3w/5C0SeaFgMuQy931m+b3OVE5LEzPLro5xzPjtV5NzQIOu+SRZmeDSwLsTES7mL8Pz9Ql01DsEASRsLP4FtelWJrFuA+YZTEPU0Z4vpai/RcV0GMB40fCuQGM/sqq62TYfC9JLe/wkNKXqSVQSRgKhTaBoQczu5IVfwDSr12OIBKA4874zQsXR0kI1yIXAct10L1G4fFJ6gjSqzlVF+i5T/Utou85D3JKO/ZRI3TA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hICCXKtcOQDqUtuANseh1x25+W6S4EmgP9u30nRj+AU=;
+ b=LBlBcGYMOcH/FlpSDeJ26gJLXFMTohv4ncBHFq8x0t7dL8Zmu6PorbTyYxuqz6tLsxc4xix8XZfNYy/5pgHXnX+RU1urqex3egsJrdup4csNxAToT/tkxt33f3Oucbod/mvC53d9KM6iCOE+o5NpDWRUKYIwi1HRfyEsEnLdIYM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU2PR04MB8773.eurprd04.prod.outlook.com (2603:10a6:10:2e0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.32; Mon, 1 Jul
+ 2024 19:47:28 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.029; Mon, 1 Jul 2024
+ 19:47:28 +0000
+Date: Mon, 1 Jul 2024 15:47:16 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Subject: Re: [Patch v5 08/12] dmaengine: Add dma router for pl08x in LPC32XX
+ SoC
+Message-ID: <ZoMHxC7cRN45s0yl@lizhi-Precision-Tower-5810>
+References: <20240627150046.258795-1-piotr.wojtaszczyk@timesys.com>
+ <20240627150046.258795-9-piotr.wojtaszczyk@timesys.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D2E4Z4J6KJUH.1NWWV6ZAW17VI@gmail.com>
+In-Reply-To: <20240627150046.258795-9-piotr.wojtaszczyk@timesys.com>
+X-ClientProxiedBy: BYAPR05CA0035.namprd05.prod.outlook.com
+ (2603:10b6:a03:c0::48) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8773:EE_
+X-MS-Office365-Filtering-Correlation-Id: e896c931-a10a-409d-32e5-08dc9a06a382
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?Mw9px1KJGKX0Pln0NxrxQWC3N2WXR+lh1tVqNDSNXGcyAoB+GvecBJBgIQD4?=
+ =?us-ascii?Q?R9K3hjw7JYU6zcnKYBKGQpGC90jmlMswm9o+GkIln12kXEavMCXwBv0ByNtD?=
+ =?us-ascii?Q?mt0qh+iy3De8OQcanh4D2oxxp1ZaiDp4TvkFNsZC1NI2v+/0JK6GZiEkJMlq?=
+ =?us-ascii?Q?aKbLMSF4T5tomQzKqxqBmp6BPrnGD1oRi1JemMASq331mAOSOz52xCW5qJe3?=
+ =?us-ascii?Q?WX9eeLGwsdgYLWA9mIt87YFxnK0c/AStIUcanTbTPykVdfgNI9/GwrGEMGcS?=
+ =?us-ascii?Q?8DuvqymJtVfMJQ+1pZ5zkHgsdW+tVOrKTSuSPweifGlmOafkcWMtuMCrOnEu?=
+ =?us-ascii?Q?7fYtweI5Q6+frQu1g74UFv5MIY5gYJvJguuMEm3Jnir9EPH62sqxFXoI8YhL?=
+ =?us-ascii?Q?xk7BxMdyhrpckzF5ex+LVI8g1w624/cTkn3MTt18dIXQ4QKA0IZoVjISQpoF?=
+ =?us-ascii?Q?8jQYX2LLbdzCcswdTnTFMGI2W96Ft05d16EXvgNY20qC4bIFHsQnNlCN8KD2?=
+ =?us-ascii?Q?rybHFzwzzb8+56E/nBhXz1f4ZqxUgfp7Qg2a2IK3BvvATbgD3lTLRg4IlDgo?=
+ =?us-ascii?Q?uriv5foBMkfEBIkn3hABtzPUUQ5zDBxRh6omI2QDsw9QLIc6NJdnvBWx6BCP?=
+ =?us-ascii?Q?hjaYmUPPAeGlo+pXO8LaxcoVbsCB3v9Fx5awQjVy9paMxlGBw2iFDOtUnADc?=
+ =?us-ascii?Q?0A1Si96180Gfm86JugFX/4DTHHBRQ594CRQWwBvoM/YjigqeZ/LxBuQGS2lT?=
+ =?us-ascii?Q?TAufSEIl87Htj5/kZn0a+Fplv3zJ/R7WsidfdR7eXxog3+E1BhoPhr+jlnfP?=
+ =?us-ascii?Q?7G2opItSX5+GuEcdxzhj9DsuVzHy+kW11PdtQAO3kqnwx/M4ZiZqBKqYvVwS?=
+ =?us-ascii?Q?11K/pA9Wg7ENv3ilkAO7muktpmTsJbzq5B9X4syscRWTmTJkEv2ddPMUgZpv?=
+ =?us-ascii?Q?scEoru/8xgG3DUW4bgsCx4yDBZOo48rQe3QGTtlRDwrUxxYk32/3+L5kBM0x?=
+ =?us-ascii?Q?OVqm0u7URo6XObErXWYM2WIECk64GT+wLpVOIzoHhyGBXkm+mSQBXa0JxSO+?=
+ =?us-ascii?Q?TMmg6FVxe9zXe2WwHUJlCIbA9bLibxIuEatDqxMf5j+Vceg3bAfepifxWDHK?=
+ =?us-ascii?Q?me6/SrpBk9Zt2DrszJWyLk+JMfKBx2aQQpX13zky3uRvkv5S1jgJAD45F2Jr?=
+ =?us-ascii?Q?zG48IMxGnl62FWjoGir3ARygvXO29hj3uk0Dbem5aHELae32/D3QBArSOvzf?=
+ =?us-ascii?Q?lyfK9awYd5H7LLEzy7WyMckedUa20oZg5ZDiB4lw+CsXSr/jqw7JEFp/NWko?=
+ =?us-ascii?Q?QzhY67qb6WVQEsm8yKk60VlluDD/puWosZJfZl+qdNgU0fDHFMJV5vXhwnuU?=
+ =?us-ascii?Q?MGw87U0=3D?=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ZRiyCfaZqIGJr+j1met8q0fHABGzpLbhEEmcjoG6cSOrbwUKg96dEb1qgB0o?=
+ =?us-ascii?Q?Wt/9LfHqiWbR2H2anvTpF+cr1H0V0UvLnNEdZCv4n7yaxN870g80EWesvZZC?=
+ =?us-ascii?Q?JoL4E7iKSUvOhw1TrGkpakg4kNsIrUSvjHwEifov4GVuGD65tIT2xT3E/NeH?=
+ =?us-ascii?Q?cVkKxC+iXoOuhnVUUtuyWaf4GUoMXkz0qNtCywDMGghqyNSabKmR9N5u935h?=
+ =?us-ascii?Q?FffvalAvqoN8JJ0GghEg5C3XAv8g7d95GfJeQRLtSNMaeudbV7dJRwQHL0ox?=
+ =?us-ascii?Q?C1W1aaYh3nor1jgxWnQd0JwU7zHG39h5UKRLxgbO07rIhkYIwvJO1Zm22BWc?=
+ =?us-ascii?Q?5fA+LHnkpajGsR3MIa7Ac2f2GuQxr3Ipg/8fdB6CCxrzrdpIrTbhuh1Yz17d?=
+ =?us-ascii?Q?vTM0ECPh2RUcGiu/N2hkMSbW7I8C33/r2b3j7N5I0O8hWs8oouAZ/yW/V5gF?=
+ =?us-ascii?Q?1Uq7zyTgr0e0dhhdmWIuj/U4c1g83dQHRLBlU7BTXVv39KojW5CEh/Agod/0?=
+ =?us-ascii?Q?pvgRVdSsaXZN2Nxreg2Q3wH/zEctnJJOksF9z3NhuS0H/jt33sRnnt//GH7F?=
+ =?us-ascii?Q?YDqHEZlncclf7v42YkuC60Vxhh67y6+c8ky3aycld29A/koTEZPa/GaYS/eW?=
+ =?us-ascii?Q?1ubMk2mjWmopqok9ewnV6PHiuzFZ9B2hqP6mQsqIseB8yDXJ3bmO+e2bqhb0?=
+ =?us-ascii?Q?yuw5j1f9OP7ty6iyRox91t1sddNBhUnWSRwXB0kcXNdjBqmrD/dNBLSZJqux?=
+ =?us-ascii?Q?QUS2qczBr3nfXyOEb1rRJPG5t01UJbeTfYdMqf7R7Jl/R5gveX3rXJvJQBE0?=
+ =?us-ascii?Q?yeE4ZrsUcvLjh+y0PE4M1WzLsMRzeUy1wKCOF+WVdcsWbXrhDTzotOLaW50n?=
+ =?us-ascii?Q?uOyCKRXucV7T6W4SXXxb1jfvrWlytiFx32GjCX8M8u6PzlV3lD0oyVVD9EXy?=
+ =?us-ascii?Q?q5x9PdGHDB5wnrgEAzoehjXcR2PlVs3wtxM74DDausfxy/GnRRoGjFJpM623?=
+ =?us-ascii?Q?BJH2+3pkSQ1nFHIfUTpKU2Krku0pZjudXTIdTP6xOwHHA3bVEF+VRKGkBIbB?=
+ =?us-ascii?Q?IQvyE0dRXV9nnfFIydCQBmsuBbYe2Z96MeGmbCApmwFiSVLZP9SKN58YVT2d?=
+ =?us-ascii?Q?xLDhnPQedQSfqQTwiI0krF8h400xIJS2VlE737tmD+zrvBFPXFm+LzgXW8rX?=
+ =?us-ascii?Q?EcZ/m5WRg53YVGzlH9wdBr+QtB7qio028sfd8Ka0OgbK9LO88FVK8rg5YWgQ?=
+ =?us-ascii?Q?OPuTY3uoYRYP1bhnkn6Lt8DjFRbM+7U6hqPY4bA1LPya81KmmMeeP7HbyQVk?=
+ =?us-ascii?Q?qYhLWZQIdhAAYhvgI+ouULe2kM7QgiqzVySrd80oI043yey0EU/C7Ay7147N?=
+ =?us-ascii?Q?NDCzAJt7CsZp+7LWouqsDMAibbnzeeBqmLsHolsO6+kpUgthgQ9XtX1S5Ul/?=
+ =?us-ascii?Q?YcuWc0TODnbt3QG2rsRqe3X6Oohg/hnezNVg03vhBWOq3NfyI3Ks/raOnhe9?=
+ =?us-ascii?Q?Zi7+9Nlg0YJTC/ZsgrFuM+smAddrkRWOvk/T6/RMfySZ3taBrs9RRVB7h6qQ?=
+ =?us-ascii?Q?1VfL8izdgSjYQA+KPNs2W6RmN9XDSyBSOoJswQ+Z?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e896c931-a10a-409d-32e5-08dc9a06a382
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2024 19:47:28.6103
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m9nNFWFnPYhoS9Qb3Ul5Z9yKd75CdzwZtMWYH559ymntNw6aq6QvDnMxLJbVYBDnQiPlQSSIa/urKFWcXkCuXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8773
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,731 +143,295 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Vignesh Raghavendra <vigneshr@ti.com>, Michael Turquette <mturquette@baylibre.com>, Li Zetao <lizetao1@huawei.com>, Liam Girdwood <lgirdwood@gmail.com>, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, linux-clk@vger.kernel.org, Rob Herring <robh@kernel.org>, Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, "J.M.B. Downing" <jonathan.downing@nautel.com>, Corentin Labbe <clabbe@baylibre.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Yangtao Li <frank.li@vivo.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, dmaengine@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 01, 2024 at 08:39:03PM GMT, Nicholas Piggin wrote:
-> On Fri Jun 21, 2024 at 4:54 AM AEST, Naveen N Rao wrote:
-> > Function profile sequence on powerpc includes two instructions at the
-> > beginning of each function:
-> > 	mflr	r0
-> > 	bl	ftrace_caller
-> >
-> > The call to ftrace_caller() gets nop'ed out during kernel boot and is
-> > patched in when ftrace is enabled.
-> >
-> > Given the sequence, we cannot return from ftrace_caller with 'blr' as we
-> > need to keep LR and r0 intact. This results in link stack imbalance when
-> 
-> (link stack is IBMese for "return address predictor", if that wasn't
-> obvious)
-> 
-> > ftrace is enabled. To address that, we would like to use a three
-> > instruction sequence:
-> > 	mflr	r0
-> > 	bl	ftrace_caller
-> > 	mtlr	r0
-> >
-> > Further more, to support DYNAMIC_FTRACE_WITH_CALL_OPS, we need to
-> > reserve two instruction slots before the function. This results in a
-> > total of five instruction slots to be reserved for ftrace use on each
-> > function that is traced.
-> >
-> > Move the function profile sequence out-of-line to minimize its impact.
-> > To do this, we reserve a single nop at function entry using
-> > -fpatchable-function-entry=1 and add a pass on vmlinux.o to determine
-> 
-> What's the need to do this on vmlinux.o rather than vmlinux? We have
-> all function syms?
+On Thu, Jun 27, 2024 at 05:00:26PM +0200, Piotr Wojtaszczyk wrote:
+> LPC32XX connects few of its peripherals to pl08x DMA thru a multiplexer,
+                                                       ^^^ through?
+I google 'thru', most said it is informal spell of 'through'.
 
-We want to be able to build and include another .o file to be linked 
-into vmlinux. That file contains symbols (pfe_stub_text, et al) used by 
-vmlinux.o
+> this driver allows to route a signal request line thru the multiplexer for
+> given peripheral.
+> 
+> Signed-off-by: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+> ---
+> Changes for v5:
+> - Fix struct declaration order
+> - Removed unused variables
+> - Break search loop if expected lpc32xx_muxes[i].signal is found
+> 
+> Changes for v4:
+> - This patch is new in v4
+> 
+>  MAINTAINERS                  |   1 +
+>  drivers/dma/Kconfig          |   9 ++
+>  drivers/dma/Makefile         |   1 +
+>  drivers/dma/lpc32xx-dmamux.c | 195 +++++++++++++++++++++++++++++++++++
+>  4 files changed, 206 insertions(+)
+>  create mode 100644 drivers/dma/lpc32xx-dmamux.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ceec359c68fc..118d48747641 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2404,6 +2404,7 @@ R:	Vladimir Zapolskiy <vz@mleia.com>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/dma/nxp,lpc3220-dmamux.yaml
+> +F:	drivers/dma/lpc32xx-dmamux.c
+>  
+>  ARM/Marvell Dove/MV78xx0/Orion SOC support
+>  M:	Andrew Lunn <andrew@lunn.ch>
+> diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+> index 002a5ec80620..aeace3d7e066 100644
+> --- a/drivers/dma/Kconfig
+> +++ b/drivers/dma/Kconfig
+> @@ -378,6 +378,15 @@ config LPC18XX_DMAMUX
+>  	  Enable support for DMA on NXP LPC18xx/43xx platforms
+>  	  with PL080 and multiplexed DMA request lines.
+>  
+> +config LPC32XX_DMAMUX
+> +	bool "NXP LPC32xx DMA MUX for PL080"
+> +	depends on ARCH_LPC32XX || COMPILE_TEST
+> +	depends on OF && AMBA_PL08X
+> +	select MFD_SYSCON
+> +	help
+> +	  Support for PL080 multiplexed DMA request lines on
+> +	  LPC32XX platrofm.
+> +
+>  config LS2X_APB_DMA
+>  	tristate "Loongson LS2X APB DMA support"
+>  	depends on LOONGARCH || COMPILE_TEST
+> diff --git a/drivers/dma/Makefile b/drivers/dma/Makefile
+> index 802ca916f05f..6f1350b62e7f 100644
+> --- a/drivers/dma/Makefile
+> +++ b/drivers/dma/Makefile
+> @@ -50,6 +50,7 @@ obj-$(CONFIG_INTEL_IOATDMA) += ioat/
+>  obj-y += idxd/
+>  obj-$(CONFIG_K3_DMA) += k3dma.o
+>  obj-$(CONFIG_LPC18XX_DMAMUX) += lpc18xx-dmamux.o
+> +obj-$(CONFIG_LPC32XX_DMAMUX) += lpc32xx-dmamux.o
+>  obj-$(CONFIG_LS2X_APB_DMA) += ls2x-apb-dma.o
+>  obj-$(CONFIG_MILBEAUT_HDMAC) += milbeaut-hdmac.o
+>  obj-$(CONFIG_MILBEAUT_XDMAC) += milbeaut-xdmac.o
+> diff --git a/drivers/dma/lpc32xx-dmamux.c b/drivers/dma/lpc32xx-dmamux.c
+> new file mode 100644
+> index 000000000000..351d7e23e615
+> --- /dev/null
+> +++ b/drivers/dma/lpc32xx-dmamux.c
+> @@ -0,0 +1,195 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +//
+> +// Copyright 2024 Timesys Corporation <piotr.wojtaszczyk@timesys.com>
+> +//
+> +// Based on TI DMA Crossbar driver by:
+> +//   Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
+> +//   Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> +
+> +#include <linux/err.h>
+> +#include <linux/init.h>
+> +#include <linux/mfd/syscon.h>
+> +#include <linux/of.h>
+> +#include <linux/of_dma.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <linux/spinlock.h>
+> +
+> +#define LPC32XX_SSP_CLK_CTRL 0x78
+> +#define LPC32XX_I2S_CLK_CTRL 0x7c
+> +
+> +struct lpc32xx_dmamux {
+> +	int signal;
+> +	char *name_sel0;
+> +	char *name_sel1;
+> +	int muxval;
+> +	int muxreg;
+> +	int bit;
+> +	bool busy;
+> +};
+> +
+> +struct lpc32xx_dmamux_data {
+> +	struct dma_router dmarouter;
+> +	struct regmap *reg;
+> +	spinlock_t lock; /* protects busy status flag */
+> +};
+> +
+> +/* From LPC32x0 User manual "3.2.1 DMA request signals" */
+> +static struct lpc32xx_dmamux lpc32xx_muxes[] = {
+> +	{
+> +		.signal = 3,
+> +		.name_sel0 = "spi2-rx-tx",
+> +		.name_sel1 = "ssp1-rx",
+> +		.muxreg = LPC32XX_SSP_CLK_CTRL,
+> +		.bit = 5,
+> +	},
+> +	{
+> +		.signal = 10,
+> +		.name_sel0 = "uart7-rx",
+> +		.name_sel1 = "i2s1-dma1",
+> +		.muxreg = LPC32XX_I2S_CLK_CTRL,
+> +		.bit = 4,
+> +	},
+> +	{
+> +		.signal = 11,
+> +		.name_sel0 = "spi1-rx-tx",
+> +		.name_sel1 = "ssp1-tx",
+> +		.muxreg = LPC32XX_SSP_CLK_CTRL,
+> +		.bit = 4,
+> +	},
+> +	{
+> +		.signal = 14,
+> +		.name_sel0 = "none",
+> +		.name_sel1 = "ssp0-rx",
+> +		.muxreg = LPC32XX_SSP_CLK_CTRL,
+> +		.bit = 3,
+> +	},
+> +	{
+> +		.signal = 15,
+> +		.name_sel0 = "none",
+> +		.name_sel1 = "ssp0-tx",
+> +		.muxreg = LPC32XX_SSP_CLK_CTRL,
+> +		.bit = 2,
+> +	},
+> +};
+> +
+> +static void lpc32xx_dmamux_release(struct device *dev, void *route_data)
+> +{
+> +	struct lpc32xx_dmamux_data *dmamux = dev_get_drvdata(dev);
+> +	struct lpc32xx_dmamux *mux = route_data;
+> +
+> +	dev_dbg(dev, "releasing dma request signal %d routed to %s\n",
+> +		mux->signal, mux->muxval ? mux->name_sel1 : mux->name_sel1);
+> +
+> +	guard(spinlock)(&dmamux->lock);
+> +
+> +	mux->busy = false;
+> +}
+> +
+> +static void *lpc32xx_dmamux_reserve(struct of_phandle_args *dma_spec,
+> +				    struct of_dma *ofdma)
+> +{
+> +	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
+> +	struct device *dev = &pdev->dev;
+> +	struct lpc32xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+> +	unsigned long flags;
+> +	struct lpc32xx_dmamux *mux = NULL;
+> +	int i;
 
-> 
-> > the total number of functions that can be traced. This is then used to
-> > generate a .S file reserving the appropriate amount of space for use as
-> > ftrace stubs, which is built and linked into vmlinux.
-> 
-> An example instruction listing for the "after" case would be nice too.
+It'd better keep reverse christmas tree order.
 
-Sure.
+> +
+> +	if (dma_spec->args_count != 3) {
+> +		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	for (i = 0; i < ARRAY_SIZE(lpc32xx_muxes); i++) {
+> +		if (lpc32xx_muxes[i].signal == dma_spec->args[0]) {
+> +			mux = &lpc32xx_muxes[i];
+> +			break;
+> +		}
+> +	}
 
-> 
-> Is this all ftrace stubs in the one place? And how do you deal with
-> kernel size exceeding the limit, if so?
+Add empty line here.
 
-Yes, all at the end. Ftrace init fails on bootup if text size exceeds 
-branch range. I should really be putting in a post-link script to detect 
-and break the build in that case.
+> +	if (!mux) {
+> +		dev_err(&pdev->dev, "invalid mux request number: %d\n",
+> +			dma_spec->args[0]);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	if (dma_spec->args[2] > 1) {
+> +		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+> +			dma_spec->args[1]);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	/* The of_node_put() will be done in the core for the node */
+> +	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+> +	if (!dma_spec->np) {
+> +		dev_err(&pdev->dev, "can't get dma master\n");
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	spin_lock_irqsave(&dmamux->lock, flags);
 
-> 
-> >
-> > On bootup, the stub space is split into separate stubs per function and
-> > populated with the proper instruction sequence. A pointer to the
-> > associated stub is maintained in dyn_arch_ftrace.
-> >
-> > For modules, space for ftrace stubs is reserved from the generic module
-> > stub space.
-> >
-> > This is restricted to and enabled by default only on 64-bit powerpc.
-> 
-> This is cool.
-> 
-> [...]
-> 
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -568,6 +568,11 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
-> >  	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mlittle-endian) if PPC64 && CPU_LITTLE_ENDIAN
-> >  	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mbig-endian) if PPC64 && CPU_BIG_ENDIAN
-> >  
-> > +config FTRACE_PFE_OUT_OF_LINE
-> > +	def_bool PPC64 && ARCH_USING_PATCHABLE_FUNCTION_ENTRY
-> > +	depends on PPC64
-> > +	select ARCH_WANTS_PRE_LINK_VMLINUX
-> 
-> This remains powerpc specific? Maybe add a PPC_ prefix to the config
-> option?
-> 
-> Bikeshed - should PFE be expanded to be consistent with the ARCH_
-> option?
+you already use guard in lpc32xx_dmamux_release().
+here is better place to use guard also.
 
-I agree. PFE isn't immediately obvious. Now that I think about it, not 
-sure it really matters that this uses -fpatchable-function-entry. I'll 
-call this PPC_FTRACE_SEQUENCE_OUT_OF_LINE. Suggestions welcome :)
+because it spin lock, better use scoped_guard() {}.
 
-> 
-> [...]
-> 
-> > diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> > index 201f9d15430a..9da1da0f87b4 100644
-> > --- a/arch/powerpc/include/asm/ftrace.h
-> > +++ b/arch/powerpc/include/asm/ftrace.h
-> > @@ -26,6 +26,9 @@ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
-> >  struct module;
-> >  struct dyn_ftrace;
-> >  struct dyn_arch_ftrace {
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	unsigned long pfe_stub;
-> > +#endif
-> >  };
-> 
-> Ah, we put something else in here. This is the offset to the
-> stub? Maybe call it pfe_stub_offset?
+> +	if (mux->busy) {
+> +		spin_unlock_irqrestore(&dmamux->lock, flags);
+> +		dev_err(dev, "dma request signal %d busy, routed to %s\n",
+> +			mux->signal, mux->muxval ? mux->name_sel1 : mux->name_sel1);
+> +		of_node_put(dma_spec->np);
+> +		return ERR_PTR(-EBUSY);
+> +	}
+> +
+> +	mux->busy = true;
+> +	mux->muxval = dma_spec->args[2] ? BIT(mux->bit) : 0;
+> +
+> +	regmap_update_bits(dmamux->reg, mux->muxreg, BIT(mux->bit), mux->muxval);
+> +	spin_unlock_irqrestore(&dmamux->lock, flags);
+> +
+> +	dma_spec->args[2] = 0;
+> +	dma_spec->args_count = 2;
 
-Ack.
+Why need update dma_spec here? Suppose it just pass down dt information. 
 
+> +
+> +	dev_dbg(dev, "dma request signal %d routed to %s\n",
+> +		mux->signal, mux->muxval ? mux->name_sel1 : mux->name_sel1);
+> +
+> +	return mux;
+> +}
+> +
+> +static int lpc32xx_dmamux_probe(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
+> +	struct lpc32xx_dmamux_data *dmamux;
+> +
+> +	dmamux = devm_kzalloc(&pdev->dev, sizeof(*dmamux), GFP_KERNEL);
+> +	if (!dmamux)
+> +		return -ENOMEM;
+> +
+> +	dmamux->reg = syscon_node_to_regmap(np->parent);
+> +	if (IS_ERR(dmamux->reg)) {
+> +		dev_err(&pdev->dev, "syscon lookup failed\n");
+> +		return PTR_ERR(dmamux->reg);
+> +	}
+> +
+> +	spin_lock_init(&dmamux->lock);
+> +	platform_set_drvdata(pdev, dmamux);
+> +	dmamux->dmarouter.dev = &pdev->dev;
+> +	dmamux->dmarouter.route_free = lpc32xx_dmamux_release;
+> +
+> +	return of_dma_router_register(np, lpc32xx_dmamux_reserve,
+> +				      &dmamux->dmarouter);
+> +}
+> +
+> +static const struct of_device_id lpc32xx_dmamux_match[] = {
+> +	{ .compatible = "nxp,lpc3220-dmamux" },
+> +	{},
+> +};
+> +
+> +static struct platform_driver lpc32xx_dmamux_driver = {
+> +	.probe	= lpc32xx_dmamux_probe,
+> +	.driver = {
+> +		.name = "lpc32xx-dmamux",
+> +		.of_match_table = lpc32xx_dmamux_match,
+> +	},
+> +};
+> +
+> +static int __init lpc32xx_dmamux_init(void)
+> +{
+> +	return platform_driver_register(&lpc32xx_dmamux_driver);
+> +}
+> +arch_initcall(lpc32xx_dmamux_init);
+> -- 
+> 2.25.1
 > 
-> [...]
-> 
-> > diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-> > index 2cff37b5fd2c..9f3c10307331 100644
-> > --- a/arch/powerpc/kernel/trace/ftrace.c
-> > +++ b/arch/powerpc/kernel/trace/ftrace.c
-> > @@ -37,7 +37,8 @@ unsigned long ftrace_call_adjust(unsigned long addr)
-> >  	if (addr >= (unsigned long)__exittext_begin && addr < (unsigned long)__exittext_end)
-> >  		return 0;
-> >  
-> > -	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
-> > +	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY) &&
-> > +	    !IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> >  		addr += MCOUNT_INSN_SIZE;
-> >  
-> >  	return addr;
-> 
-> I don't understand what this is doing acutally (before this patch
-> even). We still emit one/two patchable intsructions at entry, so
-> why do we only need to adjust by zero/one instruction here?
-
-ftrace wants the address of the instruction that calls into 
-ftrace_caller. We emit 2 nops with -fpatchable-function-entry, so we 
-"adjust" the ftrace location to be the second nop.
-
-> 
-> 
-> > @@ -82,7 +83,7 @@ static inline int ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_
-> >  {
-> >  	int ret = ftrace_validate_inst(ip, old);
-> >  
-> > -	if (!ret)
-> > +	if (!ret && !ppc_inst_equal(old, new))
-> >  		ret = patch_instruction((u32 *)ip, new);
-> >  
-> >  	return ret;
-> 
-> Is this leftover debugging stuff or should it be in a different patch?
-
-It is intentional to simplify further patching and checks. I will move 
-this to a separate patch.
-
-> 
-> > @@ -132,11 +133,23 @@ static unsigned long ftrace_lookup_module_stub(unsigned long ip, unsigned long a
-> >  }
-> >  #endif
-> >  
-> > +static unsigned long ftrace_get_pfe_stub(struct dyn_ftrace *rec)
-> > +{
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	return rec->arch.pfe_stub;
-> > +#else
-> > +	BUILD_BUG();
-> > +#endif
-> > +}
-> > +
-> >  static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_inst_t *call_inst)
-> >  {
-> >  	unsigned long ip = rec->ip;
-> >  	unsigned long stub;
-> >  
-> > +	if (IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> > +		ip = ftrace_get_pfe_stub(rec) + MCOUNT_INSN_SIZE; /* second instruction in stub */
-> 
-> Maybe put the ip = rec->ip; into an else case here.
-
-Ok.
-
-> 
-> [...]
-> 
-> > @@ -155,6 +168,79 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_
-> >  	return 0;
-> >  }
-> >  
-> > +static int ftrace_init_pfe_stub(struct module *mod, struct dyn_ftrace *rec)
-> > +{
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	static int pfe_stub_text_index, pfe_stub_inittext_index;
-> > +	int ret = 0, pfe_stub_count, *pfe_stub_index;
-> > +	ppc_inst_t inst;
-> > +	struct ftrace_pfe_stub *pfe_stub, pfe_stub_template = {
-> > +		.insn = {
-> > +			PPC_RAW_MFLR(_R0),
-> > +			PPC_RAW_NOP(),		/* bl ftrace_caller */
-> > +			PPC_RAW_MTLR(_R0),
-> > +			PPC_RAW_NOP()		/* b rec->ip + 4 */
-> > +		}
-> > +	};
-> > +
-> > +	WARN_ON(rec->arch.pfe_stub);
-> > +
-> > +	if (is_kernel_inittext(rec->ip)) {
-> > +		pfe_stub = ftrace_pfe_stub_inittext;
-> > +		pfe_stub_index = &pfe_stub_inittext_index;
-> > +		pfe_stub_count = ftrace_pfe_stub_inittext_count;
-> > +	} else if (is_kernel_text(rec->ip)) {
-> > +		pfe_stub = ftrace_pfe_stub_text;
-> > +		pfe_stub_index = &pfe_stub_text_index;
-> > +		pfe_stub_count = ftrace_pfe_stub_text_count;
-> > +#ifdef CONFIG_MODULES
-> > +	} else if (mod) {
-> > +		pfe_stub = mod->arch.pfe_stubs;
-> > +		pfe_stub_index = &mod->arch.pfe_stub_index;
-> > +		pfe_stub_count = mod->arch.pfe_stub_count;
-> > +#endif
-> > +	} else {
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	pfe_stub += (*pfe_stub_index)++;
-> > +
-> > +	if (WARN_ON(*pfe_stub_index > pfe_stub_count))
-> > +		return -EINVAL;
-> > +
-> > +	if (!is_offset_in_branch_range((long)rec->ip - (long)&pfe_stub->insn[0]) ||
-> > +	    !is_offset_in_branch_range((long)(rec->ip + MCOUNT_INSN_SIZE) - (long)&pfe_stub->insn[3])) {
-> > +		pr_err("%s: ftrace pfe stub out of range (%p -> %p).\n",
-> > +					__func__, (void *)rec->ip, (void *)&pfe_stub->insn[0]);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	rec->arch.pfe_stub = (unsigned long)&pfe_stub->insn[0];
-> > +
-> > +	/* bl ftrace_caller */
-> > +	if (mod)
-> > +		/* We can't lookup the module since it is not fully formed yet */
-> 
-> What do you mean here, what would a lookup look like if we could do it?
-
-I originally had ftrace_get_call_inst() here, which does a 
-__module_text_address() lookup. It didn't work since the module is not 
-yet fully loaded when this is called. I can expand the comment.
-
-> 
-> > +		inst = ftrace_create_branch_inst(ftrace_get_pfe_stub(rec) + MCOUNT_INSN_SIZE,
-> > +						 mod->arch.tramp, 1);
-> > +	else
-> > +		ret = ftrace_get_call_inst(rec, (unsigned long)ftrace_caller, &inst);
-> > +	pfe_stub_template.insn[1] = ppc_inst_val(inst);
-> > +
-> > +	/* b rec->ip + 4 */
-> > +	if (!ret && create_branch(&inst, &pfe_stub->insn[3], rec->ip + MCOUNT_INSN_SIZE, 0))
-> > +		return -EINVAL;
-> > +	pfe_stub_template.insn[3] = ppc_inst_val(inst);
-> > +
-> > +	if (!ret)
-> > +		ret = patch_instructions((u32 *)pfe_stub, (u32 *)&pfe_stub_template,
-> > +					 sizeof(pfe_stub_template), false);
-> > +
-> > +	return ret;
-> > +#else /* !CONFIG_FTRACE_PFE_OUT_OF_LINE */
-> > +	BUILD_BUG();
-> > +#endif
-> > +}
-> > +
-> >  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> >  int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
-> >  {
-> > @@ -167,18 +253,29 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned
-> >  int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
-> >  {
-> >  	ppc_inst_t old, new;
-> > -	int ret;
-> > +	unsigned long ip = rec->ip;
-> > +	int ret = 0;
-> >  
-> >  	/* This can only ever be called during module load */
-> > -	if (WARN_ON(!IS_ENABLED(CONFIG_MODULES) || core_kernel_text(rec->ip)))
-> > +	if (WARN_ON(!IS_ENABLED(CONFIG_MODULES) || core_kernel_text(ip)))
-> >  		return -EINVAL;
-> >  
-> >  	old = ppc_inst(PPC_RAW_NOP());
-> > -	ret = ftrace_get_call_inst(rec, addr, &new);
-> > -	if (ret)
-> > -		return ret;
-> > +	if (IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE)) {
-> > +		ip = ftrace_get_pfe_stub(rec) + MCOUNT_INSN_SIZE; /* second instruction in stub */
-> > +		ret = ftrace_get_call_inst(rec, (unsigned long)ftrace_caller, &old);
-> > +	}
-> >  
-> > -	return ftrace_modify_code(rec->ip, old, new);
-> > +	ret |= ftrace_get_call_inst(rec, addr, &new);
-> > +
-> > +	if (!ret)
-> > +		ret = ftrace_modify_code(ip, old, new);
-> > +
-> > +	if (!ret && IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> > +		ret = ftrace_modify_code(rec->ip, ppc_inst(PPC_RAW_NOP()),
-> > +			 ppc_inst(PPC_RAW_BRANCH((long)ftrace_get_pfe_stub(rec) - (long)rec->ip)));
-> > +
-> > +	return ret;
-> >  }
-> >  
-> >  int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long addr)
-> > @@ -211,6 +308,13 @@ void ftrace_replace_code(int enable)
-> >  		new_addr = ftrace_get_addr_new(rec);
-> >  		update = ftrace_update_record(rec, enable);
-> >  
-> > +		if (IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE) && update != FTRACE_UPDATE_IGNORE) {
-> > +			ip = ftrace_get_pfe_stub(rec) + MCOUNT_INSN_SIZE;
-> > +			ret = ftrace_get_call_inst(rec, (unsigned long)ftrace_caller, &nop_inst);
-> > +			if (ret)
-> > +				goto out;
-> > +		}
-> > +
-> >  		switch (update) {
-> >  		case FTRACE_UPDATE_IGNORE:
-> >  		default:
-> > @@ -235,6 +339,24 @@ void ftrace_replace_code(int enable)
-> >  
-> >  		if (!ret)
-> >  			ret = ftrace_modify_code(ip, old, new);
-> > +
-> > +		if (!ret && IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE) &&
-> > +		    (update == FTRACE_UPDATE_MAKE_NOP || update == FTRACE_UPDATE_MAKE_CALL)) {
-> > +			/* Update the actual ftrace location */
-> > +			call_inst = ppc_inst(PPC_RAW_BRANCH((long)ftrace_get_pfe_stub(rec) -
-> > +							    (long)rec->ip));
-> > +			nop_inst = ppc_inst(PPC_RAW_NOP());
-> > +			ip = rec->ip;
-> > +
-> > +			if (update == FTRACE_UPDATE_MAKE_NOP)
-> > +				ret = ftrace_modify_code(ip, call_inst, nop_inst);
-> > +			else
-> > +				ret = ftrace_modify_code(ip, nop_inst, call_inst);
-> > +
-> > +			if (ret)
-> > +				goto out;
-> > +		}
-> > +
-> >  		if (ret)
-> >  			goto out;
-> >  	}
-> > @@ -254,7 +376,8 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
-> >  	/* Verify instructions surrounding the ftrace location */
-> >  	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY)) {
-> >  		/* Expect nops */
-> > -		ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_NOP()));
-> > +		if (!IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> > +			ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_NOP()));
-> >  		if (!ret)
-> >  			ret = ftrace_validate_inst(ip, ppc_inst(PPC_RAW_NOP()));
-> >  	} else if (IS_ENABLED(CONFIG_PPC32)) {
-> > @@ -278,6 +401,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > +	/* Set up out-of-line stub */
-> > +	if (IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> > +		return ftrace_init_pfe_stub(mod, rec);
-> > +
-> >  	/* Nop-out the ftrace location */
-> >  	new = ppc_inst(PPC_RAW_NOP());
-> >  	addr = MCOUNT_ADDR;
-> > diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-> > index 244a1c7bb1e8..b1cbef24f18f 100644
-> > --- a/arch/powerpc/kernel/trace/ftrace_entry.S
-> > +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-> > @@ -78,10 +78,6 @@
-> >  
-> >  	/* Get the _mcount() call site out of LR */
-> >  	mflr	r7
-> > -	/* Save it as pt_regs->nip */
-> > -	PPC_STL	r7, _NIP(r1)
-> > -	/* Also save it in B's stackframe header for proper unwind */
-> > -	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
-> >  	/* Save the read LR in pt_regs->link */
-> >  	PPC_STL	r0, _LINK(r1)
-> >  
-> > @@ -96,16 +92,6 @@
-> >  	lwz	r5,function_trace_op@l(r3)
-> >  #endif
-> >  
-> > -#ifdef CONFIG_LIVEPATCH_64
-> > -	mr	r14, r7		/* remember old NIP */
-> > -#endif
-> > -
-> > -	/* Calculate ip from nip-4 into r3 for call below */
-> > -	subi    r3, r7, MCOUNT_INSN_SIZE
-> > -
-> > -	/* Put the original return address in r4 as parent_ip */
-> > -	mr	r4, r0
-> > -
-> >  	/* Save special regs */
-> >  	PPC_STL	r8, _MSR(r1)
-> >  	.if \allregs == 1
-> > @@ -114,17 +100,64 @@
-> >  	PPC_STL	r11, _CCR(r1)
-> >  	.endif
-> >  
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	/* Save our real return address locally for return */
-> > +	PPC_STL	r7, STACK_INT_FRAME_MARKER(r1)
-> 
-> Hmm, should you be using STACK_INT_FRAME_MARKER in a
-> non-INT_FRAME? I actually wanted to turn the int marker
-> into a 4 byte word and move it into a reserved space in
-> the frame too. Could it go in pt_regs somewhere?
-
-I can use a nvr.
-
-> 
-> > +	/*
-> > +	 * We want the ftrace location in the function, but our lr (in r7)
-> > +	 * points at the 'mtlr r0' instruction in the out of line stub.  To
-> > +	 * recover the ftrace location, we read the branch instruction in the
-> > +	 * stub, and adjust our lr by the branch offset.
-> > +	 */
-> > +	lwz	r8, MCOUNT_INSN_SIZE(r7)
-> > +	slwi	r8, r8, 6
-> > +	srawi	r8, r8, 6
-> > +	add	r3, r7, r8
-> 
-> Clever. Maybe a comment in ftrace_init_pfe_stub() that says to
-> keep that last instruction in synch with this?
-
-Sure.
-
-> 
-> > +	/*
-> > +	 * Override our nip to point past the branch in the original function.
-> > +	 * This allows reliable stack trace and the ftrace stack tracer to work as-is.
-> > +	 */
-> > +	add	r7, r3, MCOUNT_INSN_SIZE
-> > +#else
-> > +	/* Calculate ip from nip-4 into r3 for call below */
-> > +	subi    r3, r7, MCOUNT_INSN_SIZE
-> > +#endif
-> > +
-> > +	/* Save NIP as pt_regs->nip */
-> > +	PPC_STL	r7, _NIP(r1)
-> > +	/* Also save it in B's stackframe header for proper unwind */
-> > +	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
-> > +#ifdef CONFIG_LIVEPATCH_64
-> > +	mr	r14, r7		/* remember old NIP */
-> > +#endif
-> > +
-> > +	/* Put the original return address in r4 as parent_ip */
-> > +	mr	r4, r0
-> > +
-> >  	/* Load &pt_regs in r6 for call below */
-> >  	addi    r6, r1, STACK_INT_FRAME_REGS
-> >  .endm
-> >  
-> >  .macro	ftrace_regs_exit allregs
-> > +#ifndef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> >  	/* Load ctr with the possibly modified NIP */
-> >  	PPC_LL	r3, _NIP(r1)
-> >  	mtctr	r3
-> >  
-> >  #ifdef CONFIG_LIVEPATCH_64
-> >  	cmpd	r14, r3		/* has NIP been altered? */
-> > +#endif
-> > +#else /* !CONFIG_FTRACE_PFE_OUT_OF_LINE */
-> > +#ifdef CONFIG_LIVEPATCH_64
-> > +	/* Load ctr with the possibly modified NIP */
-> 
-> Comment doesn't apply to this leg of the ifdef AFAIKS.
-> We load the original NIP into LR, and set CR0 for
-> livepatch branch.
-
-Indeed. Will update.
-
-> 
-> > +	PPC_LL	r3, _NIP(r1)
-> > +
-> > +	cmpd	r14, r3		/* has NIP been altered? */
-> > +	bne-	1f
-> > +#endif
-> > +
-> > +	PPC_LL	r3, STACK_INT_FRAME_MARKER(r1)
-> > +1:	mtlr	r3
-> >  #endif
-> >  
-> >  	/* Restore gprs */
-> > @@ -139,7 +172,9 @@
-> >  
-> >  	/* Restore possibly modified LR */
-> >  	PPC_LL	r0, _LINK(r1)
-> > +#ifndef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> >  	mtlr	r0
-> > +#endif
-> >  
-> >  #ifdef CONFIG_PPC64
-> >  	/* Restore callee's TOC */
-> > @@ -153,7 +188,12 @@
-> >          /* Based on the cmpd above, if the NIP was altered handle livepatch */
-> >  	bne-	livepatch_handler
-> >  #endif
-> > -	bctr			/* jump after _mcount site */
-> > +	/* jump after _mcount site */
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	blr
-> > +#else
-> > +	bctr
-> > +#endif
-> 
-> Here is the crux of it all, we return here with a blr that matches
-> the return address of the bl which it was called with, so the CPU
-> can predict it.
-> 
-> I think it would be worth a comment here to explain why you go to
-> so much effort to add the case that uses LR here. Because the out
-> of line stub itself could pretty well have the same calling convention
-> as the original mcount.
-
-Sure. FWIW, null_syscall showed an improvement of ~22% with ftrace 
-enabled with this patch going down from ~520 cycles to ~400 cycles.
-
-> 
-> Actually that's a thought too. Could you split this patch in two?
-> First just the patch to add the out of line call but use the same
-> calling convention as mprofile-kernel. Second which changes it to
-> use the balanced call/return. Would that be a lot of extra work?
-
-I'll check. My primary motive was to ensure there would only ever be two 
-options:
-- the existing -mprofile-kernel sequence, primarily for ppc32
-- the new ool sequence with a third instruction to balance the link 
-  stack.
-
-Though I agree splitting this makes the code easier to follow.
-
-> 
-> >  .endm
-> >  
-> >  _GLOBAL(ftrace_regs_caller)
-> > @@ -177,6 +217,11 @@ _GLOBAL(ftrace_stub)
-> >  
-> >  #ifdef CONFIG_PPC64
-> >  ftrace_no_trace:
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	REST_GPR(3, r1)
-> > +	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
-> > +	blr
-> > +#else
-> >  	mflr	r3
-> >  	mtctr	r3
-> >  	REST_GPR(3, r1)
-> > @@ -184,6 +229,7 @@ ftrace_no_trace:
-> >  	mtlr	r0
-> >  	bctr
-> >  #endif
-> > +#endif
-> >  
-> >  #ifdef CONFIG_LIVEPATCH_64
-> >  	/*
-> > @@ -196,9 +242,9 @@ ftrace_no_trace:
-> >  	 *
-> >  	 * On entry:
-> >  	 *  - we have no stack frame and can not allocate one
-> > -	 *  - LR points back to the original caller (in A)
-> > -	 *  - CTR holds the new NIP in C
-> > -	 *  - r0, r11 & r12 are free
-> > +	 *  - LR/r0 points back to the original caller (in A)
-> > +	 *  - CTR/LR holds the new NIP in C
-> > +	 *  - r11 & r12 are free
-> 
-> Could you explain the added case here, e.g.,
-> 
-> On entry, depending on CONFIG_FTRACE_PFE_OUT_OF_LINE (=n/=y)
-
-Sure.
-
-> 
-> >  	 */
-> >  livepatch_handler:
-> >  	ld	r12, PACA_THREAD_INFO(r13)
-> > @@ -208,18 +254,23 @@ livepatch_handler:
-> >  	addi	r11, r11, 24
-> >  	std	r11, TI_livepatch_sp(r12)
-> >  
-> > -	/* Save toc & real LR on livepatch stack */
-> > -	std	r2,  -24(r11)
-> > -	mflr	r12
-> > -	std	r12, -16(r11)
-> > -
-> >  	/* Store stack end marker */
-> >  	lis     r12, STACK_END_MAGIC@h
-> >  	ori     r12, r12, STACK_END_MAGIC@l
-> >  	std	r12, -8(r11)
-> >  
-> > -	/* Put ctr in r12 for global entry and branch there */
-> > +	/* Save toc & real LR on livepatch stack */
-> > +	std	r2,  -24(r11)
-> > +#ifndef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	mflr	r12
-> > +	std	r12, -16(r11)
-> >  	mfctr	r12
-> > +#else
-> > +	std	r0, -16(r11)
-> > +	mflr	r12
-> > +	/* Put ctr in r12 for global entry and branch there */
-> > +	mtctr	r12
-> > +#endif
-> >  	bctrl
-> >  
-> >  	/*
-> > diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> > index f420df7888a7..0aef9959f2cd 100644
-> > --- a/arch/powerpc/kernel/vmlinux.lds.S
-> > +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> > @@ -267,14 +267,13 @@ SECTIONS
-> >  	.init.text : AT(ADDR(.init.text) - LOAD_OFFSET) {
-> >  		_sinittext = .;
-> >  		INIT_TEXT
-> > -
-> > +		*(.tramp.ftrace.init);
-> >  		/*
-> >  		 *.init.text might be RO so we must ensure this section ends on
-> >  		 * a page boundary.
-> >  		 */
-> >  		. = ALIGN(PAGE_SIZE);
-> >  		_einittext = .;
-> > -		*(.tramp.ftrace.init);
-> >  	} :text
-> >  
-> >  	/* .exit.text is discarded at runtime, not link time,
-> 
-> Why this change?
-
-I should have explained in the commit log. Will add.
-Without this change, core_kernel_text() test was failing in 
-ftrace_init_pfe_stub() I think.
-
-> 
-> > diff --git a/arch/powerpc/tools/Makefile b/arch/powerpc/tools/Makefile
-> > new file mode 100644
-> > index 000000000000..9e2ba9a85baa
-> > --- /dev/null
-> > +++ b/arch/powerpc/tools/Makefile
-> > @@ -0,0 +1,10 @@
-> > +# SPDX-License-Identifier: GPL-2.0-or-later
-> > +
-> > +quiet_cmd_gen_ftrace_pfe_stubs = FTRACE  $@
-> > +      cmd_gen_ftrace_pfe_stubs = $< $(objtree)/vmlinux.o $@
-> > +
-> > +targets += .arch.vmlinux.o
-> > +.arch.vmlinux.o: $(srctree)/arch/powerpc/tools/gen-ftrace-pfe-stubs.sh $(objtree)/vmlinux.o FORCE
-> > +	$(call if_changed,gen_ftrace_pfe_stubs)
-> > +
-> > +clean-files += $(objtree)/.arch.vmlinux.S $(objtree)/.arch.vmlinux.o
-> > diff --git a/arch/powerpc/tools/gen-ftrace-pfe-stubs.sh b/arch/powerpc/tools/gen-ftrace-pfe-stubs.sh
-> > new file mode 100755
-> > index 000000000000..ec95e99aff14
-> > --- /dev/null
-> > +++ b/arch/powerpc/tools/gen-ftrace-pfe-stubs.sh
-> > @@ -0,0 +1,48 @@
-> > +#!/bin/sh
-> > +# SPDX-License-Identifier: GPL-2.0-or-later
-> > +
-> > +# Error out on error
-> > +set -e
-> > +
-> > +is_enabled() {
-> > +	grep -q "^$1=y" include/config/auto.conf
-> > +}
-> > +
-> > +vmlinux_o=${1}
-> > +arch_vmlinux_o=${2}
-> > +arch_vmlinux_S=$(dirname ${arch_vmlinux_o})/$(basename ${arch_vmlinux_o} .o).S
-> > +
-> > +RELOCATION=R_PPC64_ADDR64
-> > +if is_enabled CONFIG_PPC32; then
-> > +	RELOCATION=R_PPC_ADDR32
-> > +fi
-> 
-> Started PPC32 support?
-
-Yes, except perhaps the module code. The intent was to enable as much of 
-it as I could so that Christophe could try and see if this would be 
-useful on 32-bit. The config option is intentionally neutral.
-
-> 
-> > +
-> > +num_pfe_stubs_text=$(${CROSS_COMPILE}objdump -r -j __patchable_function_entries ${vmlinux_o} |
-> > +		     grep -v ".init.text" | grep "${RELOCATION}" | wc -l)
-> > +num_pfe_stubs_inittext=$(${CROSS_COMPILE}objdump -r -j __patchable_function_entries ${vmlinux_o} |
-> > +			 grep ".init.text" | grep "${RELOCATION}" | wc -l)
-> > +
-> > +cat > ${arch_vmlinux_S} <<EOF
-> > +#include <asm/asm-offsets.h>
-> > +#include <linux/linkage.h>
-> > +
-> > +.pushsection .tramp.ftrace.text,"aw"
-> > +SYM_DATA(ftrace_pfe_stub_text_count, .long ${num_pfe_stubs_text})
-> > +
-> > +SYM_CODE_START(ftrace_pfe_stub_text)
-> > +	.space ${num_pfe_stubs_text} * FTRACE_PFE_STUB_SIZE
-> > +SYM_CODE_END(ftrace_pfe_stub_text)
-> > +.popsection
-> > +
-> > +.pushsection .tramp.ftrace.init,"aw"
-> > +SYM_DATA(ftrace_pfe_stub_inittext_count, .long ${num_pfe_stubs_inittext})
-> > +
-> > +SYM_CODE_START(ftrace_pfe_stub_inittext)
-> > +	.space ${num_pfe_stubs_inittext} * FTRACE_PFE_STUB_SIZE
-> > +SYM_CODE_END(ftrace_pfe_stub_inittext)
-> > +.popsection
-> > +EOF
-> > +
-> > +${CC} ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS} \
-> > +      ${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL} \
-> > +      -c -o ${arch_vmlinux_o} ${arch_vmlinux_S}
-> 
-> Looking pretty good. I don't know the livepatch stuff well though.
-
-Thanks for the detailed review!
-
-- Naveen
