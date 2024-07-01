@@ -1,78 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D7791DD6C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 13:04:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4DC91DDF8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 13:32:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CVXT7TzI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ANN/2Ckk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCNV62BYPz3dLH
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 21:04:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCP6B62J3z3dGt
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 21:32:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CVXT7TzI;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ANN/2Ckk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::29; helo=mail-oa1-x29.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 13455 seconds by postgrey-1.37 at boromir; Mon, 01 Jul 2024 21:31:58 AEST
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCNTQ319Hz3bsj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 21:04:09 +1000 (AEST)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-25d5333989dso1579242fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2024 04:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719831842; x=1720436642; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YXzeEVHZAYNwP9LyDiGI74pJ3kMgBavuirX+asSxPgg=;
-        b=CVXT7TzIp5vWV9tOKjxjBTFu80WjIdRjSAF6Qfn/TxUq2mrp5uBviZrt3m+tAbda0G
-         mSeo6fjSb6WYA8ypF8lR6A7uDjjkY1P54ZJoWP8Xk5sEI6KoY/2+bdJzkxhVbp5S5qaO
-         YTh6lLg1GZVAAw0ISJpLX5j6TA4mS0D+q5UWIo8g25HT9eI014geul4z0qLL1GBnySHR
-         TYsbYE32mvn5hF+606z8UQGbpGqQcFvthmNSDNwC5OEbNVAhChIkdUsFStQgUjfr4EYW
-         QXuNnuuG7QKQBOKZlEbveCca5tV798hsLgn0/7EoNHgN39sKfEUq8TChqGv9CFwd6gzJ
-         Brww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719831842; x=1720436642;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YXzeEVHZAYNwP9LyDiGI74pJ3kMgBavuirX+asSxPgg=;
-        b=v9Uzo6VUOsrZS/O0C2Wnrp4TbFm3w6OReSBvnpf67JjS0LWuZ+hRk7jNONLezfvgVg
-         6ohvUqmBW/8MP2on+7hyvBFq0P6s5QD5Wz2h0eDwcUrGaJLOpHhHNfXHY3xlaBpq7M8M
-         seLkBA818Wig7AEWbW2QCTvapLPmLUvskcczlhdjG3bTKVoqhckJuVUl/dUndMIZsLiz
-         AD//gNw/IF9SUWT2W0MEJVF5DNIhmPGcKgr//FrKyT8f1cL9qt18Ty5kBtlCGan+E06R
-         jRgftS73FL5h+CV571JAUCMGs0hKez/38cOWZa+Ssb9CBrJkskFe1a3fbd1x+HF0//SE
-         1Acg==
-X-Forwarded-Encrypted: i=1; AJvYcCXU2qvrLep1o4KoibjN9th7JfD9lQyqnRMuRt9SffTw+nlvz77zNrzElR42AGuQ9b4fhiwbt6mvO+iGhvlE3MQW2IA+/PM5gU+uPIl+5Q==
-X-Gm-Message-State: AOJu0YwUNPXGi9qaIjtAujisqHyMjdA5Eg4SP9E4OhWVn4rIGn/QWrtZ
-	+yiIT2Tq/k0XLOi10TMMiP/TlGebtGhp/qRyIM8T4jgys1U3pS/l
-X-Google-Smtp-Source: AGHT+IGMlV0x2miXA7z/rApts7dhyaI7OUHVJdLxouoZVTa6LuzzBUiiewgzDm8W7JY1cJ2YJcu8rA==
-X-Received: by 2002:a05:6870:d889:b0:25d:5a7c:c8ec with SMTP id 586e51a60fabf-25db33f8b67mr5830768fac.13.1719831841923;
-        Mon, 01 Jul 2024 04:04:01 -0700 (PDT)
-Received: from localhost (118-211-5-80.tpgi.com.au. [118.211.5.80])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-708044ae395sm6396945b3a.144.2024.07.01.04.03.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jul 2024 04:04:01 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCP5V2KTKz30Tr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 21:31:56 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 4AADC240004;
+	Mon,  1 Jul 2024 11:31:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1719833510;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TqveFrD/1PHIy0E8P+KaxTJIcmaej9qy4xJZ6jJ5cN0=;
+	b=ANN/2CkkQrqrO4xZK9u8ClRYRFb5eKoKlcj7yRDCdnZ/9TiyxlLkJjTAve49Nx3kQf8MlB
+	/62guWb9ZBsXWoJY5WY6cvBiMU/RMfTxashgUO/JCcF6lKlMXUKqHNLnIPLCz/zvoi9NiW
+	Wx8tSqaZruOasBKpnyaIlbzxju3oXeHITfVLQtYvuHbYv2A4PqJ9UEj2mJfsNBahZfkzTK
+	I2qMiWLpTIz38BkgEm/l1sA5aLZonUm4pkA0sf73hW6ZCyt5wYZZ3moV+wC0dCxB1WlzF3
+	DkDaRYEBbd7h6mjSQOw6HY5ZL9nbJC5Q1a8vjoirhzMFJVi8gCKB9GwOZDc8uA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 00/10] Add support for non-interleaved mode in qmc_audio
+Date: Mon,  1 Jul 2024 13:30:27 +0200
+Message-ID: <20240701113038.55144-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.45.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Jul 2024 21:03:52 +1000
-Message-Id: <D2E5I4W6C23X.3A42AJCY8ODUJ@gmail.com>
-Subject: Re: [RFC PATCH v3 11/11] powerpc64/bpf: Add support for bpf
- trampolines
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Naveen N Rao" <naveen@kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-trace-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <cover.1718908016.git.naveen@kernel.org>
- <a88b5b57d7e9b6db96323a6d6b236d567ebd6443.1718908016.git.naveen@kernel.org>
-In-Reply-To: <a88b5b57d7e9b6db96323a6d6b236d567ebd6443.1718908016.git.naveen@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,119 +70,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Alexei
- Starovoitov <ast@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Jun 21, 2024 at 5:09 AM AEST, Naveen N Rao wrote:
-> Add support for bpf_arch_text_poke() and arch_prepare_bpf_trampoline()
-> for 64-bit powerpc.
+The qmc_audio driver supports only audio in interleaved mode.
+Non-interleaved mode can be easily supported using several QMC channel
+per DAI. In that case, data related to ch0 are sent to (received from)
+the first QMC channel, data related to ch1 use the next QMC channel and
+so on up to the last channel.
 
-What do BPF trampolines give you?
+In terms of constraints and settings, the interleaved and
+non-interleaved modes are slightly different.
 
-> BPF prog JIT is extended to mimic 64-bit powerpc approach for ftrace
-> having a single nop at function entry, followed by the function
-> profiling sequence out-of-line and a separate long branch stub for calls
-> to trampolines that are out of range. A dummy_tramp is provided to
-> simplify synchronization similar to arm64.
+In interleaved mode:
+  - The sample size should fit in the number of time-slots available for
+    the QMC channel.
+  - The number of audio channels should fit in the number of time-slots
+    (taking into account the sample size) available for the QMC channel.
 
-Synrhonization - between BPF and ftrace interfaces?
+In non-interleaved mode:
+  - The number of audio channels is the number of available QMC
+    channels.
+  - Each QMC channel should have the same number of time-slots.
+  - The sample size equals the number of time-slots of one QMC channel.
 
-> BPF Trampolines adhere to the existing ftrace ABI utilizing a
-> two-instruction profiling sequence, as well as the newer ABI utilizing a
-> three-instruction profiling sequence enabling return with a 'blr'. The
-> trampoline code itself closely follows x86 implementation.
->
-> While the code is generic, BPF trampolines are only enabled on 64-bit
-> powerpc. 32-bit powerpc will need testing and some updates.
->
-> Signed-off-by: Naveen N Rao <naveen@kernel.org>
+This series add support for the non-interleaved mode in the qmc_audio
+driver and is composed of the following parts:
+  - Patches 1 and 2: Fix some issues in the qmc_audio
+  - Patches 3 to 6: Prepare qmc_audio for the non-interleaved mode
+  - Patches 7 and 8: Extend the QMC driver API
+  - Patches 9 and 10: The support for non-interleaved mode itself
 
-Just a quick glance for now, and I don't know BPF code much.
+Compared to the previous iteration, this v2 series mainly improves
+qmc_audio_access_is_interleaved().
 
-> ---
->  arch/powerpc/include/asm/ppc-opcode.h |  14 +
->  arch/powerpc/net/bpf_jit.h            |  11 +
->  arch/powerpc/net/bpf_jit_comp.c       | 702 +++++++++++++++++++++++++-
->  arch/powerpc/net/bpf_jit_comp32.c     |   7 +-
->  arch/powerpc/net/bpf_jit_comp64.c     |   7 +-
->  5 files changed, 738 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include=
-/asm/ppc-opcode.h
-> index 076ae60b4a55..9eaa2c5d9b73 100644
-> --- a/arch/powerpc/include/asm/ppc-opcode.h
-> +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> @@ -585,12 +585,26 @@
->  #define PPC_RAW_MTSPR(spr, d)		(0x7c0003a6 | ___PPC_RS(d) | __PPC_SPR(sp=
-r))
->  #define PPC_RAW_EIEIO()			(0x7c0006ac)
-> =20
-> +/* bcl 20,31,$+4 */
-> +#define PPC_RAW_BCL()			(0x429f0005)
+Best regards,
+Hervé
 
-This is the special bcl form that gives the current address.
-Maybe call it PPC_RAW_BCL4()
+Link to v1: https://lore.kernel.org/lkml/20240620084300.397853-1-herve.codina@bootlin.com/
+Changes v1 -> v2
+  - Patches 1 to 8
+    No changes
 
-> =20
-> +void dummy_tramp(void);
-> +
-> +asm (
-> +"	.pushsection .text, \"ax\", @progbits	;"
-> +"	.global dummy_tramp			;"
-> +"	.type dummy_tramp, @function		;"
-> +"dummy_tramp:					;"
-> +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> +"	blr					;"
-> +#else
-> +"	mflr	11				;"
+  - Patch 9
+    Add 'Reviewed-by: Rob Herring (Arm) <robh@kernel.org>'
 
-Can you just drop this instruction? The caller will always
-have it in r11?
+  - Patch 10
+    Remove unneeded ';'
+    Modify qmc_audio_access_is_interleaved()
 
-> +"	mtctr	11				;"
-> +"	mtlr	0				;"
-> +"	bctr					;"
-> +#endif
-> +"	.size dummy_tramp, .-dummy_tramp	;"
-> +"	.popsection				;"
-> +);
-> +
-> +void bpf_jit_build_fentry_stubs(u32 *image, struct codegen_context *ctx)
-> +{
-> +	int ool_stub_idx, long_branch_stub_idx;
-> +
-> +	/*
-> +	 * Out-of-line stub:
-> +	 *	mflr	r0
-> +	 *	[b|bl]	tramp
-> +	 *	mtlr	r0 // only with CONFIG_FTRACE_PFE_OUT_OF_LINE
-> +	 *	b	bpf_func + 4
-> +	 */
-> +	ool_stub_idx =3D ctx->idx;
-> +	EMIT(PPC_RAW_MFLR(_R0));
-> +	EMIT(PPC_RAW_NOP());
-> +	if (IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> +		EMIT(PPC_RAW_MTLR(_R0));
-> +	WARN_ON_ONCE(!is_offset_in_branch_range(4 - (long)ctx->idx * 4)); /* TO=
-DO */
-> +	EMIT(PPC_RAW_BRANCH(4 - (long)ctx->idx * 4));
-> +
-> +	/*
-> +	 * Long branch stub:
-> +	 *	.long	<dummy_tramp_addr>
-> +	 *	mflr	r11
-> +	 *	bcl	20,31,$+4
-> +	 *	mflr	r12
-> +	 *	ld	r12, -8-SZL(r12)
-> +	 *	mtctr	r12
-> +	 *	mtlr	r11 // needed to retain ftrace ABI
-> +	 *	bctr
-> +	 */
+Herve Codina (10):
+  ASoC: fsl: fsl_qmc_audio: Check devm_kasprintf() returned value
+  ASoC: fsl: fsl_qmc_audio: Fix issues detected by checkpatch
+  ASoC: fsl: fsl_qmc_audio: Split channel buffer and PCM pointer
+    handling
+  ASoC: fsl: fsl_qmc_audio: Identify the QMC channel involved in
+    completion routines
+  ASoC: fsl: fsl_qmc_audio: Introduce
+    qmc_audio_pcm_{read,write}_submit()
+  ASoC: fsl: fsl_qmc_audio: Introduce qmc_dai_constraints_interleaved()
+  soc: fsl: cpm1: qmc: Introduce functions to get a channel from a
+    phandle list
+  soc: fsl: cpm1: qmc: Introduce qmc_chan_count_phandles()
+  dt-bindings: sound: fsl,qmc-audio: Add support for multiple QMC
+    channels per DAI
+  ASoC: fsl: fsl_qmc_audio: Add support for non-interleaved mode.
 
-You could avoid clobbering LR on >=3D POWER9 with addpcis instruction. Or
-use a pcrel load with pcrel even. I guess that's something to do later.
+ .../bindings/sound/fsl,qmc-audio.yaml         |  41 +-
+ drivers/soc/fsl/qe/qmc.c                      |  32 +-
+ include/soc/fsl/qe/qmc.h                      |  27 +-
+ sound/soc/fsl/fsl_qmc_audio.c                 | 591 +++++++++++++-----
+ 4 files changed, 506 insertions(+), 185 deletions(-)
 
-Thanks,
-Nick
+-- 
+2.45.0
+
