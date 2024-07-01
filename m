@@ -2,65 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A6A91E540
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 18:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9152C91E6F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 19:53:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MNfaOgTI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=x4FleGd4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCWbg5TPHz3dGt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 02:25:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCYYL2pXJz3c8Q
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 03:53:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MNfaOgTI;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=x4FleGd4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=dmatlack@google.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCWb013vwz3d8t
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 02:24:28 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 25E19612BB;
-	Mon,  1 Jul 2024 16:24:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F67C116B1;
-	Mon,  1 Jul 2024 16:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719851065;
-	bh=oBVFJlu3MmnNdnNe9Q9BhkVgV1GOgRax+RD1hh59NIs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=MNfaOgTI38XHbTvoSalMKLauxUd+9J/w1Q99eE96NJCsllyoTZgXBI6Sy4yc5ZAWz
-	 9lhd7stnTg5qOwtBlWhzRf1bZEBM2Z1+KvGrt35Pga41dHChLFpsASxl2s7rcG5WEd
-	 IjTwmuvK9w6t2J3u5OVbPThQV2tY13Pro0/kDpUpeRyNlgPqSg4MZKVN3fUJHcLynI
-	 uM2rFprmO8AIyyoheuuoCfSd2mPaz4x/Fu1dYLf3ndPBr+SxBUowtowO8S2yRpptyQ
-	 /RZPof4m2qkjmhkp5DlG79wllZAAWMyyC+6SIlZNoY6TuR0RRpLC07brLaOhD0aXAo
-	 ZQkCdYNG01+ZQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 01 Jul 2024 09:24:16 -0700
-Subject: [PATCH] ASoC: fsl: lpc3xxx-i2s: Avoid using ret uninitialized in
- lpc32xx_i2s_probe()
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCYXZ3Xf9z3c5q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 03:52:29 +1000 (AEST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-4256742f67fso24458085e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2024 10:52:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719856341; x=1720461141; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n1/3Mqv5bU7Lm+/6Z/xl/QjEG/rO3YJRZuHHrfT9XMs=;
+        b=x4FleGd4eFT0wMYXP4TWOVMghIE10+lVRxC+LTTYCYLKtv7XomOUZNeNRez7DXn8FQ
+         wrsSa11bwoaYvpHq1upFl7FRmC/YU37TyowKBHKAaKzLYm+qldb+w+IunNA/8S3Q2KG0
+         cYIw2/aCEXdYzqNsKU8u+3K4Gq+ElSa+KHstCL4wYOPbf7CA5Mhu1nlSEnSfqa46HEEo
+         tcMDdFdRrwCRTWcvZgN9B5QKTmWbnwPqXluiyNZ+ZhbAsC9HvRfFrIlc5VnSYP7P0JYv
+         dzFckggCN+A76GGiCsPvM7CFhwROgtH0yIIdlNhRdlltIGh8w3iRNm07oqmQ9JO+YTYJ
+         QNjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719856341; x=1720461141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n1/3Mqv5bU7Lm+/6Z/xl/QjEG/rO3YJRZuHHrfT9XMs=;
+        b=CS8kaecSCyshWpDmWlMg7FvZlQMc3b3jeq3vLuRZa2TXpSa6sSWQsgnHlaxX87I9xr
+         mflHmzVgJxc5HqFUM+sUqwMfm949Og1K7lbxrvTWMV/vgD67z7dKv0XV51TewyFSH67L
+         jFMjj3EzndrnSytOQul1vL4W2etzdEo7XxHLVvW0dSVhg0zyH26vKT1pn9rJUwEvp/5N
+         OnGPMBa7LJY7Q03tQlWQCYA9CcEa6GAPLkZrX7SNssXg8ZsGczIvnFqbW7R3KeYX++UZ
+         4Z5UkHYvhabaeYG/lgtdyrNn2d1O0ISDhJLsHWxa0kSvpGt+QvGCnPwK/evd2obzEziD
+         ollg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJIf0sb8vcG24t1JrGWXhBFYv8JqBYeFnOE4kWOSuq5vGUN1Ttjphd/ntaMV/bRv5k2OYv7kefcwA9VSCqymZV4GBuUgoVsX6SO2BNaw==
+X-Gm-Message-State: AOJu0Yz+nQijLWSc2DIcLfcAbJ6l+kKsjrWKO6fe/QKujyjDQsbzkqNK
+	+sbu+SF+VPVd7pcpcYOEjTilZgpYkOfwLJlFjLwueWNpJ8sHecRyeBHIIUwYjVv1Rl1SLM1YD2a
+	k6CCSsQwqLTRjB0X6NZNp9DHEykYLolxd6gFz
+X-Google-Smtp-Source: AGHT+IG7kANdMixnrRX/w/wCL06WRJILCv9aR81l3eU1ucu2os0oVGFSDzYlK6U+a1azCoA3WAsnnYnMeJC+/F+ecm0=
+X-Received: by 2002:a5d:49cc:0:b0:366:eade:bfbb with SMTP id
+ ffacd0b85a97d-367757200admr5266366f8f.46.1719856341379; Mon, 01 Jul 2024
+ 10:52:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-lpc32xx-asoc-fix-uninitialized-ret-v1-1-985d86189739@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAC/YgmYC/x2NzQqDMBAGX0X23IVN/ANfpfQQkm39QKIkVoLiu
- zf0ODDMXJQ1QTNNzUVJD2SssYJ5NORnFz/KCJXJiu1kFMPL5ltbCru8en6j8DciYodbcGrgpDt
- 3o0gYQt8P3lANbUmr+J88X/f9AyTAwd50AAAA
-To: "J.M.B. Downing" <jonathan.downing@nautel.com>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
- Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2122; i=nathan@kernel.org;
- h=from:subject:message-id; bh=oBVFJlu3MmnNdnNe9Q9BhkVgV1GOgRax+RD1hh59NIs=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDGlNNyxOBzy1UVET3irgUXTDdu7+cq5F79i0f9i/ydsUF
- LG55862jlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRp0cZGXr631qo3FnZemTN
- 5k6jhZ1rBSbECur+dFZelzgnU3eH3T9GhjX3eNamS0ZNeMxY1K8eef8+q6tI9MMgwRiFpSrX8rh
- d2QE=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+References: <20240503181734.1467938-1-dmatlack@google.com> <171874683295.1901599.10170158200177384059.b4-ty@google.com>
+In-Reply-To: <171874683295.1901599.10170158200177384059.b4-ty@google.com>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 1 Jul 2024 10:51:53 -0700
+Message-ID: <CALzav=cwu3M2nLHwZLCTF=eGWx2Nq+=TuHMuGTfZCNa27mLs1A@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] KVM: Set vcpu->preempted/ready iff scheduled out
+ while running
+To: Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,55 +79,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, llvm@lists.linux.dev, Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Nathan Chancellor <nathan@kernel.org>, patches@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-clang points out that ret may be used uninitialized in
-lpc32xx_i2s_probe() in an error pointer path (which becomes fatal with
-CONFIG_WERROR):
+On Tue, Jun 18, 2024 at 2:41=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Fri, 03 May 2024 11:17:31 -0700, David Matlack wrote:
+> > This series changes KVM to mark a vCPU as preempted/ready if-and-only-i=
+f
+> > it's scheduled out while running. i.e. Do not mark a vCPU
+> > preempted/ready if it's scheduled out during a non-KVM_RUN ioctl() or
+> > when userspace is doing KVM_RUN with immediate_exit=3Dtrue.
+> >
+> > This is a logical extension of commit 54aa83c90198 ("KVM: x86: do not
+> > set st->preempted when going back to user space"), which  stopped
+> > marking a vCPU as preempted when returning to userspace. But if userspa=
+ce
+> > invokes a KVM vCPU ioctl() that gets preempted, the vCPU will be marked
+> > preempted/ready. This is arguably incorrect behavior since the vCPU was
+> > not actually preempted while the guest was running, it was preempted
+> > while doing something on behalf of userspace.
+> >
+> > [...]
+>
+> Applied to kvm-x86 generic, with minor changelog tweaks (me thinks you've=
+ been
+> away from upstream too long ;-) ).  Thanks!
 
-  sound/soc/fsl/lpc3xxx-i2s.c:326:47: error: variable 'ret' is uninitialized when used here [-Werror,-Wuninitialized]
-    326 |                                      "failed to init register map: %d\n", ret);
-        |                                                                           ^~~
-  sound/soc/fsl/lpc3xxx-i2s.c:310:9: note: initialize the variable 'ret' to silence this warning
-    310 |         int ret;
-        |                ^
-        |                 = 0
-  1 error generated.
+Thanks for the cleanups. Looks like you replaced "[Tt]his commit"
+throughout. Anything else (so I can avoid the same mistakes in the
+future)?
 
-One solution would be a small refactoring of the second parameter in
-dev_err_probe(), PTR_ERR(i2s_info_p->regs), to be the value of ret in
-the if statement. However, a nicer solution for debugging purposes,
-which is the point of this statement, would be to use the '%pe'
-specifier to symbolically print the error pointer value. Do so, which
-eliminates the uninitialized use of ret, clearing up the warning.
-
-Fixes: 0959de657a10 ("ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- sound/soc/fsl/lpc3xxx-i2s.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/soc/fsl/lpc3xxx-i2s.c b/sound/soc/fsl/lpc3xxx-i2s.c
-index 0e5b4d5202ff..af995ca081a3 100644
---- a/sound/soc/fsl/lpc3xxx-i2s.c
-+++ b/sound/soc/fsl/lpc3xxx-i2s.c
-@@ -323,7 +323,7 @@ static int lpc32xx_i2s_probe(struct platform_device *pdev)
- 	i2s_info_p->regs = devm_regmap_init_mmio(dev, iomem, &lpc32xx_i2s_regconfig);
- 	if (IS_ERR(i2s_info_p->regs))
- 		return dev_err_probe(dev, PTR_ERR(i2s_info_p->regs),
--				     "failed to init register map: %d\n", ret);
-+				     "failed to init register map: %pe\n", i2s_info_p->regs);
- 
- 	i2s_info_p->clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(i2s_info_p->clk))
-
----
-base-commit: 878f4c36f9235e8a15fe0c2ecde066d92c50c8ff
-change-id: 20240701-lpc32xx-asoc-fix-uninitialized-ret-4700d6d556c1
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+>
+> [1/3] KVM: Introduce vcpu->wants_to_run
+>       https://github.com/kvm-x86/linux/commit/a6816314af57
+> [2/3] KVM: Ensure new code that references immediate_exit gets extra scru=
+tiny
+>       https://github.com/kvm-x86/linux/commit/4b23e0c199b2
+> [3/3] KVM: Mark a vCPU as preempted/ready iff it's scheduled out while ru=
+nning
+>       https://github.com/kvm-x86/linux/commit/118964562969
+>
+> --
+> https://github.com/kvm-x86/linux/tree/next
