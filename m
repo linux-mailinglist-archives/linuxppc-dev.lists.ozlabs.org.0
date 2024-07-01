@@ -1,34 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5182491E212
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:15:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE5191E226
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:17:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSjm1Nfdz3fS7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:15:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSmz4Bfbz3fm4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:17:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=m.felsch@pengutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1249 seconds by postgrey-1.37 at boromir; Tue, 02 Jul 2024 00:14:47 AEST
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSjM4G7cz3c5Y
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:14:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSkD3V4cz3fW3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:15:32 +1000 (AEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sOHTX-0001LY-37; Mon, 01 Jul 2024 15:53:47 +0200
+	id 1sOHTX-0001LY-6i; Mon, 01 Jul 2024 15:53:47 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 01 Jul 2024 15:53:40 +0200
-Subject: [PATCH 1/9] mtd: core: add nvmem_write support
+Date: Mon, 01 Jul 2024 15:53:41 +0200
+Subject: [PATCH 2/9] mtd: add mtd_is_master helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-1-3fd5f4a193cc@pengutronix.de>
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-2-3fd5f4a193cc@pengutronix.de>
 References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -76,53 +75,29 @@ Cc: Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev, linux-aspeed@li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The MTD framework does support the NVMEM framework already but only the
-read support was implemented. This commit adds the write support if the
-MTD device supports writing (MTD_WRITEABLE is set).
+Provide a simple helper to make it easy to detect an master mtd device.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/mtd/mtdcore.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ include/linux/mtd/mtd.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/mtdcore.c b/drivers/mtd/mtdcore.c
-index 724f917f91ba..dcd97e59425e 100644
---- a/drivers/mtd/mtdcore.c
-+++ b/drivers/mtd/mtdcore.c
-@@ -544,6 +544,20 @@ static int mtd_nvmem_reg_read(void *priv, unsigned int offset,
- 	return retlen == bytes ? 0 : -EIO;
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index 8d10d9d2e830..bf3fc2ea7230 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -408,6 +408,11 @@ static inline struct mtd_info *mtd_get_master(struct mtd_info *mtd)
+ 	return mtd;
  }
  
-+static int mtd_nvmem_reg_write(void *priv, unsigned int offset,
-+			       void *val, size_t bytes)
++static inline bool mtd_is_master(struct mtd_info *mtd)
 +{
-+	struct mtd_info *mtd = priv;
-+	size_t retlen;
-+	int err;
-+
-+	err = mtd_write(mtd, offset, bytes, &retlen, val);
-+	if (err && err != -EUCLEAN)
-+		return err;
-+
-+	return retlen == bytes ? 0 : -EIO;
++	return mtd->parent ? false : true;
 +}
 +
- static int mtd_nvmem_add(struct mtd_info *mtd)
+ static inline u64 mtd_get_master_ofs(struct mtd_info *mtd, u64 ofs)
  {
- 	struct device_node *node = mtd_get_of_node(mtd);
-@@ -555,10 +569,11 @@ static int mtd_nvmem_add(struct mtd_info *mtd)
- 	config.owner = THIS_MODULE;
- 	config.add_legacy_fixed_of_cells = of_device_is_compatible(node, "nvmem-cells");
- 	config.reg_read = mtd_nvmem_reg_read;
-+	config.reg_write = mtd_nvmem_reg_write;
- 	config.size = mtd->size;
- 	config.word_size = 1;
- 	config.stride = 1;
--	config.read_only = true;
-+	config.read_only = !(mtd->flags & MTD_WRITEABLE);
- 	config.root_only = true;
- 	config.ignore_wp = true;
- 	config.priv = mtd;
+ 	while (mtd->parent) {
 
 -- 
 2.39.2
