@@ -1,136 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE3791DA11
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 10:35:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5E091DA32
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 10:41:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Lu1ZoyDB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CT3JYqtP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCK9y3DhQz3fQX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 18:35:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCKK33Jncz3fmX
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 18:41:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Lu1ZoyDB;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CT3JYqtP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:240a::626; helo=nam04-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on20626.outbound.protection.outlook.com [IPv6:2a01:111:f403:240a::626])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCK9G5kphz3bdV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 18:34:56 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BOtaD0mKyNYxfRgwRv6CaAM+t3Qx3G3Iq7eu1N0SYeAD48y4avhoqNpLWw+dRXmo4KNuBfAXFpeDZVHByYxgq3GU3B1yvQ0hP+Iegcke0hvOlbKdzy5httEsc/4UUksR/owwEsuD7kjFcjRl+2/NqXzcxWmwJXGp5lTT5js1S0GOig4/cJyiXT7xc5eQ2SS9VZdlNkWRi+0UbbHqfg4BRIkgl1tB2tSdAPPBirYZze3o2xaSfkKnFVpAWkaYlWI+0zaJR76RRAKm57dh3KqBBPEBekWeG0uY8WCUBhk6Vy6yi5PB/X5SobBK29XtblkNhrYD+nIMDE/SeDaQD0imhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PFNw5m7TevX7O32FT2B4WhapzTHm6yB0PYh9fZOVVe0=;
- b=fb1izYFoHe+9UwvN0OQgTc9CY4eCpD2uuLhDXw9y+ChiymaFVDB+2rVlXlHRk8uoW4BfwNvmOJiY97riyVf72tk0Ob8XSLCBVjSO+lwwnga6ZOcgsGUSQjVIz0M4I9QVXR8d9exoGRjWdHVL3IRAGEowF7my62WFW+AFL1FFWsgQZ0I/y0HptBptUlFjJ8yHFb2YcKRmXvs7f6SoMQP3afTyXE5mJf29t3bem8ZyHeQFuThcLAUUrcIDeFUyEd6DdFoMwbwY3xDqPV/lzENPHFL1JwKW/DKZ/irtkcllPhGsuz06knAFFxFaO6CQ1PPLdNmhbASPKRp9yMTlJePfDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PFNw5m7TevX7O32FT2B4WhapzTHm6yB0PYh9fZOVVe0=;
- b=Lu1ZoyDBnGLn1frb6qiyltBSFMlR5Iwin46tZX2tghr8stvR2GBq6yw50/hQcQmsYYOU6lumh5Ns/SxGSWbTobzmmA7bzpM4hnN1HCDNCtQ1u7isogDu3I3Zv1dfEtABY4jEmDj5HpsopECWJS9o3QKnZx6Oldvq+TimPxkgEIMoHrnZSiO0qA/ehBygY/U6RUETVlPXOftp7b31rYOCPW0qlTOCOfsPHzrFjjzAjp14HUzbunDSI9V3QtNgSNaf8o3TmFE0wuMQ3ETK+GikFcbPYrqit2keyUVGs2yOEfuvupGjd9BlXT1j75b/On2HX94rZOITgFO0XWjkhniKDA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7719.29; Mon, 1 Jul 2024 08:34:31 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%6]) with mapi id 15.20.7719.028; Mon, 1 Jul 2024
- 08:34:31 +0000
-References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
- <ZoIvhDvzMCw28VBI@dread.disaster.area>
-User-agent: mu4e 1.10.8; emacs 29.1
-From: Alistair Popple <apopple@nvidia.com>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: [PATCH 00/13] fs/dax: Fix FS DAX page reference counts
-Date: Mon, 01 Jul 2024 18:33:34 +1000
-In-reply-to: <ZoIvhDvzMCw28VBI@dread.disaster.area>
-Message-ID: <87plrxo6i5.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY5P282CA0054.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:20a::13) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CY5PR12MB6526:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29db7317-e6ac-45d7-d4ae-08dc99a8a116
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?XLlxJb1lVvo85rezcGTpc3hCUtIhEW+5GVosS3jRLn3OyQiKcj0IB0KBeL8P?=
- =?us-ascii?Q?HBbiLmoJpBL2LjBsuMFC7ZwlSVPdNUjngHkCc/DuEKnsF93aEufM6ViwNjiQ?=
- =?us-ascii?Q?gxPkOTQ11h9e9i1HEoPSMXleTt4IeNO/VrxZ1PIN5mfnx2lGNNOjN6sc3aLJ?=
- =?us-ascii?Q?cZxEOW4OpbcK20TaBLMoi0KKdCtMYSUwG9Nye6NE+hANzL+kGdHOmjATmCto?=
- =?us-ascii?Q?Y6NIEKiYhrlOETALl5xvI/leurEe9T9PxkYnVSkzFp5gZe/PnXO+mYjTXupI?=
- =?us-ascii?Q?cRcDZuxQosInHDLiUR5GLK6Ihhj7usG0UQR6PAXwFmdT1IYGhUm+YC+bvhNc?=
- =?us-ascii?Q?gHmLRB9oj2sRgAy0mupZwTU1mKIQ8YsYDHb8sJ64LDn5FjR+xJ9xp9oj5HPg?=
- =?us-ascii?Q?7y2NU977dXameYCFf5ckK89qUdaIXnDwYyfpI5xw0g4Y0dQgCd5pduIda2qh?=
- =?us-ascii?Q?87KKbYiFb5tbZ3F1UCdUH2J19hMVMjBw7k1uxsaFe3K4MBLiMgC0gBTsvQEe?=
- =?us-ascii?Q?F86a0IyRrBDAqgm80TxVxlx10NZX2wgdIxn+bQ4VHptvjnRb4P67H1FaVZyH?=
- =?us-ascii?Q?xnn+fKA3ECj+Hw2YXQlBdNacLsxAkivvSOBdBG6F7gB1JsPajZsqkN8kEejW?=
- =?us-ascii?Q?OSWj/kZMQ6DAl3/onhS0e+D6B3kJdPwbCKS3DGAufg4gqHYxuDysRfSMWsTr?=
- =?us-ascii?Q?to9hpnzLjv7gQABniPQzFjwR94COSMzDyhGLas2Iuqa9ytdlsmXtxGMh+yxG?=
- =?us-ascii?Q?fTGGL5G7gqW/vcJTMG986oIk9THVT/vr2E/g7SE1uT/XSbozdNwFsu7oWe+e?=
- =?us-ascii?Q?Ubcf5gBi04G4+Hmg8BBfsD0w67Ln5gA+lWUvhT+2UsJoweYctVuD83gq7Xlh?=
- =?us-ascii?Q?pV4vioT4DYH7K7r2IpWxGIBcvHrIaJXh1KsVHNeIktP+gBLWrpCiYYQqDXPv?=
- =?us-ascii?Q?Ou+lziSiNUP24xkZkwv8zLliAHBTkLrwU4gzkee7+cj2+RTcaDuuNAWQzRvd?=
- =?us-ascii?Q?gmtkOq00+QIqnvn7Jnc1iQpZm1vn0AouCvZr85l6wYrHjYyoa8nkpAsd21m3?=
- =?us-ascii?Q?VFnlOeoXktWr99FWu2F/4tfCauwmDgaGeoLB35t52j9PhwdeXiKKDoKDiKlK?=
- =?us-ascii?Q?SNQEnqI75DbHOdm0OpLO0VyyZdUtHLpP5gE3XD19+Bxad6NnPbMllYMm6yhx?=
- =?us-ascii?Q?orwhD+mic7wj4RHM8DINSdqOUG0fbzOI0iFl012VwJDV7QBrdh5siC0WttXo?=
- =?us-ascii?Q?R8gM0cojS1C2K7oDnQskZTjohHhKR1ZEiHUoSBPbMRs89wai54hg8bGrRmZT?=
- =?us-ascii?Q?rlCe2gDBasWQHi8lpgbb+uO/puXDmW4G4nWOO4IB+eJZkMz4qEt9QTKZKlLh?=
- =?us-ascii?Q?XX9O7Tk=3D?=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?tFQ1gux8lhIoMOxgG12dVbV3IjEixEbFCya2zDeqA7Orl+5w8POA3N6+XYp5?=
- =?us-ascii?Q?EBnm3HmGXIxDuxrXll+y4oArT5SVdky9Kd2zGnw3uBmDbpJKozGCE9y26FW7?=
- =?us-ascii?Q?ZspaICZcg6l+jpXUMtG/gYeHwPrlrvgmfa4A3MCk651rf4a1BIQl0Qckzl7Z?=
- =?us-ascii?Q?nSInxSfUo6o64b5w5sxpTpyh+mHjroZlPZW58X7PKat2Kp5ctckQoxxQldDZ?=
- =?us-ascii?Q?jXWb1R8JOn6ZFrCSUJHZhdMSM9bgwZLCIQGw7YA27qOpK9ZvAb8RSpVsZxuC?=
- =?us-ascii?Q?5vPdZkqwM3Tyt4XXOX1NvcIRmypLg0pu7dJnsgm4CqhUsMq8REIsvGzoGcDZ?=
- =?us-ascii?Q?Arz3aruv+SOI7Zw9VZFueiZVKte7QCT11JJJW9hoK5hlvg04dneQO+2IFlTQ?=
- =?us-ascii?Q?M+Jk/LO0ZsnSD2AuD/AjT4V//cPYr0RGt2cDu3vlMB3NjAu0xxN9sfH/QOdO?=
- =?us-ascii?Q?One1KqFR+yUs9Hx4airaQOI1xiEaJMTdexj9QTX/Z7ZMD7edsLFPolCWsvbh?=
- =?us-ascii?Q?orB+a/gOy9zXbFEFxh5FTmZiUhz6CK9lax9W205ZsAMP8ZYG3bCYcDMAyZdn?=
- =?us-ascii?Q?8EJ11DJVweFI9mUn8FO9iPNZWwpxwt0yQzzAvJ/ebMLXfwDwCgTQ6leJrm1M?=
- =?us-ascii?Q?a/xt5uchTAkQj9aQgKo1yIo199/ktYUJE6aY+HVkTEHHX4Jf0Lq+yZam/wZj?=
- =?us-ascii?Q?4sVeIy+KAvzpQr1oDT59ilgT42ghDINQAhB/2aSpd6dCHT2WJk4oc7fQI6Ke?=
- =?us-ascii?Q?Kc6iyj6if7RqB+Twxm+J9R3lbZdsDiGX9lQSE34X90zee+KIcUwM+oZLtyc+?=
- =?us-ascii?Q?YHXl3XqGsoClGTAKb4GYCMLt2t8mSmkHW4FOpwPMpCg8BPFAmhP06ClcrFrW?=
- =?us-ascii?Q?YboMkd0QM0oGPDNuquXnxxfyGKmeI1ma77yPI6Vg+KCYMU+D1mF8yWq3TQ+J?=
- =?us-ascii?Q?TqB6njFNO6axruAyge0UWXX6j0WIxloq+P1xlX1qj6PKW7R+fwvA1GCpOtbG?=
- =?us-ascii?Q?WLcao/idEaCQggecL7Qn1916/xUAK68a28MuET7lRLIDfOr/dlfYjzYcwgN1?=
- =?us-ascii?Q?NYm62zYMQGoGCTpE0L+Pp+b7jRNVtTDlgNTjV/dIFlfEe4KfZw/wN8rCJwW+?=
- =?us-ascii?Q?ZxeHQ2jO7uz9ZbjNL+KSxKSFNVxm9fOb9+7jVAzp+I3OAxErqULN9nnF+SYH?=
- =?us-ascii?Q?yl/RGUAM6xqvZsWDXpCg9SC4ZiE+q/qU1kws7Z6YONqgSdZhU4h7acUNd7cH?=
- =?us-ascii?Q?iYDnfKL7XlBwSKhVhsABAgtPwEfIXrLvFTHibmp19XdIEPJ+RopZ+5ltZzUn?=
- =?us-ascii?Q?lZYUfZfrBQLtzVrfRjd2+c6dj72SKWRZfiDrCfLSyeeJW9mQ8MwrOcTEsfvC?=
- =?us-ascii?Q?nhVhEFpMCHTG1Is3dPrzYGTrIzRNjDuYbiKnxOYw0eJdkFFm9QvDCg6jj3Ji?=
- =?us-ascii?Q?EcceJ2gc9EsweHEM0/WEbR48iP/s0cJV9BYRnh+CV9jhRWGRchApxQL+LhVD?=
- =?us-ascii?Q?jlhWnELEbKsB0UB4/P27LAcZie692+WLWTOc6DGb3YuO9a5OmulzjLOrA6NC?=
- =?us-ascii?Q?4bqComHfNsKOyhbEx6R64vfYMofF8FFC5tq85w0y?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29db7317-e6ac-45d7-d4ae-08dc99a8a116
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2024 08:34:31.7356
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HNHem0PUDLSPzeTvb/VE3gWOqSKXF3DLTDKZ/Gzpie8bR+30UlTlRjb/XsQ8R+oyKrPvSnnD2HeTGWdx5zkKQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6526
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCKJG4LPFz3fRM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 18:41:01 +1000 (AEST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-70675977d0eso1537826b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Jul 2024 01:41:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719823259; x=1720428059; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g3x8OXlxrycHdfXvAIhFhHfcQNBUzKhTKnahatC6tJk=;
+        b=CT3JYqtPjQ2x1ju0AfghgvKjQiNdin1qVntNsdg/iIGvaylqWIE0GVk6iqjX7lux/V
+         zUGHJZrCYh2/mfqEZGKqJIFnK+CFbDYjy0LHcjjy6UDBzrIDBMGATmthOKlHUqC0vl9v
+         4Yz6DeXQqbvRkcDi7SN+pZ9d/Z0FfFf7jobRZzVExmFs/R7Tlh6fVQ1HnqOZLWzR9ktr
+         CHfhzjxHCHqkOH6DrnAPNmf14ttL/tMWj5J8Z32+m/3MKth37Jhc7VpyVYqD6fmu1lPr
+         8Ti0r/0gEVOZWg6Jorcs3AylZPkLzUV0kdeigEJKVYSWGhpJTYAmMhFxtUOHcm2HyfnB
+         Ilng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719823259; x=1720428059;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=g3x8OXlxrycHdfXvAIhFhHfcQNBUzKhTKnahatC6tJk=;
+        b=iSjSV5tv5/09+OZqfP2/fZucTQPXnJ18Je44C+9BSS9I2Ci3u2m1MI4Ek9BWe8yPTr
+         fnzbUc5QMZd+QMeHeSf9jf2VA6kvqzVsna37hyFAXF0V9aFeL9CLOr6gnyUb+A4ZEo0A
+         xQHGp/ySpV3S0ZC5VdoP2Lyaj1Wnt6nxbwU3ZEGQUa+lcgvBtmgWLllkWmuPHZjSfkl1
+         ok6seJ+pp1vucEeqRaxVrKLhTRk5CkFdDrvcJQf4VUZKcOJVHmr1cDv5qlvUyFdH/zOH
+         wkCo2WDAeIoZz+AgwPNpFrx0HP/IIXs1YJ8vsXrCz0ONblx3Y5PpLCujAjdCEnrxR4mm
+         5Mhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJSsbDSoiz+8ZKzLwTgjK+xP80yEuXhliv3694IkCijiHRJBZtTgthmrroE6CVsvmwBDApXVybHG6sCI/6QhqLxW/rL6UAatbojsjW0g==
+X-Gm-Message-State: AOJu0Yyvof50oMoxo/6+7XyFcVsjuKXcZ5ahSkJyjZ462xMy15x2CeIh
+	DX803GRtnfynHfPH6RJIzIWLuKxUtEc36mtSj84zRrTyKpuG9CK8fX1Mcg==
+X-Google-Smtp-Source: AGHT+IFF3U5blfYc7cCFy2B2VWKUGh0mSRCO0j+ghWCasUVIR5uCy8kyNN9MdGKcEbR1V4mgvBeXng==
+X-Received: by 2002:a05:6a00:4b54:b0:706:588b:d44b with SMTP id d2e1a72fcca58-70aaad60715mr3643920b3a.20.1719823259007;
+        Mon, 01 Jul 2024 01:40:59 -0700 (PDT)
+Received: from localhost (118-211-5-80.tpgi.com.au. [118.211.5.80])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70801e53ae0sm5943265b3a.23.2024.07.01.01.40.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 01:40:58 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 01 Jul 2024 18:40:50 +1000
+Message-Id: <D2E2GLXWB7TH.1L7TFQZO3149Y@gmail.com>
+Subject: Re: [RFC PATCH v3 01/11] powerpc/kprobes: Use ftrace to determine
+ if a probe is at function entry
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Naveen N Rao" <naveen@kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-trace-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1718908016.git.naveen@kernel.org>
+ <2cd04be69e90adc34bcf98d405ab6b21f268cb6a.1718908016.git.naveen@kernel.org>
+In-Reply-To: <2cd04be69e90adc34bcf98d405ab6b21f268cb6a.1718908016.git.naveen@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,48 +84,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, peterx@redhat.com, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, linux-cxl@vger.kernel.org, bhelgaas@google.com, dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, logang@deltatee.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Alexei
+ Starovoitov <ast@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-Dave Chinner <david@fromorbit.com> writes:
-
-> On Thu, Jun 27, 2024 at 10:54:15AM +1000, Alistair Popple wrote:
->> FS DAX pages have always maintained their own page reference counts
->> without following the normal rules for page reference counting. In
->> particular pages are considered free when the refcount hits one rather
->> than zero and refcounts are not added when mapping the page.
->> 
->> Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
->> mechanism for allowing GUP to hold references on the page (see
->> get_dev_pagemap). However there doesn't seem to be any reason why FS
->> DAX pages need their own reference counting scheme.
->> 
->> By treating the refcounts on these pages the same way as normal pages
->> we can remove a lot of special checks. In particular pXd_trans_huge()
->> becomes the same as pXd_leaf(), although I haven't made that change
->> here. It also frees up a valuable SW define PTE bit on architectures
->> that have devmap PTE bits defined.
->> 
->> It also almost certainly allows further clean-up of the devmap managed
->> functions, but I have left that as a future improvment.
->> 
->> This is an update to the original RFC rebased onto v6.10-rc5. Unlike
->> the original RFC it passes the same number of ndctl test suite
->> (https://github.com/pmem/ndctl) tests as my current development
->> environment does without these patches.
+On Fri Jun 21, 2024 at 4:54 AM AEST, Naveen N Rao wrote:
+> Rather than hard-coding the offset into a function to be used to
+> determine if a kprobe is at function entry, use ftrace_location() to
+> determine the ftrace location within the function and categorize all
+> instructions till that offset to be function entry.
 >
-> I strongly suggest running fstests on pmem devices with '-o
-> dax=always' mount options to get much more comprehensive fsdax test
-> coverage. That exercises a lot of the weird mmap corner cases that
-> cause problems so it would be good to actually test that nothing new
-> got broken in FSDAX by this patchset.
+> For functions that cannot be traced, we fall back to using a fixed
+> offset of 8 (two instructions) to categorize a probe as being at
+> function entry for 64-bit elfv2, unless we are using pcrel.
+>
+> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> Signed-off-by: Naveen N Rao <naveen@kernel.org>
+> ---
+>  arch/powerpc/kernel/kprobes.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.=
+c
+> index 14c5ddec3056..ca204f4f21c1 100644
+> --- a/arch/powerpc/kernel/kprobes.c
+> +++ b/arch/powerpc/kernel/kprobes.c
+> @@ -105,24 +105,22 @@ kprobe_opcode_t *kprobe_lookup_name(const char *nam=
+e, unsigned int offset)
+>  	return addr;
+>  }
+> =20
+> -static bool arch_kprobe_on_func_entry(unsigned long offset)
+> +static bool arch_kprobe_on_func_entry(unsigned long addr, unsigned long =
+offset)
+>  {
+> -#ifdef CONFIG_PPC64_ELF_ABI_V2
+> -#ifdef CONFIG_KPROBES_ON_FTRACE
+> -	return offset <=3D 16;
+> -#else
+> -	return offset <=3D 8;
+> -#endif
+> -#else
+> +	unsigned long ip =3D ftrace_location(addr);
+> +
+> +	if (ip)
+> +		return offset <=3D (ip - addr);
+> +	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2) && !IS_ENABLED(CONFIG_PPC_KERNE=
+L_PCREL))
+> +		return offset <=3D 8;
 
-Thanks Dave, I will do that and report back. I suspect it will turn up
-something, given Dan was seeing a crash with these patches.
+If it is PCREL, why not offset =3D=3D 0 as well?
 
- - Alistair
-
-> -Dave.
-
+Thanks,
+Nick
