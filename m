@@ -2,64 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA50A91E768
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 20:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9343D91E7CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 20:39:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ImT+Hj/5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I4cOk3eM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCZK649QDz3dK4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 04:27:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCZZd31mdz3gD4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 04:39:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ImT+Hj/5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I4cOk3eM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCZJR44Fyz3cB2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 04:27:03 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id EBB8FCE1A96;
-	Mon,  1 Jul 2024 18:27:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8271C116B1;
-	Mon,  1 Jul 2024 18:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719858420;
-	bh=wDmAHasbwyDrav/gjz/1HfTelzHzs8MHoUaZv+UsTFU=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ImT+Hj/5dJ6/oeZzaMtoDUKPqVouhuQg5ZghBti5V/Zb9CIbeYILdEXNobBZR7OZM
-	 6/F3s18gDPLwS+5+BU46R/28U5CRFYH300eR7xtiMYAZ6jFeY7nFfgWsfVAwRLdB6X
-	 L/LaGyvl6O+1EiVdU4/vyUMtUjWrHEldxrMEU0AN5YmlcUoUP9slhUx4qFk8hMaG6m
-	 aTI03n62QvpZUZzHSI6aaIrdrn6ji1Owb0G2Db7Q8mpLPwCXlE6AX/u4fqVLerKtMY
-	 sAB8NKe6T8mPqmCt3Uljd1pNc6i9Y9ufOs9XP1MJgXuc8Uf8FvuA8V0JexnQMJid5H
-	 Vd0gB9q7jZAOw==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 01 Jul 2024 11:26:38 -0700
-Subject: [PATCH] ASoC: fsl: lpc3xxx-i2s: Include bitfield.h for FIELD_PREP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCZMq22gJz3dXC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 04:29:58 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 461IQpAZ023037;
+	Mon, 1 Jul 2024 18:29:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	8M/NcLEsRj+FlvECMzLMigBD/zG81chYyCp7F5PFqCA=; b=I4cOk3eMOhM/v4Xp
+	5RtQeHaUhKll9ZmTN6E5LFmSwRtwcNMlvvcT1YUa2SlAYUhGLZOr8voWFr+WZ81b
+	C5G4HQmoMVP7tGdQfIwTxO7tYucZFxEANGZOPZKIW/Jw0BbqIouH3K5xG43brGa/
+	ZOdrBXZSEj/dsob8ZE8l9vx72ub1rOMYwPFgqVAHmna5Lli4/I9+MnaFPl6lZ7yU
+	EDPZxyR8ugSAfM+QpKmQAhDnc2DDqGEiip1GRTyevuj8MH1BiJk/+GwwHpjbPtnk
+	gXHlsB7aUGn9Ly7Bfs4r6iN/MRnmccl8apBvTTsBMOP3bKhaDBFz8WCS2Gk9WfIH
+	EPT+SA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4041car1hh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jul 2024 18:29:48 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 461H0Fsv024077;
+	Mon, 1 Jul 2024 18:29:47 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 402ya38b0w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jul 2024 18:29:47 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 461ITi7325035476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Jul 2024 18:29:47 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E3C5258054;
+	Mon,  1 Jul 2024 18:29:44 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5CF9A5803F;
+	Mon,  1 Jul 2024 18:29:44 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Jul 2024 18:29:44 +0000 (GMT)
+Message-ID: <53d96a8b-26ef-46a3-9b68-3d791613e47c@linux.ibm.com>
+Date: Mon, 1 Jul 2024 14:29:43 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+To: Jarkko Sakkinen <jarkko@kernel.org>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+ <9e167f3e-cd81-45ab-bd34-939f516b05a4@linux.ibm.com>
+ <55e8331d-4682-40df-9a1b-8a08dc5f6409@leemhuis.info>
+ <9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TxbAsl9mb4epcgFCGrxx9fVFbeSNOPDy
+X-Proofpoint-ORIG-GUID: TxbAsl9mb4epcgFCGrxx9fVFbeSNOPDy
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-lpc32xx-asoc-fix-include-for-field_prep-v1-1-0c5d7f71921b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAN30gmYC/x3NXQrDIBAE4KuEfe7Cai39uUopxeimXRAVJUUIu
- XuWPn7DMLNB5ybc4TFt0PgnXUpWmNME4evzh1GiGixZR1cymGo42zHQ9xJwkYGSQ1oj41KamlN
- 818YVjaM439zFW7qDrmmo7f/T87XvB2yNv3N5AAAA
-To: Mark Brown <broonie@kernel.org>, 
- "J.M.B. Downing" <jonathan.downing@nautel.com>, 
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2810; i=nathan@kernel.org;
- h=from:subject:message-id; bh=wDmAHasbwyDrav/gjz/1HfTelzHzs8MHoUaZv+UsTFU=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDGlNXz7XTWQI3vX8Z+WFtsqwSZJCPwvOnNXlsv5SxPirZ
- kJz3ErpjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRDdUM//PUFujO11fQ/po4
- a/MK4bnLf+Qp95d/YJv2suyfgmVs0VGG//XZ6ayv2O4oq+azrayL5L9ReDj6jHw/e+utz4FWN97
- q8AEA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-01_18,2024-07-01_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 clxscore=1015 mlxscore=0 malwarescore=0 mlxlogscore=999
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407010138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,60 +99,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, patches@lists.linux.dev, linux-sound@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: naveen.n.rao@linux.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-bitfield.h is not explicitly included but it is required for FIELD_PREP
-to be expanded by the preprocessor. If it is not implicitly included,
-there will be a compiler error (as seen with ARCH=hexagon allmodconfig):
 
-  sound/soc/fsl/lpc3xxx-i2s.c:169:10: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    169 |                 tmp |= LPC3XXX_I2S_WW8 | LPC3XXX_I2S_WS_HP(LPC3XXX_I2S_WW8_HP);
-        |                        ^
-  sound/soc/fsl/lpc3xxx-i2s.h:42:30: note: expanded from macro 'LPC3XXX_I2S_WW8'
-     42 | #define LPC3XXX_I2S_WW8      FIELD_PREP(0x3, 0) /* Word width is 8bit */
-        |                              ^
-  sound/soc/fsl/lpc3xxx-i2s.c:205:34: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    205 |                              LPC3XXX_I2S_DMA1_TX_EN | LPC3XXX_I2S_DMA0_TX_DEPTH(4));
-        |                                                       ^
-  sound/soc/fsl/lpc3xxx-i2s.h:65:38: note: expanded from macro 'LPC3XXX_I2S_DMA0_TX_DEPTH'
-     65 | #define LPC3XXX_I2S_DMA0_TX_DEPTH(s) FIELD_PREP(0xF0000, s) /* Set the DMA1 TX Request level */
-        |                                      ^
-  sound/soc/fsl/lpc3xxx-i2s.c:210:34: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    210 |                              LPC3XXX_I2S_DMA0_RX_EN | LPC3XXX_I2S_DMA1_RX_DEPTH(4));
-        |                                                       ^
-  sound/soc/fsl/lpc3xxx-i2s.h:70:38: note: expanded from macro 'LPC3XXX_I2S_DMA1_RX_DEPTH'
-     70 | #define LPC3XXX_I2S_DMA1_RX_DEPTH(s) FIELD_PREP(0x700, s) /* Set the DMA1 RX Request level */
-        |                                      ^
 
-Include bitfield.h explicitly, so that FIELD_PREP is always expanded,
-clearing up the compiler error.
+On 7/1/24 11:22, Jarkko Sakkinen wrote:
+> On Fri, 2024-06-28 at 17:00 +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> [CCing the regression list]
+>>
+>> On 20.06.24 00:34, Stefan Berger wrote:
+>>> Jarkko,
+>>>    are you ok with this patch?
+>>
+>> Hmmm, hope I did not miss anythng, but looks like nothing happened for
+>> about 10 days here. Hence:
+>>
+>> Jarkko, looks like some feedback from your side really would help to
+>> find a path to get this regression resolved before 6.10 is released.
+>>
+>> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> 
+> Sorry for latency, and except a bit more slow phase also during
+> July because I'm most of this month on Holiday, except taking care
+> 6.11 release.
+> 
+> This really is a bug in the HMAC code not in the IBM driver as
+> it should not break because of a new feature, i.e. this is only
+> correct conclusions, give the "no regressions" rule.
+> 
+> Since HMAC is by default only for x86_64 and it does not break
+> defconfig's, we should take time and fix the actual issue.
 
-Fixes: 0959de657a10 ("ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- sound/soc/fsl/lpc3xxx-i2s.h | 1 +
- 1 file changed, 1 insertion(+)
+It was enabled it on my ppc64 system after a git pull -- at least I did 
+not enable it explicitly. Besides that others can enable it on any arch 
+unless you now change the 'default x86_64' to a 'depends x86_64' iiuc 
+otherwise the usage of a Fixes: , as I used in my patch, would be justified.
 
-diff --git a/sound/soc/fsl/lpc3xxx-i2s.h b/sound/soc/fsl/lpc3xxx-i2s.h
-index eec755448478..b6657853017a 100644
---- a/sound/soc/fsl/lpc3xxx-i2s.h
-+++ b/sound/soc/fsl/lpc3xxx-i2s.h
-@@ -9,6 +9,7 @@
- #ifndef __SOUND_SOC_LPC3XXX_I2S_H
- #define __SOUND_SOC_LPC3XXX_I2S_H
- 
-+#include <linux/bitfield.h>
- #include <linux/types.h>
- #include <linux/regmap.h>
- 
+config TCG_TPM2_HMAC
+	bool "Use HMAC and encrypted transactions on the TPM bus"
+	default X86_64
+	select CRYPTO_ECDH
+	select CRYPTO_LIB_AESCFB
+	select CRYPTO_LIB_SHA256
 
----
-base-commit: 55f0a1fa6ea4e339c797e9a3292ca0caa4ab3885
-change-id: 20240701-lpc32xx-asoc-fix-include-for-field_prep-140db845a209
+https://elixir.bootlin.com/linux/v6.10-rc6/source/drivers/char/tpm/Kconfig
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+> 
+> BR, Jarkko
+> 
