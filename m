@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6C391E214
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2CF191E21D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:16:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSkB1sm5z3fmK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:15:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSlb3lf9z3fxN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:16:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
@@ -15,19 +15,19 @@ Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de 
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSjY65WGz3cfg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:14:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSjt5tc8z3fTV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:15:14 +1000 (AEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sOHTX-0001LY-Qc; Mon, 01 Jul 2024 15:53:47 +0200
+	id 1sOHTX-0001LY-UP; Mon, 01 Jul 2024 15:53:47 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 01 Jul 2024 15:53:46 +0200
-Subject: [PATCH 7/9] MIPS: configs: convert to MTD_EEPROM_AT24
+Date: Mon, 01 Jul 2024 15:53:47 +0200
+Subject: [PATCH 8/9] LoongArch: convert to MTD_EEPROM_AT24
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-7-3fd5f4a193cc@pengutronix.de>
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-8-3fd5f4a193cc@pengutronix.de>
 References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -80,35 +80,21 @@ new Kconfig symbol to select the I2C EEPROM driver support.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/mips/configs/cavium_octeon_defconfig | 2 +-
- arch/mips/configs/db1xxx_defconfig        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/configs/loongson3_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/configs/cavium_octeon_defconfig b/arch/mips/configs/cavium_octeon_defconfig
-index f523ee6f25bf..a5bb80a59c6e 100644
---- a/arch/mips/configs/cavium_octeon_defconfig
-+++ b/arch/mips/configs/cavium_octeon_defconfig
-@@ -50,7 +50,7 @@ CONFIG_MTD_CFI=y
- CONFIG_MTD_CFI_AMDSTD=y
- CONFIG_MTD_SLRAM=y
- CONFIG_BLK_DEV_LOOP=y
--CONFIG_EEPROM_AT24=y
-+CONFIG_MTD_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
+diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
+index b4252c357c8e..31daff75a01a 100644
+--- a/arch/loongarch/configs/loongson3_defconfig
++++ b/arch/loongarch/configs/loongson3_defconfig
+@@ -433,7 +433,7 @@ CONFIG_NVME_TARGET_LOOP=m
+ CONFIG_NVME_TARGET_RDMA=m
+ CONFIG_NVME_TARGET_FC=m
+ CONFIG_NVME_TARGET_TCP=m
+-CONFIG_EEPROM_AT24=m
++CONFIG_MTD_EEPROM_AT24=m
  CONFIG_BLK_DEV_SD=y
- CONFIG_ATA=y
-diff --git a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
-index b2d9253ff786..b1c1777df16c 100644
---- a/arch/mips/configs/db1xxx_defconfig
-+++ b/arch/mips/configs/db1xxx_defconfig
-@@ -95,7 +95,7 @@ CONFIG_MTD_NAND_ECC_SW_BCH=y
- CONFIG_MTD_NAND_AU1550=y
- CONFIG_MTD_NAND_PLATFORM=y
- CONFIG_MTD_SPI_NOR=y
--CONFIG_EEPROM_AT24=y
-+CONFIG_MTD_EEPROM_AT24=y
- CONFIG_EEPROM_AT25=y
- CONFIG_BLK_DEV_SD=y
+ CONFIG_BLK_DEV_SR=y
  CONFIG_CHR_DEV_SG=y
 
 -- 
