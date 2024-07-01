@@ -2,55 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C65E91E915
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 22:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9A791EB4B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 01:19:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gBgTVwIQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=AHmdnpuj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCcNj6NWDz3dhR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 06:00:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WChnq0xxRz3dDJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 09:19:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gBgTVwIQ;
+	dkim=pass (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=AHmdnpuj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iki.fi (client-ip=2a0b:5c81:1c1::37; helo=lahtoruutu.iki.fi; envelope-from=jarkko.sakkinen@iki.fi; receiver=lists.ozlabs.org)
+X-Greylist: delayed 526 seconds by postgrey-1.37 at boromir; Tue, 02 Jul 2024 05:10:08 AEST
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCbG80kdhz3cB2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 05:10:08 +1000 (AEST)
+Received: from localhost (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCcN22tbfz3dTT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 06:00:18 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 918966126F;
-	Mon,  1 Jul 2024 20:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C7BC116B1;
-	Mon,  1 Jul 2024 20:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719864016;
-	bh=HOe/q2x64JLK6UhZnoyDYpQNWW5obTHws+8OFaBVsw8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gBgTVwIQC2olfrsUXYgK3T5FqOLvM9Ko7870xFqkz5qU7nvxkagVJVT23v/rXwyqL
-	 7RQEPYyfbF52KCruxJdNX3/3sfbkXGC0273oh3i86t2dWAWMprwE3JE0UvRoQbK351
-	 xLNNQlFJHy1c6SWMpA2pazbRZk0lgvMDWBSAcHbEREIoCq2zE+Bn3uXxo7yNo6vC80
-	 q+ki+yJygATs9/Cl8peZjm5xUSP2rmpzLIkR+P7VxR/sLkZR5cPl8AjgfXXe1mDdeV
-	 p/p0WfKWZJkeQm/x2ezpoGUn56oE+kDkOYEtpOLaGhUXt8HSXza2iwZFqbRREks9wr
-	 4bGYFFsyJLktw==
-Date: Tue, 2 Jul 2024 01:28:00 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH v3 11/11] powerpc64/bpf: Add support for bpf
- trampolines
-Message-ID: <ldghd5e4ltteizchnhwdzf45rdcy6pr2iovchboz4b263jpbun@dhwjlq223kwv>
-References: <cover.1718908016.git.naveen@kernel.org>
- <a88b5b57d7e9b6db96323a6d6b236d567ebd6443.1718908016.git.naveen@kernel.org>
- <D2E5I4W6C23X.3A42AJCY8ODUJ@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D2E5I4W6C23X.3A42AJCY8ODUJ@gmail.com>
+	(Authenticated sender: sakkinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WCb3m67tPz49Px4;
+	Mon,  1 Jul 2024 22:01:08 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1719860469;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UFdKNGhm4fd8mnyMx9lxPsPdnIHGKCX9D2T3jRpMtYE=;
+	b=AHmdnpuj8lmOtNhL3gAT8QJLEvyjQEUuoZBoVBkA4WgW73DHusAH5w0OqP80s1n02VXeQ1
+	1gMFlEptPp2M4kmowJwlJmRmVO9Pr5O+GIkWJaGhigJrQblMRu+TfIEl07Uh5Z0BfQO45Z
+	B9nRUF5zjNHmgcgw2qHn6kvmyrB2kyPdX18ivLNxmUbPJjFr5XtxKxhp865UwMcwFASO7H
+	6bldFr63vqXWH5eAOsZ6F19UgGrxqZLIXYM8yzu6dfy17zTNaBHTMSMyCSg14NbDe6B7rG
+	92tyiypkuA/I/4MW8CPtmRIszhFCh4nurRpWdAaWLfumOxZaIlITcnsyPsyIiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1719860469;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UFdKNGhm4fd8mnyMx9lxPsPdnIHGKCX9D2T3jRpMtYE=;
+	b=FXdDSELbvygc9gHUh3yf7nk6ZqCnWoTOduv/JYdx14r4rIQpOSbBgwj9kZZjoMZJH8oo8p
+	tYRATjKIjl/NO94nEqnaeWl46O9371lewkx8amRioASmUvsR0AHDDzeYqeXVkcWR/x7xOD
+	Utg5WzlhNU6L8sKJJeT9N/Yf2MXnDlefQWwiziUH/qBY4iOO0voenBz4TFn275tstwJq+N
+	jpnLzaYEEtUXs132EDCdQctWTtZWn/3Jfq4VljE0omm4d/1OhujvA3HEQZphFz2ERPuwIX
+	/VEX33vlp+DhZEpegPyPqzThzk/r1GQcO2HDMzRgUl1MnjFAwpVEw6nEa+F0ZA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1719860469; a=rsa-sha256;
+	cv=none;
+	b=euy5uRNFCw3n+A+4ytH7y3KTDtLNi1T7vNWTo/z60oI1vmplp8hKBnCkGRixS1wjyxySjX
+	Vv04H+Qd3uxY++tIFJAmF7JrkVXTd9/hi2LsICWY8WmCn78DhF8wck/nN5xCnJsc2Xp77P
+	MffjvI4nGyxs2TSiAaJCSIFm2rIKm6H+AjXe8v65ukQoXRFD/GtyfnJbSlvhOuvD0y3ekl
+	I1xgux0IZdV9KQY/0AA8rK47eG5R1V2/j9MifSGwYw6ztI8tCWFhrtYVonddJ5cOKQa0Yq
+	JerJCbJPwh6JnYmZd0c9evU+PURs3m/2Po6JojHOETtFXvmcLLdO2e5SgY9IYw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 01 Jul 2024 19:01:08 +0000
+Message-Id: <D2EFNJTR80JS.1RW91OVY1UH1N@iki.fi>
+From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, "Jarkko Sakkinen"
+ <jarkko@kernel.org>, "Linux regressions mailing list"
+ <regressions@lists.linux.dev>
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+X-Mailer: aerc 0.17.0
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+ <9e167f3e-cd81-45ab-bd34-939f516b05a4@linux.ibm.com>
+ <55e8331d-4682-40df-9a1b-8a08dc5f6409@leemhuis.info>
+ <9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org>
+ <53d96a8b-26ef-46a3-9b68-3d791613e47c@linux.ibm.com>
+In-Reply-To: <53d96a8b-26ef-46a3-9b68-3d791613e47c@linux.ibm.com>
+X-Mailman-Approved-At: Tue, 02 Jul 2024 09:18:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,133 +95,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>, bpf@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org
+Cc: naveen.n.rao@linux.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 01, 2024 at 09:03:52PM GMT, Nicholas Piggin wrote:
-> On Fri Jun 21, 2024 at 5:09 AM AEST, Naveen N Rao wrote:
-> > Add support for bpf_arch_text_poke() and arch_prepare_bpf_trampoline()
-> > for 64-bit powerpc.
-> 
-> What do BPF trampolines give you?
+On Mon Jul 1, 2024 at 6:29 PM UTC, Stefan Berger wrote:
+>
+>
+> On 7/1/24 11:22, Jarkko Sakkinen wrote:
+> > On Fri, 2024-06-28 at 17:00 +0200, Linux regression tracking (Thorsten =
+Leemhuis) wrote:
+> >> [CCing the regression list]
+> >>
+> >> On 20.06.24 00:34, Stefan Berger wrote:
+> >>> Jarkko,
+> >>>  =C2=A0 are you ok with this patch?
+> >>
+> >> Hmmm, hope I did not miss anythng, but looks like nothing happened for
+> >> about 10 days here. Hence:
+> >>
+> >> Jarkko, looks like some feedback from your side really would help to
+> >> find a path to get this regression resolved before 6.10 is released.
+> >>
+> >> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' ha=
+t)
+> >=20
+> > Sorry for latency, and except a bit more slow phase also during
+> > July because I'm most of this month on Holiday, except taking care
+> > 6.11 release.
+> >=20
+> > This really is a bug in the HMAC code not in the IBM driver as
+> > it should not break because of a new feature, i.e. this is only
+> > correct conclusions, give the "no regressions" rule.
+> >=20
+> > Since HMAC is by default only for x86_64 and it does not break
+> > defconfig's, we should take time and fix the actual issue.
+>
+> It was enabled it on my ppc64 system after a git pull -- at least I did=
+=20
+> not enable it explicitly. Besides that others can enable it on any arch=
+=20
+> unless you now change the 'default x86_64' to a 'depends x86_64' iiuc=20
+> otherwise the usage of a Fixes: , as I used in my patch, would be justifi=
+ed.
+>
+> config TCG_TPM2_HMAC
+> 	bool "Use HMAC and encrypted transactions on the TPM bus"
+> 	default X86_64
+> 	select CRYPTO_ECDH
+> 	select CRYPTO_LIB_AESCFB
+> 	select CRYPTO_LIB_SHA256
+>
+> https://elixir.bootlin.com/linux/v6.10-rc6/source/drivers/char/tpm/Kconfi=
+g
 
-At a very basic level, they provide a way to attach bpf programs at 
-function entry/exit - as an alternative to ftrace/kprobe - in a more 
-optimal manner. Commit fec56f5890d9 ("bpf: Introduce BPF trampoline") 
-has more details.
+Yep, it is still a bug, and unmodified IBM vtpm driver must be expected
+to work. I was merely saying that there is some window to  fix it properly
+instead of duct tape since it is not yet widely enable feature.
 
-> 
-> > BPF prog JIT is extended to mimic 64-bit powerpc approach for ftrace
-> > having a single nop at function entry, followed by the function
-> > profiling sequence out-of-line and a separate long branch stub for calls
-> > to trampolines that are out of range. A dummy_tramp is provided to
-> > simplify synchronization similar to arm64.
-> 
-> Synrhonization - between BPF and ftrace interfaces?
-> 
-> > BPF Trampolines adhere to the existing ftrace ABI utilizing a
-> > two-instruction profiling sequence, as well as the newer ABI utilizing a
-> > three-instruction profiling sequence enabling return with a 'blr'. The
-> > trampoline code itself closely follows x86 implementation.
-> >
-> > While the code is generic, BPF trampolines are only enabled on 64-bit
-> > powerpc. 32-bit powerpc will need testing and some updates.
-> >
-> > Signed-off-by: Naveen N Rao <naveen@kernel.org>
-> 
-> Just a quick glance for now, and I don't know BPF code much.
-> 
-> > ---
-> >  arch/powerpc/include/asm/ppc-opcode.h |  14 +
-> >  arch/powerpc/net/bpf_jit.h            |  11 +
-> >  arch/powerpc/net/bpf_jit_comp.c       | 702 +++++++++++++++++++++++++-
-> >  arch/powerpc/net/bpf_jit_comp32.c     |   7 +-
-> >  arch/powerpc/net/bpf_jit_comp64.c     |   7 +-
-> >  5 files changed, 738 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-> > index 076ae60b4a55..9eaa2c5d9b73 100644
-> > --- a/arch/powerpc/include/asm/ppc-opcode.h
-> > +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> > @@ -585,12 +585,26 @@
-> >  #define PPC_RAW_MTSPR(spr, d)		(0x7c0003a6 | ___PPC_RS(d) | __PPC_SPR(spr))
-> >  #define PPC_RAW_EIEIO()			(0x7c0006ac)
-> >  
-> > +/* bcl 20,31,$+4 */
-> > +#define PPC_RAW_BCL()			(0x429f0005)
-> 
-> This is the special bcl form that gives the current address.
-> Maybe call it PPC_RAW_BCL4()
+I was shocked to see that the implementation has absolutely no checks
+whether chip->auth was allocated. I mean anything that would cause
+tpm2_sessions_init() not called could trigger null dereference.
 
-Sure.
+So can you test this and see how your test hardware behaves:
 
-> 
-> >  
-> > +void dummy_tramp(void);
-> > +
-> > +asm (
-> > +"	.pushsection .text, \"ax\", @progbits	;"
-> > +"	.global dummy_tramp			;"
-> > +"	.type dummy_tramp, @function		;"
-> > +"dummy_tramp:					;"
-> > +#ifdef CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +"	blr					;"
-> > +#else
-> > +"	mflr	11				;"
-> 
-> Can you just drop this instruction? The caller will always
-> have it in r11?
+https://lore.kernel.org/linux-integrity/20240701170735.109583-1-jarkko@kern=
+el.org/T/#u
 
-Indeed. Will add a comment and remove the instruction.
+I'll modify it accrodingly if problems persist. Please put your feedback
+over there. I cannot anything but compile test so it could be that
+I've ignored something.
 
-> 
-> > +"	mtctr	11				;"
-> > +"	mtlr	0				;"
-> > +"	bctr					;"
-> > +#endif
-> > +"	.size dummy_tramp, .-dummy_tramp	;"
-> > +"	.popsection				;"
-> > +);
-> > +
-> > +void bpf_jit_build_fentry_stubs(u32 *image, struct codegen_context *ctx)
-> > +{
-> > +	int ool_stub_idx, long_branch_stub_idx;
-> > +
-> > +	/*
-> > +	 * Out-of-line stub:
-> > +	 *	mflr	r0
-> > +	 *	[b|bl]	tramp
-> > +	 *	mtlr	r0 // only with CONFIG_FTRACE_PFE_OUT_OF_LINE
-> > +	 *	b	bpf_func + 4
-> > +	 */
-> > +	ool_stub_idx = ctx->idx;
-> > +	EMIT(PPC_RAW_MFLR(_R0));
-> > +	EMIT(PPC_RAW_NOP());
-> > +	if (IS_ENABLED(CONFIG_FTRACE_PFE_OUT_OF_LINE))
-> > +		EMIT(PPC_RAW_MTLR(_R0));
-> > +	WARN_ON_ONCE(!is_offset_in_branch_range(4 - (long)ctx->idx * 4)); /* TODO */
-> > +	EMIT(PPC_RAW_BRANCH(4 - (long)ctx->idx * 4));
-> > +
-> > +	/*
-> > +	 * Long branch stub:
-> > +	 *	.long	<dummy_tramp_addr>
-> > +	 *	mflr	r11
-> > +	 *	bcl	20,31,$+4
-> > +	 *	mflr	r12
-> > +	 *	ld	r12, -8-SZL(r12)
-> > +	 *	mtctr	r12
-> > +	 *	mtlr	r11 // needed to retain ftrace ABI
-> > +	 *	bctr
-> > +	 */
-> 
-> You could avoid clobbering LR on >= POWER9 with addpcis instruction. Or
-> use a pcrel load with pcrel even. I guess that's something to do later.
-
-Yes, much of BPF JIT could use a re-look to consider opportunities to 
-emit prefix instructions.
-
-
-Thanks,
-Naveen
-
+BR, Jarkko
