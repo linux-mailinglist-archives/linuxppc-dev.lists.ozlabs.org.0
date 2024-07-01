@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB7791D4FA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 02:14:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3824291D507
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 02:15:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QV7UndtV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EYjfm5Vh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WC63s2KCMz3c6n
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 10:14:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WC64g6xMmz3cP7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 10:15:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QV7UndtV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EYjfm5Vh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WC63714sSz30PH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 10:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WC63l3BHKz3cBx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 10:14:27 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 43BCC610A0;
-	Mon,  1 Jul 2024 00:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149DEC32786;
-	Mon,  1 Jul 2024 00:13:51 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6EB34610D5;
+	Mon,  1 Jul 2024 00:14:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716EAC4AF0B;
+	Mon,  1 Jul 2024 00:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792833;
-	bh=UUgRPSL1K1YZEalHMYiJfuLY/dKz6VyTyA2pBhxR47Q=;
+	s=k20201202; t=1719792864;
+	bh=LURQam/qnWpT6p2MfyUdygDTH/0GvaDlwcsioaPmjY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QV7UndtVMSA6kKD0lVqQJT02Vn95imud0P7XSvBOvZnlq3UpOiDCfzkN40KSUqjnB
-	 oH8sffkiXwk9L4ncfS4vXdwy599yGxctelGhAdY82+OKLHcgrmNXW19rAbpKOlTXuN
-	 DOZY1iG62xoveSJjUuTY8aBwWnxlFaek2fxMHjy9xlbezkKK4mhMBw3B3Vugv6SBT5
-	 h3lW7ADeb1aTcnrOPYeIhvby+p5prxSpGD66H2WViHDSeKKAE8bwNXSwxT6EofT44/
-	 ARd7dYJpjo/8jhj3y9AE76BkVC3wIaBU4QDw1HN/AxA/bNZmWCYSsq5tz9hNjstYH5
-	 i4XfOIgZGhydA==
+	b=EYjfm5VhFxj1v54UalLajeBv6KAeshJHtWcleg6BCbJCfSsve/zcuFYFtABO58U0p
+	 eK/ExULi0Y5tYxGN54h6K0IXhVgKczYi8/LBaWILdUY6dRJJYPJah1bWOCues6u4bs
+	 UT7LlSmnzGtBHd3vKBosocDkhisFXRJTvnbL2JdzteXwXW09+W/Xr9lHPMsnOKCvKx
+	 osB9AWJnCNCiPq0l6tSw1Nz/TQlQWWtOYaKwli8VXUs6VOAd+YSLrGHa38Zc8MiCY/
+	 S9bEFVp2ka6qpQPO3V0qhNK/kxXxXXmjCDpJK16w1RQKsKBtRidYEMRCOAcvzdAT5h
+	 f74jFqc3BR6Tg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 04/12] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
-Date: Sun, 30 Jun 2024 20:13:23 -0400
-Message-ID: <20240701001342.2920907-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 2/5] KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group()
+Date: Sun, 30 Jun 2024 20:14:12 -0400
+Message-ID: <20240701001420.2921203-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240701001342.2920907-1-sashal@kernel.org>
-References: <20240701001342.2920907-1-sashal@kernel.org>
+In-Reply-To: <20240701001420.2921203-1-sashal@kernel.org>
+References: <20240701001420.2921203-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.36
+X-stable-base: Linux 6.1.96
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -138,7 +138,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index 93b695b289e99..395659f2f4c8e 100644
+index 40864373ef876..549e33d4ecd62 100644
 --- a/arch/powerpc/kvm/book3s_64_vio.c
 +++ b/arch/powerpc/kvm/book3s_64_vio.c
 @@ -129,14 +129,16 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
