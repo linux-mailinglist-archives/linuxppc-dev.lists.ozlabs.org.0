@@ -1,91 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122C191E015
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 15:01:20 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OALKGbgN;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3C391E22E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:18:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCR4Y5gSXz3dVX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 23:01:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSnP2hwhz3fn2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:18:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OALKGbgN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=m.felsch@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCR3q52pPz3c5q
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 23:00:38 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 461Bur0G025294;
-	Mon, 1 Jul 2024 13:00:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:content-transfer-encoding
-	:mime-version; s=pp1; bh=U2Zm6fipJPDCUZBhGG8eUR8A/aQXoTuzJa8i8U3
-	2foA=; b=OALKGbgN6pa1zgQ29UKKqfa8+ZBpExgohWygoJNmdzn0kRUEhf0tR5d
-	NAoQGkpizQQEqt+whxhUo5/nXGqEur19D8Z0vEMlwxikeSV7S61cO6TbVL1RmUg8
-	YL6cn8AhszUD8FtQRXxJSY/t9BaLabeh/dJea6b4x8bkZLdKS/MFAynXSxHxL0FC
-	ZiYnf+QzAUNKhfmxMNNWRw5Mlpji3yNycH3KNJeifYEcjxK2yWHJ45i1Q3JGqsOM
-	jP8XpYBI1uBs5Ry3VhRUYVfF7ogP0ojOwDb6JE6VhsYOFPJHRyshroP2QIM++4uF
-	7qVBLtNYyjia78s8BpK8f8Rj/b24u6Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 403um1r9dj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 13:00:29 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 461D0TU8008664;
-	Mon, 1 Jul 2024 13:00:29 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 403um1r9df-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 13:00:29 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 461CfMqs009477;
-	Mon, 1 Jul 2024 13:00:28 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 402xtmf2pp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 13:00:28 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 461D0Oji21299650
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Jul 2024 13:00:26 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A5F0320040;
-	Mon,  1 Jul 2024 13:00:24 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A4C22004D;
-	Mon,  1 Jul 2024 13:00:22 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.99.123])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Jul 2024 13:00:22 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3] radix/kfence: map __kfence_pool at page granularity
-Date: Mon,  1 Jul 2024 18:30:21 +0530
-Message-ID: <20240701130021.578240-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.45.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WWbPqNaop5SsmpoxyE0qYcDIwbP4KYHm
-X-Proofpoint-GUID: M4AMW8JS0fTyXTUs47Acqmaur4R9E-dr
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSkL1RLMz3fnY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:15:38 +1000 (AEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1sOHTW-0001LY-Vb; Mon, 01 Jul 2024 15:53:46 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+Subject: [PATCH 0/9] AT24 EEPROM MTD Support
+Date: Mon, 01 Jul 2024 15:53:39 +0200
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-01_10,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 phishscore=0 mlxlogscore=999 impostorscore=0
- lowpriorityscore=0 bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0
- malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2407010099
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOO0gmYC/x3MQQqEMAxG4atI1hNIpTjoVcTF9DeO2WhpVQTx7
+ haX3+K9i7Im00xddVHSw7KtS4H7VIT5t/yVbSymWmovX3EcPB8NO+FtjQbecwBviDCGD2gDoI1
+ 4Kn1MOtn5vvvhvh826v1ZawAAAA==
+To: Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Russell King <linux@armlinux.org.uk>, 
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Tony Lindgren <tony@atomide.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>
+X-Mailer: b4 0.15-dev
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,245 +72,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ritesh Harjani \(IBM\)" <ritesh.list@gmail.com>, Marco Elver <elver@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Alexander Potapenko <glider@google.com>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev, linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, loongarch@lists.linux.dev, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When KFENCE is enabled, total system memory is mapped at page level
-granularity. But in radix MMU mode, ~3GB additional memory is needed
-to map 100GB of system memory at page level granularity when compared
-to using 2MB direct mapping. This is not desired considering KFENCE is
-designed to be enabled in production kernels [1]. Also, mapping only
-the memory allocated for KFENCE pool at page granularity is sufficient
-to enable KFENCE support. So, allocate __kfence_pool during bootup and
-map it at page granularity instead of mapping all system memory at
-page granularity.
+This series adds the intial support to handle EEPROMs via the MTD layer
+as well. This allow the user-space to have separate paritions since
+EEPROMs can become quite large nowadays.
 
-Without patch:
-    # cat /proc/meminfo
-    MemTotal:       101201920 kB
+With this patchset applied EEPROMs can be accessed via:
+  - legacy 'eeprom' device
+  - nvmem device
+  - mtd device(s)
 
-With patch:
-    # cat /proc/meminfo
-    MemTotal:       104483904 kB
+The patchset targets only the AT24 (I2C) EEPROMs since I have no access
+to AT25 (SPI) EEPROMs nor to one of the other misc/eeprom/* devices.
 
-Note that enabling KFENCE at runtime is disabled for radix MMU for now,
-as it depends on the ability to split page table mappings and such APIs
-are not currently implemented for radix MMU.
+Note: I'm not familiar with Kconfig symbol migration so I don't know if
+the last patch is required at the moment. Please be notified that the
+list of recipients is quite large due to the defconfig changes.
 
-All kfence_test.c testcases passed with this patch.
+Regards,
+  Marco
 
-[1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
-
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
+Marco Felsch (9):
+      mtd: core: add nvmem_write support
+      mtd: add mtd_is_master helper
+      mtd: add support to handle EEPROM devices
+      mtd: devices: add AT24 eeprom support
+      ARM: defconfig: convert to MTD_EEPROM_AT24
+      powerpc: convert to MTD_EEPROM_AT24
+      MIPS: configs: convert to MTD_EEPROM_AT24
+      LoongArch: convert to MTD_EEPROM_AT24
+      eeprom: at24: remove deprecated Kconfig symbol
 
-Changes in v3:
-* Updated the changelog and contained changes relevant for radix MMU
-  within radix-pgtable.c as suggested by mpe.
+ MAINTAINERS                                 |   2 +-
+ arch/arm/configs/aspeed_g4_defconfig        |   2 +-
+ arch/arm/configs/aspeed_g5_defconfig        |   2 +-
+ arch/arm/configs/at91_dt_defconfig          |   2 +-
+ arch/arm/configs/axm55xx_defconfig          |   2 +-
+ arch/arm/configs/davinci_all_defconfig      |   2 +-
+ arch/arm/configs/imx_v4_v5_defconfig        |   2 +-
+ arch/arm/configs/imx_v6_v7_defconfig        |   2 +-
+ arch/arm/configs/ixp4xx_defconfig           |   2 +-
+ arch/arm/configs/keystone_defconfig         |   2 +-
+ arch/arm/configs/lpc18xx_defconfig          |   2 +-
+ arch/arm/configs/lpc32xx_defconfig          |   2 +-
+ arch/arm/configs/multi_v5_defconfig         |   2 +-
+ arch/arm/configs/multi_v7_defconfig         |   2 +-
+ arch/arm/configs/mvebu_v5_defconfig         |   2 +-
+ arch/arm/configs/mvebu_v7_defconfig         |   2 +-
+ arch/arm/configs/mxs_defconfig              |   2 +-
+ arch/arm/configs/omap2plus_defconfig        |   2 +-
+ arch/arm/configs/pxa_defconfig              |   2 +-
+ arch/arm/configs/s3c6400_defconfig          |   2 +-
+ arch/arm/configs/sama5_defconfig            |   2 +-
+ arch/arm/configs/sama7_defconfig            |   2 +-
+ arch/arm/configs/shmobile_defconfig         |   2 +-
+ arch/arm/configs/socfpga_defconfig          |   2 +-
+ arch/arm/configs/tegra_defconfig            |   2 +-
+ arch/arm/configs/wpcm450_defconfig          |   2 +-
+ arch/loongarch/configs/loongson3_defconfig  |   2 +-
+ arch/mips/configs/cavium_octeon_defconfig   |   2 +-
+ arch/mips/configs/db1xxx_defconfig          |   2 +-
+ arch/powerpc/configs/44x/warp_defconfig     |   2 +-
+ arch/powerpc/configs/mpc512x_defconfig      |   2 +-
+ arch/powerpc/configs/mpc5200_defconfig      |   2 +-
+ arch/powerpc/configs/ppc6xx_defconfig       |   2 +-
+ arch/powerpc/configs/skiroot_defconfig      |   2 +-
+ drivers/misc/eeprom/Kconfig                 |  31 -------
+ drivers/misc/eeprom/Makefile                |   1 -
+ drivers/mtd/devices/Kconfig                 |  31 +++++++
+ drivers/mtd/devices/Makefile                |   1 +
+ drivers/{misc/eeprom => mtd/devices}/at24.c | 122 +++++++++++++++-------------
+ drivers/mtd/mtdcore.c                       |  49 ++++++++++-
+ include/linux/mtd/mtd.h                     |   5 ++
+ include/uapi/mtd/mtd-abi.h                  |   2 +
+ 42 files changed, 187 insertions(+), 123 deletions(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20240701-b4-v6-10-topic-usbc-tcpci-c4bc9bcce604
 
-Changes in v2:
-* Dropped the patch that adds support to enable KFENCE after startup.
-* Added changes to avoid KFENCE enablement after system startup.
-* Also, added a TODO explaining why KFENCE enablement after startup
-  is not supported for now.
-* Functions to alloc/map __kfence_pool as suggested by Ritesh.
-* Moved changes that apply to ppc32 as well to common file as suggested
-  by Christophe.
-
- 
- arch/powerpc/include/asm/kfence.h        | 11 +++-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 84 ++++++++++++++++++++++--
- arch/powerpc/mm/init-common.c            |  3 +
- 3 files changed, 93 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
-index 424ceef82ae6..fab124ada1c7 100644
---- a/arch/powerpc/include/asm/kfence.h
-+++ b/arch/powerpc/include/asm/kfence.h
-@@ -15,10 +15,19 @@
- #define ARCH_FUNC_PREFIX "."
- #endif
- 
-+#ifdef CONFIG_KFENCE
-+extern bool kfence_disabled;
-+
-+static inline void disable_kfence(void)
-+{
-+	kfence_disabled = true;
-+}
-+
- static inline bool arch_kfence_init_pool(void)
- {
--	return true;
-+	return !kfence_disabled;
- }
-+#endif
- 
- #ifdef CONFIG_PPC64
- static inline bool kfence_protect_page(unsigned long addr, bool protect)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 15e88f1439ec..b0d927009af8 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -17,6 +17,7 @@
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
- #include <linux/memory.h>
-+#include <linux/kfence.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/mmu_context.h>
-@@ -31,6 +32,7 @@
- #include <asm/uaccess.h>
- #include <asm/ultravisor.h>
- #include <asm/set_memory.h>
-+#include <asm/kfence.h>
- 
- #include <trace/events/thp.h>
- 
-@@ -293,7 +295,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
- 
- static int __meminit create_physical_mapping(unsigned long start,
- 					     unsigned long end,
--					     int nid, pgprot_t _prot)
-+					     int nid, pgprot_t _prot,
-+					     unsigned long mapping_sz_limit)
- {
- 	unsigned long vaddr, addr, mapping_size = 0;
- 	bool prev_exec, exec = false;
-@@ -301,7 +304,10 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	int psize;
- 	unsigned long max_mapping_size = memory_block_size;
- 
--	if (debug_pagealloc_enabled_or_kfence())
-+	if (mapping_sz_limit < max_mapping_size)
-+		max_mapping_size = mapping_sz_limit;
-+
-+	if (debug_pagealloc_enabled())
- 		max_mapping_size = PAGE_SIZE;
- 
- 	start = ALIGN(start, PAGE_SIZE);
-@@ -356,8 +362,74 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	return 0;
- }
- 
-+#ifdef CONFIG_KFENCE
-+static bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-+
-+static int __init parse_kfence_early_init(char *arg)
-+{
-+	int val;
-+
-+	if (get_option(&arg, &val))
-+		kfence_early_init = !!val;
-+	return 0;
-+}
-+early_param("kfence.sample_interval", parse_kfence_early_init);
-+
-+static inline phys_addr_t alloc_kfence_pool(void)
-+{
-+	phys_addr_t kfence_pool;
-+
-+	/*
-+	 * TODO: Support to enable KFENCE after bootup depends on the ability to
-+	 *       split page table mappings. As such support is not currently
-+	 *       implemented for radix pagetables, support enabling KFENCE
-+	 *       only at system startup for now.
-+	 *
-+	 *       After support for splitting mappings is available on radix,
-+	 *       alloc_kfence_pool() & map_kfence_pool() can be dropped and
-+	 *       mapping for __kfence_pool memory can be
-+	 *       split during arch_kfence_init_pool().
-+	 */
-+	if (!kfence_early_init)
-+		goto no_kfence;
-+
-+	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-+	if (!kfence_pool)
-+		goto no_kfence;
-+
-+	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	return kfence_pool;
-+
-+no_kfence:
-+	disable_kfence();
-+	return 0;
-+}
-+
-+static inline void map_kfence_pool(phys_addr_t kfence_pool)
-+{
-+	if (!kfence_pool)
-+		return;
-+
-+	if (create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
-+				    -1, PAGE_KERNEL, PAGE_SIZE))
-+		goto err;
-+
-+	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	__kfence_pool = __va(kfence_pool);
-+	return;
-+
-+err:
-+	memblock_phys_free(kfence_pool, KFENCE_POOL_SIZE);
-+	disable_kfence();
-+}
-+#else
-+static inline phys_addr_t alloc_kfence_pool(void) { return 0; }
-+static inline void map_kfence_pool(phys_addr_t kfence_pool) { }
-+#endif
-+
- static void __init radix_init_pgtable(void)
- {
-+	phys_addr_t kfence_pool;
- 	unsigned long rts_field;
- 	phys_addr_t start, end;
- 	u64 i;
-@@ -365,6 +437,8 @@ static void __init radix_init_pgtable(void)
- 	/* We don't support slb for radix */
- 	slb_set_size(0);
- 
-+	kfence_pool = alloc_kfence_pool();
-+
- 	/*
- 	 * Create the linear mapping
- 	 */
-@@ -381,9 +455,11 @@ static void __init radix_init_pgtable(void)
- 		}
- 
- 		WARN_ON(create_physical_mapping(start, end,
--						-1, PAGE_KERNEL));
-+						-1, PAGE_KERNEL, ~0UL));
- 	}
- 
-+	map_kfence_pool(kfence_pool);
-+
- 	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
- 			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
- 		/*
-@@ -875,7 +951,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
- 	}
- 
- 	return create_physical_mapping(__pa(start), __pa(end),
--				       nid, prot);
-+				       nid, prot, ~0UL);
- }
- 
- int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index d3a7726ecf51..21131b96d209 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -31,6 +31,9 @@ EXPORT_SYMBOL_GPL(kernstart_virt_addr);
- 
- bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
- bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
-+#ifdef CONFIG_KFENCE
-+bool __ro_after_init kfence_disabled;
-+#endif
- 
- static int __init parse_nosmep(char *p)
- {
+Best regards,
 -- 
-2.45.1
+Marco Felsch <m.felsch@pengutronix.de>
 
