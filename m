@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CF191E21D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:16:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D77E91E21C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 16:16:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSlb3lf9z3fxN
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:16:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCSl93gryz3fvD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 00:16:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
@@ -15,19 +15,19 @@ Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de 
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSjt5tc8z3fTV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:15:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCSjn0pb2z3fSQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 00:15:09 +1000 (AEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sOHTX-0001LY-UP; Mon, 01 Jul 2024 15:53:47 +0200
+	id 1sOHTY-0001LY-20; Mon, 01 Jul 2024 15:53:48 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 01 Jul 2024 15:53:47 +0200
-Subject: [PATCH 8/9] LoongArch: convert to MTD_EEPROM_AT24
+Date: Mon, 01 Jul 2024 15:53:48 +0200
+Subject: [PATCH 9/9] eeprom: at24: remove deprecated Kconfig symbol
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-8-3fd5f4a193cc@pengutronix.de>
+Message-Id: <20240701-b4-v6-10-topic-usbc-tcpci-v1-9-3fd5f4a193cc@pengutronix.de>
 References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 In-Reply-To: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
 To: Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -75,27 +75,32 @@ Cc: Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev, linux-aspeed@li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The EEPROM_AT24 Kconfig symbol is marked as deprecated. Make use of the
-new Kconfig symbol to select the I2C EEPROM driver support.
+All kernel users are shifted to the new MTD_EEPROM_AT24 Kconfig symbol
+so we can drop the old one.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/loongarch/configs/loongson3_defconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/eeprom/Kconfig | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index b4252c357c8e..31daff75a01a 100644
---- a/arch/loongarch/configs/loongson3_defconfig
-+++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -433,7 +433,7 @@ CONFIG_NVME_TARGET_LOOP=m
- CONFIG_NVME_TARGET_RDMA=m
- CONFIG_NVME_TARGET_FC=m
- CONFIG_NVME_TARGET_TCP=m
--CONFIG_EEPROM_AT24=m
-+CONFIG_MTD_EEPROM_AT24=m
- CONFIG_BLK_DEV_SD=y
- CONFIG_BLK_DEV_SR=y
- CONFIG_CHR_DEV_SG=y
+diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
+index 3a9aaec2f2c7..9e071cfdc6c6 100644
+--- a/drivers/misc/eeprom/Kconfig
++++ b/drivers/misc/eeprom/Kconfig
+@@ -1,13 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ menu "EEPROM support"
+ 
+-config EEPROM_AT24
+-	tristate "I2C EEPROMs / RAMs / ROMs from most vendors"
+-	select MTD_EEPROM_AT24
+-	help
+-	  Deprecated config option to get read/write support to most I2C
+-	  EEPROMs. Please use MTD_EEPROM_AT24 instead.
+-
+ config EEPROM_AT25
+ 	tristate "SPI EEPROMs (FRAMs) from most vendors"
+ 	depends on SPI && SYSFS
 
 -- 
 2.39.2
