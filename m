@@ -2,92 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF77A91D739
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 06:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E573491D741
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 06:56:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jFLWuNer;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pJNeMRFP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WCD7457VBz2y8t
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 14:47:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WCDJd4fbTz3dC1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jul 2024 14:56:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jFLWuNer;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pJNeMRFP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCCsF72KLz3c5Y
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 14:35:45 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4612wVn6023231;
-	Mon, 1 Jul 2024 04:35:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=3df/WM9upqQ7G
-	JTCrWBc0t+iO/WwbSM3dBNKNulTg3c=; b=jFLWuNerzSqYMJ6ShU4RNgPVIhtpE
-	+kBYzARpxYJNyNM93W21rgelipDNNseJ7znHHYgkr35/IBK2bPhy0c3l76ExsAk3
-	3/JOJ/BqVvKDlU4DWIa+gN+PBGl1CmDtDnpvyCshh3IJ3qpO1NOIkBf0IJPbr3HE
-	Ied6HsNMIk+UFbVm/R4cpxnKml0sjXHmEv5snLnHlia/oFtx/M4KqxV44IVNTzw1
-	5kxyeazMzlsQfG7ekPqBRhO4Qk/JSI+UQQsPsxrvbEmUuVXtx3d+lB411mbqee4d
-	nvSc5MpxjgU9eGUUoK51uSw1dL3mGPLHvIduv6BRwiFjvBMcwZM/+vn3w==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WCDHw2n8dz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jul 2024 14:55:23 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4614qDpm024734;
+	Mon, 1 Jul 2024 04:55:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=6
+	s1Wp1MJPT5iZygHaUn92dcxM+cXHEFm46diAdXVT/g=; b=pJNeMRFPvC8FUCrcW
+	3NeK7VgRVJMDZCFxMLt+AnsDSELDiZIyMeRhYWOLpdUbwVK7pVMlqIbkn17B8obC
+	qFQAJOAbTifSUQOGZULYSbj1PAD7hJ4mZMDflOuaEFG+C34JXkQkqR5Pukaj4bG3
+	dq1p1EewBSZiYsVnbbRSL04KPty9GbiuavI/KN2BL1vqOsBtKpjQYl5brXbJeWJU
+	iqN/h/uop+xnztFeYeudRBBRAuZRBrHNk5YB9XvYO0jTsY+dovVPPw4Dw6o3eW02
+	uomAl2OgYeZAQaz8tFrmMeZuiNU1NXTKG8xppCetfaS/ctop8dCnrzh6iMd77MQT
+	jgJUg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 403m4x86v1-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 403hxu8g7j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 04:35:38 +0000 (GMT)
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4614ZbnG004639;
-	Mon, 1 Jul 2024 04:35:37 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 403m4x86uw-1
+	Mon, 01 Jul 2024 04:55:00 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4614t0YK029180;
+	Mon, 1 Jul 2024 04:55:00 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 403hxu8g78-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 04:35:37 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4613ajr8009076;
-	Mon, 1 Jul 2024 04:35:36 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 402w00dgeb-1
+	Mon, 01 Jul 2024 04:55:00 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4614DCm1026417;
+	Mon, 1 Jul 2024 04:54:58 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 402wkpncrh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 04:35:36 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4614ZUVg21168628
+	Mon, 01 Jul 2024 04:54:58 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4614stJ63801774
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Jul 2024 04:35:32 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 85D942004B;
-	Mon,  1 Jul 2024 04:35:30 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BBD5820043;
-	Mon,  1 Jul 2024 04:35:27 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.21.126])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Jul 2024 04:35:27 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org, segher@kernel.crashing.org,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH V5 17/17] tools/perf: Set instruction name to be used with insn-stat when using raw instruction
-Date: Mon,  1 Jul 2024 10:04:30 +0530
-Message-Id: <20240701043430.66666-18-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20240701043430.66666-1-atrajeev@linux.vnet.ibm.com>
-References: <20240701043430.66666-1-atrajeev@linux.vnet.ibm.com>
+	Mon, 1 Jul 2024 04:54:57 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB69258056;
+	Mon,  1 Jul 2024 04:54:54 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D24A58052;
+	Mon,  1 Jul 2024 04:54:51 +0000 (GMT)
+Received: from [9.109.201.126] (unknown [9.109.201.126])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Jul 2024 04:54:51 +0000 (GMT)
+Message-ID: <dcab2925-11cb-454a-ba1e-a32e06117ca4@linux.ibm.com>
+Date: Mon, 1 Jul 2024 10:24:49 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] Skip offline cores when enabling SMT on PowerPC
+To: Thomas Gleixner <tglx@linutronix.de>,
+        "Nysal Jan K.A."
+ <nysal@linux.ibm.com>
+References: <20240612185046.1826891-1-nysal@linux.ibm.com>
+ <875xudoz4d.fsf@mail.lhotse> <87ikxza01w.ffs@tglx>
+ <11f9cc04-91eb-4a70-9ff0-5c6f24483cd3@linux.ibm.com> <87sex26nlw.ffs@tglx>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <87sex26nlw.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VLbig4uQYlUNIwWpDjGVXeJ8BOXugrW4
-X-Proofpoint-GUID: IYv9OZZczYYUvG_7DUb0sANJ1XfACI0X
+X-Proofpoint-GUID: 8mr7tDjkjiElWILwVd6jh9jlf9XVFZeJ
+X-Proofpoint-ORIG-GUID: XqkE6oS4WMgQ1S91_2M3_x2Mc-TIed-f
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-01_03,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 bulkscore=0 mlxlogscore=999 mlxscore=0 adultscore=0
- clxscore=1015 priorityscore=1501 spamscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2407010030
+ definitions=2024-07-01_04,2024-06-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 clxscore=1015 mlxlogscore=999 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407010034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,190 +104,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since the "ins.name" is not set while using raw instruction,
-perf annotate with insn-stat gives wrong data:
 
-Result from "./perf annotate --data-type --insn-stat":
 
-Annotate Instruction stats
-total 615, ok 419 (68.1%), bad 196 (31.9%)
+On 6/25/24 2:54 AM, Thomas Gleixner wrote:
+> On Tue, Jun 25 2024 at 00:41, Shrikanth Hegde wrote:
+>> On 6/24/24 1:44 AM, Thomas Gleixner wrote:
+>>> Right. So changing it not to online a thread when the full core is
+>>> offline should not really break stuff.
+>>>
+>>> OTH, the mechanism to figure that out on x86 is definitely different and
+>>> more complicated than on power because the sibling threads are not
+>>> having consecutive CPU numbers.
+>>
+>> wouldn't topology_sibling_cpumask have this info? 
+>> If the mask is empty does it mean the core is offline? 
+> 
+> The mask is not yet available for the to be brought up CPU. That's
+> established when the CPU boots. It might work because all threads are
+> brought up during early boot for !~*&^!@% reasons, but then it won't
+> work under all circumstances, e.g. 'maxcpus=$N'.
+> 
+> We could fix that now with the new topology enumeration code, but that's
+> a larger scale project.
 
-  Name      :  Good   Bad
------------------------------------------------------------
-            :   419   196
+Ok. 
 
-Patch sets "dl->ins.name" in arch specific function "check_ppc_insn"
-while initialising "struct disasm_line". Also update "ins_find" function
-to pass "struct disasm_line" as a parameter so as to set its name field
-in arch specific call.
-
-With the patch changes:
-
-Annotate Instruction stats
-total 609, ok 446 (73.2%), bad 163 (26.8%)
-
-  Name/opcode:  Good   Bad
------------------------------------------------------------
-  58                  :   323    80
-  32                  :    49    43
-  34                  :    33    11
-  OP_31_XOP_LDX       :     8    20
-  40                  :    23     0
-  OP_31_XOP_LWARX     :     5     1
-  OP_31_XOP_LWZX      :     2     3
-  OP_31_XOP_LDARX     :     3     0
-  33                  :     0     2
-  OP_31_XOP_LBZX      :     0     1
-  OP_31_XOP_LWAX      :     0     1
-  OP_31_XOP_LHZX      :     0     1
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- .../perf/arch/powerpc/annotate/instructions.c  | 18 +++++++++++++++---
- tools/perf/builtin-annotate.c                  |  4 ++--
- tools/perf/util/annotate.c                     |  2 +-
- tools/perf/util/disasm.c                       | 10 +++++-----
- tools/perf/util/disasm.h                       |  2 +-
- 5 files changed, 24 insertions(+), 12 deletions(-)
-
-diff --git a/tools/perf/arch/powerpc/annotate/instructions.c b/tools/perf/arch/powerpc/annotate/instructions.c
-index 7f2b09000860..c1cabe47d5f1 100644
---- a/tools/perf/arch/powerpc/annotate/instructions.c
-+++ b/tools/perf/arch/powerpc/annotate/instructions.c
-@@ -189,8 +189,9 @@ static int cmp_offset(const void *a, const void *b)
- 	return (val1->value - val2->value);
- }
- 
--static struct ins_ops *check_ppc_insn(u32 raw_insn)
-+static struct ins_ops *check_ppc_insn(struct disasm_line *dl)
- {
-+	int raw_insn = dl->raw.raw_insn;
- 	int opcode = PPC_OP(raw_insn);
- 	int mem_insn_31 = PPC_21_30(raw_insn);
- 	struct insn_offset *ret;
-@@ -198,19 +199,30 @@ static struct ins_ops *check_ppc_insn(u32 raw_insn)
- 		"OP_31_INSN",
- 		mem_insn_31
- 	};
-+	char name_insn[32];
- 
- 	/*
- 	 * Instructions with opcode 32 to 63 are memory
- 	 * instructions in powerpc
- 	 */
- 	if ((opcode & 0x20)) {
-+		/*
-+		 * Set name in case of raw instruction to
-+		 * opcode to be used in insn-stat
-+		 */
-+		if (!strlen(dl->ins.name)) {
-+			sprintf(name_insn, "%d", opcode);
-+			dl->ins.name = strdup(name_insn);
-+		}
- 		return &load_store_ops;
- 	} else if (opcode == 31) {
- 		/* Check for memory instructions with opcode 31 */
- 		ret = bsearch(&mem_insns_31_opcode, ins_array, ARRAY_SIZE(ins_array), sizeof(ins_array[0]), cmp_offset);
--		if (ret != NULL)
-+		if (ret) {
-+			if (!strlen(dl->ins.name))
-+				dl->ins.name = strdup(ret->name);
- 			return &load_store_ops;
--		else {
-+		} else {
- 			mem_insns_31_opcode.value = PPC_22_30(raw_insn);
- 			ret = bsearch(&mem_insns_31_opcode, arithmetic_ins_op_31, ARRAY_SIZE(arithmetic_ins_op_31),
- 					sizeof(arithmetic_ins_op_31[0]), cmp_offset);
-diff --git a/tools/perf/builtin-annotate.c b/tools/perf/builtin-annotate.c
-index b10b7f005658..68e929d4746e 100644
---- a/tools/perf/builtin-annotate.c
-+++ b/tools/perf/builtin-annotate.c
-@@ -396,10 +396,10 @@ static void print_annotate_item_stat(struct list_head *head, const char *title)
- 	printf("total %d, ok %d (%.1f%%), bad %d (%.1f%%)\n\n", total,
- 	       total_good, 100.0 * total_good / (total ?: 1),
- 	       total_bad, 100.0 * total_bad / (total ?: 1));
--	printf("  %-10s: %5s %5s\n", "Name", "Good", "Bad");
-+	printf("  %-10s: %5s %5s\n", "Name/opcode", "Good", "Bad");
- 	printf("-----------------------------------------------------------\n");
- 	list_for_each_entry(istat, head, list)
--		printf("  %-10s: %5d %5d\n", istat->name, istat->good, istat->bad);
-+		printf("  %-20s: %5d %5d\n", istat->name, istat->good, istat->bad);
- 	printf("\n");
- }
- 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index 8db2f32700aa..e1f24dff8042 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -2229,7 +2229,7 @@ static struct annotated_item_stat *annotate_data_stat(struct list_head *head,
- 		return NULL;
- 
- 	istat->name = strdup(name);
--	if (istat->name == NULL) {
-+	if ((istat->name == NULL) || (!strlen(istat->name))) {
- 		free(istat);
- 		return NULL;
- 	}
-diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-index 8eb7c86befd6..58bb1c06acb0 100644
---- a/tools/perf/util/disasm.c
-+++ b/tools/perf/util/disasm.c
-@@ -859,7 +859,7 @@ static void ins__sort(struct arch *arch)
- 	qsort(arch->instructions, nmemb, sizeof(struct ins), ins__cmp);
- }
- 
--static struct ins_ops *__ins__find(struct arch *arch, const char *name, u32 raw_insn)
-+static struct ins_ops *__ins__find(struct arch *arch, const char *name, struct disasm_line *dl)
- {
- 	struct ins *ins;
- 	const int nmemb = arch->nr_instructions;
-@@ -871,7 +871,7 @@ static struct ins_ops *__ins__find(struct arch *arch, const char *name, u32 raw_
- 		 */
- 		struct ins_ops *ops;
- 
--		ops = check_ppc_insn(raw_insn);
-+		ops = check_ppc_insn(dl);
- 		if (ops)
- 			return ops;
- 	}
-@@ -905,9 +905,9 @@ static struct ins_ops *__ins__find(struct arch *arch, const char *name, u32 raw_
- 	return ins ? ins->ops : NULL;
- }
- 
--struct ins_ops *ins__find(struct arch *arch, const char *name, u32 raw_insn)
-+struct ins_ops *ins__find(struct arch *arch, const char *name, struct disasm_line *dl)
- {
--	struct ins_ops *ops = __ins__find(arch, name, raw_insn);
-+	struct ins_ops *ops = __ins__find(arch, name, dl);
- 
- 	if (!ops && arch->associate_instruction_ops)
- 		ops = arch->associate_instruction_ops(arch, name);
-@@ -917,7 +917,7 @@ struct ins_ops *ins__find(struct arch *arch, const char *name, u32 raw_insn)
- 
- static void disasm_line__init_ins(struct disasm_line *dl, struct arch *arch, struct map_symbol *ms)
- {
--	dl->ins.ops = ins__find(arch, dl->ins.name, dl->raw.raw_insn);
-+	dl->ins.ops = ins__find(arch, dl->ins.name, dl);
- 
- 	if (!dl->ins.ops)
- 		return;
-diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
-index c1bb1e484bfb..f56beedeb9da 100644
---- a/tools/perf/util/disasm.h
-+++ b/tools/perf/util/disasm.h
-@@ -105,7 +105,7 @@ struct annotate_args {
- struct arch *arch__find(const char *name);
- bool arch__is(struct arch *arch, const char *name);
- 
--struct ins_ops *ins__find(struct arch *arch, const char *name, u32 raw_insn);
-+struct ins_ops *ins__find(struct arch *arch, const char *name, struct disasm_line *dl);
- int ins__scnprintf(struct ins *ins, char *bf, size_t size,
- 		   struct ins_operands *ops, int max_ins_name);
- 
--- 
-2.43.0
-
+Can we please document the behavior on different platforms i.e on x86 and PowerPC? 
+May be in ABI/testing/sysfs-devices-system-cpu? 
