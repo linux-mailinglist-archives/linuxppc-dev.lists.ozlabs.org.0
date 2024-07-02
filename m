@@ -2,56 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1F4924355
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 18:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD66924400
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 18:55:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rl62NnDN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HNgkDJ8Q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WD7Fd29kGz3dHt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 02:11:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WD8DP3H9jz3cWN
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 02:55:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rl62NnDN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HNgkDJ8Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD7Dw1gCBz30Tr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 02:10:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD8Ch5xNSz3bvP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 02:54:56 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id DA72C61E01;
-	Tue,  2 Jul 2024 16:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D657C116B1;
-	Tue,  2 Jul 2024 16:10:53 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id BC9E7CE1DB2;
+	Tue,  2 Jul 2024 16:54:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC98C116B1;
+	Tue,  2 Jul 2024 16:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719936653;
-	bh=Foqi+0/w6QnfJwz2VBdmJaLu5Vl+j/wJ903/i+1ldcg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Rl62NnDNF9JhDP74QvAcJyvVTBjtpbLuaawoOdvQGQbrtt4n+EWSvZ0r2Wf4SCw/W
-	 7qgY0VPU4QaPEForh2kUFrHCbwm3gXxXKQ2Gbyow/va+DaoWzARQy3bLk0cHGR7BH2
-	 9sG5NJonwRs9aLZhzN4rW8S4v3PMqoE4f90mu5APy2a+KyrwCPVJkRe3Ss8CVLOiuw
-	 t/d3OVUoVqPw1EtAeRNiJ+oTxGEQe5bbA4FUUflRlHf66Vje4qORWQfCZSnWV/1JHa
-	 qLMfsIWUTHvJOgDmrPQT6ouYgz/EZUCZhp+APJnNhTmWsgBsUyMJ1D787wGiZN0U57
-	 K9mCBG7NfM8sA==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: [PATCH] tpm: atmel: Drop PPC64 specific MMIO setup
-Date: Tue,  2 Jul 2024 10:10:48 -0600
-Message-ID: <20240702161052.3563599-1-robh@kernel.org>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1719939294;
+	bh=7cP9c/D+q/wwGCs5nQnAntLQJsixlKhlsJONo87tLoY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HNgkDJ8Q/P40NY9TZxmDmG4C9x5ZfwJNAio6ABrveLE4/VxBMWsk+7qsErG6I3vrs
+	 yWoswVVemNDliIVNA6OOW2JLYX/U+YVTORNFZb3yzKbTeHa9gA3JG9hk+U4tcNjJMY
+	 XL6Qf2PuZ7w6OJsprQrTxc8bz3tSZjkK1OpmP4UDLcVU3YwTACM3/ENnCAJGBU340J
+	 K+cfY9fOTRMZUOCJD9dLobZE8RXgJDRHUaHnki4DMFfk1M17DeWPgk0I8PEvG3YBn1
+	 wg7dNbiesOY0SbNP6tageljV9oROiJny8oyIUPgNg8G6aDAe/lj0PNc4qk3NGIHEsP
+	 yjnvmE3t7n8FQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sOgmJ-009Ao2-My;
+	Tue, 02 Jul 2024 17:54:51 +0100
+Date: Tue, 02 Jul 2024 17:54:51 +0100
+Message-ID: <86zfqzhgys.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
+In-Reply-To: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: chzigotzky@xenosoft.de, robh@kernel.org, apatel@ventanamicro.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, madskateman@gmail.com, rtd2@xtra.co.nz, matthew@a-eon.biz, darren@stevens-zone.net, info@xenosoft.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,278 +71,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The PPC64 specific MMIO setup open codes DT address functions rather
-than using standard address parsing functions. The open-coded version
-fails to handle any address translation and is not endian safe.
+On Sun, 30 Jun 2024 11:21:55 +0100,
+Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> 
+> Hello,
+> 
+> There is an issue with the identification of ATA drives with our
+> P.A. Semi Nemo boards [1] after the
+> commit "of/irq: Factor out parsing of interrupt-map parent
+> phandle+args from of_irq_parse_raw()" [2].
 
-I haven't found any evidence of what platform used this. The only thing
-that turned up was a PPC405 platform, but that is 32-bit and PPC405
-support is being removed as well. CONFIG_TCG_ATMEL is not enabled for
-any powerpc config and never was. The support was added in 2005 and
-hasn't been touched since.
+[snip]
 
-Rather than try to modernize and fix this code, just remove it.
+My earlier request for valuable debug information still stands. But
+while you're at it, can you please give the following hack a go?
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- drivers/char/tpm/Kconfig     |   2 +-
- drivers/char/tpm/tpm_atmel.c |  64 +++++++++++++++-
- drivers/char/tpm/tpm_atmel.h | 140 -----------------------------------
- 3 files changed, 62 insertions(+), 144 deletions(-)
- delete mode 100644 drivers/char/tpm/tpm_atmel.h
+	M.
 
-diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-index e63a6a17793c..9b655e9fc7ab 100644
---- a/drivers/char/tpm/Kconfig
-+++ b/drivers/char/tpm/Kconfig
-@@ -162,7 +162,7 @@ config TCG_NSC
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
  
- config TCG_ATMEL
- 	tristate "Atmel TPM Interface"
--	depends on PPC64 || HAS_IOPORT_MAP
-+	depends on HAS_IOPORT_MAP
- 	depends on HAS_IOPORT
- 	help
- 	  If you have a TPM security chip from Atmel say Yes and it 
-diff --git a/drivers/char/tpm/tpm_atmel.c b/drivers/char/tpm/tpm_atmel.c
-index 9fb2defa9dc4..622c4abe8cb3 100644
---- a/drivers/char/tpm/tpm_atmel.c
-+++ b/drivers/char/tpm/tpm_atmel.c
-@@ -15,7 +15,67 @@
-  */
+ 			oldimap = imap;
+ 			imap = of_irq_parse_imap_parent(oldimap, imaplen, out_irq);
+-			if (!imap)
+-				goto fail;
++			if (!imap) {
++				match = 0;
++				break;
++			}
  
- #include "tpm.h"
--#include "tpm_atmel.h"
-+
-+struct tpm_atmel_priv {
-+	int region_size;
-+	int have_region;
-+	unsigned long base;
-+	void __iomem *iobase;
-+};
-+
-+#define atmel_getb(chip, offset) inb(atmel_get_priv(chip)->base + offset)
-+#define atmel_putb(val, chip, offset) \
-+	outb(val, atmel_get_priv(chip)->base + offset)
-+#define atmel_request_region request_region
-+#define atmel_release_region release_region
-+/* Atmel definitions */
-+enum tpm_atmel_addr {
-+	TPM_ATMEL_BASE_ADDR_LO = 0x08,
-+	TPM_ATMEL_BASE_ADDR_HI = 0x09
-+};
-+
-+static inline int tpm_read_index(int base, int index)
-+{
-+	outb(index, base);
-+	return inb(base+1) & 0xFF;
-+}
-+
-+/* Verify this is a 1.1 Atmel TPM */
-+static int atmel_verify_tpm11(void)
-+{
-+
-+	/* verify that it is an Atmel part */
-+	if (tpm_read_index(TPM_ADDR, 4) != 'A' ||
-+	    tpm_read_index(TPM_ADDR, 5) != 'T' ||
-+	    tpm_read_index(TPM_ADDR, 6) != 'M' ||
-+	    tpm_read_index(TPM_ADDR, 7) != 'L')
-+		return 1;
-+
-+	/* query chip for its version number */
-+	if (tpm_read_index(TPM_ADDR, 0x00) != 1 ||
-+	    tpm_read_index(TPM_ADDR, 0x01) != 1)
-+		return 1;
-+
-+	/* This is an atmel supported part */
-+	return 0;
-+}
-+
-+/* Determine where to talk to device */
-+static void __iomem * atmel_get_base_addr(unsigned long *base, int *region_size)
-+{
-+	int lo, hi;
-+
-+	if (atmel_verify_tpm11() != 0)
-+		return NULL;
-+
-+	lo = tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_LO);
-+	hi = tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_HI);
-+
-+	*base = (hi << 8) | lo;
-+	*region_size = 2;
-+
-+	return ioport_map(*base, *region_size);
-+}
- 
- /* write status bits */
- enum tpm_atmel_write_status {
-@@ -142,7 +202,6 @@ static void atml_plat_remove(void)
- 	tpm_chip_unregister(chip);
- 	if (priv->have_region)
- 		atmel_release_region(priv->base, priv->region_size);
--	atmel_put_base_addr(priv->iobase);
- 	platform_device_unregister(pdev);
- }
- 
-@@ -211,7 +270,6 @@ static int __init init_atmel(void)
- err_unreg_dev:
- 	platform_device_unregister(pdev);
- err_rel_reg:
--	atmel_put_base_addr(iobase);
- 	if (have_region)
- 		atmel_release_region(base,
- 				     region_size);
-diff --git a/drivers/char/tpm/tpm_atmel.h b/drivers/char/tpm/tpm_atmel.h
-deleted file mode 100644
-index 7ac3f69dcf0f..000000000000
---- a/drivers/char/tpm/tpm_atmel.h
-+++ /dev/null
-@@ -1,140 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Copyright (C) 2005 IBM Corporation
-- *
-- * Authors:
-- * Kylene Hall <kjhall@us.ibm.com>
-- *
-- * Maintained by: <tpmdd-devel@lists.sourceforge.net>
-- *
-- * Device driver for TCG/TCPA TPM (trusted platform module).
-- * Specifications at www.trustedcomputinggroup.org
-- *
-- * These difference are required on power because the device must be
-- * discovered through the device tree and iomap must be used to get
-- * around the need for holes in the io_page_mask.  This does not happen
-- * automatically because the tpm is not a normal pci device and lives
-- * under the root node.
-- */
--
--struct tpm_atmel_priv {
--	int region_size;
--	int have_region;
--	unsigned long base;
--	void __iomem *iobase;
--};
--
--#ifdef CONFIG_PPC64
--
--#include <linux/of.h>
--
--#define atmel_getb(priv, offset) readb(priv->iobase + offset)
--#define atmel_putb(val, priv, offset) writeb(val, priv->iobase + offset)
--#define atmel_request_region request_mem_region
--#define atmel_release_region release_mem_region
--
--static inline void atmel_put_base_addr(void __iomem *iobase)
--{
--	iounmap(iobase);
--}
--
--static void __iomem * atmel_get_base_addr(unsigned long *base, int *region_size)
--{
--	struct device_node *dn;
--	unsigned long address, size;
--	const unsigned int *reg;
--	int reglen;
--	int naddrc;
--	int nsizec;
--
--	dn = of_find_node_by_name(NULL, "tpm");
--
--	if (!dn)
--		return NULL;
--
--	if (!of_device_is_compatible(dn, "AT97SC3201")) {
--		of_node_put(dn);
--		return NULL;
--	}
--
--	reg = of_get_property(dn, "reg", &reglen);
--	naddrc = of_n_addr_cells(dn);
--	nsizec = of_n_size_cells(dn);
--
--	of_node_put(dn);
--
--
--	if (naddrc == 2)
--		address = ((unsigned long) reg[0] << 32) | reg[1];
--	else
--		address = reg[0];
--
--	if (nsizec == 2)
--		size =
--		    ((unsigned long) reg[naddrc] << 32) | reg[naddrc + 1];
--	else
--		size = reg[naddrc];
--
--	*base = address;
--	*region_size = size;
--	return ioremap(*base, *region_size);
--}
--#else
--#define atmel_getb(chip, offset) inb(atmel_get_priv(chip)->base + offset)
--#define atmel_putb(val, chip, offset) \
--	outb(val, atmel_get_priv(chip)->base + offset)
--#define atmel_request_region request_region
--#define atmel_release_region release_region
--/* Atmel definitions */
--enum tpm_atmel_addr {
--	TPM_ATMEL_BASE_ADDR_LO = 0x08,
--	TPM_ATMEL_BASE_ADDR_HI = 0x09
--};
--
--static inline int tpm_read_index(int base, int index)
--{
--	outb(index, base);
--	return inb(base+1) & 0xFF;
--}
--
--/* Verify this is a 1.1 Atmel TPM */
--static int atmel_verify_tpm11(void)
--{
--
--	/* verify that it is an Atmel part */
--	if (tpm_read_index(TPM_ADDR, 4) != 'A' ||
--	    tpm_read_index(TPM_ADDR, 5) != 'T' ||
--	    tpm_read_index(TPM_ADDR, 6) != 'M' ||
--	    tpm_read_index(TPM_ADDR, 7) != 'L')
--		return 1;
--
--	/* query chip for its version number */
--	if (tpm_read_index(TPM_ADDR, 0x00) != 1 ||
--	    tpm_read_index(TPM_ADDR, 0x01) != 1)
--		return 1;
--
--	/* This is an atmel supported part */
--	return 0;
--}
--
--static inline void atmel_put_base_addr(void __iomem *iobase)
--{
--}
--
--/* Determine where to talk to device */
--static void __iomem * atmel_get_base_addr(unsigned long *base, int *region_size)
--{
--	int lo, hi;
--
--	if (atmel_verify_tpm11() != 0)
--		return NULL;
--
--	lo = tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_LO);
--	hi = tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_HI);
--
--	*base = (hi << 8) | lo;
--	*region_size = 2;
--
--	return ioport_map(*base, *region_size);
--}
--#endif
+ 			match &= of_device_is_available(out_irq->np);
+ 			if (match)
+
+This may not be the final workaround even if it solves your boot
+problem, but will at least give us a hint at what is going wrong.
+
+I have the fuzzy feeling that we may be able to lob this broken system
+as part of the of_irq_imap_abusers[] array, which would solve things
+pretty "neatly".
+
+	M.
+
 -- 
-2.43.0
-
+Without deviation from the norm, progress is not possible.
