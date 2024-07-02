@@ -1,92 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEFD9246BC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 19:56:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B53092489B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 21:50:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mvSgJCG5;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=2L5SkDMM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JJp1yF3Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WD9ZQ4Wgkz3cVn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 03:56:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDD5j2vjnz3dVx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 05:50:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mvSgJCG5;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=2L5SkDMM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JJp1yF3Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD9Yd3tPGz30Ty
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 03:55:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1719942903; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=DWGnEPQ9ll4FHGnZdCzyUt/27cf3QCHSLL2H6N7j1y9I8/5t/QSLfLhciIdaMGC42Y
-    ZGbsO4EyECz9Xn5dMA71o8YI7a5GqseVXqZVop6T/IzVSQWEAYfqkJRUhOAG4Y6lLE5q
-    oo/HTc5mRaEMlpT0auXnXLco6/rcwQyRI8Ifl0zecAArrKEf5BuPVP7EMqBZObEY2pjz
-    8O4EcY7onRtxeJyX5gVtjPSiQNsZlG+AwF4kFtyIl52PEB0d0m/oR6ddqLAzV/mW3awJ
-    1k3p9lH+TC68Jurp6Pqj6cK+sHN8mKox01s7A6P3yGk4Wgx6l/tXAEpUeGIjdC5HpggJ
-    H+eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1719942903;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=E673tN2YQj+8YdDOgypEUonLvv3SNH0/z/xJh5Re/DY=;
-    b=TUH8DlAnzXLMbDaA3ihEWSXBi0VQHbeMnvhQgaiEWRjHbluLzIqYjTG0W1Fc+vMAzW
-    6qrH5pNpyrNE4iz1yucvS/iJCFZkatQacxjOdufZQQ7T1QBkcVjRcQmUZ5hTJCRqNEnV
-    7kVnJvar/aWp9C3+WYz5sS38Q41UQJYMq4iJkZvEqeJ1WO9G4BbUkcNDvMLI1Z0+E52R
-    p16OMXLEglADqukqNzFp8bUTRVoNov8rrP6TUJHsoX8wdqBCvCAR1QJEVGUFBSJJf12z
-    rUS8/WX4tAL/fMg8SGFPeTNZiAG/yRSmob8qoS0421Z3348yOOQzy4tvqGURq3jSJvUb
-    V0aA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1719942903;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=E673tN2YQj+8YdDOgypEUonLvv3SNH0/z/xJh5Re/DY=;
-    b=mvSgJCG5rSIq5dPPNijVjlXgWwhiola37MFtb1m9skjSHrEwcRhKFw/ZcTO6ifc2/j
-    pc4T1yNBPdQzycn+0ygstbXGz2axwqCpcExcrz8XrXX9eswR++lMGY93b9M1Ae6cF8HC
-    petAvBZi2jHzkmgwOGjA14GAKa/hTw4eywvEf05JrKNd680jgimHJ7tT//YlvzjC0Uy5
-    rcW/gQJgAf2lCgz7ut9YKi4HsoGOJmKU2sI5ZBJtXd9VMK1VTAlDkYbRULcr5DfqH6OO
-    aeNMdV2zsMVVFzpYCyxMTqcR4wnyuxFuJi8IwHjGNolp9q61vUNOO1qSpKiMo7H3r2e0
-    FMyg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1719942903;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=E673tN2YQj+8YdDOgypEUonLvv3SNH0/z/xJh5Re/DY=;
-    b=2L5SkDMMJPrUnN6/0MOrNysN60u+4JYcWSxBecqkr/iZwN1FF+8LF70umCGJRvJDoJ
-    2NmsXx+urSXr+XIM6BAg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43JwibS68C57Gui33iwqCo/HyxjBt/hV5IkL4zA=="
-Received: from [IPV6:2a01:599:803:d861:d64a:638:126b:586e]
-    by smtp.strato.de (RZmta 50.5.0 AUTH)
-    with ESMTPSA id e08389062Ht2M9R
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 2 Jul 2024 19:55:02 +0200 (CEST)
-Message-ID: <68b7988d-eaaa-4713-99c3-525a34c5b322@xenosoft.de>
-Date: Tue, 2 Jul 2024 19:55:38 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDD516tHhz3cZr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 05:49:25 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2303662033;
+	Tue,  2 Jul 2024 19:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB711C116B1;
+	Tue,  2 Jul 2024 19:49:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719949761;
+	bh=IzPBlqQ/4Tj0Uk881o0FtB2r6D4ok3HgHe3q8VdKMYQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JJp1yF3ZqPfcjcf1fQipSRB97E8twMHSKw2qvDcIkGsQufK9CbZMjG1tHNofyntZw
+	 zVLxQ3TvW2Ex7gPj0v+r7PopNZNh11BDv28j1KD/MzCpH3dP+esWC2JBepOdhde7QT
+	 jcWu6vEGnDo3CO6iej+4BBhjQRnNoTX6MC5XAusQjb2eJS9XtyATJ9kpUmCKxigaHW
+	 mczEY797vfO1L6B6nON6QiRZoLtiRpGhKiOGDt9wxA7cEzomDz9km1AZxfavq6bgbI
+	 i2f2iulHL+yX3lqJ8PHGi9lgiyhb4vaS9FcIaMpD0s51BFvR6+ZvcyFNBohWH9zBok
+	 OLk6cHB/FRYAA==
+Received: from disco-boy.misterjones.org ([217.182.43.188] helo=www.loen.fr)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sOjV9-009CvD-B4;
+	Tue, 02 Jul 2024 20:49:19 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Date: Tue, 02 Jul 2024 20:49:18 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
 Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
  after the of/irq updates 2024-05-29
-To: Marc Zyngier <maz@kernel.org>
+In-Reply-To: <68b7988d-eaaa-4713-99c3-525a34c5b322@xenosoft.de>
 References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
  <861q4bizxc.wl-maz@kernel.org>
-Content-Language: en-US
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <861q4bizxc.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <68b7988d-eaaa-4713-99c3-525a34c5b322@xenosoft.de>
+User-Agent: Roundcube Webmail/1.4.15
+Message-ID: <5a6166f107ae31536665d42f410d314d@kernel.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 217.182.43.188
+X-SA-Exim-Rcpt-To: chzigotzky@xenosoft.de, robh@kernel.org, apatel@ventanamicro.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, madskateman@gmail.com, rtd2@xtra.co.nz, matthew@a-eon.biz, darren@stevens-zone.net, info@xenosoft.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,58 +79,36 @@ Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Marc,
+On 2024-07-02 18:55, Christian Zigotzky wrote:
+> Hello Marc,
+> 
+> Thank you for your reply.
+> 
+> On 02.07.24 17:19, Marc Zyngier wrote:
+>> Please provide the device tree for your platform. It isn't possible to
+>> debug this without it, no matter how many pictures you provide. If it
+>> doesn't exist in source form, you can dump it using:
+>> 
+>> # dtc -I dtb /sys/firmware/fdt
+>> 
+>> and posting the full output.
+>> 
+>> Additionally, a full dmesg of both working and non working boots would
+>> be useful.
+>> 
+>> Thanks,
+>> 
+>> 	M.
+>> 
+> The device tree of the Nemo board and further information:
+> https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
 
-Thank you for your reply.
+Please post these things on the list. I have no interest in
+fishing things on a random forum, and this information is
+useful for everyone.
 
-On 02.07.24 17:19, Marc Zyngier wrote:
-> Christian,
->
-> On Sun, 30 Jun 2024 11:21:55 +0100,
-> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->> Hello,
->>
->> There is an issue with the identification of ATA drives with our
->> P.A. Semi Nemo boards [1] after the
->> commit "of/irq: Factor out parsing of interrupt-map parent
->> phandle+args from of_irq_parse_raw()" [2].
->>
->> Error messages:
->>
->> ata2.00: failed to IDENTIFY (I/O error, err_mask=0x4)
->> ata2.00: qc timeout after 10000 mssecs (cmd 0xec)
->>
->> Screenshots [3]
->>
->> I bisected yesterday [4] and "of/irq: Factor out parsing of
->> interrupt-map parent phandle+args from of_irq_parse_raw()" [2] is the
->> first bad commit.
->>
->> Then I created a patch for reverting this first bad commit. I also
->> reverted the changes in drivers/of/property.c. [5]
->>
->> The patched kernel boots with successful detection of the ATA devices.
->>
->> Please check the of/irq updates.
-> It is hard to understand what is going on with so little information.
->
-> Please provide the device tree for your platform. It isn't possible to
-> debug this without it, no matter how many pictures you provide. If it
-> doesn't exist in source form, you can dump it using:
->
-> # dtc -I dtb /sys/firmware/fdt
->
-> and posting the full output.
->
-> Additionally, a full dmesg of both working and non working boots would
-> be useful.
->
-> Thanks,
->
-> 	M.
->
-The device tree of the Nemo board and further information: 
-https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
+Thanks,
 
-Cheers,
-Christian
+          M.
+-- 
+Jazz is not dead. It just smells funny...
