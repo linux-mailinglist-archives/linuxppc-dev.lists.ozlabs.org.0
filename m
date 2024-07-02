@@ -1,94 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E18923BCE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 12:49:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D95923BFF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 13:03:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bpSGZ8Ud;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bpSGZ8Ud;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WTeYbF90;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hzX7/nzn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WD06D3Z05z3fs2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 20:49:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WD0Px4DRBz3ftj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 21:03:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bpSGZ8Ud;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bpSGZ8Ud;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WTeYbF90;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hzX7/nzn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD05V6vCcz3fVN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 20:49:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD0PG16tPz3frP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 21:02:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719917339;
+	s=mimecast20190719; t=1719918154;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=e40lUf574M4qXxXXDozor7zE2aQYYc5FGooszxB9ayw=;
-	b=bpSGZ8UdKQHcXfKuXQ98LqR0CCSOOSI3q1+30JJp0ILkK2BFA6i7eWtnHcBBo6XkP0Qgv2
-	Vpw+8De9IJbzAIU8nIlihs18Ka6/EnGodSYG182tzB8dbr54Suq4G8YyAqUK1Adt3T04qO
-	D6tfr3kjhVe+JLg68Rym0HH8Km/j08k=
+	bh=UL8IHyEAzzEhuqWUqFBrX1hYRvB3a6Us/wF14KpIMm8=;
+	b=WTeYbF9045mnI4qmZ70HoC6XOPbyBODdDkWMWh4X+1PylHyF1ud8xoEe9WDY7c1utM93zp
+	vpKw6wSbFIVrzKaKlwuETOixoN1mCnKH2vOrYqxN0V2h8Ipi/DU3WH8d21vKB6/o4d1nwU
+	rpaH/B/1P0cRBTc95+CEVQTPFT/ZDuw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719917339;
+	s=mimecast20190719; t=1719918155;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=e40lUf574M4qXxXXDozor7zE2aQYYc5FGooszxB9ayw=;
-	b=bpSGZ8UdKQHcXfKuXQ98LqR0CCSOOSI3q1+30JJp0ILkK2BFA6i7eWtnHcBBo6XkP0Qgv2
-	Vpw+8De9IJbzAIU8nIlihs18Ka6/EnGodSYG182tzB8dbr54Suq4G8YyAqUK1Adt3T04qO
-	D6tfr3kjhVe+JLg68Rym0HH8Km/j08k=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UL8IHyEAzzEhuqWUqFBrX1hYRvB3a6Us/wF14KpIMm8=;
+	b=hzX7/nznnaa+6+t+kwpn1SRFfbISdXmhfNui/Ta4DJAUzE9yJQQApcAfs+6IIhhyMjnZFu
+	9K5cTFAlZhzIQ2UuoanS/64zZ0rTGkdKgrmd4eMPDn1bHm02nZEGou8fp2R1dSf9EndlEb
+	XaGueMoPXfYPpQ4vWtoZkdBZmKwYYcc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-184-tPmCq2LxMUKxSaVpCPwwbw-1; Tue, 02 Jul 2024 06:48:58 -0400
-X-MC-Unique: tPmCq2LxMUKxSaVpCPwwbw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-424fb2df2bdso37138365e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2024 03:48:57 -0700 (PDT)
+ us-mta-543-tRwEv0elMNuwBe-CZC34QA-1; Tue, 02 Jul 2024 07:02:32 -0400
+X-MC-Unique: tRwEv0elMNuwBe-CZC34QA-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-363edbfc61dso2150195f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jul 2024 04:02:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719917337; x=1720522137;
+        d=1e100.net; s=20230601; t=1719918151; x=1720522951;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=e40lUf574M4qXxXXDozor7zE2aQYYc5FGooszxB9ayw=;
-        b=gXA0ozAooLxZYv66PObDVxY4dz3j/vOEN17YNlg68IEA7K3qcZHcUSFsQwwShwEc5/
-         OGNBFWVuQ3GKsDcCB/XleRdxHEL7vXqCqv/EPaZmXX3UuWiEHuicpAE7VSQIoh1tBaAC
-         usuQF5qmcv43ibLbBiBoUwyEFejjJQcAJRTljinraod/vVl3O6tX6yPKLR/PW4mgLwmJ
-         Z5ERL/wA0466dbMjivJ0wNt7OFXjBTuCLPEYJjvAz8zJLPrA3sm9XxMGFrBbyzxVyMHQ
-         rh9mWJ96XyE8x9QxF15Q8o/5UPaekTZsZiX47oo1UFyto6OshFvbSPcZBCJie5KDwByM
-         Xyyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUv1zT8Wxo4uimzWvg5oEPvLx5PPtPVVjS2UMcKGmAMrFit0dQdFFxSFvYlcSgiBTB0M1Z2HH8Jk1h8u7V/3HTPU6hKgEoLPE7lAYKtBA==
-X-Gm-Message-State: AOJu0Yy85zN80LbOk5FEdkIdVDzO0bs6sSEutYYu1XYZFPD0qpM3bE+S
-	JjtfuFz8oC0fXBRUkS0vUnGQ5+MRVdK6jD5cQtPBd8ALUlKd1AbhTW97Z8LyWrzhhNub70MrzUv
-	VK4FbpIXTY5ibVMqTn99iE10o1zfoUvvtLdBNlutmBO1RpdLzB0OlZ2KqcGVpCWw=
-X-Received: by 2002:a05:600c:26c8:b0:424:a587:4392 with SMTP id 5b1f17b1804b1-4257a00bf07mr69405685e9.18.1719917337006;
-        Tue, 02 Jul 2024 03:48:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElVpxJjsjgmIY/02xE5nrq6WSECRBJ5vGvYOI17Ei9pKZ1oIb3sEwCyqTAcHum0fUrwRrmDg==
-X-Received: by 2002:a05:600c:26c8:b0:424:a587:4392 with SMTP id 5b1f17b1804b1-4257a00bf07mr69405445e9.18.1719917336542;
-        Tue, 02 Jul 2024 03:48:56 -0700 (PDT)
+        bh=UL8IHyEAzzEhuqWUqFBrX1hYRvB3a6Us/wF14KpIMm8=;
+        b=eng+pmoCK4ZQtlyyCFV36/PBqvLml3Pf5uv8TUEI3AkjsTs/+TsveD5k942B1xk2uh
+         4rHG8S6hkx//FLN7wATAzrLbuVA91ipKYUKc0rnJF/F+JhjgfZRhQrFKUXP9vZ39VmlB
+         dG/BI9b+qIpV5sz0qo0TdEqACFJEA7D4Jxi1quFmBg+KbcptKyJ3IcL1lx+i9KczCQbq
+         GrsNGeTJyzDwWllix5AV1XLVpP0QSa/GgJ6o2LHKSCimFjcTY97hUfHd6EnCX9pbLS8o
+         R+eLXwQE9kZ3QdWBAmZEsd9JcMLSCe1dDNzpDH+KCAir2u5G4biJ13vQpvjoTA6weItl
+         Up5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUnBWuBa1+rBuCF+ap3ZN+fzn1Sn8BXOSaLPOltznLhavXBhmeEkYFAnJJ0Z1jK7jtpYJbOOU6CfV8AeZUPkUOU90NXbsWz794cQBCaYA==
+X-Gm-Message-State: AOJu0Ywc1kwoYGzhg4vlyGxUFsl64d9LwqI1YTWJATLDVhXfulrxiq6w
+	zX/Qb714alDr5A+w0sSgzLYw4ea2/LjcSlcV+gtd6LiIshB1R3zRQMHObId8GWOMWOPFjvi86W0
+	4wEqONx/Bq9n6iENuTirU6TUFLiWnLM3i7g+6T21e2LAz4y+6yuDYbJHWNaaVnWg=
+X-Received: by 2002:a05:6000:1bd1:b0:367:4383:d9b4 with SMTP id ffacd0b85a97d-36775725c29mr5279859f8f.56.1719918151422;
+        Tue, 02 Jul 2024 04:02:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsWBU7bpbDTnWN0KIwHats8EvGUXSpFzRTluYA8doiuhAlqNN/TYVapDq2HAfSv1xUm1Jzhg==
+X-Received: by 2002:a05:6000:1bd1:b0:367:4383:d9b4 with SMTP id ffacd0b85a97d-36775725c29mr5279833f8f.56.1719918150932;
+        Tue, 02 Jul 2024 04:02:30 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c739:2400:78ac:64bb:a39e:2578? (p200300cbc739240078ac64bba39e2578.dip0.t-ipconnect.de. [2003:cb:c739:2400:78ac:64bb:a39e:2578])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b064f16sm193449815e9.27.2024.07.02.03.48.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3678aa3caccsm676393f8f.35.2024.07.02.04.02.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 03:48:56 -0700 (PDT)
-Message-ID: <49ab22b4-ed27-4a72-9978-aaa9328870a3@redhat.com>
-Date: Tue, 2 Jul 2024 12:48:54 +0200
+        Tue, 02 Jul 2024 04:02:30 -0700 (PDT)
+Message-ID: <0b549ff0-b0b6-4fc8-aa6f-0d76157575b3@redhat.com>
+Date: Tue, 2 Jul 2024 13:02:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/13] gup: Don't allow FOLL_LONGTERM pinning of FS DAX
- pages
+Subject: Re: [PATCH 07/13] huge_memory: Allow mappings of PUD sized pages
 To: Alistair Popple <apopple@nvidia.com>
 References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
- <74a9fc9e018e54d7afbeae166479e2358e0a1225.1719386613.git-series.apopple@nvidia.com>
- <f9539968-4b76-41a9-92d5-00082c7d1e96@redhat.com>
- <87le2klleb.fsf@nvdebian.thelocal>
+ <bd332b0d3971b03152b3541f97470817c5147b51.1719386613.git-series.apopple@nvidia.com>
+ <cf572c69-a754-4d41-b9c4-7a079b25b3c3@redhat.com>
+ <874j98gjfg.fsf@nvdebian.thelocal>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -135,7 +134,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <87le2klleb.fsf@nvdebian.thelocal>
+In-Reply-To: <874j98gjfg.fsf@nvdebian.thelocal>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -156,64 +155,123 @@ Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, linux-doc@vger.k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02.07.24 01:47, Alistair Popple wrote:
+On 02.07.24 12:19, Alistair Popple wrote:
 > 
 > David Hildenbrand <david@redhat.com> writes:
 > 
 >> On 27.06.24 02:54, Alistair Popple wrote:
->>> Longterm pinning of FS DAX pages should already be disallowed by
->>> various pXX_devmap checks. However a future change will cause these
->>> checks to be invalid for FS DAX pages so make
->>> folio_is_longterm_pinnable() return false for FS DAX pages.
->>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->>> ---
->>>    include/linux/memremap.h | 11 +++++++++++
->>>    include/linux/mm.h       |  4 ++++
->>>    2 files changed, 15 insertions(+)
->>> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
->>> index 6505713..19a448e 100644
->>> --- a/include/linux/memremap.h
->>> +++ b/include/linux/memremap.h
->>> @@ -193,6 +193,17 @@ static inline bool folio_is_device_coherent(const struct folio *folio)
->>>    	return is_device_coherent_page(&folio->page);
->>>    }
->>>    +static inline bool is_device_dax_page(const struct page *page)
->>> +{
->>> +	return is_zone_device_page(page) &&
->>> +		page_dev_pagemap(page)->type == MEMORY_DEVICE_FS_DAX;
->>> +}
->>> +
->>> +static inline bool folio_is_device_dax(const struct folio *folio)
->>> +{
->>> +	return is_device_dax_page(&folio->page);
->>> +}
->>> +
->>>    #ifdef CONFIG_ZONE_DEVICE
->>>    void zone_device_page_init(struct page *page);
->>>    void *memremap_pages(struct dev_pagemap *pgmap, int nid);
->>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index b84368b..4d1cdea 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -2032,6 +2032,10 @@ static inline bool folio_is_longterm_pinnable(struct folio *folio)
->>>    	if (folio_is_device_coherent(folio))
->>>    		return false;
->>>    +	/* DAX must also always allow eviction. */
->>> +	if (folio_is_device_dax(folio))
->>> +		return false;
->>> +
->>>    	/* Otherwise, non-movable zone folios can be pinned. */
->>>    	return !folio_is_zone_movable(folio);
->>>    
+>>> Currently DAX folio/page reference counts are managed differently to
+>>> normal pages. To allow these to be managed the same as normal pages
+>>> introduce dax_insert_pfn_pud. This will map the entire PUD-sized folio
+>>> and take references as it would for a normally mapped page.
+>>> This is distinct from the current mechanism, vmf_insert_pfn_pud,
+>>> which
+>>> simply inserts a special devmap PUD entry into the page table without
+>>> holding a reference to the page for the mapping.
 >>
->> Why is the check in check_vma_flags() insufficient? GUP-fast maybe?
+>> Do we really have to involve mapcounts/rmap for daxfs pages at this
+>> point? Or is this only "to make it look more like other pages" ?
 > 
-> Right. This came up when I was changing the code for GUP-fast, but also
-> they shouldn't be longterm pinnable and adding the case to
-> folio_is_longterm_pinnable() is an excellent way of documenting that.
+> The aim of the series is make FS DAX and other ZONE_DEVICE pages look
+> like other pages, at least with regards to the way they are refcounted.
+> 
+> At the moment they are not refcounted - instead their refcounts are
+> basically statically initialised to one and there are all these special
+> cases and functions requiring magic PTE bits (pXX_devmap) to do the
+> special DAX reference counting. This then adds some cruft to manage
+> pgmap references and to catch the 2->1 page refcount transition. All
+> this just goes away if we manage the page references the same as other
+> pages (and indeed we already manage DEVICE_PRIVATE and COHERENT pages
+> the same as normal pages).
+> 
+> So I think to make this work we at least need the mapcounts.
+> 
 
-Makes sense, might be worth adding that (GUP-fast and check_vma_flags() 
-covering GUP-slow) to the patch description.
+We only really need the mapcounts if we intend to do something like 
+folio_mapcount() == folio_ref_count() to detect unexpected folio 
+references, and if we have to have things like folio_mapped() working. 
+For now that was not required, that's why I am asking.
+
+Background also being that in a distant future folios will be decoupled 
+more from other compound pages, and only folios (or "struct anon_folio" 
+/ "struct file_folio") would even have mapcounts.
+
+For example, most stuff we map (and refcount!) via vm_insert_page() 
+really must stop involving mapcounts. These won't be "ordinary" 
+mapcount-tracked folios in the future, they are simply some refcounted 
+pages some ordinary driver allocated.
+
+For FS-DAX, if we'll be using the same "struct file_folio" approach as 
+for ordinary pageache memory, then this is the right thing to do here.
+
+
+>> I'm asking this because:
+>>
+>> (A) We don't support mixing PUD+PMD mappings yet. I have plans to change
+>>      that in the future, but for now you can only map using a single PUD
+>>      or by PTEs. I suspect that's good enoug for now for dax fs?
+> 
+> Yep, that's all we support.
+> 
+>> (B) As long as we have subpage mapcounts, this prevents vmemmap
+>>      optimizations [1]. Is that only used for device-dax for now and are
+>>      there no plans to make use of that for fs-dax?
+> 
+> I don't have any plans to. This is purely focussed on refcounting pages
+> "like normal" so we can get rid of all the DAX special casing.
+> 
+>> (C) We managed without so far :)
+> 
+> Indeed, although Christoph has asked repeatedly ([1], [2] and likely
+> others) that this gets fixed and I finally got sick of it coming up
+> everytime I need to touch something with ZONE_DEVICE pages :)
+> 
+> Also it removes the need for people to understand the special DAX page
+> recounting scheme and ends up removing a bunch of cruft as a bonus:
+> 
+>   59 files changed, 485 insertions(+), 869 deletions(-)
+
+I'm not challenging the refcounting scheme. I'm purely asking about 
+mapcount handling, which is something related but different.
+
+> 
+> And that's before I clean up all the pgmap reference handling. It also
+> removes the pXX_trans_huge and pXX_leaf distinction. So we managed, but
+> things could be better IMHO.
+> 
+
+Again, all nice things.
+
+>> Having that said, with folio->_large_mapcount things like
+>> folio_mapcount() are no longer terribly slow once we weould PTE-map a
+>> PUD-sized folio.
+>>
+>> Also, all ZONE_DEVICE pages should currently be marked PG_reserved,
+>> translating to "don't touch the memmap". I think we might want to
+>> tackle that first.
+
+Missed to add a pointer to [2].
+
+> 
+> Ok. I'm keen to get this series finished and I don't quite get the
+> connection here, what needs to change there?
+
+include/linux/page-flags.h
+
+"PG_reserved is set for special pages. The "struct page" of such a page 
+should in general not be touched (e.g. set dirty) except by its owner. 
+Pages marked as PG_reserved include:
+
+...
+
+- Device memory (e.g. PMEM, DAX, HMM)
+"
+
+I think we already entered that domain with other ZONE_DEVICE pages 
+being returned from vm_normal_folio(), unfortunately. But that really 
+must be cleaned up for these pages to not look special anymore.
+
+Agreed that it likely is something that is not blocking this series.
 
 -- 
 Cheers,
