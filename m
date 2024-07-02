@@ -1,54 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38549249B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 23:04:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D51924A0B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 23:43:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=chH1WdRO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K+WkekOh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDFlk3BkVz3dCy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 07:04:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDGck3kSTz3cyf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 07:43:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=chH1WdRO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K+WkekOh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDFl06hrbz3cVD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 07:03:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDGc04jJVz3cB7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 07:42:56 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3A0E361E1F;
-	Tue,  2 Jul 2024 21:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF44C116B1;
-	Tue,  2 Jul 2024 21:03:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5547B62046;
+	Tue,  2 Jul 2024 21:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03128C116B1;
+	Tue,  2 Jul 2024 21:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719954233;
-	bh=TWwYAQR1/ZQz/7w57+uehXebPTXv6mBfcflgPdnnh5I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=chH1WdROMrOiLZfIMPm2z55nJ9wY79Igw6knK4JxetYJgEGb4DIhY4LFHk7hIqD9F
-	 b5iqjqAQ2b+RRiVkxTc6ZOPWgp1HuhNd2IzWOwGO246STu9LQtPQXKucZhC3gtb3JV
-	 W8iT1sZkxyPXRK7O7/+ETlQUyOW3GNpXPCUebwEC56IGXc1sL7/7yfue5IDZ9ZRB28
-	 9kEF9TYJjUKYwIGda8MBE4vv7KUPb+za5k4o8aCE5Ak9M3qXc0M36ngMQaIhd+riqQ
-	 A6m6o3/XcbuimYwUGPKBQxjGFj5fm1kiEBgiomMvg1bq6AsWufPyEkbRuGf7UCfc+Y
-	 5IYtnmvlhq2cQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: [PATCH] powerpc: kexec: Use of_property_read_reg()
-Date: Tue,  2 Jul 2024 15:03:44 -0600
-Message-ID: <20240702210344.722364-1-robh@kernel.org>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1719956574;
+	bh=qWpwYRKarmxNUV5FgK+x6rE0BLQ+21EhDryzhkXDnio=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=K+WkekOh4QUXz/VxkD6A1iPtFRR3oP+m7KWELEv/HhPkvAbowVPLe2lhZpN7Ggf4Q
+	 dmnnYWw8TQupMGHoHMaetjQm6lA+AXoztc1Zuux1hahrNU1beP88VeRXy0g7ztCVUW
+	 AZRJbs/8rIq0WfH1LKdgLa4pQCqebjAUT/WepIzcJZjodxnoHS0eL3ChhEFaVibZbG
+	 i1KDeYCap3iBhzmkoQKdyt37U+mpbPXd/Ia6O/mUtQrS45vUhFP3AUNeF9u208DmUZ
+	 wa/ox1mXvTW/i4Roiu0FoRh8qVDu6hzwvr241rwIxSNB2rRD4P0CR1Dt/GpWEmxO7O
+	 55GVNelD7yvgw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sOlH1-009ENh-9r;
+	Tue, 02 Jul 2024 22:42:51 +0100
+Date: Tue, 02 Jul 2024 22:42:46 +0100
+Message-ID: <86ed8ba2sp.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
+In-Reply-To: <CAL_Jsq+_QZHMJGHqw8vFA5CspuouvY_U=+NobYQ52DcwPQx-2w@mail.gmail.com>
+References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+	<86zfqzhgys.wl-maz@kernel.org>
+	<CAL_Jsq+_QZHMJGHqw8vFA5CspuouvY_U=+NobYQ52DcwPQx-2w@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.3
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: robh@kernel.org, chzigotzky@xenosoft.de, apatel@ventanamicro.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, madskateman@gmail.com, rtd2@xtra.co.nz, matthew@a-eon.biz, darren@stevens-zone.net, info@xenosoft.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,91 +74,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: apatel@ventanamicro.com, DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <chzigotzky@xenosoft.de>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace open-coded parsing of "reg" property with
-of_property_read_reg().
+On Tue, 02 Jul 2024 21:48:23 +0100,
+Rob Herring <robh@kernel.org> wrote:
+>=20
+> On Tue, Jul 2, 2024 at 10:54=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
+te:
+> >
+> > On Sun, 30 Jun 2024 11:21:55 +0100,
+> > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> > >
+> > > Hello,
+> > >
+> > > There is an issue with the identification of ATA drives with our
+> > > P.A. Semi Nemo boards [1] after the
+> > > commit "of/irq: Factor out parsing of interrupt-map parent
+> > > phandle+args from of_irq_parse_raw()" [2].
+> >
+> > [snip]
+> >
+> > My earlier request for valuable debug information still stands. But
+> > while you're at it, can you please give the following hack a go?
+> >
+> >         M.
+> >
+> > --- a/drivers/of/irq.c
+> > +++ b/drivers/of/irq.c
+> > @@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct of=
+_phandle_args *out_irq)
+> >
+> >                         oldimap =3D imap;
+> >                         imap =3D of_irq_parse_imap_parent(oldimap, imap=
+len, out_irq);
+> > -                       if (!imap)
+> > -                               goto fail;
+> > +                       if (!imap) {
+> > +                               match =3D 0;
+> > +                               break;
+> > +                       }
+>=20
+> AFAICT reading the DT, I don't think this would fix it. imap should
+> only be null if malformed. This case to me looks like interrupt-map
+> has the correct cell sizes, but just never matches to do the mapping.
+> So maybe imaplen is off and that causes us to end up here, but if
+> there's an error I don't see it. A boot with DEBUG enabled in
+> drivers/of/irq.c would help.
+>=20
+> >
+> >                         match &=3D of_device_is_available(out_irq->np);
+> >                         if (match)
+> >
+> > This may not be the final workaround even if it solves your boot
+> > problem, but will at least give us a hint at what is going wrong.
+> >
+> > I have the fuzzy feeling that we may be able to lob this broken system
+> > as part of the of_irq_imap_abusers[] array, which would solve things
+> > pretty "neatly".
+>=20
+> I think this would work and would consolidate the work-arounds. It
+> would need either "pasemi,rootbus" or "pa-pxp" added to the list.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- arch/powerpc/kexec/file_load_64.c | 31 ++++++++++---------------------
- 1 file changed, 10 insertions(+), 21 deletions(-)
+I'd be all for this.
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 925a69ad2468..5200529bf4db 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -18,6 +18,7 @@
- #include <linux/of_fdt.h>
- #include <linux/libfdt.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-@@ -376,10 +377,9 @@ static int kdump_setup_usable_lmb(struct drmem_lmb *lmb, const __be32 **usm,
- static int add_usable_mem_property(void *fdt, struct device_node *dn,
- 				   struct umem_info *um_info)
- {
--	int n_mem_addr_cells, n_mem_size_cells, node;
-+	int node;
- 	char path[NODE_PATH_LEN];
--	int i, len, ranges, ret;
--	const __be32 *prop;
-+	int i, ret;
- 	u64 base, end;
- 
- 	of_node_get(dn);
-@@ -399,40 +399,29 @@ static int add_usable_mem_property(void *fdt, struct device_node *dn,
- 		goto out;
- 	}
- 
--	/* Get the address & size cells */
--	n_mem_addr_cells = of_n_addr_cells(dn);
--	n_mem_size_cells = of_n_size_cells(dn);
--	kexec_dprintk("address cells: %d, size cells: %d\n", n_mem_addr_cells,
--		      n_mem_size_cells);
+	M.
+
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index 462375b293e47..c94203ce65bb3 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -81,7 +81,8 @@ EXPORT_SYMBOL_GPL(of_irq_find_parent);
+ /*
+  * These interrupt controllers abuse interrupt-map for unspeakable
+  * reasons and rely on the core code to *ignore* it (the drivers do
+- * their own parsing of the property).
++ * their own parsing of the property). The PAsemi entry covers a
++ * non-sensical interrupt-map that is better left ignored.
+  *
+  * If you think of adding to the list for something *new*, think
+  * again. There is a high chance that you will be sent back to the
+@@ -95,6 +96,7 @@ static const char * const of_irq_imap_abusers[] =3D {
+ 	"fsl,ls1043a-extirq",
+ 	"fsl,ls1088a-extirq",
+ 	"renesas,rza1-irqc",
++	"pasemi,rootbus",
+ 	NULL,
+ };
+=20
+@@ -293,20 +295,8 @@ int of_irq_parse_raw(const __be32 *addr, struct of_pha=
+ndle_args *out_irq)
+ 			imaplen -=3D imap - oldimap;
+ 			pr_debug(" -> imaplen=3D%d\n", imaplen);
+ 		}
+-		if (!match) {
+-			if (intc) {
+-				/*
+-				 * The PASEMI Nemo is a known offender, so
+-				 * let's only warn for anyone else.
+-				 */
+-				WARN(!IS_ENABLED(CONFIG_PPC_PASEMI),
+-				     "%pOF interrupt-map failed, using interrupt-controller\n",
+-				     ipar);
+-				return 0;
+-			}
 -
- 	um_info->idx  = 0;
- 	if (!check_realloc_usable_mem(um_info, 2)) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
- 
--	prop = of_get_property(dn, "reg", &len);
--	if (!prop || len <= 0) {
--		ret = 0;
--		goto out;
--	}
--
- 	/*
- 	 * "reg" property represents sequence of (addr,size) tuples
- 	 * each representing a memory range.
- 	 */
--	ranges = (len >> 2) / (n_mem_addr_cells + n_mem_size_cells);
-+	for (i = 0; ; i++) {
-+		ret = of_property_read_reg(dn, i, &base, &end);
-+		if (ret)
-+			break;
- 
--	for (i = 0; i < ranges; i++) {
--		base = of_read_number(prop, n_mem_addr_cells);
--		prop += n_mem_addr_cells;
--		end = base + of_read_number(prop, n_mem_size_cells) - 1;
--		prop += n_mem_size_cells;
-+		end += base - 1;
- 
- 		ret = add_usable_mem(um_info, base, end);
- 		if (ret)
- 			goto out;
- 	}
-+	if (!i)
-+		goto out;
- 
- 	/*
- 	 * No kdump kernel usable memory found in this memory node.
--- 
-2.43.0
++		if (!match)
+ 			goto fail;
+-		}
+=20
+ 		/*
+ 		 * Successfully parsed an interrupt-map translation; copy new
 
+--=20
+Without deviation from the norm, progress is not possible.
