@@ -2,67 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D51924A0B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 23:43:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6D9924C65
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 01:50:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K+WkekOh;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=YbFMgg5b;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=meesny header.b=pyQNKyHX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDGck3kSTz3cyf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 07:43:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDKRB5M9wz3c2K
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 09:50:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K+WkekOh;
+	dkim=pass (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=YbFMgg5b;
+	dkim=pass (1024-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=meesny header.b=pyQNKyHX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iki.fi (client-ip=185.185.170.37; helo=lahtoruutu.iki.fi; envelope-from=jarkko.sakkinen@iki.fi; receiver=lists.ozlabs.org)
+X-Greylist: delayed 103661 seconds by postgrey-1.37 at boromir; Wed, 03 Jul 2024 09:49:07 AEST
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDGc04jJVz3cB7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 07:42:56 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5547B62046;
-	Tue,  2 Jul 2024 21:42:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03128C116B1;
-	Tue,  2 Jul 2024 21:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719956574;
-	bh=qWpwYRKarmxNUV5FgK+x6rE0BLQ+21EhDryzhkXDnio=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K+WkekOh4QUXz/VxkD6A1iPtFRR3oP+m7KWELEv/HhPkvAbowVPLe2lhZpN7Ggf4Q
-	 dmnnYWw8TQupMGHoHMaetjQm6lA+AXoztc1Zuux1hahrNU1beP88VeRXy0g7ztCVUW
-	 AZRJbs/8rIq0WfH1LKdgLa4pQCqebjAUT/WepIzcJZjodxnoHS0eL3ChhEFaVibZbG
-	 i1KDeYCap3iBhzmkoQKdyt37U+mpbPXd/Ia6O/mUtQrS45vUhFP3AUNeF9u208DmUZ
-	 wa/ox1mXvTW/i4Roiu0FoRh8qVDu6hzwvr241rwIxSNB2rRD4P0CR1Dt/GpWEmxO7O
-	 55GVNelD7yvgw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sOlH1-009ENh-9r;
-	Tue, 02 Jul 2024 22:42:51 +0100
-Date: Tue, 02 Jul 2024 22:42:46 +0100
-Message-ID: <86ed8ba2sp.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
-In-Reply-To: <CAL_Jsq+_QZHMJGHqw8vFA5CspuouvY_U=+NobYQ52DcwPQx-2w@mail.gmail.com>
-References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
-	<86zfqzhgys.wl-maz@kernel.org>
-	<CAL_Jsq+_QZHMJGHqw8vFA5CspuouvY_U=+NobYQ52DcwPQx-2w@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.3
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDKPb1MFLz3cXM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 09:49:07 +1000 (AEST)
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4WDKPS3XP3z49Pxq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 02:49:00 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1719964140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90b13T27WVDefVQ9TFMIUOTIGoYWnvBBve830JPz5uc=;
+	b=YbFMgg5b3FY0+1jnlR4Ka7QeUfMEIOfYRycIwrqEMrcGjjlEQjzQuD1H0ddxLoffGKGURm
+	Zfn/f8jPkBGCc7Tsqtmluytrsb7QJ0ySvSKwtx52RLU/wgHfUf1Sup1tjkA+R1Gqgf7DNg
+	GlAsXI04o0lGXdBXVGX60ONY6wbulwAI2liU7AOIXbxEyc9lFVc76nqfUP/R1zL3RnnJ0k
+	tjqYMrf55BPQ14TlJcmqeG8VCUfZXmwMCZkRTArnp+JXAtn9ERWf73U8tIzmb7+JN/RI/0
+	6LGDbWya5tciHLGqg/kDcNSrEvWyixjhI0SCKvZYHhPXxHE6Ii+DL30HEww9yw==
+Received: from localhost (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4WDKP33tvPzyTK;
+	Wed,  3 Jul 2024 02:48:38 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1719964120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90b13T27WVDefVQ9TFMIUOTIGoYWnvBBve830JPz5uc=;
+	b=pyQNKyHXp39EAf5Qlg0oPHmathCHi9DXuB8SJxSP4UnJjkKXlBJwpqWr150clD70HDqjjB
+	W+8d1isZg9nJjodxdv9Yy9+o5pn49jSx/EsP0rdWM8+f+WwH7me/RcI7CmYjfQDm7NoHp1
+	RRGMSZ9/xgGQGSPFXdU1LvwYB3sKrHM=
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1719964120; a=rsa-sha256; cv=none;
+	b=dIV5AhFDjU0eFidNIvVfjBgVwP07smKHAjGKaDFD2/b9VOi6T3xvX5gueQ7bDeqdVkfAz5
+	axjvq8NAAAmFz7FthJsjSsp3l/4zrpDmYrUaivn6BFPVgYGCpZCAwr66vQ7yHZXe59DTKp
+	4Uy44jpNG1LCq3OPg2EeYR5jQtclOpY=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1719964120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=90b13T27WVDefVQ9TFMIUOTIGoYWnvBBve830JPz5uc=;
+	b=cqjXrtof80qPRszwXMneHjrKuZT+XYUAXgsHM0qfCgfczmSXpD+RRY4qy7yAJgYLTbrBlt
+	dsIX9PXJq1RF9m0boyXJ/KFP2Dec6rRo5DNN3ylWXge0yyn3whuWIsGQWxf+ohI8e6NOYp
+	735GZdN11M1phMS9bIv3+poJf6wItSM=
+Message-ID: <b7559dbb323d16fb334f8f8f35b8fda3fb6e481c.camel@iki.fi>
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+From: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
+To: Stefan Berger <stefanb@linux.ibm.com>, Linux regressions mailing list
+	 <regressions@lists.linux.dev>
+Date: Wed, 03 Jul 2024 02:48:37 +0300
+In-Reply-To: <e7db74a0-cd5c-4394-b87e-c31ea0861ea1@linux.ibm.com>
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+	 <9e167f3e-cd81-45ab-bd34-939f516b05a4@linux.ibm.com>
+	 <55e8331d-4682-40df-9a1b-8a08dc5f6409@leemhuis.info>
+	 <9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org>
+	 <53d96a8b-26ef-46a3-9b68-3d791613e47c@linux.ibm.com>
+	 <D2EFNJTR80JS.1RW91OVY1UH1N@iki.fi>
+	 <e7db74a0-cd5c-4394-b87e-c31ea0861ea1@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: robh@kernel.org, chzigotzky@xenosoft.de, apatel@ventanamicro.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, madskateman@gmail.com, rtd2@xtra.co.nz, matthew@a-eon.biz, darren@stevens-zone.net, info@xenosoft.de
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,118 +108,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apatel@ventanamicro.com, DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <chzigotzky@xenosoft.de>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: naveen.n.rao@linux.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 02 Jul 2024 21:48:23 +0100,
-Rob Herring <robh@kernel.org> wrote:
->=20
-> On Tue, Jul 2, 2024 at 10:54=E2=80=AFAM Marc Zyngier <maz@kernel.org> wro=
-te:
-> >
-> > On Sun, 30 Jun 2024 11:21:55 +0100,
-> > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
-> > >
-> > > Hello,
-> > >
-> > > There is an issue with the identification of ATA drives with our
-> > > P.A. Semi Nemo boards [1] after the
-> > > commit "of/irq: Factor out parsing of interrupt-map parent
-> > > phandle+args from of_irq_parse_raw()" [2].
-> >
-> > [snip]
-> >
-> > My earlier request for valuable debug information still stands. But
-> > while you're at it, can you please give the following hack a go?
-> >
-> >         M.
-> >
-> > --- a/drivers/of/irq.c
-> > +++ b/drivers/of/irq.c
-> > @@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct of=
-_phandle_args *out_irq)
-> >
-> >                         oldimap =3D imap;
-> >                         imap =3D of_irq_parse_imap_parent(oldimap, imap=
-len, out_irq);
-> > -                       if (!imap)
-> > -                               goto fail;
-> > +                       if (!imap) {
-> > +                               match =3D 0;
-> > +                               break;
-> > +                       }
->=20
-> AFAICT reading the DT, I don't think this would fix it. imap should
-> only be null if malformed. This case to me looks like interrupt-map
-> has the correct cell sizes, but just never matches to do the mapping.
-> So maybe imaplen is off and that causes us to end up here, but if
-> there's an error I don't see it. A boot with DEBUG enabled in
-> drivers/of/irq.c would help.
->=20
-> >
-> >                         match &=3D of_device_is_available(out_irq->np);
-> >                         if (match)
-> >
-> > This may not be the final workaround even if it solves your boot
-> > problem, but will at least give us a hint at what is going wrong.
-> >
-> > I have the fuzzy feeling that we may be able to lob this broken system
-> > as part of the of_irq_imap_abusers[] array, which would solve things
-> > pretty "neatly".
->=20
-> I think this would work and would consolidate the work-arounds. It
-> would need either "pasemi,rootbus" or "pa-pxp" added to the list.
-
-I'd be all for this.
-
-	M.
-
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 462375b293e47..c94203ce65bb3 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -81,7 +81,8 @@ EXPORT_SYMBOL_GPL(of_irq_find_parent);
- /*
-  * These interrupt controllers abuse interrupt-map for unspeakable
-  * reasons and rely on the core code to *ignore* it (the drivers do
-- * their own parsing of the property).
-+ * their own parsing of the property). The PAsemi entry covers a
-+ * non-sensical interrupt-map that is better left ignored.
-  *
-  * If you think of adding to the list for something *new*, think
-  * again. There is a high chance that you will be sent back to the
-@@ -95,6 +96,7 @@ static const char * const of_irq_imap_abusers[] =3D {
- 	"fsl,ls1043a-extirq",
- 	"fsl,ls1088a-extirq",
- 	"renesas,rza1-irqc",
-+	"pasemi,rootbus",
- 	NULL,
- };
+On Mon, 2024-07-01 at 15:14 -0400, Stefan Berger wrote:
+> Applying it is probably the better path forward than restricting HMAC to=
 =20
-@@ -293,20 +295,8 @@ int of_irq_parse_raw(const __be32 *addr, struct of_pha=
-ndle_args *out_irq)
- 			imaplen -=3D imap - oldimap;
- 			pr_debug(" -> imaplen=3D%d\n", imaplen);
- 		}
--		if (!match) {
--			if (intc) {
--				/*
--				 * The PASEMI Nemo is a known offender, so
--				 * let's only warn for anyone else.
--				 */
--				WARN(!IS_ENABLED(CONFIG_PPC_PASEMI),
--				     "%pOF interrupt-map failed, using interrupt-controller\n",
--				     ipar);
--				return 0;
--			}
--
-+		if (!match)
- 			goto fail;
--		}
-=20
- 		/*
- 		 * Successfully parsed an interrupt-map translation; copy new
+> x86_64 now and enabling it on a per-architecture basis afterwards ...
 
---=20
-Without deviation from the norm, progress is not possible.
+Why is this here and not in the associated patch?
+
+Any, what argue against is already done for v6.10.
+
+The actual bug needs to be fixed before anything
+else.
+
+I can look at the patch when in August (back from
+holiday) but please response to the correct patch
+next time, thanks.
+
+BR, Jarkko
