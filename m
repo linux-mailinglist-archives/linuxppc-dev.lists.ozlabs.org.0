@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C85923FBD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 15:58:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD453923FBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 15:58:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WD4JB0kdJz7B9v
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 23:58:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WD4Jb4Vv1z7BHV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jul 2024 23:58:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
@@ -15,28 +15,28 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD49Z3jd6z3g3D
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 23:52:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WD49l1F6Fz3g5L
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jul 2024 23:52:58 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4WD48K12dVz9v2F;
-	Tue,  2 Jul 2024 15:51:45 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4WD48L4787z9v3s;
+	Tue,  2 Jul 2024 15:51:46 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CxQ474nA3jKF; Tue,  2 Jul 2024 15:51:45 +0200 (CEST)
+	with ESMTP id tD71Vn51syID; Tue,  2 Jul 2024 15:51:46 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4WD4862d6Bz9v7L;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4WD4865kqdz9v7N;
 	Tue,  2 Jul 2024 15:51:34 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 55D388B774;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C0D818B774;
 	Tue,  2 Jul 2024 15:51:34 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id A5pzDnRs-Jou; Tue,  2 Jul 2024 15:51:34 +0200 (CEST)
+	with ESMTP id pWxGaw-G7BNY; Tue,  2 Jul 2024 15:51:34 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.12])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C91538B775;
-	Tue,  2 Jul 2024 15:51:33 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D51F8B764;
+	Tue,  2 Jul 2024 15:51:34 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jason Gunthorpe <jgg@nvidia.com>,
@@ -44,14 +44,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Oscar Salvador <osalvador@suse.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v7 17/23] powerpc/e500: Encode hugepage size in PTE bits
-Date: Tue,  2 Jul 2024 15:51:29 +0200
-Message-ID: <6f7ce82fa8c381d55f65342d77060fc55802e612.1719928057.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v7 18/23] powerpc/e500: Don't pre-check write access on data TLB error
+Date: Tue,  2 Jul 2024 15:51:30 +0200
+Message-ID: <8525518e1657d6032b7e980c1888102828d66950.1719928057.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1719928057.git.christophe.leroy@csgroup.eu>
 References: <cover.1719928057.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1719928275; l=4066; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=ynQfm9JBiFGAxo+DROotbCi4y0+yhN5d6b0AA4yoL0Q=; b=QlbwuOh8CkIKRxk1Au5CyczWq573GEKpqCwwgW7AMQgt2eEOL8L6hmPsA5PNJoTqDOTWjwumi 7MRu1yorX68DIIBViNV11hHb6SZmkTrroIUiiqrvbJl9pPA9MJhHdpu
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719928275; l=1564; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=lXkJFaNOZfYs39NvzB2t7aMNQd5E4EiqpUUgx2rbgYk=; b=UfaTLsrzSij3pYXiv+ejHeSoRAerQa7OpK+kFzmvGET2VlKw+SFhPJdwxpiVLp8BycMHe75De Wk++EkSYFizC/zAfHU9AfP7o7tpmfuohonnxIu+luqjMTdYqXgBexcN
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,119 +69,50 @@ Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use PTE page size bits to encode hugepage size with the following
-format corresponding to the values expected in bits 52-55 in MAS1
-register. Those bits are called TSIZE:
-	0001 	4 Kbyte
-	0010 	16 Kbyte
-	0011 	64 Kbyte
-	0100 	256 Kbyte
-	0101 	1 Mbyte
-	0110 	4 Mbyte
-	0111 	16 Mbyte
-	1000 	64 Mbyte
-	1001 	256 Mbyte
-	1010 	1 Gbyte
-	1011 	4 Gbyte
-	1100 	16 Gbyte
-	1101	64 Gbyte
-	1110	256 Gbyte
-	1111	1 Tbyte
+Don't pre-check write access on read-only pages on data TLB error.
 
-It corresponds to shift value minus 10 with lowest bit removed.
-
-It is not the value expected in the PTE in that field, but only
-e6500 performs HW based TLB loading and the e6500 reference manual
-explicitely says that this field is ignored.
-
-Also add pte_huge_size() which will be used later.
+Load the TLB anyway and take a DSI exception when it happens. This
+avoids reading SPRN_ESR at every data TLB error exception.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v5: Use PAGE SIZE field instead of U0-U3 because on some HW U2-U3 are used for something else.
+v5: New
 ---
- .../powerpc/include/asm/nohash/hugetlb-e500.h |  9 ++++++
- arch/powerpc/include/asm/nohash/pte-e500.h    | 28 +++++++++----------
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ arch/powerpc/kernel/head_85xx.S | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/hugetlb-e500.h b/arch/powerpc/include/asm/nohash/hugetlb-e500.h
-index 8f04ad20e040..c6a0938e86fd 100644
---- a/arch/powerpc/include/asm/nohash/hugetlb-e500.h
-+++ b/arch/powerpc/include/asm/nohash/hugetlb-e500.h
-@@ -42,4 +42,13 @@ static inline int check_and_get_huge_psize(int shift)
- 	return shift_to_mmu_psize(shift);
- }
+diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
+index a305244afc9f..282e49c51deb 100644
+--- a/arch/powerpc/kernel/head_85xx.S
++++ b/arch/powerpc/kernel/head_85xx.S
+@@ -472,27 +472,12 @@ END_BTB_FLUSH_SECTION
+ #endif
  
-+static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
-+{
-+	unsigned int tsize = shift - _PAGE_PSIZE_SHIFT_OFFSET;
-+	pte_basic_t val = (tsize << _PAGE_PSIZE_SHIFT) & _PAGE_PSIZE_MSK;
-+
-+	return __pte((pte_val(entry) & ~(pte_basic_t)_PAGE_PSIZE_MSK) | val);
-+}
-+#define arch_make_huge_pte arch_make_huge_pte
-+
- #endif /* _ASM_POWERPC_NOHASH_HUGETLB_E500_H */
-diff --git a/arch/powerpc/include/asm/nohash/pte-e500.h b/arch/powerpc/include/asm/nohash/pte-e500.h
-index 975facc7e38e..6dac1c0a6937 100644
---- a/arch/powerpc/include/asm/nohash/pte-e500.h
-+++ b/arch/powerpc/include/asm/nohash/pte-e500.h
-@@ -19,20 +19,7 @@
- #define _PAGE_BAP_SX	0x000040
- #define _PAGE_BAP_UX	0x000080
- #define _PAGE_PSIZE_MSK	0x000f00
--#define _PAGE_PSIZE_4K	0x000200
--#define _PAGE_PSIZE_8K	0x000300
--#define _PAGE_PSIZE_16K	0x000400
--#define _PAGE_PSIZE_32K	0x000500
--#define _PAGE_PSIZE_64K	0x000600
--#define _PAGE_PSIZE_128K	0x000700
--#define _PAGE_PSIZE_256K	0x000800
--#define _PAGE_PSIZE_512K	0x000900
--#define _PAGE_PSIZE_1M	0x000a00
--#define _PAGE_PSIZE_2M	0x000b00
--#define _PAGE_PSIZE_4M	0x000c00
--#define _PAGE_PSIZE_8M	0x000d00
--#define _PAGE_PSIZE_16M	0x000e00
--#define _PAGE_PSIZE_32M	0x000f00
-+#define _PAGE_TSIZE_4K	0x000100
- #define _PAGE_DIRTY	0x001000 /* C: page changed */
- #define _PAGE_SW0	0x002000
- #define _PAGE_U3	0x004000
-@@ -46,6 +33,9 @@
- #define _PAGE_NO_CACHE	0x400000 /* I: cache inhibit */
- #define _PAGE_WRITETHRU	0x800000 /* W: cache write-through */
- 
-+#define _PAGE_PSIZE_SHIFT		7
-+#define _PAGE_PSIZE_SHIFT_OFFSET	10
-+
- /* "Higher level" linux bit combinations */
- #define _PAGE_EXEC		(_PAGE_BAP_SX | _PAGE_BAP_UX) /* .. and was cache cleaned */
- #define _PAGE_READ		(_PAGE_BAP_SR | _PAGE_BAP_UR) /* User read permission */
-@@ -87,7 +77,7 @@
-  * pages. We always set _PAGE_COHERENT when SMP is enabled or
-  * the processor might need it for DMA coherency.
-  */
--#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_PSIZE_4K)
-+#define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_TSIZE_4K)
- #if defined(CONFIG_SMP)
- #define _PAGE_BASE	(_PAGE_BASE_NC | _PAGE_COHERENT)
+ 4:
+-	/* Mask of required permission bits. Note that while we
+-	 * do copy ESR:ST to _PAGE_WRITE position as trying to write
+-	 * to an RO page is pretty common, we don't do it with
+-	 * _PAGE_DIRTY. We could do it, but it's a fairly rare
+-	 * event so I'd rather take the overhead when it happens
+-	 * rather than adding an instruction here. We should measure
+-	 * whether the whole thing is worth it in the first place
+-	 * as we could avoid loading SPRN_ESR completely in the first
+-	 * place...
+-	 *
+-	 * TODO: Is it worth doing that mfspr & rlwimi in the first
+-	 *       place or can we save a couple of instructions here ?
+-	 */
+-	mfspr	r12,SPRN_ESR
+ #ifdef CONFIG_PTE_64BIT
+ 	li	r13,_PAGE_PRESENT|_PAGE_BAP_SR
+ 	oris	r13,r13,_PAGE_ACCESSED@h
  #else
-@@ -103,6 +93,14 @@ static inline pte_t pte_mkexec(pte_t pte)
- }
- #define pte_mkexec pte_mkexec
+ 	li	r13,_PAGE_PRESENT|_PAGE_READ|_PAGE_ACCESSED
+ #endif
+-	rlwimi	r13,r12,11,29,29
  
-+static inline unsigned long pte_huge_size(pte_t pte)
-+{
-+	pte_basic_t val = pte_val(pte);
-+
-+	return 1UL << (((val & _PAGE_PSIZE_MSK) >> _PAGE_PSIZE_SHIFT) + _PAGE_PSIZE_SHIFT_OFFSET);
-+}
-+#define pte_huge_size pte_huge_size
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
+ 	FIND_PTE
+ 	andc.	r13,r13,r11		/* Check permission */
 -- 
 2.44.0
 
