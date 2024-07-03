@@ -2,47 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2D29264EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 17:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7409F926608
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 18:23:46 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Gy2Siy32;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=XNCTpZau;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDkP352hmz3fS1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 01:35:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDlTD1gB7z3dSq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 02:23:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Gy2Siy32;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=XNCTpZau;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDkNf61Rwz3cfQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 01:34:40 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WDkLJ3vy7z6K8y3;
-	Wed,  3 Jul 2024 23:32:40 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6253A140A87;
-	Wed,  3 Jul 2024 23:34:33 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 3 Jul
- 2024 16:34:32 +0100
-Date: Wed, 3 Jul 2024 16:34:31 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 12/20] iio: adc: ti_am335x_adc: convert to
- of_property_for_each_u32_new()
-Message-ID: <20240703163431.0000268f@Huawei.com>
-In-Reply-To: <20240703-of_property_for_each_u32-v1-12-42c1fc0b82aa@bootlin.com>
-References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
-	<20240703-of_property_for_each_u32-v1-12-42c1fc0b82aa@bootlin.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDlST4hn5z3cb1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 02:23:02 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1720023757; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=VVORDbf2msCtWnL/pUXyiHuHFrAdVWz4sP9G4CxWWlzj1zgWlyQZcgZsNLKgRfHDgB
+    iUIaBCEtFlaRTlkKP6cHPtxGZqApiIdEpTrgM6PqY4XvqSvuG1FYbVoEWroNtlDfLyvk
+    XjaR831cZttF7l+SJ+l2HxyGa1Gm7SZKTchFp41+Vwsqn1z0K4+ltswfthwdDUVcA0u0
+    tE5TLbnFT6DmLOB+UrVCxLOVz3Da6m3hSWQFz0igCsTXcai/UDbrweCZGt7upjEXlOlM
+    zSetek/bJ2ZPtEUUn7QxO+lh+Iqml/rk6lid1dD7rGlRIz9HusaMDY1Ih77qauRi6dsZ
+    strg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720023757;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Xefpm7kp1QKwRcK53B/u3dUPROD/z4fSpwFfZlUnT+g=;
+    b=Rk+2LGsv65JAMuSX49Rsm5StceZtRGYDQphIByXVtrzj3Chft+nhQYfFV+yBH6NJzH
+    zRUhRTGAfUqaD4m5BH1yw/wkgbnuYq0s3OqqdKh1DinQ/G8MgBhC5Ot8fXxFQg+V0stx
+    8y+vQQPmurrZDCFDwfmUe2nR2fZbD3mptY7fbeGGT7sXyJbv3jGMfSYLks0677f9e5Yj
+    WaHiFNmmQyRPkyzcVTHJphl6KNKtMtpFxo8QX+c1O6NFhjj/x3xpSBuxcQx/YLAB3MXI
+    pV4eUcwTJWT0howC366TUYEWWg5Xx9w87FJGwukXn62mz7XQO806ZO6ohL+kPStmXEV2
+    YwYQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720023757;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Xefpm7kp1QKwRcK53B/u3dUPROD/z4fSpwFfZlUnT+g=;
+    b=Gy2Siy32RcwgdZf5tB5Uj9bQMnetV5Sl2cX2/66Ss8FEXnqx5987dyz/oC31uhM+bI
+    dLLYN5VN8CdH2QQspkpypOWky7u4KrJH6qz/Dyau0dnyc/s9C412IrgwdAkb2OYU2Igs
+    eHCZk8/lSviFmAls+HGQ21LL0y+VsZKlunOTMEkwFzxxNhmqKSX8De84owH9dsraGS7p
+    MLhpdhD5tdybUBT1fX35u3Cj8XWZq6z3Q/0G7F3etYebt19IopXWHsR/M9+EgqAb7+px
+    8VehuSuapGUlAgf2fXZvdUtjxprmsShnY0DTjSWYOqwFS0WnzqoIxvEbF2SlNA6hUiMG
+    yn8g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720023757;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Xefpm7kp1QKwRcK53B/u3dUPROD/z4fSpwFfZlUnT+g=;
+    b=XNCTpZauLp8RFotnyZ1DbdXYQFNrHQ2YuynthNSaK3ibX4zCBTn4kpSyMKYocsfTnv
+    HE5EQqHZe1stoIy6kWBQ==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43J0mbSkY7T0LO5Dgwl/5WHn9PRLvYVKAUYGE"
+Received: from [IPV6:2a01:599:817:c09:f2fd:d497:aff:32c3]
+    by smtp.strato.de (RZmta 50.5.0 AUTH)
+    with ESMTPSA id e08389063GMZQ2I
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 3 Jul 2024 18:22:35 +0200 (CEST)
+Message-ID: <de910b52-4f46-47a5-896d-d60af85ae293@xenosoft.de>
+Date: Wed, 3 Jul 2024 18:23:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.174.77]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
+ after the of/irq updates 2024-05-29
+To: Marc Zyngier <maz@kernel.org>
+References: <86cynv9dx7.wl-maz@kernel.org>
+ <B550D4C4-6F82-409E-B5A8-E7D123ACB93D@xenosoft.de>
+ <86a5iyahbc.wl-maz@kernel.org>
+Content-Language: en-US
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <86a5iyahbc.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,19 +99,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Richard
- Leitner <richard.leitner@linux.dev>, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pwm@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, llvm@lists.linux.dev, Nicolas Ferre <nicolas.ferre@microchip.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, linux-clk@vger.kernel.org, Rob Herring <robh@kernel.org>, linux-samsung-soc@vger.kernel.org, Florian Fainelli <florian.fainelli@broadcom.com>, Samuel Holland <samuel@sholland.org>, Emilio =?ISO-8859-1?Q?L=F3pez?= <emilio@elopez.com.ar>, Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, linux-iio@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Michael Turquette <mturquette@baylibre.com>, devicetree@vger.kernel.org, "Peng Fan
- \(OSS\)" <peng.fan@oss.nxp.com>, linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Saravana
- Kannan <saravanak@google.com>, linux-gpio@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bjorn Andersson <andersson@kernel.org>, linux-usb@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, patches@opensource.cirrus.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Shawn Guo <shawnguo@kernel.org>, linux-sunxi@lists.linux.dev, Jonathan
- Cameron <jic23@kernel.org>
+Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 03 Jul 2024 12:36:56 +0200
-Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+On 03.07.24 12:41, Marc Zyngier wrote:
+> On Wed, 03 Jul 2024 11:26:17 +0100,
+> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+>> On 3. Jul 2024, at 08:40, Marc Zyngier <maz@kernel.org> wrote:
+>>
+>> This isn't a DTS. This is a listing of all the nodes, not something I
+>> can use to feed the kernel. I explained how to generate it.
+>>
+>> Download the compiled device tree for the Nemo board:
+>> http://www.xenosoft.de/fdt-nemo-board.zip
+>>
+>> No, thank you.
+>>
+>> ————————
+>>
+>> You know already the device tree: https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/236587.html
+> Do you think I keep this sort of things from almost three years ago? I
+> have better things to do.
+>
+> Now, either you provide the required information in the required form
+> or you don't. Either you test the proposed patches or you don't.
+>
+> If you do, great, and I'll do my best to help you. If you don't, also
+> great, because I can go back to the stuff I'm actually interested in
+> (i.e. not your machine).
+>
+> This is your call, and only yours.
+>
+> 	M.
+>
+OK, here is the dts file: 
+https://github.com/chzigotzky/kernels/blob/main/dtb_src/X1000/nemo.dts
 
-> Simplify code using of_property_for_each_u32_new() as the two additional
-> parameters in of_property_for_each_u32() are not used here.
-> 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thanks for your help.
+
