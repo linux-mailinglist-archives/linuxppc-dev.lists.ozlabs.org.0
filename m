@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7218926792
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCE29267C6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:08:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rdkJI5WT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X3bpvJgx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDnfS4Twgz3fSP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 04:01:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDnny3tbpz3dX0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 04:08:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rdkJI5WT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X3bpvJgx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDndm5hcVz3cb1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 04:01:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDnnH3Jnfz3cb1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 04:07:47 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id D9016CE2BBC;
-	Wed,  3 Jul 2024 18:01:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3A5C2BD10;
-	Wed,  3 Jul 2024 18:01:11 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9B6D6623B5;
+	Wed,  3 Jul 2024 18:07:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2346AC2BD10;
+	Wed,  3 Jul 2024 18:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720029672;
-	bh=Zf7O3ePlvok3MwLuehq8buoZy5+PWBs/kgvIKrrVIKA=;
+	s=k20201202; t=1720030063;
+	bh=7VkdfXXbnQAAagurnl0t1uowHfXXxqv6JWqV5yzvHyc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rdkJI5WT7xR8B3hhsVMq+7XqeIkJEsIaADXyaLtB4dJe9NXrYcxikXDJ/5KktssvA
-	 7etBQGsm2VyizVMZQmA9ihpwtZYUhvkMhDqqm7DZaL9YJ8uOiDoPSmPVoICg9OuK8h
-	 kf2w10dmNI2g0dOA0U+6i+Cgm8jgljOb/gfgRYI1OPkrO1v+GfL/rY1cUvohqOzaun
-	 TOkDyEhrJNtkGWe8cABu77lnRtMdZJu1H5b2xga3Mp3ipQTM+FMCsdeacpzsjDre6d
-	 /YbhzFbSXtxBcBUyDKr/EWUY3kR0SbLGgb2vJo3YUT8TlNsacvEqcfVsQLO/+01IoD
-	 8zVzREV5iKd4A==
-Date: Wed, 3 Jul 2024 12:01:11 -0600
+	b=X3bpvJgxZPWMXNOzcyielDafYLsorlGeMfGsYxZsE3DcfgNG38u+IpqkFauqV7JBb
+	 5vrbm1WYc3A6PpB/BYRkykAD7OTF0Cj7mNGz1MOi0sa5ZMS/EgfduMIqZfBT2ojOEE
+	 bFo2aTY3NN6jY868V+Ef+HPG5nwsrIILcL4gaARoEmQ/3VJxlw8KNvls5K1NJbvrcL
+	 liQUqmGsYZrzJg5w0kk4/LvcK6Tdp62Zk7+kzOZ/GnWL+VAWuwzwfMk9DNJ/Cy73bN
+	 +KSVQC/fntqBgC8EoMj80EdF4hoVvz6Kgpa3QHWVeUvUPp8LsLtGUtLPC5Ip21htEj
+	 aLChwBO4AdEcA==
+Date: Wed, 3 Jul 2024 12:07:42 -0600
 From: Rob Herring <robh@kernel.org>
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 20/20] of: deprecate and rename of_property_for_each_u32()
-Message-ID: <20240703180111.GA1245093-robh@kernel.org>
+Subject: Re: [PATCH 00/20] Simplify of_property_for_each_u32()
+Message-ID: <20240703180742.GB1245093-robh@kernel.org>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
- <20240703-of_property_for_each_u32-v1-20-42c1fc0b82aa@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240703-of_property_for_each_u32-v1-20-42c1fc0b82aa@bootlin.com>
+In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,76 +63,56 @@ Cc: Richard Leitner <richard.leitner@linux.dev>, Daniel Lezcano <daniel.lezcano@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 03, 2024 at 12:37:04PM +0200, Luca Ceresoli wrote:
-> of_property_for_each_u32() is meant to disappear. All the call sites not
-> using the 3rd and 4th arguments have already been replaced by
-> of_property_for_each_u32_new().
+On Wed, Jul 03, 2024 at 12:36:44PM +0200, Luca Ceresoli wrote:
+> [Note: to reduce the noise I have trimmed the get_maintainers list
+> manually. Should you want to be removed, or someone else added, to future
+> versions, just tell me. Sorry for the noise.]
 > 
-> Deprecate the old macro. Also rename it to minimize the number of new
-> usages and encourage conversion to the of_property_for_each_u32_new() macro
-> in not(-yet)-upstream code.
+> This series aims at simplifying of_property_for_each_u32() as well as
+> making it more difficult to misuse it in the future.
 > 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> The long-term goal is changing this pattern:
 > 
-> ---
+>   struct property *prop;
+>   const __be32 *p;
+>   u32 val;
+>  
+>   of_property_for_each_u32(np, "xyz", prop, p, val) { ... }
 > 
-> Notes:
+> to this:
 > 
->  * The following files have not been build-tested simply because I haven't
->    managed to have a config that enables them so far:
+>   u32 val;
 > 
->      drivers/irqchip/irq-pic32-evic.c
->      drivers/pinctrl/pinctrl-k210.c
+>   of_property_for_each_u32(np, "xyz", val) { ... }
 > 
->  * These have not been converted yet as they are not trivial, and they will
->    need to use a more specific function that does the lookup they need and
->    returns the result:
+> So, removing the 3rd and 4th arguments which are typically meant to be
+> internal. Those two parameters used to be unavoidable until the kernel
+> moved to building with the C11 standard unconditionally. Since then, it is
+> now possible to get rid of them. However a few users of
+> of_property_for_each_u32() do actually use those arguments, which
+> complicates the transition. For this reason this series does the following:
 > 
->      drivers/clk/clk-si5351.c
+>  * Add of_property_for_each_u32_new(), which does not have those two
+>    arguments (patch 1)
+>  * Convert _almost_ every usage to of_property_for_each_u32_new()
+>  * Rename of_property_for_each_u32() to of_property_for_each_u32_old() and
+>    deprecate it, as a incentive to code not (yet) in mainline to upgrade
+>    to the *_new() version (last patch)
 
-I would do something like this:
+I don't really see the point of introducing the _old variant. Let's get 
+this done in one step.
 
-	sz = of_property_read_variable_u32_array(np, "silabs,pll-source", array, 2, 4);
-	if (sz >= 2)
-		pdata->pll_src[array[0]] = val_to_src(array[1]);
-	if (sz >= 4)
-		pdata->pll_src[array[2]] = val_to_src(array[3]);
+> 
+> The plan for the next series is to additionally:
+> 
+>  * Convert the few remaining of_property_for_each_u32_old() instantes to
+>    of_property_for_each_u32_new()
+>  * Remove of_property_for_each_u32_old()
+>  * Rename of_property_for_each_u32_new() to of_property_for_each_u32()
 
+Honestly, I think there's few enough users we could just convert the 
+whole thing in one patch. It's all got to go thru 1 tree anyways. If 
+there's new cases in -next, then I'd be happy to send it to Linus at the 
+end of the merge window.
 
->      drivers/clk/clk.c
-
-Wouldn't this work:
-
-8<------------------------------------------------------
-
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 8cca52be993f..33a8cc193556 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -5371,6 +5371,7 @@ const char *of_clk_get_parent_name(const struct device_node *np, int index)
-        int rc;
-        int count;
-        struct clk *clk;
-+       bool found = false;
- 
-        rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
-                                        &clkspec);
-@@ -5383,15 +5384,16 @@ const char *of_clk_get_parent_name(const struct device_node *np, int index)
-        /* if there is an indices property, use it to transfer the index
-         * specified into an array offset for the clock-output-names property.
-         */
--       of_property_for_each_u32(clkspec.np, "clock-indices", prop, vp, pv) {
-+       of_property_for_each_u32_new(clkspec.np, "clock-indices", pv) {
-                if (index == pv) {
-                        index = count;
-+                       found = true;
-                        break;
-                }
-                count++;
-        }
-        /* We went off the end of 'clock-indices' without finding it */
--       if (prop && !vp)
-+       if (of_property_present(clkspec.np, "clock-indices") && !found)
-                return NULL;
- 
-        if (of_property_read_string_index(clkspec.np, "clock-output-names",
+Rob
