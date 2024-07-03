@@ -2,92 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7409F926608
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 18:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AAB492661E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 18:27:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Gy2Siy32;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=XNCTpZau;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rwd9e7kl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDlTD1gB7z3dSq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 02:23:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDlYs0pS1z3dK6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 02:27:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Gy2Siy32;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=XNCTpZau;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rwd9e7kl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDlST4hn5z3cb1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 02:23:02 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1720023757; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=VVORDbf2msCtWnL/pUXyiHuHFrAdVWz4sP9G4CxWWlzj1zgWlyQZcgZsNLKgRfHDgB
-    iUIaBCEtFlaRTlkKP6cHPtxGZqApiIdEpTrgM6PqY4XvqSvuG1FYbVoEWroNtlDfLyvk
-    XjaR831cZttF7l+SJ+l2HxyGa1Gm7SZKTchFp41+Vwsqn1z0K4+ltswfthwdDUVcA0u0
-    tE5TLbnFT6DmLOB+UrVCxLOVz3Da6m3hSWQFz0igCsTXcai/UDbrweCZGt7upjEXlOlM
-    zSetek/bJ2ZPtEUUn7QxO+lh+Iqml/rk6lid1dD7rGlRIz9HusaMDY1Ih77qauRi6dsZ
-    strg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720023757;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Xefpm7kp1QKwRcK53B/u3dUPROD/z4fSpwFfZlUnT+g=;
-    b=Rk+2LGsv65JAMuSX49Rsm5StceZtRGYDQphIByXVtrzj3Chft+nhQYfFV+yBH6NJzH
-    zRUhRTGAfUqaD4m5BH1yw/wkgbnuYq0s3OqqdKh1DinQ/G8MgBhC5Ot8fXxFQg+V0stx
-    8y+vQQPmurrZDCFDwfmUe2nR2fZbD3mptY7fbeGGT7sXyJbv3jGMfSYLks0677f9e5Yj
-    WaHiFNmmQyRPkyzcVTHJphl6KNKtMtpFxo8QX+c1O6NFhjj/x3xpSBuxcQx/YLAB3MXI
-    pV4eUcwTJWT0howC366TUYEWWg5Xx9w87FJGwukXn62mz7XQO806ZO6ohL+kPStmXEV2
-    YwYQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720023757;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Xefpm7kp1QKwRcK53B/u3dUPROD/z4fSpwFfZlUnT+g=;
-    b=Gy2Siy32RcwgdZf5tB5Uj9bQMnetV5Sl2cX2/66Ss8FEXnqx5987dyz/oC31uhM+bI
-    dLLYN5VN8CdH2QQspkpypOWky7u4KrJH6qz/Dyau0dnyc/s9C412IrgwdAkb2OYU2Igs
-    eHCZk8/lSviFmAls+HGQ21LL0y+VsZKlunOTMEkwFzxxNhmqKSX8De84owH9dsraGS7p
-    MLhpdhD5tdybUBT1fX35u3Cj8XWZq6z3Q/0G7F3etYebt19IopXWHsR/M9+EgqAb7+px
-    8VehuSuapGUlAgf2fXZvdUtjxprmsShnY0DTjSWYOqwFS0WnzqoIxvEbF2SlNA6hUiMG
-    yn8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720023757;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Xefpm7kp1QKwRcK53B/u3dUPROD/z4fSpwFfZlUnT+g=;
-    b=XNCTpZauLp8RFotnyZ1DbdXYQFNrHQ2YuynthNSaK3ibX4zCBTn4kpSyMKYocsfTnv
-    HE5EQqHZe1stoIy6kWBQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43J0mbSkY7T0LO5Dgwl/5WHn9PRLvYVKAUYGE"
-Received: from [IPV6:2a01:599:817:c09:f2fd:d497:aff:32c3]
-    by smtp.strato.de (RZmta 50.5.0 AUTH)
-    with ESMTPSA id e08389063GMZQ2I
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 3 Jul 2024 18:22:35 +0200 (CEST)
-Message-ID: <de910b52-4f46-47a5-896d-d60af85ae293@xenosoft.de>
-Date: Wed, 3 Jul 2024 18:23:12 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDlYB5nJxz3cZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 02:27:10 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 6510ECE2D2B;
+	Wed,  3 Jul 2024 16:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC89C2BD10;
+	Wed,  3 Jul 2024 16:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720024025;
+	bh=iqYxlC1bhe/7ALpkNeE5phKu3N9aTBnG3R0HukiaLws=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rwd9e7kliYyzi9FQPgDbHOkyrNE+y0jJRVWnOdmXhAkVOD1ALZD0O10DjNWFdt3yC
+	 ofb8OUs3AK4tJ1ETzauW/+3t+eb/4uqnz3ZVD6XWlRjMjQGvlP8UR9uBfs+9//130N
+	 CeN/pC1bgOCnO1VB1B+hlwcVy289AeM/esB0ht8j55bH9Y8nSprZ7wpAtbvdTbz9AL
+	 iL/UQJKak4mdUS3H81Mn47L1q38rjm7FaAXhIo9ngCEgZjFb3ikj1ZDBhqbVK8SiJr
+	 HZg0QGdZ9zMNJD8lbhhVjPqYxuorXhgrPYWZkHunA9J73aHALa3eQQyUQIz2HvRh3j
+	 HNWAuSbLQR1RA==
+Date: Wed, 3 Jul 2024 09:27:04 -0700
+From: Kees Cook <kees@kernel.org>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH v2] printk: Add a short description string to kmsg_dump()
+Message-ID: <202407030926.D5DA9B901D@keescook>
+References: <20240702122639.248110-1-jfalempe@redhat.com>
+ <202407021326.E75B8EA@keescook>
+ <10ea2ea1-e692-443e-8b48-ce9884e8b942@redhat.com>
+ <ZoUKM9-RiOrv0_Vf@pathway.suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
- after the of/irq updates 2024-05-29
-To: Marc Zyngier <maz@kernel.org>
-References: <86cynv9dx7.wl-maz@kernel.org>
- <B550D4C4-6F82-409E-B5A8-E7D123ACB93D@xenosoft.de>
- <86a5iyahbc.wl-maz@kernel.org>
-Content-Language: en-US
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <86a5iyahbc.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZoUKM9-RiOrv0_Vf@pathway.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,42 +62,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Vignesh Raghavendra <vigneshr@ti.com>, Uros Bizjak <ubizjak@gmail.com>, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, "K. Y. Srinivasan" <kys@microsoft.com>, David Airlie <airlied@gmail.com>, Wei Liu <wei.liu@kernel.org>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Dexuan Cui <decui@microsoft.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Zimmermann <tzimmermann@suse.de>, John Ogness <john.ogness@linutronix.de>, Jani Nikula <jani.nikula@intel.com>, Haiyang Zhang <haiyangz@microsoft.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>, Jocelyn Falempe <jfalempe@redhat.com>, Tony Luck <tony.luck@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, Daniel Vetter <daniel@ffwll.ch>, Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03.07.24 12:41, Marc Zyngier wrote:
-> On Wed, 03 Jul 2024 11:26:17 +0100,
-> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->> On 3. Jul 2024, at 08:40, Marc Zyngier <maz@kernel.org> wrote:
->>
->> This isn't a DTS. This is a listing of all the nodes, not something I
->> can use to feed the kernel. I explained how to generate it.
->>
->> Download the compiled device tree for the Nemo board:
->> http://www.xenosoft.de/fdt-nemo-board.zip
->>
->> No, thank you.
->>
->> ————————
->>
->> You know already the device tree: https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/236587.html
-> Do you think I keep this sort of things from almost three years ago? I
-> have better things to do.
->
-> Now, either you provide the required information in the required form
-> or you don't. Either you test the proposed patches or you don't.
->
-> If you do, great, and I'll do my best to help you. If you don't, also
-> great, because I can go back to the stuff I'm actually interested in
-> (i.e. not your machine).
->
-> This is your call, and only yours.
->
-> 	M.
->
-OK, here is the dts file: 
-https://github.com/chzigotzky/kernels/blob/main/dtb_src/X1000/nemo.dts
+On Wed, Jul 03, 2024 at 10:22:11AM +0200, Petr Mladek wrote:
+> On Wed 2024-07-03 09:57:26, Jocelyn Falempe wrote:
+> > 
+> > 
+> > On 02/07/2024 22:29, Kees Cook wrote:
+> > > On Tue, Jul 02, 2024 at 02:26:04PM +0200, Jocelyn Falempe wrote:
+> > > > kmsg_dump doesn't forward the panic reason string to the kmsg_dumper
+> > > > callback.
+> > > > This patch adds a new struct kmsg_dump_detail, that will hold the
+> > > > reason and description, and pass it to the dump() callback.
+> > > 
+> > > Thanks! I like this much better. :)
+> > > 
+> > > > 
+> > > > To avoid updating all kmsg_dump() call, it adds a kmsg_dump_desc()
+> > > > function and a macro for backward compatibility.
+> > > > 
+> > > > I've written this for drm_panic, but it can be useful for other
+> > > > kmsg_dumper.
+> > > > It allows to see the panic reason, like "sysrq triggered crash"
+> > > > or "VFS: Unable to mount root fs on xxxx" on the drm panic screen.
+> > > > 
+> > > > v2:
+> > > >   * Use a struct kmsg_dump_detail to hold the reason and description
+> > > >     pointer, for more flexibility if we want to add other parameters.
+> > > >     (Kees Cook)
+> > > >   * Fix powerpc/nvram_64 build, as I didn't update the forward
+> > > >     declaration of oops_to_nvram()
+> > > 
+> > > The versioning history commonly goes after the "---".
+> > 
+> > ok, I was not aware of this.
+> > > 
+> > > > [...]
+> > > > diff --git a/include/linux/kmsg_dump.h b/include/linux/kmsg_dump.h
+> > > > index 906521c2329c..65f5a47727bc 100644
+> > > > --- a/include/linux/kmsg_dump.h
+> > > > +++ b/include/linux/kmsg_dump.h
+> > > > @@ -39,6 +39,17 @@ struct kmsg_dump_iter {
+> > > >   	u64	next_seq;
+> > > >   };
+> > > > +/**
+> > > > + *struct kmsg_dump_detail - kernel crash detail
+> > > 
+> > > Is kern-doc happy with this? I think there is supposed to be a space
+> > > between the "*" and the first word:
+> > > 
+> > >   /**
+> > >    * struct kmsg...
+> > > 
+> > > 
+> > Good catch, yes there is a space missing.
+> > 
+> > I just checked with "make htmldocs", and in fact include/linux/kmsg_dump.h
+> > is not indexed for kernel documentation.
+> > And you can't find the definition of struct kmsg_dumper in the online doc.
+> > https://www.kernel.org/doc/html/latest/search.html?q=kmsg_dumper
+> > 
+> > > Otherwise looks good to me!
+> > > 
+> > 
+> > Thanks.
+> > 
+> > As this patch touches different subsystems, do you know on which tree it
+> > should land ?
+> 
+> Andrew usually takes patches against kernel/panic.c.
+> 
+> Or you could take it via the DRM tree, especially if you already have the code
+> using the string.
+> 
+> Also I could take it via the printk tree. The only complication is
+> that I am going to be away the following two weeks and would come
+> back in the middle of the merge window. I do not expect much problems
+> with this change but...
 
-Thanks for your help.
+If DRM doesn't want to carry it, I can put it in through the pstore
+tree. Let me know! :)
 
+-- 
+Kees Cook
