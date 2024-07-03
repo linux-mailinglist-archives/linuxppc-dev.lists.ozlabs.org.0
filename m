@@ -2,54 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1910924CA1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 02:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420D0924CCF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 02:35:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lvr/ZTaY;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=Hwzk1ORC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDKsP4F9Sz3cMX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 10:09:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDLQX0kclz3by2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 10:35:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lvr/ZTaY;
+	dkim=pass (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=Hwzk1ORC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iki.fi (client-ip=2a0b:5c81:1c1::37; helo=lahtoruutu.iki.fi; envelope-from=jarkko.sakkinen@iki.fi; receiver=lists.ozlabs.org)
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDKrh1lWKz2ysc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:09:08 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 9EA69CE0F7B;
-	Wed,  3 Jul 2024 00:09:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6506EC2BD10;
-	Wed,  3 Jul 2024 00:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719965345;
-	bh=ePBM8uzJRxVTZEWmIyligoS+xxnug3U4PYJjOKa/19E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lvr/ZTaYVRJ9GFS+EgvLaekvn6pqKwXp0nujszy9uerwf5WHRSz1q8pNStd+G6zgR
-	 1AXAX+uAkpReldOxNUA8QVK8HII6G9PNo37nU7fOaSUCb72zfU5epPkholCk/PxcMb
-	 AQ5EeU3tHlW6SuaSzE+HKyf5r/6/ol5tucZIl2wr69tIrnle4FAcHF5ByNXWyYqHeD
-	 /bteuTjUV6iEnDX3uvIhuqFv+2PvDNuO/Lh6zvyWz433gv7Zt78Y0nlgYyO7v9wDdU
-	 4hzQWdRqhM3wiR70fyiOhKvctoTGnsNig5xGK+7bFtWAUGso0ijRVyk0lFSWalqSbA
-	 TlslREdQXBrBQ==
-Date: Tue, 2 Jul 2024 17:09:03 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V5 03/17] tools/perf: Update TYPE_STATE_MAX_REGS to
- include max of regs in powerpc
-Message-ID: <ZoSWn0q8YCxxbylS@google.com>
-References: <20240701043430.66666-1-atrajeev@linux.vnet.ibm.com>
- <20240701043430.66666-4-atrajeev@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240701043430.66666-4-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDLPr64YWz30V7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:34:24 +1000 (AEST)
+Received: from localhost (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WDLPn43c7z49PwY;
+	Wed,  3 Jul 2024 03:34:21 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1719966861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GaV4tuk1WbugWdGR34mCTzuCrF1HR/X8Zy5U2pP20mY=;
+	b=Hwzk1ORCDLDo+ZiLXJZ9VZDcBs7xVnOnpn2RghTPQxZfI25659jdF6jLTsfX00r63/BfUK
+	4LJpl2qkg+FsZzTi6qEj7aJZ+qm+T3Q8QG08lI9lpRhGYIid5OcV9mk9dhF5fKgG5cAb+r
+	fOJEmy8yHRDQ23Vo27z6NynYLgwq3IUaJkTe7bAw4ek5Qe/33BCx2b2pveBwT/BVLlChT+
+	SRxjiCB9EixM2pioAv2iotHdA1II0Mt9DbC4uGjOW/vyoPOM2mUUykK7UJIhSr7WzrAqF4
+	vIvoYYMuxgqWZ/0OmKOUJElMv3Hc1HTYrq3uBKU1m+Qj0+zfJSR+r5JjUG1Fww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1719966861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GaV4tuk1WbugWdGR34mCTzuCrF1HR/X8Zy5U2pP20mY=;
+	b=r0a24xe0CGr61iBcz2UuPxJCeXSNlnpKlc2FHYz2NFz2gAk1FYG+s7W0I+0Vyyo4Y9gDBX
+	sE/pwlTG1yW3ijfHKJI6XsbchMT68iiEDm1djjK4WI2XX2EWsztLDnsqKgCnxd0oed7BOU
+	FMH2F9TXYvdseY0vdsxthj5JIXYUhOUr3PkgACLFE80nMRaXnGzwmu8fNeGUZPdd+1fm41
+	six+W33Kc1zTdF76mrSrF4ErWJHJ1pd0C4nqzmwmNeEgBXnQYeOTUOskUFN3LeTuZQxQMI
+	PKTkAcTtfQuHdyAMiDbtuiAha0SUQQs0lMrgUWfHFAW5/hn3Q+D1/xx7/2bQlQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1719966861; a=rsa-sha256;
+	cv=none;
+	b=Vu1Tcl6h9Orp81BbUjw627PbKr6gMUDh/2r3b4xEIAn2hDle019jRr3F6WBTIPEv3lah3I
+	6/0AdEeDW2sxRnvNFbE6UP90xd21TXSR4dPWn0HN3fU8ejGP826iWNmDmsei6oxby5Y058
+	kLk/cSbUN2JukeWIZHt5qZiZFRHd8WqMG04T2WD7KvlMaEKBRixgP2RZYav3GztbSwg8L8
+	2vOY25jM8l5yC90/mvjOYiojzXDbi4Qy5gnko3qORWiEc/HuBk7T591AvyE00GoUGANF4D
+	yfD+D3zH1zV3mHH2JEOW19bV3R1I8s7BXPooVyDvdzuBWY++Kl8DY9EuSLWKUw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 03 Jul 2024 03:34:21 +0300
+Message-Id: <D2FHD82R8YAC.YBL9FAIVMBWL@iki.fi>
+Subject: Re: [PATCH] tpm: ibmvtpm: Call tpm2_sessions_init() to initialize
+ session support
+From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
+To: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, "Linux regressions mailing list"
+ <regressions@lists.linux.dev>
+X-Mailer: aerc 0.17.0
+References: <20240617193408.1234365-1-stefanb@linux.ibm.com>
+ <9e167f3e-cd81-45ab-bd34-939f516b05a4@linux.ibm.com>
+ <55e8331d-4682-40df-9a1b-8a08dc5f6409@leemhuis.info>
+ <9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org>
+ <53d96a8b-26ef-46a3-9b68-3d791613e47c@linux.ibm.com>
+ <D2EFNJTR80JS.1RW91OVY1UH1N@iki.fi>
+ <e7db74a0-cd5c-4394-b87e-c31ea0861ea1@linux.ibm.com>
+ <b7559dbb323d16fb334f8f8f35b8fda3fb6e481c.camel@iki.fi>
+ <85f882ff079554c41a73d8ad4275072c5229f716.camel@iki.fi>
+In-Reply-To: <85f882ff079554c41a73d8ad4275072c5229f716.camel@iki.fi>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,193 +97,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, acme@kernel.org, jolsa@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: naveen.n.rao@linux.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 01, 2024 at 10:04:16AM +0530, Athira Rajeev wrote:
-> Add TYPE_STATE_MAX_REGS_X86 and TYPE_STATE_MAX_REGS_PPC. Define
-> TYPE_STATE_MAX_REGS to be 32 which is max size of the array. While
-> checking if reg is valid using has_reg_type, use the max value
-> depending on the architecture. For x86, use TYPE_STATE_MAX_REGS_X86
-> since max number of regs is 16. Update has_reg_type to
-> pass "struct arch" also as one of the parameters.
-> 
-> Signed-off-by: Athira Rajeev<atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/arch/x86/annotate/instructions.c | 20 ++++++++++----------
->  tools/perf/util/annotate-data.c             | 13 +++++++++----
->  tools/perf/util/annotate-data.h             |  6 ++++--
->  3 files changed, 23 insertions(+), 16 deletions(-)
-> 
-> diff --git a/tools/perf/arch/x86/annotate/instructions.c b/tools/perf/arch/x86/annotate/instructions.c
-> index 7b7d462c6c6b..ea1dc686e7b4 100644
-> --- a/tools/perf/arch/x86/annotate/instructions.c
-> +++ b/tools/perf/arch/x86/annotate/instructions.c
-> @@ -263,14 +263,14 @@ static void update_insn_state_x86(struct type_state *state,
->  		struct map_symbol *ms = dloc->ms;
->  		u64 ip = ms->sym->start + dl->al.offset;
->  
-> -		if (!has_reg_type(state, dst->reg1))
-> +		if (!has_reg_type(state, dst->reg1, dloc->arch))
->  			return;
->  
->  		tsr = &state->regs[dst->reg1];
->  
->  		if (src->imm)
->  			imm_value = src->offset;
-> -		else if (has_reg_type(state, src->reg1) &&
-> +		else if (has_reg_type(state, src->reg1, dloc->arch) &&
->  			 state->regs[src->reg1].kind == TSR_KIND_CONST)
->  			imm_value = state->regs[src->reg1].imm_value;
->  		else if (src->reg1 == DWARF_REG_PC) {
-> @@ -321,7 +321,7 @@ static void update_insn_state_x86(struct type_state *state,
->  
->  	/* Case 1. register to register or segment:offset to register transfers */
->  	if (!src->mem_ref && !dst->mem_ref) {
-> -		if (!has_reg_type(state, dst->reg1))
-> +		if (!has_reg_type(state, dst->reg1, dloc->arch))
->  			return;
->  
->  		tsr = &state->regs[dst->reg1];
-> @@ -374,7 +374,7 @@ static void update_insn_state_x86(struct type_state *state,
->  			return;
->  		}
->  
-> -		if (!has_reg_type(state, src->reg1) ||
-> +		if (!has_reg_type(state, src->reg1, dloc->arch) ||
->  		    !state->regs[src->reg1].ok) {
->  			tsr->ok = false;
->  			return;
-> @@ -392,7 +392,7 @@ static void update_insn_state_x86(struct type_state *state,
->  	if (src->mem_ref && !dst->mem_ref) {
->  		int sreg = src->reg1;
->  
-> -		if (!has_reg_type(state, dst->reg1))
-> +		if (!has_reg_type(state, dst->reg1, dloc->arch))
->  			return;
->  
->  		tsr = &state->regs[dst->reg1];
-> @@ -427,7 +427,7 @@ static void update_insn_state_x86(struct type_state *state,
->  			pr_debug_type_name(&tsr->type, tsr->kind);
->  		}
->  		/* And then dereference the pointer if it has one */
-> -		else if (has_reg_type(state, sreg) && state->regs[sreg].ok &&
-> +		else if (has_reg_type(state, sreg, dloc->arch) && state->regs[sreg].ok &&
->  			 state->regs[sreg].kind == TSR_KIND_TYPE &&
->  			 die_deref_ptr_type(&state->regs[sreg].type,
->  					    src->offset, &type_die)) {
-> @@ -464,7 +464,7 @@ static void update_insn_state_x86(struct type_state *state,
->  			pr_debug_type_name(&type_die, tsr->kind);
->  		}
->  		/* And check percpu access with base register */
-> -		else if (has_reg_type(state, sreg) &&
-> +		else if (has_reg_type(state, sreg, dloc->arch) &&
->  			 state->regs[sreg].kind == TSR_KIND_PERCPU_BASE) {
->  			u64 ip = dloc->ms->sym->start + dl->al.offset;
->  			u64 var_addr = src->offset;
-> @@ -473,7 +473,7 @@ static void update_insn_state_x86(struct type_state *state,
->  			if (src->multi_regs) {
->  				int reg2 = (sreg == src->reg1) ? src->reg2 : src->reg1;
->  
-> -				if (has_reg_type(state, reg2) && state->regs[reg2].ok &&
-> +				if (has_reg_type(state, reg2, dloc->arch) && state->regs[reg2].ok &&
->  				    state->regs[reg2].kind == TSR_KIND_CONST)
->  					var_addr += state->regs[reg2].imm_value;
->  			}
-> @@ -504,7 +504,7 @@ static void update_insn_state_x86(struct type_state *state,
->  			}
->  		}
->  		/* And then dereference the calculated pointer if it has one */
-> -		else if (has_reg_type(state, sreg) && state->regs[sreg].ok &&
-> +		else if (has_reg_type(state, sreg, dloc->arch) && state->regs[sreg].ok &&
->  			 state->regs[sreg].kind == TSR_KIND_POINTER &&
->  			 die_get_member_type(&state->regs[sreg].type,
->  					     src->offset, &type_die)) {
-> @@ -543,7 +543,7 @@ static void update_insn_state_x86(struct type_state *state,
->  	}
->  	/* Case 3. register to memory transfers */
->  	if (!src->mem_ref && dst->mem_ref) {
-> -		if (!has_reg_type(state, src->reg1) ||
-> +		if (!has_reg_type(state, src->reg1, dloc->arch) ||
->  		    !state->regs[src->reg1].ok)
->  			return;
->  
-> diff --git a/tools/perf/util/annotate-data.c b/tools/perf/util/annotate-data.c
-> index 7a48c3d72b89..fac9d3cdd318 100644
-> --- a/tools/perf/util/annotate-data.c
-> +++ b/tools/perf/util/annotate-data.c
-> @@ -131,9 +131,14 @@ static void pr_debug_location(Dwarf_Die *die, u64 pc, int reg)
->  	}
->  }
->  
-> -bool has_reg_type(struct type_state *state, int reg)
-> +bool has_reg_type(struct type_state *state, int reg, struct arch *arch)
->  {
-> -	return (unsigned)reg < ARRAY_SIZE(state->regs);
-> +	if (arch__is(arch, "x86"))
-> +		return (unsigned)reg < TYPE_STATE_MAX_REGS_x86;
-> +	else if (arch__is(arch, "powerpc"))
-> +		return (unsigned)reg < TYPE_STATE_MAX_REGS_PPC;
-> +	else
-> +		return (unsigned)reg < ARRAY_SIZE(state->regs);
->  }
->  
->  static void init_type_state(struct type_state *state, struct arch *arch)
-> @@ -707,7 +712,7 @@ static void update_var_state(struct type_state *state, struct data_loc_info *dlo
->  			pr_debug_dtp("var [%"PRIx64"] -%#x(stack)",
->  				     insn_offset, -var->offset + fb_offset);
->  			pr_debug_type_name(&mem_die, TSR_KIND_TYPE);
-> -		} else if (has_reg_type(state, var->reg) && var->offset == 0) {
-> +		} else if (has_reg_type(state, var->reg, dloc->arch) && var->offset == 0) {
->  			struct type_state_reg *reg;
->  
->  			reg = &state->regs[var->reg];
-> @@ -943,7 +948,7 @@ static int check_matching_type(struct type_state *state,
->  			if (dloc->op->reg2 == reg)
->  				reg2 = dloc->op->reg1;
->  
-> -			if (has_reg_type(state, reg2) && state->regs[reg2].ok &&
-> +			if (has_reg_type(state, reg2, dloc->arch) && state->regs[reg2].ok &&
->  			    state->regs[reg2].kind == TSR_KIND_CONST)
->  				var_addr += state->regs[reg2].imm_value;
->  		}
-> diff --git a/tools/perf/util/annotate-data.h b/tools/perf/util/annotate-data.h
-> index 6fe8ee8b8410..4d8682cdc53c 100644
-> --- a/tools/perf/util/annotate-data.h
-> +++ b/tools/perf/util/annotate-data.h
-> @@ -189,7 +189,9 @@ struct type_state_stack {
->  };
->  
->  /* FIXME: This should be arch-dependent */
-> -#define TYPE_STATE_MAX_REGS  16
-> +#define TYPE_STATE_MAX_REGS  32
-> +#define TYPE_STATE_MAX_REGS_x86	16
-> +#define TYPE_STATE_MAX_REGS_PPC	32
+On Wed Jul 3, 2024 at 2:57 AM EEST, Jarkko Sakkinen wrote:
+> On Wed, 2024-07-03 at 02:48 +0300, Jarkko Sakkinen wrote:
+> > On Mon, 2024-07-01 at 15:14 -0400, Stefan Berger wrote:
+> > > Applying it is probably the better path forward than restricting HMAC=
+ to=20
+> > > x86_64 now and enabling it on a per-architecture basis afterwards ...
+> >=20
+> > Why is this here and not in the associated patch?
+> >=20
+> > Any, what argue against is already done for v6.10.
+> >=20
+> > The actual bug needs to be fixed before anything
+> > else.
+> >=20
+> > I can look at the patch when in August (back from
+> > holiday) but please response to the correct patch
+> > next time, thanks.
+>
+> Next steps forward:
+>
+> 1  Comment out sessions_init().
+> 2. See what happens on x86 in QEMU.
+> 3. All errors were some sort size errors, so look into failing
+>    sites and fixup the use of hmac shenanigans.
 
-How about this?
+For anything "fast" or "quick" I think this really the only
+possible sane thing to do right now:
 
-#ifdef __powerpc__  // or something
-# define TYPE_STATE_MAX_REGS  32
-#else
-# define TYPE_STATE_MAX_REGS  16
-#endif
+https://lore.kernel.org/linux-integrity/20240703003033.19057-1-jarkko@kerne=
+l.org/T/#u
 
-Thanks,
-Namhyung
+There's also bunch of other drivers than tpm_ibmvtpm so better
+to limit it to known good drivers.
 
->  
->  /*
->   * State table to maintain type info in each register and stack location.
-> @@ -224,7 +226,7 @@ void global_var_type__tree_delete(struct rb_root *root);
->  
->  int hist_entry__annotate_data_tty(struct hist_entry *he, struct evsel *evsel);
->  
-> -bool has_reg_type(struct type_state *state, int reg);
-> +bool has_reg_type(struct type_state *state, int reg, struct arch *arch);
->  struct type_state_stack *findnew_stack_state(struct type_state *state,
->  						int offset, u8 kind,
->  						Dwarf_Die *type_die);
-> -- 
-> 2.43.0
-> 
+I can take at the actual issue in August and will review any
+possible patches then. This one I'll send after my current PR
+for TPM has been merged.
+
+BR, Jarkko
