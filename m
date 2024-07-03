@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC4A9259AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:47:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287039259B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:48:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=lvyFr1Kg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=mKr+b4Ho;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc1h6stkz3dT6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:47:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc2T01Whz30Tp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:48:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=lvyFr1Kg;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=mKr+b4Ho;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
 Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwM51Rdz3dHm
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwM5tgKz3dJm
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:15 +1000 (AEST)
 Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id E4AB1C65C7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:37:55 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 676D540002;
-	Wed,  3 Jul 2024 10:37:45 +0000 (UTC)
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 5574AC66F7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:01 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7254D40004;
+	Wed,  3 Jul 2024 10:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720003069;
+	t=1720003073;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1zHG+kgTAxY6YXuOFQtSuqWr0U2+nyHWGxYZLheatik=;
-	b=lvyFr1KgdlM8fWsBIY5v+NGg/+DCXDRInTjVtnh9n/uT3o0w5TGRzUlsY+e8XghtNV52SL
-	YOQTrE08/uiOUXBQYrDFIL0l6w3tNcK3tXJ6bt6MYni27LjOpYaHsifXseDH2vd+CfNJCF
-	UXSdsCrp/wRv2O1iE6G7+kHhKtpCtkl2vnOOboOh4EAVw5k3osBbyvlh4xD8xAJIxInA+5
-	YGzXuZHzfxIBDVgarTXjYDUz0mBx18c3Qs69P0XUklXAOpiVJREwZeMhQMMbVcO6VsOMFF
-	5jIQz1najcx5oDNnP5ihqZI7kny1OxYyxyvNWyNMgEBS+yMKLxQYoLwUkJZe/g==
+	bh=eb/MG1X9ZyCPKkfMiLJRzBYl1psyg/JqqItzDc7u8oM=;
+	b=mKr+b4HoPQo1Bbt3MDOJiBq9QDRNlzbhJzVl4AeA0Bf+v1zIO3zjJ/lkkLWUl9vVQjJwMj
+	GttRzJh2ll37uZc3T9+da0g8WgP0WK4eBV3Vh0zxip1Vyrqw9JcBUeUdIOgoHNg3KBvJnT
+	+8ed+7bmTxXLLfO8t+hFeawDez5BRpjqW2qGF4j8JnxhgjW/jZ7ECR4H1QVqTgA6x9xaSf
+	mBsmesIOt9vICeLPBULX+Ry1Hki1Qv3FUm4I418GCg27OH8dyMjyOfFD63735uKDyNeZQ2
+	A1FFEdDsCYFcBwTrZOYROGc6Z8mRxdAtz9zOk9dgBIRpvPyxCrCsgAvEr2f/4A==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 03 Jul 2024 12:36:50 +0200
-Subject: [PATCH 06/20] clocksource/drivers/samsung_pwm: convert to
+Date: Wed, 03 Jul 2024 12:36:51 +0200
+Subject: [PATCH 07/20] bus: ti-sysc: convert to
  of_property_for_each_u32_new()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-of_property_for_each_u32-v1-6-42c1fc0b82aa@bootlin.com>
+Message-Id: <20240703-of_property_for_each_u32-v1-7-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -98,31 +98,26 @@ parameters in of_property_for_each_u32() are not used here.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/clocksource/samsung_pwm_timer.c | 4 +---
+ drivers/bus/ti-sysc.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/clocksource/samsung_pwm_timer.c b/drivers/clocksource/samsung_pwm_timer.c
-index 6e46781bc9ac..b5ae411bc077 100644
---- a/drivers/clocksource/samsung_pwm_timer.c
-+++ b/drivers/clocksource/samsung_pwm_timer.c
-@@ -418,8 +418,6 @@ void __init samsung_pwm_clocksource_init(void __iomem *base,
- static int __init samsung_pwm_alloc(struct device_node *np,
- 				    const struct samsung_pwm_variant *variant)
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 8767e04d6c89..3d19777f1e31 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -2291,11 +2291,9 @@ static int sysc_init_idlemode(struct sysc *ddata, u8 *idlemodes,
+ 			      const char *name)
  {
+ 	struct device_node *np = ddata->dev->of_node;
 -	struct property *prop;
--	const __be32 *cur;
+-	const __be32 *p;
  	u32 val;
- 	int i, ret;
  
-@@ -427,7 +425,7 @@ static int __init samsung_pwm_alloc(struct device_node *np,
- 	for (i = 0; i < SAMSUNG_PWM_NUM; ++i)
- 		pwm.irq[i] = irq_of_parse_and_map(np, i);
- 
--	of_property_for_each_u32(np, "samsung,pwm-outputs", prop, cur, val) {
-+	of_property_for_each_u32_new(np, "samsung,pwm-outputs", val) {
- 		if (val >= SAMSUNG_PWM_NUM) {
- 			pr_warn("%s: invalid channel index in samsung,pwm-outputs property\n", __func__);
- 			continue;
+-	of_property_for_each_u32(np, name, prop, p, val) {
++	of_property_for_each_u32_new(np, name, val) {
+ 		if (val >= SYSC_NR_IDLEMODES) {
+ 			dev_err(ddata->dev, "invalid idlemode: %i\n", val);
+ 			return -EINVAL;
 
 -- 
 2.34.1
