@@ -2,96 +2,117 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B86925F5A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 13:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB129260C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 14:45:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P0vDGbdG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=nmgAGu9Q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDdZf01S2z3dSR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 21:58:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDfdS089Dz3dBX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 22:45:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P0vDGbdG;
+	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=nmgAGu9Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.152.168; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=4914b47104=rf@opensource.cirrus.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 4334 seconds by postgrey-1.37 at boromir; Wed, 03 Jul 2024 22:44:54 AEST
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDdYx5F4fz3cZy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 21:57:25 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 463AvnS8030397;
-	Wed, 3 Jul 2024 11:57:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=W
-	ZqByMisVszq09kN65sBEzVYFscYU29piGSfZF81Do4=; b=P0vDGbdGwp+OLM1KV
-	h4T9cjHa2S+JRHQjDnHHizURW0rGNLh+5IqOBbcUx0wNVj9nV6Qx7SJe92AbCYWE
-	ufdMG6euHtewN9z4IvpOGMxJCwdnVaqrE/39SF4lau//g+P5pwGA88ObdEkLB/Q0
-	g4rJPRJhqv5DbDa9uOcMcVP2KdAbTJn93rjBZu1RuDiynmy/hOUnHd35W6AO88c3
-	Q4dwYaK4M+ix+axj9LPy/Ea7vSvPxoisWFOSY+SIMzLYl3cYtgXsa+Cc3mHjDWRa
-	5zbQTBk1BZi375+i8au9H2v/mDMs+MytQR9+m0ZfK2KBP9j1n5++hUw29qwjwLBa
-	7QcZg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4054ww88hc-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDfck37rLz3cbg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 22:44:52 +1000 (AEST)
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4636mxjt003511;
+	Wed, 3 Jul 2024 06:31:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	PODMain02222019; bh=f37i3vEXbnh14lMCwflrH5FfWLKGacpcQ9pw+V8X0GM=; b=
+	nmgAGu9QNNUy+G+YvJbJdLDq3r5Fy6Tlvw22gJFuOhC/HUVavm2zyhCYI2OsrfAU
+	mDwZcEl1Ie0x2Rgl8iIhzLQtM75dpvKeYlXQz4E9/9wzgMOiW1NBymVDkVs0cTmu
+	JrK/H/3DummtYV3aHM2KFCYbKNXUwvtz7SG9OT4cRFAPBEILdNBAos0jQqGiEr3t
+	oi7Em/CxuTdS52KqxbQqLFHVuvcJjnJJi1ZWq5PU7lS2UOXmy0Q0EPAGOj1qBR7M
+	lZ91HcM0b6ZMw/944h0ilF+OF6+f/+KyPnSZdWznrzM0Dnba7pZz4Xv9KWNq0Kg6
+	bSGAR7m1b6TnrBo5lsVPKg==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 402epjd9kx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 11:57:10 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 463Bv9Zx027724;
-	Wed, 3 Jul 2024 11:57:09 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4054ww88e5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 11:57:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4639A67R030022;
-	Wed, 3 Jul 2024 11:53:13 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 402x3n2a34-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 11:53:12 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 463Br7Dw31982324
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jul 2024 11:53:09 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C47320040;
-	Wed,  3 Jul 2024 11:53:07 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 829D42005A;
-	Wed,  3 Jul 2024 11:53:04 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.44.47])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  3 Jul 2024 11:53:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH V5 05/17] tools/perf: Add support to capture and parse raw
- instruction in powerpc using dso__data_read_offset utility
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <ZoSoO7IHKreTpkbt@google.com>
-Date: Wed, 3 Jul 2024 17:22:52 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <649287F9-2301-42B8-ABD9-E6B3DC6DA50F@linux.vnet.ibm.com>
-References: <20240701043430.66666-1-atrajeev@linux.vnet.ibm.com>
- <20240701043430.66666-6-atrajeev@linux.vnet.ibm.com>
- <ZoSoO7IHKreTpkbt@google.com>
-To: Namhyung Kim <namhyung@kernel.org>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VTU_GJi3Ds1tmgOTbK-z8GKoMVIdwKRW
-X-Proofpoint-GUID: J-NB3IyAn6c5FQ1E87iGQyCivaw_vhIY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-03_07,2024-07-03_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 bulkscore=0 adultscore=0 mlxscore=0 malwarescore=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 spamscore=0
- phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407030087
+	Wed, 03 Jul 2024 06:31:30 -0500 (CDT)
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 3 Jul 2024
+ 12:31:29 +0100
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server id
+ 15.2.1544.9 via Frontend Transport; Wed, 3 Jul 2024 12:31:29 +0100
+Received: from [198.90.208.18] (ediswws06.ad.cirrus.com [198.90.208.18])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id E8801820244;
+	Wed,  3 Jul 2024 11:31:28 +0000 (UTC)
+Message-ID: <0796b481-3eec-4618-b92e-a372b7da5381@opensource.cirrus.com>
+Date: Wed, 3 Jul 2024 12:31:28 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/20] ASoC: arizona: convert to
+ of_property_for_each_u32_new()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        Miguel Ojeda
+	<ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
+        Saravana Kannan
+	<saravanak@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        "Michael
+ Turquette" <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, "Tony
+ Lindgren" <tony@atomide.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
+        Chen-Yu Tsai
+	<wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland
+	<samuel@sholland.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Daniel Lezcano
+	<daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Florian
+ Fainelli" <florian.fainelli@broadcom.com>,
+        "Broadcom internal kernel review
+ list" <bcm-kernel-feedback-list@broadcom.com>,
+        Linus Walleij
+	<linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        "Jonathan
+ Cameron" <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        "Richard
+ Leitner" <richard.leitner@linux.dev>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
+ <20240703-of_property_for_each_u32-v1-17-42c1fc0b82aa@bootlin.com>
+Content-Language: en-GB
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <20240703-of_property_for_each_u32-v1-17-42c1fc0b82aa@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: CFz_RdAJOFjMU2QBvo3bIc4bvB6lzh5q
+X-Proofpoint-ORIG-GUID: CFz_RdAJOFjMU2QBvo3bIc4bvB6lzh5q
+X-Proofpoint-Spam-Reason: safe
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,285 +124,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, "Peng Fan \(OSS\)" <peng.fan@oss.nxp.com>, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, linux-sunxi@lists.linux.dev, linux-gpio@vger.kernel.org, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-serial@vger.kernel.org, linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 3 Jul 2024, at 6:54=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
-wrote:
->=20
-> On Mon, Jul 01, 2024 at 10:04:18AM +0530, Athira Rajeev wrote:
->> Add support to capture and parse raw instruction in powerpc.
->> Currently, the perf tool infrastructure uses two ways to disassemble
->> and understand the instruction. One is objdump and other option is
->> via libcapstone.
->>=20
->> Currently, the perf tool infrastructure uses "--no-show-raw-insn" =
-option
->> with "objdump" while disassemble. Example from powerpc with this =
-option
->> for an instruction address is:
->>=20
->> Snippet from:
->> objdump  --start-address=3D<address> --stop-address=3D<address>  -d =
---no-show-raw-insn -C <vmlinux>
->>=20
->> c0000000010224b4: lwz     r10,0(r9)
->>=20
->> This line "lwz r10,0(r9)" is parsed to extract instruction name,
->> registers names and offset. Also to find whether there is a memory
->> reference in the operands, "memory_ref_char" field of objdump is =
-used.
->> For x86, "(" is used as memory_ref_char to tackle instructions of the
->> form "mov  (%rax), %rcx".
->>=20
->> In case of powerpc, not all instructions using "(" are the only =
-memory
->> instructions. Example, above instruction can also be of extended form =
-(X
->> form) "lwzx r10,0,r19". Inorder to easy identify the instruction =
-category
->> and extract the source/target registers, patch adds support to use =
-raw
->> instruction for powerpc. Approach used is to read the raw instruction
->> directly from the DSO file using "dso__data_read_offset" utility =
-which
->> is already implemented in perf infrastructure in "util/dso.c".
->>=20
->> Example:
->>=20
->> 38 01 81 e8     ld      r4,312(r1)
->>=20
->> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
->> this translates to instruction form: "ld RT,DS(RA)" and binary code
->> as:
->>=20
->>   | 58 |  RT  |  RA |      DS       | |
->>   -------------------------------------
->>   0    6     11    16              30 31
->>=20
->> Function "symbol__disassemble_dso" is updated to read raw instruction
->> directly from DSO using dso__data_read_offset utility. In case of
->> above example, this captures:
->> line:    38 01 81 e8
->>=20
->> The above works well when perf report is invoked with only sort keys =
-for
->> data type ie type and typeoff. Because there is no instruction level
->> annotation needed if only data type information is requested for. For
->> annotating sample, along with type and typeoff sort key, "sym" sort =
-key
->> is also needed. And by default invoking just "perf report" uses sort =
-key
->> "sym" that displays the symbol information.
->>=20
->> With approach changes in powerpc which first reads DSO for raw
->> instruction, "perf annotate" and "perf report" + a key breaks since
->> it doesn't do the instruction level disassembly.
->>=20
->> Snippet of result from perf report:
->>=20
->> Samples: 1K of event 'mem-loads', 4000 Hz, Event count (approx.): =
-937238
->> do_work  /usr/bin/pmlogger [Percent: local period]
->> Percent=E2=94=82        ea230010
->>       =E2=94=82        3a550010
->>       =E2=94=82        3a600000
->>=20
->>       =E2=94=82        38f60001
->>       =E2=94=82        39490008
->>       =E2=94=82        42400438
->> 51.44 =E2=94=82        81290008
->>       =E2=94=82        7d485378
->>=20
->> Here, raw instruction is displayed in the output instead of human
->> readable annotated form.
->>=20
->> One way to get the appropriate data is to specify "--objdump path", =
-by
->> which code annotation will be done. But the default behaviour will be
->> changed. To fix this breakage, check if "sym" sort key is set. If so
->> fallback and use the libcapstone/objdump way of disassmbling the =
-sample.
->>=20
->> With the changes and "perf report"
->>=20
->> Samples: 1K of event 'mem-loads', 4000 Hz, Event count (approx.): =
-937238
->> do_work  /usr/bin/pmlogger [Percent: local period]
->> Percent=E2=94=82        ld        r17,16(r3)
->>       =E2=94=82        addi      r18,r21,16
->>       =E2=94=82        li        r19,0
->>=20
->>       =E2=94=82 8b0:   rldicl    r10,r10,63,33
->>       =E2=94=82        addi      r10,r10,1
->>       =E2=94=82        mtctr     r10
->>       =E2=94=82      =E2=86=93 b         8e4
->>       =E2=94=82 8c0:   addi      r7,r22,1
->>       =E2=94=82        addi      r10,r9,8
->>       =E2=94=82      =E2=86=93 bdz       d00
->> 51.44 =E2=94=82        lwz       r9,8(r9)
->>       =E2=94=82        mr        r8,r10
->>       =E2=94=82        cmpw      r20,r9
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/perf/util/disasm.c | 101 =
-+++++++++++++++++++++++++++++++++++++++
->> 1 file changed, 101 insertions(+)
->>=20
->> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
->> index ddb861a0b043..e400dcab4029 100644
->> --- a/tools/perf/util/disasm.c
->> +++ b/tools/perf/util/disasm.c
->> @@ -25,6 +25,7 @@
->> #include "srcline.h"
->> #include "symbol.h"
->> #include "util.h"
->> +#include "sort.h"
->>=20
->> static regex_t  file_lineno;
->>=20
->> @@ -1645,6 +1646,91 @@ static int symbol__disassemble_capstone(char =
-*filename, struct symbol *sym,
->> }
->> #endif
->>=20
->> +static int symbol__disassemble_dso(char *filename, struct symbol =
-*sym,
->=20
-> Again, I still think this should be named to symbol__disassemble_raw()
-> because it only uses the raw binary codes.  Using =
-dso__data_read_offset
-> is not important here and it's just a way of implementing it.
->=20
-> Thanks,
-> Namhyung
->=20
-Hi Namhyung
-
-Thanks for review comments
-
-Sure, will change to symbol__disassemble_raw
-
-Athira
->=20
->> + struct annotate_args *args)
->> +{
->> + struct annotation *notes =3D symbol__annotation(sym);
->> + struct map *map =3D args->ms.map;
->> + struct dso *dso =3D map__dso(map);
->> + u64 start =3D map__rip_2objdump(map, sym->start);
->> + u64 end =3D map__rip_2objdump(map, sym->end);
->> + u64 len =3D end - start;
->> + u64 offset;
->> + int i, count;
->> + u8 *buf =3D NULL;
->> + char disasm_buf[512];
->> + struct disasm_line *dl;
->> + u32 *line;
->> +
->> + /* Return if objdump is specified explicitly */
->> + if (args->options->objdump_path)
->> + return -1;
->> +
->> + pr_debug("Reading raw instruction from : %s using =
-dso__data_read_offset\n", filename);
->> +
->> + buf =3D malloc(len);
->> + if (buf =3D=3D NULL)
->> + goto err;
->> +
->> + count =3D dso__data_read_offset(dso, NULL, sym->start, buf, len);
->> +
->> + line =3D (u32 *)buf;
->> +
->> + if ((u64)count !=3D len)
->> + goto err;
->> +
->> + /* add the function address and name */
->> + scnprintf(disasm_buf, sizeof(disasm_buf), "%#"PRIx64" <%s>:",
->> +   start, sym->name);
->> +
->> + args->offset =3D -1;
->> + args->line =3D disasm_buf;
->> + args->line_nr =3D 0;
->> + args->fileloc =3D NULL;
->> + args->ms.sym =3D sym;
->> +
->> + dl =3D disasm_line__new(args);
->> + if (dl =3D=3D NULL)
->> + goto err;
->> +
->> + annotation_line__add(&dl->al, &notes->src->source);
->> +
->> + /* Each raw instruction is 4 byte */
->> + count =3D len/4;
->> +
->> + for (i =3D 0, offset =3D 0; i < count; i++) {
->> + args->offset =3D offset;
->> + sprintf(args->line, "%x", line[i]);
->> + dl =3D disasm_line__new(args);
->> + if (dl =3D=3D NULL)
->> + goto err;
->> +
->> + annotation_line__add(&dl->al, &notes->src->source);
->> + offset +=3D 4;
->> + }
->> +
->> + /* It failed in the middle */
->> + if (offset !=3D len) {
->> + struct list_head *list =3D &notes->src->source;
->> +
->> + /* Discard all lines and fallback to objdump */
->> + while (!list_empty(list)) {
->> + dl =3D list_first_entry(list, struct disasm_line, al.node);
->> +
->> + list_del_init(&dl->al.node);
->> + disasm_line__free(dl);
->> + }
->> + count =3D -1;
->> + }
->> +
->> +out:
->> + free(buf);
->> + return count < 0 ? count : 0;
->> +
->> +err:
->> + count =3D -1;
->> + goto out;
->> +}
->> /*
->>  * Possibly create a new version of line with tabs expanded. Returns =
-the
->>  * existing or new line, storage is updated if a new line is =
-allocated. If
->> @@ -1769,6 +1855,21 @@ int symbol__disassemble(struct symbol *sym, =
-struct annotate_args *args)
->> strcpy(symfs_filename, tmp);
->> }
->>=20
->> + /*
->> +  * For powerpc data type profiling, use the dso__data_read_offset
->> +  * to read raw instruction directly and interpret the binary code
->> +  * to understand instructions and register fields. For sort keys as
->> +  * type and typeoff, disassemble to mnemonic notation is
->> +  * not required in case of powerpc.
->> +  */
->> + if (arch__is(args->arch, "powerpc")) {
->> + if (sort_order && !strstr(sort_order, "sym")) {
->> + err =3D symbol__disassemble_dso(symfs_filename, sym, args);
->> + if (err =3D=3D 0)
->> + goto out_remove_tmp;
->> + }
->> + }
->> +
->> #ifdef HAVE_LIBCAPSTONE_SUPPORT
->> err =3D symbol__disassemble_capstone(symfs_filename, sym, args);
->> if (err =3D=3D 0)
->> --=20
->> 2.43.0
-
-
+On 03/07/2024 11:37, Luca Ceresoli wrote:
+> Simplify code using of_property_for_each_u32_new() as the two additional
+> parameters in of_property_for_each_u32() are not used here.
+> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+>   sound/soc/codecs/arizona.c | 12 +++++-------
+>   1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/sound/soc/codecs/arizona.c b/sound/soc/codecs/arizona.c
+> index 7434aeeda292..1a64b9815809 100644
+> --- a/sound/soc/codecs/arizona.c
+> +++ b/sound/soc/codecs/arizona.c
+> @@ -2786,15 +2786,13 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
+>   {
+>   	struct arizona_pdata *pdata = &arizona->pdata;
+>   	struct device_node *np = arizona->dev->of_node;
+> -	struct property *prop;
+> -	const __be32 *cur;
+>   	u32 val;
+>   	u32 pdm_val[ARIZONA_MAX_PDM_SPK];
+>   	int ret;
+>   	int count = 0;
+>   
+>   	count = 0;
+> -	of_property_for_each_u32(np, "wlf,inmode", prop, cur, val) {
+> +	of_property_for_each_u32_new(np, "wlf,inmode", val) {
+>   		if (count == ARRAY_SIZE(pdata->inmode))
+>   			break;
+>   
+> @@ -2803,7 +2801,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
+>   	}
+>   
+>   	count = 0;
+> -	of_property_for_each_u32(np, "wlf,dmic-ref", prop, cur, val) {
+> +	of_property_for_each_u32_new(np, "wlf,dmic-ref", val) {
+>   		if (count == ARRAY_SIZE(pdata->dmic_ref))
+>   			break;
+>   
+> @@ -2812,7 +2810,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
+>   	}
+>   
+>   	count = 0;
+> -	of_property_for_each_u32(np, "wlf,out-mono", prop, cur, val) {
+> +	of_property_for_each_u32_new(np, "wlf,out-mono", val) {
+>   		if (count == ARRAY_SIZE(pdata->out_mono))
+>   			break;
+>   
+> @@ -2821,7 +2819,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
+>   	}
+>   
+>   	count = 0;
+> -	of_property_for_each_u32(np, "wlf,max-channels-clocked", prop, cur, val) {
+> +	of_property_for_each_u32_new(np, "wlf,max-channels-clocked", val) {
+>   		if (count == ARRAY_SIZE(pdata->max_channels_clocked))
+>   			break;
+>   
+> @@ -2830,7 +2828,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
+>   	}
+>   
+>   	count = 0;
+> -	of_property_for_each_u32(np, "wlf,out-volume-limit", prop, cur, val) {
+> +	of_property_for_each_u32_new(np, "wlf,out-volume-limit", val) {
+>   		if (count == ARRAY_SIZE(pdata->out_vol_limit))
+>   			break;
+>   
+> 
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
