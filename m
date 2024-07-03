@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8499259CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2849259DC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:51:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KDra0sLx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MG5/4/cp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc4n6MbLz3dRY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:50:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc5Z01CZz2y8h
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:51:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KDra0sLx;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MG5/4/cp;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
 Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwN5BZ4z3dLH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwP2NsZz3cXT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:17 +1000 (AEST)
 Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 76BB2C6730
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:13 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D3A6A4000B;
-	Wed,  3 Jul 2024 10:38:01 +0000 (UTC)
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id B26FCC6791
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:18 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E6DCC4000C;
+	Wed,  3 Jul 2024 10:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720003085;
+	t=1720003089;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kkDzWgqNUaE82FJnkubFv5bmOm6gl+/qOlOF60MzBZI=;
-	b=KDra0sLx8nTaCo2T20Rc+TTQn6dCftv+NLxXaIVH+RIs1q2YoMq0B82YrEyVgDvGjds6nu
-	RC2jLpfRcLHtf2pR9BxXyBbFfxUIIlp6w5d5IuYUNsHEqb0XXHvrI6eTEkZI8Pao8QkZo1
-	npSEexxCHK5YjW6udTXDNIQB9KQm5SQTA+Q1D4zyO5QgOyHhdtDJdiG5AWTLN6xyGdm7mn
-	/rWYkwWLKd5725CoTxczcY5BmOKymQHIaEPwiKZRPPwVVLko5kKwiYIOwkX0YkSZs8ExX0
-	uWjIn4FxLkr+64anVbbkf4GN0HOCjjfWYJVJmVaQxxlx9SayHwzv1TA6Kd/5CQ==
+	bh=m4n9Na9c++gxwPPGLgqtYV2GyYYvNsA2Yt/HwrgABCM=;
+	b=MG5/4/cpLUMYOoTYdFn5GEE4xSFBzFjdeyIQ7Ld1HS4jyQDwPVsZ+sRL0NZJG4V/L8kZmK
+	AgucvPwKtMSRmVMMFP/pyy6BmAd8dH0RIR69LfAGutPOXk4KF/W3VXvSAyQduxnAUBUPwU
+	l6wZER48jsIRJRKiz33tDEYUFGUJy6RCkV/TNP4d5b5SSy7IpASLaQ+r2nHReMZ3eLbjM2
+	HGa18fhNeNscNVPKqWC9mUCVYrb5FfcvTdaf/U2NNGahQ78hr7yJ98q08+AVuSs0yLA1OB
+	fumgPcFVsUlRIKMhXK5RBPsv4fND81CPBwB7KkNckBhTs8MkFV9Mxy1yBSsghg==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 03 Jul 2024 12:36:54 +0200
-Subject: [PATCH 10/20] pinctrl: s32cc: convert to
+Date: Wed, 03 Jul 2024 12:36:55 +0200
+Subject: [PATCH 11/20] irqchip/atmel-aic: convert to
  of_property_for_each_u32_new()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-of_property_for_each_u32-v1-10-42c1fc0b82aa@bootlin.com>
+Message-Id: <20240703-of_property_for_each_u32-v1-11-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -98,32 +98,31 @@ parameters in of_property_for_each_u32() are not used here.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/pinctrl/nxp/pinctrl-s32cc.c | 4 +---
+ drivers/irqchip/irq-atmel-aic-common.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-index f0cad2c501f7..6aeb93af77ed 100644
---- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
-+++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-@@ -735,9 +735,7 @@ static int s32_pinctrl_parse_groups(struct device_node *np,
- 				     struct s32_pin_group *grp,
- 				     struct s32_pinctrl_soc_info *info)
- {
--	const __be32 *p;
- 	struct device *dev;
+diff --git a/drivers/irqchip/irq-atmel-aic-common.c b/drivers/irqchip/irq-atmel-aic-common.c
+index 072bd227b6c6..543ea249df53 100644
+--- a/drivers/irqchip/irq-atmel-aic-common.c
++++ b/drivers/irqchip/irq-atmel-aic-common.c
+@@ -111,8 +111,6 @@ static void __init aic_common_ext_irq_of_init(struct irq_domain *domain)
+ 	struct device_node *node = irq_domain_get_of_node(domain);
+ 	struct irq_chip_generic *gc;
+ 	struct aic_chip_data *aic;
 -	struct property *prop;
- 	unsigned int *pins, *sss;
- 	int i, npins;
- 	u32 pinmux;
-@@ -768,7 +766,7 @@ static int s32_pinctrl_parse_groups(struct device_node *np,
- 		return -ENOMEM;
+-	const __be32 *p;
+ 	u32 hwirq;
  
- 	i = 0;
--	of_property_for_each_u32(np, "pinmux", prop, p, pinmux) {
-+	of_property_for_each_u32_new(np, "pinmux", pinmux) {
- 		pins[i] = get_pin_no(pinmux);
- 		sss[i] = get_pin_func(pinmux);
+ 	gc = irq_get_domain_generic_chip(domain, 0);
+@@ -120,7 +118,7 @@ static void __init aic_common_ext_irq_of_init(struct irq_domain *domain)
+ 	aic = gc->private;
+ 	aic->ext_irqs |= 1;
  
+-	of_property_for_each_u32(node, "atmel,external-irqs", prop, p, hwirq) {
++	of_property_for_each_u32_new(node, "atmel,external-irqs", hwirq) {
+ 		gc = irq_get_domain_generic_chip(domain, hwirq);
+ 		if (!gc) {
+ 			pr_warn("AIC: external irq %d >= %d skip it\n",
 
 -- 
 2.34.1
