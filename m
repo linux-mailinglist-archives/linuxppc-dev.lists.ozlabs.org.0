@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC639259E4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E07E9925A00
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:53:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=QjQJZfS3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Ib/PFCUF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc6L25Nqz3dTY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:51:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc814xtfz3dRr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:53:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=QjQJZfS3;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Ib/PFCUF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
 Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwP6Mg7z3dRY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwT08ntz3dBy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:20 +1000 (AEST)
 Received: from relay2-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::222])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 48975C6798
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:22 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E267B40002;
-	Wed,  3 Jul 2024 10:38:09 +0000 (UTC)
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id D8209C43BC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:24 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D49E740006;
+	Wed,  3 Jul 2024 10:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720003093;
+	t=1720003097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JB7jnVV90mJW2p0b0n6I13HQQYwTmmWWoFEk/HwlIBA=;
-	b=QjQJZfS3hQSmHwIyTs5N6cWBkKEhVJTnmXxV93K/mH/jCw3bNE8vBVQazsP6i+9s7H/eKZ
-	WQ573YI8LUuy/E7FsVFy7LphtduSQki23ZLleDsQAiHGRYob4mVEeLvvfzWmuC++ENo7GP
-	z56ULB449b1QKqRW49icT0WrmlOIurvHPx95lM4gK0zARettlLCbxHyglvYZt7IuPzQwDZ
-	pPyregDeYjogULkibHX5sMVBCzcCYzEI290IYlZOTNreRVC/JZ9ORcuum4RGJIjQ0j/Tu3
-	bkDdZHqjZdtRBTwwd8l0pwDZZ+Xl6swWizUKdCrki+QAvN2fUScfyf28Brju6g==
+	bh=dZPPBHSyI/+YbF/9TI9GwF+CUzeEA2RsST6wsDA28Y0=;
+	b=Ib/PFCUFguJgExTJzeLBH/xgT815E4W6OuByXZJoKzK1jTZ0BKQ6yzzGZ+tFwqfA+nCZYT
+	Nmi154RSR+0y3gE4okF0tI41PAeQtJ50AXcE2FBzGNCKJm0u904u7dys+Dc3UYYescC8Zz
+	az7DlTYiLVXAhIJX13CFLr5t+nXUAObbnbENT/513x1OxOrNGXGFixyBZdKaOaECjwQu88
+	JWAT+gu9maylMym9RKrd330DygX8qEP5aYKWm9bqPbP2r2J/O6+BKDQiocvcfc0vyNX3JR
+	0Loom3v5nYdkLj1K0iaDilqc1db8vDYfnvgGOk0A6qwaJtrYHrYDqx3ld+tbwA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 03 Jul 2024 12:36:56 +0200
-Subject: [PATCH 12/20] iio: adc: ti_am335x_adc: convert to
+Date: Wed, 03 Jul 2024 12:36:57 +0200
+Subject: [PATCH 13/20] pwm: samsung: convert to
  of_property_for_each_u32_new()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-of_property_for_each_u32-v1-12-42c1fc0b82aa@bootlin.com>
+Message-Id: <20240703-of_property_for_each_u32-v1-13-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -98,28 +98,31 @@ parameters in of_property_for_each_u32() are not used here.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/iio/adc/ti_am335x_adc.c | 4 +---
+ drivers/pwm/pwm-samsung.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index 95fa857e8aad..ca0f542ebc77 100644
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -564,13 +564,11 @@ static int tiadc_parse_dt(struct platform_device *pdev,
- 			  struct tiadc_device *adc_dev)
- {
- 	struct device_node *node = pdev->dev.of_node;
+diff --git a/drivers/pwm/pwm-samsung.c b/drivers/pwm/pwm-samsung.c
+index efb60c9f0cb3..fef02a0b023e 100644
+--- a/drivers/pwm/pwm-samsung.c
++++ b/drivers/pwm/pwm-samsung.c
+@@ -510,8 +510,6 @@ static int pwm_samsung_parse_dt(struct pwm_chip *chip)
+ 	struct samsung_pwm_chip *our_chip = to_samsung_pwm_chip(chip);
+ 	struct device_node *np = pwmchip_parent(chip)->of_node;
+ 	const struct of_device_id *match;
 -	struct property *prop;
 -	const __be32 *cur;
- 	int channels = 0;
  	u32 val;
- 	int i;
  
--	of_property_for_each_u32(node, "ti,adc-channels", prop, cur, val) {
-+	of_property_for_each_u32_new(node, "ti,adc-channels", val) {
- 		adc_dev->channel_line[channels] = val;
+ 	match = of_match_node(samsung_pwm_matches, np);
+@@ -520,7 +518,7 @@ static int pwm_samsung_parse_dt(struct pwm_chip *chip)
  
- 		/* Set Default values for optional DT parameters */
+ 	memcpy(&our_chip->variant, match->data, sizeof(our_chip->variant));
+ 
+-	of_property_for_each_u32(np, "samsung,pwm-outputs", prop, cur, val) {
++	of_property_for_each_u32_new(np, "samsung,pwm-outputs", val) {
+ 		if (val >= SAMSUNG_PWM_NUM) {
+ 			dev_err(pwmchip_parent(chip),
+ 				"%s: invalid channel index in samsung,pwm-outputs property\n",
 
 -- 
 2.34.1
