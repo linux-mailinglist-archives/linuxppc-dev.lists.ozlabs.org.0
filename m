@@ -2,88 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAB592587D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B83925986
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:45:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=NlYiDjUJ;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=HnKQGAsQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=foJzSM9R;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDbYw3c45z3d28
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:27:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDbzF0sdLz3dKL
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:45:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=NlYiDjUJ;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=HnKQGAsQ;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=foJzSM9R;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbY92q5Mz2ypm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:26:34 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1720002389; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=pNni1aDpo97idlHxjXEYnr6cXufqQ1jfdjKSGUt64RdiIJ3hZ/VMc5U4O2R+3KRJF8
-    eVmiPsIvVrA0xoR4cJTO4201shWC308D3zA4CDnlKcIQYMqsB0TXJRc67yQvQpD/hAd+
-    fHbh4Qr7pFcE1wRbur2SCH1S52UJB6VStAy1IFJIHRDPiPO908GpHMxldhfba3x26afW
-    bIHaFkvr+u5BZtgJbCQT9zd/d09jSRpRqXunOn90L4f4P4kTUzWzIc1+gc8UTFKkdS96
-    NRPSAecnwQamLoLUza+pl5T0OdIHZ72zCckgnFqGDUJDZPqMfk2aST9N8vgOicsIlThO
-    mfhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720002389;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=gsB15KylrTss2Q22K6/8fTOKkDDS/+PxBfNc7RDie7Q=;
-    b=UG+n1195gUiIEu7LB4gqzxjZecdaYprqZt2a6tpLjGHWBrJIdFUZwLVExUdocJMM9d
-    uBSh4p9xwzF1tHgOf4imCEd4OTLjUVac6xO5wjDXQXKbPt6pbS8yJWEX1EZC8dQtnNOG
-    zgg03J5KUOO5A0GhTvk/OSu26BePtiGjfupk42zzUJdhuB5ZGBHY1r6zD4kucH95ABd1
-    8qkb9oxfZtkWjI/bYwO6g9Kjk7/tkgvjqs8Tqill2DVX9WSANCjV8MGNh7Hf0b3SEjDM
-    yynHmklLA51dGl9oLInAbFyqsgrQtQWoP3adSeOnnrn2lZBNC0HQUENFyFKefxkpuSO8
-    RTfQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720002389;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=gsB15KylrTss2Q22K6/8fTOKkDDS/+PxBfNc7RDie7Q=;
-    b=NlYiDjUJmvVFgMtRhTdc3b/gD4AkDu0mBIay4tIzGxAIfULvTCZX93yP2uZuKH92hD
-    ym+q8FC9qBTAV/T+hylgajPy2bpxTozICiH7EEMmfiyuqZHvxAZAsOJ5sDJs/AydDtms
-    vWXdJLqUU8UM84jICH+D8aL1tGhIp1faiEBb+/PW5AN1uC3T/zGBxh5E8VBi0Jtd1Inw
-    sOX7qLvDbwNf/lqhCENApB6yOtZBq4Pic/I9F1OZ2b5C2dY0r/KgIALFT1Xpif5bJANo
-    AXeTzJbEig/pt+z+QKvxLntcTQssOKxKOok5Oz+Ix/dlvXACziytvv40ek1POdJkmTI6
-    CYcQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720002389;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=gsB15KylrTss2Q22K6/8fTOKkDDS/+PxBfNc7RDie7Q=;
-    b=HnKQGAsQRUJcpMBsv1E/ZPqnTqey+uXtiTQTlOFjnyEkHRAWmJZAj2ew7Elq+gaeFp
-    lhwKcR1ItlZ1bX9h07AA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5jgsyqQXntn0mkb0Dnz0PBqI1iVaDzyFx0Z7Dc="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 50.5.0 AUTH)
-    with ESMTPSA id e08389063AQSOWH
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 3 Jul 2024 12:26:28 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
-Date: Wed, 3 Jul 2024 12:26:17 +0200
-Message-Id: <B550D4C4-6F82-409E-B5A8-E7D123ACB93D@xenosoft.de>
-References: <86cynv9dx7.wl-maz@kernel.org>
-In-Reply-To: <86cynv9dx7.wl-maz@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-X-Mailer: iPhone Mail (21F90)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwG19qnz2ysX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:09 +1000 (AEST)
+Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 51A77C61E0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:37:42 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3ECA340002;
+	Wed,  3 Jul 2024 10:37:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720003045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Y9dKIY8UF+nReYR3bpF9Pb7TJp7WLPLWK/B5oYjjbq8=;
+	b=foJzSM9RuZQOf/VPApRW0lmUGrQblXobu0gWcMfK3rdR7fFeSllw9HZtvDHamCZSnVeAQd
+	xl3StvV0X9RM6zrGGH8rKfTVgGj2rxAQ/FXj4AoPA7jwEAAykHOnYYQdsWoKj0Z5qT9EbI
+	NJSgM2y4fGFlocfqLTtmMbWZcFSesBLFVfvUvMOxSvZzRHYiHre2aVkplOJXZ8APv8zjRO
+	yRmCwXsRILqubrSOViPCck2qs6VXTOpPU1Zh2pkMz/CDpauRr4KYDvJCL2P3T9WnVnXRPw
+	Yp49tSFnocZKud9kw1tjEbXpKeoo3s6qbV/lMc9MWdp1PkDr10Ce8YagcplEvA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 00/20] Simplify of_property_for_each_u32()
+Date: Wed, 03 Jul 2024 12:36:44 +0200
+Message-Id: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALwphWYC/x3MTQqEMAxA4atI1lOI9Q+8igyltKlmY0uqw4j07
+ haX3+K9GzIJU4a5uUHox5njXtF+GnCb3VdS7KtBo+5xwlbFYJLERHJcJkQxZN1mzk6rfsTgUdv
+ Bo4OaJ6HA/3e9fEt5ALUFP0BqAAAA
+To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@google.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ =?utf-8?q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Jonathan Cameron <jic23@kernel.org>, 
+ Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, 
+ Richard Leitner <richard.leitner@linux.dev>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+ Damien Le Moal <dlemoal@kernel.org>
+X-Mailer: b4 0.14.0
+X-GND-Sasl: luca.ceresoli@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,22 +88,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, "Peng Fan \(OSS\)" <peng.fan@oss.nxp.com>, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, linux-sunxi@lists.linux.dev, linux-gpio@vger.kernel.org, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-serial@vger.kernel.org, linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Luca Ceresoli <luca.ceresoli@bootlin.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3. Jul 2024, at 08:40, Marc Zyngier <maz@kernel.org> wrote:
+[Note: to reduce the noise I have trimmed the get_maintainers list
+manually. Should you want to be removed, or someone else added, to future
+versions, just tell me. Sorry for the noise.]
 
-This isn't a DTS. This is a listing of all the nodes, not something I
-can use to feed the kernel. I explained how to generate it.
+This series aims at simplifying of_property_for_each_u32() as well as
+making it more difficult to misuse it in the future.
 
-Download the compiled device tree for the Nemo board:
-http://www.xenosoft.de/fdt-nemo-board.zip
+The long-term goal is changing this pattern:
 
-No, thank you.
+  struct property *prop;
+  const __be32 *p;
+  u32 val;
+ 
+  of_property_for_each_u32(np, "xyz", prop, p, val) { ... }
 
-=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94
+to this:
 
-You know already the device tree: https://lists.ozlabs.org/pipermail/linuxpp=
-c-dev/2021-November/236587.html=
+  u32 val;
+
+  of_property_for_each_u32(np, "xyz", val) { ... }
+
+So, removing the 3rd and 4th arguments which are typically meant to be
+internal. Those two parameters used to be unavoidable until the kernel
+moved to building with the C11 standard unconditionally. Since then, it is
+now possible to get rid of them. However a few users of
+of_property_for_each_u32() do actually use those arguments, which
+complicates the transition. For this reason this series does the following:
+
+ * Add of_property_for_each_u32_new(), which does not have those two
+   arguments (patch 1)
+ * Convert _almost_ every usage to of_property_for_each_u32_new()
+ * Rename of_property_for_each_u32() to of_property_for_each_u32_old() and
+   deprecate it, as a incentive to code not (yet) in mainline to upgrade
+   to the *_new() version (last patch)
+
+The plan for the next series is to additionally:
+
+ * Convert the few remaining of_property_for_each_u32_old() instantes to
+   of_property_for_each_u32_new()
+ * Remove of_property_for_each_u32_old()
+ * Rename of_property_for_each_u32_new() to of_property_for_each_u32()
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (20):
+      of: add of_property_for_each_u32_new()
+      clk: convert to of_property_for_each_u32_new()
+      clk: qcom: convert to of_property_for_each_u32_new()
+      clk: sunxi: clk-simple-gates: convert to of_property_for_each_u32_new()
+      clk: sunxi:  clk-sun8i-bus-gates: convert to of_property_for_each_u32_new()
+      clocksource/drivers/samsung_pwm: convert to of_property_for_each_u32_new()
+      bus: ti-sysc: convert to of_property_for_each_u32_new()
+      lk: clk-conf: convert to of_property_for_each_u32_new()
+      gpio: brcmstb: convert to of_property_for_each_u32_new()
+      pinctrl: s32cc: convert to of_property_for_each_u32_new()
+      irqchip/atmel-aic: convert to of_property_for_each_u32_new()
+      iio: adc: ti_am335x_adc: convert to of_property_for_each_u32_new()
+      pwm: samsung: convert to of_property_for_each_u32_new()
+      tty: sysrq: convert to of_property_for_each_u32_new()
+      usb: usb251xb: convert to of_property_for_each_u32_new()
+      mfd: ti_am335x_tscadc: convert to of_property_for_each_u32_new()
+      ASoC: arizona: convert to of_property_for_each_u32_new()
+      powerpc/xive: convert to of_property_for_each_u32_new()
+      powerpc/xive: convert to of_property_for_each_u32_new()
+      of: deprecate and rename of_property_for_each_u32()
+
+ .clang-format                           |  3 ++-
+ arch/powerpc/sysdev/xive/native.c       |  4 +---
+ arch/powerpc/sysdev/xive/spapr.c        |  3 +--
+ drivers/bus/ti-sysc.c                   |  4 +---
+ drivers/clk/clk-conf.c                  |  4 +---
+ drivers/clk/clk-si5351.c                |  4 ++--
+ drivers/clk/clk.c                       |  6 ++----
+ drivers/clk/qcom/common.c               |  4 +---
+ drivers/clk/sunxi/clk-simple-gates.c    |  4 +---
+ drivers/clk/sunxi/clk-sun8i-bus-gates.c |  4 +---
+ drivers/clocksource/samsung_pwm_timer.c |  4 +---
+ drivers/gpio/gpio-brcmstb.c             |  5 +----
+ drivers/iio/adc/ti_am335x_adc.c         |  4 +---
+ drivers/irqchip/irq-atmel-aic-common.c  |  4 +---
+ drivers/irqchip/irq-pic32-evic.c        |  2 +-
+ drivers/mfd/ti_am335x_tscadc.c          |  4 +---
+ drivers/pinctrl/nxp/pinctrl-s32cc.c     |  4 +---
+ drivers/pinctrl/pinctrl-k210.c          |  2 +-
+ drivers/pwm/pwm-samsung.c               |  4 +---
+ drivers/tty/sysrq.c                     |  4 +---
+ drivers/usb/misc/usb251xb.c             |  4 +---
+ include/linux/of.h                      | 14 ++++++++++----
+ sound/soc/codecs/arizona.c              | 12 +++++-------
+ 23 files changed, 39 insertions(+), 68 deletions(-)
+---
+base-commit: e937d48ed96381e9620d9c81fbc1ce666f5b7358
+change-id: 20240701-of_property_for_each_u32-460fd02a5d0c
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
