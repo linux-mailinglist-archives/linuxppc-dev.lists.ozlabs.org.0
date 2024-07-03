@@ -1,97 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03DF92617C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 15:12:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C95926334
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 16:18:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QWwVy7lE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C8VIOPJ5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDgDR3Fk2z3dxN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 23:12:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDhhF4LdBz3fR4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 00:18:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QWwVy7lE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C8VIOPJ5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDgCl6z0Vz2xQ7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 23:11:47 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 463Cx0f5031395;
-	Wed, 3 Jul 2024 13:11:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:mime-version:subject:from:in-reply-to:date:cc
-	:content-transfer-encoding:message-id:references:to; s=pp1; bh=H
-	LSdzLczkH3rSXq4JFMX0v9J8lmqvzuX59aNGsotQ/o=; b=QWwVy7lEci/YaO9Hq
-	s6ElkeKF0V99EXfqUa65OAZ9p/7tUVt7kcUNO62fZ32omKrinLmBMX1Tc5AOHqP7
-	RIsM1PoaBi0FnfwcjodpWn4Uem7TMIXJVZnwdlTDuJQkOHfj6d0LLq5qOr+ZMMBj
-	Ep8UST0e99SS+zAqXo6lTezb+ls+MAx/K8Qudsi31wb15WuOvVIrO6mKeJOa/k5l
-	bS1OqPlWMMzYD+wj5AchJDHvgo3WbqqcmYkixeoyadYr/XyYJWRf/baJxvfuT96p
-	SaO20cXVn3ZK1SnnZvVGyUJycvHH3yPqdhihTbOMizNk0aK+VANVzl0C1ZXS2Ixo
-	hyWQw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDhgY196zz3cZ5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 00:17:28 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 463DQvC5027116;
+	Wed, 3 Jul 2024 14:17:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=nMMPTtYjsheWlXQLNwDkSZKOk6
+	2V9YaP8Lxldvz/DSw=; b=C8VIOPJ5TtYEqIkebGRxkuPHNipFX3E8MO2RZfu0bl
+	A9sIB8FWN3TgVQY5pXx85IGn7eL/gg5wnJ3VDE5fiwHfbYuetzDMfR9FMXn5M5+b
+	vfzUhup3TiNeH+E/8S0aOTp6qNVDbvTRM2QzZKuQfUYGX2WPg2gDTvAcFhekGrz7
+	3UZJXnEO82IPx6xvDtZDzBKxwou1fZ4qGECr0/I9jIy93b8c31kgLnO79LaobueL
+	6PrUJoHsag7MMEt7JuIAKO9Sd1Jq1ihwXtQJ3S7VEXKKqe1P+q3v76WQC/vxuLl3
+	yEpnbFVRcDfiT4yU2OAamGKBIFPLZulpy412ZOynPaEg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 405746r1f2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 405747g88k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 13:11:33 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 463DAZvG018377;
-	Wed, 3 Jul 2024 13:11:33 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 405746r1f0-1
+	Wed, 03 Jul 2024 14:17:11 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 463EHBtH011242;
+	Wed, 3 Jul 2024 14:17:11 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 405747g88f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 13:11:33 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 463A92bu024124;
-	Wed, 3 Jul 2024 13:11:32 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 402ya3j90n-1
+	Wed, 03 Jul 2024 14:17:11 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 463D0HmT030022;
+	Wed, 3 Jul 2024 14:17:10 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 402x3n2vw8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 13:11:32 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 463DBQRL54985180
+	Wed, 03 Jul 2024 14:17:10 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 463EH6rk37421496
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jul 2024 13:11:28 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8DA0A2004E;
-	Wed,  3 Jul 2024 13:11:26 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 107822004D;
-	Wed,  3 Jul 2024 13:11:24 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.44.47])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  3 Jul 2024 13:11:23 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH V5 04/17] tools/perf: Add disasm_line__parse to parse raw
- instruction for powerpc
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <ZoSmdSlEmZwyuq_b@google.com>
-Date: Wed, 3 Jul 2024 18:41:12 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A7397A0E-A76D-4B3E-AA06-29C21BEF3E64@linux.vnet.ibm.com>
-References: <20240701043430.66666-1-atrajeev@linux.vnet.ibm.com>
- <20240701043430.66666-5-atrajeev@linux.vnet.ibm.com>
- <ZoSmdSlEmZwyuq_b@google.com>
-To: Namhyung Kim <namhyung@kernel.org>
-X-Mailer: Apple Mail (2.3774.600.62)
+	Wed, 3 Jul 2024 14:17:06 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B574A2004B;
+	Wed,  3 Jul 2024 14:17:06 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1B7AF20049;
+	Wed,  3 Jul 2024 14:17:02 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com.com (unknown [9.195.35.120])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  3 Jul 2024 14:17:01 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] PCI: Fix crash during pci_dev hot-unplug on pseries KVM guest
+Date: Wed,  3 Jul 2024 19:46:34 +0530
+Message-ID: <20240703141634.2974589-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vGu_kmhMnuna08kQOaHV3PQk26oAdMKz
-X-Proofpoint-GUID: GMbBR37r7zh3lLKDW_ueTDw_4rXY_naB
+X-Proofpoint-ORIG-GUID: ZPPPV2DnNJjRUIU_HZGuFKYEn98mNIsq
+X-Proofpoint-GUID: QVwLOs4s4-3jTdg6hBX_OroaDcfcWCzX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-03_08,2024-07-03_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 suspectscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 adultscore=0 spamscore=0 mlxscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407030094
+ definitions=2024-07-03_09,2024-07-03_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxlogscore=905 clxscore=1011 lowpriorityscore=0 impostorscore=0
+ adultscore=0 priorityscore=1501 suspectscore=0 spamscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407030102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,285 +96,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, Kowshik Jois B S <kowsjois@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+of a PCI device attached to a PCI-bridge causes following kernel Oops on
+a pseries KVM guest:
 
+ RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+ Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
+ BUG: Unable to handle kernel data access on read at 0x10ec00000048
+ Faulting instruction address: 0xc0000000012d8728
+ Oops: Kernel access of bad area, sig: 11 [#1]
+ LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+<snip>
+ NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
+ LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
+ Call Trace:
+ [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
+ [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
+ [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
+ [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_locked+0x34/0x64
+ [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
+ [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
+ [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
+ [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
+ [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
+ [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
+ [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
+ [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+<snip>
 
-> On 3 Jul 2024, at 6:46=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
-wrote:
->=20
-> On Mon, Jul 01, 2024 at 10:04:17AM +0530, Athira Rajeev wrote:
->> Currently, the perf tool infrastructure disasm_line__parse function =
-to
->> parse disassembled line.
->>=20
->> Example snippet from objdump:
->> objdump  --start-address=3D<address> --stop-address=3D<address>  -d =
---no-show-raw-insn -C <vmlinux>
->>=20
->> c0000000010224b4: lwz     r10,0(r9)
->>=20
->> This line "lwz r10,0(r9)" is parsed to extract instruction name,
->> registers names and offset. In powerpc, the approach for data type
->> profiling uses raw instruction instead of result from objdump to =
-identify
->> the instruction category and extract the source/target registers.
->>=20
->> Example: 38 01 81 e8     ld      r4,312(r1)
->>=20
->> Here "38 01 81 e8" is the raw instruction representation. Add =
-function
->> "disasm_line__parse_powerpc" to handle parsing of raw instruction.
->> Also update "struct disasm_line" to save the binary code/
->> With the change, function captures:
->>=20
->> line -> "38 01 81 e8     ld      r4,312(r1)"
->> raw instruction "38 01 81 e8"
->>=20
->> Raw instruction is used later to extract the reg/offset fields. =
-Macros
->> are added to extract opcode and register fields. "struct disasm_line"
->> is updated to carry union of "bytes" and "raw_insn" of 32 bit to =
-carry raw
->> code (raw). Function "disasm_line__parse_powerpc fills the raw
->> instruction hex value and can use macros to get opcode. There is no
->> changes in existing code paths, which parses the disassembled code.
->> The size of raw instruction depends on architecture. In case of =
-powerpc,
->> the parsing the disasm line needs to handle cases for reading binary =
-code
->> directly from DSO as well as parsing the objdump result. Hence adding
->> the logic into separate function instead of updating =
-"disasm_line__parse".
->> The architecture using the instruction name and present approach is
->> not altered. Since this approach targets powerpc, the macro
->> implementation is added for powerpc as of now.
->>=20
->> Since the disasm_line__parse is used in other cases (perf annotate) =
-and
->> not only data tye profiling, the powerpc callback includes changes to
->> work with binary code as well as mneumonic representation. Also in =
-case
->> if the DSO read fails and libcapstone is not supported, the approach
->> fallback to use objdump as option. Hence as option, patch has changes =
-to
->> ensure objdump option also works well.
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/include/linux/string.h                  |  2 +
->> tools/lib/string.c                            | 13 ++++
->> .../perf/arch/powerpc/annotate/instructions.c |  1 +
->> tools/perf/arch/powerpc/util/dwarf-regs.c     |  9 +++
->> tools/perf/util/annotate.h                    |  5 +-
->> tools/perf/util/disasm.c                      | 59 =
-++++++++++++++++++-
->> 6 files changed, 87 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/tools/include/linux/string.h =
-b/tools/include/linux/string.h
->> index db5c99318c79..0acb1fc14e19 100644
->> --- a/tools/include/linux/string.h
->> +++ b/tools/include/linux/string.h
->> @@ -46,5 +46,7 @@ extern char * __must_check skip_spaces(const char =
-*);
->>=20
->> extern char *strim(char *);
->>=20
->> +extern void remove_spaces(char *s);
->> +
->> extern void *memchr_inv(const void *start, int c, size_t bytes);
->> #endif /* _TOOLS_LINUX_STRING_H_ */
->> diff --git a/tools/lib/string.c b/tools/lib/string.c
->> index 8b6892f959ab..3126d2cff716 100644
->> --- a/tools/lib/string.c
->> +++ b/tools/lib/string.c
->> @@ -153,6 +153,19 @@ char *strim(char *s)
->> return skip_spaces(s);
->> }
->>=20
->> +/*
->> + * remove_spaces - Removes whitespaces from @s
->> + */
->> +void remove_spaces(char *s)
->> +{
->> + char *d =3D s;
->> +
->> + do {
->> + while (*d =3D=3D ' ')
->> + ++d;
->> + } while ((*s++ =3D *d++));
->> +}
->> +
->> /**
->>  * strreplace - Replace all occurrences of character in string.
->>  * @s: The string to operate on.
->> diff --git a/tools/perf/arch/powerpc/annotate/instructions.c =
-b/tools/perf/arch/powerpc/annotate/instructions.c
->> index a3f423c27cae..d57fd023ef9c 100644
->> --- a/tools/perf/arch/powerpc/annotate/instructions.c
->> +++ b/tools/perf/arch/powerpc/annotate/instructions.c
->> @@ -55,6 +55,7 @@ static int powerpc__annotate_init(struct arch =
-*arch, char *cpuid __maybe_unused)
->> arch->initialized =3D true;
->> arch->associate_instruction_ops =3D =
-powerpc__associate_instruction_ops;
->> arch->objdump.comment_char      =3D '#';
->> + annotate_opts.show_asm_raw =3D true;
->> }
->>=20
->> return 0;
->> diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c =
-b/tools/perf/arch/powerpc/util/dwarf-regs.c
->> index 0c4f4caf53ac..430623ca5612 100644
->> --- a/tools/perf/arch/powerpc/util/dwarf-regs.c
->> +++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
->> @@ -98,3 +98,12 @@ int regs_query_register_offset(const char *name)
->> return roff->ptregs_offset;
->> return -EINVAL;
->> }
->> +
->> +#define PPC_OP(op) (((op) >> 26) & 0x3F)
->> +#define PPC_RA(a) (((a) >> 16) & 0x1f)
->> +#define PPC_RT(t) (((t) >> 21) & 0x1f)
->> +#define PPC_RB(b) (((b) >> 11) & 0x1f)
->> +#define PPC_D(D) ((D) & 0xfffe)
->> +#define PPC_DS(DS) ((DS) & 0xfffc)
->> +#define OP_LD 58
->> +#define OP_STD 62
->> diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
->> index d5c821c22f79..9ba772f46270 100644
->> --- a/tools/perf/util/annotate.h
->> +++ b/tools/perf/util/annotate.h
->> @@ -113,7 +113,10 @@ struct annotation_line {
->> struct disasm_line {
->> struct ins  ins;
->> struct ins_operands  ops;
->> -
->> + union {
->> + u8 bytes[4];
->> + u32 raw_insn;
->> + } raw;
->> /* This needs to be at the end. */
->> struct annotation_line  al;
->> };
->> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
->> index d2723ba024bf..ddb861a0b043 100644
->> --- a/tools/perf/util/disasm.c
->> +++ b/tools/perf/util/disasm.c
->> @@ -44,6 +44,7 @@ static int call__scnprintf(struct ins *ins, char =
-*bf, size_t size,
->>=20
->> static void ins__sort(struct arch *arch);
->> static int disasm_line__parse(char *line, const char **namep, char =
-**rawp);
->> +static int disasm_line__parse_powerpc(struct disasm_line *dl);
->>=20
->> static __attribute__((constructor)) void symbol__init_regexpr(void)
->> {
->> @@ -845,6 +846,59 @@ static int disasm_line__parse(char *line, const =
-char **namep, char **rawp)
->> return -1;
->> }
->>=20
->> +/*
->> + * Parses the result captured from symbol__disassemble_*
->> + * Example, line read from DSO file in powerpc:
->> + * line:    38 01 81 e8
->> + * opcode: fetched from arch specific get_opcode_insn
->> + * rawp_insn: e8810138
->> + *
->> + * rawp_insn is used later to extract the reg/offset fields
->> + */
->> +#define PPC_OP(op) (((op) >> 26) & 0x3F)
->> +
->> +static int disasm_line__parse_powerpc(struct disasm_line *dl)
->> +{
->> + char *line =3D dl->al.line;
->> + const char **namep =3D &dl->ins.name;
->> + char **rawp =3D &dl->ops.raw;
->> + char tmp, *tmp_raw_insn, *name_raw_insn =3D skip_spaces(line);
->> + char *name =3D skip_spaces(name_raw_insn + 11);
->=20
-> What does 11 mean?  Can you add a macro for it instead?
-> I guess it's the width of the raw codes and spaces.
->=20
-Yes, I will add macro
->=20
->> + int objdump =3D 0;
->> +
->> + if (strlen(line) > 11)
->> + objdump =3D 1;
->> +
->> + if (name_raw_insn[0] =3D=3D '\0')
->> + return -1;
->> +
->> + if (objdump) {
->> + *rawp =3D name + 1;
->> + while ((*rawp)[0] !=3D '\0' && !isspace((*rawp)[0]))
->> + ++*rawp;
->> + tmp =3D (*rawp)[0];
->> + (*rawp)[0] =3D '\0';
->> +
->> + *namep =3D strdup(name);
->> + if (*namep =3D=3D NULL)
->> + return -1;
->> +
->> + (*rawp)[0] =3D tmp;
->> + *rawp =3D strim(*rawp);
->=20
-> Can we just call disasm_line__parse()?
-Yes,=20
->=20
->=20
->> + } else
->> + *namep =3D "";
->> +
->> + tmp_raw_insn =3D strdup(name_raw_insn);
->> + tmp_raw_insn[11] =3D '\0';
->=20
-> You can use strndup().
-Ok
+A git bisect pointed this regression to be introduced via [1] that added
+a mechanism to create device tree nodes for parent PCI bridges when a
+PCI device is hot-plugged.
 
-Will send next version with these changes
+The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
+device-tree node associated with the pci_dev that was earlier
+hot-plugged and was attached under a pci-bridge. The PCI dev header
+`dev->hdr_type` being 0, results a conditional check done with
+`pci_is_bridge()` into false. Consequently, a call to
+`of_pci_make_dev_node()` to create a device node is never made. When at
+a later point in time, in the device node removal path, a memcpy is
+attempted in `__of_changeset_entry_invert()`; since the device node was
+never created, results in an Oops due to kernel read access to a bad
+address.
 
-Thanks
-Athira
->=20
-> Thanks,
-> Namhyung
->=20
->=20
->> + remove_spaces(tmp_raw_insn);
->> +
->> + sscanf(tmp_raw_insn, "%x", &dl->raw.raw_insn);
->> + if (objdump)
->> + dl->raw.raw_insn =3D be32_to_cpu(dl->raw.raw_insn);
->> +
->> + return 0;
->> +}
->> +
->> static void annotation_line__init(struct annotation_line *al,
->>   struct annotate_args *args,
->>   int nr)
->> @@ -898,7 +952,10 @@ struct disasm_line *disasm_line__new(struct =
-annotate_args *args)
->> goto out_delete;
->>=20
->> if (args->offset !=3D -1) {
->> - if (disasm_line__parse(dl->al.line, &dl->ins.name, &dl->ops.raw) < =
-0)
->> + if (arch__is(args->arch, "powerpc")) {
->> + if (disasm_line__parse_powerpc(dl) < 0)
->> + goto out_free_line;
->> + } else if (disasm_line__parse(dl->al.line, &dl->ins.name, =
-&dl->ops.raw) < 0)
->> goto out_free_line;
->>=20
->> disasm_line__init_ins(dl, args->arch, &args->ms);
->> --=20
->> 2.43.0
+To fix this issue the patch updates `pci_stop_dev()` to ensure that a
+call to `of_pci_remove_node()` is only made for pci-bridge devices.
 
+[1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
+
+Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+Tested-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+ drivers/pci/remove.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
+index d749ea8250d6..4e51c64af416 100644
+--- a/drivers/pci/remove.c
++++ b/drivers/pci/remove.c
+@@ -22,7 +22,8 @@ static void pci_stop_dev(struct pci_dev *dev)
+ 		device_release_driver(&dev->dev);
+ 		pci_proc_detach_device(dev);
+ 		pci_remove_sysfs_dev_files(dev);
+-		of_pci_remove_node(dev);
++		if (pci_is_bridge(dev))
++			of_pci_remove_node(dev);
+ 
+ 		pci_dev_assign_added(dev, false);
+ 	}
+
+base-commit: e9d22f7a6655941fc8b2b942ed354ec780936b3e
+-- 
+2.45.2
 
