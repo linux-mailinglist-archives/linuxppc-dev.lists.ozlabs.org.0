@@ -1,88 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FE1926A4E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 23:32:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F23926A52
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 23:33:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DU3S/ARu;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DU3S/ARu;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FXKtmmxr;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GpFf9Kkv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDtKt35g6z3fKh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 07:32:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDtLf3rmXz3dHP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 07:33:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DU3S/ARu;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DU3S/ARu;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FXKtmmxr;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GpFf9Kkv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDtG83MSmz3fRG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 07:29:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDtGB43cJz3fRF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 07:29:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720042173;
+	s=mimecast20190719; t=1720042174;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DPSgdrK+/9txvlBVeWURx0wHDXuvLt3nB8aMlUhEkV8=;
-	b=DU3S/ARuYOtYgQvPVYGFJHUfw982tFqFnSkjx/rfTZXn9e5kGnxA9hd+e5k99fUCaGI8Dq
-	L3L0fi4XVg//3JKEvuzkibnUWJetnAct5B1pKlbB46OLh9Y6Z4aleOo+coSAp+Mggl9tEf
-	djd5ipudyxVXzgetpHrxHtCOXxeW0fs=
+	bh=TFEuzrgphkpyKgRaMn/StFmQ1IWZKcW4qj9eIjoToHw=;
+	b=FXKtmmxrEEigCw5GSaSsTGmj3/LaPubQp1lPJxLRff5pVWAo0anbUMvFfJLMaqn64WsZyv
+	3CDlaVAj5CC+jwT5PDkZ4UZmeQBATdtIfgS+5EuJ1ZQ7hZ5Asg49fZagiv2ODqXrv/b//J
+	2L6Fbo/fBAznPpEmzmW44IRMQTa5Y5I=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720042173;
+	s=mimecast20190719; t=1720042175;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DPSgdrK+/9txvlBVeWURx0wHDXuvLt3nB8aMlUhEkV8=;
-	b=DU3S/ARuYOtYgQvPVYGFJHUfw982tFqFnSkjx/rfTZXn9e5kGnxA9hd+e5k99fUCaGI8Dq
-	L3L0fi4XVg//3JKEvuzkibnUWJetnAct5B1pKlbB46OLh9Y6Z4aleOo+coSAp+Mggl9tEf
-	djd5ipudyxVXzgetpHrxHtCOXxeW0fs=
+	bh=TFEuzrgphkpyKgRaMn/StFmQ1IWZKcW4qj9eIjoToHw=;
+	b=GpFf9KkvOZXx5qmQNGd4rITI5B2ggnpYAwljMLL6bBkHCh0taS3O41TlYHw3l8X4QvAfeY
+	LuBBt4ihMWawcHBWBPmJuxA/Ohk+hpOu/VnAXNqwPfpW7Ftq1S+X2Zl9E43x2UKBTdebh6
+	mRUu8Tcmm7CfXoLrxbVPeHL9pbuZ7hk=
 Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
  [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-G8XcGgF9MaOrHwIIKDMHog-1; Wed, 03 Jul 2024 17:29:31 -0400
-X-MC-Unique: G8XcGgF9MaOrHwIIKDMHog-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-446597b9e32so2328711cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2024 14:29:30 -0700 (PDT)
+ us-mta-548-ohV1QzQGPimnYKZ8TixxkQ-1; Wed, 03 Jul 2024 17:29:32 -0400
+X-MC-Unique: ohV1QzQGPimnYKZ8TixxkQ-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4464454e329so1958011cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Jul 2024 14:29:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720042170; x=1720646970;
+        d=1e100.net; s=20230601; t=1720042172; x=1720646972;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DPSgdrK+/9txvlBVeWURx0wHDXuvLt3nB8aMlUhEkV8=;
-        b=Bhtk0WjZxWDOCOdieqk/0HmwJIxFIniKe6jFv8vMyC/2dJrk1nQhU1VXIiulBjcdgV
-         rvO3RBQbkH6hSATQowVDlxgAydJdsJblA3bafU0yb0fkAkgGRyuesQbP8KVe2/lSgAhv
-         lwAUk6TrL/fiBoaieiceqQjhiuqsY2p0MY+WYl0HxEw2MHAykgzvKZAf6POLr6qXiJcS
-         OClunxgN07LEycnjDoHlyvptVv2YvoRCBy75iYBuKrLlEHyw6ZBZ0VdFipx9RI9SkUj9
-         4xf7O5qocWUW51H+QD/E7YYyjiZRJGrDAGIhYj7cY1hxzccH2i1JmmNJ3J1KUUusHxMQ
-         qUqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXS19n9Slk7Y/5SRwGgVCuM6aTXajO/cm/pQSsjwKp7cWAu8dxoyisEydqMqUqGLtE0itz8BgBeJsNkAYzxJ81H1swVDVCtg7oOIEjjJg==
-X-Gm-Message-State: AOJu0YyliwDBtQD43eEmxW45D46L1x8tTtzorjGAa1QNNArK/6XFL/OU
-	a2PGEWojGZ2Lhmmu+vvygIPy/XtUObXpGwYXOyYJcZj6eBs2LzkjEIBFn/QVK+FGwT9/jZFbdII
-	YqKweLW/jlgZdRpWw70j8RDWWdsOK5NCXb5IKS4fpG5ao+xVEFcHQiYWt/K6P1VAlYhPJoTY=
-X-Received: by 2002:a05:622a:102:b0:446:5d1b:5a2e with SMTP id d75a77b69052e-44662f544a3mr145792321cf.5.1720042170197;
-        Wed, 03 Jul 2024 14:29:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbwAQwNTOhld77jh3m6+0aceNgmx9fLMFpnLFNTJ0A2GCbsDu4E9EVwwSQY1Fjy1mOFnq/rQ==
-X-Received: by 2002:a05:622a:102:b0:446:5d1b:5a2e with SMTP id d75a77b69052e-44662f544a3mr145792111cf.5.1720042169860;
-        Wed, 03 Jul 2024 14:29:29 -0700 (PDT)
+        bh=TFEuzrgphkpyKgRaMn/StFmQ1IWZKcW4qj9eIjoToHw=;
+        b=EADLrxblDoTAWgwDmJ6nWnriV0/E6RT1PTcGcBeVIVkoJTMRRSo0S1da00YLfusIEp
+         ZraGfjfJlETO2EEhFRokVeD43DJ1B9NW/WwZBt2CWvtBFZqjZ9/tQx60ij+kdbjpDcGp
+         hXgGQb/rg4HnAomi5whjV1fK9HnvrYVJbMetGV90fc5+kcELsVh/S4YVBNY+KeNsmjQ6
+         jIuEo9QG1n01QSA1EhH0RCteM6TgMzsvZ3q8A5R28jIdjzQqzBrbFNmbCRzkt7hKwkxH
+         jGxklut+8djSKGf4WaShlj8MK8ljDO0NmEn6bSvu7uPS29Zxa1Wd/Ti+byS6TBGkeA61
+         mcCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUc0cFnfJX+r4XBxc5/Vu3v1ig0ao9ZzosWMyNqnAiRMKOpKt7PH0zXQlBnAuwodKAzEZSPGWibGGwc09tGVy7iTysrV4ke20+9i9iKtw==
+X-Gm-Message-State: AOJu0YxAdZyPxWl6dORYHQT77WnN+gsvZrfixpoAfxwdBnLrRLhyT2ZN
+	HoO9QT0mYOfPXTPtkQAqAt9no7sNRv+nHHFfgXZJRM0CBrg9jZEKRI4IKDKyL8/Tze12E5E2BEg
+	N6mluY6DJwQMFHnrzUqOtOeXczshSLBltQcGkNOZr/MCxGz+8DMgA1SduNJTccuE=
+X-Received: by 2002:ac8:7c4f:0:b0:446:4428:2d8f with SMTP id d75a77b69052e-44662fe8d5dmr138289601cf.6.1720042171885;
+        Wed, 03 Jul 2024 14:29:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHMHO5UTPVYkVSEJYbLjxCcukt7PlLC0h81KBHiBOgwFBj/wiCFjtQJqk/7gb0k9Iu8HJBYNg==
+X-Received: by 2002:ac8:7c4f:0:b0:446:4428:2d8f with SMTP id d75a77b69052e-44662fe8d5dmr138289521cf.6.1720042171603;
+        Wed, 03 Jul 2024 14:29:31 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4465143eb1csm54337481cf.57.2024.07.03.14.29.28
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4465143eb1csm54337481cf.57.2024.07.03.14.29.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:29:29 -0700 (PDT)
+        Wed, 03 Jul 2024 14:29:31 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 4/8] mm/powerpc: Add missing pud helpers
-Date: Wed,  3 Jul 2024 17:29:14 -0400
-Message-ID: <20240703212918.2417843-5-peterx@redhat.com>
+Subject: [PATCH v2 5/8] mm/x86: Make pud_leaf() only cares about PSE bit
+Date: Wed,  3 Jul 2024 17:29:15 -0400
+Message-ID: <20240703212918.2417843-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240703212918.2417843-1-peterx@redhat.com>
 References: <20240703212918.2417843-1-peterx@redhat.com>
@@ -106,82 +106,35 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>, peterx@redhat.com, Christophe Ler
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These new helpers will be needed for pud entry updates soon.  Introduce
-them by referencing the pmd ones.  Namely:
+An entry should be reported as PUD leaf even if it's PROT_NONE, in which
+case PRESENT bit isn't there. I hit bad pud without this when testing dax
+1G on zapping a PROT_NONE PUD.
 
-- pudp_invalidate()
-- pud_modify()
-
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h |  3 +++
- arch/powerpc/mm/book3s64/pgtable.c           | 20 ++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ arch/x86/include/asm/pgtable.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 519b1743a0f4..5da92ba68a45 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1124,6 +1124,7 @@ extern pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot);
- extern pud_t pfn_pud(unsigned long pfn, pgprot_t pgprot);
- extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
- extern pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot);
-+extern pud_t pud_modify(pud_t pud, pgprot_t newprot);
- extern void set_pmd_at(struct mm_struct *mm, unsigned long addr,
- 		       pmd_t *pmdp, pmd_t pmd);
- extern void set_pud_at(struct mm_struct *mm, unsigned long addr,
-@@ -1384,6 +1385,8 @@ static inline pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm,
- #define __HAVE_ARCH_PMDP_INVALIDATE
- extern pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 			     pmd_t *pmdp);
-+extern pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
-+			     pud_t *pudp);
- 
- #define pmd_move_must_withdraw pmd_move_must_withdraw
- struct spinlock;
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index f4d8d3c40e5c..5a4a75369043 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -176,6 +176,17 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 	return __pmd(old_pmd);
- }
- 
-+pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
-+		      pud_t *pudp)
-+{
-+	unsigned long old_pud;
-+
-+	VM_WARN_ON_ONCE(!pud_present(*pudp));
-+	old_pud = pud_hugepage_update(vma->vm_mm, address, pudp, _PAGE_PRESENT, _PAGE_INVALID);
-+	flush_pud_tlb_range(vma, address, address + HPAGE_PUD_SIZE);
-+	return __pud(old_pud);
-+}
-+
- pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
- 				   unsigned long addr, pmd_t *pmdp, int full)
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 65b8e5bb902c..25fc6d809572 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1073,8 +1073,7 @@ static inline pmd_t *pud_pgtable(pud_t pud)
+ #define pud_leaf pud_leaf
+ static inline bool pud_leaf(pud_t pud)
  {
-@@ -259,6 +270,15 @@ pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
- 	pmdv &= _HPAGE_CHG_MASK;
- 	return pmd_set_protbits(__pmd(pmdv), newprot);
+-	return (pud_val(pud) & (_PAGE_PSE | _PAGE_PRESENT)) ==
+-		(_PAGE_PSE | _PAGE_PRESENT);
++	return pud_val(pud) & _PAGE_PSE;
  }
-+
-+pud_t pud_modify(pud_t pud, pgprot_t newprot)
-+{
-+	unsigned long pudv;
-+
-+	pudv = pud_val(pud);
-+	pudv &= _HPAGE_CHG_MASK;
-+	return pud_set_protbits(__pud(pudv), newprot);
-+}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
- /* For use by kexec, called with MMU off */
+ static inline int pud_bad(pud_t pud)
 -- 
 2.45.0
 
