@@ -2,65 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F279253CD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 08:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FFE9253D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 08:42:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Px2C1HOT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YO+GqNBU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDVXb5xKGz3cXV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 16:40:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDVZS3NH6z3cVf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 16:42:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Px2C1HOT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YO+GqNBU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDVWv66BXz30YZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 16:40:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDVYm1TfTz30W2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 16:41:48 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 82CA2620D4;
-	Wed,  3 Jul 2024 06:40:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36713C32781;
-	Wed,  3 Jul 2024 06:40:07 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 575D4CE28B2;
+	Wed,  3 Jul 2024 06:41:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FB3C32781;
+	Wed,  3 Jul 2024 06:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719988807;
-	bh=Ux893/LfPQMGZoqAxPyx5lXQ3NSGVgFeJDL8OiKVL/A=;
+	s=k20201202; t=1719988904;
+	bh=unHk9c2klYNcQdPtTDkh8snTMmh7p6P9rHw8h6t5XW0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Px2C1HOTaqXMYo0VdDmewLSiwB7i1m10Vlt+LBbRIhR340b0/dGOe1RqnQvjmwTuZ
-	 6xSzfAYswueo/Dkgc0Xrb2Q+KQ4TK6ZugK7ddsS0BQi5PgPDkfSuP84S/bRqAghbCu
-	 Yvqeoz+T24fTg9zaXDlzdWY5uQVMr3Tz5Bjd4ZVNEeCA7s2dPDME1eJfNpbwAowmY/
-	 vbAz936nzuwUz/xKc53MdNrJza41khM+Kj+0lQIyDjYszBLI1SwKVgV/AajJKTvk0K
-	 04qlTxjWBGHWkUynIF/h6qO0iT/USRK63WkejtJyDFoqN7lzOwASVxndGdcAaOEYL4
-	 W9PimwG1PFtjw==
+	b=YO+GqNBUXIWmHyxjOQWFMk9d9W2rgMujkPe3Cf6NJcLgsve3AB+UFK2DgPcD2N4zO
+	 mpwnwPChvjvfhZ9ujcwZVftURSwtw8oMh0wfiOJ9//L4k2dhV388wquif2HATiJoJJ
+	 5vliNUTys+MmAB9jfJZ1aGjmBMGkmGDH8yjyVT0geOnjt375J0Lg0vjMDPvLah1X/S
+	 glZLeY2+QeOuYuCMSU5DaIlF8wvTKTro0hRMstIJQV0kJOEGb7XzpFp/x6XYteB8xS
+	 IadPXuO6eTu5k9RQ/LDUrC7IaI7uZdRf93SaH6558pdChOF3pwWLo5La4P2gGpYbxV
+	 4razzXO3al5eg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1sOteu-009LMB-Vq;
-	Wed, 03 Jul 2024 07:40:05 +0100
-Date: Wed, 03 Jul 2024 07:40:04 +0100
-Message-ID: <86cynv9dx7.wl-maz@kernel.org>
+	id 1sOtgU-009LO3-CY;
+	Wed, 03 Jul 2024 07:41:42 +0100
+Date: Wed, 03 Jul 2024 07:41:42 +0100
+Message-ID: <86bk3f9duh.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Christian Zigotzky <chzigotzky@xenosoft.de>
 Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
-In-Reply-To: <f150eb06-b796-48be-9373-544ca8948ab6@xenosoft.de>
+In-Reply-To: <5e44f1be-f626-4bcb-b1b0-583462c1a930@xenosoft.de>
 References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
-	<861q4bizxc.wl-maz@kernel.org>
-	<68b7988d-eaaa-4713-99c3-525a34c5b322@xenosoft.de>
-	<5a6166f107ae31536665d42f410d314d@kernel.org>
-	<f150eb06-b796-48be-9373-544ca8948ab6@xenosoft.de>
+	<86zfqzhgys.wl-maz@kernel.org>
+	<5e44f1be-f626-4bcb-b1b0-583462c1a930@xenosoft.de>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.3
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 X-SA-Exim-Connect-IP: 185.219.108.64
 X-SA-Exim-Rcpt-To: chzigotzky@xenosoft.de, robh@kernel.org, apatel@ventanamicro.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, madskateman@gmail.com, rtd2@xtra.co.nz, matthew@a-eon.biz, darren@stevens-zone.net, info@xenosoft.de
 X-SA-Exim-Mail-From: maz@kernel.org
@@ -80,67 +77,57 @@ Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 03 Jul 2024 04:11:55 +0100,
+On Wed, 03 Jul 2024 04:27:37 +0100,
 Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->=20
+> 
 > Hello Marc,
->=20
-> On 02.07.24 21:49, Marc Zyngier wrote:
-> > On 2024-07-02 18:55, Christian Zigotzky wrote:
-> >> Hello Marc,
-> >>=20
-> >> Thank you for your reply.
-> >>=20
-> >> On 02.07.24 17:19, Marc Zyngier wrote:
-> >>> Please provide the device tree for your platform. It isn't possible to
-> >>> debug this without it, no matter how many pictures you provide. If it
-> >>> doesn't exist in source form, you can dump it using:
-> >>>=20
-> >>> # dtc -I dtb /sys/firmware/fdt
-> >>>=20
-> >>> and posting the full output.
-> >>>=20
-> >>> Additionally, a full dmesg of both working and non working boots would
-> >>> be useful.
-> >>>=20
-> >>> Thanks,
-> >>>=20
-> >>> =C2=A0=C2=A0=C2=A0=C2=A0M.
-> >>>=20
-> >> The device tree of the Nemo board and further information:
-> >> https://forum.hyperion-entertainment.com/viewtopic.php?p=3D54406#p54406
-> >=20
-> > Please post these things on the list. I have no interest in
-> > fishing things on a random forum, and this information is
-> > useful for everyone.
-> >=20
-> > Thanks,
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 M.
->=20
-> Sorry, here you are:
->=20
-> Device tree of the Nemo board (Hardinfo):
->=20
-> -Device Tree-
-> Summary
-> Maps
-> /
-> /sdc@fc000000
-> /sdc@fc000000/openpic@fc000000
-> /sdc@fc000000/mdio@0
+> 
+> On 02.07.24 18:54, Marc Zyngier wrote:
+> > On Sun, 30 Jun 2024 11:21:55 +0100,
+> > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> >> Hello,
+> >> 
+> >> There is an issue with the identification of ATA drives with our
+> >> P.A. Semi Nemo boards [1] after the
+> >> commit "of/irq: Factor out parsing of interrupt-map parent
+> >> phandle+args from of_irq_parse_raw()" [2].
+> > [snip]
+> > 
+> > My earlier request for valuable debug information still stands. But
+> > while you're at it, can you please give the following hack a go?
+> > 
+> > 	M.
+> > 
+> > --- a/drivers/of/irq.c
+> > +++ b/drivers/of/irq.c
+> > @@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+> >     			oldimap = imap;
+> >   			imap = of_irq_parse_imap_parent(oldimap, imaplen, out_irq);
+> > -			if (!imap)
+> > -				goto fail;
+> > +			if (!imap) {
+> > +				match = 0;
+> > +				break;
+> > +			}
+> >     			match &= of_device_is_available(out_irq->np);
+> >   			if (match)
+> > 
+> > This may not be the final workaround even if it solves your boot
+> > problem, but will at least give us a hint at what is going wrong.
+> > 
+> > I have the fuzzy feeling that we may be able to lob this broken system
+> > as part of the of_irq_imap_abusers[] array, which would solve things
+> > pretty "neatly".
+> > 
+> > 	M.
+> > 
+> I saw that you may already have a solution. Do you still need the test
+> with this patch?
 
-[...]
-
-This isn't a DTS. This is a listing of all the nodes, not something I
-can use to feed the kernel. I explained how to generate it.
-
-> Download the compiled device tree for the Nemo board:
-> http://www.xenosoft.de/fdt-nemo-board.zip
-
-No, thank you.
+Both this patch and the other one, together with Rob's request to run
+the current state with of/irq.c in DEBUG mode are useful.
 
 	M.
 
---=20
+-- 
 Without deviation from the norm, progress is not possible.
