@@ -2,54 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B1D926AFA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 23:53:54 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CWLQZ/k7;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4E4926C9C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 01:59:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDtp80NJhz3fQk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 07:53:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDxbd1lryz3fVr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 09:59:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CWLQZ/k7;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDtnS6wWjz3ccL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 07:53:16 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 6A0A9CE20EF;
-	Wed,  3 Jul 2024 21:53:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B06BC2BD10;
-	Wed,  3 Jul 2024 21:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720043594;
-	bh=EoX513EDEZICnXv3yAGou7CPrLBwziHXypDMjhVRvm0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWLQZ/k7qZhU2o2y7z+5qDb/MGabHPbWUptEbLH7jsltVHiv9FCuqFT60d6nkspyf
-	 O0a/JVdhsll0FtcFmUFl0qSi3PqzgvOUGXCzmG3ZEGGW1O7vuM8EzNRlPIDHs+xmZm
-	 onypvjmbfV/NrqcCbe9yyZo4gaXMW8O+4Vb5k5kl2w1ox18a9KQcCuTtCQT8Y9Pz0m
-	 FWtewMhlEJbAQB9hIIc5xtLs2W6IWHBPo8AQ+5R6vKZCIZbRjhTbegs3hsPJ4Kd9qX
-	 +HgX0lnj52ScJA8eNV70atG630jvgq6vc1/z8ezZjXK9yR1MtBlFVam1cRWEPyBEYw
-	 YHHaoRrsYEYMg==
-From: Namhyung Kim <namhyung@kernel.org>
-To: linuxppc-dev@lists.ozlabs.org,
-	Abhishek Dubey <adubey@linux.ibm.com>
-Subject: Re: [PATCH] perf report: Calling available function for stats printing
-Date: Wed,  3 Jul 2024 14:53:13 -0700
-Message-ID: <172004357966.3801669.9283730297152342211.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-In-Reply-To: <20240628183224.452055-1-adubey@linux.ibm.com>
-References: <20240628183224.452055-1-adubey@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=andre.przywara@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDf4V49scz2xPc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 22:20:24 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9443367;
+	Wed,  3 Jul 2024 05:20:16 -0700 (PDT)
+Received: from donnerap.manchester.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE8AA3F766;
+	Wed,  3 Jul 2024 05:19:44 -0700 (PDT)
+Date: Wed, 3 Jul 2024 13:19:42 +0100
+From: Andre Przywara <andre.przywara@arm.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 05/20] clk: sunxi: clk-sun8i-bus-gates: convert to
+ of_property_for_each_u32_new()
+Message-ID: <20240703131942.1fc653fa@donnerap.manchester.arm.com>
+In-Reply-To: <20240703-of_property_for_each_u32-v1-5-42c1fc0b82aa@bootlin.com>
+References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
+	<20240703-of_property_for_each_u32-v1-5-42c1fc0b82aa@bootlin.com>
+Organization: ARM
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Thu, 04 Jul 2024 09:59:38 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,18 +46,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, irogers@google.com, peterz@infradead.org, adrian.hunter@intel.com, npiggin@gmail.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, alexander.shishkin@linux.intel.com, mingo@redhat.com, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com
+Cc: Richard Leitner <richard.leitner@linux.dev>, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pwm@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, llvm@lists.linux.dev, Nicolas Ferre <nicolas.ferre@microchip.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-riscv@lists.infradead.org, Jiri Slaby <jirislaby@kernel.org>, linux-clk@vger.kernel.org, Rob Herring <robh@kernel.org>, linux-samsung-soc@vger.kernel.org, Florian Fainelli <florian.fainelli@broadcom.com>, Samuel Holland <samuel@sholland.org>, Emilio =?UTF-8?B?TMOzcGV6?= <emilio@elopez.com.ar>, Bartosz Golaszewski <brgl@bgdev.pl>, Lee Jones <lee@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, linux-iio@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Michael Turquette <mturquette@baylibre.com>, devicetree@vger.kernel.org, "Peng
+ Fan \(OSS\)" <peng.fan@oss.nxp.com>, linux-arm-msm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Saravana Kannan <saravanak@google.com>, linux-gpio@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bjorn Andersson <andersson@kernel.org>, linux-usb@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, patches@opensource.cirrus.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Shawn Guo <shawnguo@kernel.org>, linux-sunxi@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 28 Jun 2024 14:32:24 -0400, Abhishek Dubey wrote:
+On Wed, 03 Jul 2024 12:36:49 +0200
+Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
 
-> For printing dump_trace, just use existing stats_print()
-> function.
+> Simplify code using of_property_for_each_u32_new() as the two additional
+> parameters in of_property_for_each_u32() are not used here.
 > 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+
+Cheers,
+Andre
+
+> ---
+>  drivers/clk/sunxi/clk-sun8i-bus-gates.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/clk/sunxi/clk-sun8i-bus-gates.c b/drivers/clk/sunxi/clk-sun8i-bus-gates.c
+> index b87f331f63c9..21f036457a86 100644
+> --- a/drivers/clk/sunxi/clk-sun8i-bus-gates.c
+> +++ b/drivers/clk/sunxi/clk-sun8i-bus-gates.c
+> @@ -24,11 +24,9 @@ static void __init sun8i_h3_bus_gates_init(struct device_node *node)
+>  	const char *parents[PARENT_MAX];
+>  	struct clk_onecell_data *clk_data;
+>  	const char *clk_name;
+> -	struct property *prop;
+>  	struct resource res;
+>  	void __iomem *clk_reg;
+>  	void __iomem *reg;
+> -	const __be32 *p;
+>  	int number, i;
+>  	u8 clk_bit;
+>  	int index;
+> @@ -58,7 +56,7 @@ static void __init sun8i_h3_bus_gates_init(struct device_node *node)
+>  		goto err_free_data;
+>  
+>  	i = 0;
+> -	of_property_for_each_u32(node, "clock-indices", prop, p, index) {
+> +	of_property_for_each_u32_new(node, "clock-indices", index) {
+>  		of_property_read_string_index(node, "clock-output-names",
+>  					      i, &clk_name);
+>  
 > 
 
-Applied to perf-tools-next, thanks!
-
-Best regards,
-Namhyung
