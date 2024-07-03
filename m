@@ -2,51 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C28F925A16
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 805E892590F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:39:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=e+Mq4EaG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=QHZuw6Oi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc8w719Hz3cZ5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:54:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDbrT24X0z3cYZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:39:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=e+Mq4EaG;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=QHZuw6Oi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwV2G6Bz3cYk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:22 +1000 (AEST)
-Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id ED230C67D7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:35 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E0AC74000A;
-	Wed,  3 Jul 2024 10:38:21 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbq23xSWz3c5F
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:38:38 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E4CB84000B;
+	Wed,  3 Jul 2024 10:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720003105;
+	t=1720003109;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rOJ5i98/CQuCItGEeFqAsSQmPhPnVLAmT8q3wQ8pUDQ=;
-	b=e+Mq4EaGPKsQtOaL/hcb7BkqlwBkygWkVPvMMP/nz0ny1E/R0XNQ1uuwq/INfgIMdOaiom
-	QMws49a+H6qJRb6Vhxkc4mthDjhkYUZKYLhjkFy8W9llpAdF6qzI3TgpElExLZy1lO7Pg4
-	Kka5f9FcGAJwuwOWt7NM0RXmmtdmtV1vBE8iQiURX7V73plKan8Vo+gah25l/b9tjEfBo5
-	ZyvmSpG2FkKKsVRNCIL0rylj+MWjLBdAJ/+gyrPTR7UHN0lp4PHU8yEa/5+Cfm6snx1rY/
-	wUF6j1XVT2DZvBgXst9mgSHbJZviXQ7n17OPQDV/ocXZWzap2y2no/0H+BuH4w==
+	bh=imP4H/ERPSE6KZ0W7q22wukZU6P/ZNa1h2LRRg5LPSE=;
+	b=QHZuw6OixcFOf1fmX7hr0vv6C5X6qtVBD6nwyc/mtaoJV27PNoTaRYDMr1H7OzlZvi4/bT
+	2YGle6Qhcx2ekS2M2kUmkbY0YflInP7/4aNiheGiNRTI+kIj4ZyHOjuT/iuTTvGttyFTx1
+	mZHEZour3jCbqjqEbH0udwlKJ7YcYpKFsxC1x6/Ze7kdpU8CZ7qKJxBxWkszlyEzzb6j4u
+	TDWInmuOi4dYzH/pOWH5Nb7Zq+N9j0N0VkB88X9GYj6xQIDu5zvSqSLb0dXuBDfyBQLOey
+	Yp9zkmm43vokpDk/jIF2hByFQDKg4eXCJ84Gqy+i39DwtK9oDiqQ5v8gutjCrg==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 03 Jul 2024 12:36:59 +0200
-Subject: [PATCH 15/20] usb: usb251xb: convert to
+Date: Wed, 03 Jul 2024 12:37:00 +0200
+Subject: [PATCH 16/20] mfd: ti_am335x_tscadc: convert to
  of_property_for_each_u32_new()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-of_property_for_each_u32-v1-15-42c1fc0b82aa@bootlin.com>
+Message-Id: <20240703-of_property_for_each_u32-v1-16-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -98,26 +95,31 @@ parameters in of_property_for_each_u32() are not used here.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/usb/misc/usb251xb.c | 4 +---
+ drivers/mfd/ti_am335x_tscadc.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/usb/misc/usb251xb.c b/drivers/usb/misc/usb251xb.c
-index 7da404f55a6d..490004dbb9d8 100644
---- a/drivers/usb/misc/usb251xb.c
-+++ b/drivers/usb/misc/usb251xb.c
-@@ -382,11 +382,9 @@ static void usb251xb_get_ports_field(struct usb251xb *hub,
- 				    bool ds_only, u8 *fld)
- {
- 	struct device *dev = hub->dev;
+diff --git a/drivers/mfd/ti_am335x_tscadc.c b/drivers/mfd/ti_am335x_tscadc.c
+index 4bbd542d753e..a2e6112f885f 100644
+--- a/drivers/mfd/ti_am335x_tscadc.c
++++ b/drivers/mfd/ti_am335x_tscadc.c
+@@ -119,8 +119,6 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	struct clk *clk;
+ 	struct device_node *node;
+ 	struct mfd_cell *cell;
 -	struct property *prop;
--	const __be32 *p;
- 	u32 port;
+-	const __be32 *cur;
+ 	bool use_tsc = false, use_mag = false;
+ 	u32 val;
+ 	int err;
+@@ -167,7 +165,7 @@ static	int ti_tscadc_probe(struct platform_device *pdev)
+ 	}
  
--	of_property_for_each_u32(dev->of_node, prop_name, prop, p, port) {
-+	of_property_for_each_u32_new(dev->of_node, prop_name, port) {
- 		if ((port >= ds_only ? 1 : 0) && (port <= port_cnt))
- 			*fld |= BIT(port);
- 		else
+ 	node = of_get_child_by_name(pdev->dev.of_node, "adc");
+-	of_property_for_each_u32(node, "ti,adc-channels", prop, cur, val) {
++	of_property_for_each_u32_new(node, "ti,adc-channels", val) {
+ 		adc_channels++;
+ 		if (val > 7) {
+ 			dev_err(&pdev->dev, " PIN numbers are 0..7 (not %d)\n",
 
 -- 
 2.34.1
