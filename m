@@ -1,118 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB129260C4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 14:45:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D2A925FBF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 14:09:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=nmgAGu9Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+9gmcB1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDfdS089Dz3dBX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 22:45:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDdrF5cf7z3cl9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 22:09:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=nmgAGu9Q;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+9gmcB1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.152.168; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=4914b47104=rf@opensource.cirrus.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 4334 seconds by postgrey-1.37 at boromir; Wed, 03 Jul 2024 22:44:54 AEST
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDfck37rLz3cbg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 22:44:52 +1000 (AEST)
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4636mxjt003511;
-	Wed, 3 Jul 2024 06:31:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	PODMain02222019; bh=f37i3vEXbnh14lMCwflrH5FfWLKGacpcQ9pw+V8X0GM=; b=
-	nmgAGu9QNNUy+G+YvJbJdLDq3r5Fy6Tlvw22gJFuOhC/HUVavm2zyhCYI2OsrfAU
-	mDwZcEl1Ie0x2Rgl8iIhzLQtM75dpvKeYlXQz4E9/9wzgMOiW1NBymVDkVs0cTmu
-	JrK/H/3DummtYV3aHM2KFCYbKNXUwvtz7SG9OT4cRFAPBEILdNBAos0jQqGiEr3t
-	oi7Em/CxuTdS52KqxbQqLFHVuvcJjnJJi1ZWq5PU7lS2UOXmy0Q0EPAGOj1qBR7M
-	lZ91HcM0b6ZMw/944h0ilF+OF6+f/+KyPnSZdWznrzM0Dnba7pZz4Xv9KWNq0Kg6
-	bSGAR7m1b6TnrBo5lsVPKg==
-Received: from ediex02.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 402epjd9kx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 06:31:30 -0500 (CDT)
-Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 3 Jul 2024
- 12:31:29 +0100
-Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
- anon-ediex01.ad.cirrus.com (198.61.84.80) with Microsoft SMTP Server id
- 15.2.1544.9 via Frontend Transport; Wed, 3 Jul 2024 12:31:29 +0100
-Received: from [198.90.208.18] (ediswws06.ad.cirrus.com [198.90.208.18])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id E8801820244;
-	Wed,  3 Jul 2024 11:31:28 +0000 (UTC)
-Message-ID: <0796b481-3eec-4618-b92e-a372b7da5381@opensource.cirrus.com>
-Date: Wed, 3 Jul 2024 12:31:28 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/20] ASoC: arizona: convert to
- of_property_for_each_u32_new()
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-        Miguel Ojeda
-	<ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan
-	<saravanak@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Michael
- Turquette" <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, "Tony
- Lindgren" <tony@atomide.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        =?UTF-8?Q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>,
-        Chen-Yu Tsai
-	<wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland
-	<samuel@sholland.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Daniel Lezcano
-	<daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Florian
- Fainelli" <florian.fainelli@broadcom.com>,
-        "Broadcom internal kernel review
- list" <bcm-kernel-feedback-list@broadcom.com>,
-        Linus Walleij
-	<linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        "Jonathan
- Cameron" <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
-        Shawn Guo
-	<shawnguo@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "Richard
- Leitner" <richard.leitner@linux.dev>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "Naveen N. Rao"
-	<naveen.n.rao@linux.ibm.com>,
-        Damien Le Moal <dlemoal@kernel.org>
-References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
- <20240703-of_property_for_each_u32-v1-17-42c1fc0b82aa@bootlin.com>
-Content-Language: en-GB
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
-In-Reply-To: <20240703-of_property_for_each_u32-v1-17-42c1fc0b82aa@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: CFz_RdAJOFjMU2QBvo3bIc4bvB6lzh5q
-X-Proofpoint-ORIG-GUID: CFz_RdAJOFjMU2QBvo3bIc4bvB6lzh5q
-X-Proofpoint-Spam-Reason: safe
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDdqR2N5yz3bVG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 22:09:07 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id B2D56CE2980;
+	Wed,  3 Jul 2024 12:09:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11D2C2BD10;
+	Wed,  3 Jul 2024 12:09:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720008544;
+	bh=eZ1R07sklVIHLJ7jAUSapT6sVA3yE63F67K5SBVmNPw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=V+9gmcB1mPATTVawV18eL0+TPkJMuC5vtAT4YI/v6KwgOz0T0QzheugM7sgG4qbNz
+	 BUYdv3Xtc5rBa9T5iK2rFuKrvcdAmCK1gDWPV9YvURzM09Y8MUdNiUrjcxiEGpANtV
+	 ypNy2DLgdEA5Zgdftf9G2G6rhK9+vIppBgv84D+CcYc4ShIowLJDdlMxQz2b4LLf/X
+	 qnZXr5PA3z8t68QfJMaIvV4dW2Nv2N508pU/cYhRpKW3Hzi1OqGSxdH8I81tfwHgz8
+	 YLHz+adRC41GFVXvA8g8qkWzNJtbM1vozmk4jPETSCXZH/yKnz/C6QiyNIUu1irYFA
+	 iPJb03yhosfXA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sOynF-009RDQ-JT;
+	Wed, 03 Jul 2024 13:09:01 +0100
+Date: Wed, 03 Jul 2024 13:09:00 +0100
+Message-ID: <868qyiad9f.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
+In-Reply-To: <87le2ik90h.fsf@mail.lhotse>
+References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+	<86zfqzhgys.wl-maz@kernel.org>
+	<CAL_Jsq+_QZHMJGHqw8vFA5CspuouvY_U=+NobYQ52DcwPQx-2w@mail.gmail.com>
+	<87le2ik90h.fsf@mail.lhotse>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.3
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, robh@kernel.org, chzigotzky@xenosoft.de, apatel@ventanamicro.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, madskateman@gmail.com, rtd2@xtra.co.nz, matthew@a-eon.biz, darren@stevens-zone.net, info@xenosoft.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,75 +75,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, "Peng Fan \(OSS\)" <peng.fan@oss.nxp.com>, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-arm-msm@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, linux-sunxi@lists.linux.dev, linux-gpio@vger.kernel.org, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-serial@vger.kernel.org, linux-riscv@lists.infradead.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <chzigotzky@xenosoft.de>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/07/2024 11:37, Luca Ceresoli wrote:
-> Simplify code using of_property_for_each_u32_new() as the two additional
-> parameters in of_property_for_each_u32() are not used here.
-> 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
->   sound/soc/codecs/arizona.c | 12 +++++-------
->   1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/sound/soc/codecs/arizona.c b/sound/soc/codecs/arizona.c
-> index 7434aeeda292..1a64b9815809 100644
-> --- a/sound/soc/codecs/arizona.c
-> +++ b/sound/soc/codecs/arizona.c
-> @@ -2786,15 +2786,13 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
->   {
->   	struct arizona_pdata *pdata = &arizona->pdata;
->   	struct device_node *np = arizona->dev->of_node;
-> -	struct property *prop;
-> -	const __be32 *cur;
->   	u32 val;
->   	u32 pdm_val[ARIZONA_MAX_PDM_SPK];
->   	int ret;
->   	int count = 0;
->   
->   	count = 0;
-> -	of_property_for_each_u32(np, "wlf,inmode", prop, cur, val) {
-> +	of_property_for_each_u32_new(np, "wlf,inmode", val) {
->   		if (count == ARRAY_SIZE(pdata->inmode))
->   			break;
->   
-> @@ -2803,7 +2801,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
->   	}
->   
->   	count = 0;
-> -	of_property_for_each_u32(np, "wlf,dmic-ref", prop, cur, val) {
-> +	of_property_for_each_u32_new(np, "wlf,dmic-ref", val) {
->   		if (count == ARRAY_SIZE(pdata->dmic_ref))
->   			break;
->   
-> @@ -2812,7 +2810,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
->   	}
->   
->   	count = 0;
-> -	of_property_for_each_u32(np, "wlf,out-mono", prop, cur, val) {
-> +	of_property_for_each_u32_new(np, "wlf,out-mono", val) {
->   		if (count == ARRAY_SIZE(pdata->out_mono))
->   			break;
->   
-> @@ -2821,7 +2819,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
->   	}
->   
->   	count = 0;
-> -	of_property_for_each_u32(np, "wlf,max-channels-clocked", prop, cur, val) {
-> +	of_property_for_each_u32_new(np, "wlf,max-channels-clocked", val) {
->   		if (count == ARRAY_SIZE(pdata->max_channels_clocked))
->   			break;
->   
-> @@ -2830,7 +2828,7 @@ int arizona_of_get_audio_pdata(struct arizona *arizona)
->   	}
->   
->   	count = 0;
-> -	of_property_for_each_u32(np, "wlf,out-volume-limit", prop, cur, val) {
-> +	of_property_for_each_u32_new(np, "wlf,out-volume-limit", val) {
->   		if (count == ARRAY_SIZE(pdata->out_vol_limit))
->   			break;
->   
-> 
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Hi Michael,
+
+On Wed, 03 Jul 2024 12:30:38 +0100,
+Michael Ellerman <mpe@ellerman.id.au> wrote:
+>=20
+> Rob Herring <robh@kernel.org> writes:
+> > On Tue, Jul 2, 2024 at 10:54=E2=80=AFAM Marc Zyngier <maz@kernel.org> w=
+rote:
+> >>
+> >> On Sun, 30 Jun 2024 11:21:55 +0100,
+> >> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> >> >
+> >> > Hello,
+> >> >
+> >> > There is an issue with the identification of ATA drives with our
+> >> > P.A. Semi Nemo boards [1] after the
+> >> > commit "of/irq: Factor out parsing of interrupt-map parent
+> >> > phandle+args from of_irq_parse_raw()" [2].
+> >>
+> >> [snip]
+> >>
+> >> My earlier request for valuable debug information still stands. But
+> >> while you're at it, can you please give the following hack a go?
+> >>
+> >>         M.
+> >>
+> >> --- a/drivers/of/irq.c
+> >> +++ b/drivers/of/irq.c
+> >> @@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct o=
+f_phandle_args *out_irq)
+> >>
+> >>                         oldimap =3D imap;
+> >>                         imap =3D of_irq_parse_imap_parent(oldimap, ima=
+plen, out_irq);
+> >> -                       if (!imap)
+> >> -                               goto fail;
+> >> +                       if (!imap) {
+> >> +                               match =3D 0;
+> >> +                               break;
+> >> +                       }
+> >
+> > AFAICT reading the DT, I don't think this would fix it. imap should
+> > only be null if malformed. This case to me looks like interrupt-map
+> > has the correct cell sizes, but just never matches to do the mapping.
+> > So maybe imaplen is off and that causes us to end up here, but if
+> > there's an error I don't see it. A boot with DEBUG enabled in
+> > drivers/of/irq.c would help.
+> >
+> >>
+> >>                         match &=3D of_device_is_available(out_irq->np);
+> >>                         if (match)
+> >>
+> >> This may not be the final workaround even if it solves your boot
+> >> problem, but will at least give us a hint at what is going wrong.
+> >>
+> >> I have the fuzzy feeling that we may be able to lob this broken system
+> >> as part of the of_irq_imap_abusers[] array, which would solve things
+> >> pretty "neatly".
+> >
+> > I think this would work and would consolidate the work-arounds. It
+> > would need either "pasemi,rootbus" or "pa-pxp" added to the list.
+>=20
+> Not sure if it helps, but there's already some code in arch/powerpc to
+> "fixup" the nemo device tree at boot.
+>=20
+> I'm not sure if it's actually the problem here, but it might be, it does
+> renumber some interrupts. Or possibly it could be tweaked to fix
+> whatever the issue is.
+>=20
+> The code is in fixup_device_tree_pasemi():
+>=20
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/arch/powerpc/kernel/prom_init.c?h=3Dv6.10-rc5#n3114
+
+Ah, that's quite interesting, thanks for the pointer.
+
+I can see two possibilities here:
+
+- either we remove the interrupt-map from the DT (no idea if that is
+  possible)
+
+- or we patch the interrupt-map to be slightly more useful and
+  actually match its input
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
