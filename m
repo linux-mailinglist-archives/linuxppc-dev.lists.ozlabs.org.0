@@ -1,34 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4E4926C9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 01:59:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E37E926C9E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 02:00:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDxbd1lryz3fVr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 09:59:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDxc32jrYz3fph
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 10:00:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=andre.przywara@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDf4V49scz2xPc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 22:20:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDf6y34k0z3d3Z
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 22:22:33 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B9443367;
-	Wed,  3 Jul 2024 05:20:16 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C0FA3367;
+	Wed,  3 Jul 2024 05:22:27 -0700 (PDT)
 Received: from donnerap.manchester.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE8AA3F766;
-	Wed,  3 Jul 2024 05:19:44 -0700 (PDT)
-Date: Wed, 3 Jul 2024 13:19:42 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 079283F766;
+	Wed,  3 Jul 2024 05:21:54 -0700 (PDT)
+Date: Wed, 3 Jul 2024 13:21:52 +0100
 From: Andre Przywara <andre.przywara@arm.com>
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 05/20] clk: sunxi: clk-sun8i-bus-gates: convert to
+Subject: Re: [PATCH 04/20] clk: sunxi: clk-simple-gates: convert to
  of_property_for_each_u32_new()
-Message-ID: <20240703131942.1fc653fa@donnerap.manchester.arm.com>
-In-Reply-To: <20240703-of_property_for_each_u32-v1-5-42c1fc0b82aa@bootlin.com>
+Message-ID: <20240703132152.6c306a48@donnerap.manchester.arm.com>
+In-Reply-To: <20240703-of_property_for_each_u32-v1-4-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
-	<20240703-of_property_for_each_u32-v1-5-42c1fc0b82aa@bootlin.com>
+	<20240703-of_property_for_each_u32-v1-4-42c1fc0b82aa@bootlin.com>
 Organization: ARM
 X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 MIME-Version: 1.0
@@ -51,7 +51,7 @@ Cc: Richard Leitner <richard.leitner@linux.dev>, Daniel Lezcano <daniel.lezcano@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 03 Jul 2024 12:36:49 +0200
+On Wed, 03 Jul 2024 12:36:48 +0200
 Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
 
 > Simplify code using of_property_for_each_u32_new() as the two additional
@@ -65,29 +65,29 @@ Cheers,
 Andre
 
 > ---
->  drivers/clk/sunxi/clk-sun8i-bus-gates.c | 4 +---
+>  drivers/clk/sunxi/clk-simple-gates.c | 4 +---
 >  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/clk/sunxi/clk-sun8i-bus-gates.c b/drivers/clk/sunxi/clk-sun8i-bus-gates.c
-> index b87f331f63c9..21f036457a86 100644
-> --- a/drivers/clk/sunxi/clk-sun8i-bus-gates.c
-> +++ b/drivers/clk/sunxi/clk-sun8i-bus-gates.c
-> @@ -24,11 +24,9 @@ static void __init sun8i_h3_bus_gates_init(struct device_node *node)
->  	const char *parents[PARENT_MAX];
+> diff --git a/drivers/clk/sunxi/clk-simple-gates.c b/drivers/clk/sunxi/clk-simple-gates.c
+> index 0399627c226a..a30d14937e0b 100644
+> --- a/drivers/clk/sunxi/clk-simple-gates.c
+> +++ b/drivers/clk/sunxi/clk-simple-gates.c
+> @@ -21,11 +21,9 @@ static void __init sunxi_simple_gates_setup(struct device_node *node,
+>  {
 >  	struct clk_onecell_data *clk_data;
->  	const char *clk_name;
+>  	const char *clk_parent, *clk_name;
 > -	struct property *prop;
 >  	struct resource res;
 >  	void __iomem *clk_reg;
 >  	void __iomem *reg;
 > -	const __be32 *p;
->  	int number, i;
+>  	int number, i = 0, j;
 >  	u8 clk_bit;
->  	int index;
-> @@ -58,7 +56,7 @@ static void __init sun8i_h3_bus_gates_init(struct device_node *node)
+>  	u32 index;
+> @@ -47,7 +45,7 @@ static void __init sunxi_simple_gates_setup(struct device_node *node,
+>  	if (!clk_data->clks)
 >  		goto err_free_data;
 >  
->  	i = 0;
 > -	of_property_for_each_u32(node, "clock-indices", prop, p, index) {
 > +	of_property_for_each_u32_new(node, "clock-indices", index) {
 >  		of_property_read_string_index(node, "clock-output-names",
