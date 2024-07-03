@@ -2,49 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9F792592E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FE292593C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:42:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=krq9F3d5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=aLctC95x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDbt80Dwqz3c5F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:41:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDbtv6VyLz3dDj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:41:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=krq9F3d5;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=aLctC95x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 03 Jul 2024 20:38:46 AEST
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbqB5pjvz3dDt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:38:46 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 41D1340003;
-	Wed,  3 Jul 2024 10:38:38 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbqF4Rplz3dBZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:38:49 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 42E2C40006;
+	Wed,  3 Jul 2024 10:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720003122;
+	t=1720003126;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8hUMVYtBkjPdiTzE0TuzO7cuagNMWqN2g5DCdgBLSEk=;
-	b=krq9F3d5fBd6bfy6FrrQ002RWueFPpkeVNZCRwuTg00aWfcsCAo+TqJP4lQX1lNb1wnXx8
-	8EFt540AMIJBMaxeUFLkQZT4IJffE+hEjvm/KC8c7bvRPvQNpTIO2EjrMZkQXl6020l+ii
-	3JJCVUB6s9ma44O0w2gRu+DYyEwnCB7wKWEP232QtvdGIGUIWZVUgNnTWwPDH9ook3kbME
-	D1peSErXCT5Jkj8vWWwbbj3NsFjOLFQHq2H5LTJRhcGEPUiywAMdZa3b2WOwjNwo07rHbL
-	UCHQQH7s337h9dfyUpfbcNeOaTH9uKaERBtKoDjD94zwX+pk5NZ396JKb9qCGQ==
+	bh=1Bx2CQCZLnvl2mGaHzoLhHeTCe30chHxVgbi6fu5d+s=;
+	b=aLctC95xt2Q6rMLnoKMX3FJ/PPaRdMHQEBg8Yh4ab3FSY9cbwu/dUFTyd2apLZ20deWbHL
+	p+IzkHN10jVZ1AG9Zn60wT53j8GY4YjZh45RcrSYSRiZO/UmHE3QPIVv0XvnhM2mXl2hWz
+	VOJOVdL5ZPhpZJKh1jWQ96KV9qbUgn5W/5TTMt7H+C2eSDixGWwEKYYBbQX1xXqSkyGHz5
+	91ju+rAKcnrwNcrolgluBFlh3QFO+/DQF5Wl+7Xbh+KtpnaGIUDYbYcsxewuu+9dpHQeok
+	x6ehLSPvrF/uwBxNqrMB68JqQwCZNKNJ8SkpeUBfTvTBYcpghA0kpCr+80jVbg==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 03 Jul 2024 12:37:03 +0200
-Subject: [PATCH 19/20] powerpc/xive: convert to
- of_property_for_each_u32_new()
+Date: Wed, 03 Jul 2024 12:37:04 +0200
+Subject: [PATCH 20/20] of: deprecate and rename of_property_for_each_u32()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-of_property_for_each_u32-v1-19-42c1fc0b82aa@bootlin.com>
+Message-Id: <20240703-of_property_for_each_u32-v1-20-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -91,41 +89,130 @@ Cc: devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, "Peng Fan \(O
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Simplify code using of_property_for_each_u32_new() as the two additional
-parameters in of_property_for_each_u32() are not used here.
+of_property_for_each_u32() is meant to disappear. All the call sites not
+using the 3rd and 4th arguments have already been replaced by
+of_property_for_each_u32_new().
 
-In this case only the 'prop' variable can be removed and not 'reg',
-because 'reg' is used in _previous_ lines of the same function. There
-is no side effect because the of_property_for_each_u32() macro being
-removed would anyway write 'reg' bwfore reading its value, and 'reg'
-is not used in _following_ lines.
+Deprecate the old macro. Also rename it to minimize the number of new
+usages and encourage conversion to the of_property_for_each_u32_new() macro
+in not(-yet)-upstream code.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- arch/powerpc/sysdev/xive/spapr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-index e45419264391..ffa6ca5db183 100644
---- a/arch/powerpc/sysdev/xive/spapr.c
-+++ b/arch/powerpc/sysdev/xive/spapr.c
-@@ -814,7 +814,6 @@ bool __init xive_spapr_init(void)
- 	struct device_node *np;
- 	struct resource r;
- 	void __iomem *tima;
--	struct property *prop;
- 	u8 max_prio;
- 	u32 val;
- 	u32 len;
-@@ -866,7 +865,7 @@ bool __init xive_spapr_init(void)
- 	}
+---
+
+Notes:
+
+ * The following files have not been build-tested simply because I haven't
+   managed to have a config that enables them so far:
+
+     drivers/irqchip/irq-pic32-evic.c
+     drivers/pinctrl/pinctrl-k210.c
+
+ * These have not been converted yet as they are not trivial, and they will
+   need to use a more specific function that does the lookup they need and
+   returns the result:
+
+     drivers/clk/clk-si5351.c
+     drivers/clk/clk.c
+---
+ .clang-format                    | 2 +-
+ drivers/clk/clk-si5351.c         | 4 ++--
+ drivers/clk/clk.c                | 2 +-
+ drivers/irqchip/irq-pic32-evic.c | 2 +-
+ drivers/pinctrl/pinctrl-k210.c   | 2 +-
+ include/linux/of.h               | 3 ++-
+ 6 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/.clang-format b/.clang-format
+index db25cde2651a..a91b9bb39d9b 100644
+--- a/.clang-format
++++ b/.clang-format
+@@ -569,8 +569,8 @@ ForEachMacros:
+   - 'nr_node_for_each_safe'
+   - 'of_for_each_phandle'
+   - 'of_property_for_each_string'
+-  - 'of_property_for_each_u32'
+   - 'of_property_for_each_u32_new'
++  - 'of_property_for_each_u32_old'
+   - 'pci_bus_for_each_resource'
+   - 'pci_dev_for_each_resource'
+   - 'pcl_for_each_chunk'
+diff --git a/drivers/clk/clk-si5351.c b/drivers/clk/clk-si5351.c
+index 4ce83c5265b8..ff990b15d616 100644
+--- a/drivers/clk/clk-si5351.c
++++ b/drivers/clk/clk-si5351.c
+@@ -1191,7 +1191,7 @@ static int si5351_dt_parse(struct i2c_client *client,
+ 	 * property silabs,pll-source : <num src>, [<..>]
+ 	 * allow to selectively set pll source
+ 	 */
+-	of_property_for_each_u32(np, "silabs,pll-source", prop, p, num) {
++	of_property_for_each_u32_old(np, "silabs,pll-source", prop, p, num) {
+ 		if (num >= 2) {
+ 			dev_err(&client->dev,
+ 				"invalid pll %d on pll-source prop\n", num);
+@@ -1232,7 +1232,7 @@ static int si5351_dt_parse(struct i2c_client *client,
+ 	pdata->pll_reset[0] = true;
+ 	pdata->pll_reset[1] = true;
  
- 	/* Iterate the EQ sizes and pick one */
--	of_property_for_each_u32(np, "ibm,xive-eq-sizes", prop, reg, val) {
-+	of_property_for_each_u32_new(np, "ibm,xive-eq-sizes", val) {
- 		xive_queue_shift = val;
- 		if (val == PAGE_SHIFT)
+-	of_property_for_each_u32(np, "silabs,pll-reset-mode", prop, p, num) {
++	of_property_for_each_u32_old(np, "silabs,pll-reset-mode", prop, p, num) {
+ 		if (num >= 2) {
+ 			dev_err(&client->dev,
+ 				"invalid pll %d on pll-reset-mode prop\n", num);
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 8ea168c00997..aae940c18459 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -5383,7 +5383,7 @@ const char *of_clk_get_parent_name(const struct device_node *np, int index)
+ 	/* if there is an indices property, use it to transfer the index
+ 	 * specified into an array offset for the clock-output-names property.
+ 	 */
+-	of_property_for_each_u32(clkspec.np, "clock-indices", prop, vp, pv) {
++	of_property_for_each_u32_old(clkspec.np, "clock-indices", prop, vp, pv) {
+ 		if (index == pv) {
+ 			index = count;
  			break;
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+index 1d9bb28d13e5..d9aec87f8b59 100644
+--- a/drivers/irqchip/irq-pic32-evic.c
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -196,7 +196,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
+ 	int i = 0;
+ 	const char *pname = "microchip,external-irqs";
+ 
+-	of_property_for_each_u32(node, pname, prop, p, hwirq) {
++	of_property_for_each_u32_old(node, pname, prop, p, hwirq) {
+ 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
+ 			pr_warn("More than %d external irq, skip rest\n",
+ 				ARRAY_SIZE(priv->ext_irqs));
+diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
+index b6d1ed9ec9a3..03acca8b01ef 100644
+--- a/drivers/pinctrl/pinctrl-k210.c
++++ b/drivers/pinctrl/pinctrl-k210.c
+@@ -797,7 +797,7 @@ static int k210_pinctrl_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 	if (ret < 0)
+ 		goto exit;
+ 
+-	of_property_for_each_u32(np, "pinmux", prop, p, pinmux_group) {
++	of_property_for_each_u32_old(np, "pinmux", prop, p, pinmux_group) {
+ 		const char *group_name, *func_name;
+ 		u32 pin = FIELD_GET(K210_PG_PIN, pinmux_group);
+ 		u32 func = FIELD_GET(K210_PG_FUNC, pinmux_group);
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 756847539384..15c291ab6e71 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -1429,7 +1429,8 @@ static inline int of_property_read_s32(const struct device_node *np,
+ 	     err == 0;							\
+ 	     err = of_phandle_iterator_next(it))
+ 
+-#define of_property_for_each_u32(np, propname, prop, p, u)	\
++/* deprecated - will be removed */
++#define of_property_for_each_u32_old(np, propname, prop, p, u)	\
+ 	for (prop = of_find_property(np, propname, NULL),	\
+ 		p = of_prop_next_u32(prop, NULL, &u);		\
+ 		p;						\
 
 -- 
 2.34.1
