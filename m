@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F56F9259C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8499259CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 12:50:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PXSKTR7G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KDra0sLx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc411wKgz3cY1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:49:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDc4n6MbLz3dRY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 20:50:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PXSKTR7G;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KDra0sLx;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
 Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwN34MFz3dFm
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDbwN5BZ4z3dLH
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 20:43:16 +1000 (AEST)
-Received: from relay2-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::222])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 398CDC672E
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B050440008;
-	Wed,  3 Jul 2024 10:37:57 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 76BB2C6730
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jul 2024 10:38:13 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D3A6A4000B;
+	Wed,  3 Jul 2024 10:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720003081;
+	t=1720003085;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8VfUyDEnUBHMYjfO4mnvOnujVbzdny+Xmf64Qw4TtE0=;
-	b=PXSKTR7G+vhp1MMTIX4fVICs2eEattO3+fekPacJce4Q3BwGaDyX9bly0M5x71zeAYENq3
-	L+POg1T5oDgJ4hjGA1TfmlgtRH6J5muhqFmouMew+3B3PVI/kLqFjUiQKFWpabiv6tYatP
-	v13RUSFpPI3eDcNeXOmLySxD2K7vRVyninm9hhPO/ZBUNHKJIgss785QRGfdw8AothmYH9
-	pA6ARdXWf+WrxVGQR6omvR1D3LW5TRKisC7GFZfe5Wb2Fj5idDzXZ5dzslvY1pKt2PJuEm
-	PgJRmL+vSfc7mtPsMGz+qHi/1PgiwBVfhsgcDcBw5DwdPBozOdPur1QtHlbTCg==
+	bh=kkDzWgqNUaE82FJnkubFv5bmOm6gl+/qOlOF60MzBZI=;
+	b=KDra0sLx8nTaCo2T20Rc+TTQn6dCftv+NLxXaIVH+RIs1q2YoMq0B82YrEyVgDvGjds6nu
+	RC2jLpfRcLHtf2pR9BxXyBbFfxUIIlp6w5d5IuYUNsHEqb0XXHvrI6eTEkZI8Pao8QkZo1
+	npSEexxCHK5YjW6udTXDNIQB9KQm5SQTA+Q1D4zyO5QgOyHhdtDJdiG5AWTLN6xyGdm7mn
+	/rWYkwWLKd5725CoTxczcY5BmOKymQHIaEPwiKZRPPwVVLko5kKwiYIOwkX0YkSZs8ExX0
+	uWjIn4FxLkr+64anVbbkf4GN0HOCjjfWYJVJmVaQxxlx9SayHwzv1TA6Kd/5CQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 03 Jul 2024 12:36:53 +0200
-Subject: [PATCH 09/20] gpio: brcmstb: convert to
+Date: Wed, 03 Jul 2024 12:36:54 +0200
+Subject: [PATCH 10/20] pinctrl: s32cc: convert to
  of_property_for_each_u32_new()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-of_property_for_each_u32-v1-9-42c1fc0b82aa@bootlin.com>
+Message-Id: <20240703-of_property_for_each_u32-v1-10-42c1fc0b82aa@bootlin.com>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 In-Reply-To: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -98,31 +98,31 @@ parameters in of_property_for_each_u32() are not used here.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpio/gpio-brcmstb.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-brcmstb.c b/drivers/gpio/gpio-brcmstb.c
-index 8dce78ea7139..77557bc596cd 100644
---- a/drivers/gpio/gpio-brcmstb.c
-+++ b/drivers/gpio/gpio-brcmstb.c
-@@ -591,8 +591,6 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
- 	void __iomem *reg_base;
- 	struct brcmstb_gpio_priv *priv;
- 	struct resource *res;
--	struct property *prop;
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index f0cad2c501f7..6aeb93af77ed 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -735,9 +735,7 @@ static int s32_pinctrl_parse_groups(struct device_node *np,
+ 				     struct s32_pin_group *grp,
+ 				     struct s32_pinctrl_soc_info *info)
+ {
 -	const __be32 *p;
- 	u32 bank_width;
- 	int num_banks = 0;
- 	int num_gpios = 0;
-@@ -636,8 +634,7 @@ static int brcmstb_gpio_probe(struct platform_device *pdev)
- 	flags = BGPIOF_BIG_ENDIAN_BYTE_ORDER;
- #endif
+ 	struct device *dev;
+-	struct property *prop;
+ 	unsigned int *pins, *sss;
+ 	int i, npins;
+ 	u32 pinmux;
+@@ -768,7 +766,7 @@ static int s32_pinctrl_parse_groups(struct device_node *np,
+ 		return -ENOMEM;
  
--	of_property_for_each_u32(np, "brcm,gpio-bank-widths", prop, p,
--			bank_width) {
-+	of_property_for_each_u32_new(np, "brcm,gpio-bank-widths", bank_width) {
- 		struct brcmstb_gpio_bank *bank;
- 		struct gpio_chip *gc;
+ 	i = 0;
+-	of_property_for_each_u32(np, "pinmux", prop, p, pinmux) {
++	of_property_for_each_u32_new(np, "pinmux", pinmux) {
+ 		pins[i] = get_pin_no(pinmux);
+ 		sss[i] = get_pin_func(pinmux);
  
 
 -- 
