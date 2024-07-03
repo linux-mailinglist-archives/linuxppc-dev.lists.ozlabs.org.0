@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E8E926668
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 18:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB79992666D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jul 2024 18:52:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=djUMs2VI;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=rbgTWzmx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WDm5P5Cfkz3fQR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 02:51:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WDm693qrHz3dnN
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 02:52:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=djUMs2VI;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=rbgTWzmx;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2612::611; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
 Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20611.outbound.protection.outlook.com [IPv6:2a01:111:f403:2612::611])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDm3z23j7z3cbL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 02:50:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WDm401005z3cXM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 02:50:24 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SsDd10l03GEJmy3ToiOfCEMQONFewzKp2uM5q8SKacNdilADSNKVKg/zg5EwGTLrUijMMAYU+LCzTuKeywkMF8Ow37kXpOCy9YEONm66PQ+u9hufI19QyR7IwXa0lTytoUuycJa8B7iMH9vz8fiTZRtoDbrTDjrmFwbv20gqy9daeAOh+On/WedzeNoC3GT4OdPZxl3FkeXpZHExTNw1Xe+obbW2iwZnvEb7f3A+cYMAs6LtxReHGztmThL2U7dqnz1T1laa7j8xZq+PNE7d3JKFWrEgEMJ5iYnAxlV8wsnc0HqPhA/t/2cndcCTf/5yWdcsimUArxlSLIG7ckDavQ==
+ b=cMItv4Ekn8MHEme0WhPl2YP3LUgzWlZKf+OVN7lAOToRfpDhxMjBUsxVroWZ+WXTFlejzO+U2w7TmuwY9GpzQch9l71k9CHK5dE5FI40lUGCEKQYuYjdLHrMn3mVdOcLQWlwSsV1qGANx1v9OLHkz7WvIRJNFLCYfvK5KfzQWvIgUrj4pEDhGrZUQZLX8hvTEUfyfl8AqKfzISr6UBTQWyD1kO06dbZmCcjK29IAWaiYm2V2Us5yHmcV+JgKbvEEmrDkEVWC9RfSny3SfznVTGA04Y3wedfeQECitnaXb6O6UVesTivcjeNNAEH2wILHl7RCNKSynxvywvgL6Zlq0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qpj1mjy4rcLRR9nihAqAxbDHcUQzuw0q1X+ib63Xr6M=;
- b=MVDuhglRUMa8riUlI5uuoH0S0OeuN3IBJbzAOvfZbr8huU3mnzbyRBfNapncrAJEwWmk+YLJ4iWS4hwvxvzoPoPCyQvZIA2oV40MiMM/wy9NH2o0zL50S7fL6r02Wjk2sq/AF46QDSDtzraxRN8mh4y5AlHbGpZWbLOiaCYM82eGULKfNse3q7Xu3rUhzUXoEDPYxy/6vxs1ZyVS2iceEp793L308KqTgUMmpOkQhHyJRi2RWRnq8/r4AHsbMuvb0WCu1W/jTQBWlYPl2BekBrLi2RpLCRXvtVztTAabkg0h94TfFbXTPinQt0YH8gz9ZQh5foQumttLZ2D7HuJ0mQ==
+ bh=dw+67fG3BihDeUp9JX05SFTNRFhuwfHJXo6H7JbWLRg=;
+ b=G7qYyOgYgb19WNnzSRREnclJEvJLnpWAx264Jj5m0nXPjB/6CMnINcLLs1dp2Ir3pQM0ZlIYXIMaOz8Sp7v1toZaDLBHV2UBSXv54hFD808/U1nlR89nMr0DNUQMQWhXifT10rgtWXCQvS9MBXmc/duFKFjKbhh3pcqbkxIrWmTcnAcNLem65RN7an+fauFViCoM5USAHLVAQBJ89W/n5wpmFHSMBK3R9nYZCXV5DcBN2BeJwmaPIHqrjgPkvvFT00Ls07AOaPql2QLVm6anx0O3DXKccT9AfrZStZT0eMoAmJO6g/iAGSrwWlVDy/sXv0nNoZ3zWuzs5ZVM/irzYA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qpj1mjy4rcLRR9nihAqAxbDHcUQzuw0q1X+ib63Xr6M=;
- b=djUMs2VIgYsP4F0glUOL0RMz/uhDwayn1yllrQXA1gu/kbqvhZyPHNIqkzvU5waT2NN8Y5NgkKM/t0B3GDs5KyxtL4f4Zn8G67Rp0cbyhJXtdvpcbOroKJB4yqog5nW4XgLkoAnWCWYHEY4BsTYr1Ycca5bGBR7wB7wb/5zOo2o=
+ bh=dw+67fG3BihDeUp9JX05SFTNRFhuwfHJXo6H7JbWLRg=;
+ b=rbgTWzmxubgDQTeqmAX1PmCmM/5DgmpKItfllcxrV2O3gj1fGMC4dfabUVa8wrKQxvY8Lu1XvFqrO7dTJcjI45br1srHU0khEQ6S1UQGdPWoP684amH9rppWmZdh4Mzdn2vnYIML8hZLunEWp+bd8HdIWsfE/xy9Bk+o0nKQvXI=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by PA1PR04MB10628.eurprd04.prod.outlook.com (2603:10a6:102:490::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.25; Wed, 3 Jul
- 2024 16:49:59 +0000
+ 2024 16:50:01 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.7719.029; Wed, 3 Jul 2024
- 16:49:59 +0000
+ 16:50:01 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 03 Jul 2024 12:49:39 -0400
-Subject: [PATCH 1/2] dt-bindings: soc: fsl: cpm_qe: convert to yaml format
+Date: Wed, 03 Jul 2024 12:49:40 -0400
+Subject: [PATCH 2/2] arm64: dts: fsl-ls1043a: change uqe to uqe-bus and
+ remove #address-cells
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-ls_qe_warning-v1-1-7fe4af5b0bb0@nxp.com>
+Message-Id: <20240703-ls_qe_warning-v1-2-7fe4af5b0bb0@nxp.com>
 References: <20240703-ls_qe_warning-v1-0-7fe4af5b0bb0@nxp.com>
 In-Reply-To: <20240703-ls_qe_warning-v1-0-7fe4af5b0bb0@nxp.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 X-Mailer: b4 0.13-dev-e586c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720025393; l=20039;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720025393; l=3115;
  i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=9o7LrG3vFDsB62dKj0c6GGLuTwt20y29eBBOrzQLYyI=;
- b=zOOqtv/c8jB+sb1DPVFX4LHyPX2oc9T9NE6GuWXzpPO8y9X6uV/b7tvCvKra2tGh75it94dsK
- SZSd975h7j0BRdMDt1xVBtJ2+Wj9DLCZWc1xqSBWCMVNxMQ1sV0ZQ71
+ bh=YNfDOgvKBz+51aRbHkJULurGisTUMUL2yWy5foIcNTg=;
+ b=Cwzit/w7KI70nwSh4HWc6La8zLfBe7lJwNChNf61/dRD+iSFOHlZkQkWb/qZJEqCoBI+wJaTk
+ PdjE9Cy0hCaA7Oy0oOLnciRuLUxxoGTT1wNkOJUGNngAPPKBptVObhr
 X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
  pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
 X-ClientProxiedBy: BY5PR17CA0010.namprd17.prod.outlook.com
@@ -71,89 +72,89 @@ X-ClientProxiedBy: BY5PR17CA0010.namprd17.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10628:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4a2a2d1-9894-4d7b-2ed0-08dc9b802ccf
+X-MS-Office365-Filtering-Correlation-Id: d1259b94-1e4a-497b-47a0-08dc9b802e6c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info: 	=?utf-8?B?Z3dmbVZObHNYZVFIdkdlRmFsRWlXYU9jamduM042Ui80U0tidmx3U2xTNHEr?=
- =?utf-8?B?TUgrcUFFU0syVXREc2dvSk54d1hWUnZCeGI2VldmdkVUM1o0czJBMnBPdVVv?=
- =?utf-8?B?VUxkYlJWYjA0WDBHMDlsYWoyNE1GN1pPbngzdXlKNzJtaUNzRW9sN1hQcHJx?=
- =?utf-8?B?UjYrVHBreDNuUUR5bUtLbHdzQ0oza1pCUXQzcTg0NzBiNWF6MzFLdkFhc3hz?=
- =?utf-8?B?QzNIREYvQXJqMGZrSGRTUDc4TlREYno0dEExRjgzdGFPYisxS3JnUFdSNlhS?=
- =?utf-8?B?K201QW11NkZjYi9VeUI2NUErZTh6clhEQStQdnJiYXhMUWxDSnUxNHI5eDlG?=
- =?utf-8?B?d29SV04vTEN4dkRLcEFiVGlJc0pvSWFHY05kS09lYW1BbUtNMm0xVnlkQ3N6?=
- =?utf-8?B?bTUwVjZyaEtJd3MyQnpPU0FGL25vRlNzaUtHbkJBdUxYcWM5WTlVOVlqU0xn?=
- =?utf-8?B?MmR6WHVlUUZOR3paM0E3ZEFlTFNMV3VaNjRlSUZRMHJnWFgzMnhKTzdEMEwx?=
- =?utf-8?B?a2ZHV0Z5U0ZRUzJRQWNWUTQySm1nbU9zTlR0V3lVRXNNR1hvZHIzaTVOWlo1?=
- =?utf-8?B?b2M0RFRVdHFMUzZjdEQ2M1VhZjNvYW12K1F4R253SG5tQkhKSmx5a3M0Wmcr?=
- =?utf-8?B?SVd4ZG14MDBWbUlTY2VXcGJjSytwQk1LRXY3b0Yyd0RVbDZmSjFERW5uZFZT?=
- =?utf-8?B?NEdEb050cFRxa0lTTnpSN3hWNjQyc2RDVDBjQmpBTUYxK1MxdFZzUXh2L0dK?=
- =?utf-8?B?UW40SlNzWHUzT05nRHg1UUFMMzI5WUl2aThaRmJaQTQvYlNGaXM1cFp5b0ZH?=
- =?utf-8?B?TC9YZlErcGJMZU1lUHJUbG52WUU0K1dHdFJPcHU5SkVvdjZDSkV1Ym1VUGg5?=
- =?utf-8?B?OWFQaDg2OGRQVStOTWhQdWZYNlEwa05wUTZPczdJNFNWZVU4MXJyTVpjc0oz?=
- =?utf-8?B?a3dpdEcvNkk3NkF5VWhudEM4bjVEdWo5bnFEQ1kwZVZCcXF6QWFHZUlRQkFG?=
- =?utf-8?B?a3Y3dUd0QVVWYkNvR2hMSUtZcTJEcWlxaU5UZVhPRnNyMjVDWmJYTjlRMkc3?=
- =?utf-8?B?UVhqZEo1TWdRS1l4b1BXTFZBYUYybGlrc2M1ajYydTV3ZlVVSWhFVkRPVjFm?=
- =?utf-8?B?ZUpyZmhRSEpDeEREbFl6NWZJZzl3aUt0ZUJ5Yy9kUmJqUm0yNzBPNXhpcWo3?=
- =?utf-8?B?b2FtcEFqN1dydTF0U29TdzIrZE0yaS9lem1GbnR6VGw4QWMwOUt4MldCdWxL?=
- =?utf-8?B?MGFiaTN6UXEzS0xlRDlRbzZiOVowZWJRQWg2S0tKRktXUmdqRFZRN2JKMkts?=
- =?utf-8?B?cE1BNkViU3NSdFNNMzRtWk5zeG1HNDhOZEt6R1hkNUhBN092Ni9GbTJGZEhv?=
- =?utf-8?B?SnNMUWNGTjF0MjA4UFRCOHhoTjd2MngxbXZsQWtKOW9MVVlFWWU1cHFRRUJF?=
- =?utf-8?B?N0NEVjBLV1F3ZVRJN2ZLRFAzVUJhTU9TRmd3L01DUHljYU9MY2lZOXFDVFdE?=
- =?utf-8?B?RG5KTFRBVFJoWkF4RDdJQW0rcUF0T0Q1REhyRllUUlRVWVRWd0pySFROWFFP?=
- =?utf-8?B?bHI0amJ3MVl3SzFINUk5aDdRVUtYRTUxQ0RZbnhXTDh5dWdqVTRpTVdLbzVl?=
- =?utf-8?B?Y0F3UFZsQWJpaW5DaXhvczEzVU5Mb2UwMFFBT1VkL1NpMEF0M0dYT2hreTBV?=
- =?utf-8?B?NEtRbzN1K2cxWm04eDEya3lkd2doNnhLdHppSUFmYlNqNHBmK2U2NkM2TWN1?=
- =?utf-8?B?dmFocEdhQ2ZhR0RQMXRyc0tPTThMSUZLRWdNTUN6UFdSVWMvTzc5OVBScWE4?=
- =?utf-8?B?MXY2eVhibEt5VDV3WVh6Zz09?=
+X-Microsoft-Antispam-Message-Info: 	=?utf-8?B?d1FSblJTR2VRK2xGbm03N3M0ak81cXRKQ2VGa2lyUFZOSW4wZzB0QkFZRXVQ?=
+ =?utf-8?B?SmdiU1Ira3VuTU92TzhCMk0rQ2dXeG0vOU5XUi9xd2hYUlpGWE4xNThBZUFM?=
+ =?utf-8?B?aDlnTFhUTSs1eVpNYWRnOXlaQ2EvVDVtcFhPcWNySlZ2QzRkaHlmR2VtaWRF?=
+ =?utf-8?B?dU1KcXpINWhPQzlienhtU3N3K1VlOEtDQm10T1lDMTJxSDUydWUzUGYwTHd5?=
+ =?utf-8?B?ejNxL0hOTEVxVCt4bER0OWd3MlJjWjVzSkplTlFjS0JzbkFUNXZIT2hydkxR?=
+ =?utf-8?B?UFQyN2UveEo4N212TVh6ZTQ5VzNZNWo1R0N4Y2pzMnNXc3o5bEF6SnlZN09B?=
+ =?utf-8?B?Q3hRQW4wV0xYV09ydHFSU1ljV1ArbjNpZ09vaStMeUtRa2puUFRWeFlVZERo?=
+ =?utf-8?B?RU1DREZnUk82VWhKb2NOQ2hwT3phUWt6ekc4WW9idk1GRS9UKzU0dTNRNkdX?=
+ =?utf-8?B?ckhXTVZKWXBaWFFoYmRCK0lUa081UkxYN2F2N3Axa2txYllrNTFLMFZlbFJK?=
+ =?utf-8?B?ZTVOUDVGMjdjTDdOUHkxME96OUU4REpOQWE0YXVKd0FsbDFlMlp1Zk4xTXQy?=
+ =?utf-8?B?ZithYXhUNzA0N1V6VVhtM0VhZzRKTDBZbnZ1WHN1dlJHbWZGdlh2b1NqUDht?=
+ =?utf-8?B?OTl3d3JGR01wWFYrbG5YM20wbGhjTUZXMEJMZ3lPVDZaSTNPWTZVTkd0Tks0?=
+ =?utf-8?B?bWx6NDB1NlN1S0V2MzFjelUwQzJaemc2NGhxVjRlN2hON0xyaVMyamlqc0FT?=
+ =?utf-8?B?TGh5V2FNbFR4Zkd3K1dNODFyY3REM01rYmJtSEVGc3dUR2JnamV6djh2eUxW?=
+ =?utf-8?B?dTRueGdoTG9oeld1eEI0eVd5VFd5cjB6K3VPQ0pGcFQ5cmtDR1N6Q3M5a3pR?=
+ =?utf-8?B?UWFwak0zbzJzNXZCNHRmYjVVMTc3ci9KaEZrSEdLYnRnVGRzdlNPTU5UU2Rq?=
+ =?utf-8?B?MFVzYXpZVkptcnpmVlZqcUdXSmx0TWk1RSs3aVdWY2JpUVNJdUZSdE5VWm5a?=
+ =?utf-8?B?Zk1VS0hLN3l0Q1FMbVhVUGNwNVVuR3IwS0JydW1lYllxMG03OWpHZ2QyTVkx?=
+ =?utf-8?B?QzU1NkU4aU8vdWhPUnV2WkdNaERqVEREQUd1cVlia1hyakloSXdibm1vemxx?=
+ =?utf-8?B?ZGpzWHc2aGptRGdHZVRXVlFlSW5jNm1iSlZTNGo4RW5RZ0RMUFl3eURPTzF2?=
+ =?utf-8?B?QlNxVUFhNVVodmQzMENBaisrU0NhRlM1cUNEWHpwNUtXU3lHa3hFR0tnZno2?=
+ =?utf-8?B?T0JvVC9CekhsMDdudWhLcmpTM2ErM2txUnZmOU9iMWxiTmlMTEEvVUFHQmYv?=
+ =?utf-8?B?V3BTRzRpQ0U0anpGeDdPb2s5V1htZ2ZtL0k0ZWZ3ZkEvSElQVDRYc0VKcHlE?=
+ =?utf-8?B?cmR0WXdHOWxYRGF0N0g1MW5La2pveWxFWVZpMlhYbVFZV09aeVg0U1pXa2sx?=
+ =?utf-8?B?dXEyVHdRTHExZ083UzdoN2JwR2JCblBoZEtqcXFzRTFLK1dHSjZ0T3VtZjgw?=
+ =?utf-8?B?YXp4SEN6MGdtVDJ2Z0YyYnh4ZnczVldRbFhHMVZ2MUF6NXp6L29PR2o1MkNW?=
+ =?utf-8?B?N2ZwZ1ptY0VkNHRLL0RYNWY1WENTbkZuSytWYXIwUTArclpvVmk3azVPaUp3?=
+ =?utf-8?B?WjJwMmwwYllhbWpybnkzMEs1NHdZRmFBVHo3ZExLay91di9pWXlXcVNYWFdl?=
+ =?utf-8?B?elpKMU9OaWU5RE1BRmpPK291VUJ6aEkyYU1DOEJrTkE0U1V5aG9YakQrYWli?=
+ =?utf-8?B?Y2lQck1PV2NUSlVzUnBXTlBsTzl3YkpIMVZhMDZWLzZHY0JxQVFrQUU3UFdY?=
+ =?utf-8?Q?F6tsqdbqaNatvuYVRUxpuDVyPrhmZiMrmGTC0=3D?=
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?WDU0MXEvUUQwU3E5ZG85aDAwRUd4Ry9OcjQ4WmlCTEY3bjJZQ1FwRGhLVTVy?=
- =?utf-8?B?SkMvUW95M3M1NGp6MzB2Tzc2QjF0KzY2WnNyZzRPNXMxMWRwcGI2SnN1NzhV?=
- =?utf-8?B?Y3hRd0NTV2JQQlE4Mlgzdll4eVdRejR4d2ZMbENwc2s2UW40cTZhYjJDbWpq?=
- =?utf-8?B?cG95OGtESkt1RnQvd3FXTEI5NEJlRVlvYXhJNmZQRnEwTXh0TmR1bVJwQzZM?=
- =?utf-8?B?SVNZWTd5ZDFFUWhaRERBa0d5c012eXMrWmZYajdubFRSaE5ra2RhaUlva2Qw?=
- =?utf-8?B?L3psZnlFVU1peUdRcU9OSlFMdGVtRVNOclB2SUhWNS9OVTJweXRlWDlBM3pF?=
- =?utf-8?B?NHBYeG16dlVDeDU0TGtZT250WHZoakJGbU85MVQvRzZnMno0TEg2dDdOL2tU?=
- =?utf-8?B?UUhraEZpcjY4N01NTlNpcnZSTXlpYS81Wk1BcUJ5b1pzdWlTbDlQb0dLZ1lV?=
- =?utf-8?B?anQydEtmdzJaT1NBTEw4V0szcDg5Ykc5VUdUeWZaMUlETWM5TEVyWk5POHdO?=
- =?utf-8?B?Y25XQlNZeEYyZVVrYnlqYng4YXBiR1VQUjUxaC8zQXdzeVZKbUg4a3VXeS93?=
- =?utf-8?B?VExhVm5Ydy9WdENzRkhmZVZ1VmVUaTQ1L3FoMlJhUUtBTCsreWptVE5leUZM?=
- =?utf-8?B?Vk43amF6YitPSnRZaXB4QU13Rk00WDVWaG1aR2VXcUc2c1FiREtxVWxrQjlK?=
- =?utf-8?B?WnhnczdsWDFyRkNuNFRLYWtNUGUvV2lZYW5lNXZ1K0hsb0hKN1dmQStsWmNG?=
- =?utf-8?B?anlGVGpPK1JhRXZwZS8yYjA1aE5nN0tTMlJHUXdWSGZpQ0E2N3hMeVk2N2dP?=
- =?utf-8?B?bWVGc1ErUVpxc253UDBycHkvdXFuMENNd283RTEzM1VMeHQ4VUNsZDlNWGZG?=
- =?utf-8?B?NE1qUFd0ckNXTUdCZGMxZ01Oa0YyTkJIbVB4Uk0xZVh5cm1SMHdZUzJZTWlQ?=
- =?utf-8?B?dHJZK3orZ0poZldJSkRXUnhDR24rWm1Tcnp5VTFFZU1EbTdpZkVyRTU5czFO?=
- =?utf-8?B?QkFDRGxNOW95TXltdVBIRXVFMHVvM0JyVnQ1ZTk2QTg2b05wVnFVeDJpNGZK?=
- =?utf-8?B?bVlmZGhXbmxsQVhCQ1F1OStRM0RrSW5XZUQrcGs1bjI2dVI1UHE1UFFSQklw?=
- =?utf-8?B?d2c2eDluVFB2dXZNKzY1WGdrY0I2aGhLM25HR21kWkxmYlY1Z0k4cnlEVVVY?=
- =?utf-8?B?aElFemhLMlhNUVhHMGJzSkNseVRlbVZadlBPajV1blNSWTQ3RUJnTmFadHdl?=
- =?utf-8?B?V0RqdEhoTlJaTEJBdGhtR1YrVFhVMGVya1loclQ1amx6YkJsR0FJSUdYN2NS?=
- =?utf-8?B?bmx6YW5Zc1lSKzhmb0xWY3Ixb3d3Kyt0ODNjdTFxbks3cDludFF1ZUNpZjFr?=
- =?utf-8?B?Sjl2L2RqU2R3MmJ0YURWYkFZN0NaRXl1Q1lRWVEwYk5QZGxqVnZabGcyTUlp?=
- =?utf-8?B?YTk2Q2oyOHFBNGhVOEFzaGV1RHZEc0JCdUxtemxJTFdhNHJyQURjM1A5M216?=
- =?utf-8?B?eXVUclQ0NG1OTUEyNzFIakwzVVJJaUFvQk1RZjduOEcyVEpvcXdobjB0dGxR?=
- =?utf-8?B?NndTNWthK2ZPbmI2K1ZGL2pDbElDT2tNVmZBalBTYlp2U3pyL1pJWnhUbzd3?=
- =?utf-8?B?b3laSktlbWFTUHR3VTNZTjBFeFhIUXhNRnZRR0Z6L2dMSHJhK0dOUGYvb1Jo?=
- =?utf-8?B?bjE5QngzU21pOVU1NXhyalhOcDZwbUJHSU4xa2c1N1pGNE12VUJldVE4aS9H?=
- =?utf-8?B?U0sraUVhUFZCWks2bkFwbFkybHcyV2IvL0F3R0tqUDBWclNMWWh5aGh0cmww?=
- =?utf-8?B?YXk4V3BNTzFIbEU2TGFudG41UGtXbFZkK3FtR3pDRm1xNzBMTXFHbnNDc09N?=
- =?utf-8?B?VGdOZFhNMUlISHFwYk9CbnlBQ21wMFp3OVkzckxRalJFNWJiOXorSk5yM00w?=
- =?utf-8?B?V0xVTGUvUE5udUt1blQ5WDAzSDRWSkptaWs1aXVEK0QrZ0hTTXpWTkRRYjVT?=
- =?utf-8?B?cTNrUDVlZytkekY0bEFwaHFRR3cxWitkbWhyV0FYaXc4eDY0cTZYQzRYbWxV?=
- =?utf-8?B?WlNQTXUxamtCYzJLRDZxSXlzS2lFaDh2V2s2WnJhRmFkWm1yNlArb2U1a25O?=
- =?utf-8?Q?p4z+31Uev3sb7AziKAWIAIAIg?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?ZThhcmZjQTBwOC9rVU9zaVRXaVdCaEtLWU5Pblpsbk9KRzQwUlRoUHFvSkpj?=
+ =?utf-8?B?NXlJV2tSUHJ0T3Y4SE1SbWRWRkNMdWJyMXY1QVZYNFZkNXZrUTQvWCtnZ1NW?=
+ =?utf-8?B?dFBpLy9EN1l1QnUxMzhaSGVoY3NPMlczVEdUV1J0ZllNbHo0NzR5RDQ2TkIr?=
+ =?utf-8?B?d3VEck01RkJwdjBhbzhhU0NDUUFiYXU0UEQ1U0dTaW5mMERQQmpzd3BpaG90?=
+ =?utf-8?B?S3YxWnROb3d2MGJCTUVmTHVpakVmTVlqVDdxTXNrV3R1WTN5azNJS3lDeVdy?=
+ =?utf-8?B?WnZ6ZzRRbHZ5L3pxTkxKL0piK2orRW03cEQyUWpyM3FLSzZYd0J4UVl3YVBu?=
+ =?utf-8?B?NWc0U1AxNC9kd3J2dFBTNUczaU05bnNraDJ0UkJkblJ1ak01MnpYZTNqRjVB?=
+ =?utf-8?B?WGJOOWhtZUZGMUFQM2NsamdoV2hWc3R0T3Z0NHFtaTlQUUlVVTl5RVdjdjF4?=
+ =?utf-8?B?RU5vbTRGeGpEcGpzS0VZSXN5UkI4NXhrVEZzR3FMSUw4emtUZkpqeEF0OG4z?=
+ =?utf-8?B?d3R2R3R1S0V6VDd4TFpubGQvcjNEelR6OXFUUkI5OXJad2dZTXk4T0hieGcr?=
+ =?utf-8?B?ZXUwK2htL3hXc2ZaZ1V0c2pxQWVmZ0Qvb29aY3I5UG5DZlpPWi84ODlxWU45?=
+ =?utf-8?B?L1drMUlJTUMzVGl0NTZHcTNYN2t3TW1RSnBzUUpndlRWdEJHS3l1aTlBMHFT?=
+ =?utf-8?B?b3J6Z25sT1N3bFNibDVwT0Z1R2VHTHRsYkRIb0dkWngrU2xPbndaSENBb3Vp?=
+ =?utf-8?B?U2ZCVDZCcGwyMWFSeHhIa1k3R2hFcHlscHZXd2ttVUVQVjY5VnViQi9hSkNk?=
+ =?utf-8?B?QlVVamRnWXJEdUN0VWJud1dDc2xvdWo3eTd1RVh6djZYcFFxRW5KWURLY09U?=
+ =?utf-8?B?MjlDU1BPalFOcmJoVmR0T2ZuTlRzUFVuM0xIODg3U3B4WHo5L3J6NEdZNnJL?=
+ =?utf-8?B?VzBieDl1RE9walVydldWRFhCYUZEZmFFQVE0MGtFTHlESkhBV3p0QWUwYU5K?=
+ =?utf-8?B?ODJuMzBKbURoRzZ2dzh5WkVwSzVnU01WMkdpVktaRUZIS1pEWHZlaE9QZ3Qw?=
+ =?utf-8?B?UHBHUE9jcGJyK1lBOW5mSzNpM2JsRXM4UTRNTm10VzMzek05NEZDTEk2Rmtl?=
+ =?utf-8?B?ZEFqZCtDYzB6MzdLTWQwMklTMDVEb1I4UXVKdmJhZXJaZys5T0dWSGpENWcv?=
+ =?utf-8?B?M1RsUmRUcmJYZjZoS0pjMWpYcVJRNjVKZXJuYU9jaEpFazN6ZUFkMnpHVkU1?=
+ =?utf-8?B?eWJ3Skx4b1lVWHFKYVkwd0VyQ3YxR0x3akVWUWNlK1Fsc2k1V2RpTzBva1Ew?=
+ =?utf-8?B?aTRUWUc0THBmc3NhOVNLYjUzb29HMGdXQVoyU2cvMUlDQVIzdE5YR0ErM3pK?=
+ =?utf-8?B?YXp6dzFRUEMxNCtFaitiTjltZHI5Tm9peE1qNUR5bU5ZOWJRaDVuMjY3Z3FQ?=
+ =?utf-8?B?b3hqNDQ2T29wSTJ0V1VHaUk1eEdvYnAxTGs3cTJLY3dIcmxSVDFUU0MxUXRX?=
+ =?utf-8?B?a2M4ci9UMFlHRUpsMlRPSm9tK29JRDgvdEhsMTlQazJMUlRUVTZ3ZGdrVXFF?=
+ =?utf-8?B?dmJad3dERzJ1VlpmY1VOV0ptSlZtZDJIaDJoU0t4YXFkbTlNcE5OSDhodlNZ?=
+ =?utf-8?B?RjlGSVY0YlkvYTFJeTlKcW4yM2w1K09wemlIMVN2SzlmeGI0YTU5dHdVaFBX?=
+ =?utf-8?B?cVlTempXRWlWZXBSdEs4Z1Qrd0FRZHArQyt3Q09XT2pUaDZtejNtalptVnpp?=
+ =?utf-8?B?ZXp2YXpIRVgwcTU4N3RyVitpQmJVTzl6b3I0b2ZnQmo2dFY0b0RseERzVHVr?=
+ =?utf-8?B?c1lKd2ZvenNwclpKMG1MN1p0S2VQejlLS3lIai8rRDdNK1VyQS9MZHI3dXdD?=
+ =?utf-8?B?K0ZldVIzT1hUTjIvVHd1WUJFQnV0OGhEQ0hZWWpWb0pjZWxRazNPUUF2Mm5X?=
+ =?utf-8?B?cmRuUkh1SWxWMTd1ZmkvaHhGU2wySUlmQ1UxWG1vRk1JWjdwYlpiQTh6SGQy?=
+ =?utf-8?B?MHJhODFHVHI2eDExeTQvSzNUZ2F5SUJlMUNUWFoyMFI1REppZ2dzUGUyOCts?=
+ =?utf-8?B?cmZmeG5paU5RUHVqaDVTNmRNV1Y5OXpGQitXYzJRNHZzRW0zS0F0OE43QjVq?=
+ =?utf-8?Q?eEJfjRqNLI+6y3xGGMVPtUuBd?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4a2a2d1-9894-4d7b-2ed0-08dc9b802ccf
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1259b94-1e4a-497b-47a0-08dc9b802e6c
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2024 16:49:59.0509
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2024 16:50:01.7610
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oQeRiy3shgB6UDnnpC6aC8gIsbWthbt/VxLDP8y9irEAJhbmNOMPXyeI4RUSlhi5o+7kWppy9wl5JPsZg95GhQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: YwBTVLCkpudygzg5YD5KMUYgTMO90qDn+hUhokXFq/R4dzDVZKd1EMsw6KR/mhtzWu2RTR6Lv1E+9wA+kh9CaA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10628
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -170,652 +171,68 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Convert binding doc qe.txt to yaml format. Split it to
-fsl,qe-firmware.yaml, fsl,qe-ic.yaml, fsl,qe-muram.yaml, fsl,qe-si.yaml
-fsl,qe-siram.yaml, fsl,qe.yaml.
+Change node name 'uqe' to 'uqe-bus'.
+Remove #address-cells and #size-cells for nodes, which have not child node.
 
-Additional Changes:
-- Fix error in example.
-- Change to low case for hex value.
-- Remove fsl,qe-num-riscs and fsl,qe-snums from required list.
-- Add #address-cell and #size-cell.
-- Add interrupts description for qe-ic.
-- Add compatible string fsl,ls1043-qe-si for fsl,qe-si.yaml
-- Add compatible string fsl,ls1043-qe-siram for fsl,qe-siram.yaml
-- Add child node for fsl,qe.yaml
-
-Fix below warning:
-arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000: failed to match any schema with compatible: ['fsl,qe-muram', 'fsl,cpm-muram']
-arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000: failed to match any schema with compatible: ['fsl,qe-muram', 'fsl,cpm-muram']
-arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000/data-only@0: failed to match any schema with compatible: ['fsl,qe-muram-data', 'fsl,cpm-muram-data']
-arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/uqe@2400000: failed to match any schema with compatible: ['fsl,qe', 'simple-bus']
-arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: /soc/uqe@2400000/muram@10000/data-only@0: failed to match any schema with compatible: ['fsl,qe-muram-data', 'fsl,cpm-muram-data']
-arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb: /soc/uqe@2400000/qeic@80: failed to match any schema with compatible: ['fsl,qe-ic']
+Fix below CHECK_DTBS warning:
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: uqe@2400000: si@700: '#address-cells', '#size-cells' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: uqe@2400000: siram@1000: '#address-cells', '#size-cells' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: uqe@2400000: $nodename:0: 'uqe@2400000' does not match '^([a-z][a-z0-9\\-]+-bus|bus|localbus|soc|axi|ahb|apb)(@.+)?$'
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: uqe@2400000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'qeic@80', 'ucc@2000', 'ucc@2200' were unexpected)
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: qeic@80: '#address-cells' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-ic.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: si@700: '#address-cells', '#size-cells' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-si.yaml#
+arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb: siram@1000: '#address-cells', '#size-cells' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-siram.yaml#
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../bindings/soc/fsl/cpm_qe/fsl,qe-firmware.yaml   |  48 ++++++
- .../bindings/soc/fsl/cpm_qe/fsl,qe-ic.yaml         |  47 ++++++
- .../bindings/soc/fsl/cpm_qe/fsl,qe-muram.yaml      |  71 ++++++++
- .../bindings/soc/fsl/cpm_qe/fsl,qe-si.yaml         |  40 +++++
- .../bindings/soc/fsl/cpm_qe/fsl,qe-siram.yaml      |  39 +++++
- .../devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml | 148 +++++++++++++++++
- .../devicetree/bindings/soc/fsl/cpm_qe/qe.txt      | 178 ---------------------
- 7 files changed, 393 insertions(+), 178 deletions(-)
+ arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-firmware.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-firmware.yaml
-new file mode 100644
-index 0000000000000..53b07d4edc773
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-firmware.yaml
-@@ -0,0 +1,48 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-firmware.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale QUICC Engine module Firmware Node
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  This node defines a firmware binary that is embedded in the device tree, for
-+  the purpose of passing the firmware from bootloader to the kernel, or from
-+  the hypervisor to the guest.
-+
-+  The firmware node itself contains the firmware binary contents, a compatible
-+  property, and any firmware-specific properties.  The node should be placed
-+  inside a QE node that needs it.  Doing so eliminates the need for a
-+  fsl,firmware-phandle property.  Other QE nodes that need the same firmware
-+  should define an fsl,firmware-phandle property that points to the firmware node
-+  in the first QE node.
-+
-+  The fsl,firmware property can be specified in the DTS (possibly using incbin)
-+  or can be inserted by the boot loader at boot time.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,qe-firmware
-+
-+  fsl,firmware:
-+    $ref: /schemas/types.yaml#/definitions/uint8-array
-+    description:
-+      A standard property.  This property contains the firmware binary "blob".
-+
-+required:
-+  - compatible
-+  - fsl,firmware
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    qe-firmware {
-+        compatible = "fsl,qe-firmware";
-+        fsl,firmware = <0x70 0xcd 0x00 0x00 0x01 0x46 0x45>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ic.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ic.yaml
-new file mode 100644
-index 0000000000000..8267ad00727b1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ic.yaml
-@@ -0,0 +1,47 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-ic.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale QUICC Engine module Interrupt Controller (IC)
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    const: fsl,qe-ic
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    items:
-+      - description: QE interrupt
-+      - description: QE critical
-+      - description: QE error
-+    minItems: 1
-+
-+  interrupt-controller: true
-+
-+  "#interrupt-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupt-controller
-+  - "#interrupt-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    interrupt-controller@80 {
-+        compatible = "fsl,qe-ic";
-+        reg = <0x80 0x80>;
-+        #interrupt-cells = <1>;
-+        interrupt-controller;
-+        interrupts = <95 2 0 0  94 2 0 0>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-muram.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-muram.yaml
-new file mode 100644
-index 0000000000000..cf0f38dbbe0da
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-muram.yaml
-@@ -0,0 +1,71 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-muram.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale QUICC Engine Multi-User RAM (MURAM)
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: Multi-User RAM (MURAM)
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: fsl,qe-muram
-+      - const: fsl,cpm-muram
-+
-+  ranges:
-+    maxItems: 1
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 1
-+
-+  mode:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum: [host, slave]
-+
-+
-+patternProperties:
-+  '^data\-only@[a-f0-9]+$':
-+    type: object
-+    properties:
-+      compatible:
-+        items:
-+          - const: fsl,qe-muram-data
-+          - const: fsl,cpm-muram-data
-+
-+      reg:
-+        maxItems: 1
-+
-+    required:
-+      - compatible
-+      - reg
-+
-+    additionalProperties: false
-+
-+required:
-+  - compatible
-+  - ranges
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    muram@10000 {
-+        compatible = "fsl,qe-muram", "fsl,cpm-muram";
-+        ranges = <0 0x00010000 0x0000c000>;
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+
-+        data-only@0{
-+            compatible = "fsl,qe-muram-data",
-+                         "fsl,cpm-muram-data";
-+            reg = <0 0xc000>;
-+        };
-+     };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-si.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-si.yaml
-new file mode 100644
-index 0000000000000..8e58ab58c0633
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-si.yaml
-@@ -0,0 +1,40 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-si.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale QUICC Engine module Serial Interface Block (SI)
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  The SI manages the routing of eight TDM lines to the QE block serial drivers,
-+  the MCC and the UCCs, for receive and transmit.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - fsl,ls1043-qe-si
-+          - const: fsl,t1040-qe-si
-+      - enum:
-+          - fsl,t1040-qe-si
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    si@700 {
-+        compatible = "fsl,t1040-qe-si";
-+        reg = <0x700 0x80>;
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-siram.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-siram.yaml
-new file mode 100644
-index 0000000000000..cc4ed48d786c5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-siram.yaml
-@@ -0,0 +1,39 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe-siram.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale QUICC Engine module Serial Interface Block RAM(SIRAM)
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description:
-+  store the routing entries of SI
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - fsl,ls1043-qe-siram
-+          - const: fsl,t1040-qe-siram
-+      - const: fsl,t1040-qe-siram
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    siram@1000 {
-+        compatible = "fsl,t1040-qe-siram";
-+        reg = <0x1000 0x800>;
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
-new file mode 100644
-index 0000000000000..89cdf5e1d0a8d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
-@@ -0,0 +1,148 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale QUICC Engine module (QE)
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  This represents qe module that is installed on PowerQUICC II Pro.
-+
-+  NOTE:  This is an interim binding; it should be updated to fit
-+  in with the CPM binding later in this document.
-+
-+  Basically, it is a bus of devices, that could act more or less
-+  as a complete entity (UCC, USB etc ). All of them should be siblings on
-+  the "root" qe node, using the common properties from there.
-+  The description below applies to the qe of MPC8360 and
-+  more nodes and properties would be extended in the future.
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: fsl,qe
-+      - const: simple-bus
-+
-+  reg:
-+    maxItems: 1
-+
-+  ranges:
-+    maxItems: 1
-+
-+  model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum: [QE, CPM, CPM2]
-+
-+  bus-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: the clock frequency for QUICC Engine.
-+
-+  fsl,qe-num-riscs:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: define how many RISC engines the QE has.
-+
-+  fsl,qe-snums:
-+    $ref: /schemas/types.yaml#/definitions/uint8-array
-+    maxItems: 28
-+    description:
-+      defining the array of serial number (SNUM) values for the virtual
-+      threads.
-+
-+  fsl,firmware-phandle:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: |
-+      required only if there is no fsl,qe-firmware child node
-+
-+      Points to a firmware node (see "QE Firmware Node" below)
-+      that contains the firmware that should be uploaded for this QE.
-+      The compatible property for the firmware node should say,
-+      "fsl,qe-firmware".
-+
-+  brg-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      the internal clock source frequency for baud-rate
-+      generators in Hz.
-+
-+  fsl,qe-num-snums:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    deprecated: true
-+    description: |
-+      define how many serial number(SNUM) the QE can use
-+      for the threads. Use fsl,qe-snums instead to not only specify the
-+      number of snums, but also their values.
-+
-+patternProperties:
-+  '^muram@[a-f0-9]+$':
-+    $ref: fsl,qe-muram.yaml
-+
-+  '^interrupt-controller@[a-f0-9]+$':
-+    $ref: fsl,qe-ic.yaml
-+
-+  '^si@[a-f0-9]+$':
-+    $ref: fsl,qe-si.yaml
-+
-+  '^siram@[a-f0-9]+$':
-+    $ref: fsl,qe-siram.yaml
-+
-+required:
-+  - compatible
-+  - reg
-+  - bus-frequency
-+
-+allOf:
-+  - $ref: /schemas/simple-bus.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    qe-bus@e0100000 {
-+        compatible = "fsl,qe", "simple-bus";
-+        reg = <0xe0100000 0x480>;
-+        ranges = <0 0xe0100000 0x00100000>;
-+        #address-cells = <1>;
-+        #size-cells = <1>;
-+        brg-frequency = <0>;
-+        bus-frequency = <0x179a7b00>;
-+        fsl,qe-snums = /bits/ 8 <
-+            0x04 0x05 0x0c 0x0d 0x14 0x15 0x1c 0x1d
-+            0x24 0x25 0x2c 0x2d 0x34 0x35 0x88 0x89
-+            0x98 0x99 0xa8 0xa9 0xb8 0xb9 0xc8 0xc9
-+            0xd8 0xd9 0xe8 0xe9>;
-+
-+        interrupt-controller@80 {
-+            compatible = "fsl,qe-ic";
-+            reg = <0x80 0x80>;
-+            #interrupt-cells = <1>;
-+            interrupt-controller;
-+            interrupts = <95 2 0 0  94 2 0 0>;
-+        };
-+
-+        si@700 {
-+            compatible = "fsl,t1040-qe-si";
-+            reg = <0x700 0x80>;
-+        };
-+
-+        siram@1000 {
-+          compatible = "fsl,t1040-qe-siram";
-+          reg = <0x1000 0x800>;
-+        };
-+
-+        muram@10000 {
-+            compatible = "fsl,qe-muram", "fsl,cpm-muram";
-+            ranges = <0 0x00010000 0x0000c000>;
-+            #address-cells = <1>;
-+            #size-cells = <1>;
-+
-+              data-only@0{
-+                  compatible = "fsl,qe-muram-data",
-+                              "fsl,cpm-muram-data";
-+                  reg = <0 0xc000>;
-+              };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt
-deleted file mode 100644
-index 05ec2a838c54b..0000000000000
---- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe.txt
-+++ /dev/null
-@@ -1,178 +0,0 @@
--* Freescale QUICC Engine module (QE)
--This represents qe module that is installed on PowerQUICC II Pro.
--
--NOTE:  This is an interim binding; it should be updated to fit
--in with the CPM binding later in this document.
--
--Basically, it is a bus of devices, that could act more or less
--as a complete entity (UCC, USB etc ). All of them should be siblings on
--the "root" qe node, using the common properties from there.
--The description below applies to the qe of MPC8360 and
--more nodes and properties would be extended in the future.
--
--i) Root QE device
--
--Required properties:
--- compatible : should be "fsl,qe";
--- model : precise model of the QE, Can be "QE", "CPM", or "CPM2"
--- reg : offset and length of the device registers.
--- bus-frequency : the clock frequency for QUICC Engine.
--- fsl,qe-num-riscs: define how many RISC engines the QE has.
--- fsl,qe-snums: This property has to be specified as '/bits/ 8' value,
--  defining the array of serial number (SNUM) values for the virtual
--  threads.
--
--Optional properties:
--- fsl,firmware-phandle:
--    Usage: required only if there is no fsl,qe-firmware child node
--    Value type: <phandle>
--    Definition: Points to a firmware node (see "QE Firmware Node" below)
--        that contains the firmware that should be uploaded for this QE.
--        The compatible property for the firmware node should say,
--        "fsl,qe-firmware".
--
--Recommended properties
--- brg-frequency : the internal clock source frequency for baud-rate
--  generators in Hz.
--
--Deprecated properties
--- fsl,qe-num-snums: define how many serial number(SNUM) the QE can use
--  for the threads. Use fsl,qe-snums instead to not only specify the
--  number of snums, but also their values.
--
--Example:
--     qe@e0100000 {
--	#address-cells = <1>;
--	#size-cells = <1>;
--	#interrupt-cells = <2>;
--	compatible = "fsl,qe";
--	ranges = <0 e0100000 00100000>;
--	reg = <e0100000 480>;
--	brg-frequency = <0>;
--	bus-frequency = <179A7B00>;
--	fsl,qe-snums = /bits/ 8 <
--		0x04 0x05 0x0C 0x0D 0x14 0x15 0x1C 0x1D
--		0x24 0x25 0x2C 0x2D 0x34 0x35 0x88 0x89
--		0x98 0x99 0xA8 0xA9 0xB8 0xB9 0xC8 0xC9
--		0xD8 0xD9 0xE8 0xE9>;
--     }
--
--* Multi-User RAM (MURAM)
--
--Required properties:
--- compatible : should be "fsl,qe-muram", "fsl,cpm-muram".
--- mode : the could be "host" or "slave".
--- ranges : Should be defined as specified in 1) to describe the
--   translation of MURAM addresses.
--- data-only : sub-node which defines the address area under MURAM
--   bus that can be allocated as data/parameter
--
--Example:
--
--     muram@10000 {
--	compatible = "fsl,qe-muram", "fsl,cpm-muram";
--	ranges = <0 00010000 0000c000>;
--
--	data-only@0{
--		compatible = "fsl,qe-muram-data",
--			     "fsl,cpm-muram-data";
--		reg = <0 c000>;
--	};
--     };
--
--* Interrupt Controller (IC)
--
--Required properties:
--- compatible : should be "fsl,qe-ic".
--- reg : Address range of IC register set.
--- interrupts : interrupts generated by the device.
--- interrupt-controller : this device is a interrupt controller.
--
--Example:
--
--	qeic: interrupt-controller@80 {
--		interrupt-controller;
--		compatible = "fsl,qe-ic";
--		#address-cells = <0>;
--		#interrupt-cells = <1>;
--		reg = <0x80 0x80>;
--		interrupts = <95 2 0 0  94 2 0 0>;
--	};
--
--* Serial Interface Block (SI)
--
--The SI manages the routing of eight TDM lines to the QE block serial drivers
--, the MCC and the UCCs, for receive and transmit.
--
--Required properties:
--- compatible : must be "fsl,<chip>-qe-si". For t1040, must contain
--  "fsl,t1040-qe-si".
--- reg : Address range of SI register set.
--
--Example:
--
--	si1: si@700 {
--		compatible = "fsl,t1040-qe-si";
--		reg = <0x700 0x80>;
--	};
--
--* Serial Interface Block RAM(SIRAM)
--
--store the routing entries of SI
--
--Required properties:
--- compatible : should be "fsl,<chip>-qe-siram". For t1040, must contain
--  "fsl,t1040-qe-siram".
--- reg : Address range of SI RAM.
--
--Example:
--
--	siram1: siram@1000 {
--		compatible = "fsl,t1040-qe-siram";
--		reg = <0x1000 0x800>;
--	};
--
--* QE Firmware Node
--
--This node defines a firmware binary that is embedded in the device tree, for
--the purpose of passing the firmware from bootloader to the kernel, or from
--the hypervisor to the guest.
--
--The firmware node itself contains the firmware binary contents, a compatible
--property, and any firmware-specific properties.  The node should be placed
--inside a QE node that needs it.  Doing so eliminates the need for a
--fsl,firmware-phandle property.  Other QE nodes that need the same firmware
--should define an fsl,firmware-phandle property that points to the firmware node
--in the first QE node.
--
--The fsl,firmware property can be specified in the DTS (possibly using incbin)
--or can be inserted by the boot loader at boot time.
--
--Required properties:
--  - compatible
--      Usage: required
--      Value type: <string>
--      Definition: A standard property.  Specify a string that indicates what
--          kind of firmware it is.  For QE, this should be "fsl,qe-firmware".
--
--   - fsl,firmware
--      Usage: required
--      Value type: <prop-encoded-array>, encoded as an array of bytes
--      Definition: A standard property.  This property contains the firmware
--          binary "blob".
--
--Example:
--	qe1@e0080000 {
--		compatible = "fsl,qe";
--		qe_firmware:qe-firmware {
--			compatible = "fsl,qe-firmware";
--			fsl,firmware = [0x70 0xcd 0x00 0x00 0x01 0x46 0x45 ...];
--		};
--		...
--	};
--
--	qe2@e0090000 {
--		compatible = "fsl,qe";
--		fsl,firmware-phandle = <&qe_firmware>;
--		...
--	};
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+index 17f4e31711209..c116a03fe872b 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a.dtsi
+@@ -653,7 +653,7 @@ gpio4: gpio@2330000 {
+ 			#interrupt-cells = <2>;
+ 		};
+ 
+-		uqe: uqe@2400000 {
++		uqe: uqe-bus@2400000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			compatible = "fsl,qe", "simple-bus";
+@@ -667,7 +667,6 @@ uqe: uqe@2400000 {
+ 			qeic: qeic@80 {
+ 				compatible = "fsl,qe-ic";
+ 				reg = <0x80 0x80>;
+-				#address-cells = <0>;
+ 				interrupt-controller;
+ 				#interrupt-cells = <1>;
+ 				interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
+@@ -675,16 +674,12 @@ qeic: qeic@80 {
+ 			};
+ 
+ 			si1: si@700 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 				compatible = "fsl,ls1043-qe-si",
+ 						"fsl,t1040-qe-si";
+ 				reg = <0x700 0x80>;
+ 			};
+ 
+ 			siram1: siram@1000 {
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+ 				compatible = "fsl,ls1043-qe-siram",
+ 						"fsl,t1040-qe-siram";
+ 				reg = <0x1000 0x800>;
 
 -- 
 2.34.1
