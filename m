@@ -2,78 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA777927561
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 13:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A189927587
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 13:54:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=evMF+6ea;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fHVydoH/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WFFDr5PKlz3fnk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 21:44:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WFFRp0DyJz3fS4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 21:54:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=evMF+6ea;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fHVydoH/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=fernandez.simon@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WFDVR31Hrz3cVD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 21:11:25 +1000 (AEST)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-36796d2e5a9so358759f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jul 2024 04:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720091479; x=1720696279; darn=lists.ozlabs.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qwBmB9TZGFjcG5R2+2N2tz93DvezoEGxh6PsIk8IO/w=;
-        b=evMF+6eaZ/byLbxe042rT8rqHVk+Ssif7QioukVndQPoX7RiJe/GRtfRTg9QFoZU8C
-         uZjy+rj3kjTQ4fTdvWAmUvbueP2uRW3oGlUOaf+wr5NBoWQ/CWZoAucPQ+xwUGgeRUG2
-         INi8vUWL8OC5NiveHDQL5YORCBFVUa0xyIwD/rQbmpSpsF++naJcszCJahB0cBCpDzTx
-         N08gysapXxpQ/B4soISzsOCIy/AmX4CjNecvPzKgslmFCnJNN2/5TwKkeX34STOvsmBw
-         7/GIUB3ROLAxK9R0cCFyWgtC3VFsankBoNISiZ07yJYt2CBOU7gukP0jA8+5jluvysxo
-         4M6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720091479; x=1720696279;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qwBmB9TZGFjcG5R2+2N2tz93DvezoEGxh6PsIk8IO/w=;
-        b=SCc04Rs14+DpNP/prbol2GOisLQ8SzB87fVlAqlN9SumJ4K1YNvPbdTVz1fpBZun0Z
-         LcW2HJJizth07piCphB8YouPXX5OUT9kzjzXmgRHVXXKcZTUlkQhR6PWzDWMxZIL4LVm
-         6rEQClnVE+EpX+llZc6PhRVsuJjyw974PpFuru6XsOcYQZHoKxVFr284BiuMj5ZqXANo
-         bQ2QkxFOahmLVDCSbkemutAG8NZeMNH7QreZZNbiFQWERV/G6yj5vywOJ00y15v/oD3e
-         7vHzOGoPG68CnYKsg6Tli7uvagLvzknKu193l7BViCNNev05C99/dAFuUT/ivOVfR7Wl
-         pxtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWC9B21cI+JXn5zlGjESMqpCMirC5/zuiP11KVb45gvRX4p8DC3Wf234/nqS4avv80JHcrLWmUjH0O8PQUvYoqDL3fAhdbkeyopzVx/Og==
-X-Gm-Message-State: AOJu0Yyiz8ayj4HiZoV2WwPmOZf1lcIi1mK3eh1O3d9C0qGB7IJmxN15
-	JTdZm2Z1RvssTrJ6s9oS9IKZgSzgfdI3g/uHYnJ6EusEiFBUb4Uj
-X-Google-Smtp-Source: AGHT+IFEzvL2jC2faLe/uaMvaq/UCJ26KrH1XFm9Ol6h8w0Rebt6hjx4X+gdY7pIVUfbtqQYexMuPw==
-X-Received: by 2002:a5d:5712:0:b0:367:94e7:958a with SMTP id ffacd0b85a97d-3679dd17ec1mr1153338f8f.6.1720091479417;
-        Thu, 04 Jul 2024 04:11:19 -0700 (PDT)
-Received: from [10.14.0.2] ([139.28.176.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36787db4d12sm6821051f8f.110.2024.07.04.04.11.17
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 04 Jul 2024 04:11:18 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
-Subject: Re: [PATCH 14/26] block: move the nonrot flag to queue_limits
-From: Simon Fernandez <fernandez.simon@gmail.com>
-In-Reply-To: <ZnmoANp0TgpxWuF-@kbusch-mbp.dhcp.thefacebook.com>
-Date: Thu, 4 Jul 2024 12:11:16 +0100
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <78BDDF6A-1FC7-4DD7-AABF-E0B055772CBF@gmail.com>
-References: <20240617060532.127975-1-hch@lst.de>
- <20240617060532.127975-15-hch@lst.de>
- <ZnmoANp0TgpxWuF-@kbusch-mbp.dhcp.thefacebook.com>
-To: Keith Busch <kbusch@kernel.org>
-X-Mailer: Apple Mail (2.3608.120.23.2.7)
-X-Mailman-Approved-At: Thu, 04 Jul 2024 21:44:09 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WFFR50ScQz3cZx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 21:53:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1720094015;
+	bh=Uk9degHg/Z1P6m2/0OM79LElxTX1OBh3M5kqaL4bWSE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fHVydoH/PVY7laXT4hMSD557OSb5R8yAcRpLMi5ulEWFVjqaVntnyKvov/ojV1e61
+	 iSzIkDKnubhZrKc2fmC+xQHTBDmZTDROKRzY6zQVnvKmGru/PmP7wfYogPBavu3rNf
+	 68o4HMp/oaLFc/tkbmpZfq4ht86Mj9yzlS6C4TjajGp4w5eytEWbfBEKYPVYx8B7gp
+	 n0wtRAgm53AMWikl/4RrvAiYegQAvJ2CYNyNjU9P0fnZQPFvvATzWcoF8kvn1bNSjP
+	 P3py82HVp0HBqcL2Ia8VXiEKEFzvOri7h6FrHp8NfEGEhW13z2fA8PYjbc/Qxe6GB1
+	 mcWsr36DlxVAA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WFFR22Qlhz4wx6;
+	Thu,  4 Jul 2024 21:53:33 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, Marc Zyngier <maz@kernel.org>
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
+ after the of/irq updates 2024-05-29
+In-Reply-To: <ccf14173-9818-44ef-8610-db2900c67ae8@xenosoft.de>
+References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+ <86zfqzhgys.wl-maz@kernel.org>
+ <ccf14173-9818-44ef-8610-db2900c67ae8@xenosoft.de>
+Date: Thu, 04 Jul 2024 21:53:32 +1000
+Message-ID: <874j95jrur.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,25 +61,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, linux-nvme@lists.infradead.org, Song Liu <song@kernel.org>, linux-mtd@lists.infradead.org, Vineeth Vijayan <vneethv@linux.ibm.com>, linux-bcache@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Alasdair Kergon <agk@redhat.com>, drbd-dev@lists.linbit.com, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, Richard Weinberger <richard@nod.at>, Geert Uytterhoeven <geert@linux-m68k.org>, Yu Kuai <yukuai3@huawei.com>, dm-devel@lists.linux.dev, linux-um@lists.infradead.org, Mike Snitzer <snitzer@kernel.org>, Josef Bacik <josef@toxicpanda.com>, Ming Lei <ming.lei@redhat.com>, linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Damien Le Moal <dlemoal@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>, xen-devel@lists.xenproject.org, ceph-devel@vger.kernel.org, nbd@other.debian.org, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mmc@vger.kernel.org, Philipp Reisner <philipp.reisner@linbit.com>, =?utf-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, virtualization@lists.linux.dev, Lars Ellenberg <lars.ellenberg@linbit.com>, linuxppc-dev@lists.ozlabs.org, =?utf-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
+Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi folks, how can I unsubscribe from this group.?
-Thanks in advance.
-S
+Christian Zigotzky <chzigotzky@xenosoft.de> writes:
+> On 02.07.24 18:54, Marc Zyngier wrote:
+>> On Sun, 30 Jun 2024 11:21:55 +0100,
+>> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+>>> Hello,
+>>>
+>>> There is an issue with the identification of ATA drives with our
+>>> P.A. Semi Nemo boards [1] after the
+>>> commit "of/irq: Factor out parsing of interrupt-map parent
+>>> phandle+args from of_irq_parse_raw()" [2].
+...
+>>
+>> --- a/drivers/of/irq.c
+>> +++ b/drivers/of/irq.c
+>> @@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+>>   
+>>   			oldimap = imap;
+>>   			imap = of_irq_parse_imap_parent(oldimap, imaplen, out_irq);
+>> -			if (!imap)
+>> -				goto fail;
+>> +			if (!imap) {
+>> +				match = 0;
+>> +				break;
+>> +			}
+>>   
+>>   			match &= of_device_is_available(out_irq->np);
+>>   			if (match)
+>>
+>>
+> We tested this patch yesterday and it solves the boot problem.
 
-> On 24 Jun 2024, at 18:08, Keith Busch <kbusch@kernel.org> wrote:
->=20
-> On Mon, Jun 17, 2024 at 08:04:41AM +0200, Christoph Hellwig wrote:
->> -#define blk_queue_nonrot(q)	test_bit(QUEUE_FLAG_NONROT, =
-&(q)->queue_flags)
->> +#define blk_queue_nonrot(q)	((q)->limits.features & =
-BLK_FEAT_ROTATIONAL)
->=20
-> This is inverted. Should be:
->=20
-> #define blk_queue_nonrot(q)	(!((q)->limits.features & =
-BLK_FEAT_ROTATIONAL))
->=20
+Hi Christian,
 
+Instead of that patch, can you try the one below. AFAICS the device tree
+fixups done in early boot mean the interrupt-map is not needed, and also
+has the wrong content, so if we can remove it entirely that might avoid
+the problems in the parsing code.
+
+I don't know if your firmware actually implements those methods, I
+couldn't find anything online to confirm or deny it. Seems the only
+option is to test it.
+
+cheers
+
+
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index fbb68fc28ed3..28fe082ede57 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -3138,6 +3138,14 @@ static void __init fixup_device_tree_pasemi(void)
+ 
+ 	prom_setprop(iob, name, "interrupt-controller", &val, 0);
+ 
++	prom_printf("nemo: deleting interrupt-map properties\n");
++	rc = call_prom("interpret", 1, 1,
++		      " s\" /pxp@0,e0000000\" find-device"
++		      " s\" interrupt-map\" delete-property"
++		      " s\" interrupt-map-mask\" delete-property"
++		      " device-end");
++	prom_printf("nemo: interpret returned %d\n", rc);
++
+ 	pci_name = "/pxp@0,e0000000/pci@11";
+ 	node = call_prom("finddevice", 1, 1, ADDR(pci_name));
+ 	parent = ADDR(iob);
