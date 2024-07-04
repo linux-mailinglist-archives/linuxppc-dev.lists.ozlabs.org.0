@@ -2,48 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9AC927E96
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 23:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBFB927EA8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 23:34:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=S0JEVBhI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=OW87Yyqx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WFVHb21wwz3cWN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2024 07:32:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WFVKW3XThz3cYL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2024 07:34:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=S0JEVBhI;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=OW87Yyqx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WFVGr5Qrrz3c4W
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2024 07:32:17 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BD86AFF802;
-	Thu,  4 Jul 2024 21:32:03 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WFVJr5L1nz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2024 07:34:03 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2FECD240006;
+	Thu,  4 Jul 2024 21:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720128729;
+	t=1720128840;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Rey18xTlnMgOgIPL25ImB7B15sMWYzxAsvnHNthV5S0=;
-	b=S0JEVBhI3tfc5ntPMObRrKKeyUXsGRrO+dmrSHHiA/CXiaTrDzUnuWN/8RLan/W8yEPBYy
-	WTaC4P67s78ijbrvczP1KnuPtKQbrRcwlYEqUPZPpZW0nhX/siqNP/GhziUB79nYOQPi8r
-	PhP0fpq9va52mSjevxSqg9gaf/S2Ukug9XtKh8mzSUYLpNZp80MAwL96mMkrYY7WNzzmay
-	5AT/X7DCWHP8tVhsE6o3C1PHb0Q9g3z2DXN4uHMidHU5Rwoaz4Y/LepANuZA6Uuvs21L3L
-	95mP/Ounvba0aITTStBPv4Esd+fhuzK/5YdBxhSIiG700JAP0NMtF9NGxcnshQ==
-Date: Thu, 4 Jul 2024 23:31:55 +0200
+	bh=q5IBUlpk519TSgD6Osr1ZyaFchjMZnggQfjeK80Zda4=;
+	b=OW87YyqxfC/aisrIaK1t9t5rNi1tv8W2h+PNzPy/mbY2MLmPV40lXp/tAQHoWvKu4AWsjJ
+	t1azANkvi0z3C8c1zRY+dEwMFTe4IitMjntGqs0weShRTHE6S9YLuTRM50bq5PQggOGH3h
+	VTb1TQxTb2kbXJ5aFHoZUbrXoTHiCyUiMq8h02kLT12CEGs/CoF9H4DdX4VqNE0u4czR5l
+	eyYcAzvCetxJAj9pUcmrGPPibpICDtqgs90easLdjOXXyAP4rPd46IcoQOzY7rAZwcoezR
+	bPShL3nDBJRC3irR8YI4aF7W8jyTpxGZxv27dKpKX4ap2xqwkURoZOagKsVprQ==
+Date: Thu, 4 Jul 2024 23:33:46 +0200
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 00/20] Simplify of_property_for_each_u32()
-Message-ID: <20240704233155.61b5323c@booty>
-In-Reply-To: <20240703180742.GB1245093-robh@kernel.org>
+Subject: Re: [PATCH 20/20] of: deprecate and rename
+ of_property_for_each_u32()
+Message-ID: <20240704233346.478431f8@booty>
+In-Reply-To: <20240703180111.GA1245093-robh@kernel.org>
 References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
-	<20240703180742.GB1245093-robh@kernel.org>
+	<20240703-of_property_for_each_u32-v1-20-42c1fc0b82aa@bootlin.com>
+	<20240703180111.GA1245093-robh@kernel.org>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -68,63 +70,47 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hello Rob,
 
-On Wed, 3 Jul 2024 12:07:42 -0600
+On Wed, 3 Jul 2024 12:01:11 -0600
 Rob Herring <robh@kernel.org> wrote:
 
-> On Wed, Jul 03, 2024 at 12:36:44PM +0200, Luca Ceresoli wrote:
-> > [Note: to reduce the noise I have trimmed the get_maintainers list
-> > manually. Should you want to be removed, or someone else added, to future
-> > versions, just tell me. Sorry for the noise.]
+> On Wed, Jul 03, 2024 at 12:37:04PM +0200, Luca Ceresoli wrote:
+> > of_property_for_each_u32() is meant to disappear. All the call sites not
+> > using the 3rd and 4th arguments have already been replaced by
+> > of_property_for_each_u32_new().
 > > 
-> > This series aims at simplifying of_property_for_each_u32() as well as
-> > making it more difficult to misuse it in the future.
+> > Deprecate the old macro. Also rename it to minimize the number of new
+> > usages and encourage conversion to the of_property_for_each_u32_new() macro
+> > in not(-yet)-upstream code.
 > > 
-> > The long-term goal is changing this pattern:
+> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > > 
-> >   struct property *prop;
-> >   const __be32 *p;
-> >   u32 val;
-> >  
-> >   of_property_for_each_u32(np, "xyz", prop, p, val) { ... }
+> > ---
 > > 
-> > to this:
+> > Notes:
 > > 
-> >   u32 val;
+> >  * The following files have not been build-tested simply because I haven't
+> >    managed to have a config that enables them so far:
 > > 
-> >   of_property_for_each_u32(np, "xyz", val) { ... }
+> >      drivers/irqchip/irq-pic32-evic.c
+> >      drivers/pinctrl/pinctrl-k210.c
 > > 
-> > So, removing the 3rd and 4th arguments which are typically meant to be
-> > internal. Those two parameters used to be unavoidable until the kernel
-> > moved to building with the C11 standard unconditionally. Since then, it is
-> > now possible to get rid of them. However a few users of
-> > of_property_for_each_u32() do actually use those arguments, which
-> > complicates the transition. For this reason this series does the following:
+> >  * These have not been converted yet as they are not trivial, and they will
+> >    need to use a more specific function that does the lookup they need and
+> >    returns the result:
 > > 
-> >  * Add of_property_for_each_u32_new(), which does not have those two
-> >    arguments (patch 1)
-> >  * Convert _almost_ every usage to of_property_for_each_u32_new()
-> >  * Rename of_property_for_each_u32() to of_property_for_each_u32_old() and
-> >    deprecate it, as a incentive to code not (yet) in mainline to upgrade
-> >    to the *_new() version (last patch)  
+> >      drivers/clk/clk-si5351.c  
 > 
-> I don't really see the point of introducing the _old variant. Let's get 
-> this done in one step.
-> 
-> > 
-> > The plan for the next series is to additionally:
-> > 
-> >  * Convert the few remaining of_property_for_each_u32_old() instantes to
-> >    of_property_for_each_u32_new()
-> >  * Remove of_property_for_each_u32_old()
-> >  * Rename of_property_for_each_u32_new() to of_property_for_each_u32()  
-> 
-> Honestly, I think there's few enough users we could just convert the 
-> whole thing in one patch. It's all got to go thru 1 tree anyways. If 
-> there's new cases in -next, then I'd be happy to send it to Linus at the 
-> end of the merge window.
+> I would do something like this:
 
-Sure, make sense. I'll need to convert the few remaining users, then
-I'm sending a squashed v2.
+Thanks for the suggestions.
+
+I literally did not even try to look at what the code does in these few
+places, and still haven't, simply due to time availability. But I wanted
+to get a first series out as soon as possible as it would probably be
+useful to Peng [0]. Yours will be a good starting point for when I
+tackle those few remaining usages of the "old" macro. Thanks.
+
+[0] https://lore.kernel.org/all/20240628161617.6bc9ca3c@booty/
 
 Luca
 
