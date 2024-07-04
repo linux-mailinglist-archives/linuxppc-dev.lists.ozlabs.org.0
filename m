@@ -1,55 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB6C926DCB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 05:02:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDA2926E40
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 06:11:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qEQFNE4Z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=e7MMSlim;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=8+5L3yiC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WF1dl54hBz3fR8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 13:02:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WF39l2Xlbz3bhc
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jul 2024 14:11:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qEQFNE4Z;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=e7MMSlim;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=8+5L3yiC;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WF1d06p2Kz3c3H
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 13:01:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1720062084;
-	bh=08bw283wAwwr7luwSNsiMYD2RxYSDrVcyBFIdCUHTU8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qEQFNE4ZqbatHG2jCgJfbvRT5U3MXjSgFcHdWNSExucDaO+xTC6ajCfjBQBEh473K
-	 o2ZiYZJ8Rcl7M4mmZMjT060YP63n6pT9gAQqS1a+3tAhMZBvcofU1I3XfJRyQ8Kr06
-	 VwakH1YG7yl/sE3O39PqgWemBmuNi1Ri3bJt6JUUElW1MniL3EZlOh/qb1GFPOLAVf
-	 CSUZLFfMv9B8v2EyPWKYQ9Il5h4kVXOjojbGmLowuHzTqJSr59FalJWTAirwvAaOPt
-	 pshF6wQSVXuv9T6y0efx70UDLkYWE5Lzg0I3wSVzCH8MiY3/ZPDRMlIxHmAm+1dai+
-	 CfurPAaIQYHKw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WF1cy0mGQz4wxs;
-	Thu,  4 Jul 2024 13:01:22 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mark Brown <broonie@kernel.org>, Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v2 07/10] soc: fsl: cpm1: qmc: Introduce functions to
- get a channel from a phandle list
-In-Reply-To: <a8c44188-d5d8-445d-9d64-bbfce6b1b628@sirena.org.uk>
-References: <20240701113038.55144-1-herve.codina@bootlin.com>
- <20240701113038.55144-8-herve.codina@bootlin.com>
- <a8c44188-d5d8-445d-9d64-bbfce6b1b628@sirena.org.uk>
-Date: Thu, 04 Jul 2024 13:01:21 +1000
-Message-ID: <87a5ixkghq.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WF38z6SMXz3cVm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jul 2024 14:10:41 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1720066211; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=qkyJygzzQDFPPD8O1Ywk9+fUQD/egWVt7y1Tlt5r4H2umAGSTAZtFwaE4Eq0TeKC2C
+    YZZu30DPTTi+vCfX95KbHLX1Xextg/unk2hxUV4O/qsUToWXOoWQFhjTuPYtdJ/KYvCQ
+    NQGLkyeE1qxlg9CJThEXl8YQ24TIYEOyOh2CgexLOo6f3+IUTEn9lwiSMysOgCT0BykH
+    MimqIsMwRfb/jgoKm+IAja5Na0/kEQ46KLJC229balKUlflVsIqMlUD96zqK20FJUE7Q
+    dU4M3x3qJgFuYcJCjcEKPxBQOnaUn7vW5DjlvmymACy27YftghLjU9Z3OhIt1CZNtYhB
+    z1Vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720066211;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=waNYzVh47/kMBZcFAwbpFzTIdIRmPW6TiXgS9tOC80M=;
+    b=P4RCcPkrP6xjSNAyYAT3YtfUrfNCdKQeslOCqb5mk+xnu7jpijhvuJQHDaK6XcodQL
+    FoQOkMwE6Nxpvpp5XIMRqAqAdrNyEp2++u0NGHAPpUxos+VleDu+zdIWz0jy4GdCTJVQ
+    m4BioGurLrFNYEeP8kW10naFxSKDSxDZrMuX8eNgN4MmQEJnoPA+2XuYYTAQxngiwbyl
+    9nNYfp6q6mFcXUit0frfJhrnR4ot9yST2Ca4l1QtIZhfnll+pzEJJseZFisknVsqffKU
+    E/t2U1fbPAHbxX1wxmBC6s8u+hZajywkOPmcf77COXnR7OgnCLHvk5pjdkXOVyX5Cgtp
+    XjYQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720066211;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=waNYzVh47/kMBZcFAwbpFzTIdIRmPW6TiXgS9tOC80M=;
+    b=e7MMSlim9DkMjN8BFpaF13MbZkqpPDSdqlvpb6DjSKfGVDUjqRU3aj/i23ivhNSS+B
+    L1Q2tN/NtNoQ4sGUddX8bdo+qTRb37wa0ydVf+vBY13HoWZUtI7wCC1KDZs/iM98N7ow
+    Lu8MQDlXJN9dOfd6D1oiwno+YtVzL21mJmpbQ0DPRec9PqVXgSxmDkOQyU6uDJu3LXfv
+    e+siN6ELOPulKQ+tTkiG1sgCcEl+gQdAdFN8UnUv9tNunSZqi7gj+7WjMFlQTc23h7Gz
+    8dY+dJcrzLeqfr3RJOImvSeAANd/+APJ972AMe1gE0qA7mxEb0EHIO0j1nAcjJ/g/vMk
+    XKBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720066211;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=waNYzVh47/kMBZcFAwbpFzTIdIRmPW6TiXgS9tOC80M=;
+    b=8+5L3yiCGaW9qoCPHg4wmxYcjm6J1H0SqqKjk8KyvbOcdaj3c/DpDDKKYYcAvySupO
+    ryzhiomdAj1ftkDZ5sAA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43J1zbS8JqJTXDk2ePuRj/Ii+5Yjqee1PRe9v5N8="
+Received: from [IPV6:2a01:599:81b:e76c:5d34:e38e:a378:4532]
+    by smtp.strato.de (RZmta 50.5.0 AUTH)
+    with ESMTPSA id e083890644AAQnu
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 4 Jul 2024 06:10:10 +0200 (CEST)
+Message-ID: <ccf14173-9818-44ef-8610-db2900c67ae8@xenosoft.de>
+Date: Thu, 4 Jul 2024 06:10:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
+ after the of/irq updates 2024-05-29
+Content-Language: en-US
+To: Marc Zyngier <maz@kernel.org>
+References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
+ <86zfqzhgys.wl-maz@kernel.org>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <86zfqzhgys.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,40 +98,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, devicetree@vger.kernel.org, linux-sound@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-kernel@vger.kernel.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mark Brown <broonie@kernel.org> writes:
-> On Mon, Jul 01, 2024 at 01:30:34PM +0200, Herve Codina wrote:
->> qmc_chan_get_byphandle() and the resource managed version retrieve a
->> channel from a simple phandle.
->> 
->> Extend the API and introduce qmc_chan_get_byphandles_index() and the
->> resource managed version in order to retrieve a channel from a phandle
->> list using the provided index to identify the phandle in the list.
+On 02.07.24 18:54, Marc Zyngier wrote:
+> On Sun, 30 Jun 2024 11:21:55 +0100,
+> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+>> Hello,
+>>
+>> There is an issue with the identification of ATA drives with our
+>> P.A. Semi Nemo boards [1] after the
+>> commit "of/irq: Factor out parsing of interrupt-map parent
+>> phandle+args from of_irq_parse_raw()" [2].
+> [snip]
 >
-> These two PowerPC patches seem trivial enough and have got no response,
-> unless someone objects I'll go ahead and apply them.
+> My earlier request for valuable debug information still stands. But
+> while you're at it, can you please give the following hack a go?
+>
+> 	M.
+>
+> --- a/drivers/of/irq.c
+> +++ b/drivers/of/irq.c
+> @@ -282,8 +282,10 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+>   
+>   			oldimap = imap;
+>   			imap = of_irq_parse_imap_parent(oldimap, imaplen, out_irq);
+> -			if (!imap)
+> -				goto fail;
+> +			if (!imap) {
+> +				match = 0;
+> +				break;
+> +			}
+>   
+>   			match &= of_device_is_available(out_irq->np);
+>   			if (match)
+>
+> This may not be the final workaround even if it solves your boot
+> problem, but will at least give us a hint at what is going wrong.
+>
+> I have the fuzzy feeling that we may be able to lob this broken system
+> as part of the of_irq_imap_abusers[] array, which would solve things
+> pretty "neatly".
+>
+> 	M.
+>
+We tested this patch yesterday and it solves the boot problem.
 
-Ack.
-
-MAINTAINERS says:
-
-FREESCALE QUICC ENGINE LIBRARY
-M:      Qiang Zhao <qiang.zhao@nxp.com>
-L:      linuxppc-dev@lists.ozlabs.org
-S:      Maintained
-F:      drivers/soc/fsl/qe/
-F:      include/soc/fsl/qe/
-
-But I see no email from that address since January 2021:
-
-  https://lore.kernel.org/all/?q=f%3Aqiang.zhao%40nxp.com
-
-And actually drivers/soc/fsl was marked orphan in April, maybe this
-should be also.
-
-Or does Herve want to take over maintaining it?
-
-cheers
+Thanks
