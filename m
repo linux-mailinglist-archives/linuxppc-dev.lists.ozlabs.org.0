@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242EA9286DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2024 12:36:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD27928785
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2024 13:09:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lSk7v5X8;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RJQrY8TJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WFqgN6Yf4z3dRm
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2024 20:36:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WFrPS4VvLz3d8t
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jul 2024 21:09:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lSk7v5X8;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RJQrY8TJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WFqfc02QYz3bq0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2024 20:35:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WFrNk1s79z3cW7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jul 2024 21:08:36 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720175736; x=1751711736;
+  t=1720177718; x=1751713718;
   h=date:from:to:cc:subject:message-id;
-  bh=navsekxoJlzBZZrqwpPMk4K1d4lkqpKHwe99ZIYItSE=;
-  b=lSk7v5X8PKaCY5hs6/D8Ts4IAZizJ0Nvf9RRa0BlhR9sPX5J/Ve1eruC
-   3M3oWo0NM9aM5zakrzqT6hy83Zl/+EjQVUOag6GWwgg7RmMVgf1MHG8HG
-   xwkxiMAG1/J6odrJwimrmljBKtOyQ+7EpI23d6wIdxvJ2k/BARvO4dhw0
-   IkRsn6IMFVnjOHBdl1pc5R9he9sDJ7LVxW6WI7Bc3g+LU4v/tCdGp7q11
-   wfH/HMmoXFsR75l/+5UyyK1MG9xAAH+j8kkvoUgjJFV7Cynl8JBw9s2F2
-   3z5k/HxLZaw0yTquoREaxetgeH5Vr014Q5s/GEzjl2CUfNPMOBrqixgU6
-   w==;
-X-CSE-ConnectionGUID: pUNRQA3tRgahjJFjQ1030Q==
-X-CSE-MsgGUID: bTtzZHzNRHSYAOoaIWcNGw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17282059"
+  bh=4XY7/yJIbgEyQ3ON6kBoxvTkmV1yLSE66eMbNfEg7zs=;
+  b=RJQrY8TJ+2mW/Tt3pgHeLm77SAbAHjxLGWKdH5OPu/MaUJh7hCVQ6ZWL
+   3BdQpWqLBhDelZTNGrKs+Ff3TNaL/fFujZoqQEbCwSZIUSpcDefozBgbD
+   cqNire2WYYAa2M+GkNu5+Tlfe2Rx/hUN6jlu4cymm6InmpV4rvDYwdrTW
+   qq/kuQYigAVqYheACBAl85+X4JH3XO9UsPaX8bZCVEv/WXFwxQWxw2Sr/
+   4UifA8aeA3vgic6ZAdStpv+hmqKR5F2yjXUcj5+BEZf2GqwUdNKP2DbEB
+   LXKHeStRPjBBxQ6dbrdaiy82uwu003cS3FQYsDvCVBhvjmC8VrKJV2A2g
+   A==;
+X-CSE-ConnectionGUID: M9a2r1L5QC2VQSurW07Zzg==
+X-CSE-MsgGUID: 5KVtT9tlQoygx0VP9QvtJg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28622244"
 X-IronPort-AV: E=Sophos;i="6.09,184,1716274800"; 
-   d="scan'208";a="17282059"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 03:35:30 -0700
-X-CSE-ConnectionGUID: spoQUp8oR4id8+JDIS1/6A==
-X-CSE-MsgGUID: dnfobh9qQ5eWVYaf4zTQ1Q==
+   d="scan'208";a="28622244"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 04:08:33 -0700
+X-CSE-ConnectionGUID: DrK4OnoDQ1OMl/L4p2ppRw==
+X-CSE-MsgGUID: oPBqWfcURgCMQpkrspdOzw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,184,1716274800"; 
-   d="scan'208";a="51437417"
+   d="scan'208";a="47592610"
 Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Jul 2024 03:35:28 -0700
+  by orviesa008.jf.intel.com with ESMTP; 05 Jul 2024 04:08:33 -0700
 Received: from kbuild by 68891e0c336b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sPgHm-000SGm-0p;
-	Fri, 05 Jul 2024 10:35:26 +0000
-Date: Fri, 05 Jul 2024 18:34:46 +0800
+	id 1sPgnl-000SIr-1i;
+	Fri, 05 Jul 2024 11:08:29 +0000
+Date: Fri, 05 Jul 2024 19:07:32 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
- ca8dad0415162efea3597abe06b2025f34213eb5
-Message-ID: <202407051844.fXKxBaQh-lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 20ce0c247b2500cb7060cb115274ba71abda2626
+Message-ID: <202407051930.wT2BHmTg-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,12 +74,12 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-branch HEAD: ca8dad0415162efea3597abe06b2025f34213eb5  KVM: PPC: add missing MODULE_DESCRIPTION() macros
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 20ce0c247b2500cb7060cb115274ba71abda2626  powerpc/pci: Hotplug driver bridge support
 
-elapsed time: 1223m
+elapsed time: 1257m
 
-configs tested: 198
+configs tested: 211
 configs skipped: 8
 
 The following configs have been built successfully.
@@ -135,22 +135,35 @@ i386                              allnoconfig   clang-18
 i386                             allyesconfig   clang-18
 i386         buildonly-randconfig-001-20240705   gcc-13
 i386         buildonly-randconfig-002-20240705   gcc-13
+i386         buildonly-randconfig-002-20240705   gcc-9
+i386         buildonly-randconfig-003-20240705   gcc-11
 i386         buildonly-randconfig-003-20240705   gcc-13
+i386         buildonly-randconfig-004-20240705   clang-18
 i386         buildonly-randconfig-004-20240705   gcc-13
+i386         buildonly-randconfig-005-20240705   clang-18
 i386         buildonly-randconfig-005-20240705   gcc-13
+i386         buildonly-randconfig-006-20240705   clang-18
 i386         buildonly-randconfig-006-20240705   gcc-13
 i386                                defconfig   clang-18
 i386                  randconfig-001-20240705   gcc-13
+i386                  randconfig-002-20240705   clang-18
 i386                  randconfig-002-20240705   gcc-13
+i386                  randconfig-003-20240705   gcc-11
 i386                  randconfig-003-20240705   gcc-13
 i386                  randconfig-004-20240705   gcc-13
+i386                  randconfig-005-20240705   clang-18
 i386                  randconfig-005-20240705   gcc-13
+i386                  randconfig-006-20240705   clang-18
 i386                  randconfig-006-20240705   gcc-13
 i386                  randconfig-011-20240705   gcc-13
 i386                  randconfig-012-20240705   gcc-13
+i386                  randconfig-013-20240705   clang-18
 i386                  randconfig-013-20240705   gcc-13
 i386                  randconfig-014-20240705   gcc-13
+i386                  randconfig-014-20240705   gcc-8
+i386                  randconfig-015-20240705   gcc-10
 i386                  randconfig-015-20240705   gcc-13
+i386                  randconfig-016-20240705   clang-18
 i386                  randconfig-016-20240705   gcc-13
 loongarch                        allmodconfig   gcc-13.2.0
 loongarch                         allnoconfig   gcc-13.2.0
