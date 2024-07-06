@@ -2,92 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA729290A2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 06:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4069290A9
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 06:16:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=CU3V8+Rn;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=h9ELvBui;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=XPTajlGc;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=vuWMRX2u;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WGH2H1Ktgz3dGt
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 14:09:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WGHBd23wsz3dSj
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 14:16:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=CU3V8+Rn;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=h9ELvBui;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=XPTajlGc;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=vuWMRX2u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.84; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.82; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WGH1T6XNSz3cFN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2024 14:08:28 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1720238876; cv=none;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WGH9r4qxkz3cVq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2024 14:15:43 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1720239314; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=afE8zlvjMDiHJG0g14FvbblzcibBgchfsCVll7Ak8MvWlIHpXDLkvbSJKq++XCbfm4
-    E67/C7sibKfMN/RuFIkRUbPIL9A+cNcBGvVuHzfF8cZrsijr5h3jbk/UeZAfzlDXXN2I
-    qhjvgdcIjWeGMmPgQ8jE4d1VyxquvGln4j4NLhqyVWHyB4OgiUq/CXZ/r3ihy9w97UPE
-    B9qO7EnCHs7Z47m5a/82EB5ibwJftKVQZBkSsZ9xUJ0W9NTkWUYpaypkM+braCuQHj4c
-    fWRQdDd9F8Sv3o0cUzJduCIfYaPpE+PcrPv6Ix4cNYUI6Vv8uL+caagbi+nXohneWaRu
-    6twg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720238876;
+    b=VtfVt2cOF+rA3+I9OBu+gCPinh+sZB3kUWgR/NCGWzofkmmH7aQdNfPWwbknDC3KJf
+    SPJ1romQsuhSFpY288KTMwCDxhGqvkR0g9pagUCYt4+DshKKCVDUSHcA0TKcIOTbpEl5
+    N4lGB4L/TR5DDMLhnTcdYAxy3iLUlZmPWIpPwxWpaoEhr7MsPfb7xeIBSuUCWlUVT5fZ
+    dInGr9W5Z1cX1Y3tRz+a/T9+zHBrlz5oIt6rMLyzO8zlONb/9XebIULa0otqoE8NyYfp
+    1u86pA6W/HvzQDnDejWepfmstTdF1Un7rQ+MeLkkTo7hdeZeLnRBR0dvRgsQD06MA6PO
+    +RvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720239314;
     s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
     From:Subject:Sender;
-    bh=BUxdG2TSosrogFKAx1RCrtEFDutRK7NOzxoHeWYNJBQ=;
-    b=RuHBmz6ukCIFyhqCW/S5CSKf7h/OQBMp1Nx1p8VQwsSj/SLK5L24WMBrD1E7Dwirqi
-    0Q0wIFV5vI//ahK6SjuMzHxiNh4+AL6gdZSDUuzOtfLcvndMpzTrggZNQ6kR++hdZIRr
-    3lFwA5mWX0JnmowFPa6lyr4Ui4jPRJGzgw43kcDEc4n7mWNGKUiRu641Y+qsunuJa0H3
-    jStA2rWA9B5gX6HMmWaF599MgGKOjF39l2EfyE8Rf1dRSSz2Eb0dipw3kyeOyNuGQX78
-    xvqIJAqSY4Mfua9Wm+M0QJX8UxGbhx6yB4Uvk0u17F4PG1COUr8AQUTWbJs7VAzi3EWg
-    oe1g==
+    bh=ivDInmxi0LVR9fj9t7hLEhw2Clxv8+4/zyBawJOnrIc=;
+    b=lHJwghh9D7oRhmAh4VS5ssAWxjYworIrCFh1jzGg6TMycnUxAOd2o89/T0l/VK4SGs
+    r1NmNP8RWmnUqv83YcrVAKuJtMaCr5O+rx9CidEzKWc39eCKoXR7fxA8kXn05Z27jbEh
+    zKIaTbXZ99PP3oChy0hFbSRin2xWiv3av8p5U6A53sQ/3eTERawBlzGE4hK1EZyY275G
+    2EcLneZB5vREtw19eW3cgaaNBe3A8Y1dec4PCA0rn6JP4V8o9jMUi4vlPHdIR12oSyfx
+    1oMx7uQ8lMj1UXQ6tar+Xlr5ycPdkKolXHgrj18JylYA2UAectNuKzLVLasULV/4BVXQ
+    T7Qw==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720238876;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720239314;
     s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
     From:Subject:Sender;
-    bh=BUxdG2TSosrogFKAx1RCrtEFDutRK7NOzxoHeWYNJBQ=;
-    b=CU3V8+Rn4vSSo86G/NpXnTOHBqkeKrKcUc3zkFoSdvCNvgOHs26ToWbHfIRzbghYpa
-    1hJHUCUBltN0SCaZ6LehfVkSplhD1hLQNjtmhk0afx5O56F8uu3QB21Sw1wc9YnhAh12
-    SwIcEIR+iQuea2SEeH1R62hXLKiDYV1WoFMJsu9o9+wPfNurhSgn0OI8db6krE7uLO1X
-    6d8QrXPDW6PKvP8DiBF7rpxAs3MqsrNMT2eESMTollDsyybFqtM7lU4mf7ji69LgbQ+g
-    FZ8WeRdbwUZaejSunQVCgrLHIFMKdk8bxWNHrMJ7MTLOaIC0hc1yORFZVif9YMYjM+zw
-    NgKQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720238876;
+    bh=ivDInmxi0LVR9fj9t7hLEhw2Clxv8+4/zyBawJOnrIc=;
+    b=XPTajlGcBVZvuX2Y9SSW879fSLeDkOmRPG97iG8dtV8+GvSXy7R8eMkOC7TZFJhPnW
+    +g2rfsMw47xK5xvoK8nRZQbUI3r/8xFg4vjkpGuz6btxSUSoQ84gxl4/9bvXE5jtOvNN
+    o3MV3X9owq5vqa+Ymfhk/SZAnYJRJgIRljVRpKKBWygeVNOhLtirrYdC20A780fKvZge
+    EH4TSArIn9j0XjY3ioUcIdWB0BsZwFmIUVF11UJwbtz9OGqpb85h/5MKEUdNLjwz6l7q
+    OXVUu3gi4omJS+fl72mddmGQs3ZMneDUY2at+KVcaJzdcX5noTc+GrA8IJ/xKyS68kHv
+    SkKA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720239314;
     s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
     From:Subject:Sender;
-    bh=BUxdG2TSosrogFKAx1RCrtEFDutRK7NOzxoHeWYNJBQ=;
-    b=h9ELvBuik5br/qsE+1mD9fqIk2uJrNhOi9MlyKQ80ZJObOh1SbnDd7B4Tou01r/pAf
-    DWbukC7WW34LRZlHwJDg==
+    bh=ivDInmxi0LVR9fj9t7hLEhw2Clxv8+4/zyBawJOnrIc=;
+    b=vuWMRX2uuvnavhinsbiCio62jAcZALX/XSM2VpeA3BZ8ui3J92rRMr6a7Bm0rklXJ5
+    i0G+L6/47RqWSAN1u+AQ==
 X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43JxzbX9aBXGVEW0JCZz/ysRKUXcHeKga07FTVA=="
 Received: from [IPV6:2a01:599:80b:5b09:42f:765a:b8c7:96ff]
     by smtp.strato.de (RZmta 50.5.0 AUTH)
-    with ESMTPSA id e0838906647tXuf
+    with ESMTPSA id e083890664FDXuo
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Sat, 6 Jul 2024 06:07:55 +0200 (CEST)
-Message-ID: <691062ea-a120-45cc-a457-874c5588da8c@xenosoft.de>
-Date: Sat, 6 Jul 2024 06:08:32 +0200
+    Sat, 6 Jul 2024 06:15:13 +0200 (CEST)
+Message-ID: <aeaa9b78-5853-473e-b985-b10241e88e0d@xenosoft.de>
+Date: Sat, 6 Jul 2024 06:15:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
  after the of/irq updates 2024-05-29
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Content-Language: en-US
 To: Michael Ellerman <mpe@ellerman.id.au>, Marc Zyngier <maz@kernel.org>
 References: <3ab66fab-c3f2-4bed-a04d-a10c57dcdd9b@xenosoft.de>
  <86zfqzhgys.wl-maz@kernel.org>
  <ccf14173-9818-44ef-8610-db2900c67ae8@xenosoft.de>
  <874j95jrur.fsf@mail.lhotse>
  <3baff554-e8f6-42b0-b931-207175a4d8fd@xenosoft.de>
-Content-Language: en-US
-In-Reply-To: <3baff554-e8f6-42b0-b931-207175a4d8fd@xenosoft.de>
+ <dfc7ec00-5216-4590-9347-ee10cd1e8380@xenosoft.de>
+ <87o77ciqj8.fsf@mail.lhotse>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <87o77ciqj8.fsf@mail.lhotse>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -104,6 +106,8 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
+Types corrected and html removed
 
 On 05.07.24 03:19, Michael Ellerman wrote:
  >
@@ -148,8 +152,8 @@ Thank you for the patch! Unfortunately the kernel doesn't boot.
 
 See: https://forum.hyperion-entertainment.com/viewtopic.php?p=58629#p58629
 
-Our tester has tested the second irq patch again and the kernels boots. 
-We will test it again to be sure that it really work. ;-)
+Our tester has tested the second irq patch again and the kernel boots. 
+We will test it again to be sure that it really works. ;-)
 
 Second irq patch:
 
