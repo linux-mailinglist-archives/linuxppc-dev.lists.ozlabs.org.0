@@ -1,51 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A026592937A
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 14:09:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C94C29294A7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 17:55:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VajEfRv5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=EFm+RcmE;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=feUqBK6f;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WGThF2tqHz3cYm
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jul 2024 22:09:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WGZj74LjVz3cR3
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 01:55:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VajEfRv5;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=EFm+RcmE;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=feUqBK6f;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WGTgV26R8z30Wm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jul 2024 22:08:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1720267717;
-	bh=Ug+KF5YGrihKrbfmbNh75185czFZqdxboNmnIHHzoMM=;
-	h=From:To:Subject:Date:From;
-	b=VajEfRv5A/al4NyXt1zZwzC5DDDzC2Op3uXKHJdF4r/DouJO39myesAZJZmNrj8hb
-	 Ecdg5mNtSQG6nQ3jVBDDZGbZA3HyOy+ntBRpW2N2wBcAYhM33SQCyuF+GDWOpo+jWY
-	 AZ61D7UF76ezemvbw0YtVfA43xCSPydM4F69vnAXD6qKRqf5zdHvU0Kx0zfZ922BnQ
-	 ETDGQw1sXLe3VXs1kQqtrFApFSiAoh86uobm+n0/xMSqVRkalsYwiZ5VZVd1TUBzAu
-	 MYQrql4ucIzOdllgR7loB/vR3RJ+qXQccoyoiNQRh7a8bv97TqTAzYKntGC9p6B/uh
-	 P/yewTF47hTkA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WGTgT23pvz4w2S;
-	Sat,  6 Jul 2024 22:08:37 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] selftests/powerpc: Fix build with USERCFLAGS set
-Date: Sat,  6 Jul 2024 22:08:33 +1000
-Message-ID: <20240706120833.909853-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.45.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WGZhN1LnJz30Vf
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Jul 2024 01:54:41 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1720281272; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=oQu9NJpOTvlm5sqaOBtbtSjC0GmbqaTimIaErxL5er0Cy/y1doMRrYd8YHsasBDvv2
+    +bpa44fULXnM/OBjToO6pjSsNp47pPrDs/uh4c233WTsognGXbU/xHZf7ukrIjVP4BZg
+    RDNpuIgguQl5U4eickv0vIPFv1VdshLv9RL0fN9uR3l5fDQK0MxIIUihJhOfUtwJHYOI
+    LOTldA+PQuA7IatRdqAY4xy3njnQUQTmzZElydx1EoXLofTU1PxE6/GEIbXwWOHrdQsE
+    BmGRnxQUh9GGIYJYbpdt45g+5rGRr78G8DuOgkLjQOZBpyoec9SyqEO+6BWQLsnCweP2
+    eYqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720281272;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=V5YwiazAeEN4dRiis3W1yfsGHE0h2QF7Ju83ZXv0xIw=;
+    b=DyT6PHTmBeSgGXeyC302gvjLyhYtgE5QH2EwcjMehTllmqGQGALl7lc9l0KXPFuahz
+    CI4U/aIETe985yEzzLSZKBxiS5UD+owVLYCT9pk+ORt+c0+n0yk8jQV/Ck9rkIvmHqlN
+    c0K2AjvqxGPBzvBDX9TbPJVDJ8pGpi2RxISJutYNTxnVtNpsHyqEIVfK6sdyXSvNssNv
+    Jh8OH3qdqzaJqfgxEOeNFr/ypfASJCQ/HP2l1eFLRMEJuJQTXZqZqxYWCd02VfWTlWV6
+    ZFrnfP9PXE03ZSdknClLVLth+Kmj4yGMZVm4xdIuUxfK4g/CSYco3EW0Z56DtB8qTVMA
+    ZfmQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720281272;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=V5YwiazAeEN4dRiis3W1yfsGHE0h2QF7Ju83ZXv0xIw=;
+    b=EFm+RcmEv3Jb6IZRdOg09a00x/Od740fpnTkH8XS2mvx3dIdfIgtyl9OLqp+av91aq
+    AFPsmvHmMk9Q27zp6YWU08KM1I+eXCIz9b/BqEUtCf7iBaOjB7ua7y5S2OxEte2wwij5
+    fpTecZk7yKJXlgG7BpJlgTQl/7k0x+2RVGI5NnFCUTd76FeOvoGKayrASRIBiTCN67d3
+    7KkTan+cH7n4Jf8K+Z5cByWi7LE1b4f63NGtPYhfdluXG94oMzrPZ5euEUJABLQFmAQi
+    4tboeUrDnPivRy0+v+b8VGNq0TPKxmWEhUoH5ckaGWqG7ok35jm3XulmmNnthRcawkEW
+    xXBQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720281272;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=V5YwiazAeEN4dRiis3W1yfsGHE0h2QF7Ju83ZXv0xIw=;
+    b=feUqBK6fPUAJa9MwugIBfvjA9VqnYR2IcS/1VKpZyqPJcohTAspOxna4wuCDAPKPF4
+    HMtx926oKldM5qV6MgAA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5m3s36WCHpkK6jpK2wKbeiFIUzgLYe3d6gbw0o="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 50.5.0 AUTH)
+    with ESMTPSA id e08389066FsVYVz
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 6 Jul 2024 17:54:31 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives after the of/irq updates 2024-05-29
+Date: Sat, 6 Jul 2024 17:54:20 +0200
+Message-Id: <8FDD860C-4DA4-46EF-BAD6-8F68837DA993@xenosoft.de>
+References: <aeaa9b78-5853-473e-b985-b10241e88e0d@xenosoft.de>
+In-Reply-To: <aeaa9b78-5853-473e-b985-b10241e88e0d@xenosoft.de>
+To: Michael Ellerman <mpe@ellerman.id.au>, Marc Zyngier <maz@kernel.org>
+X-Mailer: iPhone Mail (21F90)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,65 +95,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently building the powerpc selftests with USERCFLAGS set to anything
-causes the build to break:
 
-  $ make -C tools/testing/selftests/powerpc V=1 USERCFLAGS=-Wno-error
-  ...
-  gcc -Wno-error    cache_shape.c ...
-  cache_shape.c:18:10: fatal error: utils.h: No such file or directory
-     18 | #include "utils.h"
-        |          ^~~~~~~~~
-  compilation terminated.
 
-This happens because the USERCFLAGS are added to CFLAGS in lib.mk, which
-causes the check of CFLAGS in powerpc/flags.mk to skip setting CFLAGS at
-all, resulting in none of the usual CFLAGS being passed. That can
-be seen in the output above, the only flag passed to the compiler is
--Wno-error.
+On 6. Jul 2024, at 06:15, Christian Zigotzky wrote:
 
-Fix it by dropping the conditional setting of CFLAGS in flags.mk.
-Instead always set CFLAGS, but also append USERCFLAGS if they are set.
+Our tester has tested the second irq patch again and the kernel boots. We wi=
+ll test it again to be sure that it really works. ;-)
 
-Note that appending to CFLAGS (with +=) wouldn't work, because flags.mk
-is included by multiple Makefiles (to support partial builds), causing
-CFLAGS to be appended to multiple times. Additionally that would place
-the USERCFLAGS prior to the standard CFLAGS, meaning the USERCFLAGS
-couldn't override the standard flags. Being able to override the
-standard flags is desirable, for example for adding -Wno-error.
+Second irq patch:
 
-With the fix in place, the CFLAGS are set correctly, including the
-USERCFLAGS:
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index 462375b293e47..c94203ce65bb3 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -81,7 +81,8 @@ EXPORT_SYMBOL_GPL(of_irq_find_parent);
+ /*
+  * These interrupt controllers abuse interrupt-map for unspeakable
+  * reasons and rely on the core code to *ignore* it (the drivers do
+- * their own parsing of the property).
++ * their own parsing of the property). The PAsemi entry covers a
++ * non-sensical interrupt-map that is better left ignored.
+  *
+  * If you think of adding to the list for something *new*, think
+  * again. There is a high chance that you will be sent back to the
+@@ -95,6 +96,7 @@ static const char * const of_irq_imap_abusers[] =3D {
+     "fsl,ls1043a-extirq",
+     "fsl,ls1088a-extirq",
+     "renesas,rza1-irqc",
++    "pasemi,rootbus",
+     NULL,
+ };
 
-  $ make -C tools/testing/selftests/powerpc V=1 USERCFLAGS=-Wno-error
-  ...
-  gcc -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"v6.10-rc2-7-gdea17e7e56c3"'
-  -I/home/michael/linux/tools/testing/selftests/powerpc/include -Wno-error
-  cache_shape.c ...
-
-Fixes: 5553a79387e9 ("selftests/powerpc: Add flags.mk to support pmu buildable")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- tools/testing/selftests/powerpc/flags.mk | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/powerpc/flags.mk b/tools/testing/selftests/powerpc/flags.mk
-index b909bee3cb2a..abb9e58d95c4 100644
---- a/tools/testing/selftests/powerpc/flags.mk
-+++ b/tools/testing/selftests/powerpc/flags.mk
-@@ -5,8 +5,5 @@ GIT_VERSION := $(shell git describe --always --long --dirty || echo "unknown")
- export GIT_VERSION
- endif
- 
--ifeq ($(CFLAGS),)
--CFLAGS := -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"$(GIT_VERSION)"' -I$(selfdir)/powerpc/include $(CFLAGS)
-+CFLAGS := -std=gnu99 -O2 -Wall -Werror -DGIT_VERSION='"$(GIT_VERSION)"' -I$(selfdir)/powerpc/include $(USERCFLAGS)
- export CFLAGS
--endif
+@@ -293,20 +295,8 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phan=
+dle_args *out_irq)
+             imaplen -=3D imap - oldimap;
+             pr_debug(" -> imaplen=3D%d\n", imaplen);
+         }
+-        if (!match) {
+-            if (intc) {
+-                /*
+-                 * The PASEMI Nemo is a known offender, so
+-                 * let's only warn for anyone else.
+-                 */
+-                WARN(!IS_ENABLED(CONFIG_PPC_PASEMI),
+-                     "%pOF interrupt-map failed, using interrupt-controller=
+\n",
+-                     ipar);
+-                return 0;
+-            }
 -
--- 
-2.45.2
++        if (!match)
+             goto fail;
+-        }
+
+         /*
+          * Successfully parsed an interrupt-map translation; copy new
+
+-----
+
+Great news! Our tester has tested this second irq patch again and it boots.
+
+Link: https://forum.hyperion-entertainment.com/viewtopic.php?p=3D58632#p5863=
+2
+
+We will use this patch for the kernel 6.10-rc7.
+
+- - Christian=
 
