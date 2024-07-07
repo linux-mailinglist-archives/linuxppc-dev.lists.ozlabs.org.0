@@ -2,94 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3F9929878
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 16:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B7E92987B
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 16:49:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lhZ156Cw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rfnEkmQu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WH9B80JQsz3cYG
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2024 00:49:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WH9Bw5LcXz3cWd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jul 2024 00:49:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lhZ156Cw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rfnEkmQu;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WH95M6KqHz30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2024 00:44:55 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 467EHfew032185;
-	Sun, 7 Jul 2024 14:44:48 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WH95S57tYz3cPK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jul 2024 00:45:00 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 467EdO7r023531;
+	Sun, 7 Jul 2024 14:44:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
 	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
-	n+6YGDag3p0zcKCJLVkO4XM6sp4nhI+1FYQgWDL6U+g=; b=lhZ156Cwu/h9vtv1
-	FX8JZtAUOsqFaNGqCVZV7+kDBNGXZBSn5fx5aD0jvz7Hbpr5nrzLf7EMXETnUIPy
-	znnI2/z4p38ZqWb2/NlOUGE8/iq7BSDmFAdR5VhJ1tfPpXWJeHSQHqtByKtJtCaO
-	UxQPCbyUzr4c2jCK+ni346+Sta4jo4wy0Ps1WUgb4qmbBHcgoDYh/rMgUxWg4ZZg
-	gKXZ5jwGUM6lmZ2OtQwcougQNGs0KIKnX0PRIL9+xAsUs0PMWyhiEpPOTztU+s3a
-	YVA3LFkrPgOTsJIiBbTh1gTtSMR7STLUkHma7FmodX9osp5HSjb3KKsPJQf1cYw2
-	v0t5uw==
+	:mime-version:content-transfer-encoding; s=pp1; bh=R4zRoe8cy0bXv
+	9UMUIvpBUjuBCRKOaghhAkUwTc7VhI=; b=rfnEkmQuHMcs3VT7L5IdMBPHrdD0r
+	yY1w/3UWIsgblEJnwIar+N9/BNVj5lVWCTm+tUp00X9gQeGtnfDPzhVp7gV7jfzb
+	IOLl0EaxUHO0DRR5VPdEv+p4H/6jO7HQL8DRHGdXFo6Di8VVuahZ+zmiQWvLWC5C
+	EPu8+yyqqGymsqN91pn8/lim1FhzpIda03zwWwcHf4r1q0aLnB8Pmx1dzJYu5nQl
+	YEoQXaHOrYAxfK4yws/J97LCiV+IFAIyAhPQpWoSLNiFzOaKGYg8VHq74WTflB9x
+	MT6OMdJbPp5NK3PaLNc5PS/uzV9sSq4SECtDdck71l/AV02V/UezPdsug==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 407ruugcdp-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 407p7j8mf0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jul 2024 14:44:48 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 467EilAZ003626;
-	Sun, 7 Jul 2024 14:44:47 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 407ruugcdk-1
+	Sun, 07 Jul 2024 14:44:51 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 467EipYN030796;
+	Sun, 7 Jul 2024 14:44:51 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 407p7j8mex-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jul 2024 14:44:47 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 467CIJkv006916;
-	Sun, 7 Jul 2024 14:44:46 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 407jfm27h6-1
+	Sun, 07 Jul 2024 14:44:51 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 467B6v92024579;
+	Sun, 7 Jul 2024 14:44:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 407hrmad7k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jul 2024 14:44:46 +0000
+	Sun, 07 Jul 2024 14:44:50 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 467EifKs35848464
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 467Eii3S45416926
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 7 Jul 2024 14:44:43 GMT
+	Sun, 7 Jul 2024 14:44:46 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56F2520049;
+	by IMSVA (Postfix) with ESMTP id 90CE720049;
+	Sun,  7 Jul 2024 14:44:44 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AA89220040;
 	Sun,  7 Jul 2024 14:44:41 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B17A20040;
-	Sun,  7 Jul 2024 14:44:38 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.43.1.68])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  7 Jul 2024 14:44:38 +0000 (GMT)
+	Sun,  7 Jul 2024 14:44:41 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         irogers@google.com, namhyung@kernel.org, segher@kernel.crashing.org,
         christophe.leroy@csgroup.eu
-Subject: [PATCH V6 05/18] tools/perf: Add support to capture and parse raw instruction in powerpc using dso__data_read_offset utility
-Date: Sun,  7 Jul 2024 20:14:06 +0530
-Message-Id: <20240707144419.92510-6-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V6 06/18] tools/perf: Update parameters for reg extract functions to use raw instruction on powerpc
+Date: Sun,  7 Jul 2024 20:14:07 +0530
+Message-Id: <20240707144419.92510-7-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20240707144419.92510-1-atrajeev@linux.vnet.ibm.com>
 References: <20240707144419.92510-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: d6iW5LfMQxs66zmluWt_fui3pH7tKLp4
-X-Proofpoint-ORIG-GUID: bZQyXm9VbxON6smvNd0YFVVzbnUJjgFc
+X-Proofpoint-GUID: ZO-zE525q76qDxGCIzl3xmQD8oA_W1qz
+X-Proofpoint-ORIG-GUID: cTNIDdy8JBRzx-SGahaEtvGVQT-AXgqs
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-07_06,2024-07-05_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 mlxscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407070117
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501 adultscore=0
+ impostorscore=0 phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
+ definitions=main-2407070117
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,234 +103,314 @@ Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support to capture and parse raw instruction in powerpc.
-Currently, the perf tool infrastructure uses two ways to disassemble
-and understand the instruction. One is objdump and other option is
-via libcapstone.
+Use the raw instruction code and macros to identify memory instructions,
+extract register fields and also offset. The implementation addresses
+the D-form, X-form, DS-form instructions. Adds "mem_ref" field to check
+whether source/target has memory reference. Add function
+"get_powerpc_regs" which will set these fields: reg1, reg2, offset
+depending of where it is source or target ops.
 
-Currently, the perf tool infrastructure uses "--no-show-raw-insn" option
-with "objdump" while disassemble. Example from powerpc with this option
-for an instruction address is:
-
-Snippet from:
-objdump  --start-address=<address> --stop-address=<address>  -d --no-show-raw-insn -C <vmlinux>
-
-c0000000010224b4:	lwz     r10,0(r9)
-
-This line "lwz r10,0(r9)" is parsed to extract instruction name,
-registers names and offset. Also to find whether there is a memory
-reference in the operands, "memory_ref_char" field of objdump is used.
-For x86, "(" is used as memory_ref_char to tackle instructions of the
-form "mov  (%rax), %rcx".
-
-In case of powerpc, not all instructions using "(" are the only memory
-instructions. Example, above instruction can also be of extended form (X
-form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
-and extract the source/target registers, patch adds support to use raw
-instruction for powerpc. Approach used is to read the raw instruction
-directly from the DSO file using "dso__data_read_offset" utility which
-is already implemented in perf infrastructure in "util/dso.c".
-
-Example:
-
-38 01 81 e8     ld      r4,312(r1)
-
-Here "38 01 81 e8" is the raw instruction representation. In powerpc,
-this translates to instruction form: "ld RT,DS(RA)" and binary code
-as:
-
-   | 58 |  RT  |  RA |      DS       | |
-   -------------------------------------
-   0    6     11    16              30 31
-
-Function "symbol__disassemble_dso" is updated to read raw instruction
-directly from DSO using dso__data_read_offset utility. In case of
-above example, this captures:
-line:    38 01 81 e8
-
-The above works well when perf report is invoked with only sort keys for
-data type ie type and typeoff. Because there is no instruction level
-annotation needed if only data type information is requested for. For
-annotating sample, along with type and typeoff sort key, "sym" sort key
-is also needed. And by default invoking just "perf report" uses sort key
-"sym" that displays the symbol information.
-
-With approach changes in powerpc which first reads DSO for raw
-instruction, "perf annotate" and "perf report" + a key breaks since
-it doesn't do the instruction level disassembly.
-
-Snippet of result from perf report:
-
-Samples: 1K of event 'mem-loads', 4000 Hz, Event count (approx.): 937238
-do_work  /usr/bin/pmlogger [Percent: local period]
-Percent│        ea230010
-       │        3a550010
-       │        3a600000
-
-       │        38f60001
-       │        39490008
-       │        42400438
- 51.44 │        81290008
-       │        7d485378
-
-Here, raw instruction is displayed in the output instead of human
-readable annotated form.
-
-One way to get the appropriate data is to specify "--objdump path", by
-which code annotation will be done. But the default behaviour will be
-changed. To fix this breakage, check if "sym" sort key is set. If so
-fallback and use the libcapstone/objdump way of disassmbling the sample.
-
-With the changes and "perf report"
-
-Samples: 1K of event 'mem-loads', 4000 Hz, Event count (approx.): 937238
-do_work  /usr/bin/pmlogger [Percent: local period]
-Percent│        ld        r17,16(r3)
-       │        addi      r18,r21,16
-       │        li        r19,0
-
-       │ 8b0:   rldicl    r10,r10,63,33
-       │        addi      r10,r10,1
-       │        mtctr     r10
-       │      ↓ b         8e4
-       │ 8c0:   addi      r7,r22,1
-       │        addi      r10,r9,8
-       │      ↓ bdz       d00
- 51.44 │        lwz       r9,8(r9)
-       │        mr        r8,r10
-       │        cmpw      r20,r9
+Update "parse" callback for "struct ins_ops" to also pass "struct
+disasm_line" as argument. This is needed in parse functions where opcode
+is used to determine whether to set multi_regs and other fields
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- tools/perf/util/disasm.c | 101 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 101 insertions(+)
+ tools/perf/arch/arm64/annotate/instructions.c |  3 +-
+ .../arch/loongarch/annotate/instructions.c    |  6 ++-
+ tools/perf/arch/powerpc/util/dwarf-regs.c     | 44 +++++++++++++++++++
+ tools/perf/arch/s390/annotate/instructions.c  |  5 ++-
+ tools/perf/util/annotate.c                    | 19 ++++++--
+ tools/perf/util/disasm.c                      | 19 +++++---
+ tools/perf/util/disasm.h                      |  5 ++-
+ tools/perf/util/include/dwarf-regs.h          | 11 +++++
+ 8 files changed, 96 insertions(+), 16 deletions(-)
 
+diff --git a/tools/perf/arch/arm64/annotate/instructions.c b/tools/perf/arch/arm64/annotate/instructions.c
+index 4af0c3a0f86e..f86d9f4798bd 100644
+--- a/tools/perf/arch/arm64/annotate/instructions.c
++++ b/tools/perf/arch/arm64/annotate/instructions.c
+@@ -11,7 +11,8 @@ struct arm64_annotate {
+ 
+ static int arm64_mov__parse(struct arch *arch __maybe_unused,
+ 			    struct ins_operands *ops,
+-			    struct map_symbol *ms __maybe_unused)
++			    struct map_symbol *ms __maybe_unused,
++			    struct disasm_line *dl __maybe_unused)
+ {
+ 	char *s = strchr(ops->raw, ','), *target, *endptr;
+ 
+diff --git a/tools/perf/arch/loongarch/annotate/instructions.c b/tools/perf/arch/loongarch/annotate/instructions.c
+index 21cc7e4149f7..ab43b1ab51e3 100644
+--- a/tools/perf/arch/loongarch/annotate/instructions.c
++++ b/tools/perf/arch/loongarch/annotate/instructions.c
+@@ -5,7 +5,8 @@
+  * Copyright (C) 2020-2023 Loongson Technology Corporation Limited
+  */
+ 
+-static int loongarch_call__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
++static int loongarch_call__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	char *c, *endptr, *tok, *name;
+ 	struct map *map = ms->map;
+@@ -51,7 +52,8 @@ static struct ins_ops loongarch_call_ops = {
+ 	.scnprintf = call__scnprintf,
+ };
+ 
+-static int loongarch_jump__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
++static int loongarch_jump__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	struct map *map = ms->map;
+ 	struct symbol *sym = ms->sym;
+diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c b/tools/perf/arch/powerpc/util/dwarf-regs.c
+index 430623ca5612..104c7ae5c433 100644
+--- a/tools/perf/arch/powerpc/util/dwarf-regs.c
++++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
+@@ -107,3 +107,47 @@ int regs_query_register_offset(const char *name)
+ #define PPC_DS(DS)	((DS) & 0xfffc)
+ #define OP_LD	58
+ #define OP_STD	62
++
++static int get_source_reg(u32 raw_insn)
++{
++	return PPC_RA(raw_insn);
++}
++
++static int get_target_reg(u32 raw_insn)
++{
++	return PPC_RT(raw_insn);
++}
++
++static int get_offset_opcode(u32 raw_insn)
++{
++	int opcode = PPC_OP(raw_insn);
++
++	/* DS- form */
++	if ((opcode == OP_LD) || (opcode == OP_STD))
++		return PPC_DS(raw_insn);
++	else
++		return PPC_D(raw_insn);
++}
++
++/*
++ * Fills the required fields for op_loc depending on if it
++ * is a source or target.
++ * D form: ins RT,D(RA) -> src_reg1 = RA, offset = D, dst_reg1 = RT
++ * DS form: ins RT,DS(RA) -> src_reg1 = RA, offset = DS, dst_reg1 = RT
++ * X form: ins RT,RA,RB -> src_reg1 = RA, src_reg2 = RB, dst_reg1 = RT
++ */
++void get_powerpc_regs(u32 raw_insn, int is_source,
++		struct annotated_op_loc *op_loc)
++{
++	if (is_source)
++		op_loc->reg1 = get_source_reg(raw_insn);
++	else
++		op_loc->reg1 = get_target_reg(raw_insn);
++
++	if (op_loc->multi_regs)
++		op_loc->reg2 = PPC_RB(raw_insn);
++
++	/* TODO: Implement offset handling for X Form */
++	if ((op_loc->mem_ref) && (PPC_OP(raw_insn) != 31))
++		op_loc->offset = get_offset_opcode(raw_insn);
++}
+diff --git a/tools/perf/arch/s390/annotate/instructions.c b/tools/perf/arch/s390/annotate/instructions.c
+index da5aa3e1f04c..eeac25cca699 100644
+--- a/tools/perf/arch/s390/annotate/instructions.c
++++ b/tools/perf/arch/s390/annotate/instructions.c
+@@ -2,7 +2,7 @@
+ #include <linux/compiler.h>
+ 
+ static int s390_call__parse(struct arch *arch, struct ins_operands *ops,
+-			    struct map_symbol *ms)
++			    struct map_symbol *ms, struct disasm_line *dl __maybe_unused)
+ {
+ 	char *endptr, *tok, *name;
+ 	struct map *map = ms->map;
+@@ -52,7 +52,8 @@ static struct ins_ops s390_call_ops = {
+ 
+ static int s390_mov__parse(struct arch *arch __maybe_unused,
+ 			   struct ins_operands *ops,
+-			   struct map_symbol *ms __maybe_unused)
++			   struct map_symbol *ms __maybe_unused,
++			   struct disasm_line *dl __maybe_unused)
+ {
+ 	char *s = strchr(ops->raw, ','), *target, *endptr;
+ 
+diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+index 1451caf25e77..ce99db291c5e 100644
+--- a/tools/perf/util/annotate.c
++++ b/tools/perf/util/annotate.c
+@@ -2123,20 +2123,33 @@ int annotate_get_insn_location(struct arch *arch, struct disasm_line *dl,
+ 	for_each_insn_op_loc(loc, i, op_loc) {
+ 		const char *insn_str = ops->source.raw;
+ 		bool multi_regs = ops->source.multi_regs;
++		bool mem_ref = ops->source.mem_ref;
+ 
+ 		if (i == INSN_OP_TARGET) {
+ 			insn_str = ops->target.raw;
+ 			multi_regs = ops->target.multi_regs;
++			mem_ref = ops->target.mem_ref;
+ 		}
+ 
+ 		/* Invalidate the register by default */
+ 		op_loc->reg1 = -1;
+ 		op_loc->reg2 = -1;
+ 
+-		if (insn_str == NULL)
+-			continue;
++		if (insn_str == NULL) {
++			if (!arch__is(arch, "powerpc"))
++				continue;
++		}
+ 
+-		if (strchr(insn_str, arch->objdump.memory_ref_char)) {
++		/*
++		 * For powerpc, call get_powerpc_regs function which extracts the
++		 * required fields for op_loc, ie reg1, reg2, offset from the
++		 * raw instruction.
++		 */
++		if (arch__is(arch, "powerpc")) {
++			op_loc->mem_ref = mem_ref;
++			op_loc->multi_regs = multi_regs;
++			get_powerpc_regs(dl->raw.raw_insn, !i, op_loc);
++		} else if (strchr(insn_str, arch->objdump.memory_ref_char)) {
+ 			op_loc->mem_ref = true;
+ 			op_loc->multi_regs = multi_regs;
+ 			extract_reg_offset(arch, insn_str, op_loc);
 diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-index a53591a6111e..646290b043b2 100644
+index 646290b043b2..8e45f0874e03 100644
 --- a/tools/perf/util/disasm.c
 +++ b/tools/perf/util/disasm.c
-@@ -25,6 +25,7 @@
- #include "srcline.h"
- #include "symbol.h"
- #include "util.h"
-+#include "sort.h"
+@@ -256,7 +256,8 @@ bool ins__is_fused(struct arch *arch, const char *ins1, const char *ins2)
+ 	return arch->ins_is_fused(arch, ins1, ins2);
+ }
  
- static regex_t	 file_lineno;
+-static int call__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
++static int call__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	char *endptr, *tok, *name;
+ 	struct map *map = ms->map;
+@@ -351,7 +352,8 @@ static inline const char *validate_comma(const char *c, struct ins_operands *ops
+ 	return c;
+ }
  
-@@ -1634,6 +1635,91 @@ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
+-static int jump__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
++static int jump__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	struct map *map = ms->map;
+ 	struct symbol *sym = ms->sym;
+@@ -510,7 +512,8 @@ static int comment__symbol(char *raw, char *comment, u64 *addrp, char **namep)
+ 	return 0;
+ }
+ 
+-static int lock__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms)
++static int lock__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	ops->locked.ops = zalloc(sizeof(*ops->locked.ops));
+ 	if (ops->locked.ops == NULL)
+@@ -525,7 +528,7 @@ static int lock__parse(struct arch *arch, struct ins_operands *ops, struct map_s
+ 		goto out_free_ops;
+ 
+ 	if (ops->locked.ins.ops->parse &&
+-	    ops->locked.ins.ops->parse(arch, ops->locked.ops, ms) < 0)
++	    ops->locked.ins.ops->parse(arch, ops->locked.ops, ms, NULL) < 0)
+ 		goto out_free_ops;
+ 
+ 	return 0;
+@@ -596,7 +599,8 @@ static bool check_multi_regs(struct arch *arch, const char *op)
+ 	return count > 1;
+ }
+ 
+-static int mov__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms __maybe_unused)
++static int mov__parse(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms __maybe_unused,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	char *s = strchr(ops->raw, ','), *target, *comment, prev;
+ 
+@@ -674,7 +678,8 @@ static struct ins_ops mov_ops = {
+ 	.scnprintf = mov__scnprintf,
+ };
+ 
+-static int dec__parse(struct arch *arch __maybe_unused, struct ins_operands *ops, struct map_symbol *ms __maybe_unused)
++static int dec__parse(struct arch *arch __maybe_unused, struct ins_operands *ops, struct map_symbol *ms __maybe_unused,
++		struct disasm_line *dl __maybe_unused)
+ {
+ 	char *target, *comment, *s, prev;
+ 
+@@ -815,7 +820,7 @@ static void disasm_line__init_ins(struct disasm_line *dl, struct arch *arch, str
+ 	if (!dl->ins.ops)
+ 		return;
+ 
+-	if (dl->ins.ops->parse && dl->ins.ops->parse(arch, &dl->ops, ms) < 0)
++	if (dl->ins.ops->parse && dl->ins.ops->parse(arch, &dl->ops, ms, dl) < 0)
+ 		dl->ins.ops = NULL;
+ }
+ 
+diff --git a/tools/perf/util/disasm.h b/tools/perf/util/disasm.h
+index c835759c8e2b..30be0a94ea04 100644
+--- a/tools/perf/util/disasm.h
++++ b/tools/perf/util/disasm.h
+@@ -62,6 +62,7 @@ struct ins_operands {
+ 		bool	offset_avail;
+ 		bool	outside;
+ 		bool	multi_regs;
++		bool	mem_ref;
+ 	} target;
+ 	union {
+ 		struct {
+@@ -69,6 +70,7 @@ struct ins_operands {
+ 			char	*name;
+ 			u64	addr;
+ 			bool	multi_regs;
++			bool	mem_ref;
+ 		} source;
+ 		struct {
+ 			struct ins	    ins;
+@@ -83,7 +85,8 @@ struct ins_operands {
+ 
+ struct ins_ops {
+ 	void (*free)(struct ins_operands *ops);
+-	int (*parse)(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms);
++	int (*parse)(struct arch *arch, struct ins_operands *ops, struct map_symbol *ms,
++			struct disasm_line *dl);
+ 	int (*scnprintf)(struct ins *ins, char *bf, size_t size,
+ 			 struct ins_operands *ops, int max_ins_name);
+ };
+diff --git a/tools/perf/util/include/dwarf-regs.h b/tools/perf/util/include/dwarf-regs.h
+index 01fb25a1150a..8fb987818b1a 100644
+--- a/tools/perf/util/include/dwarf-regs.h
++++ b/tools/perf/util/include/dwarf-regs.h
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef _PERF_DWARF_REGS_H_
+ #define _PERF_DWARF_REGS_H_
++#include "annotate.h"
+ 
+ #define DWARF_REG_PC  0xd3af9c /* random number */
+ #define DWARF_REG_FB  0xd3affb /* random number */
+@@ -31,6 +32,16 @@ static inline int get_dwarf_regnum(const char *name __maybe_unused,
  }
  #endif
  
-+static int symbol__disassemble_raw(char *filename, struct symbol *sym,
-+					struct annotate_args *args)
++#if !defined(__powerpc__) || !defined(HAVE_DWARF_SUPPORT)
++static inline void get_powerpc_regs(u32 raw_insn __maybe_unused, int is_source __maybe_unused,
++		struct annotated_op_loc *op_loc __maybe_unused)
 +{
-+	struct annotation *notes = symbol__annotation(sym);
-+	struct map *map = args->ms.map;
-+	struct dso *dso = map__dso(map);
-+	u64 start = map__rip_2objdump(map, sym->start);
-+	u64 end = map__rip_2objdump(map, sym->end);
-+	u64 len = end - start;
-+	u64 offset;
-+	int i, count;
-+	u8 *buf = NULL;
-+	char disasm_buf[512];
-+	struct disasm_line *dl;
-+	u32 *line;
-+
-+	/* Return if objdump is specified explicitly */
-+	if (args->options->objdump_path)
-+		return -1;
-+
-+	pr_debug("Reading raw instruction from : %s using dso__data_read_offset\n", filename);
-+
-+	buf = malloc(len);
-+	if (buf == NULL)
-+		goto err;
-+
-+	count = dso__data_read_offset(dso, NULL, sym->start, buf, len);
-+
-+	line = (u32 *)buf;
-+
-+	if ((u64)count != len)
-+		goto err;
-+
-+	/* add the function address and name */
-+	scnprintf(disasm_buf, sizeof(disasm_buf), "%#"PRIx64" <%s>:",
-+		  start, sym->name);
-+
-+	args->offset = -1;
-+	args->line = disasm_buf;
-+	args->line_nr = 0;
-+	args->fileloc = NULL;
-+	args->ms.sym = sym;
-+
-+	dl = disasm_line__new(args);
-+	if (dl == NULL)
-+		goto err;
-+
-+	annotation_line__add(&dl->al, &notes->src->source);
-+
-+	/* Each raw instruction is 4 byte */
-+	count = len/4;
-+
-+	for (i = 0, offset = 0; i < count; i++) {
-+		args->offset = offset;
-+		sprintf(args->line, "%x", line[i]);
-+		dl = disasm_line__new(args);
-+		if (dl == NULL)
-+			goto err;
-+
-+		annotation_line__add(&dl->al, &notes->src->source);
-+		offset += 4;
-+	}
-+
-+	/* It failed in the middle */
-+	if (offset != len) {
-+		struct list_head *list = &notes->src->source;
-+
-+		/* Discard all lines and fallback to objdump */
-+		while (!list_empty(list)) {
-+			dl = list_first_entry(list, struct disasm_line, al.node);
-+
-+			list_del_init(&dl->al.node);
-+			disasm_line__free(dl);
-+		}
-+		count = -1;
-+	}
-+
-+out:
-+	free(buf);
-+	return count < 0 ? count : 0;
-+
-+err:
-+	count = -1;
-+	goto out;
++	return;
 +}
- /*
-  * Possibly create a new version of line with tabs expanded. Returns the
-  * existing or new line, storage is updated if a new line is allocated. If
-@@ -1758,6 +1844,21 @@ int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
- 		strcpy(symfs_filename, tmp);
- 	}
- 
-+	/*
-+	 * For powerpc data type profiling, use the dso__data_read_offset
-+	 * to read raw instruction directly and interpret the binary code
-+	 * to understand instructions and register fields. For sort keys as
-+	 * type and typeoff, disassemble to mnemonic notation is
-+	 * not required in case of powerpc.
-+	 */
-+	if (arch__is(args->arch, "powerpc")) {
-+		if (sort_order && !strstr(sort_order, "sym")) {
-+			err = symbol__disassemble_raw(symfs_filename, sym, args);
-+			if (err == 0)
-+				goto out_remove_tmp;
-+		}
-+	}
++#else
++void get_powerpc_regs(u32 raw_insn, int is_source, struct annotated_op_loc *op_loc);
++#endif
 +
- #ifdef HAVE_LIBCAPSTONE_SUPPORT
- 	err = symbol__disassemble_capstone(symfs_filename, sym, args);
- 	if (err == 0)
+ #ifdef HAVE_ARCH_REGS_QUERY_REGISTER_OFFSET
+ /*
+  * Arch should support fetching the offset of a register in pt_regs
 -- 
 2.43.0
 
