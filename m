@@ -1,50 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2270E9295E8
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 01:29:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4D892964C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 03:38:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MGu/4hdM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lb7Wb9qI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WGmn46kg2z3cSN
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 09:29:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WGqfT1y1mz3cS0
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jul 2024 11:38:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MGu/4hdM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lb7Wb9qI;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WGmmM6hFZz30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Jul 2024 09:28:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1720308531;
-	bh=MZPrrz50Q58iHN+nAhEHGrx3MePXgnyuTKmR8fmWfbE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MGu/4hdMEq1NfRSrcEM5BBzs52X1JsfoSUUAH8Ghd/LxT95qE/s8hpDIOoCYaaUDx
-	 /u/V/s0Zo1fx1BZkBzwfO3r6x1vBmBDnZg5RQeu6TrmmLS1blJ/TxHZdBpIfEtMCti
-	 Z/JDW9VqrdC7o98vIDmsQhE/TIaITFGyj0lBPutAVZ0E4HO4Iimm1fYgn0DSKpctrL
-	 Rh03tpgPNKg0behZHP23t/78uUs7mH2t5giXo0ApIMuiVaMPW+bnFGZBaQpaQBiUHo
-	 yal2y8bgas+KhoEmpuNEsW94ayLWciiTrl3RgYBYM5LoIHUETLRaKesFVcf2yEmsgb
-	 m1R6deEBdTc7w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WGmmL75HJz4xNg;
-	Sun,  7 Jul 2024 09:28:50 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.10-4 tag
-Date: Sun, 07 Jul 2024 09:28:50 +1000
-Message-ID: <87wmly2j7x.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WGqdn579Mz3cQL
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Jul 2024 11:38:21 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 08992CE0171;
+	Sun,  7 Jul 2024 01:38:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4EA67C2BD10;
+	Sun,  7 Jul 2024 01:38:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720316296;
+	bh=DO4mjBeSv+rHa+N2vYm3ADbLYG0pH0vMnK2UvRXIXOY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Lb7Wb9qIydSVlM7jLqmwxk3sYwvbGUXJoeXr397iHU55CQe3YSzXe27W4Z7zYke8c
+	 AeRTQWlMEopXjrO5ca9OkoFR/K8gGOz3vQwCYpBRx5A7BP7MsRSeJ/tJ+KgTJ2r3vq
+	 zbZ2957z2FU86BXnOeuurX5LhRzpbG0IFcq35pVGSYjYDj+DLru4B4ZVW/BacZgtZF
+	 VWP34YYaunM8I2zpWnSD8fHHigpcKQhZFo41K3U6cC7/Z/PvZta4H1BpPjFlZaM9H6
+	 wlwAhp/05nZYaFpaaecOO1N+OYHAiiH5eFh6lyGaFl/OJ3Usko3prrWIAwdT3MiBHI
+	 4ht2DKVsa9KCg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 40985C43446;
+	Sun,  7 Jul 2024 01:38:16 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.10-4 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87wmly2j7x.fsf@mail.lhotse>
+References: <87wmly2j7x.fsf@mail.lhotse>
+X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <87wmly2j7x.fsf@mail.lhotse>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.10-4
+X-PR-Tracked-Commit-Id: 8b7f59de92ac65aa21c7d779274dbfa577ae2d2c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c6653f49e4fd3b0d52c12a1fc814d6c5b234ea15
+Message-Id: <172031629625.31798.10712226152561786260.pr-tracker-bot@kernel.org>
+Date: Sun, 07 Jul 2024 01:38:16 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,83 +66,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: anjalik@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, ganeshgr@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinglin.wen@shingroup.cn
+Cc: anjalik@linux.ibm.com, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, npiggin@gmail.com, ganeshgr@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, jinglin.wen@shingroup.cn
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+The pull request you sent on Sun, 07 Jul 2024 09:28:50 +1000:
 
-Hi Linus,
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.10-4
 
-Please pull some more powerpc fixes for 6.10:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c6653f49e4fd3b0d52c12a1fc814d6c5b234ea15
 
-The following changes since commit a986fa57fd81a1430e00b3c6cf8a325d6f894a63:
+Thank you!
 
-  KVM: PPC: Book3S HV: Prevent UAF in kvm_spapr_tce_attach_iommu_group() (2024-06-16 10:20:11 +1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.10-4
-
-for you to fetch changes up to 8b7f59de92ac65aa21c7d779274dbfa577ae2d2c:
-
-  selftests/powerpc: Fix build with USERCFLAGS set (2024-07-06 22:10:14 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.10 #4
-
- - Fix unnecessary copy to 0 when kernel is booted at address 0.
-
- - Fix usercopy crash when dumping dtl via debugfs.
-
- - Avoid possible crash when PCI hotplug races with error handling.
-
- - Fix kexec crash caused by scv being disabled before other CPUs call-in.
-
- - Fix powerpc selftests build with USERCFLAGS set.
-
-Thanks to: Anjali K, Ganesh Goudar, Gautam Menghani, Jinglin Wen, Nicholas
-Piggin, Sourabh Jain, Srikar Dronamraju, Vishal Chourasia.
-
-- ------------------------------------------------------------------
-Anjali K (1):
-      powerpc/pseries: Whitelist dtl slub object for copying to userspace
-
-Ganesh Goudar (1):
-      powerpc/eeh: avoid possible crash when edev->pdev changes
-
-Jinglin Wen (1):
-      powerpc/64s: Fix unnecessary copy to 0 when kernel is booted at address 0
-
-Michael Ellerman (1):
-      selftests/powerpc: Fix build with USERCFLAGS set
-
-Nicholas Piggin (1):
-      powerpc/pseries: Fix scv instruction crash with kexec
-
-
- arch/powerpc/kernel/eeh_pe.c             |  7 +++++--
- arch/powerpc/kernel/head_64.S            |  5 +++--
- arch/powerpc/kexec/core_64.c             | 11 +++++++++++
- arch/powerpc/platforms/pseries/kexec.c   |  8 --------
- arch/powerpc/platforms/pseries/pseries.h |  1 -
- arch/powerpc/platforms/pseries/setup.c   |  5 ++---
- tools/testing/selftests/powerpc/flags.mk |  5 +----
- 7 files changed, 22 insertions(+), 20 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmaJ0hYACgkQUevqPMjh
-pYB1uBAAhxsR3VV+XLbJTkhEARgUdzZt+8AMk4oc7dzPx1xUIavXJqaMGdoCGDcu
-0atvYlyel2CAFHbjRkaIzOxg2ZUtXdOvio4udeFvb48DCnaaH0WsOdG70OIThtX0
-Zl+lkRgRy5SM1KPJUa+o9ygvi90ZNbOV358h/ar9l4O7EULmOqZwlZYAhlEYr25B
-MtvX6ZONGOgl5SxVr9+55vLm0/g97OzuGmi343XHEdHjBhH5HkcKi8Z5XkwYFGOt
-cExZFVtWnayM+PsUkympt3o5Zchb+oc1EUAJWUILQJQMHx89atc9Q0pxZyi7XXA/
-tT8mq0O78+iZbK1UuQ3qgE1/YPrHCdX8Glo0AmGoSem8P41HlWyamK28U4aK6VWd
-iqJCb25EZmKs5uo4Z0F10jswjc9QOgFftzgM74GCLkZ74vx3ubw9vKacRb/SkdLi
-vQz0M0Gh73tqwfjN0W3gRwWblCim3kCoHVBb8CmiB0YeDoq7nu2+ow94WFrhlvs+
-/HFOQ5NgnMhjzytmeAzWOk0s/xOXPCwbrEUjfRxRg5cZCWXUuO6XmeO547pZy2Ke
-JwBWO+Hi9b5jwC/5LEQZ3wJ2rjSCJwDKT8MwqvcSSsEXvpGvsjMCi4mTqVVlbRkQ
-qz/lv0PozyavP/AUPamX0wZ0k5df/XDkX1qxoxyG/x1HXlwDhJ4=
-=7pyj
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
