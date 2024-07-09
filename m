@@ -2,59 +2,104 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6C992B57E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 12:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6D792B5FA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 12:54:09 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ep5yM+XM;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9BcXKMIJ;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=GnDPxJa5;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lkILmT7M;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJHYs4TSbz3dDP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 20:40:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJHt65FMvz3cYr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 20:54:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mfe@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ep5yM+XM;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=9BcXKMIJ;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=GnDPxJa5;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lkILmT7M;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJHYV456zz3cP3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 20:39:42 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sR8FD-0003rR-B5; Tue, 09 Jul 2024 12:38:47 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sR8F7-008G9a-MD; Tue, 09 Jul 2024 12:38:41 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sR8F7-006Uv6-1k;
-	Tue, 09 Jul 2024 12:38:41 +0200
-Date: Tue, 9 Jul 2024 12:38:41 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 4/9] mtd: devices: add AT24 eeprom support
-Message-ID: <20240709103841.7x7n4hdtqrunyoc3@pengutronix.de>
-References: <20240701-b4-v6-10-topic-usbc-tcpci-v1-0-3fd5f4a193cc@pengutronix.de>
- <20240701-b4-v6-10-topic-usbc-tcpci-v1-4-3fd5f4a193cc@pengutronix.de>
- <07b701a9-7b52-45b7-8dba-1c25d77cbf15@linaro.org>
- <mafs0ikxnykpr.fsf@kernel.org>
- <20240702-congenial-vigilant-boar-aeae44@houat>
- <mafs0ed8byj5z.fsf@kernel.org>
- <20240702-mighty-brilliant-eel-b0d9fa@houat>
- <20240708084440.70186564@xps-13>
- <20240709092214.omr7ccphdzdk7z7j@pengutronix.de>
- <20240709114302.3c604ef3@xps-13>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJHsN46DHz30Ss
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 20:53:28 +1000 (AEST)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E06AF1F7B5;
+	Tue,  9 Jul 2024 10:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1720522396; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S6PZdiJUUOQ7/tocirlXk54I+exN8OLe8KW3h1b5AAU=;
+	b=Ep5yM+XMyBz5JKZvmiZ3dx+0gOJlUf9vDrLHcGSo5+yeUBspfy4FYvLpaP5klu3/Mp50jq
+	uI0mawcGJpeLGq9NPwXm27ghdDzAwVAbRXNX7GgvZvuYtTI1KPTyCA+FiK9ln/xHZ38ID+
+	IpDuLMV/jq1CDbczhp+Ody2m2S4bQeE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1720522396;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S6PZdiJUUOQ7/tocirlXk54I+exN8OLe8KW3h1b5AAU=;
+	b=9BcXKMIJwRrV2+r7BsOiKjQJphoJdzNcCCfNIUEK9lSHE3FcEd1Y8trxy3JsLOWvEDj++h
+	11vTSfV8kPXQBbAg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1720522395; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S6PZdiJUUOQ7/tocirlXk54I+exN8OLe8KW3h1b5AAU=;
+	b=GnDPxJa5ZNCS15va8Zb+oR/Li2PPkBaKeuUfQVSnmkw2LXEGSItP5XB3/PCkYLgqePd76G
+	V483aJP/fRsigiX+wJx5Y6jHf1CxmFbYBbtI6FkU6uzWPPmOrgB4vWdILxTAY8emKqI12K
+	4g+ipnibhAd15xW6iVbMT8bBpqPUVJ4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1720522395;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S6PZdiJUUOQ7/tocirlXk54I+exN8OLe8KW3h1b5AAU=;
+	b=lkILmT7Mzc+btc0jAmQiIw/Ob2VT4dlvTnRVHbDGCvlfrlSJktY9ZzsjF18vZY8HwTTcjG
+	vS/iYZmVshVCGoAA==
+Date: Tue, 9 Jul 2024 12:53:14 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/pseries: Fix scv instruction crash with kexec
+Message-ID: <20240709105314.GA26833@kitsune.suse.cz>
+References: <20240625134047.298759-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240709114302.3c604ef3@xps-13>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20240625134047.298759-1-npiggin@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.992];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_ZERO(0.00)[0];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,104 +111,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Vignesh Raghavendra <vigneshr@ti.com>, Geert Uytterhoeven <geert+renesas@glider.be>, imx@lists.linux.dev, Tony Lindgren <tony@atomide.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, Thierry Reding <thierry.reding@gmail.com>, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Fabio Estevam <festevam@gmail.com>, linux-aspeed@lists.ozlabs.org, Richard Weinberger <richard@nod.at>, Gregory Clement <gregory.clement@bootlin.com>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>, Jonathan Hunter <jonathanh@nvidia.com>, Tudor Ambarus <tudor.ambarus@linaro.org>, Joel Stanley <joel@jms.id.au>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, openbmc@lists.ozlabs.org, Sascha Hauer <s.hauer@pengutronix.de>, Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, Maxime Ripard <mripard@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>, Nicholas Piggin <npiggin@gmail.com>, loongarch@lists.linux.dev, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Pratyush Yadav <pratyush@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24-07-09, Miquel Raynal wrote:
-> Hi Marco,
+Hello,
+
+On Tue, Jun 25, 2024 at 11:40:47PM +1000, Nicholas Piggin wrote:
+> kexec on pseries disables AIL (reloc_on_exc), required for scv
+> instruction support, before other CPUs have been shut down. This means
+> they can execute scv instructions after AIL is disabled, which causes an
+> interrupt at an unexpected entry location that crashes the kernel.
 > 
-> > > > > >> I also found a thread from 2013 by Maxime Ripard (+Cc) suggesting adding
-> > > > > >> EEPROMs to MTD [1]. The main purpose would have been unifying the EEPROM
-> > > > > >> drivers under a single interface. I am not sure what came of it though,
-> > > > > >> since I can't find any patches that followed up with the proposal.    
-> > > > > >
-> > > > > > That discussion led to drivers/nvmem after I started to work on
-> > > > > > some early prototype, and Srinivas took over that work.    
-> > > > > 
-> > > > > So would you say it is better for EEPROM drivers to use nvmem instead of
-> > > > > moving under MTD?    
-> > > > 
-> > > > I thought so at the time, but that was more than 10y ago, and I have
-> > > > followed neither nvmem nor MTD since so I don't really have an opinion
-> > > > there.
-> > > > 
-> > > > It looks like drivers/misc/eeprom/at24.c has support for nvmem though,
-> > > > and MTD can be used as an nvmem provider too, so it's not clear to me
-> > > > why we would want to create yet another variant.
-> > > > 
-> > > > But again, you shouldn't really ask me in the first place :)
-> > > > 
-> > > > I'm sure Miquel, Srinivas, and surely others, are much more relevant to
-> > > > answer that question.  
-> > > 
-> > > More relevant, I doubt, but just a feeling: EEPROMs have their own
-> > > subsystem now, NVMEM, which, as Maxime said, was initially written for
-> > > that very specific case. EEPROMs don't have the complexity of MTD
-> > > devices, and thus pulling the whole MTD subsystem just for getting
-> > > partitions seems counter intuitive to me. You can definitely "split"
-> > > EEPROM devices with NVMEM as well anyway.  
-> > 
-> > I asked for feedback on my RFC [1] and all I got was to merge both
-> > drivers into one and make the driver backward compatible, which I did by
-> > this commit.
+> Change the kexec sequence to disable AIL after other CPUs have been
+> brought down.
 > 
-> I'm sorry for not bringing this earlier.
-
-The purpose of the RFC was exactly to figure out the way to go therefore
-I'm a bit surprised now :/
-
-> > > Overall I think the idea of getting rid of these misc/ drivers is goes
-> > > into the right direction, but registering directly into NVMEM makes
-> > > more sense IMO.  
-> > 
-> > So you propose to have two places for the partition handling (one for
-> > MTD and one for NVMEM) instead of one and moving the code into NVMEM
-> > directly?
+> As a refresher, the real-mode scv interrupt vector is 0x17000, and the
+> fixed-location head code probably couldn't easily deal with implementing
+> such high addresses so it was just decided not to support that interrupt
+> at all.
 > 
-> Why two places for the partitions handling? Just one, in NVMEM. Also
+> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Fixes: 7fa95f9adaee7 ("powerpc/64s: system call support for scv/rfscv instructions")
 
-Without checking the details I think that converting the MTD
-partitioning code into NVMEM partitioning code is a bigger task. As you
-said below there are many legacy code paths you need to consider so they
-still work afterwards as well.
+looks like this is only broken by
+commit 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexec paths")
 
-> usually EEPROMs don't require very advanced partitioning schemes,
-> unlike flashes (which are the most common MTD devices today).
+This change reverts the kexec parts done in that commit.
 
-As said in my cover letter EEPROMs can become quite large and MTD
-supports partitioning storage devices which is very handy for large
-EEPROMs as well.
+That is the fix is 5.19+, not 5.9+
 
-> > That doesn't sound right to me either. Also I don't get the
-> > point why EEPROMs can't be handled by the MTD layer?
+Thanks
+
+Michal
+
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kexec/core_64.c             | 11 +++++++++++
+>  arch/powerpc/platforms/pseries/kexec.c   |  8 --------
+>  arch/powerpc/platforms/pseries/pseries.h |  1 -
+>  arch/powerpc/platforms/pseries/setup.c   |  1 -
+>  4 files changed, 11 insertions(+), 10 deletions(-)
 > 
-> They can, but should they? Just compile the two layers and observe
-> the size difference. MTD is complex and old, carries a lot of history,
-> and the user interface is also not straightforward because you need to
-> handle pages, blocks, erases, bitflips, ECC stats, OOB bytes and
-> positions, two OTP areas... None of that exists in the EEPROM world. So
-> why would you want to register into MTD and pull a huge subsystem while
-> there is a much more recent, simpler and way lighter subsystem fitting
-> much better your device?
-
-Didn't checked the size but the honest, MTD provides many Kconfig
-switches to trim the size down. As of now the mtd.o is made of up to 5
-(6 if chipreg.o is counted -> should be an opt) files which is of course
-larger than the pure misc/eeprom/at24.c driver but not that large. 
-
-Regards,
-  Marco
-
-> > The layer already
-> > supports devices of type MTD_RAM which are very simple and don't require
-> > an erase-op at least I don't see one.
-> 
-> MTD_RAM has been there forever, probably for "bad" reasons. BTW there
-> has been an attempt at removing it which was reverted in _2006_ and then
-> felt into the cracks:
-> 21c8db9eff95 ("[MTD] Restore MTD_ROM and MTD_RAM types")
-> 
-> Thanks,
-> Miquèl
+> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+> index 85050be08a23..72b12bc10f90 100644
+> --- a/arch/powerpc/kexec/core_64.c
+> +++ b/arch/powerpc/kexec/core_64.c
+> @@ -27,6 +27,7 @@
+>  #include <asm/paca.h>
+>  #include <asm/mmu.h>
+>  #include <asm/sections.h>	/* _end */
+> +#include <asm/setup.h>
+>  #include <asm/smp.h>
+>  #include <asm/hw_breakpoint.h>
+>  #include <asm/svm.h>
+> @@ -317,6 +318,16 @@ void default_machine_kexec(struct kimage *image)
+>  	if (!kdump_in_progress())
+>  		kexec_prepare_cpus();
+>  
+> +#ifdef CONFIG_PPC_PSERIES
+> +	/*
+> +	 * This must be done after other CPUs have shut down, otherwise they
+> +	 * could execute the 'scv' instruction, which is not supported with
+> +	 * reloc disabled (see configure_exceptions()).
+> +	 */
+> +	if (firmware_has_feature(FW_FEATURE_SET_MODE))
+> +		pseries_disable_reloc_on_exc();
+> +#endif
+> +
+>  	printk("kexec: Starting switchover sequence.\n");
+>  
+>  	/* switch to a staticly allocated stack.  Based on irq stack code.
+> diff --git a/arch/powerpc/platforms/pseries/kexec.c b/arch/powerpc/platforms/pseries/kexec.c
+> index 096d09ed89f6..431be156ca9b 100644
+> --- a/arch/powerpc/platforms/pseries/kexec.c
+> +++ b/arch/powerpc/platforms/pseries/kexec.c
+> @@ -61,11 +61,3 @@ void pseries_kexec_cpu_down(int crash_shutdown, int secondary)
+>  	} else
+>  		xics_kexec_teardown_cpu(secondary);
+>  }
+> -
+> -void pseries_machine_kexec(struct kimage *image)
+> -{
+> -	if (firmware_has_feature(FW_FEATURE_SET_MODE))
+> -		pseries_disable_reloc_on_exc();
+> -
+> -	default_machine_kexec(image);
+> -}
+> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+> index bba4ad192b0f..3968a6970fa8 100644
+> --- a/arch/powerpc/platforms/pseries/pseries.h
+> +++ b/arch/powerpc/platforms/pseries/pseries.h
+> @@ -38,7 +38,6 @@ static inline void smp_init_pseries(void) { }
+>  #endif
+>  
+>  extern void pseries_kexec_cpu_down(int crash_shutdown, int secondary);
+> -void pseries_machine_kexec(struct kimage *image);
+>  
+>  extern void pSeries_final_fixup(void);
+>  
+> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+> index 284a6fa04b0c..b44de0f0822f 100644
+> --- a/arch/powerpc/platforms/pseries/setup.c
+> +++ b/arch/powerpc/platforms/pseries/setup.c
+> @@ -1159,7 +1159,6 @@ define_machine(pseries) {
+>  	.machine_check_exception = pSeries_machine_check_exception,
+>  	.machine_check_log_err	= pSeries_machine_check_log_err,
+>  #ifdef CONFIG_KEXEC_CORE
+> -	.machine_kexec          = pseries_machine_kexec,
+>  	.kexec_cpu_down         = pseries_kexec_cpu_down,
+>  #endif
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+> -- 
+> 2.45.1
 > 
