@@ -2,54 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C158D92BA69
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:03:57 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HDICM+k6;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2C692BB78
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:37:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJLlv4RpWz3cWd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:03:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJMVC2yyFz3dHP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:37:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HDICM+k6;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJLl94VF8z3c3W
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:03:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1720530191;
-	bh=Q8gSg+bXfSIMjxyQ8VqEPJ+/eqbSrn9qWPO7jTl1J6s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=HDICM+k6YMmx/TgvJ+7XibgE8njhjCC8Rt77rRZKFZaVDksi1xMTL+cgGCdcxAoym
-	 HiQlgWqb9+q7Jdcncs8D0FKWPrwRC/oFi2y1rGdXn3voe8uqcSuHZaOhZy8hgTHdkT
-	 7OIDXsgwAnTKqp6fVcUD/rJlnP4NMhWoxD632+YJmCS2L/EceQxyVKATEMumbBAwig
-	 4V2ketbAQnR3aGhg/FCia/yjnMz/61tIinh+9Fq6aln3WMfr0mJC1XoT34UltNclAy
-	 yNAHfWd1rMM4sxbFw7Shq70e6OkwlO/Um322HAvRQ2Cc2nqb/qu9nLSBfqn8P/hL6Q
-	 ktE+itiIR9mGg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WJLl30Zwgz4w2P;
-	Tue,  9 Jul 2024 23:03:10 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, Nicholas Piggin
- <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries: Fix scv instruction crash with kexec
-In-Reply-To: <20240709105314.GA26833@kitsune.suse.cz>
-References: <20240625134047.298759-1-npiggin@gmail.com>
- <20240709105314.GA26833@kitsune.suse.cz>
-Date: Tue, 09 Jul 2024 23:03:10 +1000
-Message-ID: <87h6cy67ld.fsf@mail.lhotse>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJLmX15RMz2ysg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:04:25 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E083B153B;
+	Tue,  9 Jul 2024 06:04:17 -0700 (PDT)
+Received: from [10.44.160.75] (e126510-lin.lund.arm.com [10.44.160.75])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 58E303F766;
+	Tue,  9 Jul 2024 06:03:45 -0700 (PDT)
+Message-ID: <d41e8660-e081-4a60-a901-94eb2f72a643@arm.com>
+Date: Tue, 9 Jul 2024 15:03:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 15/29] arm64: handle PKEY/POE faults
+To: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-16-joey.gouly@arm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <20240503130147.1154804-16-joey.gouly@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Tue, 09 Jul 2024 23:36:08 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,69 +45,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> Hello,
+On 03/05/2024 15:01, Joey Gouly wrote:
+> [...]
 >
-> On Tue, Jun 25, 2024 at 11:40:47PM +1000, Nicholas Piggin wrote:
->> kexec on pseries disables AIL (reloc_on_exc), required for scv
->> instruction support, before other CPUs have been shut down. This means
->> they can execute scv instructions after AIL is disabled, which causes an
->> interrupt at an unexpected entry location that crashes the kernel.
->>=20
->> Change the kexec sequence to disable AIL after other CPUs have been
->> brought down.
->>=20
->> As a refresher, the real-mode scv interrupt vector is 0x17000, and the
->> fixed-location head code probably couldn't easily deal with implementing
->> such high addresses so it was just decided not to support that interrupt
->> at all.
->>=20
->> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> Fixes: 7fa95f9adaee7 ("powerpc/64s: system call support for scv/rfscv in=
-structions")
->
-> looks like this is only broken by
-> commit 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexe=
-c paths")
->
-> This change reverts the kexec parts done in that commit.
->
-> That is the fix is 5.19+, not 5.9+
+> +static bool fault_from_pkey(unsigned long esr, struct vm_area_struct *vma,
+> +			unsigned int mm_flags)
+> +{
+> +	unsigned long iss2 = ESR_ELx_ISS2(esr);
+> +
+> +	if (!arch_pkeys_enabled())
+> +		return false;
+> +
+> +	if (iss2 & ESR_ELx_Overlay)
+> +		return true;
+> +
+> +	return !arch_vma_access_permitted(vma,
+> +			mm_flags & FAULT_FLAG_WRITE,
+> +			mm_flags & FAULT_FLAG_INSTRUCTION,
+> +			mm_flags & FAULT_FLAG_REMOTE);
 
-Commit 2ab2d5794f14 moved the kexec code from one file to another, but
-didn't change when the key function (pseries_disable_reloc_on_exc()) was
-called.
+This function is only called from do_page_fault(), so the access cannot
+be remote. The equivalent x86 function (access_error()) always sets
+foreign to false.
 
-The old code was:
+> +}
+> +
+>  static vm_fault_t __do_page_fault(struct mm_struct *mm,
+>  				  struct vm_area_struct *vma, unsigned long addr,
+>  				  unsigned int mm_flags, unsigned long vm_flags,
+> @@ -529,6 +547,8 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+>  	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
+>  	unsigned long addr = untagged_addr(far);
+>  	struct vm_area_struct *vma;
+> +	bool pkey_fault = false;
+> +	int pkey = -1;
+>  
+>  	if (kprobe_page_fault(regs, esr))
+>  		return 0;
+> @@ -590,6 +610,12 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+>  		vma_end_read(vma);
+>  		goto lock_mmap;
+>  	}
+> +
+> +	if (fault_from_pkey(esr, vma, mm_flags)) {
+> +		vma_end_read(vma);
+> +		goto lock_mmap;
+> +	}
+> +
+>  	fault = handle_mm_fault(vma, addr, mm_flags | FAULT_FLAG_VMA_LOCK, regs);
+>  	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
+>  		vma_end_read(vma);
+> @@ -617,6 +643,11 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+>  		goto done;
+>  	}
+>  
+> +	if (fault_from_pkey(esr, vma, mm_flags)) {
+> +		pkey_fault = true;
+> +		pkey = vma_pkey(vma);
+> +	}
+> +
+>  	fault = __do_page_fault(mm, vma, addr, mm_flags, vm_flags, regs);
 
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platform=
-s/pseries/setup.c
-index a3dab15b0a2f..c9fcc30a0365 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -421,16 +421,6 @@ void pseries_disable_reloc_on_exc(void)
- }
- EXPORT_SYMBOL(pseries_disable_reloc_on_exc);
+We don't actually need to call __do_page_fault()/handle_mm_fault() if
+the fault was caused by POE. It still works since it checks
+arch_vma_access_permitted() early, but we might as well skip it
+altogether (like on x86). On 6.10-rcX, we could handle it like a missing
+vm_flags (goto bad_area).
 
--#ifdef CONFIG_KEXEC_CORE
--static void pSeries_machine_kexec(struct kimage *image)
--{
--       if (firmware_has_feature(FW_FEATURE_SET_MODE))
--               pseries_disable_reloc_on_exc();
--
--       default_machine_kexec(image);
--}
--#endif
--
-
-ie. pseries_disable_reloc_on_exc() (which disables AIL) is called before
-default_machine_kexec() where secondary CPUs are collected.
-
-So AFAICS the bug would still have been there prior to 2ab2d5794f14. But
-it's late here so I could be reading it wrong.
-
-cheers
+Kevin
