@@ -2,60 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B653392BB8C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FBD92BB5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:34:28 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=PtsalJxW;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJMXG3gWnz3ftj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:38:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJMR50xzzz3cW7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:34:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 412 seconds by postgrey-1.37 at boromir; Tue, 09 Jul 2024 23:25:16 AEST
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=PtsalJxW;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJMDX1Pv2z30Ss
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:25:15 +1000 (AEST)
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowADHz+eEOI1m3nhgAg--.39722S2;
-	Tue, 09 Jul 2024 21:18:05 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: fbarrat@linux.ibm.com,
-	ajd@linux.ibm.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	manoj@linux.vnet.ibm.com,
-	mpe@ellerman.id.au,
-	clombard@linux.vnet.ibm.com,
-	imunsie@au1.ibm.com
-Subject: [PATCH] cxl: Fix possible null pointer dereference in read_handle()
-Date: Tue,  9 Jul 2024 21:17:54 +0800
-Message-Id: <20240709131754.855144-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJMQN2N1Sz2y8Z
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:33:47 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2FA196145C;
+	Tue,  9 Jul 2024 13:33:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7155FC32786;
+	Tue,  9 Jul 2024 13:32:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1720531972;
+	bh=mOE+ryN8qxxEVONxkiQngqNrCkNEB9WBTPuTNVncMOs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PtsalJxWGaXFB9T7jLMLh7Ih886MrFqgDPdz3jcM2NG0VRU6tQC3lLBTvDWW5x/NY
+	 BxtT4eqc40FFMIAsSBC2zbYanf4pJuIwqNj/lDGe9vHNPUIxRkXqqr+45S+8DlVZ8a
+	 DNjoLE4uvKgLBaDhpz6dtKbrYdChnBdNf8T6Nlac=
+Date: Tue, 9 Jul 2024 15:32:50 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Subject: Re: [PATCH] cxl: Fix possible null pointer dereference in
+ read_handle()
+Message-ID: <2024070940-customize-sturdily-fc81@gregkh>
+References: <20240709131754.855144-1-make24@iscas.ac.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: zQCowADHz+eEOI1m3nhgAg--.39722S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFWDGrWDAw4xAr4UWry8Krg_yoW3Awc_CF
-	4UZr1xXryjgr9rGr1Y9r47Zr92yrW8uF95Zr4ftFW7K3y5CF1aqr1I9rs3ZrnrWr4DXFyD
-	Aw1qy3sY9r42gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
-X-Originating-IP: [183.174.60.14]
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Mailman-Approved-At: Tue, 09 Jul 2024 23:36:08 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240709131754.855144-1-make24@iscas.ac.cn>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,33 +57,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Ma Ke <make24@iscas.ac.cn>
+Cc: ajd@linux.ibm.com, arnd@arndb.de, linux-kernel@vger.kernel.org, stable@vger.kernel.org, manoj@linux.vnet.ibm.com, imunsie@au1.ibm.com, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, clombard@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In read_handle() of_get_address() may return NULL which is later
-dereferenced. Fix this bug by adding NULL check.
+On Tue, Jul 09, 2024 at 09:17:54PM +0800, Ma Ke wrote:
+> In read_handle() of_get_address() may return NULL which is later
+> dereferenced. Fix this bug by adding NULL check.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/misc/cxl/of.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+> index bcc005dff1c0..d8dbb3723951 100644
+> --- a/drivers/misc/cxl/of.c
+> +++ b/drivers/misc/cxl/of.c
+> @@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+>  
+>  	/* Get address and size of the node */
+>  	prop = of_get_address(np, 0, &size, NULL);
+> -	if (size)
+> +	if (!prop || size)
+>  		return -EINVAL;
 
-Cc: stable@vger.kernel.org
-Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/misc/cxl/of.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+How was this issue found?
 
-diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
-index bcc005dff1c0..d8dbb3723951 100644
---- a/drivers/misc/cxl/of.c
-+++ b/drivers/misc/cxl/of.c
-@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
- 
- 	/* Get address and size of the node */
- 	prop = of_get_address(np, 0, &size, NULL);
--	if (size)
-+	if (!prop || size)
- 		return -EINVAL;
- 
- 	/* Helper to read a big number; size is in cells (not bytes) */
--- 
-2.25.1
+thanks,
 
+greg k-h
