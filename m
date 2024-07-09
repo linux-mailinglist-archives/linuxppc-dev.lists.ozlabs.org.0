@@ -2,36 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154E792B08B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 08:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D8092B0D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 09:08:16 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fg6vl+ed;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJBSp5qfCz3frL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 16:50:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJBsV1NLGz3dFm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 17:08:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fg6vl+ed;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJBSQ0137z2yhZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 16:49:57 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WJBSJ0k2hz4w2M;
-	Tue,  9 Jul 2024 16:49:52 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, npiggin@gmail.com, Krishna Kumar <krishnak@linux.ibm.com>
-In-Reply-To: <20240701074513.94873-1-krishnak@linux.ibm.com>
-References: <20240701074513.94873-1-krishnak@linux.ibm.com>
-Subject: Re: [PATCH v4 0/2] PCI hotplug driver fixes
-Message-Id: <172050773908.27948.6452109648223872879.b4-ty@ellerman.id.au>
-Date: Tue, 09 Jul 2024 16:48:59 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJBrp4mH5z30Sq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 17:07:38 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id B4A3661074;
+	Tue,  9 Jul 2024 07:07:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA311C3277B;
+	Tue,  9 Jul 2024 07:07:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720508855;
+	bh=n3KjbNXBrD920Bv9YuVrjRmWR5+79F/h/abJmAqIJIc=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=fg6vl+edF8ebJvcXKmZD+GZail+FnR+kTG/E8udsquNCITAUOHzdD6fEQAuNJAGYN
+	 zawZgiNRwNTdNvICzQBgULXjFqmUYUoQ8+duJ8vaW1uRGlBAWUhk15WMg63oP3BVE+
+	 kHKHE3XditVr1qpegB7cey1yQfxOyIQ5VTeseulghWs4HhX/v4zLDsGyyC/qmPMxnh
+	 +5ZaxnNkn3tHpHBU3ZHcaKMdvFZCA2b1zGTJZFkbTDiwJnUPLvddv7SjS1CH98xHC8
+	 zW0QuIDwL7ebzEzqpuo0WI8mUoFefCMQiYT6TQW75RMOQk/Abyex2tKin4MnnU416X
+	 Hh6/7ZoQfDeVQ==
+Date: Tue, 09 Jul 2024 12:28:29 +0530
+From: Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH v3] PowerPC: Replace kretprobe with rethook
+To: Abhishek Dubey <adubey@linux.ibm.com>, Masami Hiramatsu
+	<mhiramat@kernel.org>
+References: <20240627132101.405665-1-adubey@linux.ibm.com>
+	<20240702085302.90ab3214b8b6e39614bb8d11@kernel.org>
+In-Reply-To: <20240702085302.90ab3214b8b6e39614bb8d11@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1720508281.2dd5hnh2rv.naveen@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,36 +62,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, aneesh.kumar@kernel.org, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu, gbatra@linux.ibm.com, tpearson@raptorengineering.com, oohall@gmail.com, bhelgaas@google.com, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 01 Jul 2024 13:15:05 +0530, Krishna Kumar wrote:
-> The fix of Powerpc hotplug driver (drivers/pci/hotplug/pnv_php.c)
-> addresses below two issues.
-> 
-> 1. Kernel Crash during hot unplug of bridge/switch slot.
-> 
-> 2. Bridge Support Enablement - Previously, when we do a hot-unplug
-> operation on a bridge slot, all the ports and devices behind the
-> bridge-ports would be hot-unplugged/offline, but when we do a hot-plug
-> operation on the same bridge slot, all the ports and devices behind the
-> bridge would not get hot-plugged/online. In this case, Only the first
-> port of the bridge gets enabled and the remaining port/devices remain
-> unplugged/offline.  After the fix, The hot-unplug and hot-plug
-> operations on the slot associated with the bridge started behaving
-> correctly and became in sync. Now, after the hot plug operation on the
-> same slot, all the bridge ports and devices behind the bridge become
-> hot-plugged/online/restored in the same manner as it was before the
-> hot-unplug operation.
-> 
-> [...]
+Masami Hiramatsu wrote:
+> On Thu, 27 Jun 2024 09:21:01 -0400
+> Abhishek Dubey <adubey@linux.ibm.com> wrote:
+>=20
+>> +/* rethook initializer */
+>> +int __init arch_init_kprobes(void)
+>> +{
+>> +	return register_kprobe(&trampoline_p);
+>> +}
+>=20
+> No, please don't use arch_init_kprobes() for initializing rethook, since
+> rethook is used from fprobe too (at this moment).
+>=20
+> If you want to make it relays on kprobes, you have to make a dependency
+> in powerpc's kconfig, e.g.
+>=20
+> select HAVE_RETHOOK if KPROBES
+>=20
+> But I don't recommend it.
 
-Applied to powerpc/next.
+Given that kretprobe has always worked this way on powerpc, I think this
+is a fair tradeoff. We get to enable fprobes on powerpc only if kprobes
+is also enabled.
 
-[1/2] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
-      https://git.kernel.org/powerpc/c/335e35b748527f0c06ded9eebb65387f60647fda
-[2/2] powerpc: hotplug driver bridge support
-      https://git.kernel.org/powerpc/c/20ce0c247b2500cb7060cb115274ba71abda2626
+Longer term, it would certainly be nice to get rid of that probe, and to
+expand the trampoline to directly invoke the rethook callback.
 
-cheers
+
+Thanks,
+Naveen
