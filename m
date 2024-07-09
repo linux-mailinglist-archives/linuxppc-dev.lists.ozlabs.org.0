@@ -1,113 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9942B92BABC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:11:48 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=zhdjt+CP;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6PyvjXLG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=zhdjt+CP;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6PyvjXLG;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B653392BB8C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:38:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJLwt1xkTz3dK7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:11:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJMXG3gWnz3ftj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:38:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=zhdjt+CP;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6PyvjXLG;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=zhdjt+CP;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6PyvjXLG;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 412 seconds by postgrey-1.37 at boromir; Tue, 09 Jul 2024 23:25:16 AEST
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJLw54YYcz3cGS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:11:00 +1000 (AEST)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 07CBD1F7BB;
-	Tue,  9 Jul 2024 13:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1720530657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jvj+CYjfPLQdg2gDrjN70o2HTsk5KrY6yRIRFXK7aRY=;
-	b=zhdjt+CP9j6IsQpKFUmHQ17XhvBZ1D1/msT/WoixqygoHVxrAXeIZHKCIPYAAhXSvoRSsk
-	4++ec+dNBPhmGxPEmwXOW7JHmm4t8b+O0Yfl7ewZPe12Ls+9Jvc2O/JfiUTehjm4k9T6xN
-	QX+OZKX+V06Zcry0sA9pupy8GvUJzas=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1720530657;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jvj+CYjfPLQdg2gDrjN70o2HTsk5KrY6yRIRFXK7aRY=;
-	b=6PyvjXLGBFNiv0ipDIrwgc4QrXZ3Sgr/6nTJwlhiD8W+eltiaIYRl+yBTIm6QbBqayRFt/
-	ANTVdB1gib9pMJAw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1720530657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jvj+CYjfPLQdg2gDrjN70o2HTsk5KrY6yRIRFXK7aRY=;
-	b=zhdjt+CP9j6IsQpKFUmHQ17XhvBZ1D1/msT/WoixqygoHVxrAXeIZHKCIPYAAhXSvoRSsk
-	4++ec+dNBPhmGxPEmwXOW7JHmm4t8b+O0Yfl7ewZPe12Ls+9Jvc2O/JfiUTehjm4k9T6xN
-	QX+OZKX+V06Zcry0sA9pupy8GvUJzas=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1720530657;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jvj+CYjfPLQdg2gDrjN70o2HTsk5KrY6yRIRFXK7aRY=;
-	b=6PyvjXLGBFNiv0ipDIrwgc4QrXZ3Sgr/6nTJwlhiD8W+eltiaIYRl+yBTIm6QbBqayRFt/
-	ANTVdB1gib9pMJAw==
-Date: Tue, 9 Jul 2024 15:10:55 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pseries: Fix scv instruction crash with kexec
-Message-ID: <20240709131055.GB26833@kitsune.suse.cz>
-References: <20240625134047.298759-1-npiggin@gmail.com>
- <20240709105314.GA26833@kitsune.suse.cz>
- <87h6cy67ld.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJMDX1Pv2z30Ss
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:25:15 +1000 (AEST)
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowADHz+eEOI1m3nhgAg--.39722S2;
+	Tue, 09 Jul 2024 21:18:05 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	manoj@linux.vnet.ibm.com,
+	mpe@ellerman.id.au,
+	clombard@linux.vnet.ibm.com,
+	imunsie@au1.ibm.com
+Subject: [PATCH] cxl: Fix possible null pointer dereference in read_handle()
+Date: Tue,  9 Jul 2024 21:17:54 +0800
+Message-Id: <20240709131754.855144-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87h6cy67ld.fsf@mail.lhotse>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ZERO(0.00)[0];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[gmail.com,lists.ozlabs.org,linux.ibm.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
+X-CM-TRANSID: zQCowADHz+eEOI1m3nhgAg--.39722S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFWDGrWDAw4xAr4UWry8Krg_yoW3Awc_CF
+	4UZr1xXryjgr9rGr1Y9r47Zr92yrW8uF95Zr4ftFW7K3y5CF1aqr1I9rs3ZrnrWr4DXFyD
+	Aw1qy3sY9r42gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
+X-Originating-IP: [183.174.60.14]
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Mailman-Approved-At: Tue, 09 Jul 2024 23:36:08 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,71 +67,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Ma Ke <make24@iscas.ac.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 09, 2024 at 11:03:10PM +1000, Michael Ellerman wrote:
-> Michal Suchánek <msuchanek@suse.de> writes:
-> > Hello,
-> >
-> > On Tue, Jun 25, 2024 at 11:40:47PM +1000, Nicholas Piggin wrote:
-> >> kexec on pseries disables AIL (reloc_on_exc), required for scv
-> >> instruction support, before other CPUs have been shut down. This means
-> >> they can execute scv instructions after AIL is disabled, which causes an
-> >> interrupt at an unexpected entry location that crashes the kernel.
-> >> 
-> >> Change the kexec sequence to disable AIL after other CPUs have been
-> >> brought down.
-> >> 
-> >> As a refresher, the real-mode scv interrupt vector is 0x17000, and the
-> >> fixed-location head code probably couldn't easily deal with implementing
-> >> such high addresses so it was just decided not to support that interrupt
-> >> at all.
-> >> 
-> >> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> >> Fixes: 7fa95f9adaee7 ("powerpc/64s: system call support for scv/rfscv instructions")
-> >
-> > looks like this is only broken by
-> > commit 2ab2d5794f14 ("powerpc/kasan: Disable address sanitization in kexec paths")
-> >
-> > This change reverts the kexec parts done in that commit.
-> >
-> > That is the fix is 5.19+, not 5.9+
-> 
-> Commit 2ab2d5794f14 moved the kexec code from one file to another, but
-> didn't change when the key function (pseries_disable_reloc_on_exc()) was
-> called.
-> 
-> The old code was:
-> 
-> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-> index a3dab15b0a2f..c9fcc30a0365 100644
-> --- a/arch/powerpc/platforms/pseries/setup.c
-> +++ b/arch/powerpc/platforms/pseries/setup.c
-> @@ -421,16 +421,6 @@ void pseries_disable_reloc_on_exc(void)
->  }
->  EXPORT_SYMBOL(pseries_disable_reloc_on_exc);
-> 
-> -#ifdef CONFIG_KEXEC_CORE
-> -static void pSeries_machine_kexec(struct kimage *image)
-> -{
-> -       if (firmware_has_feature(FW_FEATURE_SET_MODE))
-> -               pseries_disable_reloc_on_exc();
-> -
-> -       default_machine_kexec(image);
-> -}
-> -#endif
-> -
-> 
-> ie. pseries_disable_reloc_on_exc() (which disables AIL) is called before
-> default_machine_kexec() where secondary CPUs are collected.
-> 
-> So AFAICS the bug would still have been there prior to 2ab2d5794f14. But
-> it's late here so I could be reading it wrong.
+In read_handle() of_get_address() may return NULL which is later
+dereferenced. Fix this bug by adding NULL check.
 
-Indeed, missed that the code was only moved.
+Cc: stable@vger.kernel.org
+Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/misc/cxl/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the clarification
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index bcc005dff1c0..d8dbb3723951 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+ 
+ 	/* Get address and size of the node */
+ 	prop = of_get_address(np, 0, &size, NULL);
+-	if (size)
++	if (!prop || size)
+ 		return -EINVAL;
+ 
+ 	/* Helper to read a big number; size is in cells (not bytes) */
+-- 
+2.25.1
 
-Michal
