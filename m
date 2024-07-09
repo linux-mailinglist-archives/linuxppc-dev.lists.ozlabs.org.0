@@ -1,51 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FBD92BB5D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:34:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE20592BBD8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:50:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=PtsalJxW;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=WkltUh1i;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJMR50xzzz3cW7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:34:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJMnd6T1bz3cTQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:50:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=PtsalJxW;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=WkltUh1i;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJMQN2N1Sz2y8Z
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:33:47 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2FA196145C;
-	Tue,  9 Jul 2024 13:33:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7155FC32786;
-	Tue,  9 Jul 2024 13:32:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720531972;
-	bh=mOE+ryN8qxxEVONxkiQngqNrCkNEB9WBTPuTNVncMOs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PtsalJxWGaXFB9T7jLMLh7Ih886MrFqgDPdz3jcM2NG0VRU6tQC3lLBTvDWW5x/NY
-	 BxtT4eqc40FFMIAsSBC2zbYanf4pJuIwqNj/lDGe9vHNPUIxRkXqqr+45S+8DlVZ8a
-	 DNjoLE4uvKgLBaDhpz6dtKbrYdChnBdNf8T6Nlac=
-Date: Tue, 9 Jul 2024 15:32:50 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ma Ke <make24@iscas.ac.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJMmw0Vs5z2xPd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:49:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720532947; x=1721137747; i=markus.elfring@web.de;
+	bh=a015ZC5r03ehNw73sIJe/WiI2A13WN9tv5vZoYkZ0RU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WkltUh1iEhfoZNCT8KIZzUNg0zksVJFjJ//b7xvaMKPZYWZzqaql+V44Zp7pOk5I
+	 2QZqvsbiNHMN9zmFympsFgqukqxmprSUZk2LSLxIJNzsZU9jWLefhYUyn9ppEUNTM
+	 nvJmckHQmcuwW13RKU7MUWzx7rdnzu7pdcjOGKxFXtCkHC3Zl8geeA9jqnQjawtpZ
+	 i4iCh67n2gH7f8kPpMXd3vbELVHT5EHgYgmqSXdullP+YqkB2uopSLdPi7Ekkqa03
+	 cux55NxZK0qaSInTsYavVTpxt57EAFMFB9cVdI8l+DZ2sNmPLKtZhOlyAgvavZj4R
+	 ykjxJpkJIoVN0ZwzLQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MOm0r-1skBlk0bNv-00Lgme; Tue, 09
+ Jul 2024 15:49:07 +0200
+Message-ID: <a10b0d71-2e1c-47d6-9c7a-4086035fc6ec@web.de>
+Date: Tue, 9 Jul 2024 15:48:57 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: make24@iscas.ac.cn, linuxppc-dev@lists.ozlabs.org,
+ kernel-janitors@vger.kernel.org
+References: <20240709131754.855144-1-make24@iscas.ac.cn>
 Subject: Re: [PATCH] cxl: Fix possible null pointer dereference in
  read_handle()
-Message-ID: <2024070940-customize-sturdily-fc81@gregkh>
-References: <20240709131754.855144-1-make24@iscas.ac.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
 In-Reply-To: <20240709131754.855144-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wD8tpFNoCW581VFsOPGKJF66fFjx15l+bwepghLJM6uHTOaEEIV
+ S+CYjNw6rH2wZ4TwvNgnSQP8vBlD/7iuiRLjicS9hxBOLD8V1kU2vdnDrofiv4uP6k9Fh63
+ tqjoNqMkBduPCI8cZMTSYsHsjI2ttQfQTSuaquQ1HtekCs1jJFF+FNrDUy0EF/ZT3bBSY5l
+ XIyBXWpEoWS9T6Vfr42qw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MqjwUJAwWmA=;d33iWjaAIjULA24pEscPLGP8YoJ
+ nnxs35QjcOFAwZUZOS/fchXGW2rVCJTqaBwzJC3otBl2Nku7qfiw0wV6Xvlf8W+rr2JpjG7oW
+ Ax0SjwWa5i85kIiemtwn+/qUrpNio9Wltl1QXbrFRSLOgFmTW+6m3RT25od+kA4JTuGJJrhE1
+ +V72jE+WfgmWe8buVOkeJQzlA6witivjXSsni+spk7rD9X2QkMB2uQe9oEyW4pT48zsAEkpLT
+ l+n7kL9Ju8MPN/aPKOaeD2naiXWuTVVbdJomjnS45Eyu+dT1hi1zyLwBO0+FeiP/uwGOe/v3W
+ WdnK72SAHW1OcK0pfs9EpWk/OBk6rUSXDzH9lG3ADFodCCmeRHNm6pxyAVdvtUz827ZOahdCd
+ T47sLWT3wNR19SCzdd6PrLkFWJQpmfgmBRkj16Zam7hl1JacP2KwMmFZKgz0FFvEVauFWB524
+ HMqyJobNi4lnigHkg7pJ+VZxtMpdAPI9i3gsivCR+VGYueYpbjQq2N1Gz3gWSkj6OUp+dkV9v
+ KOL6OHmzv2b/ntdMOaxRMo7DyqK+rvZku2hJgxYXpNlqsb86S3qfaeTpms4gnW7NpfFoFvEoB
+ pP1MAyVx1cegla6iWuJpFte1lg1SLidWLzXp8u7tfK1bpfk66Xohy9JZNjScdTsGERdqiG5KT
+ cbBUs/wiXNzkl9AbNVsJxDBF2sGWkEqxlstxPnpdxGZFKrZRE11RZ73T5vYSbzDFffSLHq5kQ
+ BZi2xY6kJksgnRBYPyzNtbDHWj6BdSWycz1xAFr6ShVATEdztfpHEhAkODEpsA+atYGhMG5Ol
+ ux7Myq0mUUuINiM7gvwKns6m8TXTYbqM4bfj1DdUbAxWY=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,35 +83,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, arnd@arndb.de, linux-kernel@vger.kernel.org, stable@vger.kernel.org, manoj@linux.vnet.ibm.com, imunsie@au1.ibm.com, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, clombard@linux.vnet.ibm.com
+Cc: Wei Liu <wei.liu@kernel.org>, Christophe Lombard <clombard@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, "Manoj N. Kumar" <manoj@linux.ibm.com>, Ian Munsie <imunsie@au1.ibm.com>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 09, 2024 at 09:17:54PM +0800, Ma Ke wrote:
-> In read_handle() of_get_address() may return NULL which is later
-> dereferenced. Fix this bug by adding NULL check.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+=E2=80=A6
 > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/misc/cxl/of.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
-> index bcc005dff1c0..d8dbb3723951 100644
-> --- a/drivers/misc/cxl/of.c
-> +++ b/drivers/misc/cxl/of.c
-> @@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
->  
->  	/* Get address and size of the node */
->  	prop = of_get_address(np, 0, &size, NULL);
-> -	if (size)
-> +	if (!prop || size)
->  		return -EINVAL;
 
-How was this issue found?
+Under which circumstances will this information be corrected anyhow?
 
-thanks,
+The usage of mailing list addresses is probably undesirable for
+the Developer's Certificate of Origin, isn't it?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.10-rc7#n398
 
-greg k-h
+Regards,
+Markus
