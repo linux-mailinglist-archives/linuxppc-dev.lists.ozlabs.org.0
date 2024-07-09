@@ -1,56 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB13792BC49
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 15:59:43 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Koo4514l;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23D092BDF9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 17:15:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJN0D6cyXz3cZ6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jul 2024 23:59:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJPh75Gmtz3dSr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 01:15:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Koo4514l;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.42; helo=mail-ed1-f42.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJMzK0c1Qz3cbL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jul 2024 23:58:53 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 09B2B6145C;
-	Tue,  9 Jul 2024 13:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7927CC4AF14;
-	Tue,  9 Jul 2024 13:58:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720533529;
-	bh=IV7zdIApBfCvWaPWbDflGVgSlxzXBapr2avJvbK/Z0s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Koo4514lTYDqu8/pzyTQ0wWq4zSS88GpD3U6KIZLcKdysKjRXWAEphVwTgnDRpkqG
-	 8kMKgOpgeJZlWIttaEuepWKfnVNQRG5CZ3LixWAEVYtT8H70vwbE2CkOOLg6rFpE4T
-	 YY6tQ3NF2OzuCYKONEVyfMHNV8S5y4TgF4XXODK9QhKyRbVfx61HcoDopZhj0Z28IW
-	 VF9z3Cw4Lu9k/ub8x64Wol2TzJ+ybyedRubcAL82nRWt9jhxeAoBPf1PYhgklbQ0FE
-	 keHKfI4XdWYnBnFfFMjJJIaZsJuZYGDGjB132Q6UIru14eUWfr3dSBf6a82ZjW1tOe
-	 xc93TwOc2Qa7w==
-Date: Tue, 9 Jul 2024 22:58:45 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH v3] PowerPC: Replace kretprobe with rethook
-Message-Id: <20240709225845.43cc72b8b691217ec428d3a0@kernel.org>
-In-Reply-To: <1720508281.2dd5hnh2rv.naveen@kernel.org>
-References: <20240627132101.405665-1-adubey@linux.ibm.com>
-	<20240702085302.90ab3214b8b6e39614bb8d11@kernel.org>
-	<1720508281.2dd5hnh2rv.naveen@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJPgk3fTXz30Wf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2024 01:15:30 +1000 (AEST)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-58b966b4166so6334114a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jul 2024 08:15:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720538127; x=1721142927;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=udOmhMw6nVnLDB7CnXYCG2+/atZ0tO+NBuzOh1Ic4BU=;
+        b=IJEChFYTsvLKU2KBLrfOHxWf2BF3YGcjFt8J5Z2YcorXVBHqOMJx1tDENPddy0yHVd
+         0ue+8ew2ylEJZt43C8djFeDiU8eFF9du6m5e2eIaDe5pWcPbjCZ/K4VX06sCN7SyBM5V
+         4/CRpi8oto7jX0IUrOiU/5rAEjgtrQbeo42gH6W9kzbxW1u4rYJCBjgC5AgbQRTck1Mq
+         G1pYwwb+tCEq8GjUNP4I25AW4BC7/UW0zxrjEZASGSmP5Nd/Ze/5xapTxXkTWlD/cjz8
+         r/EWZSVM88Ws1JbhdW0rpXlwUAVmrMxop8S/T32DRWvxoAoxt4IfyKYRdZRQ5WhC1ot0
+         Kd3A==
+X-Forwarded-Encrypted: i=1; AJvYcCU0S+zjXI1ntpLOqqvcZai6XoEzdPSiab8crSrAorpfCHTdS/dkxj9I4M+mAb/QQvm5uPx8QGS8SFGYQPxE1W2khMXR5Qa7+4C09aINdg==
+X-Gm-Message-State: AOJu0Yyo1KbKwh2UMV9G3R7a/aJcZghnJCT5eWDM0lBdohjTbUueHqen
+	fWQBIG46KOcUhLMs+HtKUqCmaJKf8K/YyF2hpGPLfQKvyVXrvc4K
+X-Google-Smtp-Source: AGHT+IF35/Mch11jtk1xVIeWdVFdvciZZUw5TTShgdZrcKMKdHljQsWt+u2oBbViFk5ZTk6F/AOa7g==
+X-Received: by 2002:a17:906:c083:b0:a6f:49b1:dec5 with SMTP id a640c23a62f3a-a780b705231mr177181466b.46.1720538126122;
+        Tue, 09 Jul 2024 08:15:26 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a853a62sm83568866b.157.2024.07.09.08.15.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jul 2024 08:15:25 -0700 (PDT)
+Date: Tue, 9 Jul 2024 08:15:23 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH 1/4] soc: fsl: qbman: FSL_DPAA depends on COMPILE_TEST
+Message-ID: <Zo1UC/grXeIocGu5@gmail.com>
+References: <20240624162128.1665620-1-leitao@debian.org>
+ <202406261920.l5pzM1rj-lkp@intel.com>
+ <20240626140623.7ebsspddqwc24ne4@skbuf>
+ <Zn2yGBuwiW/BYvQ7@gmail.com>
+ <20240708133746.ea62kkeq2inzcos5@skbuf>
+ <Zow5FUmOADrqUpM9@gmail.com>
+ <20240709135811.c7tqh3ocfumg6ctt@skbuf>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240709135811.c7tqh3ocfumg6ctt@skbuf>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,52 +68,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, Abhishek Dubey <adubey@linux.ibm.com>
+Cc: kernel test robot <lkp@intel.com>, netdev@vger.kernel.org, Roy.Pledge@nxp.com, llvm@lists.linux.dev, open list <linux-kernel@vger.kernel.org>, horms@kernel.org, oe-kbuild-all@lists.linux.dev, kuba@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 09 Jul 2024 12:28:29 +0530
-Naveen N Rao <naveen@kernel.org> wrote:
+Hello Vladimir,
 
-> Masami Hiramatsu wrote:
-> > On Thu, 27 Jun 2024 09:21:01 -0400
-> > Abhishek Dubey <adubey@linux.ibm.com> wrote:
-> > 
-> >> +/* rethook initializer */
-> >> +int __init arch_init_kprobes(void)
-> >> +{
-> >> +	return register_kprobe(&trampoline_p);
-> >> +}
-> > 
-> > No, please don't use arch_init_kprobes() for initializing rethook, since
-> > rethook is used from fprobe too (at this moment).
-> > 
-> > If you want to make it relays on kprobes, you have to make a dependency
-> > in powerpc's kconfig, e.g.
-> > 
-> > select HAVE_RETHOOK if KPROBES
-> > 
-> > But I don't recommend it.
+On Tue, Jul 09, 2024 at 04:58:11PM +0300, Vladimir Oltean wrote:
+
+> On Mon, Jul 08, 2024 at 12:08:05PM -0700, Breno Leitao wrote:
+> > I thought about a patch like the following (compile tested only). What
+> > do you think?
 > 
-> Given that kretprobe has always worked this way on powerpc, I think this
-> is a fair tradeoff. We get to enable fprobes on powerpc only if kprobes
-> is also enabled.
+> To be honest, there are several things I don't really like about this
+> patch.
 > 
-> Longer term, it would certainly be nice to get rid of that probe, and to
-> expand the trampoline to directly invoke the rethook callback.
+> - I really struggled with applying it in the current format. Could you
+>   please post the output of git format-patch in the future?
 
-OK. In longer term, rethook will be only for kretprobe, and kretprobe
-will be replaced by fprobe[1]. So please comment it and add that 
+This is the output of `git format-patch` shifted right by a tab.
 
-[1] https://lore.kernel.org/all/172000134410.63468.13742222887213469474.stgit@devnote2/
-
-Thank you,
-
+> - You addressed dpaa_set_coalesce() but not also dpaa_fq_setup()
+> - You misrepresented the patch content by saying you only allocate size
+>   for online CPUs in the commit message. But you allocate for all
+>   possible CPUs.
+> - You only kfree(needs_revert) in the error (revert_values) case, but
+>   not in the normal (return 0) case.
+> - The netdev coding style is to sort the lines with variable
+>   declarations in reverse order of line length (they call this "reverse
+>   Christmas tree"). Your patch broke that order.
+> - You should use kcalloc() instead of kmalloc_array() + memset()
 > 
-> 
-> Thanks,
-> Naveen
+> I have prepared and tested the attached alternative patch on a board and
+> I am preparing to submit it myself, if you don't have any objection.
 
+Sure, not a problem. You just asked how that would be possible, and I
+decided to craft patch to show what I had in mind. I am glad we have a
+way moving forward.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Thanks for solving it.
