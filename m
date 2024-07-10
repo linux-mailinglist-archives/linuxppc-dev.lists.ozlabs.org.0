@@ -2,91 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC9C92C971
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 05:54:16 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=fCM6lj9T;
-	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=scvggdjo;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A90F92CF3F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 12:34:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJkWB3bxhz3d36
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 13:54:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJvPM35YYz3cXs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 20:34:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=fCM6lj9T;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=scvggdjo;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJkVP4Rdqz3c5t
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2024 13:53:30 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1720583580; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=hoOnVnmAwl5/d6O9LWBGgLHtxLKdnVTiF88/W4WDqnUekf14Yd6qauuT9ix/8fa4hs
-    18KUEeaHMHFqKlgFtHU5qv81L8TdZODAr+ng6RrXbmTiMS3SABIPwiIhb/SeXYnYINI/
-    QVJhVAjdE95dBYV+Ns3/mQyjr8l2cnKwOjssCWjgewX8Q/MVF3EOAhXqt+lFptVWZQWn
-    VP4GrtURgsyaqkpCUq2BKmrJ/9Cb8fHpuZiBBzKo4v2OQB/tnBAEcmJgrWY4wei99HbE
-    dzOnpegCJ55xR3BYtWShJbRCFDAO+ewni/ugakPToNwtp+LTOReD/dczoQZEXYGHv3t9
-    ObGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720583580;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=KRsZudZaU66bfqcpsExsQgaeHpzwNOwn1WEuUI/OyRA=;
-    b=sFWNg31SL3rE48PT+jPyiDJqH2ETQKNEcRv8KnLvMkcLRR5PoG0QmUS81hX4piJuz+
-    9ObVjBq7OncAkHCi46XNlTfU8MNPUXtbcUFE9ZV11Aa4b9Y/ykh9gOpj3xH9guwWwZdO
-    e8LGQ1SmwT9JyZoXjtR3vZSCDA5FglX4LEGN8Oou7ndzf3FAiYNQGuOAt/Kx4/4pwj3K
-    uZNRbLUq9fGQQStAGG2K2Al+tDr+ztUyZEzGIMZ7nRm0+xWGUQAzKa/AGm6uKs2Gv5g+
-    R2suadLKjsqVpqUWt7plcSlzhUIgm4/rNiMo7NWGGcrzFlvg18+CcWYPfTbK8A3i5YmC
-    hSXA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720583580;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=KRsZudZaU66bfqcpsExsQgaeHpzwNOwn1WEuUI/OyRA=;
-    b=fCM6lj9TSrbNvTu5XpoCXJ+W+IzmaDucjm8UV2Iops2Zmc1RvCcS4LiNbmCl9FCrvg
-    eX1qwJiImPWhFgEviVmpVCPD+vDBgLSuHmQgfzBUhbG4lmhVA2BEDqc8Ssuor6n4Ny4J
-    EjPRTpf1G/nfcKbfjejDFhLlfooT1nubOIa32+BcCzNdPqCLfXvZpIy4BAPHvaU5Xc46
-    PCnpJlMVVc+2N7NcJhH+1ckDREBP5Nmwt0Mr/Jt8FQdNqVkZMY9vWwBfEKB+A0ltO39T
-    R4K33F1FPp3Bsn/nPRl9b8j+BT6nGOysqoPGfBAyeMYrh0TlvNJR+q2WBlsoZ5mAu9iC
-    k7ew==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720583580;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=KRsZudZaU66bfqcpsExsQgaeHpzwNOwn1WEuUI/OyRA=;
-    b=scvggdjooBCng+3I0Y9aHPMwxcrFQR67GZncRNUHpSXuYrvcxw9uczkCVwhVtNQzdr
-    hf8T/fNvWKn9Q++3IQDg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43J0obSjfTFwxtSORXzhXD5BXQVVAX0YLHX9mRQ=="
-Received: from [IPV6:2a01:599:819:be6d:c234:9ffb:cfc:6d3e]
-    by smtp.strato.de (RZmta 50.5.0 AUTH)
-    with ESMTPSA id e0838906A3qwiWE
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 10 Jul 2024 05:52:58 +0200 (CEST)
-Message-ID: <c8010a06-9d8d-466a-9a83-ee25950f1885@xenosoft.de>
-Date: Wed, 10 Jul 2024 05:53:35 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJvNz0hgRz3bNs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2024 20:34:24 +1000 (AEST)
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAD3_7eRY45mBMyMAg--.50608S2;
+	Wed, 10 Jul 2024 18:34:03 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: fbarrat@linux.ibm.com,
+	ajd@linux.ibm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	clombard@linux.vnet.ibm.com,
+	imunsie@au1.ibm.com,
+	mpe@ellerman.id.au,
+	manoj@linux.vnet.ibm.com
+Subject: [PATCH v2] cxl: Fix possible null pointer dereference in read_handle()
+Date: Wed, 10 Jul 2024 18:33:52 +0800
+Message-Id: <20240710103352.1890726-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
- after the of/irq updates 2024-05-29
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Michael Ellerman <mpe@ellerman.id.au>, Marc Zyngier <maz@kernel.org>
-References: <aeaa9b78-5853-473e-b985-b10241e88e0d@xenosoft.de>
- <8FDD860C-4DA4-46EF-BAD6-8F68837DA993@xenosoft.de>
-Content-Language: en-US
-In-Reply-To: <8FDD860C-4DA4-46EF-BAD6-8F68837DA993@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: zQCowAD3_7eRY45mBMyMAg--.50608S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFWDGF18Kr1DAFy5Zw47Arb_yoWkurc_uF
+	47Xr1xW34jgr12kw1Y9r43Zrnav3ykuF95Zr4Sqay3K345AF1Yqr1SvrZYvwnrXr45ZFWD
+	Cw1qg3sa9w12gjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbHa0DUUUUU==
+X-Originating-IP: [183.174.60.14]
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,19 +65,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apatel@ventanamicro.com, Rob Herring <robh@kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, DTML <devicetree@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Ma Ke <make24@iscas.ac.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
+In read_handle(), of_get_address() may return NULL which is later
+dereferenced. Fix this by adding NULL check.
 
-The RC7 of kernel 6.10 boots without any problems [1] if we use the 
-second irq patch [2]. Is it possible to add this patch to the mainline 
-kernel?
+Cc: stable@vger.kernel.org
+Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- The potential vulnerability was discovered as follows: based on our 
+customized static analysis tool, extract vulnerability features[1], and 
+then match similar vulnerability features in this function.
+- Reference link:
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=2d9adecc88ab678785b581ab021f039372c324cb
+---
+ drivers/misc/cxl/of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Christian
+diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+index bcc005dff1c0..d8dbb3723951 100644
+--- a/drivers/misc/cxl/of.c
++++ b/drivers/misc/cxl/of.c
+@@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *handle)
+ 
+ 	/* Get address and size of the node */
+ 	prop = of_get_address(np, 0, &size, NULL);
+-	if (size)
++	if (!prop || size)
+ 		return -EINVAL;
+ 
+ 	/* Helper to read a big number; size is in cells (not bytes) */
+-- 
+2.25.1
 
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=58643#p58643
-[2] 
-https://github.com/chzigotzky/kernels/blob/main/patches/X1000/of_irq_v4.patch
