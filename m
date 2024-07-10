@@ -1,75 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FA092D55F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 17:52:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C643092D565
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 17:54:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=My4FrErE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mB0b2hv2;
+	dkim=fail reason="signature verification failed" header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=s9tWOi+0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WK2S143VHz3cb2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 01:52:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WK2V946Dsz3cXB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 01:54:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=My4FrErE;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mB0b2hv2;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=s9tWOi+0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3gk6ozgykdokdplyunrzzrwp.nzxwtyfiaan-opgwtded.zkwlmd.zcr@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WK2RK4wndz3bZN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 01:51:55 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1fb05b9e222so40944595ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2024 08:51:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720626713; x=1721231513; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2S/Ws8T8aRzTnaLMwEZxjsu7iN6mSUkQ05y/iw/B/rc=;
-        b=My4FrErEVFTEyJ4Nrv9EIdW0YgvkiqNjxbStDKN9HYwXwxCkal03rAosCjhjcxmUDh
-         TjExSKWlnTJEqhE8IBN2xofkuHCG0jOEN+uPd13EnZnd6ipHOcb3mZXsQwzTox9rZwoo
-         fPSrOZS9iGpj4ngmDcobbtfPLos1zS8fcY85GKuZxDP3MS/XckOp4Nssqdj7AA2mHacA
-         jOoXX0GmjLT2HM/BJ7gfTOxdzqTuTGLeft2wTTBRDK8Z51iha4nbKk8EPOi7A6kYU4GD
-         7ycMWwPAqLrsW5tBTU7HvQ85wFQaL+RbuPyCh4cZUzOVAx09S8+LryOmaH1Gjs4Zm5Zl
-         ElFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720626713; x=1721231513;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2S/Ws8T8aRzTnaLMwEZxjsu7iN6mSUkQ05y/iw/B/rc=;
-        b=kqkcDoGLfMkJzu4okQtVkjF+TXItKji2AS9u9SidOFVmoHXq7uLT7mUN7Vui7JydMW
-         2B6hJormwQ7k0nnZigSO6Mr+LSRD3gdNw/u9tIQplpUIjU/fRUUPTaJlZoUQhxYXOUdB
-         AX42w7234HDmLPbyXobIutPhIuc4CbxgcfHn4/+2BZmt6NCqkjYpoG6J88nIG04GJjOY
-         B08Wc3RhT2TGN291zB161PPAEFMBrUzfCvyYTX3ysqrWRQ4FZgS8DiTx1HXiy/PUfVxP
-         LNSwMbELHA8Pqk+d+QcDbJPdTJBlfk54iaGLkpbjggcvSM7XBRn2+wsu/VbSgtpECR84
-         N5kA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDY/DrcNrFSOlhyyj34cVTuvBITMxNq/N4rLlUD9hpl2sOeRlPGdgGPUg8W8DTXfYfoy7oMft5jAyenZyNw80W9mLad28pjjEdzyjMNA==
-X-Gm-Message-State: AOJu0YxjubOMYQJEG9mN0qpFIpmTvreMnNCVB3RyqztG9bcFS3Dk0Dco
-	aJE6oCAXOET8qq6SFXVFuhTJLPJNgrIrzLAm7B1Rta6LfioK6hlQ1o9j2mUKpTZY9WFjznI/d5c
-	0Pw==
-X-Google-Smtp-Source: AGHT+IGFDWyL4oVIv+kd3eR4ozKAgHx5u/arXUHJsTVnFMVwi1+9LesGIr7Enb4S0IMxOwQQwYsx6SyO0KU=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:dad2:b0:1f7:175a:69ab with SMTP id
- d9443c01a7336-1fbb6ce3e7dmr4023085ad.4.1720626712651; Wed, 10 Jul 2024
- 08:51:52 -0700 (PDT)
-Date: Wed, 10 Jul 2024 08:51:51 -0700
-In-Reply-To: <CALzav=cwu3M2nLHwZLCTF=eGWx2Nq+=TuHMuGTfZCNa27mLs1A@mail.gmail.com>
-Mime-Version: 1.0
-References: <20240503181734.1467938-1-dmatlack@google.com> <171874683295.1901599.10170158200177384059.b4-ty@google.com>
- <CALzav=cwu3M2nLHwZLCTF=eGWx2Nq+=TuHMuGTfZCNa27mLs1A@mail.gmail.com>
-Message-ID: <Zo6uFz187FBYnQiY@google.com>
-Subject: Re: [PATCH v3 0/3] KVM: Set vcpu->preempted/ready iff scheduled out
- while running
-From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WK2TQ4Plfz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 01:53:43 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1720626794; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=dhyLrJQzKZA7DetdcIkoUYtZlOXNv9rpWJSMJ1R8xg3HZ17NsO/MiB7gNWrRq4AQsR
+    Yjo4Hzoa8yiHhcXYa7fHcMvPFMWY1iWzcWhPF6PrUb7VupUhq/i6AYU7xayzNk6Jusmn
+    YCRMg2FnwtEZQGQSa7gCBiWh+XRSNll2h4TLtx3SR5Mt+f7Hag30zFNzQl6D49eJOxMM
+    8ftPOku0iqPE4mt+7mIPMHaxPBE6HtS6MFGlR2J3Kfnil/Rj7nKMDpaCYP2iVMQ2tTDW
+    TJJW6WAnAG3dBTyFXR9rFjzFhn3vPZ3zOBMudrqGC/+1/1YxnLkn5HmJfSPlp/Za4hgz
+    lO5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1720626794;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=PfucqSUYS+2Wqh2OLAbjFuyLzje/ymDp4Oy7t2u0uA0=;
+    b=lBpxtWNEWFrbQreyJFuFetyh8+Xzg2YZmlmdGeJv+GadRZTKuQ1oPXMvJF5fSPriun
+    9U+Qmx9GEVKBm+GYdAZVAqy9cAo636MY57EyiFTEFOWifdHBS46CK1IyfVR/61hxFY0Q
+    yPWma5hStpR8ZB0/5e+CrdW2/GPip0UVTk5JttHnwWbEeAnHnbqD21p1Z2eqy7hkRGeM
+    BIXCwlOvDuPPsSI8xg/VGbm7sR8JPJJ4OZQO+hrPd2wFVEWTF4gBCfDfkuyssOKzVlOp
+    dCi0GzrKehgSNexdBlrYu5ckQ0OVlj2xS3DUoOkOL2RORjnxuFOXdwZjIodGs1GVUwQF
+    apAg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1720626794;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=PfucqSUYS+2Wqh2OLAbjFuyLzje/ymDp4Oy7t2u0uA0=;
+    b=mB0b2hv2DF7m2tJU8+UeYYjmV1OWNT3FOg7UskOUsY9kG5UD+YRN6a/NbDuqV6lnJe
+    EAsLJTOZB5MOQ/g0SUx4GScLEWFIyjOK81hHuaIFjek46OXtoivmxnZ9x9m7+yPAIjeO
+    3X+aSnN9XzBB67BG4AkJXnzuA6NFigknCWsx2aoNz5umCnkBBNNJwVw0QUoX8b7uVvIA
+    YfafM+btmLzLMmYMZNe7+zpJ7x8neS2tvUUR+DzA9R1u3pVckp+3PgwNTNhkIKCtc4qd
+    c/Xwjx4LzBj0bkGlqug+4ySGweA1Yr7EwU9yvM/mYNfB9ltJYMMgyx6h0d+Dwbwet1Dq
+    3aEg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1720626794;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=PfucqSUYS+2Wqh2OLAbjFuyLzje/ymDp4Oy7t2u0uA0=;
+    b=s9tWOi+05jDhMZ4ulq0O7cTH5q6ijzd2PTvo/v6DMvg9kuaq2O0DEE8bJuHkTmJtcJ
+    IN8tv3s9q3j0NQSg4tAw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedR43JwmbXmfCciixhc6PQvMamQd/ks6Pmy/QEdWPbg="
+Received: from [IPV6:2a01:599:807:3814:9744:3840:d777:9185]
+    by smtp.strato.de (RZmta 50.5.0 AUTH)
+    with ESMTPSA id e0838906AFrClkR
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 10 Jul 2024 17:53:12 +0200 (CEST)
+Message-ID: <56b743eb-7d21-4432-b44d-909a5ce0f259@xenosoft.de>
+Date: Wed, 10 Jul 2024 17:53:50 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PowerPC] [PASEMI] Issue with the identification of ATA drives
+ after the of/irq updates 2024-05-29
+To: Rob Herring <robh@kernel.org>
+References: <aeaa9b78-5853-473e-b985-b10241e88e0d@xenosoft.de>
+ <8FDD860C-4DA4-46EF-BAD6-8F68837DA993@xenosoft.de>
+ <c8010a06-9d8d-466a-9a83-ee25950f1885@xenosoft.de>
+ <CAL_JsqJE+YZY3h+MZ0wzT2SZ5dLq_zR1iteNcdLUOoVPwKkxRw@mail.gmail.com>
+Content-Language: en-US
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <CAL_JsqJE+YZY3h+MZ0wzT2SZ5dLq_zR1iteNcdLUOoVPwKkxRw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +100,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, Palmer Dabbelt <palmer@dabbelt.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Atish Patra <atishp@atishpatra.org>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: apatel@ventanamicro.com, DTML <devicetree@vger.kernel.org>, Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, mad skateman <madskateman@gmail.com>, Marc Zyngier <maz@kernel.org>, Matthew Leaman <matthew@a-eon.biz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hypexed@yahoo.com.au, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 01, 2024, David Matlack wrote:
-> On Tue, Jun 18, 2024 at 2:41=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Fri, 03 May 2024 11:17:31 -0700, David Matlack wrote:
-> > > This series changes KVM to mark a vCPU as preempted/ready if-and-only=
--if
-> > > it's scheduled out while running. i.e. Do not mark a vCPU
-> > > preempted/ready if it's scheduled out during a non-KVM_RUN ioctl() or
-> > > when userspace is doing KVM_RUN with immediate_exit=3Dtrue.
-> > >
-> > > This is a logical extension of commit 54aa83c90198 ("KVM: x86: do not
-> > > set st->preempted when going back to user space"), which  stopped
-> > > marking a vCPU as preempted when returning to userspace. But if users=
-pace
-> > > invokes a KVM vCPU ioctl() that gets preempted, the vCPU will be mark=
-ed
-> > > preempted/ready. This is arguably incorrect behavior since the vCPU w=
-as
-> > > not actually preempted while the guest was running, it was preempted
-> > > while doing something on behalf of userspace.
-> > >
-> > > [...]
-> >
-> > Applied to kvm-x86 generic, with minor changelog tweaks (me thinks you'=
-ve been
-> > away from upstream too long ;-) ).  Thanks!
->=20
-> Thanks for the cleanups. Looks like you replaced "[Tt]his commit"
-> throughout. Anything else (so I can avoid the same mistakes in the
-> future)?
+On 10.07.24 17:05, Rob Herring wrote:
+> On Tue, Jul 9, 2024 at 9:53 PM Christian Zigotzky
+> <chzigotzky@xenosoft.de> wrote:
+>> Hi All,
+>>
+>> The RC7 of kernel 6.10 boots without any problems [1] if we use the
+>> second irq patch [2]. Is it possible to add this patch to the mainline
+>> kernel?
+> Yes, sent it to Linus yesterday.
+>
+> Rob
+Great! Thank you very much! :-)
 
-I don't think so?  The "This commit" stuff is the only thing that I remembe=
-r, so
-any other tweaks can't be that important :-)
+Christian
