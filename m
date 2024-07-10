@@ -1,51 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8841B92CFF6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 13:00:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E6592D192
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 14:28:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=vs7EktCw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qpIvD5RT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WJvz92V8mz3cfn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 21:00:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WJxwq0Pvkz3dLH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jul 2024 22:28:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=vs7EktCw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qpIvD5RT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJvyS4KgVz2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2024 20:59:59 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 465F4CE14A1;
-	Wed, 10 Jul 2024 10:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2B7C32781;
-	Wed, 10 Jul 2024 10:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720609195;
-	bh=tMlH2OXPei8W8GzXahYFQG62CK2hv/8deu1RpFRVkQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vs7EktCw5xixb1VI8uPyOFQ5RZ5h9SwZLocBQYn4biVvtXivY7g9JLO47g2yilUR7
-	 uPkjdKXUJOWoDjQUSi5JHf2z3662Hgaeutmb89CXo5Cs/iTYjHymDz1e5RFeJIQ2jN
-	 FgG0BoZegT2J09e2QEQfoTtJQA/w/BjFUvzeEt2s=
-Date: Wed, 10 Jul 2024 12:59:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Subject: Re: [PATCH v2] cxl: Fix possible null pointer dereference in
- read_handle()
-Message-ID: <2024071052-squad-glorify-0830@gregkh>
-References: <20240710103352.1890726-1-make24@iscas.ac.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WJxw63Lklz3cBd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jul 2024 22:28:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1720614483;
+	bh=Dk9oQcXatpAOcTNW8F66wOLoyQ5TH0P2B5WSusLytqQ=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=qpIvD5RTkuF9fGU3j3NgGN1Vt5MfoHL2HHmrNHOJyC91we37pZlyXosmrger+PW3P
+	 xYNcM4NoKB6F+zS3op6Adh4aUQ/GO5X3anLbHBKJBpZuEGM7OY4dWFcTZgPjeEY5f4
+	 JZSBu8EIjk95riKS/NmG964c07ZcIUEbYhx9tlr3KHNr2PWsQWKh82az1UaD9qeMmx
+	 V7mc2L8OrExqqsImzjcs0xgLrIvvbHjxEdjyOKOitHRQ0LXY9MtICWlf1hi71K6M4v
+	 6ajrqWSis8hBkINxnV3zI8uphyFN8xWUS0l9RxNYVASz8AwVdz74wXaxI2aPSx11Sq
+	 JQW2dbFkU6AuA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WJxw23dKxz4w2M;
+	Wed, 10 Jul 2024 22:28:02 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, linux-mm@kvack.org, Andrew Morton
+ <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>,
+ Matthew Wilcox <willy@infradead.org>, sidhartha.kumar@oracle.com, "Paul E
+ . McKenney" <paulmck@kernel.org>, Bert Karwatzki <spasswolf@web.de>, Jiri
+ Olsa <olsajiri@gmail.com>, linux-kernel@vger.kernel.org, Kees Cook
+ <kees@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 16/16] mm/mmap: Move may_expand_vm() check in
+ mmap_region()
+In-Reply-To: <0998f05b-9d5f-4b24-9030-22421e1dd859@lucifer.local>
+References: <20240704182718.2653918-1-Liam.Howlett@oracle.com>
+ <20240704182718.2653918-17-Liam.Howlett@oracle.com>
+ <8fbb424d-a781-4e61-af7a-904e281eba8c@lucifer.local>
+ <e5ldsusdn3som7wn2rw76wtrhnlrxk3vkyk3iyimh6qv3ptvwu@24zfmamllev6>
+ <0998f05b-9d5f-4b24-9030-22421e1dd859@lucifer.local>
+Date: Wed, 10 Jul 2024 22:28:01 +1000
+Message-ID: <874j8x5t4e.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240710103352.1890726-1-make24@iscas.ac.cn>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,30 +70,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, arnd@arndb.de, linux-kernel@vger.kernel.org, stable@vger.kernel.org, manoj@linux.vnet.ibm.com, imunsie@au1.ibm.com, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, clombard@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 10, 2024 at 06:33:52PM +0800, Ma Ke wrote:
-> In read_handle(), of_get_address() may return NULL which is later
-> dereferenced. Fix this by adding NULL check.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - The potential vulnerability was discovered as follows: based on our 
-> customized static analysis tool, extract vulnerability features[1], and 
-> then match similar vulnerability features in this function.
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com> writes:
+> On Mon, Jul 08, 2024 at 04:43:15PM GMT, Liam R. Howlett wrote:
+>>
+...
+>> The functionality here has changed
+>> --- from ---
+>> may_expand_vm() check
+>> can_modify_mm() check
+>> arch_unmap()
+>> vms_gather_munmap_vmas()
+>> ...
+>>
+>> --- to ---
+>> can_modify_mm() check
+>> arch_unmap()
+>> vms_gather_munmap_vmas()
+>> may_expand_vm() check
+>> ...
+>>
+>> vms_gather_munmap_vmas() does nothing but figures out what to do later,
+>> but could use memory and can fail.
+>>
+>> The user implications are:
+>>
+>> 1. The return type on the error may change to -EPERM from -ENOMEM, if
+>> you are not allowed to expand and are trying to overwrite mseal()'ed
+>> VMAs. That seems so very rare that I'm not sure it's worth mentioning.
+>>
+>>
+>> 2. arch_unmap() called prior to may_expand_vm().
+>> powerpc uses this to set mm->context.vdso = NULL if mm->context.vdso is
+>> within the unmap range.  User implication of this means that an
+>> application my set the vdso to NULL prior to hitting the -ENOMEM case in
+>> may_expand_vm() due to the address space limit.
+>>
+>> Assuming the removal of the vdso does not cause the application to seg
+>> fault, then the user visible change is that any vdso call after a failed
+>> mmap(MAP_FIXED) call would result in a seg fault.  The only reason it
+>> would fail is if the mapping process was attempting to map a large
+>> enough area over the vdso (which is accounted and in the vma tree,
+>> afaict) and ran out of memory. Note that this situation could arise
+>> already since we could run out of memory (not accounting) after the
+>> arch_unmap() call within the kernel.
+>>
+>> The code today can suffer the same fate, but not by the accounting
+>> failure.  It can happen due to failure to allocate a new vma,
+>> do_vmi_munmap() failure after the arch_unmap() call, or any of the other
+>> failure scenarios later in the mmap_region() function.
+>>
+>> At the very least, this requires an expanded change log.
+>
+> Indeed, also (as mentioned on IRC) I feel like we need to look at whether
+> we _truly_ need this arch_unmap() call for a single, rather antiquated,
+> architecture.
 
-You need to follow the rules outlined in
-Documentation/process/researcher-guidelines.rst when doing stuff like
-this.  Otherwise all of your patches will have to be rejected.
+You can call it "niche" or "irrelevant" or "fringe", but "antiquated" is
+factually wrong :) Power10 came out of the fab just a few years ago at
+7nm.
 
-Please fix up the changelog text of all of the patches you have
-submitted recently to follow those rules.
+> I mean why are they unmapping the VDSO, why is that valid, why does it need
+> that field to be set to NULL, is it possible to signify that in some other
+> way etc.?
 
-thanks,
+It was originally for CRIU. So a niche workload on a niche architecture.
 
-greg k-h
+But from the commit that added it, it sounds like CRIU was using mremap,
+which should be handled these days by vdso_mremap(). So it could be that
+arch_unmap() is not actually needed for CRIU anymore.
+
+Then I guess we have to decide if removing our arch_unmap() would be an
+ABI break, regardless of whether CRIU needs it or not.
+
+cheers
