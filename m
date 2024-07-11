@@ -1,188 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD91292EDF6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 19:40:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD9592EF2B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 20:50:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=nFhDw+we;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=PJx4ivRK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aVnZeCGP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WKhnZ47mfz3cWP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 03:40:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WKkLZ0kYfz3fV3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 04:50:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=nFhDw+we;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=PJx4ivRK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aVnZeCGP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 5964 seconds by postgrey-1.37 at boromir; Fri, 12 Jul 2024 03:39:25 AEST
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKhms5BwLz3cBx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2024 03:39:24 +1000 (AEST)
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46BFBZlF008221;
-	Thu, 11 Jul 2024 15:59:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	date:from:to:cc:subject:message-id:references:content-type
-	:content-transfer-encoding:in-reply-to:mime-version; s=
-	corp-2023-11-20; bh=ShDvrSd+viRNeBNU+FfjoOh2yPOx+MwVBfECN1HdLFc=; b=
-	nFhDw+wesxA97vWBSI6F4yOMsMqSIzMl17kJDLl8PoTPampHdM+5URTfqAUqmJya
-	KRhP/OApoJn6E9UzTAd5y6AItqsgSiOYUsAooJ+nJn/ISZBg87JxUNHkSyUnAf6H
-	UbXKI4bTdI8vR3o2hKoAmLi2kawIuST3ZyUwuqvEnwpOphgmCctoShkzshuK9+b7
-	aTXiCUbb01eiq7Irfa6wf+ICzGUJJxJCHMwqe44Ci/VkLQoudaT+fnZ09K7i4scd
-	e6RJH8c9j8tBJV5xWUH4PbL3lacC14W2E6j9wgeGFhWfdIwe8Ej+nxRfGZ6Kp0Ea
-	8mYIIoMoxFVQEqdXJNlDMw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 406wkya2wb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jul 2024 15:59:34 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 46BEcqXe030101;
-	Thu, 11 Jul 2024 15:59:32 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 409vvbf8sc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jul 2024 15:59:32 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xzUL2fdxJAp2XWENB5yh/mwxBn7aWpZH5dWSqMiiAoD93JiyaMlwUfuyk7k4ouGH9pCAJVbVkKGqxLoVUszm9KLvhaHjMe8j0+WodxUBzOksyqH+dnH7hlZj4zsOkHBt4KSYjDJLnJtc73q+dDpV+Wa31/VQRGt2uP+Qg4jm4O6oAjYfV1vTIHtu91pnLa4CM4a6BKUfQwH8XSQKl4wGQBQ4LPQ2IhNWYleSFhtHWRBDf+2hCFdbO0MLjRoxdbRsmt4u2j5InT/kXdALYVkvHjPrBYB9pKuLljWoC0XLnRkW7W8CcWBFNmfiQXay5deHlZamzLLEf/zP7522DFZX5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ShDvrSd+viRNeBNU+FfjoOh2yPOx+MwVBfECN1HdLFc=;
- b=BN8Ew9Am/hkZU+siKIqejE8cFQnCG7zL011frD1EpbPkw3xJEit0jsru6njNwhW+sW2VDOf+uF+R5PJ2qMfFk/WkKI8iN+4U37ziw4t4GKNSItBBpWH+w3IB/iqI7we0S1ZTjNiqhTTzqWbeqVz2gcjfDQXJek0w7FwcOS5GnM9XfqJV993VuwOMrK9F5Wo8OUsl/O2F9GDUgdnXTZxhM3BBXb7b9cwNVCt2I/evUjp/AUvdsK36kCYlCArAwJGxNDJuc85jAJwhEcNsBrrGoGanpueXHfedGEqsHdwaHBty7Fw+/9xhHihZfYtuAQOlSy+SqcmghhfepGAxxNbZeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ShDvrSd+viRNeBNU+FfjoOh2yPOx+MwVBfECN1HdLFc=;
- b=PJx4ivRKdhNs2vPe3DmCOd4EjxwE8nbApppejKkyXUioznqJRHffDtXPhVk6nhJ//jm9iBS2ZuMHXQOhyF9IHwU7XM/CKmQJV9Dwe5SCssfomL0+Zij77FprwYeDdLE1GcCH0bZJdNn7B3DagvS0tEcqBG/+W0yjRKia263hHZs=
-Received: from DS0PR10MB7933.namprd10.prod.outlook.com (2603:10b6:8:1b8::15)
- by BN0PR10MB4967.namprd10.prod.outlook.com (2603:10b6:408:123::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Thu, 11 Jul
- 2024 15:59:29 +0000
-Received: from DS0PR10MB7933.namprd10.prod.outlook.com
- ([fe80::2561:85b0:ae8f:9490]) by DS0PR10MB7933.namprd10.prod.outlook.com
- ([fe80::2561:85b0:ae8f:9490%3]) with mapi id 15.20.7741.033; Thu, 11 Jul 2024
- 15:59:29 +0000
-Date: Thu, 11 Jul 2024 11:59:25 -0400
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
-Subject: Re: [PATCH v4 17/21] mm/mmap: Drop arch_unmap() call from all archs
-Message-ID: <6vhuf2uuaibrmtb47tqf6qm6ckpsvmxgrh776wyrpd4ezccrnr@vdbv7msydynk>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	LEROY Christophe <christophe.leroy2@cs-soprasteria.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lstoakes@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, "sidhartha.kumar@oracle.com" <sidhartha.kumar@oracle.com>, 
-	"Paul E . McKenney" <paulmck@kernel.org>, Bert Karwatzki <spasswolf@web.de>, 
-	Jiri Olsa <olsajiri@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Kees Cook <kees@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Dmitry Safonov <dima@arista.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>
-References: <20240710192250.4114783-1-Liam.Howlett@oracle.com>
- <20240710192250.4114783-18-Liam.Howlett@oracle.com>
- <3843b797-8e31-498c-adff-153f9568505e@cs-soprasteria.com>
- <kuzulyzpa35xs7wevnklswchebc5xgnvtxpqly3wisfb7d34mp@npelpwy3h5wv>
- <26f9353e-fe0e-4a2e-ae12-8021f0c7bf40@cs-soprasteria.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKkKr460fz3dBj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2024 04:49:36 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46BHSKwE012625;
+	Thu, 11 Jul 2024 18:49:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:content-transfer-encoding:in-reply-to; s=pp1; bh=p
+	ZO9j8GmuMeCi/bqbRh+LycNGy3Igu5uFZv0+f29TKc=; b=aVnZeCGPJNjKY8L7q
+	CjCGksi7mbth/cMejAwr//SBw76lXflvXeybQFoZq+nfQEWIpkRo+Ldi7NRcYfpQ
+	WAb5LOz6o9lnRgA/cV3KAVgDKtO9pFLbgukUQ197dPRo2ByAw5gO8GU64oNbf6DK
+	MX5CSdU0+on3VlDjeHSxUqD1SZ4/pUIkh2zEDyYMakaN27sVzNuy4LlkoG55PKWt
+	toztxTaebDZnE8I3T54X8oo0gad3+fKlR936oncdRdQaVQs6kLPKgOaYWI9irxzq
+	jsNFnhzUXx0Lj6vggEc0abxpY00diuMdg7GszFT1i3eBkg+YkkDiLg8s9zya8Kk6
+	mBxOQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40akts86ma-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jul 2024 18:49:18 +0000 (GMT)
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46BInIKQ007445;
+	Thu, 11 Jul 2024 18:49:18 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40akts86m6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jul 2024 18:49:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46BIDTdp024690;
+	Thu, 11 Jul 2024 18:49:17 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 407g8ujmf6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jul 2024 18:49:17 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46BInB3P58720608
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jul 2024 18:49:13 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C35A120043;
+	Thu, 11 Jul 2024 18:49:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 142FB20040;
+	Thu, 11 Jul 2024 18:49:00 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.195.44.247])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 11 Jul 2024 18:48:59 +0000 (GMT)
+Date: Fri, 12 Jul 2024 00:18:47 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Lizhi Hou <lizhi.hou@amd.com>
+Subject: Re: [PATCH] PCI: Fix crash during pci_dev hot-unplug on pseries KVM
+ guest
+Message-ID: <k5h7tto6kdwcgtxoeglqncojjwact6xxqnin4inffol74jdows@fj5ujezqwb24>
+Mail-Followup-To: Lizhi Hou <lizhi.hou@amd.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	Rob Herring <robh@kernel.org>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, 
+	Lukas Wunner <lukas@wunner.de>
+References: <20240705192034.GA73447@bhelgaas>
+ <2359de90-1712-903e-c3c9-1f1f694718db@amd.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <26f9353e-fe0e-4a2e-ae12-8021f0c7bf40@cs-soprasteria.com>
-User-Agent: NeoMutt/20240425
-X-ClientProxiedBy: YT1P288CA0006.CANP288.PROD.OUTLOOK.COM (2603:10b6:b01::19)
- To DS0PR10MB7933.namprd10.prod.outlook.com (2603:10b6:8:1b8::15)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7933:EE_|BN0PR10MB4967:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e2167fe-1502-42a8-ade9-08dca1c2721b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: 	=?iso-8859-1?Q?uG7RwWDC+2nYteS47tN19O8KWH/xKi7vqmO+nsGehBOj/qM5waUK1fZnyl?=
- =?iso-8859-1?Q?iqpuCBlbXqAnK1Aom8LEb1Z5+Xg4aWuwwO4zUHQpSJD/tihaSIbX09g/72?=
- =?iso-8859-1?Q?L0tOsHawac3Y0PJ++7GXUv/x9bgRjGfrvOWwF9CvXAuWf7aRCKKfadXhLd?=
- =?iso-8859-1?Q?eJZq9pAJm1m1FVyXkLf7LZ+sRuvDVUyWxrFezDSTgKJwLrmpTr3qlUw8wB?=
- =?iso-8859-1?Q?Ix4C5Q+RuckbWZZs6EbpTFcUGvdWybdaHY1KtlF0zW5S8LFSdK8uPVr1fe?=
- =?iso-8859-1?Q?epMYkqb1Pzw+R+o7N8YlNBLMZCYuZ9y7Z3Y+r8aFj6kVjDRnAY+BTKgaVl?=
- =?iso-8859-1?Q?GFmBWL7uPAgoN2jc1dPecRBIuORQgdzbKJcr7j3b4HYhxvy3o48Cg3+Kyb?=
- =?iso-8859-1?Q?s2Jhz6vrwjDE+jixWj7rI1esuumvO+SgUd50TjPnzPs35IslJSteC+HXYG?=
- =?iso-8859-1?Q?1TMIfugVSN4Gs9CSky4yNhdpqmp8/VF+hELSe7emT11mJkYferftU3kPFK?=
- =?iso-8859-1?Q?dDu/edMZBLyvWvFKtsHMoLgZu71mqF8PD8dFAhfpdbNU8vhoP7auhmvWts?=
- =?iso-8859-1?Q?lF1uTJOWD9f9KDpAgYtt5voIP02ew35daG16HNQlExz8bhsLUNRXjqxH1r?=
- =?iso-8859-1?Q?Wnf4x5jhs1qvtIjXWfLviW1S7gFPygjwpMHucLIMpuMw/E+E1sPnnes3d3?=
- =?iso-8859-1?Q?Z1sggAE/0nGxIXU+mUqbb+YH6BeZXQDS6WRQXu++OiA2LL9brYb/l2SZ53?=
- =?iso-8859-1?Q?RHLoapbT3NxvKsCWYmyacWEHIKyH1a3isvN1WtmdG1AY8SQxKNWnSHtYVg?=
- =?iso-8859-1?Q?gaLdJZBo2UddKv6EKKUXLTSVEPgqUBLCEEcO2CeryVPHtWM7XaxYPvP4zo?=
- =?iso-8859-1?Q?aBEl5tEiKATcdTa2UrQjKaMU/hrtJZeyhO5+JK0sRqEwLTgD1yPQxhRwVu?=
- =?iso-8859-1?Q?SjZj1wDqc566HubrW2g94KAOnJXp/i08I8KMZn23ITiKEKbELnUmNgBBIY?=
- =?iso-8859-1?Q?lIzJNLc+wf+rZH+Sj0bz4yjHcmfPpm2PO6vlgMpOzrklNY+dE3Mgv9tnDV?=
- =?iso-8859-1?Q?xn+tFiy1tvhfcy5Lu8vwRql51s6MEW/D7nrNzjwHFTvGSmSFns18OVE/+f?=
- =?iso-8859-1?Q?DpuJm8+NEAwwkFY82ZRx1Vt+pU0ciVrP12lVhHRVET5EchUO1V89eyix8S?=
- =?iso-8859-1?Q?7dAxNYjw1K5ye2SbFsDRFgM3PYQl4mP+oEv8mnbj0TGmioAg7fP97mI9VC?=
- =?iso-8859-1?Q?4pzO6+bz5P7XFjz+Ne5gdqfoqdSWXhBYS2w4rDyuBTEzNo6xDeLwv9n5Lu?=
- =?iso-8859-1?Q?RTFCiF8F4ckGSOxsApbmeRy5vi7Cz1AjMFm8uoyDCKbsFUI=3D?=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7933.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?iso-8859-1?Q?0p0ZPwDLeIzQaR5SqIxF37HbnzbQAkIy4wpvfDQSjtgWsHJf9yppfJ2trQ?=
- =?iso-8859-1?Q?rWvHHr3UiCmKjtoPZ0IsqvvVY1vK43j+nVQDVOJYSYa79zGswpINHpq3+y?=
- =?iso-8859-1?Q?+FKqC5IveUoVOxlwDZWK5UOc6Mu9IW4nGhUAtFNlp0u0fFn/WnbxyRqVBI?=
- =?iso-8859-1?Q?53SfPcoPgiGm5RNFWtYpMnU3i6V2T4PDHRFVWkJnfpOXKs6ypyZ6BGLBy0?=
- =?iso-8859-1?Q?y0mvF67mA8ITmPtf9mctwU0ybCSQkDvLuie+SSp0mnJwMo6ehqMWB+1Jxj?=
- =?iso-8859-1?Q?MdGngPEehz8d1Dz5P0kCegpf+ckHcvo0qC9LHFAp13kYWMMGHThcR6Mg6e?=
- =?iso-8859-1?Q?D1McX9bsva5eAkZr7RpQq0qEBsxaEYZ2UI0/dwWkeHxkyumdFj6gQ/tGBd?=
- =?iso-8859-1?Q?dIBVlBa0Q89tYwktuLF+g0w2lNnpti6r8bYD1/px66SCzJ6NrfaIHKUDDZ?=
- =?iso-8859-1?Q?JR9TXqTZWjvUIfvbR6A8W+EdHQ+chxbazOILJ0V31noOj/PJCMw3poB1m9?=
- =?iso-8859-1?Q?Q/W1rR0CBBcrXrYSx9QKZBkWuz2H4peTrkiIvury/tHaQuA9g0klURVDgN?=
- =?iso-8859-1?Q?KRCp9IkdiCgu42+wnc3kvLxz7IiorCuZSqG/+nZ/649zZvfPBLFcseP5ww?=
- =?iso-8859-1?Q?Kh+P+dDUhAEoa7weRxNXo0MZ0APUzm6chu3PKgyJyI+x3DboYeLksOhukI?=
- =?iso-8859-1?Q?f+AuJPK9d1QXQlNgCCo4f0KmGGYkvtVMZu6bc7FtkmjZaz1bIrBaPPceyW?=
- =?iso-8859-1?Q?rZ8ynZ6INyttxtMSS7yi6kVmlrzwbvpRSJWxmKh8/9S/jPOVlmMxOZZFc/?=
- =?iso-8859-1?Q?9xd8P2owpeaeCmUO5VHX0kYpP7lHtcj4SDL5twzMq4COHpNFl+XMK/L6v7?=
- =?iso-8859-1?Q?XYJx/6K9LsidB3YQV+wMAqS4cIiP3PHrexN70Lhh6UGYhQYn9JAq3hN7x/?=
- =?iso-8859-1?Q?442xxvmFXNzUX6tLri2gjmuQx5FRdexkkzS4eZ2i9dLE0Lca33TryAz0P8?=
- =?iso-8859-1?Q?Kk84n0l2e39J2LxcKZCISsTFhXWP+C0IYKTNx+VrCTn7oyN4MJdCWNo/XI?=
- =?iso-8859-1?Q?e2oCNkSiAkrz8FY/flw0lGm+Tg3BJ+uQ2Z4rNKTvq/ePEGv4WdthsiN2ka?=
- =?iso-8859-1?Q?Rs9o2dekWm3zD7C5QW2VHdbYOpmIfXHd3oRNoLcZsrUcP7RrR9z2xWhBCd?=
- =?iso-8859-1?Q?QdMUoG/H8xsTAjbag9bex5Wvvqbvx+2NqeUxGCH9wZq8I2kCxT0Ky5FQ5K?=
- =?iso-8859-1?Q?bKSdlNJM6vBG4YXhxXqDPWrWMVa2I6IFPAbfwKP0kXOh4srIjxR12VIsAL?=
- =?iso-8859-1?Q?SbTKZS6rwtfOcmKDpwhp0rDeAyzDNciTWRUoytOV+MvNed0hrH0xgcIPhI?=
- =?iso-8859-1?Q?LkAkJknOWZoGp6tpXvtWGvfksbLgGZlnfFlX2FsB103swO90lhtWI54tDZ?=
- =?iso-8859-1?Q?53Yvs3mpIoUlaMmbIp2jGD0yfSgm8qmhlP+XgmjViTiz1T0KWZ5LuGBO9H?=
- =?iso-8859-1?Q?H62SgLG4x80j9ZeI4yKu+HjLo5jk72WvymFfNBwtfGgmWaAIJKrfGenFJi?=
- =?iso-8859-1?Q?uYLTSLCHLwqCOy4CiRmhmmGhxQBEXQMU6qttlPxS3EnLFJ5DwtmoGMkNmS?=
- =?iso-8859-1?Q?AXgARPbxX+dvvdhM026rH2lLeqwiNCmj9uupGdYAolLmcaU0FoWSuN/Q?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 	GkF3YaMZcpJ5JDzDK+QTcLU80Ff1lpQYoxksWLxcxH6VWnsQTWtJz2/VmgyU9tGKe77EFerorvvZzpDMh0H7AVS753U8Q4zaR6dt+Ku+0y99lUi9gRwk9QpO1qVmnOOQ/R3oyA5gWnd2bx7FbS1toeldTjk/Gip8+0ATH3yqYhQhuk9RHKviNIfDhELf8lkKS+FUYzkrRwsKuWKvvn56vAglLf3e5Q6dVKJ5H0sSnZFs4d3AjWXAK83SsuPoBKFEk3vncQLezgXUi+r43Cow6VRmiYsRFPm7/N+vPJ0NisCI1UMdGCvHBBT392U+6XvIwIqY6kDRBuGH1OI4DqAZcvzUSHMGephm/FBI8MyJ/8YxXgcV66FKu/LVhAMo+jw8xBL+L1xCntRmi/G+EHd2mL6rxOxngaeZFcvKby+oyV0ZvOAVDDLCRbHHyw7+QANDY8GckOFcHfRPIJPjiwWEMAtnfmyW7N2wO9xFNSVGDjc/OVJCyk8DgaRplQVjnjOqnPm5U6aMluETFJjL8x26WiIcoYgTC6MrKHTpZRvtKaw4C1S35Rcr0vL0myS87EJWC+e6PTnz8F7OSMahC/OvZE1+a9AEN4nMQmJsDyFM4RE=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e2167fe-1502-42a8-ade9-08dca1c2721b
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7933.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 15:59:29.1538
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ePdDkduIIz4StVh+VaUUscdB3fZ7tI23iph1wTZTvgJV9bMq5eDKkzAcr8LDSvcT3LflZ01bOh76BrnFqh7vlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB4967
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2359de90-1712-903e-c3c9-1f1f694718db@amd.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Gon01WQFtL9qxfZfuloDPHdcqatQhpnD
+X-Proofpoint-GUID: LWsB8du8MknWW_Md0SIc8A3Akzq6_Z3J
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-11_11,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 phishscore=0 adultscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2406180000
- definitions=main-2407110111
-X-Proofpoint-ORIG-GUID: mQTLj6X0JrXz-bWitmVbYFgHAd1JQckY
-X-Proofpoint-GUID: mQTLj6X0JrXz-bWitmVbYFgHAd1JQckY
+ definitions=2024-07-11_13,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 spamscore=0
+ phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407110128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -194,90 +108,257 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dmitry Safonov <dima@arista.com>, Lorenzo Stoakes <lstoakes@gmail.com>, "Paul E . McKenney" <paulmck@kernel.org>, Dave Hansen <dave.hansen@intel.com>, Kees Cook <kees@kernel.org>, Jiri Olsa <olsajiri@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Bert Karwatzki <spasswolf@web.de>, Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, "sidhartha.kumar@oracle.com" <sidhartha.kumar@oracle.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Rob Herring <robh@kernel.org>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* LEROY Christophe <christophe.leroy2@cs-soprasteria.com> [240711 04:28]:
->=20
->=20
-> Le 11/07/2024 =E0 01:26, Liam R. Howlett a =E9crit :
-> > * LEROY Christophe <christophe.leroy2@cs-soprasteria.com> [240710 17:02=
-]:
-> >>
-> >>
-> >> Le 10/07/2024 =E0 21:22, Liam R. Howlett a =E9crit :
-> >>> From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-> >>>
-> >>> The arch_unmap call was previously moved above the rbtree modificatio=
-ns
-> >>> in commit 5a28fc94c914 ("x86/mpx, mm/core: Fix recursive munmap()
-> >>> corruption").  The move was motivated by an issue with calling
-> >>> arch_unmap() after the rbtree was modified.
-> >>>
-> >>> Since the above commit, mpx was dropped from the kernel in 45fc24e89b=
-7c
-> >>> ("x86/mpx: remove MPX from arch/x86"), so the motivation for calling
-> >>> arch_unmap() prior to modifying the vma tree no longer exists
-> >>> (regardless of rbtree or maple tree implementations).
-> >>>
-> >>> Furthermore, the powerpc implementation is also no longer needed as p=
-er
-> >>> [1] and [2].  So the arch_unmap() function can be completely removed.
-> >>
-> >> I'm not sure to understand. Is it replaced by something else ?
-> >> We wanted to get rid of arch_unmap() but it was supposed to be replace=
-d
-> >> by some core function because the functionnality itself is still
-> >> required and indeed all the discussion around [2] demonstrated that no=
-t
-> >> only powerpc but at least arm and probably others needed to properly
-> >> clean-up reference to VDSO mappings on unmapping.
-> >>
-> >> So as mentioned by Michael you can't just drop that without replacing =
-it
-> >> by something else. We need the VDSO signal handling to properly fallba=
-ck
-> >> on stack-based trampoline when the VDSO trampoline gets mapped out.
-> >
-> > I'll address this after the part I missed..
->=20
-> After ? What do you mean ? It needs to be addressed _before_ removing
-> arch_unmap()
+On 2024/07/10 09:48 PM, Lizhi Hou wrote:
+> 
+> On 7/5/24 12:20, Bjorn Helgaas wrote:
+> > [+cc Lukas, FYI]
+> > 
+> > On Wed, Jul 03, 2024 at 07:46:34PM +0530, Amit Machhiwal wrote:
+> > > With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+> > > of a PCI device attached to a PCI-bridge causes following kernel Oops on
+> > > a pseries KVM guest:
+> > > 
+> > >   RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+> > >   Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
+> > >   BUG: Unable to handle kernel data access on read at 0x10ec00000048
+> > >   Faulting instruction address: 0xc0000000012d8728
+> > >   Oops: Kernel access of bad area, sig: 11 [#1]
+> > >   LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> > > <snip>
+> > >   NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
+> > >   LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
+> > >   Call Trace:
+> > >   [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
+> > >   [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
+> > >   [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
+> > >   [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_locked+0x34/0x64
+> > >   [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
+> > >   [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
+> > >   [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
+> > >   [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
+> > >   [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
+> > >   [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
+> > >   [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
+> > >   [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> > > <snip>
+> > > 
+> > > A git bisect pointed this regression to be introduced via [1] that added
+> > > a mechanism to create device tree nodes for parent PCI bridges when a
+> > > PCI device is hot-plugged.
+> > > 
+> > > The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
+> > > device-tree node associated with the pci_dev that was earlier
+> > > hot-plugged and was attached under a pci-bridge. The PCI dev header
+> > > `dev->hdr_type` being 0, results a conditional check done with
+> > > `pci_is_bridge()` into false. Consequently, a call to
+> > > `of_pci_make_dev_node()` to create a device node is never made. When at
+> > > a later point in time, in the device node removal path, a memcpy is
+> > > attempted in `__of_changeset_entry_invert()`; since the device node was
+> > > never created, results in an Oops due to kernel read access to a bad
+> > > address.
+> > > 
+> > > To fix this issue the patch updates `pci_stop_dev()` to ensure that a
+> > > call to `of_pci_remove_node()` is only made for pci-bridge devices.
+> > > 
+> > > [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > 
+> > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+> > > Tested-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+> > > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > Thanks for the patch and testing!  Would like a reviewed-by from
+> > Lizhi.
+> 
+> of_pci_make_dev_node() will create of nodes for some endpoint devices (not a
+> bridge) as well. And actually this is the main purpose.
+> 
+> Maybe the patch as below would resolve the Oops?
 
-After the later comments in this email, sorry that wasn't clear.
+Thanks for the patch, Lizhi! I tried out this patch and don't see the issue with
+the same. The hot-plug and hot-unplug of PCI device seem to work fine as
+expected.
 
->=20
-> >
-> >>
-> >> Or did I miss something ?
-> >>
-> >
-> > I think I missed something in regards to what you need in ppc.
->=20
-> It is not only powerpc. Powerpc is the only one doing it at the moment
-> but investigation has demonstrated that other architectures are affected.
->=20
-> >
-> >  From what I understand, other platforms still map and use the vdso
-> > (context.vdso is set), but unmap_arch() does nothing.  It is only the
-> > powerpc version that clears the vdso pointer if it is unmapped.
->=20
-> Yes on powerpc it works. On other platforms like arm it segfaults so it
-> should be fixed
-> (https://lore.kernel.org/lkml/87imd5h5kb.fsf@mpe.ellerman.id.au/)
->=20
-> Could be fixed by properly implementing arch_unmap() on every arch, or
-> carry-on with Dmitry's series.
+~ Amit
 
-Okay, I understand what you are saying now.  I'm not going to tackle
-that change within this series, so I'll just relocate the arch_munmap()
-back to where it was, after the removal of the vmas in v5.
-
-> I think you fully understand that it doesn't work as it is except on
-> powerpc. Again the goal should be to make it work on all architectures.
-
-Got it, thanks for clarifying.
-
-Regards,
-Liam
+> 
+> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> index dda6092e6d3a..3c693b091ecf 100644
+> --- a/drivers/of/dynamic.c
+> +++ b/drivers/of/dynamic.c
+> @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct
+> device_node *np,
+>   * a given changeset.
+>   *
+>   * @ocs: Pointer to changeset
+> + * @np: Pointer to device node. If it is not null, init it directly instead
+> of
+> + *      allocate a new node.
+>   * @parent: Pointer to parent device node
+>   * @full_name: Node full name
+>   *
+>   * Return: Pointer to the created device node or NULL in case of an error.
+>   */
+>  struct device_node *of_changeset_create_node(struct of_changeset *ocs,
+> +                                            struct device_node *np,
+>                                              struct device_node *parent,
+>                                              const char *full_name)
+>  {
+> -       struct device_node *np;
+>         int ret;
+> 
+> -       np = __of_node_dup(NULL, full_name);
+> -       if (!np)
+> -               return NULL;
+> +       if (!np) {
+> +               np = __of_node_dup(NULL, full_name);
+> +               if (!np)
+> +                       return NULL;
+> +       } else {
+> +               of_node_set_flag(np, OF_DYNAMIC);
+> +               of_node_set_flag(np, OF_DETACHED);
+> +       }
+> +
+>         np->parent = parent;
+> 
+>         ret = of_changeset_attach_node(ocs, np);
+> diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+> index 445ad13dab98..087de26852cc 100644
+> --- a/drivers/of/unittest.c
+> +++ b/drivers/of/unittest.c
+> @@ -871,7 +871,7 @@ static void __init of_unittest_changeset(void)
+>         unittest(!of_changeset_add_property(&chgset, parent, ppadd), "fail
+> add prop prop-add\n");
+>         unittest(!of_changeset_update_property(&chgset, parent, ppupdate),
+> "fail update prop\n");
+>         unittest(!of_changeset_remove_property(&chgset, parent, ppremove),
+> "fail remove prop\n");
+> -       n22 = of_changeset_create_node(&chgset, n2, "n22");
+> +       n22 = of_changeset_create_node(&chgset, NULL, n2, "n22");
+>         unittest(n22, "fail create n22\n");
+>         unittest(!of_changeset_add_prop_string(&chgset, n22, "prop-str",
+> "abcd"),
+>                  "fail add prop prop-str");
+> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> index 51e3dd0ea5ab..92c079b2e570 100644
+> --- a/drivers/pci/of.c
+> +++ b/drivers/pci/of.c
+> @@ -608,18 +608,28 @@ int devm_of_pci_bridge_init(struct device *dev, struct
+> pci_host_bridge *bridge)
+> 
+>  #ifdef CONFIG_PCI_DYNAMIC_OF_NODES
+> 
+> +void of_pci_free_node(struct device_node *np)
+> +{
+> +       struct of_changeset *cset;
+> +
+> +       cset = (struct of_changeset *)(np + 1);
+> +
+> +       np->data = NULL;
+> +       of_changeset_revert(cset);
+> +       of_changeset_destroy(cset);
+> +       of_node_put(np);
+> +}
+> +
+>  void of_pci_remove_node(struct pci_dev *pdev)
+>  {
+>         struct device_node *np;
+> 
+>         np = pci_device_to_OF_node(pdev);
+> -       if (!np || !of_node_check_flag(np, OF_DYNAMIC))
+> +       if (!np || np->data != of_pci_free_node)
+>                 return;
+>         pdev->dev.of_node = NULL;
+> 
+> -       of_changeset_revert(np->data);
+> -       of_changeset_destroy(np->data);
+> -       of_node_put(np);
+> +       of_pci_free_node(np);
+>  }
+> 
+>  void of_pci_make_dev_node(struct pci_dev *pdev)
+> @@ -655,14 +665,18 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+>         if (!name)
+>                 return;
+> 
+> -       cset = kmalloc(sizeof(*cset), GFP_KERNEL);
+> -       if (!cset)
+> +       np = kzalloc(sizeof(*np) + sizeof(*cset), GFP_KERNEL);
+> +       if (!np)
+>                 goto out_free_name;
+> +       np->full_name = name;
+> +       of_node_init(np);
+> +
+> +       cset = (struct of_changeset *)(np + 1);
+>         of_changeset_init(cset);
+> 
+> -       np = of_changeset_create_node(cset, ppnode, name);
+> +       np = of_changeset_create_node(cset, np, ppnode, NULL);
+>         if (!np)
+> -               goto out_destroy_cset;
+> +               goto out_free_node;
+> 
+>         ret = of_pci_add_properties(pdev, cset, np);
+>         if (ret)
+> @@ -672,9 +686,8 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+>         if (ret)
+>                 goto out_free_node;
+> 
+> -       np->data = cset;
+> +       np->data = of_pci_free_node;
+>         pdev->dev.of_node = np;
+> -       kfree(name);
+> 
+>         return;
+> 
+> diff --git a/include/linux/of.h b/include/linux/of.h
+> index a0bedd038a05..f774459d0d84 100644
+> --- a/include/linux/of.h
+> +++ b/include/linux/of.h
+> @@ -1631,6 +1631,7 @@ static inline int of_changeset_update_property(struct
+> of_changeset *ocs,
+>  }
+> 
+>  struct device_node *of_changeset_create_node(struct of_changeset *ocs,
+> +                                            struct device_node *np,
+>                                              struct device_node *parent,
+>                                              const char *full_name);
+>  int of_changeset_add_prop_string(struct of_changeset *ocs,
+> 
+> Thanks,
+> 
+> Lizhi
+> 
+> > 
+> > > ---
+> > >   drivers/pci/remove.c | 3 ++-
+> > >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
+> > > index d749ea8250d6..4e51c64af416 100644
+> > > --- a/drivers/pci/remove.c
+> > > +++ b/drivers/pci/remove.c
+> > > @@ -22,7 +22,8 @@ static void pci_stop_dev(struct pci_dev *dev)
+> > >   		device_release_driver(&dev->dev);
+> > >   		pci_proc_detach_device(dev);
+> > >   		pci_remove_sysfs_dev_files(dev);
+> > > -		of_pci_remove_node(dev);
+> > > +		if (pci_is_bridge(dev))
+> > > +			of_pci_remove_node(dev);
+> > IIUC, this basically undoes the work that was done by
+> > of_pci_make_dev_node().
+> > 
+> > The call of of_pci_make_dev_node() from pci_bus_add_device() was added
+> > by 407d1a51921e and is conditional on pci_is_bridge(), so it makes
+> > sense to me that the remove needs a similar condition.
+> > 
+> > >   		pci_dev_assign_added(dev, false);
+> > >   	}
+> > > 
+> > > base-commit: e9d22f7a6655941fc8b2b942ed354ec780936b3e
+> > > -- 
+> > > 2.45.2
+> > > 
