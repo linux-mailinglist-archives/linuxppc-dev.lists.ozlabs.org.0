@@ -2,63 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB0892E830
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 14:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2B692E9F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 15:54:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txXmhDxB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kBffDW30;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WKYkN6hmSz3cWP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 22:21:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WKbnN0T1Bz3cWP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 23:54:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txXmhDxB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kBffDW30;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=mchehab+huawei@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKYjg4RBlz30TB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 22:21:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKbmh38fxz3cRd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 23:53:56 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5093261D15
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 12:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041B3C4AF0A
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 12:21:08 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1475861D43;
+	Thu, 11 Jul 2024 13:53:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23420C116B1;
+	Thu, 11 Jul 2024 13:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720700468;
-	bh=+52FPB3c3wjL8TK+FFddWZnDSoZX6pDi9JJHJg3PmM0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=txXmhDxBnfB4WsObEh60Wz/HWAhiv1UHOL9xVuJr5eJMo6eNntbRTubtEOmYtvAx5
-	 MZPSR8dWBtmqFhf/K9vhx/CAjVBSkqvW/yMec4ZXSiovpKm9iZwIXnVo/A+hcK/ueC
-	 QLXMkKKo9REZvYCxxY4AJF8TiqS8svW0fqjJpne9iXzkcbjAcDG2MqYPXfPu8UGlf0
-	 Np1k2LljjwfxHRgRINTVDyRQdXs9E//KUa6PehdBrAjVT/XTrMz9FePL9xArOO3Yzw
-	 GdQNHM6lg9H6XjtaCjl4UzispM9UAimG91ccNKrxAgZqgrZdeCgNXxJU5Z9Aymv03z
-	 p89mraxfXKTeg==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52eafec1e84so1185859e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 05:21:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVZj/9c/e3OTTaxV1nkwZ02MRVTY/0b5DdZXdGlHyeqPZv7d2GuIlqUVTleHgK6QSpbYxU0bEaSbsjXgQXLBaIZ9nYEWJpn9YwtAbCYmA==
-X-Gm-Message-State: AOJu0YyG/q/3d8XKuEByL5k3Al9Hu8VOZs0OlpCRuQAPgm5EHqaKWwpm
-	LB20xy17cPayUV/yuq1AwzdTyTz81rhHXVC/ddKYOtQqCegeAiwqHIt1FtWtXkGIAP/1jU0Mg9q
-	s5TjT+5z6WDMix7//OpJdmReiuw==
-X-Google-Smtp-Source: AGHT+IFq48139LTNoH/EhDszKQ0cYnElGlN8CYXm4ZkgPD7yDdzVEKydnwQDyrr05M9kqxOePrrTaeMoYkQOQDIYnOY=
-X-Received: by 2002:a05:6512:401a:b0:52e:9423:867f with SMTP id
- 2adb3069b0e04-52eb99a137bmr6375363e87.36.1720700466351; Thu, 11 Jul 2024
- 05:21:06 -0700 (PDT)
+	s=k20201202; t=1720706032;
+	bh=d7eUnvpmqA007vMePeAhiRZGhhclqfU3sA2rSd2dSGE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kBffDW30SyBlZCqOGULzop3FoMuyN+QQ5auURLJHQ5kfGcoTU9L9BiiUyfwL0TSaQ
+	 9FyJbO7q3Taqqe/b01urzCCS7eNXube/zETixa6xqPWAxNw0y2W8zPBksMpugkp3Xh
+	 LqCNUaKK+sijkltj6+6l3z/RDT8/JrIY4cY7mpsMXX8m9k3JFDhWxB7BPzXudK9MYL
+	 QXuBppwEKWmEaJnzivH29zNXl9lYQi4m0+phrN2TkuSEQAdR6LufjZtHVNOyNZhskw
+	 5T/LmEct54eHM00gSnnslvBpv1DEFb/gsyCCQQ8a23/HuBXF3K3hL+AVQeIDVE8YMR
+	 J6BbIo9b7etPA==
+Date: Thu, 11 Jul 2024 15:53:43 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Tong Tiangen <tongtiangen@huawei.com>
+Subject: Re: [PATCH v12 1/6] uaccess: add generic fallback version of
+ copy_mc_to_user()
+Message-ID: <20240711155343.3729bc30@foz.lan>
+In-Reply-To: <20240528085915.1955987-2-tongtiangen@huawei.com>
+References: <20240528085915.1955987-1-tongtiangen@huawei.com>
+	<20240528085915.1955987-2-tongtiangen@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20240703141634.2974589-1-amachhiw@linux.ibm.com>
-In-Reply-To: <20240703141634.2974589-1-amachhiw@linux.ibm.com>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 11 Jul 2024 06:20:53 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL9hg8Hze4oOP1R55yVXBfTKE=RfwdBraNHiO71K21uNA@mail.gmail.com>
-Message-ID: <CAL_JsqL9hg8Hze4oOP1R55yVXBfTKE=RfwdBraNHiO71K21uNA@mail.gmail.com>
-Subject: Re: [PATCH] PCI: Fix crash during pci_dev hot-unplug on pseries KVM guest
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,19 +62,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, wangkefeng.wang@huawei.com, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, "H. Peter Anvin" <hpa@zytor.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>, x86@kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, linuxppc-dev@lists.ozlabs.org, Guohanjun <guohanjun@huawei.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Robin Murphy <robin.murphy@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 3, 2024 at 8:17=E2=80=AFAM Amit Machhiwal <amachhiw@linux.ibm.c=
-om> wrote:
->
-> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
-> of a PCI device attached to a PCI-bridge causes following kernel Oops on
-> a pseries KVM guest:
+Em Tue, 28 May 2024 16:59:10 +0800
+Tong Tiangen <tongtiangen@huawei.com> escreveu:
 
-Can I ask why you have this option on in the first place? Do you have
-a use for it or it's just a case of distros turn on every kconfig
-option.
+> x86/powerpc has it's implementation of copy_mc_to_user(), we add generic
+> fallback in include/linux/uaccess.h prepare for other architechures to
+> enable CONFIG_ARCH_HAS_COPY_MC.
+> 
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/include/asm/uaccess.h | 1 +
+>  arch/x86/include/asm/uaccess.h     | 1 +
+>  include/linux/uaccess.h            | 8 ++++++++
+>  3 files changed, 10 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index de10437fd206..df42e6ad647f 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -381,6 +381,7 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
+>  
+>  	return n;
+>  }
+> +#define copy_mc_to_user copy_mc_to_user
 
-Rob
+Such define looks weird on my eyes. What to do you want to do here?
+
+>  #endif
+>  
+>  extern long __copy_from_user_flushcache(void *dst, const void __user *src,
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+> index 0f9bab92a43d..309f2439327e 100644
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -497,6 +497,7 @@ copy_mc_to_kernel(void *to, const void *from, unsigned len);
+>  
+>  unsigned long __must_check
+>  copy_mc_to_user(void __user *to, const void *from, unsigned len);
+> +#define copy_mc_to_user copy_mc_to_user
+
+Same here.
+
+>  #endif
+>  
+>  /*
+> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+> index 3064314f4832..0dfa9241b6ee 100644
+> --- a/include/linux/uaccess.h
+> +++ b/include/linux/uaccess.h
+> @@ -205,6 +205,14 @@ copy_mc_to_kernel(void *dst, const void *src, size_t cnt)
+>  }
+>  #endif
+>  
+> +#ifndef copy_mc_to_user
+> +static inline unsigned long __must_check
+> +copy_mc_to_user(void *dst, const void *src, size_t cnt)
+> +{
+> +	return copy_to_user(dst, src, cnt);
+> +}
+> +#endif
+> +
+>  static __always_inline void pagefault_disabled_inc(void)
+>  {
+>  	current->pagefault_disabled++;
+
+
+
+Thanks,
+Mauro
