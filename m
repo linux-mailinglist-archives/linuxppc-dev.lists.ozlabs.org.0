@@ -2,57 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AD692E5E4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 13:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB0892E830
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 14:21:51 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txXmhDxB;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WKXJ00W27z3cVt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 21:17:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WKYkN6hmSz3cWP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 22:21:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.42; helo=mail-ej1-f42.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txXmhDxB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKXHZ46S9z2y70
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 21:16:57 +1000 (AEST)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a77cc73d35fso337054366b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 04:16:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720696614; x=1721301414;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/r51nS+g7lQoWT0HNbExECB6/rA+diGsBSoUeSas/gM=;
-        b=RldSN4vrKmYCayXNkFhN1oI2AfhU2eAzJbw4ivXrTYZ+ihmzSMeijNtdhSwOdWK6cG
-         h7zuWgY33Qf3Q8atZzgtIIjbd4fxbndSZUGdze1OdI/265QwIUOV/V4gI+aAnF+Povxb
-         zHjKIFsOznRLq4HrivUhQM/yVGHFH+jzqK6iPmXRxB+s02yAALlT9lMJWZYxYouHVkwq
-         j/lab9I6yB0Mv0LO51w6PI8Pqrp+2/qnrgv4zJcibGNR6arQbtAEyKyCDCJuPKEgpEVo
-         54Hc0UpVajgiGIT6tc+fsV+GphafAPpSXV72oJFE08rkU697uXyH/37ViQ7DO6lWgaGw
-         nBSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaU5eIMNwbCur65mc/Z++kKrL+/MFjPYtjZe5NRVR18/CRxG6MquV3PJ0cu0KDlfJOd/2K9UYvZXVETryVkZ+cfm6p95JaMUDSHiGl3w==
-X-Gm-Message-State: AOJu0YwGqw6wZrLueKiDsVypZR3vhDKwVjhUJZBz/m8Uks6g5taqe2U9
-	/UzHPaG6YM4SVgn8mVewcdeMsO+A49q+qSzhy3w2zBzUgj1ta3fs
-X-Google-Smtp-Source: AGHT+IE6LZHdbstxR+votJm7nuupUZbWEEQffPECqBfV2tlXDzop1gI1NS4S6fcacoV6R+qMyM4bdw==
-X-Received: by 2002:a17:906:5806:b0:a6f:e699:a9f8 with SMTP id a640c23a62f3a-a798a2cc14amr156904966b.18.1720696614118;
-        Thu, 11 Jul 2024 04:16:54 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-115.fbsv.net. [2a03:2880:30ff:73::face:b00c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a797ddb28ccsm132052466b.147.2024.07.11.04.16.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 04:16:53 -0700 (PDT)
-Date: Thu, 11 Jul 2024 04:16:51 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH net-next 1/5] net: dpaa: avoid on-stack arrays of NR_CPUS
- elements
-Message-ID: <Zo+/I5Rw0hp5wGeQ@gmail.com>
-References: <20240710230025.46487-1-vladimir.oltean@nxp.com>
- <20240710230025.46487-2-vladimir.oltean@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKYjg4RBlz30TB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 22:21:11 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5093261D15
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 12:21:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041B3C4AF0A
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 12:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720700468;
+	bh=+52FPB3c3wjL8TK+FFddWZnDSoZX6pDi9JJHJg3PmM0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=txXmhDxBnfB4WsObEh60Wz/HWAhiv1UHOL9xVuJr5eJMo6eNntbRTubtEOmYtvAx5
+	 MZPSR8dWBtmqFhf/K9vhx/CAjVBSkqvW/yMec4ZXSiovpKm9iZwIXnVo/A+hcK/ueC
+	 QLXMkKKo9REZvYCxxY4AJF8TiqS8svW0fqjJpne9iXzkcbjAcDG2MqYPXfPu8UGlf0
+	 Np1k2LljjwfxHRgRINTVDyRQdXs9E//KUa6PehdBrAjVT/XTrMz9FePL9xArOO3Yzw
+	 GdQNHM6lg9H6XjtaCjl4UzispM9UAimG91ccNKrxAgZqgrZdeCgNXxJU5Z9Aymv03z
+	 p89mraxfXKTeg==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52eafec1e84so1185859e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 05:21:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVZj/9c/e3OTTaxV1nkwZ02MRVTY/0b5DdZXdGlHyeqPZv7d2GuIlqUVTleHgK6QSpbYxU0bEaSbsjXgQXLBaIZ9nYEWJpn9YwtAbCYmA==
+X-Gm-Message-State: AOJu0YyG/q/3d8XKuEByL5k3Al9Hu8VOZs0OlpCRuQAPgm5EHqaKWwpm
+	LB20xy17cPayUV/yuq1AwzdTyTz81rhHXVC/ddKYOtQqCegeAiwqHIt1FtWtXkGIAP/1jU0Mg9q
+	s5TjT+5z6WDMix7//OpJdmReiuw==
+X-Google-Smtp-Source: AGHT+IFq48139LTNoH/EhDszKQ0cYnElGlN8CYXm4ZkgPD7yDdzVEKydnwQDyrr05M9kqxOePrrTaeMoYkQOQDIYnOY=
+X-Received: by 2002:a05:6512:401a:b0:52e:9423:867f with SMTP id
+ 2adb3069b0e04-52eb99a137bmr6375363e87.36.1720700466351; Thu, 11 Jul 2024
+ 05:21:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240710230025.46487-2-vladimir.oltean@nxp.com>
+References: <20240703141634.2974589-1-amachhiw@linux.ibm.com>
+In-Reply-To: <20240703141634.2974589-1-amachhiw@linux.ibm.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 11 Jul 2024 06:20:53 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqL9hg8Hze4oOP1R55yVXBfTKE=RfwdBraNHiO71K21uNA@mail.gmail.com>
+Message-ID: <CAL_JsqL9hg8Hze4oOP1R55yVXBfTKE=RfwdBraNHiO71K21uNA@mail.gmail.com>
+Subject: Re: [PATCH] PCI: Fix crash during pci_dev hot-unplug on pseries KVM guest
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,36 +70,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, Madalin Bucur <madalin.bucur@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-arm-kernel@lists.infradead.org
+Cc: Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Vladimir,
+On Wed, Jul 3, 2024 at 8:17=E2=80=AFAM Amit Machhiwal <amachhiw@linux.ibm.c=
+om> wrote:
+>
+> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+> of a PCI device attached to a PCI-bridge causes following kernel Oops on
+> a pseries KVM guest:
 
-On Thu, Jul 11, 2024 at 02:00:21AM +0300, Vladimir Oltean wrote:
-> The dpaa-eth driver is written for PowerPC and Arm SoCs which have 1-24
-> CPUs. It depends on CONFIG_NR_CPUS having a reasonably small value in
-> Kconfig. Otherwise, there are 2 functions which allocate on-stack arrays
-> of NR_CPUS elements, and these can quickly explode in size, leading to
-> warnings such as:
-> 
->   drivers/net/ethernet/freescale/dpaa/dpaa_eth.c:3280:12: warning:
->   stack frame size (16664) exceeds limit (2048) in 'dpaa_eth_probe' [-Wframe-larger-than]
-> 
-> The problem is twofold:
-> - Reducing the array size to the boot-time num_possible_cpus() (rather
->   than the compile-time NR_CPUS) creates a variable-length array,
->   which should be avoided in the Linux kernel.
-> - Using NR_CPUS as an array size makes the driver blow up in stack
->   consumption with generic, as opposed to hand-crafted, .config files.
-> 
-> A simple solution is to use dynamic allocation for num_possible_cpus()
-> elements (aka a small number determined at runtime).
-> 
-> Link: https://lore.kernel.org/all/202406261920.l5pzM1rj-lkp@intel.com/
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Can I ask why you have this option on in the first place? Do you have
+a use for it or it's just a case of distros turn on every kconfig
+option.
 
-Thanks for working on it.
-
---breno
+Rob
