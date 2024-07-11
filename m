@@ -1,42 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3960092E3BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 11:51:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7EB92E50D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 12:49:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WKVNT0h0vz3ccL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 19:51:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WKWgz5640z3dBX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jul 2024 20:49:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WKVN51Q2Sz3cW7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 19:50:41 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4621C1007;
-	Thu, 11 Jul 2024 02:50:33 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B87B3F766;
-	Thu, 11 Jul 2024 02:50:05 -0700 (PDT)
-Date: Thu, 11 Jul 2024 10:50:00 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH v4 17/29] arm64: implement PKEYS support
-Message-ID: <20240711095000.GA488602@e124191.cambridge.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-18-joey.gouly@arm.com>
- <ZlnlQ/avUAuSum5R@arm.com>
- <20240531152138.GA1805682@e124191.cambridge.arm.com>
- <Zln6ckvyktar8r0n@arm.com>
- <87a5jj4rhw.fsf@oldenburg.str.redhat.com>
- <ZnBNd51hVlaPTvn8@arm.com>
- <ZownjvHbPI1anfpM@arm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKWgb4PG1z30Ss
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jul 2024 20:49:13 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WKWgR6DKKz9sSd;
+	Thu, 11 Jul 2024 12:49:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2RqFO7Mhyqy7; Thu, 11 Jul 2024 12:49:07 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WKWgR5VXDz9sSV;
+	Thu, 11 Jul 2024 12:49:07 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id AEB5C8B778;
+	Thu, 11 Jul 2024 12:49:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id fChFF1nWQOWT; Thu, 11 Jul 2024 12:49:07 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.233.107])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 480138B764;
+	Thu, 11 Jul 2024 12:49:07 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc: Remove 40x leftovers
+Date: Thu, 11 Jul 2024 12:49:01 +0200
+Message-ID: <ab30ae302783d8617d407864b92db1b926ab5ab9.1720694914.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZownjvHbPI1anfpM@arm.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720694942; l=1243; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=34zE3+s18qxDmJ/g6Sn4JXCB/W17u3pBk+nhOORmuxw=; b=Qf3m+E0r0EGY3uzEtzcwi8SiBmKgleoMjAp6HDSuD2TpYSHYw25CR2atNoFUOFg4lT+JtRkrM s698EtKtPb/B34tw5FD0kXoR3v7c4E7tSTLHYLeZCcq5ezBxDL19Yg5
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,136 +59,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Szabolcs Nagy <szabolcs.nagy@arm.com>, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, Florian Weimer <fweimer@redhat.com>, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 08, 2024 at 06:53:18PM +0100, Catalin Marinas wrote:
-> Hi Szabolcs,
-> 
-> On Mon, Jun 17, 2024 at 03:51:35PM +0100, Szabolcs Nagy wrote:
-> > The 06/17/2024 15:40, Florian Weimer wrote:
-> > > >> A user can still set it by interacting with the register directly, but I guess
-> > > >> we want something for the glibc interface..
-> > > >> 
-> > > >> Dave, any thoughts here?
-> > > >
-> > > > adding Florian too, since i found an old thread of his that tried
-> > > > to add separate PKEY_DISABLE_READ and PKEY_DISABLE_EXECUTE, but
-> > > > it did not seem to end up upstream. (this makes more sense to me
-> > > > as libc api than the weird disable access semantics)
-> > > 
-> > > I still think it makes sense to have a full complenent of PKEY_* flags
-> > > complementing the PROT_* flags, in a somewhat abstract fashion for
-> > > pkey_alloc only.  The internal protection mask register encoding will
-> > > differ from architecture to architecture, but the abstract glibc
-> > > functions pkey_set and pkey_get could use them (if we are a bit
-> > > careful).
-> > 
-> > to me it makes sense to have abstract
-> > 
-> > PKEY_DISABLE_READ
-> > PKEY_DISABLE_WRITE
-> > PKEY_DISABLE_EXECUTE
-> > PKEY_DISABLE_ACCESS
-> > 
-> > where access is handled like
-> > 
-> > if (flags&PKEY_DISABLE_ACCESS)
-> > 	flags |= PKEY_DISABLE_READ|PKEY_DISABLE_WRITE;
-> > disable_read = flags&PKEY_DISABLE_READ;
-> > disable_write = flags&PKEY_DISABLE_WRITE;
-> > disable_exec = flags&PKEY_DISABLE_EXECUTE;
-> > 
-> > if there are unsupported combinations like
-> > disable_read&&!disable_write then those are rejected
-> > by pkey_alloc and pkey_set.
-> > 
-> > this allows portable use of pkey apis.
-> > (the flags could be target specific, but don't have to be)
-> 
-> On powerpc, PKEY_DISABLE_ACCESS also disables execution. AFAICT, the
-> kernel doesn't define a PKEY_DISABLE_READ, only PKEY_DISABLE_ACCESS so
-> for powerpc there's no way to to set an execute-only permission via this
-> interface. I wouldn't like to diverge from powerpc.
+Fixes: e939da89d024 ("powerpc: Remove 40x from Kconfig and defconfig")
+Fixes: 548f5244f106 ("powerpc/40x: Remove EP405")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/boot/wrapper              | 2 +-
+ arch/powerpc/platforms/Kconfig.cputype | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-I think this is wrong, look at this code from powerpc:
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index 585c4ea27ab9..b1f5549a3c9c 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -337,7 +337,7 @@ ps3)
+     make_space=n
+     pie=
+     ;;
+-ep88xc|ep405|ep8248e)
++ep88xc|ep8248e)
+     platformo="$object/fixed-head.o $object/$platform.o"
+     binary=y
+     ;;
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 1ec98688c915..4b0d7d4f88f6 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -250,7 +250,6 @@ config TARGET_CPU
+ 	default "e6500" if E6500_CPU
+ 	default "power4" if POWERPC64_CPU && !CPU_LITTLE_ENDIAN
+ 	default "power8" if POWERPC64_CPU && CPU_LITTLE_ENDIAN
+-	default "405" if 405_CPU
+ 	default "440" if 440_CPU
+ 	default "464" if 464_CPU
+ 	default "476" if 476_CPU
+-- 
+2.44.0
 
-arch/powerpc/mm/book3s64/pkeys.c: __arch_set_user_pkey_access
-
-        if (init_val & PKEY_DISABLE_EXECUTE) {
-                if (!pkey_execute_disable_supported)
-                        return -EINVAL;
-                new_iamr_bits |= IAMR_EX_BIT;
-        }
-        init_iamr(pkey, new_iamr_bits);
-
-        /* Set the bits we need in AMR: */
-        if (init_val & PKEY_DISABLE_ACCESS)
-                new_amr_bits |= AMR_RD_BIT | AMR_WR_BIT;
-        else if (init_val & PKEY_DISABLE_WRITE)
-                new_amr_bits |= AMR_WR_BIT;
-
-        init_amr(pkey, new_amr_bits);
-
-Seems to me that PKEY_DISABLE_ACCESS leaves exec permissions as-is.
-
-Here is the patch I am planning to include in the next version of the series.
-This should support all PKEY_DISABLE_* combinations. Any comments? 
-
-commit ba51371a544f6b0a4a0f03df62ad894d53f5039b
-Author: Joey Gouly <joey.gouly@arm.com>
-Date:   Thu Jul 4 11:29:20 2024 +0100
-
-    arm64: add PKEY_DISABLE_READ and PKEY_DISABLE_EXEC
-    
-    TODO
-    
-    Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-
-diff --git arch/arm64/include/uapi/asm/mman.h arch/arm64/include/uapi/asm/mman.h
-index 1e6482a838e1..e7e0c8216243 100644
---- arch/arm64/include/uapi/asm/mman.h
-+++ arch/arm64/include/uapi/asm/mman.h
-@@ -7,4 +7,13 @@
- #define PROT_BTI       0x10            /* BTI guarded page */
- #define PROT_MTE       0x20            /* Normal Tagged mapping */
- 
-+/* Override any generic PKEY permission defines */
-+#define PKEY_DISABLE_EXECUTE   0x4
-+#define PKEY_DISABLE_READ      0x8
-+#undef PKEY_ACCESS_MASK
-+#define PKEY_ACCESS_MASK       (PKEY_DISABLE_ACCESS |\
-+                               PKEY_DISABLE_WRITE  |\
-+                               PKEY_DISABLE_READ   |\
-+                               PKEY_DISABLE_EXECUTE)
-+
- #endif /* ! _UAPI__ASM_MMAN_H */
-diff --git arch/arm64/mm/mmu.c arch/arm64/mm/mmu.c
-index 68afe5fc3071..ce4cc6bdee4e 100644
---- arch/arm64/mm/mmu.c
-+++ arch/arm64/mm/mmu.c
-@@ -1570,10 +1570,15 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long i
-                return -EINVAL;
- 
-        /* Set the bits we need in POR:  */
-+       new_por = POE_RXW;
-+       if (init_val & PKEY_DISABLE_WRITE)
-+               new_por &= ~POE_W;
-        if (init_val & PKEY_DISABLE_ACCESS)
--               new_por = POE_X;
--       else if (init_val & PKEY_DISABLE_WRITE)
--               new_por = POE_RX;
-+               new_por &= ~POE_RW;
-+       if (init_val & PKEY_DISABLE_READ)
-+               new_por &= ~POE_R;
-+       if (init_val & PKEY_DISABLE_EXECUTE)
-+               new_por &= ~POE_X;
- 
-        /* Shift the bits in to the correct place in POR for pkey: */
-        pkey_shift = pkey * POR_BITS_PER_PKEY;
-
-
-
-Thanks,
-Joey
