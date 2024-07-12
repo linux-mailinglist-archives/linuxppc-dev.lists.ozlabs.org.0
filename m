@@ -1,98 +1,105 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9C592FEA3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 18:35:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E4392FFA7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 19:20:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MCvNKusD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pTa1Lz4N;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WLHJ35qbcz3cWP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 02:34:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WLJJH5tb8z3cgB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 03:20:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MCvNKusD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pTa1Lz4N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WLHHM2PKPz30W8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2024 02:34:22 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CGQthA001231;
-	Fri, 12 Jul 2024 16:34:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	12YbCikve2CAmDk87xfKtkq9w9t5lVoCOWkW1TB7EaE=; b=MCvNKusDCNsY93N9
-	pmPjwlF7ruDFK8YhyXZg2oWNX4Ww3eq7GSxBb7zORbLn2ipJaKHvL16+eyk/ixHD
-	eYUJUpSYi+49NPO0vBuZ4a2z/OEB+4gqoSaXE2g89kVfslin/hbfnROSZg63brN1
-	awF19HX66Zk5LE6KOr/YfiE0ronIFs3wMSeUHYUMVrc02URpH2cX84+crAO0H7v7
-	NW9R/O9Nz7+V4tGvWk4N0KjJ/a5Pd10IadDpkahgLZm8g7N1nnhY8iDswPBeiGBy
-	4lriIG2QY7cxhuek4M5EsNoI46ZVxtnUSV1eqXkUEubti84dFIqZHViKC+0ihbt7
-	kwuQUg==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WLJHc3c8Jz3bvP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2024 03:19:39 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46CFvUvD014723;
+	Fri, 12 Jul 2024 17:19:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:content-transfer-encoding:in-reply-to; s=pp1; bh=P
+	KLdN+4HvBPUBpPcjX23XjukBoXJmaIgK0lpyBVPehs=; b=pTa1Lz4N4kcksyH25
+	aui4MTWaA6mHQS9axVcYmtR4CBTepfVSa+CDXN08hm71FdZWdUzen3OUGhrdtSMy
+	KKcxBbHxTvq/BuJL5oUxwSyWJY3KUTgAfNtwXAVqljrFIAzwoYwa8CE8DjCjkKpp
+	kZvILS7XC4SrDquKE74oSMAiWzFg9EEdpPBHxVy/kBLRD46zvQgTeCLBRorfnuOP
+	lY/zTAeShcR3CYb1lDL+auybtsERiSyTyNwy5jQ5Q6CvWuTQOVZIsLTpmt4HHdIY
+	A2HEbvtsLP/kjIJcMy716uBLOourR9ebkT9VaoV/42BuCbQ7DN/7gkwWnbKpNIxQ
+	9+/mA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40b75kg4xp-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40b4y7gmbv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 16:34:09 +0000 (GMT)
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46CGY8ii016892;
-	Fri, 12 Jul 2024 16:34:09 GMT
+	Fri, 12 Jul 2024 17:19:26 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46CHJPgM023228;
+	Fri, 12 Jul 2024 17:19:25 GMT
 Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40b75kg4xj-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40b4y7gmbs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 16:34:08 +0000 (GMT)
+	Fri, 12 Jul 2024 17:19:25 +0000 (GMT)
 Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46CE2O5Z024575;
-	Fri, 12 Jul 2024 16:34:08 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 407hrn7ddh-1
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46CE1mO1024583;
+	Fri, 12 Jul 2024 17:19:25 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 407hrn7k5n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Jul 2024 16:34:08 +0000
+	Fri, 12 Jul 2024 17:19:24 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46CGY2uk18874636
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46CHJJua34996642
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Jul 2024 16:34:04 GMT
+	Fri, 12 Jul 2024 17:19:21 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 406732004F;
-	Fri, 12 Jul 2024 16:34:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5171520043;
+	Fri, 12 Jul 2024 17:19:19 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFD8620040;
-	Fri, 12 Jul 2024 16:33:58 +0000 (GMT)
-Received: from [9.171.22.164] (unknown [9.171.22.164])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 12 Jul 2024 16:33:58 +0000 (GMT)
-Message-ID: <0e5be712-4b0a-47a2-8c89-ee7ffe4e29b8@linux.ibm.com>
-Date: Fri, 12 Jul 2024 22:03:57 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V6 00/18] Add data type profiling support for powerpc
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-References: <20240707144419.92510-1-atrajeev@linux.vnet.ibm.com>
- <5CBFBE42-A15C-47A4-B980-62313FEF1EFA@linux.vnet.ibm.com>
-Content-Language: en-US
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <5CBFBE42-A15C-47A4-B980-62313FEF1EFA@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9lFZ8sHdl9fLGwoGRyJB1kDFjQ20hHnh
-X-Proofpoint-ORIG-GUID: RVJOODqGvaMZAnE90eicrx0KM3w8Hy0J
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by IMSVA (Postfix) with ESMTP id 5C46E20040;
+	Fri, 12 Jul 2024 17:19:16 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.195.45.199])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 12 Jul 2024 17:19:16 +0000 (GMT)
+Date: Fri, 12 Jul 2024 22:49:10 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Lizhi Hou <lizhi.hou@amd.com>
+Subject: Re: [PATCH] PCI: Fix crash during pci_dev hot-unplug on pseries KVM
+ guest
+Message-ID: <parclvdotds2m44iphcy7qlhnxg6ugdtk7ad7wxodtktj6m5zj@wpuwa7xc6ve4>
+Mail-Followup-To: Lizhi Hou <lizhi.hou@amd.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	Rob Herring <robh@kernel.org>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, 
+	Lukas Wunner <lukas@wunner.de>
+References: <20240705192034.GA73447@bhelgaas>
+ <2359de90-1712-903e-c3c9-1f1f694718db@amd.com>
+ <k5h7tto6kdwcgtxoeglqncojjwact6xxqnin4inffol74jdows@fj5ujezqwb24>
+ <f1c2125e-c87e-d816-c92b-db814f501134@amd.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f1c2125e-c87e-d816-c92b-db814f501134@amd.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sEAC1-5TYDh5GqKpo8s93-VQZKLYqtNZ
+X-Proofpoint-ORIG-GUID: qmakTHWV9aEhnRW0UZq7bentTl0ZwFwN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-12_12,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 impostorscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
- malwarescore=0 suspectscore=0 clxscore=1011 phishscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407120112
+ definitions=2024-07-12_13,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2406140001
+ definitions=main-2407120116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,318 +111,268 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Rob Herring <robh@kernel.org>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Lizhi,
 
+On 2024/07/11 02:18 PM, Lizhi Hou wrote:
+> 
+> On 7/11/24 11:48, Amit Machhiwal wrote:
+> > On 2024/07/10 09:48 PM, Lizhi Hou wrote:
+> > > On 7/5/24 12:20, Bjorn Helgaas wrote:
+> > > > [+cc Lukas, FYI]
+> > > > 
+> > > > On Wed, Jul 03, 2024 at 07:46:34PM +0530, Amit Machhiwal wrote:
+> > > > > With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+> > > > > of a PCI device attached to a PCI-bridge causes following kernel Oops on
+> > > > > a pseries KVM guest:
+> > > > > 
+> > > > >    RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+> > > > >    Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
+> > > > >    BUG: Unable to handle kernel data access on read at 0x10ec00000048
+> > > > >    Faulting instruction address: 0xc0000000012d8728
+> > > > >    Oops: Kernel access of bad area, sig: 11 [#1]
+> > > > >    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> > > > > <snip>
+> > > > >    NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
+> > > > >    LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
+> > > > >    Call Trace:
+> > > > >    [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
+> > > > >    [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
+> > > > >    [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
+> > > > >    [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_locked+0x34/0x64
+> > > > >    [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
+> > > > >    [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
+> > > > >    [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
+> > > > >    [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
+> > > > >    [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
+> > > > >    [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
+> > > > >    [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
+> > > > >    [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> > > > > <snip>
+> > > > > 
+> > > > > A git bisect pointed this regression to be introduced via [1] that added
+> > > > > a mechanism to create device tree nodes for parent PCI bridges when a
+> > > > > PCI device is hot-plugged.
+> > > > > 
+> > > > > The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
+> > > > > device-tree node associated with the pci_dev that was earlier
+> > > > > hot-plugged and was attached under a pci-bridge. The PCI dev header
+> > > > > `dev->hdr_type` being 0, results a conditional check done with
+> > > > > `pci_is_bridge()` into false. Consequently, a call to
+> > > > > `of_pci_make_dev_node()` to create a device node is never made. When at
+> > > > > a later point in time, in the device node removal path, a memcpy is
+> > > > > attempted in `__of_changeset_entry_invert()`; since the device node was
+> > > > > never created, results in an Oops due to kernel read access to a bad
+> > > > > address.
+> > > > > 
+> > > > > To fix this issue the patch updates `pci_stop_dev()` to ensure that a
+> > > > > call to `of_pci_remove_node()` is only made for pci-bridge devices.
+> > > > > 
+> > > > > [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > > > 
+> > > > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > > > Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+> > > > > Tested-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+> > > > > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > > > Thanks for the patch and testing!  Would like a reviewed-by from
+> > > > Lizhi.
+> > > of_pci_make_dev_node() will create of nodes for some endpoint devices (not a
+> > > bridge) as well. And actually this is the main purpose.
+> > > 
+> > > Maybe the patch as below would resolve the Oops?
+> > Thanks for the patch, Lizhi! I tried out this patch and don't see the issue with
+> > the same. The hot-plug and hot-unplug of PCI device seem to work fine as
+> > expected.
+> 
+> Cool! Thanks for trying it. Will you re-spin the patch or you would like me
+> to create a patch?
 
-On 7/12/24 09:14, Athira Rajeev wrote:
-> 
-> 
->> On 7 Jul 2024, at 8:14â€¯PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com> wrote:
->>
->> The patchset from Namhyung added support for data type profiling
->> in perf tool. This enabled support to associate PMU samples to data
->> types they refer using DWARF debug information. With the upstream
->> perf, currently it possible to run perf report or perf annotate to
->> view the data type information on x86.
->>
->> Initial patchset posted here had changes need to enable data type
->> profiling support for powerpc.
->>
-> 
-> Hi Namhyung,
-> 
-> Requesting for review on this V6 patchset. I have addressed review comments from V5. 
-> If the patchset looks good, can you please pull this in.
-> 
-> Thanks
-> Athira
+Sure, I'll re-spin and send the V2 of the patch.
 
-Patches looks fine to me. Also tested in powerpc box.
+~ Amit
 
-Reviewed-by : Kajol Jain <kjain@linux.ibm.com>
-Tested-by : Kajol Jain <kjain@linux.ibm.com>
-
-Thanks,
-Kajol Jain
-
->> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgroup.eu/T/
->>
->> Main change were:
->> 1. powerpc instruction nmemonic table to associate load/store
->> instructions with move_ops which is use to identify if instruction
->> is a memory access one.
->> 2. To get register number and access offset from the given
->> instruction, code uses fields from "struct arch" -> objump.
->> Added entry for powerpc here.
->> 3. A get_arch_regnum to return register number from the
->> register name string.
->>
->> But the apporach used in the initial patchset used parsing of
->> disassembled code which the current perf tool implementation does.
->>
->> Example: lwz     r10,0(r9)
->>
->> This line "lwz r10,0(r9)" is parsed to extract instruction name,
->> registers names and offset. Also to find whether there is a memory
->> reference in the operands, "memory_ref_char" field of objdump is used.
->> For x86, "(" is used as memory_ref_char to tackle instructions of the
->> form "mov  (%rax), %rcx".
->>
->> In case of powerpc, not all instructions using "(" are the only memory
->> instructions. Example, above instruction can also be of extended form (X
->> form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
->> and extract the source/target registers, second patchset added support to use
->> raw instruction. With raw instruction, macros are added to extract opcode
->> and register fields.
->> Link to second patchset:
->> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.ibm.com/
->>
->> Example representation using --show-raw-insn in objdump gives result:
->>
->> 38 01 81 e8     ld      r4,312(r1)
->>
->> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
->> this translates to instruction form: "ld RT,DS(RA)" and binary code
->> as:
->>  _____________________________________
->>  | 58 |  RT  |  RA |      DS       | |
->>  -------------------------------------
->> 0    6     11    16              30 31
->>
->> Second patchset used "objdump" again to read the raw instruction.
->> But since there is no need to disassemble and binary code can be read
->> directly from the DSO, third patchset (ie this patchset) uses below
->> apporach. The apporach preferred in powerpc to parse sample for data
->> type profiling in V3 patchset is:
->> - Read directly from DSO using dso__data_read_offset
->> - If that fails for any case, fallback to using libcapstone
->> - If libcapstone is not supported, approach will use objdump
->>
->> Patchset adds support to pick the opcode and reg fields from this
->> raw/binary instruction code. This approach came in from review comment
->> by Segher Boessenkool and Christophe for the initial patchset.
->>
->> Apart from that, instruction tracking is enabled for powerpc and
->> support function is added to find variables defined as registers
->> Example, in powerpc, below two registers are
->> defined to represent variable:
->> 1. r13: represents local_paca
->> register struct paca_struct *local_paca asm("r13");
->>
->> 2. r1: represents stack_pointer
->> register void *__stack_pointer asm("r1");
->>
->> These are handled in this patchset.
->>
->> - Patch 1 is to rearrange register state type structures to header file
->> so that it can referred from other arch specific files
->> - Patch 2 is to make instruction tracking as a callback to"struct arch"
->> so that it can be implemented by other archs easily and defined in arch
->> specific files
->> - Patch 3 is to handle state type regs array size for x86 and powerpc
->> - Patch 4 adds support to capture and parse raw instruction in powerpc
->> using dso__data_read_offset utility
->> - Patch 4 also adds logic to support using objdump when doing default "perf
->> report" or "perf annotate" since it that needs disassembled instruction.
->> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
->> - Patch 6 update parameters for reg extract functions to use raw
->> instruction on powerpc
->> - Patch 7 updates ins__find to carry raw_insn and also adds parse
->> callback for memory instructions for powerpc
->> - Patch 8 add support to identify memory instructions of opcode 31 in
->> powerpc
->> - Patch 9 adds more instructions to support instruction tracking in powerpc
->> - Patch 10 and 11 handles instruction tracking for powerpc.
->> - Patch 12, 13 and 14 add support to use libcapstone in powerpc
->> - Patch 15 and patch 16 handles support to find global register variables
->> - PAtch 17 updates data type compare functions data_type_cmp and
->>  sort__typeoff_sort to include var_name along with type_name in
->>  comparison.
->> - Patch 18 handles insn-stat option for perf annotate
->>
->> Note:
->> - There are remaining unknowns (25%) as seen in annotate Instruction stats
->> below.
->> - This patchset is not tested on powerpc32. In next step of enhancements
->> along with handling remaining unknowns, plan to cover powerpc32 changes
->> based on how testing goes.
->>
->> With the current patchset:
->>
->> ./perf record -a -e mem-loads sleep 1
->> ./perf report -s type,typeoff --hierarchy --group --stdio
->> ./perf annotate --data-type --insn-stat
->>
->> perf annotate logs:
->> ==================
->>
->> Annotate Instruction stats
->> total 609, ok 446 (73.2%), bad 163 (26.8%)
->>
->>  Name/opcode:  Good   Bad
->>  -----------------------------------------------------------
->>  58                  :   323    80
->>  32                  :    49    43
->>  34                  :    33    11
->>  OP_31_XOP_LDX       :     8    20
->>  40                  :    23     0
->>  OP_31_XOP_LWARX     :     5     1
->>  OP_31_XOP_LWZX      :     2     3
->>  OP_31_XOP_LDARX     :     3     0
->>  33                  :     0     2
->>  OP_31_XOP_LBZX      :     0     1
->>  OP_31_XOP_LWAX      :     0     1
->>  OP_31_XOP_LHZX      :     0     1
->>
->> perf report logs:
->> =================
->>
->>  Total Lost Samples: 0
->>
->>  Samples: 1K of event 'mem-loads'
->>  Event count (approx.): 937238
->>
->>  Overhead  Data Type  Data Type Offset
->> ........  .........  ................
->>    48.60%  (unknown)  (unknown) +0 (no field)
->>    11.42%  long unsigned int  long unsigned int +0 (current_stack_pointer)
->>     4.68%  struct paca_struct  struct paca_struct +2312 (__current)
->>     4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
->>     2.69%  struct paca_struct  struct paca_struct +2808 (canary)
->>     2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
->>     2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
->>     1.43%  long unsigned int  long unsigned int +0 (no field)
->>     1.41%  struct vm_fault  struct vm_fault +0 (vma)
->>     1.29%  struct task_struct  struct task_struct +276 (flags)
->>     1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
->>     0.90%  struct security_hook_list  struct security_hook_list +0 (list.next)
->>     0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
->>     0.76%  struct rq  struct rq +2856 (cpu)
->>     0.72%  long long unsigned int  long long unsigned int +0 (no field)
->>
->> Thanks
->> Athira Rajeev
->>
->> Changelog:
->> From v5 -> v6:
->> - Addressed review comments from Namhyung
->>  Conditionally define TYPE_STATE_MAX_REGS based on arch.
->>  Added macro for defining width of the raw codes and spaces
->>  in disasm_line__parse_powerpc.
->>  Call disasm_line__parse from disasm_line__parse_powerpc
->>  for generic code.
->>  Renamed symbol__disassemble_dso to symbol__disassemble_raw.
->>  Fixed find_data_type_global_reg to correclty free var_types
->>  and change indent level.
->>  Fixed data_type_cmp and sort__typeoff_sort to include var_name
->>  in comparing data type entries.
 > 
->>
->> From v4 -> v5:
->> - Addressed review comments from Namhyung
->>  Handle max number of type state regs as 16 for x86 and 32 for
->>  powerpc.
->>  Added generic support for objdump patch first and DSO read
->>  optimisation next
->>  combined patch 3 and patch 4 in patchseries V4 to one patch
->>  Changed reference for "raw_insn" to use "u32"
->>  Splitted "parse" callback patch changes and "ins__find" patch
->>  changes into two
->>  Instead of making weak function, added get_powerpc_regs to
->>  extract register and offset fields for powerpc
->> - Addressed complation fail when "dwarf.h" is not present ie
->>  elfutils devel is not present. Used includes for #ifdef HAVE_DWARF_SUPPORT
->>  when including functions that use Dwarf references. Also
->>  conditionally include some of the header files.
->>
->> From v3->v4:
->> - Addressed review comments from Ian by using capston_init from
->>  "util/print_insn.c" instead of "open_capston_handle".
->> - Addressed review comment from Namhyung by moving "opcode"
->>  field from "struct ins" to "struct disasm_line"
->>
->> From v2->v3:
->> - Addressed review comments from Christophe and Namhyung for V2
->> - Changed the apporach in powerpc to parse sample for data
->>  type profiling as:
->>  Read directly from DSO using dso__data_read_offset
->>  If that fails for any case, fallback to using libcapstone
->>  If libcapstone is not supported, approach will use objdump
->> - Include instructions with opcode as 31 and correctly categorize
->>  them as memory or arithmetic instructions.
->> - Include more instructions for instruction tracking in powerpc
->>
->> From v1->v2:
->> - Addressed suggestion from Christophe Leroy and Segher Boessenkool
->>  to use the binary code (raw insn) to fetch opcode, register and
->>  offset fields.
->> - Added support for instruction tracking in powerpc
->> - Find the register defined variables (r13 and r1 which points to
->>  local_paca and current_stack_pointer in powerpc)
->>
->> Athira Rajeev (18):
->>  tools/perf: Move the data structures related to register type to
->>    header file
->>  tools/perf: Add "update_insn_state" callback function to handle arch
->>    specific instruction tracking
->>  tools/perf: Update TYPE_STATE_MAX_REGS to include max of regs in
->>    powerpc
->>  tools/perf: Add disasm_line__parse to parse raw instruction for
->>    powerpc
->>  tools/perf: Add support to capture and parse raw instruction in
->>    powerpc using dso__data_read_offset utility
->>  tools/perf: Update parameters for reg extract functions to use raw
->>    instruction on powerpc
->>  tools/perf: Add parse function for memory instructions in powerpc
->>  tools/perf: Add support to identify memory instructions of opcode 31
->>    in powerpc
->>  tools/perf: Add some of the arithmetic instructions to support
->>    instruction tracking in powerpc
->>  tools/perf: Add more instructions for instruction tracking
->>  tools/perf: Update instruction tracking for powerpc
->>  tools/perf: Make capstone_init non-static so that it can be used
->>    during symbol disassemble
->>  tools/perf: Use capstone_init and remove open_capstone_handle from
->>    disasm.c
->>  tools/perf: Add support to use libcapstone in powerpc
->>  tools/perf: Add support to find global register variables using
->>    find_data_type_global_reg
->>  tools/perf: Add support for global_die to capture name of variable in
->>    case of register defined variable
->>  tools/perf: Update data_type_cmp and sort__typeoff_sort function to
->>    include var_name in comparison
->>  tools/perf: Set instruction name to be used with insn-stat when using
->>    raw instruction
->>
->> tools/include/linux/string.h                  |   2 +
->> tools/lib/string.c                            |  13 +
->> tools/perf/arch/arm64/annotate/instructions.c |   3 +-
->> .../arch/loongarch/annotate/instructions.c    |   6 +-
->> .../perf/arch/powerpc/annotate/instructions.c | 254 ++++++++
->> tools/perf/arch/powerpc/util/dwarf-regs.c     |  53 ++
->> tools/perf/arch/s390/annotate/instructions.c  |   5 +-
->> tools/perf/arch/x86/annotate/instructions.c   | 377 ++++++++++++
->> tools/perf/builtin-annotate.c                 |   4 +-
->> tools/perf/util/annotate-data.c               | 545 ++++--------------
->> tools/perf/util/annotate-data.h               |  83 +++
->> tools/perf/util/annotate.c                    |  29 +-
->> tools/perf/util/annotate.h                    |   6 +-
->> tools/perf/util/disasm.c                      | 468 +++++++++++++--
->> tools/perf/util/disasm.h                      |  19 +-
->> tools/perf/util/dwarf-aux.c                   |   1 +
->> tools/perf/util/dwarf-aux.h                   |   1 +
->> tools/perf/util/include/dwarf-regs.h          |  12 +
->> tools/perf/util/print_insn.c                  |  15 +-
->> tools/perf/util/print_insn.h                  |   5 +
->> tools/perf/util/sort.c                        |  23 +-
->> 21 files changed, 1420 insertions(+), 504 deletions(-)
->>
->> -- 
->> 2.43.0
->>
->>
+> Lizhi
 > 
-> 
+> > 
+> > ~ Amit
+> > 
+> > > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> > > index dda6092e6d3a..3c693b091ecf 100644
+> > > --- a/drivers/of/dynamic.c
+> > > +++ b/drivers/of/dynamic.c
+> > > @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct
+> > > device_node *np,
+> > >    * a given changeset.
+> > >    *
+> > >    * @ocs: Pointer to changeset
+> > > + * @np: Pointer to device node. If it is not null, init it directly instead
+> > > of
+> > > + *      allocate a new node.
+> > >    * @parent: Pointer to parent device node
+> > >    * @full_name: Node full name
+> > >    *
+> > >    * Return: Pointer to the created device node or NULL in case of an error.
+> > >    */
+> > >   struct device_node *of_changeset_create_node(struct of_changeset *ocs,
+> > > +                                            struct device_node *np,
+> > >                                               struct device_node *parent,
+> > >                                               const char *full_name)
+> > >   {
+> > > -       struct device_node *np;
+> > >          int ret;
+> > > 
+> > > -       np = __of_node_dup(NULL, full_name);
+> > > -       if (!np)
+> > > -               return NULL;
+> > > +       if (!np) {
+> > > +               np = __of_node_dup(NULL, full_name);
+> > > +               if (!np)
+> > > +                       return NULL;
+> > > +       } else {
+> > > +               of_node_set_flag(np, OF_DYNAMIC);
+> > > +               of_node_set_flag(np, OF_DETACHED);
+> > > +       }
+> > > +
+> > >          np->parent = parent;
+> > > 
+> > >          ret = of_changeset_attach_node(ocs, np);
+> > > diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+> > > index 445ad13dab98..087de26852cc 100644
+> > > --- a/drivers/of/unittest.c
+> > > +++ b/drivers/of/unittest.c
+> > > @@ -871,7 +871,7 @@ static void __init of_unittest_changeset(void)
+> > >          unittest(!of_changeset_add_property(&chgset, parent, ppadd), "fail
+> > > add prop prop-add\n");
+> > >          unittest(!of_changeset_update_property(&chgset, parent, ppupdate),
+> > > "fail update prop\n");
+> > >          unittest(!of_changeset_remove_property(&chgset, parent, ppremove),
+> > > "fail remove prop\n");
+> > > -       n22 = of_changeset_create_node(&chgset, n2, "n22");
+> > > +       n22 = of_changeset_create_node(&chgset, NULL, n2, "n22");
+> > >          unittest(n22, "fail create n22\n");
+> > >          unittest(!of_changeset_add_prop_string(&chgset, n22, "prop-str",
+> > > "abcd"),
+> > >                   "fail add prop prop-str");
+> > > diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> > > index 51e3dd0ea5ab..92c079b2e570 100644
+> > > --- a/drivers/pci/of.c
+> > > +++ b/drivers/pci/of.c
+> > > @@ -608,18 +608,28 @@ int devm_of_pci_bridge_init(struct device *dev, struct
+> > > pci_host_bridge *bridge)
+> > > 
+> > >   #ifdef CONFIG_PCI_DYNAMIC_OF_NODES
+> > > 
+> > > +void of_pci_free_node(struct device_node *np)
+> > > +{
+> > > +       struct of_changeset *cset;
+> > > +
+> > > +       cset = (struct of_changeset *)(np + 1);
+> > > +
+> > > +       np->data = NULL;
+> > > +       of_changeset_revert(cset);
+> > > +       of_changeset_destroy(cset);
+> > > +       of_node_put(np);
+> > > +}
+> > > +
+> > >   void of_pci_remove_node(struct pci_dev *pdev)
+> > >   {
+> > >          struct device_node *np;
+> > > 
+> > >          np = pci_device_to_OF_node(pdev);
+> > > -       if (!np || !of_node_check_flag(np, OF_DYNAMIC))
+> > > +       if (!np || np->data != of_pci_free_node)
+> > >                  return;
+> > >          pdev->dev.of_node = NULL;
+> > > 
+> > > -       of_changeset_revert(np->data);
+> > > -       of_changeset_destroy(np->data);
+> > > -       of_node_put(np);
+> > > +       of_pci_free_node(np);
+> > >   }
+> > > 
+> > >   void of_pci_make_dev_node(struct pci_dev *pdev)
+> > > @@ -655,14 +665,18 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+> > >          if (!name)
+> > >                  return;
+> > > 
+> > > -       cset = kmalloc(sizeof(*cset), GFP_KERNEL);
+> > > -       if (!cset)
+> > > +       np = kzalloc(sizeof(*np) + sizeof(*cset), GFP_KERNEL);
+> > > +       if (!np)
+> > >                  goto out_free_name;
+> > > +       np->full_name = name;
+> > > +       of_node_init(np);
+> > > +
+> > > +       cset = (struct of_changeset *)(np + 1);
+> > >          of_changeset_init(cset);
+> > > 
+> > > -       np = of_changeset_create_node(cset, ppnode, name);
+> > > +       np = of_changeset_create_node(cset, np, ppnode, NULL);
+> > >          if (!np)
+> > > -               goto out_destroy_cset;
+> > > +               goto out_free_node;
+> > > 
+> > >          ret = of_pci_add_properties(pdev, cset, np);
+> > >          if (ret)
+> > > @@ -672,9 +686,8 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+> > >          if (ret)
+> > >                  goto out_free_node;
+> > > 
+> > > -       np->data = cset;
+> > > +       np->data = of_pci_free_node;
+> > >          pdev->dev.of_node = np;
+> > > -       kfree(name);
+> > > 
+> > >          return;
+> > > 
+> > > diff --git a/include/linux/of.h b/include/linux/of.h
+> > > index a0bedd038a05..f774459d0d84 100644
+> > > --- a/include/linux/of.h
+> > > +++ b/include/linux/of.h
+> > > @@ -1631,6 +1631,7 @@ static inline int of_changeset_update_property(struct
+> > > of_changeset *ocs,
+> > >   }
+> > > 
+> > >   struct device_node *of_changeset_create_node(struct of_changeset *ocs,
+> > > +                                            struct device_node *np,
+> > >                                               struct device_node *parent,
+> > >                                               const char *full_name);
+> > >   int of_changeset_add_prop_string(struct of_changeset *ocs,
+> > > 
+> > > Thanks,
+> > > 
+> > > Lizhi
+> > > 
+> > > > > ---
+> > > > >    drivers/pci/remove.c | 3 ++-
+> > > > >    1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
+> > > > > index d749ea8250d6..4e51c64af416 100644
+> > > > > --- a/drivers/pci/remove.c
+> > > > > +++ b/drivers/pci/remove.c
+> > > > > @@ -22,7 +22,8 @@ static void pci_stop_dev(struct pci_dev *dev)
+> > > > >    		device_release_driver(&dev->dev);
+> > > > >    		pci_proc_detach_device(dev);
+> > > > >    		pci_remove_sysfs_dev_files(dev);
+> > > > > -		of_pci_remove_node(dev);
+> > > > > +		if (pci_is_bridge(dev))
+> > > > > +			of_pci_remove_node(dev);
+> > > > IIUC, this basically undoes the work that was done by
+> > > > of_pci_make_dev_node().
+> > > > 
+> > > > The call of of_pci_make_dev_node() from pci_bus_add_device() was added
+> > > > by 407d1a51921e and is conditional on pci_is_bridge(), so it makes
+> > > > sense to me that the remove needs a similar condition.
+> > > > 
+> > > > >    		pci_dev_assign_added(dev, false);
+> > > > >    	}
+> > > > > 
+> > > > > base-commit: e9d22f7a6655941fc8b2b942ed354ec780936b3e
+> > > > > -- 
+> > > > > 2.45.2
+> > > > > 
