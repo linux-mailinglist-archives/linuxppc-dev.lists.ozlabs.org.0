@@ -1,138 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7F992F43C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 04:58:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF8E92F476
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 05:46:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kgxI2Z3D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tSsyfVLr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WKx9m0q24z3fS1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 12:58:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WKyDs51krz3fT3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jul 2024 13:46:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kgxI2Z3D;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tSsyfVLr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:200a::623; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20623.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::623])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKx9427MYz3cFw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2024 12:57:41 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VEengKGlulAiPcctVleZLqRN4HuBF4n0q99p84lRtYAQD+MdMONNONtFO9tL91VwqkwfNdMHifi0zWaQDIbO/q8YO2aArUvxx2tCKT9KDLQTKVjW8iN4OmWFzbHUJjOTZhBWxgNO1ACspXBg1I9BFSTZcpcQCV4SCQxJoOFDTRwLQJun6pFOtwSKEehdWKgyknrwDJEcW+MgEZX/9R2aFQEHut6PQki2LuMDc3MtjRjA4909Q3SpS4ZefTeXl3+jymbPCRsffph4NEwJTu1/It5+bRUxYW8UgiNCza5sVXfQ1EwAR6U0PzSYJZjL2XmtDdKs1u/c06g6/sS3GyEWuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1ZDgUYwcLj4KTqeYki9xIFtWtXWvuNOu8Iq63IYvC4g=;
- b=iSHD1djpWo4JluB0K3kngvAkcCnDKhp8+ww7SLLLB5Vxb2o1ERhUsdQPpS7wsl9W1aICWjmSIGHiOP58bqB2NjQAw0uzYU3aBysAQcLkN7F4blzw1/xIcG2SQsJMdZlvYkieE0jN7Ekrp+gqCHaZDOuV6HSXIRa1UIL+ntHOlIJRATxYsGhud4TFZY2/WpIz3pisFOxnnljt3KIuSTFXv183Rl748++TwTlj6DU+eNrZt5/FY4QxAo5gH9Y9kr1kibZmLY++AKoujJ7tVNo3in0AMYosoc6ldKMN6g7rl/37qynjjZI58WTL7ebSKme1lB7ZFq4bSEuBAQ6LePHQgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1ZDgUYwcLj4KTqeYki9xIFtWtXWvuNOu8Iq63IYvC4g=;
- b=kgxI2Z3DV7DTyaqabop893MqrrlQwa+D7r53Y2BqmDScqsEdrOzmAC9AnVr5AEgHJKZI8DwTfjAq21vi4YBZqlcSsEs+ujsgiVaUCouZAlL1g1B0f8Tc4es3nScXi0v+izve4BG0AEH+arg4VyM/d5Bwsk7obtYgyHkwSTz0FNPA+hBAg/rvuSdQ/mwyZlwUmyBY0YoRk6PBWyT601bUlErvWUesigr6NLdXzwKspgCnxeVou3c7uHZsk05VcG68OMmV3JBsWtBYa8/8fWvGhv9MXB7kqP+042NDkH40W6wp0jt1orqwr3eFFl0bRW9dlNovFMZjrezKn9LbreT2zg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- MN2PR12MB4341.namprd12.prod.outlook.com (2603:10b6:208:262::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Fri, 12 Jul
- 2024 02:57:18 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%2]) with mapi id 15.20.7741.033; Fri, 12 Jul 2024
- 02:57:18 +0000
-References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
- <400a4584f6f628998a7093aee49d9f86c592754b.1719386613.git-series.apopple@nvidia.com>
- <ZogCDpfSyCcjVXWH@x1n> <87zfqrw69i.fsf@nvdebian.thelocal>
- <Zo1dqTPLn_gosrSO@x1n>
-User-agent: mu4e 1.10.8; emacs 29.1
-From: Alistair Popple <apopple@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 11/13] huge_memory: Remove dead vmf_insert_pXd code
-Date: Fri, 12 Jul 2024 12:40:39 +1000
-In-reply-to: <Zo1dqTPLn_gosrSO@x1n>
-Message-ID: <87sewf48s6.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY5P282CA0140.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:205::16) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WKyD86zl7z3dSr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jul 2024 13:45:28 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46C3Seix008806;
+	Fri, 12 Jul 2024 03:45:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-type:subject:from:in-reply-to:date:cc:message-id
+	:references:to:content-transfer-encoding:mime-version; s=pp1;
+	 bh=X8/PFaRFBb0wXVXi412Lp8LueSCHNa0S49nLIttnLO8=; b=tSsyfVLrtOMi
+	HSKj8LaxBPEZVvIJXmugX0qgWTR0AtRbHnJ58i7mXIh3Pg0vhjnCVfUzY2lvSpeE
+	OTFWNsgWPgIEJexagv2pSNYN64dMFVyO9+q5E7QpuHnFM+yO7wflX8Ns0O7Q6Bfh
+	55pTObbqKhav4inCcpRSmlY/V2A/DLdhzCCsQO/SzVVDP57WWBBpOPM6zvQQjWWV
+	iZdIh2i2VdatQjPIAs1m09c9G+kUBDHzQ4g+EYGWU1Ti5OMWGTU9bJbm7X0oWJ5z
+	3wf0iXVuH1m2kC92MWv08bfYrqHRA+oREBzTF1GDaNlTuEfNoHURj1UlYmQnAq4B
+	mC+t91rQpA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40avm000x7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jul 2024 03:45:17 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46C3jGvE032325;
+	Fri, 12 Jul 2024 03:45:16 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40avm000x4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jul 2024 03:45:16 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46C1FVmf024670;
+	Fri, 12 Jul 2024 03:45:15 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 407g8umnew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Jul 2024 03:45:15 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46C3jAUr53346582
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jul 2024 03:45:12 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 51BC72004E;
+	Fri, 12 Jul 2024 03:45:10 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F22520043;
+	Fri, 12 Jul 2024 03:45:07 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.11.236])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 12 Jul 2024 03:45:07 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Subject: Re: [PATCH V6 00/18] Add data type profiling support for powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20240707144419.92510-1-atrajeev@linux.vnet.ibm.com>
+Date: Fri, 12 Jul 2024 09:14:55 +0530
+Message-Id: <5CBFBE42-A15C-47A4-B980-62313FEF1EFA@linux.vnet.ibm.com>
+References: <20240707144419.92510-1-atrajeev@linux.vnet.ibm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: RYRCSF-eSOLFaC_PiTJ1JJ-inRJ168Th
+X-Proofpoint-GUID: ZJTISuGtoLLQW3hZ7dKJYZX3qvZr8JiR
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MN2PR12MB4341:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b9b0fbe-f440-496b-3a5d-08dca21e5775
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?YXSHomOL9R3zN5UMsAXBlzsyDK1/0vOcMRpuYuJvDQeQ3Yn+xovbMIVWLIv6?=
- =?us-ascii?Q?Sh7kGA77t7dn0LpsnXiVBs2bUkgAKU22D9n+13JEAc+1ILrLTsq81AsvWzU6?=
- =?us-ascii?Q?ZLQjy377CmCuxZTOp3JktXerxUIXNfTWAZV2IRMCO5xmtlEuImwmlRRIGynQ?=
- =?us-ascii?Q?0swzN/V32bbP9dp7kvcx5GponB7V55xl/uJAm3ofbodvfsW13+8l0DnGYHIb?=
- =?us-ascii?Q?x1/ZebZrHklnx5UaFQbvC5p16tjoBTGMDPCCHELilAZoCXMiZDwIg/mjG/Yb?=
- =?us-ascii?Q?3CUmz3VAxvT4GwFFXF8FR8SdUiKXfnjQYelBKhY+Mc+K+WjGmdeZO46q/eBp?=
- =?us-ascii?Q?+uoWcdCEqC3pKbwZT8k1Z2bbkSdYDjvSW+asgxCJo/w+UqawjnhWmo+3eXJV?=
- =?us-ascii?Q?yGeiHoadvp280PKkk9FqGcCQ6bZvFk7LA3OWh6R3k8IRyjVRmCBcBjlmb4Ku?=
- =?us-ascii?Q?QuFhj2rONBkz15GYHF3u+OxT5+LewX6ctRJXlY+d7unqZMfWG3ysqRN2rSMc?=
- =?us-ascii?Q?a8ew7r9BkHeBstuE5pNYNkv3geeAdKu3ZiNzORyB8ZaBWRaO5wMxvLw01OCl?=
- =?us-ascii?Q?ww2wr7qu6PFak80oBAjcDq3Ym6XOAEY7qukMa3yTgPSVlXrR3VL2bV06Zz26?=
- =?us-ascii?Q?Ex0RglrPYPwr/ONYKeq7/3SJ3eZV3mRr8/lHqoDG6OxgaTjjMno2raRnnlHg?=
- =?us-ascii?Q?HZbbFSPe8/rUZdpw7n/3s3Av1KWA2gLli4J8+RxO6P9Am475bIc4C7hJGM22?=
- =?us-ascii?Q?zEC+RkNbavvZAvrH0ietWeYHVUvZ8PDtfJFvTpJb7sLA93igE22LFu4jhUe4?=
- =?us-ascii?Q?VLI7Q+pqLEtqZoCkvyGkmmPgnuaNOBg+OlinBQwzItd3/BY54/SPLybCWA0I?=
- =?us-ascii?Q?CihXAwd0Tz78GNnqrXutH6bu0fxBJHwTnurUvaIAmPu+EB5C0uLPAnqIKiNq?=
- =?us-ascii?Q?uR/DURP65sJuSiLdDgJ0v/yy8WqcuokmAcdAgVQ87IDYxnUPuFiS1OOQVzVS?=
- =?us-ascii?Q?zJnM85/J8I8jp71zuDj36GN8+dG1xz67ma0vwH9mgvpalorN+W3oPrPENz5y?=
- =?us-ascii?Q?4pDuQxPEV3m6AcOplzPNDtrNDIcSiy17a2dM6u1IMVh23xJ0E7BK4J/aR9PW?=
- =?us-ascii?Q?OoccZo4ASXx769lP66i2czgX1zaQRB4XUEXeeAJ0QOvupo8LwsmsWvgUNzRZ?=
- =?us-ascii?Q?Tzy4B0EX83941a4HsrrXBfLOpbX0ULDCtFVfujtWMcDfufAXLt/NAd54up0C?=
- =?us-ascii?Q?UotDbQTFa1pxtzexiJ0MoxCJzW2SHIrXhPHihD4gMWwJN+PblTKj+1fctnAQ?=
- =?us-ascii?Q?A8D2fAetx34DtnvozhOaQc++t1AVNwwjCXpvzLqY38FaqA=3D=3D?=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?vgtA6iMvqgnAKqilLOMHC+keCd1WuJFIumGppKiWAI7rrrOYPC1DLGGDJ54G?=
- =?us-ascii?Q?9blzK9724yhyk2Lzp298/RIZCSbH5y1TiUAEBjoTzThECaknKb20UmOIfImx?=
- =?us-ascii?Q?62vz9YrU6JyQ7Pt/UW9cN8myt8hpf/awr6iiejLev3FHdr2YvZqcpanD+fWX?=
- =?us-ascii?Q?8toDB2kHgxq+x4cSp1QlDWlOOEskQJ2AjNmzXTkZZGMmhmXNk9vAwwywzPlg?=
- =?us-ascii?Q?dMgHEmTPRGcM1SKaYCqulIhZvsQc4wjXGmLRIHkdJToODM7UI00mB4ummQWU?=
- =?us-ascii?Q?B/a/C096lZUlEDvoSL4PfiX2LkiAN+sof213ah/VRupjyXbOGha0PZ4O+/51?=
- =?us-ascii?Q?mN9EAYvVRiqcOFMp27FvttYaX2zjaSenb5yHIZYRXee1T2MNL9HXP6j+gbgt?=
- =?us-ascii?Q?k+vO7K4iaw7OD+tDTWxtxiQl8QkIMrB8q8yK7jfHBRRTFW9m7vimS8mZswWW?=
- =?us-ascii?Q?wEBVo55cLc9kAh7pi5tbddxKxSI7XVtYbikVLJYUhhNy/dMP+r8hWE8FMTRT?=
- =?us-ascii?Q?55d7CDsJBq7+JPTWHveIf133b0qvS5eTcLD+WQzHnhK5mtcczFfD8PjeHhC3?=
- =?us-ascii?Q?mfzWV+df/RoQWW3GbqhdYEGjV+YrMGz561RO44TKw0YDFCjU1oDQj7BCyVS2?=
- =?us-ascii?Q?HJgYHO/27i2eciyi7PoTYXWSR4tWm9Idyny6iy4OywMkRNxZtqjIOsTnwGTe?=
- =?us-ascii?Q?pHrxcUF2GiI6MhzjHqlJX6X8OGtw44DJ678gxIjRdUXlCu8/pUek9kQn7v6P?=
- =?us-ascii?Q?myLwX3PI0R/koeTTMe0wApEw3mBu5TkVZwhYOvzK8Pq/VawsLlz8OTypF3SC?=
- =?us-ascii?Q?y7UVsTMtmQb2eaF3kxQmJgSGBuWRb/uzPLIXXHDI2WtxcVSvbZ+WLMlEFuix?=
- =?us-ascii?Q?7vqZkrjkkTGmTld7IrFfLotX//HdYnHw3vFyr5DU55HY/KWmc8O8LK3YIdfx?=
- =?us-ascii?Q?v+lc+cH6M+CdWM2iWNUsZVSUo0K8qjong9Pj3LYvFjHQvupafNj4NKiAim3A?=
- =?us-ascii?Q?8B8Nz2Z2Iq/VUyyCZdIx+EGG0TfxQ/2Rv2jC3QUmMXe3K75ZPiriFgdAf79j?=
- =?us-ascii?Q?sRWVOYOR0IgdKOWGYuUMsKLFPLwgxw426SNFI3B/314AnXKIirwd0PNSN6kX?=
- =?us-ascii?Q?1UdWgo3xsmDKpj0hnnVqopfjB9YGqxBTucz3oGrTwXg+0Qwtc4F04NvneDxB?=
- =?us-ascii?Q?66F+Hhc+I1QWe8lro4grbFOu8PmxsaATM85cOTZBmKIegRRG5xrDkOtr2M6A?=
- =?us-ascii?Q?ExVZEDh4JKdBJx1f2O3hKMoECV10ABjqszPGIEx/yAr/edicX9G/JRTWMJtf?=
- =?us-ascii?Q?VSu95kY6Br0iEFkFvUndI+5aloLbtnmVmSZ2obrMNUu1POJMFv5dMMN4U0JL?=
- =?us-ascii?Q?uVrj01QC+YBtOZ525ZHWbI7UegZfhAYx3bVWmnQXPUj3sJyd2wnaE6SpyNJq?=
- =?us-ascii?Q?nRelLlQ8QoXiS8866M6jWl8UopG9XycfqX8YjoFNlsWpOe9HvsGL6oaTkv/T?=
- =?us-ascii?Q?7QGW4YrWeSKqrHNUHNKgSqsrEhJWnLUoK2IlPFPEkpB3fQdwZvGY3IO9YJJ/?=
- =?us-ascii?Q?auQW2S0HbVEzblznM67x/kvx7Ny0R4NC20KtUu0p?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b9b0fbe-f440-496b-3a5d-08dca21e5775
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 02:57:18.2893
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RlDee7WbkxGPuO4R3/88Yk1r43LvWGYanshUDQoQB3H6ip3n80+MRLsNwV9XiS83NYyzmcgNwKNIhMIeS1foSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4341
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-11_19,2024-07-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 spamscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407120023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,125 +103,314 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmiaohe@huawei.com, nvdimm@lists.linux.dev, jack@suse.cz, david@redhat.com, djwong@kernel.org, dave.hansen@linux.intel.com, david@fromorbit.com, linux-cxl@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, hch@lst.de, dave.jiang@intel.com, vishal.l.verma@intel.com, linux-doc@vger.kernel.org, willy@infradead.org, jgg@ziepe.ca, catalin.marinas@arm.com, linux-ext4@vger.kernel.org, ira.weiny@intel.com, jhubbard@nvidia.com, npiggin@gmail.com, Alex Williamson <alex.williamson@redhat.com>, bhelgaas@google.com, dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org, tytso@mit.edu, logang@deltatee.com, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Ian Rogers <irogers@google.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, akanksha@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Peter Xu <peterx@redhat.com> writes:
 
-> On Tue, Jul 09, 2024 at 02:07:31PM +1000, Alistair Popple wrote:
->> 
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > Hi, Alistair,
->> >
->> > On Thu, Jun 27, 2024 at 10:54:26AM +1000, Alistair Popple wrote:
->> >> Now that DAX is managing page reference counts the same as normal
->> >> pages there are no callers for vmf_insert_pXd functions so remove
->> >> them.
->> >> 
->> >> Signed-off-by: Alistair Popple <apopple@nvidia.com>
->> >> ---
->> >>  include/linux/huge_mm.h |   2 +-
->> >>  mm/huge_memory.c        | 165 +-----------------------------------------
->> >>  2 files changed, 167 deletions(-)
->> >> 
->> >> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> >> index 9207d8e..0fb6bff 100644
->> >> --- a/include/linux/huge_mm.h
->> >> +++ b/include/linux/huge_mm.h
->> >> @@ -37,8 +37,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->> >>  		    pmd_t *pmd, unsigned long addr, pgprot_t newprot,
->> >>  		    unsigned long cp_flags);
->> >>  
->> >> -vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, pfn_t pfn, bool write);
->> >> -vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn, bool write);
->> >>  vm_fault_t dax_insert_pfn_pmd(struct vm_fault *vmf, pfn_t pfn, bool write);
->> >>  vm_fault_t dax_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn, bool write);
->> >
->> > There's a plan to support huge pfnmaps in VFIO, which may still make good
->> > use of these functions.  I think it's fine to remove them but it may mean
->> > we'll need to add them back when supporting pfnmaps with no memmap.
->> 
->> I'm ok with that. If we need them back in future it shouldn't be too
->> hard to add them back again. I just couldn't find any callers of them
->> once DAX stopped using them and the usual policy is to remove unused
->> functions.
->
-> True.  Currently the pmd/pud helpers are only used in dax.
->
->> 
->> > Is it still possible to make the old API generic to both service the new
->> > dax refcount plan, but at the meantime working for pfn injections when
->> > there's no page struct?
->> 
->> I don't think so - this new dax refcount plan relies on having a struct
->> page to take references on so I don't think it makes much sense to
->> combine it with something that doesn't have a struct page. It sounds
->> like the situation is the analogue of vm_insert_page()
->> vs. vmf_insert_pfn() - it's possible for both to exist but there's not
->> really anything that can be shared between the two APIs as one has a
->> page and the other is just a raw PFN.
->
-> I still think most of the codes should be shared on e.g. most of sanity
-> checks, pgtable injections, pgtable deposits (for pmd) and so on.
+> On 7 Jul 2024, at 8:14=E2=80=AFPM, Athira Rajeev <atrajeev@linux.vnet.ibm=
+.com> wrote:
+>=20
+> The patchset from Namhyung added support for data type profiling
+> in perf tool. This enabled support to associate PMU samples to data
+> types they refer using DWARF debug information. With the upstream
+> perf, currently it possible to run perf report or perf annotate to
+> view the data type information on x86.
+>=20
+> Initial patchset posted here had changes need to enable data type
+> profiling support for powerpc.
+>=20
 
-Yeah, it was mostly the BUG_ON's that weren't applicable once pXd_devmap
-went away.
+Hi Namhyung,
 
-> To be explicit, I wonder whether something like below diff would be
-> applicable on top of the patch "huge_memory: Allow mappings of PMD sized
-> pages" in this series, which introduced dax_insert_pfn_pmd() for dax:
->
-> $ diff origin new
-> 1c1
-> < vm_fault_t dax_insert_pfn_pmd(struct vm_fault *vmf, pfn_t pfn, bool write)
-> ---
->> vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, pfn_t pfn, bool write)
-> 55,58c55,60
-> <       folio = page_folio(page);
-> <       folio_get(folio);
-> <       folio_add_file_rmap_pmd(folio, page, vma);
-> <       add_mm_counter(mm, mm_counter_file(folio), HPAGE_PMD_NR);
-> ---
->>         if (page) {
->>                 folio = page_folio(page);
->>                 folio_get(folio);
->>                 folio_add_file_rmap_pmd(folio, page, vma);
->>                 add_mm_counter(mm, mm_counter_file(folio), HPAGE_PMD_NR);
->>         }
+Requesting for review on this V6 patchset. I have addressed review comments=
+ from V5.=20
+If the patchset looks good, can you please pull this in.
 
-We get the page from calling pfn_t_to_page(pfn). This is safe for the
-DAX case but is it safe to use a page returned by this more generally?
+Thanks
+Athira
+> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgroup.=
+eu/T/
+>=20
+> Main change were:
+> 1. powerpc instruction nmemonic table to associate load/store
+> instructions with move_ops which is use to identify if instruction
+> is a memory access one.
+> 2. To get register number and access offset from the given
+> instruction, code uses fields from "struct arch" -> objump.
+> Added entry for powerpc here.
+> 3. A get_arch_regnum to return register number from the
+> register name string.
+>=20
+> But the apporach used in the initial patchset used parsing of
+> disassembled code which the current perf tool implementation does.
+>=20
+> Example: lwz     r10,0(r9)
+>=20
+> This line "lwz r10,0(r9)" is parsed to extract instruction name,
+> registers names and offset. Also to find whether there is a memory
+> reference in the operands, "memory_ref_char" field of objdump is used.
+> For x86, "(" is used as memory_ref_char to tackle instructions of the
+> form "mov  (%rax), %rcx".
+>=20
+> In case of powerpc, not all instructions using "(" are the only memory
+> instructions. Example, above instruction can also be of extended form (X
+> form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
+> and extract the source/target registers, second patchset added support to=
+ use
+> raw instruction. With raw instruction, macros are added to extract opcode
+> and register fields.
+> Link to second patchset:
+> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.ib=
+m.com/
+>=20
+> Example representation using --show-raw-insn in objdump gives result:
+>=20
+> 38 01 81 e8     ld      r4,312(r1)
+>=20
+> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
+> this translates to instruction form: "ld RT,DS(RA)" and binary code
+> as:
+>  _____________________________________
+>  | 58 |  RT  |  RA |      DS       | |
+>  -------------------------------------
+> 0    6     11    16              30 31
+>=20
+> Second patchset used "objdump" again to read the raw instruction.
+> But since there is no need to disassemble and binary code can be read
+> directly from the DSO, third patchset (ie this patchset) uses below
+> apporach. The apporach preferred in powerpc to parse sample for data
+> type profiling in V3 patchset is:
+> - Read directly from DSO using dso__data_read_offset
+> - If that fails for any case, fallback to using libcapstone
+> - If libcapstone is not supported, approach will use objdump
+>=20
+> Patchset adds support to pick the opcode and reg fields from this
+> raw/binary instruction code. This approach came in from review comment
+> by Segher Boessenkool and Christophe for the initial patchset.
+>=20
+> Apart from that, instruction tracking is enabled for powerpc and
+> support function is added to find variables defined as registers
+> Example, in powerpc, below two registers are
+> defined to represent variable:
+> 1. r13: represents local_paca
+> register struct paca_struct *local_paca asm("r13");
+>=20
+> 2. r1: represents stack_pointer
+> register void *__stack_pointer asm("r1");
+>=20
+> These are handled in this patchset.
+>=20
+> - Patch 1 is to rearrange register state type structures to header file
+> so that it can referred from other arch specific files
+> - Patch 2 is to make instruction tracking as a callback to"struct arch"
+> so that it can be implemented by other archs easily and defined in arch
+> specific files
+> - Patch 3 is to handle state type regs array size for x86 and powerpc
+> - Patch 4 adds support to capture and parse raw instruction in powerpc
+> using dso__data_read_offset utility
+> - Patch 4 also adds logic to support using objdump when doing default "pe=
+rf
+> report" or "perf annotate" since it that needs disassembled instruction.
+> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
+> - Patch 6 update parameters for reg extract functions to use raw
+> instruction on powerpc
+> - Patch 7 updates ins__find to carry raw_insn and also adds parse
+> callback for memory instructions for powerpc
+> - Patch 8 add support to identify memory instructions of opcode 31 in
+> powerpc
+> - Patch 9 adds more instructions to support instruction tracking in power=
+pc
+> - Patch 10 and 11 handles instruction tracking for powerpc.
+> - Patch 12, 13 and 14 add support to use libcapstone in powerpc
+> - Patch 15 and patch 16 handles support to find global register variables
+> - PAtch 17 updates data type compare functions data_type_cmp and
+>  sort__typeoff_sort to include var_name along with type_name in
+>  comparison.
+> - Patch 18 handles insn-stat option for perf annotate
+>=20
+> Note:
+> - There are remaining unknowns (25%) as seen in annotate Instruction stats
+> below.
+> - This patchset is not tested on powerpc32. In next step of enhancements
+> along with handling remaining unknowns, plan to cover powerpc32 changes
+> based on how testing goes.
+>=20
+> With the current patchset:
+>=20
+> ./perf record -a -e mem-loads sleep 1
+> ./perf report -s type,typeoff --hierarchy --group --stdio
+> ./perf annotate --data-type --insn-stat
+>=20
+> perf annotate logs:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> Annotate Instruction stats
+> total 609, ok 446 (73.2%), bad 163 (26.8%)
+>=20
+>  Name/opcode:  Good   Bad
+>  -----------------------------------------------------------
+>  58                  :   323    80
+>  32                  :    49    43
+>  34                  :    33    11
+>  OP_31_XOP_LDX       :     8    20
+>  40                  :    23     0
+>  OP_31_XOP_LWARX     :     5     1
+>  OP_31_XOP_LWZX      :     2     3
+>  OP_31_XOP_LDARX     :     3     0
+>  33                  :     0     2
+>  OP_31_XOP_LBZX      :     0     1
+>  OP_31_XOP_LWAX      :     0     1
+>  OP_31_XOP_LHZX      :     0     1
+>=20
+> perf report logs:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+>  Total Lost Samples: 0
+>=20
+>  Samples: 1K of event 'mem-loads'
+>  Event count (approx.): 937238
+>=20
+>  Overhead  Data Type  Data Type Offset
+> ........  .........  ................
+>    48.60%  (unknown)  (unknown) +0 (no field)
+>    11.42%  long unsigned int  long unsigned int +0 (current_stack_pointer)
+>     4.68%  struct paca_struct  struct paca_struct +2312 (__current)
+>     4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
+>     2.69%  struct paca_struct  struct paca_struct +2808 (canary)
+>     2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
+>     2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
+>     1.43%  long unsigned int  long unsigned int +0 (no field)
+>     1.41%  struct vm_fault  struct vm_fault +0 (vma)
+>     1.29%  struct task_struct  struct task_struct +276 (flags)
+>     1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
+>     0.90%  struct security_hook_list  struct security_hook_list +0 (list.=
+next)
+>     0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
+>     0.76%  struct rq  struct rq +2856 (cpu)
+>     0.72%  long long unsigned int  long long unsigned int +0 (no field)
+>=20
+> Thanks
+> Athira Rajeev
+>=20
+> Changelog:
+> From v5 -> v6:
+> - Addressed review comments from Namhyung
+>  Conditionally define TYPE_STATE_MAX_REGS based on arch.
+>  Added macro for defining width of the raw codes and spaces
+>  in disasm_line__parse_powerpc.
+>  Call disasm_line__parse from disasm_line__parse_powerpc
+>  for generic code.
+>  Renamed symbol__disassemble_dso to symbol__disassemble_raw.
+>  Fixed find_data_type_global_reg to correclty free var_types
+>  and change indent level.
+>  Fixed data_type_cmp and sort__typeoff_sort to include var_name
+>  in comparing data type entries.
 
-From an API perspective it would make more sense for the DAX code to
-pass the page rather than the pfn. I didn't do that because device DAX
-just had the PFN and this was DAX-specific code. But if we want to make
-it generic I'd rather have callers pass the page in.
-
-Of course that probably doesn't help you, because then the call would be
-vmf_insert_page_pmd() rather than a raw pfn, but as you point out there
-might be some common code we could share.
-
->
-> As most of the rest look very similar to what pfn injections would need..
-> and in the PoC of ours we're using vmf_insert_pfn_pmd/pud().
-
-Do you have the PoC posted anywhere so I can get an understanding of how
-this might be used?
-
-> That also reminds me on whether it'll be easier to implement the new dax
-> support for page struct on top of vmf_insert_pfn_pmd/pud, rather than
-> removing the 1st then adding the new one.  Maybe it'll reduce code churns,
-> and would that also make reviews easier?
-
-Yeah, that's a good observation. I think it was just a quirk of how I
-was developing this and also not caring about the PFN case so I'll see
-what that looks like.
-
-> It's also possible I missed something important so the old function must be
-> removed.
->
-> Thanks,
+>=20
+> From v4 -> v5:
+> - Addressed review comments from Namhyung
+>  Handle max number of type state regs as 16 for x86 and 32 for
+>  powerpc.
+>  Added generic support for objdump patch first and DSO read
+>  optimisation next
+>  combined patch 3 and patch 4 in patchseries V4 to one patch
+>  Changed reference for "raw_insn" to use "u32"
+>  Splitted "parse" callback patch changes and "ins__find" patch
+>  changes into two
+>  Instead of making weak function, added get_powerpc_regs to
+>  extract register and offset fields for powerpc
+> - Addressed complation fail when "dwarf.h" is not present ie
+>  elfutils devel is not present. Used includes for #ifdef HAVE_DWARF_SUPPO=
+RT
+>  when including functions that use Dwarf references. Also
+>  conditionally include some of the header files.
+>=20
+> From v3->v4:
+> - Addressed review comments from Ian by using capston_init from
+>  "util/print_insn.c" instead of "open_capston_handle".
+> - Addressed review comment from Namhyung by moving "opcode"
+>  field from "struct ins" to "struct disasm_line"
+>=20
+> From v2->v3:
+> - Addressed review comments from Christophe and Namhyung for V2
+> - Changed the apporach in powerpc to parse sample for data
+>  type profiling as:
+>  Read directly from DSO using dso__data_read_offset
+>  If that fails for any case, fallback to using libcapstone
+>  If libcapstone is not supported, approach will use objdump
+> - Include instructions with opcode as 31 and correctly categorize
+>  them as memory or arithmetic instructions.
+> - Include more instructions for instruction tracking in powerpc
+>=20
+> From v1->v2:
+> - Addressed suggestion from Christophe Leroy and Segher Boessenkool
+>  to use the binary code (raw insn) to fetch opcode, register and
+>  offset fields.
+> - Added support for instruction tracking in powerpc
+> - Find the register defined variables (r13 and r1 which points to
+>  local_paca and current_stack_pointer in powerpc)
+>=20
+> Athira Rajeev (18):
+>  tools/perf: Move the data structures related to register type to
+>    header file
+>  tools/perf: Add "update_insn_state" callback function to handle arch
+>    specific instruction tracking
+>  tools/perf: Update TYPE_STATE_MAX_REGS to include max of regs in
+>    powerpc
+>  tools/perf: Add disasm_line__parse to parse raw instruction for
+>    powerpc
+>  tools/perf: Add support to capture and parse raw instruction in
+>    powerpc using dso__data_read_offset utility
+>  tools/perf: Update parameters for reg extract functions to use raw
+>    instruction on powerpc
+>  tools/perf: Add parse function for memory instructions in powerpc
+>  tools/perf: Add support to identify memory instructions of opcode 31
+>    in powerpc
+>  tools/perf: Add some of the arithmetic instructions to support
+>    instruction tracking in powerpc
+>  tools/perf: Add more instructions for instruction tracking
+>  tools/perf: Update instruction tracking for powerpc
+>  tools/perf: Make capstone_init non-static so that it can be used
+>    during symbol disassemble
+>  tools/perf: Use capstone_init and remove open_capstone_handle from
+>    disasm.c
+>  tools/perf: Add support to use libcapstone in powerpc
+>  tools/perf: Add support to find global register variables using
+>    find_data_type_global_reg
+>  tools/perf: Add support for global_die to capture name of variable in
+>    case of register defined variable
+>  tools/perf: Update data_type_cmp and sort__typeoff_sort function to
+>    include var_name in comparison
+>  tools/perf: Set instruction name to be used with insn-stat when using
+>    raw instruction
+>=20
+> tools/include/linux/string.h                  |   2 +
+> tools/lib/string.c                            |  13 +
+> tools/perf/arch/arm64/annotate/instructions.c |   3 +-
+> .../arch/loongarch/annotate/instructions.c    |   6 +-
+> .../perf/arch/powerpc/annotate/instructions.c | 254 ++++++++
+> tools/perf/arch/powerpc/util/dwarf-regs.c     |  53 ++
+> tools/perf/arch/s390/annotate/instructions.c  |   5 +-
+> tools/perf/arch/x86/annotate/instructions.c   | 377 ++++++++++++
+> tools/perf/builtin-annotate.c                 |   4 +-
+> tools/perf/util/annotate-data.c               | 545 ++++--------------
+> tools/perf/util/annotate-data.h               |  83 +++
+> tools/perf/util/annotate.c                    |  29 +-
+> tools/perf/util/annotate.h                    |   6 +-
+> tools/perf/util/disasm.c                      | 468 +++++++++++++--
+> tools/perf/util/disasm.h                      |  19 +-
+> tools/perf/util/dwarf-aux.c                   |   1 +
+> tools/perf/util/dwarf-aux.h                   |   1 +
+> tools/perf/util/include/dwarf-regs.h          |  12 +
+> tools/perf/util/print_insn.c                  |  15 +-
+> tools/perf/util/print_insn.h                  |   5 +
+> tools/perf/util/sort.c                        |  23 +-
+> 21 files changed, 1420 insertions(+), 504 deletions(-)
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
 
