@@ -2,62 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750F29305CD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 15:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B62C59305CF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 15:58:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fQ0DkTym;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KP8PxmgU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WLqkM0YnLz3cZR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 23:56:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WLqmZ3XZNz3cZB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 23:58:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fQ0DkTym;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KP8PxmgU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WLqjc4dKKz30Wf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2024 23:55:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WLqls5mzgz2y8g
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jul 2024 23:57:29 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720878932; x=1752414932;
+  t=1720879050; x=1752415050;
   h=date:from:to:cc:subject:message-id;
-  bh=Ohiywx5Va1euIU22k84Bpe3bRuX2oURP9h7RrwGmGPM=;
-  b=fQ0DkTymqiAlkSIpgHUfAfnqq+soP7y+y2ifU188cAzQeBrqHysF3gki
-   t6/UCP2ZXIro7bMMV2gSaxczjne49naBO9g8VZzHW/funVbToz+1RSoPs
-   oJaAp5NLiHUH2A2yAa5Jhtp2GjtEQ5nb3djFPIUWUCL9nnSmWLOYS7yDE
-   0+odgKitvH15Ozw70Mx4qEFoQpMBKqMRs2Y6wKbBwTto1BaKxsbvFobmm
-   WBUfF+8d8a45jZ2rZy6ibOOADMyZoCU0I62sAsj0OgwOskKc1v0ZnYki5
-   LC78QHnqtLlMQXXGekCzPY08WXMgLHtytyEC3VKZizHdYFUquF3GHv3jA
+  bh=xWZgOCy94Wm4TDtBrNTIj8DOn4NOPkyBv2vPV6/EDzw=;
+  b=KP8PxmgU4/0UJPq3RYoo3BAXyA07ZxuvkiQiyQK592ByPq0S2KH5FGPu
+   9fkZfzYt4OxDRns36GyExPR8FN/OI5lWDdkrxpiPhhZgNt4gsfFQHogvh
+   gOymzRT1d2a/wp2sZk+Am6hULP6nykE2JQ1fKsula/TUBQAQ0T7HRKkbQ
+   RN8HKfm6x7FZlxk5Z2MxmQiq/Gq/7sWPEV2k/wZ/nQ4OGE0hUJy1E0cBt
+   03DZL90hb4bSbF7pELFQ6D1KSVUtG1z4EHcyoKnlsLoe4uNUygx684sa4
+   at4MQYr71MQljzK5oUFxkKDhl0K5mfsZfDmt1WRrJEja6OLWIhralAPdy
    A==;
-X-CSE-ConnectionGUID: iP4hUxgqRc6m+Z2rn9/fig==
-X-CSE-MsgGUID: o0Dt5p/KQym9bepZd1d2lA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="21227855"
+X-CSE-ConnectionGUID: E2OwzJNBTt+30nlus6n1fw==
+X-CSE-MsgGUID: OBIQgDmNRjet83WzM+Bqcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11131"; a="29719802"
 X-IronPort-AV: E=Sophos;i="6.09,206,1716274800"; 
-   d="scan'208";a="21227855"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2024 06:55:27 -0700
-X-CSE-ConnectionGUID: ewUYxJLHT+uo18BeEEKZIg==
-X-CSE-MsgGUID: 7IzkxlWjTeGx36ckNSFzxQ==
+   d="scan'208";a="29719802"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2024 06:57:27 -0700
+X-CSE-ConnectionGUID: ie5pIeXiSci9aWl/Z/Semw==
+X-CSE-MsgGUID: RCiGaClqRV2zKTwM6NWu2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,206,1716274800"; 
-   d="scan'208";a="54122552"
+   d="scan'208";a="54363530"
 Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 13 Jul 2024 06:55:25 -0700
+  by orviesa004.jf.intel.com with ESMTP; 13 Jul 2024 06:57:26 -0700
 Received: from kbuild by 68891e0c336b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sSdDf-000cDq-12;
-	Sat, 13 Jul 2024 13:55:23 +0000
-Date: Sat, 13 Jul 2024 21:54:29 +0800
+	id 1sSdFb-000cEQ-29;
+	Sat, 13 Jul 2024 13:57:23 +0000
+Date: Sat, 13 Jul 2024 21:56:46 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 582b0e554593e530b1386eacafee6c412c5673cc
-Message-ID: <202407132127.P7NmjtUg-lkp@intel.com>
+Subject: [powerpc:next] BUILD SUCCESS
+ 90e812ac40c4b813fdbafab22f426fe4cdf840a8
+Message-ID: <202407132144.Ntz7NkX8-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,12 +74,12 @@ Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 582b0e554593e530b1386eacafee6c412c5673cc  Automatic merge of 'next' into merge (2024-07-12 22:47)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 90e812ac40c4b813fdbafab22f426fe4cdf840a8  Documentation/powerpc: Mention 40x is removed
 
-elapsed time: 1456m
+elapsed time: 1458m
 
-configs tested: 196
+configs tested: 212
 configs skipped: 4
 
 The following configs have been built successfully.
@@ -94,15 +94,19 @@ arc                               allnoconfig   gcc-13.2.0
 arc                              allyesconfig   gcc-13.2.0
 arc                          axs103_defconfig   gcc-13.2.0
 arc                                 defconfig   gcc-13.2.0
+arc                 nsimosci_hs_smp_defconfig   gcc-13.2.0
 arc                   randconfig-001-20240713   gcc-13.2.0
 arc                   randconfig-002-20240713   gcc-13.2.0
 arm                              allmodconfig   gcc-13.2.0
 arm                               allnoconfig   gcc-13.2.0
 arm                              allyesconfig   gcc-13.2.0
+arm                       aspeed_g4_defconfig   gcc-13.2.0
 arm                         at91_dt_defconfig   clang-19
 arm                     davinci_all_defconfig   gcc-13.2.0
 arm                                 defconfig   gcc-13.2.0
+arm                           h3600_defconfig   gcc-13.2.0
 arm                       imx_v4_v5_defconfig   gcc-13.2.0
+arm                           imxrt_defconfig   gcc-13.2.0
 arm                      integrator_defconfig   gcc-13.2.0
 arm                       omap2plus_defconfig   gcc-14.1.0
 arm                          pxa168_defconfig   gcc-13.2.0
@@ -113,6 +117,7 @@ arm                   randconfig-003-20240713   gcc-13.2.0
 arm                   randconfig-004-20240713   gcc-13.2.0
 arm                        realview_defconfig   clang-19
 arm                             rpc_defconfig   gcc-13.2.0
+arm                           sama5_defconfig   gcc-13.2.0
 arm64                            allmodconfig   gcc-13.2.0
 arm64                             allnoconfig   gcc-13.2.0
 arm64                               defconfig   gcc-13.2.0
@@ -154,6 +159,7 @@ loongarch                         allnoconfig   gcc-13.2.0
 loongarch                           defconfig   gcc-13.2.0
 loongarch             randconfig-001-20240713   gcc-13.2.0
 loongarch             randconfig-002-20240713   gcc-13.2.0
+m68k                             alldefconfig   gcc-13.2.0
 m68k                             allmodconfig   gcc-14.1.0
 m68k                              allnoconfig   gcc-13.2.0
 m68k                             allyesconfig   gcc-14.1.0
@@ -165,14 +171,19 @@ microblaze                       allmodconfig   gcc-14.1.0
 microblaze                        allnoconfig   gcc-13.2.0
 microblaze                       allyesconfig   gcc-14.1.0
 microblaze                          defconfig   gcc-13.2.0
+microblaze                      mmu_defconfig   gcc-13.2.0
 mips                              allnoconfig   gcc-13.2.0
+mips                      bmips_stb_defconfig   gcc-13.2.0
+mips                     cu1830-neo_defconfig   gcc-13.2.0
 mips                     loongson1b_defconfig   gcc-14.1.0
 mips                      loongson3_defconfig   clang-19
 mips                      malta_kvm_defconfig   gcc-14.1.0
 mips                malta_qemu_32r6_defconfig   clang-19
 mips                      maltasmvp_defconfig   gcc-14.1.0
 mips                        maltaup_defconfig   clang-19
+mips                           mtx1_defconfig   gcc-13.2.0
 mips                        omega2p_defconfig   gcc-13.2.0
+mips                          rm200_defconfig   gcc-13.2.0
 mips                           rs90_defconfig   clang-19
 nios2                         3c120_defconfig   gcc-13.2.0
 nios2                             allnoconfig   gcc-13.2.0
@@ -186,6 +197,7 @@ parisc                           allmodconfig   gcc-14.1.0
 parisc                            allnoconfig   gcc-14.1.0
 parisc                           allyesconfig   gcc-14.1.0
 parisc                              defconfig   gcc-14.1.0
+parisc                generic-64bit_defconfig   gcc-13.2.0
 parisc                randconfig-001-20240713   gcc-13.2.0
 parisc                randconfig-002-20240713   gcc-13.2.0
 parisc64                            defconfig   gcc-13.2.0
@@ -195,11 +207,14 @@ powerpc                           allnoconfig   gcc-14.1.0
 powerpc                          allyesconfig   gcc-14.1.0
 powerpc                     asp8347_defconfig   clang-19
 powerpc                 canyonlands_defconfig   clang-19
+powerpc                      cm5200_defconfig   gcc-13.2.0
 powerpc                       eiger_defconfig   clang-19
 powerpc                    gamecube_defconfig   gcc-13.2.0
 powerpc                    ge_imp3a_defconfig   gcc-13.2.0
+powerpc                   motionpro_defconfig   gcc-13.2.0
 powerpc                   motionpro_defconfig   gcc-14.1.0
 powerpc                     mpc512x_defconfig   clang-19
+powerpc                     mpc5200_defconfig   gcc-13.2.0
 powerpc                     mpc5200_defconfig   gcc-14.1.0
 powerpc                 mpc8313_rdb_defconfig   gcc-13.2.0
 powerpc                 mpc834x_itx_defconfig   gcc-13.2.0
@@ -209,6 +224,7 @@ powerpc               randconfig-002-20240713   gcc-13.2.0
 powerpc               randconfig-003-20240713   gcc-13.2.0
 powerpc                     tqm8555_defconfig   clang-19
 powerpc                        warp_defconfig   gcc-13.2.0
+powerpc                 xes_mpc85xx_defconfig   gcc-13.2.0
 powerpc64             randconfig-001-20240713   gcc-13.2.0
 powerpc64             randconfig-002-20240713   gcc-13.2.0
 powerpc64             randconfig-003-20240713   gcc-13.2.0
