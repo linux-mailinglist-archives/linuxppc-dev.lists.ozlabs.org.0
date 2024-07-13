@@ -1,90 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7739D930695
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 19:04:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E735930696
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jul 2024 19:05:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dZ4APYWD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l5BOze+x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WLvvR2nKxz30T1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 03:04:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WLvwF1vHFz3cZ2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 03:05:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dZ4APYWD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l5BOze+x;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WLvkG2B8vz3cXT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 02:56:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WLvkL0fp3z30WF
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 02:56:25 +1000 (AEST)
 Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46DGRAh2007742;
-	Sat, 13 Jul 2024 16:56:14 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46DGRBhd007841;
+	Sat, 13 Jul 2024 16:56:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
 	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=EYtZ9DREGGSgj
-	7qLUS/AlxbRItQ7Bmw1UST2fYrv8N4=; b=dZ4APYWD9EI1tGeYwn4GGgvQ7NJfU
-	24s5GS2pe1AtswTqRmh6dEngBfsol1vF3svRbyXqLJObECe1nEvZ/VRLTRcyhNqR
-	F3lZAR/wOiTA+F6J6icP1cRX3XXUVVT9vO4s6UqgqFz4EqY20I9hGHsYE8rMvcW7
-	+G9i7RLqOwG+8La+bTgxJDnhGRDKgVx6Af9Wqmpbb5G6Al/AYRhfLKATZUWKB6jh
-	3Oy1tGbOEiFkszAfR2qwfbt/C03Ggb8pT1J5Tu13zM702tOiY8XrHy2VIyOQIb6n
-	WRtT5G8p42Vj3vZlfHt3YKqrl2VMUEvaARuedfxFlspYSIUj8/GNh0dZw==
+	:mime-version:content-transfer-encoding; s=pp1; bh=WX4wusfJTU3VY
+	GdORkObtUkPdyBwGK8weKJiUofIwSk=; b=l5BOze+xMYQTOx/mOZiSLqJljiVhd
+	PveIgyVQNJ33HH5A2HecA/ct4vk2U9TKQ1g2GgN8V1Bcs8J7SgELbFS23dGX9MEj
+	zIhFTTaFqb19p4QISPaZgB0YpkfOJHgDok/jCiWH46ntZRMrIhhFjXiBFcwZpbBD
+	kVqEETnYu1kPIvh6MxeqtwlH1WVE6i43gXNGk2DysDQvYtQ70IusR2OBJkK0DTfJ
+	Ui+VKY+UodIVnr/CR2OdXXVEBNdzE3iesnKcpgm/XtIxZehtAT/Wp0E+NH3gVgJ1
+	e5itMvErlYd5a8lE5mXrUf1+QVpCl6fMT0leUz2SGpGkdM8+6B9t2vHWA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40brr2gchs-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40brr2gchy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 13 Jul 2024 16:56:14 +0000 (GMT)
+	Sat, 13 Jul 2024 16:56:17 +0000 (GMT)
 Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46DGuD0J016065;
-	Sat, 13 Jul 2024 16:56:13 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40brr2gchm-1
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46DGuHXP016162;
+	Sat, 13 Jul 2024 16:56:17 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40brr2gcht-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 13 Jul 2024 16:56:13 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46DDZhue006958;
-	Sat, 13 Jul 2024 16:56:13 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 407jfn406y-1
+	Sat, 13 Jul 2024 16:56:16 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46DDq67N011498;
+	Sat, 13 Jul 2024 16:56:16 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 40bpec1fpw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 13 Jul 2024 16:56:13 +0000
+	Sat, 13 Jul 2024 16:56:16 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46DGu7pw46334212
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46DGuASr23724622
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 13 Jul 2024 16:56:09 GMT
+	Sat, 13 Jul 2024 16:56:12 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A517320040;
-	Sat, 13 Jul 2024 16:56:07 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C224B20040;
+	Sat, 13 Jul 2024 16:56:10 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA89D2004B;
-	Sat, 13 Jul 2024 16:56:04 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0255F20043;
+	Sat, 13 Jul 2024 16:56:08 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.43.49.134])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 13 Jul 2024 16:56:04 +0000 (GMT)
+	Sat, 13 Jul 2024 16:56:07 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         irogers@google.com, namhyung@kernel.org, segher@kernel.crashing.org,
         christophe.leroy@csgroup.eu
-Subject: [PATCH V7 10/18] tools/perf: Add more instructions for instruction tracking
-Date: Sat, 13 Jul 2024 22:25:21 +0530
-Message-Id: <20240713165529.59298-11-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V7 11/18] tools/perf: Update instruction tracking for powerpc
+Date: Sat, 13 Jul 2024 22:25:22 +0530
+Message-Id: <20240713165529.59298-12-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20240713165529.59298-1-atrajeev@linux.vnet.ibm.com>
 References: <20240713165529.59298-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _jLhns30NEtvWNLzeT6MJNf9TxYkNtWB
-X-Proofpoint-ORIG-GUID: uVp4C1W-qDBeLXrUgw7Xy3K9tzEqnizf
+X-Proofpoint-GUID: -_ROqTjfIwCzxvB2DkY1HJqKsylXpRTy
+X-Proofpoint-ORIG-GUID: LDn6XfYjwIhn3hMvo0V_x-126Y0iXF_N
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-13_13,2024-07-11_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=871 spamscore=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
  impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0
  clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2406140001 definitions=main-2407130127
@@ -103,47 +103,141 @@ Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add few more instructions and use opcode as search key
-to find if it is supported by the architecture. Added ones
-are: addi, addic, addic., addis, subfic and mulli
+Add instruction tracking function "update_insn_state_powerpc" for
+powerpc. Example sequence in powerpc:
+
+ld      r10,264(r3)
+mr      r31,r3
+<<after some sequence>
+ld      r9,312(r31)
+
+Consider ithe sample is pointing to: "ld r9,312(r31)".
+Here the memory reference is hit at "312(r31)" where 312 is the offset
+and r31 is the source register. Previous instruction sequence shows that
+register state of r3 is moved to r31. So to identify the data type for r31
+access, the previous instruction ("mr") needs to be tracked and the
+state type entry has to be updated. Current instruction tracking support
+in perf tools infrastructure is specific to x86. Patch adds this support
+for powerpc as well.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- tools/perf/arch/powerpc/annotate/instructions.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../perf/arch/powerpc/annotate/instructions.c | 59 +++++++++++++++++++
+ tools/perf/util/annotate-data.c               |  9 ++-
+ tools/perf/util/disasm.c                      |  3 +
+ 3 files changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/tools/perf/arch/powerpc/annotate/instructions.c b/tools/perf/arch/powerpc/annotate/instructions.c
-index aa5ee09fa28f..aa25a336d8d0 100644
+index aa25a336d8d0..af1032572bf3 100644
 --- a/tools/perf/arch/powerpc/annotate/instructions.c
 +++ b/tools/perf/arch/powerpc/annotate/instructions.c
-@@ -172,6 +172,14 @@ static struct insn_offset arithmetic_ins_op_31[] = {
- 	{ .name = "DIV_W_XO_FORM",	.value = 491, },
- };
- 
-+static struct insn_offset arithmetic_two_ops[] = {
-+	{ .name = "mulli",      .value = 7, },
-+	{ .name = "subfic",     .value = 8, },
-+	{ .name = "addic",      .value = 12, },
-+	{ .name = "addic.",     .value = 13, },
-+	{ .name = "addi",       .value = 14, },
-+	{ .name = "addis",      .value = 15, },
-+};
- 
- static int cmp_offset(const void *a, const void *b)
- {
-@@ -212,6 +220,12 @@ static struct ins_ops *check_ppc_insn(u32 raw_insn)
- 			if (PPC_21_30(raw_insn) == 444)
- 				return &arithmetic_ops;
- 		}
-+	} else {
-+		mem_insns_31_opcode.value = opcode;
-+		ret = bsearch(&mem_insns_31_opcode, arithmetic_two_ops, ARRAY_SIZE(arithmetic_two_ops),
-+				sizeof(arithmetic_two_ops[0]), cmp_offset);
-+		if (ret != NULL)
-+			return &arithmetic_ops;
- 	}
- 
+@@ -231,6 +231,65 @@ static struct ins_ops *check_ppc_insn(u32 raw_insn)
  	return NULL;
+ }
+ 
++/*
++ * Instruction tracking function to track register state moves.
++ * Example sequence:
++ *    ld      r10,264(r3)
++ *    mr      r31,r3
++ *    <<after some sequence>
++ *    ld      r9,312(r31)
++ *
++ * Previous instruction sequence shows that register state of r3
++ * is moved to r31. update_insn_state_powerpc tracks these state
++ * changes
++ */
++#ifdef HAVE_DWARF_SUPPORT
++static void update_insn_state_powerpc(struct type_state *state,
++		struct data_loc_info *dloc, Dwarf_Die * cu_die __maybe_unused,
++		struct disasm_line *dl)
++{
++	struct annotated_insn_loc loc;
++	struct annotated_op_loc *src = &loc.ops[INSN_OP_SOURCE];
++	struct annotated_op_loc *dst = &loc.ops[INSN_OP_TARGET];
++	struct type_state_reg *tsr;
++	u32 insn_offset = dl->al.offset;
++
++	if (annotate_get_insn_location(dloc->arch, dl, &loc) < 0)
++		return;
++
++	/*
++	 * Value 444 for bits 21:30 is for "mr"
++	 * instruction. "mr" is extended OR. So set the
++	 * source and destination reg correctly
++	 */
++	if (PPC_21_30(dl->raw.raw_insn) == 444) {
++		int src_reg = src->reg1;
++
++		src->reg1 = dst->reg1;
++		dst->reg1 = src_reg;
++	}
++
++	if (!has_reg_type(state, dst->reg1))
++		return;
++
++	tsr = &state->regs[dst->reg1];
++
++	if (!has_reg_type(state, src->reg1) ||
++			!state->regs[src->reg1].ok) {
++		tsr->ok = false;
++		return;
++	}
++
++	tsr->type = state->regs[src->reg1].type;
++	tsr->kind = state->regs[src->reg1].kind;
++	tsr->ok = true;
++
++	pr_debug_dtp("mov [%x] reg%d -> reg%d",
++			insn_offset, src->reg1, dst->reg1);
++	pr_debug_type_name(&tsr->type, tsr->kind);
++}
++#endif /* HAVE_DWARF_SUPPORT */
++
+ static int powerpc__annotate_init(struct arch *arch, char *cpuid __maybe_unused)
+ {
+ 	if (!arch->initialized) {
+diff --git a/tools/perf/util/annotate-data.c b/tools/perf/util/annotate-data.c
+index 7a48c3d72b89..734acdd8c4b7 100644
+--- a/tools/perf/util/annotate-data.c
++++ b/tools/perf/util/annotate-data.c
+@@ -1080,6 +1080,13 @@ static int find_data_type_insn(struct data_loc_info *dloc,
+ 	return ret;
+ }
+ 
++static int arch_supports_insn_tracking(struct data_loc_info *dloc)
++{
++	if ((arch__is(dloc->arch, "x86")) || (arch__is(dloc->arch, "powerpc")))
++		return 1;
++	return 0;
++}
++
+ /*
+  * Construct a list of basic blocks for each scope with variables and try to find
+  * the data type by updating a type state table through instructions.
+@@ -1094,7 +1101,7 @@ static int find_data_type_block(struct data_loc_info *dloc,
+ 	int ret = -1;
+ 
+ 	/* TODO: other architecture support */
+-	if (!arch__is(dloc->arch, "x86"))
++	if (!arch_supports_insn_tracking(dloc))
+ 		return -1;
+ 
+ 	prev_dst_ip = dst_ip = dloc->ip;
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 801d57287a35..a839f037bdaf 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -157,6 +157,9 @@ static struct arch architectures[] = {
+ 	{
+ 		.name = "powerpc",
+ 		.init = powerpc__annotate_init,
++#ifdef HAVE_DWARF_SUPPORT
++		.update_insn_state = update_insn_state_powerpc,
++#endif
+ 	},
+ 	{
+ 		.name = "riscv64",
 -- 
 2.43.0
 
