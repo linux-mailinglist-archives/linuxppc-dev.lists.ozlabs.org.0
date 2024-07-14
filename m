@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798BE930955
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 10:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD67930943
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 10:35:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iu+S2/CO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WLEI08GH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WMJhg1Ty1z3cb8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 18:41:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WMJYb218Zz3dBZ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 18:35:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iu+S2/CO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WLEI08GH;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMJcj0NHhz3dDq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 18:37:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMJR31v0Vz3d8t
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 18:29:35 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 65F8460AF6;
-	Sun, 14 Jul 2024 08:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9C0C4AF0A;
-	Sun, 14 Jul 2024 08:29:28 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 85EFA60A05;
+	Sun, 14 Jul 2024 08:29:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821D9C116B1;
+	Sun, 14 Jul 2024 08:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720945769;
-	bh=Yw7BK5ZSzIqUwdH+xzRKsshvO4agK2xzXRxs7K0POPk=;
+	s=k20201202; t=1720945773;
+	bh=47kbk80bp7tXVEEQCet5lJPGJOYNcBOP1uYRsf338lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iu+S2/COmExD2t5/fDyfq7l4ZVCYt9JRCq2RzN28BeGCP0NBLWxXIADnph3qHr7++
-	 I5YmI/fYuJrPObs+vDblAtzHtWjk5PfERvuquk4AGn1wYo6u6O2rRRNjCfNf2FiodN
-	 T1JjYiM3b7+z2wgBy83gtr8Je2ojhXe+ppbathOWCyvlKT5FmP0QtZ6ckhnvSQKqyW
-	 e1JprOL03fEhjRNxXiby58fOoWl6spkopXuA5gKtgpz3YpJYdFsXWskVdin143+Ak8
-	 TuuHmshZ2OA4nq3Lx/g6Why2YfMiFMWnqBeSUEUKuFXPkh2MRYVBTf1n80ZxvxkTSN
-	 FDhfLN4ImhX0Q==
+	b=WLEI08GHjvSjYoDfNMhXk7LjgkS2AY5hdtYIJbTep3tzlvGho2fIxhi/UziKHrJPz
+	 H1SRL6HyO/CETYQ2biAhcBtBrnHZ8KylbqpxgTzv+H+s1diMxqhHJ2av8xHOAF/0KI
+	 b4KEYYWTPouAgI+dhvn64hl3W/wp+3goKe6eeGltft4XoX/dVR0et2cbbITz435J7D
+	 8Q36P/o5w7apuTfdp3vlO7gCb+HxRTHKG460QfZjtG8l5lLgOkVrWhrghLJDx+odQ0
+	 p/1jfEAjhcNvHd2DJ12INIm2b3KKfKsx6rzCe+LrMeHqzuLvJ8Au+HTiaabomqAq+f
+	 RMNOzjMpGHvmQ==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>,
 	<linux-trace-kernel@vger.kernel.org>,
 	<bpf@vger.kernel.org>,
 	linux-kbuild@vger.kernel.org,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v4 02/17] powerpc/kprobes: Use ftrace to determine if a probe is at function entry
-Date: Sun, 14 Jul 2024 13:57:38 +0530
-Message-ID: <dc9bea437809e4c0dbb6dba2e23325eb83a770d0.1720942106.git.naveen@kernel.org>
+Subject: [RFC PATCH v4 03/17] powerpc64/ftrace: Nop out additional 'std' instruction emitted by gcc v5.x
+Date: Sun, 14 Jul 2024 13:57:39 +0530
+Message-ID: <a526892b715b5f93db0ea2807c67fc8026fade74.1720942106.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1720942106.git.naveen@kernel.org>
 References: <cover.1720942106.git.naveen@kernel.org>
@@ -67,58 +67,46 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than hard-coding the offset into a function to be used to
-determine if a kprobe is at function entry, use ftrace_location() to
-determine the ftrace location within the function and categorize all
-instructions till that offset to be function entry.
+Gcc v5.x emits a 3-instruction sequence for -mprofile-kernel:
+	mflr	r0
+	std	r0, 16(r1)
+	bl	_mcount
 
-For functions that cannot be traced, we fall back to using a fixed
-offset of 8 (two instructions) to categorize a probe as being at
-function entry for 64-bit elfv2, unless we are using pcrel.
+Gcc v6.x moved to a simpler 2-instruction sequence by removing the 'std'
+instruction. The store saved the return address in the LR save area in
+the caller stack frame for stack unwinding. However, with dynamic
+ftrace, we no longer have a call to _mcount on kernel boot when ftrace
+is not enabled. When ftrace is enabled, that store is performed within
+ftrace_caller(). As such, the additional 'std' instruction is redundant.
+Nop it out on kernel boot.
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+With this change, we now use the same 2-instruction profiling sequence
+with both -mprofile-kernel, as well as -fpatchable-function-entry on
+64-bit powerpc.
+
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/kernel/kprobes.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 14c5ddec3056..ca204f4f21c1 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -105,24 +105,22 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
- 	return addr;
- }
- 
--static bool arch_kprobe_on_func_entry(unsigned long offset)
-+static bool arch_kprobe_on_func_entry(unsigned long addr, unsigned long offset)
- {
--#ifdef CONFIG_PPC64_ELF_ABI_V2
--#ifdef CONFIG_KPROBES_ON_FTRACE
--	return offset <= 16;
--#else
--	return offset <= 8;
--#endif
--#else
-+	unsigned long ip = ftrace_location(addr);
-+
-+	if (ip)
-+		return offset <= (ip - addr);
-+	if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2) && !IS_ENABLED(CONFIG_PPC_KERNEL_PCREL))
-+		return offset <= 8;
- 	return !offset;
--#endif
- }
- 
- /* XXX try and fold the magic of kprobe_lookup_name() in this */
- kprobe_opcode_t *arch_adjust_kprobe_addr(unsigned long addr, unsigned long offset,
- 					 bool *on_func_entry)
- {
--	*on_func_entry = arch_kprobe_on_func_entry(offset);
-+	*on_func_entry = arch_kprobe_on_func_entry(addr, offset);
- 	return (kprobe_opcode_t *)(addr + offset);
- }
- 
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index d8d6b4fd9a14..2ef504700e8d 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -246,8 +246,12 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+ 		/* Expected sequence: 'mflr r0', ['std r0,16(r1)'], 'bl _mcount' */
+ 		ret = ftrace_read_inst(ip - 4, &old);
+ 		if (!ret && !ppc_inst_equal(old, ppc_inst(PPC_RAW_MFLR(_R0)))) {
++			/* Gcc v5.x emit the additional 'std' instruction, gcc v6.x don't */
+ 			ret = ftrace_validate_inst(ip - 8, ppc_inst(PPC_RAW_MFLR(_R0)));
+-			ret |= ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_STD(_R0, _R1, 16)));
++			if (ret)
++				return ret;
++			ret = ftrace_modify_code(ip - 4, ppc_inst(PPC_RAW_STD(_R0, _R1, 16)),
++						 ppc_inst(PPC_RAW_NOP()));
+ 		}
+ 	} else {
+ 		return -EINVAL;
 -- 
 2.45.2
 
