@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486AE930950
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 10:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A467930951
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 10:40:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ez2dMaHK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zt2BoB7W;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WMJfM0kJmz3cHP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 18:39:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WMJg71ZTHz3cYJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jul 2024 18:40:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ez2dMaHK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zt2BoB7W;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMJRX5X06z3dD1
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 18:30:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMJRc6plKz3cSH
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 18:30:04 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 08F1860AD9;
-	Sun, 14 Jul 2024 08:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003A3C116B1;
-	Sun, 14 Jul 2024 08:29:58 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id B215CCE0B09;
+	Sun, 14 Jul 2024 08:30:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CD9C116B1;
+	Sun, 14 Jul 2024 08:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720945798;
-	bh=IskF71GDKHjgxuqQkVkMv1lu202Is52qU3cvSr5TzWg=;
+	s=k20201202; t=1720945803;
+	bh=Ioka5XsUMFumHCOKG404RsMEfa4dS57u3guGUJVji54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ez2dMaHKVcxvJb5HVREOY3vyA8FdKoFQ2VCsgb9kbKy+Se7X83ieG3zMzk7beBRVs
-	 hz/u5AWz7B8yPyYWMGCBXauJ8IwLW7fynI9ORXtAzRqGgJG+Qbi0Wz6jxIvBbPa8Jm
-	 rZ5IpQyP2vGpnc1DEvVFoNJwgMFgphkrpcgQQHBuinoHiRgxKBiGnY+87gh7IiiAvr
-	 Owog/3UBfZ6KE/OgKxjYghrMC74PjcLcLk3AUGX/RawP7axcr+ilvlK88/eYq1CewD
-	 vxSJB07wQq+dc3Uq11gwPPwZQQYsepHTiSxelPOH19JEtCJtPNOxx3Ruteqi53j4GK
-	 +MQYRzJq5rESw==
+	b=Zt2BoB7WmSNdxKHJLar2STWNDmvm7TCUzM6Uhx0zZWtC2oKyLQZj4RLu/7TjiNKCH
+	 8TsXwBXRyIE5jymoJIYqlhPkNeNvqB+Fuvr4VVWKSBMsuYYd7w9SRW0Mtl3UiS9+8W
+	 i8jEHMIRr0/9kMS9CFJJ1iizH7R+gjGSRLvKueKA/5KJhgjNf3grHiHrwaqPo12H0g
+	 5qeVB6cDApxSZkxmDWLq0iRzJpwKqVX0nvrqtlawp9P1yhZXXWlJ3lfQ/Mh5yLJ0KE
+	 jt4pHTN0gjcVmYI58HwrS0IIpkYY9BI0FHVxjVl+qPWO4Euswyvecc6RMG99ocVh0+
+	 Rh9I6z+6YoUhA==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>,
 	<linux-trace-kernel@vger.kernel.org>,
 	<bpf@vger.kernel.org>,
 	linux-kbuild@vger.kernel.org,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v4 09/17] powerpc64/bpf: Fold bpf_jit_emit_func_call_hlp() into bpf_jit_emit_func_call_rel()
-Date: Sun, 14 Jul 2024 13:57:45 +0530
-Message-ID: <abfa93c7c740d84869148f4609b6ea11a9697432.1720942106.git.naveen@kernel.org>
+Subject: [RFC PATCH v4 10/17] powerpc/ftrace: Add a postlink script to validate function tracer
+Date: Sun, 14 Jul 2024 13:57:46 +0530
+Message-ID: <6eac5cc2848a08778dc8ebe6477f3b8ad98f7947.1720942106.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1720942106.git.naveen@kernel.org>
 References: <cover.1720942106.git.naveen@kernel.org>
@@ -67,128 +67,115 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 61688a82e047 ("powerpc/bpf: enable kfunc call") enhanced
-bpf_jit_emit_func_call_hlp() to handle calls out to module region, where
-bpf progs are generated. The only difference now between
-bpf_jit_emit_func_call_hlp() and bpf_jit_emit_func_call_rel() is in
-handling of the initial pass where target function address is not known.
-Fold that logic into bpf_jit_emit_func_call_hlp() and rename it to
-bpf_jit_emit_func_call_rel() to simplify bpf function call JIT code.
+Function tracer on powerpc can only work with vmlinux having a .text
+size of up to ~64MB due to powerpc branch instruction having a limited
+relative branch range of 32MB. Today, this is only detected on kernel
+boot when ftrace is init'ed. Add a post-link script to check the size of
+.text so that we can detect this at build time, and break the build if
+necessary.
 
-We don't actually need to load/restore TOC across a call out to a
-different kernel helper or to a different bpf program since they all
-work with the kernel TOC. We only need to do it if we have to call out
-to a module function. So, guard TOC load/restore with appropriate
-conditions.
+We add a dependency on !COMPILE_TEST for CONFIG_HAVE_FUNCTION_TRACER so
+that allyesconfig and other test builds can continue to work without
+enabling ftrace.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/net/bpf_jit_comp64.c | 61 +++++++++----------------------
- 1 file changed, 17 insertions(+), 44 deletions(-)
+ arch/powerpc/Kconfig               |  2 +-
+ arch/powerpc/Makefile.postlink     |  8 ++++++
+ arch/powerpc/tools/ftrace_check.sh | 45 ++++++++++++++++++++++++++++++
+ 3 files changed, 54 insertions(+), 1 deletion(-)
+ create mode 100755 arch/powerpc/tools/ftrace_check.sh
 
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 2cbcdf93cc19..f3be024fc685 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -202,14 +202,22 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
- 	EMIT(PPC_RAW_BLR());
- }
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f8891fbe7c16..68f0e7a5576f 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -244,7 +244,7 @@ config PPC
+ 	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
+ 	select HAVE_FUNCTION_ERROR_INJECTION
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+-	select HAVE_FUNCTION_TRACER		if PPC64 || (PPC32 && CC_IS_GCC)
++	select HAVE_FUNCTION_TRACER		if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
+ 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
+ 	select HAVE_GENERIC_VDSO
+ 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC_BOOK3S_64 && SMP
+diff --git a/arch/powerpc/Makefile.postlink b/arch/powerpc/Makefile.postlink
+index ae5a4256b03d..bb601be36173 100644
+--- a/arch/powerpc/Makefile.postlink
++++ b/arch/powerpc/Makefile.postlink
+@@ -24,6 +24,9 @@ else
+ 	$(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
+ endif
  
--static int
--bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
-+int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
- {
- 	unsigned long func_addr = func ? ppc_function_entry((void *)func) : 0;
- 	long reladdr;
++quiet_cmd_ftrace_check = CHKFTRC $@
++      cmd_ftrace_check = $(CONFIG_SHELL) $(srctree)/arch/powerpc/tools/ftrace_check.sh "$(NM)" "$@"
++
+ # `@true` prevents complaint when there is nothing to be done
  
--	if (WARN_ON_ONCE(!kernel_text_address(func_addr)))
--		return -EINVAL;
-+	/* bpf to bpf call, func is not known in the initial pass. Emit 5 nops as a placeholder */
-+	if (!func) {
-+		for (int i = 0; i < 5; i++)
-+			EMIT(PPC_RAW_NOP());
-+		/* elfv1 needs an additional instruction to load addr from descriptor */
-+		if (IS_ENABLED(CONFIG_PPC64_ELF_ABI_V1))
-+			EMIT(PPC_RAW_NOP());
-+		EMIT(PPC_RAW_MTCTR(_R12));
-+		EMIT(PPC_RAW_BCTRL());
-+		return 0;
-+	}
+ vmlinux: FORCE
+@@ -34,6 +37,11 @@ endif
+ ifdef CONFIG_RELOCATABLE
+ 	$(call if_changed,relocs_check)
+ endif
++ifdef CONFIG_FUNCTION_TRACER
++ifndef CONFIG_PPC64_ELF_ABI_V1
++	$(call cmd,ftrace_check)
++endif
++endif
  
- #ifdef CONFIG_PPC_KERNEL_PCREL
- 	reladdr = func_addr - local_paca->kernelbase;
-@@ -266,7 +274,8 @@ bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx,
- 			 * We can clobber r2 since we get called through a
- 			 * function pointer (so caller will save/restore r2).
- 			 */
--			EMIT(PPC_RAW_LD(_R2, bpf_to_ppc(TMP_REG_2), 8));
-+			if (is_module_text_address(func_addr))
-+				EMIT(PPC_RAW_LD(_R2, bpf_to_ppc(TMP_REG_2), 8));
- 		} else {
- 			PPC_LI64(_R12, func);
- 			EMIT(PPC_RAW_MTCTR(_R12));
-@@ -276,46 +285,14 @@ bpf_jit_emit_func_call_hlp(u32 *image, u32 *fimage, struct codegen_context *ctx,
- 		 * Load r2 with kernel TOC as kernel TOC is used if function address falls
- 		 * within core kernel text.
- 		 */
--		EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)));
-+		if (is_module_text_address(func_addr))
-+			EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)));
- 	}
- #endif
- 
- 	return 0;
- }
- 
--int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
--{
--	unsigned int i, ctx_idx = ctx->idx;
--
--	if (WARN_ON_ONCE(func && is_module_text_address(func)))
--		return -EINVAL;
--
--	/* skip past descriptor if elf v1 */
--	func += FUNCTION_DESCR_SIZE;
--
--	/* Load function address into r12 */
--	PPC_LI64(_R12, func);
--
--	/* For bpf-to-bpf function calls, the callee's address is unknown
--	 * until the last extra pass. As seen above, we use PPC_LI64() to
--	 * load the callee's address, but this may optimize the number of
--	 * instructions required based on the nature of the address.
--	 *
--	 * Since we don't want the number of instructions emitted to increase,
--	 * we pad the optimized PPC_LI64() call with NOPs to guarantee that
--	 * we always have a five-instruction sequence, which is the maximum
--	 * that PPC_LI64() can emit.
--	 */
--	if (!image)
--		for (i = ctx->idx - ctx_idx; i < 5; i++)
--			EMIT(PPC_RAW_NOP());
--
--	EMIT(PPC_RAW_MTCTR(_R12));
--	EMIT(PPC_RAW_BCTRL());
--
--	return 0;
--}
--
- static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
- {
- 	/*
-@@ -1102,11 +1079,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 			if (ret < 0)
- 				return ret;
- 
--			if (func_addr_fixed)
--				ret = bpf_jit_emit_func_call_hlp(image, fimage, ctx, func_addr);
--			else
--				ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
--
-+			ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
- 			if (ret)
- 				return ret;
- 
+ clean:
+ 	rm -f .tmp_symbols.txt
+diff --git a/arch/powerpc/tools/ftrace_check.sh b/arch/powerpc/tools/ftrace_check.sh
+new file mode 100755
+index 000000000000..33f2fd45e54d
+--- /dev/null
++++ b/arch/powerpc/tools/ftrace_check.sh
+@@ -0,0 +1,45 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0-or-later
++#
++# This script checks vmlinux to ensure that all functions can call ftrace_caller() either directly,
++# or through the stub, ftrace_tramp_text, at the end of kernel text.
++
++# Error out if any command fails
++set -e
++
++# Allow for verbose output
++if [ "$V" = "1" ]; then
++	set -x
++fi
++
++if [ $# -lt 2 ]; then
++	echo "$0 [path to nm] [path to vmlinux]" 1>&2
++	exit 1
++fi
++
++# Have Kbuild supply the path to nm so we handle cross compilation.
++nm="$1"
++vmlinux="$2"
++
++stext_addr=$($nm "$vmlinux" | grep -e " [TA] _stext$" | cut -d' ' -f1 | tr '[[:lower:]]' '[[:upper:]]')
++ftrace_caller_addr=$($nm "$vmlinux" | grep -e " T ftrace_caller$" | cut -d' ' -f1 | tr '[[:lower:]]' '[[:upper:]]')
++ftrace_tramp_addr=$($nm "$vmlinux" | grep -e " T ftrace_tramp_text$" | cut -d' ' -f1 | tr '[[:lower:]]' '[[:upper:]]')
++
++ftrace_caller_offset=$(echo "ibase=16;$ftrace_caller_addr - $stext_addr" | bc)
++ftrace_tramp_offset=$(echo "ibase=16;$ftrace_tramp_addr - $ftrace_caller_addr" | bc)
++sz_32m=$(printf "%d" 0x2000000)
++sz_64m=$(printf "%d" 0x4000000)
++
++# ftrace_caller - _stext < 32M
++if [ $ftrace_caller_offset -ge $sz_32m ]; then
++	echo "ERROR: ftrace_caller (0x$ftrace_caller_addr) is beyond 32MiB of _stext" 1>&2
++	echo "ERROR: consider disabling CONFIG_FUNCTION_TRACER, or reducing the size of kernel text" 1>&2
++	exit 1
++fi
++
++# ftrace_tramp_text - ftrace_caller < 64M
++if [ $ftrace_tramp_offset -ge $sz_64m ]; then
++	echo "ERROR: kernel text extends beyond 64MiB from ftrace_caller" 1>&2
++	echo "ERROR: consider disabling CONFIG_FUNCTION_TRACER, or reducing the size of kernel text" 1>&2
++	exit 1
++fi
 -- 
 2.45.2
 
