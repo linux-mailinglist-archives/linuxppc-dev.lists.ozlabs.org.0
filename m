@@ -2,64 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FA7931A94
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 20:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4FB931AC5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 21:22:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mzM56u57;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iNcOZ5qY;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iNcOZ5qY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNBHv6rfgz3cWc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 04:56:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNBsy3NG2z3dBq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 05:22:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mzM56u57;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iNcOZ5qY;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iNcOZ5qY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNBHC6xngz3c3l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 04:55:51 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 21769CE116E
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 18:55:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6498FC4AF0F
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 18:55:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721069748;
-	bh=fTaVUp5ixXjyj/IQvLPoiMP1xh8WB5ilzwlfi5SQ9Uo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mzM56u57vbSMU7UUmNVR4LLKrqMOvG0VNwKB6Losab0GAaAtgyoVZ5a5yCpA/S/D7
-	 sbovS4flkyFA7smIGcKPNkt9qbdkLfEW/ixpl5yuO288I7N8GcOQbgL7x+TQNGD+B9
-	 wN1PsljQzJSNiOq+B4zKMYjVqY8uAYYuoEtRQG0PFQBy1wmbjyYjtdwlQTnOF4I1A5
-	 33RglqbJ2gLElY1MIjHGK2yB212+Tp/hUw+OwoEpHGQxCpIe+iYzssVx43PRZ8laHU
-	 taaqx9n+A8pb4XwEBlxpYNZkkX5cYFHERPLLHHSNexnZAn/Yy6/RSr3VB5cyR8pl8d
-	 WMu1M4G2Wlrlg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2eeb2d60efbso55744891fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 11:55:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWcSEo0DfH97VeRi6UxpdvTXMT+o+nTKhTQIHFf5BbqAne9sQFRWUBQC00pmELu2RfnGr6aIq8Kgsnn05Vq+vkVKDerRcHas9GfVPy6zw==
-X-Gm-Message-State: AOJu0YxJ6BnFT4KZj0EGA5VYiT3BKAMfUucwBwbcGUiKRM30pxKyIfYD
-	lKLRkFcjsox8EbX/8mGTS2eYDDbyRd/mT68gqXO5EmxcLwpXfyRKghrpeH5JYZizQzgRNyk26ar
-	+Sp8SjQfQ5UW0kihKd0ljyr+Sfg==
-X-Google-Smtp-Source: AGHT+IG5hZtW/6OyRaCvviup+P1U2Ghou4YKlTCsHtRsWKDMqkEasf58VhGXraqlzg+5tGrRgvrOkOsdfd2CYJKf+h0=
-X-Received: by 2002:a05:651c:1254:b0:2ec:57c7:c740 with SMTP id
- 38308e7fff4ca-2eef41d72bbmr63931fa.39.1721069746552; Mon, 15 Jul 2024
- 11:55:46 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNBsG36PWz3bX3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 05:21:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721071308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fcwbFvUlydJ89LCIJbZYnbeNwq+Aa7yYvNbAx9RPsSI=;
+	b=iNcOZ5qYLa00O/g57/nKXFin6bQb6re4gpo/wqgz/mCRfuHqtesjutGO21l0n5dKehtZJT
+	rfq4/LvFnVSWaN3Q9GDxkgEBGCqFRg81bBbqFQ7ZyJIpndDrnDhQRV87ecMg3BophBGY0Q
+	yQnX5mhzKvBRVqeYXuzWAYVVCf2pdXM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721071308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fcwbFvUlydJ89LCIJbZYnbeNwq+Aa7yYvNbAx9RPsSI=;
+	b=iNcOZ5qYLa00O/g57/nKXFin6bQb6re4gpo/wqgz/mCRfuHqtesjutGO21l0n5dKehtZJT
+	rfq4/LvFnVSWaN3Q9GDxkgEBGCqFRg81bBbqFQ7ZyJIpndDrnDhQRV87ecMg3BophBGY0Q
+	yQnX5mhzKvBRVqeYXuzWAYVVCf2pdXM=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-646-yaD2m_OGPkqYYy8JrBjgcA-1; Mon, 15 Jul 2024 15:21:46 -0400
+X-MC-Unique: yaD2m_OGPkqYYy8JrBjgcA-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6b7740643fbso2326536d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 12:21:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721071306; x=1721676106;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fcwbFvUlydJ89LCIJbZYnbeNwq+Aa7yYvNbAx9RPsSI=;
+        b=f1iYVw3tcNld4n5UKwZZEow/M5Wr2EIIAwJ9dkK37Tu263F6EQtJJ3D/B/0xnURK//
+         vejIz8Gs0f7jN3xX5gTcPWrLlJB4UudFJy/vyqbCv+5dtt8/0/PihpLbXjE2rrg/OXnD
+         1N88RnuQZNdXHpVboAGuwIBGnAYApUxGmxikGnMIpRsrzgMh+VhKM8mR5kGtc4xs80+3
+         e0dUlU+PeHPzToXzrRZJhy1ETI0IzYVszHkJ5K5R3z3DEkwOPJyqPRS//LHppUDAUkyr
+         at3X0NtLn4tcrQ18rETsJTEglsR1hr/0NJ7y5QQYcUqXSpWabbvJPZzR82O9AvaYLtHT
+         ZCXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUoVt8qCcQHfPx8AzWnWFYgkcsgXAiCIgAGC/T9PFuON/MPuhfc4n6BLu+bYDs1rz+0LnDio1Nh27nfWew=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwNs5yd4iLiQJjpwvcqlLSuRoli+49kS3YcQpors8FIAWjCzHLs
+	HAwhD5WL6TCN5WgGnNQOF++hhN4afQUQdlumuC8WaZB7KQCZh+scqUzcZQao9PX8XlWEoTwCrRt
+	CQepSvl0M4ilzVEXR3QOT9ZbItnuEz0JlkpwJaOvdtvSgnIBFS7YappuvKgIlO0w=
+X-Received: by 2002:a05:6214:3d87:b0:6b2:b5b5:124e with SMTP id 6a1803df08f44-6b77dd634e7mr5106646d6.0.1721071306253;
+        Mon, 15 Jul 2024 12:21:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFu7hXxUrNpLJfANABTNicknn5i9R99x8eQnIUTwDJYLFg/NIIa0kT9/i+hFib8ttrRFUJmhA==
+X-Received: by 2002:a05:6214:3d87:b0:6b2:b5b5:124e with SMTP id 6a1803df08f44-6b77dd634e7mr5106546d6.0.1721071305812;
+        Mon, 15 Jul 2024 12:21:45 -0700 (PDT)
+Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b761978d30sm24039356d6.31.2024.07.15.12.21.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 12:21:45 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/8] mm/mprotect: Fix dax puds
+Date: Mon, 15 Jul 2024 15:21:34 -0400
+Message-ID: <20240715192142.3241557-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-References: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
-In-Reply-To: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 15 Jul 2024 12:55:33 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
-Message-ID: <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
-Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
- KVM guest
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,138 +98,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, peterx@redhat.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 15, 2024 at 2:08=E2=80=AFAM Amit Machhiwal <amachhiw@linux.ibm.=
-com> wrote:
->
-> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
-> of a PCI device attached to a PCI-bridge causes following kernel Oops on
-> a pseries KVM guest:
->
->  RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
->  Kernel attempted to read user page (10ec00000048) - exploit attempt? (ui=
-d: 0)
->  BUG: Unable to handle kernel data access on read at 0x10ec00000048
->  Faulting instruction address: 0xc0000000012d8728
->  Oops: Kernel access of bad area, sig: 11 [#1]
->  LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSeries
-> <snip>
->  NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
->  LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
->  Call Trace:
->  [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
->  [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
->  [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
->  [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_loc=
-ked+0x34/0x64
->  [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
->  [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
->  [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
->  [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
->  [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
->  [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
->  [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
->  [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/=
-0x2ec
-> <snip>
->
-> A git bisect pointed this regression to be introduced via [1] that added
-> a mechanism to create device tree nodes for parent PCI bridges when a
-> PCI device is hot-plugged.
->
-> The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
-> device-tree node associated with the pci_dev that was earlier
-> hot-plugged and was attached under a pci-bridge. The PCI dev header
-> `dev->hdr_type` being 0, results a conditional check done with
-> `pci_is_bridge()` into false. Consequently, a call to
-> `of_pci_make_dev_node()` to create a device node is never made. When at
-> a later point in time, in the device node removal path, a memcpy is
-> attempted in `__of_changeset_entry_invert()`; since the device node was
-> never created, results in an Oops due to kernel read access to a bad
-> address.
->
-> To fix this issue, the patch updates `of_changeset_create_node()` to
-> allocate a new node only when the device node doesn't exist and init it
-> in case it does already. Also, introduce `of_pci_free_node()` to be
-> called to only revert and destroy the changeset device node that was
-> created via a call to `of_changeset_create_node()`.
->
-> [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
->
-> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
-> Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
-> Changes since v1:
->     * Included Lizhi's suggested changes on V1
->     * Fixed below two warnings from Lizhi's changes and rearranged the cl=
-eanup
->       part a bit in `of_pci_make_dev_node`
->         drivers/pci/of.c:611:6: warning: no previous prototype for =E2=80=
-=98of_pci_free_node=E2=80=99 [-Wmissing-prototypes]
->           611 | void of_pci_free_node(struct device_node *np)
->               |      ^~~~~~~~~~~~~~~~
->         drivers/pci/of.c: In function =E2=80=98of_pci_make_dev_node=E2=80=
-=99:
->         drivers/pci/of.c:696:1: warning: label =E2=80=98out_destroy_cset=
-=E2=80=99 defined but not used [-Wunused-label]
->           696 | out_destroy_cset:
->               | ^~~~~~~~~~~~~~~~
->     * V1: https://lore.kernel.org/all/20240703141634.2974589-1-amachhiw@l=
-inux.ibm.com/
->
->  drivers/of/dynamic.c  | 16 ++++++++++++----
->  drivers/of/unittest.c |  2 +-
->  drivers/pci/bus.c     |  3 +--
->  drivers/pci/of.c      | 39 ++++++++++++++++++++++++++-------------
->  drivers/pci/pci.h     |  2 ++
->  include/linux/of.h    |  1 +
->  6 files changed, 43 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> index dda6092e6d3a..9bba5e82a384 100644
-> --- a/drivers/of/dynamic.c
-> +++ b/drivers/of/dynamic.c
-> @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct devi=
-ce_node *np,
->   * a given changeset.
->   *
->   * @ocs: Pointer to changeset
-> + * @np: Pointer to device node. If null, allocate a new node. If not, in=
-it an
-> + *     existing one.
->   * @parent: Pointer to parent device node
->   * @full_name: Node full name
->   *
->   * Return: Pointer to the created device node or NULL in case of an erro=
-r.
->   */
->  struct device_node *of_changeset_create_node(struct of_changeset *ocs,
-> +                                            struct device_node *np,
->                                              struct device_node *parent,
->                                              const char *full_name)
->  {
-> -       struct device_node *np;
->         int ret;
->
-> -       np =3D __of_node_dup(NULL, full_name);
-> -       if (!np)
-> -               return NULL;
-> +       if (!np) {
-> +               np =3D __of_node_dup(NULL, full_name);
-> +               if (!np)
-> +                       return NULL;
-> +       } else {
-> +               of_node_set_flag(np, OF_DYNAMIC);
-> +               of_node_set_flag(np, OF_DETACHED);
+[Based on mm-unstable, commit 31334cf98dbd, July 2nd]
 
-Are we going to rename the function to
-of_changeset_create_or_maybe_modify_node()? No. The functions here are
-very clear in that they allocate new objects and don't reuse what's
-passed in.
+v3:
+- Fix a build issue on i386 PAE config
+- Moved one line from patch 8 to patch 3
 
-Rob
+v1: https://lore.kernel.org/r/20240621142504.1940209-1-peterx@redhat.com
+v2: https://lore.kernel.org/r/20240703212918.2417843-1-peterx@redhat.com
+
+Dax supports pud pages for a while, but mprotect on puds was missing since
+the start.  This series tries to fix that by providing pud handling in
+mprotect().  The goal is to add more types of pud mappings like hugetlb or
+pfnmaps.  This series paves way for it by fixing known pud entries.
+
+Considering nobody reported this until when I looked at those other types
+of pud mappings, I am thinking maybe it doesn't need to be a fix for stable
+and this may not need to be backported.  I would guess whoever cares about
+mprotect() won't care 1G dax puds yet, vice versa.  I hope fixing that in
+new kernels would be fine, but I'm open to suggestions.
+
+There're a few small things changed to teach mprotect work on PUDs. E.g. it
+will need to start with dropping NUMA_HUGE_PTE_UPDATES which may stop
+making sense when there can be more than one type of huge pte.  OTOH, we'll
+also need to push the mmu notifiers from pmd to pud layers, which might
+need some attention but so far I think it's safe.  For such details, please
+refer to each patch's commit message.
+
+The mprotect() pud process should be straightforward, as I kept it as
+simple as possible.  There's no NUMA handled as dax simply doesn't support
+that.  There's also no userfault involvements as file memory (even if work
+with userfault-wp async mode) will need to split a pud, so pud entry
+doesn't need to yet know userfault's existance (but hugetlb entries will;
+that's also for later).
+
+Tests
+=====
+
+What I did test:
+
+- cross-build tests that I normally cover [1]
+
+- smoke tested on x86_64 the simplest program [2] on dev_dax 1G PUD
+  mprotect() using QEMU's nvdimm emulations [3] and ndctl to create
+  namespaces with proper alignments, which used to throw "bad pud" but now
+  it'll run through all fine.  I checked sigbus happens if with illegal
+  access on protected puds.
+
+- vmtests.
+
+What I didn't test:
+
+- fsdax: I wanted to also give it a shot, but only until then I noticed it
+  doesn't seem to be supported (according to dax_iomap_fault(), which will
+  always fallback on PUD_ORDER).  I did remember it was supported before, I
+  could miss something important there.. please shoot if so.
+
+- userfault wp-async: I also wanted to test userfault-wp async be able to
+  split huge puds (here it's simply a clear_pud.. though), but it won't
+  work for devdax anyway due to not allowed to do smaller than 1G faults in
+  this case. So skip too.
+
+- Power, as no hardware on hand.
+
+Thanks,
+
+[1] https://gitlab.com/peterx/lkb-harness/-/blob/main/config.json
+[2] https://github.com/xzpeter/clibs/blob/master/misc/dax.c
+[3] https://github.com/qemu/qemu/blob/master/docs/nvdimm.txt
+
+Peter Xu (8):
+  mm/dax: Dump start address in fault handler
+  mm/mprotect: Remove NUMA_HUGE_PTE_UPDATES
+  mm/mprotect: Push mmu notifier to PUDs
+  mm/powerpc: Add missing pud helpers
+  mm/x86: Make pud_leaf() only cares about PSE bit
+  mm/x86: arch_check_zapped_pud()
+  mm/x86: Add missing pud helpers
+  mm/mprotect: fix dax pud handlings
+
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  3 +
+ arch/powerpc/mm/book3s64/pgtable.c           | 20 ++++++
+ arch/x86/include/asm/pgtable.h               | 68 +++++++++++++++---
+ arch/x86/mm/pgtable.c                        | 19 +++++
+ drivers/dax/device.c                         |  6 +-
+ include/linux/huge_mm.h                      | 24 +++++++
+ include/linux/pgtable.h                      |  7 ++
+ include/linux/vm_event_item.h                |  1 -
+ mm/huge_memory.c                             | 56 ++++++++++++++-
+ mm/mprotect.c                                | 74 ++++++++++++--------
+ mm/vmstat.c                                  |  1 -
+ 11 files changed, 234 insertions(+), 45 deletions(-)
+
+-- 
+2.45.0
+
