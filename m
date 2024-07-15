@@ -2,78 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001A4930FA4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 10:26:04 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=avtfMnlU;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id A12F0930FC0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 10:28:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WMwJV5H3tz3d9G
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 18:26:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WMwMr4QF4z3fn0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 18:28:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=avtfMnlU;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d35; helo=mail-io1-xd35.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMwHn2TpLz30WC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 18:25:23 +1000 (AEST)
-Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-7fd3dbc01deso192388839f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 01:25:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721031921; x=1721636721; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rW2thNGYkRyZe8HIPJ8rpQcN6uYkUSeuH9TVqbqQqOM=;
-        b=avtfMnlU/h50JYeI92XGQ2moOYK0aUR8F+gP3eQCfGY3z3KwXa0+OWZBfmf9zvjDQT
-         m9LgBAxqJyeVr6jKwbCsEaxHbU1o80wksNnj58f+XRng9buc5RToOgtHFa1pdKp1HTA1
-         0EsZJ4goVw+f6VZqoDgxfbeYXoogLifwaXxQnAngYOjhN/Py3gu50pdejVJ6SQygWET4
-         loUhhioc1SLRA5IssPbFeQAssc6b3EIBirxCKtgJgM28Wyyzkq+J9pUWFOBtP6eZEbm6
-         JnE0+5JVscNInIF7eXf1FL6FY0kjtmST9KLDMhJKEQY+ZbCKplWQdq0l9HdOMdytT9YT
-         OdTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721031921; x=1721636721;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rW2thNGYkRyZe8HIPJ8rpQcN6uYkUSeuH9TVqbqQqOM=;
-        b=fKjWtukiA771yqmrFSOU7uHCLmQtzG8D/VsXb3oQrEocDh7sB8/Zj5Lr98DcqmWpGj
-         MV6RiIG6RYeAYNkxEnJRoD4Nba+CRMANSRHcgGkMiyw8GVijDr4SeehO53TEws5W5HlJ
-         M2/0upxVAKafdY13e2Xdd1SAR0kdQbHColdKcFWP3xj3R9dYncagK6soKEeIHARSy2Vt
-         NrvGeSY7ohsUCtH68NrWf4DUQMhBZGvc44tUfnyT2cdMVGWEPOaseJ12v66JqCBsNayo
-         N96cSIAtESCM19CflWrKONOsFdilCO6XYPpWuwhpfwKF1Au4lg2llyF5RbHiRy+r7kt3
-         vUlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrKMHYcYs2rfU5mbL0jqmL5/TAEQr3jFogA4Dasgm7Y0CGZbTog7G6d8SnH1TYA6Xe2ko9wZQq9rYS5QrjppdxXNf/OTBj/P8Rni32FA==
-X-Gm-Message-State: AOJu0YxSRc8+bOlLncmjMv1Pi0EVb1JXXDaJkpHiwU6HgHEG7LBLhT3K
-	6KRPi/MInm/XQ3edOOPgoR0OO+HXu7KEIrHjIst7UBYwPSswVx58
-X-Google-Smtp-Source: AGHT+IEJOtY6h6sgqUX2Zqpq7jO4aSc5SbNrF10Bl+Cu1roWxg+N/2mw68X1fDSEsPnU5o1cPk9G6A==
-X-Received: by 2002:a6b:db0d:0:b0:805:e2bf:f303 with SMTP id ca18e2360f4ac-805e2bff70emr1391622039f.8.1721031920882;
-        Mon, 15 Jul 2024 01:25:20 -0700 (PDT)
-Received: from localhost ([1.146.120.6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7ec7eed2sm3770443b3a.116.2024.07.15.01.25.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 01:25:20 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WMwLd10BTz3dBh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 18:27:52 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E188ADA7;
+	Mon, 15 Jul 2024 01:27:46 -0700 (PDT)
+Received: from [10.162.40.16] (a077893.blr.arm.com [10.162.40.16])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 538F93F73F;
+	Mon, 15 Jul 2024 01:27:12 -0700 (PDT)
+Message-ID: <3c655663-3407-4602-a958-c5382a6b3133@arm.com>
+Date: Mon, 15 Jul 2024 13:57:10 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/29] arm64: context switch POR_EL0 register
+To: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-7-joey.gouly@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20240503130147.1154804-7-joey.gouly@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Jul 2024 18:25:10 +1000
-Message-Id: <D2PYW90LRVAY.3PCE9P3NE2NEB@gmail.com>
-Subject: Re: [RFC PATCH v4 12/17] powerpc64/ftrace: Move ftrace sequence out
- of line
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Naveen N Rao" <naveen@kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-trace-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <cover.1720942106.git.naveen@kernel.org>
- <9cf2cdddba74ec167ae1af5ec189bba8f704fb51.1720942106.git.naveen@kernel.org>
-In-Reply-To: <9cf2cdddba74ec167ae1af5ec189bba8f704fb51.1720942106.git.naveen@kernel.org>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,44 +44,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Daniel
- Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Vishal Chourasia <vishalc@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun Jul 14, 2024 at 6:27 PM AEST, Naveen N Rao wrote:
-> Function profile sequence on powerpc includes two instructions at the
-> beginning of each function:
-> 	mflr	r0
-> 	bl	ftrace_caller
->
-> The call to ftrace_caller() gets nop'ed out during kernel boot and is
-> patched in when ftrace is enabled.
->
-> Given the sequence, we cannot return from ftrace_caller with 'blr' as we
-> need to keep LR and r0 intact. This results in link stack (return
-> address predictor) imbalance when ftrace is enabled. To address that, we
-> would like to use a three instruction sequence:
-> 	mflr	r0
-> 	bl	ftrace_caller
-> 	mtlr	r0
->
-> Further more, to support DYNAMIC_FTRACE_WITH_CALL_OPS, we need to
-> reserve two instruction slots before the function. This results in a
-> total of five instruction slots to be reserved for ftrace use on each
-> function that is traced.
->
-> Move the function profile sequence out-of-line to minimize its impact.
-> To do this, we reserve a single nop at function entry using
-> -fpatchable-function-entry=3D1 and add a pass on vmlinux.o to determine
-> the total number of functions that can be traced. This is then used to
-> generate a .S file reserving the appropriate amount of space for use as
-> ftrace stubs, which is built and linked into vmlinux.
 
-These are all going into .tramp.ftrace.text AFAIKS? Should that be
-moved after some of the other text in the linker script then if it
-could get quite large? sched and lock and other things should be
-closer to the rest of text and hot code.
 
-Thanks,
-Nick
+On 5/3/24 18:31, Joey Gouly wrote:
+> POR_EL0 is a register that can be modified by userspace directly,
+> so it must be context switched.
+> 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> ---
+>  arch/arm64/include/asm/cpufeature.h |  6 ++++++
+>  arch/arm64/include/asm/processor.h  |  1 +
+>  arch/arm64/include/asm/sysreg.h     |  3 +++
+>  arch/arm64/kernel/process.c         | 28 ++++++++++++++++++++++++++++
+>  4 files changed, 38 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+> index 8b904a757bd3..d46aab23e06e 100644
+> --- a/arch/arm64/include/asm/cpufeature.h
+> +++ b/arch/arm64/include/asm/cpufeature.h
+> @@ -832,6 +832,12 @@ static inline bool system_supports_lpa2(void)
+>  	return cpus_have_final_cap(ARM64_HAS_LPA2);
+>  }
+>  
+> +static inline bool system_supports_poe(void)
+> +{
+> +	return IS_ENABLED(CONFIG_ARM64_POE) &&
+
+CONFIG_ARM64_POE has not been defined/added until now ?
+
+> +		alternative_has_cap_unlikely(ARM64_HAS_S1POE);
+> +}
+> +
+>  int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
+>  bool try_emulate_mrs(struct pt_regs *regs, u32 isn);
+>  
+> diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+> index f77371232d8c..e6376f979273 100644
+> --- a/arch/arm64/include/asm/processor.h
+> +++ b/arch/arm64/include/asm/processor.h
+> @@ -184,6 +184,7 @@ struct thread_struct {
+>  	u64			sctlr_user;
+>  	u64			svcr;
+>  	u64			tpidr2_el0;
+> +	u64			por_el0;
+>  };
+
+As there going to be a new config i.e CONFIG_ARM64_POE, should not this
+register be wrapped up with #ifdef CONFIG_ARM64_POE as well ? Similarly
+access into p->thread.por_el0 should also be conditional on that config.
+
+>  
+>  static inline unsigned int thread_get_vl(struct thread_struct *thread,
+> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> index 9e8999592f3a..62c399811dbf 100644
+> --- a/arch/arm64/include/asm/sysreg.h
+> +++ b/arch/arm64/include/asm/sysreg.h
+> @@ -1064,6 +1064,9 @@
+>  #define POE_RXW		UL(0x7)
+>  #define POE_MASK	UL(0xf)
+>  
+> +/* Initial value for Permission Overlay Extension for EL0 */
+> +#define POR_EL0_INIT	POE_RXW
+
+The idea behind POE_RXW as the init value is to be all permissive ?
+
+> +
+>  #define ARM64_FEATURE_FIELD_BITS	4
+>  
+>  /* Defined for compatibility only, do not add new users. */
+> diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+> index 4ae31b7af6c3..0ffaca98bed6 100644
+> --- a/arch/arm64/kernel/process.c
+> +++ b/arch/arm64/kernel/process.c
+> @@ -271,12 +271,23 @@ static void flush_tagged_addr_state(void)
+>  		clear_thread_flag(TIF_TAGGED_ADDR);
+>  }
+>  
+> +static void flush_poe(void)
+> +{
+> +	if (!system_supports_poe())
+> +		return;
+> +
+> +	write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
+> +	/* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> +	isb();
+> +}
+> +
+>  void flush_thread(void)
+>  {
+>  	fpsimd_flush_thread();
+>  	tls_thread_flush();
+>  	flush_ptrace_hw_breakpoint(current);
+>  	flush_tagged_addr_state();
+> +	flush_poe();
+>  }
+>  
+>  void arch_release_task_struct(struct task_struct *tsk)
+> @@ -371,6 +382,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+>  		if (system_supports_tpidr2())
+>  			p->thread.tpidr2_el0 = read_sysreg_s(SYS_TPIDR2_EL0);
+>  
+> +		if (system_supports_poe())
+> +			p->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> +
+>  		if (stack_start) {
+>  			if (is_compat_thread(task_thread_info(p)))
+>  				childregs->compat_sp = stack_start;
+> @@ -495,6 +509,19 @@ static void erratum_1418040_new_exec(void)
+>  	preempt_enable();
+>  }
+>  
+> +static void permission_overlay_switch(struct task_struct *next)
+> +{
+> +	if (!system_supports_poe())
+> +		return;
+> +
+> +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> +	if (current->thread.por_el0 != next->thread.por_el0) {
+> +		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+> +		/* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> +		isb();
+> +	}
+> +}
+> +
+>  /*
+>   * __switch_to() checks current->thread.sctlr_user as an optimisation. Therefore
+>   * this function must be called with preemption disabled and the update to
+> @@ -530,6 +557,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
+>  	ssbs_thread_switch(next);
+>  	erratum_1418040_thread_switch(next);
+>  	ptrauth_thread_switch_user(next);
+> +	permission_overlay_switch(next);
+>  
+>  	/*
+>  	 * Complete any pending TLB or cache maintenance on this CPU in case
