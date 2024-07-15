@@ -2,64 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2907E931BA5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 22:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6CA931BB2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 22:18:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F148nSjS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TuGYsfLc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WND130lkLz3cZ1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 06:13:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WND6Q0gRwz3dHm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 06:18:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F148nSjS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TuGYsfLc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WND0M33RMz30WF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 06:13:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WND5l2tTYz3c3l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 06:17:47 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 24A5FCE1196
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 20:13:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68623C4AF0A
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 20:13:03 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 9ACFECE102E;
+	Mon, 15 Jul 2024 20:17:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10193C32782;
+	Mon, 15 Jul 2024 20:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721074383;
-	bh=7OmVVQobhT3hSRfGbLhcTRfJUMXmXRi2dqnL5IXZS94=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=F148nSjStWATTjAnDYTpC9c0XIaOxn1KvnJIj6HAtt2tSLK4GBJH0V6yQNyB6At8E
-	 Dh3cmk92UReqsRsOHGHl+wlMc51+Pa7rXBDAH4A5gBFUkmKCjAx4/Nbb2OecpxJ/WZ
-	 H6u6L7FXB4kNbf+l/QiqaEA+GNakZKgc+RV3FHko1ds2meoYeOYfEkb/SRDOxcokbl
-	 Lia4mvNHDklhZjiMQj2WhrAVaYM7WctgK847g18BDjlWvZ5LsO7i6SnGzJSWmJusUn
-	 ch23mcGe2aRrSlDluuxG0h9Q0z/GVTwTpZlsR9e3ujPY3tDhIzFYIyUHr9r67F8UaK
-	 ErQGpvoWKsRlw==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2eabd22d3f4so53935091fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 13:13:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVQ7CqM6obXnWEPAhWfRWbn+K9UnT7L/vsnFSF4X2J5Bu6EhER+9Ms8PBjanw2ebgOPnE7KdYVpnLWPvXJtR4/RSY7ofVFKRm6I5YERFA==
-X-Gm-Message-State: AOJu0YytqdEaMXYlnSEbZBAXSZ+IX/QOFUiIyX1791mVlxegznmkvhAQ
-	DYmKCa32i2imZoGtkTdAcqsokAdVV9gxgsEC0QN7vc8IdL8TkjElkZhbEJ1tgE0T+h50hm8EqKs
-	roXJxUafT3jrdX4Qw+Q3rCwXqHHE=
-X-Google-Smtp-Source: AGHT+IHobuX65Qnne2KlfE18leFW6GlJLHaB/JmPa66fpayvh11K/s2F89TKgZdfpv7KGVf5mpLk/XmBKYwXCMmctQY=
-X-Received: by 2002:a05:6512:1282:b0:52c:e393:6634 with SMTP id
- 2adb3069b0e04-52edf019b1amr10513e87.33.1721074382019; Mon, 15 Jul 2024
- 13:13:02 -0700 (PDT)
+	s=k20201202; t=1721074664;
+	bh=nV0pV7geh3E0Gng/hveSYWznkIUJ2IUGHcX8dzFXWOY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TuGYsfLcx4GspKL86Eh/mosMZut+5IR33yPnktkxhHSsLtJLwoG7R+PTdsfJaGNGv
+	 EEsBgrMTB/d9+P3pG00k5CpvXUlXXAUp06SkyRUyXzXG5Gg1QfUVaAwFJnEDA81Eve
+	 XCiLvlIQNT3XrJ79nV1CWO/lkeMB4onsXrzbIfzKukWEVI5fcH5gd1lG8G0Sa67wNg
+	 SgOOQzlTIfTSa1WWFAGegf9V1reI0i3t/93fD1W8pVcDHtiv3ZHiQoI5/uSe4cmJY9
+	 NbZlWOo3IIm1W58H9bQP5k72fSzsTKG5TnnyM/uiLPOVNFWGsyHwa2tFqGd8P45cDq
+	 ZBFIDVDbN9n2w==
+Date: Mon, 15 Jul 2024 21:16:44 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Subject: Re: [PATCH v4 10/29] arm64: enable the Permission Overlay Extension
+ for EL0
+Message-ID: <a867d629-270f-4f34-90a6-4bc346e5c018@sirena.org.uk>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-11-joey.gouly@arm.com>
 MIME-Version: 1.0
-References: <20240613133711.2867745-1-zhengyejian1@huawei.com> <20240613133711.2867745-2-zhengyejian1@huawei.com>
-In-Reply-To: <20240613133711.2867745-2-zhengyejian1@huawei.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 16 Jul 2024 05:12:24 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQkSnZ1nVXiZH9kg52H-A_=urcsv-W7wGXvunMGhGX8Vw@mail.gmail.com>
-Message-ID: <CAK7LNAQkSnZ1nVXiZH9kg52H-A_=urcsv-W7wGXvunMGhGX8Vw@mail.gmail.com>
-Subject: Re: [PATCH 1/6] kallsyms: Optimize multiple times of realloc() to one
- time of malloc()
-To: Zheng Yejian <zhengyejian1@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Q58zRk7wvnj6jGJn"
+Content-Disposition: inline
+In-Reply-To: <20240503130147.1154804-11-joey.gouly@arm.com>
+X-Cookie: You'll be sorry...
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,39 +63,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, kees@kernel.org, dave.hansen@linux.intel.com, james.clark@arm.com, hpa@zytor.com, x86@kernel.org, christophe.leroy@csgroup.eu, peterz@infradead.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, yhs@fb.com, linux-trace-kernel@vger.kernel.org, nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, rostedt@goodmis.org, nathan@kernel.org, bp@alien8.de, npiggin@gmail.com, tglx@linutronix.de, jpoimboe@kernel.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, mcgrof@kernel.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 13, 2024 at 10:36=E2=80=AFPM Zheng Yejian <zhengyejian1@huawei.=
-com> wrote:
->
-> Array 'table' is used to store pointers of symbols that read from in.map
-> file, and its size depends on the number of symbols. Currently 'table'
-> is expanded by calling realloc() every 10000 symbols read.
->
-> However, there generally are around 100000+ symbols, which means that
-> the expansion is generally 10+ times.
->
-> As an optimization, introduce linked list 'sym_list' to associate and
-> count all symbols, then store them into 'table' at one time.
->
-> Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
 
+--Q58zRk7wvnj6jGJn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I do not think this is worthwhile.
+On Fri, May 03, 2024 at 02:01:28PM +0100, Joey Gouly wrote:
 
-realloc() is simple.
+> This takes the last bit of HWCAP2, is this fine? What can we do about
+> more features in the future?
 
-If this is a problem, you can increase the
-"+=3D 10000" to "+=3D 65536" or something.
+HWCAP3 has already been allocated so we could just start using that.
 
+--Q58zRk7wvnj6jGJn
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaVg6sACgkQJNaLcl1U
+h9AW9Af+JYOKBw8IlU3TJ8USeMzNKhlTsIR9EXmjyh8mC+eUbN+xIrb5A7B4dG6m
+dk6iLPP5/E8GCiVOKSmrN2D8WF4fcCTkl1cwLojd2EkthrMhOX1qgJTkzNosR76D
+aVo2JL7YvyiEpKMaZv74UnaxL9zipPWHMwX8tyakt+3F75Jho3fjo/pkNleV8jxl
+bALzynA7fKtt7p2R57PbLXPhTLG4IxG/8gH2ODuDwMj6o46ng4BmOfZXlgaqOgsT
+RxnODCG0OpXODiw+QlMS/JBrbg21d3Rc3CHVUsz4INNeI0WRL1yv35HFKWdfhuIQ
+v1DA+hOMClSlNNEQ+qWr3JYq7W6eqw==
+=sIpQ
+-----END PGP SIGNATURE-----
 
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+--Q58zRk7wvnj6jGJn--
