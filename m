@@ -2,79 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBDB931B13
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 21:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B19931B59
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 22:01:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=U+c8yoRC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QRlV3xtQ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QRlV3xtQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNC9g6Ds9z3cYr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 05:36:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNCkm67C2z3cjv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 06:01:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=quicinc.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=U+c8yoRC;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QRlV3xtQ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QRlV3xtQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNC902jGnz3bZN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 05:35:30 +1000 (AEST)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46FH8jKZ031938;
-	Mon, 15 Jul 2024 19:35:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	KMUJ2TW4Kz92vZ1WNbj9fim2oaakNFSraWNVGeLCagg=; b=U+c8yoRCaunVsvgr
-	XG+15WKI+r84R5ti6CuwxYjgMxlP7Sm0SE1k2Tm1Mrg9d/O7GvrjlRw4kqEu9vhQ
-	6KixL6vuFBRM/EZ1+JHTU+yfNyaVwhEO6MKy+tju10wQdfVY0l32MCoQnlz/Z/KL
-	20ovJCG4Ugy7LJbNX0Ynt6qTatm/P7cKSCmk/sw8cl4Ycx7K/0s9drAYggl3UOpV
-	Ux3vpxaL2z34mt7SfO/h5g0P5CrXc5m0R1kutWp+xppsA5qpV6xxmFkP8prBHNQv
-	kNS61b1lkOMM9b5l5ByeKUmQdwrlnxZLqEts3vS0BxBsXowysOWdvltHBkUgEyYv
-	wTm9mw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40bjbh50b2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jul 2024 19:35:13 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46FJZC02001309
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jul 2024 19:35:12 GMT
-Received: from [10.48.247.129] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 15 Jul
- 2024 12:35:11 -0700
-Message-ID: <6c324421-f35a-450a-9a39-05aab3136c8d@quicinc.com>
-Date: Mon, 15 Jul 2024 12:35:10 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNCk50Crxz30Wq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 06:00:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721073640;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=15Dmclh4kIckOnCQwprcdxOX/buxG2q7LphezAtYVv8=;
+	b=QRlV3xtQexjn8woHW4g/x+2UCzIj3HAtcsL6wCiJWb3z703Ha1AT93PhAem2UskadX5SZ9
+	rnRyBLYX8jxIHqpvqQFhIJqmZHp+lYKKTBslfxuVNZWX3RgXiI6wcf62tcYGKYJFNx8vlL
+	bHZNTlS8Z8s56mzgyiXrG39eOXP0Xk4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721073640;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=15Dmclh4kIckOnCQwprcdxOX/buxG2q7LphezAtYVv8=;
+	b=QRlV3xtQexjn8woHW4g/x+2UCzIj3HAtcsL6wCiJWb3z703Ha1AT93PhAem2UskadX5SZ9
+	rnRyBLYX8jxIHqpvqQFhIJqmZHp+lYKKTBslfxuVNZWX3RgXiI6wcf62tcYGKYJFNx8vlL
+	bHZNTlS8Z8s56mzgyiXrG39eOXP0Xk4=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-103-wZje7avZOsqliie8jp5RbQ-1; Mon, 15 Jul 2024 16:00:38 -0400
+X-MC-Unique: wZje7avZOsqliie8jp5RbQ-1
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6b5e99c06efso9844076d6.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 13:00:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721073638; x=1721678438;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=15Dmclh4kIckOnCQwprcdxOX/buxG2q7LphezAtYVv8=;
+        b=iiEGdeTd/sx7neKYooSthv8+tANclHn4L4ATDfweRvGOhOAuqbdJYZw3Yqsf1QiUAq
+         kEY0+oLI1ozYZ0ItU1NXUPBobDscNm0WCkpcDQuQ5QLDuYKrusTiJdoMl0GqgiY88+Me
+         mSrcNTOCd3L1A5IcJfJUTkPmeP8Crjd5MRfCrwjpsbidxpswF5i43fJCzwsSJJ+aMH5c
+         CN0P6iL5U9MXyDE/QpHB/si/xVEL1EnjxeOJAtQ8nx7b2VohPKlAjTKf7QfeIrWgkOPj
+         hSBt4jtaBfA9uQ1us4BkCcfsdfnGC/r1Ji4nVA/x01fWVqJpaCcmBXD8jr1+xHSaz8bF
+         QAKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWqQ9hm8i1GyPDq/NpPqIY/6Xl4LuOzHkpThn79rjOoMZh+IZjpzwAV83ToS6mteL12bIVUNIxENBCwj0tuEeB55HXglTyFQgQzl8+Gw==
+X-Gm-Message-State: AOJu0YwWMgugS/VoH+a5QdP3N8/sjokyKz9GnU754fjg2iFV99GNjGsh
+	CHP2zKLv16EuOXg+5z+Tzg+XNZ+ZW4iV/n73X8instmSlr6Pa6Brw3VfQEYpRHpNdKQxM4ecz/P
+	jL5U4WuHnT7gWu282kFo51f3fvvRJTWcu5UlvFmcpd49XpJV6Pk60wpsppzom4mM=
+X-Received: by 2002:a05:6214:31a0:b0:6b7:586c:6d9 with SMTP id 6a1803df08f44-6b77df58959mr5345396d6.7.1721073637960;
+        Mon, 15 Jul 2024 13:00:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6GZr9wMOYCEvghsINr3u6w1OSLohUo6zAjbcvIW8QTcL9i2DqhQXaU6Y+D7OVjwAgKHeENQ==
+X-Received: by 2002:a05:6214:31a0:b0:6b7:586c:6d9 with SMTP id 6a1803df08f44-6b77df58959mr5345176d6.7.1721073637602;
+        Mon, 15 Jul 2024 13:00:37 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b76199d5a2sm24091186d6.60.2024.07.15.13.00.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jul 2024 13:00:37 -0700 (PDT)
+Date: Mon, 15 Jul 2024 16:00:34 -0400
+From: Peter Xu <peterx@redhat.com>
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/8] mm/mprotect: Fix dax puds
+Message-ID: <ZpV_4ms0X5SQj0xx@x1n>
+References: <20240715192142.3241557-1-peterx@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpufreq: powerpc: add missing MODULE_DESCRIPTION() macros
-Content-Language: en-US
-To: Viresh Kumar <viresh.kumar@linaro.org>
-References: <20240614-md-powerpc-drivers-cpufreq-v1-1-de4034d87fd2@quicinc.com>
- <20240701083320.c3r4aussa4qojewq@vireshk-i7>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240701083320.c3r4aussa4qojewq@vireshk-i7>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: ctGWlwWjxygEGzUEfixMirX5izh2d6XZ
-X-Proofpoint-GUID: ctGWlwWjxygEGzUEfixMirX5izh2d6XZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_13,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- clxscore=1011 spamscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407150152
+In-Reply-To: <20240715192142.3241557-1-peterx@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,32 +98,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/1/2024 1:33 AM, Viresh Kumar wrote:
-> On 14-06-24, 23:08, Jeff Johnson wrote:
->> With ARCH=powerpc, make allmodconfig && make W=1 C=1 reports:
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/cpufreq/ppc-cbe-cpufreq.o
->> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/cpufreq/powernv-cpufreq.o
->>
->> Add the missing invocation of the MODULE_DESCRIPTION() macro to all
->> files which have a MODULE_LICENSE().
->>
->> This includes three additional files which, although they did not
->> produce a warning with the powerpc allmodconfig configuration, may
->> cause this warning with specific options enabled in the kernel
->> configuration.
->>
->> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> 
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> 
+On Mon, Jul 15, 2024 at 03:21:34PM -0400, Peter Xu wrote:
+> [Based on mm-unstable, commit 31334cf98dbd, July 2nd]
 
-I still don't see this in linux-next. Is anything else needed from me?
+I forgot to update here in the cover letter; it's actually based on the
+lastest..  Which is 79ae458094ff, as of today (July 15th).
 
-Of the almost 300 patches I've submitted to fix these issues tree-wide, this
-is one of the 13 remaining. Hopefully this can make it into the 6.11 merge
-window. If not, Greg KH has indicated he'll take this as an -rc instead of
-waiting for 6.12.
+-- 
+Peter Xu
+
