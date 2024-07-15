@@ -2,55 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B493930E2B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 08:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5073930E5A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 08:53:20 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BfhVfPso;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WMsvJ1BNfz3dBp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 16:37:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WMtFV5yZWz3fQW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jul 2024 16:53:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BfhVfPso;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMstv2vF9z30Wl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 16:37:09 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WMstl0Wtcz9sSK;
-	Mon, 15 Jul 2024 08:37:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id oazn0T8e1H3x; Mon, 15 Jul 2024 08:37:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WMstk6rR7z9sSH;
-	Mon, 15 Jul 2024 08:37:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DABB08B76C;
-	Mon, 15 Jul 2024 08:37:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id pOSQDiM8HNmP; Mon, 15 Jul 2024 08:37:02 +0200 (CEST)
-Received: from [192.168.233.202] (unknown [192.168.233.202])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5EA3A8B763;
-	Mon, 15 Jul 2024 08:37:02 +0200 (CEST)
-Message-ID: <4cad3dc8-f7b8-4771-ad04-f3524bc03340@csgroup.eu>
-Date: Mon, 15 Jul 2024 08:37:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] MAINTAINERS: Update powerpc BPF JIT maintainers
-To: Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org
-References: <fb6ef126771c70538067709af69d960da3560ce7.1720944897.git.naveen@kernel.org>
- <24fea21d9d4458973aadd6a02bb1bf558b8bd0b2.1720944897.git.naveen@kernel.org>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <24fea21d9d4458973aadd6a02bb1bf558b8bd0b2.1720944897.git.naveen@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WMtDp0Cklz30Wl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jul 2024 16:52:40 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-70af4868d3dso2881425b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jul 2024 23:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721026357; x=1721631157; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TOUBnyacfrZf8eVlFcm0/q6B+wJPrQJ79e88GPN7rB4=;
+        b=BfhVfPso3KTqr6XpRbgefm8Ib7piQ6X5cg72GTbP8BKpG7aoN+x19Q22w4yI4NBOGU
+         5x5XCosL3LmYcSz1noq3owYYEp/NlHC+YAiXWZ8nMO4KJznedZdNULUqjSYR+MhalvEE
+         g+g9Ouw8klWztX6/DyqNIupSQAzC+YZD2nPR/LZFzBHIv17FtlBVPLdNzA8PEyso4Z7z
+         poRmql9A0htw2OVDnaayw/Kb6BllXRMKVeoVXpcmmrTVA+KLUy6mdEwHy8O3lcwovkMR
+         go9e8JeHanNfg1hunYdHj6R3QfxcumspqBlSDhT7cR6sItRY9Wrwe/6W9vv2jjZ9NUqT
+         ndew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721026357; x=1721631157;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TOUBnyacfrZf8eVlFcm0/q6B+wJPrQJ79e88GPN7rB4=;
+        b=jKpjeM0eneuM1B0THIIiiTHnk1QWAxJjscDx0lgqRB6AIUrAWROzL9s3hzBn6p3s36
+         WfHTnVeMN+fyMNs32F0i1S32CeaRKaJTQtxRy05w30x+qFzxD65W/4GrJr1ipqexTStp
+         IDYpnapSOWQkqzmEu58nh9GigD6FWfAwgSTnfqbHUd40VqAWyqIOBSHbaHCa4bAM4ft/
+         AscwY8UOOmmMFSjK5RRJZpJdzdszF7AQIgxBTxmDTlK3S2lwQMI/knZY2J1Cf2okPWYK
+         0HTWu0Z/tmZpqTWPPkjqDI8oHjBYLt7YVKw4LXN6ahAc6bpiDtTd7Rw0uaWc59iJkUkW
+         EBag==
+X-Forwarded-Encrypted: i=1; AJvYcCU24bZafejFEqe71pzjfBLdrcMPTlNY87M46m3guDan6sLusIsVjpKQbtm/wzDTOoicgCb2qmenplPKMdnOGongAmCV964uRpQaqfY9gQ==
+X-Gm-Message-State: AOJu0YwLFolrJUi7fB0QSXw+NzZcBDNUdYJVk5pUXHkZ5kKu6NfV+4IH
+	4QHz2xfbiDcxUomWP7jaC4PsABrdPhi6Ob+B78Gvpm6Ib/Xzl/it
+X-Google-Smtp-Source: AGHT+IFh6bSn4V5kPfc1+LrO3cOGjERs8h1Xg/TGnhJOuvCkDfri4xK1SmxC19x+mql3WPQIZcGfoA==
+X-Received: by 2002:a05:6a20:a125:b0:1c2:8949:5bb3 with SMTP id adf61e73a8af0-1c2984cf1f6mr18562950637.42.1721026357378;
+        Sun, 14 Jul 2024 23:52:37 -0700 (PDT)
+Received: from localhost ([1.146.120.6])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ca3c74eb5dsm6027391a91.0.2024.07.14.23.52.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 Jul 2024 23:52:37 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 15 Jul 2024 16:52:26 +1000
+Message-Id: <D2PWX8QDYFXB.B2LUK0XGNIYF@gmail.com>
+Subject: Re: [RFC PATCH v4 08/17] powerpc/ftrace: Move ftrace stub used for
+ init text before _einittext
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Naveen N Rao" <naveen@kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-trace-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1720942106.git.naveen@kernel.org>
+ <ce15b4bfe271a49b5edad8149be113bc78207fda.1720942106.git.naveen@kernel.org>
+In-Reply-To: <ce15b4bfe271a49b5edad8149be113bc78207fda.1720942106.git.naveen@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,41 +85,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Daniel
+ Borkmann <daniel@iogearbox.net>, Masahiro Yamada <masahiroy@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Vishal Chourasia <vishalc@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sun Jul 14, 2024 at 6:27 PM AEST, Naveen N Rao wrote:
+> Move the ftrace stub used to cover inittext before _einittext so that it
+> is within kernel text, as seen through core_kernel_text(). This is
+> required for a subsequent change to ftrace.
 
+Hmm, is there a reason it was outside einittext anyway?
 
-Le 14/07/2024 à 10:34, Naveen N Rao a écrit :
-> Hari Bathini has been updating and maintaining the powerpc BPF JIT since
-> a while now. Christophe Leroy has been doing the same for 32-bit
-> powerpc. Add them as maintainers for the powerpc BPF JIT.
-> 
-> I am no longer actively looking into the powerpc BPF JIT. Change my role
-> to that of a reviewer so that I can help with the odd query.
-> 
+Does it do anything else? Other than symbols, on some 32-bit platforms
+it looks like it could change some of the initial mapping/pinning. Maybe
+they jut get lucky and always map it before the change anyway?
+
+It looks like the right thing to do even without the subsequent ftrace
+change though.
+
+Thanks,
+Nick
+
+>
 > Signed-off-by: Naveen N Rao <naveen@kernel.org>
-
-Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
 > ---
->   MAINTAINERS | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 05f14b67cd74..c7a931ee7a2e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3878,8 +3878,10 @@ S:	Odd Fixes
->   F:	drivers/net/ethernet/netronome/nfp/bpf/
->   
->   BPF JIT for POWERPC (32-BIT AND 64-BIT)
-> -M:	Naveen N Rao <naveen@kernel.org>
->   M:	Michael Ellerman <mpe@ellerman.id.au>
-> +M:	Hari Bathini <hbathini@linux.ibm.com>
-> +M:	Christophe Leroy <christophe.leroy@csgroup.eu>
-> +R:	Naveen N Rao <naveen@kernel.org>
->   L:	bpf@vger.kernel.org
->   S:	Supported
->   F:	arch/powerpc/net/
+>  arch/powerpc/kernel/vmlinux.lds.S | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmli=
+nux.lds.S
+> index f420df7888a7..0aef9959f2cd 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -267,14 +267,13 @@ SECTIONS
+>  	.init.text : AT(ADDR(.init.text) - LOAD_OFFSET) {
+>  		_sinittext =3D .;
+>  		INIT_TEXT
+> -
+> +		*(.tramp.ftrace.init);
+>  		/*
+>  		 *.init.text might be RO so we must ensure this section ends on
+>  		 * a page boundary.
+>  		 */
+>  		. =3D ALIGN(PAGE_SIZE);
+>  		_einittext =3D .;
+> -		*(.tramp.ftrace.init);
+>  	} :text
+> =20
+>  	/* .exit.text is discarded at runtime, not link time,
+
