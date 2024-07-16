@@ -1,36 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB61993244C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 12:43:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA79932454
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 12:48:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNbJ44fnHz3fKQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 20:43:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNbQC37NYz3fQH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 20:48:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNbHh70hQz30Np
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 20:42:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNbPq0fx2z30Ts
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 20:47:57 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 644EA1063;
-	Tue, 16 Jul 2024 03:42:33 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E3E6B1063;
+	Tue, 16 Jul 2024 03:47:51 -0700 (PDT)
 Received: from [10.163.52.225] (unknown [10.163.52.225])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A5F513F762;
-	Tue, 16 Jul 2024 03:41:58 -0700 (PDT)
-Message-ID: <de3cb762-88ee-4b69-a22c-2c5841c9e833@arm.com>
-Date: Tue, 16 Jul 2024 16:11:54 +0530
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9F1E83F762;
+	Tue, 16 Jul 2024 03:47:16 -0700 (PDT)
+Message-ID: <fe3ccf1e-4c57-4795-add3-1eb47f3bdcaa@arm.com>
+Date: Tue, 16 Jul 2024 16:17:12 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 20/29] arm64: enable POE and PIE to coexist
+Subject: Re: [PATCH v4 19/29] arm64: enable PKEY support for CPUs with S1POE
 To: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-21-joey.gouly@arm.com>
+ <20240503130147.1154804-20-joey.gouly@arm.com>
 Content-Language: en-US
 From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20240503130147.1154804-21-joey.gouly@arm.com>
+In-Reply-To: <20240503130147.1154804-20-joey.gouly@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -51,37 +51,34 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 
 On 5/3/24 18:31, Joey Gouly wrote:
-> Set the EL0/userspace indirection encodings to be the overlay enabled
-> variants of the permissions.
-
-Could you please explain the rationale for this ? Should POE variants for
-pte permissions be used (when available) instead of permission indirection
-ones.
-
+> Now that PKEYs support has been implemented, enable it for CPUs that
+> support S1POE.
 > 
 > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 > Cc: Catalin Marinas <catalin.marinas@arm.com>
 > Cc: Will Deacon <will@kernel.org>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
 > ---
->  arch/arm64/include/asm/pgtable-prot.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  arch/arm64/include/asm/pkeys.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-> index dd9ee67d1d87..4f9f85437d3d 100644
-> --- a/arch/arm64/include/asm/pgtable-prot.h
-> +++ b/arch/arm64/include/asm/pgtable-prot.h
-> @@ -147,10 +147,10 @@ static inline bool __pure lpa2_is_enabled(void)
+> diff --git a/arch/arm64/include/asm/pkeys.h b/arch/arm64/include/asm/pkeys.h
+> index a284508a4d02..3ea928ec94c0 100644
+> --- a/arch/arm64/include/asm/pkeys.h
+> +++ b/arch/arm64/include/asm/pkeys.h
+> @@ -17,7 +17,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
 >  
->  #define PIE_E0	( \
->  	PIRx_ELx_PERM(pte_pi_index(_PAGE_EXECONLY),      PIE_X_O) | \
-> -	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY_EXEC), PIE_RX)  | \
-> -	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RWX) | \
-> -	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY),      PIE_R)   | \
-> -	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED),        PIE_RW))
-> +	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY_EXEC), PIE_RX_O)  | \
-> +	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RWX_O) | \
-> +	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY),      PIE_R_O)   | \
-> +	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED),        PIE_RW_O))
+>  static inline bool arch_pkeys_enabled(void)
+>  {
+> -	return false;
+> +	return system_supports_poe();
+>  }
 >  
->  #define PIE_E1	( \
->  	PIRx_ELx_PERM(pte_pi_index(_PAGE_EXECONLY),      PIE_NONE_O) | \
+>  static inline int vma_pkey(struct vm_area_struct *vma)
+
+Small nit. Would it better to be consistently using system_supports_poe()
+helper rather than arch_pkeys_enabled() inside arch/arm64/ platform code
+like - during POE fault handling i.e inside fault_from_pkey().
