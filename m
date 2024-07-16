@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE7C93258D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:26:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392CD93258F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:26:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hbP8A0lE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HMx+mv1b;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNcFm3WK9z2y8q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:26:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNcGY0dgkz30T7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:26:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hbP8A0lE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HMx+mv1b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc3656bsz3dDj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:16:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc3J737fz3dGr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:17:00 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F1D9060B9F;
+	by sin.source.kernel.org (Postfix) with ESMTP id 8F7F9CE12EA;
+	Tue, 16 Jul 2024 11:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332CBC116B1;
 	Tue, 16 Jul 2024 11:16:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC11C4AF0D;
-	Tue, 16 Jul 2024 11:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721128608;
-	bh=cw/dvVFpXQw8UFABdX3d8CGu73vGiQNRy5vsiOPnGKU=;
+	s=k20201202; t=1721128618;
+	bh=YeX/zOM98p7oq0+D8eMJgxNsT4zHLIp5lz3y21iev7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbP8A0lEpqUTNDzt8jAuMvv6yCcB+FkqjrOQXQgUWcNzcZ3+xmIR/Aq1Yfp/okNoV
-	 IxtfpfmtCpeARUNWee3xrWyJ+MV8+fqdOnXDXmDSbmggoHhS8hnAQRCM6WDuTW2B8o
-	 R6ovcDEBbii5Ob4bL2Mrw5doidNTSFYtK8nUfLb31saiKBa99WjoYVfh0rLKHC3BZa
-	 mysjvhMi7gKCDFNWYJfdmsaeFEBXPXyzNpLT8adWtIYuX5w/pzCWdyzxmtYtHzySlk
-	 JM0zImcPHXvpx62YrgbS+n47aQzi3RmFdvy8Y0k7NX2M73TkKaURcJbMZJrXC8nNrw
-	 ftINNXlBfq8ig==
+	b=HMx+mv1bGMjSPO/WhXFoC7Rb6iwGJqO9+dc/PUQ7veMxE3nuT0c0YLJwrz38TAU5U
+	 0Q11IMAbO3FNvgruj4uJVrCJo6jk1vS1LAVFC81AqQ0MuvdcmgStTZWJbieXGzd32z
+	 Q1AvmWDPdMBMJcrP6CfzjFyV8++UxYuZCQYAOp+h3jZQ5SWk7yVa1h51Es450b+Bna
+	 bZVU+zwGud/LyPykJINM4pTaM5I/ZzInZVcM5NxM3FdZ+R1KpT3irgg+XUabbvLr17
+	 V3NQfhWGoJ5Yxgbl2OLtmxSFWA3NTbUkLFBCFfIYdmmncDx1yZMjgx/873JHAnRRkM
+	 +SJO1kobq7E8g==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 16/17] arch_numa: switch over to numa_memblks
-Date: Tue, 16 Jul 2024 14:13:45 +0300
-Message-ID: <20240716111346.3676969-17-rppt@kernel.org>
+Subject: [PATCH 17/17] mm: make range-to-target_node lookup facility a part of numa_memblks
+Date: Tue, 16 Jul 2024 14:13:46 +0300
+Message-ID: <20240716111346.3676969-18-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716111346.3676969-1-rppt@kernel.org>
 References: <20240716111346.3676969-1-rppt@kernel.org>
@@ -65,338 +65,191 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Until now arch_numa was directly translating firmware NUMA information
-to memblock.
+The x86 implementation of range-to-target_node lookup (i.e.
+phys_to_target_node() and memory_add_physaddr_to_nid()) relies on
+numa_memblks.
 
-Using numa_memblks as an intermediate step has a few advantages:
-* alignment with more battle tested x86 implementation
-* availability of NUMA emulation
-* maintaining node information for not yet populated memory
-
-Replace current functionality related to numa_add_memblk() and
-__node_distance() with the implementation based on numa_memblks and add
-functions required by numa_emulation.
+Since numa_memblks are now part of the generic code, move these
+functions from x86 to mm/numa_memblks.c and select
+CONFIG_NUMA_KEEP_MEMINFO when CONFIG_NUMA_MEMBLKS=y for dax and cxl.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/base/Kconfig       |   1 +
- drivers/base/arch_numa.c   | 200 +++++++++++--------------------------
- include/asm-generic/numa.h |   6 +-
- 3 files changed, 64 insertions(+), 143 deletions(-)
+ arch/x86/include/asm/sparsemem.h |  9 --------
+ arch/x86/mm/numa.c               | 38 --------------------------------
+ drivers/cxl/Kconfig              |  2 +-
+ drivers/dax/Kconfig              |  2 +-
+ include/linux/numa_memblks.h     |  7 ++++++
+ mm/numa.c                        |  1 +
+ mm/numa_memblks.c                | 38 ++++++++++++++++++++++++++++++++
+ 7 files changed, 48 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
-index 2b8fd6bb7da0..064eb52ff7e2 100644
---- a/drivers/base/Kconfig
-+++ b/drivers/base/Kconfig
-@@ -226,6 +226,7 @@ config GENERIC_ARCH_TOPOLOGY
+diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+index 64df897c0ee3..3918c7a434f5 100644
+--- a/arch/x86/include/asm/sparsemem.h
++++ b/arch/x86/include/asm/sparsemem.h
+@@ -31,13 +31,4 @@
  
- config GENERIC_ARCH_NUMA
- 	bool
-+	select NUMA_MEMBLKS
+ #endif /* CONFIG_SPARSEMEM */
+ 
+-#ifndef __ASSEMBLY__
+-#ifdef CONFIG_NUMA_KEEP_MEMINFO
+-extern int phys_to_target_node(phys_addr_t start);
+-#define phys_to_target_node phys_to_target_node
+-extern int memory_add_physaddr_to_nid(u64 start);
+-#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+-#endif
+-#endif /* __ASSEMBLY__ */
+-
+ #endif /* _ASM_X86_SPARSEMEM_H */
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 16bc703c9272..8e790528805e 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -449,41 +449,3 @@ u64 __init numa_emu_dma_end(void)
+ 	return PFN_PHYS(MAX_DMA32_PFN);
+ }
+ #endif /* CONFIG_NUMA_EMU */
+-
+-#ifdef CONFIG_NUMA_KEEP_MEMINFO
+-static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
+-{
+-	int i;
+-
+-	for (i = 0; i < mi->nr_blks; i++)
+-		if (mi->blk[i].start <= start && mi->blk[i].end > start)
+-			return mi->blk[i].nid;
+-	return NUMA_NO_NODE;
+-}
+-
+-int phys_to_target_node(phys_addr_t start)
+-{
+-	int nid = meminfo_to_nid(&numa_meminfo, start);
+-
+-	/*
+-	 * Prefer online nodes, but if reserved memory might be
+-	 * hot-added continue the search with reserved ranges.
+-	 */
+-	if (nid != NUMA_NO_NODE)
+-		return nid;
+-
+-	return meminfo_to_nid(&numa_reserved_meminfo, start);
+-}
+-EXPORT_SYMBOL_GPL(phys_to_target_node);
+-
+-int memory_add_physaddr_to_nid(u64 start)
+-{
+-	int nid = meminfo_to_nid(&numa_meminfo, start);
+-
+-	if (nid == NUMA_NO_NODE)
+-		nid = numa_meminfo.blk[0].nid;
+-	return nid;
+-}
+-EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+-
+-#endif
+diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+index 99b5c25be079..29c192f20082 100644
+--- a/drivers/cxl/Kconfig
++++ b/drivers/cxl/Kconfig
+@@ -6,7 +6,7 @@ menuconfig CXL_BUS
+ 	select FW_UPLOAD
+ 	select PCI_DOE
+ 	select FIRMWARE_TABLE
+-	select NUMA_KEEP_MEMINFO if (NUMA && X86)
++	select NUMA_KEEP_MEMINFO if NUMA_MEMBLKS
  	help
- 	  Enable support for generic NUMA implementation. Currently, RISC-V
- 	  and ARM64 use it.
-diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
-index 2ebf12eab99f..333cbbad7466 100644
---- a/drivers/base/arch_numa.c
-+++ b/drivers/base/arch_numa.c
-@@ -12,14 +12,12 @@
+ 	  CXL is a bus that is electrically compatible with PCI Express, but
+ 	  layers three protocols on that signalling (CXL.io, CXL.cache, and
+diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+index a88744244149..d656e4c0eb84 100644
+--- a/drivers/dax/Kconfig
++++ b/drivers/dax/Kconfig
+@@ -30,7 +30,7 @@ config DEV_DAX_PMEM
+ config DEV_DAX_HMEM
+ 	tristate "HMEM DAX: direct access to 'specific purpose' memory"
+ 	depends on EFI_SOFT_RESERVE
+-	select NUMA_KEEP_MEMINFO if (NUMA && X86)
++	select NUMA_KEEP_MEMINFO if NUMA_MEMBLKS
+ 	default DEV_DAX
+ 	help
+ 	  EFI 2.8 platforms, and others, may advertise 'specific purpose'
+diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+index 5c6e12ad0b7a..17d4bcc34091 100644
+--- a/include/linux/numa_memblks.h
++++ b/include/linux/numa_memblks.h
+@@ -46,6 +46,13 @@ static inline int numa_emu_cmdline(char *str)
+ }
+ #endif /* CONFIG_NUMA_EMU */
+ 
++#ifdef CONFIG_NUMA_KEEP_MEMINFO
++extern int phys_to_target_node(phys_addr_t start);
++#define phys_to_target_node phys_to_target_node
++extern int memory_add_physaddr_to_nid(u64 start);
++#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
++#endif /* CONFIG_NUMA_KEEP_MEMINFO */
++
+ #endif /* CONFIG_NUMA_MEMBLKS */
+ 
+ #endif	/* __NUMA_MEMBLKS_H */
+diff --git a/mm/numa.c b/mm/numa.c
+index 0483cabc4c4b..64c30cab2208 100644
+--- a/mm/numa.c
++++ b/mm/numa.c
+@@ -3,6 +3,7 @@
  #include <linux/memblock.h>
- #include <linux/module.h>
- #include <linux/of.h>
+ #include <linux/printk.h>
+ #include <linux/numa.h>
 +#include <linux/numa_memblks.h>
  
- #include <asm/sections.h>
- 
--nodemask_t numa_nodes_parsed __initdata;
- static int cpu_to_node_map[NR_CPUS] = { [0 ... NR_CPUS-1] = NUMA_NO_NODE };
- 
--static int numa_distance_cnt;
--static u8 *numa_distance;
- bool numa_off;
- 
- static __init int numa_parse_early_param(char *opt)
-@@ -28,6 +26,8 @@ static __init int numa_parse_early_param(char *opt)
- 		return -EINVAL;
- 	if (str_has_prefix(opt, "off"))
- 		numa_off = true;
-+	if (!strncmp(opt, "fake=", 5))
-+		return numa_emu_cmdline(opt + 5);
- 
+ struct pglist_data *node_data[MAX_NUMNODES];
+ EXPORT_SYMBOL(node_data);
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 640f3a3ce0ee..46ac3f998b4e 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -525,3 +525,41 @@ int __init numa_fill_memblks(u64 start, u64 end)
+ 	}
  	return 0;
- }
-@@ -59,6 +59,7 @@ EXPORT_SYMBOL(cpumask_of_node);
- 
- #endif
- 
-+#ifndef CONFIG_NUMA_EMU
- static void numa_update_cpu(unsigned int cpu, bool remove)
- {
- 	int nid = cpu_to_node(cpu);
-@@ -81,6 +82,7 @@ void numa_remove_cpu(unsigned int cpu)
- {
- 	numa_update_cpu(cpu, true);
- }
-+#endif
- 
- void numa_clear_node(unsigned int cpu)
- {
-@@ -142,7 +144,7 @@ void __init early_map_cpu_to_node(unsigned int cpu, int nid)
- unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
- EXPORT_SYMBOL(__per_cpu_offset);
- 
--int __init early_cpu_to_node(int cpu)
-+int early_cpu_to_node(int cpu)
- {
- 	return cpu_to_node_map[cpu];
- }
-@@ -187,30 +189,6 @@ void __init setup_per_cpu_areas(void)
- }
- #endif
- 
--/**
-- * numa_add_memblk() - Set node id to memblk
-- * @nid: NUMA node ID of the new memblk
-- * @start: Start address of the new memblk
-- * @end:  End address of the new memblk
-- *
-- * RETURNS:
-- * 0 on success, -errno on failure.
-- */
--int __init numa_add_memblk(int nid, u64 start, u64 end)
--{
--	int ret;
--
--	ret = memblock_set_node(start, (end - start), &memblock.memory, nid);
--	if (ret < 0) {
--		pr_err("memblock [0x%llx - 0x%llx] failed to add on node %d\n",
--			start, (end - 1), nid);
--		return ret;
--	}
--
--	node_set(nid, numa_nodes_parsed);
--	return ret;
--}
--
- /*
-  * Initialize NODE_DATA for a node on the local memory
-  */
-@@ -226,116 +204,9 @@ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
- 	NODE_DATA(nid)->node_spanned_pages = end_pfn - start_pfn;
- }
- 
--/*
-- * numa_free_distance
-- *
-- * The current table is freed.
-- */
--void __init numa_free_distance(void)
--{
--	size_t size;
--
--	if (!numa_distance)
--		return;
--
--	size = numa_distance_cnt * numa_distance_cnt *
--		sizeof(numa_distance[0]);
--
--	memblock_free(numa_distance, size);
--	numa_distance_cnt = 0;
--	numa_distance = NULL;
--}
--
--/*
-- * Create a new NUMA distance table.
-- */
--static int __init numa_alloc_distance(void)
--{
--	size_t size;
--	int i, j;
--
--	size = nr_node_ids * nr_node_ids * sizeof(numa_distance[0]);
--	numa_distance = memblock_alloc(size, PAGE_SIZE);
--	if (WARN_ON(!numa_distance))
--		return -ENOMEM;
--
--	numa_distance_cnt = nr_node_ids;
--
--	/* fill with the default distances */
--	for (i = 0; i < numa_distance_cnt; i++)
--		for (j = 0; j < numa_distance_cnt; j++)
--			numa_distance[i * numa_distance_cnt + j] = i == j ?
--				LOCAL_DISTANCE : REMOTE_DISTANCE;
--
--	pr_debug("Initialized distance table, cnt=%d\n", numa_distance_cnt);
--
--	return 0;
--}
--
--/**
-- * numa_set_distance() - Set inter node NUMA distance from node to node.
-- * @from: the 'from' node to set distance
-- * @to: the 'to'  node to set distance
-- * @distance: NUMA distance
-- *
-- * Set the distance from node @from to @to to @distance.
-- * If distance table doesn't exist, a warning is printed.
-- *
-- * If @from or @to is higher than the highest known node or lower than zero
-- * or @distance doesn't make sense, the call is ignored.
-- */
--void __init numa_set_distance(int from, int to, int distance)
--{
--	if (!numa_distance) {
--		pr_warn_once("Warning: distance table not allocated yet\n");
--		return;
--	}
--
--	if (from >= numa_distance_cnt || to >= numa_distance_cnt ||
--			from < 0 || to < 0) {
--		pr_warn_once("Warning: node ids are out of bound, from=%d to=%d distance=%d\n",
--			    from, to, distance);
--		return;
--	}
--
--	if ((u8)distance != distance ||
--	    (from == to && distance != LOCAL_DISTANCE)) {
--		pr_warn_once("Warning: invalid distance parameter, from=%d to=%d distance=%d\n",
--			     from, to, distance);
--		return;
--	}
--
--	numa_distance[from * numa_distance_cnt + to] = distance;
--}
--
--/*
-- * Return NUMA distance @from to @to
-- */
--int __node_distance(int from, int to)
--{
--	if (from >= numa_distance_cnt || to >= numa_distance_cnt)
--		return from == to ? LOCAL_DISTANCE : REMOTE_DISTANCE;
--	return numa_distance[from * numa_distance_cnt + to];
--}
--EXPORT_SYMBOL(__node_distance);
--
- static int __init numa_register_nodes(void)
- {
- 	int nid;
--	struct memblock_region *mblk;
--
--	/* Check that valid nid is set to memblks */
--	for_each_mem_region(mblk) {
--		int mblk_nid = memblock_get_region_node(mblk);
--		phys_addr_t start = mblk->base;
--		phys_addr_t end = mblk->base + mblk->size - 1;
--
--		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
--			pr_warn("Warning: invalid memblk node %d [mem %pap-%pap]\n",
--				mblk_nid, &start, &end);
--			return -EINVAL;
--		}
--	}
- 
- 	/* Finally register nodes. */
- 	for_each_node_mask(nid, numa_nodes_parsed) {
-@@ -360,11 +231,7 @@ static int __init numa_init(int (*init_func)(void))
- 	nodes_clear(node_possible_map);
- 	nodes_clear(node_online_map);
- 
--	ret = numa_alloc_distance();
--	if (ret < 0)
--		return ret;
--
--	ret = init_func();
-+	ret = numa_memblks_init(init_func, /* memblock_force_top_down */ false);
- 	if (ret < 0)
- 		goto out_free_distance;
- 
-@@ -382,7 +249,7 @@ static int __init numa_init(int (*init_func)(void))
- 
- 	return 0;
- out_free_distance:
--	numa_free_distance();
-+	numa_reset_distance();
- 	return ret;
- }
- 
-@@ -454,3 +321,54 @@ void __init arch_numa_init(void)
- 
- 	numa_init(dummy_numa_init);
  }
 +
-+#ifdef CONFIG_NUMA_EMU
-+void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
-+					unsigned int nr_emu_nids)
++#ifdef CONFIG_NUMA_KEEP_MEMINFO
++static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
 +{
-+	int i, j;
++	int i;
++
++	for (i = 0; i < mi->nr_blks; i++)
++		if (mi->blk[i].start <= start && mi->blk[i].end > start)
++			return mi->blk[i].nid;
++	return NUMA_NO_NODE;
++}
++
++int phys_to_target_node(phys_addr_t start)
++{
++	int nid = meminfo_to_nid(&numa_meminfo, start);
 +
 +	/*
-+	 * Transform __apicid_to_node table to use emulated nids by
-+	 * reverse-mapping phys_nid.  The maps should always exist but fall
-+	 * back to zero just in case.
++	 * Prefer online nodes, but if reserved memory might be
++	 * hot-added continue the search with reserved ranges.
 +	 */
-+	for (i = 0; i < ARRAY_SIZE(cpu_to_node_map); i++) {
-+		if (cpu_to_node_map[i] == NUMA_NO_NODE)
-+			continue;
-+		for (j = 0; j < nr_emu_nids; j++)
-+			if (cpu_to_node_map[i] == emu_nid_to_phys[j])
-+				break;
-+		cpu_to_node_map[i] = j < nr_emu_nids ? j : 0;
-+	}
-+}
++	if (nid != NUMA_NO_NODE)
++		return nid;
 +
-+u64 __init numa_emu_dma_end(void)
++	return meminfo_to_nid(&numa_reserved_meminfo, start);
++}
++EXPORT_SYMBOL_GPL(phys_to_target_node);
++
++int memory_add_physaddr_to_nid(u64 start)
 +{
-+	return PFN_PHYS(memblock_start_of_DRAM() + SZ_4G);
++	int nid = meminfo_to_nid(&numa_meminfo, start);
++
++	if (nid == NUMA_NO_NODE)
++		nid = numa_meminfo.blk[0].nid;
++	return nid;
 +}
++EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
 +
-+void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable)
-+{
-+	struct cpumask *mask;
-+
-+	if (node == NUMA_NO_NODE)
-+		return;
-+
-+	mask = node_to_cpumask_map[node];
-+	if (!cpumask_available(mask)) {
-+		pr_err("node_to_cpumask_map[%i] NULL\n", node);
-+		dump_stack();
-+		return;
-+	}
-+
-+	if (enable)
-+		cpumask_set_cpu(cpu, mask);
-+	else
-+		cpumask_clear_cpu(cpu, mask);
-+
-+	pr_debug("%s cpu %d node %d: mask now %*pbl\n",
-+		 enable ? "numa_add_cpu" : "numa_remove_cpu",
-+		 cpu, node, cpumask_pr_args(mask));
-+}
-+#endif /* CONFIG_NUMA_EMU */
-diff --git a/include/asm-generic/numa.h b/include/asm-generic/numa.h
-index c32e0cf23c90..c2b046d1fd82 100644
---- a/include/asm-generic/numa.h
-+++ b/include/asm-generic/numa.h
-@@ -32,8 +32,6 @@ static inline const struct cpumask *cpumask_of_node(int node)
- 
- void __init arch_numa_init(void);
- int __init numa_add_memblk(int nodeid, u64 start, u64 end);
--void __init numa_set_distance(int from, int to, int distance);
--void __init numa_free_distance(void);
- void __init early_map_cpu_to_node(unsigned int cpu, int nid);
- int __init early_cpu_to_node(int cpu);
- void numa_store_cpu_info(unsigned int cpu);
-@@ -51,4 +49,8 @@ static inline int early_cpu_to_node(int cpu) { return 0; }
- 
- #endif	/* CONFIG_NUMA */
- 
-+#ifdef CONFIG_NUMA_EMU
-+void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable);
-+#endif
-+
- #endif	/* __ASM_GENERIC_NUMA_H */
++#endif /* CONFIG_NUMA_KEEP_MEMINFO */
 -- 
 2.43.0
 
