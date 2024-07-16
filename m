@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519A69324D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3839324E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:16:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VkMJWuO9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AHYvyTyo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNc1S1lR2z3dBp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:15:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNc2L3S5sz3cbX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:16:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VkMJWuO9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AHYvyTyo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc0C6yPVz3cdn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:14:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc0N706Qz3ck2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:14:28 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C8FC9610A2;
+	by sin.source.kernel.org (Postfix) with ESMTP id 698F0CE0F1F;
+	Tue, 16 Jul 2024 11:14:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097D6C116B1;
 	Tue, 16 Jul 2024 11:14:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF837C4AF09;
-	Tue, 16 Jul 2024 11:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721128456;
-	bh=y3TD89E5xgR+cEB9zJIVa1MhEE/ag71T+percuJb8Jk=;
+	s=k20201202; t=1721128466;
+	bh=wE9udk3T5PUOzWhffSqfqF0jfi91yVWMRgCuaEhaWIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkMJWuO92ZVIqTdQkBEULX1mdRfTUE6/w4UgTHJ/fo7CztNbTtED3l85kzn8gLFLR
-	 LumfY8sNSw4PSPj6yPSVQ8T2AEm8DCptdeO4INOBYjWuTbnE/JBCrfMzXTkNp8RXXu
-	 PBbS4LvDKghzVJNnNuLWmFVcS9ZKXPYXnKmA2ypjS6EXUEizahbhRrvw97jmJUis9x
-	 t5wpJsRgWDGJfWMC3y9xWDYl0Ok0JGcYB/caEAlLDVVeg4rOAYZV4nWqDO8bTw2kQj
-	 43/rV7DDmhcC37yK0DUqUAJAzU4bD2511EnJEtmeEXsRdvV9Uz2W5zZnfn3J5VwvF8
-	 0EWJpUJP/BkOg==
+	b=AHYvyTyoQdtcDKaKGfRvbH/k6v/hYcWwLrOx1jp5xLw1rY+jYz5xGTfikSNNSgM5P
+	 ascExz6fxmydjPn6HZfKq/ZFwMEVIfa7bUZ2QS8KH7HiYeEt/cUiiL7Sub9UT8l1Bd
+	 6wPGKVTyk77GsDwySVg8PytwHZNiRILMoy+qXJGsFiclG9JJZKiYDLIa1jUCOsNevf
+	 BgHd+H1v9JSol1EQej2nbJdR5kwI7HAr89McG9tCtJdGaMXxdLX1lHfHiL0p3WZm98
+	 779qc9KY7u2HmJdGGMjD8egQ1Sahkt58uZg5grtiNbPXEXWw+GPNTO+QZBPuQYFN27
+	 CjsEuBDQRRH6g==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 01/17] mm: move kernel/numa.c to mm/
-Date: Tue, 16 Jul 2024 14:13:30 +0300
-Message-ID: <20240716111346.3676969-2-rppt@kernel.org>
+Subject: [PATCH 02/17] MIPS: sgi-ip27: make NODE_DATA() the same as on all other architectures
+Date: Tue, 16 Jul 2024 14:13:31 +0300
+Message-ID: <20240716111346.3676969-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716111346.3676969-1-rppt@kernel.org>
 References: <20240716111346.3676969-1-rppt@kernel.org>
@@ -65,41 +65,62 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-The stub functions in kernel/numa.c belong to mm/ rather than to kernel/
+sgi-ip27 is the only system that defines NODE_DATA() differently than
+the rest of NUMA machines.
+
+Add node_data array of struct pglist pointers that will point to
+__node_data[node]->pglist and redefine NODE_DATA() to use node_data
+array.
+
+This will allow pulling declaration of node_data to the generic mm code
+in the next commit.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- kernel/Makefile       | 1 -
- mm/Makefile           | 1 +
- {kernel => mm}/numa.c | 0
- 3 files changed, 1 insertion(+), 1 deletion(-)
- rename {kernel => mm}/numa.c (100%)
+ arch/mips/include/asm/mach-ip27/mmzone.h | 5 ++++-
+ arch/mips/sgi-ip27/ip27-memory.c         | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/Makefile b/kernel/Makefile
-index 3c13240dfc9f..87866b037fbe 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -116,7 +116,6 @@ obj-$(CONFIG_SHADOW_CALL_STACK) += scs.o
- obj-$(CONFIG_HAVE_STATIC_CALL) += static_call.o
- obj-$(CONFIG_HAVE_STATIC_CALL_INLINE) += static_call_inline.o
- obj-$(CONFIG_CFI_CLANG) += cfi.o
--obj-$(CONFIG_NUMA) += numa.o
+diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
+index 08c36e50a860..629c3f290203 100644
+--- a/arch/mips/include/asm/mach-ip27/mmzone.h
++++ b/arch/mips/include/asm/mach-ip27/mmzone.h
+@@ -22,7 +22,10 @@ struct node_data {
  
- obj-$(CONFIG_PERF_EVENTS) += events/
+ extern struct node_data *__node_data[];
  
-diff --git a/mm/Makefile b/mm/Makefile
-index 8fb85acda1b1..773b3b267438 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -139,3 +139,4 @@ obj-$(CONFIG_HAVE_BOOTMEM_INFO_NODE) += bootmem_info.o
- obj-$(CONFIG_GENERIC_IOREMAP) += ioremap.o
- obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
-+obj-$(CONFIG_NUMA) += numa.o
-diff --git a/kernel/numa.c b/mm/numa.c
-similarity index 100%
-rename from kernel/numa.c
-rename to mm/numa.c
+-#define NODE_DATA(n)		(&__node_data[(n)]->pglist)
+ #define hub_data(n)		(&__node_data[(n)]->hub)
+ 
++extern struct pglist_data *node_data[];
++
++#define NODE_DATA(nid)		(node_data[nid])
++
+ #endif /* _ASM_MACH_MMZONE_H */
+diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+index b8ca94cfb4fe..c30ef6958b97 100644
+--- a/arch/mips/sgi-ip27/ip27-memory.c
++++ b/arch/mips/sgi-ip27/ip27-memory.c
+@@ -34,8 +34,10 @@
+ #define SLOT_PFNSHIFT		(SLOT_SHIFT - PAGE_SHIFT)
+ #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
+ 
+-struct node_data *__node_data[MAX_NUMNODES];
++struct pglist_data *node_data[MAX_NUMNODES];
++EXPORT_SYMBOL(node_data);
+ 
++struct node_data *__node_data[MAX_NUMNODES];
+ EXPORT_SYMBOL(__node_data);
+ 
+ static u64 gen_region_mask(void)
+@@ -361,6 +363,7 @@ static void __init node_mem_init(nasid_t node)
+ 	 */
+ 	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
+ 	memset(__node_data[node], 0, PAGE_SIZE);
++	node_data[node] = &__node_data[node]->pglist;
+ 
+ 	NODE_DATA(node)->node_start_pfn = start_pfn;
+ 	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
 -- 
 2.43.0
 
