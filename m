@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3A9932588
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:24:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4B493258C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:25:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KRpLrrVg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DR/UKOJ/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNcD41dpvz3cbX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:24:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNcDr6rRsz3dHM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:25:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KRpLrrVg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DR/UKOJ/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc2k2Wmpz3dDj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:16:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc2w5KSPz3dHD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:16:40 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 513AFCE0C68;
-	Tue, 16 Jul 2024 11:16:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C776CC4AF0D;
-	Tue, 16 Jul 2024 11:16:18 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 4CDBECE12F9;
+	Tue, 16 Jul 2024 11:16:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4143C116B1;
+	Tue, 16 Jul 2024 11:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721128588;
-	bh=J5LEqR4AoCvU/KZiQsAwdFPUPPx4+6cXxvN58f3qL14=;
+	s=k20201202; t=1721128598;
+	bh=7Q9+Mq1OzbCzQ3l6qZ8hFadj8WwRPzHvJheGL7bczxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KRpLrrVgs49iPdPeTlsZTWXyagoaSsHx1E5C93i5+9P8SBlnn7Z12NbhmT4tPpRpJ
-	 0zI+BO3Nppe5LLSfYA4/YJraT3JXfCwhgn8es8kezNFA5tq+VGZs0z3yKJaNH88eeY
-	 ko/ZZr/J/iuMNP63MEa1Cz8SPM5bEZgddW3tOQDKBjZZ6IRrZzzrI/1IH19/F20lWd
-	 U4anRDTclZV9ZpdtUMrjnLxeBd4fO7FcnGM+dt98tawWilGeWcPF4NK8RCMxjjkijt
-	 61SQDh1+30pevGJ+NuacABT3RBSTFUm2AWNy8CJd82u176925JGY/GFFjGvjXBldU6
-	 /v8D8XbcQ1KyQ==
+	b=DR/UKOJ/h4uG7SYpNzlc2X9CWTUegBVq7/FEDSICT5v7b5oob5MruZ1Km9M+sBk9w
+	 CrSZGTKrdq+1umF3gBmMGFcaZCoC89EDdmv5WrJaNrdVnw4l1yMWg59lcltDPFCz1C
+	 c8WIvtqlHUvYvghfdoL+3hTZwAkV1bCk5YQWIGnPNU+6jfjgj4LABXzboYg8GzruEv
+	 7bQ8ryZxvJODCU7frKDMJK8TrhBuw74SWFDmRevbWL2HWc9qWBEUfYl8qlYurs2SfG
+	 lMCnTuVPllpeAO8ytYEKcrt5eEcNZcGUU9XEKzAjRzy1dM1dHsXD2cV4R1kri25vkc
+	 +ode6C8uopYbw==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 14/17] mm: introduce numa_emulation
-Date: Tue, 16 Jul 2024 14:13:43 +0300
-Message-ID: <20240716111346.3676969-15-rppt@kernel.org>
+Subject: [PATCH 15/17] mm: make numa_memblks more self-contained
+Date: Tue, 16 Jul 2024 14:13:44 +0300
+Message-ID: <20240716111346.3676969-16-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716111346.3676969-1-rppt@kernel.org>
 References: <20240716111346.3676969-1-rppt@kernel.org>
@@ -65,167 +65,243 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Move numa_emulation codfrom arch/x86 to mm/numa_emulation.c
-
-This code will be later reused by arch_numa.
-
-No functional changes.
+Introduce numa_memblks_init() and move some code around to avoid several
+global variables in numa_memblks.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/Kconfig             |  8 --------
- arch/x86/include/asm/numa.h  | 12 ------------
- arch/x86/mm/Makefile         |  1 -
- arch/x86/mm/numa_internal.h  | 11 -----------
- include/linux/numa_memblks.h | 17 +++++++++++++++++
- mm/Kconfig                   |  8 ++++++++
- mm/Makefile                  |  1 +
- mm/numa_emulation.c          |  4 +---
- 8 files changed, 27 insertions(+), 35 deletions(-)
+ arch/x86/mm/numa.c           | 53 ++++---------------------
+ include/linux/numa_memblks.h |  9 +----
+ mm/numa_memblks.c            | 77 +++++++++++++++++++++++++++---------
+ 3 files changed, 68 insertions(+), 71 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index d8084f37157c..a42735c126fa 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1592,14 +1592,6 @@ config X86_64_ACPI_NUMA
- 	help
- 	  Enable ACPI SRAT based node topology detection.
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 3848e68d771a..16bc703c9272 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -115,30 +115,19 @@ void __init setup_node_to_cpumask_map(void)
+ 	pr_debug("Node to cpumask map for %u nodes\n", nr_node_ids);
+ }
  
--config NUMA_EMU
--	bool "NUMA emulation"
--	depends on NUMA
--	help
--	  Enable NUMA emulation. A flat machine will be split
--	  into virtual nodes when booted with "numa=fake=N", where N is the
--	  number of nodes. This is only useful for debugging.
+-static int __init numa_register_memblks(struct numa_meminfo *mi)
++static int __init numa_register_nodes(void)
+ {
+-	int i, nid, err;
 -
- config NODES_SHIFT
- 	int "Maximum NUMA Nodes (as a power of 2)" if !MAXSMP
- 	range 1 10
-diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
-index 6e9a50bf03d4..c6e232e3c303 100644
---- a/arch/x86/include/asm/numa.h
-+++ b/arch/x86/include/asm/numa.h
-@@ -67,16 +67,4 @@ static inline void init_gi_nodes(void)			{ }
- void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable);
- #endif
+-	err = numa_register_meminfo(mi);
+-	if (err)
+-		return err;
++	int nid;
  
--#ifdef CONFIG_NUMA_EMU
--int numa_emu_cmdline(char *str);
--void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
--					unsigned int nr_emu_nids);
--u64 __init numa_emu_dma_end(void);
--#else /* CONFIG_NUMA_EMU */
--static inline int numa_emu_cmdline(char *str)
--{
--	return -EINVAL;
--}
--#endif /* CONFIG_NUMA_EMU */
+ 	if (!memblock_validate_numa_coverage(SZ_1M))
+ 		return -EINVAL;
+ 
+ 	/* Finally register nodes. */
+ 	for_each_node_mask(nid, node_possible_map) {
+-		u64 start = PFN_PHYS(max_pfn);
+-		u64 end = 0;
 -
- #endif	/* _ASM_X86_NUMA_H */
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 8d3a00e5c528..690fbf48e853 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -57,7 +57,6 @@ obj-$(CONFIG_MMIOTRACE_TEST)	+= testmmiotrace.o
- obj-$(CONFIG_NUMA)		+= numa.o numa_$(BITS).o
- obj-$(CONFIG_AMD_NUMA)		+= amdtopology.o
- obj-$(CONFIG_ACPI_NUMA)		+= srat.o
--obj-$(CONFIG_NUMA_EMU)		+= numa_emulation.o
+-		for (i = 0; i < mi->nr_blks; i++) {
+-			if (nid != mi->blk[i].nid)
+-				continue;
+-			start = min(mi->blk[i].start, start);
+-			end = max(mi->blk[i].end, end);
+-		}
++		unsigned long start_pfn, end_pfn;
  
- obj-$(CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS)	+= pkeys.o
- obj-$(CONFIG_RANDOMIZE_MEMORY)			+= kaslr.o
-diff --git a/arch/x86/mm/numa_internal.h b/arch/x86/mm/numa_internal.h
-index 249e3aaeadce..11e1ff370c10 100644
---- a/arch/x86/mm/numa_internal.h
-+++ b/arch/x86/mm/numa_internal.h
-@@ -7,15 +7,4 @@
+-		if (start >= end)
++		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
++		if (start_pfn >= end_pfn)
+ 			continue;
  
- void __init x86_numa_init(void);
+ 		alloc_node_data(nid);
+@@ -178,39 +167,11 @@ static int __init numa_init(int (*init_func)(void))
+ 	for (i = 0; i < MAX_LOCAL_APIC; i++)
+ 		set_apicid_to_node(i, NUMA_NO_NODE);
  
--struct numa_meminfo;
+-	nodes_clear(numa_nodes_parsed);
+-	nodes_clear(node_possible_map);
+-	nodes_clear(node_online_map);
+-	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
+-	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
+-				  NUMA_NO_NODE));
+-	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
+-				  NUMA_NO_NODE));
+-	/* In case that parsing SRAT failed. */
+-	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
+-	numa_reset_distance();
 -
--#ifdef CONFIG_NUMA_EMU
--void __init numa_emulation(struct numa_meminfo *numa_meminfo,
--			   int numa_dist_cnt);
--#else
--static inline void numa_emulation(struct numa_meminfo *numa_meminfo,
--				  int numa_dist_cnt)
--{ }
--#endif
+-	ret = init_func();
+-	if (ret < 0)
+-		return ret;
 -
- #endif	/* __X86_MM_NUMA_INTERNAL_H */
+-	/*
+-	 * We reset memblock back to the top-down direction
+-	 * here because if we configured ACPI_NUMA, we have
+-	 * parsed SRAT in init_func(). It is ok to have the
+-	 * reset here even if we did't configure ACPI_NUMA
+-	 * or acpi numa init fails and fallbacks to dummy
+-	 * numa init.
+-	 */
+-	memblock_set_bottom_up(false);
+-
+-	ret = numa_cleanup_meminfo(&numa_meminfo);
++	ret = numa_memblks_init(init_func, /* memblock_force_top_down */ true);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	numa_emulation(&numa_meminfo, numa_distance_cnt);
+-
+-	ret = numa_register_memblks(&numa_meminfo);
++	ret = numa_register_nodes();
+ 	if (ret < 0)
+ 		return ret;
+ 
 diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-index 968a590535ac..f81f98678074 100644
+index f81f98678074..5c6e12ad0b7a 100644
 --- a/include/linux/numa_memblks.h
 +++ b/include/linux/numa_memblks.h
-@@ -34,6 +34,23 @@ int __init numa_register_meminfo(struct numa_meminfo *mi);
- void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
- 				       const struct numa_meminfo *mi);
+@@ -7,7 +7,6 @@
  
-+#ifdef CONFIG_NUMA_EMU
-+int numa_emu_cmdline(char *str);
-+void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
-+					unsigned int nr_emu_nids);
-+u64 __init numa_emu_dma_end(void);
-+void __init numa_emulation(struct numa_meminfo *numa_meminfo,
-+			   int numa_dist_cnt);
-+#else
-+static inline void numa_emulation(struct numa_meminfo *numa_meminfo,
-+				  int numa_dist_cnt)
-+{ }
-+static inline int numa_emu_cmdline(char *str)
-+{
-+	return -EINVAL;
-+}
-+#endif /* CONFIG_NUMA_EMU */
-+
- #endif /* CONFIG_NUMA_MEMBLKS */
+ #define NR_NODE_MEMBLKS		(MAX_NUMNODES * 2)
  
- #endif	/* __NUMA_MEMBLKS_H */
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 15c6efbaa1df..ae58eecdefdc 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1252,6 +1252,14 @@ config EXECMEM
- config NUMA_MEMBLKS
- 	bool
+-extern int numa_distance_cnt;
+ void __init numa_set_distance(int from, int to, int distance);
+ void __init numa_reset_distance(void);
  
-+config NUMA_EMU
-+	bool "NUMA emulation"
-+	depends on NUMA_MEMBLKS
-+	help
-+	  Enable NUMA emulation. A flat machine will be split
-+	  into virtual nodes when booted with "numa=fake=N", where N is the
-+	  number of nodes. This is only useful for debugging.
-+
- source "mm/damon/Kconfig"
+@@ -22,17 +21,13 @@ struct numa_meminfo {
+ 	struct numa_memblk	blk[NR_NODE_MEMBLKS];
+ };
  
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 17bc4013a2c5..d5b1b30f76e3 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -141,3 +141,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_NUMA) += numa.o
- obj-$(CONFIG_NUMA_MEMBLKS) += numa_memblks.o
-+obj-$(CONFIG_NUMA_EMU) += numa_emulation.o
-diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-index 33610026b7a3..031fb9961bf7 100644
---- a/mm/numa_emulation.c
-+++ b/mm/numa_emulation.c
-@@ -7,9 +7,7 @@
- #include <linux/topology.h>
- #include <linux/memblock.h>
- #include <linux/numa_memblks.h>
--#include <asm/dma.h>
+-extern struct numa_meminfo numa_meminfo __initdata_or_meminfo;
+-extern struct numa_meminfo numa_reserved_meminfo __initdata_or_meminfo;
 -
--#include "numa_internal.h"
-+#include <asm/numa.h>
+ int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+ void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
  
- #define FAKE_NODE_MIN_SIZE	((u64)32 << 20)
- #define FAKE_NODE_MIN_HASH_MASK	(~(FAKE_NODE_MIN_SIZE - 1UL))
+ int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
+-int __init numa_register_meminfo(struct numa_meminfo *mi);
+ 
+-void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
+-				       const struct numa_meminfo *mi);
++int __init numa_memblks_init(int (*init_func)(void),
++			     bool memblock_force_top_down);
+ 
+ #ifdef CONFIG_NUMA_EMU
+ int numa_emu_cmdline(char *str);
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index e0039549aaac..640f3a3ce0ee 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -7,13 +7,27 @@
+ #include <linux/numa.h>
+ #include <linux/numa_memblks.h>
+ 
+-int numa_distance_cnt;
++static int numa_distance_cnt;
+ static u8 *numa_distance;
+ 
+ nodemask_t numa_nodes_parsed __initdata;
+ 
+-struct numa_meminfo numa_meminfo __initdata_or_meminfo;
+-struct numa_meminfo numa_reserved_meminfo __initdata_or_meminfo;
++static struct numa_meminfo numa_meminfo __initdata_or_meminfo;
++static struct numa_meminfo numa_reserved_meminfo __initdata_or_meminfo;
++
++/*
++ * Set nodes, which have memory in @mi, in *@nodemask.
++ */
++static void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
++					      const struct numa_meminfo *mi)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(mi->blk); i++)
++		if (mi->blk[i].start != mi->blk[i].end &&
++		    mi->blk[i].nid != NUMA_NO_NODE)
++			node_set(mi->blk[i].nid, *nodemask);
++}
+ 
+ /**
+  * numa_reset_distance - Reset NUMA distance table
+@@ -287,20 +301,6 @@ int __init numa_cleanup_meminfo(struct numa_meminfo *mi)
+ 	return 0;
+ }
+ 
+-/*
+- * Set nodes, which have memory in @mi, in *@nodemask.
+- */
+-void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
+-				       const struct numa_meminfo *mi)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(mi->blk); i++)
+-		if (mi->blk[i].start != mi->blk[i].end &&
+-		    mi->blk[i].nid != NUMA_NO_NODE)
+-			node_set(mi->blk[i].nid, *nodemask);
+-}
+-
+ /*
+  * Mark all currently memblock-reserved physical memory (which covers the
+  * kernel's own memory ranges) as hot-unswappable.
+@@ -368,7 +368,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
+ 	}
+ }
+ 
+-int __init numa_register_meminfo(struct numa_meminfo *mi)
++static int __init numa_register_meminfo(struct numa_meminfo *mi)
+ {
+ 	int i;
+ 
+@@ -412,6 +412,47 @@ int __init numa_register_meminfo(struct numa_meminfo *mi)
+ 	return 0;
+ }
+ 
++int __init numa_memblks_init(int (*init_func)(void),
++			     bool memblock_force_top_down)
++{
++	int ret;
++
++	nodes_clear(numa_nodes_parsed);
++	nodes_clear(node_possible_map);
++	nodes_clear(node_online_map);
++	memset(&numa_meminfo, 0, sizeof(numa_meminfo));
++	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.memory,
++				  NUMA_NO_NODE));
++	WARN_ON(memblock_set_node(0, ULLONG_MAX, &memblock.reserved,
++				  NUMA_NO_NODE));
++	/* In case that parsing SRAT failed. */
++	WARN_ON(memblock_clear_hotplug(0, ULLONG_MAX));
++	numa_reset_distance();
++
++	ret = init_func();
++	if (ret < 0)
++		return ret;
++
++	/*
++	 * We reset memblock back to the top-down direction
++	 * here because if we configured ACPI_NUMA, we have
++	 * parsed SRAT in init_func(). It is ok to have the
++	 * reset here even if we did't configure ACPI_NUMA
++	 * or acpi numa init fails and fallbacks to dummy
++	 * numa init.
++	 */
++	if (memblock_force_top_down)
++		memblock_set_bottom_up(false);
++
++	ret = numa_cleanup_meminfo(&numa_meminfo);
++	if (ret < 0)
++		return ret;
++
++	numa_emulation(&numa_meminfo, numa_distance_cnt);
++
++	return numa_register_meminfo(&numa_meminfo);
++}
++
+ static int __init cmp_memblk(const void *a, const void *b)
+ {
+ 	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
 -- 
 2.43.0
 
