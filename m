@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B61893252F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:19:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FD293253F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 13:19:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eUYe44Ch;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RcsB2+p5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNc5Z1djQz2ypm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:18:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNc6L3h36z3cLl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 21:19:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eUYe44Ch;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RcsB2+p5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc191hrfz3cYh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:15:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNc1M3Jxcz3dK3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 21:15:19 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7886460B9F;
+	by sin.source.kernel.org (Postfix) with ESMTP id 1DCEDCE12E4;
+	Tue, 16 Jul 2024 11:15:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD63DC4AF0E;
 	Tue, 16 Jul 2024 11:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCECC116B1;
-	Tue, 16 Jul 2024 11:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721128507;
-	bh=GElWHq2qRIT8py39Ko6uJRewjseLB9ydLgZveNWdQ+Q=;
+	s=k20201202; t=1721128517;
+	bh=xrJFUSIui5+3tWKM7Qfe5mEbY1VRxe1m5uYa78xjxbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUYe44ChrhAY+EIKXqRBxJW/GGnRiqr4keNuzA8k+5ofeJ4HBvR/n8QM0J61no1f2
-	 abiQBz3/QII7idJTs0afg3rMGY90A9xGmtBhYCNbiK9q4iubegCmxJf7NrcoovNvKG
-	 qQRxvsWN8oXJMXkni0JawCEhHK8wA6sAxUA+cca/xtj4Q9hkmUftsVcp/KiDWJ6cLF
-	 921Vh4BmVDEODNmwHfRepZDaSRiM/CEFqWbhNtHQKO/A34nitM0llJ5YCV7ixvsAcB
-	 JHNcrvbEtQV/XUjf4mxX16sZ1+VCT2rSdlrKQOTKpNfcPTqTHU8isN0T/2V75O32aW
-	 WPUTqww3gzW2A==
+	b=RcsB2+p5QHBap1vUNzky7TEU4+Tn5z4k+AWvpXJWK7FJN1CZhMEKfjUb0nM48ukl5
+	 i8gN4HNW516pgCT0OD2NQGIKEhZpQCmvW+FnncHa+T2rZ4KUCYsxX54ArgLBbRccvW
+	 /M4/82T1OQbmPY6lAIvDiNuYTgsZDmRyYwZFvrDAfzZEhTXQ7LmI1Uo9xig4RDhIVe
+	 8umplX4XAEATc0RUK6AVqsoePJFhu07FX3c1e1566RQ0tcb/MaNe5IdDa9j4GrGdjD
+	 S8M0nenFB/BUBHnEHESMvZVA1n1kLJWjGQP1MwZdrCrNt3LpuQ9gp1Eu/ZbsxcO864
+	 i7FoOB9zttDRg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 06/17] x86/numa: simplify numa_distance allocation
-Date: Tue, 16 Jul 2024 14:13:35 +0300
-Message-ID: <20240716111346.3676969-7-rppt@kernel.org>
+Subject: [PATCH 07/17] x86/numa: move FAKE_NODE_* defines to numa_emu
+Date: Tue, 16 Jul 2024 14:13:36 +0300
+Message-ID: <20240716111346.3676969-8-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240716111346.3676969-1-rppt@kernel.org>
 References: <20240716111346.3676969-1-rppt@kernel.org>
@@ -65,63 +65,43 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Allocation of numa_distance uses memblock_phys_alloc_range() to limit
-allocation to be below the last mapped page.
-
-But NUMA initializaition runs after the direct map is populated and
-there is also code in setup_arch() that adjusts memblock limit to
-reflect how much memory is already mapped in the direct map.
-
-Simplify the allocation of numa_distance and use plain memblock_alloc().
-This makes the code clearer and ensures that when numa_distance is not
-allocated it is always NULL.
+The definitions of FAKE_NODE_MIN_SIZE and FAKE_NODE_MIN_HASH_MASK are
+only used by numa emulation code, make them local to
+arch/x86/mm/numa_emulation.c
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/x86/mm/numa.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ arch/x86/include/asm/numa.h  | 2 --
+ arch/x86/mm/numa_emulation.c | 3 +++
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 5e1dde26674b..ab2d4ecef786 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -319,8 +319,7 @@ void __init numa_reset_distance(void)
- {
- 	size_t size = numa_distance_cnt * numa_distance_cnt * sizeof(numa_distance[0]);
+diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+index ef2844d69173..2dab1ada96cf 100644
+--- a/arch/x86/include/asm/numa.h
++++ b/arch/x86/include/asm/numa.h
+@@ -71,8 +71,6 @@ void debug_cpumask_set_cpu(int cpu, int node, bool enable);
+ #endif
  
--	/* numa_distance could be 1LU marking allocation failure, test cnt */
--	if (numa_distance_cnt)
-+	if (numa_distance)
- 		memblock_free(numa_distance, size);
- 	numa_distance_cnt = 0;
- 	numa_distance = NULL;	/* enable table creation */
-@@ -331,7 +330,6 @@ static int __init numa_alloc_distance(void)
- 	nodemask_t nodes_parsed;
- 	size_t size;
- 	int i, j, cnt = 0;
--	u64 phys;
+ #ifdef CONFIG_NUMA_EMU
+-#define FAKE_NODE_MIN_SIZE	((u64)32 << 20)
+-#define FAKE_NODE_MIN_HASH_MASK	(~(FAKE_NODE_MIN_SIZE - 1UL))
+ int numa_emu_cmdline(char *str);
+ #else /* CONFIG_NUMA_EMU */
+ static inline int numa_emu_cmdline(char *str)
+diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
+index 9a9305367fdd..1ce22e315b80 100644
+--- a/arch/x86/mm/numa_emulation.c
++++ b/arch/x86/mm/numa_emulation.c
+@@ -10,6 +10,9 @@
  
- 	/* size the new table and allocate it */
- 	nodes_parsed = numa_nodes_parsed;
-@@ -342,16 +340,12 @@ static int __init numa_alloc_distance(void)
- 	cnt++;
- 	size = cnt * cnt * sizeof(numa_distance[0]);
+ #include "numa_internal.h"
  
--	phys = memblock_phys_alloc_range(size, PAGE_SIZE, 0,
--					 PFN_PHYS(max_pfn_mapped));
--	if (!phys) {
-+	numa_distance = memblock_alloc(size, PAGE_SIZE);
-+	if (!numa_distance) {
- 		pr_warn("Warning: can't allocate distance table!\n");
--		/* don't retry until explicitly reset */
--		numa_distance = (void *)1LU;
- 		return -ENOMEM;
- 	}
++#define FAKE_NODE_MIN_SIZE	((u64)32 << 20)
++#define FAKE_NODE_MIN_HASH_MASK	(~(FAKE_NODE_MIN_SIZE - 1UL))
++
+ static int emu_nid_to_phys[MAX_NUMNODES];
+ static char *emu_cmdline __initdata;
  
--	numa_distance = __va(phys);
- 	numa_distance_cnt = cnt;
- 
- 	/* fill with the default distances */
 -- 
 2.43.0
 
