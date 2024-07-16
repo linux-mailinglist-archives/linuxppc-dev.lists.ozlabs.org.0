@@ -1,38 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8119322F4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 11:36:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E25932345
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 11:46:37 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gNdby14H;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNYpm0dbSz3cZF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 19:36:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WNZ2z62fVz3cYZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jul 2024 19:46:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WNYpM0j4Kz3cSy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 19:35:37 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B7EA1063;
-	Tue, 16 Jul 2024 02:35:31 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB77D3F762;
-	Tue, 16 Jul 2024 02:35:02 -0700 (PDT)
-Date: Tue, 16 Jul 2024 10:34:57 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH v4 13/29] arm64: convert protection key into vm_flags and
- pgprot values
-Message-ID: <20240716093457.GA1542300@e124191.cambridge.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-14-joey.gouly@arm.com>
- <0f87e51e-f790-4302-896f-9b9a74ed7495@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0f87e51e-f790-4302-896f-9b9a74ed7495@arm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gNdby14H;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WNZ2J5CkRz3cTw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jul 2024 19:46:00 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 62470CE12A2;
+	Tue, 16 Jul 2024 09:45:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA146C116B1;
+	Tue, 16 Jul 2024 09:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721123156;
+	bh=SqXgNm6FhzAJA14mBWUxDsVvY4d+YHMpCRQGynbdfDE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gNdby14HQ2ApZ0VAhsv66j6UvRn5Salr683iDSupG4UaBeZz3im4hmb7e8qgpkmF8
+	 ZqLreb1UdfoR7cJHu4k1Umj3o18fFw+vlSVBn6dpVUaLH4GhcwjILYRKe68LDxB5fe
+	 qkRE1k5avvu8yT+D/M3yf1ZClg6IQl6Xpzzw6VG74nZ1x7ADbWIJjbTXnee65e7c0c
+	 ItzKSFgmm3+5+V9pV61+RHXrjqatLO/ofe96tkY+QqksRD2V0KB36GNhKkkSspT3Zx
+	 c15TfackFDw9V/0UOa0m9nfvayW+mh54Gsr+qeQQoG3WVlpklIYGwP/RMN4jtIeEkt
+	 YWiPHW4xxHGxg==
+Date: Tue, 16 Jul 2024 18:45:51 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH 2/2] MAINTAINERS: Update powerpc BPF JIT maintainers
+Message-Id: <20240716184551.a16cfd72b3f31148b0e9170a@kernel.org>
+In-Reply-To: <92e61201-2ee4-458d-988d-a476018a05dc@linux.ibm.com>
+References: <fb6ef126771c70538067709af69d960da3560ce7.1720944897.git.naveen@kernel.org>
+	<24fea21d9d4458973aadd6a02bb1bf558b8bd0b2.1720944897.git.naveen@kernel.org>
+	<92e61201-2ee4-458d-988d-a476018a05dc@linux.ibm.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,88 +62,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Masami Hiramatsu <mhiramat@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 16, 2024 at 02:35:48PM +0530, Anshuman Khandual wrote:
+Hi,
+
+On Tue, 16 Jul 2024 12:36:11 +0530
+Hari Bathini <hbathini@linux.ibm.com> wrote:
+
 > 
 > 
-> On 5/3/24 18:31, Joey Gouly wrote:
-> > Modify arch_calc_vm_prot_bits() and vm_get_page_prot() such that the pkey
-> > value is set in the vm_flags and then into the pgprot value.
+> On 14/07/24 2:04 pm, Naveen N Rao wrote:
+> > Hari Bathini has been updating and maintaining the powerpc BPF JIT since
+> > a while now. Christophe Leroy has been doing the same for 32-bit
+> > powerpc. Add them as maintainers for the powerpc BPF JIT.
 > > 
-> > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Will Deacon <will@kernel.org>
+> > I am no longer actively looking into the powerpc BPF JIT. Change my role
+> > to that of a reviewer so that I can help with the odd query.
+> > 
+> > Signed-off-by: Naveen N Rao <naveen@kernel.org>
+> 
+> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+But this should go through powerpc tree or bpf tree.
+
+Thank you,
+
+> 
 > > ---
-> >  arch/arm64/include/asm/mman.h | 8 +++++++-
-> >  arch/arm64/mm/mmap.c          | 9 +++++++++
-> >  2 files changed, 16 insertions(+), 1 deletion(-)
+> >   MAINTAINERS | 4 +++-
+> >   1 file changed, 3 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/arch/arm64/include/asm/mman.h b/arch/arm64/include/asm/mman.h
-> > index 5966ee4a6154..ecb2d18dc4d7 100644
-> > --- a/arch/arm64/include/asm/mman.h
-> > +++ b/arch/arm64/include/asm/mman.h
-> > @@ -7,7 +7,7 @@
-> >  #include <uapi/asm/mman.h>
-> >  
-> >  static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-> > -	unsigned long pkey __always_unused)
-> > +	unsigned long pkey)
-> >  {
-> >  	unsigned long ret = 0;
-> >  
-> > @@ -17,6 +17,12 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-> >  	if (system_supports_mte() && (prot & PROT_MTE))
-> >  		ret |= VM_MTE;
-> >  
-> > +#if defined(CONFIG_ARCH_HAS_PKEYS)
-> > +	ret |= pkey & 0x1 ? VM_PKEY_BIT0 : 0;
-> > +	ret |= pkey & 0x2 ? VM_PKEY_BIT1 : 0;
-> > +	ret |= pkey & 0x4 ? VM_PKEY_BIT2 : 0;
-> 
-> 0x1, 0x2, 0x4 here are standard bit positions for their corresponding
-> VM_KEY_XXX based protection values ? Although this is similar to what
-> x86 is doing currently, hence just trying to understand if these bit
-> positions here are related to the user visible ABI, which should be
-> standardized ?
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 05f14b67cd74..c7a931ee7a2e 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -3878,8 +3878,10 @@ S:	Odd Fixes
+> >   F:	drivers/net/ethernet/netronome/nfp/bpf/
+> >   
+> >   BPF JIT for POWERPC (32-BIT AND 64-BIT)
+> > -M:	Naveen N Rao <naveen@kernel.org>
+> >   M:	Michael Ellerman <mpe@ellerman.id.au>
+> > +M:	Hari Bathini <hbathini@linux.ibm.com>
+> > +M:	Christophe Leroy <christophe.leroy@csgroup.eu>
+> > +R:	Naveen N Rao <naveen@kernel.org>
+> >   L:	bpf@vger.kernel.org
+> >   S:	Supported
+> >   F:	arch/powerpc/net/
 
-The bit positions of VM_PKEY_BIT* aren't user visible. This is converting the
-value of the `pkey` that was passed to the mprotect, into the internal flags.
 
-I might replace those hex values with BIT(0), BIT(1), BIT(2), might be clearer.
-
-> 
-> Agree with previous comments about the need for system_supports_poe()
-> based additional check for the above code block.
-> 
-> > +#endif
-> > +
-> >  	return ret;
-> >  }
-> >  #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
-> > diff --git a/arch/arm64/mm/mmap.c b/arch/arm64/mm/mmap.c
-> > index 642bdf908b22..86eda6bc7893 100644
-> > --- a/arch/arm64/mm/mmap.c
-> > +++ b/arch/arm64/mm/mmap.c
-> > @@ -102,6 +102,15 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
-> >  	if (vm_flags & VM_MTE)
-> >  		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
-> >  
-> > +#ifdef CONFIG_ARCH_HAS_PKEYS
-> > +	if (vm_flags & VM_PKEY_BIT0)
-> > +		prot |= PTE_PO_IDX_0;
-> > +	if (vm_flags & VM_PKEY_BIT1)
-> > +		prot |= PTE_PO_IDX_1;
-> > +	if (vm_flags & VM_PKEY_BIT2)
-> > +		prot |= PTE_PO_IDX_2;
-> > +#endif
-> > +
-> >  	return __pgprot(prot);
-> >  }
-> >  EXPORT_SYMBOL(vm_get_page_prot);
-> 
-
-Thanks,
-Joey
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
