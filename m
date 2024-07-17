@@ -1,92 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6F1933EA3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 16:35:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F91933EA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 16:36:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F5ryX/Ff;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XckOrP3r;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPJQF5vPVz3cWc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 00:35:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPJR86kJ0z30Vl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 00:36:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F5ryX/Ff;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XckOrP3r;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPJPY1dBKz2y8f
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 00:35:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPJQ41BxPz3cmC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 00:35:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721226909;
+	s=mimecast20190719; t=1721226937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bQ+fqkZTCVbwQr6DwGYo0tiSadNAEaaTmdSJdfMrkK4=;
-	b=F5ryX/FfzPO93vBbawShVyRcQ/tEIN/Zfdbd8yhL8LduLJkKvs3l5lcVeNKryXdU6ZtXW6
-	SJr3sKu+nomOncjeLV0VsfdUCfN+bvSNxdvnh8MgKmrzYOwxwPJHARGEHRgOH3u3xcgCq1
-	pEdzHIepF9nUWaH96EP2WjZdMIxvV0E=
+	bh=N1ZA4THI/NaMS6hGpfXHfX7B4XiRlWC0xjiP6EIcxcw=;
+	b=RVQsncTNteAyYnzZuO93RUi6bg2eoYSzx3pfkuea0hTL7Kb5t8fUlvP3nMEsGxj3wkypod
+	FwkO1yPK8EJhHLPcKMRwp9qPFNvsS6rz8V8JmZJyI/xjyN26xRmKDeU+VMRBBgTK33B+kj
+	nVv2QCD+i/7RmebQ6Igb0Vfznx7BdY8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721226910;
+	s=mimecast20190719; t=1721226937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bQ+fqkZTCVbwQr6DwGYo0tiSadNAEaaTmdSJdfMrkK4=;
-	b=XckOrP3r0ZoqjB5ImUMK5DB/Va78uZp+Ajri1O6PgHcCbflP2wzd3e/3kGSAmhf2s9Ohi+
-	+Yk8S/A/AUd+hwjhj1/U0CRGaMlnkvBY+slV9g7gNTI1HdsFVO87bfHIAxLIqWhgv6wkMR
-	sFCkpSjbGq6zHP2QYUypKj3sNhXJi4E=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=N1ZA4THI/NaMS6hGpfXHfX7B4XiRlWC0xjiP6EIcxcw=;
+	b=RVQsncTNteAyYnzZuO93RUi6bg2eoYSzx3pfkuea0hTL7Kb5t8fUlvP3nMEsGxj3wkypod
+	FwkO1yPK8EJhHLPcKMRwp9qPFNvsS6rz8V8JmZJyI/xjyN26xRmKDeU+VMRBBgTK33B+kj
+	nVv2QCD+i/7RmebQ6Igb0Vfznx7BdY8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-475-DCd2HE0nO4az3PdkOc68AQ-1; Wed, 17 Jul 2024 10:35:06 -0400
-X-MC-Unique: DCd2HE0nO4az3PdkOc68AQ-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2ee92048377so77335991fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 07:35:06 -0700 (PDT)
+ us-mta-695-qgx69EdMOAyMak69Th5BHA-1; Wed, 17 Jul 2024 10:35:35 -0400
+X-MC-Unique: qgx69EdMOAyMak69Th5BHA-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3678fd1edf8so419502f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 07:35:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721226905; x=1721831705;
+        d=1e100.net; s=20230601; t=1721226934; x=1721831734;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=bQ+fqkZTCVbwQr6DwGYo0tiSadNAEaaTmdSJdfMrkK4=;
-        b=HSMAjDTS82KXIF5aqp1lqZirhlpW5j8Iw5z4wg6h/F82n80qVUy4DenXC4TebgsoGD
-         08zNYHoCkDqgEBngcB7JM6Nlg0EcDbhadE5SRHro2EBG5KCNv6Viu7Q3D4zBv1gjC7K0
-         YqXf9aAJzuQSrm25Akgo2vOBfpRJGfzmlnjoMOVCKsYVE+u1eX6wQJNQpY/xw5TJOyFX
-         ilWEGvxFuz6WptL91FYOenZ+7chll+CwHzDZo0xHQ1LOR8TL94XBY9tHfpSHDujWHrbE
-         C6fhaI6SR/aBdH3tkYURrWIYC3s3ETWHcuHLvrThIbVw/GPxTCcCFqYaeVB19vNnrmrY
-         ypew==
-X-Forwarded-Encrypted: i=1; AJvYcCWujJ84WrhmuFo0X9QO+YkrFXvdsURAi7gsnxYlUGKiCld/nlk3Zu7n2Z8pJegUjxRvU92j1GCivzCz1zzEf8LDztvpOC/rFuH1rBGByA==
-X-Gm-Message-State: AOJu0YxJW5slJya/3uHt2Q1N0rzIa/EwLQmDc/i58katdymMIFnVXi5+
-	Rt2ZOiW/Hmh6b+7PwQdFgUuCnB1xBvXwl9EzQF2iBqgh3vcQxOtmDgKJCSYI3BGZIK4h1Oiht5X
-	bbCRBBScSNN55xuDALnn9CcWB5Ree+u0bDupXWuBIsNS/nhxyQFK7Reb76xH5+gY=
-X-Received: by 2002:a05:6512:1316:b0:52e:a60e:3a04 with SMTP id 2adb3069b0e04-52ee542a129mr1866209e87.59.1721226905241;
-        Wed, 17 Jul 2024 07:35:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH04Gq57875HpWPakTIyYyIvXlTOyNbE9pUtdgazlRW5m2Y5upStMZ+SEMfPLUpoxgxOiDOHQ==
-X-Received: by 2002:a05:6512:1316:b0:52e:a60e:3a04 with SMTP id 2adb3069b0e04-52ee542a129mr1866156e87.59.1721226904762;
-        Wed, 17 Jul 2024 07:35:04 -0700 (PDT)
+        bh=N1ZA4THI/NaMS6hGpfXHfX7B4XiRlWC0xjiP6EIcxcw=;
+        b=ZNMAviVWNXTudRFs0sFI6OIPNAMCMBTKb5tl6nbEZg3bI0PQ26WfByWw+d0exNdYh0
+         br/wDxbHmBGr1ZCWH7wvJrYMzBNaWyd7kOp6XPryCxtEcO2nAzgkUdgY0i1dbGrmURwq
+         +vyUfZjeCl+/j0HKYaX9nsndLxVDiKPJj09/jCEMlN3ZptIdB13uo8JAKhwHJvJGAkcj
+         zBfYAjZidJ6b8YAHaMxqCJ4YWwQ5jn7hdAVy6HrC6Zgudz+AE/UPQ10UOJ0B1/h+qpwh
+         zcieZClzJ3EiGfQV+A7i6IFZu12zzuskQvj7sC108hhQR1tUdRtaU3NAhHV87uQiIAmP
+         5LHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbbrkLf92evnhw1zTH/BPKdysKCOKnNzaYDXnvaPdRbm0TdDwmPb07tVSdKWpKAcOVrD5voBWD9gz+QnrF9VgF/ySVhYwQliwVoGCPcg==
+X-Gm-Message-State: AOJu0YwRvHR3lk2Y50/wz3wDlUyzUpkqoP7jHyS7S76v8+rmBASbThiM
+	/mNP0jslAzXS3rylFFBxmPz9xXHoxIoYSB5PodTZhzy+trqagMfIP6JfSPX/GKG6vKGeS8umnYr
+	1EyvgKT3Bv6OHcYYappBFmqJs+thlvuoW1ztRsS4o/BgyJhEBHJ2UD+6XJgJplRA=
+X-Received: by 2002:a05:600c:5121:b0:426:618a:a092 with SMTP id 5b1f17b1804b1-427bb8e85c4mr39358775e9.13.1721226933819;
+        Wed, 17 Jul 2024 07:35:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEX70FS4S+9yQpWhIxbutDmeW8IdP8r1sizijP5dFKFOs14MIR+fctf34DTHwiKpauxrYwt+w==
+X-Received: by 2002:a05:600c:5121:b0:426:618a:a092 with SMTP id 5b1f17b1804b1-427bb8e85c4mr39358625e9.13.1721226933478;
+        Wed, 17 Jul 2024 07:35:33 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c714:c00:b08b:a871:ce99:dfde? (p200300cbc7140c00b08ba871ce99dfde.dip0.t-ipconnect.de. [2003:cb:c714:c00:b08b:a871:ce99:dfde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427c779847asm301165e9.8.2024.07.17.07.35.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427c77a8078sm244165e9.18.2024.07.17.07.35.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jul 2024 07:35:04 -0700 (PDT)
-Message-ID: <11c4ffb9-ea48-44d0-8a58-2c705c7176de@redhat.com>
-Date: Wed, 17 Jul 2024 16:35:02 +0200
+        Wed, 17 Jul 2024 07:35:33 -0700 (PDT)
+Message-ID: <bceb7745-dfbc-446c-9fc0-38aa8ae4cb6a@redhat.com>
+Date: Wed, 17 Jul 2024 16:35:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/17] arch, mm: move definition of node_data to generic
- code
+Subject: Re: [PATCH 01/17] mm: move kernel/numa.c to mm/
 To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
 References: <20240716111346.3676969-1-rppt@kernel.org>
- <20240716111346.3676969-5-rppt@kernel.org>
+ <20240716111346.3676969-2-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -133,7 +132,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240716111346.3676969-5-rppt@kernel.org>
+In-Reply-To: <20240716111346.3676969-2-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -157,62 +156,10 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 16.07.24 13:13, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Every architecture that supports NUMA defines node_data in the same way:
-> 
-> 	struct pglist_data *node_data[MAX_NUMNODES];
-> 
-> No reason to keep multiple copies of this definition and its forward
-> declarations, especially when such forward declaration is the only thing
-> in include/asm/mmzone.h for many architectures.
-> 
-> Add definition and declaration of node_data to generic code and drop
-> architecture-specific versions.
+> The stub functions in kernel/numa.c belong to mm/ rather than to kernel/
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->   arch/arm64/include/asm/Kbuild                  |  1 +
->   arch/arm64/include/asm/mmzone.h                | 13 -------------
->   arch/arm64/include/asm/topology.h              |  1 +
->   arch/loongarch/include/asm/Kbuild              |  1 +
->   arch/loongarch/include/asm/mmzone.h            | 16 ----------------
->   arch/loongarch/include/asm/topology.h          |  1 +
->   arch/loongarch/kernel/numa.c                   |  3 ---
->   arch/mips/include/asm/mach-ip27/mmzone.h       |  4 ----
->   arch/mips/include/asm/mach-loongson64/mmzone.h |  4 ----
->   arch/mips/loongson64/numa.c                    |  2 --
->   arch/mips/sgi-ip27/ip27-memory.c               |  3 ---
->   arch/powerpc/include/asm/mmzone.h              |  6 ------
->   arch/powerpc/mm/numa.c                         |  2 --
->   arch/riscv/include/asm/Kbuild                  |  1 +
->   arch/riscv/include/asm/mmzone.h                | 13 -------------
->   arch/riscv/include/asm/topology.h              |  4 ++++
->   arch/s390/include/asm/Kbuild                   |  1 +
->   arch/s390/include/asm/mmzone.h                 | 17 -----------------
->   arch/s390/kernel/numa.c                        |  3 ---
->   arch/sh/include/asm/mmzone.h                   |  3 ---
->   arch/sh/mm/numa.c                              |  3 ---
->   arch/sparc/include/asm/mmzone.h                |  4 ----
->   arch/sparc/mm/init_64.c                        |  2 --
->   arch/x86/include/asm/Kbuild                    |  1 +
->   arch/x86/include/asm/mmzone.h                  |  6 ------
->   arch/x86/include/asm/mmzone_32.h               | 17 -----------------
->   arch/x86/include/asm/mmzone_64.h               | 18 ------------------
->   arch/x86/mm/numa.c                             |  3 ---
->   drivers/base/arch_numa.c                       |  2 --
->   include/asm-generic/mmzone.h                   |  5 +++++
->   include/linux/numa.h                           |  3 +++
->   mm/numa.c                                      |  3 +++
->   32 files changed, 22 insertions(+), 144 deletions(-)
->   delete mode 100644 arch/arm64/include/asm/mmzone.h
->   delete mode 100644 arch/loongarch/include/asm/mmzone.h
->   delete mode 100644 arch/riscv/include/asm/mmzone.h
->   delete mode 100644 arch/s390/include/asm/mmzone.h
->   delete mode 100644 arch/x86/include/asm/mmzone.h
->   delete mode 100644 arch/x86/include/asm/mmzone_32.h
->   delete mode 100644 arch/x86/include/asm/mmzone_64.h
->   create mode 100644 include/asm-generic/mmzone.h
-
-Nice!
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
