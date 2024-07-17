@@ -1,72 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF899344D5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 00:26:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D92B9344FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 01:06:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=OhFxAIc6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=FJF7XIGG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPVsL6GS5z3cQX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 08:26:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPWln25Ytz3ck9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 09:06:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=OhFxAIc6;
+	dkim=pass (2048-bit key; unprotected) header.d=iogearbox.net header.i=@iogearbox.net header.a=rsa-sha256 header.s=default2302 header.b=FJF7XIGG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=nunodasneves@linux.microsoft.com; receiver=lists.ozlabs.org)
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPPNW46xMz3cBK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 04:19:39 +1000 (AEST)
-Received: from [10.0.0.114] (c-67-182-156-199.hsd1.wa.comcast.net [67.182.156.199])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 8C91C20B7165;
-	Wed, 17 Jul 2024 11:19:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8C91C20B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1721240347;
-	bh=tJdPiTzkzL7kgsepa1RSwY8pS6OHdOQ3F2zaVjV9kCg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=OhFxAIc677f8IqoXw8fkc7DEx9Q+cXUJi3G4rOZDYBneRlzPDrjR/CFTVzqwIbbm0
-	 HFEb5lGZUS8QYZIRkCfOC+BMbijncDDiglaGQAisAM2JNl8ST6zjFRhrGXClE1Dh67
-	 CFadODeFv2QGdIzToPUffWMbbhbsJOjiIRQfib3I=
-Message-ID: <c13f74fc-1c18-480e-84d4-55f11bcb1e98@linux.microsoft.com>
-Date: Wed, 17 Jul 2024 11:19:03 -0700
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62; helo=www62.your-server.de; envelope-from=daniel@iogearbox.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1645 seconds by postgrey-1.37 at boromir; Thu, 18 Jul 2024 09:06:07 AEST
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPWl30vX1z3by2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 09:06:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=z9pdZ21hvYIwVRiPXazOclxmW+YuoQrndU0f/vyzFq4=; b=FJF7XIGGlyUGv8xIOQKc/gmeey
+	WIe1tZwybuYe8Sh3hkXGe9gRuNkETTLVzccLAh8uiikbzTQG3Lpx8IgA9UYyyh0DHF0B749paMN3X
+	GzkQRCd4QOK0SyP8nxt3j210BHMRIUj1tm02Q5rUG74jkeMVOduak9uyy6xKI+QTGeGM3Ua7MQ+LN
+	esAAjIbbIp0AIcGumfIEojZUkpZm8XfK9JzvifnFCIEfmtfiMkP2Elh4L8RpxfRlsqqmRBOpNGvI+
+	cIifep9TZC0QTfVs1OUlyRrCBiq2ukbjCqqshk0OBaXPmTuhYgsnBasEU4/rdV/9K/qJMAkD4UIGH
+	3iUaRnWQ==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1sUDHx-000L1Q-BE; Thu, 18 Jul 2024 00:38:21 +0200
+Received: from [178.197.248.43] (helo=linux.home)
+	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1sUDHw-000Bnj-2K;
+	Thu, 18 Jul 2024 00:38:20 +0200
+Subject: Re: [PATCH 1/2] MAINTAINERS: Update email address of Naveen
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <fb6ef126771c70538067709af69d960da3560ce7.1720944897.git.naveen@kernel.org>
+ <20240716190222.f3278a2ef0c6a35bd51cfd63@kernel.org>
+ <87sew8wtxw.fsf@mail.lhotse>
+ <20240718064331.834e1359f9c3f285f2dd7eb5@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <6f979810-4992-13ba-c154-a4b5f838844d@iogearbox.net>
+Date: Thu, 18 Jul 2024 00:38:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] printk: Add a short description string to kmsg_dump()
-To: Jocelyn Falempe <jfalempe@redhat.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Petr Mladek
- <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- John Ogness <john.ogness@linutronix.de>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jani Nikula <jani.nikula@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Uros Bizjak <ubizjak@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org
-References: <20240702122639.248110-1-jfalempe@redhat.com>
+In-Reply-To: <20240718064331.834e1359f9c3f285f2dd7eb5@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-In-Reply-To: <20240702122639.248110-1-jfalempe@redhat.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 18 Jul 2024 08:25:17 +1000
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27339/Wed Jul 17 10:36:14 2024)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,38 +76,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Alexei Starovoitov <ast@kernel.org>, Naveen N Rao <naveen@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/2/2024 5:26 AM, Jocelyn Falempe wrote:
-> kmsg_dump doesn't forward the panic reason string to the kmsg_dumper
-> callback.
-> This patch adds a new struct kmsg_dump_detail, that will hold the
-> reason and description, and pass it to the dump() callback.
+On 7/17/24 11:43 PM, Masami Hiramatsu (Google) wrote:
+> On Wed, 17 Jul 2024 13:58:35 +1000
+> Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> Masami Hiramatsu (Google) <mhiramat@kernel.org> writes:
+>>> On Sun, 14 Jul 2024 14:04:23 +0530
+>>> Naveen N Rao <naveen@kernel.org> wrote:
+>>>
+>>>> I have switched to using my @kernel.org id for my contributions. Update
+>>>> MAINTAINERS and mailmap to reflect the same.
+>>>
+>>> Looks good to me.
+>>>
+>>> Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+>>>
+>>> Would powerpc maintainer pick this?
+>>
+>> Yeah I can take both.
 > 
-> To avoid updating all kmsg_dump() call, it adds a kmsg_dump_desc()
-> function and a macro for backward compatibility.
-> 
-> I've written this for drm_panic, but it can be useful for other
-> kmsg_dumper.
-> It allows to see the panic reason, like "sysrq triggered crash"
-> or "VFS: Unable to mount root fs on xxxx" on the drm panic screen.
-> 
-> v2:
->  * Use a struct kmsg_dump_detail to hold the reason and description
->    pointer, for more flexibility if we want to add other parameters.
->    (Kees Cook)
->  * Fix powerpc/nvram_64 build, as I didn't update the forward
->    declaration of oops_to_nvram()
-> 
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-> ---
->  arch/powerpc/kernel/nvram_64.c             |  8 ++++----
->  arch/powerpc/platforms/powernv/opal-kmsg.c |  4 ++--
->  arch/um/kernel/kmsg_dump.c                 |  2 +-
->  drivers/gpu/drm/drm_panic.c                |  4 ++--
->  drivers/hv/hv_common.c                     |  4 ++--
+> Thank you for pick them up!
 
-Acked-by: Nuno Das Neves <nunodasneves@linux.microsoft.com> (hyperv)
+Looks like patchbot did not send a reply, but I already took them
+to bpf tree.
 
-LGTM
+Thanks,
+Daniel
