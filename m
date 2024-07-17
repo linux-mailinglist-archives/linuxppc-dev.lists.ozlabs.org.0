@@ -2,98 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C0C933CE2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 14:15:05 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=D+BKKQ0q;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=meesny header.b=Fi9XPKfP;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id CB245933D80
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 15:17:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPFHq4q9jz30Vy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 22:15:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPGh85pCyz3fS3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 23:17:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=lahtoruutu header.b=D+BKKQ0q;
-	dkim=pass (1024-bit key; secure) header.d=iki.fi header.i=@iki.fi header.a=rsa-sha256 header.s=meesny header.b=Fi9XPKfP;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iki.fi (client-ip=2a0b:5c81:1c1::37; helo=lahtoruutu.iki.fi; envelope-from=jarkko.sakkinen@iki.fi; receiver=lists.ozlabs.org)
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Wed, 17 Jul 2024 23:17:24 AEST
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPFH50chnz30Vv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 22:14:25 +1000 (AEST)
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4WPFGx5YdVz49Pv5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 15:14:17 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1721218457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zV30Oaz/+3O+8LGsjPpfGA2IrdtTFpds3os2OOfj6vc=;
-	b=D+BKKQ0q3hC7G7es6UlHKheiJib4hJClgnaqsHRkjI98ffxTitulWxFRn8RzePPG/IZv3J
-	j+9j4dahwGFG3+lb5c0YLJRCtkpoBJseOA/DK7IEqttIAka7XmgLS8zTdrOHPjetx6RtNa
-	MVjaQHJXmx7Iuzf3pog2do9K5FlF/MAphwp/ZF71hEp7c/AoOk6cIHJ4anYtlaBnw9TDwu
-	m3pIm1mspsFa3w0CfckeTW/Uqz/wUhUadgdydd1Kiwo1bCVfZRylGkc5fae18Vw2W49HXd
-	p4Fr7uifBD4xvyXGUd5iON9J4xnzmbZmdq2eLjIWyfwQh83DSjcellfV2UzEdQ==
-Received: from localhost (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sakkinen)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4WPFGb5m0fzyVP;
-	Wed, 17 Jul 2024 15:13:59 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1721218442;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zV30Oaz/+3O+8LGsjPpfGA2IrdtTFpds3os2OOfj6vc=;
-	b=Fi9XPKfPL4p4WU/grjUK4XuEzVEFnflut40GCyP6GwxplF7ct785Gj6oisTwuOVkXnk2N3
-	KH3nXJg77jqkxXFXkhncF7hg1UxYbpkYMNo0Su8cLKUPdoyZoJ2L9qDv+c+BKe1mxmlpYt
-	en3DS2sy0B0faLjsQAR/DDWDjJB6qKM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1721218442;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zV30Oaz/+3O+8LGsjPpfGA2IrdtTFpds3os2OOfj6vc=;
-	b=b5YcQ/CuO5wMPdoAOpjYz/Im8nmOOdz8X9E6x5YILmcSQ6Q+l84xhjgY0IBzvuSHbBcs+i
-	P0+vjKkZkxNzHY6AOecNUH/mFRO6DI5KxPbGG2ng6FhfU8VkrO6B7ReqWTyAHJ18gh0FHC
-	Ay00yk9vhgRkuxUqZe12wjR9YgxSNok=
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1721218442; a=rsa-sha256; cv=none;
-	b=ZfQAfm67UUBzVrmCJEFiaDqCc+UXVnwHsfWBoSxOrB6EF2ApgusHDtuM7258qKdp8RmgW0
-	STAWcQ39EJQnHrOYXVTFvSBj3zMYQJJnVyccMOopk8PgD5iWr2EZv6oXKAokin5w3lYqjn
-	poXqBnxC4XY3NxKSRLs/6dNftapZp0U=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPGgm5ZtWz2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 23:17:24 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-286-suj3PZiePpKJoA_vVWHUeA-1; Wed, 17 Jul 2024 14:16:09 +0100
+X-MC-Unique: suj3PZiePpKJoA_vVWHUeA-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 17 Jul
+ 2024 14:15:29 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Wed, 17 Jul 2024 14:15:29 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Stewart Hildebrand' <stewart.hildebrand@amd.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Zimmermann <tzimmermann@suse.de>, "Arnd
+ Bergmann" <arnd@arndb.de>, Sam Ravnborg <sam@ravnborg.org>, Yongji Xie
+	<elohimes@gmail.com>, =?iso-8859-1?Q?Ilpo_J=E4rvinen?=
+	<ilpo.jarvinen@linux.intel.com>
+Subject: RE: [PATCH v2 0/8] PCI: Align small (<4k) BARs
+Thread-Topic: [PATCH v2 0/8] PCI: Align small (<4k) BARs
+Thread-Index: AQHa17cKP+9xH7dU/kmzREQ0omlV2bH64QzQ
+Date: Wed, 17 Jul 2024 13:15:29 +0000
+Message-ID: <0da056616de54589bc1d4b95dcdf5d3d@AcuMS.aculab.com>
+References: <20240716193246.1909697-1-stewart.hildebrand@amd.com>
+In-Reply-To: <20240716193246.1909697-1-stewart.hildebrand@amd.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Jul 2024 15:13:59 +0300
-Message-Id: <D2RT0J8KXY1H.3MEV7KGQXTWHW@iki.fi>
-Subject: Re: [PATCH] tpm: atmel: Drop PPC64 specific MMIO setup
-From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
-To: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>, "Rob Herring (Arm)"
- <robh@kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>, "Jarkko Sakkinen"
- <jarkko@kernel.org>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Michael Ellerman"
- <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>, "Christophe
- Leroy" <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
- <naveen.n.rao@linux.ibm.com>
-X-Mailer: aerc 0.17.0
-References: <20240702161052.3563599-1-robh@kernel.org>
- <D2RSWMPFF8KK.X5HZZMHANQMO@iki.fi>
-In-Reply-To: <D2RSWMPFF8KK.X5HZZMHANQMO@iki.fi>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,320 +68,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Jul 17, 2024 at 3:08 PM EEST, Jarkko Sakkinen wrote:
-> On Tue Jul 2, 2024 at 7:10 PM EEST, Rob Herring (Arm) wrote:
-> > The PPC64 specific MMIO setup open codes DT address functions rather
-> > than using standard address parsing functions. The open-coded version
-> > fails to handle any address translation and is not endian safe.
-> >
-> > I haven't found any evidence of what platform used this. The only thing
-> > that turned up was a PPC405 platform, but that is 32-bit and PPC405
-> > support is being removed as well. CONFIG_TCG_ATMEL is not enabled for
-> > any powerpc config and never was. The support was added in 2005 and
-> > hasn't been touched since.
-> >
-> > Rather than try to modernize and fix this code, just remove it.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > ---
-> >  drivers/char/tpm/Kconfig     |   2 +-
-> >  drivers/char/tpm/tpm_atmel.c |  64 +++++++++++++++-
-> >  drivers/char/tpm/tpm_atmel.h | 140 -----------------------------------
-> >  3 files changed, 62 insertions(+), 144 deletions(-)
-> >  delete mode 100644 drivers/char/tpm/tpm_atmel.h
-> >
-> > diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-> > index e63a6a17793c..9b655e9fc7ab 100644
-> > --- a/drivers/char/tpm/Kconfig
-> > +++ b/drivers/char/tpm/Kconfig
-> > @@ -162,7 +162,7 @@ config TCG_NSC
-> > =20
-> >  config TCG_ATMEL
-> >  	tristate "Atmel TPM Interface"
-> > -	depends on PPC64 || HAS_IOPORT_MAP
-> > +	depends on HAS_IOPORT_MAP
-> >  	depends on HAS_IOPORT
-> >  	help
-> >  	  If you have a TPM security chip from Atmel say Yes and it=20
-> > diff --git a/drivers/char/tpm/tpm_atmel.c b/drivers/char/tpm/tpm_atmel.=
-c
-> > index 9fb2defa9dc4..622c4abe8cb3 100644
-> > --- a/drivers/char/tpm/tpm_atmel.c
-> > +++ b/drivers/char/tpm/tpm_atmel.c
-> > @@ -15,7 +15,67 @@
-> >   */
-> > =20
-> >  #include "tpm.h"
-> > -#include "tpm_atmel.h"
-> > +
-> > +struct tpm_atmel_priv {
-> > +	int region_size;
-> > +	int have_region;
-> > +	unsigned long base;
-> > +	void __iomem *iobase;
-> > +};
-> > +
-> > +#define atmel_getb(chip, offset) inb(atmel_get_priv(chip)->base + offs=
-et)
-> > +#define atmel_putb(val, chip, offset) \
-> > +	outb(val, atmel_get_priv(chip)->base + offset)
-> > +#define atmel_request_region request_region
-> > +#define atmel_release_region release_region
-> > +/* Atmel definitions */
-> > +enum tpm_atmel_addr {
-> > +	TPM_ATMEL_BASE_ADDR_LO =3D 0x08,
-> > +	TPM_ATMEL_BASE_ADDR_HI =3D 0x09
-> > +};
-> > +
-> > +static inline int tpm_read_index(int base, int index)
-> > +{
-> > +	outb(index, base);
-> > +	return inb(base+1) & 0xFF;
-> > +}
-> > +
-> > +/* Verify this is a 1.1 Atmel TPM */
-> > +static int atmel_verify_tpm11(void)
-> > +{
-> > +
-> > +	/* verify that it is an Atmel part */
-> > +	if (tpm_read_index(TPM_ADDR, 4) !=3D 'A' ||
-> > +	    tpm_read_index(TPM_ADDR, 5) !=3D 'T' ||
-> > +	    tpm_read_index(TPM_ADDR, 6) !=3D 'M' ||
-> > +	    tpm_read_index(TPM_ADDR, 7) !=3D 'L')
-> > +		return 1;
-> > +
-> > +	/* query chip for its version number */
-> > +	if (tpm_read_index(TPM_ADDR, 0x00) !=3D 1 ||
-> > +	    tpm_read_index(TPM_ADDR, 0x01) !=3D 1)
-> > +		return 1;
-> > +
-> > +	/* This is an atmel supported part */
-> > +	return 0;
-> > +}
-> > +
-> > +/* Determine where to talk to device */
-> > +static void __iomem * atmel_get_base_addr(unsigned long *base, int *re=
-gion_size)
-> > +{
-> > +	int lo, hi;
-> > +
-> > +	if (atmel_verify_tpm11() !=3D 0)
-> > +		return NULL;
-> > +
-> > +	lo =3D tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_LO);
-> > +	hi =3D tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_HI);
-> > +
-> > +	*base =3D (hi << 8) | lo;
-> > +	*region_size =3D 2;
-> > +
-> > +	return ioport_map(*base, *region_size);
-> > +}
-> > =20
-> >  /* write status bits */
-> >  enum tpm_atmel_write_status {
-> > @@ -142,7 +202,6 @@ static void atml_plat_remove(void)
-> >  	tpm_chip_unregister(chip);
-> >  	if (priv->have_region)
-> >  		atmel_release_region(priv->base, priv->region_size);
-> > -	atmel_put_base_addr(priv->iobase);
-> >  	platform_device_unregister(pdev);
-> >  }
-> > =20
-> > @@ -211,7 +270,6 @@ static int __init init_atmel(void)
-> >  err_unreg_dev:
-> >  	platform_device_unregister(pdev);
-> >  err_rel_reg:
-> > -	atmel_put_base_addr(iobase);
-> >  	if (have_region)
-> >  		atmel_release_region(base,
-> >  				     region_size);
-> > diff --git a/drivers/char/tpm/tpm_atmel.h b/drivers/char/tpm/tpm_atmel.=
-h
-> > deleted file mode 100644
-> > index 7ac3f69dcf0f..000000000000
-> > --- a/drivers/char/tpm/tpm_atmel.h
-> > +++ /dev/null
-> > @@ -1,140 +0,0 @@
-> > -/* SPDX-License-Identifier: GPL-2.0-only */
-> > -/*
-> > - * Copyright (C) 2005 IBM Corporation
-> > - *
-> > - * Authors:
-> > - * Kylene Hall <kjhall@us.ibm.com>
-> > - *
-> > - * Maintained by: <tpmdd-devel@lists.sourceforge.net>
-> > - *
-> > - * Device driver for TCG/TCPA TPM (trusted platform module).
-> > - * Specifications at www.trustedcomputinggroup.org
-> > - *
-> > - * These difference are required on power because the device must be
-> > - * discovered through the device tree and iomap must be used to get
-> > - * around the need for holes in the io_page_mask.  This does not happe=
-n
-> > - * automatically because the tpm is not a normal pci device and lives
-> > - * under the root node.
-> > - */
-> > -
-> > -struct tpm_atmel_priv {
-> > -	int region_size;
-> > -	int have_region;
-> > -	unsigned long base;
-> > -	void __iomem *iobase;
-> > -};
-> > -
-> > -#ifdef CONFIG_PPC64
-> > -
-> > -#include <linux/of.h>
-> > -
-> > -#define atmel_getb(priv, offset) readb(priv->iobase + offset)
-> > -#define atmel_putb(val, priv, offset) writeb(val, priv->iobase + offse=
-t)
-> > -#define atmel_request_region request_mem_region
-> > -#define atmel_release_region release_mem_region
-> > -
-> > -static inline void atmel_put_base_addr(void __iomem *iobase)
-> > -{
-> > -	iounmap(iobase);
-> > -}
-> > -
-> > -static void __iomem * atmel_get_base_addr(unsigned long *base, int *re=
-gion_size)
-> > -{
-> > -	struct device_node *dn;
-> > -	unsigned long address, size;
-> > -	const unsigned int *reg;
-> > -	int reglen;
-> > -	int naddrc;
-> > -	int nsizec;
-> > -
-> > -	dn =3D of_find_node_by_name(NULL, "tpm");
-> > -
-> > -	if (!dn)
-> > -		return NULL;
-> > -
-> > -	if (!of_device_is_compatible(dn, "AT97SC3201")) {
-> > -		of_node_put(dn);
-> > -		return NULL;
-> > -	}
-> > -
-> > -	reg =3D of_get_property(dn, "reg", &reglen);
-> > -	naddrc =3D of_n_addr_cells(dn);
-> > -	nsizec =3D of_n_size_cells(dn);
-> > -
-> > -	of_node_put(dn);
-> > -
-> > -
-> > -	if (naddrc =3D=3D 2)
-> > -		address =3D ((unsigned long) reg[0] << 32) | reg[1];
-> > -	else
-> > -		address =3D reg[0];
-> > -
-> > -	if (nsizec =3D=3D 2)
-> > -		size =3D
-> > -		    ((unsigned long) reg[naddrc] << 32) | reg[naddrc + 1];
-> > -	else
-> > -		size =3D reg[naddrc];
-> > -
-> > -	*base =3D address;
-> > -	*region_size =3D size;
-> > -	return ioremap(*base, *region_size);
-> > -}
-> > -#else
-> > -#define atmel_getb(chip, offset) inb(atmel_get_priv(chip)->base + offs=
-et)
-> > -#define atmel_putb(val, chip, offset) \
-> > -	outb(val, atmel_get_priv(chip)->base + offset)
-> > -#define atmel_request_region request_region
-> > -#define atmel_release_region release_region
-> > -/* Atmel definitions */
-> > -enum tpm_atmel_addr {
-> > -	TPM_ATMEL_BASE_ADDR_LO =3D 0x08,
-> > -	TPM_ATMEL_BASE_ADDR_HI =3D 0x09
-> > -};
-> > -
-> > -static inline int tpm_read_index(int base, int index)
-> > -{
-> > -	outb(index, base);
-> > -	return inb(base+1) & 0xFF;
-> > -}
-> > -
-> > -/* Verify this is a 1.1 Atmel TPM */
-> > -static int atmel_verify_tpm11(void)
-> > -{
-> > -
-> > -	/* verify that it is an Atmel part */
-> > -	if (tpm_read_index(TPM_ADDR, 4) !=3D 'A' ||
-> > -	    tpm_read_index(TPM_ADDR, 5) !=3D 'T' ||
-> > -	    tpm_read_index(TPM_ADDR, 6) !=3D 'M' ||
-> > -	    tpm_read_index(TPM_ADDR, 7) !=3D 'L')
-> > -		return 1;
-> > -
-> > -	/* query chip for its version number */
-> > -	if (tpm_read_index(TPM_ADDR, 0x00) !=3D 1 ||
-> > -	    tpm_read_index(TPM_ADDR, 0x01) !=3D 1)
-> > -		return 1;
-> > -
-> > -	/* This is an atmel supported part */
-> > -	return 0;
-> > -}
-> > -
-> > -static inline void atmel_put_base_addr(void __iomem *iobase)
-> > -{
-> > -}
-> > -
-> > -/* Determine where to talk to device */
-> > -static void __iomem * atmel_get_base_addr(unsigned long *base, int *re=
-gion_size)
-> > -{
-> > -	int lo, hi;
-> > -
-> > -	if (atmel_verify_tpm11() !=3D 0)
-> > -		return NULL;
-> > -
-> > -	lo =3D tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_LO);
-> > -	hi =3D tpm_read_index(TPM_ADDR, TPM_ATMEL_BASE_ADDR_HI);
-> > -
-> > -	*base =3D (hi << 8) | lo;
-> > -	*region_size =3D 2;
-> > -
-> > -	return ioport_map(*base, *region_size);
-> > -}
-> > -#endif
->
-> Responding from holidays but:
->
-> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->
-> [still away for couple of weeks]
+From: Stewart Hildebrand
+> Sent: 16 July 2024 20:33
+>=20
+> This series sets the default minimum resource alignment to 4k for memory
+> BARs. In preparation, it makes an optimization and addresses some corner
+> cases observed when reallocating BARs. I consider the prepapatory
+> patches to be prerequisites to changing the default BAR alignment.
 
-I got these in with checkpatch.pl --strict:
+Should the BARs be page aligned on systems with large pages?
+At least as an option for hypervisor pass-through and any than can be mmap(=
+)ed
+into userspace.
 
-CHECK: Macro argument 'offset' may be better as '(offset)' to avoid precede=
-nce issues
-#59: FILE: drivers/char/tpm/tpm_atmel.c:26:
-+#define atmel_getb(chip, offset) inb(atmel_get_priv(chip)->base + offset)
+Does any hardware actually have 'silly numbers' of small memory BARs?
 
-CHECK: Macro argument 'offset' may be better as '(offset)' to avoid precede=
-nce issues
-#60: FILE: drivers/char/tpm/tpm_atmel.c:27:
-+#define atmel_putb(val, chip, offset) \
-+	outb(val, atmel_get_priv(chip)->base + offset)
+I have a vague memory of some ethernet controllers having lots of (?)
+virtual devices that might have separate registers than can be mapped
+out to a hypervisor.
+Expanding those to a large page might be problematic - but needed for secur=
+ity.
 
-CHECK: spaces preferred around that '+' (ctx:VxV)
-#73: FILE: drivers/char/tpm/tpm_atmel.c:40:
-+	return inb(base+1) & 0xFF;
- 	              ^
+For more normal hardware just ensuring that two separate targets don't shar=
+e
+a page while allowing (eg) two 1k BAR to reside in the same 64k page would
+give some security.
 
-CHECK: Blank lines aren't necessary after an open brace '{'
-#79: FILE: drivers/char/tpm/tpm_atmel.c:46:
-+{
-+
+Aligning a small MSIX BAR is unlikely to have any effect on the address
+space utilisation (for PCIe) since the bridge will assign a power of two
+sized block - with a big pad (useful for generating pcie errors!)
 
-Can you address them and I'll tag the next version, once I've
-revisited checkpatch. Otherwise, nothing against the code change.
+=09David
 
-BR, Jarkko
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
