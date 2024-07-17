@@ -1,91 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F91933EA9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 16:36:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51F2933EC9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jul 2024 16:43:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KnAhcoV/;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KnAhcoV/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPJR86kJ0z30Vl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 00:36:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPJbD4mVnz3clx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 00:43:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RVQsncTN;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KnAhcoV/;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KnAhcoV/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPJQ41BxPz3cmC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 00:35:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPJZX5S3jz30Tv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 00:42:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721226937;
+	s=mimecast20190719; t=1721227376;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N1ZA4THI/NaMS6hGpfXHfX7B4XiRlWC0xjiP6EIcxcw=;
-	b=RVQsncTNteAyYnzZuO93RUi6bg2eoYSzx3pfkuea0hTL7Kb5t8fUlvP3nMEsGxj3wkypod
-	FwkO1yPK8EJhHLPcKMRwp9qPFNvsS6rz8V8JmZJyI/xjyN26xRmKDeU+VMRBBgTK33B+kj
-	nVv2QCD+i/7RmebQ6Igb0Vfznx7BdY8=
+	bh=M2vL8rRc69gotddfUAFMWYk4nVzDmp9tj4adCdBDziU=;
+	b=KnAhcoV/nrmH/vNi6zw7j1gfWPjlqpxQDxYgyLcQ2bQsH0b0qZC7WKEkMUgy1vGHN3kMYi
+	T0/qOGrbOmwSgz0gQHSPbSFgV2X96gsfcf0KDQyIl4U7PXtJcIJt+7NeEeTxErkPSGgcGs
+	wmUNL9ctheChx1/4+FTQOOV8dTqoDyA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721226937;
+	s=mimecast20190719; t=1721227376;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N1ZA4THI/NaMS6hGpfXHfX7B4XiRlWC0xjiP6EIcxcw=;
-	b=RVQsncTNteAyYnzZuO93RUi6bg2eoYSzx3pfkuea0hTL7Kb5t8fUlvP3nMEsGxj3wkypod
-	FwkO1yPK8EJhHLPcKMRwp9qPFNvsS6rz8V8JmZJyI/xjyN26xRmKDeU+VMRBBgTK33B+kj
-	nVv2QCD+i/7RmebQ6Igb0Vfznx7BdY8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=M2vL8rRc69gotddfUAFMWYk4nVzDmp9tj4adCdBDziU=;
+	b=KnAhcoV/nrmH/vNi6zw7j1gfWPjlqpxQDxYgyLcQ2bQsH0b0qZC7WKEkMUgy1vGHN3kMYi
+	T0/qOGrbOmwSgz0gQHSPbSFgV2X96gsfcf0KDQyIl4U7PXtJcIJt+7NeEeTxErkPSGgcGs
+	wmUNL9ctheChx1/4+FTQOOV8dTqoDyA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-qgx69EdMOAyMak69Th5BHA-1; Wed, 17 Jul 2024 10:35:35 -0400
-X-MC-Unique: qgx69EdMOAyMak69Th5BHA-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3678fd1edf8so419502f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 07:35:34 -0700 (PDT)
+ us-mta-138-V8Js_PjkNUuixLIf73odFA-1; Wed, 17 Jul 2024 10:42:53 -0400
+X-MC-Unique: V8Js_PjkNUuixLIf73odFA-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a77c6ea022fso127096866b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jul 2024 07:42:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721226934; x=1721831734;
+        d=1e100.net; s=20230601; t=1721227372; x=1721832172;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=N1ZA4THI/NaMS6hGpfXHfX7B4XiRlWC0xjiP6EIcxcw=;
-        b=ZNMAviVWNXTudRFs0sFI6OIPNAMCMBTKb5tl6nbEZg3bI0PQ26WfByWw+d0exNdYh0
-         br/wDxbHmBGr1ZCWH7wvJrYMzBNaWyd7kOp6XPryCxtEcO2nAzgkUdgY0i1dbGrmURwq
-         +vyUfZjeCl+/j0HKYaX9nsndLxVDiKPJj09/jCEMlN3ZptIdB13uo8JAKhwHJvJGAkcj
-         zBfYAjZidJ6b8YAHaMxqCJ4YWwQ5jn7hdAVy6HrC6Zgudz+AE/UPQ10UOJ0B1/h+qpwh
-         zcieZClzJ3EiGfQV+A7i6IFZu12zzuskQvj7sC108hhQR1tUdRtaU3NAhHV87uQiIAmP
-         5LHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbbrkLf92evnhw1zTH/BPKdysKCOKnNzaYDXnvaPdRbm0TdDwmPb07tVSdKWpKAcOVrD5voBWD9gz+QnrF9VgF/ySVhYwQliwVoGCPcg==
-X-Gm-Message-State: AOJu0YwRvHR3lk2Y50/wz3wDlUyzUpkqoP7jHyS7S76v8+rmBASbThiM
-	/mNP0jslAzXS3rylFFBxmPz9xXHoxIoYSB5PodTZhzy+trqagMfIP6JfSPX/GKG6vKGeS8umnYr
-	1EyvgKT3Bv6OHcYYappBFmqJs+thlvuoW1ztRsS4o/BgyJhEBHJ2UD+6XJgJplRA=
-X-Received: by 2002:a05:600c:5121:b0:426:618a:a092 with SMTP id 5b1f17b1804b1-427bb8e85c4mr39358775e9.13.1721226933819;
-        Wed, 17 Jul 2024 07:35:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEX70FS4S+9yQpWhIxbutDmeW8IdP8r1sizijP5dFKFOs14MIR+fctf34DTHwiKpauxrYwt+w==
-X-Received: by 2002:a05:600c:5121:b0:426:618a:a092 with SMTP id 5b1f17b1804b1-427bb8e85c4mr39358625e9.13.1721226933478;
-        Wed, 17 Jul 2024 07:35:33 -0700 (PDT)
+        bh=M2vL8rRc69gotddfUAFMWYk4nVzDmp9tj4adCdBDziU=;
+        b=eI+xdJ+0crQaaSr8updpP5Nt2vpzShGvyreRZ/hEFYeoSVOSIrZm0Yby9g1EJqk5Jo
+         cSYSd7YuXMnsedjKAN+LoVNXeQs5buYLutkznMYby3+/nygySrH218FipQDJ3INesQYl
+         kC4tk2YqNq//L9X0m4oMWQh5yDb57F9PEQVCSWvUepgKTk9sUx3EX0Tg6dZqwXAz/1GL
+         4QFwj+Fhg9n8MWscR90ZOQKeSU2w/LU+H5WG18MXxbGtqD47P6QQc2k4c3B2bdVrdNWK
+         ZgN7m7ses29GmRoC3zLpI4XTBm/0DNerWDKot9WqGp7zZ+sxWRtsb+AdrwZUlrhkImx3
+         zcOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwSUUyHQFKh2u13KEAshV/amdnQK1EX9mD5CHmZ7XrGnUusskmDod0JGC0bBLCTvrOZ8IqfBIJDYGpAyvZ3MGWCh8CDAddvCE3BkE+Tw==
+X-Gm-Message-State: AOJu0YxT7aCaE/e7LNIYgvVc05oc8MXP1fBPqdrkuJq3GGoSyWqcBmPG
+	SoRNfqlzYhIl+Y9zkkjoJfAz3P3Uicyu/EbdOqDJhStlV8xz+ly/vi+zL0su6GuHLB0JigUONUx
+	fvi3KmPGIaFvRKhhw7c6Wm64Pdx4CYk5ZVS20b+4B8kUIZIc6XG+iz1qRm+2Dn7s=
+X-Received: by 2002:a17:906:1c0f:b0:a6f:46f1:5434 with SMTP id a640c23a62f3a-a79eda04168mr521686566b.6.1721227372352;
+        Wed, 17 Jul 2024 07:42:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEi6DrDSqxxObcD+4KvqZEIVIf6XCAhrJ0LWIBdtNZjezxwhMU5bcwwGQ0tRJ1krbBOftaEqw==
+X-Received: by 2002:a17:906:1c0f:b0:a6f:46f1:5434 with SMTP id a640c23a62f3a-a79eda04168mr521682366b.6.1721227371866;
+        Wed, 17 Jul 2024 07:42:51 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c714:c00:b08b:a871:ce99:dfde? (p200300cbc7140c00b08ba871ce99dfde.dip0.t-ipconnect.de. [2003:cb:c714:c00:b08b:a871:ce99:dfde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427c77a8078sm244165e9.18.2024.07.17.07.35.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d2018sm453924466b.85.2024.07.17.07.42.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jul 2024 07:35:33 -0700 (PDT)
-Message-ID: <bceb7745-dfbc-446c-9fc0-38aa8ae4cb6a@redhat.com>
-Date: Wed, 17 Jul 2024 16:35:31 +0200
+        Wed, 17 Jul 2024 07:42:51 -0700 (PDT)
+Message-ID: <220da8ed-337a-4b1e-badf-2bff1d36e6c3@redhat.com>
+Date: Wed, 17 Jul 2024 16:42:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/17] mm: move kernel/numa.c to mm/
+Subject: Re: [PATCH 05/17] arch, mm: pull out allocation of NODE_DATA to
+ generic code
 To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
 References: <20240716111346.3676969-1-rppt@kernel.org>
- <20240716111346.3676969-2-rppt@kernel.org>
+ <20240716111346.3676969-6-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -132,7 +133,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240716111346.3676969-2-rppt@kernel.org>
+In-Reply-To: <20240716111346.3676969-6-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -156,12 +157,88 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 16.07.24 13:13, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> The stub functions in kernel/numa.c belong to mm/ rather than to kernel/
+> Architectures that support NUMA duplicate the code that allocates
+> NODE_DATA on the node-local memory with slight variations in reporting
+> of the addresses where the memory was allocated.
+> 
+> Use x86 version as the basis for the generic alloc_node_data() function
+> and call this function in architecture specific numa initialization.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
 
-Acked-by: David Hildenbrand <david@redhat.com>
+[...]
+
+> diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
+> index 9208eaadf690..909f6cec3a26 100644
+> --- a/arch/mips/loongson64/numa.c
+> +++ b/arch/mips/loongson64/numa.c
+> @@ -81,12 +81,8 @@ static void __init init_topology_matrix(void)
+>   
+>   static void __init node_mem_init(unsigned int node)
+>   {
+> -	struct pglist_data *nd;
+>   	unsigned long node_addrspace_offset;
+>   	unsigned long start_pfn, end_pfn;
+> -	unsigned long nd_pa;
+> -	int tnid;
+> -	const size_t nd_size = roundup(sizeof(pg_data_t), SMP_CACHE_BYTES);
+
+One interesting change is that we now always round up to full pages on 
+architectures where we previously rounded up to SMP_CACHE_BYTES.
+
+I assume we don't really expect a significant growth in memory 
+consumption that we care about, especially because most systems with 
+many nodes also have  quite some memory around.
+
+
+> -/* Allocate NODE_DATA for a node on the local memory */
+> -static void __init alloc_node_data(int nid)
+> -{
+> -	const size_t nd_size = roundup(sizeof(pg_data_t), PAGE_SIZE);
+> -	u64 nd_pa;
+> -	void *nd;
+> -	int tnid;
+> -
+> -	/*
+> -	 * Allocate node data.  Try node-local memory and then any node.
+> -	 * Never allocate in DMA zone.
+> -	 */
+> -	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
+> -	if (!nd_pa) {
+> -		pr_err("Cannot find %zu bytes in any node (initial node: %d)\n",
+> -		       nd_size, nid);
+> -		return;
+> -	}
+> -	nd = __va(nd_pa);
+> -
+> -	/* report and initialize */
+> -	printk(KERN_INFO "NODE_DATA(%d) allocated [mem %#010Lx-%#010Lx]\n", nid,
+> -	       nd_pa, nd_pa + nd_size - 1);
+> -	tnid = early_pfn_to_nid(nd_pa >> PAGE_SHIFT);
+> -	if (tnid != nid)
+> -		printk(KERN_INFO "    NODE_DATA(%d) on node %d\n", nid, tnid);
+> -
+> -	node_data[nid] = nd;
+> -	memset(NODE_DATA(nid), 0, sizeof(pg_data_t));
+> -
+> -	node_set_online(nid);
+> -}
+> -
+>   /**
+>    * numa_cleanup_meminfo - Cleanup a numa_meminfo
+>    * @mi: numa_meminfo to clean up
+> @@ -571,6 +538,7 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+>   			continue;
+>   
+>   		alloc_node_data(nid);
+> +		node_set_online(nid);
+>   	}
+
+I can spot that we only remove a single node_set_online() call from x86.
+
+What about all the other architectures? Will there be any change in 
+behavior for them? Or do we simply set the nodes online later once more?
 
 -- 
 Cheers,
