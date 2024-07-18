@@ -2,56 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3262B934983
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 10:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C08B934895
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 09:06:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=OlB6nsD5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kUgbLYcY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPlgG4SqQz3brC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 18:03:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPkPV2VPXz3dL7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 17:06:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=OlB6nsD5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kUgbLYcY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=luca.ceresoli@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay6-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPkBh55DTz3cHP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 16:57:13 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 66B00C0011;
-	Thu, 18 Jul 2024 06:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1721285821;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TgZHkXL2FGs1/bjZPDSboGR72yBe//NfgloPvNTjUQ0=;
-	b=OlB6nsD5RtGZmYjd7bhjEoZx7QMkbbOT8V45YhxxCFz4y2iiCJe+cf2PVPl+VsXD6UUMqk
-	Yc28bGhZQ13OubzP5CW/pjPqqFo91MRM0eVoREVGLvn0MLgNZy6pPxquFKWhNBkv4SbFT2
-	sax9ioW5vC5M5bokQz4XncM9ZdU0GCDemzBwA+l1XJdTnXTEUKHI48dxPqMAjv00+G3aQG
-	rBXI5/ojqb79XSjovNP74Rn6wSf1My85vfzfK9OmlUEoc3d8vGPg+knHhqSD5yHTRQLUcZ
-	BDxiKiWHxBRawYhcLiwX+N2Krj0xmgk4IRTokaqbJaztXMntEG+p6mo1v3ON7A==
-Date: Thu, 18 Jul 2024 08:56:51 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH v2] of: remove internal arguments from
- of_property_for_each_u32()
-Message-ID: <20240718085651.63ddfb20@booty>
-In-Reply-To: <1e36b1ba8af3584128550822a70cb072.sboyd@kernel.org>
-References: <20240717-of_property_for_each_u32-v2-1-4060990f49c9@bootlin.com>
-	<1e36b1ba8af3584128550822a70cb072.sboyd@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPkNp0Zfcz3cSP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 17:06:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 0DBCD619FF;
+	Thu, 18 Jul 2024 07:05:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD529C116B1;
+	Thu, 18 Jul 2024 07:05:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721286357;
+	bh=whHsob4RS5v2GdrWHkkMKcRLrbELb7YOdJDyppVzr6A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kUgbLYcYkFi+yM5DNGWYkc6mZnNnUffrZs2ftic6RoJlQJ7E8d8XWB5uF1VxaloMN
+	 2pI7IBqElMjV0qmk4el5sVZlUVx1UwdD/P/sQY2CWDd738D2psQymoIvRySGsgmXuk
+	 ZUck602iq5YkHci1Vyu9rFtlsvRJpdSEkMm+v+2VIQWc/AzrdgqrSUiCL4vEDXKVee
+	 8A9PZCK5pqB7fQmK9zQfZYL2C8lRMzESmGfyxSOLFBGVMQZpNwRh+NK+wlWHkdZfdM
+	 jaUarx/bIXxsaGX38yt2XwW4s4VTuawsNrk9K8J+JTbrZLoL9aVyqQB8FzZnTP9IQn
+	 +gP4pgv5FiIEw==
+Date: Thu, 18 Jul 2024 10:02:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 05/17] arch, mm: pull out allocation of NODE_DATA to
+ generic code
+Message-ID: <Zpi-HAb7EBxrZBtK@kernel.org>
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-6-rppt@kernel.org>
+ <220da8ed-337a-4b1e-badf-2bff1d36e6c3@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: luca.ceresoli@bootlin.com
-X-Mailman-Approved-At: Thu, 18 Jul 2024 18:03:04 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <220da8ed-337a-4b1e-badf-2bff1d36e6c3@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,33 +62,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-riscv@lists.infradead.org, Alexandre Belloni <alexandre.belloni@bootlin.com>, Lee Jones <lee@kernel.org>, Jacky Bai <ping.bai@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>, Tony Lindgren <tony@atomide.com>, Linus Walleij <linus.walleij@linaro.org>, llvm@lists.linux.dev, Richard Leitner <richard.leitner@linux.dev>, Jaroslav Kysela <perex@perex.cz>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org, patches@opensource.cirrus.com, Uwe =?UTF-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, Fabio Estevam <festevam@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Doug Berger <opendmb@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, Aaro Koskinen <aaro.koskinen@iki.fi>, Emilio =?UTF-8?Q?L=C3=B3pez?= <emilio@elopez.com.ar>, Jiri Slaby <jirislaby@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Daniel Lezcano <daniel.lezcano@linaro.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-clk@vger.kernel.org, linux-samsung-soc@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, Andreas Kemnade <andreas@kemnade.info>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, linux-serial@vger.kernel.org, Andre Przywara <andre.przywara@arm.com>, Miguel Ojeda <ojeda@kernel.org>, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-usb@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>, Dong Aisheng <aisheng.dong@nxp.com>, "Peng Fan \(OSS\)" <peng.fan@oss.nxp.com>, linux-arm-msm@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Damien Le Moal <dlemoal@kernel.org>, linux-pwm@vger.kernel.org, linux-sound@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Krzysztof Kozlowski <krzk@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Chester Lin <chester62515@gmail.com>, Roger Quadros <rogerq@kernel.org>, Matthias Brugger <mbrugger@suse.com>, Saravana Kannan <saravanak@google.com>, linux-gpio@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bjorn Andersson <andersson@kernel.org>, Samuel Holland <samuel@sholland.org>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Kevin Hilman <khilman@baylibre.com>, Uwe =?UTF-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, Shawn Guo <shawnguo@kernel.org>, linux-sunxi@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>
+Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Stephen,
-
-On Wed, 17 Jul 2024 16:33:34 -0700
-Stephen Boyd <sboyd@kernel.org> wrote:
-
-> > @@ -1191,20 +1191,24 @@ static int si5351_dt_parse(struct i2c_client *client,
-> >          * property silabs,pll-source : <num src>, [<..>]
-> >          * allow to selectively set pll source
-> >          */
-> > -       of_property_for_each_u32(np, "silabs,pll-source", prop, p, num) {
-> > +       sz = of_property_read_variable_u32_array(np, "silabs,pll-source", array, 2, 4);
-> > +       sz = (sz == -EINVAL) ? 0 : sz; /* Missing property is OK */
-> > +       if (sz < 0)
-> > +               return dev_err_probe(&client->dev, sz, "invalid pll-source");  
+On Wed, Jul 17, 2024 at 04:42:48PM +0200, David Hildenbrand wrote:
+> On 16.07.24 13:13, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Architectures that support NUMA duplicate the code that allocates
+> > NODE_DATA on the node-local memory with slight variations in reporting
+> > of the addresses where the memory was allocated.
+> > 
+> > Use x86 version as the basis for the generic alloc_node_data() function
+> > and call this function in architecture specific numa initialization.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
 > 
-> Needs a newline on the printk message.
+> [...]
+> 
+> > diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
+> > index 9208eaadf690..909f6cec3a26 100644
+> > --- a/arch/mips/loongson64/numa.c
+> > +++ b/arch/mips/loongson64/numa.c
+> > @@ -81,12 +81,8 @@ static void __init init_topology_matrix(void)
+> >   static void __init node_mem_init(unsigned int node)
+> >   {
+> > -	struct pglist_data *nd;
+> >   	unsigned long node_addrspace_offset;
+> >   	unsigned long start_pfn, end_pfn;
+> > -	unsigned long nd_pa;
+> > -	int tnid;
+> > -	const size_t nd_size = roundup(sizeof(pg_data_t), SMP_CACHE_BYTES);
+> 
+> One interesting change is that we now always round up to full pages on
+> architectures where we previously rounded up to SMP_CACHE_BYTES.
 
-Ouch! Fix queued for v3.
+On my workstation struct pglist_data take 174400, cachelines: 2725, members: 43 */
+ 
+> I assume we don't really expect a significant growth in memory consumption
+> that we care about, especially because most systems with many nodes also
+> have  quite some memory around.
 
-Thanks,
-Luca
+With Debian kernel configuration for 6.5 struct pglist data takes 174400
+bytes so the increase here is below 1%.
+
+For NUMA systems with a lot of nodes that shouldn't be a problem.
+
+> > -/* Allocate NODE_DATA for a node on the local memory */
+> > -static void __init alloc_node_data(int nid)
+> > -{
+> > -	const size_t nd_size = roundup(sizeof(pg_data_t), PAGE_SIZE);
+> > -	u64 nd_pa;
+> > -	void *nd;
+> > -	int tnid;
+> > -
+> > -	/*
+> > -	 * Allocate node data.  Try node-local memory and then any node.
+> > -	 * Never allocate in DMA zone.
+> > -	 */
+> > -	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
+> > -	if (!nd_pa) {
+> > -		pr_err("Cannot find %zu bytes in any node (initial node: %d)\n",
+> > -		       nd_size, nid);
+> > -		return;
+> > -	}
+> > -	nd = __va(nd_pa);
+> > -
+> > -	/* report and initialize */
+> > -	printk(KERN_INFO "NODE_DATA(%d) allocated [mem %#010Lx-%#010Lx]\n", nid,
+> > -	       nd_pa, nd_pa + nd_size - 1);
+> > -	tnid = early_pfn_to_nid(nd_pa >> PAGE_SHIFT);
+> > -	if (tnid != nid)
+> > -		printk(KERN_INFO "    NODE_DATA(%d) on node %d\n", nid, tnid);
+> > -
+> > -	node_data[nid] = nd;
+> > -	memset(NODE_DATA(nid), 0, sizeof(pg_data_t));
+> > -
+> > -	node_set_online(nid);
+> > -}
+> > -
+> >   /**
+> >    * numa_cleanup_meminfo - Cleanup a numa_meminfo
+> >    * @mi: numa_meminfo to clean up
+> > @@ -571,6 +538,7 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+> >   			continue;
+> >   		alloc_node_data(nid);
+> > +		node_set_online(nid);
+> >   	}
+> 
+> I can spot that we only remove a single node_set_online() call from x86.
+> 
+> What about all the other architectures? Will there be any change in behavior
+> for them? Or do we simply set the nodes online later once more?
+
+On x86 node_set_online() was a part of alloc_node_data() and I moved it
+outside so it's called right after alloc_node_data(). On other
+architectures the allocation didn't include that call, so there should be
+no difference there.
+ 
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
+> 
 
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Sincerely yours,
+Mike.
