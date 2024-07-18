@@ -2,63 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3789345D8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 03:34:57 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xldneooz;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9879346D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 05:46:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPb2j55xxz3cVb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 11:34:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPdy94xmyz3fRZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 13:46:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xldneooz;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhengyejian1@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPb1y5w1Kz2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 11:34:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721266455; x=1752802455;
-  h=date:from:to:cc:subject:message-id;
-  bh=QjrnBIPsceqVCjLL7TiHosDqQgWUNO2RtPC63gueCXk=;
-  b=Xldneoozl/80PxL4aWbOLod0QCMKe8Zd6gsUVCrgbhbeM7xg6FSp5yp5
-   eusCetx2AZDtsclwk3o3puDZDkiou2xNmpG2I1ih3AdfqbjaMy+2l+aT1
-   f4O6FRWWQU+lqqoLqpec7AT54jSkO1s5iia5C9FDjJsV++YOZDQgEdGLY
-   r28I9kzZq93G0YWj3IxgylmvFEZCrhCfhrpZqMJiUULI8ippKva/vYL4L
-   o3WVUx+Su/1hvfXI+QHcY530rTC3df1yFNF4hsdD3/Qc7PCyU/AtZLDPj
-   KwwC/m4a4/FjlMEJl9aqj8wX51lTyq04sqXu+id/yahJunYpoA3G4BjTS
-   A==;
-X-CSE-ConnectionGUID: TinE7hqoQ3eAko3tx494yQ==
-X-CSE-MsgGUID: Rg54LjLrQdKA04Gjn5UUIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="18503620"
-X-IronPort-AV: E=Sophos;i="6.09,216,1716274800"; 
-   d="scan'208";a="18503620"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 18:34:09 -0700
-X-CSE-ConnectionGUID: uSwgskJ+QDyhOxpwZ+g2xQ==
-X-CSE-MsgGUID: n0q5oDgMRV65uh0Dm7dyvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,216,1716274800"; 
-   d="scan'208";a="55728243"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 17 Jul 2024 18:34:08 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sUG21-000gqe-1d;
-	Thu, 18 Jul 2024 01:34:05 +0000
-Date: Thu, 18 Jul 2024 09:33:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 14d36ba18b805633de60a308952737bad6314eca
-Message-ID: <202407180954.QCNdR0fs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPdxm451Zz3bq0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 13:45:48 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4WPdrh3Hnxz28fXb;
+	Thu, 18 Jul 2024 11:41:24 +0800 (CST)
+Received: from dggpeml500012.china.huawei.com (unknown [7.185.36.15])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8691718001B;
+	Thu, 18 Jul 2024 11:45:43 +0800 (CST)
+Received: from [10.67.111.172] (10.67.111.172) by
+ dggpeml500012.china.huawei.com (7.185.36.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 18 Jul 2024 11:45:43 +0800
+Message-ID: <c87eeb9c-5f54-480c-17c2-01339416b1b9@huawei.com>
+Date: Thu, 18 Jul 2024 11:45:42 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH 2/6] kallsyms: Emit symbol at the holes in the text
+Content-Language: en-US
+To: Masahiro Yamada <masahiroy@kernel.org>
+References: <20240613133711.2867745-1-zhengyejian1@huawei.com>
+ <20240613133711.2867745-3-zhengyejian1@huawei.com>
+ <CAK7LNAQaLc6aDK85qQtPHoCkQSGyL-TxXjpgJTfehe2Q1=jMSA@mail.gmail.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
+In-Reply-To: <CAK7LNAQaLc6aDK85qQtPHoCkQSGyL-TxXjpgJTfehe2Q1=jMSA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.111.172]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpeml500012.china.huawei.com (7.185.36.15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,192 +55,330 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, kees@kernel.org, dave.hansen@linux.intel.com, james.clark@arm.com, hpa@zytor.com, x86@kernel.org, christophe.leroy@csgroup.eu, peterz@infradead.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, yhs@fb.com, linux-trace-kernel@vger.kernel.org, nicolas@fjasle.eu, linux-kbuild@vger.kernel.org, rostedt@goodmis.org, nathan@kernel.org, bp@alien8.de, npiggin@gmail.com, tglx@linutronix.de, jpoimboe@kernel.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, mcgrof@kernel.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 14d36ba18b805633de60a308952737bad6314eca  Automatic merge of 'next' into merge (2024-07-17 22:23)
+On 2024/7/16 16:33, Masahiro Yamada wrote:
+> On Thu, Jun 13, 2024 at 10:36 PM Zheng Yejian <zhengyejian1@huawei.com> wrote:
+>>
+>> When a weak type function is overridden, its symbol will be removed
+>> from the symbol table, but its code will not be removed. Besides,
+>> due to lacking of size for kallsyms, kernel compute function size by
+>> substracting its symbol address from its next symbol address (see
+>> kallsyms_lookup_size_offset()). These will cause that size of some
+>> function is computed to be larger than it actually is, just because
+>> symbol of its following weak function is removed.
+>>
+>> This issue also causes multiple __fentry__ locations to be counted in
+>> the some function scope, and eventually causes ftrace_location() to find
+>> wrong __fentry__ location. It was reported in
+>> Link: https://lore.kernel.org/all/20240607115211.734845-1-zhengyejian1@huawei.com/
+>>
+>> Peter suggested to change scipts/kallsyms.c to emit readily
+>> identifiable symbol names for all the weak junk, eg:
+>>
+>>    __weak_junk_NNNNN
+>>
+>> The name of this kind symbol needs some discussion, but it's temporarily
+>> called "__hole_symbol_XXXXX" in this patch:
+>> 1. Pass size info to scripts/kallsyms  (see mksysmap());
+>> 2. Traverse sorted function symbols, if one function address plus its
+>>     size less than next function address, it means there's a hole, then
+>>     emit a symbol "__hole_symbol_XXXXX" there which type is 't'.
+>>
+>> After this patch, the effect is as follows:
+>>
+>>    $ cat /proc/kallsyms | grep -A 3 do_one_initcall
+>>    ffffffff810021e0 T do_one_initcall
+>>    ffffffff8100245e t __hole_symbol_XXXXX
+>>    ffffffff810024a0 t __pfx_rootfs_init_fs_context
+>>
+>> Suggested-by: Peter Zijlstra <peterz@infradead.org>
+>> Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+> 
+> 
+> 
+> With my quick test, "t__hole_symbol_XXXXX" was encoded
+> into the following 10-byte stream.
+> 
+> .byte 0x09, 0x94, 0xbf, 0x18, 0xf3, 0x3d, 0xce, 0xd1, 0xd1, 0x58
+> 
+> 
+> 
+> Now "t__hole_symbol_XXXXX" is the most common symbol name.
+> However, 10 byte is consumed for every instance of
+> "t__hole_symbol_XXXXX".
+> 
+> This is much less efficient thanI had expected,
+> although I did not analyze the logic of this inefficiency.
+>
+Hi, Masahiro!
 
-elapsed time: 757m
+In my local test, "t__hole_symbol_XXXXX" was finally encoded
+into just one byte. See "kallsyms_token_table" in the .tmp_vmlinux.kallsyms2.S:
 
-configs tested: 169
-configs skipped: 5
+   kallsyms_token_table:
+         [...]
+         .asciz  "t__hole_symbol_XXXXX"
+         .asciz  "hole_symbol_XXXXX"
+         .asciz  "e_symbol_XXXXX"
+         .asciz  "XXXXX"
+         .asciz  "XXX"
+         .asciz  "e_symbol_"
+         .asciz  "ymbol_"
+         .asciz  "ymb"
+         .asciz  "hol"
+         .asciz  "ol_"
+         .asciz  "pfx"
+         .asciz  "pf"
+         .asciz  "e_s"
+         .asciz  "ym"
+         .asciz  "t__"
+         .asciz  "_s"
+         .asciz  "ol"
+         .asciz  "__"
+         .asciz  "XX"
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+But it would still takes up several tokens due to substrings of
+"t__hole_symbol_XXXXX" would also become the most common ones.
+After this patch, the number of "t__hole_symbol_XXXXX" will be ~30% of the total.
 
-tested configs:
-alpha                            alldefconfig   gcc-13.3.0
-alpha                             allnoconfig   gcc-13.2.0
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-alpha                               defconfig   gcc-13.2.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arm                              allmodconfig   gcc-13.2.0
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-19
-arm                               allnoconfig   gcc-13.2.0
-arm                              allyesconfig   gcc-13.2.0
-arm                              allyesconfig   gcc-14.1.0
-arm                                 defconfig   gcc-13.2.0
-arm                            hisi_defconfig   gcc-13.3.0
-arm                           spitz_defconfig   gcc-13.3.0
-arm                       versatile_defconfig   gcc-13.3.0
-arm                         vf610m4_defconfig   gcc-13.3.0
-arm64                            allmodconfig   clang-19
-arm64                            allmodconfig   gcc-13.2.0
-arm64                             allnoconfig   gcc-13.2.0
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-13.2.0
-csky                              allnoconfig   gcc-13.2.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-13.2.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-i386                             allmodconfig   clang-18
-i386                             allmodconfig   gcc-13
-i386                              allnoconfig   clang-18
-i386                              allnoconfig   gcc-13
-i386                             allyesconfig   clang-18
-i386                             allyesconfig   gcc-13
-i386         buildonly-randconfig-001-20240717   clang-18
-i386         buildonly-randconfig-001-20240718   gcc-11
-i386         buildonly-randconfig-002-20240717   gcc-13
-i386         buildonly-randconfig-002-20240718   gcc-11
-i386         buildonly-randconfig-003-20240717   gcc-13
-i386         buildonly-randconfig-003-20240718   gcc-11
-i386         buildonly-randconfig-004-20240717   gcc-13
-i386         buildonly-randconfig-004-20240718   gcc-11
-i386         buildonly-randconfig-005-20240717   gcc-10
-i386         buildonly-randconfig-005-20240718   gcc-11
-i386         buildonly-randconfig-006-20240717   clang-18
-i386         buildonly-randconfig-006-20240718   gcc-11
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240717   gcc-8
-i386                  randconfig-001-20240718   gcc-11
-i386                  randconfig-002-20240717   clang-18
-i386                  randconfig-002-20240718   gcc-11
-i386                  randconfig-003-20240717   clang-18
-i386                  randconfig-003-20240718   gcc-11
-i386                  randconfig-004-20240717   gcc-8
-i386                  randconfig-004-20240718   gcc-11
-i386                  randconfig-005-20240717   gcc-10
-i386                  randconfig-005-20240718   gcc-11
-i386                  randconfig-006-20240717   gcc-13
-i386                  randconfig-006-20240718   gcc-11
-i386                  randconfig-011-20240717   gcc-9
-i386                  randconfig-011-20240718   gcc-11
-i386                  randconfig-012-20240717   gcc-13
-i386                  randconfig-012-20240718   gcc-11
-i386                  randconfig-013-20240717   clang-18
-i386                  randconfig-013-20240718   gcc-11
-i386                  randconfig-014-20240717   clang-18
-i386                  randconfig-014-20240718   gcc-11
-i386                  randconfig-015-20240717   clang-18
-i386                  randconfig-015-20240718   gcc-11
-i386                  randconfig-016-20240717   clang-18
-i386                  randconfig-016-20240718   gcc-11
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-13.2.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-13.2.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                         amcore_defconfig   gcc-13.3.0
-m68k                                defconfig   gcc-13.2.0
-m68k                           virt_defconfig   gcc-13.3.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-14.1.0
-mips                           ip27_defconfig   gcc-13.3.0
-nios2                             allnoconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-13.2.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc64                            defconfig   gcc-13.2.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   gcc-14.1.0
-powerpc                 canyonlands_defconfig   gcc-13.3.0
-powerpc                 mpc834x_itx_defconfig   gcc-13.3.0
-powerpc                      ppc6xx_defconfig   gcc-13.3.0
-powerpc                     tqm8548_defconfig   gcc-13.3.0
-riscv                            allmodconfig   gcc-14.1.0
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   gcc-14.1.0
-riscv                               defconfig   clang-19
-riscv                               defconfig   gcc-14.1.0
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                              allnoconfig   gcc-14.1.0
-s390                             allyesconfig   clang-19
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-19
-s390                                defconfig   gcc-14.1.0
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-13.2.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                         apsh4a3a_defconfig   gcc-13.3.0
-sh                        apsh4ad0a_defconfig   gcc-13.3.0
-sh                                  defconfig   gcc-14.1.0
-sh                        sh7763rdp_defconfig   gcc-13.3.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                                allnoconfig   gcc-14.1.0
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                                  defconfig   gcc-14.1.0
-um                             i386_defconfig   gcc-13
-um                             i386_defconfig   gcc-14.1.0
-um                           x86_64_defconfig   clang-15
-um                           x86_64_defconfig   gcc-14.1.0
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240717   gcc-13
-x86_64       buildonly-randconfig-002-20240717   gcc-13
-x86_64       buildonly-randconfig-003-20240717   gcc-13
-x86_64       buildonly-randconfig-004-20240717   clang-18
-x86_64       buildonly-randconfig-005-20240717   clang-18
-x86_64       buildonly-randconfig-006-20240717   gcc-13
-x86_64                              defconfig   clang-18
-x86_64                              defconfig   gcc-13
-x86_64                randconfig-001-20240717   gcc-7
-x86_64                randconfig-002-20240717   gcc-9
-x86_64                randconfig-003-20240717   clang-18
-x86_64                randconfig-004-20240717   gcc-9
-x86_64                randconfig-005-20240717   clang-18
-x86_64                randconfig-006-20240717   gcc-11
-x86_64                randconfig-011-20240717   gcc-8
-x86_64                randconfig-012-20240717   clang-18
-x86_64                randconfig-013-20240717   gcc-12
-x86_64                randconfig-014-20240717   gcc-10
-x86_64                randconfig-015-20240717   clang-18
-x86_64                randconfig-016-20240717   clang-18
-x86_64                randconfig-071-20240717   gcc-12
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                            allnoconfig   gcc-14.1.0
+> 
+> 
+> 
+> 
+> 
+> 
+>> ---
+>>   scripts/kallsyms.c      | 101 +++++++++++++++++++++++++++++++++++++++-
+>>   scripts/link-vmlinux.sh |   4 +-
+>>   scripts/mksysmap        |   2 +-
+>>   3 files changed, 102 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+>> index 6559a9802f6e..5c4cde864a04 100644
+>> --- a/scripts/kallsyms.c
+>> +++ b/scripts/kallsyms.c
+>> @@ -35,6 +35,7 @@
+>>   struct sym_entry {
+>>          struct sym_entry *next;
+>>          unsigned long long addr;
+>> +       unsigned long long size;
+>>          unsigned int len;
+>>          unsigned int seq;
+>>          unsigned int start_pos;
+>> @@ -74,6 +75,7 @@ static int token_profit[0x10000];
+>>   static unsigned char best_table[256][2];
+>>   static unsigned char best_table_len[256];
+>>
+>> +static const char hole_symbol[] = "__hole_symbol_XXXXX";
+>>
+>>   static void usage(void)
+>>   {
+>> @@ -130,8 +132,16 @@ static struct sym_entry *read_symbol(FILE *in, char **buf, size_t *buf_len)
+>>          size_t len;
+>>          ssize_t readlen;
+>>          struct sym_entry *sym;
+>> +       unsigned long long size = 0;
+>>
+>>          errno = 0;
+>> +       /*
+>> +        * Example of expected symbol format:
+>> +        * 1. symbol with size info:
+>> +        *    ffffffff81000070 00000000000001d7 T __startup_64
+>> +        * 2. symbol without size info:
+>> +        *    0000000002a00000 A text_size
+>> +        */
+>>          readlen = getline(buf, buf_len, in);
+>>          if (readlen < 0) {
+>>                  if (errno) {
+>> @@ -145,9 +155,24 @@ static struct sym_entry *read_symbol(FILE *in, char **buf, size_t *buf_len)
+>>                  (*buf)[readlen - 1] = 0;
+>>
+>>          addr = strtoull(*buf, &p, 16);
+>> +       if (*buf == p || *p++ != ' ') {
+>> +               fprintf(stderr, "line format error: unable to parse address\n");
+>> +               exit(EXIT_FAILURE);
+>> +       }
+>> +
+>> +       if (*p == '0') {
+>> +               char *str = p;
+>>
+>> -       if (*buf == p || *p++ != ' ' || !isascii((type = *p++)) || *p++ != ' ') {
+>> -               fprintf(stderr, "line format error\n");
+>> +               size = strtoull(str, &p, 16);
+>> +               if (str == p || *p++ != ' ') {
+>> +                       fprintf(stderr, "line format error: unable to parse size\n");
+>> +                       exit(EXIT_FAILURE);
+>> +               }
+>> +       }
+>> +
+>> +       type = *p++;
+>> +       if (!isascii(type) || *p++ != ' ') {
+>> +               fprintf(stderr, "line format error: unable to parse type\n");
+>>                  exit(EXIT_FAILURE);
+>>          }
+>>
+>> @@ -182,6 +207,7 @@ static struct sym_entry *read_symbol(FILE *in, char **buf, size_t *buf_len)
+>>                  exit(EXIT_FAILURE);
+>>          }
+>>          sym->addr = addr;
+>> +       sym->size = size;
+>>          sym->len = len;
+>>          sym->sym[0] = type;
+>>          strcpy(sym_name(sym), name);
+>> @@ -795,6 +821,76 @@ static void sort_symbols(void)
+>>          qsort(table, table_cnt, sizeof(table[0]), compare_symbols);
+>>   }
+>>
+>> +static int may_exist_hole_after_symbol(const struct sym_entry *se)
+> 
+> 
+> The return type should be bool.
+> 
+
+Yes!
+
+> 
+> 
+>> +{
+>> +       char type = se->sym[0];
+>> +
+>> +       /* Only check text symbol or weak symbol */
+>> +       if (type != 't' && type != 'T' &&
+>> +           type != 'w' && type != 'W')
+>> +               return 0;
+>> +       /* Symbol without size has no hole */
+>> +       return se->size != 0;
+>> +}
+>> +
+>> +static struct sym_entry *gen_hole_symbol(unsigned long long addr)
+>> +{
+>> +       struct sym_entry *sym;
+>> +       static size_t len = sizeof(hole_symbol);
+>> +
+>> +       /* include type field */
+>> +       sym = malloc(sizeof(*sym) + len + 1);
+>> +       if (!sym) {
+>> +               fprintf(stderr, "unable to allocate memory for hole symbol\n");
+>> +               exit(EXIT_FAILURE);
+>> +       }
+>> +       sym->addr = addr;
+>> +       sym->size = 0;
+>> +       sym->len = len;
+>> +       sym->sym[0] = 't';
+>> +       strcpy(sym_name(sym), hole_symbol);
+>> +       sym->percpu_absolute = 0;
+>> +       return sym;
+>> +}
+>> +
+>> +static void emit_hole_symbols(void)
+>> +{
+>> +       unsigned int i, pos, nr_emit;
+>> +       struct sym_entry **new_table;
+>> +       unsigned int new_cnt;
+>> +
+>> +       nr_emit = 0;
+>> +       for (i = 0; i < table_cnt - 1; i++) {
+>> +               if (may_exist_hole_after_symbol(table[i]) &&
+>> +                   table[i]->addr + table[i]->size < table[i+1]->addr)
+>> +                       nr_emit++;
+>> +       }
+>> +       if (!nr_emit)
+>> +               return;
+>> +
+>> +       new_cnt = table_cnt + nr_emit;
+>> +       new_table = malloc(sizeof(*new_table) * new_cnt);
+> 
+> 
+> Do you need to allocate another huge table?
+> 
+> You can use realloc() to append the room for nr_emit
+> if you iterate the table in the reverse order.
+> 
+
+Yes, it would be much better. If it turns out to be the
+"emit hole symbol" solution, I'll change it to that in the next version,
+actually, I forgot to mark this series as "RFC".
+
+> 
+> 
+> 
+> 
+> 
+> 
+>> +       if (!new_table) {
+>> +               fprintf(stderr, "unable to allocate memory for new table\n");
+>> +               exit(EXIT_FAILURE);
+>> +       }
+>> +
+>> +       pos = 0;
+>> +       for (i = 0; i < table_cnt; i++) {
+>> +               unsigned long long addr;
+>> +
+>> +               new_table[pos++] = table[i];
+>> +               if ((i == table_cnt - 1) || !may_exist_hole_after_symbol(table[i]))
+>> +                       continue;
+>> +               addr = table[i]->addr + table[i]->size;
+>> +               if (addr < table[i+1]->addr)
+>> +                       new_table[pos++] = gen_hole_symbol(addr);
+>> +       }
+>> +       free(table);
+>> +       table = new_table;
+>> +       table_cnt = new_cnt;
+>> +}
+>> +
+>>   static void make_percpus_absolute(void)
+>>   {
+>>          unsigned int i;
+>> @@ -854,6 +950,7 @@ int main(int argc, char **argv)
+>>          if (absolute_percpu)
+>>                  make_percpus_absolute();
+>>          sort_symbols();
+>> +       emit_hole_symbols();
+>>          if (base_relative)
+>>                  record_relative_base();
+>>          optimize_token_table();
+>> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+>> index 518c70b8db50..8e1373902bfe 100755
+>> --- a/scripts/link-vmlinux.sh
+>> +++ b/scripts/link-vmlinux.sh
+>> @@ -189,11 +189,11 @@ kallsyms_step()
+>>   }
+>>
+>>   # Create map file with all symbols from ${1}
+>> -# See mksymap for additional details
+>> +# See mksysmap for additional details
+>>   mksysmap()
+>>   {
+>>          info NM ${2}
+>> -       ${NM} -n "${1}" | sed -f "${srctree}/scripts/mksysmap" > "${2}"
+>> +       ${NM} -nS "${1}" | sed -f "${srctree}/scripts/mksysmap" > "${2}"
+>>   }
+>>
+>>   sorttable()
+>> diff --git a/scripts/mksysmap b/scripts/mksysmap
+>> index c12723a04655..7a4415f21143 100755
+>> --- a/scripts/mksysmap
+>> +++ b/scripts/mksysmap
+>> @@ -2,7 +2,7 @@
+>>   # SPDX-License-Identifier: GPL-2.0-only
+>>   #
+>>   # sed script to filter out symbols that are not needed for System.map,
+>> -# or not suitable for kallsyms. The input should be 'nm -n <file>'.
+>> +# or not suitable for kallsyms. The input should be 'nm -nS <file>'.
+>>   #
+>>   # System.map is used by module-init tools and some debugging
+>>   # tools to retrieve the actual addresses of symbols in the kernel.
+>> --
+>> 2.25.1
+>>
+>>
+> 
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Zheng Yejian
+
