@@ -1,92 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F30934A7B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 10:53:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAF4934A7E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 10:53:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rrp4R3td;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PmTow4lq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPmmK0VD5z3cbg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 18:53:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPmn54TWXz3dSv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 18:53:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rrp4R3td;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PmTow4lq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPmbn0H17z3dSv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 18:45:40 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46I8QTqO028025;
-	Thu, 18 Jul 2024 08:45:33 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPmbs2vzxz3dTR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 18:45:45 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46I7uSMQ009016;
+	Thu, 18 Jul 2024 08:45:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
 	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=fy9IOkzB0t8i1
-	oiNZZQ64C5h/ObqxL8EiXLYD/+uYEU=; b=Rrp4R3tdSQ+pM2Rv+tmFued4prHuH
-	O9xsZTnOyTAFClBb5GDCuxDT8z3VqAlIMQU4tVDigkV395GN0eC2v7vFzDSDU9Ci
-	KlFGIPVPfq9TBVGn8retMAFSJItt2YzW1KiFZgFFRijVAZHydaVf1aLrw11DxFwe
-	4gO6Yr5WO7d8xP/8ZXyZSFscoExSxCtDsOZojqUr41XYFWxidvKKY+lpYGrCbMRc
-	VMw46Ti7uTjxfSdVChl27ypwgJV1gJpTh1r9+sOSANTKvywTE7xXxwDcwuLTrzBL
-	V3KvSCXEdeFa56ah3HtGHVFPw/tWj7dJQvxfAoiqitMyreLhtRugdlOUw==
+	:mime-version:content-transfer-encoding; s=pp1; bh=cepyYsdxwZaxq
+	SdHwkctn1PykyJAMhva5jZSPM5ecso=; b=PmTow4lqnqKPSsCwYAL0oD7KlFrcP
+	/77+diXnTZHyYRkciliKvyxFO62/D8MrdfKjviEE9NWPY+LiZRI2lFZCaO+6FlJz
+	zwBhkdHSlYtgjPo+ih97+Wy3kEX8xKOKgYXMYR4vuR02u1VAYURexCcNEjUHC9nP
+	/Fz5tefWQT78Yb1FrazYLsKnemYPf4AKZjTl/KdjZXhg0OCbotlcvKPV6TUBExyZ
+	oG78jpxKnSFbs+qIGtvXQkIqe3yD/twGilof/ijtFkWqinWTbxnVp7X+nU5kJRNb
+	JYIJncQYQ7gOdvZ/TpJsfTaH5ek/AWp3mUvsrdnwgXKcs5tQz5TkheOCw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ey4m82yq-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40eev9agcg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jul 2024 08:45:33 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46I8jWFC021718;
-	Thu, 18 Jul 2024 08:45:32 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ey4m82yk-1
+	Thu, 18 Jul 2024 08:45:37 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46I8ja0k018503;
+	Thu, 18 Jul 2024 08:45:36 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40eev9agcd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jul 2024 08:45:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46I5TGWn029293;
-	Thu, 18 Jul 2024 08:45:31 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40dwkn0r7v-1
+	Thu, 18 Jul 2024 08:45:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46I5JbAm000547;
+	Thu, 18 Jul 2024 08:45:35 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40dwkk8qy5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Jul 2024 08:45:31 +0000
+	Thu, 18 Jul 2024 08:45:35 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46I8jPEI33620712
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46I8jT9u57671998
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Jul 2024 08:45:28 GMT
+	Thu, 18 Jul 2024 08:45:31 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DDFDD2004D;
-	Thu, 18 Jul 2024 08:45:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 688EB2004B;
+	Thu, 18 Jul 2024 08:45:29 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD9F320043;
-	Thu, 18 Jul 2024 08:45:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3DB5820043;
+	Thu, 18 Jul 2024 08:45:26 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.43.69.1])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 18 Jul 2024 08:45:22 +0000 (GMT)
+	Thu, 18 Jul 2024 08:45:26 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         irogers@google.com, namhyung@kernel.org, segher@kernel.crashing.org,
         christophe.leroy@csgroup.eu
-Subject: [PATCH V8 10/15] tools/perf: Add more instructions for instruction tracking
-Date: Thu, 18 Jul 2024 14:13:53 +0530
-Message-Id: <20240718084358.72242-11-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V8 11/15] tools/perf: Update instruction tracking for powerpc
+Date: Thu, 18 Jul 2024 14:13:54 +0530
+Message-Id: <20240718084358.72242-12-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20240718084358.72242-1-atrajeev@linux.vnet.ibm.com>
 References: <20240718084358.72242-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Tg6jpWx80NolWNEb17N9Ot43vS-cvzBe
-X-Proofpoint-ORIG-GUID: GYzzNvmcSdYGS_FjrifGg1HibPwsED0t
+X-Proofpoint-ORIG-GUID: G-B8NzXNh1jUNkFILq13lcHK33GnqTn7
+X-Proofpoint-GUID: pB4i7YN-fZDjxqiej7wHPgPqqCEbpseX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-18_04,2024-07-17_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=924 mlxscore=0 phishscore=0 suspectscore=0 bulkscore=0
- clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 mlxscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.19.0-2407110000 definitions=main-2407180054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -103,49 +103,143 @@ Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add few more instructions and use opcode as search key
-to find if it is supported by the architecture. Added ones
-are: addi, addic, addic., addis, subfic and mulli
+Add instruction tracking function "update_insn_state_powerpc" for
+powerpc. Example sequence in powerpc:
+
+ld      r10,264(r3)
+mr      r31,r3
+<<after some sequence>
+ld      r9,312(r31)
+
+Consider ithe sample is pointing to: "ld r9,312(r31)".
+Here the memory reference is hit at "312(r31)" where 312 is the offset
+and r31 is the source register. Previous instruction sequence shows that
+register state of r3 is moved to r31. So to identify the data type for r31
+access, the previous instruction ("mr") needs to be tracked and the
+state type entry has to be updated. Current instruction tracking support
+in perf tools infrastructure is specific to x86. Patch adds this support
+for powerpc as well.
 
 Reviewed-and-tested-by: Kajol Jain <kjain@linux.ibm.com>
 Reviewed-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- tools/perf/arch/powerpc/annotate/instructions.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../perf/arch/powerpc/annotate/instructions.c | 59 +++++++++++++++++++
+ tools/perf/util/annotate-data.c               |  9 ++-
+ tools/perf/util/disasm.c                      |  3 +
+ 3 files changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/tools/perf/arch/powerpc/annotate/instructions.c b/tools/perf/arch/powerpc/annotate/instructions.c
-index aa5ee09fa28f..aa25a336d8d0 100644
+index aa25a336d8d0..af1032572bf3 100644
 --- a/tools/perf/arch/powerpc/annotate/instructions.c
 +++ b/tools/perf/arch/powerpc/annotate/instructions.c
-@@ -172,6 +172,14 @@ static struct insn_offset arithmetic_ins_op_31[] = {
- 	{ .name = "DIV_W_XO_FORM",	.value = 491, },
- };
- 
-+static struct insn_offset arithmetic_two_ops[] = {
-+	{ .name = "mulli",      .value = 7, },
-+	{ .name = "subfic",     .value = 8, },
-+	{ .name = "addic",      .value = 12, },
-+	{ .name = "addic.",     .value = 13, },
-+	{ .name = "addi",       .value = 14, },
-+	{ .name = "addis",      .value = 15, },
-+};
- 
- static int cmp_offset(const void *a, const void *b)
- {
-@@ -212,6 +220,12 @@ static struct ins_ops *check_ppc_insn(u32 raw_insn)
- 			if (PPC_21_30(raw_insn) == 444)
- 				return &arithmetic_ops;
- 		}
-+	} else {
-+		mem_insns_31_opcode.value = opcode;
-+		ret = bsearch(&mem_insns_31_opcode, arithmetic_two_ops, ARRAY_SIZE(arithmetic_two_ops),
-+				sizeof(arithmetic_two_ops[0]), cmp_offset);
-+		if (ret != NULL)
-+			return &arithmetic_ops;
- 	}
- 
+@@ -231,6 +231,65 @@ static struct ins_ops *check_ppc_insn(u32 raw_insn)
  	return NULL;
+ }
+ 
++/*
++ * Instruction tracking function to track register state moves.
++ * Example sequence:
++ *    ld      r10,264(r3)
++ *    mr      r31,r3
++ *    <<after some sequence>
++ *    ld      r9,312(r31)
++ *
++ * Previous instruction sequence shows that register state of r3
++ * is moved to r31. update_insn_state_powerpc tracks these state
++ * changes
++ */
++#ifdef HAVE_DWARF_SUPPORT
++static void update_insn_state_powerpc(struct type_state *state,
++		struct data_loc_info *dloc, Dwarf_Die * cu_die __maybe_unused,
++		struct disasm_line *dl)
++{
++	struct annotated_insn_loc loc;
++	struct annotated_op_loc *src = &loc.ops[INSN_OP_SOURCE];
++	struct annotated_op_loc *dst = &loc.ops[INSN_OP_TARGET];
++	struct type_state_reg *tsr;
++	u32 insn_offset = dl->al.offset;
++
++	if (annotate_get_insn_location(dloc->arch, dl, &loc) < 0)
++		return;
++
++	/*
++	 * Value 444 for bits 21:30 is for "mr"
++	 * instruction. "mr" is extended OR. So set the
++	 * source and destination reg correctly
++	 */
++	if (PPC_21_30(dl->raw.raw_insn) == 444) {
++		int src_reg = src->reg1;
++
++		src->reg1 = dst->reg1;
++		dst->reg1 = src_reg;
++	}
++
++	if (!has_reg_type(state, dst->reg1))
++		return;
++
++	tsr = &state->regs[dst->reg1];
++
++	if (!has_reg_type(state, src->reg1) ||
++			!state->regs[src->reg1].ok) {
++		tsr->ok = false;
++		return;
++	}
++
++	tsr->type = state->regs[src->reg1].type;
++	tsr->kind = state->regs[src->reg1].kind;
++	tsr->ok = true;
++
++	pr_debug_dtp("mov [%x] reg%d -> reg%d",
++			insn_offset, src->reg1, dst->reg1);
++	pr_debug_type_name(&tsr->type, tsr->kind);
++}
++#endif /* HAVE_DWARF_SUPPORT */
++
+ static int powerpc__annotate_init(struct arch *arch, char *cpuid __maybe_unused)
+ {
+ 	if (!arch->initialized) {
+diff --git a/tools/perf/util/annotate-data.c b/tools/perf/util/annotate-data.c
+index 7a48c3d72b89..734acdd8c4b7 100644
+--- a/tools/perf/util/annotate-data.c
++++ b/tools/perf/util/annotate-data.c
+@@ -1080,6 +1080,13 @@ static int find_data_type_insn(struct data_loc_info *dloc,
+ 	return ret;
+ }
+ 
++static int arch_supports_insn_tracking(struct data_loc_info *dloc)
++{
++	if ((arch__is(dloc->arch, "x86")) || (arch__is(dloc->arch, "powerpc")))
++		return 1;
++	return 0;
++}
++
+ /*
+  * Construct a list of basic blocks for each scope with variables and try to find
+  * the data type by updating a type state table through instructions.
+@@ -1094,7 +1101,7 @@ static int find_data_type_block(struct data_loc_info *dloc,
+ 	int ret = -1;
+ 
+ 	/* TODO: other architecture support */
+-	if (!arch__is(dloc->arch, "x86"))
++	if (!arch_supports_insn_tracking(dloc))
+ 		return -1;
+ 
+ 	prev_dst_ip = dst_ip = dloc->ip;
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 801d57287a35..a839f037bdaf 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -157,6 +157,9 @@ static struct arch architectures[] = {
+ 	{
+ 		.name = "powerpc",
+ 		.init = powerpc__annotate_init,
++#ifdef HAVE_DWARF_SUPPORT
++		.update_insn_state = update_insn_state_powerpc,
++#endif
+ 	},
+ 	{
+ 		.name = "riscv64",
 -- 
 2.43.0
 
