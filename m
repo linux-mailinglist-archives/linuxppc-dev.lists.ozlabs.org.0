@@ -1,55 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0765E934799
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 07:26:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEB29347A4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 07:35:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jC88iIba;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p7/xqVop;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WPh9h6dv9z3cbg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 15:26:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WPhMy3KRyz3cbQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jul 2024 15:35:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jC88iIba;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p7/xqVop;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPh904LKlz30VR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 15:25:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WPhMG33G2z3bq0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jul 2024 15:34:34 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BEA61617E1;
-	Thu, 18 Jul 2024 05:25:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA19BC116B1;
-	Thu, 18 Jul 2024 05:25:36 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 5AF37CE191E;
+	Thu, 18 Jul 2024 05:34:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFC0C4AF0C;
+	Thu, 18 Jul 2024 05:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721280337;
-	bh=gz5HRW3k7w7Z2GdY8gP9qNQg9huLlUvJzLWO7hht1jw=;
+	s=k20201202; t=1721280871;
+	bh=6Y3seYleECpysirwu0nT31CnYBFTOhEeVtSuXLsWE8Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jC88iIbaZSQenHpqOe8q3elITyR6utuwi6KAZ7xqmHmIgvhJh8mt2xfNO/vRuOWiQ
-	 7Q65GyPjsghAlq71YmDa5eyTIrmEf9/9eYUG0uHSHRBktvz9azMzPGAOZKQE+32p26
-	 rXpkC3VaW85Rk7FEn3hj8u85zXDAP8LVqJ7y9oHQt3DAa7S/vg92mrHZJOdJJVWY8q
-	 TJtiMTYfh+ZeCGFowcs1ei4RO93kgvsLdqPN12ojFc3skz6N8Eg430qPE27zdVh1In
-	 bx0W44smIS2HYOUeW93VTKt+osrGb+0rzjVzx1OYpphNXeqmR+pk9fkqF6rEfVkl2v
-	 JOqpYMLGd2Qlg==
-Date: Wed, 17 Jul 2024 22:25:35 -0700
+	b=p7/xqVopX5tkp04dLiYfsIP7B/8xGTBKwjFrRg6Sd01r3moaoYt8B3Zj6IurfwK2F
+	 aATn4th4E04pLdvvVf3P14zmHJu/J5xDxbefaJpH26RjNpfsi6xMVLlWHCVv17NJE5
+	 pseH4I90J+cd57P55XvRuUB/U5gVaIKISwBOGRJM5liveQvD6QndKKPUXTy0cYer19
+	 OzGlrGZLGpGnRP9gAhUy+2+oU+Bs750E9XGyqjSBgPKRefDrwdbM7Q3tzIndVhLXG2
+	 Z3XPXKDuHyfzu8r7+P1cxb7k/Vr6/h12iPPiyoXkXOm77ZNAKCpDqv0sYXNkSFvidT
+	 A5+C9QV9TXOxg==
+Date: Wed, 17 Jul 2024 22:34:29 -0700
 From: Namhyung Kim <namhyung@kernel.org>
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V7 16/18] tools/perf: Add support for global_die to
- capture name of variable in case of register defined variable
-Message-ID: <ZpinT_O_13pl-Lab@google.com>
+Subject: Re: [PATCH V7 00/18] Add data type profiling support for powerpc
+Message-ID: <ZpipZcu8KixXxzbw@google.com>
 References: <20240713165529.59298-1-atrajeev@linux.vnet.ibm.com>
- <20240713165529.59298-17-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240713165529.59298-17-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20240713165529.59298-1-atrajeev@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,232 +63,308 @@ Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 13, 2024 at 10:25:27PM +0530, Athira Rajeev wrote:
-> In case of register defined variable (found using
-> find_data_type_global_reg), if the type of variable happens to be base
-> type (example, long unsigned int), perf report captures it as:
+Hello,
+
+On Sat, Jul 13, 2024 at 10:25:11PM +0530, Athira Rajeev wrote:
+> The patchset from Namhyung added support for data type profiling
+> in perf tool. This enabled support to associate PMU samples to data
+> types they refer using DWARF debug information. With the upstream
+> perf, currently it possible to run perf report or perf annotate to
+> view the data type information on x86.
 > 
->     12.85%  long unsigned int  long unsigned int +0 (no field)
+> Initial patchset posted here had changes need to enable data type
+> profiling support for powerpc.
 > 
-> The above data type is actually referring to samples captured while
-> accessing "r1" which represents current stack pointer in powerpc.
+> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgroup.eu/T/
+> 
+> Main change were:
+> 1. powerpc instruction nmemonic table to associate load/store
+> instructions with move_ops which is use to identify if instruction
+> is a memory access one.
+> 2. To get register number and access offset from the given
+> instruction, code uses fields from "struct arch" -> objump.
+> Added entry for powerpc here.
+> 3. A get_arch_regnum to return register number from the
+> register name string.
+> 
+> But the apporach used in the initial patchset used parsing of
+> disassembled code which the current perf tool implementation does.
+> 
+> Example: lwz     r10,0(r9)
+> 
+> This line "lwz r10,0(r9)" is parsed to extract instruction name,
+> registers names and offset. Also to find whether there is a memory
+> reference in the operands, "memory_ref_char" field of objdump is used.
+> For x86, "(" is used as memory_ref_char to tackle instructions of the
+> form "mov  (%rax), %rcx".
+> 
+> In case of powerpc, not all instructions using "(" are the only memory
+> instructions. Example, above instruction can also be of extended form (X
+> form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
+> and extract the source/target registers, second patchset added support to use
+> raw instruction. With raw instruction, macros are added to extract opcode
+> and register fields.
+> Link to second patchset:
+> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.ibm.com/
+> 
+> Example representation using --show-raw-insn in objdump gives result:
+> 
+> 38 01 81 e8     ld      r4,312(r1)
+> 
+> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
+> this translates to instruction form: "ld RT,DS(RA)" and binary code
+> as:
+>   _____________________________________
+>   | 58 |  RT  |  RA |      DS       | |
+>   -------------------------------------
+> 0    6     11    16              30 31
+> 
+> Second patchset used "objdump" again to read the raw instruction.
+> But since there is no need to disassemble and binary code can be read
+> directly from the DSO, third patchset (ie this patchset) uses below
+> apporach. The apporach preferred in powerpc to parse sample for data
+> type profiling in V3 patchset is:
+> - Read directly from DSO using dso__data_read_offset
+> - If that fails for any case, fallback to using libcapstone
+> - If libcapstone is not supported, approach will use objdump
+> 
+> Patchset adds support to pick the opcode and reg fields from this
+> raw/binary instruction code. This approach came in from review comment
+> by Segher Boessenkool and Christophe for the initial patchset.
+> 
+> Apart from that, instruction tracking is enabled for powerpc and
+> support function is added to find variables defined as registers
+> Example, in powerpc, below two registers are
+> defined to represent variable:
+> 1. r13: represents local_paca
+> register struct paca_struct *local_paca asm("r13");
+> 
+> 2. r1: represents stack_pointer
 > register void *__stack_pointer asm("r1");
 > 
-> The dwarf debug contains this as:
+> These are handled in this patchset.
 > 
-> <<>>
->  <1><18dd772>: Abbrev Number: 129 (DW_TAG_variable)
->     <18dd774>   DW_AT_name        : (indirect string, offset: 0x11ba): current_stack_pointer
->     <18dd778>   DW_AT_decl_file   : 51
->     <18dd779>   DW_AT_decl_line   : 1468
->     <18dd77b>   DW_AT_decl_column : 24
->     <18dd77c>   DW_AT_type        : <0x18da5cd>
->     <18dd780>   DW_AT_external    : 1
->     <18dd780>   DW_AT_location    : 1 byte block: 51    (DW_OP_reg1 (r1))
+> - Patch 1 is to rearrange register state type structures to header file
+> so that it can referred from other arch specific files
+> - Patch 2 is to make instruction tracking as a callback to"struct arch"
+> so that it can be implemented by other archs easily and defined in arch
+> specific files
+> - Patch 3 is to handle state type regs array size for x86 and powerpc
+> - Patch 4 adds support to capture and parse raw instruction in powerpc
+> using dso__data_read_offset utility
+> - Patch 4 also adds logic to support using objdump when doing default "perf
+> report" or "perf annotate" since it that needs disassembled instruction.
+> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
+> - Patch 6 update parameters for reg extract functions to use raw
+> instruction on powerpc
+> - Patch 7 updates ins__find to carry raw_insn and also adds parse
+> callback for memory instructions for powerpc
+> - Patch 8 add support to identify memory instructions of opcode 31 in
+> powerpc
+> - Patch 9 adds more instructions to support instruction tracking in powerpc
+> - Patch 10 and 11 handles instruction tracking for powerpc.
+> - Patch 12, 13 and 14 add support to use libcapstone in powerpc
+> - Patch 15 and patch 16 handles support to find global register variables
+> - PAtch 17 updates data type compare functions data_type_cmp and
+>   sort__typeoff_sort to include var_name along with type_name in
+>   comparison.
+> - Patch 18 handles insn-stat option for perf annotate
 > 
->  where 18da5cd is:
+> Note:
+> - There are remaining unknowns (25%) as seen in annotate Instruction stats
+> below.
+> - This patchset is not tested on powerpc32. In next step of enhancements
+> along with handling remaining unknowns, plan to cover powerpc32 changes
+> based on how testing goes.
 > 
->  <1><18da5cd>: Abbrev Number: 47 (DW_TAG_base_type)
->     <18da5ce>   DW_AT_byte_size   : 8
->     <18da5cf>   DW_AT_encoding    : 7   (unsigned)
->     <18da5d0>   DW_AT_name        : (indirect string, offset: 0x55c7): long unsigned int
-> <<>>
-
-Actually this is different from your description.  I expect
-
-  DW_TAG_variable
-    DW_AT_name: __stack_pointer
-    DW_AT_type: <pointer_type> (void *)
-
-But it seems your DWARF has
-
-  DW_TAG_variable
-    DW_AT_name: current_stack_pointer
-    DW_AT_type: <base_type> (long unsigned int)
-
+> With the current patchset:
 > 
-> To make it more clear to the user, capture the DW_AT_name of the
-> variable and save it as part of Dwarf_Global. Dwarf_Global is used so
-> that it can be used and retrieved while presenting the result.
+>  ./perf record -a -e mem-loads sleep 1
+>  ./perf report -s type,typeoff --hierarchy --group --stdio
+>  ./perf annotate --data-type --insn-stat
 > 
-> Update "dso__findnew_data_type" function to set "var_name" if
-> variable name is set as part of Dwarf_Global.
+> perf annotate logs:
+> ==================
 > 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/util/annotate-data.c | 30 ++++++++++++++++++++++++------
->  tools/perf/util/dwarf-aux.c     |  1 +
->  tools/perf/util/dwarf-aux.h     |  1 +
->  3 files changed, 26 insertions(+), 6 deletions(-)
 > 
-> diff --git a/tools/perf/util/annotate-data.c b/tools/perf/util/annotate-data.c
-> index a5b4429ede57..8d05f3dbddf6 100644
-> --- a/tools/perf/util/annotate-data.c
-> +++ b/tools/perf/util/annotate-data.c
-> @@ -268,28 +268,37 @@ static void delete_members(struct annotated_member *member)
->  }
->  
->  static struct annotated_data_type *dso__findnew_data_type(struct dso *dso,
-> -							  Dwarf_Die *type_die)
-> +							  Dwarf_Die *type_die, Dwarf_Global *global_die)
->  {
->  	struct annotated_data_type *result = NULL;
->  	struct annotated_data_type key;
->  	struct rb_node *node;
->  	struct strbuf sb;
-> +	struct strbuf sb_var_name;
->  	char *type_name;
-> +	char *var_name = NULL;
->  	Dwarf_Word size;
->  
->  	strbuf_init(&sb, 32);
-> +	strbuf_init(&sb_var_name, 32);
->  	if (die_get_typename_from_type(type_die, &sb) < 0)
->  		strbuf_add(&sb, "(unknown type)", 14);
-> +	if (global_die->name) {
-> +		strbuf_addstr(&sb_var_name, global_die->name);
-> +		var_name = strbuf_detach(&sb_var_name, NULL);
+> Annotate Instruction stats
+> total 609, ok 446 (73.2%), bad 163 (26.8%)
+> 
+>   Name/opcode         :  Good   Bad
+>   -----------------------------------------------------------
+>   58                  :   323    80
+>   32                  :    49    43
+>   34                  :    33    11
+>   OP_31_XOP_LDX       :     8    20
+>   40                  :    23     0
+>   OP_31_XOP_LWARX     :     5     1
+>   OP_31_XOP_LWZX      :     2     3
+>   OP_31_XOP_LDARX     :     3     0
+>   33                  :     0     2
+>   OP_31_XOP_LBZX      :     0     1
+>   OP_31_XOP_LWAX      :     0     1
+>   OP_31_XOP_LHZX      :     0     1
+>   
+> perf report logs:
+> =================
+> 
+>   Total Lost Samples: 0
+> 
+>   Samples: 1K of event 'mem-loads'
+>   Event count (approx.): 937238
+> 
+>   Overhead  Data Type  Data Type Offset
+>  ........  .........  ................
+>     48.60%  (unknown)  (unknown) +0 (no field)
+>     11.42%  long unsigned int  long unsigned int +0 (current_stack_pointer)
+>      4.68%  struct paca_struct  struct paca_struct +2312 (__current)
+>      4.57%  struct paca_struct  struct paca_struct +2354 (irq_soft_mask)
+>      2.69%  struct paca_struct  struct paca_struct +2808 (canary)
+>      2.68%  struct paca_struct  struct paca_struct +8 (paca_index)
+>      2.24%  struct paca_struct  struct paca_struct +48 (data_offset)
+>      1.43%  long unsigned int  long unsigned int +0 (no field)
+>      1.41%  struct vm_fault  struct vm_fault +0 (vma)
+>      1.29%  struct task_struct  struct task_struct +276 (flags)
+>      1.03%  struct pt_regs  struct pt_regs +264 (user_regs.msr)
+>      0.90%  struct security_hook_list  struct security_hook_list +0 (list.next)
+>      0.76%  struct irq_desc  struct irq_desc +304 (irq_data.chip)
+>      0.76%  struct rq  struct rq +2856 (cpu)
+>      0.72%  long long unsigned int  long long unsigned int +0 (no field)
 
-I think you can just use strdup(global_die->name).
+Thanks for your work!  But I think you need to split the basic part and
+global register support part which needs more review.
 
-
-> +	}
->  	type_name = strbuf_detach(&sb, NULL);
->  	dwarf_aggregate_size(type_die, &size);
->  
->  	/* Check existing nodes in dso->data_types tree */
->  	key.self.type_name = type_name;
-> +	key.self.var_name = var_name;
->  	key.self.size = size;
->  	node = rb_find(&key, dso__data_types(dso), data_type_cmp);
->  	if (node) {
->  		result = rb_entry(node, struct annotated_data_type, node);
->  		free(type_name);
-> +		free(var_name);
->  		return result;
->  	}
->  
-> @@ -297,10 +306,12 @@ static struct annotated_data_type *dso__findnew_data_type(struct dso *dso,
->  	result = zalloc(sizeof(*result));
->  	if (result == NULL) {
->  		free(type_name);
-> +		free(var_name);
->  		return NULL;
->  	}
->  
->  	result->self.type_name = type_name;
-> +	result->self.var_name = var_name;
->  	result->self.size = size;
->  	INIT_LIST_HEAD(&result->self.children);
->  
-> @@ -1178,7 +1189,7 @@ static int find_data_type_block(struct data_loc_info *dloc,
->   * cu_die and match with reg to identify data type die.
->   */
->  static int find_data_type_global_reg(struct data_loc_info *dloc, int reg, Dwarf_Die *cu_die,
-> -		Dwarf_Die *type_die)
-> +		Dwarf_Die *type_die, Dwarf_Global *global_die)
->  {
->  	Dwarf_Die vr_die;
->  	int ret = -1;
-> @@ -1191,8 +1202,11 @@ static int find_data_type_global_reg(struct data_loc_info *dloc, int reg, Dwarf_
->  		if (dwarf_offdie(dloc->di->dbg, var_types->die_off, &vr_die)) {
->  			if (die_get_real_type(&vr_die, type_die) == NULL) {
->  				dloc->type_offset = 0;
-> +				global_die->name = var_types->name;
->  				dwarf_offdie(dloc->di->dbg, var_types->die_off, type_die);
->  			}
-> +			global_die->die_offset = (long)dwarf_dieoffset(type_die);
-> +			global_die->cu_offset = (long)dwarf_dieoffset(cu_die);
-
-It seems all you need is the name of the variable.  Can we simply pass
-the name instead of Dwarf_Global?
-
-
->  			pr_debug_type_name(type_die, TSR_KIND_TYPE);
->  			ret = 0;
->  			pr_debug_dtp("found by CU for %s (die:%#lx)\n",
-> @@ -1207,7 +1221,8 @@ static int find_data_type_global_reg(struct data_loc_info *dloc, int reg, Dwarf_
->  }
->  
->  /* The result will be saved in @type_die */
-> -static int find_data_type_die(struct data_loc_info *dloc, Dwarf_Die *type_die)
-> +static int find_data_type_die(struct data_loc_info *dloc, Dwarf_Die *type_die,
-> +		Dwarf_Global *global_die)
->  {
->  	struct annotated_op_loc *loc = dloc->op;
->  	Dwarf_Die cu_die, var_die;
-> @@ -1221,6 +1236,8 @@ static int find_data_type_die(struct data_loc_info *dloc, Dwarf_Die *type_die)
->  	u64 pc;
->  	char buf[64];
->  
-> +	memset(global_die, 0, sizeof(Dwarf_Global));
-> +
->  	if (dloc->op->multi_regs)
->  		snprintf(buf, sizeof(buf), "reg%d, reg%d", dloc->op->reg1, dloc->op->reg2);
->  	else if (dloc->op->reg1 == DWARF_REG_PC)
-> @@ -1254,7 +1271,7 @@ static int find_data_type_die(struct data_loc_info *dloc, Dwarf_Die *type_die)
->  		     dwarf_diename(&cu_die), (long)dwarf_dieoffset(&cu_die));
->  
->  	if (loc->reg_type == DWARF_REG_GLOBAL) {
-> -		ret = find_data_type_global_reg(dloc, reg, &cu_die, type_die);
-> +		ret = find_data_type_global_reg(dloc, reg, &cu_die, type_die, global_die);
->  		if (!ret)
->  			goto out;
->  	}
-> @@ -1390,6 +1407,7 @@ struct annotated_data_type *find_data_type(struct data_loc_info *dloc)
->  	struct annotated_data_type *result = NULL;
->  	struct dso *dso = map__dso(dloc->ms->map);
->  	Dwarf_Die type_die;
-> +	Dwarf_Global global_die;
->  
->  	dloc->di = debuginfo__new(dso__long_name(dso));
->  	if (dloc->di == NULL) {
-> @@ -1405,10 +1423,10 @@ struct annotated_data_type *find_data_type(struct data_loc_info *dloc)
->  
->  	dloc->fbreg = -1;
->  
-> -	if (find_data_type_die(dloc, &type_die) < 0)
-> +	if (find_data_type_die(dloc, &type_die, &global_die) < 0)
->  		goto out;
->  
-> -	result = dso__findnew_data_type(dso, &type_die);
-> +	result = dso__findnew_data_type(dso, &type_die, &global_die);
->  
->  out:
->  	debuginfo__delete(dloc->di);
-> diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
-> index 44ef968a7ad3..9e61ff326651 100644
-> --- a/tools/perf/util/dwarf-aux.c
-> +++ b/tools/perf/util/dwarf-aux.c
-> @@ -1610,6 +1610,7 @@ static int __die_collect_vars_cb(Dwarf_Die *die_mem, void *arg)
->  	vt->reg = reg_from_dwarf_op(ops);
->  	vt->offset = offset_from_dwarf_op(ops);
->  	vt->next = *var_types;
-> +	vt->name = dwarf_diename(die_mem);
-
-Hmm.. maybe we can just collect variables (not their types) directly,
-then we can get the name from the variable DIE without saving it in
-the struct die_var_type.
+For the patch 1 to 14:
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
 
 Thanks,
 Namhyung
 
-
->  	*var_types = vt;
->  
->  	return DIE_FIND_CB_SIBLING;
-> diff --git a/tools/perf/util/dwarf-aux.h b/tools/perf/util/dwarf-aux.h
-> index 24446412b869..406a5b1e269b 100644
-> --- a/tools/perf/util/dwarf-aux.h
-> +++ b/tools/perf/util/dwarf-aux.h
-> @@ -146,6 +146,7 @@ struct die_var_type {
->  	u64 addr;
->  	int reg;
->  	int offset;
-> +	const char *name;
->  };
->  
->  /* Return type info of a member at offset */
+> 
+> Thanks
+> Athira Rajeev
+> 
+> Changelog:
+> From v6 -> v7:
+> - Addressed review comments from Namhyung
+>   Changed format string space to %-20s while printing
+>   instruction stats in patch 18.
+>   Use cmp_null in patch 17 while comparing var_name to
+>   properly sort with correct order.
+> 
+> From v5 -> v6:
+> - Addressed review comments from Namhyung
+>   Conditionally define TYPE_STATE_MAX_REGS based on arch.
+>   Added macro for defining width of the raw codes and spaces
+>   in disasm_line__parse_powerpc.
+>   Call disasm_line__parse from disasm_line__parse_powerpc
+>   for generic code.
+>   Renamed symbol__disassemble_dso to symbol__disassemble_raw.
+>   Fixed find_data_type_global_reg to correclty free var_types
+>   and change indent level.
+>   Fixed data_type_cmp and sort__typeoff_sort to include var_name
+>   in comparing data type entries.
+>   
+> From v4 -> v5:
+> - Addressed review comments from Namhyung
+>   Handle max number of type state regs as 16 for x86 and 32 for
+>   powerpc.
+>   Added generic support for objdump patch first and DSO read
+>   optimisation next
+>   combined patch 3 and patch 4 in patchseries V4 to one patch
+>   Changed reference for "raw_insn" to use "u32"
+>   Splitted "parse" callback patch changes and "ins__find" patch
+>   changes into two
+>   Instead of making weak function, added get_powerpc_regs to
+>   extract register and offset fields for powerpc
+> - Addressed complation fail when "dwarf.h" is not present ie
+>   elfutils devel is not present. Used includes for #ifdef HAVE_DWARF_SUPPORT
+>   when including functions that use Dwarf references. Also
+>   conditionally include some of the header files.
+> 
+> From v3->v4:
+> - Addressed review comments from Ian by using capston_init from
+>   "util/print_insn.c" instead of "open_capston_handle".
+> - Addressed review comment from Namhyung by moving "opcode"
+>   field from "struct ins" to "struct disasm_line"
+> 
+> From v2->v3:
+> - Addressed review comments from Christophe and Namhyung for V2
+> - Changed the apporach in powerpc to parse sample for data
+>   type profiling as:
+>   Read directly from DSO using dso__data_read_offset
+>   If that fails for any case, fallback to using libcapstone
+>   If libcapstone is not supported, approach will use objdump
+> - Include instructions with opcode as 31 and correctly categorize
+>   them as memory or arithmetic instructions.
+> - Include more instructions for instruction tracking in powerpc
+> 
+> From v1->v2:
+> - Addressed suggestion from Christophe Leroy and Segher Boessenkool
+>   to use the binary code (raw insn) to fetch opcode, register and
+>   offset fields.
+> - Added support for instruction tracking in powerpc
+> - Find the register defined variables (r13 and r1 which points to
+>   local_paca and current_stack_pointer in powerpc)
+> 
+> Athira Rajeev (18):
+>   tools/perf: Move the data structures related to register type to
+>     header file
+>   tools/perf: Add "update_insn_state" callback function to handle arch
+>     specific instruction tracking
+>   tools/perf: Update TYPE_STATE_MAX_REGS to include max of regs in
+>     powerpc
+>   tools/perf: Add disasm_line__parse to parse raw instruction for
+>     powerpc
+>   tools/perf: Add support to capture and parse raw instruction in
+>     powerpc using dso__data_read_offset utility
+>   tools/perf: Update parameters for reg extract functions to use raw
+>     instruction on powerpc
+>   tools/perf: Add parse function for memory instructions in powerpc
+>   tools/perf: Add support to identify memory instructions of opcode 31
+>     in powerpc
+>   tools/perf: Add some of the arithmetic instructions to support
+>     instruction tracking in powerpc
+>   tools/perf: Add more instructions for instruction tracking
+>   tools/perf: Update instruction tracking for powerpc
+>   tools/perf: Make capstone_init non-static so that it can be used
+>     during symbol disassemble
+>   tools/perf: Use capstone_init and remove open_capstone_handle from
+>     disasm.c
+>   tools/perf: Add support to use libcapstone in powerpc
+>   tools/perf: Add support to find global register variables using
+>     find_data_type_global_reg
+>   tools/perf: Add support for global_die to capture name of variable in
+>     case of register defined variable
+>   tools/perf: Update data_type_cmp and sort__typeoff_sort function to
+>     include var_name in comparison
+>   tools/perf: Set instruction name to be used with insn-stat when using
+>     raw instruction
+> 
+>  tools/include/linux/string.h                  |   2 +
+>  tools/lib/string.c                            |  13 +
+>  tools/perf/arch/arm64/annotate/instructions.c |   3 +-
+>  .../arch/loongarch/annotate/instructions.c    |   6 +-
+>  .../perf/arch/powerpc/annotate/instructions.c | 254 ++++++++
+>  tools/perf/arch/powerpc/util/dwarf-regs.c     |  53 ++
+>  tools/perf/arch/s390/annotate/instructions.c  |   5 +-
+>  tools/perf/arch/x86/annotate/instructions.c   | 377 ++++++++++++
+>  tools/perf/builtin-annotate.c                 |   4 +-
+>  tools/perf/util/annotate-data.c               | 544 ++++--------------
+>  tools/perf/util/annotate-data.h               |  83 +++
+>  tools/perf/util/annotate.c                    |  29 +-
+>  tools/perf/util/annotate.h                    |   6 +-
+>  tools/perf/util/disasm.c                      | 468 +++++++++++++--
+>  tools/perf/util/disasm.h                      |  19 +-
+>  tools/perf/util/dwarf-aux.c                   |   1 +
+>  tools/perf/util/dwarf-aux.h                   |   1 +
+>  tools/perf/util/include/dwarf-regs.h          |  12 +
+>  tools/perf/util/print_insn.c                  |  15 +-
+>  tools/perf/util/print_insn.h                  |   5 +
+>  tools/perf/util/sort.c                        |  25 +-
+>  tools/perf/util/sort.h                        |   1 +
+>  22 files changed, 1421 insertions(+), 505 deletions(-)
+> 
 > -- 
 > 2.43.0
 > 
