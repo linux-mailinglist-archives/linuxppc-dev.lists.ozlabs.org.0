@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644DF937AFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 18:29:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C049937B06
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 18:30:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WQZrH2rGbz3fS0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jul 2024 02:29:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WQZsz2k8dz3d8B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jul 2024 02:30:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
@@ -14,26 +14,26 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WQZqv1fTcz3cdy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jul 2024 02:28:56 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WQZn61R1mz6K7Fc;
-	Sat, 20 Jul 2024 00:26:34 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WQZsb5zHVz3cdy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jul 2024 02:30:27 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WQZqJ0Xzhz6K6TT;
+	Sat, 20 Jul 2024 00:28:28 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9E616140517;
-	Sat, 20 Jul 2024 00:28:51 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B243F140C98;
+	Sat, 20 Jul 2024 00:30:22 +0800 (CST)
 Received: from localhost (10.48.157.16) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 19 Jul
- 2024 17:28:50 +0100
-Date: Fri, 19 Jul 2024 17:28:49 +0100
+ 2024 17:30:16 +0100
+Date: Fri, 19 Jul 2024 17:30:15 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 06/17] x86/numa: simplify numa_distance allocation
-Message-ID: <20240719172849.000019a0@Huawei.com>
-In-Reply-To: <20240716111346.3676969-7-rppt@kernel.org>
+Subject: Re: [PATCH 07/17] x86/numa: move FAKE_NODE_* defines to numa_emu
+Message-ID: <20240719173015.00002a01@Huawei.com>
+In-Reply-To: <20240716111346.3676969-8-rppt@kernel.org>
 References: <20240716111346.3676969-1-rppt@kernel.org>
-	<20240716111346.3676969-7-rppt@kernel.org>
+	<20240716111346.3676969-8-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -62,80 +62,15 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 16 Jul 2024 14:13:35 +0300
+On Tue, 16 Jul 2024 14:13:36 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Allocation of numa_distance uses memblock_phys_alloc_range() to limit
-> allocation to be below the last mapped page.
-> 
-> But NUMA initializaition runs after the direct map is populated and
-
-initialization (one too many 'i's)
-
-> there is also code in setup_arch() that adjusts memblock limit to
-> reflect how much memory is already mapped in the direct map.
-> 
-> Simplify the allocation of numa_distance and use plain memblock_alloc().
-> This makes the code clearer and ensures that when numa_distance is not
-> allocated it is always NULL.
-Doesn't this break the comment in numa_set_distance() kernel-doc?
-"
- * If such table cannot be allocated, a warning is printed and further
- * calls are ignored until the distance table is reset with
- * numa_reset_distance().
-"
-
-Superficially that looks to be to avoid repeatedly hitting the
-singleton bit at the top of numa_set_distance() as SRAT or similar
-parsing occurs.
-
+> The definitions of FAKE_NODE_MIN_SIZE and FAKE_NODE_MIN_HASH_MASK are
+> only used by numa emulation code, make them local to
+> arch/x86/mm/numa_emulation.c
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  arch/x86/mm/numa.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index 5e1dde26674b..ab2d4ecef786 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -319,8 +319,7 @@ void __init numa_reset_distance(void)
->  {
->  	size_t size = numa_distance_cnt * numa_distance_cnt * sizeof(numa_distance[0]);
->  
-> -	/* numa_distance could be 1LU marking allocation failure, test cnt */
-> -	if (numa_distance_cnt)
-> +	if (numa_distance)
->  		memblock_free(numa_distance, size);
->  	numa_distance_cnt = 0;
->  	numa_distance = NULL;	/* enable table creation */
-> @@ -331,7 +330,6 @@ static int __init numa_alloc_distance(void)
->  	nodemask_t nodes_parsed;
->  	size_t size;
->  	int i, j, cnt = 0;
-> -	u64 phys;
->  
->  	/* size the new table and allocate it */
->  	nodes_parsed = numa_nodes_parsed;
-> @@ -342,16 +340,12 @@ static int __init numa_alloc_distance(void)
->  	cnt++;
->  	size = cnt * cnt * sizeof(numa_distance[0]);
->  
-> -	phys = memblock_phys_alloc_range(size, PAGE_SIZE, 0,
-> -					 PFN_PHYS(max_pfn_mapped));
-> -	if (!phys) {
-> +	numa_distance = memblock_alloc(size, PAGE_SIZE);
-> +	if (!numa_distance) {
->  		pr_warn("Warning: can't allocate distance table!\n");
-> -		/* don't retry until explicitly reset */
-> -		numa_distance = (void *)1LU;
->  		return -ENOMEM;
->  	}
->  
-> -	numa_distance = __va(phys);
->  	numa_distance_cnt = cnt;
->  
->  	/* fill with the default distances */
 
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
