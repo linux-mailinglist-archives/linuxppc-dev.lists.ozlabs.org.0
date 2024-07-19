@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54636937B63
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 18:57:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A96937BD1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 19:49:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WQbT825gLz3dWl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jul 2024 02:57:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WQccc71bcz3dRf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Jul 2024 03:49:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from frasgout.his.huawei.com (unknown [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WQbSm1K1kz3cZ9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jul 2024 02:57:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WQccF4f07z3cBZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Jul 2024 03:48:58 +1000 (AEST)
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WQbQ30Sw7z6K8lH;
-	Sat, 20 Jul 2024 00:55:07 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WQcZJ1Dcbz6J9fr;
+	Sat, 20 Jul 2024 01:47:20 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 84DA0140A79;
-	Sat, 20 Jul 2024 00:57:24 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id CF8E5140A79;
+	Sat, 20 Jul 2024 01:48:44 +0800 (CST)
 Received: from localhost (10.48.157.16) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 19 Jul
- 2024 17:57:23 +0100
-Date: Fri, 19 Jul 2024 17:57:22 +0100
+ 2024 18:48:43 +0100
+Date: Fri, 19 Jul 2024 18:48:42 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 11/17] x86/numa: numa_{add,remove}_cpu: make cpu
- parameter unsigned
-Message-ID: <20240719175722.000016f8@Huawei.com>
-In-Reply-To: <20240716111346.3676969-12-rppt@kernel.org>
+Subject: Re: [PATCH 13/17] mm: move numa_distance and related code from x86
+ to numa_memblks
+Message-ID: <20240719184842.000030bc@Huawei.com>
+In-Reply-To: <20240716111346.3676969-14-rppt@kernel.org>
 References: <20240716111346.3676969-1-rppt@kernel.org>
-	<20240716111346.3676969-12-rppt@kernel.org>
+	<20240716111346.3676969-14-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.48.157.16]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,22 +63,21 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 16 Jul 2024 14:13:40 +0300
+On Tue, 16 Jul 2024 14:13:42 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> CPU id cannot be negative.
+> Move code dealing with numa_distance array from arch/x86 to
+> mm/numa_memblks.c
+
+It's not really numa memblock related. Is this the best place
+to put it?
+
 > 
-> Making it unsigned also aligns with declarations in
-> include/asm-generic/numa.h used by arm64 and riscv and allows sharing
-> numa emulation code with these architectures.
+> This code will be later reused by arch_numa.
+> 
+> No functional changes.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Makes sense for both reasons. FWIW given how simple it is.
 
-Maybe worth bringing a few more functions inline with this?
-Probably something for another day given we don't care about the
-inconsistency for this series.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
