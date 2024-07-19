@@ -2,87 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E9C9371EA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 03:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C16689371F9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 03:23:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SL1+xeZ/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MbfDLs2j;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WQBYX33XPz3dRj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 11:15:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WQBlP4Rpnz3dRr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jul 2024 11:23:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SL1+xeZ/;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MbfDLs2j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WQBXr6pwyz3cSP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2024 11:14:35 +1000 (AEST)
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46J0xWXq017355;
-	Fri, 19 Jul 2024 01:14:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=zHbhBFyOllyjuCCAoTfJqv
-	bJVQQNgmBpoTjvwW2kojM=; b=SL1+xeZ/TLoJ42dJK3+7PKiiUcdiGJrJyMPO+O
-	VJV3ufsk8ZXdvaOa3dmlPb5Ie1SREOXZnJ0MAbhrxY12vIn+CfSpnsyRAgXQQdzP
-	F2MGTVAmqNYCnxMrjaMGiiW+LZXHopuU0s35LrLJtQlpJTLO1D5FkWSH7eUdqyzu
-	ph1BPXFgI6/41jteKodVNGEDqlAjZYSZsrcEBDeLh8VBj1ACBi6YoF5cGazrcpi8
-	l9aascroSiNrIG3oNrds/cJd4j26UWzJJCk2eGhmPDhvmYW6fIQAI/g6fKXV9ukv
-	3mTYSruBw8DIAGFlqP8Axm8gOR76U6nwhnQlGXjL4wTozLkQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40fe33g0r3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Jul 2024 01:14:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46J1EIhK017016
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Jul 2024 01:14:18 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Jul
- 2024 18:14:18 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Thu, 18 Jul 2024 18:14:18 -0700
-Subject: [PATCH] crypto: ppc/curve25519 - add missing MODULE_DESCRIPTION()
- macro
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WQBkj31nkz3cZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jul 2024 11:23:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1721352189;
+	bh=kks5Td3BcJE2RSambxKy4mn/i2Umcsqm6PazM0dpxEA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MbfDLs2jhrxzlosqAldNpwILIjvnNJGzd0tmsec4SXfEz1RrVrP/1XZs0EHnBBIhZ
+	 vzCu7L59n4+mym/xYHGUjXIEfr+fftayKQJaCXLz1qYkv43pZh6+k1jctSjfB1c1J+
+	 9OlzCjWqkniw7UJYTy/9QWPXsThK3M0OsxZTTnMzLPd/6a23yF1G+kxFaS5B86P0mN
+	 6m0DBVRkmTthHkG8lbc9W2/VEeFZ9fGWcoo4E7zAUMgfXw8mYFqpH1GTONguI7po0W
+	 Clji9mgEBRVUBGC83avR6OjFcsWPY/xWrLln/vTgdx+VvmtDkfaOs3m40H33UQnzfk
+	 cH+ftEuIscXJw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WQBkj0Cgrz4wbr;
+	Fri, 19 Jul 2024 11:23:08 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ma Ke <make24@iscas.ac.cn>
+Subject: Re: [PATCH v4] cxl: Fix possible null pointer dereference in
+ read_handle()
+In-Reply-To: <20240716132737.1642226-1-make24@iscas.ac.cn>
+References: <87y163w4n4.fsf@mail.lhotse>
+ <20240716132737.1642226-1-make24@iscas.ac.cn>
+Date: Fri, 19 Jul 2024 11:23:07 +1000
+Message-ID: <87msmew4xw.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240718-md-powerpc-arch-powerpc-crypto-v1-1-b23a1989248e@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAOm9mWYC/z3NQQ6CMBCF4auQWTtJKUbRqxgXw3SwXdA2U4IYw
- t2txrj8Fu9/GxTRIAWuzQYqSyghxYr20AB7ig/B4KrBGns057bHyWFOT9HMSMr+D9ZXnhNavpy
- 63jojNEKNZJUxrN+D2716oCI4KEX2n+xvNVGZRWHf3wtmQyOQAAAA
-To: Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
-	<npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "Naveen
- N. Rao" <naveen.n.rao@linux.ibm.com>,
-        Danny Tsen <dtsen@linux.ibm.com>
-X-Mailer: b4 0.14.0
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: AHCmfBGGce-eTHgTuaMnKcweacq8a52Y
-X-Proofpoint-GUID: AHCmfBGGce-eTHgTuaMnKcweacq8a52Y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-18_18,2024-07-18_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 bulkscore=0 priorityscore=1501
- impostorscore=0 spamscore=0 suspectscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2407190007
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,38 +61,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, Jeff
- Johnson <quic_jjohnson@quicinc.com>, linux-kernel@vger.kernel.org
+Cc: ajd@linux.ibm.com, arnd@arndb.de, make24@iscas.ac.cn, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, manoj@linux.vnet.ibm.com, imunsie@au1.ibm.com, fbarrat@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, dan.carpenter@linaro.org, clombard@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 1fffe7a34c89 ("script: modpost: emit a warning when the
-description is missing"), a module without a MODULE_DESCRIPTION() will
-result in a warning with make W=1. The following warning is being
-observed when building ppc64le with CRYPTO_CURVE25519_PPC64=m:
+Ma Ke <make24@iscas.ac.cn> writes:
+>> Michael Ellerman<mpe@ellerman.id.au> wrote:
+>> > In read_handle(), of_get_address() may return NULL if getting address =
+and
+>> > size of the node failed. When of_read_number() uses prop to handle
+>> > conversions between different byte orders, it could lead to a null poi=
+nter
+>> > dereference. Add NULL check to fix potential issue.
+>> >
+>> > Found by static analysis.
+>> >
+>> > Cc: stable@vger.kernel.org
+>> > Fixes: 14baf4d9c739 ("cxl: Add guest-specific code")
+>> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>> > ---
+>> > Changes in v4:
+>> > - modified vulnerability description according to suggestions, making =
+the=20
+>> > process of static analysis of vulnerabilities clearer. No active resea=
+rch=20
+>> > on developer behavior.
+>> > Changes in v3:
+>> > - fixed up the changelog text as suggestions.
+>> > Changes in v2:
+>> > - added an explanation of how the potential vulnerability was discover=
+ed,
+>> > but not meet the description specification requirements.
+>> > ---
+>> >  drivers/misc/cxl/of.c | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> >
+>> > diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+>> > index bcc005dff1c0..d8dbb3723951 100644
+>> > --- a/drivers/misc/cxl/of.c
+>> > +++ b/drivers/misc/cxl/of.c
+>> > @@ -58,7 +58,7 @@ static int read_handle(struct device_node *np, u64 *=
+handle)
+>> >=20=20
+>> >  	/* Get address and size of the node */
+>> >  	prop =3D of_get_address(np, 0, &size, NULL);
+>> > -	if (size)
+>> > +	if (!prop || size)
+>> >  		return -EINVAL;
+>> >=20=20
+>> >  	/* Helper to read a big number; size is in cells (not bytes) */
+>>=20
+>> If you expand the context this could just use of_property_read_reg(),
+>> something like below.
+>>=20
+>> cheers
+>>=20
+>>=20
+>> diff --git a/drivers/misc/cxl/of.c b/drivers/misc/cxl/of.c
+>> index bcc005dff1c0..a184855b2a7b 100644
+>> --- a/drivers/misc/cxl/of.c
+>> +++ b/drivers/misc/cxl/of.c
+>> @@ -53,16 +53,15 @@ static const __be64 *read_prop64_dword(const struct =
+device_node *np,
+>>=20=20
+>>  static int read_handle(struct device_node *np, u64 *handle)
+>>  {
+>> -	const __be32 *prop;
+>>  	u64 size;
+>> +=09
+>> +	if (of_property_read_reg(np, 0, handle, &size))
+>> +		return -EINVAL;
+>>=20=20
+>> -	/* Get address and size of the node */
+>> -	prop =3D of_get_address(np, 0, &size, NULL);
+>> +	// Size must be zero per PAPR+ v2.13 =C2=A7 C.6.19
+>>  	if (size)
+>>  		return -EINVAL;
+>>=20=20
+>> -	/* Helper to read a big number; size is in cells (not bytes) */
+>> -	*handle =3D of_read_number(prop, of_n_addr_cells(np));
+>>  	return 0;
+>>  }
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in arch/powerpc/crypto/curve25519-ppc64le.o
+> Thank you for discussing and guiding me on the vulnerability I submitted.=
+=20
+> I've carefully read through your conversation with Dan Carpenter. I'm=20
+> uncertain whether to use my patch or the one you provided. Could you plea=
+se
+> advise on which patch would be more appropriate?=20
+> Looking forward to your reply.
 
-Add the missing invocation of the MODULE_DESCRIPTION() macro.
+Your patch is OK, I'll send an ack.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- arch/powerpc/crypto/curve25519-ppc64le-core.c | 1 +
- 1 file changed, 1 insertion(+)
+If we want to refactor it to use of_property_read_reg() we can do that
+in future - though this code will probably be removed in the not too
+distant future anyway.
 
-diff --git a/arch/powerpc/crypto/curve25519-ppc64le-core.c b/arch/powerpc/crypto/curve25519-ppc64le-core.c
-index 4e3e44ea4484..f7810be0b292 100644
---- a/arch/powerpc/crypto/curve25519-ppc64le-core.c
-+++ b/arch/powerpc/crypto/curve25519-ppc64le-core.c
-@@ -295,5 +295,6 @@ module_exit(curve25519_mod_exit);
- 
- MODULE_ALIAS_CRYPTO("curve25519");
- MODULE_ALIAS_CRYPTO("curve25519-ppc64le");
-+MODULE_DESCRIPTION("PPC64le Curve25519 scalar multiplication with 51 bits limbs");
- MODULE_LICENSE("GPL v2");
- MODULE_AUTHOR("Danny Tsen <dtsen@us.ibm.com>");
-
----
-base-commit: df1e9791998a92fe9f1e7d3f031b34daaad39e2f
-change-id: 20240718-md-powerpc-arch-powerpc-crypto-2c96382d0eaf
-
+cheers
