@@ -1,142 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 577D8938FEC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2024 15:30:36 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fLCwrejS;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rk+mU8G4;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F4B939009
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2024 15:41:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WSLkf28Blz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2024 23:30:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WSLyg3Q21z3d4F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Jul 2024 23:40:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fLCwrejS;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rk+mU8G4;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSLjx4k2lz3bnt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2024 23:29:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721654989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hj0518Q+ag2Y9NZVcsCpncBBpD7wr8EEpXH9Btxb4Io=;
-	b=fLCwrejSGd8EwhkzncuiF35/KqnR0ZoEGsXcooJjWf5WqReaxZInyvko+EUbWp84GIF20a
-	BJKDv073G8lciS/AQBNKxLjcg/Ywc683jBcXpyBuAFr+sq0NzWXMSh3yHtUZkCpPVMPjBg
-	8MxlZGuAokjukKCMmd+zT6bFevsNbDM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721654990;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hj0518Q+ag2Y9NZVcsCpncBBpD7wr8EEpXH9Btxb4Io=;
-	b=Rk+mU8G4ZLlvCsSpuiXkvY4X5MSTXJLKNpRZ5oJu7IqcQtS0HrLgSQ08aXin1i2qQoiIN9
-	bG+egQOyj+JtoxO9+vGwL4pwcXQBcNBHI8CkFJ2TvUVq9heoDjrKRWeLJNq8A/MfSEQr4Z
-	SaU0HF4dh5OTGb/b3+sYN+7MUu0bk8A=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-Qm5_QsqNPRahmNsVsh6luw-1; Mon, 22 Jul 2024 09:29:46 -0400
-X-MC-Unique: Qm5_QsqNPRahmNsVsh6luw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42668796626so32911755e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2024 06:29:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721654985; x=1722259785;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hj0518Q+ag2Y9NZVcsCpncBBpD7wr8EEpXH9Btxb4Io=;
-        b=o9zZldrPFPn7mHXmHsoLpd3RlXBAtQM+ndSNToj4d3FWQ8CLR1EFhkSl62uQQWDRBn
-         yqpB39zgyF04Xi5gEX6mnO4zFAaBWg6s63889x9LAzAAmh7+JVyyYt7ll5n+7X5zWu+z
-         o9vZmpHWKeltQIEZmYCu+boAgO/QzJk9mwpsF0UqWKGXa2oDpeqoaKUyg8Y3zXFEBXNE
-         vne4sV8BI86RIqlm1KpdoDeHXsXW7ICRaWvbCcvVyjpxa1DV1A5lt7nVFJQyMajz//PU
-         KUEsivFkrl+MJBszszbyxCK8kBUHMXDN7nZLe2wJZWFLP0+qo8IKcjmknICgqIzHph+2
-         LT1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfRkrZvm2o2+LCMfe2VJC9ZncaBb75XQff6v0HTqA39flQzaNRFQQpWnk32y/x96iSbteTV1pqsb4cRV+TbIvsbqTLmOEPyAtIZRkVQg==
-X-Gm-Message-State: AOJu0YxjQXXyi1lagPHU3QFepxap7R45Ve8zPylO5jECyadzdIkOnXrk
-	IKoqHPlgZVxUGWfnjwYerS6ViC3O/DCGy0s+SfMy51jdsqdvbCZMfjkbcton8EWKOGntoCgSD43
-	jp+jMHF8RSNeEUyIvh7GSa/Y9q0u1xlRdvQYpTHfqBoRj/yQ32S06YcEDSK6Ad2I=
-X-Received: by 2002:a05:600c:a4c:b0:426:6389:94c4 with SMTP id 5b1f17b1804b1-427ea1d5a2dmr9070995e9.37.1721654985332;
-        Mon, 22 Jul 2024 06:29:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIyw9dA2YYXh0wR+3Pj025bxjyvTGi6gFSINBbowgn9GBPFQbhi8MNgjqnWB9eXV6rnCmpfg==
-X-Received: by 2002:a05:600c:a4c:b0:426:6389:94c4 with SMTP id 5b1f17b1804b1-427ea1d5a2dmr9070715e9.37.1721654984893;
-        Mon, 22 Jul 2024 06:29:44 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c727:7000:c050:e303:f8a7:6ed9? (p200300cbc7277000c050e303f8a76ed9.dip0.t-ipconnect.de. [2003:cb:c727:7000:c050:e303:f8a7:6ed9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427d6900caasm126895385e9.11.2024.07.22.06.29.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 06:29:44 -0700 (PDT)
-Message-ID: <cf36725d-c197-4c07-8998-d34711335fdb@redhat.com>
-Date: Mon, 22 Jul 2024 15:29:43 +0200
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WSLyG3R10z2y8q
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Jul 2024 23:40:35 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E204CFEC;
+	Mon, 22 Jul 2024 06:40:27 -0700 (PDT)
+Received: from [10.44.160.75] (e126510-lin.lund.arm.com [10.44.160.75])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E99F23F766;
+	Mon, 22 Jul 2024 06:39:56 -0700 (PDT)
+Message-ID: <b4f8b351-4c83-43b4-bfbe-8f67f3f56fb9@arm.com>
+Date: Mon, 22 Jul 2024 15:39:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/6] mm: THP-agnostic refactor on huge mappings
-To: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20240717220219.3743374-1-peterx@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240717220219.3743374-1-peterx@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v4 17/29] arm64: implement PKEYS support
+To: Catalin Marinas <catalin.marinas@arm.com>, Joey Gouly <joey.gouly@arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-18-joey.gouly@arm.com> <Zogmi1AogxHWlWWR@arm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <Zogmi1AogxHWlWWR@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -149,68 +44,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Alistair Popple <apopple@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>, sparclinux@vger.kernel.org, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
+Cc: szabolcs.nagy@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18.07.24 00:02, Peter Xu wrote:
-> This is an RFC series, so not yet for merging.  Please don't be scared by
-> the code changes: most of them are code movements only.
-> 
-> This series is based on the dax mprotect fix series here (while that one is
-> based on mm-unstable):
-> 
->    [PATCH v3 0/8] mm/mprotect: Fix dax puds
->    https://lore.kernel.org/r/20240715192142.3241557-1-peterx@redhat.com
-> 
-> Overview
-> ========
-> 
-> This series doesn't provide any feature change.  The only goal of this
-> series is to start decoupling two ideas: "THP" and "huge mapping".  We
-> already started with having PGTABLE_HAS_HUGE_LEAVES config option, and this
-> one extends that idea into the code.
-> 
-> The issue is that we have so many functions that only compile with
-> CONFIG_THP=on, even though they're about huge mappings, and huge mapping is
-> a pretty common concept, which can apply to many things besides THPs
-> nowadays.  The major THP file is mm/huge_memory.c as of now.
-> 
-> The first example of such huge mapping users will be hugetlb.  We lived
-> until now with no problem simply because Linux almost duplicated all the
-> logics there in the "THP" files into hugetlb APIs.  If we want to get rid
-> of hugetlb specific APIs and paths, this _might_ be the first thing we want
-> to do, because we want to be able to e.g., zapping a hugetlb pmd entry even
-> if !CONFIG_THP.
-> 
-> Then consider other things like dax / pfnmaps.  Dax can depend on THP, then
-> it'll naturally be able to use pmd/pud helpers, that's okay.  However is it
-> a must?  Do we also want to have every new pmd/pud mappings in the future
-> to depend on THP (like PFNMAP)?  My answer is no, but I'm open to opinions.
-> 
-> If anyone agrees with me that "huge mapping" (aka, PMD/PUD mappings that
-> are larger than PAGE_SIZE) is a more generic concept than THP, then I think
-> at some point we need to move the generic code out of THP code into a
-> common code base.
-> 
-> This is what this series does as a start.
+On 05/07/2024 18:59, Catalin Marinas wrote:
+> On Fri, May 03, 2024 at 02:01:35PM +0100, Joey Gouly wrote:
+>> @@ -163,7 +182,8 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
+>>  #define pte_access_permitted_no_overlay(pte, write) \
+>>  	(((pte_val(pte) & (PTE_VALID | PTE_USER)) == (PTE_VALID | PTE_USER)) && (!(write) || pte_write(pte)))
+>>  #define pte_access_permitted(pte, write) \
+>> -	pte_access_permitted_no_overlay(pte, write)
+>> +	(pte_access_permitted_no_overlay(pte, write) && \
+>> +	por_el0_allows_pkey(FIELD_GET(PTE_PO_IDX_MASK, pte_val(pte)), write, false))
+> I'm still not entirely convinced on checking the keys during fast GUP
+> but that's what x86 and powerpc do already, so I guess we'll follow the
+> same ABI.
 
-Hi Peter!
+I've thought about this some more. In summary I don't think adding this
+check to pte_access_permitted() is controversial, but we should decide
+how POR_EL0 is set for kernel threads.
 
- From a quick glimpse, patch #1-#4 do make sense independent of patch #5.
+This change essentially means that fast GUP behaves like uaccess for
+pages that are already present: in both cases POR_EL0 will be looked up
+based on the POIndex of the page being accessed (by the hardware in the
+uaccess case, and explicitly in the fast GUP case). Fast GUP always
+operates on current->mm, so to me checking POR_EL0 in
+pte_access_permitted() should be no more restrictive than a uaccess
+check from a user perspective. In other words, POR_EL0 is checked when
+the kernel accesses user memory on the user's behalf, whether through
+uaccess or GUP.
 
-I am not so sure about all of the code movement in patch #5. If large 
-folios are the future, then likely huge_memory.c should simply be the 
-home for all that logic.
+It's also worth noting that the "slow" GUP path (which
+get_user_pages_fast() falls back to if a page is missing) also checks
+POR_EL0 by virtue of calling handle_mm_fault(), which in turn calls
+arch_vma_access_permitted(). It would be pretty inconsistent for the
+slow GUP path to do a pkey check but not the fast path. (That said, the
+slow GUP path does not call arch_vma_access_permitted() if a page is
+already present, so callers of get_user_pages() and similar will get
+inconsistent checking. Not great, that may be worth fixing - but that's
+clearly beyond the scope of this series.)
 
-Maybe the goal should better be to compile huge_memory.c not only for 
-THP, but also for other use cases that require that logic, and fence off 
-all THP specific stuff using #ifdef?
+Now an interesting question is what happens with kernel threads that
+access user memory, as is the case for the optional io_uring kernel
+thread (IORING_SETUP_SQPOLL). The discussion above holds regardless of
+the type of thread, so the sqpoll thread will have its POR_EL0 checked
+when processing commands that involve uaccess or GUP. AFAICT, this
+series does not have special handling for kernel threads w.r.t. POR_EL0,
+which means that it is left unchanged when a new kernel thread is cloned
+(create_io_thread() in the IORING_SETUP_SQPOLL case). The sqpoll thread
+will therefore inherit POR_EL0 from the (user) thread that calls
+io_uring_setup(). In other words, the sqpoll thread ends up with the
+same view of user memory as that user thread - for instance if its
+POR_EL0 prevents access to POIndex 1, then any I/O that the sqpoll
+thread attempts on mappings with POIndex/pkey 1 will fail.
 
-Not sure, though. But a lot of this code movements/churn might be avoidable.
+This behaviour seems potentially useful to me, as the io_uring SQ could
+easily become a way to bypass POE without some restriction. However, it
+feels like this should be documented, as one should keep it in mind when
+using pkeys, and there may well be other cases where kernel threads are
+impacted by POR_EL0. I am also unsure how x86/ppc handle this.
 
--- 
-Cheers,
-
-David / dhildenb
-
+Kevin
