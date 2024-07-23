@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4795D939B3C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 08:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7627D939B3F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 08:58:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mh2GRPm2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GdtNpb5f;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WSnyy1Pd1z3cZ4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 16:57:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WSnzk2pbQz3clH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 16:58:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mh2GRPm2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GdtNpb5f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSnjq5xv3z3cY8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 16:46:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSnk33xhtz3ccS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 16:46:35 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id C13F8CE0BBB;
+	by sin.source.kernel.org (Postfix) with ESMTP id 5B0A6CE0E07;
+	Tue, 23 Jul 2024 06:46:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E983C4AF14;
 	Tue, 23 Jul 2024 06:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17035C4AF0C;
-	Tue, 23 Jul 2024 06:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721717182;
-	bh=czQlSB1prAUx4+nfVbpfC7vYMDzPDxbO3yiJDWAcvGA=;
+	s=k20201202; t=1721717193;
+	bh=zVDs6WKjT/YvUD2GuaqovEFQsz1PVdi+2wlgjwoVKBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mh2GRPm2wBte19heLPPhCf25v4O8wId4t+XDdcLCfWpGv5PTkhss9ReUL8uazZULe
-	 6eM8hQ+PWHhFnWT76FwkX2NWIgKyOpW3GylcxSfAvHhs0N7B5LuvANwWeCeqv+0nDx
-	 mhNPH8UgkiWp4VYIHXnZ1B4AFRHWcZw1ZlNwvtOAL0/JWEF+dZaXAkCexbuQgF77Kg
-	 MPc24q9PrvJh/gNzTjBu1XTMLLkvq6W+vGcmjsVIS4dX2Fgk3Bp7HPWIm4OA0YwdlJ
-	 shJ43oMYTjLQ/vbrZALQOA/kooXYb1d27NgGQfNNeu69CkjqYV2KsWm0OQI46bPrqY
-	 tFWPaODMjuktQ==
+	b=GdtNpb5fUIpXsX9U29NSh04YZWODgndxZxjste8kTAvvVKauwF6UNM6S9Dr3BCKEs
+	 yzF3a95E4FDYjaodsPNzYMUIiAFluD4W6BzfRkWMXJaN5mJiDqA0nbhJUlVN8YBreY
+	 N8Lfe55rcuYatNFvDLpb1o/ai1cq2a87KFY1vXc2G3PokM+pzDBZiGx1YYc0JvUIwd
+	 hD+FxT+d7coc5Nv4te6g48WPgLLOAIBVm7uSHK4G4+cw6nfe/xZpmv2v/wDAZjLxfx
+	 maJJGo9Hlb/cksHiz+XhQBIYl3hu/DniwedBxjLUcBhi+OlRUy+RXddlr9a1o66hWz
+	 zfdJosOcK+iJA==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 21/25] mm: numa_memblks: make several functions and variables static
-Date: Tue, 23 Jul 2024 09:41:52 +0300
-Message-ID: <20240723064156.4009477-22-rppt@kernel.org>
+Subject: [PATCH v2 22/25] mm: numa_memblks: use memblock_{start,end}_of_DRAM() when sanitizing meminfo
+Date: Tue, 23 Jul 2024 09:41:53 +0300
+Message-ID: <20240723064156.4009477-23-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240723064156.4009477-1-rppt@kernel.org>
 References: <20240723064156.4009477-1-rppt@kernel.org>
@@ -65,113 +65,33 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Make functions and variables that are exclusively used by numa_memblks
-static.
+numa_cleanup_meminfo() moves blocks outside system RAM to
+numa_reserved_meminfo and it uses 0 and PFN_PHYS(max_pfn) to determine
+the memory boundaries.
 
-Move numa_nodemask_from_meminfo() before its callers to avoid forward
-declaration.
+Replace the memory range boundaries with more portable
+memblock_start_of_DRAM() and memblock_end_of_DRAM().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- include/linux/numa_memblks.h |  8 --------
- mm/numa_memblks.c            | 36 ++++++++++++++++++------------------
- 2 files changed, 18 insertions(+), 26 deletions(-)
+ mm/numa_memblks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-index 07381320848f..5c6e12ad0b7a 100644
---- a/include/linux/numa_memblks.h
-+++ b/include/linux/numa_memblks.h
-@@ -7,7 +7,6 @@
- 
- #define NR_NODE_MEMBLKS		(MAX_NUMNODES * 2)
- 
--extern int numa_distance_cnt;
- void __init numa_set_distance(int from, int to, int distance);
- void __init numa_reset_distance(void);
- 
-@@ -22,17 +21,10 @@ struct numa_meminfo {
- 	struct numa_memblk	blk[NR_NODE_MEMBLKS];
- };
- 
--extern struct numa_meminfo numa_meminfo __initdata_or_meminfo;
--extern struct numa_meminfo numa_reserved_meminfo __initdata_or_meminfo;
--
- int __init numa_add_memblk(int nodeid, u64 start, u64 end);
- void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
- 
- int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
--int __init numa_register_meminfo(struct numa_meminfo *mi);
--
--void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
--				       const struct numa_meminfo *mi);
- 
- int __init numa_memblks_init(int (*init_func)(void),
- 			     bool memblock_force_top_down);
 diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 7749b6f6b250..e97665a5e8ce 100644
+index e97665a5e8ce..e4358ad92233 100644
 --- a/mm/numa_memblks.c
 +++ b/mm/numa_memblks.c
-@@ -7,13 +7,27 @@
- #include <linux/numa.h>
- #include <linux/numa_memblks.h>
- 
--int numa_distance_cnt;
-+static int numa_distance_cnt;
- static u8 *numa_distance;
- 
- nodemask_t numa_nodes_parsed __initdata;
- 
--struct numa_meminfo numa_meminfo __initdata_or_meminfo;
--struct numa_meminfo numa_reserved_meminfo __initdata_or_meminfo;
-+static struct numa_meminfo numa_meminfo __initdata_or_meminfo;
-+static struct numa_meminfo numa_reserved_meminfo __initdata_or_meminfo;
-+
-+/*
-+ * Set nodes, which have memory in @mi, in *@nodemask.
-+ */
-+static void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
-+					      const struct numa_meminfo *mi)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(mi->blk); i++)
-+		if (mi->blk[i].start != mi->blk[i].end &&
-+		    mi->blk[i].nid != NUMA_NO_NODE)
-+			node_set(mi->blk[i].nid, *nodemask);
-+}
- 
- /**
-  * numa_reset_distance - Reset NUMA distance table
-@@ -290,20 +304,6 @@ int __init numa_cleanup_meminfo(struct numa_meminfo *mi)
- 	return 0;
- }
- 
--/*
-- * Set nodes, which have memory in @mi, in *@nodemask.
-- */
--void __init numa_nodemask_from_meminfo(nodemask_t *nodemask,
--				       const struct numa_meminfo *mi)
--{
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(mi->blk); i++)
--		if (mi->blk[i].start != mi->blk[i].end &&
--		    mi->blk[i].nid != NUMA_NO_NODE)
--			node_set(mi->blk[i].nid, *nodemask);
--}
--
- /*
-  * Mark all currently memblock-reserved physical memory (which covers the
-  * kernel's own memory ranges) as hot-unswappable.
-@@ -371,7 +371,7 @@ static void __init numa_clear_kernel_node_hotplug(void)
- 	}
- }
- 
--int __init numa_register_meminfo(struct numa_meminfo *mi)
-+static int __init numa_register_meminfo(struct numa_meminfo *mi)
+@@ -212,8 +212,8 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
+  */
+ int __init numa_cleanup_meminfo(struct numa_meminfo *mi)
  {
- 	int i;
+-	const u64 low = 0;
+-	const u64 high = PFN_PHYS(max_pfn);
++	const u64 low = memblock_start_of_DRAM();
++	const u64 high = memblock_end_of_DRAM();
+ 	int i, j, k;
  
+ 	/* first, trim all entries */
 -- 
 2.43.0
 
