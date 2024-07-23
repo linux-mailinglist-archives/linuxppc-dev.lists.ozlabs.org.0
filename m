@@ -2,54 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AEC93A79F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 21:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 904C693A7D5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 21:55:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kXsDrXkL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dYMY9VmQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WT6Kt6Sthz2ysg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 05:15:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WT7DB2YXPz3cfx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 05:55:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kXsDrXkL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dYMY9VmQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WT6KC4dBwz2y70
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 05:14:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WT7CW0tKJz3cH2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 05:54:47 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E742960E84;
-	Tue, 23 Jul 2024 19:14:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CEDC4AF09;
-	Tue, 23 Jul 2024 19:14:35 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 41A1D60CF7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 19:54:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB705C4AF0F
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 19:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721762076;
-	bh=4dx5AYwCwF/d/KGh67noqIku30q2B5+XqMtC+MzyJF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kXsDrXkLMkzPGuNTQu0MONelt7NJr85Ze67Kq9td1DjzgeK4Evai4bF+JVoCHQHFM
-	 xHniB6n1xQsvb+fvFiWdlPA5Fi1iQgxZyHEA37kBNikaW+zuN93xXwICULZlXB517l
-	 RoksFPMbarpEtUvLqrOG9iqmWfltnOluNduNg2a1kcN7IgbWJhP9Q461qXwrbSbYU9
-	 KHoZYv6OQNv94l7CV4tKXNBabV0U1KU1P70NQVE2vu7gVBBxJuPCmPQW35zUYZNJk/
-	 3bR53Ri6de0TfhfAJDXwPTcprXxjf5qcZ+j/AUOQxJK6kb+/Za7z9/3zDCFwWu0rk/
-	 hMOzmwTuFG+vQ==
-Date: Tue, 23 Jul 2024 16:14:30 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V8 04/15] tools/perf: Add disasm_line__parse to parse raw
- instruction for powerpc
-Message-ID: <ZqABFhGYfcu60V7S@x1>
-References: <20240718084358.72242-1-atrajeev@linux.vnet.ibm.com>
- <20240718084358.72242-5-atrajeev@linux.vnet.ibm.com>
+	s=k20201202; t=1721764484;
+	bh=k5RrtdLWKZsCl7EDSRNM33NdEcdTiw1cogBHDYG6Wkc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=dYMY9VmQ644gRDyP98cRxhXFLbUyBu/MIgqSpuG4QacvVX3j7FYjWoDnNShgOtSaB
+	 k9NzXP8C/aw7MlPHPw1FwNPv5W2UgSSf+C/Lot7M/k5opxrPjsUKz4wPDL4sOML7CX
+	 vCzmPQF88kC5dLybXj7fGXOUkBvxsZkxSzqwuimmaLwPT+F9fDu7IYasyV98JgMemd
+	 YA8es6Cy2mj0qro2xHEGaIiNHVkKbr67OMCbSQyNtOs7Kd1E15q/MdlEOp0AocIqiW
+	 0Z/bQwRDD9eXV7qjdzxysFa3wop5tA8NzoSpx2ABg4wHrKfypp7ZLLa4VydGBWKQtg
+	 By9DbyBPM4NVQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52f01afa11cso4303253e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 12:54:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVTVTfgzEtdp2QpGR2tlXqYcgw16CKDeOOrXmtorKTfGdr0drPDTt4DLuKd88vxtC3+isPe20F0RfqQ0mFwn1edG857JZ7++1Im8izC3A==
+X-Gm-Message-State: AOJu0YyBfDsrg1yPT1faONKn0kxkg9TlyoNF/ENIDOngb8B8WIbNdxYO
+	RnVVyj6/HOa5eIMe/6kh61qzJBI5sxhB/m5T6y2ByVjUiKfabl95vy33oSELeMZJigxM2yuU/tL
+	+I1HJKeQ4vRUShS84CnTv6MrZqA==
+X-Google-Smtp-Source: AGHT+IGCQdyyu8qkAIF4Y+x34DGI3oQcrcatbK5X9D1j6aSuxaMLw+4ruouSVY9w4zl61f3BJLQ8XUi3IEInszr9fCk=
+X-Received: by 2002:a05:6512:3a90:b0:52c:d78b:d0b8 with SMTP id
+ 2adb3069b0e04-52fc406dd9amr3011081e87.39.1721764483150; Tue, 23 Jul 2024
+ 12:54:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240718084358.72242-5-atrajeev@linux.vnet.ibm.com>
+References: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
+ <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
+ <a6c92c73-13fb-8e9c-29de-1437654c3880@amd.com> <20240723162107.GA501469-robh@kernel.org>
+ <a8d2e310-9446-6cfa-fe00-4ef83cdb6590@amd.com>
+In-Reply-To: <a8d2e310-9446-6cfa-fe00-4ef83cdb6590@amd.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 23 Jul 2024 13:54:30 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
+Message-ID: <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
+ KVM guest
+To: Lizhi Hou <lizhi.hou@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,235 +74,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>, Lukas Wunner <lukas@wunner.de>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 18, 2024 at 02:13:47PM +0530, Athira Rajeev wrote:
-> Currently, the perf tool infrastructure disasm_line__parse function to
-> parse disassembled line.
-> 
-> Example snippet from objdump:
-> objdump  --start-address=<address> --stop-address=<address>  -d --no-show-raw-insn -C <vmlinux>
-> 
-> c0000000010224b4:	lwz     r10,0(r9)
-> 
-> This line "lwz r10,0(r9)" is parsed to extract instruction name,
-> registers names and offset. In powerpc, the approach for data type
-> profiling uses raw instruction instead of result from objdump to identify
-> the instruction category and extract the source/target registers.
-> 
-> Example: 38 01 81 e8     ld      r4,312(r1)
-> 
-> Here "38 01 81 e8" is the raw instruction representation. Add function
-> "disasm_line__parse_powerpc" to handle parsing of raw instruction.
-> Also update "struct disasm_line" to save the binary code/
-> With the change, function captures:
-> 
-> line -> "38 01 81 e8     ld      r4,312(r1)"
-> raw instruction "38 01 81 e8"
-> 
-> Raw instruction is used later to extract the reg/offset fields. Macros
-> are added to extract opcode and register fields. "struct disasm_line"
-> is updated to carry union of "bytes" and "raw_insn" of 32 bit to carry raw
-> code (raw). Function "disasm_line__parse_powerpc fills the raw
-> instruction hex value and can use macros to get opcode. There is no
-> changes in existing code paths, which parses the disassembled code.
-> The size of raw instruction depends on architecture. In case of powerpc,
-> the parsing the disasm line needs to handle cases for reading binary code
-> directly from DSO as well as parsing the objdump result. Hence adding
-> the logic into separate function instead of updating "disasm_line__parse".
-> The architecture using the instruction name and present approach is
-> not altered. Since this approach targets powerpc, the macro
-> implementation is added for powerpc as of now.
-> 
-> Since the disasm_line__parse is used in other cases (perf annotate) and
-> not only data tye profiling, the powerpc callback includes changes to
-> work with binary code as well as mneumonic representation. Also in case
-> if the DSO read fails and libcapstone is not supported, the approach
-> fallback to use objdump as option. Hence as option, patch has changes to
-> ensure objdump option also works well.
-> 
-> Reviewed-and-tested-by: Kajol Jain <kjain@linux.ibm.com>
-> Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/include/linux/string.h                  |  2 +
->  tools/lib/string.c                            | 13 +++++
->  .../perf/arch/powerpc/annotate/instructions.c |  1 +
->  tools/perf/arch/powerpc/util/dwarf-regs.c     |  9 ++++
->  tools/perf/util/annotate.h                    |  5 +-
->  tools/perf/util/disasm.c                      | 48 ++++++++++++++++++-
->  6 files changed, 76 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/include/linux/string.h b/tools/include/linux/string.h
-> index db5c99318c79..0acb1fc14e19 100644
-> --- a/tools/include/linux/string.h
-> +++ b/tools/include/linux/string.h
-> @@ -46,5 +46,7 @@ extern char * __must_check skip_spaces(const char *);
->  
->  extern char *strim(char *);
->  
-> +extern void remove_spaces(char *s);
-> +
->  extern void *memchr_inv(const void *start, int c, size_t bytes);
->  #endif /* _TOOLS_LINUX_STRING_H_ */
-> diff --git a/tools/lib/string.c b/tools/lib/string.c
-> index 8b6892f959ab..3126d2cff716 100644
-> --- a/tools/lib/string.c
-> +++ b/tools/lib/string.c
-> @@ -153,6 +153,19 @@ char *strim(char *s)
->  	return skip_spaces(s);
->  }
->  
-> +/*
-> + * remove_spaces - Removes whitespaces from @s
-> + */
-> +void remove_spaces(char *s)
-> +{
-> +	char *d = s;
-> +
-> +	do {
-> +		while (*d == ' ')
-> +			++d;
-> +	} while ((*s++ = *d++));
-> +}
-> +
->  /**
->   * strreplace - Replace all occurrences of character in string.
->   * @s: The string to operate on.
-> diff --git a/tools/perf/arch/powerpc/annotate/instructions.c b/tools/perf/arch/powerpc/annotate/instructions.c
-> index a3f423c27cae..d57fd023ef9c 100644
-> --- a/tools/perf/arch/powerpc/annotate/instructions.c
-> +++ b/tools/perf/arch/powerpc/annotate/instructions.c
-> @@ -55,6 +55,7 @@ static int powerpc__annotate_init(struct arch *arch, char *cpuid __maybe_unused)
->  		arch->initialized = true;
->  		arch->associate_instruction_ops = powerpc__associate_instruction_ops;
->  		arch->objdump.comment_char      = '#';
-> +		annotate_opts.show_asm_raw = true;
->  	}
->  
->  	return 0;
-> diff --git a/tools/perf/arch/powerpc/util/dwarf-regs.c b/tools/perf/arch/powerpc/util/dwarf-regs.c
-> index 0c4f4caf53ac..430623ca5612 100644
-> --- a/tools/perf/arch/powerpc/util/dwarf-regs.c
-> +++ b/tools/perf/arch/powerpc/util/dwarf-regs.c
-> @@ -98,3 +98,12 @@ int regs_query_register_offset(const char *name)
->  			return roff->ptregs_offset;
->  	return -EINVAL;
->  }
-> +
-> +#define PPC_OP(op)	(((op) >> 26) & 0x3F)
-> +#define PPC_RA(a)	(((a) >> 16) & 0x1f)
-> +#define PPC_RT(t)	(((t) >> 21) & 0x1f)
-> +#define PPC_RB(b)	(((b) >> 11) & 0x1f)
-> +#define PPC_D(D)	((D) & 0xfffe)
-> +#define PPC_DS(DS)	((DS) & 0xfffc)
-> +#define OP_LD	58
-> +#define OP_STD	62
-> diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
-> index d5c821c22f79..9ba772f46270 100644
-> --- a/tools/perf/util/annotate.h
-> +++ b/tools/perf/util/annotate.h
-> @@ -113,7 +113,10 @@ struct annotation_line {
->  struct disasm_line {
->  	struct ins		 ins;
->  	struct ins_operands	 ops;
-> -
-> +	union {
-> +		u8 bytes[4];
-> +		u32 raw_insn;
-> +	} raw;
->  	/* This needs to be at the end. */
->  	struct annotation_line	 al;
->  };
-> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-> index d2723ba024bf..a53591a6111e 100644
-> --- a/tools/perf/util/disasm.c
-> +++ b/tools/perf/util/disasm.c
-> @@ -44,6 +44,7 @@ static int call__scnprintf(struct ins *ins, char *bf, size_t size,
->  
->  static void ins__sort(struct arch *arch);
->  static int disasm_line__parse(char *line, const char **namep, char **rawp);
-> +static int disasm_line__parse_powerpc(struct disasm_line *dl);
->  
->  static __attribute__((constructor)) void symbol__init_regexpr(void)
->  {
-> @@ -845,6 +846,48 @@ static int disasm_line__parse(char *line, const char **namep, char **rawp)
->  	return -1;
->  }
->  
-> +/*
-> + * Parses the result captured from symbol__disassemble_*
-> + * Example, line read from DSO file in powerpc:
-> + * line:    38 01 81 e8
-> + * opcode: fetched from arch specific get_opcode_insn
-> + * rawp_insn: e8810138
-> + *
-> + * rawp_insn is used later to extract the reg/offset fields
-> + */
-> +#define	PPC_OP(op)	(((op) >> 26) & 0x3F)
-> +#define	RAW_BYTES	11
-> +
-> +static int disasm_line__parse_powerpc(struct disasm_line *dl)
-> +{
-> +	char *line = dl->al.line;
-> +	const char **namep = &dl->ins.name;
-> +	char **rawp = &dl->ops.raw;
-> +	char *tmp_raw_insn, *name_raw_insn = skip_spaces(line);
-> +	char *name = skip_spaces(name_raw_insn + RAW_BYTES);
-> +	int objdump = 0;
-> +
-> +	if (strlen(line) > RAW_BYTES)
-> +		objdump = 1;
-> +
-> +	if (name_raw_insn[0] == '\0')
-> +		return -1;
-> +
-> +	if (objdump) {
-> +		disasm_line__parse(name, namep, rawp);
-> +	} else
-> +		*namep = "";
-> +
-> +	tmp_raw_insn = strndup(name_raw_insn, 11);
+On Tue, Jul 23, 2024 at 12:21=E2=80=AFPM Lizhi Hou <lizhi.hou@amd.com> wrot=
+e:
+>
+>
+> On 7/23/24 09:21, Rob Herring wrote:
+> > On Mon, Jul 15, 2024 at 01:52:30PM -0700, Lizhi Hou wrote:
+> >> On 7/15/24 11:55, Rob Herring wrote:
+> >>> On Mon, Jul 15, 2024 at 2:08=E2=80=AFAM Amit Machhiwal <amachhiw@linu=
+x.ibm.com> wrote:
+> >>>> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequ=
+ence
+> >>>> of a PCI device attached to a PCI-bridge causes following kernel Oop=
+s on
+> >>>> a pseries KVM guest:
+> >>>>
+> >>>>    RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+> >>>>    Kernel attempted to read user page (10ec00000048) - exploit attem=
+pt? (uid: 0)
+> >>>>    BUG: Unable to handle kernel data access on read at 0x10ec0000004=
+8
+> >>>>    Faulting instruction address: 0xc0000000012d8728
+> >>>>    Oops: Kernel access of bad area, sig: 11 [#1]
+> >>>>    LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSeries
+> >>>> <snip>
+> >>>>    NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
+> >>>>    LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
+> >>>>    Call Trace:
+> >>>>    [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0x=
+d8
+> >>>>    [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb=
+0
+> >>>>    [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x=
+138
+> >>>>    [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_dev=
+ice_locked+0x34/0x64
+> >>>>    [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
+> >>>>    [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
+> >>>>    [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
+> >>>>    [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0=
+/0x2e0
+> >>>>    [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
+> >>>>    [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
+> >>>>    [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/=
+0x290
+> >>>>    [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common=
++0x15c/0x2ec
+> >>>> <snip>
+> >>>>
+> >>>> A git bisect pointed this regression to be introduced via [1] that a=
+dded
+> >>>> a mechanism to create device tree nodes for parent PCI bridges when =
+a
+> >>>> PCI device is hot-plugged.
+> >>>>
+> >>>> The Oops is caused when `pci_stop_dev()` tries to remove a non-exist=
+ing
+> >>>> device-tree node associated with the pci_dev that was earlier
+> >>>> hot-plugged and was attached under a pci-bridge. The PCI dev header
+> >>>> `dev->hdr_type` being 0, results a conditional check done with
+> >>>> `pci_is_bridge()` into false. Consequently, a call to
+> >>>> `of_pci_make_dev_node()` to create a device node is never made. When=
+ at
+> >>>> a later point in time, in the device node removal path, a memcpy is
+> >>>> attempted in `__of_changeset_entry_invert()`; since the device node =
+was
+> >>>> never created, results in an Oops due to kernel read access to a bad
+> >>>> address.
+> >>>>
+> >>>> To fix this issue, the patch updates `of_changeset_create_node()` to
+> >>>> allocate a new node only when the device node doesn't exist and init=
+ it
+> >>>> in case it does already. Also, introduce `of_pci_free_node()` to be
+> >>>> called to only revert and destroy the changeset device node that was
+> >>>> created via a call to `of_changeset_create_node()`.
+> >>>>
+> >>>> [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
+> >>>>
+> >>>> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> >>>> Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+> >>>> Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+> >>>> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> >>>> ---
+> >>>> Changes since v1:
+> >>>>       * Included Lizhi's suggested changes on V1
+> >>>>       * Fixed below two warnings from Lizhi's changes and rearranged=
+ the cleanup
+> >>>>         part a bit in `of_pci_make_dev_node`
+> >>>>           drivers/pci/of.c:611:6: warning: no previous prototype for=
+ =E2=80=98of_pci_free_node=E2=80=99 [-Wmissing-prototypes]
+> >>>>             611 | void of_pci_free_node(struct device_node *np)
+> >>>>                 |      ^~~~~~~~~~~~~~~~
+> >>>>           drivers/pci/of.c: In function =E2=80=98of_pci_make_dev_nod=
+e=E2=80=99:
+> >>>>           drivers/pci/of.c:696:1: warning: label =E2=80=98out_destro=
+y_cset=E2=80=99 defined but not used [-Wunused-label]
+> >>>>             696 | out_destroy_cset:
+> >>>>                 | ^~~~~~~~~~~~~~~~
+> >>>>       * V1: https://lore.kernel.org/all/20240703141634.2974589-1-ama=
+chhiw@linux.ibm.com/
+> >>>>
+> >>>>    drivers/of/dynamic.c  | 16 ++++++++++++----
+> >>>>    drivers/of/unittest.c |  2 +-
+> >>>>    drivers/pci/bus.c     |  3 +--
+> >>>>    drivers/pci/of.c      | 39 ++++++++++++++++++++++++++------------=
+-
+> >>>>    drivers/pci/pci.h     |  2 ++
+> >>>>    include/linux/of.h    |  1 +
+> >>>>    6 files changed, 43 insertions(+), 20 deletions(-)
+> >>>>
+> >>>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> >>>> index dda6092e6d3a..9bba5e82a384 100644
+> >>>> --- a/drivers/of/dynamic.c
+> >>>> +++ b/drivers/of/dynamic.c
+> >>>> @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct=
+ device_node *np,
+> >>>>     * a given changeset.
+> >>>>     *
+> >>>>     * @ocs: Pointer to changeset
+> >>>> + * @np: Pointer to device node. If null, allocate a new node. If no=
+t, init an
+> >>>> + *     existing one.
+> >>>>     * @parent: Pointer to parent device node
+> >>>>     * @full_name: Node full name
+> >>>>     *
+> >>>>     * Return: Pointer to the created device node or NULL in case of =
+an error.
+> >>>>     */
+> >>>>    struct device_node *of_changeset_create_node(struct of_changeset =
+*ocs,
+> >>>> +                                            struct device_node *np,
+> >>>>                                                struct device_node *p=
+arent,
+> >>>>                                                const char *full_name=
+)
+> >>>>    {
+> >>>> -       struct device_node *np;
+> >>>>           int ret;
+> >>>>
+> >>>> -       np =3D __of_node_dup(NULL, full_name);
+> >>>> -       if (!np)
+> >>>> -               return NULL;
+> >>>> +       if (!np) {
+> >>>> +               np =3D __of_node_dup(NULL, full_name);
+> >>>> +               if (!np)
+> >>>> +                       return NULL;
+> >>>> +       } else {
+> >>>> +               of_node_set_flag(np, OF_DYNAMIC);
+> >>>> +               of_node_set_flag(np, OF_DETACHED);
+> >>> Are we going to rename the function to
+> >>> of_changeset_create_or_maybe_modify_node()? No. The functions here ar=
+e
+> >>> very clear in that they allocate new objects and don't reuse what's
+> >>> passed in.
+> >> Ok. How about keeping of_changeset_create_node unchanged.
+> >>
+> >> Instead, call kzalloc(), of_node_init() and of_changeset_attach_node()
+> >>
+> >> in of_pci_make_dev_node() directly.
+> >>
+> >> A similar example is dlpar_parse_cc_node().
+> >>
+> >>
+> >> Does this sound better?
+> > No, because really that code should be re-written using of_changeset
+> > API.
+> >
+> > My suggestion is add a data pointer to struct of_changeset and then set
+> > that to something to know the data ptr is a changeset and is your
+> > changeset.
+>
+> I do not fully understand the point. I think the issue is that we do not
+> know if a given of_node is created by of_pci_make_dev_node(), correct?
 
-Not  checking the result of strndup(), I'll try to add the check on an
-extra pass after I read the patches.
+Yes.
 
-- Arnaldo
+> of_node->data can point to anything. And we do not know if it points a
+> cset or not.
 
-> +	remove_spaces(tmp_raw_insn);
-> +
-> +	sscanf(tmp_raw_insn, "%x", &dl->raw.raw_insn);
-> +	if (objdump)
-> +		dl->raw.raw_insn = be32_to_cpu(dl->raw.raw_insn);
-> +
-> +	return 0;
-> +}
-> +
->  static void annotation_line__init(struct annotation_line *al,
->  				  struct annotate_args *args,
->  				  int nr)
-> @@ -898,7 +941,10 @@ struct disasm_line *disasm_line__new(struct annotate_args *args)
->  		goto out_delete;
->  
->  	if (args->offset != -1) {
-> -		if (disasm_line__parse(dl->al.line, &dl->ins.name, &dl->ops.raw) < 0)
-> +		if (arch__is(args->arch, "powerpc")) {
-> +			if (disasm_line__parse_powerpc(dl) < 0)
-> +				goto out_free_line;
-> +		} else if (disasm_line__parse(dl->al.line, &dl->ins.name, &dl->ops.raw) < 0)
->  			goto out_free_line;
+Right. But instead of checking "of_node->data =3D=3D of_pci_free_node",
+you would just be checking "*(of_node->data) =3D=3D of_pci_free_node"
+(omitting a NULL check and cast for simplicity). I suppose in theory
+that could have a false match, but that could happen in this patch
+already.
 
-When the if has {}, the else should as well.
-Documentation/process/coding-style.rst has this documented.
+> Do you mean to add a flag (e.g. OF_PCI_DYNAMIC) to
+> indicate of_node->data points to cset?
 
-This is minor, I'm pointing out so that you take into account for the
-future.
+That would be another option, but OF_PCI_DYNAMIC would not be a good
+name because that would be a flag bit for every single caller needing
+similar functionality. Name it just what it indicates: of_node->data
+points to cset
 
-- Arnaldo
+If we have that flag, then possibly the DT core can handle more
+clean-up itself like calling detach and freeing the changeset.
+Ideally, the flags should be internal to the DT code.
 
->  
->  		disasm_line__init_ins(dl, args->arch, &args->ms);
-> -- 
-> 2.43.0
+Rob
