@@ -1,95 +1,142 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA1B93A875
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 23:05:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3227893A885
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 23:09:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=UeNxZcrZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WT8mV15Q7z3d2S
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 07:04:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WT8sV17Cxz3ckp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 07:09:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=UeNxZcrZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2009::622; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=lizhi.hou@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20622.outbound.protection.outlook.com [IPv6:2a01:111:f403:2009::622])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WT8lp3zYjz3c58
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 07:04:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721768655;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AgNOjwKnUy48py4Ld6sAQndZB5vwc59GpzRjxep5jN4=;
-	b=aWVzfyFFHr/nmOX2FAnIedkWXnTeKC6cPDGT0xBiIitdPruecUFy2bMt7OMAGtKR0EPw0t
-	O+Brgr2E7RKyXCrlZzNJW8MylKXXMjXCQnEwVeuPk+9PfvCqFWcbwNKbPQA+MyGM9v3Q2T
-	+K0x4/GB8jDYCyGwI6Wa0bsGaGfbZFE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721768655;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AgNOjwKnUy48py4Ld6sAQndZB5vwc59GpzRjxep5jN4=;
-	b=aWVzfyFFHr/nmOX2FAnIedkWXnTeKC6cPDGT0xBiIitdPruecUFy2bMt7OMAGtKR0EPw0t
-	O+Brgr2E7RKyXCrlZzNJW8MylKXXMjXCQnEwVeuPk+9PfvCqFWcbwNKbPQA+MyGM9v3Q2T
-	+K0x4/GB8jDYCyGwI6Wa0bsGaGfbZFE=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-9Wt3qqpFOASyBkPrxlAe9w-1; Tue, 23 Jul 2024 17:04:13 -0400
-X-MC-Unique: 9Wt3qqpFOASyBkPrxlAe9w-1
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3d8ae3b69daso1307406b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 14:04:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721768653; x=1722373453;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AgNOjwKnUy48py4Ld6sAQndZB5vwc59GpzRjxep5jN4=;
-        b=B9JyokYceo46chccWPP7pSAxB6CJS9hDH9CnzAzFH19cqSFk2f0COxdBzsQBme83Kz
-         b7c+/Q6Qa/26Nh8lCHocM17WOjua6ZYg50t65lZmvniFrT8zqT3FHkrVwd5agikCvcky
-         BTzQeoOh7tg1zoGf48E2JE0tvQ3afBLe8iZNT+j4WD7mtOkaCTz9Ol07Bt8dSsS0fTuI
-         gWSb+J3rqe8ErbwTAoGdMtIOGbwZ2SWZ8viyJLlAwIEAbHMhmy/SQd2TxiYJ3VqIKf2d
-         h/4quVwoH6KEWsUPFASKIL1wmSAG473wg3VMNPf3i4WswrNSQ6cZAiKowJhxbKrtmYli
-         PTrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbpMd8pitbNkfWz7yD+zieYWu5wShs/hJ+KM2KNX7hf5RR9VAFd+bi9w/1DwKCvvFKT4+Xlt/BebNe6JQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzpmrw9sV9XYwpjhCw7lnAb7DlLG8G650gYmtSNrLcwb7RcpPCh
-	rKL/R46IQh19Tiv1J1LGO9YprjeX33Dl5rcTRu/TWTb5aV8Gj+tQO8C6Kukg6uJvunE2Hdt1NLK
-	U4TX2uJO9wH8UL8X5Sb21zuarETdEFr3j5MnxSkdPopN/NGksGFebNDXVSFv6Vbc=
-X-Received: by 2002:a9d:6043:0:b0:703:78ff:1e1 with SMTP id 46e09a7af769-708fd973bc0mr6593336a34.0.1721768653030;
-        Tue, 23 Jul 2024 14:04:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhxM1GaXKORyXEI48pMqHK/HKFQ8d349p1Ngql0yZkrT6ZS6/TU4RH6kRMVcENNPnDcnR0BQ==
-X-Received: by 2002:a9d:6043:0:b0:703:78ff:1e1 with SMTP id 46e09a7af769-708fd973bc0mr6593320a34.0.1721768652631;
-        Tue, 23 Jul 2024 14:04:12 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a19905a721sm515082185a.93.2024.07.23.14.04.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 14:04:11 -0700 (PDT)
-Date: Tue, 23 Jul 2024 17:04:08 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH RFC 0/6] mm: THP-agnostic refactor on huge mappings
-Message-ID: <ZqAayNSDf_6cfziw@x1n>
-References: <20240717220219.3743374-1-peterx@redhat.com>
- <cf36725d-c197-4c07-8998-d34711335fdb@redhat.com>
- <Zp57ZLk2IQoHOI7u@x1n>
- <cfe94481-233a-421c-b607-08517588de6c@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WT8rp5dDZz3cZ4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 07:08:39 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IhdJ2EY0HoLfD7rK9i7BJGgNTQqb4CY2OXtb+EMwySdzTwgNM90iHp0vOgEz4oLwXyOmcGuVJ/1utyrzHfuCp6e2MhI7XYoDDXTkqIKslkeQIWkAWRuTuS0r3ozzq/yz2FjhFDvSA4OFSRvSASPyoFwtqolDDhEp9yaolirbXRRVwKxbHAnJb0GkKetsA6KnNq58iKkxprKTJd6N9IiwF6i3IJdHA9nJyX1rLT0zdArYpo51OCgdQUiAsTTwd8MCAfy9Mj1xooqOARrUonRTpdomFRbw3syfk2TPfUfWXSy54niaejDEBTIOOQJ528YG9WlEVmv+SPrTWRN5DTZbsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TQmRepm8M3O+jUFZoGthTK5sXOQQY/jirnNr6L8i98g=;
+ b=B/Fg1yPeGzXP7kWZexWoO7GAPti43AByY+K5phCsAc+4Jf6/AmeQJlYYcz21qChjM3cLVzt0YTBWbNfECsDSIKaGpzXovodbi3m4JF5xFm3PjsN1Gz0WBV/fwpV1cCcpQyCjHzhOo+SAiAgVZsg7pg9mw7qxe+y93u+wQBhRmxFAZoOXLta1gzHQePetxTLusPXVBpQTIDSnS7NCoTWb15467WwxsUmUswT4YlmSEyiFMsVSRM0sfEt4C1UeePyrw/0+8kCqjqyxru/RYqoc0W4NiCx/geQctec1VixUYaL38GckfMulZgUlI1ewIeFjQnegJ29hxKeW9VqwoPM/vw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TQmRepm8M3O+jUFZoGthTK5sXOQQY/jirnNr6L8i98g=;
+ b=UeNxZcrZuFQg05ygLeBo6hKMrwYfWOClvG2/BIHo3QQaXji9GMjfrzOJnOejYWYSQY+6HenJuDTjDlgjCWexNXC33QrjyqTg8jbbTr71/G20XpeSUi7cU64Lv2fB2XVeNgDclo7vqFAcRmMPEQ0b2mjTd02nQj3LGh9Mkh6guAM=
+Received: from SJ0PR03CA0357.namprd03.prod.outlook.com (2603:10b6:a03:39c::32)
+ by DS0PR12MB7927.namprd12.prod.outlook.com (2603:10b6:8:147::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16; Tue, 23 Jul
+ 2024 21:08:16 +0000
+Received: from CO1PEPF000075F4.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c:cafe::2b) by SJ0PR03CA0357.outlook.office365.com
+ (2603:10b6:a03:39c::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.17 via Frontend
+ Transport; Tue, 23 Jul 2024 21:08:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CO1PEPF000075F4.mail.protection.outlook.com (10.167.249.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7784.11 via Frontend Transport; Tue, 23 Jul 2024 21:08:15 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 23 Jul
+ 2024 16:08:14 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 23 Jul
+ 2024 16:08:13 -0500
+Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 23 Jul 2024 16:08:12 -0500
+Message-ID: <ac3aeec4-70fc-cd9e-498c-acab0b218d9b@amd.com>
+Date: Tue, 23 Jul 2024 14:08:12 -0700
 MIME-Version: 1.0
-In-Reply-To: <cfe94481-233a-421c-b607-08517588de6c@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
+ KVM guest
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>
+References: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
+ <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
+ <a6c92c73-13fb-8e9c-29de-1437654c3880@amd.com>
+ <20240723162107.GA501469-robh@kernel.org>
+ <a8d2e310-9446-6cfa-fe00-4ef83cdb6590@amd.com>
+ <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
+In-Reply-To: <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000075F4:EE_|DS0PR12MB7927:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ceab90d-5aba-4a33-ba08-08dcab5b91f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700013;
+X-Microsoft-Antispam-Message-Info: 	=?utf-8?B?a003ZW1lWlZVaG1QV1NNb1hRR2ZyZmpOeS9LNHA3UE5BcERFQU1adlpBbnhv?=
+ =?utf-8?B?QzBFY3E1Z0t4bnBSUEgxdUpXb216TVIrVmc3a1FOdjNsTnBMTjBMNm9nYUxm?=
+ =?utf-8?B?cDVteVhoUDJrRUdhaDJWQ3NxQUx3RGIyRzZzSWdYNFRZWS9ySncxbndoMHM4?=
+ =?utf-8?B?VmN4Znl4VGdHcWxxeENaSTlOU1lDTjEvc3FqWjdLT2NWbjU1WXVxb0VPL0x0?=
+ =?utf-8?B?czZSYUs1TFNjNW5oUnRPT1dsY0x1VEp6OGlaY2tQUWZhd05pSXVZbjVYZXc5?=
+ =?utf-8?B?UkJKeHRFaXNhRWFLRkJnTWdnNlppc1FUc1JZRlNVaURzMzZobUpHYjNucnh4?=
+ =?utf-8?B?aE45YXpHT1FvcVRiVTlJVEFLa1pYN0RUZC9tOXluTWZTQVRxVnRXMmhZVWZR?=
+ =?utf-8?B?UytjbG9tWHdwYmRsM2RuWnMwT0xqRWpkeXVvVnJTYXlRWWhXZ05lZ2Q1YjJD?=
+ =?utf-8?B?dkJiSzRNb2xBSk5kQm82NXJjbW04NzhOazlwNVJyZ29sWHFLNmhDelJvalV4?=
+ =?utf-8?B?dHE4MS9WcVNhVVE2ZUQxTlNDcWdpTGdZeGxtbjM5Z2lpRWlTQmp4T3MydC9k?=
+ =?utf-8?B?SHpVeVViWEFsYnhSVXpQR3BJdjBZby9jTnQ4L0hsQ2dsWGNQeE16Z2d5V1Rv?=
+ =?utf-8?B?K3kzL2pRNGRxMzVqdXY0RHRueGYyejZxcTEzZ3NtSWVveUV1WHY0STRteEN1?=
+ =?utf-8?B?OWV1S0JERlMyUmZwNTNFYmRQWURsa0VQR2F4a0M5dG5oNGl1RTVUM1dGMUZt?=
+ =?utf-8?B?NzBHOXl5cy9LVWFNNTQ0UCtWZUFWM3pqRk5wZEtSWHZRVW1oVnBBaHdIT1d6?=
+ =?utf-8?B?aVFacHpzVjZEMTNPNy84VkhFN0FyUW9FVHlWcjRIMUt1UWtqWkFUY1krUng2?=
+ =?utf-8?B?K3V3VnJHWDRGakhnZkU3cHdCTmU3WUNkL0Y0QVgvOTFaeUpsNTRoVHBqN1BW?=
+ =?utf-8?B?aWVwdWl2czl6UThhS3RHZFR6SE56M2VkQjU0eTk1dkNNalJCRmNyZHc2eGNV?=
+ =?utf-8?B?SE85aGxxeDIyeGc4UU9IclgzL1dBSWtnN3p4cDEvekdWNjVNUGJKRnRwMFVP?=
+ =?utf-8?B?cVl0K3MxOHFKR0lOd3lwYVVxVlBQMEVmYnZwdktzNUtFWGFIZ1ExaCt5TENu?=
+ =?utf-8?B?cXJVNlpBb1VvZG5MUmJmOTVjZ0JOWWFKMzd1VjBsNDl1R1F1eWNGMGQrQWox?=
+ =?utf-8?B?Rm5HNi8rY1VuV29IYi9pbXk4dDRSbFJYUHNvUVpDL1ZYSGwyMWIySWoxRndl?=
+ =?utf-8?B?NWdlVWJuOVpubXRtSXNXSGdnVW9RKzhXdExYNStJTnZrOWR0THhBS0wxeURE?=
+ =?utf-8?B?REdVRTRvUlZ6S3c3SHZHN1RZdHdzUTVDbmt6c01MczZCQ01aNUtpRkVhYWtz?=
+ =?utf-8?B?ekR3cHphUlVTV3kxeHVzcU1LeXBEaUFIL3N2UEtjMExNb2loOUo5SzRMY1pl?=
+ =?utf-8?B?SlBod2taMVZjR1dQNEc0WHVLOTI0cGgvWkhMUE15MEtlTU9QVnlpbmhQUEN5?=
+ =?utf-8?B?V1lVOEVZTENWalJmd1ZyWklHRkdESVZjdExQamZoczZXeU93czNESXJuVnY5?=
+ =?utf-8?B?WjgvYlpIYWxGMFlBdHBmTHNFK25yS0llakUzbHU4bFlVTzlOYVBUc2tyRWVP?=
+ =?utf-8?B?VVdSQXJWdkJITU5WTVowNEdvamRqTGVjcGNSR1Exbkt6VkxUNlk3QnpTUUtD?=
+ =?utf-8?B?Ymd6alMwckkzc1FhWlloMG9NQ3Z6MFg1TkFrNjFRaFhIMU4zRzJsVy9uSC9r?=
+ =?utf-8?B?TmxBZmg5Qk5nNFBNUjZ2M0NoMzJ3YjZ6eTRlUXZUU2hPK2txWHpzeWdDeEFl?=
+ =?utf-8?B?YmlMa2w1N2Z5OUc2aDlVU3ZWQXNlbGRDa0NSVlBtN2FtWUR2WHAzOVN0VFhp?=
+ =?utf-8?B?VzJWSW0rN29wU0hvMEhmMUNJN1J6alFCRWFnZlhySjcrbFE9PQ==?=
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 21:08:15.5307
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ceab90d-5aba-4a33-ba08-08dcab5b91f2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	CO1PEPF000075F4.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7927
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,151 +148,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Alistair Popple <apopple@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Alex Williamson <alex.williamson@redhat.com>, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>, sparclinux@vger.kernel.org, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
+Cc: devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>, Lukas
+ Wunner <lukas@wunner.de>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 23, 2024 at 10:18:37AM +0200, David Hildenbrand wrote:
-> On 22.07.24 17:31, Peter Xu wrote:
-> > On Mon, Jul 22, 2024 at 03:29:43PM +0200, David Hildenbrand wrote:
-> > > On 18.07.24 00:02, Peter Xu wrote:
-> > > > This is an RFC series, so not yet for merging.  Please don't be scared by
-> > > > the code changes: most of them are code movements only.
-> > > > 
-> > > > This series is based on the dax mprotect fix series here (while that one is
-> > > > based on mm-unstable):
-> > > > 
-> > > >     [PATCH v3 0/8] mm/mprotect: Fix dax puds
-> > > >     https://lore.kernel.org/r/20240715192142.3241557-1-peterx@redhat.com
-> > > > 
-> > > > Overview
-> > > > ========
-> > > > 
-> > > > This series doesn't provide any feature change.  The only goal of this
-> > > > series is to start decoupling two ideas: "THP" and "huge mapping".  We
-> > > > already started with having PGTABLE_HAS_HUGE_LEAVES config option, and this
-> > > > one extends that idea into the code.
-> > > > 
-> > > > The issue is that we have so many functions that only compile with
-> > > > CONFIG_THP=on, even though they're about huge mappings, and huge mapping is
-> > > > a pretty common concept, which can apply to many things besides THPs
-> > > > nowadays.  The major THP file is mm/huge_memory.c as of now.
-> > > > 
-> > > > The first example of such huge mapping users will be hugetlb.  We lived
-> > > > until now with no problem simply because Linux almost duplicated all the
-> > > > logics there in the "THP" files into hugetlb APIs.  If we want to get rid
-> > > > of hugetlb specific APIs and paths, this _might_ be the first thing we want
-> > > > to do, because we want to be able to e.g., zapping a hugetlb pmd entry even
-> > > > if !CONFIG_THP.
-> > > > 
-> > > > Then consider other things like dax / pfnmaps.  Dax can depend on THP, then
-> > > > it'll naturally be able to use pmd/pud helpers, that's okay.  However is it
-> > > > a must?  Do we also want to have every new pmd/pud mappings in the future
-> > > > to depend on THP (like PFNMAP)?  My answer is no, but I'm open to opinions.
-> > > > 
-> > > > If anyone agrees with me that "huge mapping" (aka, PMD/PUD mappings that
-> > > > are larger than PAGE_SIZE) is a more generic concept than THP, then I think
-> > > > at some point we need to move the generic code out of THP code into a
-> > > > common code base.
-> > > > 
-> > > > This is what this series does as a start.
-> > > 
-> > > Hi Peter!
-> > > 
-> > >  From a quick glimpse, patch #1-#4 do make sense independent of patch #5.
-> > > 
-> > > I am not so sure about all of the code movement in patch #5. If large folios
-> > > are the future, then likely huge_memory.c should simply be the home for all
-> > > that logic.
-> > > 
-> > > Maybe the goal should better be to compile huge_memory.c not only for THP,
-> > > but also for other use cases that require that logic, and fence off all THP
-> > > specific stuff using #ifdef?
-> > > 
-> > > Not sure, though. But a lot of this code movements/churn might be avoidable.
-> > 
-> > I'm fine using ifdefs in the current fine, but IMHO it's a matter of
-> > whether we want to keep huge_memory.c growing into even larger file, and
-> > keep all large folio logics only in that file.  Currently it's ~4000 LOCs.
-> 
-> Depends on "how much" for sure. huge_memory.c is currently on place 12 of
-> the biggest files in mm/. So there might not be immediate cause for action
-> ... just yet :) [guess which file is on #2 :) ]
 
-7821, hugetlb.c  
-7602, vmscan.c          
-7275, slub.c       
-7072, page_alloc.c
-6673, memory.c     
-5402, memcontrol.c 
-5239, shmem.c   
-5155, vmalloc.c      
-4419, filemap.c       
-4060, mmap.c       
-3882, huge_memory.c
+On 7/23/24 12:54, Rob Herring wrote:
+> On Tue, Jul 23, 2024 at 12:21 PM Lizhi Hou <lizhi.hou@amd.com> wrote:
+>>
+>> On 7/23/24 09:21, Rob Herring wrote:
+>>> On Mon, Jul 15, 2024 at 01:52:30PM -0700, Lizhi Hou wrote:
+>>>> On 7/15/24 11:55, Rob Herring wrote:
+>>>>> On Mon, Jul 15, 2024 at 2:08 AM Amit Machhiwal <amachhiw@linux.ibm.com> wrote:
+>>>>>> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+>>>>>> of a PCI device attached to a PCI-bridge causes following kernel Oops on
+>>>>>> a pseries KVM guest:
+>>>>>>
+>>>>>>     RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+>>>>>>     Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
+>>>>>>     BUG: Unable to handle kernel data access on read at 0x10ec00000048
+>>>>>>     Faulting instruction address: 0xc0000000012d8728
+>>>>>>     Oops: Kernel access of bad area, sig: 11 [#1]
+>>>>>>     LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+>>>>>> <snip>
+>>>>>>     NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
+>>>>>>     LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
+>>>>>>     Call Trace:
+>>>>>>     [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
+>>>>>>     [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
+>>>>>>     [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
+>>>>>>     [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_locked+0x34/0x64
+>>>>>>     [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
+>>>>>>     [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
+>>>>>>     [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
+>>>>>>     [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
+>>>>>>     [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
+>>>>>>     [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
+>>>>>>     [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
+>>>>>>     [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+>>>>>> <snip>
+>>>>>>
+>>>>>> A git bisect pointed this regression to be introduced via [1] that added
+>>>>>> a mechanism to create device tree nodes for parent PCI bridges when a
+>>>>>> PCI device is hot-plugged.
+>>>>>>
+>>>>>> The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
+>>>>>> device-tree node associated with the pci_dev that was earlier
+>>>>>> hot-plugged and was attached under a pci-bridge. The PCI dev header
+>>>>>> `dev->hdr_type` being 0, results a conditional check done with
+>>>>>> `pci_is_bridge()` into false. Consequently, a call to
+>>>>>> `of_pci_make_dev_node()` to create a device node is never made. When at
+>>>>>> a later point in time, in the device node removal path, a memcpy is
+>>>>>> attempted in `__of_changeset_entry_invert()`; since the device node was
+>>>>>> never created, results in an Oops due to kernel read access to a bad
+>>>>>> address.
+>>>>>>
+>>>>>> To fix this issue, the patch updates `of_changeset_create_node()` to
+>>>>>> allocate a new node only when the device node doesn't exist and init it
+>>>>>> in case it does already. Also, introduce `of_pci_free_node()` to be
+>>>>>> called to only revert and destroy the changeset device node that was
+>>>>>> created via a call to `of_changeset_create_node()`.
+>>>>>>
+>>>>>> [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
+>>>>>>
+>>>>>> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+>>>>>> Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+>>>>>> Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+>>>>>> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+>>>>>> ---
+>>>>>> Changes since v1:
+>>>>>>        * Included Lizhi's suggested changes on V1
+>>>>>>        * Fixed below two warnings from Lizhi's changes and rearranged the cleanup
+>>>>>>          part a bit in `of_pci_make_dev_node`
+>>>>>>            drivers/pci/of.c:611:6: warning: no previous prototype for ‘of_pci_free_node’ [-Wmissing-prototypes]
+>>>>>>              611 | void of_pci_free_node(struct device_node *np)
+>>>>>>                  |      ^~~~~~~~~~~~~~~~
+>>>>>>            drivers/pci/of.c: In function ‘of_pci_make_dev_node’:
+>>>>>>            drivers/pci/of.c:696:1: warning: label ‘out_destroy_cset’ defined but not used [-Wunused-label]
+>>>>>>              696 | out_destroy_cset:
+>>>>>>                  | ^~~~~~~~~~~~~~~~
+>>>>>>        * V1: https://lore.kernel.org/all/20240703141634.2974589-1-amachhiw@linux.ibm.com/
+>>>>>>
+>>>>>>     drivers/of/dynamic.c  | 16 ++++++++++++----
+>>>>>>     drivers/of/unittest.c |  2 +-
+>>>>>>     drivers/pci/bus.c     |  3 +--
+>>>>>>     drivers/pci/of.c      | 39 ++++++++++++++++++++++++++-------------
+>>>>>>     drivers/pci/pci.h     |  2 ++
+>>>>>>     include/linux/of.h    |  1 +
+>>>>>>     6 files changed, 43 insertions(+), 20 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+>>>>>> index dda6092e6d3a..9bba5e82a384 100644
+>>>>>> --- a/drivers/of/dynamic.c
+>>>>>> +++ b/drivers/of/dynamic.c
+>>>>>> @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct device_node *np,
+>>>>>>      * a given changeset.
+>>>>>>      *
+>>>>>>      * @ocs: Pointer to changeset
+>>>>>> + * @np: Pointer to device node. If null, allocate a new node. If not, init an
+>>>>>> + *     existing one.
+>>>>>>      * @parent: Pointer to parent device node
+>>>>>>      * @full_name: Node full name
+>>>>>>      *
+>>>>>>      * Return: Pointer to the created device node or NULL in case of an error.
+>>>>>>      */
+>>>>>>     struct device_node *of_changeset_create_node(struct of_changeset *ocs,
+>>>>>> +                                            struct device_node *np,
+>>>>>>                                                 struct device_node *parent,
+>>>>>>                                                 const char *full_name)
+>>>>>>     {
+>>>>>> -       struct device_node *np;
+>>>>>>            int ret;
+>>>>>>
+>>>>>> -       np = __of_node_dup(NULL, full_name);
+>>>>>> -       if (!np)
+>>>>>> -               return NULL;
+>>>>>> +       if (!np) {
+>>>>>> +               np = __of_node_dup(NULL, full_name);
+>>>>>> +               if (!np)
+>>>>>> +                       return NULL;
+>>>>>> +       } else {
+>>>>>> +               of_node_set_flag(np, OF_DYNAMIC);
+>>>>>> +               of_node_set_flag(np, OF_DETACHED);
+>>>>> Are we going to rename the function to
+>>>>> of_changeset_create_or_maybe_modify_node()? No. The functions here are
+>>>>> very clear in that they allocate new objects and don't reuse what's
+>>>>> passed in.
+>>>> Ok. How about keeping of_changeset_create_node unchanged.
+>>>>
+>>>> Instead, call kzalloc(), of_node_init() and of_changeset_attach_node()
+>>>>
+>>>> in of_pci_make_dev_node() directly.
+>>>>
+>>>> A similar example is dlpar_parse_cc_node().
+>>>>
+>>>>
+>>>> Does this sound better?
+>>> No, because really that code should be re-written using of_changeset
+>>> API.
+>>>
+>>> My suggestion is add a data pointer to struct of_changeset and then set
+>>> that to something to know the data ptr is a changeset and is your
+>>> changeset.
+>> I do not fully understand the point. I think the issue is that we do not
+>> know if a given of_node is created by of_pci_make_dev_node(), correct?
+> Yes.
+>
+>> of_node->data can point to anything. And we do not know if it points a
+>> cset or not.
+> Right. But instead of checking "of_node->data == of_pci_free_node",
+> you would just be checking "*(of_node->data) == of_pci_free_node"
 
-IMHO a split is normally better than keeping everything in one file, but
-yeah I'd confess THP file isn't that bad comparing to others..  And I'm
-definitely surprised it's even out of top ten.
+if of_node->data is a char* pointer, it would be panic. So I used 
+of_node->data == of_pci_free_node.
 
-> 
-> > 
-> > Nornally I don't see this as much of a "code churn" category, because it
-> > doesn't changes the code itself but only move things.  I personally also
-> > prefer without code churns, but only in the case where there'll be tiny
-> > little functional changes here and there without real benefit.
-> > 
-> > It's pretty unavoidable to me when one file grows too large and we'll need
-> > to split, and in this case git doesn't have a good way to track such
-> > movement..
-> 
-> Yes, that's what I mean.
-> 
-> I've been recently thinking if we should pursue a different direction:
-> 
-> Just as we recently relocated most follow_huge_* stuff into gup.c, likely we
-> should rather look into moving copy_huge_pmd, change_huge_pmd, copy_huge_pmd
-> ... into the files where they logically belong to.
-> 
-> In madvise.c, we've been doing that in some places already: For
-> madvise_cold_or_pageout_pte_range() we inline the code, but not for
-> madvise_free_huge_pmd().
-> 
-> pmd_trans_huge() would already compile to a NOP without
-> CONFIG_TRANSPARENT_HUGEPAGE, but to make that code avoid most
-> CONFIG_TRANSPARENT_HUGEPAGE, we'd need a couple more function stubs to make
-> the compiler happy while still being able to compile that code out when not
-> required.
+> (omitting a NULL check and cast for simplicity). I suppose in theory
+> that could have a false match, but that could happen in this patch
+> already.
 
-Right, I had a patch does exactly that, where it's called pmd_is_leaf(),
-for example, but taking CONFIG_* into account.
+I think if any other kernel code  put of_pci_free_node to of_node->data, 
+it can be fixed over there.
 
-I remember I had some issue with that, e.g. I used to see pmd_trans_huge()
-(when !THP) can optimize some path but pmd_is_leaf() didn't do the same job
-even if all configs were off.  But that's another story and I didn't yet
-dig deeper.  Could be something small but overlooked.
+>
+>> Do you mean to add a flag (e.g. OF_PCI_DYNAMIC) to
+>> indicate of_node->data points to cset?
+> That would be another option, but OF_PCI_DYNAMIC would not be a good
+> name because that would be a flag bit for every single caller needing
+> similar functionality. Name it just what it indicates: of_node->data
+> points to cset
+>
+> If we have that flag, then possibly the DT core can handle more
+> clean-up itself like calling detach and freeing the changeset.
+> Ideally, the flags should be internal to the DT code.
 
-> 
-> The idea would be that e.g., pmd_leaf() would return "false" at compile time
-> if no active configuration (THP, HUGETLB, ...) would be active. So we could
-> just use pmd_leaf() similar to pmd_trans_huge() in relevant code and have
-> the compiler optimize it all out without putting it into separate files.
-> 
-> That means, large folios and PMD/PUD mappings will become "more common" and
-> better integrated, without the need to jump between files.
-> 
-> Just some thought about an alternative that would make sense to me.
+Sure. If you prefer this option, I will propose another fix.
 
-Yeah comments are always welcomed, thanks.
-
-So I suppose maybe it would be easier for now that I make the pfnmap branch
-depending on THP. It looks to me something like this may still take some
-time to consolidate.  When it's light enough, maybe it can be a few initial
-patches on top of a hugetlb series that can start to use this.  Maybe
-that'll at least make the patches easier to review.
 
 Thanks,
 
--- 
-Peter Xu
+Lizhi
 
+>
+> Rob
