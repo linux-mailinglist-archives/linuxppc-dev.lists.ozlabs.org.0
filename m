@@ -1,85 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C307939C18
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 09:58:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36367939A14
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 08:43:01 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RJhNstXj;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WSqKR2dtZz3fvw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 17:58:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WSndv1Dk7z3cY5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 16:42:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huaweicloud.com (client-ip=45.249.212.56; helo=dggsgout12.his.huawei.com; envelope-from=zhengyejian@huaweicloud.com; receiver=lists.ozlabs.org)
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RJhNstXj;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSnpY06brz3clL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 16:50:28 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WSnP146mVz4f3khK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 14:31:49 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id EE73B1A0568
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 14:32:01 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.67.175.61])
-	by APP2 (Coremail) with SMTP id Syh0CgA34wpOTp9mjImuAw--.48686S7;
-	Tue, 23 Jul 2024 14:32:01 +0800 (CST)
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
-To: masahiroy@kernel.org,
-	peterz@infradead.org,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mark.rutland@arm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	naveen.n.rao@linux.ibm.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	mcgrof@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	nathan@kernel.org,
-	nicolas@fjasle.eu,
-	ojeda@kernel.org,
-	akpm@linux-foundation.org,
-	surenb@google.com,
-	pasha.tatashin@soleen.com,
-	kent.overstreet@linux.dev,
-	james.clark@arm.com,
-	jpoimboe@kernel.org
-Subject: [PATCH v2 5/5] ftrace: Revert the FTRACE_MCOUNT_MAX_OFFSET workaround
-Date: Tue, 23 Jul 2024 14:32:58 +0800
-Message-Id: <20240723063258.2240610-6-zhengyejian@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
-References: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSnd76tPvz30T8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 16:42:19 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 65E8760B89;
+	Tue, 23 Jul 2024 06:42:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06589C4AF0B;
+	Tue, 23 Jul 2024 06:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721716937;
+	bh=kClsaodBCvsJ+OpWo0SvlYVKVW681tzmFQcaGnY0oe0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RJhNstXjyeErh8almzQWDcVec+nPCxdrDaPLjMXrZ1wfgN+p+xMkq+Z2flxT67llB
+	 uc/c4HxmWMPBHNUO+6ahMcmt5W+n0WlsVglZcY5IvNNFQu7ypuakv8uc8IriFywgdg
+	 x1RhMP169bh8Gqo+f5hFY41at8mycpcf9CWJnwEedQYl2fIFUMkcSXigbqKWlgNPYL
+	 gyRbdB+et87yqzHXzKC+HNgsHBV5tTxpNd9VwiyB7Nl5BwzeH5pVg+5xNzV+HjZi5D
+	 +iZFJrwpyLXCzg+mlZUEGgRf2J6fe2GSQ6lnI0upcC/Nk3wKusFqJ0/RM0Y0GUsbXY
+	 5JwJi+f3DixvA==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/25] mm: introduce numa_memblks
+Date: Tue, 23 Jul 2024 09:41:31 +0300
+Message-ID: <20240723064156.4009477-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: Syh0CgA34wpOTp9mjImuAw--.48686S7
-X-Coremail-Antispam: 1UD129KBjvJXoWxKFy7Cw17Zw1kCFy7CF4kWFg_yoW3GFWfpF
-	ZIya1qgrW7CF4jga9Fgr1DCFyakrn0kryaq3yDG34FywnYqr4j9F92yrWqvr97JrWkCa4f
-	XFW7ZrW2yFnxZ3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-	z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr1j6r
-	xdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0D
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7MxkF7I0En4kS14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
-	CEb7AF67AKxVWrXVW8Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI
-	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
-	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
-	daVFxhVjvjDU0xZFpf9x0pR4E__UUUUU=
-X-CM-SenderInfo: x2kh0w51hmxt3q6k3tpzhluzxrxghudrp/
-X-Mailman-Approved-At: Tue, 23 Jul 2024 17:56:45 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,250 +57,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zhengyejian@huaweicloud.com, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-mips@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After patch titled "ftrace: Skip invalid __fentry__ in
-ftrace_process_locs()", __fentry__ locations in overridden weak function
-have been checked and skipped, then all records in ftrace_pages are
-valid, the FTRACE_MCOUNT_MAX_OFFSET workaround can be reverted, include:
- 1. commit b39181f7c690 ("ftrace: Add FTRACE_MCOUNT_MAX_OFFSET to avoid
-    adding weak function")
- 2. commit 7af82ff90a2b ("powerpc/ftrace: Ignore weak functions")
- 3. commit f6834c8c59a8 ("powerpc/ftrace: Fix dropping weak symbols with
-    older toolchains")
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
----
- arch/powerpc/include/asm/ftrace.h |   7 --
- arch/x86/include/asm/ftrace.h     |   7 --
- kernel/trace/ftrace.c             | 141 +-----------------------------
- 3 files changed, 2 insertions(+), 153 deletions(-)
+Hi,
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index 559560286e6d..328cf55acfb7 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -8,13 +8,6 @@
- #define MCOUNT_ADDR		((unsigned long)(_mcount))
- #define MCOUNT_INSN_SIZE	4 /* sizeof mcount call */
- 
--/* Ignore unused weak functions which will have larger offsets */
--#if defined(CONFIG_MPROFILE_KERNEL) || defined(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY)
--#define FTRACE_MCOUNT_MAX_OFFSET	16
--#elif defined(CONFIG_PPC32)
--#define FTRACE_MCOUNT_MAX_OFFSET	8
--#endif
--
- #ifndef __ASSEMBLY__
- extern void _mcount(void);
- 
-diff --git a/arch/x86/include/asm/ftrace.h b/arch/x86/include/asm/ftrace.h
-index 0152a81d9b4a..6a3a4a8830dc 100644
---- a/arch/x86/include/asm/ftrace.h
-+++ b/arch/x86/include/asm/ftrace.h
-@@ -9,13 +9,6 @@
- # define MCOUNT_ADDR		((unsigned long)(__fentry__))
- #define MCOUNT_INSN_SIZE	5 /* sizeof mcount call */
- 
--/* Ignore unused weak functions which will have non zero offsets */
--#ifdef CONFIG_HAVE_FENTRY
--# include <asm/ibt.h>
--/* Add offset for endbr64 if IBT enabled */
--# define FTRACE_MCOUNT_MAX_OFFSET	ENDBR_INSN_SIZE
--#endif
--
- #ifdef CONFIG_DYNAMIC_FTRACE
- #define ARCH_SUPPORTS_FTRACE_OPS 1
- #endif
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 6947be8801d9..37510c591498 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -49,8 +49,6 @@
- #define FTRACE_NOCLEAR_FLAGS	(FTRACE_FL_DISABLED | FTRACE_FL_TOUCHED | \
- 				 FTRACE_FL_MODIFIED)
- 
--#define FTRACE_INVALID_FUNCTION		"__ftrace_invalid_address__"
--
- #define FTRACE_WARN_ON(cond)			\
- 	({					\
- 		int ___r = cond;		\
-@@ -4208,105 +4206,6 @@ static void add_trampoline_func(struct seq_file *m, struct ftrace_ops *ops,
- 		seq_printf(m, " ->%pS", ptr);
- }
- 
--#ifdef FTRACE_MCOUNT_MAX_OFFSET
--/*
-- * Weak functions can still have an mcount/fentry that is saved in
-- * the __mcount_loc section. These can be detected by having a
-- * symbol offset of greater than FTRACE_MCOUNT_MAX_OFFSET, as the
-- * symbol found by kallsyms is not the function that the mcount/fentry
-- * is part of. The offset is much greater in these cases.
-- *
-- * Test the record to make sure that the ip points to a valid kallsyms
-- * and if not, mark it disabled.
-- */
--static int test_for_valid_rec(struct dyn_ftrace *rec)
--{
--	char str[KSYM_SYMBOL_LEN];
--	unsigned long offset;
--	const char *ret;
--
--	ret = kallsyms_lookup(rec->ip, NULL, &offset, NULL, str);
--
--	/* Weak functions can cause invalid addresses */
--	if (!ret || offset > FTRACE_MCOUNT_MAX_OFFSET) {
--		rec->flags |= FTRACE_FL_DISABLED;
--		return 0;
--	}
--	return 1;
--}
--
--static struct workqueue_struct *ftrace_check_wq __initdata;
--static struct work_struct ftrace_check_work __initdata;
--
--/*
-- * Scan all the mcount/fentry entries to make sure they are valid.
-- */
--static __init void ftrace_check_work_func(struct work_struct *work)
--{
--	struct ftrace_page *pg;
--	struct dyn_ftrace *rec;
--
--	mutex_lock(&ftrace_lock);
--	do_for_each_ftrace_rec(pg, rec) {
--		test_for_valid_rec(rec);
--	} while_for_each_ftrace_rec();
--	mutex_unlock(&ftrace_lock);
--}
--
--static int __init ftrace_check_for_weak_functions(void)
--{
--	INIT_WORK(&ftrace_check_work, ftrace_check_work_func);
--
--	ftrace_check_wq = alloc_workqueue("ftrace_check_wq", WQ_UNBOUND, 0);
--
--	queue_work(ftrace_check_wq, &ftrace_check_work);
--	return 0;
--}
--
--static int __init ftrace_check_sync(void)
--{
--	/* Make sure the ftrace_check updates are finished */
--	if (ftrace_check_wq)
--		destroy_workqueue(ftrace_check_wq);
--	return 0;
--}
--
--late_initcall_sync(ftrace_check_sync);
--subsys_initcall(ftrace_check_for_weak_functions);
--
--static int print_rec(struct seq_file *m, unsigned long ip)
--{
--	unsigned long offset;
--	char str[KSYM_SYMBOL_LEN];
--	char *modname;
--	const char *ret;
--
--	ret = kallsyms_lookup(ip, NULL, &offset, &modname, str);
--	/* Weak functions can cause invalid addresses */
--	if (!ret || offset > FTRACE_MCOUNT_MAX_OFFSET) {
--		snprintf(str, KSYM_SYMBOL_LEN, "%s_%ld",
--			 FTRACE_INVALID_FUNCTION, offset);
--		ret = NULL;
--	}
--
--	seq_puts(m, str);
--	if (modname)
--		seq_printf(m, " [%s]", modname);
--	return ret == NULL ? -1 : 0;
--}
--#else
--static inline int test_for_valid_rec(struct dyn_ftrace *rec)
--{
--	return 1;
--}
--
--static inline int print_rec(struct seq_file *m, unsigned long ip)
--{
--	seq_printf(m, "%ps", (void *)ip);
--	return 0;
--}
--#endif
--
- static int t_show(struct seq_file *m, void *v)
- {
- 	struct ftrace_iterator *iter = m->private;
-@@ -4334,13 +4233,7 @@ static int t_show(struct seq_file *m, void *v)
- 	if (iter->flags & FTRACE_ITER_ADDRS)
- 		seq_printf(m, "%lx ", rec->ip);
- 
--	if (print_rec(m, rec->ip)) {
--		/* This should only happen when a rec is disabled */
--		WARN_ON_ONCE(!(rec->flags & FTRACE_FL_DISABLED));
--		seq_putc(m, '\n');
--		return 0;
--	}
--
-+	seq_printf(m, "%ps", (void *)rec->ip);
- 	if (iter->flags & (FTRACE_ITER_ENABLED | FTRACE_ITER_TOUCHED)) {
- 		struct ftrace_ops *ops;
- 
-@@ -4720,24 +4613,6 @@ add_rec_by_index(struct ftrace_hash *hash, struct ftrace_glob *func_g,
- 	return 0;
- }
- 
--#ifdef FTRACE_MCOUNT_MAX_OFFSET
--static int lookup_ip(unsigned long ip, char **modname, char *str)
--{
--	unsigned long offset;
--
--	kallsyms_lookup(ip, NULL, &offset, modname, str);
--	if (offset > FTRACE_MCOUNT_MAX_OFFSET)
--		return -1;
--	return 0;
--}
--#else
--static int lookup_ip(unsigned long ip, char **modname, char *str)
--{
--	kallsyms_lookup(ip, NULL, NULL, modname, str);
--	return 0;
--}
--#endif
--
- static int
- ftrace_match_record(struct dyn_ftrace *rec, struct ftrace_glob *func_g,
- 		struct ftrace_glob *mod_g, int exclude_mod)
-@@ -4745,12 +4620,7 @@ ftrace_match_record(struct dyn_ftrace *rec, struct ftrace_glob *func_g,
- 	char str[KSYM_SYMBOL_LEN];
- 	char *modname;
- 
--	if (lookup_ip(rec->ip, &modname, str)) {
--		/* This should only happen when a rec is disabled */
--		WARN_ON_ONCE(system_state == SYSTEM_RUNNING &&
--			     !(rec->flags & FTRACE_FL_DISABLED));
--		return 0;
--	}
-+	kallsyms_lookup(rec->ip, NULL, NULL, &modname, str);
- 
- 	if (mod_g) {
- 		int mod_matches = (modname) ? ftrace_match(modname, mod_g) : 0;
-@@ -7399,13 +7269,6 @@ void ftrace_module_enable(struct module *mod)
- 		if (!within_module(rec->ip, mod))
- 			break;
- 
--		/* Weak functions should still be ignored */
--		if (!test_for_valid_rec(rec)) {
--			/* Clear all other flags. Should not be enabled anyway */
--			rec->flags = FTRACE_FL_DISABLED;
--			continue;
--		}
--
- 		cnt = 0;
- 
- 		/*
+Following the discussion about handling of CXL fixed memory windows on
+arm64 [1] I decided to bite the bullet and move numa_memblks from x86 to
+the generic code so they will be available on arm64/riscv and maybe on
+loongarch sometime later.
+
+While it could be possible to use memblock to describe CXL memory windows,
+it currently lacks notion of unpopulated memory ranges and numa_memblks
+does implement this.
+
+Another reason to make numa_memblks generic is that both arch_numa (arm64
+and riscv) and loongarch use trimmed copy of x86 code although there is no
+fundamental reason why the same code cannot be used on all these platforms.
+Having numa_memblks in mm/ will make it's interaction with ACPI and FDT
+more consistent and I believe will reduce maintenance burden.
+
+And with generic numa_memblks it is (almost) straightforward to enable NUMA
+emulation on arm64 and riscv.
+
+The first 9 commits in this series are cleanups that are not strictly
+related to numa_memblks.
+Commits 10-16 slightly reorder code in x86 to allow extracting numa_memblks
+and NUMA emulation to the generic code.
+Commits 17-19 actually move the code from arch/x86/ to mm/ and commits 20-22
+does some aftermath cleanups.
+Commit 23 switches arch_numa to numa_memblks.
+Commit 24 enables usage of phys_to_target_node() and
+memory_add_physaddr_to_nid() with numa_memblks.
+Commit 25 moves the description for numa=fake from x86 to admin-guide
+
+[1] https://lore.kernel.org/all/20240529171236.32002-1-Jonathan.Cameron@huawei.com/
+
+v1: https://lore.kernel.org/all/20240716111346.3676969-1-rppt@kernel.org
+* add cleanup for arch_alloc_nodedata and HAVE_ARCH_NODEDATA_EXTENSION
+* add patch that moves description of numa=fake kernel parameter from
+  x86 to admin-guide
+* reduce rounding up of node_data allocations from PAGE_SIZE to
+  SMP_CACHE_BYTES
+* restore single allocation attempt of numa_distance
+* fix several comments
+* added review tags
+
+Mike Rapoport (Microsoft) (25):
+  mm: move kernel/numa.c to mm/
+  MIPS: sgi-ip27: make NODE_DATA() the same as on all other architectures
+  MIPS: sgi-ip27: ensure node_possible_map only contains valid nodes
+  MIPS: sgi-ip27: drop HAVE_ARCH_NODEDATA_EXTENSION
+  MIPS: loongson64: rename __node_data to node_data
+  MIPS: loongson64: drop HAVE_ARCH_NODEDATA_EXTENSION
+  mm: drop CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
+  arch, mm: move definition of node_data to generic code
+  arch, mm: pull out allocation of NODE_DATA to generic code
+  x86/numa: simplify numa_distance allocation
+  x86/numa: use get_pfn_range_for_nid to verify that node spans memory
+  x86/numa: move FAKE_NODE_* defines to numa_emu
+  x86/numa_emu: simplify allocation of phys_dist
+  x86/numa_emu: split __apicid_to_node update to a helper function
+  x86/numa_emu: use a helper function to get MAX_DMA32_PFN
+  x86/numa: numa_{add,remove}_cpu: make cpu parameter unsigned
+  mm: introduce numa_memblks
+  mm: move numa_distance and related code from x86 to numa_memblks
+  mm: introduce numa_emulation
+  mm: numa_memblks: introduce numa_memblks_init
+  mm: numa_memblks: make several functions and variables static
+  mm: numa_memblks: use memblock_{start,end}_of_DRAM() when sanitizing
+    meminfo
+  arch_numa: switch over to numa_memblks
+  mm: make range-to-target_node lookup facility a part of numa_memblks
+  docs: move numa=fake description to kernel-parameters.txt
+
+ .../admin-guide/kernel-parameters.txt         |  15 +
+ .../arch/x86/x86_64/boot-options.rst          |  12 -
+ arch/arm64/include/asm/Kbuild                 |   1 +
+ arch/arm64/include/asm/mmzone.h               |  13 -
+ arch/arm64/include/asm/topology.h             |   1 +
+ arch/loongarch/include/asm/Kbuild             |   1 +
+ arch/loongarch/include/asm/mmzone.h           |  16 -
+ arch/loongarch/include/asm/topology.h         |   1 +
+ arch/loongarch/kernel/numa.c                  |  21 -
+ arch/mips/Kconfig                             |   5 -
+ arch/mips/include/asm/mach-ip27/mmzone.h      |   1 -
+ .../mips/include/asm/mach-loongson64/mmzone.h |   4 -
+ arch/mips/loongson64/numa.c                   |  28 +-
+ arch/mips/sgi-ip27/ip27-memory.c              |  12 +-
+ arch/mips/sgi-ip27/ip27-smp.c                 |   2 +
+ arch/powerpc/include/asm/mmzone.h             |   6 -
+ arch/powerpc/mm/numa.c                        |  26 +-
+ arch/riscv/include/asm/Kbuild                 |   1 +
+ arch/riscv/include/asm/mmzone.h               |  13 -
+ arch/riscv/include/asm/topology.h             |   4 +
+ arch/s390/include/asm/Kbuild                  |   1 +
+ arch/s390/include/asm/mmzone.h                |  17 -
+ arch/s390/kernel/numa.c                       |   3 -
+ arch/sh/include/asm/mmzone.h                  |   3 -
+ arch/sh/mm/init.c                             |   7 +-
+ arch/sh/mm/numa.c                             |   3 -
+ arch/sparc/include/asm/mmzone.h               |   4 -
+ arch/sparc/mm/init_64.c                       |  11 +-
+ arch/x86/Kconfig                              |   9 +-
+ arch/x86/include/asm/Kbuild                   |   1 +
+ arch/x86/include/asm/mmzone.h                 |   6 -
+ arch/x86/include/asm/mmzone_32.h              |  17 -
+ arch/x86/include/asm/mmzone_64.h              |  18 -
+ arch/x86/include/asm/numa.h                   |  26 +-
+ arch/x86/include/asm/sparsemem.h              |   9 -
+ arch/x86/mm/Makefile                          |   1 -
+ arch/x86/mm/amdtopology.c                     |   1 +
+ arch/x86/mm/numa.c                            | 618 +-----------------
+ arch/x86/mm/numa_internal.h                   |  24 -
+ drivers/acpi/numa/srat.c                      |   1 +
+ drivers/base/Kconfig                          |   1 +
+ drivers/base/arch_numa.c                      | 223 ++-----
+ drivers/cxl/Kconfig                           |   2 +-
+ drivers/dax/Kconfig                           |   2 +-
+ drivers/of/of_numa.c                          |   1 +
+ include/asm-generic/mmzone.h                  |   5 +
+ include/asm-generic/numa.h                    |   6 +-
+ include/linux/memory_hotplug.h                |  48 --
+ include/linux/numa.h                          |   5 +
+ include/linux/numa_memblks.h                  |  58 ++
+ kernel/Makefile                               |   1 -
+ kernel/numa.c                                 |  26 -
+ mm/Kconfig                                    |  11 +
+ mm/Makefile                                   |   3 +
+ mm/mm_init.c                                  |   3 +-
+ mm/numa.c                                     |  57 ++
+ {arch/x86/mm => mm}/numa_emulation.c          |  42 +-
+ mm/numa_memblks.c                             | 568 ++++++++++++++++
+ 58 files changed, 867 insertions(+), 1158 deletions(-)
+ delete mode 100644 arch/arm64/include/asm/mmzone.h
+ delete mode 100644 arch/loongarch/include/asm/mmzone.h
+ delete mode 100644 arch/riscv/include/asm/mmzone.h
+ delete mode 100644 arch/s390/include/asm/mmzone.h
+ delete mode 100644 arch/x86/include/asm/mmzone.h
+ delete mode 100644 arch/x86/include/asm/mmzone_32.h
+ delete mode 100644 arch/x86/include/asm/mmzone_64.h
+ create mode 100644 include/asm-generic/mmzone.h
+ create mode 100644 include/linux/numa_memblks.h
+ delete mode 100644 kernel/numa.c
+ create mode 100644 mm/numa.c
+ rename {arch/x86/mm => mm}/numa_emulation.c (94%)
+ create mode 100644 mm/numa_memblks.c
+
+
+base-commit: 22a40d14b572deb80c0648557f4bd502d7e83826
 -- 
-2.25.1
+2.43.0
 
