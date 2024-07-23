@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5529D939A46
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 08:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E95939A5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 08:45:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L4fNJ84X;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jjn0IMhJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WSngZ1sLdz3cbC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 16:44:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WSnhL3H5Yz3cY1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 16:45:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L4fNJ84X;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jjn0IMhJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSndf4zFGz3cXd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 16:42:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSndp0HBzz3cYR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 16:42:54 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B5DE060B98;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4A56860D2D;
+	Tue, 23 Jul 2024 06:42:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7A2C4AF0B;
 	Tue, 23 Jul 2024 06:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65428C4AF09;
-	Tue, 23 Jul 2024 06:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721716960;
-	bh=wE9udk3T5PUOzWhffSqfqF0jfi91yVWMRgCuaEhaWIs=;
+	s=k20201202; t=1721716972;
+	bh=mRZLqq2N2ryJ5ZO7g59g+rrLvkwOpPlbSt8yNKJxh4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4fNJ84X321lZQzRVwm/9NQS5NvRjUpsrvUknu/25CNWvxfQJeLO5JGwoMu66FrNE
-	 yvDUpLniReSKqIGbvqtVRByoS59WWzegjXjEaI/pSrYNABzkWG217PFiU/HwCkFTUq
-	 g5LaEICTajd27yc9CaZWhZMte2v93pqn/oc7mWi2RjQwmIaj9fD9pBiOpgfGeAY97T
-	 Oe4NEENOMypP8RnZtX4JhQBHzOIYuexn1Vt8ZCQFxdsT1om7AChjHOPoOQjfy6zd24
-	 JMhzIfEW86NpfX+IthkEOW0SXal75QemXF5ziyXOa5gbgR3IX+M2Vk2vL97MmOTzDj
-	 iYFpZ/HwvvjKw==
+	b=Jjn0IMhJcrPhS4Bl96Cwo0k6df1nhuQSiNyQ/dbVBMzBCcrp9rXxtpGaIPsnWwg1g
+	 EutfShLwl4ML33LtMf4CMUXhriaZXC2Y0XnDQ5eHWFqH0oTLeSRxwYQvMiTH4+3pg4
+	 23X5S2IXpSsSIpciOEufgRtYvvNy1kJjTIubaTDearGmucjQ2peycwqBYrl0lnidvI
+	 C3r1Rp8+mjvm7PE1YQsVU4cLUmpqTmzFmPLSRVzjvocHAABjPDxVifYy/vK56oo8wA
+	 2FidhSRWcQ1vbPPvkPNtW95l80WFNvn/FUjHRkFCWUy8NwC+vz8A4Ft0biSW1xNoPs
+	 CVT7tSIze5Nug==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 02/25] MIPS: sgi-ip27: make NODE_DATA() the same as on all other architectures
-Date: Tue, 23 Jul 2024 09:41:33 +0300
-Message-ID: <20240723064156.4009477-3-rppt@kernel.org>
+Subject: [PATCH v2 03/25] MIPS: sgi-ip27: ensure node_possible_map only contains valid nodes
+Date: Tue, 23 Jul 2024 09:41:34 +0300
+Message-ID: <20240723064156.4009477-4-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240723064156.4009477-1-rppt@kernel.org>
 References: <20240723064156.4009477-1-rppt@kernel.org>
@@ -65,62 +65,34 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-sgi-ip27 is the only system that defines NODE_DATA() differently than
-the rest of NUMA machines.
+For SGI IP27 machines node_possible_map is statically set to
+NODE_MASK_ALL and it is not updated during NUMA initialization.
 
-Add node_data array of struct pglist pointers that will point to
-__node_data[node]->pglist and redefine NODE_DATA() to use node_data
-array.
-
-This will allow pulling declaration of node_data to the generic mm code
-in the next commit.
+Ensure that it only contains nodes present in the system.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/mips/include/asm/mach-ip27/mmzone.h | 5 ++++-
- arch/mips/sgi-ip27/ip27-memory.c         | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ arch/mips/sgi-ip27/ip27-smp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
-index 08c36e50a860..629c3f290203 100644
---- a/arch/mips/include/asm/mach-ip27/mmzone.h
-+++ b/arch/mips/include/asm/mach-ip27/mmzone.h
-@@ -22,7 +22,10 @@ struct node_data {
+diff --git a/arch/mips/sgi-ip27/ip27-smp.c b/arch/mips/sgi-ip27/ip27-smp.c
+index 5d2652a1d35a..62733e049570 100644
+--- a/arch/mips/sgi-ip27/ip27-smp.c
++++ b/arch/mips/sgi-ip27/ip27-smp.c
+@@ -70,11 +70,13 @@ void cpu_node_probe(void)
+ 	gda_t *gdap = GDA;
  
- extern struct node_data *__node_data[];
+ 	nodes_clear(node_online_map);
++	nodes_clear(node_possible_map);
+ 	for (i = 0; i < MAX_NUMNODES; i++) {
+ 		nasid_t nasid = gdap->g_nasidtable[i];
+ 		if (nasid == INVALID_NASID)
+ 			break;
+ 		node_set_online(nasid);
++		node_set(nasid, node_possible_map);
+ 		highest = node_scan_cpus(nasid, highest);
+ 	}
  
--#define NODE_DATA(n)		(&__node_data[(n)]->pglist)
- #define hub_data(n)		(&__node_data[(n)]->hub)
- 
-+extern struct pglist_data *node_data[];
-+
-+#define NODE_DATA(nid)		(node_data[nid])
-+
- #endif /* _ASM_MACH_MMZONE_H */
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index b8ca94cfb4fe..c30ef6958b97 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -34,8 +34,10 @@
- #define SLOT_PFNSHIFT		(SLOT_SHIFT - PAGE_SHIFT)
- #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
- 
--struct node_data *__node_data[MAX_NUMNODES];
-+struct pglist_data *node_data[MAX_NUMNODES];
-+EXPORT_SYMBOL(node_data);
- 
-+struct node_data *__node_data[MAX_NUMNODES];
- EXPORT_SYMBOL(__node_data);
- 
- static u64 gen_region_mask(void)
-@@ -361,6 +363,7 @@ static void __init node_mem_init(nasid_t node)
- 	 */
- 	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
- 	memset(__node_data[node], 0, PAGE_SIZE);
-+	node_data[node] = &__node_data[node]->pglist;
- 
- 	NODE_DATA(node)->node_start_pfn = start_pfn;
- 	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
 -- 
 2.43.0
 
