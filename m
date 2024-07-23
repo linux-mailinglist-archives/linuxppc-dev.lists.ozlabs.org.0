@@ -1,143 +1,121 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E986939C77
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 10:19:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A67C939D3A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 11:06:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SY+vCyBi;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SY+vCyBi;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=boVNr7YL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WSqn92zC6z3cj7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 18:19:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WSrqJ39fFz3cxn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 19:06:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SY+vCyBi;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SY+vCyBi;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=boVNr7YL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2414::61a; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=vignesh.balasubrmanian@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::61a])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSqmS1Sd5z3cZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 18:18:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721722723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=e7cAW2e9eTq2PNCKhGWDYhlkj3Xk8nGIpFjirqjv88A=;
-	b=SY+vCyBih68++XuOfZuju/LUfNt2eutuAzy/Zlp4wihmtXW+0uz5mX2czAgIiaoc4tV1Vn
-	9d0bJj6luD3qRjcinecFYR9AvM6GPNMigmkky/ApOqqQQlYfEWT64TKUlDxXA0I+dCL9My
-	exBp0QOwP+dbUeVtdZnxI2ov90UbZa0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721722723;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=e7cAW2e9eTq2PNCKhGWDYhlkj3Xk8nGIpFjirqjv88A=;
-	b=SY+vCyBih68++XuOfZuju/LUfNt2eutuAzy/Zlp4wihmtXW+0uz5mX2czAgIiaoc4tV1Vn
-	9d0bJj6luD3qRjcinecFYR9AvM6GPNMigmkky/ApOqqQQlYfEWT64TKUlDxXA0I+dCL9My
-	exBp0QOwP+dbUeVtdZnxI2ov90UbZa0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-nrgFGWE1PJmxcMn6lAyHfw-1; Tue, 23 Jul 2024 04:18:41 -0400
-X-MC-Unique: nrgFGWE1PJmxcMn6lAyHfw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4265d3bf59dso37360655e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 01:18:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721722720; x=1722327520;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=e7cAW2e9eTq2PNCKhGWDYhlkj3Xk8nGIpFjirqjv88A=;
-        b=D4QvzaiGRZlCB2BcjtgD/ZGSDFd5bzf4WNlD1rJOb04qdA6gtEdQzDZNtn67er/VC9
-         +tLxotjv9fTq0HASii/kSGDYTWoiijfWZJbxN5RAYhY2tfMSqHmWfjkvTYls/sYSyd+d
-         ITUn6xAHAobBrYgAvIjrI2CTLr3NZc0tU6mOwudU+tPmlN1Fwg2TctZgjpEGKAY4UZZs
-         /e/mk52Op/w5Bf3cPd8Ei/OJvz22qOAjCAMgoeRIx3k8jStGS6SylR6kqGf9+Mb2u/bk
-         ii06polQyxEaPG5QJbT563g147JwHAqSOzbsH39D6YhKmdVbf3tEV+49sSoLIJtJpoc6
-         9O4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXAWmSDVxwdv6vADiXSou9CExzh3EDAmlusmOKy1Mjx9AtiC2CTIR/nCMcLGBPTe+Y/tTFIWKnfV+W4b7KUG9IvABdifyqDVZqFShAAkA==
-X-Gm-Message-State: AOJu0Yxbk+MPNmMFiLmfHyFhKnROQZsp9Kk/KEGXIO/2lVxbXZWYv15P
-	60tX9WKBZizyeZR6eL98UkqM1ok/PDiv9ohGOVozHtInSil3mc4OB0WEHlMYnS0wK/tsu8ncxbO
-	1C+RHvvDuuqCW0AYn7ojzudi8EUYlJDBaenWfVXE9WSXt/ZHgshj7fXFMIeaHFkY=
-X-Received: by 2002:a05:600c:500f:b0:426:6326:4cec with SMTP id 5b1f17b1804b1-427df7a7828mr59109995e9.29.1721722720305;
-        Tue, 23 Jul 2024 01:18:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUWHnl+IF1Uo0ddKTvKJTZa1BJHPgCl9dGzav/h00NQB9OiTQfs5h5kD6cvqR3xzQXjLrG9w==
-X-Received: by 2002:a05:600c:500f:b0:426:6326:4cec with SMTP id 5b1f17b1804b1-427df7a7828mr59109795e9.29.1721722719834;
-        Tue, 23 Jul 2024 01:18:39 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c72f:ed00:9dc2:1adb:d133:4434? (p200300cbc72fed009dc21adbd1334434.dip0.t-ipconnect.de. [2003:cb:c72f:ed00:9dc2:1adb:d133:4434])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427d6929827sm160330615e9.34.2024.07.23.01.18.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jul 2024 01:18:39 -0700 (PDT)
-Message-ID: <cfe94481-233a-421c-b607-08517588de6c@redhat.com>
-Date: Tue, 23 Jul 2024 10:18:37 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WSrpb50NRz3cK8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 19:05:40 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b4laMHJwiGM0eeqmCt+HNC0B/cLq/Ze9vZ9XOzRzmobJxDZufrdOjvIAQJT6qByTYv5epo07l2idf283mLkTKjAApeqPzmSZYvDpw3ntXNZQAB3UKEbd2+YqpU09UOo/qOhLGdkrJTqrnIvasC2Q3yHmu5OJZilOFQkdYkiMWp+D4rG4R5Rq/8OHuETgw1Z2dssQBeJ1swDlIKOT99NHqSjqlniD6qlQPtlzAvhmRQWcds0cdmuzmyuPWFUQbArmFv2MREEUvTEcr/gQUBGqICg4tmdQKLEVrz/WEpbvV5BoWhdwjLNi0Ul2hrIckltsvzAlyo+fyul+XNnc2rcSFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mtMSQ2UWgJ3UdAMy9RzIntBd3GmM49CTeq9ZcqRfx78=;
+ b=hwBoVFb8tv/zt4ih1MdUV20g7PM8jZqhUtBcBnad1CNAOipHkBkIBBpa6uLCIzmTp/k+0iT/kD3kCLmzvoIt5z5sB/w4hlgJE6xjA8uAllk3zMkndTXbYIfh4moqEoDaVEB8HzUtpf2ExWFLCH76AQFx5cfhvJGq/atXQoU4llorzogIzSW3KnOxaeO/ZaFWEJ1OTcuXkmIdZ2HMJVEqrI7Gad7pA+rtXdla5TpHipDSsMfEtoVdDJlzX+mTWDi0NfWg3DAJnQU71JYbN0eFkIXmS5Bf85rxls2WKCysA8oYPj2+Gg/r5fsdyaMM81C3mI3W+noTq+3wbzEpUIsKYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mtMSQ2UWgJ3UdAMy9RzIntBd3GmM49CTeq9ZcqRfx78=;
+ b=boVNr7YLCnVfkcRIfp9THW/SkV74OFR1hIpbVSuZUMJQmvwN07zXQ1EYbUynM5qL/FGiz9WE4JJi8FKyUGnbgsH4HJLTB5RbJ5uCTOFeJY+XFce3SWauFsbt7KLsHSsCvlmvl+KmguCFXAKym8o2AFqT1jNJdeP+DIpR1iy/ITg=
+Received: from DM5PR07CA0092.namprd07.prod.outlook.com (2603:10b6:4:ae::21) by
+ CY5PR12MB6250.namprd12.prod.outlook.com (2603:10b6:930:22::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7784.17; Tue, 23 Jul 2024 09:05:17 +0000
+Received: from CH1PEPF0000A34C.namprd04.prod.outlook.com
+ (2603:10b6:4:ae:cafe::1d) by DM5PR07CA0092.outlook.office365.com
+ (2603:10b6:4:ae::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.18 via Frontend
+ Transport; Tue, 23 Jul 2024 09:05:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000A34C.mail.protection.outlook.com (10.167.244.6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7784.11 via Frontend Transport; Tue, 23 Jul 2024 09:05:17 +0000
+Received: from amd-System-Product-Name.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 23 Jul 2024 04:05:10 -0500
+From: Vignesh Balasubramanian <vigbalas@amd.com>
+To: <linux-kernel@vger.kernel.org>, <linux-toolchains@vger.kernel.org>
+Subject: [PATCH v4 0/1] Add XSAVE layout description to Core files for debuggers to support varying XSAVE layouts
+Date: Tue, 23 Jul 2024 14:34:53 +0530
+Message-ID: <20240723090454.8241-1-vigbalas@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/6] mm: THP-agnostic refactor on huge mappings
-To: Peter Xu <peterx@redhat.com>
-References: <20240717220219.3743374-1-peterx@redhat.com>
- <cf36725d-c197-4c07-8998-d34711335fdb@redhat.com> <Zp57ZLk2IQoHOI7u@x1n>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Zp57ZLk2IQoHOI7u@x1n>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A34C:EE_|CY5PR12MB6250:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9fddbe6-c88c-49e1-bcbd-08dcaaf6929b
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|1800799024|376014|7416014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?5XpCy1OC619rfvmf07aGE/Id2+vMYDDjoNuD8tXPzXu9NL3IOMSGDkPDVA/A?=
+ =?us-ascii?Q?yPUdy+h2B9ryFhhbzmAExp49qLsNYZB94zc8HWfwN1zLzY/EBFslBBUxHvg/?=
+ =?us-ascii?Q?B515s8XuFBY9SVV5XRCqJC+PdVs/46unqDPQTld/cVpDMgA9XJZLOtKvi1/0?=
+ =?us-ascii?Q?9tyi0BpEwZmZ1jmeIMmvnk8KxTvwZYDZUehPUJKUsUwzEc9At1kZ5RgVGFDT?=
+ =?us-ascii?Q?vkGxFMs+Hib+mbphgY2+Kzmf9B8lx1CilaLa55QkLEe4hmZ8SCZBF0C457gE?=
+ =?us-ascii?Q?lb1J3vnXHIKlVe2U8TFQRryjdRMxfJil9IelkAxl6cf8kvOrCcRy83Iq0scl?=
+ =?us-ascii?Q?U5ysuanb83DKGiXftkIBlOgrFthETdrcIRJYVCipS/Dy7L22oKy5qeY90pN7?=
+ =?us-ascii?Q?aga5x2/SJMZO4tkgI6jP7AyiFciDAhJYydusB7i9qIPstNhb8juJxFKvb6V8?=
+ =?us-ascii?Q?C4y8lSwI5PhtDc2eoB62YU5G97qeU+9YozNRY6GSkhh/1TJdhGYihbSdVr4n?=
+ =?us-ascii?Q?W4AoDhX5+TS1cUnz/uiHFa6N9lolZW4rvBrm91HQYj/1Mi+bPQ0HB9x4WYDy?=
+ =?us-ascii?Q?FM+ciBkgeSPOLbwj9730R9G8Ei1i43oVBWxATL0wGskC2xBKP+m9FpH1I1Gc?=
+ =?us-ascii?Q?4Ae/QoHc1IYNy6nFK9SvWmbgu107FAL4js4UiWaYAl+kja5c7CaYnxZRRKLT?=
+ =?us-ascii?Q?bcClti8YAb9197Lo8DaZQ/F3xvsU3NBINEk/AzLA9KjksMVvSRqyiCu3He0H?=
+ =?us-ascii?Q?+G/6pJssWL8EqTSFTO/sX6fZ9Bk3nHB5S8RSjHO6N/35eUQUIV3y0Lq/X3RU?=
+ =?us-ascii?Q?3fVa10lWX1fqzqKiIqAgH1zgwWNRKGCRcfO7hWzFORa3otX/mQCnFls2Tt5p?=
+ =?us-ascii?Q?y3Fl1CyrK2BnQj+j197/kP8pIF4pkdY6zoSVcn/3Tui5d3OQCglZc9ACcBwX?=
+ =?us-ascii?Q?iWa08Pw5jvuv50Nk5BQll7W7iu7uoEb7okkPf90ACVXVu3OyecCZRdRmqop5?=
+ =?us-ascii?Q?CjS6/TSoQR7hRu2OfnHoapxug65Hqmb7kt4NyDfxyHzCWrnI/TAYpappKKRu?=
+ =?us-ascii?Q?6JXUZSfQ6PUaJkcHSOZtnNcwMMHI/GFIAaR33B0y+NfjZ0v7/ptSFHa0rBHC?=
+ =?us-ascii?Q?90nF4bfklOV1zLbzjVI0YolRHJ81coaraTsnNcsgPXIMaewE4N05RSpOJ9HZ?=
+ =?us-ascii?Q?XtSVcXTsBW2686y7FWXnfLj26o4vjxcoF62fwseQkJ36E1KfCObsyh0RY7B6?=
+ =?us-ascii?Q?qku6OMgNgoAi7ymLG7wbnl1ysmC6cJ5a7PDIKWJ1vzfgTPXvbI2B1KmtKecT?=
+ =?us-ascii?Q?k6OWjuHPF9jHGgYzm1Mz0uCOKkBgZCl0xOSapXR3TBjXOTmYQ7DL3gnDoPS1?=
+ =?us-ascii?Q?C8L13u2p57oifVKlWfgi8d+Dil+EXEUhknKhICnxhVJiA58YkrNd628nNDcb?=
+ =?us-ascii?Q?YjymXJLbvnnTzs2l1obe9KP1KBEm0iUN?=
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 09:05:17.2499
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9fddbe6-c88c-49e1-bcbd-08dcaaf6929b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	CH1PEPF0000A34C.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6250
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -149,129 +127,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Alistair Popple <apopple@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Alex Williamson <alex.williamson@redhat.com>, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>, sparclinux@vger.kernel.org, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
+Cc: felix.willgerodt@intel.com, matz@suse.de, keescook@chromium.org, jhb@FreeBSD.org, bpetkov@amd.com, x86@kernel.org, npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, linux-mm@kvack.org, Vignesh Balasubramanian <vigbalas@amd.com>, ebiederm@xmission.com, naveen.n.rao@linux.ibm.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, jinisusan.george@amd.com, binutils@sourceware.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22.07.24 17:31, Peter Xu wrote:
-> On Mon, Jul 22, 2024 at 03:29:43PM +0200, David Hildenbrand wrote:
->> On 18.07.24 00:02, Peter Xu wrote:
->>> This is an RFC series, so not yet for merging.  Please don't be scared by
->>> the code changes: most of them are code movements only.
->>>
->>> This series is based on the dax mprotect fix series here (while that one is
->>> based on mm-unstable):
->>>
->>>     [PATCH v3 0/8] mm/mprotect: Fix dax puds
->>>     https://lore.kernel.org/r/20240715192142.3241557-1-peterx@redhat.com
->>>
->>> Overview
->>> ========
->>>
->>> This series doesn't provide any feature change.  The only goal of this
->>> series is to start decoupling two ideas: "THP" and "huge mapping".  We
->>> already started with having PGTABLE_HAS_HUGE_LEAVES config option, and this
->>> one extends that idea into the code.
->>>
->>> The issue is that we have so many functions that only compile with
->>> CONFIG_THP=on, even though they're about huge mappings, and huge mapping is
->>> a pretty common concept, which can apply to many things besides THPs
->>> nowadays.  The major THP file is mm/huge_memory.c as of now.
->>>
->>> The first example of such huge mapping users will be hugetlb.  We lived
->>> until now with no problem simply because Linux almost duplicated all the
->>> logics there in the "THP" files into hugetlb APIs.  If we want to get rid
->>> of hugetlb specific APIs and paths, this _might_ be the first thing we want
->>> to do, because we want to be able to e.g., zapping a hugetlb pmd entry even
->>> if !CONFIG_THP.
->>>
->>> Then consider other things like dax / pfnmaps.  Dax can depend on THP, then
->>> it'll naturally be able to use pmd/pud helpers, that's okay.  However is it
->>> a must?  Do we also want to have every new pmd/pud mappings in the future
->>> to depend on THP (like PFNMAP)?  My answer is no, but I'm open to opinions.
->>>
->>> If anyone agrees with me that "huge mapping" (aka, PMD/PUD mappings that
->>> are larger than PAGE_SIZE) is a more generic concept than THP, then I think
->>> at some point we need to move the generic code out of THP code into a
->>> common code base.
->>>
->>> This is what this series does as a start.
->>
->> Hi Peter!
->>
->>  From a quick glimpse, patch #1-#4 do make sense independent of patch #5.
->>
->> I am not so sure about all of the code movement in patch #5. If large folios
->> are the future, then likely huge_memory.c should simply be the home for all
->> that logic.
->>
->> Maybe the goal should better be to compile huge_memory.c not only for THP,
->> but also for other use cases that require that logic, and fence off all THP
->> specific stuff using #ifdef?
->>
->> Not sure, though. But a lot of this code movements/churn might be avoidable.
-> 
-> I'm fine using ifdefs in the current fine, but IMHO it's a matter of
-> whether we want to keep huge_memory.c growing into even larger file, and
-> keep all large folio logics only in that file.  Currently it's ~4000 LOCs.
+This patch proposes to add an extra .note section in the corefile to
+dump the CPUID information of a machine.
+This is being done to solve the issue of tools like the debuggers
+having to deal with coredumps from machines with varying XSAVE
+layouts in spite of having the same XCR0 bits.
+The new proposed .note section, at this point, consists of an array
+of records containing the information of each extended feature that
+is present. This provides details about the offsets and the sizes
+of the various extended save state components of the machine where
+the application crash occurred. Requesting a review for this patch.
 
-Depends on "how much" for sure. huge_memory.c is currently on place 12 
-of the biggest files in mm/. So there might not be immediate cause for 
-action ... just yet :) [guess which file is on #2 :) ]
 
-> 
-> Nornally I don't see this as much of a "code churn" category, because it
-> doesn't changes the code itself but only move things.  I personally also
-> prefer without code churns, but only in the case where there'll be tiny
-> little functional changes here and there without real benefit.
-> 
-> It's pretty unavoidable to me when one file grows too large and we'll need
-> to split, and in this case git doesn't have a good way to track such
-> movement..
+Vignesh Balasubramanian (1):
+  x86/elf: Add a new .note section containing xfeatures buffer layout
+    info to x86 core files
 
-Yes, that's what I mean.
-
-I've been recently thinking if we should pursue a different direction:
-
-Just as we recently relocated most follow_huge_* stuff into gup.c, 
-likely we should rather look into moving copy_huge_pmd, change_huge_pmd, 
-copy_huge_pmd ... into the files where they logically belong to.
-
-In madvise.c, we've been doing that in some places already: For 
-madvise_cold_or_pageout_pte_range() we inline the code, but not for 
-madvise_free_huge_pmd().
-
-pmd_trans_huge() would already compile to a NOP without 
-CONFIG_TRANSPARENT_HUGEPAGE, but to make that code avoid most 
-CONFIG_TRANSPARENT_HUGEPAGE, we'd need a couple more function stubs to 
-make the compiler happy while still being able to compile that code out 
-when not required.
-
-The idea would be that e.g., pmd_leaf() would return "false" at compile 
-time if no active configuration (THP, HUGETLB, ...) would be active. So 
-we could just use pmd_leaf() similar to pmd_trans_huge() in relevant 
-code and have the compiler optimize it all out without putting it into 
-separate files.
-
-That means, large folios and PMD/PUD mappings will become "more common" 
-and better integrated, without the need to jump between files.
-
-Just some thought about an alternative that would make sense to me.
-
-> 
-> Irrelevant of this, just to mention I think there's still one option that I
-> at least can make the huge pfnmap depends on THP again which shouldn't be a
-> huge deal (I don't have any use case that needs huge pfnmap but disable
-> THP, anyway..), so this series isn't an immediate concern to me for that
-> route.  But for a hugetlb rework this might be something we need to do,
-> because we simplly can't make CONFIG_HUGETLB rely on CONFIG_THP..
-
-Yes, likely. FSDAX went a similar direction and called that FSDAX thing 
-a "THP" whereby it really doesn't have anything in common with a THP, 
-besides being partially mappable -- IMHO.
+ arch/x86/Kconfig                |  1 +
+ arch/x86/include/uapi/asm/elf.h | 15 ++++++
+ arch/x86/kernel/fpu/xstate.c    | 89 +++++++++++++++++++++++++++++++++
+ fs/binfmt_elf.c                 |  4 +-
+ include/uapi/linux/elf.h        |  1 +
+ 5 files changed, 108 insertions(+), 2 deletions(-)
+ create mode 100644 arch/x86/include/uapi/asm/elf.h
 
 -- 
-Cheers,
-
-David / dhildenb
+2.34.1
 
