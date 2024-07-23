@@ -2,52 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D24193A7FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 22:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA1B93A875
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Jul 2024 23:05:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P04ucTqF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WT7Vp0M4Yz3ccf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 06:08:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WT8mV15Q7z3d2S
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 07:04:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P04ucTqF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aWVzfyFF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WT7V7111Pz3cZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 06:07:27 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 112B960EA6;
-	Tue, 23 Jul 2024 20:07:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9B7C4AF09;
-	Tue, 23 Jul 2024 20:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721765243;
-	bh=c39NElwI9aObYt1pGTqlFJRmam8cihqu4wr02ztzNfU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P04ucTqFrkKJ2FIidm0VknxYuEYSZLtHjERskgAhdThPn4t2Vkvi31dyJCZt+uyHR
-	 LWpMcgKhIl7FOBSLnIXygrBGIAkNd/HwStKiefcVFeZcxWhHkGhIO529OrlGCSZNRC
-	 PW/hUggJ1yYC47Pu/12SnUAsLeB7s+Hq2qBg5lfTaa7dZ0+6gh/rR3plWIeJnnrekp
-	 rY+PVb9THsWz4VLcsn8moDKD61WQ8q15r+WAo82rUvpCSAVpsc/WwAweNxHSagLJg7
-	 XdqzVmwOh08RrxPWVt6f76LoskSSIuJY3lZ8HYQVvKU74wICkJ4IZttb/1MN1cjhTB
-	 ilK0IUGPWlg8A==
-Date: Tue, 23 Jul 2024 17:07:19 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V8 00/15] Add data type profiling support for powerpc
-Message-ID: <ZqANd2cGSM3bSDr6@x1>
-References: <20240718084358.72242-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WT8lp3zYjz3c58
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 07:04:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721768655;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AgNOjwKnUy48py4Ld6sAQndZB5vwc59GpzRjxep5jN4=;
+	b=aWVzfyFFHr/nmOX2FAnIedkWXnTeKC6cPDGT0xBiIitdPruecUFy2bMt7OMAGtKR0EPw0t
+	O+Brgr2E7RKyXCrlZzNJW8MylKXXMjXCQnEwVeuPk+9PfvCqFWcbwNKbPQA+MyGM9v3Q2T
+	+K0x4/GB8jDYCyGwI6Wa0bsGaGfbZFE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721768655;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AgNOjwKnUy48py4Ld6sAQndZB5vwc59GpzRjxep5jN4=;
+	b=aWVzfyFFHr/nmOX2FAnIedkWXnTeKC6cPDGT0xBiIitdPruecUFy2bMt7OMAGtKR0EPw0t
+	O+Brgr2E7RKyXCrlZzNJW8MylKXXMjXCQnEwVeuPk+9PfvCqFWcbwNKbPQA+MyGM9v3Q2T
+	+K0x4/GB8jDYCyGwI6Wa0bsGaGfbZFE=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-9Wt3qqpFOASyBkPrxlAe9w-1; Tue, 23 Jul 2024 17:04:13 -0400
+X-MC-Unique: 9Wt3qqpFOASyBkPrxlAe9w-1
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3d8ae3b69daso1307406b6e.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Jul 2024 14:04:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721768653; x=1722373453;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AgNOjwKnUy48py4Ld6sAQndZB5vwc59GpzRjxep5jN4=;
+        b=B9JyokYceo46chccWPP7pSAxB6CJS9hDH9CnzAzFH19cqSFk2f0COxdBzsQBme83Kz
+         b7c+/Q6Qa/26Nh8lCHocM17WOjua6ZYg50t65lZmvniFrT8zqT3FHkrVwd5agikCvcky
+         BTzQeoOh7tg1zoGf48E2JE0tvQ3afBLe8iZNT+j4WD7mtOkaCTz9Ol07Bt8dSsS0fTuI
+         gWSb+J3rqe8ErbwTAoGdMtIOGbwZ2SWZ8viyJLlAwIEAbHMhmy/SQd2TxiYJ3VqIKf2d
+         h/4quVwoH6KEWsUPFASKIL1wmSAG473wg3VMNPf3i4WswrNSQ6cZAiKowJhxbKrtmYli
+         PTrg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbpMd8pitbNkfWz7yD+zieYWu5wShs/hJ+KM2KNX7hf5RR9VAFd+bi9w/1DwKCvvFKT4+Xlt/BebNe6JQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzpmrw9sV9XYwpjhCw7lnAb7DlLG8G650gYmtSNrLcwb7RcpPCh
+	rKL/R46IQh19Tiv1J1LGO9YprjeX33Dl5rcTRu/TWTb5aV8Gj+tQO8C6Kukg6uJvunE2Hdt1NLK
+	U4TX2uJO9wH8UL8X5Sb21zuarETdEFr3j5MnxSkdPopN/NGksGFebNDXVSFv6Vbc=
+X-Received: by 2002:a9d:6043:0:b0:703:78ff:1e1 with SMTP id 46e09a7af769-708fd973bc0mr6593336a34.0.1721768653030;
+        Tue, 23 Jul 2024 14:04:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhxM1GaXKORyXEI48pMqHK/HKFQ8d349p1Ngql0yZkrT6ZS6/TU4RH6kRMVcENNPnDcnR0BQ==
+X-Received: by 2002:a9d:6043:0:b0:703:78ff:1e1 with SMTP id 46e09a7af769-708fd973bc0mr6593320a34.0.1721768652631;
+        Tue, 23 Jul 2024 14:04:12 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a19905a721sm515082185a.93.2024.07.23.14.04.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jul 2024 14:04:11 -0700 (PDT)
+Date: Tue, 23 Jul 2024 17:04:08 -0400
+From: Peter Xu <peterx@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH RFC 0/6] mm: THP-agnostic refactor on huge mappings
+Message-ID: <ZqAayNSDf_6cfziw@x1n>
+References: <20240717220219.3743374-1-peterx@redhat.com>
+ <cf36725d-c197-4c07-8998-d34711335fdb@redhat.com>
+ <Zp57ZLk2IQoHOI7u@x1n>
+ <cfe94481-233a-421c-b607-08517588de6c@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <cfe94481-233a-421c-b607-08517588de6c@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240718084358.72242-1-atrajeev@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,314 +101,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: linux-s390@vger.kernel.org, Alistair Popple <apopple@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Alex Williamson <alex.williamson@redhat.com>, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>, sparclinux@vger.kernel.org, Axel Rasmussen <axelrasmussen@google.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 18, 2024 at 02:13:43PM +0530, Athira Rajeev wrote:
-> The patchset from Namhyung added support for data type profiling
-> in perf tool. This enabled support to associate PMU samples to data
-> types they refer using DWARF debug information. With the upstream
-> perf, currently it possible to run perf report or perf annotate to
-> view the data type information on x86.
+On Tue, Jul 23, 2024 at 10:18:37AM +0200, David Hildenbrand wrote:
+> On 22.07.24 17:31, Peter Xu wrote:
+> > On Mon, Jul 22, 2024 at 03:29:43PM +0200, David Hildenbrand wrote:
+> > > On 18.07.24 00:02, Peter Xu wrote:
+> > > > This is an RFC series, so not yet for merging.  Please don't be scared by
+> > > > the code changes: most of them are code movements only.
+> > > > 
+> > > > This series is based on the dax mprotect fix series here (while that one is
+> > > > based on mm-unstable):
+> > > > 
+> > > >     [PATCH v3 0/8] mm/mprotect: Fix dax puds
+> > > >     https://lore.kernel.org/r/20240715192142.3241557-1-peterx@redhat.com
+> > > > 
+> > > > Overview
+> > > > ========
+> > > > 
+> > > > This series doesn't provide any feature change.  The only goal of this
+> > > > series is to start decoupling two ideas: "THP" and "huge mapping".  We
+> > > > already started with having PGTABLE_HAS_HUGE_LEAVES config option, and this
+> > > > one extends that idea into the code.
+> > > > 
+> > > > The issue is that we have so many functions that only compile with
+> > > > CONFIG_THP=on, even though they're about huge mappings, and huge mapping is
+> > > > a pretty common concept, which can apply to many things besides THPs
+> > > > nowadays.  The major THP file is mm/huge_memory.c as of now.
+> > > > 
+> > > > The first example of such huge mapping users will be hugetlb.  We lived
+> > > > until now with no problem simply because Linux almost duplicated all the
+> > > > logics there in the "THP" files into hugetlb APIs.  If we want to get rid
+> > > > of hugetlb specific APIs and paths, this _might_ be the first thing we want
+> > > > to do, because we want to be able to e.g., zapping a hugetlb pmd entry even
+> > > > if !CONFIG_THP.
+> > > > 
+> > > > Then consider other things like dax / pfnmaps.  Dax can depend on THP, then
+> > > > it'll naturally be able to use pmd/pud helpers, that's okay.  However is it
+> > > > a must?  Do we also want to have every new pmd/pud mappings in the future
+> > > > to depend on THP (like PFNMAP)?  My answer is no, but I'm open to opinions.
+> > > > 
+> > > > If anyone agrees with me that "huge mapping" (aka, PMD/PUD mappings that
+> > > > are larger than PAGE_SIZE) is a more generic concept than THP, then I think
+> > > > at some point we need to move the generic code out of THP code into a
+> > > > common code base.
+> > > > 
+> > > > This is what this series does as a start.
+> > > 
+> > > Hi Peter!
+> > > 
+> > >  From a quick glimpse, patch #1-#4 do make sense independent of patch #5.
+> > > 
+> > > I am not so sure about all of the code movement in patch #5. If large folios
+> > > are the future, then likely huge_memory.c should simply be the home for all
+> > > that logic.
+> > > 
+> > > Maybe the goal should better be to compile huge_memory.c not only for THP,
+> > > but also for other use cases that require that logic, and fence off all THP
+> > > specific stuff using #ifdef?
+> > > 
+> > > Not sure, though. But a lot of this code movements/churn might be avoidable.
+> > 
+> > I'm fine using ifdefs in the current fine, but IMHO it's a matter of
+> > whether we want to keep huge_memory.c growing into even larger file, and
+> > keep all large folio logics only in that file.  Currently it's ~4000 LOCs.
 > 
-> Initial patchset posted here had changes need to enable data type
-> profiling support for powerpc.
+> Depends on "how much" for sure. huge_memory.c is currently on place 12 of
+> the biggest files in mm/. So there might not be immediate cause for action
+> ... just yet :) [guess which file is on #2 :) ]
 
-I have this in tmp.perf-tools-next now, will do more tests before moving
-to perf-tools-next.
+7821, hugetlb.c  
+7602, vmscan.c          
+7275, slub.c       
+7072, page_alloc.c
+6673, memory.c     
+5402, memcontrol.c 
+5239, shmem.c   
+5155, vmalloc.c      
+4419, filemap.c       
+4060, mmap.c       
+3882, huge_memory.c
 
-I see that Namhyung reviewed the patch series, and that it was tested,
-in general I thought we need to go on improving things go avoid having
-arch specific code in the non-arch code, I guess right now its important
-to land these to try and encourage people to try data-type profiling
-more widely, hopefully finding and improving data structures in the
-kernel.
+IMHO a split is normally better than keeping everything in one file, but
+yeah I'd confess THP file isn't that bad comparing to others..  And I'm
+definitely surprised it's even out of top ten.
 
-We need to write about such cases so as to provide success stories on
-using perf for data-type profiling.
+> 
+> > 
+> > Nornally I don't see this as much of a "code churn" category, because it
+> > doesn't changes the code itself but only move things.  I personally also
+> > prefer without code churns, but only in the case where there'll be tiny
+> > little functional changes here and there without real benefit.
+> > 
+> > It's pretty unavoidable to me when one file grows too large and we'll need
+> > to split, and in this case git doesn't have a good way to track such
+> > movement..
+> 
+> Yes, that's what I mean.
+> 
+> I've been recently thinking if we should pursue a different direction:
+> 
+> Just as we recently relocated most follow_huge_* stuff into gup.c, likely we
+> should rather look into moving copy_huge_pmd, change_huge_pmd, copy_huge_pmd
+> ... into the files where they logically belong to.
+> 
+> In madvise.c, we've been doing that in some places already: For
+> madvise_cold_or_pageout_pte_range() we inline the code, but not for
+> madvise_free_huge_pmd().
+> 
+> pmd_trans_huge() would already compile to a NOP without
+> CONFIG_TRANSPARENT_HUGEPAGE, but to make that code avoid most
+> CONFIG_TRANSPARENT_HUGEPAGE, we'd need a couple more function stubs to make
+> the compiler happy while still being able to compile that code out when not
+> required.
 
-Thanks for working on this!
+Right, I had a patch does exactly that, where it's called pmd_is_leaf(),
+for example, but taking CONFIG_* into account.
 
-- Arnaldo
- 
-> https://lore.kernel.org/all/6e09dc28-4a2e-49d8-a2b5-ffb3396a9952@csgroup.eu/T/
+I remember I had some issue with that, e.g. I used to see pmd_trans_huge()
+(when !THP) can optimize some path but pmd_is_leaf() didn't do the same job
+even if all configs were off.  But that's another story and I didn't yet
+dig deeper.  Could be something small but overlooked.
+
 > 
-> Main change were:
-> 1. powerpc instruction nmemonic table to associate load/store
-> instructions with move_ops which is use to identify if instruction
-> is a memory access one.
-> 2. To get register number and access offset from the given
-> instruction, code uses fields from "struct arch" -> objump.
-> Added entry for powerpc here.
-> 3. A get_arch_regnum to return register number from the
-> register name string.
+> The idea would be that e.g., pmd_leaf() would return "false" at compile time
+> if no active configuration (THP, HUGETLB, ...) would be active. So we could
+> just use pmd_leaf() similar to pmd_trans_huge() in relevant code and have
+> the compiler optimize it all out without putting it into separate files.
 > 
-> But the apporach used in the initial patchset used parsing of
-> disassembled code which the current perf tool implementation does.
+> That means, large folios and PMD/PUD mappings will become "more common" and
+> better integrated, without the need to jump between files.
 > 
-> Example: lwz     r10,0(r9)
-> 
-> This line "lwz r10,0(r9)" is parsed to extract instruction name,
-> registers names and offset. Also to find whether there is a memory
-> reference in the operands, "memory_ref_char" field of objdump is used.
-> For x86, "(" is used as memory_ref_char to tackle instructions of the
-> form "mov  (%rax), %rcx".
-> 
-> In case of powerpc, not all instructions using "(" are the only memory
-> instructions. Example, above instruction can also be of extended form (X
-> form) "lwzx r10,0,r19". Inorder to easy identify the instruction category
-> and extract the source/target registers, second patchset added support to use
-> raw instruction. With raw instruction, macros are added to extract opcode
-> and register fields.
-> Link to second patchset:
-> https://lore.kernel.org/all/20240506121906.76639-1-atrajeev@linux.vnet.ibm.com/
-> 
-> Example representation using --show-raw-insn in objdump gives result:
-> 
-> 38 01 81 e8     ld      r4,312(r1)
-> 
-> Here "38 01 81 e8" is the raw instruction representation. In powerpc,
-> this translates to instruction form: "ld RT,DS(RA)" and binary code
-> as:
->   _____________________________________
->   | 58 |  RT  |  RA |      DS       | |
->   -------------------------------------
-> 0    6     11    16              30 31
-> 
-> Second patchset used "objdump" again to read the raw instruction.
-> But since there is no need to disassemble and binary code can be read
-> directly from the DSO, third patchset (ie this patchset) uses below
-> apporach. The apporach preferred in powerpc to parse sample for data
-> type profiling in V3 patchset is:
-> - Read directly from DSO using dso__data_read_offset
-> - If that fails for any case, fallback to using libcapstone
-> - If libcapstone is not supported, approach will use objdump
-> 
-> Patchset adds support to pick the opcode and reg fields from this
-> raw/binary instruction code. This approach came in from review comment
-> by Segher Boessenkool and Christophe for the initial patchset.
-> 
-> Apart from that, instruction tracking is enabled for powerpc.
-> 
-> These are handled in this patchset.
-> 
-> - Patch 1 is to rearrange register state type structures to header file
-> so that it can referred from other arch specific files
-> - Patch 2 is to make instruction tracking as a callback to"struct arch"
-> so that it can be implemented by other archs easily and defined in arch
-> specific files
-> - Patch 3 is to handle state type regs array size for x86 and powerpc
-> - Patch 4 adds support to capture and parse raw instruction in powerpc
-> using dso__data_read_offset utility
-> - Patch 4 also adds logic to support using objdump when doing default "perf
-> report" or "perf annotate" since it that needs disassembled instruction.
-> - Patch 5 adds disasm_line__parse to parse raw instruction for powerpc
-> - Patch 6 update parameters for reg extract functions to use raw
-> instruction on powerpc
-> - Patch 7 updates ins__find to carry raw_insn and also adds parse
-> callback for memory instructions for powerpc
-> - Patch 8 add support to identify memory instructions of opcode 31 in
-> powerpc
-> - Patch 9 adds more instructions to support instruction tracking in powerpc
-> - Patch 10 and 11 handles instruction tracking for powerpc.
-> - Patch 12, 13 and 14 add support to use libcapstone in powerpc
-> - Patch 15 handles insn-stat option for perf annotate
-> 
-> Note:
-> - There are remaining unknowns (25%) as seen in annotate Instruction stats
-> below.
-> - This patchset is not tested on powerpc32. In next step of enhancements
-> along with handling remaining unknowns, plan to cover powerpc32 changes
-> based on how testing goes.
-> - Patch changes to handle global register support will be posted in
-> follow up after addressing review comment from Namhung here:
-> https://lore.kernel.org/linux-perf-users/CAM9d7cg5MYvLeOoBuKqp1pw7uvRfqCw1fXpLtgct0npL96JaYg@mail.gmail.com/T/#mb309184ebf5d2c9b539cd86d61ffe2a3696eac71
-> 
-> With the current patchset:
-> 
->  ./perf record -a -e mem-loads sleep 1
->  ./perf report -s type,typeoff --hierarchy --group --stdio
->  ./perf annotate --data-type --insn-stat
-> 
-> perf annotate logs:
-> ==================
-> 
-> Annotate Instruction stats
-> total 609, ok 266 (43.7%), bad 343 (56.3%)
-> 
->   Name/opcode         :  Good   Bad
-> -----------------------------------------------------------
->   58                  :   172   231
->   32                  :    48    44
->   34                  :    19    25
->   OP_31_XOP_LDX       :     8    20
->   40                  :     9    14
->   OP_31_XOP_LWARX     :     5     1
->   OP_31_XOP_LWZX      :     2     3
->   OP_31_XOP_LDARX     :     3     0
->   33                  :     0     2
->   OP_31_XOP_LBZX      :     0     1
->   OP_31_XOP_LWAX      :     0     1
->   OP_31_XOP_LHZX      :     0     1
->  
-> perf report logs:
-> =================
-> 
->   Total Lost Samples: 0
-> 
->   Samples: 1K of event 'mem-loads'
->   Event count (approx.): 937238
-> 
->     Overhead  Data Type / Data Type Offset
->     ........  .........  ................
->      1.73%     struct task_struct
->         1.29%     struct task_struct +276 (flags)
->         0.10%     struct task_struct +1872 (mm)
->         0.08%     struct task_struct +3632 (thread.regs)
->         0.08%     struct task_struct +1072 (sched_class)
->         0.05%     struct task_struct +1928 ()
->         0.03%     struct task_struct +1064 (dl_server)
->         0.02%     struct task_struct +0 (thread_info.preempt_count)
->         0.02%     struct task_struct +120 (thread_info)
->         0.02%     struct task_struct +2216 (worker_private)
->         0.02%     struct task_struct +24 (thread_info.slb_preload_nr)
->         0.02%     struct task_struct +8 (thread_info.local_flags)
->         0.01%     struct task_struct +1416 (nr_cpus_allowed)
->      1.68%     struct file
->         0.58%     struct file +176 (f_op)
->         0.53%     struct file +24 (f_count.counter)
->         0.46%     struct file +20 (f_mode)
->         0.11%     struct file +200 (private_data)
->      1.63%     struct rq
->         0.76%     struct rq +2856 (cpu)
->         0.21%     struct rq +2592 (curr)
->         0.11%     struct rq +2632 (clock_update_flags)
->         0.08%     struct rq +2600 (idle)
->         0.06%     struct rq +2688 (clock_task)
->         0.05%     struct rq +16 (numa_migrate_on)
->         0.04%     struct rq +2864 (cfs_tasks.next)
-> 
-> Thanks
-> Athira Rajeev
-> 
-> Changelog:
-> >From v7 -> v8:
->   Split patches 1 to 14 and patch 18 as basic patches.
->   Patch 15, 16 and 17 is related to global register handling
->   and will be handled separately.
->   Added Reviewed-and-tested-by from Kajol Jain
->   Added Reviewed-by from Namhyung for patches 1 to 14, patch 18
-> 
-> >From v6 -> v7:
-> - Addressed review comments from Namhyung
->   Changed format string space to %-20s while printing
->   instruction stats in patch 18.
->   Use cmp_null in patch 17 while comparing var_name to
->   properly sort with correct order.
-> 
-> >From v5 -> v6:
-> - Addressed review comments from Namhyung
->   Conditionally define TYPE_STATE_MAX_REGS based on arch.
->   Added macro for defining width of the raw codes and spaces
->   in disasm_line__parse_powerpc.
->   Call disasm_line__parse from disasm_line__parse_powerpc
->   for generic code.
->   Renamed symbol__disassemble_dso to symbol__disassemble_raw.
->   Fixed find_data_type_global_reg to correclty free var_types
->   and change indent level.
->   Fixed data_type_cmp and sort__typeoff_sort to include var_name
->   in comparing data type entries.
->   
-> >From v4 -> v5:
-> - Addressed review comments from Namhyung
->   Handle max number of type state regs as 16 for x86 and 32 for
->   powerpc.
->   Added generic support for objdump patch first and DSO read
->   optimisation next
->   combined patch 3 and patch 4 in patchseries V4 to one patch
->   Changed reference for "raw_insn" to use "u32"
->   Splitted "parse" callback patch changes and "ins__find" patch
->   changes into two
->   Instead of making weak function, added get_powerpc_regs to
->   extract register and offset fields for powerpc
-> - Addressed complation fail when "dwarf.h" is not present ie
->   elfutils devel is not present. Used includes for #ifdef HAVE_DWARF_SUPPORT
->   when including functions that use Dwarf references. Also
->   conditionally include some of the header files.
-> 
-> >From v3->v4:
-> - Addressed review comments from Ian by using capston_init from
->   "util/print_insn.c" instead of "open_capston_handle".
-> - Addressed review comment from Namhyung by moving "opcode"
->   field from "struct ins" to "struct disasm_line"
-> 
-> >From v2->v3:
-> - Addressed review comments from Christophe and Namhyung for V2
-> - Changed the apporach in powerpc to parse sample for data
->   type profiling as:
->   Read directly from DSO using dso__data_read_offset
->   If that fails for any case, fallback to using libcapstone
->   If libcapstone is not supported, approach will use objdump
-> - Include instructions with opcode as 31 and correctly categorize
->   them as memory or arithmetic instructions.
-> - Include more instructions for instruction tracking in powerpc
-> 
-> >From v1->v2:
-> - Addressed suggestion from Christophe Leroy and Segher Boessenkool
->   to use the binary code (raw insn) to fetch opcode, register and
->   offset fields.
-> - Added support for instruction tracking in powerpc
-> - Find the register defined variables (r13 and r1 which points to
->   local_paca and current_stack_pointer in powerpc)
-> 
-> Athira Rajeev (15):
->   tools/perf: Move the data structures related to register type to
->     header file
->   tools/perf: Add "update_insn_state" callback function to handle arch
->     specific instruction tracking
->   tools/perf: Update TYPE_STATE_MAX_REGS to include max of regs in
->     powerpc
->   tools/perf: Add disasm_line__parse to parse raw instruction for
->     powerpc
->   tools/perf: Add support to capture and parse raw instruction in
->     powerpc using dso__data_read_offset utility
->   tools/perf: Update parameters for reg extract functions to use raw
->     instruction on powerpc
->   tools/perf: Add parse function for memory instructions in powerpc
->   tools/perf: Add support to identify memory instructions of opcode 31
->     in powerpc
->   tools/perf: Add some of the arithmetic instructions to support
->     instruction tracking in powerpc
->   tools/perf: Add more instructions for instruction tracking
->   tools/perf: Update instruction tracking for powerpc
->   tools/perf: Make capstone_init non-static so that it can be used
->     during symbol disassemble
->   tools/perf: Use capstone_init and remove open_capstone_handle from
->     disasm.c
->   tools/perf: Add support to use libcapstone in powerpc
->   tools/perf: Set instruction name to be used with insn-stat when using
->     raw instruction
-> 
->  tools/include/linux/string.h                  |   2 +
->  tools/lib/string.c                            |  13 +
->  tools/perf/arch/arm64/annotate/instructions.c |   3 +-
->  .../arch/loongarch/annotate/instructions.c    |   6 +-
->  .../perf/arch/powerpc/annotate/instructions.c | 254 ++++++++++
->  tools/perf/arch/powerpc/util/dwarf-regs.c     |  53 ++
->  tools/perf/arch/s390/annotate/instructions.c  |   5 +-
->  tools/perf/arch/x86/annotate/instructions.c   | 377 ++++++++++++++
->  tools/perf/builtin-annotate.c                 |   4 +-
->  tools/perf/util/annotate-data.c               | 453 +----------------
->  tools/perf/util/annotate-data.h               |  83 ++++
->  tools/perf/util/annotate.c                    |  21 +-
->  tools/perf/util/annotate.h                    |   5 +-
->  tools/perf/util/disasm.c                      | 468 ++++++++++++++++--
->  tools/perf/util/disasm.h                      |  19 +-
->  tools/perf/util/include/dwarf-regs.h          |  11 +
->  tools/perf/util/print_insn.c                  |  15 +-
->  tools/perf/util/print_insn.h                  |   5 +
->  18 files changed, 1301 insertions(+), 496 deletions(-)
-> 
-> -- 
-> 2.43.0
+> Just some thought about an alternative that would make sense to me.
+
+Yeah comments are always welcomed, thanks.
+
+So I suppose maybe it would be easier for now that I make the pfnmap branch
+depending on THP. It looks to me something like this may still take some
+time to consolidate.  When it's light enough, maybe it can be a few initial
+patches on top of a hugetlb series that can start to use this.  Maybe
+that'll at least make the patches easier to review.
+
+Thanks,
+
+-- 
+Peter Xu
+
