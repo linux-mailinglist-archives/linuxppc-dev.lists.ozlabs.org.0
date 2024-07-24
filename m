@@ -1,92 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAFB93B377
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 17:16:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C06C93B786
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 21:19:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BCtLbAeB;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BCtLbAeB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=ZVfdGLB6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WTczn6J9jz3cYr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 01:16:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WTkN93W1nz3cfQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 05:19:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BCtLbAeB;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BCtLbAeB;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=ZVfdGLB6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WTcz4111cz3bnL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 01:15:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721834138;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RUkRMF0WARuhu/29TKm6k3lHbJ84nYZGVBuX5dht2/s=;
-	b=BCtLbAeB56q8SCHZJ96iE1jO956tyKrDRufvR12KTEUy0y4rPfsslD1aJ7ItdF9p07Aqkd
-	/O2m3HDHkTQhHgIM1V+HHORX+2EYcKYe2A3RuMp/VGyODrmOSImvRXfurkTMxJH4mqFt1A
-	S5WIIA/B7scpJeHtcETd43PegBMpg2g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721834138;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RUkRMF0WARuhu/29TKm6k3lHbJ84nYZGVBuX5dht2/s=;
-	b=BCtLbAeB56q8SCHZJ96iE1jO956tyKrDRufvR12KTEUy0y4rPfsslD1aJ7ItdF9p07Aqkd
-	/O2m3HDHkTQhHgIM1V+HHORX+2EYcKYe2A3RuMp/VGyODrmOSImvRXfurkTMxJH4mqFt1A
-	S5WIIA/B7scpJeHtcETd43PegBMpg2g=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-klUQejJ_NiisJ4umxty6-A-1; Wed, 24 Jul 2024 11:15:34 -0400
-X-MC-Unique: klUQejJ_NiisJ4umxty6-A-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-447e66bbc62so3907711cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 08:15:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WTkMT0Cvvz30St
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 05:18:43 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-70d333d5890so139820b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Jul 2024 12:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1721848719; x=1722453519; darn=lists.ozlabs.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=a02GUhiWbAY4bVUVygn/E4p/MC1dnbGGAe2U0twtjyY=;
+        b=ZVfdGLB6+t7L20+/NontxbuJqdeve28Ldo7LDPPwdJZV0WSixHid/cYO9MLYkZis5C
+         +Qu8eQLN0F9W22r9gTILGTK7rVIP9geED2U7DBveGEo/Mp8CZUYH0yupmfPMpuWUbM3B
+         vZfhR7W3vAORZwmHafLFIZcwJxcqnE08Rn9zIXCkge1aYsYRgbgIbo3Zp7t/6skZJqB/
+         oJuQrStKc0Z7xx5tcOR0HT+M6CcJoiZx3kS1i8S9WeDrkTzZqLr/b7nakBaSCGF64u83
+         ArvpHXfO3wIPRiP6gG5ja/tLJHm2av/sb8yq5bmQJYWSwqRPGN+CCl1HL2EHNKtL9lvX
+         U1hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721834134; x=1722438934;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RUkRMF0WARuhu/29TKm6k3lHbJ84nYZGVBuX5dht2/s=;
-        b=N+ge1A31VFViaUAxEPO60bmeuTeuajU+MUoM9pjqPyn7KO+qz2jevRFlX1XjNuExK3
-         i4pSLU/+w6YfiKHm2woBst8lGLYz+DA3Nc+i1dfTuwM8Z4yzTyBcpe9ICz7CqoE/M8KR
-         1yQ9LluHCTP2f/Js3lJxxdya1XDvrUNDXMTb9UGmGQk3CWJ5tE+o/iJozpAkMj+6lAx0
-         /cktpwKyVJCRGmG6/zSKpEFdV+J0+euauhp2AnzvXbIubwFB77sJNr2fy3PBZTkVCYah
-         vzTgmIZ3NZLVX/5HRh8mSZDYiRgbqDbScCZvrjUpW8sy+rwMydO/cS213jroTQM5omOu
-         aTUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoSxny2CPFuL6a4N+0R3e/DAmX8t8S4xeeDWoW1zrBKn9AM9u3v4ppkAXpJXw/zq7tJq40DIbRiNwbPkYzIbZA9wPtLXqh22OUYXSMZA==
-X-Gm-Message-State: AOJu0Yzf8RCD5qfbV8U3URgNsLxRJzId//bS5oUlJ1MewFRFtXWWlSlp
-	yDGd/dE9QFrahkMYqXOX4nw3v8CZZzgZROrlwUJup8PB7xIGyu2HL6NxnGs+ClMJd03NiirefZM
-	sSuXESL0TNjGzAsCTdH1cjmu2n7/jQ1+1VPLhbDbiuE7q70dfsUurunIL+LCFonY=
-X-Received: by 2002:a05:622a:1b9e:b0:44e:d016:ef9 with SMTP id d75a77b69052e-44fa5387fb4mr104228251cf.9.1721834133797;
-        Wed, 24 Jul 2024 08:15:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHg7QRjC9p2RRivLgKhyMUlPKC9on06KG9o9HrmhOfrljMwx/vxFCI8Gd5BGr39JQzDkkckHQ==
-X-Received: by 2002:a05:622a:1b9e:b0:44e:d016:ef9 with SMTP id d75a77b69052e-44fa5387fb4mr104227901cf.9.1721834133260;
-        Wed, 24 Jul 2024 08:15:33 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44f9cdbe223sm54733741cf.83.2024.07.24.08.15.31
+        d=1e100.net; s=20230601; t=1721848719; x=1722453519;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a02GUhiWbAY4bVUVygn/E4p/MC1dnbGGAe2U0twtjyY=;
+        b=qCSPFyNH3machF5oJy8rbVIB5tXbVMootTSH8niXmc98VWsxQQUBMySf2Zb52S+mnN
+         M0g9e3AK0H2hdXG+rKHhvB5IhEHBWLNJdStuuIStwSdHkZ9f+j/28zR2Gp7FOsVUVA16
+         Cajozb9ZZz7Rt0VpaV2nJ3ut2Sybq2JqwrBPWkQSdpmm8+UeufkAyu2vpr1aCKn6njuD
+         sLa6WVSNq4LgXcfIC9P095/CAgPlqOIGyzN8yxawiMyGCgibz5tM2Px4B2CuqT+P2sFE
+         QW7izsFLouxJNpu0aq2q66ez+xLf6/E8K+vek0R9lAgDphmqA93ZmN/KAbQq3O86RdBz
+         XeIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWncn7voczlkf6J83IP856UwOarsZC5znNTYFEKV9uvtmPgFXKD8y88s12BDu+wFzKcz6jqqV/upwTb6oL4z+Pnpjagtx3Jv3Gp7mUPMA==
+X-Gm-Message-State: AOJu0Yx69vnlXmXU7HcnvJdR5FBDJ/zVzHm632ZYEe0bgeXjXL1M+qFH
+	R1UljKBaKZ/b7+OBfYmcwvQdZO2V5S1HRZFT11f5O4ZNzvDy4AXOYgmjdxaK3+Y=
+X-Google-Smtp-Source: AGHT+IFUwWJ+8obz221hJG5x/jzoeJXTY4KS7z9HkU5UcBMvPmWxLk9KdioZD32zMoXRgep0BAh/AA==
+X-Received: by 2002:a05:6a00:3cd5:b0:70d:15b9:3ece with SMTP id d2e1a72fcca58-70eaa946a3bmr578402b3a.29.1721848719142;
+        Wed, 24 Jul 2024 12:18:39 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.128])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-70cff4b8166sm8862385b3a.85.2024.07.24.12.18.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jul 2024 08:15:32 -0700 (PDT)
-Date: Wed, 24 Jul 2024 11:15:29 -0400
-From: Peter Xu <peterx@redhat.com>
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/8] mm/mprotect: Fix dax puds
-Message-ID: <ZqEakeCfr3rVrUz6@x1n>
-References: <20240715192142.3241557-1-peterx@redhat.com>
-MIME-Version: 1.0
-In-Reply-To: <20240715192142.3241557-1-peterx@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+        Wed, 24 Jul 2024 12:18:38 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: macro@orcam.me.uk
+Subject: PCI: Work around PCIe link training failures
+Date: Wed, 24 Jul 2024 13:18:30 -0600
+Message-Id: <20240724191830.4807-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <alpine.DEB.2.21.2407222117300.51207@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2407222117300.51207@angie.orcam.me.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,93 +76,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
+Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, oohall@gmail.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, christophe.leroy@csgroup.eu, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, npiggin@gmail.com, alex.williamson@redhat.com, ilpo.jarvinen@linux.intel.com, bhelgaas@google.com, mika.westerberg@linux.intel.com, pali@kernel.org, david.abdurachmanov@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, mattc@purestorage.com, saeedm@nvidia.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 15, 2024 at 03:21:34PM -0400, Peter Xu wrote:
-> [Based on mm-unstable, commit 31334cf98dbd, July 2nd]
-> 
-> v3:
-> - Fix a build issue on i386 PAE config
-> - Moved one line from patch 8 to patch 3
-> 
-> v1: https://lore.kernel.org/r/20240621142504.1940209-1-peterx@redhat.com
-> v2: https://lore.kernel.org/r/20240703212918.2417843-1-peterx@redhat.com
-> 
-> Dax supports pud pages for a while, but mprotect on puds was missing since
-> the start.  This series tries to fix that by providing pud handling in
-> mprotect().  The goal is to add more types of pud mappings like hugetlb or
-> pfnmaps.  This series paves way for it by fixing known pud entries.
-> 
-> Considering nobody reported this until when I looked at those other types
-> of pud mappings, I am thinking maybe it doesn't need to be a fix for stable
-> and this may not need to be backported.  I would guess whoever cares about
-> mprotect() won't care 1G dax puds yet, vice versa.  I hope fixing that in
-> new kernels would be fine, but I'm open to suggestions.
-> 
-> There're a few small things changed to teach mprotect work on PUDs. E.g. it
-> will need to start with dropping NUMA_HUGE_PTE_UPDATES which may stop
-> making sense when there can be more than one type of huge pte.  OTOH, we'll
-> also need to push the mmu notifiers from pmd to pud layers, which might
-> need some attention but so far I think it's safe.  For such details, please
-> refer to each patch's commit message.
-> 
-> The mprotect() pud process should be straightforward, as I kept it as
-> simple as possible.  There's no NUMA handled as dax simply doesn't support
-> that.  There's also no userfault involvements as file memory (even if work
-> with userfault-wp async mode) will need to split a pud, so pud entry
-> doesn't need to yet know userfault's existance (but hugetlb entries will;
-> that's also for later).
-> 
-> Tests
-> =====
-> 
-> What I did test:
-> 
-> - cross-build tests that I normally cover [1]
-> 
-> - smoke tested on x86_64 the simplest program [2] on dev_dax 1G PUD
->   mprotect() using QEMU's nvdimm emulations [3] and ndctl to create
->   namespaces with proper alignments, which used to throw "bad pud" but now
->   it'll run through all fine.  I checked sigbus happens if with illegal
->   access on protected puds.
-> 
-> - vmtests.
-> 
-> What I didn't test:
-> 
-> - fsdax: I wanted to also give it a shot, but only until then I noticed it
->   doesn't seem to be supported (according to dax_iomap_fault(), which will
->   always fallback on PUD_ORDER).  I did remember it was supported before, I
->   could miss something important there.. please shoot if so.
-> 
-> - userfault wp-async: I also wanted to test userfault-wp async be able to
->   split huge puds (here it's simply a clear_pud.. though), but it won't
->   work for devdax anyway due to not allowed to do smaller than 1G faults in
->   this case. So skip too.
-> 
-> - Power, as no hardware on hand.
+Sorry for belated response. I wasn't really sure when you first asked & I
+still only have a 'hand wavy' theory here. I think one thing that is getting
+us in trouble is when we turn the endpoint device on, then off, wait for a
+little while then turn it back on. It seems that the port here in this case
+is forced to Gen1 & there is not any path for the kernel to allow it to
+try another alternative again without an informed user to write the register.
 
-Ping - any review comments or even tests would be greatly welcomed.
+I'm still trying to barter for the time to really deeply dive into this so
+must apologize if this sounds crazy or couldn't be correct.
 
-I'm not sure whether this matters for anyone yet so far.  I hope this still
-makes sense for DAX even if this is an extremely corner case...
-
-Just to mention the follow up users of this path:
-
-  - huge pfnmap 1G may use this, when VM_PFNMAP can be mapped with 1G too,
-    then we should hit similar "bad pud" here.
-
-  - hugetlb rework will use this, when we want this path to process 1G
-    hugetlb pages too.
-
-The 1st user is not a must in my initial plan, as VFIO + VM use case
-doesn't use mprotect(), so we can keep (1) broken together with DAX 1G
-here.  But for the long term we should still fix this, IMHO.
-
-Thanks,
-
--- 
-Peter Xu
-
+- Matt
