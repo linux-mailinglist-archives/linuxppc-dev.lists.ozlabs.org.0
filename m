@@ -2,119 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCAD93B85C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 23:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C09293B851
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Jul 2024 23:01:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=TX5MYsYU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tmyPlJmB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WTmnM49bLz3cjX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 07:07:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WTmfC07Wjz3dBd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 07:01:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=TX5MYsYU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tmyPlJmB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 392 seconds by postgrey-1.37 at boromir; Thu, 25 Jul 2024 07:07:11 AEST
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WTmmb3hKmz30VX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 07:07:10 +1000 (AEST)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240724210021euoutp0231d7e8e05684c7fd4c00635de6447bfd~lQdZhL_N12009420094euoutp02z;
-	Wed, 24 Jul 2024 21:00:21 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240724210021euoutp0231d7e8e05684c7fd4c00635de6447bfd~lQdZhL_N12009420094euoutp02z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1721854821;
-	bh=6BetKsi/JkRZ4DymqJrR3MQXQeSQizzSeZc0DIGgj2A=;
-	h=Date:From:To:CC:Subject:References:From;
-	b=TX5MYsYUAk/lCQnbloJX/1xyvmFoLoZq1rLyEKiXNvi8HcjkATrMtfJUG54sZ15uC
-	 3xRNQ1Rdi4G19n6puLWjeC/DJO7G8cwLdX5Soo4n/mz7MkjaVQmXRfMBI1Leutbp89
-	 tRWoWmCvNiNzvQdU2Ry8KKOp4aaf03qHXG2EXOng=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240724210021eucas1p14b3444339aa43fc76f8f3039d1a05213~lQdZG6ssu3068230682eucas1p1n;
-	Wed, 24 Jul 2024 21:00:21 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 10.90.09875.46B61A66; Wed, 24
-	Jul 2024 22:00:20 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20240724210020eucas1p2db4a3e71e4b9696804ac8f1bad6e1c61~lQdYcJjOV1618116181eucas1p2F;
-	Wed, 24 Jul 2024 21:00:20 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240724210020eusmtrp23954d5dd21bfc13f1ff8cc809fa8fafb~lQdYZk0eX2668126681eusmtrp2q;
-	Wed, 24 Jul 2024 21:00:20 +0000 (GMT)
-X-AuditID: cbfec7f4-11bff70000002693-ea-66a16b64e8e4
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id 94.8D.09010.46B61A66; Wed, 24
-	Jul 2024 22:00:20 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240724210019eusmtip13c5484587fc1cc980c2235c6d2fb06c1~lQdYCFWSP1854318543eusmtip18;
-	Wed, 24 Jul 2024 21:00:19 +0000 (GMT)
-Received: from localhost (106.210.248.226) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Wed, 24 Jul 2024 22:00:19 +0100
-Date: Wed, 24 Jul 2024 23:00:14 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] sysctl constification changes for v6.11-rc1
-Message-ID: <20240724210014.mc6nima6cekgiukx@joelS2.panther.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WTmdS0snqz3c47
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 07:01:00 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5FCFE61263;
+	Wed, 24 Jul 2024 21:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9048AC32781;
+	Wed, 24 Jul 2024 21:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721854856;
+	bh=apiiPm2sN2lMCk/MqKB3mzoyPdTD3NiyamqHd/Iu6Uk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tmyPlJmBPjmfr1kk10V3MpyVE67ACEXME6v7/LTkG2E3p5a8+FWLZGDUkJq+xR4q6
+	 6ZFxT9RnPEwujqhBqJAmDSE3iUAk5nx7sQBfTLWQFPlzrL9E46Q+M6HauomznVweG9
+	 qsspgv4MNvvjj7wi6evPUDAIRiLD4KH1tICikcFXhvNgU81IbQ/nGZd/ogjuS41k7N
+	 AO55aaCEshdvI8zAdDyvzZn3/lnq4/W/0DTUnZjJ9sKlGegAIrEF94DIWP0lOFyIud
+	 SSwl+X4IaNnESItKB7L36GJc0e+F8YHyXNWWgUBOFwJWtvloIU8QHdKm214cgO/oug
+	 fFm6n1rY9Jl6g==
+Date: Wed, 24 Jul 2024 18:00:52 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH V8 14/15] tools/perf: Add support to use libcapstone in
+ powerpc
+Message-ID: <ZqFrhCguUd_8n-xa@x1>
+References: <20240718084358.72242-1-atrajeev@linux.vnet.ibm.com>
+ <20240718084358.72242-15-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Originating-IP: [106.210.248.226]
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxbZRTG8/Z+0qx46VBeGRZTw6KGIZKh7xxxLDHmqjEasg+VLK6xl68B
-	W1rYhDkdHxPHJtSCgZWvyyaUwdJKYR0Flg1CWwYyYANC5qwRSt2AytayOAIWKZdl++933nOe
-	85wneWlM2kKG0qmZWZwqU5EuJ8W42bY0vE15qD4p2nh+O8qz8QTy9tlJZL5wRoT+sxRhqN3m
-	AMjgHiZQ1+AjERoxlxDIND1BoO6rN3BUa1wC6HZnNYkcl1YJNHJ9kEBjlw04cvX+iCOzt5BE
-	mvoCDM3wcwR6cHaKRH3GIRx1rnRQaPmxS4SW//URqKDOg6FJzQxAvxnzKWTjX0AawwCObrZ5
-	CTRV4qbiw9mB85A1NZ8mWZNHS7H9lcs42/bLd+y9tnOAHa6sB+zE5J84617uF7EjjfMk6zXJ
-	2NIzNurTTV+I45RceupRTvXGuwfFKdPGIfJIyftfF5Q6qJNAu60YBNCQ2Q6tlVaiGIhpKdME
-	4E8jnaRQLAKo/eN3IBReAMfLbOCJpMRu3JjSA9hYe+Xp1Klxz0bnMoBNP9eSfgnORMCrPX9T
-	fiaZSDg8fxfzczATA733xtbdMUZDw/vGgnWPzcwu2Hx9eV0sYeKhpb8TFzgI3jjnXGdsbRHf
-	5Xej13gL1Pto4bxXoMPUjQl8Ag603xH590Pmohg6eA8uNN6D47NdpMCb4ay9nRI4DK5a6jYE
-	ZQBe8z2ghKJlLWjeI5EwtRMWjjkpvzNkdsPGK2kCBsJJd5BwWyDUmisw4VkCf/heKgi3whbH
-	PC48h8GbnkANkOueCaZ7JpjuaTAeYM0ghMtWZyRz6phM7liUWpGhzs5MjvrqcIYJrP3nQZ99
-	sQPoZx9G9QIRDXoBpDF5sMQ5W5MklSgVObmc6vCXqux0Tt0LttC4PEQSoQznpEyyIos7xHFH
-	ONWTrogOCD0pSsiSv1ia274Ql2/wlOkKy3/tf9iz/0IANrvpwKVTqsSzi9U10qRxqjj/rRg+
-	3i4RN6SVE/rKzxpuKZqfnzp2NyVs0rUQHJx12rdypyhi4aXVKn25rHrHCfcB88hxVpa79dr+
-	uH+4o1yiqjV2IATVHdzbVvrcR0GWKllNxfxrhYbB1nco3jOD7TbHJFgCbr16cVT7wXRPTNW3
-	Op9rqUwWG9lZc/xlsTOqwWplKdQ9tLrH0xpqGf0Qv/2xqykjX7lLvvNtG984l3g/Mjqh6BNL
-	Wk4qN5RX/Hl7/UR40FL3N9H849ix4KK/VuTWitE9MumEbCzH5+6w7gif29eX4oyYkePqFMWb
-	r2MqteJ/GkR62T4EAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAKsWRmVeSWpSXmKPExsVy+t/xu7op2QvTDLoPsFo0HlvAavH5yHE2
-	i22Lu5ks/u5sZ7bYcuweo8W6t+dZLXaf/spkcWFbH6vFpsfXWC327D3JYjFv/U9Gi8u75rBZ
-	3Fvzn9XiwoHTrBZXtq5jsXh2qJfFYtvnFjaLCQubmS2eLnjNavGh5xGbxZH1Z1ksdv3ZwW7x
-	+8czJovf3/+xWjTP/8RscWPCU0aLM+ub2C2OLRCzmLDuFIvFuc2fWS0e9b1ld5D3OLVIwmPT
-	qk42j02fJrF7nJjxm8Vj85J6jxebZzJ6nJ+xkNHj2o37LB5vf59g8riw7A2bx+dNch793cfY
-	A3ii9GyK8ktLUhUy8otLbJWiDS2M9AwtLfSMTCz1DI3NY62MTJX07WxSUnMyy1KL9O0S9DIe
-	rz/LVtDnVtHcf4+9gXGSbhcjJ4eEgIlE3/H1bF2MXBxCAksZJe707mCDSMhIbPxylRXCFpb4
-	c60Lqugjo8TXLcsZIZytjBJTdh4H62ARUJXYe/A5O4jNJqAjcf7NHWYQW0TASOLziyusIA3M
-	AhM4JC6ufcgEkhAWsJdYdeA3WDOvgIPEzhO7WCBsQYmTM5+A2cxAgxbs/gRUwwFkS0ss/8cB
-	cZGyxL1Ne5gh7FqJz3+fMU5gFJyFpHsWku5ZCN0LGJlXMYqklhbnpucWG+kVJ+YWl+al6yXn
-	525iBCadbcd+btnBuPLVR71DjEwcjIcYJTiYlUR4n7yamybEm5JYWZValB9fVJqTWnyI0RTo
-	5YnMUqLJ+cC0l1cSb2hmYGpoYmZpYGppZqwkzutZ0JEoJJCeWJKanZpakFoE08fEwSnVwBTF
-	0tF7WtTqeM4ChtjpIvcenUz32ptZELVps1HFvY5tSxe9u1d9fEbQ5tCZc/+qufas3iv5JrJi
-	UYmw1RJxm7iw3RrFb+tWyV3qMFlc3n73gPrJk5W/M4t1E6PaGovOd97x9PhYxnFwWuf9728z
-	n69fJvnLtdOsStty/Y2H5y71dBfs8tklcFFT8c3NHfyBP004lYyVxfL43586pmehNHNxaFdT
-	yXL7it9h7D7RQb4Kj470CfDt4QkJzBApv3dczPzwsSexjw9ci9F7eOjKv3Qprr1Ha5T8c46u
-	9FyZwxO+c/PSXpecxOmT5WRit8ZNvS7hwag7PW6uySJztcdHzj+SNeNRUeyKmHmwrTJ0phJL
-	cUaioRZzUXEiAGTJglPDAwAA
-X-CMS-MailID: 20240724210020eucas1p2db4a3e71e4b9696804ac8f1bad6e1c61
-X-Msg-Generator: CA
-X-RootMTR: 20240724210020eucas1p2db4a3e71e4b9696804ac8f1bad6e1c61
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240724210020eucas1p2db4a3e71e4b9696804ac8f1bad6e1c61
-References: <CGME20240724210020eucas1p2db4a3e71e4b9696804ac8f1bad6e1c61@eucas1p2.samsung.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240718084358.72242-15-atrajeev@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,218 +62,273 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joel Granados <j.granados@samsung.com>, Kees Cook <kees@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-sctp@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, rds-devel@oss.oracle.com, linux-rdma@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, coreteam@netfilter.org, Jakub Kicinski <kuba@kernel.org>, linux-trace-kernel@vger.kernel.org, bridge@lists.linux.dev, apparmor@lists.ubuntu.com, linux-xfs@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-nfs@vger.kernel.org, netdev@vger.kernel.org, kexec@lists.infradead.org, Thomas =?utf-8?B?V2Vp77+9c2NodWg=?= <linux@weissschuh.net>, linux-perf-users@vger.kernel.org, linux-security-module@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: irogers@google.com, disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, akanksha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus
+On Thu, Jul 18, 2024 at 02:13:57PM +0530, Athira Rajeev wrote:
+> Now perf uses the capstone library to disassemble the instructions in
+> x86. capstone is used (if available) for perf annotate to speed up.
+> Currently it only supports x86 architecture. Patch includes changes to
+> enable this in powerpc. For now, only for data type sort keys, this
+> method is used and only binary code (raw instruction) is read. This is
+> because powerpc approach to understand instructions and reg fields uses
+> raw instruction. The "cs_disasm" is currently not enabled. While
+> attempting to do cs_disasm, observation is that some of the instructions
+> were not identified (ex: extswsli, maddld) and it had to fallback to use
+> objdump. Hence enabling "cs_disasm" is added in comment section as a
+> TODO for powerpc.
+> 
+> Reviewed-and-tested-by: Kajol Jain <kjain@linux.ibm.com>
+> Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Constifying ctl_table structs will prevent the modification of
-proc_handler function pointers as they would reside in .rodata. To get
-there, the proc_handler arguments must first be const qualified which
-requires this (fairly large) treewide PR. Sending it in the tail end of
-of the merge window after a suggestion from Kees to avoid unneeded merge
-conflicts. It has been rebased on top of 7a3fad30fd8b4b5e370906b3c554f64026f56c2f.
-I can send it later if it makes more sense on your side; please tell me
-what you prefer.
+Is this building on ppc?
 
-This PR applies on top of what I see as your latest master, but if you
-need to generate it, you can do so by executing two commands:
-1. Semantic patch: The coccinelle script is here [1]
-  `make coccicheck MODE=patch SPFLAGS="--in-place --include-headers --smpl-spacing" COCCI=COCCI_SCRIPT`
-2. Sed command: The sed script is here [2]
-  `sed --in-place -f SED_SCRIPT fs/xfs/xfs_sysctl.c kernel/watchdog.c`
-This is my first time sending out a semantic patch, so get back to me if
-you have issues or prefer some other way of receiving it.
+Here, when building on a x86-64 machine with:
 
-Testing was done in sysctl-testing (0-day) to avoid generating
-unnecessary merge conflicts in linux-next. I do not expect any
-error/regression given that all changes contained in this PR are
-non-functional.
+ake -C tools/perf EXTRA_CFLAGS=-DREFCNT_CHECKING=1 O=/tmp/build/perf-tools-next/
 
-[1]
-```
-virtual patch
+That I got to by the usual:
 
-@r1@
-identifier ctl, write, buffer, lenp, ppos;
-identifier func !~ "appldata_(timer|interval)_handler|sched_(rt|rr)_handler|rds_tcp_skbuf_handler|proc_sctp_do_(hmac_alg|rto_min|rto_max|udp_port|alpha_beta|auth|probe_interval)";
-@@
+make -C tools/perf build-test
 
-int func(
-- struct ctl_table *ctl
-+ const struct ctl_table *ctl
-  ,int write, void *buffer, size_t *lenp, loff_t *ppos);
+I get:
 
-@r2@
-identifier func, ctl, write, buffer, lenp, ppos;
-@@
+util/disasm.c: In function ‘symbol__disassemble_capstone_powerpc’:
+util/disasm.c:1618:34: error: ‘struct dso’ has no member named ‘nsinfo’
+ 1618 |         nsinfo__mountns_enter(dso->nsinfo, &nsc);
+      |                                  ^~
+make[4]: *** [/home/acme/git/perf-tools-next/tools/build/Makefile.build:105: /tmp/build/perf-tools-next/util/disasm.o] Error 1
+make[3]: *** [/home/acme/git/perf-tools-next/tools/build/Makefile.build:158: util] Error 2
+make[2]: *** [Makefile.perf:762: /tmp/build/perf-tools-next/perf-util-in.o] Error 2
+make[1]: *** [Makefile.perf:265: sub-make] Error 2
+make: *** [Makefile:70: all] Error 2
+make: Leaving directory '/home/acme/git/perf-tools-next/tools/perf'
+⬢[acme@toolbox perf-tools-next]$
 
-int func(
-- struct ctl_table *ctl
-+ const struct ctl_table *ctl
-  ,int write, void *buffer, size_t *lenp, loff_t *ppos)
-{ ... }
+And then when looking at this changeset I noticed that you added a
+function and then only called it if:
 
-@r3@
-identifier func;
-@@
+ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
+                                        struct annotate_args *args)
+ {
+@@ -1945,6 +2083,11 @@ int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
+                        err = symbol__disassemble_raw(symfs_filename, sym, args);
+                        if (err == 0)
+                                goto out_remove_tmp;
++#ifdef HAVE_LIBCAPSTONE_SUPPORT
++                       err = symbol__disassemble_capstone_powerpc(symfs_filename, sym, args);
++                       if (err == 0)
++                               goto out_remove_tmp;
++#endif
+                }
+        }
 
-int func(
-- struct ctl_table *
-+ const struct ctl_table *
-  ,int , void *, size_t *, loff_t *);
+but the symbol__disassemble_capstone_powerpc() is being unconditionally
+built, i.e. it is not surrounded by '#ifdef HAVE_LIBCAPSTONE_SUPPORT'
 
-@r4@
-identifier func, ctl;
-@@
+And then there:
 
-int func(
-- struct ctl_table *ctl
-+ const struct ctl_table *ctl
-  ,int , void *, size_t *, loff_t *);
+dso->nsinfo
 
-@r5@
-identifier func, write, buffer, lenp, ppos;
-@@
+It should have been:
 
-int func(
-- struct ctl_table *
-+ const struct ctl_table *
-  ,int write, void *buffer, size_t *lenp, loff_t *ppos);
-```
+⬢[acme@toolbox perf-tools-next]$ git diff
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 2a1c657d6aa66cc2..99081f37c5daba60 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -1615,7 +1615,7 @@ static int symbol__disassemble_capstone_powerpc(char *filename, struct symbol *s
+        if (args->options->objdump_path)
+                return -1;
+ 
+-       nsinfo__mountns_enter(dso->nsinfo, &nsc);
++       nsinfo__mountns_enter(dso__nsinfo(dso), &nsc);
+        fd = open(filename, O_RDONLY);
+        nsinfo__mountns_exit(&nsc);
+        if (fd < 0)
+⬢[acme@toolbox perf-tools-next]$
 
-[2]
-```
-s/^xfs_stats_clear_proc_handler(const struct ctl_table \*ctl,$/xfs_stats_clear_proc_handler(\
-\tconst struct ctl_table\t*ctl,/
-s/^xfs_panic_mask_proc_handler(const struct ctl_table \*ctl,$/xfs_panic_mask_proc_handler(\
-\tconst struct ctl_table\t*ctl,/
-s/^xfs_deprecated_dointvec_minmax(const struct ctl_table \*ctl,$/xfs_deprecated_dointvec_minmax(\
-\tconst struct ctl_table\t*ctl,/
-s/proc_watchdog_common(int which, struct ctl_table \*table/proc_watchdog_common(int which, const struct ctl_table *table/
-```
+So it is critical that you try using:
 
-The following changes since commit 7a3fad30fd8b4b5e370906b3c554f64026f56c2f:
+make -C tools/perf build-test
 
-  Merge tag 'random-6.11-rc1-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/crng/random (2024-07-24 10:29:50 -0700)
+Before asking for review.
 
-are available in the Git repository at:
+Please do that next time.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/sysctl/sysctl.git/ tags/constfy-sysctl-6.11-rc1
+I'm fixing this up this time so that we can make progress.
 
-for you to fetch changes up to 78eb4ea25cd5fdbdae7eb9fdf87b99195ff67508:
+Best regards,
 
-  sysctl: treewide: constify the ctl_table argument of proc_handlers (2024-07-24 20:59:29 +0200)
+- Arnaldo
 
-----------------------------------------------------------------
-sysctl: treewide: constify the ctl_table argument of proc_handlers
 
-Summary
-- const qualify struct ctl_table args in proc_handlers:
-  This is a prerequisite to moving the static ctl_table structs into .rodata
-  data which will ensure that proc_handler function pointers cannot be
-  modified.
-
-----------------------------------------------------------------
-Joel Granados (1):
-      sysctl: treewide: constify the ctl_table argument of proc_handlers
-
- arch/arm64/kernel/armv8_deprecated.c      |  2 +-
- arch/arm64/kernel/fpsimd.c                |  2 +-
- arch/s390/appldata/appldata_base.c        | 10 ++---
- arch/s390/kernel/debug.c                  |  2 +-
- arch/s390/kernel/topology.c               |  2 +-
- arch/s390/mm/cmm.c                        |  6 +--
- arch/x86/kernel/itmt.c                    |  2 +-
- drivers/cdrom/cdrom.c                     |  4 +-
- drivers/char/random.c                     |  4 +-
- drivers/macintosh/mac_hid.c               |  2 +-
- drivers/net/vrf.c                         |  2 +-
- drivers/parport/procfs.c                  | 12 +++---
- drivers/perf/arm_pmuv3.c                  |  2 +-
- drivers/perf/riscv_pmu_sbi.c              |  2 +-
- fs/coredump.c                             |  2 +-
- fs/dcache.c                               |  2 +-
- fs/drop_caches.c                          |  2 +-
- fs/exec.c                                 |  2 +-
- fs/file_table.c                           |  2 +-
- fs/fs-writeback.c                         |  2 +-
- fs/inode.c                                |  2 +-
- fs/pipe.c                                 |  2 +-
- fs/quota/dquot.c                          |  2 +-
- fs/xfs/xfs_sysctl.c                       |  6 +--
- include/linux/ftrace.h                    |  4 +-
- include/linux/mm.h                        |  8 ++--
- include/linux/perf_event.h                |  6 +--
- include/linux/security.h                  |  2 +-
- include/linux/sysctl.h                    | 34 ++++++++--------
- include/linux/vmstat.h                    |  4 +-
- include/linux/writeback.h                 |  2 +-
- include/net/ndisc.h                       |  2 +-
- include/net/neighbour.h                   |  6 +--
- include/net/netfilter/nf_hooks_lwtunnel.h |  2 +-
- ipc/ipc_sysctl.c                          |  6 +--
- kernel/bpf/syscall.c                      |  4 +-
- kernel/delayacct.c                        |  2 +-
- kernel/events/callchain.c                 |  2 +-
- kernel/events/core.c                      |  4 +-
- kernel/fork.c                             |  2 +-
- kernel/hung_task.c                        |  2 +-
- kernel/kexec_core.c                       |  2 +-
- kernel/kprobes.c                          |  2 +-
- kernel/latencytop.c                       |  2 +-
- kernel/pid_namespace.c                    |  2 +-
- kernel/pid_sysctl.h                       |  2 +-
- kernel/printk/internal.h                  |  2 +-
- kernel/printk/printk.c                    |  2 +-
- kernel/printk/sysctl.c                    |  2 +-
- kernel/sched/core.c                       |  6 +--
- kernel/sched/rt.c                         |  8 ++--
- kernel/sched/topology.c                   |  2 +-
- kernel/seccomp.c                          |  2 +-
- kernel/stackleak.c                        |  2 +-
- kernel/sysctl.c                           | 64 +++++++++++++++----------------
- kernel/time/timer.c                       |  2 +-
- kernel/trace/ftrace.c                     |  2 +-
- kernel/trace/trace.c                      |  2 +-
- kernel/trace/trace_events_user.c          |  2 +-
- kernel/trace/trace_stack.c                |  2 +-
- kernel/umh.c                              |  2 +-
- kernel/utsname_sysctl.c                   |  2 +-
- kernel/watchdog.c                         | 12 +++---
- mm/compaction.c                           |  6 +--
- mm/hugetlb.c                              |  6 +--
- mm/page-writeback.c                       | 10 ++---
- mm/page_alloc.c                           | 14 +++----
- mm/util.c                                 |  6 +--
- mm/vmstat.c                               |  4 +-
- net/bridge/br_netfilter_hooks.c           |  2 +-
- net/core/neighbour.c                      | 18 ++++-----
- net/core/sysctl_net_core.c                | 20 +++++-----
- net/ipv4/devinet.c                        |  6 +--
- net/ipv4/route.c                          |  2 +-
- net/ipv4/sysctl_net_ipv4.c                | 30 +++++++--------
- net/ipv6/addrconf.c                       | 16 ++++----
- net/ipv6/ndisc.c                          |  2 +-
- net/ipv6/route.c                          |  2 +-
- net/ipv6/sysctl_net_ipv6.c                |  4 +-
- net/mpls/af_mpls.c                        |  4 +-
- net/mptcp/ctrl.c                          |  4 +-
- net/netfilter/ipvs/ip_vs_ctl.c            | 12 +++---
- net/netfilter/nf_conntrack_standalone.c   |  2 +-
- net/netfilter/nf_hooks_lwtunnel.c         |  2 +-
- net/netfilter/nf_log.c                    |  2 +-
- net/phonet/sysctl.c                       |  2 +-
- net/rds/tcp.c                             |  4 +-
- net/sctp/sysctl.c                         | 28 +++++++-------
- net/sunrpc/sysctl.c                       |  4 +-
- net/sunrpc/xprtrdma/svc_rdma.c            |  2 +-
- security/apparmor/lsm.c                   |  2 +-
- security/min_addr.c                       |  2 +-
- security/yama/yama_lsm.c                  |  2 +-
- 93 files changed, 258 insertions(+), 258 deletions(-)
-
--- 
-
-Joel Granados
+> ---
+>  tools/perf/util/disasm.c | 143 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 143 insertions(+)
+> 
+> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+> index a848e6f5f05a..63681df6482b 100644
+> --- a/tools/perf/util/disasm.c
+> +++ b/tools/perf/util/disasm.c
+> @@ -1585,6 +1585,144 @@ static void print_capstone_detail(cs_insn *insn, char *buf, size_t len,
+>  	}
+>  }
+>  
+> +static int symbol__disassemble_capstone_powerpc(char *filename, struct symbol *sym,
+> +					struct annotate_args *args)
+> +{
+> +	struct annotation *notes = symbol__annotation(sym);
+> +	struct map *map = args->ms.map;
+> +	struct dso *dso = map__dso(map);
+> +	struct nscookie nsc;
+> +	u64 start = map__rip_2objdump(map, sym->start);
+> +	u64 end = map__rip_2objdump(map, sym->end);
+> +	u64 len = end - start;
+> +	u64 offset;
+> +	int i, fd, count;
+> +	bool is_64bit = false;
+> +	bool needs_cs_close = false;
+> +	u8 *buf = NULL;
+> +	struct find_file_offset_data data = {
+> +		.ip = start,
+> +	};
+> +	csh handle;
+> +	char disasm_buf[512];
+> +	struct disasm_line *dl;
+> +	u32 *line;
+> +	bool disassembler_style = false;
+> +
+> +	if (args->options->objdump_path)
+> +		return -1;
+> +
+> +	nsinfo__mountns_enter(dso->nsinfo, &nsc);
+> +	fd = open(filename, O_RDONLY);
+> +	nsinfo__mountns_exit(&nsc);
+> +	if (fd < 0)
+> +		return -1;
+> +
+> +	if (file__read_maps(fd, /*exe=*/true, find_file_offset, &data,
+> +			    &is_64bit) == 0)
+> +		goto err;
+> +
+> +	if (!args->options->disassembler_style ||
+> +			!strcmp(args->options->disassembler_style, "att"))
+> +		disassembler_style = true;
+> +
+> +	if (capstone_init(maps__machine(args->ms.maps), &handle, is_64bit, disassembler_style) < 0)
+> +		goto err;
+> +
+> +	needs_cs_close = true;
+> +
+> +	buf = malloc(len);
+> +	if (buf == NULL)
+> +		goto err;
+> +
+> +	count = pread(fd, buf, len, data.offset);
+> +	close(fd);
+> +	fd = -1;
+> +
+> +	if ((u64)count != len)
+> +		goto err;
+> +
+> +	line = (u32 *)buf;
+> +
+> +	/* add the function address and name */
+> +	scnprintf(disasm_buf, sizeof(disasm_buf), "%#"PRIx64" <%s>:",
+> +		  start, sym->name);
+> +
+> +	args->offset = -1;
+> +	args->line = disasm_buf;
+> +	args->line_nr = 0;
+> +	args->fileloc = NULL;
+> +	args->ms.sym = sym;
+> +
+> +	dl = disasm_line__new(args);
+> +	if (dl == NULL)
+> +		goto err;
+> +
+> +	annotation_line__add(&dl->al, &notes->src->source);
+> +
+> +	/*
+> +	 * TODO: enable disassm for powerpc
+> +	 * count = cs_disasm(handle, buf, len, start, len, &insn);
+> +	 *
+> +	 * For now, only binary code is saved in disassembled line
+> +	 * to be used in "type" and "typeoff" sort keys. Each raw code
+> +	 * is 32 bit instruction. So use "len/4" to get the number of
+> +	 * entries.
+> +	 */
+> +	count = len/4;
+> +
+> +	for (i = 0, offset = 0; i < count; i++) {
+> +		args->offset = offset;
+> +		sprintf(args->line, "%x", line[i]);
+> +
+> +		dl = disasm_line__new(args);
+> +		if (dl == NULL)
+> +			goto err;
+> +
+> +		annotation_line__add(&dl->al, &notes->src->source);
+> +
+> +		offset += 4;
+> +	}
+> +
+> +	/* It failed in the middle */
+> +	if (offset != len) {
+> +		struct list_head *list = &notes->src->source;
+> +
+> +		/* Discard all lines and fallback to objdump */
+> +		while (!list_empty(list)) {
+> +			dl = list_first_entry(list, struct disasm_line, al.node);
+> +
+> +			list_del_init(&dl->al.node);
+> +			disasm_line__free(dl);
+> +		}
+> +		count = -1;
+> +	}
+> +
+> +out:
+> +	if (needs_cs_close)
+> +		cs_close(&handle);
+> +	free(buf);
+> +	return count < 0 ? count : 0;
+> +
+> +err:
+> +	if (fd >= 0)
+> +		close(fd);
+> +	if (needs_cs_close) {
+> +		struct disasm_line *tmp;
+> +
+> +		/*
+> +		 * It probably failed in the middle of the above loop.
+> +		 * Release any resources it might add.
+> +		 */
+> +		list_for_each_entry_safe(dl, tmp, &notes->src->source, al.node) {
+> +			list_del(&dl->al.node);
+> +			free(dl);
+> +		}
+> +	}
+> +	count = -1;
+> +	goto out;
+> +}
+> +
+>  static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
+>  					struct annotate_args *args)
+>  {
+> @@ -1942,6 +2080,11 @@ int symbol__disassemble(struct symbol *sym, struct annotate_args *args)
+>  			err = symbol__disassemble_raw(symfs_filename, sym, args);
+>  			if (err == 0)
+>  				goto out_remove_tmp;
+> +#ifdef HAVE_LIBCAPSTONE_SUPPORT
+> +			err = symbol__disassemble_capstone_powerpc(symfs_filename, sym, args);
+> +			if (err == 0)
+> +				goto out_remove_tmp;
+> +#endif
+>  		}
+>  	}
+>  
+> -- 
+> 2.43.0
