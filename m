@@ -2,58 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125B593C6B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 17:40:43 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LGFaBFor;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 6520193C6B8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 17:45:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVFTP0FMgz3dBw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 01:40:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVFZh2B7Dz3dLs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 01:45:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LGFaBFor;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVFSh5hQdz3cfK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 01:40:04 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 1371CCE13A5;
-	Thu, 25 Jul 2024 15:40:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7161AC4AF0B;
-	Thu, 25 Jul 2024 15:39:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721922000;
-	bh=b1xxyMOUKEHTM0fgA7cD5Ky7WM4hglICYTCKS++76WM=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=LGFaBForeYM7v7INCmm8bGVhoycA1yBXjiM4EkajMOqGcSngGeisvOGul/VNRlRvV
-	 X2+DZ3exNLic5d3hTcEPUV6JcJS2Y9nHCvuaRwxPyPHVRVKtFbczyE0YtKCnvvlV5K
-	 MOtjzMAea32xMcAlHbw8z6wZmT2F0AO3wFJ9zo9WVtDiy+DVOvOpc30OeGhTL7gKIV
-	 ZSKHKyiS7DrkkNIL1+ivKOf8b9BY3/v9eLwUSxPllsCQ2IoxM7gLRF834HeERh6ns7
-	 gqX/sNYkALTRA3DXBUH2eHlEAGnadBA3hc6cy43mIqKarCkZGQ2bx8dWdRCFribHV4
-	 LoNM5DdOCMRAg==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- elinor.montmasson@savoirfairelinux.com, alsa-devel@alsa-project.org, 
- linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1721877773-5229-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1721877773-5229-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl-asoc-card: Dynamically allocate memory for
- snd_soc_dai_link_components
-Message-Id: <172192199718.45693.5848047744878489432.b4-ty@kernel.org>
-Date: Thu, 25 Jul 2024 16:39:57 +0100
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVFZH5wsSz30W6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 01:44:54 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A92B61007;
+	Thu, 25 Jul 2024 08:44:47 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 312CB3F766;
+	Thu, 25 Jul 2024 08:44:19 -0700 (PDT)
+Date: Thu, 25 Jul 2024 16:44:13 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: Joey Gouly <joey.gouly@arm.com>
+Subject: Re: [PATCH v4 04/29] arm64: disable trapping of POR_EL0 to EL2
+Message-ID: <ZqJyzZB8Y8GLzYIA@e133380.arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-5-joey.gouly@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev-d4707
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240503130147.1154804-5-joey.gouly@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,42 +42,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 25 Jul 2024 11:22:53 +0800, Shengjiu Wang wrote:
-> The static snd_soc_dai_link_components cause conflict for multiple
-> instances of this generic driver. For example, when there is
-> wm8962 and SPDIF case enabled together, the contaminated
-> snd_soc_dai_link_components will cause another device probe fail.
+Hi,
+
+On Fri, May 03, 2024 at 02:01:22PM +0100, Joey Gouly wrote:
+> Allow EL0 or EL1 to access POR_EL0 without being trapped to EL2.
 > 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> ---
+>  arch/arm64/include/asm/el2_setup.h | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
 > 
+> diff --git a/arch/arm64/include/asm/el2_setup.h b/arch/arm64/include/asm/el2_setup.h
+> index b7afaa026842..df5614be4b70 100644
+> --- a/arch/arm64/include/asm/el2_setup.h
+> +++ b/arch/arm64/include/asm/el2_setup.h
+> @@ -184,12 +184,20 @@
+>  .Lset_pie_fgt_\@:
+>  	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
+>  	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1PIE_SHIFT, #4
+> -	cbz	x1, .Lset_fgt_\@
+> +	cbz	x1, .Lset_poe_fgt_\@
+>  
+>  	/* Disable trapping of PIR_EL1 / PIRE0_EL1 */
+>  	orr	x0, x0, #HFGxTR_EL2_nPIR_EL1
+>  	orr	x0, x0, #HFGxTR_EL2_nPIRE0_EL1
+>  
+> +.Lset_poe_fgt_\@:
+> +	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
+> +	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1POE_SHIFT, #4
+> +	cbz	x1, .Lset_fgt_\@
+> +
+> +	/* Disable trapping of POR_EL0 */
+> +	orr	x0, x0, #HFGxTR_EL2_nPOR_EL0
 
-Applied to
+Do I understand correctly that this is just to allow the host to access
+its own POR_EL0, before (or unless) KVM starts up?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+KVM always overrides all the EL2 trap controls while running a guest,
+right?  We don't want this bit still set when running in a guest just
+because KVM doesn't know about POE yet.
 
-Thanks!
+(Hopefully this follows naturally from the way the KVM code works, but
+my KVM-fu is a bit rusty.)
 
-[1/1] ASoC: fsl-asoc-card: Dynamically allocate memory for snd_soc_dai_link_components
-      commit: ab53dfdcdd1ec8df8729890aefa5b0e3c900afbb
+Also, what about POR_EL1?  Do we have to reset that to something sane
+(and so untrap it here), or it is sufficient if we never turn on POE
+support in the host, via TCR2_EL1.POE?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+[...]
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Cheers
+---Dave
