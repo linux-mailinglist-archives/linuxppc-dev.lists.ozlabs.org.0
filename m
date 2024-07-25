@@ -1,50 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB55893BED3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 11:15:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAF593C137
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 13:57:13 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=bizVwSo2;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WV4wW5XxTz3fny
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 19:15:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WV8WW6b5dz3d2n
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 21:57:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tkos.co.il
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=bizVwSo2;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tkos.co.il (client-ip=84.110.109.230; helo=mail.tkos.co.il; envelope-from=baruch@tkos.co.il; receiver=lists.ozlabs.org)
+X-Greylist: delayed 446 seconds by postgrey-1.37 at boromir; Thu, 25 Jul 2024 21:56:34 AEST
+Received: from mail.tkos.co.il (mail.tkos.co.il [84.110.109.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WV4vJ3HSzz3cdy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 19:14:04 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0F1351A0517;
-	Thu, 25 Jul 2024 11:14:02 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CADEA1A0515;
-	Thu, 25 Jul 2024 11:14:01 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 36826181D0FA;
-	Thu, 25 Jul 2024 17:14:00 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: fsl_micfil: Differentiate register access permission for platforms
-Date: Thu, 25 Jul 2024 16:54:54 +0800
-Message-Id: <1721897694-6088-3-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1721897694-6088-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1721897694-6088-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WV8Vp5HGyz2xWZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 21:56:34 +1000 (AEST)
+Received: from localhost (unknown [10.0.8.2])
+	by mail.tkos.co.il (Postfix) with ESMTP id 284E14404C3;
+	Thu, 25 Jul 2024 14:47:51 +0300 (IDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
+	s=default; t=1721908071;
+	bh=yE1dvBcrEBKnorpECP4pOnlN7nPfgUokWU3jR2HlwE8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bizVwSo2WQmGu0wUpHnYrd0vmUJZSj2EFi5MQvsuSsHcUPIlfFUeav8XA1ADfxEht
+	 swspOZXXy6Ab7EMunaOnm8NHsgOT9449191hCTw2/CpoAtwSwSaAwbieaI7844BSro
+	 ptDyP9e+pI/vXYmBCpx+M0RmTU+Lr81JVG8wPU3ZSwi4+YXygklxhz7lCo6Gusy58K
+	 seXAU/M/7An4QuSEy4KgL1CDRjrevZeRuLYxoakcQey6W84qW98DoLWlQoXDC09PaI
+	 4x/s1EdCLdeCgMg6IPGd80vPUq/70SWVPgWUFJSRDxadbEb9i2o8jR+4Mi0NXSi22V
+	 /YANXGITTzdfw==
+From: Baruch Siach <baruch@tkos.co.il>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH RFC v2 2/5] of: get dma area lower limit
+In-Reply-To: <ZnH-VU2iz9Q2KLbr@arm.com> (Catalin Marinas's message of "Tue, 18
+	Jun 2024 22:38:29 +0100")
+References: <cover.1712642324.git.baruch@tkos.co.il>
+	<230ea13ef8e9f576df849e1b03406184ca890ba8.1712642324.git.baruch@tkos.co.il>
+	<ZnH-VU2iz9Q2KLbr@arm.com>
+Date: Thu, 25 Jul 2024 14:49:01 +0300
+Message-ID: <87cyn1k7yq.fsf@tarshish>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,85 +59,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rob Herring <robh@kernel.org>, linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On i.MX9x platforms, the REG_MICFIL_FSYNC_CTRL, REG_MICFIL_VERID,
-REG_MICFIL_PARAM are added, but they are not existed on i.MX8x
-platforms.
+Hi Catalin,
 
-Use the existed micfil->soc->use_verid to distinguish the access
-permission for these platforms.
+On Tue, Jun 18 2024, Catalin Marinas wrote:
+> On Tue, Apr 09, 2024 at 09:17:55AM +0300, Baruch Siach wrote:
+>> of_dma_get_max_cpu_address() returns the highest CPU address that
+>> devices can use for DMA. The implicit assumption is that all CPU
+>> addresses below that limit are suitable for DMA. However the
+>> 'dma-ranges' property this code uses also encodes a lower limit for DMA
+>> that is potentially non zero.
+>> 
+>> Rename to of_dma_get_cpu_limits(), and extend to retrieve also the lower
+>> limit for the same 'dma-ranges' property describing the high limit.
+>
+> I don't understand the reason for the lower limit. The way the Linux
+> zones work is that ZONE_DMA always starts from the start of the RAM. It
+> doesn't matter whether it's 0 or not, you'd not allocate below the start
+> of RAM anyway. If you have a device that cannot use the bottom of the
+> RAM, it is pretty broken and not supported by Linux.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_micfil.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+I won't argue with that assertion. My target system RAM happens to start
+at that the lower end of devices DMA zone, so I'm fine with skipping
+this patch.
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 96a6b88d0d67..22b240a70ad4 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -855,6 +855,8 @@ static const struct reg_default fsl_micfil_reg_defaults[] = {
- 
- static bool fsl_micfil_readable_reg(struct device *dev, unsigned int reg)
- {
-+	struct fsl_micfil *micfil = dev_get_drvdata(dev);
-+
- 	switch (reg) {
- 	case REG_MICFIL_CTRL1:
- 	case REG_MICFIL_CTRL2:
-@@ -872,9 +874,6 @@ static bool fsl_micfil_readable_reg(struct device *dev, unsigned int reg)
- 	case REG_MICFIL_DC_CTRL:
- 	case REG_MICFIL_OUT_CTRL:
- 	case REG_MICFIL_OUT_STAT:
--	case REG_MICFIL_FSYNC_CTRL:
--	case REG_MICFIL_VERID:
--	case REG_MICFIL_PARAM:
- 	case REG_MICFIL_VAD0_CTRL1:
- 	case REG_MICFIL_VAD0_CTRL2:
- 	case REG_MICFIL_VAD0_STAT:
-@@ -883,6 +882,12 @@ static bool fsl_micfil_readable_reg(struct device *dev, unsigned int reg)
- 	case REG_MICFIL_VAD0_NDATA:
- 	case REG_MICFIL_VAD0_ZCD:
- 		return true;
-+	case REG_MICFIL_FSYNC_CTRL:
-+	case REG_MICFIL_VERID:
-+	case REG_MICFIL_PARAM:
-+		if (micfil->soc->use_verid)
-+			return true;
-+		fallthrough;
- 	default:
- 		return false;
- 	}
-@@ -890,6 +895,8 @@ static bool fsl_micfil_readable_reg(struct device *dev, unsigned int reg)
- 
- static bool fsl_micfil_writeable_reg(struct device *dev, unsigned int reg)
- {
-+	struct fsl_micfil *micfil = dev_get_drvdata(dev);
-+
- 	switch (reg) {
- 	case REG_MICFIL_CTRL1:
- 	case REG_MICFIL_CTRL2:
-@@ -899,7 +906,6 @@ static bool fsl_micfil_writeable_reg(struct device *dev, unsigned int reg)
- 	case REG_MICFIL_DC_CTRL:
- 	case REG_MICFIL_OUT_CTRL:
- 	case REG_MICFIL_OUT_STAT:	/* Write 1 to Clear */
--	case REG_MICFIL_FSYNC_CTRL:
- 	case REG_MICFIL_VAD0_CTRL1:
- 	case REG_MICFIL_VAD0_CTRL2:
- 	case REG_MICFIL_VAD0_STAT:	/* Write 1 to Clear */
-@@ -907,6 +913,10 @@ static bool fsl_micfil_writeable_reg(struct device *dev, unsigned int reg)
- 	case REG_MICFIL_VAD0_NCONFIG:
- 	case REG_MICFIL_VAD0_ZCD:
- 		return true;
-+	case REG_MICFIL_FSYNC_CTRL:
-+		if (micfil->soc->use_verid)
-+			return true;
-+		fallthrough;
- 	default:
- 		return false;
- 	}
+Just curious. What is the inherent limitation that prevents Linux from
+supporting DMA zone with lower limit above RAM start?
+
+Thanks,
+baruch
+
 -- 
-2.34.1
-
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.52.368.4656, http://www.tkos.co.il -
