@@ -2,139 +2,139 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB3193B9DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 02:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E21393BAFA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 04:49:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hWpdNJIL;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=K/gRXzsz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WTsQn1v3qz3d2n
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 10:37:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WTwMz2fk7z3dBc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 12:49:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hWpdNJIL;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=K/gRXzsz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2417::600; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=ziy@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20600.outbound.protection.outlook.com [IPv6:2a01:111:f403:2417::600])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::619; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=ziy@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20619.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::619])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WTsQ45lsRz3bZ3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 10:36:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WTwMH1QHpz3c1L
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 12:49:12 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ql2kQs/nrB1x3RngwzaEsYgV2E7zITfyigh8wJkXK+emLxOe2S+yl0l1JLOzO+lLpKClu/ecEkuDS5w1TSMmMc/l6P0FBexiUjrQrGLnEdLyzkjH78+V+vy3EDKNKJt4mzvFfvQEmFSjGPsp9WmBMUkkV0qoevclNPtXTSwmj8dVNmPIUMiTnyI7OgANEhiQvuZExYoxxYG2LKW0IsCAMFP62ALUjufIMtZZPSwH//9DQ8v5KUGkF36MMwyy2PPS+ITuMshHzlN10UL+wcvfzSNa/s72vHz/bGBmMNBmTQ5/17OpJAs9twHHkjAEtlS0En5XLGRr9AlJWD2gLEa+Vw==
+ b=OPMWCVZVJXVs9jQE55+3JHZ7lTFWvn6colaLiJ8qNm0IswWQC7g637kFeQYeKe0Xca27VCew96V4VOwH4tH6wzrMgt1Z4bdnDzgyftwwKLYn7ZUTZXDMlBmzNAY6YMwH3H/iwvnrcYL2MnApLHALZTW1tsYVtOQYsSedNmjn36f2pb9TIjtTnWtf8X71gb4L/GLFJRSNWlslIFrY6cMIFONjUHA1c3RtgTbdVCdLfb3D8+eWLLiBMWfRg9D36NZqPzOTpHJkIYAnOOqULSSzNmMDy6gGiWcdvf8e7cQMAXUlirXiaaHWmIFMg8XDgifrEvHBrkdBbV+/ALUyW3rtiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=puczn/Plvra1c85dji4K9vrlyWEUgXDf8mOWU9BkLB0=;
- b=WG6kF6teJD2vxyd1Z00JQ0D7v8IJNSdtMfc3jpIz/8iuz3PUiQ6OaaxOIoJaBi0z1xDLBYvSW+wD7fYUty6cnR80V+qxmkLn501OFV20KyKvELh1arGiux2FpMfT8LtfB56rsiSmeAY8jfuIsiG4r0MOgsevXb2uqQUsfLYnbVvjY+0eb3+SdNAIsP1K/1nHBEJotTgsXbbG9TO+V7T1gYZyfweqP7f9FSrhd8eUaEt0TVDcKP1pG+jI3zajbGUiWI6FoXzR+4tpcApa0WtR59J5rJ2CA+9A5+KeJFbd492CJ7jjSplGwsG27y34yvKSsypGcyZZP0MOx1BT9WYjCQ==
+ bh=KICwaEmEmefSXrpqpyBJFKorUqr504asr+dVhE0WZNg=;
+ b=WJxRncRt7GS/x80xrF+lDVOttPmfCzMKCW/RrQZyVp6tyQX42QzjQhZRLWnTzpo8p8gLS8BS/iQMcl7K3qosIT9QYMCRRanMq48HW/ZdyvPmhVbMdXVHeQ15ycirOXIFY4h3aORxsKp3NirMnoWjqzirHjvmUvNirkYC3vSI9+9RQxImlmnlIfo6jjjyfPg8pZWTPdqlRugfD8cUUZpHFlLFQOgqGu8W4sbSv9fr095oykL03bL7Ku5rRgNoXrXr6THEtF0nDgRgnfgELHmzj5B24k79qlYZ0b5QOnmRQMmOrEhNAlexRvJ6Wk/3j6iw4+rkFAZLhDdBdlJlp2Rd9Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=puczn/Plvra1c85dji4K9vrlyWEUgXDf8mOWU9BkLB0=;
- b=hWpdNJILJpAVIZDvejy+cbKEracGKV0LTQ6UUgJxG7q+54hJjR5qyEsD8sN3Sad97DFQRHPbUUzj/wWic6Mzb4k8QhHjXdMsYc5Ownw4TY14poUNzSOMmKmCVUTf25SMWukFCBX6auimKoQFWhCIqas2A4HguD43yJcISUQBC25iqj8fwXTZfud58ZBLwK0Iimj6jfAu0u51oCZTSkS+/S22vaQrUWBTaJPdYfdGGyTUcybuOHOlfWvWmDdUaWBB8GGerK9KIk36DmZ8gOxG1fwswWBVtwn3o8lYch/+b0XMmWYVFAshsSHFtgJ8fL9CYh5sDqOd6U7qOA1HkZZ/Cw==
+ bh=KICwaEmEmefSXrpqpyBJFKorUqr504asr+dVhE0WZNg=;
+ b=K/gRXzszGAPHYMDC/RhldMty0QV7ndTMINas1csgLmoH+RyKtxEsyjEtMv99trHezfehhW8WMXIUJWHFFKV5ynvVtotQPbhtm9Es3MIOdz8Ts0R0plCVX5uDQIcpiYff10dmYFu0O+edjun8LF4l7DkUGmRtVvnVUx4KnK7klsTaJYuIMoqDMcWLydleK59jaqDZhCTn1jQrUbf/DNss0C74gtCOD25RObpAdjB5jAfk9b5WiLnvtvkJAoF+sGFjVjeLpT7UUJQntv8tmC23oG9mKFleP2DJYnx7o/g3QydMxG1X99TKjUwgc42RBW7+dW65o4Ut5cbmyRsM+NTtFw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS7PR12MB5744.namprd12.prod.outlook.com (2603:10b6:8:73::18) by
- MW4PR12MB7484.namprd12.prod.outlook.com (2603:10b6:303:212::14) with
+ IA1PR12MB6434.namprd12.prod.outlook.com (2603:10b6:208:3ae::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.28; Thu, 25 Jul
- 2024 00:35:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.19; Thu, 25 Jul
+ 2024 02:48:46 +0000
 Received: from DS7PR12MB5744.namprd12.prod.outlook.com
  ([fe80::f018:13a9:e165:6b7e]) by DS7PR12MB5744.namprd12.prod.outlook.com
  ([fe80::f018:13a9:e165:6b7e%4]) with mapi id 15.20.7784.017; Thu, 25 Jul 2024
- 00:35:57 +0000
+ 02:48:46 +0000
 From: Zi Yan <ziy@nvidia.com>
 To: Mike Rapoport <rppt@kernel.org>
 Subject: Re: [PATCH v2 00/25] mm: introduce numa_memblks
-Date: Wed, 24 Jul 2024 20:35:53 -0400
+Date: Wed, 24 Jul 2024 22:48:42 -0400
 X-Mailer: MailMate (1.14r6038)
-Message-ID: <6336C276-113E-4D93-A09E-13420A6438D8@nvidia.com>
-In-Reply-To: <1D474894-F8AC-427B-8F90-5A6808E77CC5@nvidia.com>
+Message-ID: <231F6DF6-96C8-4149-92CF-4FC03C9FE357@nvidia.com>
+In-Reply-To: <6336C276-113E-4D93-A09E-13420A6438D8@nvidia.com>
 References: <20240723064156.4009477-1-rppt@kernel.org>
  <1D474894-F8AC-427B-8F90-5A6808E77CC5@nvidia.com>
+ <6336C276-113E-4D93-A09E-13420A6438D8@nvidia.com>
 Content-Type: multipart/signed;
- boundary="=_MailMate_0F561B29-1B56-4DB1-964E-7E202A4B673B_=";
+ boundary="=_MailMate_59508B23-E8AA-4646-9577-89FD38A5FCB4_=";
  micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: MN2PR07CA0015.namprd07.prod.outlook.com
- (2603:10b6:208:1a0::25) To DS7PR12MB5744.namprd12.prod.outlook.com
+X-ClientProxiedBy: BLAPR03CA0141.namprd03.prod.outlook.com
+ (2603:10b6:208:32e::26) To DS7PR12MB5744.namprd12.prod.outlook.com
  (2603:10b6:8:73::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB5744:EE_|MW4PR12MB7484:EE_
-X-MS-Office365-Filtering-Correlation-Id: b00e961b-1ed9-4fc9-7d72-08dcac41c020
+X-MS-TrafficTypeDiagnostic: DS7PR12MB5744:EE_|IA1PR12MB6434:EE_
+X-MS-Office365-Filtering-Correlation-Id: 075ff538-581b-41af-e117-08dcac544dda
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?UEQXi1MXIgOm1aM3RiyjXJlXmZOZaqLT2V8uSuz9Cbf2rjo3wM6iyTrT4j3O?=
- =?us-ascii?Q?H54v2O1XISyG1nVe3kbMjS37hTS4i+asyndqWx2aFYNCEeEyaEBp/tdOTdXm?=
- =?us-ascii?Q?EaJcXBXsd5kSLNbXiThf5h7PMK+NqDnJYZBcMwSQEChgCD1WYwQ80VIsSnmX?=
- =?us-ascii?Q?XogmRWDb+wt+35+BOv7asQR3NQPUjyUcc7EUdFaD43qSlW0RqPYQkwKnarHK?=
- =?us-ascii?Q?pxcQEK1X+eRJh+kyatAoIS+HwYMm7ZiL0FxRaF8ZF4Y8Q/1MKS3QNlIlzo5N?=
- =?us-ascii?Q?I1f9bPPENtuMYoOi6p7jK4bHj6ZTsjKkf3IbrEU0DT/ANvNI/yWyBMcKNof7?=
- =?us-ascii?Q?DJ512UZqYym7fuhbPeAvEWQxUQb/rJqpWT4q6YBWMLfBlNIk8ymXKKmLnY4E?=
- =?us-ascii?Q?bD+UJHPp76tdurk4ejtNvMCGc7k6aFlZWp3IkHjKOl3amtX39dou6P71X+yi?=
- =?us-ascii?Q?jH/luSe5fp3YXhrlI0VXV5Y1yQJIkeqwWH3qT41W5LuXBeVtlI1GJoExd+yt?=
- =?us-ascii?Q?p+uYmW1fCn6oRcT9NSMMvLUv4TVYhUEG1r8ucg2m9kNPU9YPqrOwl//JEyQ0?=
- =?us-ascii?Q?CdiW/5YDYnogUU5J2YMoYSm56x5wtskRWZz7tOMocL+l3JArPLIb/JmcjJ3S?=
- =?us-ascii?Q?6lLeXhdaad4Jx84KjmY3bIC2AD7cl20+mv0hc3Jsn+mgtdKPxoZ3l75ChBG8?=
- =?us-ascii?Q?byc3uBxd5A//DDDOhM9qtNjXkBCODDiqTsxcTDKTSVs7mP39/ieUJBGHJsC8?=
- =?us-ascii?Q?yEgyl4ltt0ZvfwqBHf3Wb16Ytw7IwdkVxUqQ0A2Qaxnmb2vR/nxhMgjlf9WS?=
- =?us-ascii?Q?e5+KKmsfdj4Ytzz4iRW8uxULYTUQYDFlGwsQXNgbBgo0Q5XocyjfxyulnNT5?=
- =?us-ascii?Q?gLbA8u3kCfpCF7PtbYWKHrxIfFdlUm8x9Pljp669M0+7xNYCZ5aBn+VA3GYO?=
- =?us-ascii?Q?sYgmMVr7LFe8eGmXc4WadoSY9oyU68JTAvVRu9tRpNcKsKdMtunZKUC4UHOu?=
- =?us-ascii?Q?rJAABLzuNy/PPAT7pWdaVa7Cr+DHmm3AKb2oySQI/7oPMh1l0Y9LaUitVnyg?=
- =?us-ascii?Q?OBrw8GhIbJtMTbCJ4bl9r7OLLm8J0qPc/deR/8xa63bfC3fcSGC9thZT3+mg?=
- =?us-ascii?Q?9tT52qpFax4XYg+mA2rajFCU1wKnBfW6x8ukYoOkxzmAEIV1G2/6+R83tW4Y?=
- =?us-ascii?Q?wB7thchh3Qt+Bn9H0CUDo/QytfY8EexEDZi4TyfGuCbbB/CXYRYe2RTfuJNo?=
- =?us-ascii?Q?yrsknjiegZl9n3v5374i0o45UdjD65YTHmZWBdaj2gAD2+74Q1LzbAhEjHlu?=
- =?us-ascii?Q?E4Rm0zgk7LwT2WUopQmvDtV2s+xQBbkr1QxLFFbm4JhbyreH+20C0o+ORMOp?=
- =?us-ascii?Q?HcHFcqs=3D?=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB5744.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?F8zHuYmDBhxnoTyLuMaurgXYomhFgefgBuJEwk+q4yRleLjJjJda9fRSTf/q?=
+ =?us-ascii?Q?HJFjhdPxL9lX31u3Anh0auTgOLNu6zqKCdfnfQS3UGzWpEx8TkFAWdF65aq+?=
+ =?us-ascii?Q?1cyJy91odCgSQiN5O1ZKT/GvtQPjcWD6wThqjMUVB5sU1jGZnv7rCRmCBK/R?=
+ =?us-ascii?Q?/xF5tWIWY7VySwZyTqC39EDfxbmhbzATPtix3W1sZ29JTlD4hjBN7H9yVaty?=
+ =?us-ascii?Q?VTgTv/tvQeWP56q8d/iYPpee/kGZEamIQLzp3D8q83U2fMZmvrq+IHYgHsut?=
+ =?us-ascii?Q?92xt/na/vDAyQrEiwlxwsBo+nqQ7dt3s5S+ZDsU/8Cf+i3TjgLFEK7qArIzn?=
+ =?us-ascii?Q?+gTqA7sVZvmMFC534QxUbE8xFstkegUZmpThgeYKUZQ5j5q8tDpRTWhHyTnd?=
+ =?us-ascii?Q?fQNPMXBgkVZ2NMxa663/H0L+34WGmF+o0fbQ6dRrYbwIvEZFxkqtiJAYWb1C?=
+ =?us-ascii?Q?w6tK4q0hEz1QUcxzPS2S1Wnef3SAuZwnbWRzOS2SYDCcW4/dgDxo0xooEwuf?=
+ =?us-ascii?Q?y9xcNUv5hzxFPImxGjbo44sXaSrg6NgHw4fX9O6qqmJ3qQwnOAM2c1Bc3BYZ?=
+ =?us-ascii?Q?Q12ySP1DhmtTqvaWUJ08pPg6mZx5gejYi0jZGFKa5tOZ3zTaQtySIbJZFFwv?=
+ =?us-ascii?Q?rHHEV0G441/DCugzbHpnmmcak73xhV5MWkEbHvj3onFyoPdAzSlU2Zkw+Vbd?=
+ =?us-ascii?Q?IoEq3nfe/4ce6YqIKto8z3SOLOXeE2LQKwZGX84ri/YmLO1C0Zjww3b953T+?=
+ =?us-ascii?Q?fEC95OQKIcmCNlJojnaXiOSbpTW3l9E1MGtzvuBqaf1dO8281JFfSAajC3x5?=
+ =?us-ascii?Q?+u7ML5X8fhvw9DXQsgjZB/hRsBqld22oBp/5tLBOQpljYhJd+DnOMT7EIZ3u?=
+ =?us-ascii?Q?LXgsSZStJJt2CfQ4Fl6dmbiQbHTEIRPS/l7zeRJ3158TKrvFZqbmJHxChhQT?=
+ =?us-ascii?Q?xtRKeboxd2K9YAFEQVjHFK2OQI0H/EEKuw8CfhlB0VjgLPqAgRlbGDFazGgQ?=
+ =?us-ascii?Q?p9Lz3wAI0Fb1BM9zqatLqCWdzvM1+YqReBeitLas1ykS+Ji93PrP3gv561LI?=
+ =?us-ascii?Q?3ji5Pb5xK6DVWDnobVXkf1KE+toSCTEJFeoortH6Fa4vJZHEbyA07xJvESex?=
+ =?us-ascii?Q?oz5hxLhuW7f3yTyTWv6z0l1gJtZwbbQoNdRX5NRFyHmmZLAQUQk/2FlYGoB8?=
+ =?us-ascii?Q?6R1fXY+lWeHprZRDL5rnOBTDDzE4SSjpBzCUuNgZKtxpvy9/O8OXXb/Rbt5v?=
+ =?us-ascii?Q?hRQ8Fl1oNYfEsEl8/BWM+GOhPjrCLtFcSenV0d3oUjytjp6S/U2VubOXLawN?=
+ =?us-ascii?Q?sNmYhtMPVYYgXd3u72rxlAJM6jj3hwXZdnnuCtzMiRxse4DjrBVClRjrTnZg?=
+ =?us-ascii?Q?SmpKX9U=3D?=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB5744.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?UEsv3FlW8LVidPVPWv/90sGVkaqGQ+ZEbdZlhWXe/wtU9RlqLpGMhCLF5rch?=
- =?us-ascii?Q?s5SA2lMNXvbNybnU5sUMjEu+e4S2hagZ5VE6YnNlPXRqRAeN+BqoLt2RIKIW?=
- =?us-ascii?Q?pey2iy2+iuFEYfcRqCo4TWHssFNamBvjanLWhh62QSI7mIaXvjB+nUxVpZUt?=
- =?us-ascii?Q?JWhumU5Z2Nu9UJgFVo+3T/DBDj/JTuoIXcXQzPTnBQu3iSEgejwZIn2X5ejG?=
- =?us-ascii?Q?Ii1vgjKZLuYTsslJJ95mJfXmYx4BxWQfwlHxy7H4bRNlm+NuowndZX1rRkcn?=
- =?us-ascii?Q?cSCaRiBg9IRmYMzzq8FXPgWL1uKpdSihsTYPcTh7YlLgG4YcteWHnWZYp8xp?=
- =?us-ascii?Q?isXF3oq1ngbTa2lvcQ99FFu80QppOQI/JGExZ6QIbjPq0SYni2vagX66M1NQ?=
- =?us-ascii?Q?rDbfOWs6QME5ZZ3oNS3attYJiuzoRKQVucgye3tmJdMR+JaTbnwC7FSsnUXM?=
- =?us-ascii?Q?122Q4jYG1/HzgIPbMHPYGKqmEZIJn6/oAdTLk28CYBr8JLMzSIgRhC+z1QLr?=
- =?us-ascii?Q?l/3V/0v0fpFHkEDltbJlYdTmjXUJjT7XECDwWjKwJW4A8TzdeYvC3WfA/Qah?=
- =?us-ascii?Q?mGeUUmGiDjENF92yjVm38ODm3NPlcd+IN8gBn233xF0SlfVsnBRqSSw9PUt3?=
- =?us-ascii?Q?fBs5HYxTkyjCiBU0RYIAjjSeqHDhAwaMX6Z8SPwcnTpsqUxtF5C1VQVJGTp0?=
- =?us-ascii?Q?Q2280epUAWrFPiJ9l8zR9I2bJo06gq7PNz2VLOc9oWuXoQIm2/dhoyy7IMJ8?=
- =?us-ascii?Q?ryVWD2dc/e/YeiPzBeXuAIw9r1G81skVA7tp4uU6bgLhidAOZBB/7537rMIi?=
- =?us-ascii?Q?N+iOwxnRk18uYlF4F5NbTzWHzDJdb4C6Ommhr3an8fDgiAB1nLL7vydlLlFK?=
- =?us-ascii?Q?TVKoEItAlHnLpheqFYyQYNfC9IwfiMlAgHsLtrgCSbBohMZ/sPeDLZ3ZEpAz?=
- =?us-ascii?Q?HXdJXUxh0m+7aRyK1OfSwFqRj3gW3irczLzpRZTVsgc2MQhJ5Wmb51UoTp6d?=
- =?us-ascii?Q?wJ5V3er1hczCDOr9vYfysSHBK+CMKGwBOU12faVlFjI/XgICCT/wBemmSiKE?=
- =?us-ascii?Q?v5/vqdCAJmql1qCEsszzDcpi2oXBvZG0sm+T7bYn80dc77PJmybB8RflEEao?=
- =?us-ascii?Q?5SJxHV2Dhg66B2ugohMEOzS3ZoqHdkmDa+lAOWxsqlLgjmjYXdYMHXQAUeVN?=
- =?us-ascii?Q?DZW1X9PNNR/bX3Z+8KLwZiY5hCODsdNZ3gX4IlkqQMdIILHAUvmn87IlZzAG?=
- =?us-ascii?Q?b1eGRayfLtVDyBTAmSCUGijUfyGZmrZmzWOraoNVCTarsqIADVfdVPEONiWA?=
- =?us-ascii?Q?QxZM2cEEo9V0lUqJ6Yr8t55jZpH4Ak7KjHesnV/0waulmjeDN83NsME4VOFr?=
- =?us-ascii?Q?l9rsqewyc8RoP/AQGBmZvqbVJ9s2hBLGqA0ibTNGWvjWLgw9K6xkIirWDGZ7?=
- =?us-ascii?Q?fwGCWRLfNGSsu55gEbNRiOs+Fe+2OP7pDxqqXlzBCO0TnHSPgzuV5nAk5eAq?=
- =?us-ascii?Q?KhQy1BtSjYggKa0b7yByUHQTXbVzDQt1CXJ/wk06Jfs39b+vvkBnokufUa2J?=
- =?us-ascii?Q?0d8bxPUlqFmVXhswEYGtjv/tohUIJypvoeSOohpg?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?KcN+AyorealjjBn58OV/a2CERzpv4ZdiPFnqfrPBIWjRrkr1pLiXlzahZaxm?=
+ =?us-ascii?Q?NY9d/XDXUKab8XwYjWNDClFrDxQW9k6ZYtDHgwL41/SKwzCYzq5JBkDDqS1o?=
+ =?us-ascii?Q?kWzNliU1vKxP9G3tzOvHE1x/hqDdF99CuFg2zcABgCVjJrRyq75MV156R3v9?=
+ =?us-ascii?Q?avQ9mab1pIFQWjflI+ZsuZYD1qTMOG+S8vjUl3igaQL5hS9WFWDtDnLFXEOb?=
+ =?us-ascii?Q?5A19tUvR1gg1C3GcEN8PF0xWoA0/wY2Sn8b1taQwRNg1SyVihpW8HzjK8pjN?=
+ =?us-ascii?Q?bsO1OT1n5H3y8YswpGQLbmv22xuZTbEDqtZ6AIbd6AkCK4SF6FAZLVDRvC9g?=
+ =?us-ascii?Q?bO26vVfrKCg9DxngGRs5h9JwU8daQDOt/hrQ0/wqnZhCN8Uf2LDVwxBOAZzO?=
+ =?us-ascii?Q?UH44lEAnwJWo93WrICTIIh7uFKXkpRgay+bB2ZLlIw9C0cNZCXKgyPtxWg7l?=
+ =?us-ascii?Q?fgej1RMvx85bvAOHKeY3V7JNg0LKvQvMf6gcXxGCxURFw+4q1NsgrzsSCr52?=
+ =?us-ascii?Q?wuduZPDusdEG02u8vLgguJrAsWSV0j7E/zVYNNoqDm9UMFDaXImmBva6FBMO?=
+ =?us-ascii?Q?I39SfRJSpeWDvtDvcz2Bv40wTLkxClpFfKvj0qsQClGV1FuZXTkLIrXa7W85?=
+ =?us-ascii?Q?mzi/9UXaDg1xO5HVazlkbg/NmbZi4vlIitroHdTYkmmHEfPctJoVixkY3RIN?=
+ =?us-ascii?Q?b3U4fqXTRHhllDuSn58yZ5i056FbQGoIFfnTRQa/BNPYY56KnI4vLp72sYoI?=
+ =?us-ascii?Q?EzodjKdUOr0c6ljwhAIvABu5SDCIMIxVfs7SJwWtaWs2r4g+EQaO29RsJgYF?=
+ =?us-ascii?Q?5g4Ta0zSplzx6/DJM6pISa2etC+YIRVxSmiBZBvel5DAovSQiZgV0MTjNFC/?=
+ =?us-ascii?Q?imAs5ATH6go5wqEHgfrHpQ4h16GgNV2CXQoKYib4KrG/2STLy7/Zjf+3/9CD?=
+ =?us-ascii?Q?ivjf8KSgyduqAm0JNlxf8+m49EnXU+yRlfH9Fo2+iwm6NRqs6QhAraML6CIW?=
+ =?us-ascii?Q?G5CuGKlS0PwJ1usjI/5hikLo17z2u8E1B29+UNiPo0ZdHRTt0sKUVCi3EF9M?=
+ =?us-ascii?Q?MmfVTRzDBEaXgMtwMeiAtTN7ayR1q6GJ2ZhZBS8/9gaYV3/e5LWPBssG5mA5?=
+ =?us-ascii?Q?ou3kjEOZeKJu5bbdnpfurYIjexrGpEDTvLmoOmpXiOjjmnk3o/lwnO0J//l4?=
+ =?us-ascii?Q?kLW1wmatHReqYHZO4HQxncY5VdE6Ey5ldUW0yAtRftSkCBlWPlcjpvo/g4vW?=
+ =?us-ascii?Q?RNjxnfcYkYPxlk+lxud1sS01fP7qy6G5OksgxfqpBK7C6EEEVWvHyK2Omdoy?=
+ =?us-ascii?Q?ypaGYMsoFJ+E60FrVFaCsJh/uT1kB00vzhmIisZ/CeKvSlVN8XDceoWjifPU?=
+ =?us-ascii?Q?dO43pCPKkLperGFAY2DJr6A9a/VLXrinqZBme2wp4fyt/wCs0c5kK7G3AqK5?=
+ =?us-ascii?Q?1nvxho9ONrYyXwzqQhD/2toSBADhx0ooDCxXko9Xc4KEUEzhkWZMdbtdXSdZ?=
+ =?us-ascii?Q?FgZ197KczpR13cZm2xrAYOtm0oPuRLVa/42t6cMo3Ulf/pqeFlkJXVMSagOq?=
+ =?us-ascii?Q?20ykFkh54liP7vW+iZuSNXtRIz03LpCl7fOfERYh?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b00e961b-1ed9-4fc9-7d72-08dcac41c020
+X-MS-Exchange-CrossTenant-Network-Message-Id: 075ff538-581b-41af-e117-08dcac544dda
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB5744.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2024 00:35:57.7342
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2024 02:48:46.4664
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QK+rn9sLxym9rS/RFQjmNGqbhsvb1t1q656c7qz9/1Y4HHPzMxuVRfeqXlr3dlrx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7484
+X-MS-Exchange-CrossTenant-UserPrincipalName: 68GWoAGC7x7M+9elXqXJm9xiJ4NJ6LwbNRQfq6l5NTs68k18A10Urz2M9qqv0O+E
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6434
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -150,238 +150,208 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_MailMate_0F561B29-1B56-4DB1-964E-7E202A4B673B_=
+--=_MailMate_59508B23-E8AA-4646-9577-89FD38A5FCB4_=
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On 24 Jul 2024, at 18:44, Zi Yan wrote:
+On 24 Jul 2024, at 20:35, Zi Yan wrote:
 
-> On 23 Jul 2024, at 2:41, Mike Rapoport wrote:
+> On 24 Jul 2024, at 18:44, Zi Yan wrote:
 >
->> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>> On 23 Jul 2024, at 2:41, Mike Rapoport wrote:
 >>
+>>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>>>
+>>> Hi,
+>>>
+>>> Following the discussion about handling of CXL fixed memory windows o=
+n
+>>> arm64 [1] I decided to bite the bullet and move numa_memblks from x86=
+ to
+>>> the generic code so they will be available on arm64/riscv and maybe o=
+n
+>>> loongarch sometime later.
+>>>
+>>> While it could be possible to use memblock to describe CXL memory win=
+dows,
+>>> it currently lacks notion of unpopulated memory ranges and numa_membl=
+ks
+>>> does implement this.
+>>>
+>>> Another reason to make numa_memblks generic is that both arch_numa (a=
+rm64
+>>> and riscv) and loongarch use trimmed copy of x86 code although there =
+is no
+>>> fundamental reason why the same code cannot be used on all these plat=
+forms.
+>>> Having numa_memblks in mm/ will make it's interaction with ACPI and F=
+DT
+>>> more consistent and I believe will reduce maintenance burden.
+>>>
+>>> And with generic numa_memblks it is (almost) straightforward to enabl=
+e NUMA
+>>> emulation on arm64 and riscv.
+>>>
+>>> The first 9 commits in this series are cleanups that are not strictly=
+
+>>> related to numa_memblks.
+>>> Commits 10-16 slightly reorder code in x86 to allow extracting numa_m=
+emblks
+>>> and NUMA emulation to the generic code.
+>>> Commits 17-19 actually move the code from arch/x86/ to mm/ and commit=
+s 20-22
+>>> does some aftermath cleanups.
+>>> Commit 23 switches arch_numa to numa_memblks.
+>>> Commit 24 enables usage of phys_to_target_node() and
+>>> memory_add_physaddr_to_nid() with numa_memblks.
+>>> Commit 25 moves the description for numa=3Dfake from x86 to admin-gui=
+de
+>>>
+>>> [1] https://lore.kernel.org/all/20240529171236.32002-1-Jonathan.Camer=
+on@huawei.com/
+>>>
+>>> v1: https://lore.kernel.org/all/20240716111346.3676969-1-rppt@kernel.=
+org
+>>> * add cleanup for arch_alloc_nodedata and HAVE_ARCH_NODEDATA_EXTENSIO=
+N
+>>> * add patch that moves description of numa=3Dfake kernel parameter fr=
+om
+>>>   x86 to admin-guide
+>>> * reduce rounding up of node_data allocations from PAGE_SIZE to
+>>>   SMP_CACHE_BYTES
+>>> * restore single allocation attempt of numa_distance
+>>> * fix several comments
+>>> * added review tags
+>>>
+>>> Mike Rapoport (Microsoft) (25):
+>>>   mm: move kernel/numa.c to mm/
+>>>   MIPS: sgi-ip27: make NODE_DATA() the same as on all other architect=
+ures
+>>>   MIPS: sgi-ip27: ensure node_possible_map only contains valid nodes
+>>>   MIPS: sgi-ip27: drop HAVE_ARCH_NODEDATA_EXTENSION
+>>>   MIPS: loongson64: rename __node_data to node_data
+>>>   MIPS: loongson64: drop HAVE_ARCH_NODEDATA_EXTENSION
+>>>   mm: drop CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
+>>>   arch, mm: move definition of node_data to generic code
+>>>   arch, mm: pull out allocation of NODE_DATA to generic code
+>>>   x86/numa: simplify numa_distance allocation
+>>>   x86/numa: use get_pfn_range_for_nid to verify that node spans memor=
+y
+>>>   x86/numa: move FAKE_NODE_* defines to numa_emu
+>>>   x86/numa_emu: simplify allocation of phys_dist
+>>>   x86/numa_emu: split __apicid_to_node update to a helper function
+>>>   x86/numa_emu: use a helper function to get MAX_DMA32_PFN
+>>>   x86/numa: numa_{add,remove}_cpu: make cpu parameter unsigned
+>>>   mm: introduce numa_memblks
+>>>   mm: move numa_distance and related code from x86 to numa_memblks
+>>>   mm: introduce numa_emulation
+>>>   mm: numa_memblks: introduce numa_memblks_init
+>>>   mm: numa_memblks: make several functions and variables static
+>>>   mm: numa_memblks: use memblock_{start,end}_of_DRAM() when sanitizin=
+g
+>>>     meminfo
+>>>   arch_numa: switch over to numa_memblks
+>>>   mm: make range-to-target_node lookup facility a part of numa_memblk=
+s
+>>>   docs: move numa=3Dfake description to kernel-parameters.txt
+>>>
 >> Hi,
 >>
->> Following the discussion about handling of CXL fixed memory windows on=
-
->> arm64 [1] I decided to bite the bullet and move numa_memblks from x86 =
-to
->> the generic code so they will be available on arm64/riscv and maybe on=
-
->> loongarch sometime later.
+>> I have tested this series on both x86_64 and arm64. It works fine on x=
+86_64.
+>> All numa=3Dfake=3D options work as they did before the series.
 >>
->> While it could be possible to use memblock to describe CXL memory wind=
-ows,
->> it currently lacks notion of unpopulated memory ranges and numa_memblk=
-s
->> does implement this.
+>> But I am not able to boot the kernel (no printout at all) on arm64 VM
+>> (Mac mini M1 VMWare). By git bisecting, arch_numa: switch over to numa=
+_memblks
+>> is the first patch causing the boot failure. I see the warning:
 >>
->> Another reason to make numa_memblks generic is that both arch_numa (ar=
-m64
->> and riscv) and loongarch use trimmed copy of x86 code although there i=
-s no
->> fundamental reason why the same code cannot be used on all these platf=
-orms.
->> Having numa_memblks in mm/ will make it's interaction with ACPI and FD=
-T
->> more consistent and I believe will reduce maintenance burden.
+>> WARNING: modpost: vmlinux: section mismatch in reference: numa_add_cpu=
++0x1c (section: .text) -> early_cpu_to_node (section: .init.text)
 >>
->> And with generic numa_memblks it is (almost) straightforward to enable=
- NUMA
->> emulation on arm64 and riscv.
+>> I am not sure if it is red herring or not, since changing early_cpu_to=
+_node
+>> to cpu_to_node in numa_add_cpu() from mm/numa_emulation.c did get rid =
+of the
+>> warning, but the system still failed to boot.
 >>
->> The first 9 commits in this series are cleanups that are not strictly
->> related to numa_memblks.
->> Commits 10-16 slightly reorder code in x86 to allow extracting numa_me=
-mblks
->> and NUMA emulation to the generic code.
->> Commits 17-19 actually move the code from arch/x86/ to mm/ and commits=
- 20-22
->> does some aftermath cleanups.
->> Commit 23 switches arch_numa to numa_memblks.
->> Commit 24 enables usage of phys_to_target_node() and
->> memory_add_physaddr_to_nid() with numa_memblks.
->> Commit 25 moves the description for numa=3Dfake from x86 to admin-guid=
-e
+>> Please note that you need binutils 2.40 to build the arm64 kernel, sin=
+ce there
+>> is a bug(https://sourceware.org/bugzilla/show_bug.cgi?id=3D31924) in 2=
+=2E42 preventing
+>> arm64 kernel from booting as well.
 >>
->> [1] https://lore.kernel.org/all/20240529171236.32002-1-Jonathan.Camero=
-n@huawei.com/
->>
->> v1: https://lore.kernel.org/all/20240716111346.3676969-1-rppt@kernel.o=
-rg
->> * add cleanup for arch_alloc_nodedata and HAVE_ARCH_NODEDATA_EXTENSION=
-
->> * add patch that moves description of numa=3Dfake kernel parameter fro=
-m
->>   x86 to admin-guide
->> * reduce rounding up of node_data allocations from PAGE_SIZE to
->>   SMP_CACHE_BYTES
->> * restore single allocation attempt of numa_distance
->> * fix several comments
->> * added review tags
->>
->> Mike Rapoport (Microsoft) (25):
->>   mm: move kernel/numa.c to mm/
->>   MIPS: sgi-ip27: make NODE_DATA() the same as on all other architectu=
-res
->>   MIPS: sgi-ip27: ensure node_possible_map only contains valid nodes
->>   MIPS: sgi-ip27: drop HAVE_ARCH_NODEDATA_EXTENSION
->>   MIPS: loongson64: rename __node_data to node_data
->>   MIPS: loongson64: drop HAVE_ARCH_NODEDATA_EXTENSION
->>   mm: drop CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
->>   arch, mm: move definition of node_data to generic code
->>   arch, mm: pull out allocation of NODE_DATA to generic code
->>   x86/numa: simplify numa_distance allocation
->>   x86/numa: use get_pfn_range_for_nid to verify that node spans memory=
-
->>   x86/numa: move FAKE_NODE_* defines to numa_emu
->>   x86/numa_emu: simplify allocation of phys_dist
->>   x86/numa_emu: split __apicid_to_node update to a helper function
->>   x86/numa_emu: use a helper function to get MAX_DMA32_PFN
->>   x86/numa: numa_{add,remove}_cpu: make cpu parameter unsigned
->>   mm: introduce numa_memblks
->>   mm: move numa_distance and related code from x86 to numa_memblks
->>   mm: introduce numa_emulation
->>   mm: numa_memblks: introduce numa_memblks_init
->>   mm: numa_memblks: make several functions and variables static
->>   mm: numa_memblks: use memblock_{start,end}_of_DRAM() when sanitizing=
-
->>     meminfo
->>   arch_numa: switch over to numa_memblks
->>   mm: make range-to-target_node lookup facility a part of numa_memblks=
-
->>   docs: move numa=3Dfake description to kernel-parameters.txt
->>
-> Hi,
+>> My config is attached.
 >
-> I have tested this series on both x86_64 and arm64. It works fine on x8=
-6_64.
-> All numa=3Dfake=3D options work as they did before the series.
+> I get more info after adding earlycon to the boot option.
+> pgdat is NULL, causing issues when free_area_init_node() is dereferenci=
+ng
+> it at first WARN_ON.
 >
-> But I am not able to boot the kernel (no printout at all) on arm64 VM
-> (Mac mini M1 VMWare). By git bisecting, arch_numa: switch over to numa_=
-memblks
-> is the first patch causing the boot failure. I see the warning:
->
-> WARNING: modpost: vmlinux: section mismatch in reference: numa_add_cpu+=
-0x1c (section: .text) -> early_cpu_to_node (section: .init.text)
->
-> I am not sure if it is red herring or not, since changing early_cpu_to_=
-node
-> to cpu_to_node in numa_add_cpu() from mm/numa_emulation.c did get rid o=
-f the
-> warning, but the system still failed to boot.
->
-> Please note that you need binutils 2.40 to build the arm64 kernel, sinc=
-e there
-> is a bug(https://sourceware.org/bugzilla/show_bug.cgi?id=3D31924) in 2.=
-42 preventing
-> arm64 kernel from booting as well.
->
-> My config is attached.
+> FYI, my build is this series on top of v6.10 instead of the base commit=
+,
+> where the series applies cleanly on top v6.10.
 
-I get more info after adding earlycon to the boot option.
-pgdat is NULL, causing issues when free_area_init_node() is dereferencing=
+OK, the issue comes from that my arm64 VM has no ACPI but x86_64 VM has i=
+t,
+thus on arm64 VM numa_init(arch_acpi_numa_ini) failed in arch_numa_init()=
 
-it at first WARN_ON.
+and the code falls back to numa_init(dummy_numa_init). In dummy_numa_init=
+(),
+before patch 23 "arch_numa: switch over to numa_memblks", numa_add_memblk=
+()
+from drivers/base/arch_numa.c is called on arm64, which unconditionally
+set 0 to numa_nodes_parsed. This is missing in the x86 version of
+numa_add_memblk(), which is now used by all arch. By adding the patch
+below, my arm64 kernel boots in the VM.
 
-FYI, my build is this series on top of v6.10 instead of the base commit,
-where the series applies cleanly on top v6.10.
 
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000080000000-0x00000000ffd82fff]
-[    0.000000]   node   0: [mem 0x00000000ffd83000-0x00000000fffb5fff]
-[    0.000000]   node   0: [mem 0x00000000fffb6000-0x000000017befffff]
-[    0.000000]   node   0: [mem 0x000000017bf00000-0x000000017bfbffff]
-[    0.000000]   node   0: [mem 0x000000017bfc0000-0x000000017c02ffff]
-[    0.000000]   node   0: [mem 0x000000017c030000-0x000000017c03ffff]
-[    0.000000]   node   0: [mem 0x000000017c040000-0x000000017c09ffff]
-[    0.000000]   node   0: [mem 0x000000017c0a0000-0x000000017c13ffff]
-[    0.000000]   node   0: [mem 0x000000017c140000-0x000000017f41ffff]
-[    0.000000]   node   0: [mem 0x000000017f420000-0x000000017f4affff]
-[    0.000000]   node   0: [mem 0x000000017f4b0000-0x000000017f5bffff]
-[    0.000000]   node   0: [mem 0x000000017f5c0000-0x000000017f5dffff]
-[    0.000000]   node   0: [mem 0x000000017f5e0000-0x000000017fffffff]
-[    0.000000] pgdat: 0000000000000000, nid: 0
-[    0.000000] Unable to handle kernel paging request at virtual address =
-0000000000002220
-[    0.000000] Mem abort info:
-[    0.000000]   ESR =3D 0x0000000096000004
-[    0.000000]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-[    0.000000]   SET =3D 0, FnV =3D 0
-[    0.000000]   EA =3D 0, S1PTW =3D 0
-[    0.000000]   FSC =3D 0x04: level 0 translation fault
-[    0.000000] Data abort info:
-[    0.000000]   ISV =3D 0, ISS =3D 0x00000004, ISS2 =3D 0x00000000
-[    0.000000]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-[    0.000000]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-[    0.000000] [0000000000002220] user address but active_mm is swapper
-[    0.000000] Internal error: Oops: 0000000096000004 [#1] SMP
-[    0.000000] Modules linked in:
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0+ #17
-[    0.000000] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYP=
-E=3D--)
-[    0.000000] pc : free_area_init+0x720/0xf90
-[    0.000000] lr : free_area_init+0x714/0xf90
-[    0.000000] sp : ffff800081eb3c20
-[    0.000000] x29: ffff800081eb3c20 x28: 000000017b5e710c x27: ffff80008=
-2158000
-[    0.000000] x26: 000000017ffff168 x25: ffff800081ecc000 x24: 000000000=
-0000000
-[    0.000000] x23: 0000000000000000 x22: 0000000000000000 x21: ffff80008=
-21f0480
-[    0.000000] x20: 0000000000000000 x19: ffff8000818863f0 x18: 000000000=
-0000006
-[    0.000000] x17: 00000000007fb000 x16: 000000017f805000 x15: ffff80008=
-1eb36b0
-[    0.000000] x14: 0000000000000000 x13: 30203a64696e202c x12: ffff80008=
-1f3ef10
-[    0.000000] x11: 0000000000000001 x10: 0000000000000001 x9 : 000000000=
-0017fe8
-[    0.000000] x8 : c0000000ffffefff x7 : ffff800081ee6d40 x6 : 000000000=
-0057fa8
-[    0.000000] x5 : ffff800081f3eeb8 x4 : 0000000000000000 x3 : 000000000=
-0000000
-[    0.000000] x2 : 0000000000000000 x1 : ffff800081ec8c40 x0 : 000000000=
-000001f
-[    0.000000] Call trace:
-[    0.000000]  free_area_init+0x720/0xf90
-[    0.000000]  bootmem_init+0x158/0x218
-[    0.000000]  setup_arch+0x220/0x650
-[    0.000000]  start_kernel+0x74/0x7e0
-[    0.000000]  __primary_switched+0x80/0x90
-[    0.000000] Code: 97a64606 b940b7f6 a90dffff f876dab4 (b9622280)
-[    0.000000] ---[ end trace 0000000000000000 ]---
-[    0.000000] Kernel panic - not syncing: Attempted to kill the idle tas=
-k!
-[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the=
- idle task! ]---
+diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
+index 806550239d08..354f15b8d9b7 100644
+--- a/drivers/base/arch_numa.c
++++ b/drivers/base/arch_numa.c
+@@ -279,6 +279,7 @@ static int __init dummy_numa_init(void)
+                pr_err("NUMA init failed\n");
+                return ret;
+        }
++       node_set(0, numa_nodes_parsed);
+
+        numa_off =3D true;
+        return 0;
+
+
+Feel free to add
+
+Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
+
+after you incorporate the fix.
+
 
 --
 Best Regards,
 Yan, Zi
 
---=_MailMate_0F561B29-1B56-4DB1-964E-7E202A4B673B_=
+--=_MailMate_59508B23-E8AA-4646-9577-89FD38A5FCB4_=
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename=signature.asc
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJDBAEBCgAtFiEE6rR4j8RuQ2XmaZol4n+egRQHKFQFAmahneoPHHppeUBudmlk
-aWEuY29tAAoJEOJ/noEUByhUlwUQAJhiW3WWTu3PREnDrPSG03Ni98AT5kE27HQs
-kZfZpevoam3PiqHoTYaJz02RxXnfY/8qp2JwPiTSCkDJfMuncNS+JC9tEykJzxdw
-15Y+zyIufYtDgu80/xlyvj4qBqkxliiAhG50K8iZOWEYBdu4GpAM87AWY3Ff0Iv+
-niUUJ/vmsNUH1R3ZYdyP2b2PfSC3Ok9kfFlwE5Jm4LXY9Ju4ixrU5Ku9C1UtxyDb
-CGRv/et2yGKPbzM34rR6u6/JAAFbXoQW3uJrUmSr2UnTbFITW51gqDQ7urvUwxPA
-pnnqqUCNLGLfR7inpVqC0EOs4AMVfnj4ZkOxWihSD73lnUz5tE8kTrt3yf7+qVO5
-Q2GTniU/D9l38KVu8yuX9Z3/DULpJN/La58dWMxPKAQlOU21eFhufMAX8sNLga/j
-VeJTo8tVpqMyJLJuT4gP0sXlZknYhCmV4RzWc5s8QT54TfcIbaAx5I2LhRJwmuu9
-Gze5NXEqCyEQ4guQ6t2oEfmf8+Eanax26jFgm08ZfUuZwfsgynTnYAyo8JtAj4az
-VIGf+kKnKOQDiojSMBABaQoiBk6h6Sh5U1AXirqeSvNrmKISkEdydul9NijMidjN
-aC97As4te+mPqJ1QyZNdudbYCtrZZ6+X+88HoDMKgB9uHhXmGpdnSsjDJ89LD9tk
-ROfMsB3E
-=mFe0
+iQJDBAEBCgAtFiEE6rR4j8RuQ2XmaZol4n+egRQHKFQFAmahvQoPHHppeUBudmlk
+aWEuY29tAAoJEOJ/noEUByhUSf0P/0cm9Ze5mkTYGa1wnpb68oWLf69d3kYx4/rD
+EJiF/eiAN0aZvKrfaf0nR+Wv3VR+Q/uNKbhMUSV4Fh4rmQ2RlHsWKyfnTiHssLey
+tG29ykrNlHIW7JKyczMSOk1OoZIcNLGGN/460+/vg/5i5GJycnZzVDossjE3aNAm
+nxsRenHA8CKxOgRfWoklsq9BxqkrbiO44mAfJ5u/pITtTBwHMl/Ic2e8jtr+jyMG
+9dXB5q5E6vyLXAam9dDqLxKBCuDN3JHEP7H8FeHqqm1fvMShZ1L2i6KNJIILIGus
+VS2axQL2JJG2gjGSU4WhUQU1vNCS9olGNq8RTR2Z8dZN0giE5RqIxnPJCtyMPxYc
+CweiYuXt3j2SnADAUJkwoG1e6UEu+N+EPl4n0NOehhsCT0I+EYUtRKG8vUlVv4J5
+lXAhfCXI2yM7y1TgmCHxeRRbvxXMzBJ9nca1DGBZ96NXga/F0n8OxOF5wZLrNAH5
+45aSfogAKVUN69rtRtd6S3YjUm8yplbX3LQ3zFG72ojN/qeLK3jOzTRO0Cqk3vCE
+qzH0Hr1GjYL2m18/9Qv2hpZYyREL8qYtRX+zbUmHhq5XQaPtfYUNOPGw91M/XCgH
++eZEp7E/gWez4mMq/hFK8b2HudbSBYg9xiDNiG2LSn0eA8pGhyXVhC4+2IzUtzSm
+JyYYM5Mt
+=ZVJ/
 -----END PGP SIGNATURE-----
 
---=_MailMate_0F561B29-1B56-4DB1-964E-7E202A4B673B_=--
+--=_MailMate_59508B23-E8AA-4646-9577-89FD38A5FCB4_=--
